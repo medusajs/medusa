@@ -13,20 +13,15 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 
 ## August 10, 2026
 
+Medusa released webhooks for Cloud organizations with the following events:
+
 ### build.canceled
 
 - Added the `build.canceled` event. Cloud delivers this event when a build is canceled.
 
 ### build.created
 
-- Removed the `data.build.created_at` property. The build creation timestamp is no longer included in the payload.
-- Removed the `data.build.updated_at` property. The build last-updated timestamp is no longer included in the payload.
-- Removed the `data.organization.created_at` property. The organization creation timestamp is no longer included in the payload.
-- Removed the `data.organization.updated_at` property. The organization last-updated timestamp is no longer included in the payload.
-- Removed the `data.project.created_at` property. The project creation timestamp is no longer included in the payload.
-- Removed the `data.project.updated_at` property. The project last-updated timestamp is no longer included in the payload.
-- Removed the `data.environment.created_at` property. The environment creation timestamp is no longer included in the payload.
-- Removed the `data.environment.updated_at` property. The environment last-updated timestamp is no longer included in the payload.
+- Added the `build.created` event. Cloud delivers this event when a build is created for an environment.
 
 ### build.failed
 
@@ -36,27 +31,13 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 
 - Added the `build.succeeded` event. Cloud delivers this event when a build completes successfully.
 
-### build.updated
-
-- Removed the `build.updated` event. Medusa no longer delivers it. Use `build.failed` or `build.succeeded` instead.
-
 ### deployment.canceled
 
 - Added the `deployment.canceled` event. Cloud delivers this event when a deployment is canceled.
 
 ### deployment.created
 
-- Removed the `data.deployment.created_at` property. The deployment creation timestamp is no longer included in the payload.
-- Removed the `data.deployment.updated_at` property. The deployment last-updated timestamp is no longer included in the payload.
-- Removed the `data.build.status` property. The build status is no longer included in deployment event payloads.
-- Removed the `data.build.created_at` property. The build creation timestamp is no longer included in the payload.
-- Removed the `data.build.updated_at` property. The build last-updated timestamp is no longer included in the payload.
-- Removed the `data.organization.created_at` property. The organization creation timestamp is no longer included in the payload.
-- Removed the `data.organization.updated_at` property. The organization last-updated timestamp is no longer included in the payload.
-- Removed the `data.project.created_at` property. The project creation timestamp is no longer included in the payload.
-- Removed the `data.project.updated_at` property. The project last-updated timestamp is no longer included in the payload.
-- Removed the `data.environment.created_at` property. The environment creation timestamp is no longer included in the payload.
-- Removed the `data.environment.updated_at` property. The environment last-updated timestamp is no longer included in the payload.
+- Added the `deployment.created` event. Cloud delivers this event when a deployment is created for an environment.
 
 ### deployment.failed
 
@@ -65,25 +46,3 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 ### deployment.succeeded
 
 - Added the `deployment.succeeded` event. Cloud delivers this event when a deployment completes successfully.
-
-### deployment.updated
-
-- Removed the `deployment.updated` event. Medusa no longer delivers it. Use `deployment.failed` or `deployment.succeeded` instead.
-
-## August 6, 2026
-
-### build.created
-
-- Added the `build.created` event, delivered when Medusa creates a build for an environment.
-
-### build.updated
-
-- Added the `build.updated` event, delivered when a build changes, such as when it reaches a final status.
-
-### deployment.created
-
-- Added the `deployment.created` event, delivered when Medusa creates a deployment for an environment.
-
-### deployment.updated
-
-- Added the `deployment.updated` event, delivered when a deployment finishes.
