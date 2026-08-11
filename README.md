@@ -21,7 +21,7 @@
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+    <img src="https://img.shields.io/badge/license-open--core-blue.svg" alt="Medusa uses an open-core licensing model." />
   </a>
   <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
@@ -42,7 +42,7 @@ To set up a Medusa application locally, visit the [Documentation](https://docs.m
 
 ## About Medusa
 
-Medusa is a commerce platform with a built-in framework for customization that allows you to build custom commerce applications without reinventing core commerce logic. The framework and modules can be used to support advanced B2B or DTC commerce stores, marketplaces, distributor platforms, PoS systems, service businesses, or similar solutions that need foundational commerce primitives. All commerce modules are open-source and freely available on npm.
+Medusa is a commerce platform with a built-in framework for customization that allows you to build custom commerce applications without reinventing core commerce logic. The framework and modules can be used to support advanced B2B or DTC commerce stores, marketplaces, distributor platforms, PoS systems, service businesses, or similar solutions that need foundational commerce primitives. Medusa's core commerce modules are open-source and freely available on npm. Enterprise Edition features are identified separately in the repository.
 
 Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advanced-development/architecture/overview) and [commerce modules](https://docs.medusajs.com/resources/commerce-modules) in the Docs.
 
@@ -70,4 +70,4 @@ Join our [Discord server](https://discord.gg/medusajs) to meet and discuss with 
 
 ## License
 
-Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE).
+Medusa uses an open-core model. The core is licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE). The RBAC-based Enterprise Edition materials identified in [ENTERPRISE-LICENSE.md](https://github.com/medusajs/medusa/blob/develop/ENTERPRISE-LICENSE.md) require a commercial agreement with MedusaJS, Inc.
