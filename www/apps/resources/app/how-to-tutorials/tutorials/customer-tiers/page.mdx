@@ -3343,7 +3343,7 @@ In this step, you'll validate that a cart's promotions match the customer's tier
 
 ### Validate Promotion Addition
 
-When a customer adds a promotion to the cart, the storefront sends a request to the [Add Promotions API Route](!api!/store#carts_postcartsidpromotions), which executes the [updateCartPromotionsWorkflow](/references/medusa-workflows/updateCartPromotionsWorkflow).
+When a customer adds a promotion to the cart, the storefront sends a request to the [Add Promotions API Route](!api!/store/carts/add-promotions), which executes the [updateCartPromotionsWorkflow](/references/medusa-workflows/updateCartPromotionsWorkflow).
 
 To ensure that customers don't add promotions that belong to different tiers, you can consume the `validate` [hook](!docs!/learn/fundamentals/workflows/workflow-hooks) of the `updateCartPromotionsWorkflow`. A hook is a specific point in a workflow where you can inject custom functionality.
 

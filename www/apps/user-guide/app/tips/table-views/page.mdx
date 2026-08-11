@@ -1,0 +1,103 @@
+---
+sidebar_position: 5
+sidebar_label: "Configure Table Views"
+tags:
+    - user guide
+    - settings
+products:
+    - settings
+---
+
+import { Adjustments, Funnel, DescendingSorting } from "@medusajs/icons"
+import { InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Configure Table Views in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to customize data tables in the Medusa Admin dashboard and save your customizations as reusable views.
+
+<Note>
+
+Configurable table views are an experimental feature that your technical team must enable in your Medusa application before you can use it. If you don't see the view options described in this guide, ask your technical team to [enable them](!resources!/commerce-modules/settings/view-configurations).
+
+</Note>
+
+## What are Table Views?
+
+Many pages in the Medusa Admin show your data in tables, such as the products or orders list. A table view is a saved customization of a table, including which columns are shown, their order, the applied filters, the sorting, and the search query.
+
+You can create personal views that only you can see, and you can set a default view that applies to everyone in your team.
+
+There are two types of views:
+
+- **Personal views**: Views that you create and that only you can see.
+- **Default view**: The view that applies to everyone in your team who doesn't have their own personal view.
+
+---
+
+## Switch Between Views
+
+At the top of a supported table, you'll find a row of view badges. The **Default** badge is always available, followed by a badge for each of your personal views, if you have any.
+
+To switch to a different view, click its badge. The table updates to show the columns, filters, and sorting of the selected view. Your selection is saved, so the table shows the same view the next time you open the page, even on a different device.
+
+---
+
+## Customize a Table
+
+To customize a table, use the following controls at the top of the table:
+
+- <InlineIcon Icon={Adjustments} alt="Columns" />: Show or hide columns, and change their order.
+- <InlineIcon Icon={Funnel} alt="Filters" />: Add filters to narrow down the records shown in the table.
+- <InlineIcon Icon={DescendingSorting} alt="Sorting" />: Change the column and direction the table is sorted by.
+- **Search**: Type in the search field to find specific records.
+
+You can also resize a column by dragging the edge of its header.
+
+After you customize a table, click the **Save** button to save your changes. The **Save** button shows a menu with the following options, depending on the active view:
+
+- **Save as new view**: Create a new personal view. You're prompted to enter a name for the view. After you save it, the new view becomes active and appears as a badge.
+- **Update view**: Update the active personal view with your changes. This option only appears if you're making changes to an existing personal view.
+- **Update default for everyone**: Save your changes to the default view. This becomes the new default for everyone in your team.
+
+---
+
+## Reset Default View
+
+If you updated the default view and you want to revert it to the original columns and settings, you can reset it by doing the following:
+
+1. Right-click the **Default** badge at the top of the table.
+2. Choose **Reset to code defaults** from the menu.
+3. Confirm the reset in the popup that appears.
+
+This resets the default view to the original columns and settings, and it applies to everyone in your team.
+
+---
+
+## Manage Personal Views
+
+### Rename a Personal View
+
+To rename a personal view:
+
+1. Right-click the view's badge at the top of the table.
+2. Choose **Edit name** from the menu.
+3. In the side menu that opens, enter a new name for the view.
+4. Click **Update** to save the new name.
+
+### Delete a Personal View
+
+<Note type="warning">
+
+Deleting a personal view is irreversible. Once you delete a view, you can't recover it.
+
+</Note>
+
+To delete a personal view:
+
+1. Right-click the view's badge at the top of the table.
+2. Choose **Delete** from the menu.
+3. Confirm the deletion in the popup that appears.

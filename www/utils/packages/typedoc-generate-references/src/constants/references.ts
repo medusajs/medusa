@@ -13,6 +13,7 @@ export const modules = [
   "promotion",
   "region",
   "sales-channel",
+  "settings",
   "stock-location-next",
   "store",
   "tax",

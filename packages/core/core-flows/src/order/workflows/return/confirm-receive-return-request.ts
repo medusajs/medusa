@@ -183,7 +183,7 @@ export type ConfirmReceiveReturnRequestWorkflowInput = {
 export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
 /**
  * This workflow confirms a return receival request. It's used by the
- * [Confirm Return Receival Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveconfirm).
+ * [Confirm Return Receival Admin API Route](https://docs.medusajs.com/api/admin/returns/confirm-return-receival).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to confirm a return receival in your custom flow.

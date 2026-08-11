@@ -71,7 +71,7 @@ export const deleteShippingProfileWorkflowId =
   "delete-shipping-profile-workflow"
 /**
  * This workflow deletes one or more shipping profiles. It's used by the
- * [Delete Shipping Profile Admin API Route](https://docs.medusajs.com/api/admin#shipping-profiles_deleteshippingprofilesid).
+ * [Delete Shipping Profile Admin API Route](https://docs.medusajs.com/api/admin/shipping-profiles/delete-a-shipping-profile).
  * Shipping profiles that are linked to products cannot be deleted.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to

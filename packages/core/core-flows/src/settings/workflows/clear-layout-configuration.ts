@@ -26,7 +26,7 @@ export const clearLayoutConfigurationWorkflowId = "clear-layout-configuration"
  * layout scope for the zone.
  *
  * This workflow is used by the
- * [Clear Layout Configuration Admin API Route](https://docs.medusajs.com/api/admin#layouts_deletelayoutszoneconfiguration).
+ * [Clear Layout Configuration Admin API Route](https://docs.medusajs.com/api/admin/layouts/clear-configuration-of-layout).
  *
  * You can use this workflow within your own customizations or custom workflows,
  * allowing you to clear a layout configuration within your custom flows.

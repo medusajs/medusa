@@ -182,6 +182,14 @@ Learn more in the [Access Deployment](../deployments/access/page.mdx) guide.
 
 ---
 
+## Clone Project Locally
+
+If you created your project from a starter, Cloud clones the starter's code into a GitHub repository in the account or organization you chose. To customize your store, you clone that repository to your machine and run the application locally.
+
+Learn how to do that in the [Clone a Cloud Project Locally](./clone-locally/page.mdx) guide.
+
+---
+
 ## Open Project Dashboard
 
 To open a project's dashboard:
@@ -319,6 +327,24 @@ Learn more in the [Preview Environments](../environments/preview/page.mdx) guide
 
 ---
 
+## Change Connected GitHub Repository
+
+You can change the GitHub repository connected to your project from the Connections settings page. This is useful if you've moved your Medusa application to a different repository.
+
+To change the connected repository:
+
+1. Open the project's dashboard.
+2. Click on the **Settings** tab.
+3. Click on the **Connections** tab in the Settings page.
+4. Under the connected GitHub repository, click the **Change** button.
+5. In the modal that opens, choose the new repository to connect.
+    - If you're not connected to GitHub yet, you'll need to connect first.
+6. Click **Save Changes**.
+
+The next time you push to the new repository, your project will be built from there.
+
+---
+
 ## Change Project Infrastructure Specifications
 
 By default, all your projects use the infrastructure specifications defined in your [organization's plan](../pricing/page.mdx).
@@ -334,6 +360,7 @@ To change the infrastructure specifications of a project:
 3. In the "General" tab of the Settings page, enable the "Infrastructure specs" toggle.
 4. In the dropdown that shows, select the plan that you want to use its specs for the project. Below the dropdown, the cost estimates will change based on the plan you select.
     - You can learn more about the available plans and their specifications in the [Plans & Pricing](../pricing/page.mdx) guide.
+    - If your organization is on a bespoke plan and you haven't selected a custom infrastructure override, you'll see a bespoke-specific note instead of a standard cost estimate. Once you select a custom override, the standard cost estimate is shown.
 5. Once you're done, click the "Save changes" button.
 
 The infrastructure specifications of the project will be updated based on the selected plan.
@@ -343,6 +370,27 @@ The infrastructure specifications of the project will be updated based on the se
 If you want to revert the infrastructure specifications of a project to use the specifications defined in your organization's plan, you can do so by disabling the "Infrastructure specs" toggle in the "General" tab of the Settings page.
 
 The project will then use the specifications defined in your organization's plan.
+
+---
+
+## Delete Storefront
+
+<Note type="warning" title="Danger">
+
+Deleting the storefront is irreversible. This action permanently removes the storefront associated with the project. You can re-add the storefront if needed.
+
+</Note>
+
+If your project has a storefront deployed, you can permanently delete it from the project settings.
+
+To delete the storefront:
+
+1. Open the project's dashboard.
+2. Click on the **Settings** tab.
+3. In the **General** tab of the Settings page, click the **Delete** button in the **Delete Storefront** section.
+4. Confirm the deletion by entering the verification phrase in the confirmation prompt, then click **Delete**.
+
+This will remove your storefront from the project. Future deployments include the backend only.
 
 ---
 

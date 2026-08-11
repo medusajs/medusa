@@ -94,7 +94,7 @@ export const cancelClaimValidateOrderStep = createStep(
 export const cancelOrderClaimWorkflowId = "cancel-claim"
 /**
  * This workflow cancels a confirmed order claim. It's used by the
- * [Cancel Claim API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidcancel).
+ * [Cancel Claim API Route](https://docs.medusajs.com/api/admin/claims/cancel-a-claim).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel a claim
  * for an order in your custom flows.

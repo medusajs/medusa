@@ -1,0 +1,2022 @@
+import { Note, Table, Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger, TypeList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Cloud Webhooks Reference`,
+}
+
+# {metadata.title}
+
+In this reference guide, you'll learn how Medusa delivers webhook events to your application, and you'll find the details and payload of every event that Medusa sends.
+
+<Prerequisites
+  items={[
+    {
+      text: "A Webhook endpoint configured and enabled for your organization. This is the endpoint that receives the events in this reference.",
+      link: "/webhooks/endpoints",
+    }
+  ]}
+/>
+
+## Webhooks Overview
+
+A webhook is an HTTP request that Medusa sends to an endpoint you own when something happens in your organization, such as a build starting or a deployment finishing. Webhooks let you react to changes in Cloud without polling for them.
+
+Medusa delivers events to the [webhook endpoint configured for your organization](../endpoints/page.mdx). If your organization has no endpoint, or its endpoint is disabled, Medusa doesn't send any events.
+
+Every event is a `POST` request with a JSON body. Your endpoint must respond with a `2xx` status code within ten seconds, otherwise Medusa treats the delivery as failed and retries it. You can track events delivery [in the Cloud dashboard](../events/page.mdx).
+
+<Note>
+
+Refer to the [Webhooks Changelog](../changelog/page.mdx) for dated updates to the webhook events that Medusa delivers.
+
+</Note>
+
+---
+
+## Webhook Delivery Details
+
+Medusa wraps every event in the same envelope. The `data` property holds the event's payload, which differs per event:
+
+```json
+{
+  "id": "whev_01K2M7Q8ZCTVX3H4",
+  "type": "deployment.created",
+  "data": {
+    // The payload of the event.
+  },
+  "created_at": "2026-08-07T09:14:22.000Z"
+}
+```
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `The ID of the delivered event. Use it to make your handler idempotent, since Medusa reuses the same ID across retries of the same event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The name of the event, such as \`deployment.created\`.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event. Refer to the event's section for its properties.`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed.`,
+    },
+  ]}
+  sectionTitle="Delivery Details"
+/>
+
+### Webhook Request Headers
+
+Every delivery includes the following headers:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Header
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Event`
+
+      </Table.Cell>
+      <Table.Cell>
+        The name of the event, matching the `type` property of the body.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Delivery`
+
+      </Table.Cell>
+      <Table.Cell>
+        The ID of the delivered event, matching the `id` property of the body.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Signature`
+
+      </Table.Cell>
+      <Table.Cell>
+        The signature of the request, which you use to verify that Medusa sent it. Refer to the [Verify Webhook Signatures](#verify-webhook-signatures) section for details.
+        
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `User-Agent`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Always `MedusaCloud-Webhook/1.0`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Verify Webhook Signatures
+
+Medusa signs every request with the secret of your webhook endpoint, and sends the signature in the `X-Medusa-Signature` header:
+
+```bash
+X-Medusa-Signature: t=1786785262,v1=5e9b41...
+```
+
+The header holds two values separated by a comma:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Value
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `t`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The time Medusa signed the request, as a Unix timestamp in seconds.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `v1`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The HMAC SHA-256 signature, in hexadecimal format.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+To verify a request, compute the HMAC SHA-256 of the string `{t}.{raw request body}` using your endpoint's secret, then compare the result to `v1`.
+
+For example:
+
+<Tabs defaultValue="medusa">
+  <TabsList>
+    <TabsTrigger value="medusa">Medusa Application</TabsTrigger>
+    <TabsTrigger value="node">Node.js</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="medusa">
+
+  In a Medusa application, verify the signature in a middleware so that your route only runs for requests that Cloud sent.
+
+  Start by registering the middleware on your webhook route in `src/api/middlewares.ts`:
+
+  ```ts title="src/api/middlewares.ts"
+  import { defineMiddlewares } from "@medusajs/framework/http"
+  import {
+    verifyWebhookSignature,
+  } from "./utils/verify-webhook-signature"
+
+  export default defineMiddlewares({
+    routes: [
+      {
+        method: ["POST"],
+        matcher: "/cloud-webhooks",
+        bodyParser: { preserveRawBody: true },
+        middlewares: [verifyWebhookSignature],
+      },
+    ],
+  })
+  ```
+
+  The `preserveRawBody` option of `bodyParser` stores the raw request body in `req.rawBody`, which you need to compute the signature. Learn more in the [Configure Request Body Parser](!docs!/learn/fundamentals/api-routes/parse-body#preserve-raw-body-data-for-webhooks) guide.
+
+  Then, create the middleware in `src/api/utils/verify-webhook-signature.ts`:
+
+  ```ts title="src/api/utils/verify-webhook-signature.ts"
+  import {
+    MedusaNextFunction,
+    MedusaRequest,
+    MedusaResponse,
+  } from "@medusajs/framework/http"
+  import crypto from "crypto"
+
+  export function verifyWebhookSignature(
+    req: MedusaRequest,
+    res: MedusaResponse,
+    next: MedusaNextFunction
+  ) {
+    const header = req.headers["x-medusa-signature"]
+    const secret = process.env.CLOUD_WEBHOOK_SECRET
+
+    if (typeof header !== "string" || !secret) {
+      return res.sendStatus(401)
+    }
+
+    const parts = new URLSearchParams(
+      header.replace(/,/g, "&")
+    )
+    const timestamp = parts.get("t")
+    const signature = parts.get("v1")
+
+    if (!timestamp || !signature || !req.rawBody) {
+      return res.sendStatus(401)
+    }
+
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(
+        `${timestamp}.${req.rawBody.toString("utf8")}`,
+        "utf8"
+      )
+      .digest("hex")
+
+    if (
+      expected.length !== signature.length ||
+      !crypto.timingSafeEqual(
+        Buffer.from(expected),
+        Buffer.from(signature)
+      )
+    ) {
+      return res.sendStatus(401)
+    }
+
+    next()
+  }
+  ```
+
+  Your route then handles the event, knowing that the request is verified:
+
+  ```ts title="src/api/cloud-webhooks/route.ts"
+  import {
+    MedusaRequest,
+    MedusaResponse,
+  } from "@medusajs/framework/http"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const event = req.body as {
+      id: string
+      type: string
+    }
+
+    // TODO handle the event
+
+    res.sendStatus(200)
+  }
+  ```
+
+    </TabsContent>
+    <TabsContent value="node">
+
+  In a plain Node.js application, pass the raw request body, the `X-Medusa-Signature` header, and your endpoint's secret to the following function:
+
+  ```ts
+  import crypto from "crypto"
+
+  export function isValid(
+    rawBody: string,
+    header: string,
+    secret: string
+  ) {
+    const parts = new URLSearchParams(
+      header.replace(/,/g, "&")
+    )
+    const timestamp = parts.get("t")
+    const signature = parts.get("v1")
+
+    if (!timestamp || !signature) {
+      return false
+    }
+
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    if (expected.length !== signature.length) {
+      return false
+    }
+
+    return crypto.timingSafeEqual(
+      Buffer.from(expected),
+      Buffer.from(signature)
+    )
+  }
+  ```
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
+
+<Note type="warning">
+
+Compute the signature from the raw request body. If your framework parses the body into an object before your handler runs, the signature won't match.
+
+</Note>
+
+You can also compare `t` to the current time and reject requests that are older than the window you accept. For example:
+
+```ts
+export function isRecent(
+  header: string,
+  toleranceInSeconds = 300
+) {
+  const parts = new URLSearchParams(
+    header.replace(/,/g, "&")
+  )
+  const timestamp = Number(parts.get("t"))
+
+  if (!timestamp) {
+    return false
+  }
+
+  const ageInSeconds = Date.now() / 1000 - timestamp
+
+  return ageInSeconds < toleranceInSeconds
+}
+```
+
+Medusa signs every delivery attempt at the time it sends it, so retries of the same event pass this check.
+
+### Webhook Retries
+
+Medusa attempts the first delivery as soon as it queues the event. If your endpoint doesn't respond with a `2xx` status code within ten seconds, Medusa retries the delivery with an exponential backoff, starting at five minutes and doubling after every attempt.
+
+Medusa will retry within twenty-four hours of the first attempt. After that, it stops retrying and marks the event as failed. You can [track the status of deliveries in the Cloud dashboard](../events/page.mdx).
+
+A delivery fails when your endpoint responds with a status code outside the `2xx` range, when it doesn't respond within ten seconds, or when Medusa can't reach it. Medusa doesn't follow redirects, so a `3xx` response also counts as a failed delivery.
+
+---
+
+## Webhook Events
+
+Medusa sends the following events:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Event
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.canceled`](#buildcanceled)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The build was canceled.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.created`](#buildcreated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Medusa created a build for an environment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.failed`](#buildfailed)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A build failed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.succeeded`](#buildsucceeded)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A build completed successfully.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.canceled`](#deploymentcanceled)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The deployment was canceled.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.created`](#deploymentcreated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Medusa created a deployment for an environment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.failed`](#deploymentfailed)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A deployment failed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.succeeded`](#deploymentsucceeded)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A deployment completed successfully.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Webhook Build Events
+
+Medusa sends these events related to an environment's builds, which happen after you push a commit to the environment's branch.
+
+### build.canceled
+
+Cloud delivers this event when a build is canceled.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.canceled".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build that was canceled.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"canceled\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.canceled"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:03:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "canceled"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ4567ABCDEF",
+  "type": "build.canceled"
+}
+```
+
+### build.created
+
+Cloud delivers this event when a new build is created for an environment.
+
+<Note title="Changes">
+
+- Medusa removed the `data.build.created_at` property on August 10, 2026. The build creation timestamp is no longer included in the payload.
+- Medusa removed the `data.build.updated_at` property on August 10, 2026. The build last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.organization.created_at` property on August 10, 2026. The organization creation timestamp is no longer included in the payload.
+- Medusa removed the `data.organization.updated_at` property on August 10, 2026. The organization last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.project.created_at` property on August 10, 2026. The project creation timestamp is no longer included in the payload.
+- Medusa removed the `data.project.updated_at` property on August 10, 2026. The project last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.environment.created_at` property on August 10, 2026. The environment creation timestamp is no longer included in the payload.
+- Medusa removed the `data.environment.updated_at` property on August 10, 2026. The environment last-updated timestamp is no longer included in the payload.
+
+</Note>
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.created".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build that was created.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.created"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:00:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "created"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ1234ABCDEF",
+  "type": "build.created"
+}
+```
+
+### build.failed
+
+Cloud delivers this event when a build fails.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.failed".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build that failed.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"failed\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.failed"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:05:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "failed"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ3456ABCDEF",
+  "type": "build.failed"
+}
+```
+
+### build.succeeded
+
+Cloud delivers this event when a build completes successfully.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.succeeded".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build that succeeded.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"succeeded\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.succeeded"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:05:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "succeeded"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ2345ABCDEF",
+  "type": "build.succeeded"
+}
+```
+
+---
+
+## Webhook Deployment Events
+
+Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
+
+### deployment.canceled
+
+Cloud delivers this event when a deployment is canceled.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.canceled".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that was canceled.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"canceled\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.canceled"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:08:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "canceled"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ8901ABCDEF",
+  "type": "deployment.canceled"
+}
+```
+
+### deployment.created
+
+Cloud delivers this event when a new deployment is created for an environment.
+
+<Note title="Changes">
+
+- Medusa removed the `data.deployment.created_at` property on August 10, 2026. The deployment creation timestamp is no longer included in the payload.
+- Medusa removed the `data.deployment.updated_at` property on August 10, 2026. The deployment last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.build.status` property on August 10, 2026. The build status is no longer included in deployment event payloads.
+- Medusa removed the `data.build.created_at` property on August 10, 2026. The build creation timestamp is no longer included in the payload.
+- Medusa removed the `data.build.updated_at` property on August 10, 2026. The build last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.organization.created_at` property on August 10, 2026. The organization creation timestamp is no longer included in the payload.
+- Medusa removed the `data.organization.updated_at` property on August 10, 2026. The organization last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.project.created_at` property on August 10, 2026. The project creation timestamp is no longer included in the payload.
+- Medusa removed the `data.project.updated_at` property on August 10, 2026. The project last-updated timestamp is no longer included in the payload.
+- Medusa removed the `data.environment.created_at` property on August 10, 2026. The environment creation timestamp is no longer included in the payload.
+- Medusa removed the `data.environment.updated_at` property on August 10, 2026. The environment last-updated timestamp is no longer included in the payload.
+
+</Note>
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.created".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that was created.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.created"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:06:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "created"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ5678ABCDEF",
+  "type": "deployment.created"
+}
+```
+
+### deployment.failed
+
+Cloud delivers this event when a deployment fails.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.failed".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that failed.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"failed\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.failed"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:10:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "failed"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ7890ABCDEF",
+  "type": "deployment.failed"
+}
+```
+
+### deployment.succeeded
+
+Cloud delivers this event when a deployment completes successfully.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.succeeded".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that succeeded.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"succeeded\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.succeeded"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:10:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "succeeded"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ6789ABCDEF",
+  "type": "deployment.succeeded"
+}
+```

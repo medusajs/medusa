@@ -172,6 +172,54 @@ export const RELATIONSHIP_FILTER_OVERRIDES: Record<
       multiple: true,
     },
   ],
+  StockLocation: [
+    {
+      field: "sales_channels",
+      relatedEntity: "SalesChannel",
+      valueField: "id",
+      displayField: "name",
+      multiple: true,
+      filterKey: "sales_channel_id",
+    },
+    {
+      field: "address",
+      relatedEntity: "StockLocationAddress",
+      valueField: "id",
+      displayField: "",
+      multiple: false,
+      filterKey: "address_id",
+    },
+  ],
+  Promotion: [
+    {
+      field: "campaign",
+      relatedEntity: "Campaign",
+      valueField: "id",
+      displayField: "name",
+      multiple: true,
+      filterKey: "campaign_id",
+    },
+  ],
+  ReservationItem: [
+    {
+      field: "inventory_item",
+      relatedEntity: "InventoryItem",
+      valueField: "id",
+      displayField: "sku",
+      multiple: true,
+      filterKey: "inventory_item_id",
+    },
+  ],
+  CustomerGroup: [
+    {
+      field: "customers",
+      relatedEntity: "Customer",
+      valueField: "id",
+      displayField: "email",
+      multiple: true,
+      filterKey: "customers",
+    },
+  ],
 }
 
 /**

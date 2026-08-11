@@ -29,9 +29,9 @@ Publishable API keys are associated with sales channels. Then, when the publisha
 
 ## How to Create a Publishable API Key?
 
-You create a publishable API key either using the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys) or the [Admin API routes](!api!/admin#api-keys_postapikeys).
+You create a publishable API key either using the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys) or the [Admin API routes](!api!/admin/api-keys/create-api-key).
 
-For example, using the [Create API Key API Route](!api!/admin#api-keys_postapikeys):
+For example, using the [Create API Key API Route](!api!/admin/api-keys/create-api-key):
 
 ```bash
 curl -X POST 'http://localhost:9000/admin/api-keys' \
@@ -45,13 +45,13 @@ curl -X POST 'http://localhost:9000/admin/api-keys' \
 
 <Note title="Tip">
 
-Learn how to send authenticated admin requests in the [Admin API reference](!api!/admin#authentication)
+Learn how to send authenticated admin requests in the [Admin API reference](!api!/admin/authentication)
 
 </Note>
 
 ### Add Sales Channels to the Publishable API Key's Scope
 
-To add sales channels to the publishable API key's scope, you can either use the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys#manage-publishable-api-keys-sales-channels), or send a request to the [Manage Sales Channels API route](!api!/admin#api-keys_postapikeysidsaleschannels):
+To add sales channels to the publishable API key's scope, you can either use the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys#manage-publishable-api-keys-sales-channels), or send a request to the [Manage Sales Channels API route](!api!/admin/api-keys/manage-sales-channels):
 
 ```bash
 curl -X POST 'http://localhost:9000/admin/api-keys/apk_123/sales-channels' \

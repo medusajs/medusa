@@ -3,11 +3,11 @@ import path from "path"
 import OpenAPIParser from "@readme/openapi-parser"
 import getPathsOfTag from "@/utils/get-paths-of-tag"
 import type { OpenAPI } from "types"
-import { workerCompatibleFetch } from "docs-utils"
+import { withRouteErrorHandling, workerCompatibleFetch } from "docs-utils"
 import { parse as parseYaml } from "yaml"
 import { readSpecFromBinding } from "@/utils/read-spec-from-binding"
 
-export async function GET(request: Request) {
+export const GET = withRouteErrorHandling(async (request: Request) => {
   const { searchParams } = new URL(request.url)
   const area = searchParams.get("area")
   const expand = searchParams.get("expand")
@@ -57,4 +57,4 @@ export async function GET(request: Request) {
   return NextResponse.json(baseSpecs, {
     status: 200,
   })
-}
+})

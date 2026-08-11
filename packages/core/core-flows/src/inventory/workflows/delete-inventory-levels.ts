@@ -112,7 +112,7 @@ export const deleteInventoryLevelsWorkflowId =
   "delete-inventory-levels-workflow"
 /**
  * This workflow deletes one or more inventory levels. It's used by the
- * [Delete Inventory Levels Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id).
+ * [Delete Inventory Levels Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/remove-inventory-level).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete inventory levels in your custom flows.

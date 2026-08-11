@@ -23,7 +23,7 @@ export type DeleteInventoryItemWorkflowOutput = string[]
 export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 /**
  * This workflow deletes one or more inventory items. It's used by the
- * [Delete Inventory Item Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsid).
+ * [Delete Inventory Item Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/delete-inventory-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete inventory items in your custom flows.

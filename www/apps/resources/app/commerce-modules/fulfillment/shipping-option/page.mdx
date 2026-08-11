@@ -27,7 +27,7 @@ A shipping option's `price_type` property determines how its price is resolved:
 
 For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](/references/fulfillment/provider) of the associated fulfillment provider to resolve the price against the cart. This happens when:
 
-- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](!api!/store#shipping-options_postshippingoptionsidcalculate).
+- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](!api!/store/shipping-options/calculate-shipping-option-price).
 - The shipping method is added to the cart.
 - The cart is refreshed. Medusa refreshes the cart after most cart changes, such as adding a line item or updating the cart's address, so the price may be recalculated frequently.
 

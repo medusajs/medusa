@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
+import compression from "compression"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
@@ -10,6 +11,10 @@ import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
+import {
+  compressionOptions,
+  shouldCompressResponse,
+} from "./utils/http-compression"
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
@@ -102,6 +107,29 @@ export async function expressLoader({
   }
 
   app.set("trust proxy", 1)
+
+  /**
+   * Register the HTTP compression middleware when it's enabled through
+   * `projectConfig.http.compression`. It has to be registered before the
+   * route handlers so it can compress the responses they produce. The
+   * `filter` additionally skips compression for requests that opt out via
+   * the `x-no-compression` header.
+   */
+  const httpCompressionOptions = compressionOptions(configModule.projectConfig)
+  if (httpCompressionOptions.enabled) {
+    // `compression` ships its own copy of the Express types, so both its
+    // filter input and its middleware output have to be bridged to the
+    // Express types used here. `shouldCompressResponse` additionally reads
+    // `req.scope` off the Medusa request, which only exists at runtime, hence
+    // the casts through `unknown`.
+    const compressionMiddleware = compression({
+      ...httpCompressionOptions,
+      filter:
+        shouldCompressResponse as unknown as compression.CompressionFilter,
+    }) as unknown as RequestHandler
+
+    app.use(compressionMiddleware)
+  }
 
   /**
    * Method to skip logging HTTP requests. We skip in test environment

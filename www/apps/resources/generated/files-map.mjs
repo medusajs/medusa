@@ -172,6 +172,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/promotions"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/page.mdx",
+    "pathname": "/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",
     "pathname": "/commerce-modules/cart/tax-lines"
   },
@@ -380,12 +384,24 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/return"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/secure-order-retrieval/page.mdx",
+    "pathname": "/commerce-modules/order/secure-order-retrieval"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/secure-return-creation/page.mdx",
+    "pathname": "/commerce-modules/order/secure-return-creation"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/tax-lines/page.mdx",
     "pathname": "/commerce-modules/order/tax-lines"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/transactions/page.mdx",
     "pathname": "/commerce-modules/order/transactions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/transfer-to-guest/page.mdx",
+    "pathname": "/commerce-modules/order/transfer-to-guest"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/workflows/page.mdx",
@@ -524,6 +540,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/physical-customs-attributes/page.mdx",
+    "pathname": "/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/selling-products/page.mdx",
     "pathname": "/commerce-modules/product/selling-products"
   },
@@ -622,6 +642,46 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/workflows/page.mdx",
     "pathname": "/commerce-modules/sales-channel/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/settings/admin-widget-zones"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/concepts/page.mdx",
+    "pathname": "/commerce-modules/settings/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/configure-view-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/configure-view-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/js-sdk/page.mdx",
+    "pathname": "/commerce-modules/settings/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/layout-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/layout-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/page.mdx",
+    "pathname": "/commerce-modules/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/property-labels/page.mdx",
+    "pathname": "/commerce-modules/settings/property-labels"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/user-preferences/page.mdx",
+    "pathname": "/commerce-modules/settings/user-preferences"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/view-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/view-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/workflows/page.mdx",
+    "pathname": "/commerce-modules/settings/workflows"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/stock-location/admin-widget-zones/page.mdx",
@@ -1264,6 +1324,10 @@ export const filesMap = [
     "pathname": "/lint/rules/no-try-catch-in-workflow"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/no-wildcard-with-specific-fields/page.mdx",
+    "pathname": "/lint/rules/no-wildcard-with-specific-fields"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/no-workflow-call-without-container/page.mdx",
     "pathname": "/lint/rules/no-workflow-call-without-container"
   },
@@ -1904,6 +1968,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/errors-installing-cli"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/esm-syntax-error/page.mdx",
+    "pathname": "/troubleshooting/esm-syntax-error"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/general-errors/page.mdx",
     "pathname": "/troubleshooting/general-errors"
   },
@@ -2132,6 +2200,18 @@ export const filesMap = [
     "pathname": "/references/api_key/types/api_key.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.CrossModuleJoinLink/page.json",
+    "pathname": "/references/api_key/types/api_key.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/api_key/types/api_key.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/api_key/types/api_key.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.Event/page.json",
     "pathname": "/references/api_key/types/api_key.Event"
   },
@@ -2162,6 +2242,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.FindConfigOrder/page.json",
     "pathname": "/references/api_key/types/api_key.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.InternalQueryOptions/page.json",
+    "pathname": "/references/api_key/types/api_key.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.JoinerRelationship/page.json",
@@ -2492,6 +2576,10 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.ConfirmAuthVerificationDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.Constructor/page.json",
+    "pathname": "/references/auth/types/auth.Constructor"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.ConsumePasswordResetTokenDTO/page.json",
     "pathname": "/references/auth/types/auth.ConsumePasswordResetTokenDTO"
   },
@@ -2512,6 +2600,18 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.CreatePasswordResetTokenResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CrossModuleJoinLink/page.json",
+    "pathname": "/references/auth/types/auth.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/auth/types/auth.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/auth/types/auth.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.DisableAuthMfaDTO/page.json",
     "pathname": "/references/auth/types/auth.DisableAuthMfaDTO"
   },
@@ -2524,6 +2624,26 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.ExpandScalar/page.json",
+    "pathname": "/references/auth/types/auth.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.FilterQuery/page.json",
+    "pathname": "/references/auth/types/auth.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.FilterQueryProperties/page.json",
+    "pathname": "/references/auth/types/auth.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.FilterValue/page.json",
+    "pathname": "/references/auth/types/auth.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.FilterValue2/page.json",
+    "pathname": "/references/auth/types/auth.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.FindConfigOrder/page.json",
     "pathname": "/references/auth/types/auth.FindConfigOrder"
   },
@@ -2534,6 +2654,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.GenerateAuthMfaRecoveryCodesResponse/page.json",
     "pathname": "/references/auth/types/auth.GenerateAuthMfaRecoveryCodesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.InternalQueryOptions/page.json",
+    "pathname": "/references/auth/types/auth.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.JoinerRelationship/page.json",
@@ -2556,8 +2680,28 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.OperatorMap/page.json",
+    "pathname": "/references/auth/types/auth.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.PrevLimit/page.json",
+    "pathname": "/references/auth/types/auth.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.Primary/page.json",
+    "pathname": "/references/auth/types/auth.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.Query/page.json",
+    "pathname": "/references/auth/types/auth.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.RawMessageFormat/page.json",
     "pathname": "/references/auth/types/auth.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.ReadonlyPrimary/page.json",
+    "pathname": "/references/auth/types/auth.ReadonlyPrimary"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.RequestAuthVerificationDTO/page.json",
@@ -2566,6 +2710,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.RequestAuthVerificationResponse/page.json",
     "pathname": "/references/auth/types/auth.RequestAuthVerificationResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.Scalar/page.json",
+    "pathname": "/references/auth/types/auth.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.UseAuthMfaRecoveryCodeDTO/page.json",
@@ -3112,6 +3260,18 @@ export const filesMap = [
     "pathname": "/references/cart/types/cart.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/cart/types/cart.CrossModuleJoinLink/page.json",
+    "pathname": "/references/cart/types/cart.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/types/cart.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/cart/types/cart.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/types/cart.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/cart/types/cart.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/cart/types/cart.Event/page.json",
     "pathname": "/references/cart/types/cart.Event"
   },
@@ -3142,6 +3302,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.FindConfigOrder/page.json",
     "pathname": "/references/cart/types/cart.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/types/cart.InternalQueryOptions/page.json",
+    "pathname": "/references/cart/types/cart.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.JoinerRelationship/page.json",
@@ -6068,6 +6232,14 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/throwUnlessStatusIsNotPaid"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestValidationStep/page.json",
+    "pathname": "/references/medusa-workflows/transferOrderToGuestValidationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/transferOrderToGuestWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.updateClaimAddItemValidationStep/page.json",
     "pathname": "/references/medusa-workflows/updateClaimAddItemValidationStep"
   },
@@ -6506,6 +6678,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/variables/core_flows.Order.Workflows_Order.requestOrderTransferWorkflowId/page.json",
     "pathname": "/references/core_flows/Order/Workflows_Order/variables/core_flows.Order.Workflows_Order.requestOrderTransferWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/variables/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflowId/page.json",
+    "pathname": "/references/core_flows/Order/Workflows_Order/variables/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/variables/core_flows.Order.Workflows_Order.updateClaimAddItemWorkflowId/page.json",
@@ -10424,6 +10600,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetVariantAvailabilityStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ImportProductOptionInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ImportProductOptionInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.LinkCustomerGroupsToCustomerWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.LinkCustomerGroupsToCustomerWorkflowInput"
   },
@@ -10734,6 +10914,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferCartCustomerWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferCartCustomerWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateApiKeysStepInput/page.json",
@@ -11564,6 +11748,22 @@ export const filesMap = [
     "pathname": "/references/currency/interfaces/currency.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/currency/types/currency.Constructor/page.json",
+    "pathname": "/references/currency/types/currency.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.CrossModuleJoinLink/page.json",
+    "pathname": "/references/currency/types/currency.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/currency/types/currency.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/currency/types/currency.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/types/currency.Event/page.json",
     "pathname": "/references/currency/types/currency.Event"
   },
@@ -11572,8 +11772,32 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/currency/types/currency.ExpandScalar/page.json",
+    "pathname": "/references/currency/types/currency.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.FilterQuery/page.json",
+    "pathname": "/references/currency/types/currency.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.FilterQueryProperties/page.json",
+    "pathname": "/references/currency/types/currency.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.FilterValue/page.json",
+    "pathname": "/references/currency/types/currency.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.FilterValue2/page.json",
+    "pathname": "/references/currency/types/currency.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/types/currency.FindConfigOrder/page.json",
     "pathname": "/references/currency/types/currency.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.InternalQueryOptions/page.json",
+    "pathname": "/references/currency/types/currency.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/currency/types/currency.JoinerRelationship/page.json",
@@ -11596,8 +11820,32 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/currency/types/currency.OperatorMap/page.json",
+    "pathname": "/references/currency/types/currency.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.PrevLimit/page.json",
+    "pathname": "/references/currency/types/currency.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.Primary/page.json",
+    "pathname": "/references/currency/types/currency.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.Query/page.json",
+    "pathname": "/references/currency/types/currency.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/types/currency.RawMessageFormat/page.json",
     "pathname": "/references/currency/types/currency.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.ReadonlyPrimary/page.json",
+    "pathname": "/references/currency/types/currency.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.Scalar/page.json",
+    "pathname": "/references/currency/types/currency.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/currency_models/variables/currency_models.Currency/page.json",
@@ -11828,6 +12076,18 @@ export const filesMap = [
     "pathname": "/references/customer/types/customer.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/customer/types/customer.CrossModuleJoinLink/page.json",
+    "pathname": "/references/customer/types/customer.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/customer/types/customer.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/customer/types/customer.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/customer/types/customer.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/customer/types/customer.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/customer/types/customer.Event/page.json",
     "pathname": "/references/customer/types/customer.Event"
   },
@@ -11858,6 +12118,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/customer/types/customer.FindConfigOrder/page.json",
     "pathname": "/references/customer/types/customer.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/customer/types/customer.InternalQueryOptions/page.json",
+    "pathname": "/references/customer/types/customer.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/customer/types/customer.JoinerRelationship/page.json",
@@ -12140,6 +12404,18 @@ export const filesMap = [
     "pathname": "/references/events/Fulfillment/variables/events.Fulfillment.ShippingOptionWorkflowEvents"
   },
   {
+    "filePath": "/www/apps/resources/references/events/Inventory/variables/events.Inventory.InventoryItemWorkflowEvents/page.json",
+    "pathname": "/references/events/Inventory/variables/events.Inventory.InventoryItemWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/Inventory/variables/events.Inventory.InventoryLevelWorkflowEvents/page.json",
+    "pathname": "/references/events/Inventory/variables/events.Inventory.InventoryLevelWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/Inventory/variables/events.Inventory.ReservationItemWorkflowEvents/page.json",
+    "pathname": "/references/events/Inventory/variables/events.Inventory.ReservationItemWorkflowEvents"
+  },
+  {
     "filePath": "/www/apps/resources/references/events/Order/variables/events.Order.OrderEditWorkflowEvents/page.json",
     "pathname": "/references/events/Order/variables/events.Order.OrderEditWorkflowEvents"
   },
@@ -12214,6 +12490,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/events/events.Fulfillment/page.json",
     "pathname": "/references/events/events.Fulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/events.Inventory/page.json",
+    "pathname": "/references/events/events.Inventory"
   },
   {
     "filePath": "/www/apps/resources/references/events/events.Order/page.json",
@@ -13000,6 +13280,18 @@ export const filesMap = [
     "pathname": "/references/fulfillment/types/fulfillment.CreateGeoZoneDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.CrossModuleJoinLink/page.json",
+    "pathname": "/references/fulfillment/types/fulfillment.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/fulfillment/types/fulfillment.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/fulfillment/types/fulfillment.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.Event/page.json",
     "pathname": "/references/fulfillment/types/fulfillment.Event"
   },
@@ -13034,6 +13326,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.GeoZoneType/page.json",
     "pathname": "/references/fulfillment/types/fulfillment.GeoZoneType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.InternalQueryOptions/page.json",
+    "pathname": "/references/fulfillment/types/fulfillment.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.JoinerRelationship/page.json",
@@ -13600,6 +13896,18 @@ export const filesMap = [
     "pathname": "/references/inventory_next/types/inventory_next.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.CrossModuleJoinLink/page.json",
+    "pathname": "/references/inventory_next/types/inventory_next.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/inventory_next/types/inventory_next.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/inventory_next/types/inventory_next.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.Event/page.json",
     "pathname": "/references/inventory_next/types/inventory_next.Event"
   },
@@ -13630,6 +13938,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.FindConfigOrder/page.json",
     "pathname": "/references/inventory_next/types/inventory_next.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.InternalQueryOptions/page.json",
+    "pathname": "/references/inventory_next/types/inventory_next.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.JoinerRelationship/page.json",
@@ -13814,6 +14126,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion/page.json",
     "pathname": "/references/js-sdk/admin/promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.propertyLabel/page.json",
+    "pathname": "/references/js-sdk/admin/propertyLabel"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.rbacPolicy/page.json",
@@ -14648,6 +14964,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.retrievePreview"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.transferToGuest/page.json",
+    "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.transferToGuest"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.update/page.json",
     "pathname": "/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.update"
   },
@@ -15110,6 +15430,34 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Promotion/properties/js_sdk.admin.Promotion.client/page.json",
     "pathname": "/references/js_sdk/admin/Promotion/properties/js_sdk.admin.Promotion.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.batch/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.batch"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.create/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.delete/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.delete"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.list/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.retrieve/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.update/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/methods/js_sdk.admin.PropertyLabel.update"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PropertyLabel/properties/js_sdk.admin.PropertyLabel.client/page.json",
+    "pathname": "/references/js_sdk/admin/PropertyLabel/properties/js_sdk.admin.PropertyLabel.client"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.create/page.json",
@@ -15728,6 +16076,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.listConfigurations"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.listEntities/page.json",
+    "pathname": "/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.listEntities"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.retrieveActiveConfiguration/page.json",
     "pathname": "/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.retrieveActiveConfiguration"
   },
@@ -15890,6 +16242,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Promotion/page.json",
     "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.PropertyLabel/page.json",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.PropertyLabel"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.RbacPolicy/page.json",
@@ -16388,6 +16744,18 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.CrossModuleJoinLink/page.json",
+    "pathname": "/references/medusa/types/medusa.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/medusa/types/medusa.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/medusa/types/medusa.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceKey/page.json",
     "pathname": "/references/medusa/types/medusa.DefaultResourceKey"
   },
@@ -16404,8 +16772,32 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExpandScalar/page.json",
+    "pathname": "/references/medusa/types/medusa.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.FilterQuery/page.json",
+    "pathname": "/references/medusa/types/medusa.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.FilterQueryProperties/page.json",
+    "pathname": "/references/medusa/types/medusa.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.FilterValue/page.json",
+    "pathname": "/references/medusa/types/medusa.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.FilterValue2/page.json",
+    "pathname": "/references/medusa/types/medusa.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.FindConfigOrder/page.json",
     "pathname": "/references/medusa/types/medusa.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.InternalQueryOptions/page.json",
+    "pathname": "/references/medusa/types/medusa.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Logger/page.json",
@@ -16452,6 +16844,10 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.MiddlewaresConfig"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.OperatorMap/page.json",
+    "pathname": "/references/medusa/types/medusa.OperatorMap"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.ParserConfig/page.json",
     "pathname": "/references/medusa/types/medusa.ParserConfig"
   },
@@ -16460,8 +16856,28 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.ParserConfigArgs"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.PrevLimit/page.json",
+    "pathname": "/references/medusa/types/medusa.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.Primary/page.json",
+    "pathname": "/references/medusa/types/medusa.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.Query/page.json",
+    "pathname": "/references/medusa/types/medusa.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.ReadonlyPrimary/page.json",
+    "pathname": "/references/medusa/types/medusa.ReadonlyPrimary"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.RouteVerb/page.json",
     "pathname": "/references/medusa/types/medusa.RouteVerb"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.Scalar/page.json",
+    "pathname": "/references/medusa/types/medusa.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.SubscriberArgs/page.json",
@@ -16494,6 +16910,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/module_events/module_events.Fulfillment/page.json",
     "pathname": "/references/fulfillment/events"
+  },
+  {
+    "filePath": "/www/apps/resources/references/module_events/module_events.Inventory/page.json",
+    "pathname": "/references/inventory/events"
   },
   {
     "filePath": "/www/apps/resources/references/module_events/module_events.Order/page.json",
@@ -16732,6 +17152,14 @@ export const filesMap = [
     "pathname": "/references/sales-channel/models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/settings/page.json",
+    "pathname": "/references/modules/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/settings_models/page.json",
+    "pathname": "/references/settings/models"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/stock_location_next/page.json",
     "pathname": "/references/modules/stock_location_next"
   },
@@ -16808,10 +17236,6 @@ export const filesMap = [
     "pathname": "/references/modules_sdk/classes/modules_sdk.RemoteJoiner"
   },
   {
-    "filePath": "/www/apps/resources/references/modules_sdk/classes/modules_sdk.RemoteQuery/page.json",
-    "pathname": "/references/modules_sdk/classes/modules_sdk.RemoteQuery"
-  },
-  {
     "filePath": "/www/apps/resources/references/modules_sdk/enums/modules_sdk.MODULE_SCOPE/page.json",
     "pathname": "/references/modules_sdk/enums/modules_sdk.MODULE_SCOPE"
   },
@@ -16854,10 +17278,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RegisterModuleJoinerConfig/page.json",
     "pathname": "/references/modules_sdk/types/modules_sdk.RegisterModuleJoinerConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RemoteFetchDataCallback/page.json",
-    "pathname": "/references/modules_sdk/types/modules_sdk.RemoteFetchDataCallback"
   },
   {
     "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RestoreEntityInput/page.json",
@@ -17924,6 +18344,18 @@ export const filesMap = [
     "pathname": "/references/order/types/order.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/order/types/order.CrossModuleJoinLink/page.json",
+    "pathname": "/references/order/types/order.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/order/types/order.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/order/types/order.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/types/order.Event/page.json",
     "pathname": "/references/order/types/order.Event"
   },
@@ -17954,6 +18386,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/types/order.FindConfigOrder/page.json",
     "pathname": "/references/order/types/order.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.InternalQueryOptions/page.json",
+    "pathname": "/references/order/types/order.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/order/types/order.JoinerRelationship/page.json",
@@ -18524,6 +18960,18 @@ export const filesMap = [
     "pathname": "/references/payment/types/payment.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/types/payment.CrossModuleJoinLink/page.json",
+    "pathname": "/references/payment/types/payment.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/types/payment.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/payment/types/payment.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/types/payment.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/payment/types/payment.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/types/payment.Event/page.json",
     "pathname": "/references/payment/types/payment.Event"
   },
@@ -18554,6 +19002,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.FindConfigOrder/page.json",
     "pathname": "/references/payment/types/payment.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/types/payment.InternalQueryOptions/page.json",
+    "pathname": "/references/payment/types/payment.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.JoinerRelationship/page.json",
@@ -19096,6 +19548,18 @@ export const filesMap = [
     "pathname": "/references/pricing/types/pricing.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.CrossModuleJoinLink/page.json",
+    "pathname": "/references/pricing/types/pricing.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/pricing/types/pricing.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/pricing/types/pricing.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.Event/page.json",
     "pathname": "/references/pricing/types/pricing.Event"
   },
@@ -19126,6 +19590,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.FindConfigOrder/page.json",
     "pathname": "/references/pricing/types/pricing.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.InternalQueryOptions/page.json",
+    "pathname": "/references/pricing/types/pricing.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.JoinerRelationship/page.json",
@@ -19764,6 +20232,18 @@ export const filesMap = [
     "pathname": "/references/product/types/product.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/product/types/product.CrossModuleJoinLink/page.json",
+    "pathname": "/references/product/types/product.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/types/product.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/product/types/product.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/types/product.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/product/types/product.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/types/product.Event/page.json",
     "pathname": "/references/product/types/product.Event"
   },
@@ -19794,6 +20274,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/types/product.FindConfigOrder/page.json",
     "pathname": "/references/product/types/product.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/types/product.InternalQueryOptions/page.json",
+    "pathname": "/references/product/types/product.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/product/types/product.JoinerRelationship/page.json",
@@ -20256,6 +20740,18 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.CrossModuleJoinLink/page.json",
+    "pathname": "/references/promotion/types/promotion.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/promotion/types/promotion.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/promotion/types/promotion.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.Event/page.json",
     "pathname": "/references/promotion/types/promotion.Event"
   },
@@ -20286,6 +20782,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.FindConfigOrder/page.json",
     "pathname": "/references/promotion/types/promotion.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.InternalQueryOptions/page.json",
+    "pathname": "/references/promotion/types/promotion.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.JoinerRelationship/page.json",
@@ -20528,6 +21028,18 @@ export const filesMap = [
     "pathname": "/references/region/types/region.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/region/types/region.CrossModuleJoinLink/page.json",
+    "pathname": "/references/region/types/region.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/region/types/region.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/region/types/region.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/region/types/region.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/region/types/region.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/region/types/region.Event/page.json",
     "pathname": "/references/region/types/region.Event"
   },
@@ -20558,6 +21070,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/region/types/region.FindConfigOrder/page.json",
     "pathname": "/references/region/types/region.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/region/types/region.InternalQueryOptions/page.json",
+    "pathname": "/references/region/types/region.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/region/types/region.JoinerRelationship/page.json",
@@ -20744,6 +21260,22 @@ export const filesMap = [
     "pathname": "/references/sales_channel/interfaces/sales_channel.UpsertSalesChannelDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Constructor/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.CrossModuleJoinLink/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Event/page.json",
     "pathname": "/references/sales_channel/types/sales_channel.Event"
   },
@@ -20752,8 +21284,32 @@ export const filesMap = [
     "pathname": "/references/sales_channel/types/sales_channel.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.ExpandScalar/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.FilterQuery/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.FilterQueryProperties/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.FilterValue/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.FilterValue2/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.FindConfigOrder/page.json",
     "pathname": "/references/sales_channel/types/sales_channel.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.InternalQueryOptions/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.JoinerRelationship/page.json",
@@ -20780,12 +21336,452 @@ export const filesMap = [
     "pathname": "/references/sales_channel/types/sales_channel.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.OperatorMap/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.PrevLimit/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Primary/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Query/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.RawMessageFormat/page.json",
     "pathname": "/references/sales_channel/types/sales_channel.RawMessageFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.ReadonlyPrimary/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Scalar/page.json",
+    "pathname": "/references/sales_channel/types/sales_channel.Scalar"
+  },
+  {
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json",
     "pathname": "/references/sales-channel/models/SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.getMessages/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.save/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.saveRawMessageData/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IModuleService/methods/settings.IModuleService.__joinerConfig/page.json",
+    "pathname": "/references/settings/IModuleService/methods/settings.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/clearActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearLayoutConfiguration/page.json",
+    "pathname": "/references/settings/clearLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createLayoutConfigurations/page.json",
+    "pathname": "/references/settings/createLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createPropertyLabels/page.json",
+    "pathname": "/references/settings/createPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createUserPreferences/page.json",
+    "pathname": "/references/settings/createUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createViewConfigurations/page.json",
+    "pathname": "/references/settings/createViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteLayoutConfigurations/page.json",
+    "pathname": "/references/settings/deleteLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deletePropertyLabels/page.json",
+    "pathname": "/references/settings/deletePropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteUserPreferences/page.json",
+    "pathname": "/references/settings/deleteUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteViewConfigurations/page.json",
+    "pathname": "/references/settings/deleteViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.generateEntityColumns/page.json",
+    "pathname": "/references/settings/generateEntityColumns"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveLayoutScope/page.json",
+    "pathname": "/references/settings/getActiveLayoutScope"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/getActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultLayoutConfiguration/page.json",
+    "pathname": "/references/settings/getSystemDefaultLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultViewConfiguration/page.json",
+    "pathname": "/references/settings/getSystemDefaultViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getUserPreference/page.json",
+    "pathname": "/references/settings/getUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.hasEntity/page.json",
+    "pathname": "/references/settings/hasEntity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.isEntityDiscoveryInitialized/page.json",
+    "pathname": "/references/settings/isEntityDiscoveryInitialized"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountLayoutConfigurations/page.json",
+    "pathname": "/references/settings/listAndCountLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountPropertyLabels/page.json",
+    "pathname": "/references/settings/listAndCountPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountUserPreferences/page.json",
+    "pathname": "/references/settings/listAndCountUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountViewConfigurations/page.json",
+    "pathname": "/references/settings/listAndCountViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listDiscoverableEntities/page.json",
+    "pathname": "/references/settings/listDiscoverableEntities"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listLayoutConfigurations/page.json",
+    "pathname": "/references/settings/listLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listPropertyLabels/page.json",
+    "pathname": "/references/settings/listPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listUserPreferences/page.json",
+    "pathname": "/references/settings/listUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listViewConfigurations/page.json",
+    "pathname": "/references/settings/listViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveLayoutConfiguration/page.json",
+    "pathname": "/references/settings/retrieveLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrievePropertyLabel/page.json",
+    "pathname": "/references/settings/retrievePropertyLabel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveUserPreference/page.json",
+    "pathname": "/references/settings/retrieveUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveViewConfiguration/page.json",
+    "pathname": "/references/settings/retrieveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveLayoutScope/page.json",
+    "pathname": "/references/settings/setActiveLayoutScope"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/setActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setLayoutConfiguration/page.json",
+    "pathname": "/references/settings/setLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setSystemDefaultLayoutConfiguration/page.json",
+    "pathname": "/references/settings/setSystemDefaultLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setUserPreference/page.json",
+    "pathname": "/references/settings/setUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updatePropertyLabels/page.json",
+    "pathname": "/references/settings/updatePropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateUserPreferences/page.json",
+    "pathname": "/references/settings/updateUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateViewConfigurations/page.json",
+    "pathname": "/references/settings/updateViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.upsertPropertyLabels/page.json",
+    "pathname": "/references/settings/upsertPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.AdminColumn/page.json",
+    "pathname": "/references/settings/interfaces/settings.AdminColumn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.AdminEntityInfo/page.json",
+    "pathname": "/references/settings/interfaces/settings.AdminEntityInfo"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.BaseFilterable/page.json",
+    "pathname": "/references/settings/interfaces/settings.BaseFilterable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.Context/page.json",
+    "pathname": "/references/settings/interfaces/settings.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreateLayoutConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreateLayoutConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreatePropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreatePropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreateViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreateViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableLayoutConfigurationProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableLayoutConfigurationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableUserPreferenceProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableUserPreferenceProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableViewConfigurationProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableViewConfigurationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FindConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.IMessageAggregator/page.json",
+    "pathname": "/references/settings/interfaces/settings.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.IModuleService/page.json",
+    "pathname": "/references/settings/interfaces/settings.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ISettingsModuleService/page.json",
+    "pathname": "/references/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.JoinerServiceConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.JoinerServiceConfigAlias/page.json",
+    "pathname": "/references/settings/interfaces/settings.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationData/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutWidgetPreference/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutWidgetPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.MessageAggregatorFormat/page.json",
+    "pathname": "/references/settings/interfaces/settings.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.PropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.PropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.PropertyLabelFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.PropertyLabelFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.RelationshipFilterConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.RelationshipFilterConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpdatePropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpdatePropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpdateViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpdateViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpsertPropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpsertPropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UserPreferenceDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UserPreferenceDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.ViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ViewConfigurationFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.ViewConfigurationFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Constructor/page.json",
+    "pathname": "/references/settings/types/settings.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinLink/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinTarget"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Event/page.json",
+    "pathname": "/references/settings/types/settings.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.EventMetadata/page.json",
+    "pathname": "/references/settings/types/settings.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ExpandScalar/page.json",
+    "pathname": "/references/settings/types/settings.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterQuery/page.json",
+    "pathname": "/references/settings/types/settings.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterQueryProperties/page.json",
+    "pathname": "/references/settings/types/settings.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterValue/page.json",
+    "pathname": "/references/settings/types/settings.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterValue2/page.json",
+    "pathname": "/references/settings/types/settings.FilterValue2"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FindConfigOrder/page.json",
+    "pathname": "/references/settings/types/settings.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.InternalQueryOptions/page.json",
+    "pathname": "/references/settings/types/settings.InternalQueryOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.JoinerRelationship/page.json",
+    "pathname": "/references/settings/types/settings.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.LinkModulesExtraFields/page.json",
+    "pathname": "/references/settings/types/settings.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Message/page.json",
+    "pathname": "/references/settings/types/settings.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ModuleJoinerConfig/page.json",
+    "pathname": "/references/settings/types/settings.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ModuleJoinerRelationship/page.json",
+    "pathname": "/references/settings/types/settings.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.OperatorMap/page.json",
+    "pathname": "/references/settings/types/settings.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.PrevLimit/page.json",
+    "pathname": "/references/settings/types/settings.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Primary/page.json",
+    "pathname": "/references/settings/types/settings.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Query/page.json",
+    "pathname": "/references/settings/types/settings.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.RawMessageFormat/page.json",
+    "pathname": "/references/settings/types/settings.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ReadonlyPrimary/page.json",
+    "pathname": "/references/settings/types/settings.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Scalar/page.json",
+    "pathname": "/references/settings/types/settings.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.LayoutConfiguration/page.json",
+    "pathname": "/references/settings/models/LayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.PropertyLabel/page.json",
+    "pathname": "/references/settings/models/PropertyLabel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.UserPreference/page.json",
+    "pathname": "/references/settings/models/UserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.ViewConfiguration/page.json",
+    "pathname": "/references/settings/models/ViewConfiguration"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/IMessageAggregator/methods/stock_location_next.IMessageAggregator.clearMessages/page.json",
@@ -20968,6 +21964,18 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/types/stock_location_next.CreateStockLocationInput"
   },
   {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.CrossModuleJoinLink/page.json",
+    "pathname": "/references/stock_location_next/types/stock_location_next.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/stock_location_next/types/stock_location_next.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/stock_location_next/types/stock_location_next.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.Event/page.json",
     "pathname": "/references/stock_location_next/types/stock_location_next.Event"
   },
@@ -21002,6 +22010,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.GeoZoneType/page.json",
     "pathname": "/references/stock_location_next/types/stock_location_next.GeoZoneType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.InternalQueryOptions/page.json",
+    "pathname": "/references/stock_location_next/types/stock_location_next.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.JoinerRelationship/page.json",
@@ -21228,6 +22240,18 @@ export const filesMap = [
     "pathname": "/references/store/types/store.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/store/types/store.CrossModuleJoinLink/page.json",
+    "pathname": "/references/store/types/store.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store/types/store.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/store/types/store.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store/types/store.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/store/types/store.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/store/types/store.Event/page.json",
     "pathname": "/references/store/types/store.Event"
   },
@@ -21258,6 +22282,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/store/types/store.FindConfigOrder/page.json",
     "pathname": "/references/store/types/store.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store/types/store.InternalQueryOptions/page.json",
+    "pathname": "/references/store/types/store.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/store/types/store.JoinerRelationship/page.json",
@@ -21808,6 +22836,18 @@ export const filesMap = [
     "pathname": "/references/tax/types/tax.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/types/tax.CrossModuleJoinLink/page.json",
+    "pathname": "/references/tax/types/tax.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/types/tax.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/tax/types/tax.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/types/tax.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/tax/types/tax.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/types/tax.Event/page.json",
     "pathname": "/references/tax/types/tax.Event"
   },
@@ -21838,6 +22878,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/tax/types/tax.FindConfigOrder/page.json",
     "pathname": "/references/tax/types/tax.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/types/tax.InternalQueryOptions/page.json",
+    "pathname": "/references/tax/types/tax.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/tax/types/tax.ItemTaxCalculationLine/page.json",
@@ -22164,6 +23208,18 @@ export const filesMap = [
     "pathname": "/references/translation/types/translation.Constructor"
   },
   {
+    "filePath": "/www/apps/resources/references/translation/types/translation.CrossModuleJoinLink/page.json",
+    "pathname": "/references/translation/types/translation.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/types/translation.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/translation/types/translation.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/types/translation.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/translation/types/translation.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/translation/types/translation.Event/page.json",
     "pathname": "/references/translation/types/translation.Event"
   },
@@ -22194,6 +23250,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/translation/types/translation.FindConfigOrder/page.json",
     "pathname": "/references/translation/types/translation.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/translation/types/translation.InternalQueryOptions/page.json",
+    "pathname": "/references/translation/types/translation.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/translation/types/translation.JoinerRelationship/page.json",
@@ -23672,6 +24732,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetPromotionsRuleValueParams"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetPropertyLabelParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetPropertyLabelParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetPropertyLabelsParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetPropertyLabelsParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetRegionParams/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetRegionParams"
   },
@@ -24736,6 +25804,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTransferOrderToGuest/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTransferOrderToGuest"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation"
   },
@@ -25130,6 +26202,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminViewConfiguration/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminViewConfiguration"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminViewConfigurationResponse/page.json",
@@ -26432,98 +27508,6 @@ export const filesMap = [
     "pathname": "/references/types/SearchTypes/types/types.SearchTypes.IndexSettings"
   },
   {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateLayoutConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateLayoutConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreatePropertyLabelDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreatePropertyLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateUserPreferenceDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateUserPreferenceDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateViewConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.CreateViewConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableLayoutConfigurationProps/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableLayoutConfigurationProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableUserPreferenceProps/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableUserPreferenceProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableViewConfigurationProps/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.FilterableViewConfigurationProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.ISettingsModuleService/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.ISettingsModuleService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationData/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationData"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationFilterableFields/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutConfigurationFilterableFields"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutWidgetPreference/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.LayoutWidgetPreference"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.PropertyLabelDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.PropertyLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.PropertyLabelFilterableFields/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.PropertyLabelFilterableFields"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateLayoutConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateLayoutConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdatePropertyLabelDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdatePropertyLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateUserPreferenceDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateUserPreferenceDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateViewConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpdateViewConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpsertPropertyLabelDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UpsertPropertyLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.UserPreferenceDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.UserPreferenceDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationColumnDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationColumnDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationDTO/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationFilterableFields/page.json",
-    "pathname": "/references/types/SettingsTypes/interfaces/types.SettingsTypes.ViewConfigurationFilterableFields"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.FilterableStockLocationAddressProps/page.json",
     "pathname": "/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.FilterableStockLocationAddressProps"
   },
@@ -26854,6 +27838,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/types.WorkflowTypes.OrderWorkflow.RequestOrderTransferWorkflowInput/page.json",
     "pathname": "/references/types/WorkflowTypes/OrderWorkflow/interfaces/types.WorkflowTypes.OrderWorkflow.RequestOrderTransferWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/types.WorkflowTypes.OrderWorkflow.TransferOrderToGuestWorkflowInput/page.json",
+    "pathname": "/references/types/WorkflowTypes/OrderWorkflow/interfaces/types.WorkflowTypes.OrderWorkflow.TransferOrderToGuestWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/OrderWorkflow/interfaces/types.WorkflowTypes.OrderWorkflow.UpdateClaimAddNewItemWorkflowInput/page.json",
@@ -27358,10 +28346,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertGeoZone/page.json",
     "pathname": "/references/types/interfaces/types.AdminUpsertGeoZone"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminViewConfiguration/page.json",
-    "pathname": "/references/types/interfaces/types.AdminViewConfiguration"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthIdentityProviderService/page.json",
@@ -28076,20 +29060,12 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.RefundPaymentOutput"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteExpandProperty/page.json",
-    "pathname": "/references/types/interfaces/types.RemoteExpandProperty"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteJoinerOptions/page.json",
     "pathname": "/references/types/interfaces/types.RemoteJoinerOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteJoinerQuery/page.json",
     "pathname": "/references/types/interfaces/types.RemoteJoinerQuery"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteNestedExpands/page.json",
-    "pathname": "/references/types/interfaces/types.RemoteNestedExpands"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RetrieveAccountHolderInput/page.json",
@@ -28264,10 +29240,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CleanupObject"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.ComputedJoinerRelationship/page.json",
-    "pathname": "/references/types/types/types.ComputedJoinerRelationship"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.CreateCalculatedShippingOptionInput/page.json",
     "pathname": "/references/types/types/types.CreateCalculatedShippingOptionInput"
   },
@@ -28316,6 +29288,18 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CreateRbacRolePolicyDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CrossModuleJoinLink/page.json",
+    "pathname": "/references/types/types/types.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/types/types/types.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/types/types/types.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.DeepPartial/page.json",
     "pathname": "/references/types/types/types.DeepPartial"
   },
@@ -28338,10 +29322,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.ExcludedProps/page.json",
     "pathname": "/references/types/types/types.ExcludedProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.ExecutionStage/page.json",
-    "pathname": "/references/types/types/types.ExecutionStage"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ExpandScalar/page.json",
@@ -28420,8 +29400,8 @@ export const filesMap = [
     "pathname": "/references/types/types/types.InputConfigBase"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.InternalJoinerServiceConfig/page.json",
-    "pathname": "/references/types/types/types.InternalJoinerServiceConfig"
+    "filePath": "/www/apps/resources/references/types/types/types.InternalQueryOptions/page.json",
+    "pathname": "/references/types/types/types.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.IsCamelCase/page.json",
@@ -28844,10 +29824,6 @@ export const filesMap = [
     "pathname": "/references/types/types.SearchTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types.SettingsTypes/page.json",
-    "pathname": "/references/types/types.SettingsTypes"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types.StockLocationTypes/page.json",
     "pathname": "/references/types/types.StockLocationTypes"
   },
@@ -29028,6 +30004,22 @@ export const filesMap = [
     "pathname": "/references/user/interfaces/user.UserDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/user/types/user.Constructor/page.json",
+    "pathname": "/references/user/types/user.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.CrossModuleJoinLink/page.json",
+    "pathname": "/references/user/types/user.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/user/types/user.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/user/types/user.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/types/user.Event/page.json",
     "pathname": "/references/user/types/user.Event"
   },
@@ -29036,8 +30028,32 @@ export const filesMap = [
     "pathname": "/references/user/types/user.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/user/types/user.ExpandScalar/page.json",
+    "pathname": "/references/user/types/user.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.FilterQuery/page.json",
+    "pathname": "/references/user/types/user.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.FilterQueryProperties/page.json",
+    "pathname": "/references/user/types/user.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.FilterValue/page.json",
+    "pathname": "/references/user/types/user.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.FilterValue2/page.json",
+    "pathname": "/references/user/types/user.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/types/user.FindConfigOrder/page.json",
     "pathname": "/references/user/types/user.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.InternalQueryOptions/page.json",
+    "pathname": "/references/user/types/user.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/user/types/user.JoinerRelationship/page.json",
@@ -29060,8 +30076,32 @@ export const filesMap = [
     "pathname": "/references/user/types/user.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/user/types/user.OperatorMap/page.json",
+    "pathname": "/references/user/types/user.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.PrevLimit/page.json",
+    "pathname": "/references/user/types/user.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.Primary/page.json",
+    "pathname": "/references/user/types/user.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.Query/page.json",
+    "pathname": "/references/user/types/user.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/types/user.RawMessageFormat/page.json",
     "pathname": "/references/user/types/user.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.ReadonlyPrimary/page.json",
+    "pathname": "/references/user/types/user.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.Scalar/page.json",
+    "pathname": "/references/user/types/user.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/user_models/variables/user_models.Invite/page.json",
@@ -29130,6 +30170,18 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/GraphQLUtils/classes/utils.GraphQLUtils.GraphQLParser/page.json",
     "pathname": "/references/utils/GraphQLUtils/classes/utils.GraphQLUtils.GraphQLParser"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/Inventory/variables/utils.Inventory.InventoryItemWorkflowEvents/page.json",
+    "pathname": "/references/utils/Inventory/variables/utils.Inventory.InventoryItemWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/Inventory/variables/utils.Inventory.InventoryLevelWorkflowEvents/page.json",
+    "pathname": "/references/utils/Inventory/variables/utils.Inventory.InventoryLevelWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/Inventory/variables/utils.Inventory.ReservationItemWorkflowEvents/page.json",
+    "pathname": "/references/utils/Inventory/variables/utils.Inventory.ReservationItemWorkflowEvents"
   },
   {
     "filePath": "/www/apps/resources/references/utils/Order/variables/utils.Order.OrderEditWorkflowEvents/page.json",
@@ -29394,6 +30446,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/utils.GraphQLUtils/page.json",
     "pathname": "/references/utils/utils.GraphQLUtils"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/utils.Inventory/page.json",
+    "pathname": "/references/utils/utils.Inventory"
   },
   {
     "filePath": "/www/apps/resources/references/utils/utils.InventoryUtils/page.json",
