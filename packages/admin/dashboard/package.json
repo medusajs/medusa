@@ -1,6 +1,7 @@
 {
   "name": "@medusajs/dashboard",
   "version": "2.18.0",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "typecheck": "tsgo --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
