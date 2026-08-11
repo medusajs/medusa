@@ -67,12 +67,10 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetInventoryItemsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
+      authorize({
         resource: Entities.inventory_item,
         operation: PolicyOperation.read,
-      },
+      }),
     ],
   },
   {

@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next"
 import { useAdminSearch } from "../../hooks/api"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
-import { usePermissions } from "../../providers/permissions-provider"
 import { DynamicSearchResult, SearchArea } from "./types"
+import { PermissionResource } from "../../lib/permissions"
 
 /**
  * Maps each searchable dynamic area to the permission resource that gates
