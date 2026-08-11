@@ -39,7 +39,7 @@
     "node": ">=20"
   },
   "author": "Sebastian Rindom",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://medusajs.com",
   "llms": "https://docs.medusajs.com/llms.txt",
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",

@@ -3,10 +3,10 @@ import { z } from "@medusajs/framework/zod"
 export type AdminGetSearchParamsType = z.infer<typeof AdminGetSearchParams>
 
 /**
- * No `fields`: a flat list cannot mean the same thing for two entities, so every
- * group returns what its index holds. No `filters` either — the module's filter
- * tree does not survive a query string legibly, and entities share nothing to
- * filter on. Both are additive later.
+ * No `fields`: each entity returns a fixed field set (index retrievable fields
+ * when the Search Module is on, or the admin fallback registry otherwise). No
+ * shared `filters` either — entities share nothing to filter on across the
+ * board. Both are additive later.
  */
 export const AdminGetSearchParams = z
   .object({

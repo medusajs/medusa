@@ -1,4 +1,6 @@
+import "@medusajs/framework/modules-sdk"
 import { SearchTypes } from "@medusajs/framework/types"
+import { defineSearchIndex, search } from "@medusajs/framework/utils"
 
 export type TestProduct = {
   id: string
@@ -72,69 +74,65 @@ export function resetDataset(products: TestProduct[] = baseProducts): void {
 // What `consume` was handed, so the tests can assert how the module routed.
 export const consumedEvents: { event: string; index: string }[] = []
 
-export const productIndex: SearchTypes.SearchIndexDefinition = {
-  name: "product",
-  entity: "product",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    title: { type: "text", searchable: { weight: 3 }, sortable: true },
-    handle: { type: "keyword", filterable: true },
-    // Indexed for matching but never returned, so the split between engine
-    // fields and `query.graph` fields is observable.
-    description: { type: "text", searchable: true, retrievable: false },
-    status: { type: "keyword", filterable: true, facetable: true },
-    brand: {
-      type: "keyword",
-      filterable: true,
-      facetable: true,
-      sortable: true,
+// Declared exactly like user code: `defineSearchIndex` compiles the DSL schema
+// and returns the normalized definition the test runner passes as options.
+export const productIndex: SearchTypes.SearchIndexDefinition =
+  defineSearchIndex({
+    name: "product",
+    entity: "product",
+    fields: search.define({
+      id: search.keyword().filterable(),
+      title: search.text().searchable({ weight: 3 }).sortable(),
+      handle: search.keyword().filterable(),
+      // Indexed for matching but never returned, so the split between engine
+      // fields and `query.graph` fields is observable.
+      description: search.text().searchable().retrievable(false),
+      status: search.keyword().filterable().facetable(),
+      brand: search.keyword().filterable().facetable().sortable(),
+      min_price: search.float().filterable().sortable().facetable(),
+      created_at: search.date().filterable().sortable(),
+      tags: search.keyword().array().filterable().facetable(),
+      variants: search
+        .object({
+          sku: search.keyword().searchable().filterable(),
+          color: search.keyword().filterable().facetable(),
+        })
+        .array(),
+    }),
+    events: ["product.created", "product.updated", "product.deleted"],
+    // Reads the document out of the dataset rather than off the event, the way a
+    // real definition reads through `query.graph`: an event carries an id.
+    async consume(event, { index }) {
+      consumedEvents.push({ event: event.name, index: index.name })
+
+      const id = (event.data as { id: string }).id
+
+      if (event.name === "product.deleted") {
+        return [{ action: "delete", filters: { id: [id] } }]
+      }
+
+      const product = dataset.products.find((candidate) => candidate.id === id)
+
+      // Gone by the time the event was handled; the delete that follows removes it.
+      if (!product) {
+        return []
+      }
+
+      return [{ action: "upsert", documents: [product] }]
     },
-    min_price: { type: "float", filterable: true, sortable: true, facetable: true },
-    created_at: { type: "date", filterable: true, sortable: true },
-    tags: { type: "keyword", array: true, filterable: true, facetable: true },
-    variants: {
-      type: "object",
-      array: true,
-      fields: {
-        sku: { type: "keyword", searchable: true, filterable: true },
-        color: { type: "keyword", filterable: true, facetable: true },
-      },
+    // eslint-disable-next-line require-yield
+    async *seed({ filters }) {
+      const ids = (filters?.ids as string[]) ?? undefined
+
+      const products = ids
+        ? dataset.products.filter((product) => ids.includes(product.id))
+        : dataset.products
+
+      // Two batches, so the streaming path and the sync cursor both get exercised.
+      const half = Math.ceil(products.length / 2) || 1
+
+      for (let i = 0; i < products.length; i += half) {
+        yield products.slice(i, i + half)
+      }
     },
-  },
-  events: ["product.created", "product.updated", "product.deleted"],
-  // Reads the document out of the dataset rather than off the event, the way a
-  // real definition reads through `query.graph`: an event carries an id.
-  async consume(event, { index }) {
-    consumedEvents.push({ event: event.name, index: index.name })
-
-    const id = (event.data as { id: string }).id
-
-    if (event.name === "product.deleted") {
-      return [{ action: "delete", filters: { id: [id] } }]
-    }
-
-    const product = dataset.products.find((candidate) => candidate.id === id)
-
-    // Gone by the time the event was handled; the delete that follows removes it.
-    if (!product) {
-      return []
-    }
-
-    return [{ action: "upsert", documents: [product] }]
-  },
-  // eslint-disable-next-line require-yield
-  async *seed({ filters }) {
-    const ids = (filters?.ids as string[]) ?? undefined
-
-    const products = ids
-      ? dataset.products.filter((product) => ids.includes(product.id))
-      : dataset.products
-
-    // Two batches, so the streaming path and the sync cursor both get exercised.
-    const half = Math.ceil(products.length / 2) || 1
-
-    for (let i = 0; i < products.length; i += half) {
-      yield products.slice(i, i + half)
-    }
-  },
-}
+  })

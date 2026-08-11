@@ -12,9 +12,9 @@ export const generatedEditDates = {
   "app/logs/page.mdx": "2026-05-06T11:31:50.584Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
-  "app/environments/environment-variables/page.mdx": "2026-07-14T15:49:50.427Z",
-  "app/environments/long-lived/page.mdx": "2026-07-31T14:17:36.309Z",
-  "app/environments/preview/page.mdx": "2026-07-27T15:27:45.446Z",
+  "app/environments/environment-variables/page.mdx": "2026-08-10T15:10:36.670Z",
+  "app/environments/long-lived/page.mdx": "2026-08-10T15:11:37.704Z",
+  "app/environments/preview/page.mdx": "2026-08-10T15:11:48.630Z",
   "app/faq/page.mdx": "2026-04-14T10:44:08.191Z",
   "app/billing/page.mdx": "2026-07-24T15:42:16.652Z",
   "app/usage/page.mdx": "2026-04-10T10:22:15.211Z",
@@ -32,9 +32,9 @@ export const generatedEditDates = {
   "app/projects/prerequisites/page.mdx": "2026-07-31T14:07:34.447Z",
   "app/storefront/page.mdx": "2026-07-28T05:57:46.335Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
-  "app/environments/custom-domains/page.mdx": "2026-08-05T20:08:46.044Z",
+  "app/environments/custom-domains/page.mdx": "2026-08-10T15:10:58.592Z",
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
-  "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
+  "app/environments/subdomains/page.mdx": "2026-08-10T15:11:15.197Z",
   "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
   "app/monitoring/http/page.mdx": "2026-04-22T14:42:22.622Z",
   "app/monitoring/page.mdx": "2026-06-08T14:16:22.810Z",
@@ -119,5 +119,7 @@ export const generatedEditDates = {
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
   "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
   "app/webhooks/endpoints/page.mdx": "2026-08-07T09:17:29.121Z",
-  "app/webhooks/events/page.mdx": "2026-08-07T09:10:40.566Z"
+  "app/webhooks/events/page.mdx": "2026-08-10T15:12:02.205Z",
+  "app/webhooks/changelog/page.mdx": "2026-08-11T12:40:39.598Z",
+  "app/webhooks/reference/page.mdx": "2026-08-11T12:41:02.857Z"
 }
