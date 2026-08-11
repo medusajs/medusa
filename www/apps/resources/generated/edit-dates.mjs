@@ -7616,7 +7616,7 @@ export const generatedEditDates = {
   "app/lint/rules/read-only-link-requires-field/page.mdx": "2026-06-18T14:23:41.893Z",
   "app/lint/page.mdx": "2026-06-19T09:20:37.112Z",
   "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z",
-  "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z",
+  "app/infrastructure-modules/caching/concepts/page.mdx": "2026-08-11T20:08:10.266Z",
   "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
   "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",

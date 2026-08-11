@@ -1249,7 +1249,13 @@ Refer to the [Caching Module documentation](!resources!/infrastructure-modules/c
     {
       type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
       name: "tags",
-      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless `computeAutomaticTags` is also set.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+    },
+    {
+      type: "`boolean`",
+      name: "computeAutomaticTags",
+      description: "Whether the automatically computed tags should be applied alongside the ones given in `tags`, rather than `tags` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their `id`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.\n\nHas no effect when `tags` is omitted, since tags are computed automatically in that case.",
+      defaultValue: "`false`"
     },
     {
       type: "`number` \| `((args: any[]) => number \| undefined)`",
@@ -1405,9 +1411,26 @@ In the example above, you cache the query results with the `Product:list:*` tag.
 
 <Note>
 
+When you set `cache.tags`, those tags replace the automatically computed ones. To keep the automatic tags and add your own on top, also set `computeAutomaticTags: true`. This is useful when you need to cover entities that automatic computation cannot see, such as link table rows, relations fetched without their `id`, or entities that affect the response without appearing in it.
+
 The cache tag must follow the [Caching Tags Convention](!resources!/infrastructure-modules/caching/concepts#caching-tags-convention) to be automatically invalidated.
 
 </Note>
+
+For example, to add extra tags without losing automatic ones:
+
+```ts highlights={[["7"], ["8"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title", "variants.*"],
+  options: {
+    cache: {
+      tags: ["LinkProductVariantInventoryItem:list:*"],
+      computeAutomaticTags: true,
+    },
+  },
+})
+```
 
 You can also pass a function as the value of `cache.tags`:
 

@@ -17776,9 +17776,12 @@ Refer to the [Caching Module documentation](undefined/resources/infrastructure-m
   2\. The \[Caching Module's service]\(!resources!/references/caching-service), which you can use to perform caching operations.
 
   The function must return a string indicating the cache key.
-- tags: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags based on the entity and its retrieved relations.
+- tags: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags based on the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless \`computeAutomaticTags\` is also set.
 
   If a function is passed, it receives as a parameter the \`query.index\` parameters, and returns an array of strings indicating the cache tags.
+- computeAutomaticTags: (\`boolean\`) Whether the automatically computed tags should be applied alongside the ones given in \`tags\`, rather than \`tags\` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their \`id\`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.
+
+  Has no effect when \`tags\` is omitted, since tags are computed automatically in that case.
 - ttl: (\`number\` | \`((args: any\[]) => number | undefined)\`) The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the \[configured TTL of the Caching Module]\(!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.
 
   If a function is passed, it receives as a parameter the \`query.index\` parameters, and returns a number indicating the TTL.
@@ -20146,9 +20149,12 @@ Refer to the [Caching Module documentation](undefined/resources/infrastructure-m
   2\. The \[Caching Module's service]\(!resources!/references/caching-service), which you can use to perform caching operations.
 
   The function must return a string indicating the cache key.
-- tags: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations.
+- tags: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless \`computeAutomaticTags\` is also set.
 
   If a function is passed, it receives as a parameter the \`query.index\` parameters, and returns an array of strings indicating the cache tags.
+- computeAutomaticTags: (\`boolean\`) Whether the automatically computed tags should be applied alongside the ones given in \`tags\`, rather than \`tags\` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their \`id\`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.
+
+  Has no effect when \`tags\` is omitted, since tags are computed automatically in that case.
 - ttl: (\`number\` | \`((args: any\[]) => number | undefined)\`) The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the \[configured TTL of the Caching Module]\(!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.
 
   If a function is passed, it receives as a parameter the \`query.graph\` parameters, and returns a number indicating the TTL.
@@ -20273,7 +20279,24 @@ const { data: products } = useQueryGraphStep({
 
 In the example above, you cache the query results with the `Product:list:*` tag.
 
+When you set `cache.tags`, those tags replace the automatically computed ones. To keep the automatic tags and add your own on top, also set `computeAutomaticTags: true`. This is useful when you need to cover entities that automatic computation cannot see, such as link table rows, relations fetched without their `id`, or entities that affect the response without appearing in it.
+
 The cache tag must follow the [Caching Tags Convention](undefined/resources/infrastructure-modules/caching/concepts#caching-tags-convention) to be automatically invalidated.
+
+For example, to add extra tags without losing automatic ones:
+
+```ts highlights={[["7"], ["8"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title", "variants.*"],
+  options: {
+    cache: {
+      tags: ["LinkProductVariantInventoryItem:list:*"],
+      computeAutomaticTags: true,
+    },
+  },
+})
+```
 
 You can also pass a function as the value of `cache.tags`:
 
@@ -53957,6 +53980,46 @@ Use custom tags when you want to group cached data for custom invalidation or re
 
 Note that if your custom tags do not follow the [Caching Tags Convention](#caching-tags-convention), the Caching Module cannot automatically invalidate your cached data. You must manually [invalidate](undefined/references/caching-service#clear) the cached data when it changes.
 
+### Combine Custom Tags With Automatic Tags
+
+When you set custom `tags`, they replace the automatically computed ones. If you want the automatic tags to still apply alongside your custom tags, set `computeAutomaticTags` to `true`.
+
+This is useful when your query retrieves data that the automatic tag computation cannot see, such as:
+
+- Link table rows (their own IDs are never selected, so no entity tag fires for them).
+- Relations selected without their `id` field.
+- Entities that affect the cached data without appearing in it, for example `ReservationItem` which changes `reserved_quantity` without being part of the query response.
+
+For example:
+
+```ts
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  tags: ["LinkProductVariantInventoryItem:list:*", "ReservationItem:list:*"],
+  computeAutomaticTags: true,
+  data,
+})
+```
+
+In the example above, the Caching Module applies the two explicit tags you provided plus all tags it computes automatically from `data`. This way you only specify what automatic computation cannot see, without restating every entity the response already exposes.
+
+When using Query, pass `computeAutomaticTags` in the `cache` option:
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title", "variants.*"],
+}, {
+  cache: {
+    tags: ["LinkProductVariantInventoryItem:list:*"],
+    computeAutomaticTags: true,
+  },
+})
+```
+
+`computeAutomaticTags` has no effect when `tags` is omitted, since automatic tags are computed by default in that case.
+
 ***
 
 ## Automatic Cache Invalidation
@@ -53976,8 +54039,15 @@ The following table shows when the Caching Module invalidates cached data based 
 |Create|\`Entity:list:\*\`|
 |Update|\`Entity:\{id}\`|
 |Delete|\`Entity:list:\*\`|
+|Restore (soft-delete reversal)|\`Entity:\{id}\`|
+|Attach (link created)|\`Entity:list:\*\`|
+|Detach (link removed)|\`Entity:list:\*\`|
 
-The `Entity:list:*` tag is always invalidated on update because an update can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every update.
+The `Entity:list:*` tag is invalidated on every mutating operation because the mutation can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every mutation.
+
+Attach and detach operations (creating or removing a module link) only invalidate the `Entity:list:*` tag because a link row doesn't carry a usable entity `id` at attach time.
+
+Restore is included because the entity re-enters every list it was soft-deleted out of.
 
 ### Which Data is Automatically Invalidated?
 
