@@ -1,6 +1,6 @@
 ---
-"@medusajs/loyalty-plugin": major
-"integration-tests-http": major
+"@medusajs/loyalty-plugin": patch
+"integration-tests-http": patch
 ---
 
 fix(loyalty): handle amount=0 in addStoreCreditsToCartWorkflow
