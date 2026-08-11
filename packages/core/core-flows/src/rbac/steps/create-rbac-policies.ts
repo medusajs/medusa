@@ -4,6 +4,7 @@ import {
   CreateRbacPolicyDTO,
   IRbacModuleService,
   PolicyOperationValue,
+  PolicyResourceValue,
 } from "@medusajs/framework/types"
 
 /**
@@ -32,7 +33,7 @@ export const createRbacPoliciesStep = createStep(
     // Normalize resource and operation to lowercase.
     const normalizedPolicies = data.policies.map((policy) => ({
       ...policy,
-      resource: policy.resource.toLowerCase(),
+      resource: policy.resource.toLowerCase() as PolicyResourceValue,
       operation: policy.operation.toLowerCase() as PolicyOperationValue,
     }))
 

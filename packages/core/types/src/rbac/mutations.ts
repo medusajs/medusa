@@ -1,4 +1,4 @@
-import { PolicyOperationValue } from "./common"
+import { PolicyOperationValue, PolicyResourceValue } from "./common"
 
 export type CreateRbacRoleDTO = {
   name: string
@@ -12,7 +12,7 @@ export type UpdateRbacRoleDTO = Partial<CreateRbacRoleDTO> & {
 
 export type CreateRbacPolicyDTO = {
   key: string
-  resource: string
+  resource: PolicyResourceValue
   operation: PolicyOperationValue
   name?: string | null
   description?: string | null

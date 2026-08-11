@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes, PolicyOperationValue } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -9,6 +9,8 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateRbacPolicy } from "../../../../../hooks/api/rbac-policies"
+import { PermissionOperation } from "../../../../../lib/permissions"
+import { PermissionResource } from "../../../../../lib/permissions"
 
 const EditPolicySchema = z.object({
   key: z.string().min(1),
@@ -43,8 +45,8 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
     await mutateAsync(
       {
         key: data.key.trim(),
-        resource: data.resource.trim(),
-        operation: data.operation.trim() as PolicyOperationValue,
+        resource: data.resource.trim() as PermissionResource,
+        operation: data.operation.trim() as PermissionOperation,
         name: data.name?.trim() || null,
         description: data.description?.trim() || null,
       },

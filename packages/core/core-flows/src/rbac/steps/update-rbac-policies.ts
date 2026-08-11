@@ -7,6 +7,7 @@ import {
   FilterableRbacPolicyProps,
   IRbacModuleService,
   PolicyOperationValue,
+  PolicyResourceValue,
   UpdateRbacPolicyDTO,
 } from "@medusajs/framework/types"
 
@@ -46,7 +47,8 @@ export const updateRbacPoliciesStep = createStep(
     // Normalize resource and operation to lowercase if present
     const normalizedUpdate = { ...data.update }
     if (normalizedUpdate.resource) {
-      normalizedUpdate.resource = normalizedUpdate.resource.toLowerCase()
+      normalizedUpdate.resource =
+        normalizedUpdate.resource.toLowerCase() as PolicyResourceValue
     }
     if (normalizedUpdate.operation) {
       normalizedUpdate.operation =

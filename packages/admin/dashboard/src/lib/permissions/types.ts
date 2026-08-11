@@ -7,85 +7,17 @@
  *   - customer:create - Can create customers
  *   - customer:* - Wildcard, full access (read + create + update + delete)
  */
+import { PolicyOperationValue, PolicyResourceValue } from "@medusajs/types"
 
 /**
  * Resources that can have permissions applied to them.
- *
- * The listed values map to Medusa's built-in commerce domains and drive editor
- * autocomplete. Custom resources (e.g. from an application's own models) are
- * also accepted via the trailing `string` member, so consuming projects can
- * check permissions for their own `resource:operation` policies.
  */
-export type PermissionResource =
-  | "customer"
-  | "customer_group"
-  | "customer_address"
-  | "order"
-  | "order_address"
-  // Order sub-operation resources (the backend protects order actions with
-  // these; the order detail wires them as `[<resource>:<op>, order:update]`).
-  | "fulfillment"
-  | "return"
-  | "order_claim"
-  | "order_exchange"
-  | "order_change"
-  | "capture"
-  | "payment"
-  | "refund"
-  | "payment_collection"
-  | "order_credit_line"
-  | "reservation_item"
-  | "product"
-  | "product_category"
-  | "product_collection"
-  | "product_tag"
-  | "product_type"
-  | "product_variant"
-  | "product_option"
-  | "price"
-  | "price_preference"
-  | "currency"
-  | "inventory"
-  | "inventory_item"
-  | "inventory_level"
-  | "reservation"
-  | "promotion"
-  | "campaign"
-  | "price_list"
-  | "region"
-  | "store"
-  | "user"
-  | "invite"
-  | "rbac_role"
-  | "rbac_policy"
-  | "sales_channel"
-  | "stock_location"
-  | "shipping_profile"
-  | "shipping_option"
-  | "shipping_option_type"
-  | "service_zone"
-  | "fulfillment_set"
-  | "fulfillment_provider"
-  | "tax_region"
-  | "tax_rate"
-  | "api_key"
-  | "return_reason"
-  | "refund_reason"
-  | "workflow_execution"
-  | "translation"
-  | "translation_setting"
-  | "notification"
-  | "file"
-  | "store_locale"
-  | "property_label"
-  // Allow custom resources from consuming projects' customizations while
-  // preserving autocomplete for the built-in resources above.
-  | (string & {})
+export type PermissionResource = PolicyResourceValue
 
 /**
  * Operations that can be performed on resources.
  */
-export type PermissionOperation = "read" | "create" | "update" | "delete" | "*"
+export type PermissionOperation = PolicyOperationValue
 
 /**
  * A single permission string in the format "resource:operation"

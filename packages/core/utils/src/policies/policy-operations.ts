@@ -15,3 +15,13 @@ export const PolicyOperation = {
   [WILDCARD]: WILDCARD,
   ALL: WILDCARD,
 } as const
+
+/**
+ * The operations every core resource is expanded with.
+ */
+export const CORE_POLICY_OPERATIONS = [
+  PolicyOperation.read,
+  PolicyOperation.create,
+  PolicyOperation.update,
+  PolicyOperation.delete,
+] as const

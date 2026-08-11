@@ -29,7 +29,7 @@ export type RbacPolicyDTO = {
 export type FilterableRbacPolicyProps = {
   id?: string | string[]
   key?: string | string[]
-  resource?: string
+  resource?: PolicyResourceValue | PolicyResourceValue[]
   operation?: PolicyOperationValue | PolicyOperationValue[]
   q?: string
 }
@@ -120,13 +120,13 @@ export type RbacContext = {
 /**
  * RBAC operations type-only registry.
  *
- * Medusa's own operations are declared here. Modules and plugins that need
- * their own operations augment this interface, which widens
+ * Medusa's own operations are declared here. Applications and plugins that
+ * need their own operations augment this interface, which widens
  * {@link PolicyOperationValue} and therefore what a route's `policies` accepts:
  *
  * ```ts
- * // src/types/policy-operations.d.ts
- * declare module "@medusajs/framework/types" {
+ * // src/types/rbac.d.ts
+ * declare module "@medusajs/types" {
  *   interface PolicyOperationRegistry {
  *     approve: "approve"
  *   }
@@ -139,6 +139,9 @@ export type RbacContext = {
  * // anywhere policies are declared, now autocompleted alongside the core operations
  * policies: [{ resource: "brand", operation: "approve" }]
  * ```
+ *
+ * Augment `@medusajs/types`. A single augmentation file then covers route policies,
+ * workflows, the module service and the admin dashboard's permission utilities alike.
  */
 export interface PolicyOperationRegistry {
   read: "read"
@@ -156,14 +159,153 @@ export type PolicyOperationValue =
   | "*"
 
 /**
+ * The resources Medusa core governs with RBAC policies. Each resource is
+ * expanded into one policy per core operation, and the resulting list is
+ * synced to the database on every boot by the RBAC module's `core-policies`
+ * loader. It also seeds {@link PolicyResourceRegistry}.
+ */
+export const CORE_POLICY_RESOURCES = [
+  // Customer
+  "customer",
+  "customer_address",
+  "customer_group",
+
+  // Inventory
+  "inventory_item",
+  "inventory_level",
+  "reservation_item",
+  "stock_location",
+
+  // Order
+  "order",
+  "order_item",
+  "order_change",
+  "order_address",
+  "order_claim",
+  "order_claim_item",
+  "order_exchange",
+  "order_credit_line",
+  "return",
+  "return_reason",
+
+  // Payment
+  "payment",
+  "payment_collection",
+  "payment_method",
+  "payment_session",
+  "refund",
+  "capture",
+  "refund_reason",
+
+  // Pricing
+  "price_list",
+  "price_preference",
+  "price",
+  "currency",
+
+  // Product
+  "product",
+  "product_variant",
+  "product_option",
+  "product_option_value",
+  "product_tag",
+  "product_type",
+  "product_category",
+  "product_collection",
+  "property_label",
+
+  // Promotion
+  "campaign",
+  "promotion",
+
+  // Region
+  "region",
+
+  // Sales channel
+  "sales_channel",
+
+  // Shipping
+  "shipping_option",
+  "shipping_option_type",
+  "shipping_profile",
+  "fulfillment",
+  "fulfillment_provider",
+  "fulfillment_set",
+  "service_zone",
+
+  // System
+  "file",
+  "notification",
+  "workflow_execution",
+  "store",
+  "store_locale",
+
+  // Tax
+  "tax_provider",
+  "tax_rate",
+  "tax_region",
+
+  // Translation
+  "translation",
+  "translation_setting",
+
+  // User
+  "user",
+  "api_key",
+  "invite",
+
+  // RBAC
+  "rbac_role",
+  "rbac_policy",
+  "rbac_role_assignment",
+] as const
+
+type CorePolicyResourceMap = {
+  [K in (typeof CORE_POLICY_RESOURCES)[number]]: K
+}
+
+/**
+ * RBAC resources type-only registry, seeded with {@link CORE_POLICY_RESOURCES}.
+ *
+ * Applications and plugins that guard their own resources (typically custom
+ * models) augment this interface, which widens {@link PolicyResourceValue}
+ * and therefore what policies accept — usually in the same file that augments
+ * {@link PolicyOperationRegistry}:
+ *
+ * ```ts
+ * // src/types/rbac.d.ts
+ * declare module "@medusajs/types" {
+ *   interface PolicyResourceRegistry {
+ *     brand: "brand"
+ *   }
+ * }
+ *
+ * export {}
+ * ```
+ *
+ * See {@link PolicyOperationRegistry} for why the augmentation targets
+ * `@medusajs/types`.
+ */
+export interface PolicyResourceRegistry extends CorePolicyResourceMap {}
+
+/**
+ * Every resource a policy may govern: the ones in
+ * {@link PolicyResourceRegistry}, plus the wildcard.
+ */
+export type PolicyResourceValue =
+  | PolicyResourceRegistry[keyof PolicyResourceRegistry]
+  | "*"
+
+/**
  * A `(resource, operation)` pair a route may be guarded by.
  *
- * `operation` is constrained to {@link PolicyOperationValue}, so modules that
- * augment {@link PolicyOperationRegistry} can guard routes with their own
- * operations and typos stay compile errors.
+ * Both slots are constrained to their registries
+ * ({@link PolicyResourceRegistry}, {@link PolicyOperationRegistry}), so
+ * applications that augment them can guard routes with their own resources
+ * and operations while typos stay compile errors.
  */
 export type PolicyAction = {
-  resource: string
+  resource: PolicyResourceValue
   operation: PolicyOperationValue | PolicyOperationValue[]
 }
 

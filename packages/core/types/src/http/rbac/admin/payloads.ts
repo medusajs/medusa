@@ -1,4 +1,4 @@
-import { PolicyOperationValue } from "../../../rbac"
+import { PolicyOperationValue, PolicyResourceValue } from "../../../rbac"
 
 export interface AdminCreateRbacRole {
   /**
@@ -115,7 +115,7 @@ export interface AdminCreateRbacPolicy {
   /**
    * The resource the policy applies to.
    */
-  resource: string
+  resource: PolicyResourceValue
   /**
    * The operation the policy allows.
    */
@@ -142,7 +142,7 @@ export interface AdminUpdateRbacPolicy {
   /**
    * The resource the policy applies to.
    */
-  resource?: string
+  resource?: PolicyResourceValue
   /**
    * The operation the policy allows.
    */
