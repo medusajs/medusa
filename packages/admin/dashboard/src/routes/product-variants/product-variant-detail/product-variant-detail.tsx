@@ -4,7 +4,10 @@ import { useLoaderData, useParams } from "react-router-dom"
 import { useProductVariant } from "../../../hooks/api/products"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { VariantGeneralSection } from "./components/variant-general-section"
 import {
   InventorySectionPlaceholder,
@@ -64,7 +67,7 @@ export const ProductVariantDetail = () => {
               {!variant.manage_inventory ? (
                 <InventorySectionPlaceholder />
               ) : (
-                <PermissionGuard permission="inventory:read">
+                <PermissionGuard permission="inventory_item:read">
                   <VariantInventorySection
                     inventoryItems={(variant.inventory_items ?? [])
                       .filter((i) => i.inventory)

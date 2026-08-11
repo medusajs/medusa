@@ -53,7 +53,7 @@ import {
 import {
   useFulfillmentProviderPermissions,
   useFulfillmentSetPermissions,
-  useInventoryPermissions,
+  useInventoryItemPermissions,
   useServiceZonePermissions,
   useShippingOptionPermissions,
   useShippingProfilePermissions,
@@ -688,7 +688,7 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { canUpdate, canDelete } = useStockLocationPermissions()
-  const { canRead: canReadInventory } = useInventoryPermissions()
+  const { canRead: canReadInventory } = useInventoryItemPermissions()
   const { mutateAsync } = useDeleteStockLocation(location.id)
   const prompt = usePrompt()
 

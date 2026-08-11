@@ -10,7 +10,7 @@ import {
 } from "../../../../lib/table/table-adapters"
 import { INVENTORY_ITEM_IDS_KEY } from "../../common/constants"
 import { InventoryActions } from "./inventory-actions"
-import { useInventoryPermissions } from "../../../../hooks/use-resource-permissions"
+import { useInventoryItemPermissions } from "../../../../hooks/use-resource-permissions"
 
 export function createInventoryTableAdapter({
   t,
@@ -106,7 +106,7 @@ export function createInventoryTableAdapter({
 export function useInventoryTableAdapter(): TableAdapter<HttpTypes.AdminInventoryItem> {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { canUpdate, canDelete } = useInventoryPermissions()
+  const { canUpdate, canDelete } = useInventoryItemPermissions()
   return useMemo(
     () => createInventoryTableAdapter({ t, navigate, canUpdate, canDelete }),
     [t, navigate, canUpdate, canDelete]

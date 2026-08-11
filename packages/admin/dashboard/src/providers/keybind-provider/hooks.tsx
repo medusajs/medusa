@@ -183,7 +183,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToReservations"),
       type: "pageShortcut",
       to: "/reservations",
-      permission: "reservation:read",
+      permission: "reservation_item:read",
     },
     {
       keys: {
