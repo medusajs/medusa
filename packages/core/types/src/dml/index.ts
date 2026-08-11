@@ -1,4 +1,5 @@
 import { CamelCase, Prettify } from "../common"
+import { SchemaPropertyMetadata } from "../schema"
 
 /**
  * Representation of DML schema. It must be a key-value pair
@@ -71,13 +72,10 @@ export type IsNullableRelation<T> = T extends () => IDmlEntity<any, any> | null
   : false
 
 /**
- * The meta-data returned by the property parse method
+ * The meta-data returned by the property parse method.
+ * Extends the shared SchemaPropertyMetadata with DML-specific fields.
  */
-export type PropertyMetadata = {
-  fieldName: string
-  defaultValue?: any
-  nullable: boolean
-  computed: boolean
+export type PropertyMetadata = SchemaPropertyMetadata & {
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>
