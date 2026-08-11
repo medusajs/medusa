@@ -4,7 +4,11 @@ import type {
   ICachingStrategy,
   Logger,
 } from "@medusajs/framework/types"
-import { GraphQLUtils, MedusaError } from "@medusajs/framework/utils"
+import {
+  deduplicate,
+  GraphQLUtils,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { CachingDefaultProvider, InjectedDependencies } from "@types"
 import CacheProviderService from "./cache-provider"
 
@@ -220,6 +224,7 @@ export default class CachingModuleService implements ICachingModuleService {
     data: object
     ttl?: number
     tags?: string[]
+    computeAutomaticTags?: boolean
     providers?: string[]
     options?: { autoInvalidate?: boolean }
   }) {
@@ -240,12 +245,14 @@ export default class CachingModuleService implements ICachingModuleService {
     data,
     ttl,
     tags,
+    computeAutomaticTags,
     providers,
     options,
   }: {
     key: string
     data: object
     tags?: string[]
+    computeAutomaticTags?: boolean
     ttl?: number
     providers?: string[] | { id: string; ttl?: number }[]
     options?: {
@@ -260,7 +267,13 @@ export default class CachingModuleService implements ICachingModuleService {
     }
 
     const key_ = key
-    const tags_ = tags ?? (await this.strategy.computeTags(data))
+    // Given tags are used on their own, unless the caller asked for the computed ones
+    // to be applied along with them. The union is what anything the computation can't
+    // see from the data needs: link tables, relations selected without their id, or
+    // entities that affect the data without appearing in it.
+    const computed =
+      !tags || computeAutomaticTags ? await this.strategy.computeTags(data) : []
+    const tags_ = tags ? deduplicate([...tags, ...computed]) : computed
 
     let providers_: string[] | { id: string; ttl?: number }[] = [
       this.defaultProviderId,
