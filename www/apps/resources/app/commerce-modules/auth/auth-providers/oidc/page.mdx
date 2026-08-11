@@ -1,0 +1,412 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `OpenID Connect (OIDC) Auth Module Provider`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the OIDC Auth Module Provider and how to install and use it in the Auth Module.
+
+The OIDC Auth Module Provider allows you to authenticate users with any spec-compliant OpenID Connect identity provider, such as Okta, Microsoft Entra ID (Azure AD), Auth0, Keycloak, or Google Workspace. It uses a redirect-based flow: the user is redirected to the identity provider, which redirects back to your callback URL after a successful login.
+
+## Register the OIDC Auth Module Provider
+
+<Prerequisites
+  items={[
+    {
+      text: "Register an OAuth 2.0 / OIDC application with your identity provider (for example, create an Okta app integration). Set the redirect URI to your Medusa application's callback route: /auth/{actor_type}/{provider_id}/callback.",
+    },
+    {
+      text: "Retrieve the client ID, client secret, and issuer URL from your identity provider.",
+    }
+  ]}
+/>
+
+To use the OIDC Auth Module Provider, add it to the array of providers passed to the Auth Module in your `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        providers: [
+          // other providers...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OIDC_ISSUER,
+              client_id: process.env.OIDC_CLIENT_ID,
+              client_secret: process.env.OIDC_CLIENT_SECRET,
+              callback_url: process.env.OIDC_CALLBACK_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The `id` you give the provider (for example, `okta`) is used in authentication routes, such as `POST /auth/user/okta` and `GET /auth/user/okta/callback`.
+
+You can register multiple instances of the OIDC provider with different IDs to support several identity providers simultaneously.
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```plain
+OIDC_ISSUER=<YOUR_ISSUER_URL>
+OIDC_CLIENT_ID=<YOUR_CLIENT_ID>
+OIDC_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+OIDC_CALLBACK_URL=<YOUR_CALLBACK_URL>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/5">Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `issuer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The identity provider's issuer URL. Used to resolve the discovery document at `{issuer}/.well-known/openid-configuration` and to validate the `iss` claim of returned ID tokens. Must be an `https` URL (or `http://localhost` outside of production).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `client_id`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The OAuth 2.0 client ID registered with the identity provider.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `client_secret`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The OAuth 2.0 client secret registered with the identity provider. Optional for public clients that authenticate with PKCE only.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `callback_url`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The default redirect URI the identity provider redirects to after a successful authentication. This should point to a frontend route that then calls Medusa's `/auth/{actor_type}/{provider_id}/callback` route.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `allowed_callback_urls`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An exact-match allowlist of callback URLs that can override `callback_url` (via the request's `callback_url` body field). Any override not in this list is rejected. When not set, any callback URL is accepted and validation is left to the identity provider.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `scopes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The OAuth 2.0 / OIDC scopes to request. The `openid` scope is required for the identity provider to return an ID token and is always included. Default: `["openid", "email", "profile"]`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `claim_mappings`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The mapping between the auth identity's fields and the ID token's claims. The key is the target field and the value is the claim name to read from. Default: `{ entity_id: "sub", email: "email", name: "name" }`. Additional keys are stored in the auth identity's `user_metadata`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `require_verified_email`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether the user's email must be verified (`email_verified` claim) by the identity provider before authentication succeeds. Default: `true`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `allowed_email_domains`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An optional allowlist of email domains permitted to authenticate through this provider. When set, only users whose email domain is in the list can log in.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `display_name`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The display name shown for this provider in the login UI. Useful when registering multiple OIDC instances. Default: `"OpenID Connect"`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `authorization_endpoint`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An explicit authorization endpoint. When set, overrides the value from the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `token_endpoint`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An explicit token endpoint. When set, overrides the value from the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `jwks_uri`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An explicit JWKS URI used to verify ID-token signatures. When set, overrides the value from the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `clock_tolerance_seconds`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The allowed clock skew in seconds when validating time-based ID-token claims (`exp`, `iat`, `nbf`). Default: `5`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `state_ttl_seconds`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The time-to-live in seconds of the single-use `state` value stored during the authentication flow. Default: `600` (10 minutes).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Authentication Flow
+
+The OIDC provider uses a redirect-based flow:
+
+1. The frontend calls `POST /auth/{actor_type}/{provider_id}` (for example, `POST /auth/user/okta`). Medusa redirects to the identity provider's authorization endpoint.
+2. The user authenticates with the identity provider.
+3. The identity provider redirects to the configured `callback_url` with an authorization code.
+4. The frontend calls `GET /auth/{actor_type}/{provider_id}/callback` with the query parameters received from the identity provider. Medusa exchanges the code for tokens, validates the ID token, and returns a JWT.
+
+---
+
+## Provisioning Admin Users
+
+For redirect-based providers, after the callback, the returned JWT does not yet have an actor (user or customer) linked to it. You must call the provision endpoint to link or create the actor before the token can be used for admin operations.
+
+Use the JS SDK's `auth.createUser` method:
+
+```ts
+const token = await sdk.auth.callback("user", "okta", queryParams)
+await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+await sdk.auth.refresh()
+```
+
+This endpoint checks whether an admin user with the identity-provider-verified email already exists:
+
+- If a user exists, it is linked to the auth identity.
+- If no user exists, a new admin user is created from the claims returned by the identity provider.
+
+---
+
+## Override Callback URL During Authentication
+
+In many cases, you may have different callback URLs for different actor types. For example, you may redirect admin users to a different URL than customers.
+
+The [Authenticate or Login API Route](../../authentication-route/page.mdx#login-route) accepts a `callback_url` body parameter to override the provider's `callback_url` option. You can restrict which URLs are allowed using the `allowed_callback_urls` option.
+
+---
+
+## Multiple OIDC Providers
+
+You can register the OIDC provider multiple times with different IDs to connect several identity providers:
+
+```ts title="medusa-config.ts"
+providers: [
+  {
+    resolve: "@medusajs/medusa/auth-oidc",
+    id: "okta",
+    options: {
+      issuer: process.env.OKTA_ISSUER,
+      client_id: process.env.OKTA_CLIENT_ID,
+      client_secret: process.env.OKTA_CLIENT_SECRET,
+      callback_url: process.env.OKTA_CALLBACK_URL,
+      display_name: "Okta",
+    },
+  },
+  {
+    resolve: "@medusajs/medusa/auth-oidc",
+    id: "entra",
+    options: {
+      issuer: process.env.ENTRA_ISSUER,
+      client_id: process.env.ENTRA_CLIENT_ID,
+      client_secret: process.env.ENTRA_CLIENT_SECRET,
+      callback_url: process.env.ENTRA_CALLBACK_URL,
+      display_name: "Microsoft Entra ID",
+    },
+  },
+],
+```

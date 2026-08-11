@@ -32629,6 +32629,158 @@ The [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/w
 - [How to implement Google social login in the storefront](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/customers/third-party-login)
 
 
+# OpenID Connect (OIDC) Auth Module Provider
+
+In this guide, you'll learn about the OIDC Auth Module Provider and how to install and use it in the Auth Module.
+
+The OIDC Auth Module Provider allows you to authenticate users with any spec-compliant OpenID Connect identity provider, such as Okta, Microsoft Entra ID (Azure AD), Auth0, Keycloak, or Google Workspace. It uses a redirect-based flow: the user is redirected to the identity provider, which redirects back to your callback URL after a successful login.
+
+## Register the OIDC Auth Module Provider
+
+### Prerequisites
+
+
+
+To use the OIDC Auth Module Provider, add it to the array of providers passed to the Auth Module in your `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        providers: [
+          // other providers...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OIDC_ISSUER,
+              client_id: process.env.OIDC_CLIENT_ID,
+              client_secret: process.env.OIDC_CLIENT_SECRET,
+              callback_url: process.env.OIDC_CALLBACK_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The `id` you give the provider (for example, `okta`) is used in authentication routes, such as `POST /auth/user/okta` and `GET /auth/user/okta/callback`.
+
+You can register multiple instances of the OIDC provider with different IDs to support several identity providers simultaneously.
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```plain
+OIDC_ISSUER=<YOUR_ISSUER_URL>
+OIDC_CLIENT_ID=<YOUR_CLIENT_ID>
+OIDC_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+OIDC_CALLBACK_URL=<YOUR_CALLBACK_URL>
+```
+
+### Module Options
+
+|Option|Description|Required|
+|---|---|---|---|---|
+|\`issuer\`|The identity provider's issuer URL. Used to resolve the discovery document at |Yes|
+|\`client\_id\`|The OAuth 2.0 client ID registered with the identity provider.|Yes|
+|\`client\_secret\`|The OAuth 2.0 client secret registered with the identity provider. Optional for public clients that authenticate with PKCE only.|No|
+|\`callback\_url\`|The default redirect URI the identity provider redirects to after a successful authentication. This should point to a frontend route that then calls Medusa's |Yes|
+|\`allowed\_callback\_urls\`|An exact-match allowlist of callback URLs that can override |No|
+|\`scopes\`|The OAuth 2.0 / OIDC scopes to request. The |No|
+|\`claim\_mappings\`|The mapping between the auth identity's fields and the ID token's claims. The key is the target field and the value is the claim name to read from. Default: |No|
+|\`require\_verified\_email\`|Whether the user's email must be verified (|No|
+|\`allowed\_email\_domains\`|An optional allowlist of email domains permitted to authenticate through this provider. When set, only users whose email domain is in the list can log in.|No|
+|\`display\_name\`|The display name shown for this provider in the login UI. Useful when registering multiple OIDC instances. Default: |No|
+|\`authorization\_endpoint\`|An explicit authorization endpoint. When set, overrides the value from the discovery document.|No|
+|\`token\_endpoint\`|An explicit token endpoint. When set, overrides the value from the discovery document.|No|
+|\`jwks\_uri\`|An explicit JWKS URI used to verify ID-token signatures. When set, overrides the value from the discovery document.|No|
+|\`clock\_tolerance\_seconds\`|The allowed clock skew in seconds when validating time-based ID-token claims (|No|
+|\`state\_ttl\_seconds\`|The time-to-live in seconds of the single-use |No|
+
+***
+
+## Authentication Flow
+
+The OIDC provider uses a redirect-based flow:
+
+1. The frontend calls `POST /auth/{actor_type}/{provider_id}` (for example, `POST /auth/user/okta`). Medusa redirects to the identity provider's authorization endpoint.
+2. The user authenticates with the identity provider.
+3. The identity provider redirects to the configured `callback_url` with an authorization code.
+4. The frontend calls `GET /auth/{actor_type}/{provider_id}/callback` with the query parameters received from the identity provider. Medusa exchanges the code for tokens, validates the ID token, and returns a JWT.
+
+***
+
+## Provisioning Admin Users
+
+For redirect-based providers, after the callback, the returned JWT does not yet have an actor (user or customer) linked to it. You must call the provision endpoint to link or create the actor before the token can be used for admin operations.
+
+Use the JS SDK's `auth.createUser` method:
+
+```ts
+const token = await sdk.auth.callback("user", "okta", queryParams)
+await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+await sdk.auth.refresh()
+```
+
+This endpoint checks whether an admin user with the identity-provider-verified email already exists:
+
+- If a user exists, it is linked to the auth identity.
+- If no user exists, a new admin user is created from the claims returned by the identity provider.
+
+***
+
+## Override Callback URL During Authentication
+
+In many cases, you may have different callback URLs for different actor types. For example, you may redirect admin users to a different URL than customers.
+
+The [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route) accepts a `callback_url` body parameter to override the provider's `callback_url` option. You can restrict which URLs are allowed using the `allowed_callback_urls` option.
+
+***
+
+## Multiple OIDC Providers
+
+You can register the OIDC provider multiple times with different IDs to connect several identity providers:
+
+```ts title="medusa-config.ts"
+providers: [
+  {
+    resolve: "@medusajs/medusa/auth-oidc",
+    id: "okta",
+    options: {
+      issuer: process.env.OKTA_ISSUER,
+      client_id: process.env.OKTA_CLIENT_ID,
+      client_secret: process.env.OKTA_CLIENT_SECRET,
+      callback_url: process.env.OKTA_CALLBACK_URL,
+      display_name: "Okta",
+    },
+  },
+  {
+    resolve: "@medusajs/medusa/auth-oidc",
+    id: "entra",
+    options: {
+      issuer: process.env.ENTRA_ISSUER,
+      client_id: process.env.ENTRA_CLIENT_ID,
+      client_secret: process.env.ENTRA_CLIENT_SECRET,
+      callback_url: process.env.ENTRA_CALLBACK_URL,
+      display_name: "Microsoft Entra ID",
+    },
+  },
+],
+```
+
+
 # Auth Module Provider
 
 In this guide, you’ll learn about the Auth Module Provider and how it's used.
@@ -32644,6 +32796,7 @@ For example, the EmailPass Auth Module Provider authenticates a user using their
 - [Emailpass](undefined/commerce-modules/auth/auth-providers/emailpass)
 - [Google](undefined/commerce-modules/auth/auth-providers/google)
 - [GitHub](undefined/commerce-modules/auth/auth-providers/github)
+- [OpenID Connect (OIDC)](undefined/commerce-modules/auth/auth-providers/oidc)
 
 ***
 
@@ -59037,6 +59190,56 @@ sdk.client.setToken("your-jwt-token")
 ```
 
 You can also clear the token manually as explained in the [Manually Clearing JWT Token](#manually-clearing-jwt-token) section.
+
+***
+
+## List Available Auth Providers
+
+The JS SDK provides a `sdk.auth.listProviders` method to retrieve the auth providers configured for a given actor type. This is useful for building a dynamic login UI that renders the correct options (for example, an email/password form or "Continue with …" redirect buttons) based on the available providers.
+
+For example:
+
+```ts
+const { providers } = await sdk.auth.listProviders("user")
+
+for (const provider of providers) {
+  if (provider.flow === "redirect") {
+    // render a "Continue with {provider.display_name}" button
+  } else {
+    // render an email/password form
+  }
+}
+```
+
+Each provider object contains:
+
+- `id`: The registered instance ID used in authentication routes (for example, `okta`).
+- `identifier`: The provider's static type (for example, `oidc` or `emailpass`).
+- `display_name`: The name to show in the UI.
+- `flow`: Either `"credentials"` (the user submits credentials directly) or `"redirect"` (the user is redirected to the provider).
+
+You can learn more about this method in the [auth.listProviders reference](undefined/references/js-sdk/auth/listProviders).
+
+***
+
+## Provision an Admin User After Redirect-Based Login
+
+When a user logs in via a redirect-based provider (such as [OIDC](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/oidc)), the JWT returned by the callback step does not yet have an admin user linked to it. You must call `sdk.auth.createUser` to link an existing user or create a new one from the identity-provider-verified claims:
+
+```ts
+const token = await sdk.auth.callback("user", "okta", queryParams)
+await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+await sdk.auth.refresh()
+```
+
+Medusa checks whether an admin user with the identity-provider-verified email already exists:
+
+- If the user exists, it is linked to the auth identity.
+- If no user exists, a new admin user is created from the claims returned by the identity provider.
+
+After calling `createUser`, call `sdk.auth.refresh` to obtain a token bound to the newly linked user.
+
+You can learn more about this method in the [auth.createUser reference](undefined/references/js-sdk/auth/createUser).
 
 ***
 

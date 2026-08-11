@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-06-05T10:32:43.628Z",
-  "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
+  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-08-11T19:51:11.728Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
@@ -5768,7 +5768,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/abandoned-cart/page.mdx": "2026-01-12T12:19:01.373Z",
   "app/integrations/guides/algolia/page.mdx": "2026-01-12T12:02:36.771Z",
   "app/integrations/guides/magento/page.mdx": "2026-06-04T06:32:19.747Z",
-  "app/js-sdk/auth/overview/page.mdx": "2026-06-01T13:12:39.861Z",
+  "app/js-sdk/auth/overview/page.mdx": "2026-08-11T19:51:39.734Z",
   "app/how-to-tutorials/tutorials/loyalty-points/page.mdx": "2026-01-12T12:21:45.523Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.plugin/page.mdx": "2025-04-11T09:04:55.084Z",
   "references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.createAddress/page.mdx": "2026-04-23T12:33:09.966Z",
@@ -7645,5 +7645,6 @@ export const generatedEditDates = {
   "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
   "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z",
   "app/commerce-modules/order/secure-order-retrieval/page.mdx": "2026-08-06T07:59:42.895Z",
-  "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z"
+  "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z",
+  "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z"
 }

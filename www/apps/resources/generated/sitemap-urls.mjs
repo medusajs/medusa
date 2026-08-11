@@ -24,6 +24,7 @@ export const sitemapUrls = [
   "/commerce-modules/auth/auth-providers/emailpass",
   "/commerce-modules/auth/auth-providers/github",
   "/commerce-modules/auth/auth-providers/google",
+  "/commerce-modules/auth/auth-providers/oidc",
   "/commerce-modules/auth/auth-providers",
   "/commerce-modules/auth/authentication-route",
   "/commerce-modules/auth/create-actor-type",
