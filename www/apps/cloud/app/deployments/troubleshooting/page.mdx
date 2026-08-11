@@ -504,6 +504,28 @@ After updating the file, commit the change and push to trigger a new deployment.
 
 ---
 
+## Next.js 15: 404 Prerender Error with Async Layouts
+
+If your Next.js 15 storefront build fails during static prerendering with an error similar to:
+
+```bash
+Error: React error #31 on /404
+```
+
+This occurs when your `not-found.tsx` file inherits a parent layout that performs async data fetches, such as `retrieveCustomer` or `retrieveCart`. During static prerendering, Next.js 15 attempts to pre-render the `/404` route using the parent layout, which triggers the async data fetches in a context where they are not supported, causing a React error.
+
+### Fix the 404 Prerender Error
+
+Add the following export to your `not-found.tsx` file to opt out of static prerendering and force the page to render dynamically at request time:
+
+```ts title="app/not-found.tsx"
+export const dynamic = "force-dynamic"
+```
+
+After adding this export, commit the change and push to trigger a new deployment.
+
+---
+
 ## Next.js 16 Middlewares Not Supported on Cloud
 
 If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:

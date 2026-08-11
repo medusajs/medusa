@@ -1,12 +1,17 @@
 import { PropertyMetadata, PropertyType } from "@medusajs/types"
+import { BaseSchemaProperty } from "../../schema"
 import { ComputedProperty } from "./computed"
 import { NullableModifier } from "./nullable"
 
 /**
  * The BaseProperty class offers shared affordances to define
- * property classes
+ * property classes for DML entities. Extends the shared schema
+ * base with DML-specific index / unique / computed modifiers.
  */
-export abstract class BaseProperty<T> implements PropertyType<T> {
+export abstract class BaseProperty<T>
+  extends BaseSchemaProperty<T>
+  implements PropertyType<T>
+{
   /**
    * Defined indexes and relationships
    */
@@ -23,12 +28,6 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * the "$dataType".
    */
   protected abstract dataType: PropertyMetadata["dataType"]
-
-  /**
-   * A type-only property to infer the JavScript data-type
-   * of the schema property
-   */
-  declare $dataType: T
 
   /**
    * This method indicates that a property's value can be `null`.
@@ -150,11 +149,10 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * Returns the serialized metadata
    */
   parse(fieldName: string): PropertyMetadata {
+    const base = super.parse(fieldName)
     return {
-      fieldName,
+      ...base,
       dataType: this.dataType,
-      nullable: false,
-      computed: false,
       defaultValue: this.#defaultValue,
       indexes: this.#indexes,
       relationships: this.#relationships,
