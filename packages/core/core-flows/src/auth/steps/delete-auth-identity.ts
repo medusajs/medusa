@@ -4,27 +4,36 @@ import { IAuthModuleService } from "@medusajs/framework/types"
 
 export const deleteAuthIdentityStepId = "delete-auth-identity"
 
+/**
+ * The input for the {@link deleteAuthIdentityStep}.
+ *
+ * @since 2.18.1
+ */
 export type DeleteAuthIdentityStepInput = {
+  /**
+   * The ID or IDs of the auth identities to delete.
+   */
   id: string | string[]
 }
 
 /**
+ * This step deletes one or more auth identities.
+ *
  * @since 2.18.1
- * Use this step to delete auth identities.
  *
  * @example
  * To delete a single auth identity:
  * ```ts
- *    deleteAuthIdentityStep({
- *      id: "authid_1234"
- *    })
+ * deleteAuthIdentityStep({
+ *   id: "authid_1234",
+ * })
  * ```
  *
  * To delete multiple auth identities:
  * ```ts
- *    deleteAuthIdentityStep({
- *      id: ["authid_1234", "authid_1235"]
- *    })
+ * deleteAuthIdentityStep({
+ *   id: ["authid_1234", "authid_1235"],
+ * })
  * ```
  */
 export const deleteAuthIdentityStep = createStep(
