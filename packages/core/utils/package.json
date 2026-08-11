@@ -27,7 +27,7 @@
     "!dist/**/__fixtures__"
   ],
   "author": "Medusa",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@medusajs/types": "2.18.0",
     "express": "^4.21.0"

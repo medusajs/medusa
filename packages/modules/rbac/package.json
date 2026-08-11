@@ -25,7 +25,7 @@
     "access": "public"
   },
   "author": "Medusa",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
     "watch:test": "yarn run -T tsc --build tsconfig.spec.json --watch",
