@@ -12,7 +12,7 @@ export abstract class BaseSchemaProperty<T> implements SchemaPropertyType<T> {
    * The runtime dataType for the schema. It is not the same as
    * the "$dataType".
    */
-  protected abstract dataType: SchemaPropertyMetadata["dataType"]
+  protected abstract dataType: SchemaPropertyMetadata<T>["dataType"]
 
   /**
    * A type-only property to infer the JavaScript data-type
@@ -23,7 +23,7 @@ export abstract class BaseSchemaProperty<T> implements SchemaPropertyType<T> {
   /**
    * Returns the serialized metadata
    */
-  parse(fieldName: string): SchemaPropertyMetadata {
+  parse(fieldName: string): SchemaPropertyMetadata<T> {
     return {
       fieldName,
       dataType: this.dataType,

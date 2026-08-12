@@ -31,7 +31,7 @@ export class ObjectProperty<
     return this
   }
 
-  parse(fieldName: string): SearchPropertyMetadata {
+  parse(fieldName: string): SearchPropertyMetadata<InferSearchObjectValue<Schema>> {
     const metadata = super.parse(fieldName)
     const fields: Record<string, SearchPropertyMetadata> = {}
 
