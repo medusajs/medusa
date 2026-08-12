@@ -14,7 +14,7 @@ export const RegionDetailBreadcrumb = (props: RegionDetailBreadcrumbProps) => {
       fields: REGION_DETAIL_FIELDS,
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )
@@ -27,5 +27,5 @@ export const RegionDetailBreadcrumb = (props: RegionDetailBreadcrumbProps) => {
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminRegionResponse>) => ({
-  title: match.data?.region?.name,
+  title: match.loaderData?.region?.name,
 })

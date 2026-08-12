@@ -112,9 +112,6 @@
   "peerDependenciesMeta": {
     "ioredis": {
       "optional": true
-    },
-    "vite": {
-      "optional": true
     }
   }
 }

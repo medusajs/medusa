@@ -7,6 +7,10 @@ import {
 import type { RedisOptions } from "ioredis"
 
 import { ConnectionOptions } from "node:tls"
+// This package emits CommonJS under `moduleResolution: Node16`, while Vite ships
+// ESM-only type declarations, so TypeScript cannot resolve them from here and
+// `InlineConfig` degrades to `any`. Fixing that needs a `resolution-mode` import
+// attribute, which the repo's Prettier (2.8.8) cannot parse.
 // @ts-ignore
 import type { InlineConfig } from "vite"
 import type { Logger } from "../logger"
