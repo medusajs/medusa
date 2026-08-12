@@ -15,7 +15,7 @@ export class VectorProperty extends BaseSearchProperty<number[]> {
     this.#dimensions = dimensions
   }
 
-  parse(fieldName: string): SearchPropertyMetadata {
+  parse(fieldName: string): SearchPropertyMetadata<number[]> {
     const metadata = super.parse(fieldName)
     metadata.dimensions = this.#dimensions
     return metadata

@@ -12,7 +12,13 @@ import { deleteAuthIdentityStep, setAuthAppMetadataStep } from "../../auth"
 import { useQueryGraphStep } from "../../common"
 import { deleteCustomersWorkflow } from "./delete-customers"
 
+/**
+ * The input for the {@link removeCustomerAccountWorkflow}.
+ */
 export type RemoveCustomerAccountWorkflowInput = {
+  /**
+   * The ID of the customer to remove.
+   */
   customerId: string
 }
 
