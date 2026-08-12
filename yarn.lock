@@ -3637,8 +3637,6 @@ __metadata:
   peerDependenciesMeta:
     ioredis:
       optional: true
-    vite:
-      optional: true
   bin:
     medusa-mikro-orm: dist/mikro-orm-cli/bin.js
   languageName: unknown
@@ -4254,7 +4252,7 @@ __metadata:
     bignumber.js: ^9.1.2
   peerDependencies:
     ioredis: ^5.4.1
-    vite: ^5.4.21
+    vite: ">=5"
   peerDependenciesMeta:
     ioredis:
       optional: true
