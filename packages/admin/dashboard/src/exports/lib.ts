@@ -11,3 +11,14 @@ export {
   createTableAdapter,
   type TableAdapter,
 } from "../lib/table/table-adapters"
+
+export {
+  defineSearchEntity,
+  clearSearchEntities,
+  getSearchEntity,
+  getSearchEntityNames,
+  hasSearchEntity,
+  type SearchEntityDefinition,
+  type SearchEntityTransform,
+  type SearchLabelTranslator,
+} from "../lib/search/search-entities"
