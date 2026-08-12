@@ -44,6 +44,46 @@ export type AuthenticationResponse = {
 /**
  * @interface
  *
+ * Public information about a registered auth provider instance. This is safe to
+ * expose to unauthenticated clients (for example, a login UI that renders a
+ * button per provider). It never includes the provider's options or secrets.
+ */
+export type AuthProviderInfoDTO = {
+  /**
+   * The registered instance ID of the provider. This is the value used in
+   * authentication routes (for example, `okta` in `POST /auth/user/okta`).
+   */
+  id: string
+
+  /**
+   * The provider's static identifier (for example, `oidc` or `emailpass`).
+   * Multiple instances can share the same identifier.
+   */
+  identifier: string
+
+  /**
+   * The name to display for the provider in a frontend application.
+   */
+  display_name: string
+
+  /**
+   * The authentication flow the provider uses:
+   *
+   * - `credentials`: the client submits credentials (for example, email and
+   * password) directly to the authentication route.
+   * - `redirect`: the client is redirected to the provider (for example, an
+   * OIDC identity provider) and returns through a callback. A provider is
+   * considered `redirect` when it implements `validateCallback`.
+   *
+   * This value is derived and can be used by a frontend to decide whether to
+   * render a credentials form or a "Continue with ..." redirect button.
+   */
+  flow: "credentials" | "redirect"
+}
+
+/**
+ * @interface
+ *
  * The data passed to the auth provider when authenticating a user
  * or validating a callback.
  */

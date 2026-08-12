@@ -21,7 +21,13 @@ export interface AuthIdentityProviderService {
     }
   ) => Promise<AuthIdentityDTO>
   // These methods are used for OAuth providers to store and retrieve state
-  setState: (key: string, value: Record<string, unknown>) => Promise<void>
+  setState: (
+    key: string,
+    value: Record<string, unknown>,
+    ttlSeconds?: number
+  ) => Promise<void>
+  // Retrieving the state consumes it: the entry is deleted after a successful
+  // read so that a state value can only be used once.
   getState: (key: string) => Promise<Record<string, unknown> | null>
 }
 
