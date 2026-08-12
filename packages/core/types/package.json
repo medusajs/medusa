@@ -16,7 +16,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "publishConfig": {
     "access": "public"
@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "ioredis": "^5.4.1",
-    "vite": "^5.4.21"
+    "vite": ">=5"
   },
   "peerDependenciesMeta": {
     "ioredis": {
