@@ -27987,7 +27987,7 @@ A Medusa application is made up of a Node.js server and a Vite admin dashboard. 
 
 ### Prerequisites
 
-- [Node.js v20+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL installed and running](https://www.postgresql.org/download/)
 
@@ -58523,7 +58523,7 @@ The Medusa CLI tool provides commands that facilitate your development.
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -59035,7 +59035,7 @@ The Medusa CLI tool provides commands that facilitate your development.
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -148230,7 +148230,7 @@ The icons package is installed independently from Medusa UI. Learn how to instal
 
 To use Medusa UI in your standalone project, you must have:
 
-- React 18+ installed. Most React-based frameworks and libraries, such as Next.js and Vite, are compatible with this requirement.
+- React v18.3.1 or later (within the React 18 range) installed. The package's peer dependency requires `react@^18.3.1`, so React 19 is not officially supported yet. Most React 18-compatible frameworks and libraries, such as Next.js and Vite, satisfy this requirement.
 - [Tailwind CSS](https://v3.tailwindcss.com/) installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
   - Medusa UI was built with Tailwind CSS v3, but it may also support v4.
 
