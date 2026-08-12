@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "ioredis": "^5.4.1",
-    "vite": "^5.4.21"
+    "vite": ">=5"
   },
   "peerDependenciesMeta": {
     "ioredis": {

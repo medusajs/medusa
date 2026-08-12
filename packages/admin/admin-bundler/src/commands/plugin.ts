@@ -24,6 +24,8 @@ export async function plugin(options: PluginOptions) {
     "react",
     "react/jsx-runtime",
     "react-router-dom",
+    "react-router",
+    "react-router/dom",
     "react-i18next",
     "@medusajs/js-sdk",
     "@medusajs/admin-sdk",
