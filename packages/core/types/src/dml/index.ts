@@ -337,6 +337,9 @@ export type CheckConstraint<Schema extends DMLSchema> =
       property?: string
     }
 
+/**
+ * An index definition on a DML entity.
+ */
 export type EntityIndex<
   Schema extends DMLSchema = DMLSchema,
   Where = string
