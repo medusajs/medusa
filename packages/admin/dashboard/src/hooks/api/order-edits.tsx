@@ -39,11 +39,12 @@ export const useRequestOrderEdit = (
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
     FetchError,
-    void
+    HttpTypes.AdminRequestOrderEdit
   >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.orderEdit.request(id),
+    mutationFn: (payload: HttpTypes.AdminRequestOrderEdit) =>
+      sdk.admin.orderEdit.request(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

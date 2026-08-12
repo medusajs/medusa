@@ -44,6 +44,11 @@ export const sidebar = [
             title: "Navigation Styles",
             path: "/navigation",
           },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/changelog",
+          },
         ],
       },
       {
@@ -375,6 +380,33 @@ export const sidebar = [
                 path: "/monitoring/http",
               },
             ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
+          },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/webhooks/changelog",
           },
         ],
       },

@@ -4,7 +4,7 @@
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {
-    "build": "yarn run -T tsup"
+    "build": "yarn run -T tsup && node ./scripts/assert-esm-imports.mjs"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +27,7 @@
     "@medusajs/admin-shared": "2.18.0",
     "@medusajs/admin-vite-plugin": "2.18.0",
     "@medusajs/dashboard": "2.18.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^5.2.0",
     "autoprefixer": "^10.4.19",
     "compression": "^1.8.0",
     "express": "^4.21.0",
@@ -36,7 +36,10 @@
     "outdent": "^0.8.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^3.4.3",
-    "vite": "^5.4.21"
+    "vite": "^7.3.6"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
 }

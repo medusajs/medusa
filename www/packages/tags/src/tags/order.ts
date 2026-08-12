@@ -64,6 +64,14 @@ export const order = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },
   {
+    "title": "Restrict Order Retrieval",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
+  },
+  {
+    "title": "Restrict Return Creation",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation"
+  },
+  {
     "title": "Implement Quote Management",
     "path": "https://docs.medusajs.com/resources/examples/guides/quote-management"
   },

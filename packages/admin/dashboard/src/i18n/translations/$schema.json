@@ -5123,6 +5123,12 @@
             "noteHint": {
               "type": "string"
             },
+            "sendNotification": {
+              "type": "string"
+            },
+            "sendNotificationHint": {
+              "type": "string"
+            },
             "cancelSuccessToast": {
               "type": "string"
             },
@@ -5184,6 +5190,8 @@
             "create",
             "currentTotal",
             "noteHint",
+            "sendNotification",
+            "sendNotificationHint",
             "cancelSuccessToast",
             "createSuccessToast",
             "activeChangeError",
@@ -14296,9 +14304,28 @@
             },
             "cloud": {
               "type": "string"
+            },
+            "noProviders": {
+              "type": "string"
+            },
+            "continueWithProvider": {
+              "type": "string"
+            },
+            "or": {
+              "type": "string"
+            },
+            "provisioningFailed": {
+              "type": "string"
             }
           },
-          "required": ["authenticationFailed", "cloud"],
+          "required": [
+            "authenticationFailed",
+            "cloud",
+            "noProviders",
+            "continueWithProvider",
+            "or",
+            "provisioningFailed"
+          ],
           "additionalProperties": false
         }
       },

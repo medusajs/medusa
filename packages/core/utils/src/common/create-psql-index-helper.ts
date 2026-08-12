@@ -41,7 +41,7 @@ export function createPsqlIndexStatementHelper({
   tableName: string
   columns: string | string[]
   type?: string
-  where?: string
+  where?: string | null
   unique?: boolean
 }) {
   const columnsName = Array.isArray(columns) ? columns.join("_") : columns
