@@ -19,6 +19,9 @@ export interface ProviderSearchQuery
   q?: string
 }
 
+/**
+ * The input for deleting documents from a search index.
+ */
 export interface SearchDeleteDocumentsInput {
   index: string
   filters: SearchFilters
