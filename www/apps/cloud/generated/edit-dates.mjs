@@ -121,5 +121,6 @@ export const generatedEditDates = {
   "app/webhooks/endpoints/page.mdx": "2026-08-07T09:17:29.121Z",
   "app/webhooks/events/page.mdx": "2026-08-10T15:12:02.205Z",
   "app/webhooks/changelog/page.mdx": "2026-08-11T12:40:39.598Z",
-  "app/webhooks/reference/page.mdx": "2026-08-11T12:41:02.857Z"
+  "app/webhooks/reference/page.mdx": "2026-08-11T12:41:02.857Z",
+  "app/changelog/page.mdx": "2026-08-12T11:18:07.152Z"
 }
