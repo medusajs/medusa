@@ -2,7 +2,7 @@
 "@medusajs/dashboard": minor
 ---
 
-feat(dashboard)!: upgrade to react-router 7
+feat(dashboard): upgrade to react-router 7
 
 **Breaking:** projects must bump their own `react-router-dom` dependency to 7.x.
 

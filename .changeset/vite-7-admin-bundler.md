@@ -2,7 +2,7 @@
 "@medusajs/admin-bundler": minor
 ---
 
-feat(admin-bundler)!: upgrade to vite 7
+feat(admin-bundler): upgrade to vite 7
 
 Upgrades the admin build toolchain to Vite 7.3.6, `@vitejs/plugin-react` 5, and esbuild 0.27.
 
