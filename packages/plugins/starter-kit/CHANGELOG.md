@@ -1,0 +1,1 @@
+# @medusajs/starter-kit-plugin

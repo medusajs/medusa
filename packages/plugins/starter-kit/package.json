@@ -1,0 +1,92 @@
+{
+  "name": "@medusajs/starter-kit-plugin",
+  "version": "2.18.0",
+  "description": "Medusa Plugin: Starter Kit - default invite and password reset email notifications",
+  "author": "Medusa (https://medusajs.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/plugins/starter-kit"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "files": [
+    ".medusa/server"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./workflows": "./.medusa/server/src/workflows/index.js",
+    "./.medusa/server/src/modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./providers/*": "./.medusa/server/src/providers/*/index.js",
+    "./types": "./.medusa/server/src/types/index.js",
+    "./*": "./.medusa/server/src/*.js",
+    "./admin": {
+      "import": "./.medusa/server/src/admin/index.mjs",
+      "require": "./.medusa/server/src/admin/index.js",
+      "default": "./.medusa/server/src/admin/index.js"
+    }
+  },
+  "keywords": [
+    "medusa",
+    "plugin",
+    "medusa-plugin",
+    "medusa-plugin-notification",
+    "medusa-v2",
+    "email",
+    "auth",
+    "invite",
+    "password-reset"
+  ],
+  "scripts": {
+    "build:plugin": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
+    "link:watch": "medusa plugin:publish && medusa plugin:develop",
+    "watch": "medusa plugin:develop",
+    "preview:emails": "email dev --dir ./src/utils/email-templates"
+  },
+  "dependencies": {
+    "@react-email/components": "0.3.3",
+    "@react-email/render": "1.1.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@medusajs/admin-sdk": "2.18.0",
+    "@medusajs/cli": "2.18.0",
+    "@medusajs/framework": "2.18.0",
+    "@medusajs/medusa": "2.18.0",
+    "@medusajs/test-utils": "2.18.0",
+    "@medusajs/types": "2.18.0",
+    "@react-email/preview-server": "4.2.5",
+    "@swc/core": "1.5.7",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.2.25",
+    "cross-env": "^7.0.3",
+    "react-email": "4.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "@medusajs/cli": "2.18.0",
+    "@medusajs/framework": "2.18.0",
+    "@medusajs/medusa": "2.18.0",
+    "@medusajs/test-utils": "2.18.0"
+  },
+  "peerDependenciesMeta": {
+    "@medusajs/cli": {
+      "optional": true
+    },
+    "@medusajs/test-utils": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "yarn@3.2.1"
+}

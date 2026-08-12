@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": "jest --silent --no-cache --bail --forceExit",
+    "test:integration": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --silent --no-cache --bail --forceExit",
     "build": "tsc --allowJs --outDir ./dist"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
     "@medusajs/region": "workspace:^",
+    "@medusajs/starter-kit-plugin": "workspace:^",
     "@medusajs/stock-location": "workspace:^",
     "@medusajs/store": "workspace:^",
     "@medusajs/tax": "workspace:^",

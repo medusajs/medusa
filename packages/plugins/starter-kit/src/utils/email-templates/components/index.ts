@@ -1,0 +1,6 @@
+export { EmailButton } from "./email-button"
+export { EmailHeading } from "./email-heading"
+export { EmailLayout } from "./email-layout"
+export { EmailMutedText } from "./email-muted-text"
+export { EmailText } from "./email-text"
+export { EmailUrlFallback } from "./email-url-fallback"
