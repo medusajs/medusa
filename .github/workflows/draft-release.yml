@@ -193,6 +193,22 @@ jobs:
 
           IMPORTANT: Only create /tmp/release-notes.md using the Write tool. Do not use git commands. Do not create any other files.
 
+          Step 3 — The release notes MUST start with a title and subtitle block, before any other content, in exactly this format (an HTML comment that opens with "<!--" and closes with "CMS_BREAK -->"):
+
+          <!--
+
+          # ${TAG}: Short Highlight One, Short Highlight Two, Short Highlight Three
+
+          One or two sentences summarizing the most important change in this release and what it enables.
+
+          CMS_BREAK -->
+
+          Rules for the title and subtitle block:
+          - The title line is a level-one heading (a single "#") starting with the release tag "${TAG}", followed by ": ", then two to four of the release's most important highlights in title case, separated by commas.
+          - The subtitle is plain prose (no markdown headings, lists, or links) of at most two sentences describing the release's main highlight.
+          - Keep the blank lines and the "CMS_BREAK -->" closing line exactly as shown.
+          - Everything after "CMS_BREAK -->" is the normal release notes body as defined by the /writing-releases skill.
+
           Context:
           - Repository: ${REPO}
           - Previous release: ${PREVIOUS_TAG}
@@ -248,9 +264,18 @@ jobs:
             exit 1
           fi
 
+          # Use the title from the title/subtitle block Claude generated at the top of the
+          # release notes (the first level-one heading), falling back to the tag.
+          RELEASE_TITLE=$(grep -m1 '^# ' /tmp/release-notes.md | sed 's/^# *//' || true)
+          if [ -z "$RELEASE_TITLE" ]; then
+            echo "WARNING: no title heading found in release notes — falling back to $TAG"
+            RELEASE_TITLE="$TAG"
+          fi
+          echo "Release title: $RELEASE_TITLE"
+
           ARGS=(
             "$TAG"
-            --title "$TAG"
+            --title "$RELEASE_TITLE"
             --notes-file /tmp/release-notes.md
             --draft
             --target "${{ github.sha }}"
