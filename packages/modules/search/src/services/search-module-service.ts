@@ -272,10 +272,25 @@ export default class SearchModuleService
    * Seeds whatever needs data. Indexes that are not migrated yet are skipped —
    * creating and migrating physical indexes is the application's job
    * (e.g. `db:migrate`), not something a booting worker invents.
+   *
+   * The exception is a provider that asked for it through `migrate_on_startup`,
+   * whose indexes do not outlive the process that created them. Those are
+   * migrated here first, so the index and the data filling it are built by the
+   * same process.
    */
   protected async onApplicationStart_(): Promise<void> {
     if (!this.indexes_.size || !this.isWorkerMode) {
       return
+    }
+
+    // Unconditional for those providers: they start with nothing, so there is
+    // no state worth inspecting first.
+    for (const definition of this.indexes_.values()) {
+      const provider = this.searchProviderService_.retrieve(definition.provider)
+
+      if (provider.migrate_on_startup) {
+        await provider.upsertIndex({ index: definition })
+      }
     }
 
     const seeds = await this.createSeedPlan_()

@@ -298,6 +298,38 @@ Do not update CLI docs for internal refactors that don't change the CLI's extern
 
 ---
 
+## Cloud Changelog
+
+Cloud has three separate changelogs, and each change belongs to exactly one of them:
+
+| Changelog | File | Covers |
+|---|---|---|
+| Cloud | `www/apps/cloud/app/changelog/page.mdx` | Dashboard changes |
+| Cloud CLI | `www/apps/cloud/app/cli/changelog/page.mdx` | `mcloud` releases |
+| Webhooks | `www/apps/cloud/app/webhooks/changelog/page.mdx` | Webhook event changes |
+
+The Cloud changelog links to the other two at the top of the page, and never repeats their entries.
+
+Dashboard changes are **dated, not versioned**, since the dashboard has no user-facing version number.
+
+- Each entry uses a `## {Month} {Day}, {Year}` heading, for example `## August 10, 2026`
+- Entries are newest-first, directly below the intro, and separated by `---` dividers
+- Under each date, add one bullet point per change, written in the present tense from the user's perspective
+- When a change replaces earlier behavior, add a sentence on what it was before, as in "Previously, the card kept showing a loading preview"
+- If a documentation page covers the change, link to it in the bullet point with a relative path, such as `[Environment Variables](../environments/environment-variables/page.mdx)`
+- If an entry for that date already exists, merge the bullet points into it instead of adding a duplicate
+
+Only functional and design changes belong in the changelog:
+
+| Include | Exclude |
+|---|---|
+| New functionality, such as a new page, setting, or action | Copy changes, such as a renamed label or an added note |
+| Changed behavior, such as a new default, validation, or limit | Visual polish that doesn't change behavior |
+| New or removed form inputs, and why the input was added | Bug fixes with no user-visible change |
+| Design and navigation changes, such as a new navigation style | Internal or performance work |
+
+---
+
 ## Webhooks Documentation
 
 Cloud's webhook events are documented on **two pages only**:
@@ -418,6 +450,8 @@ Update or create cloud docs when a dashboard change:
 - Adds a new monitoring or notification option
 
 Or when a CLI change adds, modifies, or removes commands, flags, or output formats (see the [CLI Documentation](#cli-documentation) section above).
+
+Every dashboard change in that list also gets a changelog entry (see the [Cloud Changelog](#cloud-changelog) section above).
 
 ## Example Page
 

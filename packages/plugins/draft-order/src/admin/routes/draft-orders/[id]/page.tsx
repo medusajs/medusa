@@ -30,7 +30,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   breadcrumb: (match: UIMatch<HttpTypes.AdminOrderResponse>) =>
-    `#${match.data.order.display_id}`,
+    `#${match.loaderData.order.display_id}`,
 }
 
 const ID = () => {

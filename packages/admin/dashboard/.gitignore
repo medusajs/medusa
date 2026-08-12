@@ -10,6 +10,10 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# Output of `yarn build:vite`, which CI runs to verify the real Vite build of
+# the admin app. Kept separate from `dist` so it never clobbers the tsup output
+# that `@medusajs/dashboard` actually publishes.
+dist-vite
 *.local
 
 # Editor directories and files

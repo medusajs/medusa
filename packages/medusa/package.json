@@ -36,10 +36,10 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "author": "Sebastian Rindom",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://medusajs.com",
   "llms": "https://docs.medusajs.com/llms.txt",
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",
@@ -67,6 +67,7 @@
     "@medusajs/auth-emailpass": "2.18.0",
     "@medusajs/auth-github": "2.18.0",
     "@medusajs/auth-google": "2.18.0",
+    "@medusajs/auth-oidc": "2.18.0",
     "@medusajs/cache-inmemory": "2.18.0",
     "@medusajs/cache-redis": "2.18.0",
     "@medusajs/caching": "2.18.0",

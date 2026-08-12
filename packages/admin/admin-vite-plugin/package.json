@@ -30,21 +30,23 @@
     "test:watch": "../../../node_modules/.bin/vitest"
   },
   "devDependencies": {
-    "vite": "^5.4.21"
+    "vite": "^7.3.6"
   },
   "peerDependencies": {
-    "vite": "^5.4.21"
+    "vite": "^5.4.21 || ^6.0.0 || ^7.0.0"
   },
   "dependencies": {
     "@babel/parser": "7.25.6",
     "@babel/traverse": "7.25.6",
     "@babel/types": "7.25.6",
     "@medusajs/admin-shared": "2.18.0",
-    "chokidar": "^3.5.3",
     "fdir": "6.1.1",
     "magic-string": "0.30.5",
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
 }
