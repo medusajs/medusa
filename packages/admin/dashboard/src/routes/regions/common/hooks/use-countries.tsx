@@ -1,6 +1,6 @@
 import { RegionCountryDTO } from "@medusajs/types"
-import { json } from "react-router-dom"
 import { StaticCountry } from "../../../../lib/data/countries"
+import { jsonResponse } from "../../../../lib/json-response"
 
 const acceptedOrderKeys = ["name", "iso_2"]
 
@@ -29,7 +29,7 @@ export const useCountries = ({
 
     if (!acceptedOrderKeys.includes(key)) {
       console.log(`The key ${key} is not a valid order key`)
-      throw json(`The key ${key} is not a valid order key`, 500)
+      throw jsonResponse(`The key ${key} is not a valid order key`, 500)
     }
 
     const sortKey = key as keyof RegionCountryDTO

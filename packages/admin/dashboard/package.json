@@ -8,6 +8,7 @@
     "dev": "../../../node_modules/.bin/vite",
     "build": "yarn typecheck && yarn run -T tsup",
     "build:preview": "../../../node_modules/.bin/vite build",
+    "build:vite": "../../../node_modules/.bin/vite build --outDir dist-vite --emptyOutDir",
     "preview": "../../../node_modules/.bin/vite preview",
     "test": "../../../node_modules/.bin/vitest --run",
     "i18n:validate": "node ./scripts/i18n/validate-translation.js",
@@ -96,7 +97,7 @@
     "react-hook-form": "7.83.0",
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",
-    "react-router-dom": "6.30.4",
+    "react-router-dom": "7.18.2",
     "zod": "4.2.0"
   },
   "devDependencies": {
@@ -109,5 +110,8 @@
     "eslint": "8",
     "typescript": "5.9.3"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
 }
