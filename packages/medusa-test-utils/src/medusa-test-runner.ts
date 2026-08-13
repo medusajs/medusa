@@ -42,6 +42,9 @@ export interface MedusaSuiteOptions {
   getMedusaApp: () => MedusaAppOutput
   utils: {
     waitWorkflowExecutions: () => Promise<void>
+    freezeDatabaseBaseline: (options?: {
+      templateName?: string
+    }) => Promise<void>
   }
 }
 
@@ -53,8 +56,11 @@ interface TestRunnerConfig {
   schema?: string
   debug?: boolean
   inApp?: boolean
+  seedBaseline?: (options: MedusaSuiteOptions) => Promise<void>
   hooks?: {
     beforeServerStart?: (container: MedusaContainer) => Promise<void>
+    afterSetup?: (options: MedusaSuiteOptions) => Promise<void>
+    seedBaseline?: (options: MedusaSuiteOptions) => Promise<void>
   }
   cwd?: string
 }
@@ -83,6 +89,7 @@ class MedusaTestRunner {
   private loadedApplication: any = null
   private shutdown: () => Promise<void> = async () => void 0
   private hooks: TestRunnerConfig["hooks"] = {}
+  private seedBaseline?: (options: MedusaSuiteOptions) => Promise<void>
   private databaseTemplateReady = false
   private skipNextRestore = false
 
@@ -107,6 +114,7 @@ class MedusaTestRunner {
       schema: this.schema,
       debug: this.debug,
     }
+    this.seedBaseline = config.seedBaseline
     this.hooks = config.hooks ?? {}
 
     this.setupProcessHandlers()
@@ -286,6 +294,21 @@ class MedusaTestRunner {
       await configLoaderOverride(this.cwd, this.dbConfig)
       applyEnvVarsToProcess(this.env)
       await this.setupApplication()
+
+      const seedBaselineFn =
+        this.seedBaseline ??
+        this.hooks?.seedBaseline ??
+        this.hooks?.afterSetup
+
+      if (seedBaselineFn) {
+        const options = this.getOptions()
+        await seedBaselineFn(options)
+        if (this.globalContainer) {
+          await waitWorkflowExecutions(this.globalContainer)
+        }
+        await this.snapshotDatabase()
+        this.skipNextRestore = false
+      }
     } catch (error) {
       await this.cleanup()
       throw error
@@ -298,6 +321,20 @@ class MedusaTestRunner {
       templateName: this.dbTemplateName,
     })
     this.databaseTemplateReady = true
+  }
+
+  private async freezeDatabaseBaseline(options?: {
+    templateName?: string
+  }): Promise<void> {
+    if (this.globalContainer) {
+      await waitWorkflowExecutions(this.globalContainer)
+    }
+    await this.dbUtils.snapshot({
+      databaseName: this.dbName,
+      templateName: options?.templateName ?? this.dbTemplateName,
+    })
+    this.databaseTemplateReady = true
+    this.skipNextRestore = true
   }
 
   public async beforeEach(): Promise<void> {
@@ -355,12 +392,7 @@ class MedusaTestRunner {
       dbUtils: {
         ...this.dbUtils,
         snapshot: async (options) => {
-          await this.dbUtils.snapshot({
-            databaseName: this.dbName,
-            templateName: options?.templateName ?? this.dbTemplateName,
-          })
-          this.databaseTemplateReady = true
-          this.skipNextRestore = true
+          await this.freezeDatabaseBaseline(options)
         },
         restore: (options) =>
           this.dbUtils.restore({
@@ -371,6 +403,9 @@ class MedusaTestRunner {
       utils: {
         waitWorkflowExecutions: () =>
           waitWorkflowExecutions(this.globalContainer as MedusaContainer),
+        freezeDatabaseBaseline: async (options) => {
+          await this.freezeDatabaseBaseline(options)
+        },
       },
     }
   }
@@ -384,6 +419,7 @@ export function medusaIntegrationTestRunner({
   env = {},
   debug = false,
   inApp = false,
+  seedBaseline,
   testSuite,
   hooks,
   cwd,
@@ -395,6 +431,7 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   inApp?: boolean
+  seedBaseline?: (options: MedusaSuiteOptions) => Promise<void>
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
   cwd?: string
@@ -407,6 +444,7 @@ export function medusaIntegrationTestRunner({
     env,
     debug,
     inApp,
+    seedBaseline,
     hooks,
     cwd,
   })
