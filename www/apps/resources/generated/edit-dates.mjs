@@ -7646,5 +7646,7 @@ export const generatedEditDates = {
   "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z",
   "app/commerce-modules/order/secure-order-retrieval/page.mdx": "2026-08-06T07:59:42.895Z",
   "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z",
-  "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z"
+  "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z",
+  "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z"
 }
