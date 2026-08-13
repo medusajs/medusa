@@ -100,10 +100,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-providers/google"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/oidc/page.mdx",
-    "pathname": "/commerce-modules/auth/auth-providers/oidc"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers"
   },
