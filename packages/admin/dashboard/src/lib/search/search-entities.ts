@@ -1,5 +1,6 @@
 import { TFunction } from "i18next"
 import { DynamicSearchResultItem } from "../../components/search/types"
+import type { Keys } from "../../providers/keybind-provider/types"
 import { DEFAULT_SEARCH_ENTITIES } from "./default-search-entities"
 
 export type SearchEntityTransform<TItem = any> = (
@@ -16,6 +17,24 @@ export type SearchLabelTranslator = (
   options?: Record<string, unknown>
 ) => string
 
+/**
+ * A "Jump to" entry for a search entity: a key sequence bound by the admin
+ * shell that also appears in the search palette's navigation group.
+ */
+export type SearchEntityShortcut = {
+  keys: Keys
+  /**
+   * Label for the "Jump to" entry. Falls back to the entity's group label.
+   */
+  label?: string | ((t: SearchLabelTranslator) => string)
+  /**
+   * Whether the entry is grouped with the page or the settings shortcuts.
+   * Defaults to `pageShortcut`.
+   */
+  type?: "pageShortcut" | "settingShortcut"
+  to: string
+}
+
 export type SearchEntityDefinition<TItem = any> = {
   /**
    * Group heading shown in the search palette.
@@ -24,6 +43,11 @@ export type SearchEntityDefinition<TItem = any> = {
    * - function → called with the i18n `t` function
    */
   groupLabel?: string | ((t: SearchLabelTranslator) => string)
+  /**
+   * Optional "Jump to" navigation entry for the entity's list page. Omit it
+   * for entities that have no page of their own (e.g. nested entities).
+   */
+  shortcut?: SearchEntityShortcut
   transform: SearchEntityTransform<TItem>
 }
 
@@ -53,6 +77,11 @@ let customized = false
  *
  * defineSearchEntity("organization", {
  *   groupLabel: "Organizations",
+ *   shortcut: {
+ *     keys: { Mac: ["G", "Z"] },
+ *     label: "Go to Organizations",
+ *     to: "/organizations",
+ *   },
  *   transform: (org) => ({
  *     id: org.id,
  *     title: org.name,
@@ -123,4 +152,38 @@ export function resolveSearchEntityGroupLabel(
   // Custom entities usually have no translation for the conventional key, so
   // show the entity name rather than the raw key.
   return translate(`app.search.groups.${name}`, { defaultValue: name })
+}
+
+/**
+ * The "Jump to" entries of every registered entity that declares one, in
+ * registration order.
+ */
+export function getSearchEntityShortcuts(): {
+  entity: string
+  shortcut: SearchEntityShortcut
+}[] {
+  return [...searchEntities.entries()]
+    .filter(([, definition]) => !!definition.shortcut)
+    .map(([entity, definition]) => ({
+      entity,
+      shortcut: definition.shortcut!,
+    }))
+}
+
+export function resolveSearchEntityShortcutLabel(
+  name: string,
+  t: TFunction | SearchLabelTranslator
+): string {
+  const translate = t as SearchLabelTranslator
+  const label = searchEntities.get(name)?.shortcut?.label
+
+  if (typeof label === "function") {
+    return label(translate)
+  }
+
+  if (typeof label === "string") {
+    return label
+  }
+
+  return resolveSearchEntityGroupLabel(name, t)
 }

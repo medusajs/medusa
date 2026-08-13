@@ -2,14 +2,20 @@ import { HttpTypes } from "@medusajs/types"
 import type { SearchEntityDefinition } from "./search-entities"
 
 /**
- * Built-in admin search entities. The registry in `./search-entities` seeds
- * itself from this map when it is evaluated, which always happens before any
- * app or plugin `search-entities.tsx` file runs — registering an entity
- * requires importing the registry module first. That makes overrides safe in
- * every bundling order without any registration-time bookkeeping.
+ * Built-in admin search entities, including their "Jump to" shortcuts. The
+ * registry in `./search-entities` seeds itself from this map when it is
+ * evaluated, which always happens before any app or plugin
+ * `search-entities.tsx` file runs — registering an entity requires importing
+ * the registry module first. That makes overrides safe in every bundling order
+ * without any registration-time bookkeeping.
  */
 export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
   order: {
+    shortcut: {
+      keys: { Mac: ["G", "O"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToOrders"),
+      to: "/orders",
+    },
     transform: (order: HttpTypes.AdminOrder) => ({
       id: order.id,
       title: `#${order.display_id}`,
@@ -19,6 +25,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   product: {
+    shortcut: {
+      keys: { Mac: ["G", "P"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToProducts"),
+      to: "/products",
+    },
     transform: (product: HttpTypes.AdminProduct) => ({
       id: product.id,
       title: product.title,
@@ -37,6 +48,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   category: {
+    shortcut: {
+      keys: { Mac: ["G", "A"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToCategories"),
+      to: "/categories",
+    },
     transform: (category: HttpTypes.AdminProductCategory) => ({
       id: category.id,
       title: category.name,
@@ -45,6 +61,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   inventory: {
+    shortcut: {
+      keys: { Mac: ["G", "I"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToInventory"),
+      to: "/inventory",
+    },
     transform: (inventory: HttpTypes.AdminInventoryItem) => ({
       id: inventory.id,
       title: inventory.title ?? "",
@@ -54,6 +75,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   customer: {
+    shortcut: {
+      keys: { Mac: ["G", "U"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToCustomers"),
+      to: "/customers",
+    },
     transform: (customer: HttpTypes.AdminCustomer) => {
       const name = [customer.first_name, customer.last_name]
         .filter(Boolean)
@@ -68,6 +94,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     },
   },
   customerGroup: {
+    shortcut: {
+      keys: { Mac: ["G", "G"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToCustomerGroups"),
+      to: "/customer-groups",
+    },
     transform: (customerGroup: HttpTypes.AdminCustomerGroup) => ({
       id: customerGroup.id,
       title: customerGroup.name!,
@@ -76,6 +107,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   collection: {
+    shortcut: {
+      keys: { Mac: ["G", "C"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToCollections"),
+      to: "/collections",
+    },
     transform: (collection: HttpTypes.AdminCollection) => ({
       id: collection.id,
       title: collection.title,
@@ -84,6 +120,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   promotion: {
+    shortcut: {
+      keys: { Mac: ["G", "M"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToPromotions"),
+      to: "/promotions",
+    },
     transform: (promotion: HttpTypes.AdminPromotion) => ({
       id: promotion.id,
       title: promotion.code!,
@@ -92,6 +133,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   campaign: {
+    shortcut: {
+      keys: { Mac: ["G", "K"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToCampaigns"),
+      to: "/campaigns",
+    },
     transform: (campaign: HttpTypes.AdminCampaign) => ({
       id: campaign.id,
       title: campaign.name,
@@ -100,6 +146,11 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   priceList: {
+    shortcut: {
+      keys: { Mac: ["G", "L"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToPriceLists"),
+      to: "/price-lists",
+    },
     transform: (priceList: HttpTypes.AdminPriceList) => ({
       id: priceList.id,
       title: priceList.title,
@@ -108,6 +159,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   user: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "U"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToUsers"),
+      type: "settingShortcut",
+      to: "/settings/users",
+    },
     transform: (user: HttpTypes.AdminUser) => ({
       id: user.id,
       title: `${user.first_name} ${user.last_name}`,
@@ -117,6 +174,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   region: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "R"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToRegions"),
+      type: "settingShortcut",
+      to: "/settings/regions",
+    },
     transform: (region: HttpTypes.AdminRegion) => ({
       id: region.id,
       title: region.name,
@@ -125,6 +188,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   taxRegion: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "T"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToTaxRegions"),
+      type: "settingShortcut",
+      to: "/settings/tax-regions",
+    },
     transform: (taxRegion: HttpTypes.AdminTaxRegion) => ({
       id: taxRegion.id,
       title:
@@ -136,6 +205,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   returnReason: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "M"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToReturnReasons"),
+      type: "settingShortcut",
+      to: "/settings/return-reasons",
+    },
     transform: (returnReason: HttpTypes.AdminReturnReason) => ({
       id: returnReason.id,
       title: returnReason.label,
@@ -145,6 +220,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   salesChannel: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "A"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToSalesChannels"),
+      type: "settingShortcut",
+      to: "/settings/sales-channels",
+    },
     transform: (salesChannel: HttpTypes.AdminSalesChannel) => ({
       id: salesChannel.id,
       title: salesChannel.name,
@@ -153,6 +234,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   productType: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "P"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToProductTypes"),
+      type: "settingShortcut",
+      to: "/settings/product-types",
+    },
     transform: (productType: HttpTypes.AdminProductType) => ({
       id: productType.id,
       title: productType.value,
@@ -169,6 +256,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   location: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "L"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToLocations"),
+      type: "settingShortcut",
+      to: "/settings/locations",
+    },
     transform: (location: HttpTypes.AdminStockLocation) => ({
       id: location.id,
       title: location.name,
@@ -185,6 +278,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   publishableApiKey: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "J"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToPublishableApiKeys"),
+      type: "settingShortcut",
+      to: "/settings/publishable-api-keys",
+    },
     transform: (apiKey: HttpTypes.AdminApiKeyResponse["api_key"]) => ({
       id: apiKey.id,
       title: apiKey.title,
@@ -194,6 +293,12 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
     }),
   },
   secretApiKey: {
+    shortcut: {
+      keys: { Mac: ["G", ",", "K"] },
+      label: (t) => t("app.keyboardShortcuts.settings.goToSecretApiKeys"),
+      type: "settingShortcut",
+      to: "/settings/secret-api-keys",
+    },
     transform: (apiKey: HttpTypes.AdminApiKeyResponse["api_key"]) => ({
       id: apiKey.id,
       title: apiKey.title,

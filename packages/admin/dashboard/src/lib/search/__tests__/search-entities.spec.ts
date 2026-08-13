@@ -135,4 +135,77 @@ describe("search entity registry", () => {
       "organization"
     )
   })
+
+  test("the built-in entities carry their Jump to shortcuts", async () => {
+    const registry = await loadRegistry()
+
+    const shortcuts = registry.getSearchEntityShortcuts()
+    const order = shortcuts.find(({ entity }) => entity === "order")
+
+    expect(order?.shortcut.to).toEqual("/orders")
+    // Entities without a page of their own have no entry.
+    expect(
+      shortcuts.some(({ entity }) => entity === "productVariant")
+    ).toBe(false)
+  })
+
+  test("clearing the registry removes the Jump to entries with it", async () => {
+    const registry = await loadRegistry()
+
+    registry.clearSearchEntities()
+
+    expect(registry.getSearchEntityShortcuts()).toEqual([])
+  })
+
+  test("a custom entity can declare its own Jump to entry", async () => {
+    const registry = await loadRegistry()
+
+    registry.defineSearchEntity("organization", {
+      shortcut: {
+        keys: { Mac: ["G", "Z"] },
+        label: "Go to Organizations",
+        to: "/organizations",
+      },
+      transform: (item) => ({
+        id: item.id,
+        title: item.name,
+        to: `/organizations/${item.id}`,
+        value: `organization:${item.id}`,
+      }),
+    })
+
+    const entry = registry
+      .getSearchEntityShortcuts()
+      .find(({ entity }) => entity === "organization")
+
+    expect(entry?.shortcut.to).toEqual("/organizations")
+
+    const t = ((key: string) => `translated:${key}`) as any
+    expect(
+      registry.resolveSearchEntityShortcutLabel("organization", t)
+    ).toEqual("Go to Organizations")
+  })
+
+  test("a shortcut without a label falls back to the entity's group label", async () => {
+    const registry = await loadRegistry()
+
+    registry.defineSearchEntity("organization", {
+      groupLabel: "Organizations",
+      shortcut: {
+        keys: { Mac: ["G", "Z"] },
+        to: "/organizations",
+      },
+      transform: (item) => ({
+        id: item.id,
+        title: item.name,
+        to: `/organizations/${item.id}`,
+        value: `organization:${item.id}`,
+      }),
+    })
+
+    const t = ((key: string) => `translated:${key}`) as any
+    expect(
+      registry.resolveSearchEntityShortcutLabel("organization", t)
+    ).toEqual("Organizations")
+  })
 })

@@ -19,6 +19,9 @@ export {
   getSearchEntityNames,
   hasSearchEntity,
   type SearchEntityDefinition,
+  type SearchEntityShortcut,
   type SearchEntityTransform,
   type SearchLabelTranslator,
 } from "../lib/search/search-entities"
+
+export type { Keys } from "../providers/keybind-provider/types"
