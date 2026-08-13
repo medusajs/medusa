@@ -4250,7 +4250,6 @@ __metadata:
   dependencies:
     "@medusajs/deps": 2.19.0
     bignumber.js: ^9.1.2
-    express: ^4.21.0
   peerDependencies:
     express: ^4.21.0
     ioredis: ^5.4.1

@@ -34,7 +34,6 @@ import {
 } from "@medusajs/icons"
 import { matchSorter } from "match-sorter"
 
-import { usePermissions } from "../../providers/permissions-provider"
 import { resolveSearchEntityGroupLabel } from "../../lib/search/search-entities"
 import { useSearch } from "../../providers/search-provider"
 import { Skeleton } from "../common/skeleton"
@@ -45,9 +44,8 @@ import {
   SEARCH_LIMIT_INCREMENT,
 } from "./constants"
 import { SearchArea } from "./types"
-import { SEARCH_AREA_RESOURCE, useSearchResults } from "./use-search-results"
+import { useSearchResults } from "./use-search-results"
 import { useDocumentDirection } from "../../hooks/use-document-direction"
-import { PermissionResource } from "../../lib/permissions"
 
 export const Search = () => {
   const [area, setArea] = useState<SearchArea>("all")
@@ -370,21 +368,11 @@ const CommandInput = forwardRef<
     ref
   ) => {
     const { t } = useTranslation()
-    const { hasPermission } = usePermissions()
     const innerRef = useRef<HTMLInputElement>(null)
     const direction = useDocumentDirection()
     useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
       ref,
       () => innerRef.current
-    )
-
-    const availableAreas = useMemo(
-      () =>
-        SEARCH_AREAS.filter((a) => {
-          const resource = SEARCH_AREA_RESOURCE[a] as PermissionResource
-          return resource ? hasPermission(`${resource}:read`) : true
-        }),
-      [hasPermission]
     )
 
     return (
