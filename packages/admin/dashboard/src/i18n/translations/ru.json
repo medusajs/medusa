@@ -3814,7 +3814,11 @@
   "auth": {
     "login": {
       "authenticationFailed": "Ошибка аутентификации",
-      "cloud": "Войти через Medusa Cloud"
+      "cloud": "Войти через Medusa Cloud",
+      "noProviders": "Чтобы войти, зарегистрируйте провайдера аутентификации в конфигурации Medusa.",
+      "continueWithProvider": "Продолжить через {{provider}}",
+      "or": "или",
+      "provisioningFailed": "Не удалось завершить вход. Обратитесь к администратору."
     }
   },
   "permissions": {
