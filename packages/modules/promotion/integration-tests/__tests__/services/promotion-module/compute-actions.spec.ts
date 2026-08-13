@@ -7746,6 +7746,115 @@ moduleIntegrationTestRunner({
         })
       })
 
+      describe("when a single application round needs more than one target item", () => {
+        it("should not exceed max_quantity across rounds even when a round has to fragment apply_to_quantity across several target items", async () => {
+          const buyProduct = "prod_buy_frag"
+          const targetProduct = "prod_target_frag"
+
+          const promotion = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              type: "percentage",
+              target_type: "items",
+              value: 100,
+              allocation: "each",
+              // Each round needs 2 target units to satisfy apply_to_quantity,
+              // but every eligible target line only has 1 unit, so every
+              // round has to combine two separate target items to reach it.
+              // max_quantity caps the *total* discounted quantity at 3, which
+              // is less than what two full rounds (2 + 2 = 4) would apply.
+              apply_to_quantity: 2,
+              max_quantity: 3,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product.id",
+                  operator: "eq",
+                  values: [targetProduct],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product.id",
+                  operator: "eq",
+                  values: [buyProduct],
+                },
+              ],
+            } as any,
+          })
+
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_buy",
+                quantity: 10,
+                subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
+                product: { id: buyProduct },
+              },
+              {
+                id: "item_target_1",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product: { id: targetProduct },
+              },
+              {
+                id: "item_target_2",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product: { id: targetProduct },
+              },
+              {
+                id: "item_target_3",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product: { id: targetProduct },
+              },
+              {
+                id: "item_target_4",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product: { id: targetProduct },
+              },
+            ],
+          }
+
+          const result = await service.computeActions(
+            [promotion.code!],
+            context
+          )
+
+          const parsed = JSON.parse(JSON.stringify(result)) as Array<{
+            action: string
+            item_id: string
+            amount: number
+          }>
+
+          const totalDiscountedUnits = parsed.length
+          const totalDiscountedAmount = parsed.reduce(
+            (sum, action) => sum + action.amount,
+            0
+          )
+
+          // apply_to_quantity (2) fits inside max_quantity (3), so exactly
+          // one round's worth should apply. A second round would need 2 more
+          // units and only 1 unit of allowance is left after the first round,
+          // so it must be rejected entirely rather than partially applied.
+          expect(totalDiscountedUnits).toEqual(2)
+          expect(totalDiscountedAmount).toEqual(2000)
+        })
+      })
+
       describe("when promotion allocation is once", () => {
         describe("when application type is fixed", () => {
           it("should apply promotion to lowest priced items first and respect max_quantity limit across all items", async () => {
