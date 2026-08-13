@@ -108,11 +108,30 @@ A draft order's `locale` can be set and updated before converting it to a regula
 
 When the draft order is converted to a regular order, it retains its `locale` property. The details of the order items will remain in the specified locale.
 
+### Tax Lines and Address Changes
+
+<Note>
+
+This behavior is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+When you update a draft order's shipping or billing address using the `updateDraftOrderWorkflow`, Medusa automatically recomputes the draft order's tax lines. This ensures the tax lines reflect the correct tax jurisdiction after the address change.
+
+Whether Medusa recomputes the tax lines depends on the region's `automatic_taxes` setting:
+
+- If `automatic_taxes` is enabled, Medusa recomputes the tax lines from the tax provider.
+- If `automatic_taxes` is disabled, the tax lines are not recomputed.
+
+This behavior is different from regular orders: updating a regular order's address using the `updateOrderWorkflow` does not trigger a tax recomputation.
+
 ### Converting Draft Orders to Regular Orders
 
 Once a draft order is finalized and ready for processing, it can be converted to a regular order. This involves:
 
 - Changing its `status` property to `pending`.
 - Changing its `is_draft_order` property to `false`.
+
+When converting a draft order using the `convertDraftOrderWorkflow`, Medusa recomputes the draft order's tax lines before placing the order. This ensures the order never carries stale tax lines, for example from a previous address change. The recomputation also respects the region's `automatic_taxes` setting.
 
 Admin users can then manage the order like any other regular order, including processing payments and fulfilling items.

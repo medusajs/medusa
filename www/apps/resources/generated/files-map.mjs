@@ -1348,6 +1348,10 @@ export const filesMap = [
     "pathname": "/lint/rules/prefer-modules-enum"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-workflow-event-over-module-event/page.mdx",
+    "pathname": "/lint/rules/prefer-workflow-event-over-module-event"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/prices-in-major-units/page.mdx",
     "pathname": "/lint/rules/prices-in-major-units"
   },
@@ -1914,6 +1918,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/test-tools-reference/moduleIntegrationTestRunner/page.mdx",
     "pathname": "/test-tools-reference/moduleIntegrationTestRunner"
+  },
+  {
+    "filePath": "/www/apps/resources/app/test-tools-reference/normalizeBigNumbers/page.mdx",
+    "pathname": "/test-tools-reference/normalizeBigNumbers"
   },
   {
     "filePath": "/www/apps/resources/app/test-tools-reference/page.mdx",
