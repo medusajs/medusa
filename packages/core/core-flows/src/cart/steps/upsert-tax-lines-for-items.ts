@@ -147,36 +147,70 @@ export const upsertTaxLinesForItemsStep = createStep(
   }
 )
 
-function normalizeItemTaxLinesForCart(
+export function normalizeItemTaxLinesForCart(
   taxLines: ItemTaxLineDTO[],
   existingTaxLines: LineItemTaxLineDTO[]
 ): CreateLineItemTaxLineDTO[] {
-  return taxLines.map((taxLine: ItemTaxLineDTO & { id?: string }) => ({
-    id: existingTaxLines.find((t) => t.item_id === taxLine.line_item_id)?.id,
-    description: taxLine.name,
-    tax_rate_id: taxLine.rate_id,
-    code: taxLine.code!,
-    rate: taxLine.rate!,
-    provider_id: taxLine.provider_id,
-    item_id: taxLine.line_item_id,
-    data: taxLine.data,
-  }))
+  // An item can have more than one tax line at once (e.g. a combinable rate
+  // plus its parent region's rate), so matching an existing row on item_id
+  // alone isn't enough - every new line for that item would resolve to the
+  // same existing id and the upsert would collapse them into a single row,
+  // silently dropping the rest. Matching on the rate as well keeps each tax
+  // line paired with its own row.
+  const usedExistingIds = new Set<string>()
+
+  return taxLines.map((taxLine: ItemTaxLineDTO & { id?: string }) => {
+    const match = existingTaxLines.find(
+      (t) =>
+        !usedExistingIds.has(t.id) &&
+        t.item_id === taxLine.line_item_id &&
+        t.tax_rate_id === taxLine.rate_id
+    )
+
+    if (match) {
+      usedExistingIds.add(match.id)
+    }
+
+    return {
+      id: match?.id,
+      description: taxLine.name,
+      tax_rate_id: taxLine.rate_id,
+      code: taxLine.code!,
+      rate: taxLine.rate!,
+      provider_id: taxLine.provider_id,
+      item_id: taxLine.line_item_id,
+      data: taxLine.data,
+    }
+  })
 }
 
-function normalizeShippingTaxLinesForCart(
+export function normalizeShippingTaxLinesForCart(
   taxLines: ShippingTaxLineDTO[],
   existingTaxLines: ShippingMethodTaxLineDTO[]
 ): CreateShippingMethodTaxLineDTO[] {
-  return taxLines.map((taxLine: ShippingTaxLineDTO & { id?: string }) => ({
-    id: existingTaxLines.find(
-      (t) => t.shipping_method_id === taxLine.shipping_line_id
-    )?.id,
-    description: taxLine.name,
-    tax_rate_id: taxLine.rate_id,
-    code: taxLine.code!,
-    rate: taxLine.rate!,
-    provider_id: taxLine.provider_id,
-    shipping_method_id: taxLine.shipping_line_id,
-    data: taxLine.data,
-  }))
+  const usedExistingIds = new Set<string>()
+
+  return taxLines.map((taxLine: ShippingTaxLineDTO & { id?: string }) => {
+    const match = existingTaxLines.find(
+      (t) =>
+        !usedExistingIds.has(t.id) &&
+        t.shipping_method_id === taxLine.shipping_line_id &&
+        t.tax_rate_id === taxLine.rate_id
+    )
+
+    if (match) {
+      usedExistingIds.add(match.id)
+    }
+
+    return {
+      id: match?.id,
+      description: taxLine.name,
+      tax_rate_id: taxLine.rate_id,
+      code: taxLine.code!,
+      rate: taxLine.rate!,
+      provider_id: taxLine.provider_id,
+      shipping_method_id: taxLine.shipping_line_id,
+      data: taxLine.data,
+    }
+  })
 }
