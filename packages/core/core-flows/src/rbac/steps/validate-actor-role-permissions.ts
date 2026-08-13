@@ -1,6 +1,7 @@
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
+import { RbacScope } from "@medusajs/framework/types"
 
 /**
  * @ignore
@@ -10,6 +11,7 @@ export type ValidateActorRolePermissionsStepInput = {
   actor_id: string
   actor?: string
   role_ids: string[]
+  scope?: RbacScope
 }
 
 /**
@@ -28,7 +30,7 @@ export const validateActorRolePermissionsStepId =
 export const validateActorRolePermissionsStep = createStep(
   validateActorRolePermissionsStepId,
   async (data: ValidateActorRolePermissionsStepInput, { container }) => {
-    const { actor_id, actor, role_ids } = data
+    const { actor_id, actor, role_ids, scope } = data
 
     if (!role_ids?.length) {
       return new StepResponse(void 0)
@@ -58,6 +60,7 @@ export const validateActorRolePermissionsStep = createStep(
       actor,
       actions: actionsToCheck,
       errorMessage: "You do not have permission to assign these roles",
+      scope,
     })
 
     return new StepResponse(void 0)

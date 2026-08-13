@@ -91,6 +91,7 @@ export const POST = async (
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
+      granting_scope: req.rbac_context?.scope,
       assignments: referenceIds.map((referenceId) => ({
         role_id: roleId,
         reference,
@@ -134,6 +135,7 @@ export const DELETE = async (
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
+      granting_scope: req.rbac_context?.scope,
       assignments: referenceIds.map((referenceId) => ({
         role_id: roleId,
         reference,
