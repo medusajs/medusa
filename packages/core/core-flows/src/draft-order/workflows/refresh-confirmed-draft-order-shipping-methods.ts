@@ -1,7 +1,6 @@
 import {
   CalculateShippingOptionPriceDTO,
   FulfillmentSetDTO,
-  OrderDTO,
   ShippingOptionDTO,
   StockLocationDTO,
 } from "@medusajs/framework/types"
@@ -13,7 +12,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment/steps"
 import {
   updateOrderShippingMethodsStep,
@@ -61,8 +60,8 @@ export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
   function (
     input: WorkflowData<RefreshConfirmedDraftOrderShippingMethodsWorkflowInput>
   ): WorkflowResponse<void> {
-    const order: OrderDTO = useRemoteQueryStep({
-      entry_point: "orders",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
       fields: [
         "id",
         "shipping_address.*",
@@ -73,9 +72,11 @@ export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
         "shipping_methods.is_custom_amount",
         "shipping_methods.shipping_option_id",
       ],
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
+      filters: { id: input.order_id },
+      options: {
+        isList: false,
+        throwIfKeyNotFound: true,
+      },
     }).config({ name: "refresh-confirmed-order-query" })
 
     const shippingOptionIds = transform(order, (order) =>
@@ -85,10 +86,10 @@ export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
         .filter(Boolean)
     )
 
-    const shippingOptions = useRemoteQueryStep({
-      entry_point: "shipping_option",
+    const { data: shippingOptions } = useQueryGraphStep({
+      entity: "shipping_option",
       fields: SHIPPING_OPTION_FIELDS_FOR_PRICE_CALCULATION,
-      variables: { id: shippingOptionIds },
+      filters: { id: shippingOptionIds },
     }).config({ name: "refresh-confirmed-options-query" })
 
     const plan = transform({ order, shippingOptions }, (data) => {

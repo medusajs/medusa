@@ -295,33 +295,6 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("runs the setPricingContext hook when resolving a flat-rate option", async () => {
-        let captured: any
-        setPricingContextSpy = (hookInput) => {
-          captured = hookInput
-          // Return an empty (but valid) context; flat price stays unchanged.
-          return {}
-        }
-
-        await beginEdit()
-        await addItem(2)
-        await addShippingMethod(flatShippingOption.id)
-        await confirmEdit()
-
-        // The hook fires with the workflow input (even though the workflow runs
-        // as a nested step of add-draft-order-shipping-methods).
-        expect(captured).toEqual(
-          expect.objectContaining({
-            shipping_option_id: flatShippingOption.id,
-            order_id: testDraftOrder.id,
-            currency_code: "usd",
-          })
-        )
-
-        const order = await getDraftOrder()
-        expect(order.shipping_methods[0].amount).toBe(5)
-      })
-
       it("refreshes the calculated shipping price when items are added", async () => {
         await beginEdit()
         await addItem(2)

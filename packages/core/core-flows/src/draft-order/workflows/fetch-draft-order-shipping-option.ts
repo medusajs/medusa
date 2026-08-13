@@ -10,9 +10,12 @@ import {
   when,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { ShippingOptionPriceType } from "@medusajs/framework/utils"
+import {
+  QueryContext,
+  ShippingOptionPriceType,
+} from "@medusajs/framework/utils"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment/steps"
-import { useQueryGraphStep, useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { previewOrderChangeStep } from "../../order"
 import { filterCartItemsByShippingProfile } from "../../cart/utils/filter-items-by-shipping-profile"
 import { pricingContextResult } from "../../cart/utils/schemas"
@@ -176,21 +179,27 @@ export const fetchShippingOptionForDraftOrderWorkflow = createWorkflow(
       { isCalculatedPriceShippingOption },
       ({ isCalculatedPriceShippingOption }) => !isCalculatedPriceShippingOption
     ).then(() => {
-      const shippingOption = useRemoteQueryStep({
-        entry_point: "shipping_option",
+      const calculatedPriceQueryContext = transform(
+        { pricingContext },
+        ({ pricingContext }) => {
+          return QueryContext(pricingContext)
+        }
+      )
+      const { data: shippingOption } = useQueryGraphStep({
+        entity: "shipping_option",
         fields: [
           "id",
           "name",
           "calculated_price.calculated_amount",
           "calculated_price.is_calculated_price_tax_inclusive",
         ],
-        variables: {
+        filters: {
           id: input.shipping_option_id,
-          calculated_price: {
-            context: pricingContext,
-          },
         },
-        list: false,
+        context: {
+          calculated_price: calculatedPriceQueryContext,
+        },
+        options: { isList: false },
       }).config({ name: "flat-rate-option" })
 
       return shippingOption
