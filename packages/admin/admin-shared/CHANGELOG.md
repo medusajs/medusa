@@ -1,5 +1,11 @@
 # @medusajs/admin-shared
 
+## 2.19.0
+
+### Patch Changes
+
+- [`8f03b13a6137047ce36f61a9bb033879395f9345`](undefined) - fix(admin-shared): add missing gift_card.list.side injection zone
+
 ## 2.18.0
 
 ### Patch Changes
