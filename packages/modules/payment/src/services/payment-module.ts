@@ -276,9 +276,9 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
-          ...(data.currency_code ? 
-            { currency_code: normalizeCurrencyCode(data.currency_code) } :
-            {}),
+          ...(data.currency_code
+            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+            : {}),
         },
       ]
     } else {
@@ -291,10 +291,9 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
-        ...(data.currency_code ?
-          { currency_code: normalizeCurrencyCode(data.currency_code) } :
-          {}
-        ),
+        ...(data.currency_code
+          ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+          : {}),
       }))
     }
 
@@ -351,10 +350,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
     const forCreate = input
       .filter(
@@ -362,10 +360,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
@@ -856,7 +853,10 @@ export default class PaymentModuleService
 
     const lockedPayment = await this.paymentService_.retrieve(
       data.payment_id,
-      { select: ["id", "pending_captures"], relations: ["captures.raw_amount"] },
+      {
+        select: ["id", "pending_captures"],
+        relations: ["captures.raw_amount"],
+      },
       sharedContext
     )
     const confirmedCapturedAmount = lockedPayment.captures.reduce(
@@ -882,10 +882,7 @@ export default class PaymentModuleService
       (lockedPayment.pending_captures as PendingCaptureEntry[] | null) ?? []
     const reservedAmount = lockedPending
       .filter((entry) => entry.reserved)
-      .reduce(
-        (sum, entry) => MathBN.add(sum, entry.amount),
-        MathBN.convert(0)
-      )
+      .reduce((sum, entry) => MathBN.add(sum, entry.amount), MathBN.convert(0))
 
     const capturedAmount = MathBN.add(confirmedCapturedAmount, reservedAmount)
 
@@ -943,7 +940,9 @@ export default class PaymentModuleService
     const reusable = lockedPending.find(
       (entry) => !entry.reserved && MathBN.eq(entry.amount, data.amount!)
     )
-    const captureId = reusable ? reusable.id : generateEntityId(undefined, "capt")
+    const captureId = reusable
+      ? reusable.id
+      : generateEntityId(undefined, "capt")
 
     // Always (re-)mark this attempt's entry as reserved, even when reusing
     // an existing id, so the guard above sees its amount as reserved for as
@@ -1192,13 +1191,21 @@ export default class PaymentModuleService
       },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
-      return MathBN.add(captureAmount, amountAsBigNumber)
-    }, MathBN.convert(0))
-    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
-      return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    const capturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        const amountAsBigNumber = new BigNumber(
+          next.raw_amount as BigNumberInput
+        )
+        return MathBN.add(captureAmount, amountAsBigNumber)
+      },
+      MathBN.convert(0)
+    )
+    const refundedAmount = lockedPayment.refunds.reduce(
+      (refundedAmount, next) => {
+        return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
+      },
+      MathBN.convert(0)
+    )
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
@@ -1305,7 +1312,11 @@ export default class PaymentModuleService
         // right after sessions/captures/refunds were created, and select-in
         // does not otherwise re-populate collections that are already loaded on
         // the managed entities in the shared context.
-        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        relations: [
+          "payment_sessions",
+          "payments.captures",
+          "payments.refunds",
+        ],
         options: { refresh: true },
       },
       sharedContext
