@@ -124,15 +124,7 @@ export const useGlobalShortcuts = () => {
         to: shortcut.to,
       })
     ),
-    // Pages that are not searchable entities.
-    {
-      keys: {
-        Mac: ["G", "R"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToReservations"),
-      type: "pageShortcut",
-      to: "/reservations",
-    },
+    // The admin shell's own destinations, which belong to no entity.
     {
       keys: {
         Mac: ["G", ","],
