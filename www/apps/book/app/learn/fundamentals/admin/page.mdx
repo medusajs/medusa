@@ -16,11 +16,21 @@ To explore the Medusa Admin's commerce features, check out the [User Guide](!use
 
 The Medusa Admin is an intuitive dashboard that allows merchants to manage their ecommerce store. It provides management features related to products, orders, customers, and more.
 
-The Medusa Admin is built with [Vite v5](https://v5.vite.dev/). When you [install the Medusa application](../../installation/page.mdx), you also install the Medusa Admin. Then, when you start the Medusa application, you can access the Medusa Admin at `http://localhost:9000/app`.
+The Medusa Admin is built with [Vite v7](https://v7.vite.dev/). When you [install the Medusa application](../../installation/page.mdx), you also install the Medusa Admin. Then, when you start the Medusa application, you can access the Medusa Admin at `http://localhost:9000/app`.
 
 <Note title="Tip">
 
 If you don't have an admin user, use the [Medusa CLI](!resources!/medusa-cli/commands/user) to create one.
+
+</Note>
+
+<Note>
+
+The Medusa Admin was migrated from Vite v5 to v7.3.6 and `react-router-dom` v6 to v7.18.2 in [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+As of that version, the Medusa Admin supports Chrome v107+, Edge v107+, Firefox v104+, and Safari v16+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](../../configurations/medusa-config/page.mdx#vite).
+
+If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](./routing/page.mdx) chapter.
 
 </Note>
 

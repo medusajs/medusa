@@ -7395,6 +7395,13 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "title": "moduleIntegrationTestRunner",
               "path": "/test-tools-reference/moduleIntegrationTestRunner",
               "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "title": "normalizeBigNumbers",
+              "path": "/test-tools-reference/normalizeBigNumbers",
+              "children": []
             }
           ]
         }

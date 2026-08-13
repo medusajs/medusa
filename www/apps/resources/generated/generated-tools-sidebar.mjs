@@ -486,6 +486,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/prefer-workflow-event-over-module-event",
+                      "title": "prefer-workflow-event-over-module-event",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/prices-in-major-units",
                       "title": "prices-in-major-units",
                       "description": "",
