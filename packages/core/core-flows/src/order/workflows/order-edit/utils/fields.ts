@@ -44,6 +44,8 @@ export const fieldsToRefreshOrderEdit = [
   "items.subtotal",
   "items.product.id",
   "items.product_id",
+  "items.detail.raw_fulfilled_quantity",
+  "items.detail.fulfilled_quantity",
   "items.adjustments.*",
   "shipping_methods.*",
   "shipping_methods.adjustments.*",

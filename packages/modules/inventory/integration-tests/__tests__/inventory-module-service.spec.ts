@@ -763,6 +763,82 @@ moduleIntegrationTestRunner<IInventoryService>({
             expect.objectContaining({ reserved_quantity: 2 })
           )
         })
+
+        it("restoreReservationItemsByLineItem resurrects reservations for the line that were already deleted earlier, not just the ones from the most recent delete", async () => {
+          // A reservation consumed by fulfillment well before the later
+          // delete/restore cycle below - e.g. the line was fulfilled, so
+          // this reservation was soft-deleted and should stay that way.
+          const consumedByFulfillment = await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            quantity: 1,
+            line_item_id: "line-item-later-edited",
+          })
+          await service.softDeleteReservationItems(consumedByFulfillment.id)
+
+          // A newer reservation for the same line item (e.g. created by a
+          // later order edit).
+          const fromLaterEdit = await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            quantity: 1,
+            line_item_id: "line-item-later-edited",
+          })
+
+          await service.deleteReservationItemsByLineItem(
+            "line-item-later-edited"
+          )
+
+          // restoreReservationItemsByLineItem un-soft-deletes *every*
+          // soft-deleted reservation row for the line item - including the
+          // one from fulfillment, which this delete/restore cycle never
+          // touched and has nothing to do with.
+          await service.restoreReservationItemsByLineItem(
+            "line-item-later-edited"
+          )
+
+          const restoredByLineItem = await service.listReservationItems({
+            line_item_id: "line-item-later-edited",
+          })
+
+          expect(restoredByLineItem.map((r) => r.id).sort()).toEqual(
+            [consumedByFulfillment.id, fromLaterEdit.id].sort()
+          )
+        })
+
+        it("restoreReservationItems(ids) only restores the specific reservations given, leaving other deleted rows for the same line item alone", async () => {
+          const consumedByFulfillment = await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            quantity: 1,
+            line_item_id: "line-item-later-edited",
+          })
+          await service.softDeleteReservationItems(consumedByFulfillment.id)
+
+          const fromLaterEdit = await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            quantity: 1,
+            line_item_id: "line-item-later-edited",
+          })
+
+          await service.deleteReservationItemsByLineItem(
+            "line-item-later-edited"
+          )
+
+          // Restoring by the precise id(s) a step actually deleted - as the
+          // order-edit workflow's compensation now does - only brings back
+          // that reservation, leaving the one consumed by fulfillment
+          // (which this delete/restore cycle never touched) alone.
+          await service.restoreReservationItems([fromLaterEdit.id])
+
+          const restoredById = await service.listReservationItems({
+            line_item_id: "line-item-later-edited",
+          })
+
+          expect(restoredById).toHaveLength(1)
+          expect(restoredById[0].id).toEqual(fromLaterEdit.id)
+        })
       })
 
       describe("deleteReservationItemByLocationId", () => {
