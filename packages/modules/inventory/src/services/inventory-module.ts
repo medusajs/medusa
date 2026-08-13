@@ -659,8 +659,42 @@ export default class InventoryModuleService
       },
       new Map()
     )
-    const availabilityData = input.map((data) => {
+    const availabilityData = input.flatMap((data) => {
       const reservation = reservationMap.get(data.id)!
+      const movesLocation =
+        isDefined(data.location_id) &&
+        data.location_id !== reservation.location_id
+
+      if (movesLocation) {
+        // None of this reservation's quantity is accounted for at the new
+        // location yet - it's all still sitting against the old one - so the
+        // full (possibly updated) quantity has to be checked against the
+        // destination's availability, not just the delta from a quantity
+        // change. Treating this like a same-location update and checking
+        // only the delta (or 0, when the quantity isn't changing) skips the
+        // availability check at the destination entirely.
+        //
+        // We also need the *old* location's inventory level in the result
+        // below, or its reserved_quantity is never decremented: ensureInventoryLevels
+        // only returns rows for the locations passed in here, and
+        // levelAdjustmentUpdates is built by mapping over exactly those rows.
+        // A 0-quantity entry pulls that row in without affecting validation.
+        return [
+          {
+            inventory_item_id: reservation.inventory_item_id,
+            location_id: reservation.location_id,
+            quantity: 0,
+            allow_backorder: true,
+          },
+          {
+            inventory_item_id: reservation.inventory_item_id,
+            location_id: data.location_id!,
+            quantity: data.quantity ?? reservation.quantity,
+            allow_backorder:
+              data.allow_backorder || reservation.allow_backorder || false,
+          },
+        ]
+      }
 
       let adjustment = data.quantity
         ? MathBN.sub(data.quantity, reservation.quantity)
@@ -670,13 +704,15 @@ export default class InventoryModuleService
         adjustment = 0
       }
 
-      return {
-        inventory_item_id: reservation.inventory_item_id,
-        location_id: data.location_id ?? reservation.location_id,
-        quantity: adjustment,
-        allow_backorder:
-          data.allow_backorder || reservation.allow_backorder || false,
-      }
+      return [
+        {
+          inventory_item_id: reservation.inventory_item_id,
+          location_id: data.location_id ?? reservation.location_id,
+          quantity: adjustment,
+          allow_backorder:
+            data.allow_backorder || reservation.allow_backorder || false,
+        },
+      ]
     })
 
     const inventoryLevels = await this.ensureInventoryLevels(
