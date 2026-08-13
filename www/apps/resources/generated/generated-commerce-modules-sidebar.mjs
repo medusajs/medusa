@@ -963,6 +963,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/auth/listAuthProviders",
+                      "title": "listAuthProviders",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/auth/listAuthVerifications",
                       "title": "listAuthVerifications",
                       "description": "",

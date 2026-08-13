@@ -134,9 +134,15 @@ const useDynamicSearchResults = (
       )
   }, [q, results, limit, t])
 
+  // Treat the debounce wait as loading too — otherwise `CommandEmpty` flashes
+  // "no results" for ~300ms before the request even starts.
+  const isWaitingForDebounce = Boolean(q) && q !== debouncedSearch
+
   return {
     dynamicResults,
-    isFetching: Boolean(debouncedSearch) && isDynamicArea && isFetching,
+    isFetching:
+      isDynamicArea &&
+      (isWaitingForDebounce || (Boolean(debouncedSearch) && isFetching)),
   }
 }
 
@@ -161,9 +167,9 @@ function transformSearchResultGroup(
   limit: number,
   t: TFunction
 ): DynamicSearchResult | undefined {
-  const definition = getSearchEntity(group.entity)
+  const transform = getSearchEntity(group.entity)?.transform
 
-  if (!definition || !Array.isArray(group.data)) {
+  if (!transform || !Array.isArray(group.data)) {
     return undefined
   }
 
@@ -172,6 +178,6 @@ function transformSearchResultGroup(
     area: group.entity,
     hasMore: group.count > limit,
     count: group.count,
-    items: group.data.map(definition.transform),
+    items: group.data.map(transform),
   }
 }
