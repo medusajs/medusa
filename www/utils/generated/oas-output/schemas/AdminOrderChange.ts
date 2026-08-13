@@ -156,7 +156,7 @@
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The order change's no notification.
+ *     description: Whether to send notifications to the customer regarding the order change's updates.
  * 
 */
 

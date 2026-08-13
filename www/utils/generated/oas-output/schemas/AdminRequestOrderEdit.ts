@@ -1,13 +1,13 @@
 /**
  * @schema AdminRequestOrderEdit
  * type: object
- * description: SUMMARY
+ * description: The details of the request to edit an order.
  * x-schemaName: AdminRequestOrderEdit
  * properties:
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The order edit's no notification.
+ *     description: Whether to send notifications to the customer regarding the order edit's updates.
  * 
 */
 

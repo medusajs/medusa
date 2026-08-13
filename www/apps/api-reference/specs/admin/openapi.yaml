@@ -1330,6 +1330,8 @@ paths:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:
     $ref: paths/auth_token_refresh.yaml
+  /auth/user/providers:
+    $ref: paths/auth_user_providers.yaml
   /auth/user/{auth_provider}:
     $ref: paths/auth_user_{auth_provider}.yaml
   /auth/user/{auth_provider}/callback:
@@ -1340,6 +1342,8 @@ paths:
     $ref: paths/auth_user_{auth_provider}_reset-password.yaml
   /auth/user/{auth_provider}/update:
     $ref: paths/auth_user_{auth_provider}_update.yaml
+  /auth/{auth_provider}/user:
+    $ref: paths/auth_{auth_provider}_user.yaml
 components:
   securitySchemes:
     api_token:

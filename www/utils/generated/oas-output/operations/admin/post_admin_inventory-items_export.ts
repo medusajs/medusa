@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/inventory-items/export
  * operationId: PostInventoryItemsExport
- * summary: Create Inventory Item
- * description: Create a inventory item.
+ * summary: Export Inventory Items
+ * description: |
+ *   Start an inventory items export process to retrieve a CSV of exported inventory items.
+ * 
+ *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`.
+ *   Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -12,21 +16,21 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The inventory item's ID.
+ *           description: The ID of the inventory item to export.
  *         - type: array
- *           description: The inventory item's ID.
+ *           description: The IDs of the inventory items to export.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: The ID of the inventory item to export.
  *   - name: q
  *     in: query
- *     description: The inventory item's q.
+ *     description: Search query to apply on inventory item searchable fields to filter the results.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The inventory item's q.
+ *       description: Search query to apply on inventory item searchable fields to filter the results.
  *   - name: sku
  *     in: query
  *     required: false
@@ -34,13 +38,13 @@
  *       oneOf:
  *         - type: string
  *           title: sku
- *           description: The inventory item's sku.
+ *           description: Filter by the inventory item's sku.
  *         - type: array
- *           description: The inventory item's sku.
+ *           description: Filter by the inventory items' sku.
  *           items:
  *             type: string
  *             title: sku
- *             description: The sku's details.
+ *             description: Filter by the inventory item's sku.
  *   - name: origin_country
  *     in: query
  *     required: false
@@ -48,13 +52,13 @@
  *       oneOf:
  *         - type: string
  *           title: origin_country
- *           description: The inventory item's origin country.
+ *           description: Filter by the inventory item's origin country.
  *         - type: array
- *           description: The inventory item's origin country.
+ *           description: Filter by the inventory items' origin country.
  *           items:
  *             type: string
  *             title: origin_country
- *             description: The origin country's details.
+ *             description: Filter by the inventory item's origin country.
  *   - name: mid_code
  *     in: query
  *     required: false
@@ -62,13 +66,13 @@
  *       oneOf:
  *         - type: string
  *           title: mid_code
- *           description: The inventory item's mid code.
+ *           description: Filter by the inventory item's mid code.
  *         - type: array
- *           description: The inventory item's mid code.
+ *           description: Filter by the inventory items' mid code.
  *           items:
  *             type: string
  *             title: mid_code
- *             description: The mid code's details.
+ *             description: Filter by the inventory item's mid code.
  *   - name: hs_code
  *     in: query
  *     required: false
@@ -76,13 +80,13 @@
  *       oneOf:
  *         - type: string
  *           title: hs_code
- *           description: The inventory item's hs code.
+ *           description: Filter by the inventory item's hs code.
  *         - type: array
- *           description: The inventory item's hs code.
+ *           description: Filter by the inventory items' hs code.
  *           items:
  *             type: string
  *             title: hs_code
- *             description: The hs code's details.
+ *             description: Filter by the inventory item's hs code.
  *   - name: material
  *     in: query
  *     required: false
@@ -90,21 +94,21 @@
  *       oneOf:
  *         - type: string
  *           title: material
- *           description: The inventory item's material.
+ *           description: Filter by the inventory item's material.
  *         - type: array
- *           description: The inventory item's material.
+ *           description: Filter by the inventory items' material.
  *           items:
  *             type: string
  *             title: material
- *             description: The material's details.
+ *             description: Filter by the inventory item's material.
  *   - name: requires_shipping
  *     in: query
- *     description: The inventory item's requires shipping.
+ *     description: Filter by whether the inventory item requires shipping.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: requires_shipping
- *       description: The inventory item's requires shipping.
+ *       description: Whether the inventory item requires shipping.
  *   - name: weight
  *     in: query
  *     required: false
@@ -112,7 +116,7 @@
  *       oneOf:
  *         - type: number
  *           title: weight
- *           description: The inventory item's weight.
+ *           description: Filter by the inventory item's weight.
  *         - type: object
  *           properties:
  *             $and:
@@ -219,7 +223,7 @@
  *               title: $exists
  *               description: Filter by whether a value exists or not.
  *           title: weight
- *           description: The inventory item's weight.
+ *           description: Filter by the inventory item's weight.
  *   - name: length
  *     in: query
  *     required: false
@@ -227,7 +231,7 @@
  *       oneOf:
  *         - type: number
  *           title: length
- *           description: The inventory item's length.
+ *           description: Filter by the inventory item's length.
  *         - type: object
  *           properties:
  *             $and:
@@ -334,7 +338,7 @@
  *               title: $exists
  *               description: Filter by whether a value exists or not.
  *           title: length
- *           description: The inventory item's length.
+ *           description: Filter by the inventory item's length.
  *   - name: height
  *     in: query
  *     required: false
@@ -342,7 +346,7 @@
  *       oneOf:
  *         - type: number
  *           title: height
- *           description: The inventory item's height.
+ *           description: Filter by the inventory item's height.
  *         - type: object
  *           properties:
  *             $and:
@@ -449,7 +453,7 @@
  *               title: $exists
  *               description: Filter by whether a value exists or not.
  *           title: height
- *           description: The inventory item's height.
+ *           description: Filter by the inventory item's height.
  *   - name: width
  *     in: query
  *     required: false
@@ -457,7 +461,7 @@
  *       oneOf:
  *         - type: number
  *           title: width
- *           description: The inventory item's width.
+ *           description: Filter by the inventory item's width.
  *         - type: object
  *           properties:
  *             $and:
@@ -564,26 +568,26 @@
  *               title: $exists
  *               description: Filter by whether a value exists or not.
  *           title: width
- *           description: The inventory item's width.
+ *           description: Filter by the inventory item's width.
  *   - name: location_levels
  *     in: query
- *     description: The inventory item's location levels.
+ *     description: Filter by the inventory item's location levels.
  *     required: false
  *     schema:
  *       type: object
- *       description: The inventory item's location levels.
+ *       description: Filter by the inventory item's location levels.
  *       properties:
  *         location_id:
  *           oneOf:
  *             - type: string
  *               title: location_id
- *               description: The location level's location id.
+ *               description: Filter by a location ID.
  *             - type: array
- *               description: The location level's location id.
+ *               description: Filter by multiple location IDs.
  *               items:
  *                 type: string
  *                 title: location_id
- *                 description: The location id's details.
+ *                 description: A location ID to filter by.
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -616,12 +620,12 @@
  *         url: "#pagination"
  *   - name: with_deleted
  *     in: query
- *     description: The inventory item's with deleted.
+ *     description: Whether to include soft-deleted items in the results.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: with_deleted
- *       description: The inventory item's with deleted.
+ *       description: Whether to include soft-deleted items in the results.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default

@@ -23804,8 +23804,12 @@ paths:
   /admin/inventory-items/export:
     post:
       operationId: PostInventoryItemsExport
-      summary: Create Inventory Item
-      description: Create a inventory item.
+      summary: Export Inventory Items
+      description: |
+        Start an inventory items export process to retrieve a CSV of exported inventory items.
+
+        You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`.
+        Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
       x-authenticated: true
       parameters:
         - name: id
@@ -23815,21 +23819,21 @@ paths:
             oneOf:
               - type: string
                 title: id
-                description: The inventory item's ID.
+                description: The ID of the inventory item to export.
               - type: array
-                description: The inventory item's ID.
+                description: The IDs of the inventory items to export.
                 items:
                   type: string
                   title: id
-                  description: The id's ID.
+                  description: The ID of the inventory item to export.
         - name: q
           in: query
-          description: The inventory item's q.
+          description: Search query to apply on inventory item searchable fields to filter the results.
           required: false
           schema:
             type: string
             title: q
-            description: The inventory item's q.
+            description: Search query to apply on inventory item searchable fields to filter the results.
         - name: sku
           in: query
           required: false
@@ -23837,13 +23841,13 @@ paths:
             oneOf:
               - type: string
                 title: sku
-                description: The inventory item's sku.
+                description: Filter by the inventory item's sku.
               - type: array
-                description: The inventory item's sku.
+                description: Filter by the inventory items' sku.
                 items:
                   type: string
                   title: sku
-                  description: The sku's details.
+                  description: Filter by the inventory item's sku.
         - name: origin_country
           in: query
           required: false
@@ -23851,13 +23855,13 @@ paths:
             oneOf:
               - type: string
                 title: origin_country
-                description: The inventory item's origin country.
+                description: Filter by the inventory item's origin country.
               - type: array
-                description: The inventory item's origin country.
+                description: Filter by the inventory items' origin country.
                 items:
                   type: string
                   title: origin_country
-                  description: The origin country's details.
+                  description: Filter by the inventory item's origin country.
         - name: mid_code
           in: query
           required: false
@@ -23865,13 +23869,13 @@ paths:
             oneOf:
               - type: string
                 title: mid_code
-                description: The inventory item's mid code.
+                description: Filter by the inventory item's mid code.
               - type: array
-                description: The inventory item's mid code.
+                description: Filter by the inventory items' mid code.
                 items:
                   type: string
                   title: mid_code
-                  description: The mid code's details.
+                  description: Filter by the inventory item's mid code.
         - name: hs_code
           in: query
           required: false
@@ -23879,13 +23883,13 @@ paths:
             oneOf:
               - type: string
                 title: hs_code
-                description: The inventory item's hs code.
+                description: Filter by the inventory item's hs code.
               - type: array
-                description: The inventory item's hs code.
+                description: Filter by the inventory items' hs code.
                 items:
                   type: string
                   title: hs_code
-                  description: The hs code's details.
+                  description: Filter by the inventory item's hs code.
         - name: material
           in: query
           required: false
@@ -23893,21 +23897,21 @@ paths:
             oneOf:
               - type: string
                 title: material
-                description: The inventory item's material.
+                description: Filter by the inventory item's material.
               - type: array
-                description: The inventory item's material.
+                description: Filter by the inventory items' material.
                 items:
                   type: string
                   title: material
-                  description: The material's details.
+                  description: Filter by the inventory item's material.
         - name: requires_shipping
           in: query
-          description: The inventory item's requires shipping.
+          description: Filter by whether the inventory item requires shipping.
           required: false
           schema:
             type: boolean
             title: requires_shipping
-            description: The inventory item's requires shipping.
+            description: Whether the inventory item requires shipping.
         - name: weight
           in: query
           required: false
@@ -23915,7 +23919,7 @@ paths:
             oneOf:
               - type: number
                 title: weight
-                description: The inventory item's weight.
+                description: Filter by the inventory item's weight.
               - type: object
                 properties:
                   $and:
@@ -24022,7 +24026,7 @@ paths:
                     title: $exists
                     description: Filter by whether a value exists or not.
                 title: weight
-                description: The inventory item's weight.
+                description: Filter by the inventory item's weight.
         - name: length
           in: query
           required: false
@@ -24030,7 +24034,7 @@ paths:
             oneOf:
               - type: number
                 title: length
-                description: The inventory item's length.
+                description: Filter by the inventory item's length.
               - type: object
                 properties:
                   $and:
@@ -24137,7 +24141,7 @@ paths:
                     title: $exists
                     description: Filter by whether a value exists or not.
                 title: length
-                description: The inventory item's length.
+                description: Filter by the inventory item's length.
         - name: height
           in: query
           required: false
@@ -24145,7 +24149,7 @@ paths:
             oneOf:
               - type: number
                 title: height
-                description: The inventory item's height.
+                description: Filter by the inventory item's height.
               - type: object
                 properties:
                   $and:
@@ -24252,7 +24256,7 @@ paths:
                     title: $exists
                     description: Filter by whether a value exists or not.
                 title: height
-                description: The inventory item's height.
+                description: Filter by the inventory item's height.
         - name: width
           in: query
           required: false
@@ -24260,7 +24264,7 @@ paths:
             oneOf:
               - type: number
                 title: width
-                description: The inventory item's width.
+                description: Filter by the inventory item's width.
               - type: object
                 properties:
                   $and:
@@ -24367,26 +24371,26 @@ paths:
                     title: $exists
                     description: Filter by whether a value exists or not.
                 title: width
-                description: The inventory item's width.
+                description: Filter by the inventory item's width.
         - name: location_levels
           in: query
-          description: The inventory item's location levels.
+          description: Filter by the inventory item's location levels.
           required: false
           schema:
             type: object
-            description: The inventory item's location levels.
+            description: Filter by the inventory item's location levels.
             properties:
               location_id:
                 oneOf:
                   - type: string
                     title: location_id
-                    description: The location level's location id.
+                    description: Filter by a location ID.
                   - type: array
-                    description: The location level's location id.
+                    description: Filter by multiple location IDs.
                     items:
                       type: string
                       title: location_id
-                      description: The location id's details.
+                      description: A location ID to filter by.
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -24419,12 +24423,12 @@ paths:
               url: '#pagination'
         - name: with_deleted
           in: query
-          description: The inventory item's with deleted.
+          description: Whether to include soft-deleted items in the results.
           required: false
           schema:
             type: boolean
             title: with_deleted
-            description: The inventory item's with deleted.
+            description: Whether to include soft-deleted items in the results.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
@@ -71770,6 +71774,52 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/user/providers:
+    get:
+      operationId: GetUserProviders
+      x-sidebar-summary: List Providers
+      summary: List Auth Providers for Admin Users
+      description: Retrieve a list of auth providers for the user actor type. This is useful to show the authentication option for the available providers.
+      x-authenticated: false
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { providers } = await sdk.auth.listProviders("user")
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/auth/user/providers'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthProvidersListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /auth/user/{auth_provider}:
     post:
       operationId: PostActor_typeAuth_provider
@@ -72280,6 +72330,68 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/{auth_provider}/user:
+    post:
+      operationId: PostAuth_providerUser
+      summary: Create an Admin User for an Auth Provider
+      x-sidebar-summary: Create Admin User
+      description: Create an admin user for an auth provider. This is useful for providers like OIDC where the user is created in the provider and then needs to be created in Medusa. Be careful of using this endpoint with providers like Google or GitHub, as any one can sign up as an admin user. Make sure to disable these providers for admin users using the [http.authMethodsPerActor](https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers#configure-allowed-auth-providers-of-actor-types) configuration.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The ID of the auth provider to create the admin user for.
+          required: true
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const token = await sdk.auth.callback("user", "okta", queryParams)
+            await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+            await sdk.auth.refresh()
+        - lang: Shell
+          label: cURL
+          source: curl -X POST '{backend_url}/auth/okta/user'
+      tags:
+        - '[auth_provider]'
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: createUserAccountWorkflow
+      x-events:
+        - name: user.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the user
+            }
+            ```
+          description: Emitted when users are created.
+          deprecated: false
 components:
   schemas:
     AdminAddClaimItems:
@@ -78261,7 +78373,7 @@ components:
             description: Learn how to manage metadata
     AdminExportInventoryItemResponse:
       type: object
-      description: SUMMARY
+      description: The response for initiating an export inventory items workflow.
       x-schemaName: AdminExportInventoryItemResponse
       required:
         - transaction_id
@@ -78269,7 +78381,7 @@ components:
         transaction_id:
           type: string
           title: transaction_id
-          description: The ID of the export inventory items workflow's transaction.
+          description: The ID of the workflow execution's transaction. Use it to check the status of the export by sending a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`
     AdminExportOrderResponse:
       type: object
       description: The details of the order export.
@@ -80322,7 +80434,7 @@ components:
         no_notification:
           type: boolean
           title: no_notification
-          description: The order change's no notification.
+          description: Whether to send notifications to the customer regarding the order change's updates.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -84259,13 +84371,13 @@ components:
             description: A promotion code to remove from the draft order.
     AdminRequestOrderEdit:
       type: object
-      description: SUMMARY
+      description: The details of the request to edit an order.
       x-schemaName: AdminRequestOrderEdit
       properties:
         no_notification:
           type: boolean
           title: no_notification
-          description: The order edit's no notification.
+          description: Whether to send notifications to the customer regarding the order edit's updates.
     AdminRequestOrderTransfer:
       type: object
       description: The details of the request to transfer the order.
@@ -88825,6 +88937,18 @@ components:
           enum:
             - credentials
             - redirect
+    AuthProvidersListResponse:
+      type: object
+      description: The response of listing the auth providers available.
+      x-schemaName: AuthProvidersListResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: The list of auth providers.
+          items:
+            $ref: '#/components/schemas/AuthProvider'
     AuthResponse:
       type: object
       description: The authentication's details.
@@ -93334,7 +93458,7 @@ components:
         no_notification:
           type: boolean
           title: no_notification
-          description: The order change's no notification.
+          description: Whether to send notifications to the customer regarding the order change's updates.
     OrderChangeAction:
       type: object
       description: The order change action's details.
