@@ -149,6 +149,18 @@ describe("search entity registry", () => {
     ).toBe(false)
   })
 
+  test("a shortcut-only entry navigates but is never searched", async () => {
+    const registry = await loadRegistry()
+
+    const shortcuts = registry.getSearchEntityShortcuts()
+
+    expect(
+      shortcuts.find(({ entity }) => entity === "reservation")?.shortcut.to
+    ).toEqual("/reservations")
+    expect(registry.hasSearchEntity("reservation")).toBe(false)
+    expect(registry.getSearchEntityNames()).not.toContain("reservation")
+  })
+
   test("clearing the registry removes the Jump to entries with it", async () => {
     const registry = await loadRegistry()
 

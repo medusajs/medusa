@@ -158,6 +158,15 @@ export const DEFAULT_SEARCH_ENTITIES: Record<string, SearchEntityDefinition> = {
       value: `priceList:${priceList.id}`,
     }),
   },
+  // Navigable, but a reservation is a quantity against an inventory item and a
+  // location, with nothing readable to match on — so no `transform`.
+  reservation: {
+    shortcut: {
+      keys: { Mac: ["G", "R"] },
+      label: (t) => t("app.keyboardShortcuts.navigation.goToReservations"),
+      to: "/reservations",
+    },
+  },
   user: {
     shortcut: {
       keys: { Mac: ["G", ",", "U"] },
