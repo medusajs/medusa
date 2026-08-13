@@ -38,7 +38,7 @@ export class Search {
    * })
    *
    * @tags search
-   * @since 2.18.1
+   * @since 2.19.0
    */
   async list(query?: HttpTypes.AdminSearchParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminSearchResponse>(

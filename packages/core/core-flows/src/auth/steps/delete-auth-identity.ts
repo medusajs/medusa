@@ -7,7 +7,7 @@ export const deleteAuthIdentityStepId = "delete-auth-identity"
 /**
  * The input for the {@link deleteAuthIdentityStep}.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type DeleteAuthIdentityStepInput = {
   /**
@@ -19,7 +19,7 @@ export type DeleteAuthIdentityStepInput = {
 /**
  * This step deletes one or more auth identities.
  *
- * @since 2.18.1
+ * @since 2.19.0
  *
  * @example
  * To delete a single auth identity:
