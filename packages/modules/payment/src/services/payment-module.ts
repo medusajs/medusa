@@ -743,7 +743,6 @@ export default class PaymentModuleService
           "currency_code",
           "captured_at",
           "canceled_at",
-          "pending_capture",
         ],
         relations: ["captures.raw_amount"],
       },
