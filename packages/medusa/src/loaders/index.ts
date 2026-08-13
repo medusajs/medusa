@@ -179,7 +179,7 @@ export default async ({
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   const plugins = await getResolvedPlugins(rootDirectory, configModule, true)
-  mergePluginModules(configModule, plugins)
+  mergePluginModules(configModule, plugins, rootDirectory)
 
   Object.keys(configModule.modules ?? {}).forEach((key) => {
     validateModuleName(key)
