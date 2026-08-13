@@ -140,6 +140,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa/page.json"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthProviders",
+    "newSlug": "/references/auth/listAuthProviders",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthProviders/page.json"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthVerifications",
     "newSlug": "/references/auth/listAuthVerifications",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthVerifications/page.json"
@@ -665,6 +670,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.deleteAuthIdentityStep",
+    "newSlug": "/references/medusa-workflows/steps/deleteAuthIdentityStep",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.deleteAuthIdentityStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep",
     "newSlug": "/references/medusa-workflows/steps/requestVerificationStep",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep/page.json"
@@ -753,6 +763,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemActionsStep",
     "newSlug": "/references/medusa-workflows/steps/getLineItemActionsStep",
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemActionsStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemPricingQuantitiesStep",
+    "newSlug": "/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemPricingQuantitiesStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getPromotionCodesToApply",
@@ -1715,6 +1730,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryLevelsStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.exportInventoryItemsStep",
+    "newSlug": "/references/medusa-workflows/steps/exportInventoryItemsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.exportInventoryItemsStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.updateInventoryItemsStep",
     "newSlug": "/references/medusa-workflows/steps/updateInventoryItemsStep",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.updateInventoryItemsStep/page.json"
@@ -1768,6 +1788,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryLevelsWorkflow",
     "newSlug": "/references/medusa-workflows/deleteInventoryLevelsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryLevelsWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.exportInventoryItemsWorkflow",
+    "newSlug": "/references/medusa-workflows/exportInventoryItemsWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.exportInventoryItemsWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.updateInventoryItemsWorkflow",
@@ -5550,6 +5575,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel/page.json"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.search",
+    "newSlug": "/references/js-sdk/admin/search",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.search/page.json"
+  },
+  {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption",
     "newSlug": "/references/js-sdk/admin/shippingOption",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption/page.json"
@@ -5623,6 +5653,16 @@ export const slugChanges = [
     "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback",
     "newSlug": "/references/js-sdk/auth/callback",
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback/page.json"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.createUser",
+    "newSlug": "/references/js-sdk/auth/createUser",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.createUser/page.json"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.listProviders",
+    "newSlug": "/references/js-sdk/auth/listProviders",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.listProviders/page.json"
   },
   {
     "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login",

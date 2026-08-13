@@ -35,12 +35,13 @@ import {
 import { matchSorter } from "match-sorter"
 
 import { usePermissions } from "../../providers/permissions-provider"
+import { resolveSearchEntityGroupLabel } from "../../lib/search/search-entities"
 import { useSearch } from "../../providers/search-provider"
 import { Skeleton } from "../common/skeleton"
 import { Thumbnail } from "../common/thumbnail"
 import {
   DEFAULT_SEARCH_LIMIT,
-  SEARCH_AREAS,
+  getSearchAreas,
   SEARCH_LIMIT_INCREMENT,
 } from "./constants"
 import { SearchArea } from "./types"
@@ -395,7 +396,7 @@ const CommandInput = forwardRef<
                 size="2xsmall"
                 className="hover:bg-ui-bg-base-pressed transition-fg cursor-pointer"
               >
-                {t(`app.search.groups.${area}`)}
+                {resolveSearchEntityGroupLabel(area, t)}
                 <TriangleDownMini className="text-ui-fg-muted" />
               </Badge>
             </DropdownMenu.Trigger>
@@ -411,13 +412,13 @@ const CommandInput = forwardRef<
                 value={area}
                 onValueChange={(v) => setArea(v as SearchArea)}
               >
-                {availableAreas.map((area) => (
-                  <Fragment key={area}>
-                    {area === "command" && <DropdownMenu.Separator />}
-                    <DropdownMenu.RadioItem value={area}>
-                      {t(`app.search.groups.${area}`)}
+                {getSearchAreas().map((searchArea) => (
+                  <Fragment key={searchArea}>
+                    {searchArea === "command" && <DropdownMenu.Separator />}
+                    <DropdownMenu.RadioItem value={searchArea}>
+                      {resolveSearchEntityGroupLabel(searchArea, t)}
                     </DropdownMenu.RadioItem>
-                    {area === "all" && <DropdownMenu.Separator />}
+                    {searchArea === "all" && <DropdownMenu.Separator />}
                   </Fragment>
                 ))}
               </DropdownMenu.RadioGroup>

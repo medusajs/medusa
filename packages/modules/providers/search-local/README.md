@@ -25,7 +25,7 @@ for production traffic.
 | Facets    | value and range                                                                        |
 | Sorting   | one field, or relevance                                                                |
 | Deletes   | any filter; a filter on the primary key alone takes Orama's remove-by-id path          |
-| Other     | `distinct`, aliases, exact counts                                                      |
+| Other     | `distinct`, exact counts                                                               |
 
 ## What it does not
 

@@ -21,9 +21,9 @@ export class Search {
   }
 
   /**
-   * This method searches across entities. When the Search Module is enabled,
-   * results come from its indexes; otherwise each entity is queried with the
-   * same free-text `q` filter the list endpoints support.
+   * This method searches across entities. Per entity, results come from the
+   * Search Module when that entity is indexed; otherwise each entity is queried
+   * with the same free-text `q` filter the list endpoints support.
    *
    * Results are grouped per entity and paginated independently.
    *
@@ -38,7 +38,7 @@ export class Search {
    * })
    *
    * @tags search
-   * @since 2.18.1
+   * @since 2.19.0
    */
   async list(query?: HttpTypes.AdminSearchParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminSearchResponse>(

@@ -4,8 +4,50 @@ import {
   FetchError,
 } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
-import { UseMutationOptions, useMutation } from "@tanstack/react-query"
+import {
+  UseMutationOptions,
+  UseQueryOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
+
+/**
+ * Public information about an auth provider registered for the `user` actor,
+ * as returned by `GET /auth/user/providers`.
+ */
+export type AuthProvider = HttpTypes.AuthProvider
+
+export const authProvidersQueryKey = ["auth", "providers"] as const
+
+/**
+ * Fetches the auth providers available for the `user` actor. This is a public,
+ * pre-auth endpoint, so no authenticated session is required.
+ */
+export const useAuthProviders = (
+  options?: Omit<
+    UseQueryOptions<HttpTypes.AuthProvidersListResponse, FetchError>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryKey: authProvidersQueryKey,
+    queryFn: async () => sdk.auth.listProviders("user"),
+    staleTime: 5 * 60 * 1000,
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const provisionAuthUser = async (
+  provider: string,
+  token: string
+): Promise<void> => {
+  await sdk.auth.createUser(provider, {
+    Authorization: `Bearer ${token}`,
+  })
+}
 
 export const useSignInWithEmailPass = (
   options?: UseMutationOptions<
