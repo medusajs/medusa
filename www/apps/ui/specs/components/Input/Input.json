@@ -9,20 +9,6 @@
         "computed": false
       },
       "description": "The input's size.",
-      "tsType": {
-        "name": "union",
-        "raw": "\"small\" \\| \"base\"",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"small\""
-          },
-          {
-            "name": "literal",
-            "value": "\"base\""
-          }
-        ]
-      },
       "required": false
     }
   },

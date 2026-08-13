@@ -9,20 +9,6 @@
         "computed": false
       },
       "description": "Whether to show the select items below (`popper`) or over (`item-aligned`) the select input.",
-      "tsType": {
-        "name": "union",
-        "raw": "\"item-aligned\" \\| \"popper\"",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"item-aligned\""
-          },
-          {
-            "name": "literal",
-            "value": "\"popper\""
-          }
-        ]
-      },
       "required": false
     },
     "sideOffset": {
@@ -31,9 +17,6 @@
         "computed": false
       },
       "description": "The distance of the content pop-up in pixels from the select input. Only available when position is set to popper.",
-      "tsType": {
-        "name": "number"
-      },
       "required": false
     },
     "collisionPadding": {
@@ -42,20 +25,6 @@
         "computed": false
       },
       "description": "The distance in pixels from the boundary edges where collision detection should occur. Only available when position is set to popper.",
-      "tsType": {
-        "name": "union",
-        "raw": "number \\| Partial&#60;Record&#60;\"top\" \\| \"right\" \\| \"bottom\" \\| \"left\", number&#62;&#62;",
-        "elements": [
-          {
-            "name": "number"
-          },
-          {
-            "name": "Partial",
-            "elements": [],
-            "raw": "Partial&#60;Record&#60;\"top\" \\| \"right\" \\| \"bottom\" \\| \"left\", number&#62;&#62;"
-          }
-        ]
-      },
       "required": false
     }
   }

@@ -1,6 +1,5 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DataTablePaginationSkeleton",
-  "props": {}
+  "displayName": "DataTablePaginationSkeleton"
 }

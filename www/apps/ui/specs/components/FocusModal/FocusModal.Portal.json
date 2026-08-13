@@ -1,6 +1,5 @@
 {
   "description": "The `FocusModal.Content` component uses this component to wrap the modal content.\nIt accepts props from the [Radix UI Dialog Portal](https://www.radix-ui.com/primitives/docs/components/dialog#portal) component.",
   "methods": [],
-  "displayName": "FocusModal.Portal",
-  "props": {}
+  "displayName": "FocusModal.Portal"
 }

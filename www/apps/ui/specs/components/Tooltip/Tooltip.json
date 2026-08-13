@@ -48,11 +48,7 @@
           }
         ]
       },
-      "description": "The side to position the tooltip.\n\n",
-      "defaultValue": {
-        "value": "top",
-        "computed": false
-      }
+      "description": "The side to position the tooltip.\n\n@defaultValue top"
     },
     "maxWidth": {
       "required": false,
@@ -70,54 +66,23 @@
         "value": "8",
         "computed": false
       },
-      "description": "The distance in pixels between the tooltip and its trigger.",
-      "tsType": {
-        "name": "number"
-      },
+      "description": "The distance in pixels between the tooltip and its trigger.\n\n@keep",
       "required": false
     },
     "children": {
-      "description": "The element to trigger the tooltip."
+      "description": "The element to trigger the tooltip.\n\n@keep"
     },
     "open": {
-      "description": "Whether the tooltip is currently open.",
-      "tsType": {
-        "name": "boolean"
-      }
+      "description": "Whether the tooltip is currently open.\n\n@keep"
     },
     "defaultOpen": {
-      "description": "Whether the tooltip is open by default.",
-      "tsType": {
-        "name": "boolean"
-      }
+      "description": "Whether the tooltip is open by default.\n\n@keep"
     },
     "onOpenChange": {
-      "description": "A function that is called when the tooltip's open state changes.",
-      "tsType": {
-        "name": "signature",
-        "type": "function",
-        "raw": "(open: boolean) => void",
-        "signature": {
-          "arguments": [
-            {
-              "name": "open",
-              "type": {
-                "name": "boolean"
-              },
-              "rest": false
-            }
-          ],
-          "return": {
-            "name": "void"
-          }
-        }
-      }
+      "description": "A function that is called when the tooltip's open state changes.\n\n@keep"
     },
     "delayDuration": {
-      "description": "The time in milliseconds to delay the tooltip's appearance.",
-      "tsType": {
-        "name": "number"
-      }
+      "description": "The time in milliseconds to delay the tooltip's appearance.\n\n@keep"
     }
   },
   "composes": [

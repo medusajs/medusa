@@ -1,6 +1,5 @@
 {
   "description": "The `Drawer.Content` component uses this component to wrap the drawer content.\nIt accepts props from the [Radix UI Dialog Portal](https://www.radix-ui.com/primitives/docs/components/dialog#portal) component.",
   "methods": [],
-  "displayName": "Drawer.Portal",
-  "props": {}
+  "displayName": "Drawer.Portal"
 }

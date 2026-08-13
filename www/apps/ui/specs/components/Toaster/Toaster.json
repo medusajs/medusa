@@ -9,38 +9,6 @@
         "computed": false
       },
       "description": "The position of the created toasts.",
-      "tsType": {
-        "name": "union",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"top-left\""
-          },
-          {
-            "name": "literal",
-            "value": "\"top-center\""
-          },
-          {
-            "name": "literal",
-            "value": "\"top-right\""
-          },
-          {
-            "name": "literal",
-            "value": "\"bottom-left\""
-          },
-          {
-            "name": "literal",
-            "value": "\"bottom-center\""
-          },
-          {
-            "name": "literal",
-            "value": "\"bottom-right\""
-          },
-          {
-            "name": "undefined"
-          }
-        ]
-      },
       "required": false
     },
     "gap": {
@@ -49,9 +17,6 @@
         "computed": false
       },
       "description": "The gap between the toast components.",
-      "tsType": {
-        "name": "number"
-      },
       "required": false
     },
     "offset": {
@@ -60,31 +25,10 @@
         "computed": false
       },
       "description": "The space from the edges of the screen.",
-      "tsType": {
-        "name": "union",
-        "elements": [
-          {
-            "name": "string"
-          },
-          {
-            "name": "number"
-          },
-          {
-            "name": "undefined"
-          }
-        ]
-      },
       "required": false
     },
     "duration": {
-      "description": "The time in milliseconds that a toast is shown before it's\nautomatically dismissed.\n\n",
-      "tsType": {
-        "name": "number"
-      },
-      "defaultValue": {
-        "value": "4000",
-        "computed": false
-      }
+      "description": "The time in milliseconds that a toast is shown before it's\nautomatically dismissed.\n\n@defaultValue 4000"
     }
   },
   "composes": [

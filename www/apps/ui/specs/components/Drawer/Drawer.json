@@ -1,6 +1,5 @@
 {
   "description": "This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.",
   "methods": [],
-  "displayName": "Drawer",
-  "props": {}
+  "displayName": "Drawer"
 }

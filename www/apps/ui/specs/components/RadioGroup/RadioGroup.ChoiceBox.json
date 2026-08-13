@@ -18,10 +18,7 @@
       "description": "The description for the radio button."
     },
     "value": {
-      "description": "The value of the radio button.",
-      "tsType": {
-        "name": "string"
-      }
+      "description": "The value of the radio button."
     }
   }
 }
