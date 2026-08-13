@@ -119,7 +119,10 @@ export function detectPackageManager(
 ): PackageManager {
   let fallback: PackageManager | undefined
 
-  for (const dir of [installRoot, ...ancestors(directory, installRoot)]) {
+  for (const dir of new Set([
+    path.resolve(installRoot),
+    ...ancestors(directory, installRoot),
+  ])) {
     const fromLockFile = lockFilePackageManager(dir)
     if (fromLockFile) {
       return fromLockFile
