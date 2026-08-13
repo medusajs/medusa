@@ -34,7 +34,9 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
   /**
    * The definitions this module manages. It does not discover them itself — the
    * application loads them off the file system and passes them in, so there is one
-   * input rather than two that can disagree.
+   * input rather than two that can disagree. Already normalized: DSL field
+   * schemas are compiled to plain definitions by `defineSearchIndex`, so the
+   * module never sees them.
    */
   indexes?: SearchTypes.SearchIndexDefinition[]
 

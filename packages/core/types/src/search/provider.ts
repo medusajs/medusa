@@ -19,6 +19,9 @@ export interface ProviderSearchQuery
   q?: string
 }
 
+/**
+ * The input for deleting documents from a search index.
+ */
 export interface SearchDeleteDocumentsInput {
   index: string
   filters: SearchFilters
@@ -35,6 +38,20 @@ export interface ISearchProvider {
    * definition to a provider.
    */
   readonly identifier: string
+
+  /**
+   * Whether the module has to migrate this provider's indexes when the
+   * application starts, rather than leaving it to `db:migrate`.
+   *
+   * Set it when indexes do not outlive the process that created them, as an
+   * in-memory provider's do not: `db:migrate` runs in a process of its own, so
+   * everything it built is gone by the time the application boots. The module
+   * then migrates before it seeds, and the two happen in the process that
+   * serves the reads.
+   *
+   * Leave it unset for an engine that holds its indexes elsewhere.
+   */
+  readonly migrate_on_startup?: boolean
 
   /**
    * Creates or updates the index at `index.physical_name` to match the definition.

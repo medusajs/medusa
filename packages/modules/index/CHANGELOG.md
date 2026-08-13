@@ -1,5 +1,14 @@
 # @medusajs/index
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16186](https://github.com/medusajs/medusa/pull/16186) [`65040fc503f75428f6f582969e1e7abe27c00987`](https://github.com/medusajs/medusa/commit/65040fc503f75428f6f582969e1e7abe27c00987) Thanks [@DS123-ally](https://github.com/DS123-ally)! - fix(index): preserve Date filters when flattening query filters
+
+- Updated dependencies [[`372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30`](https://github.com/medusajs/medusa/commit/372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30), [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982)]:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

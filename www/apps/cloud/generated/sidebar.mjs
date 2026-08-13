@@ -57,6 +57,13 @@ export const generatedSidebars = [
             "title": "Navigation Styles",
             "path": "/navigation",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
           }
         ]
       },
@@ -519,6 +526,20 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Manage Events",
             "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/webhooks/changelog",
             "children": []
           }
         ]

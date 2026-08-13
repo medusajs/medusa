@@ -1,5 +1,19 @@
 # @medusajs/js-sdk
 
+## 2.19.0
+
+### Minor Changes
+
+- [#16238](https://github.com/medusajs/medusa/pull/16238) [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,dashboard,js-sdk, medusa,types,utils): support notification preferences for order edits
+
+- [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](undefined) - fix(js-sdk): remove dead product-option methods from admin.product
+
+### Patch Changes
+
+- [#16223](https://github.com/medusajs/medusa/pull/16223) [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,medusa,dashboard,js-sdk,types): add inventory item export with per-location levels
+
+- [#16023](https://github.com/medusajs/medusa/pull/16023) [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(auth-oidc,dashboard,auth,js-sdk,types,medusa): generic OIDC auth provider
+
 ## 2.18.0
 
 ### Patch Changes

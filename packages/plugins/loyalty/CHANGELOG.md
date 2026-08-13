@@ -1,5 +1,23 @@
 # @medusajs/loyalty-plugin
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(plugins): widen the react-router-dom peer range to v6 and v7
+
+  The optional `react-router-dom` peer is now `^6.30.4 || ^7.0.0`, so these plugins install cleanly whether the host project is on react-router 6 or 7.
+
+- Updated dependencies [[`0e1ccf49654caefa8305fe91a4c9abd573ca1143`](https://github.com/medusajs/medusa/commit/0e1ccf49654caefa8305fe91a4c9abd573ca1143), [`be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d`](https://github.com/medusajs/medusa/commit/be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d), [`7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9`](https://github.com/medusajs/medusa/commit/7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9), [`60346987f74cc606d6864df765e7d4b007def3fe`](undefined), [`c13aaa96b3968b7f021131529f630b1de7bd6970`](https://github.com/medusajs/medusa/commit/c13aaa96b3968b7f021131529f630b1de7bd6970), [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c), [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](undefined), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`5641bab6ea2d6f0eb7cb9188486656d555ce4d60`](https://github.com/medusajs/medusa/commit/5641bab6ea2d6f0eb7cb9188486656d555ce4d60), [`372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30`](https://github.com/medusajs/medusa/commit/372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30), [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7), [`438271818d8a3d10470fe838a6ac5c994019620c`](undefined), [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](undefined), [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677), [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23), [`39fac16bfa77374e3158842f64aeff4031e4f37b`](https://github.com/medusajs/medusa/commit/39fac16bfa77374e3158842f64aeff4031e4f37b), [`5c54d68fd0f4020291deb3746eb21dccf498ca45`](https://github.com/medusajs/medusa/commit/5c54d68fd0f4020291deb3746eb21dccf498ca45), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`9fa4bd9eb941a266c560b35683e8230af33a3352`](https://github.com/medusajs/medusa/commit/9fa4bd9eb941a266c560b35683e8230af33a3352)]:
+  - @medusajs/medusa@2.19.0
+  - @medusajs/test-utils@2.19.0
+  - @medusajs/dashboard@2.19.0
+  - @medusajs/icons@2.19.0
+  - @medusajs/framework@2.19.0
+  - @medusajs/cli@2.19.0
+  - @medusajs/admin-sdk@2.19.0
+  - @medusajs/ui@4.2.1
+
 ## 2.18.0
 
 ### Patch Changes

@@ -118,7 +118,17 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       filters: { id: shippingMethod.shipping_option_id },
       options: {
         cache: {
-          enable: true,
+          // The shipping option, its type, provider and the resolved location are all
+          // computed from the response. These are what computation cannot see: the
+          // service zone, fulfillment set and rules are selected without their ids,
+          // and the fulfillment set resolves its location through a link row.
+          tags: [
+            "ServiceZone:list:*",
+            "FulfillmentSet:list:*",
+            "ShippingOptionRule:list:*",
+            "LinkLocationFulfillmentSet:list:*",
+          ],
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "calculated-option" })

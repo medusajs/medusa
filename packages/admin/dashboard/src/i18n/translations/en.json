@@ -3711,8 +3711,12 @@
   },
   "auth": {
     "login": {
+      "noProviders": "Register an auth provider in your Medusa config to be able to login",
       "authenticationFailed": "Authentication failed",
-      "cloud": "Log in with Medusa Cloud"
+      "cloud": "Log in with Medusa Cloud",
+      "continueWithProvider": "Continue with {{provider}}",
+      "or": "or",
+      "provisioningFailed": "We couldn't complete your sign in. Please contact an administrator."
     }
   },
   "permissions": {

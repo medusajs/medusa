@@ -512,6 +512,10 @@ function validateIndexDefinition({
       fail(`vector field "${path}" must declare its "dimensions"`)
     }
 
+    if (field.type === "vector" && field.array) {
+      fail(`vector field "${path}" cannot be an array`)
+    }
+
     if (field.type === "object" && !field.fields) {
       fail(`object field "${path}" must declare its "fields"`)
     }

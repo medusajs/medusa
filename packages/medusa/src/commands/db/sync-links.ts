@@ -226,7 +226,7 @@ const main = async function ({
     const medusaAppLoader = new MedusaAppLoader()
 
     const plugins = await getResolvedPlugins(directory, configModule, true)
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, directory)
 
     const linksSourcePaths = plugins.map((plugin) =>
       join(plugin.resolve, "links")
