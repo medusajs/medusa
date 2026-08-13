@@ -9,6 +9,9 @@ export interface AdminSearchParams {
    * The entities / indexes to search, comma-separated.
    * When the Search Module is enabled, defaults to every registered index.
    * Otherwise defaults to the admin fallback entity set.
+   *
+   * Per entity, an index is used when one exists; otherwise the request falls
+   * back to `query.graph` for that entity only.
    */
   entity?: string | string[]
 
