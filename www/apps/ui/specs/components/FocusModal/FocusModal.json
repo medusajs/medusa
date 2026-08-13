@@ -1,5 +1,44 @@
 {
   "description": "This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.",
   "methods": [],
-  "displayName": "FocusModal"
+  "displayName": "FocusModal",
+  "props": {
+    "defaultOpen": {
+      "description": "Whether the modal is opened by default.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "open": {
+      "description": "Whether the modal is opened.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "onOpenChange": {
+      "description": "A function to handle when the modal is opened or closed.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(open: boolean) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "open",
+              "type": {
+                "name": "boolean"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    }
+  }
 }

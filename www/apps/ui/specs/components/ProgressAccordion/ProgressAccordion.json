@@ -1,5 +1,6 @@
 {
   "description": "This component is based on the [Radix UI Accordion](https://radix-ui.com/primitives/docs/components/accordion) primitves.",
   "methods": [],
-  "displayName": "ProgressAccordion"
+  "displayName": "ProgressAccordion",
+  "props": {}
 }

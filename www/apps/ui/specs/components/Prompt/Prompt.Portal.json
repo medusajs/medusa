@@ -1,5 +1,6 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "Prompt.Portal"
+  "displayName": "Prompt.Portal",
+  "props": {}
 }

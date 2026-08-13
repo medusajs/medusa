@@ -8,7 +8,10 @@
         "value": "100",
         "computed": false
       },
-      "description": "",
+      "description": "The duration from when the pointer enters the trigger until the tooltip gets opened.",
+      "tsType": {
+        "name": "number"
+      },
       "required": false
     },
     "skipDelayDuration": {
@@ -16,8 +19,18 @@
         "value": "300",
         "computed": false
       },
-      "description": "",
+      "description": "How much time a user has to enter another trigger without incurring a delay again.",
+      "tsType": {
+        "name": "number"
+      },
       "required": false
+    },
+    "disableHoverableContent": {
+      "description": "When `true`, trying to hover the content will result in the tooltip closing as the pointer leaves the trigger.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
     }
   }
 }

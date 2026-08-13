@@ -46,6 +46,32 @@
         "computed": false
       },
       "description": "The text's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\" \\| \"xlarge\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xlarge\""
+          }
+        ]
+      },
       "required": false
     },
     "weight": {
@@ -54,6 +80,20 @@
         "computed": false
       },
       "description": "The text's font weight.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"regular\" \\| \"plus\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"regular\""
+          },
+          {
+            "name": "literal",
+            "value": "\"plus\""
+          }
+        ]
+      },
       "required": false
     },
     "family": {
@@ -62,6 +102,20 @@
         "computed": false
       },
       "description": "The text's font family.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"sans\" \\| \"mono\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"sans\""
+          },
+          {
+            "name": "literal",
+            "value": "\"mono\""
+          }
+        ]
+      },
       "required": false
     },
     "leading": {
@@ -70,6 +124,20 @@
         "computed": false
       },
       "description": "The text's line height.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"normal\" \\| \"compact\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"normal\""
+          },
+          {
+            "name": "literal",
+            "value": "\"compact\""
+          }
+        ]
+      },
       "required": false
     }
   },

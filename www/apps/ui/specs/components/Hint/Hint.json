@@ -9,6 +9,20 @@
         "computed": false
       },
       "description": "The hint's style.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"error\" \\| \"info\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"error\""
+          },
+          {
+            "name": "literal",
+            "value": "\"info\""
+          }
+        ]
+      },
       "required": false
     }
   },

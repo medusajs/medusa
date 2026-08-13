@@ -1,0 +1,6 @@
+{
+  "description": "This component adds an accessible title to the drawer.\nIt accepts props from the [Radix UI Dialog Title](https://www.radix-ui.com/primitives/docs/components/dialog#title) component.",
+  "methods": [],
+  "displayName": "Drawer.Title",
+  "props": {}
+}

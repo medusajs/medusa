@@ -23,13 +23,34 @@
         "computed": false
       },
       "description": "The input's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"small\" \\| \"base\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          }
+        ]
+      },
       "required": false
     },
     "disabled": {
-      "description": "Whether the input is disabled.\n\n@keep\n@defaultValue false"
+      "description": "Whether the input is disabled.\n\n\n",
+      "tsType": {
+        "name": "boolean"
+      },
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
     },
     "onInvalid": {
-      "description": "A function that is triggered when the input is invalid.\n\n@keep"
+      "description": "A function that is triggered when the input is invalid."
     }
   },
   "composes": [

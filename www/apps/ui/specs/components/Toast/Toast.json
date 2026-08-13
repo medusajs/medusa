@@ -30,7 +30,64 @@
     "action": {
       "required": false,
       "tsType": {
-        "name": "ToastAction"
+        "name": "signature",
+        "type": "object",
+        "raw": "&#123; altText: string ; label: string ; onClick: () => void \\| Promise&#60;void&#62; ; variant?: ToastActionVariant  &#125;",
+        "signature": {
+          "properties": [
+            {
+              "key": "altText",
+              "value": {
+                "name": "string"
+              },
+              "description": "The button's alt text."
+            },
+            {
+              "key": "label",
+              "value": {
+                "name": "string"
+              },
+              "description": "The button's text."
+            },
+            {
+              "key": "onClick",
+              "value": {
+                "name": "signature",
+                "type": "function",
+                "raw": "() => void \\| Promise&#60;void&#62;",
+                "signature": {
+                  "arguments": [],
+                  "return": {
+                    "name": "void \\| Promise&#60;void&#62;"
+                  }
+                }
+              },
+              "description": "The function to execute when the button is clicked."
+            },
+            {
+              "key": "variant",
+              "value": {
+                "name": "ToastActionVariant",
+                "elements": [
+                  {
+                    "name": "union",
+                    "raw": "\"default\" \\| \"destructive\"",
+                    "elements": [
+                      {
+                        "name": "\"default\""
+                      },
+                      {
+                        "name": "\"destructive\""
+                      }
+                    ]
+                  }
+                ],
+                "raw": "ToastActionVariant"
+              },
+              "description": "The button's variant."
+            }
+          ]
+        }
       },
       "description": "The toast's action buttons."
     }

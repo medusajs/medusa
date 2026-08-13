@@ -121,7 +121,10 @@
         "value": "\"One-time password\"",
         "computed": false
       },
-      "description": "",
+      "description": "Defines a string value that labels the current element.",
+      "tsType": {
+        "name": "string"
+      },
       "required": false
     }
   },

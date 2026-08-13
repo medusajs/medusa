@@ -1,5 +1,6 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "Popover.Trigger"
+  "displayName": "Popover.Trigger",
+  "props": {}
 }

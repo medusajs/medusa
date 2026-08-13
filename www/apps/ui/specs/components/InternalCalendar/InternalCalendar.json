@@ -1,5 +1,6 @@
 {
   "description": "InternalCalendar is the internal implementation of the Calendar component.\nIt's not for public use, but only used for other components like DatePicker.",
   "methods": [],
-  "displayName": "InternalCalendar"
+  "displayName": "InternalCalendar",
+  "props": {}
 }

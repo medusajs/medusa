@@ -23,6 +23,20 @@
         "computed": false
       },
       "description": "The style of the avatar.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"squared\" \\| \"rounded\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"squared\""
+          },
+          {
+            "name": "literal",
+            "value": "\"rounded\""
+          }
+        ]
+      },
       "required": false
     },
     "size": {
@@ -31,6 +45,36 @@
         "computed": false
       },
       "description": "The size of the avatar's border radius.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"2xsmall\" \\| \"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\" \\| \"xlarge\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"2xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xlarge\""
+          }
+        ]
+      },
       "required": false
     }
   },

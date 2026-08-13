@@ -1,0 +1,6 @@
+{
+  "description": "This component is used to create the close button for the modal.\nIt accepts props from the [Radix UI Dialog Close](https://www.radix-ui.com/primitives/docs/components/dialog#close) component.",
+  "methods": [],
+  "displayName": "FocusModal.Close",
+  "props": {}
+}

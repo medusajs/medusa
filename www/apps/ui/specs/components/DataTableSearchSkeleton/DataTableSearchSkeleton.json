@@ -1,5 +1,6 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DataTableSearchSkeleton"
+  "displayName": "DataTableSearchSkeleton",
+  "props": {}
 }

@@ -20,6 +20,32 @@
         "computed": false
       },
       "description": "The badge's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"2xsmall\" \\| \"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"2xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          }
+        ]
+      },
       "required": false
     },
     "rounded": {
@@ -28,6 +54,20 @@
         "computed": false
       },
       "description": "The style of the badge's border radius.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"full\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"full\""
+          }
+        ]
+      },
       "required": false
     },
     "color": {
@@ -36,6 +76,36 @@
         "computed": false
       },
       "description": "The badge's color.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"green\" \\| \"red\" \\| \"blue\" \\| \"orange\" \\| \"grey\" \\| \"purple\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"green\""
+          },
+          {
+            "name": "literal",
+            "value": "\"red\""
+          },
+          {
+            "name": "literal",
+            "value": "\"blue\""
+          },
+          {
+            "name": "literal",
+            "value": "\"orange\""
+          },
+          {
+            "name": "literal",
+            "value": "\"grey\""
+          },
+          {
+            "name": "literal",
+            "value": "\"purple\""
+          }
+        ]
+      },
       "required": false
     }
   },

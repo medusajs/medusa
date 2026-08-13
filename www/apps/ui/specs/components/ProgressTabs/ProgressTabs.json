@@ -1,5 +1,89 @@
 {
   "description": "This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.",
   "methods": [],
-  "displayName": "ProgressTabs"
+  "displayName": "ProgressTabs",
+  "props": {
+    "activationMode": {
+      "description": "Whether a tab is activated automatically or manually.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"manual\" \\| \"automatic\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"manual\""
+          },
+          {
+            "name": "literal",
+            "value": "\"automatic\""
+          }
+        ]
+      }
+    },
+    "defaultValue": {
+      "description": "The value of the tab to select by default, if uncontrolled",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
+    "dir": {
+      "description": "The direction of navigation between toolbar items.",
+      "required": false,
+      "tsType": {
+        "name": "Direction",
+        "elements": [],
+        "raw": "Direction"
+      }
+    },
+    "onValueChange": {
+      "description": "A function called when a new tab is selected",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(value: string) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "value",
+              "type": {
+                "name": "string"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "orientation": {
+      "description": "The orientation the tabs are layed out.\nMainly so arrow navigation is done accordingly (left & right vs. up & down)",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"horizontal\" \\| \"vertical\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"horizontal\""
+          },
+          {
+            "name": "literal",
+            "value": "\"vertical\""
+          }
+        ]
+      }
+    },
+    "value": {
+      "description": "The value for the selected tab, if controlled",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    }
+  }
 }

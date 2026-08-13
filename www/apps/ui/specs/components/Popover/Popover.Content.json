@@ -9,6 +9,9 @@
         "computed": false
       },
       "description": "The distance in pixels from the anchor.",
+      "tsType": {
+        "name": "number"
+      },
       "required": false
     },
     "side": {
@@ -17,6 +20,28 @@
         "computed": false
       },
       "description": "The preferred side of the anchor to render against when open.\nWill be reversed when collisions occur and `avoidCollisions` is enabled.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"top\" \\| \"right\" \\| \"bottom\" \\| \"left\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"top\""
+          },
+          {
+            "name": "literal",
+            "value": "\"right\""
+          },
+          {
+            "name": "literal",
+            "value": "\"bottom\""
+          },
+          {
+            "name": "literal",
+            "value": "\"left\""
+          }
+        ]
+      },
       "required": false
     },
     "align": {
@@ -25,6 +50,24 @@
         "computed": false
       },
       "description": "The preferred alignment against the anchor. May change when collisions occur.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"center\" \\| \"end\" \\| \"start\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"center\""
+          },
+          {
+            "name": "literal",
+            "value": "\"end\""
+          },
+          {
+            "name": "literal",
+            "value": "\"start\""
+          }
+        ]
+      },
       "required": false
     }
   }

@@ -9,6 +9,28 @@
         "computed": false
       },
       "description": "The label's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          }
+        ]
+      },
       "required": false
     },
     "weight": {
@@ -17,6 +39,20 @@
         "computed": false
       },
       "description": "The label's font weight.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"regular\" \\| \"plus\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"regular\""
+          },
+          {
+            "name": "literal",
+            "value": "\"plus\""
+          }
+        ]
+      },
       "required": false
     }
   },

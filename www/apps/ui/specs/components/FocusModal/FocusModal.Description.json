@@ -1,0 +1,6 @@
+{
+  "description": "This component adds accessible description to the modal.\nIt accepts props from the [Radix UI Dialog Description](https://www.radix-ui.com/primitives/docs/components/dialog#description) component.",
+  "methods": [],
+  "displayName": "FocusModal.Description",
+  "props": {}
+}

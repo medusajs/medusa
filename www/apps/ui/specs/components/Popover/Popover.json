@@ -1,5 +1,6 @@
 {
   "description": "This component is based on the [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover) primitves.",
   "methods": [],
-  "displayName": "Popover"
+  "displayName": "Popover",
+  "props": {}
 }

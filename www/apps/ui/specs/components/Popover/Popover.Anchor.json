@@ -1,5 +1,6 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "Popover.Anchor"
+  "displayName": "Popover.Anchor",
+  "props": {}
 }

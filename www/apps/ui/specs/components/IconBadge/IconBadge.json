@@ -20,6 +20,36 @@
         "computed": false
       },
       "description": "The badge's color.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"green\" \\| \"red\" \\| \"blue\" \\| \"orange\" \\| \"grey\" \\| \"purple\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"green\""
+          },
+          {
+            "name": "literal",
+            "value": "\"red\""
+          },
+          {
+            "name": "literal",
+            "value": "\"blue\""
+          },
+          {
+            "name": "literal",
+            "value": "\"orange\""
+          },
+          {
+            "name": "literal",
+            "value": "\"grey\""
+          },
+          {
+            "name": "literal",
+            "value": "\"purple\""
+          }
+        ]
+      },
       "required": false
     },
     "size": {
@@ -28,6 +58,20 @@
         "computed": false
       },
       "description": "The badge's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"large\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          }
+        ]
+      },
       "required": false
     }
   },

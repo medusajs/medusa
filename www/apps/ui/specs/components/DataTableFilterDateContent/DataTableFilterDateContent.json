@@ -71,6 +71,20 @@
         "computed": false
       },
       "description": "",
+      "tsType": {
+        "name": "union",
+        "raw": "\"date\" \\| \"date-time\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"date\""
+          },
+          {
+            "name": "literal",
+            "value": "\"date-time\""
+          }
+        ]
+      },
       "required": false
     },
     "rangeOptionLabel": {
@@ -79,6 +93,9 @@
         "computed": false
       },
       "description": "",
+      "tsType": {
+        "name": "string"
+      },
       "required": false
     },
     "rangeOptionStartLabel": {
@@ -87,6 +104,9 @@
         "computed": false
       },
       "description": "",
+      "tsType": {
+        "name": "string"
+      },
       "required": false
     },
     "rangeOptionEndLabel": {
@@ -95,6 +115,9 @@
         "computed": false
       },
       "description": "",
+      "tsType": {
+        "name": "string"
+      },
       "required": false
     },
     "disableRangeOption": {
@@ -103,6 +126,9 @@
         "computed": false
       },
       "description": "",
+      "tsType": {
+        "name": "boolean"
+      },
       "required": false
     }
   }

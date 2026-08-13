@@ -1,5 +1,6 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DataTableSortingMenuSkeleton"
+  "displayName": "DataTableSortingMenuSkeleton",
+  "props": {}
 }
