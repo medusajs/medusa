@@ -587,6 +587,7 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/sales-channel
     x-associatedSchema:
       $ref: ./components/schemas/AdminSalesChannel.yaml
+  - name: Search
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingOptionType.yaml
@@ -953,6 +954,8 @@ paths:
     $ref: paths/admin_index_sync.yaml
   /admin/inventory-items:
     $ref: paths/admin_inventory-items.yaml
+  /admin/inventory-items/export:
+    $ref: paths/admin_inventory-items_export.yaml
   /admin/inventory-items/location-levels/batch:
     $ref: paths/admin_inventory-items_location-levels_batch.yaml
   /admin/inventory-items/{id}:
@@ -1210,6 +1213,8 @@ paths:
     $ref: paths/admin_sales-channels_{id}.yaml
   /admin/sales-channels/{id}/products:
     $ref: paths/admin_sales-channels_{id}_products.yaml
+  /admin/search:
+    $ref: paths/admin_search.yaml
   /admin/shipping-option-types:
     $ref: paths/admin_shipping-option-types.yaml
   /admin/shipping-option-types/{id}:

@@ -1,0 +1,15 @@
+/**
+ * @schema AdminExportInventoryItemResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminExportInventoryItemResponse
+ * required:
+ *   - transaction_id
+ * properties:
+ *   transaction_id:
+ *     type: string
+ *     title: transaction_id
+ *     description: The ID of the export inventory items workflow's transaction.
+ * 
+*/
+
