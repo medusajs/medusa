@@ -743,6 +743,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "pending_captures": {
+          "name": "pending_captures",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
         "payment_collection_id": {
           "name": "payment_collection_id",
           "type": "text",

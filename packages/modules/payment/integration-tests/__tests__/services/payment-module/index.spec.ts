@@ -1019,6 +1019,64 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("reuses the same idempotency key when a capture is retried after a provider failure", async () => {
+            const capturePaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "capturePayment")
+              .mockRejectedValueOnce(new Error("simulated timeout"))
+              .mockResolvedValueOnce({ data: {} })
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual("simulated timeout")
+
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturePaymentMock).toHaveBeenCalledTimes(2)
+
+            const [firstCallArgs, secondCallArgs] = capturePaymentMock.mock.calls
+            expect(firstCallArgs[1].context.idempotency_key).toEqual(
+              secondCallArgs[1].context.idempotency_key
+            )
+
+            expect(capturedPayment.captures).toHaveLength(1)
+          })
+
+          it("rotates the idempotency key when a different capture supersedes a stale pending one", async () => {
+            const capturePaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "capturePayment")
+              .mockRejectedValueOnce(new Error("simulated timeout"))
+              .mockResolvedValueOnce({ data: {} })
+
+            const error = await service
+              .capturePayment({
+                amount: 50,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual("simulated timeout")
+
+            // A different capture amount is a new logical operation, not a
+            // retry of the failed one -- it must not reuse the stale key.
+            await service.capturePayment({
+              amount: 30,
+              payment_id: "pay-id-1",
+            })
+
+            const [firstCallArgs, secondCallArgs] = capturePaymentMock.mock.calls
+            expect(firstCallArgs[1].context.idempotency_key).not.toEqual(
+              secondCallArgs[1].context.idempotency_key
+            )
+          })
+
           it("should not call provider capturePayment for auto-captured payments", async () => {
             const collection = await service.createPaymentCollections({
               amount: 200,

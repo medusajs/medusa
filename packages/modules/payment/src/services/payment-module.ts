@@ -57,6 +57,7 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
+  generateEntityId,
 } from "@medusajs/framework/utils"
 import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
@@ -70,6 +71,28 @@ import {
 } from "@models"
 import { joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
+
+// A Capture row that either already exists (auto-capture) or hasn't been
+// persisted yet because the provider hasn't confirmed the capture
+// (id was already reserved as the idempotency key sent to the provider).
+type PendingOrCreatedCapture = {
+  id: string
+  amount: BigNumberInput
+  captured_by?: string
+}
+
+// One capture attempt that hasn't resulted in a confirmed Capture row yet.
+// `reserved: true` means its amount is currently in flight to the provider
+// and must count toward the authorized-amount guard, exactly like a
+// confirmed capture would. `reserved: false` means the attempt already
+// settled (failed) and the entry is kept only as an idempotency-key reuse
+// hint for a retry of that same capture (same amount).
+type PendingCaptureEntry = {
+  id: string
+  amount: string
+  captured_by?: string
+  reserved: boolean
+}
 
 type InjectedDependencies = {
   logger?: Logger
@@ -720,6 +743,7 @@ export default class PaymentModuleService
           "currency_code",
           "captured_at",
           "canceled_at",
+          "pending_capture",
         ],
         relations: ["captures.raw_amount"],
       },
@@ -735,6 +759,7 @@ export default class PaymentModuleService
     const { isFullyCaptured, capture } = await this.capturePayment_(
       data_,
       payment,
+      isCaptured,
       sharedContext
     )
 
@@ -746,8 +771,13 @@ export default class PaymentModuleService
         sharedContext
       )
     } catch (error) {
-      if (capture?.id) {
-        await super.deleteCaptures({ id: capture.id }, sharedContext)
+      if (!isCaptured && capture) {
+        // Free this attempt's capacity reservation now that it has settled,
+        // but keep its id/amount as a hint so a sequential retry of this
+        // same capture reuses it as its idempotency key instead of minting
+        // a new one. Other entries for other in-flight captures on this
+        // payment are left untouched.
+        await this.releasePendingCapture_(payment.id, capture.id, sharedContext)
       }
       throw error
     }
@@ -774,10 +804,11 @@ export default class PaymentModuleService
   protected async capturePayment_(
     data: CreateCaptureDTO,
     payment: InferEntityType<typeof Payment>,
+    isCaptured: boolean,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<{
     isFullyCaptured: boolean
-    capture?: InferEntityType<typeof Capture>
+    capture?: PendingOrCreatedCapture
   }> {
     if (payment.canceled_at) {
       throw new MedusaError(
@@ -826,12 +857,38 @@ export default class PaymentModuleService
 
     const lockedPayment = await this.paymentService_.retrieve(
       data.payment_id,
-      { select: ["id"], relations: ["captures.raw_amount"] },
+      { select: ["id", "pending_captures"], relations: ["captures.raw_amount"] },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    const confirmedCapturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
+      },
+      MathBN.convert(0)
+    )
+
+    // Capture attempts that are currently in flight to the provider (guard
+    // already passed, provider call not yet settled) reserve their amount
+    // just like a confirmed capture would, so a genuinely concurrent second
+    // request is still rejected by the guard below -- while multiple
+    // *different* concurrent captures on the same payment (e.g. two split
+    // captures that together still fit the authorized amount) each get
+    // their own entry instead of clobbering one another. A reservation is
+    // freed (but the id/amount is kept as a reuse hint) once its attempt
+    // settles -- see capturePayment's catch block and
+    // capturePaymentFromProvider_ -- so a *sequential* retry of the same
+    // failed attempt, which by definition only runs after the previous one
+    // has already settled, is never blocked by its own earlier reservation.
+    const lockedPending =
+      (lockedPayment.pending_captures as PendingCaptureEntry[] | null) ?? []
+    const reservedAmount = lockedPending
+      .filter((entry) => entry.reserved)
+      .reduce(
+        (sum, entry) => MathBN.add(sum, entry.amount),
+        MathBN.convert(0)
+      )
+
+    const capturedAmount = MathBN.add(confirmedCapturedAmount, reservedAmount)
 
     const authorizedAmount = new BigNumber(payment.raw_amount as BigNumberInput)
     const newCaptureAmount = new BigNumber(data.amount)
@@ -858,22 +915,71 @@ export default class PaymentModuleService
       this.roundToCurrencyPrecision(authorizedAmount, payment.currency_code)
     )
 
-    const capture = await this.captureService_.create(
+    if (isCaptured) {
+      // Auto-capture: the provider is never called for this attempt, so
+      // there is no idempotency concern -- create the bookkeeping row now,
+      // same as before.
+      const capture = await this.captureService_.create(
+        {
+          payment: data.payment_id,
+          amount: data.amount,
+          captured_by: data.captured_by,
+        },
+        sharedContext
+      )
+      return { isFullyCaptured, capture }
+    }
+
+    // The provider will be called for this attempt. Resolve which
+    // idempotency key to send it: reuse a settled (not currently reserved)
+    // pending entry left over from an earlier, failed attempt at the *same*
+    // capture (same amount), or mint a fresh one otherwise. A reserved
+    // entry is never reused even on an amount match -- it belongs to a
+    // still in-flight sibling capture, so reusing it would send the same
+    // idempotency key for two different operations and collide when both
+    // try to persist a Capture row with that id. The Capture row itself is
+    // only created after the provider confirms success (see
+    // capturePaymentFromProvider_) so a failed provider call never leaves a
+    // phantom row behind.
+    const reusable = lockedPending.find(
+      (entry) => !entry.reserved && MathBN.eq(entry.amount, data.amount!)
+    )
+    const captureId = reusable ? reusable.id : generateEntityId(undefined, "capt")
+
+    // Always (re-)mark this attempt's entry as reserved, even when reusing
+    // an existing id, so the guard above sees its amount as reserved for as
+    // long as its own provider call is in flight. Other entries (other
+    // in-flight or settled captures on this payment) are left untouched.
+    await this.paymentService_.update(
       {
-        payment: data.payment_id,
-        amount: data.amount,
-        captured_by: data.captured_by,
+        id: payment.id,
+        pending_captures: [
+          ...lockedPending.filter((entry) => entry.id !== captureId),
+          {
+            id: captureId,
+            amount: data.amount.toString(),
+            captured_by: data.captured_by,
+            reserved: true,
+          },
+        ],
       },
       sharedContext
     )
 
-    return { isFullyCaptured, capture }
+    return {
+      isFullyCaptured,
+      capture: {
+        id: captureId,
+        amount: data.amount,
+        captured_by: data.captured_by,
+      },
+    }
   }
 
   @InjectManager()
   protected async capturePaymentFromProvider_(
     payment: InferEntityType<typeof Payment>,
-    capture: InferEntityType<typeof Capture> | undefined,
+    capture: PendingOrCreatedCapture | undefined,
     options: {
       isFullyCaptured?: boolean
       isCaptured?: boolean
@@ -890,6 +996,22 @@ export default class PaymentModuleService
           },
         }
       )
+
+      // Provider confirmed the capture: persist the Capture row now (using
+      // the id that was already sent as the idempotency key) and clear the
+      // pending marker so a future, unrelated capture doesn't try to reuse
+      // or rotate against it.
+      await this.captureService_.create(
+        {
+          id: capture!.id,
+          payment: payment.id,
+          amount: capture!.amount,
+          captured_by: capture!.captured_by,
+        },
+        sharedContext
+      )
+
+      await this.removePendingCapture_(payment.id, capture!.id, sharedContext)
 
       await this.paymentService_.update(
         {
@@ -914,6 +1036,70 @@ export default class PaymentModuleService
     }
 
     return payment
+  }
+
+  // Re-locks the payment row and applies `mutate` to its pending_captures
+  // array, so a release/removal that happens outside capturePayment_'s own
+  // critical section (i.e. after the provider call settles) still can't
+  // race with a concurrent sibling attempt reading or writing the same
+  // array.
+  @InjectTransactionManager()
+  protected async updatePendingCaptures_(
+    paymentId: string,
+    mutate: (pending: PendingCaptureEntry[]) => PendingCaptureEntry[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "updatePendingCaptures_ must run inside a transaction to serialize concurrent updates."
+      )
+    }
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    await knex("payment").where("id", paymentId).forUpdate().select("id")
+
+    const locked = await this.paymentService_.retrieve(
+      paymentId,
+      { select: ["id", "pending_captures"] },
+      sharedContext
+    )
+    const current =
+      (locked.pending_captures as PendingCaptureEntry[] | null) ?? []
+    const next = mutate(current)
+
+    await this.paymentService_.update(
+      { id: paymentId, pending_captures: next.length ? next : null },
+      sharedContext
+    )
+  }
+
+  protected async releasePendingCapture_(
+    paymentId: string,
+    captureId: string,
+    sharedContext: Context
+  ): Promise<void> {
+    await this.updatePendingCaptures_(
+      paymentId,
+      (pending) =>
+        pending.map((entry) =>
+          entry.id === captureId ? { ...entry, reserved: false } : entry
+        ),
+      sharedContext
+    )
+  }
+
+  protected async removePendingCapture_(
+    paymentId: string,
+    captureId: string,
+    sharedContext: Context
+  ): Promise<void> {
+    await this.updatePendingCaptures_(
+      paymentId,
+      (pending) => pending.filter((entry) => entry.id !== captureId),
+      sharedContext
+    )
   }
 
   @InjectManager()
