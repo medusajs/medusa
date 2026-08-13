@@ -19386,7 +19386,7 @@ const { data: posts } = await query.graph({
     "id", 
     "title",
     "product.id",
-    "product.title"
+    "product.title",
   ],
 })
 ```
