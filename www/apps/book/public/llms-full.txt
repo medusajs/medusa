@@ -2684,6 +2684,8 @@ The `admin.vite` configuration specifies Vite configurations for the Medusa Admi
 
 Learn about configurations you can pass to Vite in [Vite's documentation](https://vite.dev/config/).
 
+Starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the function receives a Vite v7 configuration object, whereas it received a Vite v5 configuration object in earlier versions. So, if you set `build.target` to `modules`, or use the removed `splitVendorChunkPlugin`, update your configuration. Also, if you installed `vite` in your project for type support, update it to v7.
+
 #### Example
 
 For example, if you're using a third-party library that isn't ESM-compatible, add it to Vite's `optimizeDeps` configuration:
@@ -9035,6 +9037,10 @@ If you don't have an admin user, use the [Medusa CLI](undefined/resources/medusa
 
 The Medusa Admin was migrated from Vite v5 to v7.3.6 and `react-router-dom` v6 to v7.18.2 in [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
 
+As of that version, the Medusa Admin supports Chrome v107+, Edge v107+, Firefox v104+, and Safari v16+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](undefined/learn/configurations/medusa-config#vite).
+
+If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](undefined/learn/fundamentals/admin/routing) chapter.
+
 ***
 
 ## How to Customize the Medusa Admin?
@@ -9076,6 +9082,10 @@ The Medusa Admin dashboard uses [React Router](https://reactrouter.com) under th
 In this chapter, you'll learn about routing-related customizations that you can use in your widgets, UI routes, and settings pages using React Router.
 
 `react-router-dom` is available in your project by default through the Medusa packages. You don't need to install it separately.
+
+Starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the Medusa Admin uses React Router v7. If your project has its own `react-router-dom` dependency, update it to v7 to avoid installing two versions of React Router, which leads to a `useNavigate() may be used only in the context of a Router` error in your admin customizations.
+
+React Router v7 also removed the `json` and `defer` utilities. Instead of `json`, return a `Response` object with a JSON body from your loader. Instead of `defer`, return a plain object holding the unresolved promises.
 
 ## Link to a Page
 
@@ -9119,8 +9129,8 @@ However, if you need the data to be fetched before the route is rendered, such a
 
 To fetch data with a route loader:
 
-1. Define and export a [React Router loader](https://reactrouter.com/6.29.0/route/loader#loader) function in the UI route's file. In this function, you can fetch and return data asynchronously.
-2. In your UI route's component, you can use the [useLoaderData hook from React Router](https://reactrouter.com/6.29.0/hooks/use-loader-data#useloaderdata) to access the data returned by the `loader` function.
+1. Define and export a [React Router loader](https://reactrouter.com/start/data/route-object#loader) function in the UI route's file. In this function, you can fetch and return data asynchronously.
+2. In your UI route's component, you can use the [useLoaderData hook from React Router](https://reactrouter.com/api/hooks/useLoaderData) to access the data returned by the `loader` function.
 
 For example, consider the following UI route created at `src/admin/routes/custom/page.tsx`:
 
@@ -9217,7 +9227,7 @@ In the loader, you can fetch data asynchronously using the route parameter and r
 
 Route handles are available starting from Medusa v2.5.1.
 
-In your UI route or any route file, you can export a `handle` object to define [route handles](https://reactrouter.com/start/framework/route-module#handle). The object is passed to the loader and route contexts.
+In your UI route or any route file, you can export a `handle` object to define [route handles](https://reactrouter.com/start/data/route-object#handle). The object is passed to the loader and route contexts.
 
 For example:
 
@@ -9231,7 +9241,7 @@ You can also use the `handle` object to define a breadcrumb for the route. Learn
 
 ### React Router Components and Hooks
 
-Refer to [react-router-dom’s documentation](https://reactrouter.com/en/6.29.0) for components and hooks that you can use in your admin customizations.
+Refer to [React Router’s documentation](https://reactrouter.com) for components and hooks that you can use in your admin customizations.
 
 
 # Admin Development Tips
@@ -10167,7 +10177,7 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/en/main/hooks/use-params).
+You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/api/hooks/useParams).
 
 If you run the Medusa application and go to `http://localhost:9000/app/custom/123`, you'll see `123` printed in the page.
 
@@ -10276,14 +10286,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   breadcrumb: (
-    { data }: UIMatch<BrandResponse>
-  ) => data.brand.name || "Brand",
+    { loaderData }: UIMatch<BrandResponse>
+  ) => loaderData?.brand.name || "Brand",
 }
 ```
 
 In the `loader` function, you retrieve the brands from a custom API route and return them.
 
-Then, in the `handle.breadcrumb` function, you receive `data` prop containing the brand information returned by the `loader` function. You can use this data to return a dynamic breadcrumb label.
+Then, in the `handle.breadcrumb` function, you receive the `loaderData` prop containing the brand information returned by the `loader` function. You can use this data to return a dynamic breadcrumb label.
+
+The `loaderData` prop replaces the `data` prop starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), which upgraded the Medusa Admin to React Router v7. In earlier versions, use the `data` prop instead.
 
 When you open the UI route at `http://localhost:9000/app/brands/123`, the breadcrumb will show the brand's name, such as `Acme`.
 
@@ -10338,14 +10350,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   seo: (match: UIMatch<BrandResponse>) => ({
-    title: match.data?.brand.name || "Brand",
+    title: match.loaderData?.brand.name || "Brand",
   }),
 }
 ```
 
 In the `loader` function, you retrieve the brand from a custom API route and return it.
 
-Then, in the `handle.seo` function, you receive the `match` object whose `data` property holds the data returned by the `loader` function. You use this data to return the dynamic title.
+Then, in the `handle.seo` function, you receive the `match` object whose `loaderData` property holds the data returned by the `loader` function. You use this data to return the dynamic title.
+
+The `loaderData` property replaces the `data` property starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), which upgraded the Medusa Admin to React Router v7. In earlier versions, use the `data` property instead.
 
 When you open the UI route at `http://localhost:9000/app/brands/123`, the browser tab's title will show the brand's name, such as `Acme - Medusa`.
 
@@ -27801,7 +27815,7 @@ EXPOSE 9000 5173 8000
 ENTRYPOINT ["./start.sh"]
 ```
 
-In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20 or later.
+In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20.19.0 or later.
 
 The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
 
@@ -29653,7 +29667,7 @@ This chapter is also useful for developers who are already familiar with Medusa 
 
 ### Node.js Version
 
-While Medusa v1 supported Node.js v16+, Medusa v2 requires Node.js v20+. So, make sure to update your Node.js version if it's older.
+While Medusa v1 supported Node.js v16+, Medusa v2 requires Node.js v20.19.0+ or v22.12.0+. So, make sure to update your Node.js version if it's older.
 
 Refer to the [Node.js documentation](https://nodejs.org/en/docs/) for instructions on how to update your Node.js version.
 
@@ -29898,7 +29912,7 @@ In this section, you'll learn about the changes in the Medusa Admin between v1 a
 
 This section doesn't cover changes related to Medusa Admin customizations. They're covered later in the [Admin Customization Changes](#admin-customization-changes) section.
 
-The Medusa Admin is now available out-of-the-box. It's built with [Vite v5](https://vite.dev/) and runs at `http://localhost:9000/app` by default when you start your Medusa application.
+The Medusa Admin is now available out-of-the-box. It's built with [Vite v7](https://vite.dev/) and runs at `http://localhost:9000/app` by default when you start your Medusa application.
 
 ### Admin Configurations
 
@@ -31383,7 +31397,7 @@ The workspace has the following two directories:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Yarn v3+](https://v3.yarnpkg.com/getting-started/install)
 
 In the `www` directory, run the following command to install the dependencies:
@@ -59338,8 +59352,6 @@ Each provider object contains:
 - `display_name`: The name to show in the UI.
 - `flow`: Either `"credentials"` (the user submits credentials directly) or `"redirect"` (the user is redirected to the provider).
 
-You can learn more about this method in the [auth.listProviders reference](undefined/references/js-sdk/auth/listProviders).
-
 ***
 
 ## Logout in JS SDK
@@ -60010,7 +60022,7 @@ This guide will teach you how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -60829,7 +60841,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -69008,7 +69020,7 @@ By following this tutorial, you will:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -69641,7 +69653,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -72787,7 +72799,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -75759,7 +75771,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -79549,7 +79561,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -80138,7 +80150,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -80772,7 +80784,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -83118,7 +83130,7 @@ By following this tutorial, you will learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -84942,7 +84954,7 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -86988,7 +87000,7 @@ By following this tutorial, you will learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -90275,7 +90287,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -96050,7 +96062,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -96602,7 +96614,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -100773,7 +100785,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -102646,7 +102658,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -103150,7 +103162,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -103987,7 +103999,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -105263,7 +105275,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -106792,7 +106804,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -109909,7 +109921,7 @@ You'll first install a Medusa application that exposes core commerce features th
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -111066,7 +111078,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -112330,7 +112342,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -113552,7 +113564,7 @@ So, to support the above flow, you'll create:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -114766,7 +114778,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -118795,7 +118807,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -120637,7 +120649,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -121925,7 +121937,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -123744,7 +123756,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -124418,7 +124430,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -124763,7 +124775,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -126006,7 +126018,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -126635,7 +126647,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20 or v22 (Versions supported by Strapi)](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+ (Versions supported by Strapi)](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -130771,7 +130783,7 @@ You'll first install a Medusa application that exposes core commerce features th
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -134040,7 +134052,7 @@ It accepts the following props:
 
   - props: (object) This property is only accepted if \`type\` is \`button\` or \`action-menu\`. If \`type\` is \`button\`, it accepts the \[props to pass to the UI Button component]\(https://docs.medusajs.com/components/button). If \`type\` is \`action-menu\`, it accepts the props to pass to the action menu, explained in \[this guide]\(../action-menu/page.mdx).
 
-  - link: (\[LinkProps]\(https://reactrouter.com/en/main/components/link)) This property is only accepted if \`type\` is \`button\`. If provided, a link is rendered inside the button. Its value is the props to pass the \`Link\` component of \`react-router-dom\`.
+  - link: (\[LinkProps]\(https://reactrouter.com/api/components/Link)) This property is only accepted if \`type\` is \`button\`. If provided, a link is rendered inside the button. Its value is the props to pass the \`Link\` component of \`react-router-dom\`.
 
   - children: (React.ReactNode) This property is only accepted if \`type\` is \`custom\`. Its content is rendered as part of the actions.
 
@@ -136162,7 +136174,7 @@ In this step, you'll set up a Medusa application and configure the Stripe Module
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -138459,7 +138471,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -148697,7 +148709,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -151592,7 +151604,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -152828,7 +152840,7 @@ This guide provides an example of an approach to implement digital products. You
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -156092,7 +156104,7 @@ This guide will teach you how to implement the general integration between Medus
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -156923,7 +156935,7 @@ If you don't have a Medusa application yet, you can install it with the followin
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -157618,7 +157630,7 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -160935,7 +160947,7 @@ This guide provides an example of an approach to implement marketplaces. You're 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -162990,7 +163002,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -164263,7 +164275,7 @@ This guide provides an example of an approach to implement subscriptions. You're
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -166913,7 +166925,7 @@ By following this tutorial, you will learn how to:
 
 ### Prerequisites
 
-- [Node.js v20+](https://nodejs.org/en/download)
+- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
