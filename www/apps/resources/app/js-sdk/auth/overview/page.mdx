@@ -406,27 +406,6 @@ You can learn more about this method in the [auth.listProviders reference](/refe
 
 ---
 
-## Provision an Admin User After Redirect-Based Login
-
-When a user logs in via a redirect-based provider (such as [OIDC](../../../commerce-modules/auth/auth-providers/oidc/page.mdx)), the JWT returned by the callback step does not yet have an admin user linked to it. You must call `sdk.auth.createUser` to link an existing user or create a new one from the identity-provider-verified claims:
-
-```ts
-const token = await sdk.auth.callback("user", "okta", queryParams)
-await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
-await sdk.auth.refresh()
-```
-
-Medusa checks whether an admin user with the identity-provider-verified email already exists:
-
-- If the user exists, it is linked to the auth identity.
-- If no user exists, a new admin user is created from the claims returned by the identity provider.
-
-After calling `createUser`, call `sdk.auth.refresh` to obtain a token bound to the newly linked user.
-
-You can learn more about this method in the [auth.createUser reference](/references/js-sdk/auth/createUser).
-
----
-
 ## Logout in JS SDK
 
 <Note>
