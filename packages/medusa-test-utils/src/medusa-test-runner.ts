@@ -17,6 +17,7 @@ import {
   formatError,
   initDb,
   migrateDatabase,
+  migrateSearchIndexes,
   startApp,
   syncLinks,
 } from "./medusa-test-runner-utils"
@@ -186,7 +187,7 @@ class MedusaTestRunner {
     await migrator.ensureMigrationsTable()
 
     logger.info(
-      `Migrating database with core migrations and links ${this.dbName}`
+      `Migrating database with core migrations, links, and search indexes ${this.dbName}`
     )
     await migrateDatabase(appLoader)
     await syncLinks(appLoader, this.modulesConfigPath, container, logger)
@@ -204,6 +205,10 @@ class MedusaTestRunner {
     })
 
     this.loadedApplication = await appLoader.load()
+
+    // Same role as `db:migrate:search` / link sync: create physical indexes
+    // before the HTTP app starts (and before suites seed data that is ingested).
+    await migrateSearchIndexes(container, logger)
 
     try {
       const {
