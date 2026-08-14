@@ -139876,6 +139876,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/index/sync](undefined/api/admin#index_postindexsync)
 - [GET /admin/inventory-items](undefined/api/admin#inventory-items_getinventoryitems)
 - [POST /admin/inventory-items](undefined/api/admin#inventory-items_postinventoryitems)
+- [POST /admin/inventory-items/export](undefined/api/admin#inventory-items_postinventoryitemsexport)
 - [POST /admin/inventory-items/location-levels/batch](undefined/api/admin#inventory-items_postinventoryitemslocationlevelsbatch)
 - [GET /admin/inventory-items/{id}](undefined/api/admin#inventory-items_getinventoryitemsid)
 - [POST /admin/inventory-items/{id}](undefined/api/admin#inventory-items_postinventoryitemsid)
@@ -140070,6 +140071,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/sales-channels/{id}](undefined/api/admin#sales-channels_postsaleschannelsid)
 - [DELETE /admin/sales-channels/{id}](undefined/api/admin#sales-channels_deletesaleschannelsid)
 - [POST /admin/sales-channels/{id}/products](undefined/api/admin#sales-channels_postsaleschannelsidproducts)
+- [GET /admin/search](undefined/api/admin#search_getsearch)
 - [GET /admin/shipping-option-types](undefined/api/admin#shipping-option-types_getshippingoptiontypes)
 - [POST /admin/shipping-option-types](undefined/api/admin#shipping-option-types_postshippingoptiontypes)
 - [GET /admin/shipping-option-types/{id}](undefined/api/admin#shipping-option-types_getshippingoptiontypesid)
@@ -140156,16 +140158,19 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /auth/session](undefined/api/admin#auth_postsession)
 - [DELETE /auth/session](undefined/api/admin#auth_deletesession)
 - [POST /auth/token/refresh](undefined/api/admin#auth_postadminauthtokenrefresh)
+- [GET /auth/user/providers](undefined/api/admin#auth_getuserproviders)
 - [POST /auth/user/{auth_provider}](undefined/api/admin#auth_postactor_typeauth_provider)
 - [POST /auth/user/{auth_provider}/callback](undefined/api/admin#auth_postactor_typeauth_providercallback)
 - [POST /auth/user/{auth_provider}/register](undefined/api/admin#auth_postactor_typeauth_provider_register)
 - [POST /auth/user/{auth_provider}/reset-password](undefined/api/admin#auth_postactor_typeauth_providerresetpassword)
 - [POST /auth/user/{auth_provider}/update](undefined/api/admin#auth_postactor_typeauth_providerupdate)
+- [POST /auth/{auth_provider}/user](undefined/api/admin#auth_provider_postauth_provideruser)
 
 
 ## Store API Reference
 
 - [POST /auth/customer/emailpass/verification/confirm](undefined/api/store#auth_postactor_typeauth_providerverificationconfirm)
+- [GET /auth/customer/providers](undefined/api/store#auth_getcustomerproviders)
 - [POST /auth/customer/{auth_provider}](undefined/api/store#auth_postactor_typeauth_provider)
 - [POST /auth/customer/{auth_provider}/callback](undefined/api/store#auth_postactor_typeauth_providercallback)
 - [POST /auth/customer/{auth_provider}/register](undefined/api/store#auth_postactor_typeauth_provider_register)
