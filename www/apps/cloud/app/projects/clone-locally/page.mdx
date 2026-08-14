@@ -1,0 +1,133 @@
+import { Prerequisites, Note } from "docs-ui"
+
+export const metadata = {
+  title: `Clone a Cloud Project Locally`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to clone your Cloud project's repository to your machine and run the Medusa application locally.
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20.19.0+ or v22.12.0+ installed.",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git installed.",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL installed and running locally.",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+## Who is this Guide for?
+
+This guide is for you if you created your project from one of Medusa's [starters](../page.mdx#1-create-project-from-a-starter). In that case, Cloud clones the starter's code into a GitHub repository in the account or organization you chose, and you don't have the code on your machine yet.
+
+To customize your store, add features, or debug issues, you clone that repository locally and run the application against resources on your machine.
+
+---
+
+## 1. Clone the Repository
+
+To clone the repository linked to your project:
+
+1. Open the project's dashboard.
+2. Click the **Repository** button at the top right to open the GitHub repository in a new tab.
+3. On GitHub, click the **Code** button and copy the repository's URL.
+4. In your terminal, clone the repository and change into its directory:
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+Replace `<repository-url>` with the URL you copied, and `<repository-name>` with the name of the created directory.
+
+---
+
+## 2. Install Dependencies
+
+Starters are monorepos that hold the Medusa application and the storefront as separate packages, usually under `apps/backend` and `apps/storefront`. Install the dependencies of all packages from the repository's root directory:
+
+```bash npm2yarn
+npm install
+```
+
+Use the same package manager as the starter. To find it, check which lock file the repository has: `package-lock.json` for npm, `yarn.lock` for Yarn, or `pnpm-lock.yaml` for pnpm.
+
+---
+
+## 3. Set Up Environment Variables
+
+Starters don't include `.env` files, since they hold secrets that you can't commit to Git. Instead, either copy a `.env.template` or create a `.env` file in the Medusa application's directory that points to resources running on your machine, rather than the resources of a Cloud environment:
+
+```bash title="apps/backend/.env"
+DATABASE_URL=postgres://localhost/medusa-local
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=supersecret
+COOKIE_SECRET=supersecret
+STORE_CORS=http://localhost:8000
+ADMIN_CORS=http://localhost:9000
+AUTH_CORS=http://localhost:9000,http://localhost:8000
+```
+
+Replace the values with the ones matching your setup:
+
+- `DATABASE_URL`: The connection string of a local PostgreSQL database. Create the database first if it doesn't exist.
+- `REDIS_URL`: The connection string of a local Redis instance. Remove this variable if you don't run Redis locally, and Medusa falls back to in-memory modules.
+- `JWT_SECRET` and `COOKIE_SECRET`: Any random strings. Use different values than the ones in your Cloud environments.
+- `STORE_CORS`, `ADMIN_CORS`, and `AUTH_CORS`: The local URLs that can send requests to the Medusa application. Change `http://localhost:8000` if your storefront runs on another port.
+
+Local resources keep your development work isolated, so you can seed and change data without affecting a deployed store. Learn about the rest of the available configurations in the [Medusa Configurations](!docs!/learn/configurations/medusa-config) guide.
+
+For the storefront, create a `.env` file in its directory with the variables it expects. Refer to the starter's `.env.template` file for the list of variables.
+
+<Note title="Tip" forceMultiline>
+
+If you need your local setup to mirror a deployed environment, you can reuse that environment's variables instead. Either [export the variables](../../environments/environment-variables/page.mdx#export-environment-variables-on-cloud) from the environment's dashboard and rename the downloaded `env.txt` file to `.env`, or run the following command with the [Cloud CLI](../../cli/page.mdx):
+
+```bash
+mcloud variables list --reveal --dotenv > .env
+```
+
+Pass `--type storefront` to export the storefront's variables instead. Learn more in the [variables command reference](../../cli/commands/variables/page.mdx#export-variables-to-a-env-file).
+
+Since these variables point to the environment's database, Redis instance, and other resources, any change you make locally affects the deployed environment. Only reuse them for debugging, and prefer local resources for development.
+
+</Note>
+
+---
+
+## 4. Run the Application Locally
+
+Change to the Medusa application's directory, then run the migrations to prepare your local database:
+
+```bash
+npx medusa db:migrate
+```
+
+Next, create an admin user to log into the Medusa Admin locally:
+
+```bash
+npx medusa user -e admin@medusajs.com -p supersecret
+```
+
+Then, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+The Medusa application runs at `http://localhost:9000`, and the Medusa Admin at `http://localhost:9000/app`. Learn more in the [Installation](!docs!/learn/installation) guide.
+
+To run the storefront, refer to the starter's README file in the repository. It has the commands and variables specific to the storefront.
+
+---
+
+## Push Local Changes to Cloud
+
+Cloud deploys your changes when you push them to the GitHub repository linked to your project. Push to the branch of a [long-lived environment](../../environments/long-lived/page.mdx) to deploy to that environment, or open a pull request to create a [preview environment](../../environments/preview/page.mdx).

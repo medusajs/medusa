@@ -1,23 +1,50 @@
 import { CloudAnalysisResult, CloudDispatchPayload } from "../types/index.js"
 
+const DASHBOARD_CHANGELOG_PAGE = "www/apps/cloud/app/changelog/page.mdx"
+
 export class CloudContextBuilder {
-  build(payload: CloudDispatchPayload): CloudAnalysisResult {
-    const claudePrompt = this.buildPrompt(payload)
+  build(
+    payload: CloudDispatchPayload,
+    releaseDate?: string
+  ): CloudAnalysisResult {
+    const changelog = this.getChangelog(payload, releaseDate)
+    const claudePrompt = this.buildPrompt(payload, changelog, releaseDate)
 
     return {
       affectedProjects: [
         {
           project: "cloud",
-          reason:
-            "User-facing changes were deployed to Cloud Production",
+          reason: "User-facing changes were deployed to Cloud Production",
         },
       ],
       claudePrompt,
       featureFlaggedFeatures: payload.featureFlaggedFeatures ?? [],
+      ...(changelog ? { changelog } : {}),
     }
   }
 
-  private buildPrompt(payload: CloudDispatchPayload): string {
+  /**
+   * Returns the changelog entry to write only when the dispatch carries a CLI
+   * release with non-empty notes AND a version. Otherwise returns undefined so
+   * the dashboard/CLI-reference flow is left untouched.
+   */
+  private getChangelog(
+    payload: CloudDispatchPayload,
+    releaseDate?: string
+  ): { version: string; notes: string; date?: string } | undefined {
+    const notes = payload.releaseNotes?.trim()
+    if (!notes || !payload.version) {
+      return undefined
+    }
+
+    return { version: payload.version, notes, date: releaseDate }
+  }
+
+  private buildPrompt(
+    payload: CloudDispatchPayload,
+    changelog?: { version: string; notes: string; date?: string },
+    releaseDate?: string
+  ): string {
     const sections: string[] = []
 
     sections.push(this.buildSkillSection())
@@ -28,6 +55,15 @@ export class CloudContextBuilder {
         payload.featureFlaggedFeatures ?? []
       )
     )
+
+    if (payload.descriptions?.trim()) {
+      sections.push(this.buildDashboardChangelogSection(releaseDate))
+    }
+
+    if (changelog) {
+      sections.push(this.buildChangelogSection(changelog))
+    }
+
     sections.push(this.buildAffectedProjectSection())
     sections.push(this.buildConstraintsSection())
 
@@ -50,8 +86,9 @@ Your job is to:
 2. Review the feature descriptions below
 3. For each described change, determine whether a documentation update is needed
 4. **Dashboard changes**: If an existing page covers the feature, update it. If a new feature has no existing page and is substantial enough, create one and add it to \`www/apps/cloud/sidebar.mjs\`
-5. **CLI changes**: Update the relevant command page under \`www/apps/cloud/app/cli/commands/\`. If a new command was added, create a new page and add it to the sidebar under the CLI category. If a command was removed, remove its page and sidebar entry. Follow the existing CLI page format (see the CLI section in \`reference/cloud-style.md\`)
-6. If a described change is too vague or clearly internal, skip it rather than guess`
+5. **Dashboard changelog**: Record the dashboard changes in the Cloud changelog page, as explained in the "Cloud Changelog" section below
+6. **CLI changes**: Update the relevant command page under \`www/apps/cloud/app/cli/commands/\`. If a new command was added, create a new page and add it to the sidebar under the CLI category. If a command was removed, remove its page and sidebar entry. Follow the existing CLI page format (see the CLI section in \`reference/cloud-style.md\`)
+7. If a described change is too vague or clearly internal, skip it rather than guess`
   }
 
   private buildDescriptionsSection(
@@ -76,6 +113,93 @@ Your job is to:
     return lines.join("\n")
   }
 
+  /**
+   * Instructs Claude to record the dashboard changes of this deployment in the
+   * Cloud changelog. The changelog is dated rather than versioned, since the
+   * dashboard has no user-facing version number.
+   */
+  private buildDashboardChangelogSection(releaseDate?: string): string {
+    const heading = releaseDate ?? "{Month} {Day}, {Year}"
+
+    return `## Cloud Changelog
+
+Record the **dashboard** changes of this deployment in the Cloud changelog page. This changelog covers the Cloud dashboard only — CLI and webhook changes have their own changelog pages and must never be added here.
+
+**Changelog page:** \`${DASHBOARD_CHANGELOG_PAGE}\`
+
+Steps:
+1. If \`${DASHBOARD_CHANGELOG_PAGE}\` does not exist, create it first: a \`metadata\` export with the title \`Cloud Changelog\`, an \`# {metadata.title}\` heading, a one-sentence intro explaining that it lists notable changes to the Cloud dashboard, newest first, and a short list linking to the [Cloud CLI Changelog](../cli/changelog/page.mdx) and the [Webhooks Changelog](../webhooks/changelog/page.mdx). Then add a sidebar entry for it in \`www/apps/cloud/sidebar.mjs\` as a top-level link at the end of the \`items\` array:
+   \`\`\`js
+   {
+     type: "link",
+     title: "Changelog",
+     path: "/changelog",
+   },
+   \`\`\`
+2. Add a \`## ${heading}\` heading for this deployment, placed **newest-first** — directly below the intro and above any existing dated section, separated from the section below it by a \`---\` divider.
+3. Under that heading, add one bullet point per user-facing dashboard change. Write each bullet in the present tense, describing what a user can now do or what now behaves differently.
+4. If the change is covered by a documentation page, link to that page in its bullet point using a relative path, such as \`[Environment Variables](../environments/environment-variables/page.mdx)\`. Link to the page you updated for that change, and only link to pages that exist.
+5. If a section for **${heading}** already exists (this deployment may be re-run), merge the bullet points into it instead of adding a duplicate section.
+6. If this deployment has no dashboard changes that qualify below, leave the changelog page untouched.
+
+**What belongs in the changelog:**
+
+- New functionality, such as a new page, resource, setting, or action a user can take
+- Changes to how existing functionality behaves, such as a different default, a new validation, or a changed limit
+- New or removed form inputs, along with why the input was added and what it controls
+- Overall design and navigation changes, such as a new navigation style, a restructured page, or a moved action
+
+**What does not belong in the changelog:**
+
+- Copy changes, such as a renamed label, a reworded description, or an added note or tooltip
+- Visual polish that doesn't change behavior, such as spacing, colors, or icon swaps
+- Bug fixes with no user-visible behavior change, performance work, and internal refactors
+- Anything not visible to users in the dashboard
+
+**Example entry:**
+
+\`\`\`mdx
+## August 10, 2026
+
+- You can now set an environment variable as available at build time, runtime, or both, which controls whether Medusa injects it into your build or your running application. Refer to [Environment Variables](../environments/environment-variables/page.mdx) for more details.
+- The dashboard's sidebar navigation is now grouped by project, so switching between a project's environments no longer requires going back to the organization's page.
+\`\`\``
+  }
+
+  private buildChangelogSection(changelog: {
+    version: string
+    notes: string
+    date?: string
+  }): string {
+    const heading = changelog.date
+      ? `${changelog.version} (${changelog.date})`
+      : changelog.version
+
+    return `## Cloud CLI Changelog
+
+A new version of the Cloud CLI (\`mcloud\`) was released: **${changelog.version}**${changelog.date ? ` on **${changelog.date}**` : ""}. You must record it in the Cloud CLI changelog page.
+
+**Changelog page:** \`www/apps/cloud/app/cli/changelog/page.mdx\`
+
+Steps:
+1. If \`www/apps/cloud/app/cli/changelog/page.mdx\` does not exist, create it first following the format of other CLI pages (frontmatter with \`metadata.title\`, an \`# {metadata.title}\` heading, and a one-sentence intro explaining it lists notable changes to the Cloud CLI, newest first). Then add a sidebar entry for it in \`www/apps/cloud/sidebar.mjs\` under the CLI category, right after the "For Agents" entry:
+   \`\`\`js
+   {
+     type: "link",
+     title: "Changelog",
+     path: "/cli/changelog",
+     hideFromChildItems: true,
+   },
+   \`\`\`
+2. Add a section for version \`${changelog.version}\` using a \`## ${heading}\` heading, placed **newest-first** (above any existing version sections, directly below the intro). Keep the version and date together in the heading exactly as shown.
+3. Under that heading, render the release notes below **exactly as provided** — do not rewrite, summarize, invent commands/versions/dates, or add content not present in the notes.
+4. If a section for version \`${changelog.version}\` already exists (this release may be re-run), **update it in place** (including its heading and notes) instead of adding a duplicate section.
+
+Release notes for \`${changelog.version}\`:
+
+${changelog.notes}`
+  }
+
   private buildAffectedProjectSection(): string {
     return `## Affected Documentation Project
 
@@ -91,7 +215,12 @@ Your job is to:
 - \`www/apps/cloud/app/cli/page.mdx\` — CLI overview and installation
 - \`www/apps/cloud/app/cli/agents/page.mdx\` — CLI for AI agents
 - \`www/apps/cloud/app/cli/commands/<command>/page.mdx\` — one page per command topic (e.g. \`deployments\`, \`environments\`, \`variables\`)
-- Each command page documents all subcommands for that topic (e.g. \`deployments list\`, \`deployments get\`, \`deployments build-logs\` all on the same page)`
+- Each command page documents all subcommands for that topic (e.g. \`deployments list\`, \`deployments get\`, \`deployments build-logs\` all on the same page)
+
+**Changelog pages:**
+- \`${DASHBOARD_CHANGELOG_PAGE}\` — dated changelog of dashboard changes
+- \`www/apps/cloud/app/cli/changelog/page.mdx\` — versioned changelog of Cloud CLI releases
+- \`www/apps/cloud/app/webhooks/changelog/page.mdx\` — dated changelog of webhook event changes (never write to it from this workflow)`
   }
 
   private buildConstraintsSection(): string {

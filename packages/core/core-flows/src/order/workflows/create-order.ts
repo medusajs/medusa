@@ -29,7 +29,10 @@ import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants
 import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { refreshDraftOrderAdjustmentsWorkflow } from "../../draft-order/workflows/refresh-draft-order-adjustments"
 import { createOrdersStep } from "../steps"
-import { productVariantsFields } from "../utils/fields"
+import {
+  productVariantsCacheTags,
+  productVariantsFields,
+} from "../utils/fields"
 import { updateOrderTaxLinesWorkflow } from "./update-tax-lines"
 
 function prepareLineItems(data) {
@@ -97,7 +100,7 @@ export type CreateOrderWorkflowInput = CreateOrderDTO & AdditionalData
 
 export const createOrdersWorkflowId = "create-orders"
 /**
- * This workflow creates an order. It's used by the [Create Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders), but
+ * This workflow creates an order. It's used by the [Create Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/create-draft-order), but
  * you can also use it to create any order.
  *
  * This workflow has a hook that allows you to perform custom actions on the created order. For example, you can pass under `additional_data` custom data that
@@ -105,6 +108,15 @@ export const createOrdersWorkflowId = "create-orders"
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around creating an order. For example,
  * you can create a workflow that imports orders from an external system, then uses this workflow to create the orders in Medusa.
+ *
+ * :::note
+ *
+ * This workflow only validates that the order's items have sufficient inventory quantity; it doesn't create inventory reservations for the order's items.
+ * So, fulfilling an order created by this workflow with {@link createOrderFulfillmentWorkflow} throws an error for items whose variants have `manage_inventory` enabled,
+ * as they don't have an associated reservation. To create the reservations, use the [createReservationsWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/createReservationsWorkflow)
+ * after creating the order, passing each reservation the `line_item_id` of the order's item so that the fulfillment workflow can find it.
+ *
+ * :::
  *
  * @example
  * const { result } = await createOrderWorkflow(container)
@@ -277,7 +289,8 @@ export const createOrderWorkflow = createWorkflow(
       },
       options: {
         cache: {
-          enable: true,
+          tags: productVariantsCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "query-variants-without-calculated-price" })

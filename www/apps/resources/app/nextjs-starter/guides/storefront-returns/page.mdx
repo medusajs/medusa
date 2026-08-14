@@ -41,7 +41,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -90,7 +90,7 @@ cd apps/storefront
 
 ### List Return Reasons Function
 
-The first function sends a request to the [List Return Reasons](!api!/store#return-reasons_getreturnreasons) API route. It fetches the available return reasons, which customers can select from when creating a return request.
+The first function sends a request to the [List Return Reasons](!api!/store/return-reasons/list-return-reasons) API route. It fetches the available return reasons, which customers can select from when creating a return request.
 
 Create the file `src/lib/data/returns.ts` with the following content:
 
@@ -127,7 +127,7 @@ You add the `listReturnReasons` function. It sends a `GET` request to the `/stor
 
 ### List Return Shipping Options Function
 
-Next, you'll add a function that sends a request to the [List Shipping Options](!api!/store#shipping-options_getshippingoptions) API route. It fetches the available shipping options for returns, which customers can select from when creating a return request.
+Next, you'll add a function that sends a request to the [List Shipping Options](!api!/store/shipping-options/list-shipping-options-for-cart) API route. It fetches the available shipping options for returns, which customers can select from when creating a return request.
 
 In the same `src/lib/data/returns.ts` file, add the following function:
 
@@ -166,7 +166,13 @@ The API route accepts the following query parameters:
 
 ### Create Return Function
 
-Finally, you'll add a function that sends a request to the [Create Return](!api!/store#returns_postreturns) API route. This creates a return request for an order.
+Finally, you'll add a function that sends a request to the [Create Return](!api!/store/returns/create-return) API route. This creates a return request for an order.
+
+<Note>
+
+The Create Return API route doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](../../../commerce-modules/order/secure-return-creation/page.mdx).
+
+</Note>
 
 In the same `src/lib/data/returns.ts` file, add the following function:
 
@@ -1330,7 +1336,7 @@ As a merchant, you can now handle return requests from the Medusa Admin. You can
 
 You can customize the return request page to fit your storefront's design and requirements. You can also change how returns are created. For example, you can let guest customers request returns, set custom prices for return shipping options, or specify a stock location to return the items to.
 
-Refer to the [Create Return API reference](!api!/api/store#returns_postreturns) to see the available parameters when creating a return request.
+Refer to the [Create Return API reference](!api!/api/store/returns/create-return) to see the available parameters when creating a return request.
 
 ### Learn More about Medusa
 

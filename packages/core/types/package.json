@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "2.17.2",
+  "version": "2.19.0",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "publishConfig": {
     "access": "public"
@@ -28,7 +28,7 @@
     "!dist/**/__mocks__"
   ],
   "author": "Medusa",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
@@ -38,11 +38,11 @@
     "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
-    "@medusajs/deps": "2.17.2"
+    "@medusajs/deps": "2.19.0"
   },
   "peerDependencies": {
     "ioredis": "^5.4.1",
-    "vite": "^5.4.21"
+    "vite": ">=5"
   },
   "peerDependenciesMeta": {
     "ioredis": {

@@ -6,6 +6,11 @@ import {
   MedusaError,
 } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
+import {
+  applyResidualFilters,
+  hideResidualProperties,
+} from "./cross-module-joins/residual-filters"
+import { sortByResidualOrder } from "./cross-module-joins/residual-order"
 import { getNestedItems } from "./helpers"
 import {
   BASE_PATH,
@@ -53,6 +58,15 @@ export async function executePlan({
 }> {
   const { options } = plan
 
+  const residuals = plan.residualCrossModuleFilters ?? []
+  const residualOrderBy = plan.residualOrderBy ?? []
+  const hasResiduals = residuals.length > 0 || residualOrderBy.length > 0
+  // Residuals are completed in memory below, so pagination moves with them:
+  // pull it off the root fetch and re-apply after filtering/sorting.
+  const pagination = hasResiduals
+    ? extractRootPagination(plan.root)
+    : undefined
+
   const response = await fetchData({
     dataFetcher,
     expand: plan.root,
@@ -86,12 +100,108 @@ export async function executePlan({
     catalog,
   })
 
+  if (hasResiduals) {
+    if (residuals.length) {
+      data = applyResidualFilters({ items: data, residuals })
+    }
+
+    if (residualOrderBy.length) {
+      sortByResidualOrder({ items: data, orderBy: residualOrderBy })
+    }
+
+    if (plan.residualHiddenProperties?.length) {
+      hideResidualProperties({
+        items: data,
+        hidden: plan.residualHiddenProperties,
+      })
+    }
+
+    const count = data.length
+
+    if (pagination) {
+      const skip = pagination.skip ?? 0
+      data =
+        pagination.take != null
+          ? data.slice(skip, skip + pagination.take)
+          : skip
+          ? data.slice(skip)
+          : data
+
+      if (pagination.withMetadata) {
+        return {
+          data,
+          responsePath: "rows",
+          rawResponse: {
+            data: {
+              rows: data,
+              metadata: {
+                skip: pagination.skip,
+                take: pagination.take,
+                count,
+              },
+            },
+            path: "rows",
+          },
+          wasArray,
+        }
+      }
+    }
+  }
+
   return {
     data,
     responsePath: response.path,
     rawResponse: response,
     wasArray,
   }
+}
+
+/**
+ * Removes pagination args from the root fetch so residuals evaluate against
+ * the full (stage-1 filtered) root set. `withMetadata` mirrors the data
+ * fetcher's skip/cursor detection, which decides whether the response gets a
+ * `{ rows, metadata }` envelope.
+ */
+function extractRootPagination(root: RemoteExpandProperty):
+  | {
+      skip?: number
+      take?: number | null
+      withMetadata: boolean
+    }
+  | undefined {
+  if (!root.args?.length) {
+    return undefined
+  }
+
+  const aliases: Record<string, "skip" | "take" | "cursor"> = {
+    skip: "skip",
+    offset: "skip",
+    take: "take",
+    limit: "take",
+    cursor: "cursor",
+  }
+
+  const captured: { skip?: number; take?: number | null } = {}
+  let found = false
+  let withMetadata = false
+
+  root.args = root.args.filter((arg) => {
+    const target = aliases[arg.name]
+    if (!target) {
+      return true
+    }
+
+    found = true
+    if (target === "skip" || target === "cursor") {
+      withMetadata = true
+    }
+    if (target !== "cursor") {
+      captured[target] = arg.value
+    }
+    return false
+  })
+
+  return found ? { ...captured, withMetadata } : undefined
 }
 
 /**

@@ -62,7 +62,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -1652,7 +1652,7 @@ const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -1756,7 +1756,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
 This adds a `POST` API route at `/admin/sanity/syncs`. In the route handler, you execute the `sanitySyncProductsWorkflow` without passing it a `product_ids` input. The step in the workflow will retrieve all products, instead of filtering them by ID, and sync them to Sanity.
 
-You return the transaction ID of the workflow, which you can use to track the execution's progress since the workflow will run in the background. This is not implemented in this guide, but Medusa has a [Get Execution API route](!api!/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id) that you can use to get the details of a workflow's execution.
+You return the transaction ID of the workflow, which you can use to track the execution's progress since the workflow will run in the background. This is not implemented in this guide, but Medusa has a [Get Execution API route](!api!/admin/workflows-executions/get-exection) that you can use to get the details of a workflow's execution.
 
 ### Add Sanity UI Route
 

@@ -32,7 +32,7 @@ In this chapter, you'll learn how to retrieve a product's brand (and vice-versa)
 
 ## Approach 1: Retrieve Brands in Existing API Routes
 
-Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin#products_getproducts), [Get Product](!api!/admin#products_getproductsid), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
+Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin/products/list-products), [Get Product](!api!/admin/products/get-a-product), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
 
 <Note>
 
@@ -49,7 +49,7 @@ curl 'http://localhost:9000/admin/products?fields=+brand.*' \
 
 <Note title="Tip">
 
-Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](!api!/store#authentication).
+Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](!api!/store/authentication).
 
 </Note>
 
@@ -134,7 +134,7 @@ curl 'http://localhost:9000/admin/brands' \
 
 <Note title="Tip">
 
-Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](!api!/store#authentication).
+Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](!api!/store/authentication).
 
 </Note>
 

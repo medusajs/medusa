@@ -35,7 +35,7 @@ export interface BatchTranslationSettingsWorkflowInput {
 
 /**
  * This workflow creates, updates, and deletes translation settings in batch.
- * It's used by the [List Translation Settings API route](https://docs.medusajs.com/api/admin#translations_gettranslationssettings).
+ * It's used by the [List Translation Settings API route](https://docs.medusajs.com/api/admin/translations/list-settings).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create, update, and delete translation settings in your custom flows.

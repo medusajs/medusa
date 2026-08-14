@@ -30,7 +30,7 @@ There are two ways to retrieve nested categories:
 
 ## Retrieve Nested Categories of a Category
 
-To retrieve the child or nested categories of a category in your storefront, pass to the [Get a Category API Route](!api!/store#product-categories_getproductcategoriesid) the following query parameters:
+To retrieve the child or nested categories of a category in your storefront, pass to the [Get a Category API Route](!api!/store/product-categories/get-a-product-category) the following query parameters:
 
 - `include_descendants_tree=true` to retrieve each category's nested categories at all levels.
 - Add `category_children` to `fields`, which is the field that will hold a category's nested categories.
@@ -135,7 +135,7 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the nested categories of a category by passing the `include_descendants_tree` query parameter to the [Get a Category API Route](!api!/store#product-categories_getproductcategoriesid). 
+In this example, you retrieve the nested categories of a category by passing the `include_descendants_tree` query parameter to the [Get a Category API Route](!api!/store/product-categories/get-a-product-category). 
 
 The response has a `product_category` field, which is a [product category object](!api!/store/#product-categories_productcategory_schema). It will have a `category_children` field, which is an array of [product category objects](!api!/store/#product-categories_productcategory_schema).
 
@@ -147,7 +147,7 @@ Then, in the React component, you show a category's children by iterating over t
 
 Alternatively, you may want to retrieve all categories as a hierarchy.
 
-To do this, you can pass the `include_descendants_tree` query parameter to the [List Product Categories API Route](!api!/store#product-categories_getproductcategories), along with the `parent_category_id` query parameter set to `null`. This ensures that only categories with children are retrieved at the top level.
+To do this, you can pass the `include_descendants_tree` query parameter to the [List Product Categories API Route](!api!/store/product-categories/list-product-categories), along with the `parent_category_id` query parameter set to `null`. This ensures that only categories with children are retrieved at the top level.
 
 For example:
 
@@ -248,7 +248,7 @@ export const categoriesFetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve all categories as a hierarchy by passing the `include_descendants_tree` query parameter to the [List Product Categories API Route](!api!/store#product-categories_getproductcategories).
+In this example, you retrieve all categories as a hierarchy by passing the `include_descendants_tree` query parameter to the [List Product Categories API Route](!api!/store/product-categories/list-product-categories).
 
 The response has a `product_categories` field, which is an array of [product category objects](!api!/store/#product-categories_productcategory_schema).
 

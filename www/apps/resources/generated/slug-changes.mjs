@@ -140,6 +140,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa/page.json"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthProviders",
+    "newSlug": "/references/auth/listAuthProviders",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthProviders/page.json"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthVerifications",
     "newSlug": "/references/auth/listAuthVerifications",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthVerifications/page.json"
@@ -665,6 +670,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.deleteAuthIdentityStep",
+    "newSlug": "/references/medusa-workflows/steps/deleteAuthIdentityStep",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.deleteAuthIdentityStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep",
     "newSlug": "/references/medusa-workflows/steps/requestVerificationStep",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep/page.json"
@@ -753,6 +763,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemActionsStep",
     "newSlug": "/references/medusa-workflows/steps/getLineItemActionsStep",
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemActionsStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemPricingQuantitiesStep",
+    "newSlug": "/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getLineItemPricingQuantitiesStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getPromotionCodesToApply",
@@ -1715,6 +1730,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryLevelsStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.exportInventoryItemsStep",
+    "newSlug": "/references/medusa-workflows/steps/exportInventoryItemsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.exportInventoryItemsStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.updateInventoryItemsStep",
     "newSlug": "/references/medusa-workflows/steps/updateInventoryItemsStep",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.updateInventoryItemsStep/page.json"
@@ -1768,6 +1788,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryLevelsWorkflow",
     "newSlug": "/references/medusa-workflows/deleteInventoryLevelsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryLevelsWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.exportInventoryItemsWorkflow",
+    "newSlug": "/references/medusa-workflows/exportInventoryItemsWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.exportInventoryItemsWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.updateInventoryItemsWorkflow",
@@ -2748,6 +2773,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.throwUnlessStatusIsNotPaid",
     "newSlug": "/references/medusa-workflows/throwUnlessStatusIsNotPaid",
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.throwUnlessStatusIsNotPaid/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestValidationStep",
+    "newSlug": "/references/medusa-workflows/transferOrderToGuestValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestValidationStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflow",
+    "newSlug": "/references/medusa-workflows/transferOrderToGuestWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.updateClaimAddItemValidationStep",
@@ -5495,6 +5530,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion/page.json"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.propertyLabel",
+    "newSlug": "/references/js-sdk/admin/propertyLabel",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.propertyLabel/page.json"
+  },
+  {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.rbacPolicy",
     "newSlug": "/references/js-sdk/admin/rbacPolicy",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.rbacPolicy/page.json"
@@ -5533,6 +5573,11 @@ export const slugChanges = [
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel",
     "newSlug": "/references/js-sdk/admin/salesChannel",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.salesChannel/page.json"
+  },
+  {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.search",
+    "newSlug": "/references/js-sdk/admin/search",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.search/page.json"
   },
   {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.shippingOption",
@@ -5608,6 +5653,16 @@ export const slugChanges = [
     "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback",
     "newSlug": "/references/js-sdk/auth/callback",
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.callback/page.json"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.createUser",
+    "newSlug": "/references/js-sdk/auth/createUser",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.createUser/page.json"
+  },
+  {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.listProviders",
+    "newSlug": "/references/js-sdk/auth/listProviders",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.listProviders/page.json"
   },
   {
     "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.login",
@@ -5780,6 +5835,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/module_events/module_events.Fulfillment/page.json"
   },
   {
+    "origSlug": "/references/module_events/module_events.Inventory",
+    "newSlug": "/references/inventory/events",
+    "filePath": "/www/apps/resources/references/module_events/module_events.Inventory/page.json"
+  },
+  {
     "origSlug": "/references/module_events/module_events.Order",
     "newSlug": "/references/order/events",
     "filePath": "/www/apps/resources/references/module_events/module_events.Order/page.json"
@@ -5903,6 +5963,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/sales_channel_models",
     "newSlug": "/references/sales-channel/models",
     "filePath": "/www/apps/resources/references/modules/sales_channel_models/page.json"
+  },
+  {
+    "origSlug": "/references/modules/settings_models",
+    "newSlug": "/references/settings/models",
+    "filePath": "/www/apps/resources/references/modules/settings_models/page.json"
   },
   {
     "origSlug": "/references/modules/stock_location_next_models",
@@ -8023,6 +8088,231 @@ export const slugChanges = [
     "origSlug": "/references/sales_channel_models/variables/sales_channel_models.SalesChannel",
     "newSlug": "/references/sales-channel/models/SalesChannel",
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration",
+    "newSlug": "/references/settings/clearActiveViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearLayoutConfiguration",
+    "newSlug": "/references/settings/clearLayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearLayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createLayoutConfigurations",
+    "newSlug": "/references/settings/createLayoutConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createLayoutConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createPropertyLabels",
+    "newSlug": "/references/settings/createPropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createPropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createUserPreferences",
+    "newSlug": "/references/settings/createUserPreferences",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createUserPreferences/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createViewConfigurations",
+    "newSlug": "/references/settings/createViewConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createViewConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteLayoutConfigurations",
+    "newSlug": "/references/settings/deleteLayoutConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteLayoutConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deletePropertyLabels",
+    "newSlug": "/references/settings/deletePropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deletePropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteUserPreferences",
+    "newSlug": "/references/settings/deleteUserPreferences",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteUserPreferences/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteViewConfigurations",
+    "newSlug": "/references/settings/deleteViewConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteViewConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.generateEntityColumns",
+    "newSlug": "/references/settings/generateEntityColumns",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.generateEntityColumns/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveLayoutScope",
+    "newSlug": "/references/settings/getActiveLayoutScope",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveLayoutScope/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveViewConfiguration",
+    "newSlug": "/references/settings/getActiveViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveViewConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultLayoutConfiguration",
+    "newSlug": "/references/settings/getSystemDefaultLayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultLayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultViewConfiguration",
+    "newSlug": "/references/settings/getSystemDefaultViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultViewConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getUserPreference",
+    "newSlug": "/references/settings/getUserPreference",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getUserPreference/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.hasEntity",
+    "newSlug": "/references/settings/hasEntity",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.hasEntity/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.isEntityDiscoveryInitialized",
+    "newSlug": "/references/settings/isEntityDiscoveryInitialized",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.isEntityDiscoveryInitialized/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountLayoutConfigurations",
+    "newSlug": "/references/settings/listAndCountLayoutConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountLayoutConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountPropertyLabels",
+    "newSlug": "/references/settings/listAndCountPropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountPropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountUserPreferences",
+    "newSlug": "/references/settings/listAndCountUserPreferences",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountUserPreferences/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountViewConfigurations",
+    "newSlug": "/references/settings/listAndCountViewConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountViewConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listDiscoverableEntities",
+    "newSlug": "/references/settings/listDiscoverableEntities",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listDiscoverableEntities/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listLayoutConfigurations",
+    "newSlug": "/references/settings/listLayoutConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listLayoutConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listPropertyLabels",
+    "newSlug": "/references/settings/listPropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listPropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listUserPreferences",
+    "newSlug": "/references/settings/listUserPreferences",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listUserPreferences/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listViewConfigurations",
+    "newSlug": "/references/settings/listViewConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listViewConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveLayoutConfiguration",
+    "newSlug": "/references/settings/retrieveLayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveLayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrievePropertyLabel",
+    "newSlug": "/references/settings/retrievePropertyLabel",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrievePropertyLabel/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveUserPreference",
+    "newSlug": "/references/settings/retrieveUserPreference",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveUserPreference/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveViewConfiguration",
+    "newSlug": "/references/settings/retrieveViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveViewConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveLayoutScope",
+    "newSlug": "/references/settings/setActiveLayoutScope",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveLayoutScope/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveViewConfiguration",
+    "newSlug": "/references/settings/setActiveViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveViewConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setLayoutConfiguration",
+    "newSlug": "/references/settings/setLayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setLayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setSystemDefaultLayoutConfiguration",
+    "newSlug": "/references/settings/setSystemDefaultLayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setSystemDefaultLayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setUserPreference",
+    "newSlug": "/references/settings/setUserPreference",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setUserPreference/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updatePropertyLabels",
+    "newSlug": "/references/settings/updatePropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updatePropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateUserPreferences",
+    "newSlug": "/references/settings/updateUserPreferences",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateUserPreferences/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateViewConfigurations",
+    "newSlug": "/references/settings/updateViewConfigurations",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateViewConfigurations/page.json"
+  },
+  {
+    "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.upsertPropertyLabels",
+    "newSlug": "/references/settings/upsertPropertyLabels",
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.upsertPropertyLabels/page.json"
+  },
+  {
+    "origSlug": "/references/settings/interfaces/settings.ISettingsModuleService",
+    "newSlug": "/references/settings",
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ISettingsModuleService/page.json"
+  },
+  {
+    "origSlug": "/references/settings_models/variables/settings_models.LayoutConfiguration",
+    "newSlug": "/references/settings/models/LayoutConfiguration",
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.LayoutConfiguration/page.json"
+  },
+  {
+    "origSlug": "/references/settings_models/variables/settings_models.PropertyLabel",
+    "newSlug": "/references/settings/models/PropertyLabel",
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.PropertyLabel/page.json"
+  },
+  {
+    "origSlug": "/references/settings_models/variables/settings_models.UserPreference",
+    "newSlug": "/references/settings/models/UserPreference",
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.UserPreference/page.json"
+  },
+  {
+    "origSlug": "/references/settings_models/variables/settings_models.ViewConfiguration",
+    "newSlug": "/references/settings/models/ViewConfiguration",
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.ViewConfiguration/page.json"
   },
   {
     "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.createStockLocations",

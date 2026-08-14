@@ -29,7 +29,7 @@ export async function generateTypes({
   )
 
   const plugins = await getResolvedPlugins(directory, configModule, true)
-  mergePluginModules(configModule, plugins)
+  mergePluginModules(configModule, plugins, directory)
 
   Object.keys(configModule.modules ?? {}).forEach((key) => {
     validateModuleName(key)

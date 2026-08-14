@@ -6,6 +6,9 @@ import { IAuthModuleService } from "@medusajs/framework/types"
 import { AuthEvents, Modules } from "@medusajs/framework/utils"
 import { AuthMfaDisableFactorRequestType } from "../../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<AuthMfaDisableFactorRequestType>,
   res: MedusaResponse

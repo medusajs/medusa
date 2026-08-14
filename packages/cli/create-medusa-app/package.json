@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "2.17.2",
+  "version": "2.19.0",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -14,13 +14,12 @@
     "test": "../../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
-    "@medusajs/deps": "2.17.2",
-    "@medusajs/telemetry": "2.17.2",
+    "@medusajs/deps": "2.19.0",
+    "@medusajs/telemetry": "2.19.0",
     "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "inquirer": "^8.0.0",
-    "nanoid": "^4.0.2",
     "node-emoji": "^2.0.2",
     "node-fetch": "^3.3.1",
     "open": "^9.1.0",
@@ -31,7 +30,7 @@
     "validator": "^13.15.22",
     "wait-on": "^9.0.1",
     "winston": "^3.9.0",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.4"
   },
   "engines": {
     "node": ">=14.16"

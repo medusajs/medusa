@@ -1,7 +1,7 @@
-import { existsSync, statSync } from "fs"
+import { existsSync, readFileSync, statSync } from "fs"
 import { mkdir, readdir, rm, writeFile } from "fs/promises"
 import path from "path"
-import type { Tags } from "types"
+import type { FrontMatter, Tags } from "types"
 import { findPageTitle, getFrontMatterSync } from "docs-utils"
 
 type ConfigItem = {
@@ -75,7 +75,9 @@ function tagNameToFileName(tagName: string): string {
 function tagNameToVarName(tagName: string): string {
   return tagName
     .toLowerCase()
-    .replaceAll(/\s([a-zA-Z\d])/g, (captured) => captured.toUpperCase().trim())
+    .replaceAll(/[\s-]([a-zA-Z\d])/g, (captured) =>
+      captured.toUpperCase().replaceAll(/[\s-]/g, "")
+    )
 }
 
 export async function generateTags(basePath?: string) {
@@ -87,16 +89,34 @@ export async function generateTags(basePath?: string) {
 
       for (const file of files) {
         const fullPath = path.join(currentDirPath, file)
-        if (!file.endsWith(".mdx") || file.startsWith("_")) {
+        const isMdx = file.endsWith(".mdx")
+        // References are now generated as a JSON doc-model (`page.json`)
+        // instead of MDX, so their frontmatter (including tags) lives inside
+        // the JSON rather than as YAML frontmatter.
+        const isReferenceJson = file === "page.json"
+
+        if ((!isMdx && !isReferenceJson) || file.startsWith("_")) {
           if (statSync(fullPath).isDirectory()) {
             await scanDirectory(fullPath, omitPath)
           }
           continue
         }
 
-        const frontmatter = getFrontMatterSync(fullPath)
         const fileBasename = path.basename(file)
         const itemBasePath = path.join(item.path, omitPath || "")
+
+        let frontmatter: FrontMatter
+        let pageTitle: string | undefined
+        if (isReferenceJson) {
+          const docPage = JSON.parse(readFileSync(fullPath, "utf-8"))
+          frontmatter = docPage.frontmatter || {}
+          // reference pages bake their final slug into the doc-model
+          frontmatter.slug = frontmatter.slug || docPage.slug
+          pageTitle = docPage.title
+        } else {
+          frontmatter = getFrontMatterSync(fullPath)
+          pageTitle = findPageTitle(fullPath)
+        }
 
         frontmatter.tags?.forEach((tag) => {
           const tagName = typeof tag === "string" ? tag : tag.name
@@ -108,9 +128,7 @@ export async function generateTags(basePath?: string) {
           tags[tagName].push({
             title:
               tagLabel ||
-              normalizePageTitle(
-                frontmatter.sidebar_label || findPageTitle(fullPath) || ""
-              ),
+              normalizePageTitle(frontmatter.sidebar_label || pageTitle || ""),
             path: `${BASE_URL}${item.tagBasePath}${
               frontmatter.slug ||
               fullPath.replace(itemBasePath, "").replace(`/${fileBasename}`, "")

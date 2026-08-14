@@ -170,7 +170,7 @@ class MedusaTestRunner {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
     const plugins = await getResolvedPlugins(this.cwd, configModule)
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, this.cwd)
 
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),
@@ -191,6 +191,17 @@ class MedusaTestRunner {
     await migrateDatabase(appLoader)
     await syncLinks(appLoader, this.modulesConfigPath, container, logger)
     await clearInstances()
+
+    // The app is booted here as well as by `startApp` below, and the two share a
+    // container, so the Search Module built here is the one the test ends up with.
+    // The definitions have to be registered before that, the same way the http
+    // loader does it. `clearInstances` empties the registry, hence the placement.
+    const { loadSearchIndexes } = require("@medusajs/medusa/loaders/search")
+    await loadSearchIndexes({
+      plugins: await getResolvedPlugins(this.cwd, configModule, true),
+      configModule,
+      logger,
+    })
 
     this.loadedApplication = await appLoader.load()
 

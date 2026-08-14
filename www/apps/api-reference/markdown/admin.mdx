@@ -7,6 +7,7 @@ import {
   DividedMarkdownCode
 } from "@/layouts/DividedMarkdown/Sections"
 import Section from "@/components/Section"
+import ViewAsMarkdown from "@/components/ViewAsMarkdown"
 
 import ClientLibraries from "./client-libraries.mdx"
 
@@ -18,7 +19,9 @@ import ClientLibraries from "./client-libraries.mdx"
 
 <DividedMarkdownContent>
 
-<H1 className={"!h2-docs scroll-m-[184px] lg:scroll-m-[264px]"} id="introduction">Medusa V2 Admin API Reference</H1>
+<H1 className={"scroll-m-[184px] lg:scroll-m-[264px] !mb-0"} id="introduction">Medusa V2 Admin API Reference</H1>
+
+<ViewAsMarkdown path="/admin" className="mb-1" />
 
 This API reference includes Medusa v2's Admin APIs, which are REST APIs exposed by the Medusa application. They are used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
 
@@ -67,7 +70,7 @@ Use a JWT token in a request's bearer authorization header to send authenticated
 
 #### How to Obtain the JWT Token
 
-To obtain a JWT token, send a request to the [authentication route](#auth_postactor_typeauth_provider) passing it the user's email and password in the request body.
+To obtain a JWT token, send a request to the [authentication route](https://docs.medusajs.com/api/admin/auth/authenticate-user) passing it the user's email and password in the request body.
 
 </DividedMarkdownContent>
 
@@ -177,7 +180,7 @@ Use a user's secret API Token to send authenticated requests.
 
 #### How to Create an API Token for a User
 
-Create the API key token either from the [Medusa Admin](!user-guide!/settings/developer/secret-api-keys) or using the [Create API Key API Route](#api-keys_postapikeys).
+Create the API key token either from the [Medusa Admin](!user-guide!/settings/developer/secret-api-keys) or using the [Create API Key API Route](https://docs.medusajs.com/api/admin/api-keys/create-api-key).
 
 <Note>
 
@@ -294,7 +297,7 @@ To obtain a cookie session ID, you must have a [JWT token for bearer authenticat
 
 Then, if you're using the JS SDK, make sure the `auth.type` configuration is set to `session`, as explained in the [JS SDK configurations](!resources!/js-sdk#js-sdk-configurations) guide. The `auth.login` method will handle setting the session cookie and passing it in subsequent requests.
 
-If you're not using the JS SDK, send a request to the [session authentication API route](#auth_postsession). To view the cookie session ID, pass the `-v` option to the `curl` command.
+If you're not using the JS SDK, send a request to the [session authentication API route](https://docs.medusajs.com/api/admin/auth/set-authentication-session). To view the cookie session ID, pass the `-v` option to the `curl` command.
 
 </DividedMarkdownContent>
 
@@ -895,6 +898,59 @@ curl 'localhost:9000/admin/products?fields=variants.title,variants.sku,options.t
 </CodeTabs>
 
 This returns the variants and options of each product, but the variants only have their `id`, `title`, and `sku` fields, and the options only have their `id` and `title` fields. The `id` is always included.
+
+</DividedMarkdownCode>
+
+</DividedMarkdownLayout>
+
+<DividedMarkdownLayout addYSpacing codeContentClassName="mt-3">
+
+<DividedMarkdownContent>
+
+### Select Nested Relations
+
+A relation can have relations of its own. To select a nested relation, chain the relation names with a dot (`.`), prefixing the deepest relation with `*` to select all its fields. For example, `*variants.prices`.
+
+</DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
+<DividedMarkdownLayout addYSpacing>
+
+<DividedMarkdownContent>
+
+Prefixing a relation with `*` only selects that relation's own fields, not its nested relations. So, to retrieve a nested relation, you must reference it explicitly through its parent, as shown in the example.
+
+You can chain more relations to select deeper levels, such as `*items.variant.product`.
+
+</DividedMarkdownContent>
+
+<DividedMarkdownCode>
+
+<CodeTabs group="request-examples">
+
+<CodeTab label="JS SDK" value="js-sdk">
+
+```js title="Select nested relations"
+sdk.admin.product.list({
+  fields: "*variants.prices"
+})
+```
+
+</CodeTab>
+
+<CodeTab label="cURL" value="curl">
+
+```bash title="Select nested relations"
+curl 'localhost:9000/admin/products?fields=*variants.prices' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+</CodeTab>
+
+</CodeTabs>
+
+This returns the variants of each product, each with its `prices` relation populated.
 
 </DividedMarkdownCode>
 

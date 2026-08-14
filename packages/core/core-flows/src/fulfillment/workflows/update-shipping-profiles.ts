@@ -16,7 +16,7 @@ export const updateShippingProfilesWorkflowId =
   "update-shipping-profiles-workflow"
 /**
  * This workflow updates one or more shipping profiles. It's used by the
- * [Update Shipping Profiles Admin API Route](https://docs.medusajs.com/api/admin#shipping-profiles_postshippingprofilesid).
+ * [Update Shipping Profiles Admin API Route](https://docs.medusajs.com/api/admin/shipping-profiles/update-a-shipping-profile).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * update shipping profiles within your custom flows.

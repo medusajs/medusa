@@ -292,7 +292,7 @@ export const OrderBalanceSettlementForm = ({
                             decimalScale={currency.decimal_digits}
                             symbol={currency.symbol_native}
                             code={currency.code}
-                            value={field.value.value}
+                            value={field.value?.value}
                             onValueChange={(_value, _name, values) =>
                               onChange({
                                 value: values?.value ?? "",
@@ -350,7 +350,7 @@ export const OrderBalanceSettlementForm = ({
                             decimalScale={currency.decimal_digits}
                             symbol={currency.symbol_native}
                             code={currency.code}
-                            value={field.value.value}
+                            value={field.value?.value}
                             onValueChange={(_value, _name, values) => {
                               onChange({
                                 value: values?.value ?? "",

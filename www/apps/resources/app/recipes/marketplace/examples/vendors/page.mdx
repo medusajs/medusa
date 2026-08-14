@@ -54,7 +54,7 @@ This guide provides an example of an approach to implement marketplaces. You're 
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -1157,7 +1157,7 @@ export default defineMiddlewares({
 })
 ```
 
-Similar to before, you apply the `validateAndTransformBody` middleware on the `POST /vendors/products` API route. You pass to the middleware the `AdminCreateProduct` schema that Medusa uses to validate the request body of the [Create Product Admin API Route](!api!/admin#products_postproducts).
+Similar to before, you apply the `validateAndTransformBody` middleware on the `POST /vendors/products` API route. You pass to the middleware the `AdminCreateProduct` schema that Medusa uses to validate the request body of the [Create Product Admin API Route](!api!/admin/products/create-product).
 
 ### Test it Out
 

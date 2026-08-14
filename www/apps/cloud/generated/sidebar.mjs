@@ -5,14 +5,12 @@ export const generatedSidebars = [
     "items": [
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Getting Started",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/",
             "title": "Introduction",
@@ -20,7 +18,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/sign-up",
             "title": "Sign Up",
@@ -28,7 +25,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/first-project",
             "title": "Create First Project",
@@ -36,7 +32,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/faq",
             "title": "FAQ",
@@ -44,7 +39,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/comparison",
             "title": "Cloud vs Self Hosting",
@@ -52,7 +46,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Command Palette",
             "path": "/command-palette",
@@ -60,24 +53,28 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Navigation Styles",
             "path": "/navigation",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
             "children": []
           }
         ]
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Basics",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
@@ -85,14 +82,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Projects",
             "path": "/projects",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Prerequisites",
                 "path": "/projects/prerequisites",
@@ -100,7 +95,13 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
+                "type": "link",
+                "title": "Clone Project Locally",
+                "path": "/projects/clone-locally",
+                "children": []
+              },
+              {
+                "loaded": true,
                 "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
@@ -110,14 +111,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Environments",
             "path": "/environments",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Long-Lived",
                 "path": "/environments/long-lived",
@@ -125,7 +124,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Preview",
                 "path": "/environments/preview",
@@ -133,7 +131,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
@@ -141,7 +138,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Subdomains",
                 "path": "/environments/subdomains",
@@ -149,7 +145,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Custom Domains",
                 "path": "/environments/custom-domains",
@@ -157,7 +152,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "ref",
                 "title": "Monitoring",
                 "path": "/monitoring",
@@ -167,14 +161,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Deployments",
             "path": "/deployments",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Access Deployment",
                 "path": "/deployments/access",
@@ -182,7 +174,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Fix with AI",
                 "path": "/deployments/fix-with-ai",
@@ -190,7 +181,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Troubleshooting",
                 "path": "/deployments/troubleshooting",
@@ -200,7 +190,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Access Keys",
             "path": "/access-keys",
@@ -208,7 +197,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Account",
             "path": "/user",
@@ -218,14 +206,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "CLI",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Installation",
             "path": "/cli",
@@ -234,7 +220,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "For Agents",
             "path": "/cli/agents",
@@ -242,7 +227,14 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/cli/changelog",
+            "hideFromChildItems": true,
+            "children": []
+          },
+          {
+            "loaded": true,
             "type": "link",
             "title": "login",
             "path": "/cli/commands/login",
@@ -250,7 +242,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "signup",
             "path": "/cli/commands/signup",
@@ -258,7 +249,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "use",
             "path": "/cli/commands/use",
@@ -266,7 +256,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "whoami",
             "path": "/cli/commands/whoami",
@@ -274,7 +263,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "organizations",
             "path": "/cli/commands/organizations",
@@ -282,7 +270,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "projects",
             "path": "/cli/commands/projects",
@@ -290,7 +277,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "environments",
             "path": "/cli/commands/environments",
@@ -298,7 +284,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "deployments",
             "path": "/cli/commands/deployments",
@@ -306,7 +291,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "variables",
             "path": "/cli/commands/variables",
@@ -314,7 +298,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "logs",
             "path": "/cli/commands/logs",
@@ -322,7 +305,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "local",
             "path": "/cli/commands/local",
@@ -330,7 +312,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "version",
             "path": "/cli/commands/version",
@@ -338,7 +319,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "logout",
             "path": "/cli/commands/logout",
@@ -348,14 +328,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Resources",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Storefront",
             "path": "/storefront",
@@ -363,7 +341,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Database",
             "path": "/database",
@@ -371,7 +348,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Redis",
             "path": "/redis",
@@ -379,7 +355,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "S3",
             "path": "/s3",
@@ -387,7 +362,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Cache",
             "path": "/cache",
@@ -395,14 +369,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Emails",
             "path": "/emails",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "React Email Templates",
                 "path": "/emails/react-email",
@@ -414,14 +386,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Plugins",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Loyalty",
             "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
@@ -433,7 +403,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Draft Orders",
             "path": "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
@@ -447,14 +416,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Billing",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Overview",
             "path": "/billing",
@@ -462,7 +429,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Plans & Pricing",
             "path": "/pricing",
@@ -470,7 +436,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Manage Plans",
             "path": "/billing/plans",
@@ -478,7 +443,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Manage Billing Details",
             "path": "/billing/manage",
@@ -488,14 +452,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Monitoring",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Logs",
             "path": "/logs",
@@ -503,7 +465,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Notifications",
             "path": "/notifications",
@@ -511,7 +472,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Usage",
             "path": "/usage",
@@ -519,14 +479,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Performance",
             "path": "/monitoring",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Servers",
                 "path": "/monitoring/servers",
@@ -534,7 +492,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Workers",
                 "path": "/monitoring/workers",
@@ -542,7 +499,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "HTTP",
                 "path": "/monitoring/http",
@@ -554,14 +510,48 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
+        "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/webhooks/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
         "type": "category",
         "title": "Networking",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "IP Addresses",
             "path": "/ip-addresses",
@@ -571,14 +561,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Best Practices",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Update Medusa",
             "path": "/update-medusa",
@@ -586,7 +574,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Connect Storefront",
             "path": "/connect-storefront",

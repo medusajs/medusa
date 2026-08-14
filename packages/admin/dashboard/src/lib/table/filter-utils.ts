@@ -76,17 +76,17 @@ export function generateFiltersFromColumns(
       ]
     }
 
-    if (column.filter?.relationship && relationshipOptions) {
-      const options = relationshipOptions[column.field]
+    if (column.filter?.relationship) {
+      const options = relationshipOptions?.[column.field]
       if (options) {
         filterConfig.options = options
         filterConfig.searchable = true
+      } else {
+        filterConfig.type = "string"
       }
     }
 
-    // For number filters, enable operators if the API provides them
-    // Note: DataTable only supports includeOperators boolean, not custom operator lists
-    if (filterType === "number" && column.filter?.operators) {
+    if (filterType === "number") {
       filterConfig.includeOperators = true
     }
 

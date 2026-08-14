@@ -16,6 +16,14 @@ const productJoinerConfig: ModuleJoinerConfig = {
       __internal: {
         crossjoinable: ["id", "title", "handle"],
         tableName: "product",
+        relations: {
+          variants: {
+            entity: "ProductVariant",
+            foreignKey: "product_id",
+            foreignKeyOwner: "target",
+            isList: true,
+          },
+        },
       },
       args: {
         methodSuffix: "Products",
@@ -46,9 +54,29 @@ const pricingJoinerConfig: ModuleJoinerConfig = {
       __internal: {
         crossjoinable: ["id", "currency_code"],
         tableName: "price_set",
+        relations: {
+          prices: {
+            entity: "Price",
+            foreignKey: "price_set_id",
+            foreignKeyOwner: "target",
+            isList: true,
+          },
+        },
       },
       args: {
         methodSuffix: "PriceSets",
+      },
+    },
+    {
+      name: ["price", "prices"],
+      entity: "Price",
+      // price_list_id mirrors a belongsTo foreign key column.
+      __internal: {
+        crossjoinable: ["id", "amount", "currency_code", "price_list_id"],
+        tableName: "price",
+      },
+      args: {
+        methodSuffix: "Prices",
       },
     },
   ],
@@ -114,6 +142,11 @@ const productVariantPriceSetLink: ModuleJoinerConfig = {
       entity: "ProductVariant",
       fieldAlias: {
         price_set: "price_set_link.price_set",
+        prices: {
+          path: "price_set_link.price_set.prices",
+          isList: true,
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
         calculated_price: {
           path: "price_set_link.price_set.calculated_price",
           forwardArgumentsOnPath: ["price_set_link.price_set"],

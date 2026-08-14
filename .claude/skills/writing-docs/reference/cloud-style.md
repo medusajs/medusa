@@ -124,15 +124,29 @@ import { Table } from "docs-ui"
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Column</Table.HeaderCell>
+      <Table.HeaderCell>
+        Column
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.Cell>Value</Table.Cell>
+      <Table.Cell>
+        Value
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
+```
+
+Put each cell's content on its own line, indented one level deeper than its tag. When a cell's content uses markdown, such as inline code or a link, surround it with blank lines so MDX parses it:
+
+```mdx
+      <Table.Cell>
+
+      [`deployment.created`](#deploymentcreated)
+
+      </Table.Cell>
 ```
 
 ## Cross-Project Links
@@ -284,6 +298,146 @@ Do not update CLI docs for internal refactors that don't change the CLI's extern
 
 ---
 
+## Cloud Changelog
+
+Cloud has three separate changelogs, and each change belongs to exactly one of them:
+
+| Changelog | File | Covers |
+|---|---|---|
+| Cloud | `www/apps/cloud/app/changelog/page.mdx` | Dashboard changes |
+| Cloud CLI | `www/apps/cloud/app/cli/changelog/page.mdx` | `mcloud` releases |
+| Webhooks | `www/apps/cloud/app/webhooks/changelog/page.mdx` | Webhook event changes |
+
+The Cloud changelog links to the other two at the top of the page, and never repeats their entries.
+
+Dashboard changes are **dated, not versioned**, since the dashboard has no user-facing version number.
+
+- Each entry uses a `## {Month} {Day}, {Year}` heading, for example `## August 10, 2026`
+- Entries are newest-first, directly below the intro, and separated by `---` dividers
+- Under each date, add one bullet point per change, written in the present tense from the user's perspective
+- When a change replaces earlier behavior, add a sentence on what it was before, as in "Previously, the card kept showing a loading preview"
+- If a documentation page covers the change, link to it in the bullet point with a relative path, such as `[Environment Variables](../environments/environment-variables/page.mdx)`
+- If an entry for that date already exists, merge the bullet points into it instead of adding a duplicate
+
+Only functional and design changes belong in the changelog:
+
+| Include | Exclude |
+|---|---|
+| New functionality, such as a new page, setting, or action | Copy changes, such as a renamed label or an added note |
+| Changed behavior, such as a new default, validation, or limit | Visual polish that doesn't change behavior |
+| New or removed form inputs, and why the input was added | Bug fixes with no user-visible change |
+| Design and navigation changes, such as a new navigation style | Internal or performance work |
+
+---
+
+## Webhooks Documentation
+
+Cloud's webhook events are documented on **two pages only**:
+
+| Page | File |
+|---|---|
+| Events reference | `www/apps/cloud/app/webhooks/page.mdx` |
+| Changelog | `www/apps/cloud/app/webhooks/changelog/page.mdx` |
+
+Never create a page per event. Every event is a section on the single reference page.
+
+### Reference Page Structure
+
+```mdx
+import { Note, Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Webhooks`,
+}
+
+# {metadata.title}
+
+## Webhooks Overview      → what webhooks are, how Medusa delivers them
+## Delivery Details       → headers, signature verification, retries
+## Webhook Events                 → summary table linking to every event's section
+## Webhook <Resource> Events      → one section per resource, holding its events
+### <event name>          → one subsection per event
+```
+
+Events are grouped by the resource they belong to, taken from the part of the event name before the dot. For example, `build.created` and `build.updated` both live under `## Build Events`. Separate resource groups with `---` dividers, but not the events within a group.
+
+Each resource group follows this shape:
+
+````mdx
+## Deployment Events
+
+Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
+
+### deployment.created
+
+Medusa sends this event when it creates a deployment for an environment.
+
+<Note title="Changes">
+
+- Medusa removed the `data.commit_sha` property on August 4, 2026.
+
+</Note>
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "deployment",
+      type: "`object`",
+      description: `The details of the deployment.`,
+    },
+  ]}
+  sectionTitle="deployment.created"
+/>
+
+#### Example Payload
+
+```json
+{
+  "type": "deployment.created"
+}
+```
+
+### deployment.updated
+
+Medusa sends this event when a deployment finishes.
+````
+
+**Rules:**
+
+- The `##` group heading is the resource in title case, followed by "Events", such as `## Build Events`. It starts with one sentence covering the whole group
+- The `###` heading is the event name exactly as delivered, in code-free plain text (`### deployment.created`, not `` ### `deployment.created` ``), so anchors stay stable
+- Order groups alphabetically by their heading, and order events alphabetically within a group. The `## Events` table follows the same order
+- `sectionTitle` on `TypeList` matches the event name
+- `TypeList` `type` values are wrapped in backticks inside a double-quoted string (`` type: "`string`" ``), and `description` values use template literals
+- Nest object properties with the `children` array instead of flattening them into `data.x` names
+- The `## Events` table lists every event, across all groups, with a link to its section anchor. Anchors strip dots, so `deployment.created` links to `#deploymentcreated`
+- When you remove the last event of a group, remove the group's `##` heading and its intro too
+
+### Changelog Page
+
+Webhook changes are **dated, not versioned**. Never write a version number on either page.
+
+- Each entry uses a `## {Month} {Day}, {Year}` heading, for example `## August 4, 2026`
+- Entries are newest-first, directly below the intro
+- Under each date, use a `### <event name>` subsection with bullet points describing what changed
+- Use a `### Delivery` subsection for changes that aren't tied to a single event, such as header, signature, or retry changes
+- If an entry for that date already exists, merge into it instead of adding a duplicate
+
+### Inline Change Notes
+
+When an event's payload changes, add a `<Note title="Changes">` block after the section intro of that event, listing the change and the date it went live. Write these actively, since Vale flags passive voice:
+
+```mdx
+- Medusa removed the `data.commit_sha` property on August 4, 2026.
+- Medusa added the `data.build_id` property on August 4, 2026.
+```
+
+Keep previous entries in the note and add new bullet points at the top.
+
+---
+
 ## When to Update Cloud Docs
 
 Update or create cloud docs when a dashboard change:
@@ -296,6 +450,8 @@ Update or create cloud docs when a dashboard change:
 - Adds a new monitoring or notification option
 
 Or when a CLI change adds, modifies, or removes commands, flags, or output formats (see the [CLI Documentation](#cli-documentation) section above).
+
+Every dashboard change in that list also gets a changelog entry (see the [Cloud Changelog](#cloud-changelog) section above).
 
 ## Example Page
 

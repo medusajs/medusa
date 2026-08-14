@@ -408,6 +408,7 @@ const GIFT_CARD_INJECTION_ZONES = [
   "gift_card.details",
   "gift_card.details.side",
   "gift_card.list",
+  "gift_card.list.side",
 ] as const
 
 const LEGACY_GIFT_CARD_PRODUCT_INJECTION_ZONES = [

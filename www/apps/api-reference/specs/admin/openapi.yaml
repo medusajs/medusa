@@ -587,6 +587,7 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/sales-channel
     x-associatedSchema:
       $ref: ./components/schemas/AdminSalesChannel.yaml
+  - name: Search
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingOptionType.yaml
@@ -778,6 +779,19 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminUser.yaml
   - name: Views
+    description: >
+      A view configuration is a saved data-table view for an entity, such as
+      products or orders. It lets admin users customize how a table shows its
+      data, then save that customization as a reusable view.
+
+      These API routes allow admin users to manage the system default and
+      personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: >-
+        https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminViewConfiguration.yaml
   - name: Workflows Executions
     description: >
       These API routes allow you to track workflow executions in your Medusa
@@ -940,6 +954,8 @@ paths:
     $ref: paths/admin_index_sync.yaml
   /admin/inventory-items:
     $ref: paths/admin_inventory-items.yaml
+  /admin/inventory-items/export:
+    $ref: paths/admin_inventory-items_export.yaml
   /admin/inventory-items/location-levels/batch:
     $ref: paths/admin_inventory-items_location-levels_batch.yaml
   /admin/inventory-items/{id}:
@@ -1027,6 +1043,8 @@ paths:
     $ref: paths/admin_orders_{id}_transfer.yaml
   /admin/orders/{id}/transfer/cancel:
     $ref: paths/admin_orders_{id}_transfer_cancel.yaml
+  /admin/orders/{id}/transfer/guest:
+    $ref: paths/admin_orders_{id}_transfer_guest.yaml
   /admin/payment-collections:
     $ref: paths/admin_payment-collections.yaml
   /admin/payment-collections/{id}:
@@ -1195,6 +1213,8 @@ paths:
     $ref: paths/admin_sales-channels_{id}.yaml
   /admin/sales-channels/{id}/products:
     $ref: paths/admin_sales-channels_{id}_products.yaml
+  /admin/search:
+    $ref: paths/admin_search.yaml
   /admin/shipping-option-types:
     $ref: paths/admin_shipping-option-types.yaml
   /admin/shipping-option-types/{id}:
@@ -1310,6 +1330,8 @@ paths:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:
     $ref: paths/auth_token_refresh.yaml
+  /auth/user/providers:
+    $ref: paths/auth_user_providers.yaml
   /auth/user/{auth_provider}:
     $ref: paths/auth_user_{auth_provider}.yaml
   /auth/user/{auth_provider}/callback:
@@ -1320,6 +1342,8 @@ paths:
     $ref: paths/auth_user_{auth_provider}_reset-password.yaml
   /auth/user/{auth_provider}/update:
     $ref: paths/auth_user_{auth_provider}_update.yaml
+  /auth/{auth_provider}/user:
+    $ref: paths/auth_{auth_provider}_user.yaml
 components:
   securitySchemes:
     api_token:

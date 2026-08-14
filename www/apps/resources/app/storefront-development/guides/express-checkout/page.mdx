@@ -80,7 +80,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -1276,7 +1276,7 @@ useEffect(() => {
 // TODO set selected variant
 ```
 
-In the `useEffect` hook, you use the JS SDK to send a request to the [List Products](!api!/store#products_getproducts) API route, passing the following query parameters:
+In the `useEffect` hook, you use the JS SDK to send a request to the [List Products](!api!/store/products/list-products) API route, passing the following query parameters:
 
 - `handle`: Filter the list of products with the unique handler.
 - `region_id`: Set the selected region, which is necessary to retrieve the correct pricing.
@@ -1284,7 +1284,7 @@ In the `useEffect` hook, you use the JS SDK to send a request to the [List Produ
 
 <Note title="Tip">
 
-Most of Medusa's API routes accept the `fields` query parameter, allowing you to specify the fields you need to retrieve. Learn more about its usage in [this documentation](!api!/store#select-fields-and-relations)
+Most of Medusa's API routes accept the `fields` query parameter, allowing you to specify the fields you need to retrieve. Learn more about its usage in [this documentation](!api!/store/select-fields-and-relations)
 
 </Note>
 
@@ -2043,7 +2043,7 @@ useEffect(() => {
 // TODO set calculated prices
 ```
 
-In the `useEffect` hook, you use the JS SDK to send a request to the [List Shipping Options of a Cart](!api!/store#shipping-options_getshippingoptions) API route, passing the cart's ID as a query parameter. The API route returns a list of shipping options, which you set in the `shippingOptions` state variable.
+In the `useEffect` hook, you use the JS SDK to send a request to the [List Shipping Options of a Cart](!api!/store/shipping-options/list-shipping-options-for-cart) API route, passing the cart's ID as a query parameter. The API route returns a list of shipping options, which you set in the `shippingOptions` state variable.
 
 ### Retrieve Calculated Prices
 
@@ -2052,7 +2052,7 @@ Shipping options have a `price_type` property whose value is either:
 - `flat_rate`: This value means the shipping option has a fixed price.
 - `calculated`: This value means the shipping option's price is calculated based on the cart's context, such as the shipping address or items in the carts. This is useful when the [fulfillment provider](../../../commerce-modules/fulfillment/fulfillment-provider/page.mdx) that's associated with a shipping option calculates the price based on these conditions.
 
-So, to retrieve the prices of calculated shipping options, you use Medusa's [Calculate Shipping Option Price](!api!/store#shipping-options_postshippingoptionsidcalculate) API route.
+So, to retrieve the prices of calculated shipping options, you use Medusa's [Calculate Shipping Option Price](!api!/store/shipping-options/calculate-shipping-option-price) API route.
 
 Replace the `TODO` in the `Shipping` component with the following:
 
@@ -2379,7 +2379,7 @@ useEffect(() => {
 // TODO handle provider selection
 ```
 
-In the `useEffect` hook, you use the JS SDK to send a request to the [List Payment Providers](!api!/store#payment-providers_getpaymentproviders) API route, passing the cart's region ID as a query parameter.
+In the `useEffect` hook, you use the JS SDK to send a request to the [List Payment Providers](!api!/store/payment-providers/list-payment-providers) API route, passing the cart's region ID as a query parameter.
 
 The API route returns a list of payment providers, which you set in the `paymentProviders` state variable. These are the payment providers you'll allow the customer to select from.
 
@@ -2505,7 +2505,7 @@ const placeOrder = () => {
 // TODO render payment step
 ```
 
-You define a `placeOrder` function that uses the JS SDK to complete the cart by sending a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete). If the cart is successfully completed, you unset the cart and redirect the customer to the confirmation page, which you'll implement later.
+You define a `placeOrder` function that uses the JS SDK to complete the cart by sending a request to the [Complete Cart API route](!api!/store/carts/complete-cart). If the cart is successfully completed, you unset the cart and redirect the customer to the confirmation page, which you'll implement later.
 
 ### Render Payment Step
 

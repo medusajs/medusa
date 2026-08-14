@@ -14,7 +14,7 @@ export type CancelFulfillmentWorkflowInput = {
 export const cancelFulfillmentWorkflowId = "cancel-fulfillment-workflow"
 /**
  * This workflow cancels a fulfillment. It's used by the
- * [Cancel Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidcancel).
+ * [Cancel Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/fulfillments/cancel-a-fulfillment).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * cancel a fulfillment within your custom flows.

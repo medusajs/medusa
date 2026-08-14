@@ -2,14 +2,20 @@ import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useProductTag } from "../../../hooks/api"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { ProductTagGeneralSection } from "./components/product-tag-general-section"
 import { ProductTagProductSection } from "./components/product-tag-product-section"
+import { ConfigurableProductTagProductSection } from "./components/product-tag-product-section/configurable-product-tag-product-section"
 import { productTagLoader } from "./loader"
 
 export const ProductTagDetail = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof productTagLoader>
@@ -43,7 +49,13 @@ export const ProductTagDetail = () => {
               <ProductTagGeneralSection productTag={product_tag} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductTagProductSection">
-              <ProductTagProductSection productTag={product_tag} />
+              {isViewConfigEnabled ? (
+                <ConfigurableProductTagProductSection
+                  productTag={product_tag}
+                />
+              ) : (
+                <ProductTagProductSection productTag={product_tag} />
+              )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_tag, { permissions: false })}
           </>

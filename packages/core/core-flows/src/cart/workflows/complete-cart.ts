@@ -73,7 +73,7 @@ const TWO_MINUTES = 60 * 2
 export const completeCartWorkflowId = "complete-cart"
 /**
  * This workflow completes a cart and places an order for the customer. It's executed by the
- * [Complete Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidcomplete).
+ * [Complete Cart Store API Route](https://docs.medusajs.com/api/store/carts/complete-cart).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around completing a cart.
  * For example, in the [Subscriptions recipe](https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard#create-workflow),
@@ -109,6 +109,25 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * If you need to change the cart before completing it, do so in a separate step or workflow that runs before `completeCartWorkflow`,
  * and refresh the cart's payment collection so that the payment session's amount matches the new total.
+ *
+ * ## Payment Authorization and Failure Handling
+ *
+ * The workflow creates the order first, then authorizes the cart's payment session as its last operation. This ordering minimizes the
+ * window in which an authorized or captured payment must be rolled back: only recording the order's transactions, running the
+ * `orderCreated` hook, and creating links happen after the payment is authorized.
+ *
+ * If the workflow fails after the payment was authorized or captured, its compensation reverts the payment automatically, so a completion
+ * failure doesn't leave an orphaned payment:
+ *
+ * - An authorized payment that wasn't captured is canceled.
+ * - A captured payment is refunded, unless a later or concurrent completion attempt already placed an order for the same cart. In that
+ * case, the refund is skipped so that the successful order keeps its payment.
+ *
+ * Because the payment is reverted before the workflow returns, a caller doesn't need to issue a refund itself when completion fails. When
+ * this workflow is executed by the Complete Cart Store API Route, the route distinguishes the two outcomes with a `type` field in its
+ * response: a value of `order` means the cart was completed and an order was placed, whereas `cart` means completion failed and the error
+ * is set in the response's `error` field. So, a storefront verifies whether an order was created by checking that the response's `type` is
+ * `order`, rather than assuming a payment was charged.
  *
  * ## Cart Completion Idempotency
  *

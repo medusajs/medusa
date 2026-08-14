@@ -414,7 +414,7 @@ Learn more about product variant's inventory management in [this guide](../varia
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `inventory_items.*` in `fields`:
+To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -423,11 +423,11 @@ To retrieve the inventory items of a product variant with [Query](!docs!/learn/f
 const { data: variants } = await query.graph({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
 
   </CodeTab>
@@ -441,15 +441,58 @@ import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 const { data: variants } = useQueryGraphStep({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
 
   </CodeTab>
 </CodeTabs>
+
+You can also traverse from the `product` entity through its variants to their inventory items:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+  </CodeTab>
+</CodeTabs>
+
+<Note>
+
+Creating a product variant with `manage_inventory` enabled creates an inventory item automatically, but does not create inventory levels. You must create inventory levels separately to set the stocked quantity at a specific location. Refer to the [Inventory Module's documentation](../../inventory/page.mdx) for details.
+
+</Note>
 
 ### Manage with Link
 

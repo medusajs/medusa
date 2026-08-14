@@ -2,7 +2,7 @@ export const generatedEditDates = {
   "app/tips/languages/page.mdx": "2026-07-10T06:21:41.949Z",
   "app/tips/bulk-editor/page.mdx": "2026-07-10T06:21:38.367Z",
   "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
-  "app/settings/sales-channels/page.mdx": "2025-05-30T13:31:09.754Z",
+  "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-06-09T08:36:17.375Z",
   "app/page.mdx": "2025-02-26T14:18:27.755Z",
   "app/settings/page.mdx": "2025-10-09T07:25:58.554Z",
@@ -23,7 +23,7 @@ export const generatedEditDates = {
   "app/customers/groups/page.mdx": "2025-05-30T13:26:56.820Z",
   "app/orders/manage/page.mdx": "2026-04-10T06:16:09.853Z",
   "app/orders/returns/page.mdx": "2025-10-09T07:33:10.189Z",
-  "app/inventory/page.mdx": "2025-05-30T13:27:31.179Z",
+  "app/inventory/page.mdx": "2026-07-28T15:36:20.180Z",
   "app/orders/claims/page.mdx": "2026-04-10T21:41:50.630Z",
   "app/orders/fulfillments/page.mdx": "2025-10-30T11:49:21.135Z",
   "app/customers/page.mdx": "2025-05-30T13:27:11.744Z",
@@ -71,5 +71,8 @@ export const generatedEditDates = {
   "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
   "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
   "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z",
-  "app/tips/layout-configurations/page.mdx": "2026-07-10T06:55:25.191Z"
+  "app/tips/layout-configurations/page.mdx": "2026-07-23T12:50:25.531Z",
+  "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
+  "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
+  "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z"
 }

@@ -2,11 +2,9 @@
  * @oas [post] /admin/invites/accept
  * operationId: PostInvitesAccept
  * summary: Accept Invite
- * description: >
+ * description: |
  *   Accept an invite and create a new user.
- * 
- *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`). The user can
- *   then authenticate using the `/auth/user/emailpass` API route.
+ *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`). The user can then authenticate using the `/auth/user/emailpass` API route.
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -44,7 +42,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |-
- *       curl -X POST '{backend_url}/admin/invites/accept' \
+ *       curl -X POST '{backend_url}/admin/invites/accept?token={invite_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "Lila_Zemlak@hotmail.com",
@@ -111,6 +109,27 @@
  *       ```
  *     description: Emitted when an invite is accepted.
  *     deprecated: false
+ * parameters:
+ *   - name: token
+ *     in: query
+ *     description: The invite's token.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       title: token
+ *       description: The invite's token.
+ *   - name: fields
+ *     in: query
+ *     description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. Without prefix it will replace the entire default fields.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: fields
+ *       description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. Without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * 
 */
 

@@ -43,7 +43,12 @@ export const sidebar = [
             type: "link",
             title: "Navigation Styles",
             path: "/navigation",
-          }
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/changelog",
+          },
         ],
       },
       {
@@ -65,6 +70,11 @@ export const sidebar = [
                 type: "link",
                 title: "Prerequisites",
                 path: "/projects/prerequisites",
+              },
+              {
+                type: "link",
+                title: "Clone Project Locally",
+                path: "/projects/clone-locally",
               },
               {
                 type: "link",
@@ -141,7 +151,7 @@ export const sidebar = [
             type: "link",
             title: "Account",
             path: "/user",
-          }
+          },
         ],
       },
       {
@@ -159,6 +169,12 @@ export const sidebar = [
             type: "link",
             title: "For Agents",
             path: "/cli/agents",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/cli/changelog",
+            hideFromChildItems: true,
           },
           {
             type: "link",
@@ -364,6 +380,33 @@ export const sidebar = [
                 path: "/monitoring/http",
               },
             ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
+          },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/webhooks/changelog",
           },
         ],
       },

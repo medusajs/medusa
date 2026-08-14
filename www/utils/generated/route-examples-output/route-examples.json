@@ -311,6 +311,9 @@
   "POST /admin/inventory-items/{id}": {
     "js-sdk": "sdk.admin.inventoryItem.update(\"iitem_123\", {\n  sku: \"SHIRT\"\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item)\n})"
   },
+  "POST /admin/inventory-items/export": {
+    "js-sdk": "sdk.admin.inventoryItem.export({})\n.then(({ transaction_id }) => {\n  console.log(transaction_id)\n})"
+  },
   "GET /admin/inventory-items": {
     "js-sdk": "sdk.admin.inventoryItem.list()\n.then(({ inventory_items, count, limit, offset }) => {\n  console.log(inventory_items)\n})"
   },
@@ -383,6 +386,9 @@
   "POST /admin/orders/{id}/transfer": {
     "js-sdk": "sdk.admin.order.requestTransfer(\"order_123\", {\n  customer_id: \"cus_123\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
   },
+  "POST /admin/orders/{id}/transfer/guest": {
+    "js-sdk": "sdk.admin.order.transferToGuest(\"order_123\", {\n  email: \"customer@example.com\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
+  },
   "POST /admin/orders/{id}/transfer/cancel": {
     "js-sdk": "sdk.admin.order.cancelTransfer(\"order_123\")\n.then(({ order }) => {\n  console.log(order)\n})"
   },
@@ -423,7 +429,7 @@
     "js-sdk": "sdk.admin.orderEdit.initiateRequest({\n  order_id: \"order_123\"\n})\n.then(({ order_change }) => {\n  console.log(order_change)\n})"
   },
   "POST /admin/order-edits/{id}/request": {
-    "js-sdk": "sdk.admin.orderEdit.request(\"order_123\")\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
+    "js-sdk": "sdk.admin.orderEdit.request(\"order_123\", {\n  no_notification: false\n})\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
   },
   "POST /admin/order-edits/{id}/confirm": {
     "js-sdk": "sdk.admin.orderEdit.confirm(\"order_123\")\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
@@ -563,20 +569,8 @@
   "POST /admin/products/{productid}/variants/inventory-items/batch": {
     "js-sdk": "sdk.admin.product.batchVariantInventoryItems(\n  \"prod_123\",\n  {\n    create: [\n      {\n        inventory_item_id: \"iitem_123\",\n        variant_id: \"variant_123\",\n        required_quantity: 10\n      }\n    ],\n    update: [\n      {\n        inventory_item_id: \"iitem_1234\",\n        variant_id: \"variant_1234\",\n        required_quantity: 20\n      }\n    ],\n    delete: [\n      {\n        inventory_item_id: \"iitem_321\",\n        variant_id: \"variant_321\"\n      }\n    ]\n  }\n)\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})"
   },
-  "POST /admin/products/{productid}/options": {
-    "js-sdk": "sdk.admin.product.createOption(\n  \"prod_123\",\n  {\n    title: \"Color\",\n    values: [\"Green\", \"Blue\"]\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
-  },
-  "POST /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.updateOption(\n  \"prod_123\",\n  \"prodopt_123\",\n  {\n    title: \"Color\"\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
-  },
   "GET /admin/products/{productid}/options": {
     "js-sdk": "sdk.admin.product.listOptions(\"prod_123\")\n.then(({ product_options, count, limit, offset }) => {\n  console.log(product_options)\n})"
-  },
-  "GET /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.retrieveOption(\n  \"prod_123\",\n  \"prodopt_123\"\n)\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
-  },
-  "DELETE /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.deleteOption(\"prod_123\", \"prodopt_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/products/{productid}/images/{imageid}/variants/batch": {
     "js-sdk": "sdk.admin.product.batchImageVariants(\"prod_123\", \"img_123\", {\n  add: [\"variant_123\", \"variant_456\"],\n  remove: [\"variant_789\"]\n})\n.then(({ added, removed }) => {\n  console.log(added, removed)\n})"
@@ -827,6 +821,9 @@
   "POST /admin/sales-channels/{id}/products": {
     "js-sdk": "sdk.admin.salesChannel.batchProducts(\"sc_123\", {\n  add: [\"prod_123\", \"prod_456\"],\n  remove: [\"prod_789\"]\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel)\n})"
   },
+  "GET /admin/search": {
+    "js-sdk": "sdk.admin.search.list({ q: \"shirt\", limit: 5 })\n.then(({ results }) => {\n  console.log(results)\n})"
+  },
   "POST /admin/shipping-options": {
     "js-sdk": "sdk.admin.shippingOption.create({\n  name: \"Standard Shipping\",\n  profile_id: \"shp_123\",\n})\n.then(({ shipping_option }) => {\n  console.log(shipping_option)\n})"
   },
@@ -964,6 +961,36 @@
   },
   "GET /admin/users/me": {
     "js-sdk": "sdk.admin.user.me()\n.then(({ user }) => {\n  console.log(user)\n})"
+  },
+  "GET /admin/views/entities": {
+    "js-sdk": "sdk.admin.views.listEntities()\n.then(({ entities }) => {\n  console.log(entities)\n})"
+  },
+  "GET /admin/views/{entity}/columns": {
+    "js-sdk": "const { columns } = await sdk.admin.views.columns(\"orders\")"
+  },
+  "GET /admin/views/{entity}/configurations": {
+    "js-sdk": "sdk.admin.views.listConfigurations(\"orders\")\n.then(({ view_configurations, count, limit, offset }) => {\n  console.log(view_configurations)\n})"
+  },
+  "POST /admin/views/{entity}/configurations": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.createConfiguration(\n  \"orders\",\n  {\n    name: \"My Orders View\",\n    configuration: {\n      visible_columns: [\"display_id\", \"status\"],\n      column_order: [\"display_id\", \"status\"],\n    },\n  }\n)"
+  },
+  "GET /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "sdk.admin.views.retrieveConfiguration(\"orders\", \"viewconfig_123\")\n.then(({ view_configuration }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.updateConfiguration(\n  \"orders\",\n  \"viewconfig_123\",\n  {\n    name: \"Updated View\",\n  }\n)"
+  },
+  "DELETE /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(\n  \"orders\",\n  \"viewconfig_123\"\n)"
+  },
+  "GET /admin/views/{entity}/configurations/active": {
+    "js-sdk": "sdk.admin.views.retrieveActiveConfiguration(\"orders\")\n.then(({ view_configuration, active_view_configuration_id }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/active": {
+    "js-sdk": "await sdk.admin.views.setActiveConfiguration(\"orders\", {\n  view_configuration_id: \"viewconfig_123\",\n})"
+  },
+  "GET /admin/layouts/configurations": {
+    "js-sdk": "const { layout_configurations } = await sdk.admin.layouts.listConfigurations()"
   },
   "GET /admin/workflows-executions": {
     "js-sdk": "sdk.admin.workflowExecution.list()\n.then(({ workflow_executions, count, limit, offset }) => {\n  console.log(workflow_executions)\n})"
@@ -1126,6 +1153,12 @@
   },
   "POST /auth/{actor}/{provider}/update": {
     "js-sdk": "sdk.auth.updateProvider(\n  \"customer\",\n  \"emailpass\",\n  {\n    password: \"supersecret\"\n  },\n  token\n)\n.then(() => {\n  // password updated\n})"
+  },
+  "GET /auth/{actor}/providers": {
+    "js-sdk": "const { providers } = await sdk.auth.listProviders(\"user\")"
+  },
+  "POST /auth/{provider}/user": {
+    "js-sdk": "const token = await sdk.auth.callback(\"user\", \"okta\", queryParams)\nawait sdk.auth.createUser(\"okta\", { Authorization: `Bearer ${token}` })\nawait sdk.auth.refresh()"
   },
   "GET /store/regions": {
     "js-sdk": "sdk.store.region.list()\n.then(({ regions, count, limit, offset }) => {\n  console.log(regions)\n})"
