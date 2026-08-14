@@ -173,6 +173,11 @@ export const sidebar = [
             title: "Manage Reservations",
             path: "/inventory/reservations",
           },
+          {
+            type: "link",
+            title: "Export Inventory Items",
+            path: "/inventory/export",
+          },
         ],
       },
       {
@@ -350,6 +355,11 @@ export const sidebar = [
             type: "link",
             title: "Product Tags",
             path: "/settings/product-tags",
+          },
+          {
+            type: "link",
+            title: "Property Labels",
+            path: "/settings/property-labels",
           },
           {
             type: "link",

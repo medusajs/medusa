@@ -17,7 +17,7 @@ export type UpdateStoresWorkflowOutput = StoreDTO[]
 export const updateStoresWorkflowId = "update-stores"
 /**
  * This workflow updates stores matching the specified filters. It's used by the
- * [Update Store Admin API Route](https://docs.medusajs.com/api/admin#stores_poststoresid).
+ * [Update Store Admin API Route](https://docs.medusajs.com/api/admin/stores/update-a-store).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update stores within your custom flows.

@@ -26,4 +26,21 @@ describe("flattenWhereClauses", () => {
       e: 4,
     })
   })
+
+  it("should preserve non-plain object values", () => {
+    const date = new Date("2024-01-01T00:00:00.000Z")
+    const where = {
+      created_at: date,
+      nested: {
+        updated_at: date,
+      },
+    }
+
+    const result = flattenObjectKeys(where)
+
+    expect(result).toEqual({
+      created_at: date,
+      "nested.updated_at": date,
+    })
+  })
 })

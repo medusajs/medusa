@@ -1,6 +1,9 @@
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/framework/types"
 import { Modules, promiseAll } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  moduleIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 
 jest.setTimeout(100000)
 
@@ -202,7 +205,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
         const createdOrder = await service.createOrders(input)
 
-        expect(createdOrder).toEqual(expectation)
+        expect(normalizeBigNumbers(createdOrder)).toEqual(expectation)
       })
 
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
@@ -213,7 +216,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         })
         const created = await service.createOrders(inpCopy)
 
-        expect(created.summary).toEqual(
+        expect(normalizeBigNumbers(created.summary)).toEqual(
           expect.objectContaining({
             transaction_total: 58.9,
             pending_difference: 0,

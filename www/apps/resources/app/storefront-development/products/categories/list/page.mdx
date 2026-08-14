@@ -25,7 +25,7 @@ Product categories allow you to organize similar products together and within a 
 
 ## List Product Categories
 
-To retrieve the list of product categories, send a request to the [List Product Categories API route](!api!/store#product-categories_getproductcategories):
+To retrieve the list of product categories, send a request to the [List Product Categories API route](!api!/store/product-categories/list-product-categories):
 
 <Note title="Tip">
 
@@ -93,7 +93,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-In this example, you send a request to the [List Product Categories API route](!api!/store#product-categories_getproductcategories).
+In this example, you send a request to the [List Product Categories API route](!api!/store/product-categories/list-product-categories).
 
 The response has a `product_categories` field, which is an array of [product categories](!api!/store/#product-categories_productcategory_schema).
 
@@ -101,7 +101,7 @@ The response has a `product_categories` field, which is an array of [product cat
 
 ## Paginate Product Categories
 
-To paginate product categories, pass the following query parameters to the [List Product Categories API route](!api!/store#product-categories_getproductcategories):
+To paginate product categories, pass the following query parameters to the [List Product Categories API route](!api!/store/product-categories/list-product-categories):
 
 - `limit`: The number of product categories to return in the request.
 - `offset`: The number of product categories to skip before the returned product categories. You can calculate this by multiplying the current page with the limit.
@@ -190,7 +190,7 @@ export default function Categories() {
 }
 ```
 
-In this example, you send a request to the [List Product Categories API route](!api!/store#product-categories_getproductcategories) with the `limit` and `offset` query parameters.
+In this example, you send a request to the [List Product Categories API route](!api!/store/product-categories/list-product-categories) with the `limit` and `offset` query parameters.
 
 The response object returns a `count` field, which is the total count of product categories. Use it to determine whether there are more product categories that can be loaded.
 
@@ -200,9 +200,9 @@ If there are more product categories, you show a button to load more product cat
 
 ## Filter Categories
 
-The [List Product Categories API route](!api!/store#product-categories_getproductcategories) accepts query parameters to filter the categories by description, handle, `external_id`, and more.
+The [List Product Categories API route](!api!/store/product-categories/list-product-categories) accepts query parameters to filter the categories by description, handle, `external_id`, and more.
 
-Refer to the [API reference](!api!/store#product-categories_getproductcategories) for the full list of accepted query parameters.
+Refer to the [API reference](!api!/store/product-categories/list-product-categories) for the full list of accepted query parameters.
 
 For example, to filter the categories by with a search query:
 

@@ -56,6 +56,22 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/export",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetInventoryItemsParams,
+        QueryConfig.listTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.inventory_item,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/inventory-items/:id",
     middlewares: [

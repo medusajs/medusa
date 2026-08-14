@@ -118,7 +118,7 @@ export type RemoveAddItemClaimActionWorkflowInput = OrderWorkflow.DeleteOrderCla
 export const removeAddItemClaimActionWorkflowId = "remove-item-claim-add-action"
 /**
  * This workflow removes outbound (new) items from a claim. It's used by the
- * [Remove Outbound Items Admin API Route](https://docs.medusajs.com/api/admin#claims_deleteclaimsidoutbounditemsaction_id).
+ * [Remove Outbound Items Admin API Route](https://docs.medusajs.com/api/admin/claims/remove-outbound-item).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to remove outbound items from a claim
  * in your custom flows.

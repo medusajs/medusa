@@ -5,13 +5,12 @@ import {
   UpdateLineItemWithoutSelectorDTO,
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/framework/types"
-import {
-  MathBN,
-  Modules,
-  deepEqualObj,
-  isPresent,
-} from "@medusajs/framework/utils"
+import { MathBN, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  findMatchingLineItem,
+  lineItemFieldsForMerging,
+} from "../utils/find-matching-line-item"
 
 /**
  * The details of the line items to create or update.
@@ -72,14 +71,7 @@ export const getLineItemActionsStep = createStep(
         variant_id: variantIds,
       },
       {
-        select: [
-          "id",
-          "metadata",
-          "variant_id",
-          "quantity",
-          "unit_price",
-          "compare_at_unit_price",
-        ],
+        select: lineItemFieldsForMerging,
       }
     )
 
@@ -97,22 +89,10 @@ export const getLineItemActionsStep = createStep(
     const itemsToCreate: CreateLineItemForCartDTO[] = []
     const itemsToUpdate: UpdateLineItemWithSelectorDTO["data"][] = []
 
-    const metadataMatches = (
-      existingItem: CartLineItemDTO,
-      newItem: CreateLineItemForCartDTO
-    ) =>
-      (!isPresent(existingItem?.metadata) && !isPresent(newItem.metadata)) ||
-      deepEqualObj(existingItem?.metadata, newItem.metadata)
-
     for (const item of data.items) {
       const variantItems = variantItemsMap.get(item.variant_id!)
 
-      const existingItem = variantItems?.find((existingItem) =>
-        item.is_custom_price
-          ? metadataMatches(existingItem, item) &&
-            item.unit_price === existingItem.unit_price
-          : metadataMatches(existingItem, item) && !existingItem.is_custom_price
-      )
+      const existingItem = findMatchingLineItem(variantItems, item)
 
       if (existingItem) {
         const quantity = MathBN.sum(

@@ -39,7 +39,7 @@ post:
       source:
         $ref: ../code_samples/Shell/auth_verification_confirm/post.sh
   tags:
-    - Verification
+    - Auth
   responses:
     '200':
       description: OK

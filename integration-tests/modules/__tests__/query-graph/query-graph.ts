@@ -4,7 +4,7 @@ import path from "path"
 jest.setTimeout(100000)
 
 import { createProductsWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/utils"
+import { Modules, QueryContext } from "@medusajs/utils"
 import { TranslationModule } from "../__fixtures__/translation-test/src/modules/translation/service"
 
 const createTranslations = async (container, inputs) => {
@@ -919,6 +919,70 @@ medusaIntegrationTestRunner({
           )
         })
 
+        // Order uses a custom find/findAndCount that bypasses the base
+        // repository prepareFindOptions — this covers that those methods apply
+        // cross-module join filters themselves.
+        it("should filter orders by a read-only linked sales channel", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const orderService: any = container.resolve(Modules.ORDER)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Order Retail Channel",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Order Wholesale Channel",
+            })
+
+          await orderService.createOrders([
+            {
+              currency_code: "usd",
+              email: "retail-order@test.com",
+              sales_channel_id: retailChannel.id,
+              items: [
+                {
+                  title: "Retail item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-order@test.com",
+              sales_channel_id: wholesaleChannel.id,
+              items: [
+                {
+                  title: "Wholesale item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+          ])
+
+          const { data: filteredOrders } = await query.graph({
+            entity: "order",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Order Retail Channel",
+              },
+            },
+          })
+
+          expect(filteredOrders).toHaveLength(1)
+          expect(filteredOrders[0]).toEqual(
+            expect.objectContaining({
+              email: "retail-order@test.com",
+            })
+          )
+        })
+
         it("should filter carts by a field of the read-only linked product", async () => {
           const container = getContainer()
           const query = container.resolve("query")
@@ -1249,6 +1313,225 @@ medusaIntegrationTestRunner({
           expect(
             filteredCarts.every((cart) => cart.email.startsWith("retail-cart-"))
           ).toBe(true)
+        })
+
+        // Stage 2: filters that cannot be pushed down to SQL (unsupported
+        // operators, computed fields) are completed in memory after the
+        // fetch, with pagination applied to the filtered set.
+        describe("residual (in-memory) filtering", () => {
+          it("should complete unsupported-operator filters in memory", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            const { data: products } = await query.graph({
+              entity: "product",
+              fields: ["id", "title", "translation.key"],
+            })
+
+            const targetProduct = products.find(
+              (product) => product.title === "Product 2"
+            )
+
+            expect(targetProduct?.translation?.key).toBeDefined()
+
+            // $re is not supported by the SQL pushdown, so the filter is
+            // evaluated in memory against the loaded translations.
+            const { data: filteredProducts } = await query.graph({
+              entity: "product",
+              fields: ["id", "title"],
+              filters: {
+                translation: {
+                  key: { $re: `^${targetProduct!.translation!.key}$` },
+                },
+              },
+            })
+
+            expect(filteredProducts).toHaveLength(1)
+            expect(filteredProducts[0]).toEqual(
+              expect.objectContaining({
+                id: targetProduct!.id,
+                title: "Product 2",
+              })
+            )
+            // The translation was loaded only for evaluation and is hidden
+            // from the payload.
+            expect(filteredProducts[0].translation).toBeUndefined()
+          })
+
+          it("should combine pushed-down and residual filters", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            const { data: variants } = await query.graph({
+              entity: "variant",
+              fields: ["id", "title", "price_set.id", "translation.key"],
+            })
+
+            const targetVariant = variants.find(
+              (variant) => variant.title === "P1 Variant 1"
+            )
+            const otherVariant = variants.find(
+              (variant) => variant.title === "P2 Variant 1"
+            )
+
+            expect(targetVariant?.price_set?.id).toBeDefined()
+            expect(targetVariant?.translation?.key).toBeDefined()
+
+            // price_set.id is pushed down to SQL while translation.key with
+            // $re stays residual — both must intersect.
+            const { data: matching } = await query.graph({
+              entity: "variant",
+              fields: ["id", "title"],
+              filters: {
+                price_set: { id: targetVariant!.price_set!.id },
+                translation: {
+                  key: { $re: `^${targetVariant!.translation!.key}$` },
+                },
+              },
+            })
+
+            expect(matching).toHaveLength(1)
+            expect(matching[0].id).toEqual(targetVariant!.id)
+
+            // The pushed filter points at another variant: intersection is
+            // empty even though the residual filter matches.
+            const { data: disjoint } = await query.graph({
+              entity: "variant",
+              fields: ["id"],
+              filters: {
+                price_set: { id: otherVariant!.price_set!.id },
+                translation: {
+                  key: { $re: `^${targetVariant!.translation!.key}$` },
+                },
+              },
+            })
+
+            expect(disjoint).toHaveLength(0)
+          })
+
+          it("should filter by a computed field in memory", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            // calculated_price is a computed field, so the filter cannot be
+            // pushed down and is evaluated in memory against the computed
+            // values (variant 1 of each product costs 10 usd, variant 2
+            // costs 20 usd).
+            const { data: filteredVariants } = await query.graph({
+              entity: "variant",
+              fields: ["id", "title"],
+              filters: {
+                price_set: {
+                  calculated_price: { calculated_amount: { $gt: 15 } },
+                },
+              },
+              context: {
+                calculated_price: QueryContext({ currency_code: "usd" }),
+              },
+            })
+
+            expect(filteredVariants).toHaveLength(3)
+            expect(
+              filteredVariants.every((variant) =>
+                variant.title.endsWith("Variant 2")
+              )
+            ).toBe(true)
+            expect(filteredVariants[0].price_set).toBeUndefined()
+          })
+
+          it("should filter and sort variants by calculated price", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            // The seeded products all price their variants at 10/20 usd; add
+            // one with distinct prices so the ordering is observable.
+            await createProductsWorkflow(container).run({
+              input: {
+                products: [
+                  {
+                    title: "Product 4",
+                    options: [{ title: "size", values: ["small", "large"] }],
+                    variants: [
+                      {
+                        title: "P4 Variant 1",
+                        options: { size: "small" },
+                        prices: [{ amount: 5, currency_code: "usd" }],
+                      },
+                      {
+                        title: "P4 Variant 2",
+                        options: { size: "large" },
+                        prices: [{ amount: 30, currency_code: "usd" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            })
+
+            // Both the filter and the primary sort key target the computed
+            // calculated_price, so filtering, sorting, and pagination all
+            // complete in memory (title breaks ties between equal amounts).
+            const { data: variants, metadata } = await query.graph({
+              entity: "variant",
+              fields: ["id", "title", "calculated_price.calculated_amount"],
+              filters: {
+                price_set: {
+                  calculated_price: { calculated_amount: { $gt: 8 } },
+                },
+              },
+              pagination: {
+                order: {
+                  price_set: {
+                    calculated_price: { calculated_amount: "DESC" },
+                  },
+                  title: "ASC",
+                },
+                skip: 0,
+                take: 4,
+              },
+              context: {
+                calculated_price: QueryContext({ currency_code: "usd" }),
+              },
+            })
+
+            // 5 usd is filtered out; 30, 20, 20, 20, 10, 10, 10 remain.
+            expect(metadata?.count).toEqual(7)
+            expect(variants.map((variant) => variant.title)).toEqual([
+              "P4 Variant 2",
+              "P1 Variant 2",
+              "P2 Variant 2",
+              "P3 Variant 2",
+            ])
+            expect(
+              variants.map(
+                (variant) => variant.calculated_price?.calculated_amount
+              )
+            ).toEqual([30, 20, 20, 20])
+          })
+
+          it("should paginate after in-memory filtering", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            // Every product's translation key is its id, so the residual
+            // regex matches all three products before pagination.
+            const { data: filteredProducts, metadata } = await query.graph({
+              entity: "product",
+              fields: ["id", "title"],
+              filters: {
+                translation: { key: { $re: "^prod" } },
+              },
+              pagination: {
+                skip: 1,
+                take: 1,
+                order: { title: "ASC" },
+              },
+            })
+
+            expect(metadata?.count).toEqual(3)
+            expect(filteredProducts).toHaveLength(1)
+            expect(filteredProducts[0].title).toEqual("Product 2")
+          })
         })
       })
     })

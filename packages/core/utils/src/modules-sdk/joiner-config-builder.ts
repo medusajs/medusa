@@ -9,6 +9,7 @@ import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
   camelToSnakeCase,
+  deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
@@ -304,6 +305,12 @@ function buildCrossModuleJoinMetadataFromDmlObjects(
 
         if (relationMetadata) {
           relations[property] = relationMetadata
+
+          // belongsTo foreign keys are real columns on this table (e.g.
+          // price.price_list_id) and are filterable like any other column.
+          if (relationMetadata.foreignKeyOwner === "self") {
+            crossjoinable.push(relationMetadata.foreignKey)
+          }
         }
         continue
       }
@@ -318,7 +325,7 @@ function buildCrossModuleJoinMetadataFromDmlObjects(
     }
 
     metadata[entityName] = {
-      crossjoinable,
+      crossjoinable: deduplicate(crossjoinable),
       tableName: tableNameWithoutSchema,
       ...(pgSchema ? { schema: pgSchema } : {}),
       ...(Object.keys(relations).length ? { relations } : {}),

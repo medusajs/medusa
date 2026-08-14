@@ -84,7 +84,7 @@ This guide will teach you how to:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -753,7 +753,7 @@ Since you export a `POST` function in this file, you're exposing a `POST` API ro
 1. A request object with details and context on the request, such as path and body parameters.
 2. A response object to manipulate and send the response.
 
-In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](!api!/store#carts_postcartsidlineitems).
+In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](!api!/store/carts/add-line-item).
 
 Then, you execute the `addCustomToCartWorkflow` by invoking it, passing it the Medusa container, which is available in the request's `scope` property, then executing its `run` method. You pass the workflow's input object with the cart's ID and the item to add to the cart.
 
@@ -805,7 +805,7 @@ You pass in the `routes` array an object having the following properties:
 
 - `matcher`: The route to apply the middleware on.
 - `method`: The HTTP method to apply the middleware on for the specified API route.
-- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](!api!/store#carts_postcartsidlineitems).
+- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](!api!/store/carts/add-line-item).
 
 Any request sent to the `/store/carts/:id/line-items-metals` API route will now fail if it doesn't have the required parameters.
 
@@ -876,7 +876,13 @@ You'll use this variant to add it to the cart later. You can find its ID by clic
 
 #### Retrieve Publishable API Key
 
-All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, products that aren't available in a cart's sales channel can't be added to it.
+All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, the products you retrieve are only those available in the key's sales channels.
+
+<Note>
+
+Medusa doesn't reject a variant added to a cart when its product isn't available in the cart's sales channel. Refer to the [Enforce Sales Channel Availability in Carts](../../../commerce-modules/cart/sales-channel-availability/page.mdx) guide to learn how to add that validation.
+
+</Note>
 
 To retrieve the publishable API key, on the Medusa Admin:
 

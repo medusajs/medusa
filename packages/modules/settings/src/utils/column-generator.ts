@@ -21,6 +21,7 @@ import {
   getDefaultVisibleFields,
   getEntityOverride,
   getFieldFilterRules,
+  getFieldMetadata,
   getFieldOrdering,
   getFieldRenderModes,
   getNonFilterableFields,
@@ -128,8 +129,9 @@ export function generateEntityColumns(
   const override = customOverride || getEntityOverride(entity.name)
   const filterRules = getFieldFilterRules(entity.name, override)
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
-  const fieldOrdering = getFieldOrdering(entity.name, override)
+  const defaultFieldOrdering = getFieldOrdering(entity.name, override)
   const fieldRenderModes = getFieldRenderModes(entity.name, override)
+  const fieldMetadata = getFieldMetadata(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
   const nonFilterableFields = getNonFilterableFields(entity.name, override)
   const nonSortableFields = getNonSortableFields(entity.name, override)
@@ -147,8 +149,9 @@ export function generateEntityColumns(
     processedFields,
     filterRules,
     defaultVisibleFields,
-    fieldOrdering,
+    defaultFieldOrdering,
     fieldRenderModes,
+    fieldMetadata,
     nonFilterableFields,
     nonSortableFields,
     propertyLabels
@@ -166,8 +169,9 @@ export function generateEntityColumns(
         processedFields,
         filterRules,
         defaultVisibleFields,
-        fieldOrdering,
+        defaultFieldOrdering,
         fieldRenderModes,
+        fieldMetadata,
         nonFilterableFields,
         nonSortableFields,
         propertyLabels
@@ -177,7 +181,7 @@ export function generateEntityColumns(
 
   // Add computed columns
   const computedColumnRegistry = getComputedColumnRegistry()
-  const computedColumns = computedColumnRegistry.getForEntity(entity.name)
+  const computedColumns = computedColumnRegistry.get(entity.name)
 
   for (const computed of computedColumns) {
     const columnId = computed.id
@@ -193,25 +197,30 @@ export function generateEntityColumns(
       name: label?.label || computed.name,
       description: label?.description || computed.description,
       field: columnId,
-      sortable: false,
+      sortable: computed.sortable ?? false,
       hideable: true,
       default_visible:
         computed.defaultVisible || defaultVisibleFields.includes(columnId),
-      data_type: "string",
-      semantic_type: "computed",
-      context: "display",
-      computed: {
-        type: computed.renderMode,
-        required_fields: computed.requiredFields,
-        optional_fields: computed.optionalFields || [],
-        metadata: computed.metadata ?? {},
-      },
+      data_type: (computed.dataType ??
+        "string") as ViewConfigurationColumn["data_type"],
+      semantic_type: computed.renderMode ? "computed" : "relationship",
+      context: computed.context ?? "display",
+      // Only display columns carry a compute (render + required fields);
+      // filter-only injected columns omit it.
+      computed: computed.renderMode
+        ? {
+            type: computed.renderMode,
+            required_fields: computed.requiredFields ?? [],
+            optional_fields: computed.optionalFields || [],
+          }
+        : undefined,
+      metadata: computed.metadata,
       render_mode: computed.renderMode,
-      default_order: fieldOrdering[columnId] || 850,
+      default_order: defaultFieldOrdering[columnId] || 850,
       category:
         (computed.category as ViewConfigurationColumn["category"]) ||
         "computed",
-      filter: { enabled: false },
+      filter: computed.filter ?? { enabled: false },
       source: { module: entity.module, entity: entity.name },
       custom_label: hasCustomLabel,
       label_id: label?.id,
@@ -235,8 +244,9 @@ function processEntityType(
   processedFields: Set<string>,
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
-  fieldOrdering: Record<string, number>,
+  defaultFieldOrdering: Record<string, number>,
   fieldRenderModes: Record<string, RenderMode>,
+  fieldMetadata: Record<string, Record<string, any>>,
   nonFilterableFields: string[],
   nonSortableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
@@ -328,7 +338,8 @@ function processEntityType(
         semantic_type: semanticType,
         context: "both",
         render_mode: renderMode,
-        default_order: fieldOrdering[fullPath] || 900,
+        metadata: fieldMetadata[fullPath],
+        default_order: defaultFieldOrdering[fullPath] || 900,
         category: parentPath
           ? "relationship"
           : semanticTypeToCategory(semanticType),
@@ -421,7 +432,8 @@ function processEntityType(
               semantic_type: semanticType,
               context: "both",
               render_mode: renderMode,
-              default_order: fieldOrdering[nestedPath] || 950,
+              metadata: fieldMetadata[nestedPath],
+              default_order: defaultFieldOrdering[nestedPath] || 950,
               category: "relationship",
               filter,
               source: { module: entity.module, entity: entity.name },

@@ -19,7 +19,7 @@ This command is available starting Medusa mcloud CLI v0.1.10. Make sure to updat
 <Prerequisites
   items={[
     {
-      text: "This command builds a Docker image locally, so you must have [Docker](https://docs.docker.com/get-docker/) installed and running.",
+      text: "This command builds a Docker image locally, so you must have Docker installed and running.",
       link: "https://docs.docker.com/get-docker/",
     }
   ]}
@@ -76,6 +76,8 @@ If the build succeeds, the resulting image is tagged `<repository-name>:cloud-lo
 <Note>
 
 Before the build starts, the CLI may print warnings if your installed CLI version is outdated, or if the current repository or branch doesn't match the linked Cloud project and environment. These are warnings only and don't stop the build.
+
+If your repository does not have a remote origin configured, the CLI falls back to using the local folder name as the repository name.
 
 </Note>
 

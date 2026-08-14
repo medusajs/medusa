@@ -18,7 +18,7 @@ In this guide, you'll learn how to list and retrieve product options in your sto
 
 <Note>
 
-This feature is available since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+This feature is available since [Medusa v2.17.0](https://github.com/medusajs/medusa/releases/tag/v2.17.0).
 
 </Note>
 
@@ -36,7 +36,7 @@ Product options are useful for:
 
 ## List Product Options
 
-To retrieve a list of product options, send a request to the [List Product Options API route](!api!/store#product-options_getproductoptions):
+To retrieve a list of product options, send a request to the [List Product Options API route](!api!/store/product-options/list-product-options):
 
 <Note title="Tip">
 
@@ -108,7 +108,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-The response has a `product_options` field, which is an array of [product options](!api!/store#product-options_productoptionschema). Each product option has a `values` field, which is an array of the option's values.
+The response has a `product_options` field, which is an array of [product options](!api!/store/product-options/schema). Each product option has a `values` field, which is an array of the option's values.
 
 ---
 
@@ -215,7 +215,7 @@ You then show a button to load more options if there are more pages.
 
 ## Retrieve a Product Option
 
-To retrieve a product option by its ID, send a request to the [Retrieve Product Option API route](!api!/store#product-options_getproductoptionsid):
+To retrieve a product option by its ID, send a request to the [Retrieve Product Option API route](!api!/store/product-options/get-a-product-option):
 
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">
@@ -286,7 +286,7 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-The response has a `product_option` field, which is a [product option object](!api!/store#product-options_productoptionschema).
+The response has a `product_option` field, which is a [product option object](!api!/store/product-options/schema).
 
 ---
 
@@ -394,7 +394,7 @@ The returned products are filtered to only include those whose variants have the
 
 <Note>
 
-To filter variants of the products by option values, use the [List Product Variants API route](!api!/store#product-variants_getproductvariants) with the `option_value_id` query parameter.
+To filter variants of the products by option values, use the [List Product Variants API route](!api!/store/product-variants/list-product-variants) with the `option_value_id` query parameter.
 
 </Note>
 

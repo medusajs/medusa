@@ -439,6 +439,7 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/sales-channel
     x-associatedSchema:
       $ref: '#/components/schemas/AdminSalesChannel'
+  - name: Search
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: '#/components/schemas/AdminShippingOptionType'
@@ -571,6 +572,14 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminUser'
   - name: Views
+    description: |
+      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+      These API routes allow admin users to manage the system default and personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminViewConfiguration'
   - name: Workflows Executions
     description: |
       These API routes allow you to track workflow executions in your Medusa application.
@@ -4366,7 +4375,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderClaimWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/claims/{id}/claim-items:
     post:
       operationId: PostClaimsIdClaimItems
@@ -8858,6 +8878,17 @@ paths:
             ```
           description: Emitted when a claim is created for an order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteClaimsIdRequest
       summary: Cancel Claim Request
@@ -18245,6 +18276,17 @@ paths:
             Emitted when an order is placed, or when a draft order is converted to an
             order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
       requestBody:
         content:
           application/json:
@@ -20374,7 +20416,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderExchangeWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/exchanges/{id}/inbound/items:
     post:
       operationId: PostExchangesIdInboundItems
@@ -21483,6 +21536,17 @@ paths:
             ```
           description: Emitted when an exchange is created for an order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteExchangesIdRequest
       summary: Cancel Exchange Request
@@ -23144,6 +23208,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 200 status code's message.
+                example: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -23709,6 +23780,734 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createInventoryItemsWorkflow
+      x-events:
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
+  /admin/inventory-items/export:
+    post:
+      operationId: PostInventoryItemsExport
+      summary: Export Inventory Items
+      description: |
+        Start an inventory items export process to retrieve a CSV of exported inventory items.
+
+        You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`.
+        Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: id
+                description: The ID of the inventory item to export.
+              - type: array
+                description: The IDs of the inventory items to export.
+                items:
+                  type: string
+                  title: id
+                  description: The ID of the inventory item to export.
+        - name: q
+          in: query
+          description: Search query to apply on inventory item searchable fields to filter the results.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: Search query to apply on inventory item searchable fields to filter the results.
+        - name: sku
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: sku
+                description: Filter by the inventory item's sku.
+              - type: array
+                description: Filter by the inventory items' sku.
+                items:
+                  type: string
+                  title: sku
+                  description: Filter by the inventory item's sku.
+        - name: origin_country
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: origin_country
+                description: Filter by the inventory item's origin country.
+              - type: array
+                description: Filter by the inventory items' origin country.
+                items:
+                  type: string
+                  title: origin_country
+                  description: Filter by the inventory item's origin country.
+        - name: mid_code
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: mid_code
+                description: Filter by the inventory item's mid code.
+              - type: array
+                description: Filter by the inventory items' mid code.
+                items:
+                  type: string
+                  title: mid_code
+                  description: Filter by the inventory item's mid code.
+        - name: hs_code
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: hs_code
+                description: Filter by the inventory item's hs code.
+              - type: array
+                description: Filter by the inventory items' hs code.
+                items:
+                  type: string
+                  title: hs_code
+                  description: Filter by the inventory item's hs code.
+        - name: material
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: material
+                description: Filter by the inventory item's material.
+              - type: array
+                description: Filter by the inventory items' material.
+                items:
+                  type: string
+                  title: material
+                  description: Filter by the inventory item's material.
+        - name: requires_shipping
+          in: query
+          description: Filter by whether the inventory item requires shipping.
+          required: false
+          schema:
+            type: boolean
+            title: requires_shipping
+            description: Whether the inventory item requires shipping.
+        - name: weight
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: number
+                title: weight
+                description: Filter by the inventory item's weight.
+              - type: object
+                properties:
+                  $and:
+                    type: array
+                    description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $or:
+                    type: array
+                    description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $eq:
+                    oneOf:
+                      - type: number
+                        title: $eq
+                        description: Filter by exact value.
+                      - type: array
+                        title: $eq
+                        description: Filter by exact value.
+                        items:
+                          type: number
+                  $ne:
+                    type: number
+                    title: $ne
+                    description: Filter by not equal to the given value.
+                  $in:
+                    type: array
+                    title: $in
+                    description: Filter by values included in the given array.
+                    items:
+                      type: number
+                  $nin:
+                    type: array
+                    title: $nin
+                    description: Filter by values not included in the given array.
+                    items:
+                      type: number
+                  $not:
+                    oneOf:
+                      - type: number
+                        title: $not
+                        description: Filter by not equal to the given value.
+                      - type: object
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                      - type: array
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                        items:
+                          type: number
+                  $gt:
+                    type: number
+                    title: $gt
+                    description: Filter by values greater than the given value.
+                  $gte:
+                    type: number
+                    title: $gte
+                    description: Filter by values greater than or equal to the given value.
+                  $lt:
+                    type: number
+                    title: $lt
+                    description: Filter by values less than the given value.
+                  $lte:
+                    type: number
+                    title: $lte
+                    description: Filter by values less than or equal to the given value.
+                  $like:
+                    type: number
+                    title: $like
+                    description: Apply a `like` filter. Useful for strings only.
+                  $re:
+                    type: number
+                    title: $re
+                    description: Apply a regex filter. Useful for strings only.
+                  $ilike:
+                    type: number
+                    title: $ilike
+                    description: Apply a case-insensitive `like` filter. Useful for strings only.
+                  $fulltext:
+                    type: number
+                    title: $fulltext
+                    description: Filter to apply on full-text properties.
+                  $overlap:
+                    type: array
+                    title: $overlap
+                    description: Filter to apply on array properties to find overlapping values.
+                    items:
+                      type: number
+                  $contains:
+                    type: array
+                    title: $contains
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $contained:
+                    type: array
+                    title: $contained
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $exists:
+                    type: boolean
+                    title: $exists
+                    description: Filter by whether a value exists or not.
+                title: weight
+                description: Filter by the inventory item's weight.
+        - name: length
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: number
+                title: length
+                description: Filter by the inventory item's length.
+              - type: object
+                properties:
+                  $and:
+                    type: array
+                    description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $or:
+                    type: array
+                    description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $eq:
+                    oneOf:
+                      - type: number
+                        title: $eq
+                        description: Filter by exact value.
+                      - type: array
+                        title: $eq
+                        description: Filter by exact value.
+                        items:
+                          type: number
+                  $ne:
+                    type: number
+                    title: $ne
+                    description: Filter by not equal to the given value.
+                  $in:
+                    type: array
+                    title: $in
+                    description: Filter by values included in the given array.
+                    items:
+                      type: number
+                  $nin:
+                    type: array
+                    title: $nin
+                    description: Filter by values not included in the given array.
+                    items:
+                      type: number
+                  $not:
+                    oneOf:
+                      - type: number
+                        title: $not
+                        description: Filter by not equal to the given value.
+                      - type: object
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                      - type: array
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                        items:
+                          type: number
+                  $gt:
+                    type: number
+                    title: $gt
+                    description: Filter by values greater than the given value.
+                  $gte:
+                    type: number
+                    title: $gte
+                    description: Filter by values greater than or equal to the given value.
+                  $lt:
+                    type: number
+                    title: $lt
+                    description: Filter by values less than the given value.
+                  $lte:
+                    type: number
+                    title: $lte
+                    description: Filter by values less than or equal to the given value.
+                  $like:
+                    type: number
+                    title: $like
+                    description: Apply a `like` filter. Useful for strings only.
+                  $re:
+                    type: number
+                    title: $re
+                    description: Apply a regex filter. Useful for strings only.
+                  $ilike:
+                    type: number
+                    title: $ilike
+                    description: Apply a case-insensitive `like` filter. Useful for strings only.
+                  $fulltext:
+                    type: number
+                    title: $fulltext
+                    description: Filter to apply on full-text properties.
+                  $overlap:
+                    type: array
+                    title: $overlap
+                    description: Filter to apply on array properties to find overlapping values.
+                    items:
+                      type: number
+                  $contains:
+                    type: array
+                    title: $contains
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $contained:
+                    type: array
+                    title: $contained
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $exists:
+                    type: boolean
+                    title: $exists
+                    description: Filter by whether a value exists or not.
+                title: length
+                description: Filter by the inventory item's length.
+        - name: height
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: number
+                title: height
+                description: Filter by the inventory item's height.
+              - type: object
+                properties:
+                  $and:
+                    type: array
+                    description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $or:
+                    type: array
+                    description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $eq:
+                    oneOf:
+                      - type: number
+                        title: $eq
+                        description: Filter by exact value.
+                      - type: array
+                        title: $eq
+                        description: Filter by exact value.
+                        items:
+                          type: number
+                  $ne:
+                    type: number
+                    title: $ne
+                    description: Filter by not equal to the given value.
+                  $in:
+                    type: array
+                    title: $in
+                    description: Filter by values included in the given array.
+                    items:
+                      type: number
+                  $nin:
+                    type: array
+                    title: $nin
+                    description: Filter by values not included in the given array.
+                    items:
+                      type: number
+                  $not:
+                    oneOf:
+                      - type: number
+                        title: $not
+                        description: Filter by not equal to the given value.
+                      - type: object
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                      - type: array
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                        items:
+                          type: number
+                  $gt:
+                    type: number
+                    title: $gt
+                    description: Filter by values greater than the given value.
+                  $gte:
+                    type: number
+                    title: $gte
+                    description: Filter by values greater than or equal to the given value.
+                  $lt:
+                    type: number
+                    title: $lt
+                    description: Filter by values less than the given value.
+                  $lte:
+                    type: number
+                    title: $lte
+                    description: Filter by values less than or equal to the given value.
+                  $like:
+                    type: number
+                    title: $like
+                    description: Apply a `like` filter. Useful for strings only.
+                  $re:
+                    type: number
+                    title: $re
+                    description: Apply a regex filter. Useful for strings only.
+                  $ilike:
+                    type: number
+                    title: $ilike
+                    description: Apply a case-insensitive `like` filter. Useful for strings only.
+                  $fulltext:
+                    type: number
+                    title: $fulltext
+                    description: Filter to apply on full-text properties.
+                  $overlap:
+                    type: array
+                    title: $overlap
+                    description: Filter to apply on array properties to find overlapping values.
+                    items:
+                      type: number
+                  $contains:
+                    type: array
+                    title: $contains
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $contained:
+                    type: array
+                    title: $contained
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $exists:
+                    type: boolean
+                    title: $exists
+                    description: Filter by whether a value exists or not.
+                title: height
+                description: Filter by the inventory item's height.
+        - name: width
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: number
+                title: width
+                description: Filter by the inventory item's width.
+              - type: object
+                properties:
+                  $and:
+                    type: array
+                    description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $or:
+                    type: array
+                    description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                    items:
+                      type: object
+                  $eq:
+                    oneOf:
+                      - type: number
+                        title: $eq
+                        description: Filter by exact value.
+                      - type: array
+                        title: $eq
+                        description: Filter by exact value.
+                        items:
+                          type: number
+                  $ne:
+                    type: number
+                    title: $ne
+                    description: Filter by not equal to the given value.
+                  $in:
+                    type: array
+                    title: $in
+                    description: Filter by values included in the given array.
+                    items:
+                      type: number
+                  $nin:
+                    type: array
+                    title: $nin
+                    description: Filter by values not included in the given array.
+                    items:
+                      type: number
+                  $not:
+                    oneOf:
+                      - type: number
+                        title: $not
+                        description: Filter by not equal to the given value.
+                      - type: object
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                      - type: array
+                        title: $not
+                        description: Filter by values not matching the conditions in this parameter.
+                        items:
+                          type: number
+                  $gt:
+                    type: number
+                    title: $gt
+                    description: Filter by values greater than the given value.
+                  $gte:
+                    type: number
+                    title: $gte
+                    description: Filter by values greater than or equal to the given value.
+                  $lt:
+                    type: number
+                    title: $lt
+                    description: Filter by values less than the given value.
+                  $lte:
+                    type: number
+                    title: $lte
+                    description: Filter by values less than or equal to the given value.
+                  $like:
+                    type: number
+                    title: $like
+                    description: Apply a `like` filter. Useful for strings only.
+                  $re:
+                    type: number
+                    title: $re
+                    description: Apply a regex filter. Useful for strings only.
+                  $ilike:
+                    type: number
+                    title: $ilike
+                    description: Apply a case-insensitive `like` filter. Useful for strings only.
+                  $fulltext:
+                    type: number
+                    title: $fulltext
+                    description: Filter to apply on full-text properties.
+                  $overlap:
+                    type: array
+                    title: $overlap
+                    description: Filter to apply on array properties to find overlapping values.
+                    items:
+                      type: number
+                  $contains:
+                    type: array
+                    title: $contains
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $contained:
+                    type: array
+                    title: $contained
+                    description: Filter to apply on array properties to find contained values.
+                    items:
+                      type: number
+                  $exists:
+                    type: boolean
+                    title: $exists
+                    description: Filter by whether a value exists or not.
+                title: width
+                description: Filter by the inventory item's width.
+        - name: location_levels
+          in: query
+          description: Filter by the inventory item's location levels.
+          required: false
+          schema:
+            type: object
+            description: Filter by the inventory item's location levels.
+            properties:
+              location_id:
+                oneOf:
+                  - type: string
+                    title: location_id
+                    description: Filter by a location ID.
+                  - type: array
+                    description: Filter by multiple location IDs.
+                    items:
+                      type: string
+                      title: location_id
+                      description: A location ID to filter by.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+            externalDocs:
+              url: '#pagination'
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+            externalDocs:
+              url: '#pagination'
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            externalDocs:
+              url: '#pagination'
+        - name: with_deleted
+          in: query
+          description: Whether to include soft-deleted items in the results.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: Whether to include soft-deleted items in the results.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+        - name: $and
+          in: query
+          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+          required: false
+          schema:
+            type: array
+            description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $and
+        - name: $or
+          in: query
+          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+          required: false
+          schema:
+            type: array
+            description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $or
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.inventoryItem.export({})
+            .then(({ transaction_id }) => {
+              console.log(transaction_id)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/inventory-items/export' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Inventory Items
+      responses:
+        '202':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminExportInventoryItemResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: exportInventoryItemsWorkflow
       x-events: []
   /admin/inventory-items/location-levels/batch:
     post:
@@ -23799,7 +24598,40 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchInventoryItemLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}:
     get:
       operationId: GetInventoryItemsId
@@ -23965,7 +24797,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateInventoryItemsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are updated.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsId
       summary: Delete Inventory Item
@@ -24046,7 +24888,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteInventoryItemWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels:
     get:
       operationId: GetInventoryItemsIdLocationLevels
@@ -24261,7 +25113,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/batch:
     post:
       operationId: PostInventoryItemsIdLocationLevelsBatch
@@ -24332,7 +25194,40 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchInventoryItemLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/{location_id}:
     post:
       operationId: PostInventoryItemsIdLocationLevelsLocation_id
@@ -24423,7 +25318,20 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
       summary: Remove Inventory Level of Inventory Item
@@ -24531,7 +25439,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/invites:
     get:
       operationId: GetInvites
@@ -25227,7 +26145,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |-
-            curl -X POST '{backend_url}/admin/invites/accept' \
+            curl -X POST '{backend_url}/admin/invites/accept?token={invite_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "email": "Lila_Zemlak@hotmail.com",
@@ -25294,6 +26212,25 @@ paths:
             ```
           description: Emitted when an invite is accepted.
           deprecated: false
+      parameters:
+        - name: token
+          in: query
+          description: The invite's token.
+          required: true
+          schema:
+            type: string
+            title: token
+            description: The invite's token.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
   /admin/invites/{id}:
     get:
       operationId: GetInvitesId
@@ -25664,6 +26601,20 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { layout_configurations } = await sdk.admin.layouts.listConfigurations()
         - lang: Shell
           label: cURL
           source: |-
@@ -26212,6 +27163,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: to
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: to
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
+              - type: array
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
+                items:
+                  type: string
+                  title: to
+                  description: Who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
       security:
         - api_token: []
         - cookie_auth: []
@@ -27453,11 +28418,34 @@ paths:
             {
               order_id, // The ID of the order
               actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+              no_notification, // (boolean) Whether the customer shouldn't be notified of the order edit, as stored on the order change when the edit was requested. Available since v2.19.0.
             }
             ```
           description: Emitted when an order edit request is confirmed.
           deprecated: false
           since: 2.8.0
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/order-edits/{id}/items:
     post:
       operationId: PostOrderEditsIdItems
@@ -27811,7 +28799,9 @@ paths:
               },
             })
 
-            sdk.admin.orderEdit.request("order_123")
+            sdk.admin.orderEdit.request("order_123", {
+              no_notification: false
+            })
             .then(({ order_preview }) => {
               console.log(order_preview)
             })
@@ -27849,11 +28839,17 @@ paths:
             {
               order_id, // The ID of the order
               actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+              no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.
             }
             ```
           description: Emitted when an order edit is requested.
           deprecated: false
           since: 2.8.0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRequestOrderEdit'
   /admin/order-edits/{id}/shipping-method:
     post:
       operationId: PostOrderEditsIdShippingMethod
@@ -29288,12 +30284,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: version
+          in: query
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
@@ -29301,14 +30302,6 @@ paths:
             description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
-        - name: version
-          in: query
-          description: The version of the order to retrieve.
-          required: false
-          schema:
-            type: number
-            title: version
-            description: The version of the order to retrieve.
       security:
         - api_token: []
         - cookie_auth: []
@@ -29350,7 +30343,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}' \
-            -H 'Authorization: Bearer {jwt_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -29577,6 +30570,17 @@ paths:
             ```
           description: Emitted when an order is canceld.
           deprecated: false
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/changes:
     get:
       operationId: GetOrdersIdChanges
@@ -30740,6 +31744,9 @@ paths:
                       type: boolean
                       title: no_notification
                       description: Whether to send the customer a notification about the created fulfillment.
+                    delivery_address:
+                      $ref: '#/components/schemas/AdminFulfillmentDeliveryAddress'
+                      description: The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider.
                     metadata:
                       type: object
                       description: The order's metadata. Can hold custom key-value pairs.
@@ -30825,6 +31832,41 @@ paths:
             ```
           description: Emitted when a fulfillment is created for an order.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idCancel
@@ -30930,6 +31972,41 @@ paths:
             ```
           description: Emitted when an order's fulfillment is canceled.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idMarkAsDelivered
@@ -31747,6 +32824,100 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderTransferRequestWorkflow
+      x-events: []
+  /admin/orders/{id}/transfer/guest:
+    post:
+      operationId: PostOrdersIdTransferGuest
+      summary: Transfer Order to Guest Customer
+      x-sidebar-summary: Transfer to Guest
+      description: Transfer an order to a guest customer. This is useful when the order email was incorrectly entered and you want to set it to a guest customer. The order will be transferred to a new guest customer with the provided email. For transferring orders to registered customer, check out the [Request Order Transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer) API route instead.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order's ID.
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: query
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTransferOrderToGuest'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.order.transferToGuest("order_123", {
+              email: "customer@example.com",
+              internal_note: "Internal note",
+            })
+            .then(({ order }) => {
+              console.log(order)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/orders/{id}/transfer/guest' \
+            -H 'Authorization: Bearer {access_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "email": "Eda_Kuhic78@gmail.com"
+            }'
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: transferOrderToGuestWorkflow
       x-events: []
   /admin/payment-collections:
     post:
@@ -36674,7 +37845,7 @@ paths:
     delete:
       operationId: DeleteProductCategoriesId
       summary: Delete a Product Category
-      description: Delete a product category. This doesn't deleted products in that category.
+      description: Delete a product category. This doesn't delete the products in that category. A product category that has child categories can't be deleted, so you must delete its child categories first.
       x-authenticated: true
       parameters:
         - name: id
@@ -42062,6 +43233,26 @@ paths:
             ```
           description: Emitted when products are created.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/batch:
     post:
       operationId: PostProductsBatch
@@ -42208,6 +43399,36 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/export:
     post:
       operationId: PostProductsExport
@@ -43522,6 +44743,36 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
       deprecated: true
       x-deprecated_message: use `POST /admin/products/imports` instead.
   /admin/products/import/{transaction_id}/confirm:
@@ -43960,6 +45211,16 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/images/{image_id}/variants/batch:
     post:
       operationId: PostProductsIdImagesImage_idVariantsBatch
@@ -45053,6 +46314,26 @@ paths:
             ```
           description: Emitted when product variants are created.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/batch:
     post:
       operationId: PostProductsIdVariantsBatch
@@ -45176,6 +46457,36 @@ paths:
             ```
           description: Emitted when product variants are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/inventory-items/batch:
     post:
       operationId: PostProductsIdVariantsInventoryItemsBatch
@@ -45545,6 +46856,16 @@ paths:
             ```
           description: Emitted when product variants are deleted.
           deprecated: false
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/{variant_id}/images/batch:
     post:
       operationId: PostProductsIdVariantsVariant_idImagesBatch
@@ -50616,7 +51937,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
   /admin/reservations/{id}:
     get:
       operationId: GetReservationsId
@@ -50771,7 +52103,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteReservationsId
       summary: Delete a Reservation
@@ -50852,7 +52195,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/return-reasons:
     get:
       operationId: GetReturnReasons
@@ -54885,6 +56239,19 @@ paths:
             ```
           description: Emitted when a return is marked as received.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
   /admin/returns/{id}/request:
     post:
       operationId: PostReturnsIdRequest
@@ -57914,6 +59281,139 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: linkProductsToSalesChannelWorkflow
       x-events: []
+  /admin/search:
+    get:
+      operationId: GetSearch
+      summary: List Search
+      description: Retrieve a list of search. The search can be filtered by fields such as `id`. The search can also be sorted or paginated.
+      x-authenticated: true
+      parameters:
+        - name: q
+          in: query
+          description: The search's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The search's q.
+        - name: entity
+          in: query
+          description: The search's entity.
+          required: false
+          schema:
+            type: array
+            description: The search's entity.
+            items:
+              type: string
+              title: entity
+              description: The entity's details.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+            externalDocs:
+              url: '#pagination'
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+            externalDocs:
+              url: '#pagination'
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.search.list({ q: "shirt", limit: 5 })
+            .then(({ results }) => {
+              console.log(results)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/search' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Search
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: SUMMARY
+                required:
+                  - results
+                properties:
+                  results:
+                    type: array
+                    description: In the order the entities were requested.
+                    items:
+                      type: object
+                      description: The result's results.
+                      required:
+                        - entity
+                        - data
+                        - count
+                        - offset
+                        - limit
+                      properties:
+                        entity:
+                          type: string
+                          title: entity
+                          description: The result's entity.
+                        data:
+                          type: array
+                          description: The documents the index holds, in relevance order.
+                          items:
+                            type: object
+                            description: The datum's data.
+                        count:
+                          type: number
+                          title: count
+                          description: Treat as an estimate — most engines only approximate a total.
+                        offset:
+                          type: number
+                          title: offset
+                          description: The result's offset.
+                        limit:
+                          type: number
+                          title: limit
+                          description: The result's limit.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/shipping-option-types:
     get:
       operationId: GetShippingOptionTypes
@@ -59553,7 +61053,18 @@ paths:
     post:
       operationId: PostShippingOptionsId
       summary: Update a Shipping Option
-      description: Update a shipping option's details.
+      description: |
+        Update a shipping option's details.
+
+        When you provide the `prices` array, it replaces the shipping option's existing flat-rate prices:
+
+        - A price with a matching `id` is updated.
+        - A price without an `id` is created
+        - Any existing price whose `id` isn't included in the array is deleted.
+
+        The `rules` you provide for a price similarly replace that price's existing rules, so omit a rule to remove it.
+
+        Omitting the `prices` property entirely leaves the existing prices unchanged, whereas setting `price_type` to `calculated` removes all flat-rate prices.
       x-authenticated: true
       parameters:
         - name: id
@@ -59564,12 +61075,12 @@ paths:
             type: string
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
       security:
@@ -59605,7 +61116,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-options/{id}' \
-            -H 'Authorization: Bearer {jwt_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -67897,6 +69408,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.listEntities()
+            .then(({ entities }) => {
+              console.log(entities)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -67944,6 +69472,20 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { columns } = await sdk.admin.views.columns("orders")
         - lang: Shell
           label: cURL
           source: |-
@@ -68362,6 +69904,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.listConfigurations("orders")
+            .then(({ view_configurations, count, limit, offset }) => {
+              console.log(view_configurations)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68446,6 +70005,29 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminCreateViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { view_configuration } = await sdk.admin.views.createConfiguration(
+              "orders",
+              {
+                name: "My Orders View",
+                configuration: {
+                  visible_columns: ["display_id", "status"],
+                  column_order: ["display_id", "status"],
+                },
+              }
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -68509,6 +70091,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.retrieveActiveConfiguration("orders")
+            .then(({ view_configuration, active_view_configuration_id }) => {
+              console.log(view_configuration)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68573,6 +70172,22 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminSetActiveViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            await sdk.admin.views.setActiveConfiguration("orders", {
+              view_configuration_id: "viewconfig_123",
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68647,6 +70262,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.retrieveConfiguration("orders", "viewconfig_123")
+            .then(({ view_configuration }) => {
+              console.log(view_configuration)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68703,6 +70335,26 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminUpdateViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { view_configuration } = await sdk.admin.views.updateConfiguration(
+              "orders",
+              "viewconfig_123",
+              {
+                name: "Updated View",
+              }
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -68760,6 +70412,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(
+              "orders",
+              "viewconfig_123"
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -70105,6 +71774,52 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/user/providers:
+    get:
+      operationId: GetUserProviders
+      x-sidebar-summary: List Providers
+      summary: List Auth Providers for Admin Users
+      description: Retrieve a list of auth providers for the user actor type. This is useful to show the authentication option for the available providers.
+      x-authenticated: false
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { providers } = await sdk.auth.listProviders("user")
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/auth/user/providers'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthProvidersListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /auth/user/{auth_provider}:
     post:
       operationId: PostActor_typeAuth_provider
@@ -70486,6 +72201,13 @@ paths:
       responses:
         '201':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 201 status code's message.
+                example: Created
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -70608,6 +72330,68 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/{auth_provider}/user:
+    post:
+      operationId: PostAuth_providerUser
+      summary: Create an Admin User for an Auth Provider
+      x-sidebar-summary: Create Admin User
+      description: Create an admin user for an auth provider. This is useful for providers like OIDC where the user is created in the provider and then needs to be created in Medusa. Be careful of using this endpoint with providers like Google or GitHub, as any one can sign up as an admin user. Make sure to disable these providers for admin users using the [http.authMethodsPerActor](https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers#configure-allowed-auth-providers-of-actor-types) configuration.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The ID of the auth provider to create the admin user for.
+          required: true
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const token = await sdk.auth.callback("user", "okta", queryParams)
+            await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+            await sdk.auth.refresh()
+        - lang: Shell
+          label: cURL
+          source: curl -X POST '{backend_url}/auth/okta/user'
+      tags:
+        - '[auth_provider]'
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: createUserAccountWorkflow
+      x-events:
+        - name: user.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the user
+            }
+            ```
+          description: Emitted when users are created.
+          deprecated: false
 components:
   schemas:
     AdminAddClaimItems:
@@ -72712,6 +74496,9 @@ components:
           type: string
           title: label_id
           description: The ID of the column's label, if it has a custom label.
+        metadata:
+          type: object
+          description: The column's metadata.
     AdminConfirmReceiveReturn:
       type: object
       description: The confirmation's details.
@@ -76584,6 +78371,17 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+    AdminExportInventoryItemResponse:
+      type: object
+      description: The response for initiating an export inventory items workflow.
+      x-schemaName: AdminExportInventoryItemResponse
+      required:
+        - transaction_id
+      properties:
+        transaction_id:
+          type: string
+          title: transaction_id
+          description: The ID of the workflow execution's transaction. Use it to check the status of the export by sending a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`
     AdminExportOrderResponse:
       type: object
       description: The details of the order export.
@@ -77250,17 +79048,20 @@ components:
       type: object
       description: The details of the user to be created.
       properties:
-        token:
+        email:
           type: string
-          title: token
-          description: The invite's token.
-        fields:
+          title: email
+          description: The invite's email.
+          format: email
+        first_name:
           type: string
-          title: fields
-          description: The invite's fields.
+          title: first_name
+          description: The invited user's first name.
+        last_name:
+          type: string
+          title: last_name
+          description: The invited user's last name.
       x-schemaName: AdminGetInviteAcceptParams
-      required:
-        - token
     AdminGiftCard:
       type: object
       description: The gift card's details.
@@ -78630,6 +80431,10 @@ components:
           type: string
           title: internal_note
           description: The order change's internal note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -82564,6 +84369,15 @@ components:
             type: string
             title: promo_codes
             description: A promotion code to remove from the draft order.
+    AdminRequestOrderEdit:
+      type: object
+      description: The details of the request to edit an order.
+      x-schemaName: AdminRequestOrderEdit
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order edit's updates.
     AdminRequestOrderTransfer:
       type: object
       description: The details of the request to transfer the order.
@@ -84545,6 +86359,26 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+    AdminTransferOrderToGuest:
+      type: object
+      description: The details of the order transfer to a guest.
+      x-schemaName: AdminTransferOrderToGuest
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          title: email
+          description: The email to which the order will be transferred.
+          format: email
+        internal_note:
+          type: string
+          title: internal_note
+          description: The internal note for the order transfer.
+        description:
+          type: string
+          title: description
+          description: Details of the order transfer to a guest.
     AdminTranslation:
       type: object
       description: The translation's details.
@@ -86087,7 +87921,7 @@ components:
           description: The shipping option's type id.
         prices:
           type: array
-          description: The shipping option's prices.
+          description: The shipping option's prices. This array replaces the shipping option's existing prices - a price with a matching `id` is updated, a price without an `id` is created, and any existing price whose `id` isn't included is deleted. Omit this property to leave the existing prices unchanged.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminUpdateShippingOptionPriceWithCurrency'
@@ -86111,7 +87945,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         currency_code:
           type: string
           title: currency_code
@@ -86123,7 +87957,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionPriceWithRegion:
@@ -86134,7 +87968,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         region_id:
           type: string
           title: region_id
@@ -86145,7 +87979,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionRule:
@@ -87061,6 +88895,60 @@ components:
           type: string
           title: location
           description: The location to redirect the user to for further authentication with the third-party provider.
+    AuthProvider:
+      type: object
+      description: |-
+        The public information of a registered auth provider instance. This is safe
+        to expose to unauthenticated clients and never contains provider options or
+        secrets.
+      x-schemaName: AuthProvider
+      required:
+        - id
+        - identifier
+        - display_name
+        - flow
+      properties:
+        id:
+          type: string
+          title: id
+          description: |-
+            The registered instance ID of the provider, used in authentication routes
+            (for example, `okta` in `POST /auth/user/okta`).
+        identifier:
+          type: string
+          title: identifier
+          description: The provider's static identifier (for example, `oidc` or `emailpass`).
+        display_name:
+          type: string
+          title: display_name
+          description: The name to display for the provider in a frontend application.
+        flow:
+          type: string
+          description: |-
+            The authentication flow the provider uses:
+
+            - `credentials`: the client submits credentials (for example, email and
+            password) directly to the authentication route.
+            - `redirect`: the client is redirected to the provider (for example, an
+            OIDC identity provider) and returns through a callback.
+
+            A frontend can use this to decide whether to render a credentials form or a
+            "Continue with ..." redirect button.
+          enum:
+            - credentials
+            - redirect
+    AuthProvidersListResponse:
+      type: object
+      description: The response of listing the auth providers available.
+      x-schemaName: AuthProvidersListResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: The list of auth providers.
+          items:
+            $ref: '#/components/schemas/AuthProvider'
     AuthResponse:
       type: object
       description: The authentication's details.
@@ -87356,6 +89244,11 @@ components:
           type: number
           title: original_shipping_tax_total
           description: The sum of all shipping methods' original tax totals before discounts.
+        completed_at:
+          type: string
+          title: completed_at
+          description: The date the cart was completed.
+          format: date-time
     BaseCartAddress:
       type: object
       description: The cart's shipping address.
@@ -87861,8 +89754,6 @@ components:
       properties:
         item:
           type: object
-          title: item
-          description: The details of the item that the adjustment belongs to.
         item_id:
           type: string
           title: item_id
@@ -87921,9 +89812,7 @@ components:
         - updated_at
       properties:
         item:
-          type: object
-          title: item
-          description: The details of the item that the tax line belongs to.
+          $ref: '#/components/schemas/BaseCartLineItem'
         item_id:
           type: string
           title: item_id
@@ -90272,8 +92161,10 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the adjustment belongs to.
+        shipping_method_id:
+          type: string
+          title: shipping_method_id
+          description: The ID of the shipping method this adjustment applies on.
         id:
           type: string
           title: id
@@ -90329,8 +92220,6 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the tax line belongs to.
         shipping_method_id:
           type: string
           title: shipping_method_id
@@ -91566,6 +93455,10 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     OrderChangeAction:
       type: object
       description: The order change action's details.
@@ -92366,6 +94259,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata, can hold custom key-value pairs.
     OrderReturnItem:
       type: object
       description: The item's items.
@@ -92662,6 +94561,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata. Can hold custom key-value pairs.
     OrderTransaction:
       type: object
       description: The transaction's details.
@@ -92796,6 +94701,10 @@ components:
           type: string
           title: endpoint
           description: The relationship filter's endpoint.
+        filter_key:
+          type: string
+          title: filter_key
+          description: The relationship's filter key.
     Return:
       type: object
       description: The return's details.
@@ -93145,7 +95054,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the cart's sales channel. Only products that belong to the same sales channel can be added to the cart. The created order will be associated with the same sales channel.
+          description: |
+            The ID of the cart's sales channel. The created order is associated with the same sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email
@@ -93867,7 +95781,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount for the cart. For a shipping option whose `price_type` is `calculated`, this amount is computed on the fly by the fulfillment provider against the cart.
         data:
           type: object
           description: The shipping option's data, useful for the provider handling fulfillment.
@@ -93999,7 +95913,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the sales channel that cart is created in. Only products available in that sales channel can be added to the cart. If not provided, the store's default sales channel is associated with the cart instead.
+          description: |
+            The ID of the sales channel that cart is created in. If not provided, the store's default sales channel is associated with the cart instead.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         metadata:
           type: object
           description: The cart's metadata, can hold custom key-value pairs.
@@ -96924,7 +98843,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
         is_tax_inclusive:
           type: boolean
           title: is_tax_inclusive
@@ -97338,7 +99257,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the associated sales channel. Only products available in this channel can be added to the cart.
+          description: |
+            The ID of the associated sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email

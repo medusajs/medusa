@@ -81,3 +81,32 @@ export class RestrictedFieldFilter implements IFieldFilter {
     return notAllowedFields
   }
 }
+
+/**
+ * Filter that disallows specific fields as a hard security boundary.
+ * Any requested field whose path contains a disallowed segment is returned as
+ * not allowed (e.g. `orders` matches both `orders` and `orders.customer.email`).
+ * Behaves like {@link RestrictedFieldFilter}, but is enforced independently of
+ * any feature flag so it can be relied upon to keep sensitive relations off
+ * unauthenticated endpoints.
+ */
+export class DisallowedFieldFilter implements IFieldFilter {
+  private disallowed: string[]
+
+  constructor({ disallowed }: { disallowed: string[] }) {
+    this.disallowed = disallowed
+  }
+
+  getNotAllowedFields(context: FieldFilterContext): string[] {
+    const { parsedFields } = context
+    const { fields, starFields } = parsedFields
+    const fieldsToCheck = [...fields, ...Array.from(starFields)]
+
+    return fieldsToCheck.filter((field) => {
+      const fieldSegments = field.split(".")
+      return this.disallowed.some((disallowedField) =>
+        fieldSegments.includes(disallowedField)
+      )
+    })
+  }
+}

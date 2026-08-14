@@ -29,7 +29,7 @@ export type UpdatePromotionsWorkflowInput = {
 
 export const updatePromotionsWorkflowId = "update-promotions"
 /**
- * This workflow updates one or more promotions. It's used by the [Update Promotion Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsid).
+ * This workflow updates one or more promotions. It's used by the [Update Promotion Admin API Route](https://docs.medusajs.com/api/admin/promotions/update-a-promotion).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated promotion. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the promotions.

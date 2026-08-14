@@ -1,4 +1,4 @@
-import { PencilSquare, Plus, Trash } from "@medusajs/icons"
+import { Plus } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -13,6 +13,7 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { CollectionProductRowActions } from "./collection-product-row-actions"
 
 type CollectionProductSectionProps = {
   collection: HttpTypes.AdminCollection
@@ -145,76 +146,6 @@ export const CollectionProductSection = ({
   )
 }
 
-const ProductActions = ({
-  product,
-  collectionId,
-}: {
-  product: HttpTypes.AdminProduct
-  collectionId: string
-}) => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const { mutateAsync } = useUpdateCollectionProducts(collectionId)
-
-  const handleRemove = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("collections.removeSingleProductWarning", {
-        title: product.title,
-      }),
-      confirmText: t("actions.remove"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync(
-      {
-        remove: [product.id],
-      },
-      {
-        onSuccess: () => {
-          toast.success(
-            t("collections.products.remove.successToast", {
-              count: 1,
-            })
-          )
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      }
-    )
-  }
-
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/products/${product.id}/edit`,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.remove"),
-              onClick: handleRemove,
-            },
-          ],
-        },
-      ]}
-    />
-  )
-}
-
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = () => {
@@ -259,7 +190,7 @@ const useColumns = () => {
           }
 
           return (
-            <ProductActions
+            <CollectionProductRowActions
               product={row.original}
               collectionId={collectionId}
             />

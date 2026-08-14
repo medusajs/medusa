@@ -6,6 +6,9 @@ import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { AuthMfaCreateFactorRequestType } from "../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -18,6 +21,9 @@ export const GET = async (
   return res.status(200).json({ mfa_factors: mfaFactors })
 }
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaCreateFactorRequestType>,
   res: MedusaResponse
