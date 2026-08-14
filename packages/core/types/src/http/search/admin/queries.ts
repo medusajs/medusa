@@ -17,5 +17,8 @@ export interface AdminSearchParams {
 
   /** Per entity, not across the response — each group paginates on its own. */
   limit?: number
+  /**
+   * The number of items to skip before the results. Used for pagination.
+   */
   offset?: number
 }
