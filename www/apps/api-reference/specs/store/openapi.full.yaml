@@ -246,6 +246,52 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/customer/providers:
+    get:
+      operationId: GetCustomerProviders
+      x-sidebar-summary: List Providers
+      summary: List Auth Providers for Customers
+      description: Retrieve a list of auth providers for the customer actor type. This is useful to show the authentication option for the available providers.
+      x-authenticated: false
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { providers } = await sdk.auth.listProviders("customer")
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/auth/customer/providers'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthProvidersListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /auth/customer/{auth_provider}:
     post:
       operationId: PostActor_typeAuth_provider
@@ -12390,7 +12436,7 @@ paths:
     post:
       operationId: PostReturns
       summary: Create Return
-      description: Create a return for an order's items. The admin receives the return and process it from their side.
+      description: Create a return for an order's items. The admin receives the return and process it from their side. This API route doesn't require customer authentication, so that guest customers can request a return for their orders. To restrict access to this API route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation).
       x-authenticated: false
       parameters:
         - name: x-publishable-api-key
@@ -19314,6 +19360,17 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+    AdminExportInventoryItemResponse:
+      type: object
+      description: The response for initiating an export inventory items workflow.
+      x-schemaName: AdminExportInventoryItemResponse
+      required:
+        - transaction_id
+      properties:
+        transaction_id:
+          type: string
+          title: transaction_id
+          description: The ID of the workflow execution's transaction. Use it to check the status of the export by sending a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`
     AdminExportOrderResponse:
       type: object
       description: The details of the order export.
@@ -21363,6 +21420,10 @@ components:
           type: string
           title: internal_note
           description: The order change's internal note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -25297,6 +25358,15 @@ components:
             type: string
             title: promo_codes
             description: A promotion code to remove from the draft order.
+    AdminRequestOrderEdit:
+      type: object
+      description: The details of the request to edit an order.
+      x-schemaName: AdminRequestOrderEdit
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order edit's updates.
     AdminRequestOrderTransfer:
       type: object
       description: The details of the request to transfer the order.
@@ -29814,6 +29884,60 @@ components:
           type: string
           title: location
           description: The location to redirect the user to for further authentication with the third-party provider.
+    AuthProvider:
+      type: object
+      description: |-
+        The public information of a registered auth provider instance. This is safe
+        to expose to unauthenticated clients and never contains provider options or
+        secrets.
+      x-schemaName: AuthProvider
+      required:
+        - id
+        - identifier
+        - display_name
+        - flow
+      properties:
+        id:
+          type: string
+          title: id
+          description: |-
+            The registered instance ID of the provider, used in authentication routes
+            (for example, `okta` in `POST /auth/user/okta`).
+        identifier:
+          type: string
+          title: identifier
+          description: The provider's static identifier (for example, `oidc` or `emailpass`).
+        display_name:
+          type: string
+          title: display_name
+          description: The name to display for the provider in a frontend application.
+        flow:
+          type: string
+          description: |-
+            The authentication flow the provider uses:
+
+            - `credentials`: the client submits credentials (for example, email and
+            password) directly to the authentication route.
+            - `redirect`: the client is redirected to the provider (for example, an
+            OIDC identity provider) and returns through a callback.
+
+            A frontend can use this to decide whether to render a credentials form or a
+            "Continue with ..." redirect button.
+          enum:
+            - credentials
+            - redirect
+    AuthProvidersListResponse:
+      type: object
+      description: The response of listing the auth providers available.
+      x-schemaName: AuthProvidersListResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: The list of auth providers.
+          items:
+            $ref: '#/components/schemas/AuthProvider'
     AuthResponse:
       type: object
       description: The authentication's details.
@@ -34320,6 +34444,10 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     OrderChangeAction:
       type: object
       description: The order change action's details.

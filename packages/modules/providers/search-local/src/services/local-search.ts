@@ -46,6 +46,11 @@ type StoredIndex = {
 export class LocalSearchService extends AbstractSearchProviderService {
   static identifier = "search-local"
 
+  // Indexes live in this process' memory, so the ones `db:migrate` created are
+  // gone with it. The module migrates them again when the application starts,
+  // just before seeding them.
+  readonly migrate_on_startup = true
+
   protected readonly logger_?: Logger
   protected readonly indexes_: Map<string, StoredIndex> = new Map()
 
@@ -66,8 +71,7 @@ export class LocalSearchService extends AbstractSearchProviderService {
 
     // Orama fixes a schema at creation, so bringing an index up to date means
     // rebuilding it empty. That is safe because the module only ever points this
-    // at an index it is about to seed — a shadow it will swap in, or a live one
-    // it is refilling wholesale.
+    // at an index it is about to seed.
     if (!existing || !sameSchema(existing.plan, plan)) {
       this.indexes_.set(index.physical_name, {
         name: index.physical_name,
@@ -98,22 +102,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
       created_at: stored.created_at,
       updated_at: stored.updated_at,
     }))
-  }
-
-  // Repointing an alias is just moving the database between keys.
-  async swapIndex({
-    alias,
-    index,
-  }: {
-    alias: string
-    index: string
-  }): Promise<SearchTypes.SearchTask> {
-    const shadow = this.retrieve(index)
-
-    this.indexes_.set(alias, { ...shadow, name: alias, updated_at: new Date() })
-    this.indexes_.delete(index)
-
-    return this.task(alias)
   }
 
   async upsertDocuments({

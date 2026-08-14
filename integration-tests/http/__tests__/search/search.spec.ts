@@ -209,7 +209,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it("queries the database for the whole request when only some of the entities are indexed", async () => {
+      it("uses the search engine for indexed entities and the database for the rest", async () => {
         const response = await api.get(
           "/admin/search?q=zephyr&entity=product,region",
           adminHeaders
@@ -221,11 +221,18 @@ medusaIntegrationTestRunner({
           "region",
         ])
 
-        // The index would have answered with its own fields, so the field set
-        // is what tells the two paths apart.
+        // Index fields for product; graph fields would be id/thumbnail/title.
         expect(
           Object.keys(groupFor(response.data, "product").data[0]).sort()
-        ).toEqual(["id", "thumbnail", "title"])
+        ).toEqual(["handle", "id", "status", "title"])
+        expect(groupFor(response.data, "product").data).toEqual([
+          expect.objectContaining({
+            title: "Zephyr Shirt",
+          }),
+        ])
+        expect(groupFor(response.data, "region")).toEqual(
+          expect.objectContaining({ entity: "region", data: [], count: 0 })
+        )
       })
 
       it("fails on an entity that is neither indexed nor searchable in the database", async () => {

@@ -18,7 +18,7 @@ export const ProductVariantDetailBreadcrumb = (
       fields: VARIANT_DETAIL_FIELDS,
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id) && Boolean(variant_id),
     }
   )
@@ -31,5 +31,5 @@ export const ProductVariantDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminProductVariantResponse>) => ({
-  title: match.data?.variant?.title,
+  title: match.loaderData?.variant?.title,
 })

@@ -22,6 +22,28 @@ export interface InvalidationEvent {
   cacheKeys: string[]
 }
 
+/**
+ * The mutations a cached entity can go through. `attached`/`detached` are the
+ * link modules' equivalent of created/deleted, and `restored` reverses a soft
+ * delete.
+ */
+export type InvalidationOperation =
+  | "created"
+  | "updated"
+  | "deleted"
+  | "restored"
+  | "attached"
+  | "detached"
+
+const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
+  "created",
+  "updated",
+  "deleted",
+  "restored",
+  "attached",
+  "detached",
+]
+
 export class CacheInvalidationParser {
   private typeMap: Map<string, GraphQLObjectType>
   private idPrefixToEntityName: Record<string, string>
@@ -190,7 +212,7 @@ export class CacheInvalidationParser {
    */
   buildInvalidationEvents(
     entities: EntityReference[],
-    operation: "created" | "updated" | "deleted" = "updated"
+    operation: InvalidationOperation = "updated"
   ): InvalidationEvent[] {
     const events: InvalidationEvent[] = []
     const processedEntities = new Set<string>()
@@ -225,18 +247,21 @@ export class CacheInvalidationParser {
    */
   private buildAffectedCacheKeys(
     entity: EntityReference,
-    operation: "created" | "updated" | "deleted" = "updated"
+    operation: InvalidationOperation = "updated"
   ): string[] {
     const keys = new Set<string>()
 
     keys.add(`${entity.type}:${entity.id}`)
 
-    // Add the list key when the entity was found in an array context or for
-    // created/updated/deleted operations. Updates are included because a
-    // mutation can change whether an entity matches a cached list's filters
-    // (e.g. a product going from draft to published), and the cache layer has
-    // no way of knowing which fields are filter-relevant.
-    if (entity.isInArray || ["created", "updated", "deleted"].includes(operation)) {
+    // Add the list key when the entity was found in an array context or for any
+    // mutating operation. Updates are included because a mutation can change
+    // whether an entity matches a cached list's filters (e.g. a product going
+    // from draft to published), and the cache layer has no way of knowing which
+    // fields are filter-relevant. Attach/detach are included because a link row
+    // never carries a usable id at attach time, so the list key is the only tag
+    // a cached link query can be invalidated by. Restore is included because the
+    // entity re-enters every list it was soft deleted out of.
+    if (entity.isInArray || LIST_AFFECTING_OPERATIONS.includes(operation)) {
       keys.add(`${entity.type}:list:*`)
     }
 

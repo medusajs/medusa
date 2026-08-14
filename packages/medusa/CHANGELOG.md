@@ -1,5 +1,99 @@
 # Change Log
 
+## 2.19.0
+
+### Minor Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa): require node 20.19 or newer
+
+  **Breaking:** the minimum Node version is now **20.19.0** (or 22.12.0+), raised from 20.0.0 to match Vite 7's requirement. Node 20.0–20.18 and 22.0–22.11 are no longer supported for `medusa develop`, `medusa build` or `medusa plugin:build`.
+
+### Patch Changes
+
+- [#16133](https://github.com/medusajs/medusa/pull/16133) [`0e1ccf49654caefa8305fe91a4c9abd573ca1143`](https://github.com/medusajs/medusa/commit/0e1ccf49654caefa8305fe91a4c9abd573ca1143) Thanks [@GBreg19](https://github.com/GBreg19)! - fix(medusa): allow admin draft orders without an email or customer_id
+
+  `POST /admin/draft-orders` previously rejected requests missing both `email` and `customer_id`, even though `createOrderWorkflow` and the order data model already support neither being set. This blocked use cases with no captured customer identity (e.g. POS/walk-in orders). The admin validator no longer requires either field.
+
+  Also fixes a related bug the relaxed validator exposed: the route's customer-lookup fallback queried `customer` with `filters: { id: undefined }` when `customer_id` was omitted, which matched an arbitrary customer instead of none, leaking an unrelated customer's email onto the draft order. The lookup now only runs when `customer_id` is actually provided.
+
+- [#16308](https://github.com/medusajs/medusa/pull/16308) [`be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d`](https://github.com/medusajs/medusa/commit/be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(test-utils, modules-sdk, utils, medusa): fix plugin:add for monorepo projects
+
+- [#16315](https://github.com/medusajs/medusa/pull/16315) [`c13aaa96b3968b7f021131529f630b1de7bd6970`](https://github.com/medusajs/medusa/commit/c13aaa96b3968b7f021131529f630b1de7bd6970) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(product, types, utils, medusa): optimize migration script for product options
+
+- [#16223](https://github.com/medusajs/medusa/pull/16223) [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,medusa,dashboard,js-sdk,types): add inventory item export with per-location levels
+
+- [#16323](https://github.com/medusajs/medusa/pull/16323) [`5641bab6ea2d6f0eb7cb9188486656d555ce4d60`](https://github.com/medusajs/medusa/commit/5641bab6ea2d6f0eb7cb9188486656d555ce4d60) Thanks [@lazerg](https://github.com/lazerg)! - fix(medusa): document the invite accept token as a query parameter
+
+  `POST /admin/invites/accept` passed its query params type as the request body type, so the API reference listed `token` as a body field. The route reads `token` from the query string and its body validator is strict, so anyone following the reference got `Unrecognized fields: 'token'` with the token in the body and `Field 'token' is required` without it. The route now types the body and the query params separately.
+
+- [#16238](https://github.com/medusajs/medusa/pull/16238) [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,dashboard,js-sdk, medusa,types,utils): support notification preferences for order edits
+
+- [#16298](https://github.com/medusajs/medusa/pull/16298) [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677) Thanks [@sradevski](https://github.com/sradevski)! - Add the Search Module: provider-backed search with an in-memory (Orama) provider, the `query.search` primitive, index definition discovery from `search/`, index migrations through `db:migrate`, event-driven ingestion, and an `/admin/search` endpoint
+
+- [#16023](https://github.com/medusajs/medusa/pull/16023) [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(auth-oidc,dashboard,auth,js-sdk,types,medusa): generic OIDC auth provider
+
+- [#16188](https://github.com/medusajs/medusa/pull/16188) [`5c54d68fd0f4020291deb3746eb21dccf498ca45`](https://github.com/medusajs/medusa/commit/5c54d68fd0f4020291deb3746eb21dccf498ca45) Thanks [@irontaek](https://github.com/irontaek)! - perf(medusa): avoid O(n²) matching in the translations batch endpoint by using Sets for created/updated id lookups
+
+- [#16139](https://github.com/medusajs/medusa/pull/16139) [`9fa4bd9eb941a266c560b35683e8230af33a3352`](https://github.com/medusajs/medusa/commit/9fa4bd9eb941a266c560b35683e8230af33a3352) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(fulfillment, core-flows, types, utils, medusa): support custom delivery address + pass additional data to createFulfillment
+
+- Updated dependencies [[`a42ee0825b07409cab68cd351516c35b74238150`](https://github.com/medusajs/medusa/commit/a42ee0825b07409cab68cd351516c35b74238150), [`a4791af3b2e566684b18e7ea07b086c579ec874f`](https://github.com/medusajs/medusa/commit/a4791af3b2e566684b18e7ea07b086c579ec874f), [`5cc7fdef1893d8c4afac8de8e3cfa32d451e69a5`](https://github.com/medusajs/medusa/commit/5cc7fdef1893d8c4afac8de8e3cfa32d451e69a5), [`f2c9d7d3c11507f92142b440a1d90ad74c2a03de`](https://github.com/medusajs/medusa/commit/f2c9d7d3c11507f92142b440a1d90ad74c2a03de), [`e037c71ff11add91583124a600840ce793421fe7`](https://github.com/medusajs/medusa/commit/e037c71ff11add91583124a600840ce793421fe7), [`7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9`](https://github.com/medusajs/medusa/commit/7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9), [`aeea1f46bf4947ca36577e950b4c79a1faba8ba1`](https://github.com/medusajs/medusa/commit/aeea1f46bf4947ca36577e950b4c79a1faba8ba1), [`c13aaa96b3968b7f021131529f630b1de7bd6970`](https://github.com/medusajs/medusa/commit/c13aaa96b3968b7f021131529f630b1de7bd6970), [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c), [`01f31bc58b1ff729a7326bdf54c65f92e35b0725`](https://github.com/medusajs/medusa/commit/01f31bc58b1ff729a7326bdf54c65f92e35b0725), [`11d58f75f22691e63ef4258f8c40d63a3d12332b`](https://github.com/medusajs/medusa/commit/11d58f75f22691e63ef4258f8c40d63a3d12332b), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`c6188c23f2efda5dafcb8bea83f71dc02d375f19`](https://github.com/medusajs/medusa/commit/c6188c23f2efda5dafcb8bea83f71dc02d375f19), [`372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30`](https://github.com/medusajs/medusa/commit/372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30), [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7), [`941fd67d59b6f506efc18e255b051c4d3ab14f64`](https://github.com/medusajs/medusa/commit/941fd67d59b6f506efc18e255b051c4d3ab14f64), [`65040fc503f75428f6f582969e1e7abe27c00987`](https://github.com/medusajs/medusa/commit/65040fc503f75428f6f582969e1e7abe27c00987), [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677), [`4f2b8a2b435870a379b029d5e6348a3c06cc4093`](https://github.com/medusajs/medusa/commit/4f2b8a2b435870a379b029d5e6348a3c06cc4093), [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`9fa4bd9eb941a266c560b35683e8230af33a3352`](https://github.com/medusajs/medusa/commit/9fa4bd9eb941a266c560b35683e8230af33a3352)]:
+  - @medusajs/core-flows@2.19.0
+  - @medusajs/order@2.19.0
+  - @medusajs/product@2.19.0
+  - @medusajs/draft-order@2.19.0
+  - @medusajs/cart@2.19.0
+  - @medusajs/file-s3@2.19.0
+  - @medusajs/caching@2.19.0
+  - @medusajs/framework@2.19.0
+  - @medusajs/pricing@2.19.0
+  - @medusajs/index@2.19.0
+  - @medusajs/search-local@2.19.0
+  - @medusajs/search@2.19.0
+  - @medusajs/auth-oidc@2.19.0
+  - @medusajs/auth@2.19.0
+  - @medusajs/admin-bundler@2.19.0
+  - @medusajs/fulfillment@2.19.0
+  - @medusajs/event-bus-redis@2.19.0
+  - @medusajs/analytics@2.19.0
+  - @medusajs/api-key@2.19.0
+  - @medusajs/currency@2.19.0
+  - @medusajs/customer@2.19.0
+  - @medusajs/file@2.19.0
+  - @medusajs/inventory@2.19.0
+  - @medusajs/link-modules@2.19.0
+  - @medusajs/locking@2.19.0
+  - @medusajs/notification@2.19.0
+  - @medusajs/payment@2.19.0
+  - @medusajs/promotion@2.19.0
+  - @medusajs/rbac@2.19.0
+  - @medusajs/region@2.19.0
+  - @medusajs/sales-channel@2.19.0
+  - @medusajs/settings@2.19.0
+  - @medusajs/stock-location@2.19.0
+  - @medusajs/store@2.19.0
+  - @medusajs/tax@2.19.0
+  - @medusajs/translation@2.19.0
+  - @medusajs/user@2.19.0
+  - @medusajs/workflow-engine-inmemory@2.19.0
+  - @medusajs/workflow-engine-redis@2.19.0
+  - @medusajs/cache-inmemory@2.19.0
+  - @medusajs/cache-redis@2.19.0
+  - @medusajs/event-bus-local@2.19.0
+  - @medusajs/analytics-local@2.19.0
+  - @medusajs/analytics-posthog@2.19.0
+  - @medusajs/auth-emailpass@2.19.0
+  - @medusajs/auth-github@2.19.0
+  - @medusajs/auth-google@2.19.0
+  - @medusajs/caching-redis@2.19.0
+  - @medusajs/file-local@2.19.0
+  - @medusajs/fulfillment-manual@2.19.0
+  - @medusajs/locking-postgres@2.19.0
+  - @medusajs/locking-redis@2.19.0
+  - @medusajs/notification-local@2.19.0
+  - @medusajs/notification-sendgrid@2.19.0
+  - @medusajs/payment-stripe@2.19.0
+  - @medusajs/telemetry@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

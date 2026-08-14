@@ -49,7 +49,7 @@
  *     title: sales_channel_id
  *     description: |
  *       The ID of the cart's sales channel. The created order is associated with the same sales channel.
- *
+ * 
  *       A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
  *     externalDocs:
  *       url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability

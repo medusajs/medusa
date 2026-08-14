@@ -1,0 +1,29 @@
+{
+  "name": "release-banner",
+  "private": true,
+  "license": "MIT",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "yarn clean && tsc",
+    "watch": "tsc --watch",
+    "clean": "rimraf dist",
+    "lint": "eslint --ext .ts src",
+    "render": "node dist/cli.js render",
+    "preview": "node dist/cli.js preview",
+    "upload": "node dist/cli.js upload"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "cloudinary": "^2.10.0",
+    "commander": "^11.1.0",
+    "satori": "^0.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.10",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.6.2"
+  }
+}

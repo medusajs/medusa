@@ -114,22 +114,50 @@ This graph collects data models of all modules in your application, including co
 
 ---
 
-## Retrieve Linked Records
+## Select Specific Fields
 
-Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with `.*`.
+Always list in `fields` the properties you need, rather than passing `*` or `{relation}.*` to retrieve every property.
 
-For example:
+Selecting specific fields keeps the query cheaper for the database, the response smaller, and the cached result easier to invalidate. Retrieving all properties also loads relations and computed properties that you may not use.
+
+For example, instead of retrieving all properties of a post and its author:
 
 <CodeTabs group="query">
   <CodeTab label="query.graph" value="query.graph">
 
-```ts highlights={[["6"]]}
+```ts title="Avoid"
+const { data: posts } = await query.graph({
+  entity: "post",
+  fields: ["*", "author.*"],
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts title="Avoid"
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["*", "author.*"],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Retrieve only the properties you use:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts title="Prefer"
 const { data: posts } = await query.graph({
   entity: "post",
   fields: [
-    "id", 
+    "id",
     "title",
-    "product.*",
+    "author.id",
+    "author.name",
   ],
 })
 ```
@@ -137,13 +165,14 @@ const { data: posts } = await query.graph({
   </CodeTab>
   <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
 
-```ts highlights={[["6"]]}
+```ts title="Prefer"
 const { data: posts } = useQueryGraphStep({
   entity: "post",
   fields: [
-    "id", 
+    "id",
     "title",
-    "product.*",
+    "author.id",
+    "author.name",
   ],
 })
 ```
@@ -151,14 +180,72 @@ const { data: posts } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-`.*` means that all of the data model's properties should be retrieved. You can also retrieve specific properties by replacing the `*` with the property name for each property.
+### Avoid Retrieving All Fields of Carts and Orders
+
+Selecting specific fields matters most for the `cart` and `order` data models, along with their related data models, such as `return` and `order_change`.
+
+These data models have computed total properties, such as `total`, `subtotal`, and `tax_total`. Medusa calculates these totals in the application, not the database, and it only calculates them when you request at least one total property, or when you pass `*`.
+
+So, when you pass `*` in `fields`, Medusa:
+
+- Calculates all totals for every retrieved record.
+- Loads the relations required for that calculation, including `items`, `credit_lines`, `items.tax_lines`, `items.adjustments`, `shipping_methods`, `shipping_methods.tax_lines`, and `shipping_methods.adjustments`, even if you don't use them.
+
+For a list of orders, this turns a simple query into a much heavier one. So, request totals only when you display them:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts title="Prefer"
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "id",
+    "display_id",
+    "status",
+    "currency_code",
+    // request totals only if you use them:
+    "total",
+    "items.id",
+    "items.title",
+  ],
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts title="Prefer"
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: [
+    "id",
+    "display_id",
+    "status",
+    "currency_code",
+    // request totals only if you use them:
+    "total",
+    "items.id",
+    "items.title",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve Linked Records
+
+Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with the `.{field}` notation, where `{field}` is the property of the linked data model you want to retrieve.
 
 For example:
 
 <CodeTabs group="query">
   <CodeTab label="query.graph" value="query.graph">
 
-```ts
+```ts highlights={[["6"], ["7"]]}
 const { data: posts } = await query.graph({
   entity: "post",
   fields: [
@@ -173,7 +260,7 @@ const { data: posts } = await query.graph({
   </CodeTab>
   <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
 
-```ts
+```ts highlights={[["6"], ["7"]]}
 const { data: posts } = useQueryGraphStep({
   entity: "post",
   fields: [
@@ -190,9 +277,44 @@ const { data: posts } = useQueryGraphStep({
 
 In the example above, you retrieve only the `id` and `title` properties of the `product` linked to a `post`.
 
+Alternatively, you can pass `.*` to retrieve all properties of the linked data model. Use this only when you need every property, as explained in the [Select Specific Fields](#select-specific-fields) section.
+
+For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts
+const { data: posts } = await query.graph({
+  entity: "post",
+  fields: [
+    "id", 
+    "title",
+    "product.*",
+  ],
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: [
+    "id", 
+    "title",
+    "product.*",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 ### Retrieve List Link Records
 
-If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.*`.
+If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.{field}`.
 
 For example:
 
@@ -205,7 +327,7 @@ const { data: posts } = await query.graph({
   fields: [
     "id", 
     "title",
-    "products.*",
+    "products.id",
   ],
 })
 ```
@@ -219,7 +341,7 @@ const { data: posts } = useQueryGraphStep({
   fields: [
     "id", 
     "title",
-    "products.*",
+    "products.id",
   ],
 })
 ```
@@ -238,12 +360,13 @@ For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone
 <CodeTabs group="query">
   <CodeTab label="query.graph" value="query.graph">
 
-```ts highlights={[["4"]]}
+```ts highlights={[["5"], ["6"]]}
 const { data: shippingOptions } = await query.graph({
   entity: "shipping_option",
   fields: [
     "id",
-    "service_zone.fulfillment_set.location.*",
+    "service_zone.fulfillment_set.location.id",
+    "service_zone.fulfillment_set.location.name",
   ],
 })
 ```
@@ -251,12 +374,13 @@ const { data: shippingOptions } = await query.graph({
   </CodeTab>
   <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
 
-```ts highlights={[["4"]]}
+```ts highlights={[["5"], ["6"]]}
 const { data: shippingOptions } = useQueryGraphStep({
   entity: "shipping_option",
   fields: [
     "id",
-    "service_zone.fulfillment_set.location.*",
+    "service_zone.fulfillment_set.location.id",
+    "service_zone.fulfillment_set.location.name",
   ],
 })
 ```
@@ -264,7 +388,7 @@ const { data: shippingOptions } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-In the example above, each level in the `service_zone.fulfillment_set.location.*` path is a relation or link that Query resolves in order. You can also select specific properties at any level, such as `service_zone.fulfillment_set.location.id`, instead of using `.*`.
+In the example above, each level in the `service_zone.fulfillment_set.location` path is a relation or link that Query resolves in order. Select the properties you need at the last level, as explained in the [Select Specific Fields](#select-specific-fields) section.
 
 The returned `data` nests each level under the previous one. For example:
 
@@ -277,7 +401,7 @@ The returned `data` nests each level under the previous one. For example:
       "id": "fuset_123",
       "location": {
         "id": "sloc_123",
-        // other stock location fields...
+        "name": "Warehouse"
       }
     }
   }
@@ -303,8 +427,8 @@ For example:
 export const queryLinkTableHighlights = [
   ["1", "", "Import the module link."],
   ["6", "ProductPostLink.entryPoint", "Pass the `entryPoint` property of the link to Query"],
-  ["7", `"product.*"`, "Retrieve the fields of a product record linked to a `Post` record."],
-  ["7", `"post.*"`, "Retrieve the fields of a `Post` record linked to a product record."]
+  ["11", `"product.id"`, "Retrieve the ID of a product record linked to a `Post` record."],
+  ["13", `"post.id"`, "Retrieve the ID of a `Post` record linked to a product record."]
 ]
 
 ```ts highlights={queryLinkTableHighlights}
@@ -314,7 +438,15 @@ import ProductPostLink from "../../../links/product-post"
 
 const { data: productCustoms } = await query.graph({
   entity: ProductPostLink.entryPoint,
-  fields: ["*", "product.*", "post.*"],
+  fields: [
+    "id",
+    "product_id",
+    "post_id",
+    "product.id",
+    "product.title",
+    "post.id",
+    "post.title",
+  ],
   pagination: {
     take: 5,
     skip: 0,
@@ -325,10 +457,10 @@ const { data: productCustoms } = await query.graph({
 In the object passed to the `graph` method:
 
 - You pass the `entryPoint` property of the link definition as the value for `entity`. So, Query will retrieve records from the module link's table.
-- You pass three items to the `fields` property:
-    - `*` to retrieve the link table's fields. This is useful if the link table has [custom columns](../custom-columns/page.mdx).
-    - `product.*` to retrieve the fields of a product record linked to a `Post` record.
-    - `post.*` to retrieve the fields of a `Post` record linked to a product record.
+- You pass in the `fields` property:
+    - The link table's columns, such as `id`, `product_id`, and `post_id`. You can also select [custom columns](../custom-columns/page.mdx) that you defined in the link table.
+    - `product.id` and `product.title` to retrieve those properties of a product record linked to a `Post` record.
+    - `post.id` and `post.title` to retrieve those properties of a `Post` record linked to a product record.
 
 You can then apply any [filters](#apply-filters) or [pagination configurations](#apply-pagination) on the module link's table. For example, you can apply filters on the `product_id`, `post_id`, and any other custom columns you defined in the link table.
 
@@ -341,11 +473,11 @@ The returned `data` is similar to the following:
   "post_id": "123",
   "product": {
     "id": "prod_123",
-    // other product fields...
+    "title": "Shirt"
   },
   "post": {
     "id": "123",
-    // other post fields...
+    "title": "My Post"
   }
 }]
 ```
@@ -1088,7 +1220,7 @@ For example:
 ```ts
 const { data: posts } = await query.graph({
   entity: "post",
-  fields: ["id", "title", "author.*"],
+  fields: ["id", "title", "author.id"],
   filters: {
     id: "post_123",
     author_id: "author_123",
@@ -1104,7 +1236,7 @@ const { data: posts } = await query.graph({
 ```ts
 const { data: posts } = useQueryGraphStep({
   entity: "post",
-  fields: ["id", "title", "author.*"],
+  fields: ["id", "title", "author.id"],
   filters: {
     id: "post_123",
     author_id: "author_123",
@@ -1130,7 +1262,7 @@ For example:
 ```ts
 const { data: posts } = await query.graph({
   entity: "author",
-  fields: ["id", "name", "posts.*"],
+  fields: ["id", "name", "posts.id"],
   filters: {
     id: "author_123",
     posts: {
@@ -1148,7 +1280,7 @@ const { data: posts } = await query.graph({
 ```ts
 const { data: posts } = useQueryGraphStep({
   entity: "author",
-  fields: ["id", "name", "posts.*"],
+  fields: ["id", "name", "posts.id"],
   filters: {
     id: "author_123",
     posts: {
@@ -1249,7 +1381,13 @@ Refer to the [Caching Module documentation](!resources!/infrastructure-modules/c
     {
       type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
       name: "tags",
-      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless `computeAutomaticTags` is also set.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+    },
+    {
+      type: "`boolean`",
+      name: "computeAutomaticTags",
+      description: "Whether the automatically computed tags should be applied alongside the ones given in `tags`, rather than `tags` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their `id`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.\n\nHas no effect when `tags` is omitted, since tags are computed automatically in that case.",
+      defaultValue: "`false`"
     },
     {
       type: "`number` \| `((args: any[]) => number \| undefined)`",
@@ -1405,9 +1543,26 @@ In the example above, you cache the query results with the `Product:list:*` tag.
 
 <Note>
 
+When you set `cache.tags`, those tags replace the automatically computed ones. To keep the automatic tags and add your own on top, also set `computeAutomaticTags: true`. This is useful when you need to cover entities that automatic computation cannot see, such as link table rows, relations fetched without their `id`, or entities that affect the response without appearing in it.
+
 The cache tag must follow the [Caching Tags Convention](!resources!/infrastructure-modules/caching/concepts#caching-tags-convention) to be automatically invalidated.
 
 </Note>
+
+For example, to add extra tags without losing automatic ones:
+
+```ts highlights={[["7"], ["8"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title", "variants.id"],
+  options: {
+    cache: {
+      tags: ["LinkProductVariantInventoryItem:list:*"],
+      computeAutomaticTags: true,
+    },
+  },
+})
+```
 
 You can also pass a function as the value of `cache.tags`:
 
@@ -1699,7 +1854,8 @@ export default defineMiddlewares({
             defaults: [
               "id",
               "title",
-              "products.*",
+              "products.id",
+              "products.title",
             ],
             isList: true,
           }
@@ -1723,6 +1879,12 @@ The `validateAndTransformQuery` accepts two parameters:
     3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
     4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
     5. `disallowed`: An array of field path segments that are always stripped from the query, regardless of what the client requests. Any requested field whose path contains one of these segments is removed before the query executes. Unlike `allowed`, this is a hard security boundary that middleware cannot override. Use it to keep sensitive relations off unauthenticated endpoints.
+
+<Note title="Tip">
+
+List specific properties in `defaults` rather than `*` or `{relation}.*`. Every client request that doesn't pass a `fields` query parameter uses these defaults, so an expensive default applies to all of them. Refer to the [Select Specific Fields](#select-specific-fields) section for details.
+
+</Note>
 
 ### Step 2: Use Configurations in API Route
 

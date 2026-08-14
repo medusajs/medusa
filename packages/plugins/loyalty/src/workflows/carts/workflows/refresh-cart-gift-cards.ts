@@ -13,6 +13,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
+import { isGiftCardExpired } from "../../../utils/gift-card";
 import { retrieveGiftCardsBalanceStep } from "../../gift-cards/steps/retrieve-gift-card-balance";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
 
@@ -109,11 +110,16 @@ export const refreshCartGiftCardsWorkflow = createWorkflow(
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
       filters: { code: giftCardCodes },
-      fields: ["id", "code", "status", "currency_code"],
+      fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
+    // expired gift cards are dropped rather than rejected, so that a cart
+    // holding a gift card that expired after it was applied can still be
+    // refreshed. Their credit lines and links were already removed above.
     const giftCards = transform({ giftCardQuery }, ({ giftCardQuery }) => {
-      return giftCardQuery.data;
+      return giftCardQuery.data.filter(
+        (giftCard) => !isGiftCardExpired(giftCard)
+      );
     });
 
     const giftCardsIds = transform({ giftCards }, ({ giftCards }) => {

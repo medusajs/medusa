@@ -27,7 +27,7 @@ export abstract class BaseProperty<T>
    * The runtime dataType for the schema. It is not the same as
    * the "$dataType".
    */
-  protected abstract dataType: PropertyMetadata["dataType"]
+  protected abstract dataType: PropertyMetadata<T>["dataType"]
 
   /**
    * This method indicates that a property's value can be `null`.
@@ -148,7 +148,7 @@ export abstract class BaseProperty<T>
   /**
    * Returns the serialized metadata
    */
-  parse(fieldName: string): PropertyMetadata {
+  parse(fieldName: string): PropertyMetadata<T> {
     const base = super.parse(fieldName)
     return {
       ...base,

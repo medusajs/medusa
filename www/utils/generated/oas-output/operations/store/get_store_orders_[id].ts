@@ -2,7 +2,9 @@
  * @oas [get] /store/orders/{id}
  * operationId: GetOrdersId
  * summary: Get an Order
- * description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned. This API route doesn't require customer authentication, so that guest customers can view their order confirmation page after placing an order. To restrict access to this API route, refer to the [Restrict Order Retrieval guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval).
+ * description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned. This API route doesn't require customer authentication, so that guest
+ *   customers can view their order confirmation page after placing an order. To restrict access to this API route, refer to the [Restrict Order Retrieval
+ *   guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval).
  * x-authenticated: false
  * parameters:
  *   - name: id
