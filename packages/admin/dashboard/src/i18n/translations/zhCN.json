@@ -549,7 +549,7 @@
       },
       "successToast": "媒体更新成功。",
       "manageImageVariants": "管理关联变体",
-      "fileTooLarge": "一个或多个文件超过最大文件大小 {{size}}:{{name}}",
+      "fileTooLarge": "一个或多个文件超过最大文件大小 {{size}}：{{name}}",
       "variantImages": "变体图片",
       "showAvailableImages": "显示可用图片",
       "availableImages": "选择图片",
