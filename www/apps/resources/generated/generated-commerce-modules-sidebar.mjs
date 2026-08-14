@@ -510,6 +510,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "ref",
+              "title": "Restrict Return Creation",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "link",
               "path": "/commerce-modules/auth/email-verification",
               "title": "Send Email Verification",
@@ -950,6 +957,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/listAuthMfa",
                       "title": "listAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/auth/listAuthProviders",
+                      "title": "listAuthProviders",
                       "description": "",
                       "children": []
                     },
@@ -6255,6 +6270,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Restrict Order Retrieval",
               "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Return Creation",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation",
               "children": []
             },
             {

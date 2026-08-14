@@ -107,6 +107,22 @@ const modules = {
     resolve: "@medusajs/index",
     disable: process.env.ENABLE_INDEX_MODULE !== "true",
   },
+  [Modules.SEARCH]: {
+    resolve: "@medusajs/search",
+    disable: process.env.ENABLE_SEARCH_MODULE !== "true",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/search-local",
+          id: "local",
+        },
+      ],
+      // Passed in rather than discovered: this app has no `search/` folder, and
+      // the module takes one input either way. The fixture declares through
+      // `defineSearchIndex`, so these are already-normalized definitions.
+      indexes: require("./dist/fixtures/search").default,
+    },
+  },
   [Modules.RBAC]: {
     resolve: "@medusajs/rbac",
     disable: process.env.MEDUSA_FF_RBAC !== "true",

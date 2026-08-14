@@ -1,0 +1,1 @@
+{"slug":"/references/types/SearchTypes/types/types.SearchTypes.SearchMatchStrategy","title":"SearchMatchStrategy","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"SearchMatchStrategy","type":"`\"all\"` \\| `\"any\"` \\| `\"last\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
