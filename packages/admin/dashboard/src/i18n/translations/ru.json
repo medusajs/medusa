@@ -1617,7 +1617,8 @@
       },
       "trackingLabel": "Отслеживание",
       "shippingFromLabel": "Отправка из",
-      "itemsLabel": "Товары"
+      "itemsLabel": "Товары",
+      "locationUnavailable": "Локация удалена/недоступна"
     },
     "refund": {
       "title": "Создать возврат",
