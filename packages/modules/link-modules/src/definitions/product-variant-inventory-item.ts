@@ -9,8 +9,14 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
     idPrefix: "pvitem",
     extraFields: {
       required_quantity: {
-        type: "integer",
+        type: "decimal",
         defaultValue: "1",
+        options: {
+          // unconstrained numeric, hydrated as a JS number (same shape the
+          // inventory module exposes for its bigNumber quantity columns)
+          columnType: "numeric",
+          runtimeType: "number",
+        },
       },
     },
   },

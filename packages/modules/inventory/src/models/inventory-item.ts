@@ -25,8 +25,8 @@ const InventoryItem = model
     reservation_items: model.hasMany(() => ReservationItem, {
       mappedBy: "inventory_item",
     }),
-    reserved_quantity: model.number().computed(),
-    stocked_quantity: model.number().computed(),
+    reserved_quantity: model.bigNumber().computed(),
+    stocked_quantity: model.bigNumber().computed(),
   })
   .cascades({
     delete: ["location_levels", "reservation_items"],

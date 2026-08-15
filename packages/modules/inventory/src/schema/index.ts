@@ -20,8 +20,8 @@ type InventoryItem {
   metadata: JSON
   location_levels: [InventoryLevel]
   reservation_items: [ReservationItem]
-  reserved_quantity: Int!
-  stocked_quantity: Int!
+  reserved_quantity: Float!
+  stocked_quantity: Float!
 }
 
 type InventoryLevel {
@@ -32,11 +32,11 @@ type InventoryLevel {
   inventory_item_id: String!
   inventory_item: InventoryItem!
   location_id: String!
-  stocked_quantity: Int!
-  reserved_quantity: Int!
-  incoming_quantity: Int!
+  stocked_quantity: Float!
+  reserved_quantity: Float!
+  incoming_quantity: Float!
   metadata: JSON
-  available_quantity: Int!
+  available_quantity: Float!
 }
 
 type ReservationItem {
@@ -49,7 +49,7 @@ type ReservationItem {
   inventory_item_id: String!
   inventory_item: InventoryItem!
   location_id: String!
-  quantity: Int!
+  quantity: Float!
   external_id: String
   description: String
   created_by: String
