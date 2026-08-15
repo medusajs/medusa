@@ -562,6 +562,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     documents,
   }: {
     index: string
+    definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
   }): Promise<SearchTypes.SearchTask> {
     const catalog = await this.retrieve(index)
