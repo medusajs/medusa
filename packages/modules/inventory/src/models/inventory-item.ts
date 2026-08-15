@@ -10,6 +10,7 @@ const InventoryItem = model
     hs_code: model.text().searchable().nullable(),
     mid_code: model.text().searchable().nullable(),
     material: model.text().nullable(),
+    unit_of_measure: model.text().nullable(),
     weight: model.number().nullable(),
     length: model.number().nullable(),
     height: model.number().nullable(),

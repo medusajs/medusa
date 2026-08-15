@@ -9,6 +9,7 @@ type InventoryItem {
   hs_code: String
   mid_code: String
   material: String
+  unit_of_measure: String
   weight: Int
   length: Int
   height: Int
