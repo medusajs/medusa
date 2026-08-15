@@ -105,6 +105,7 @@ export const specsTagIndex = {
     ],
     "inventory-items": [
       "admin_inventory-items.yaml",
+      "admin_inventory-items_export.yaml",
       "admin_inventory-items_location-levels_batch.yaml",
       "admin_inventory-items_{id}.yaml",
       "admin_inventory-items_{id}_location-levels.yaml",
@@ -284,6 +285,9 @@ export const specsTagIndex = {
       "admin_sales-channels.yaml",
       "admin_sales-channels_{id}.yaml",
       "admin_sales-channels_{id}_products.yaml"
+    ],
+    "search": [
+      "admin_search.yaml"
     ],
     "shipping-option-types": [
       "admin_shipping-option-types.yaml",

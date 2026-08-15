@@ -223,8 +223,8 @@ tags:
       $ref: "#/components/schemas/AdminInvite"
   - name: Layouts
     description: >
-      An admin can modify the layout of their admin dashboard. This allows admins to customize their
-      dashboard to their preferences and needs.
+      An admin can modify the layout of their admin dashboard. This allows
+      admins to customize their dashboard to their preferences and needs.
 
       These API routes allow admin users to manage layouts.
   - name: Locales
@@ -573,6 +573,7 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/sales-channel
     x-associatedSchema:
       $ref: "#/components/schemas/AdminSalesChannel"
+  - name: Search
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: "#/components/schemas/AdminShippingOptionType"
@@ -760,9 +761,12 @@ tags:
       $ref: "#/components/schemas/AdminUser"
   - name: Views
     description: >
-      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+      A view configuration is a saved data-table view for an entity, such as
+      products or orders. It lets admin users customize how a table shows its
+      data, then save that customization as a reusable view.
 
-      These API routes allow admin users to manage the system default and personal views.
+      These API routes allow admin users to manage the system default and
+      personal views.
     externalDocs:
       description: Learn more about views configurations.
       url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
