@@ -1,5 +1,18 @@
 import { SearchTypes } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  readDocumentPath,
+  searchValueToBoolean,
+  searchValueToNumber,
+  setDocumentPath,
+} from "@medusajs/framework/utils"
+
+// Path flattening, projection and primary-key extraction live in
+// @medusajs/utils so every provider collapses documents identically.
+export {
+  extractPrimaryKeyFilter,
+  projectDocument,
+} from "@medusajs/framework/utils"
 
 /**
  * The original document, stored verbatim. Orama keeps undeclared properties
@@ -269,81 +282,14 @@ export function sameSchema(a: IndexPlan, b: IndexPlan): boolean {
 
 /* -------------------------------- documents ------------------------------- */
 
-// Walks a dotted path, flattening through arrays encountered on the way.
-function readPath(source: unknown, segments: string[]): unknown[] {
-  let current: unknown[] = [source]
-
-  for (const segment of segments) {
-    const next: unknown[] = []
-
-    for (const value of current) {
-      if (value === null || value === undefined) {
-        continue
-      }
-      if (Array.isArray(value)) {
-        for (const entry of value) {
-          const resolved = (entry as Record<string, unknown>)?.[segment]
-          if (resolved !== undefined) {
-            next.push(resolved)
-          }
-        }
-        continue
-      }
-      const resolved = (value as Record<string, unknown>)?.[segment]
-      if (resolved !== undefined) {
-        next.push(resolved)
-      }
-    }
-
-    current = next
-  }
-
-  return current.flat(Infinity).filter((v) => v !== null && v !== undefined)
-}
-
-function setPath(target: Record<string, any>, path: string, value: unknown) {
-  const segments = path.split(".")
-  let cursor = target
-
-  for (const segment of segments.slice(0, -1)) {
-    cursor[segment] ??= {}
-    cursor = cursor[segment]
-  }
-
-  cursor[segments[segments.length - 1]] = value
-}
-
-function toNumber(value: unknown, isDate: boolean): number | undefined {
-  const num = isDate
-    ? value instanceof Date
-      ? value.getTime()
-      : Date.parse(String(value))
-    : typeof value === "number"
-    ? value
-    : Number(value)
-
-  return Number.isNaN(num) ? undefined : num
-}
-
-function toBoolean(value: unknown): boolean {
-  if (typeof value === "boolean") {
-    return value
-  }
-  // `Boolean("false")` is `true`, so string forms are read by content.
-  if (value === "true" || value === "false") {
-    return value === "true"
-  }
-  return Boolean(value)
-}
-
 function coerce(value: unknown, planned: PlannedField): unknown {
   const base = planned.type.replace("[]", "")
 
   switch (base) {
     case "number":
-      return toNumber(value, planned.is_date)
+      return searchValueToNumber(value, planned.is_date)
     case "boolean":
-      return toBoolean(value)
+      return searchValueToBoolean(value)
     case "string":
     case "enum":
       return typeof value === "string" ? value : String(value)
@@ -361,7 +307,7 @@ export function toOramaDocument(
   const target: Record<string, any> = {}
 
   for (const planned of plan.fields.values()) {
-    const values = readPath(document, planned.path.split("."))
+    const values = readDocumentPath(document, planned.path.split("."))
       .map((value) => coerce(value, planned))
       .filter((value) => value !== undefined)
 
@@ -370,10 +316,10 @@ export function toOramaDocument(
     }
 
     const value = planned.is_array ? values : values[0]
-    setPath(target, planned.path, value)
+    setDocumentPath(target, planned.path, value)
 
     if (planned.filter_path) {
-      setPath(target, planned.filter_path, value)
+      setDocumentPath(target, planned.filter_path, value)
     }
   }
 
@@ -390,47 +336,6 @@ export function toOramaDocument(
   target[SOURCE_KEY] = document
 
   return target
-}
-
-// Narrows a source document to the requested dotted paths.
-export function projectDocument(
-  source: Record<string, unknown>,
-  paths: string[]
-): Record<string, unknown> {
-  const picked: Record<string, any> = {}
-
-  for (const path of paths) {
-    const segments = path.split(".")
-    const [head, ...rest] = segments
-    const value = source?.[head]
-
-    if (value === undefined) {
-      continue
-    }
-
-    if (!rest.length) {
-      picked[head] = value
-      continue
-    }
-
-    // Recurse so that `variants.title` keeps the shape of `variants`.
-    if (Array.isArray(value)) {
-      const existing = Array.isArray(picked[head]) ? picked[head] : []
-      picked[head] = value.map((entry, i) =>
-        Object.assign(
-          existing[i] ?? {},
-          projectDocument(entry as Record<string, unknown>, [rest.join(".")])
-        )
-      )
-    } else if (value && typeof value === "object") {
-      picked[head] = Object.assign(
-        picked[head] ?? {},
-        projectDocument(value as Record<string, unknown>, [rest.join(".")])
-      )
-    }
-  }
-
-  return picked
 }
 
 /* --------------------------------- filters -------------------------------- */
@@ -622,51 +527,6 @@ export function toOramaWhere(
   merge(filters)
 
   return Object.keys(where).length ? where : undefined
-}
-
-/**
- * Recognises a filter that is nothing but primary-key membership, so a delete goes
- * straight to `removeMultiple` instead of searching first. `undefined` for
- * anything else, including the primary key alongside other fields.
- */
-export function extractPrimaryKeyFilter(
-  filters: SearchTypes.SearchFilters,
-  plan: IndexPlan
-): string[] | undefined {
-  const keys = Object.keys(filters)
-
-  if (keys.length !== 1 || keys[0] !== plan.primary_key) {
-    return undefined
-  }
-
-  const predicate = filters[plan.primary_key]
-
-  const asIds = (value: unknown): string[] | undefined => {
-    const values = Array.isArray(value) ? value : [value]
-    return values.every((v) => typeof v === "string")
-      ? (values as string[])
-      : undefined
-  }
-
-  if (predicate === null || typeof predicate !== "object") {
-    return asIds(predicate)
-  }
-
-  if (Array.isArray(predicate)) {
-    return asIds(predicate)
-  }
-
-  const operators = Object.keys(predicate)
-
-  if (operators.length !== 1) {
-    return undefined
-  }
-
-  if (operators[0] === "$eq" || operators[0] === "$in") {
-    return asIds((predicate as Record<string, unknown>)[operators[0]])
-  }
-
-  return undefined
 }
 
 /* --------------------------------- facets --------------------------------- */

@@ -104,6 +104,7 @@
     "@medusajs/sales-channel": "2.19.0",
     "@medusajs/search": "2.19.0",
     "@medusajs/search-local": "2.19.0",
+    "@medusajs/search-postgres": "2.19.0",
     "@medusajs/settings": "2.19.0",
     "@medusajs/stock-location": "2.19.0",
     "@medusajs/store": "2.19.0",
