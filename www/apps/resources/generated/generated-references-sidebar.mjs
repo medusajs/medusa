@@ -207,6 +207,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/deleteAuthIdentityStep",
+                  "title": "deleteAuthIdentityStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/requestVerificationStep",
                   "title": "requestVerificationStep",
                   "description": "",
@@ -542,6 +550,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/getLineItemActionsStep",
                   "title": "getLineItemActionsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep",
+                  "title": "getLineItemPricingQuantitiesStep",
                   "description": "",
                   "children": []
                 },
@@ -2066,6 +2082,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/exportInventoryItemsWorkflow",
+                  "title": "exportInventoryItemsWorkflow",
+                  "description": "Export inventory items with filtering capabilities.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/updateInventoryItemsWorkflow",
                   "title": "updateInventoryItemsWorkflow",
                   "description": "Update one or more inventory items.",
@@ -2131,6 +2155,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteInventoryLevelsStep",
                   "title": "deleteInventoryLevelsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/exportInventoryItemsStep",
+                  "title": "exportInventoryItemsStep",
                   "description": "",
                   "children": []
                 },
@@ -7394,6 +7426,13 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "link",
               "title": "moduleIntegrationTestRunner",
               "path": "/test-tools-reference/moduleIntegrationTestRunner",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "title": "normalizeBigNumbers",
+              "path": "/test-tools-reference/normalizeBigNumbers",
               "children": []
             }
           ]

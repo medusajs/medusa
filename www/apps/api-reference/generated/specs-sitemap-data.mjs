@@ -210,6 +210,7 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "inventory-items_getinventoryitems",
         "inventory-items_postinventoryitems",
+        "inventory-items_postinventoryitemsexport",
         "inventory-items_postinventoryitemslocationlevelsbatch",
         "inventory-items_getinventoryitemsid",
         "inventory-items_postinventoryitemsid",
@@ -544,6 +545,12 @@ export const specsSitemapData = {
         "sales-channels_postsaleschannelsid",
         "sales-channels_deletesaleschannelsid",
         "sales-channels_postsaleschannelsidproducts"
+      ]
+    },
+    {
+      "tagSectionId": "search",
+      "operationSectionIds": [
+        "search_getsearch"
       ]
     },
     {

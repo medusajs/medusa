@@ -79,6 +79,12 @@ After a minute, the following message will be logged to the terminal:
 info:    Greeting!
 ```
 
+### Disable a Scheduled Job
+
+Do not disable a scheduled job by commenting out or removing the `config` export while keeping the file in `src/jobs/`. This will cause errors when you build or start your Medusa application.
+
+To disable a scheduled job, move its file out of the `src/jobs` directory. For example, move it to `src/scripts/` or any directory other than `src/jobs/`.
+
 ### Troubleshooting Scheduled Jobs
 
 If your scheduled job is not running at the expected times, refer to the [Scheduled Job Troubleshooting Guide](!resources!/troubleshooting/scheduled-job-not-running).

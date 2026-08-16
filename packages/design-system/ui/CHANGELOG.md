@@ -1,5 +1,12 @@
 # @medusajs/ui
 
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982)]:
+  - @medusajs/icons@2.19.0
+
 ## 4.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @medusajs/eslint-plugin
 
+## 2.19.0
+
+### Patch Changes
+
+- [`8933ac87c69b6904f890afe6d4c41e542732272e`](undefined) - feat(eslint-plugin): prefer workflow events
+
 ## 2.18.0
 
 ### Patch Changes

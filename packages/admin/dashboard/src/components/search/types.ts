@@ -1,6 +1,4 @@
-import { SEARCH_AREAS } from "./constants"
-
-export type SearchArea = (typeof SEARCH_AREAS)[number]
+export type SearchArea = string
 
 export type DynamicSearchResultItem = {
   id: string
