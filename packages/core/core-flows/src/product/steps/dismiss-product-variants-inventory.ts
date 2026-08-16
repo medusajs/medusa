@@ -72,7 +72,7 @@ export const dismissProductVariantsInventoryStep = createStep(
 
     const dismissedVariantInventoryItems = await dismissVariantsInventory(
       variantIds,
-      query as Query,
+      query as unknown as Query,
       link
     )
     return new StepResponse(void 0, dismissedVariantInventoryItems)

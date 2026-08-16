@@ -20,6 +20,7 @@ export const requiredOrderFieldsForInventoryConfirmation = [
   "canceled_at",
   "sales_channel_id",
   "items.*",
+  "items.detail.*",
   "items.variant.manage_inventory",
   "items.variant.allow_backorder",
   "items.variant.inventory_items.inventory_item_id",

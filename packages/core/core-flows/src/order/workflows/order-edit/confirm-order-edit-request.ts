@@ -26,7 +26,7 @@ import {
 } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { emitEventStep, useQueryGraphStep } from "../../../common"
 import { acquireLockStep, releaseLockStep } from "../../../locking"
-import { deleteReservationsByLineItemsStep } from "../../../reservation"
+import { deleteReservationsByLineItemsStep } from "../../../reservation/steps"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -228,28 +228,53 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
-          const updateAction = itemAction.actions!.find(
-            (a) => a.action === ChangeActionType.ITEM_UPDATE
+          const updateActions =
+            itemAction.actions?.filter(
+              (a) => a.action === ChangeActionType.ITEM_UPDATE
+            ) ?? []
+
+          const hasItemAdd = itemAction.actions?.some(
+            (a) => a.action === ChangeActionType.ITEM_ADD
           )
 
-          if (updateAction) {
+          const isQuantityUnchanged =
+            !hasItemAdd &&
+            updateActions.length > 0 &&
+            updateActions.every((a) =>
+              MathBN.eq((a.details as any)?.quantity_diff ?? 0, 0)
+            )
+
+          if (isQuantityUnchanged) {
+            return
+          }
+
+          if (updateActions.length > 0) {
             updatedItemIds.push(ordItem.id)
           }
 
           const newQuantity: BigNumberInput =
             itemAction.raw_quantity ?? itemAction.quantity
 
+          const fulfilledQuantity =
+            ordItem.detail?.raw_fulfilled_quantity ??
+            ordItem.detail?.fulfilled_quantity ??
+            (ordItem as any).raw_fulfilled_quantity ??
+            (ordItem as any).fulfilled_quantity ??
+            0
+
           const reservationQuantity = MathBN.sub(
             newQuantity,
-            ordItem.raw_fulfilled_quantity
+            fulfilledQuantity
           )
 
-          allItems.push({
-            id: ordItem.id,
-            variant_id: ordItem.variant_id,
-            quantity: reservationQuantity,
-          })
-          allVariants.push(ordItem.variant)
+          if (MathBN.gt(reservationQuantity, 0)) {
+            allItems.push({
+              id: ordItem.id,
+              variant_id: ordItem.variant_id,
+              quantity: reservationQuantity,
+            })
+            allVariants.push(ordItem.variant)
+          }
         })
 
         return {
