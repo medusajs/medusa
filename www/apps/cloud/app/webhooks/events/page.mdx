@@ -1,5 +1,5 @@
 import { Note, InlineIcon } from "docs-ui"
-import { ArrowPathMini } from "@medusajs/icons"
+import { ArrowPathMini, SquareTwoStack } from "@medusajs/icons"
 
 export const metadata = {
   title: `Manage Webhook Events in Cloud`,
@@ -59,7 +59,7 @@ Click on any row to expand it and see additional information about that delivery
 - **Next auto retry**: The scheduled time for the next automatic retry attempt.
 - **Project**: The name of the project associated with the event, with a quick-filter button to filter the list by that project.
 - **Environment**: The name of the environment associated with the event, with a quick-filter button to filter the list by that environment.
-- **Payload**: The full JSON payload sent with the event. This is the payload in the `data` field of the webhook request body.
+- **Payload**: The full JSON body sent with the event, including the event's `id`, `type`, `created_at`, and `data` fields. Click the <InlineIcon Icon={SquareTwoStack} alt="copy" /> icon in the top-right corner of the payload panel to copy the full event body to the clipboard.
 
 ---
 

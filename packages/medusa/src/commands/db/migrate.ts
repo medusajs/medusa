@@ -6,7 +6,7 @@ import {
   isDefined,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import { Logger, MedusaContainer } from "@medusajs/types"
+import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { fork } from "child_process"
 import path, { join } from "path"
 import { initializeContainer } from "../../loaders"
@@ -67,7 +67,7 @@ export async function migrate({
   )
 
   const plugins = await getResolvedPlugins(directory, configModule, true)
-  mergePluginModules(configModule, plugins)
+  mergePluginModules(configModule, plugins, directory)
 
   const linksSourcePaths = plugins.map((plugin) =>
     join(plugin.resolve, "links")

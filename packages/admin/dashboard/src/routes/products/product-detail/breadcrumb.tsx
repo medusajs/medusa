@@ -17,7 +17,7 @@ export const ProductDetailBreadcrumb = (
         "-type,-collection,-options,-tags,-images,-variants,-sales_channels",
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )
@@ -30,5 +30,5 @@ export const ProductDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminProductResponse>) => ({
-  title: match.data?.product?.title,
+  title: match.loaderData?.product?.title,
 })
