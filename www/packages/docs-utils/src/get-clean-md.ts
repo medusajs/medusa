@@ -9,6 +9,7 @@ import {
   ComponentParser,
   parseCard,
   parseCardList,
+  parseChangelogList,
   parseChildDocs,
   parseCodeTabs,
   parseColors,
@@ -34,6 +35,7 @@ import { matter } from "vfile-matter"
 const parsers: Record<string, ComponentParser> = {
   Card: parseCard,
   CardList: parseCardList,
+  ChangelogList: parseChangelogList,
   ChildDocs: parseChildDocs,
   CodeTabs: parseCodeTabs,
   Details: parseDetails,
@@ -54,7 +56,11 @@ const parsers: Record<string, ComponentParser> = {
   EventHeader: parseEventHeader,
 }
 
-const asyncParserNames = new Set(["ComponentExample", "ComponentReference"])
+const asyncParserNames = new Set([
+  "ChangelogList",
+  "ComponentExample",
+  "ComponentReference",
+])
 
 const isComponentAllowed = (nodeName: string): boolean => {
   return Object.keys(parsers).includes(nodeName)
