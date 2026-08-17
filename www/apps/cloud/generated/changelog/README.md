@@ -7,6 +7,7 @@ Each dated entry of the [Cloud changelog](../../app/changelog/page.mdx) is a
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-08-10",
+  title: "Build-time and runtime environment variables",
   summary:
     "Environment variables can be scoped to build time or runtime, and the sidebar is now grouped by project.",
   image:
@@ -17,8 +18,11 @@ export default {
 ```
 
 - `date` matches the file name, and the changelog is sorted by it, newest first.
-- `content` is Markdown, **without** the date heading. The heading is rendered
-  from `date`, so `## August 10, 2026` must never be in the content.
+- `title` is the short headline the page uses as the entry's heading, with the
+  date shown next to it. Aim for 3–8 words, sentence case, no trailing period.
+  It's optional, and falls back to the formatted date.
+- `content` is Markdown, **without** a heading. The heading is rendered from
+  `title`, so a `##` line in the content would show up twice.
 - Links to other Cloud documentation pages are root-relative and omit both the
   `/cloud` base path and the `page.mdx` suffix, such as
   `/environments/custom-domains`. Links to other documentation projects are full
@@ -31,6 +35,9 @@ export default {
   `/cloud/api/changelog` endpoint.
 - `image` is the entry's banner, also **not rendered on the page** and only
   returned by the endpoint. Don't write it by hand; see below.
+
+An entry's anchor on the page — `#august-10-2026` — comes from its **date**, not
+its title, so rewording a title doesn't break a permalink to the entry.
 
 After adding or changing an entry, run `yarn prep` in `www/apps/cloud` to
 regenerate `index.mjs`, the manifest the changelog page and the

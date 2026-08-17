@@ -1,7 +1,9 @@
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-08-05",
-  image: "https://res.cloudinary.com/dza7lstvk/image/upload/v1786952781/Cloud%20Changelog/aug-5.png",
+  title: "Grouped organization settings and separate domain verification",
+  image:
+    "https://res.cloudinary.com/dza7lstvk/image/upload/v1786952781/Cloud%20Changelog/aug-5.png",
   summary:
     "The sidebar groups organization settings into collapsible sections, and a domain's DNS records page splits checking records from restarting verification.",
   content: `- The sidebar navigation now groups your organization's settings into collapsible sections for the organization, your account, billing, emails, and payments, so you can reach a setting without leaving the page you're on. If the organization has no projects yet, the sidebar shows the ways to create your first project instead of an empty list. Refer to [Change Navigation Preference on Cloud](/navigation) for more details.
