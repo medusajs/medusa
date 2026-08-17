@@ -144,9 +144,9 @@ describe("search entity registry", () => {
 
     expect(order?.shortcut.to).toEqual("/orders")
     // Entities without a page of their own have no entry.
-    expect(
-      shortcuts.some(({ entity }) => entity === "productVariant")
-    ).toBe(false)
+    expect(shortcuts.some(({ entity }) => entity === "product_variant")).toBe(
+      false
+    )
   })
 
   test("a shortcut-only entry navigates but is never searched", async () => {
