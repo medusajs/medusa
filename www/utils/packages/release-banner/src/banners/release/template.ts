@@ -1,55 +1,22 @@
-import { logoDataUri } from "./logo.js"
-import { SPEC } from "./spec.js"
-import type {
-  BannerNode,
-  BannerSpec,
-  GradientStop,
-  RenderOptions,
-  StyleObject,
-} from "./types.js"
+import { h, linearGradient } from "../../element.js"
+import { logoDataUri } from "../../logo.js"
+import { scaler } from "../../spec.js"
+import type { BannerNode, DeepPartial, StyleObject } from "../../types.js"
+import { RELEASE_SPEC, type ReleaseSpec } from "./spec.js"
 
-/** Element factory for the plain object tree satori consumes. */
-function h(
-  type: string,
-  props: Record<string, unknown> = {},
-  ...children: (BannerNode | string)[]
+export type ReleaseInput = {
+  type: "release"
+  /** Version label rendered inside the pill, e.g. `v2.19.0`. */
+  version: string
+  spec?: DeepPartial<ReleaseSpec>
+}
+
+/** Builds the release banner's element tree. */
+export function buildRelease(
+  { version }: ReleaseInput,
+  spec: ReleaseSpec
 ): BannerNode {
-  return {
-    type,
-    props: {
-      ...props,
-      children: (children.length > 1
-        ? children
-        : children[0]) as BannerNode["props"]["children"],
-    },
-    key: null,
-  }
-}
-
-function linearGradient(stops: GradientStop[], angle = "180deg"): string {
-  const parts = stops.map(([offset, color]) => `${color} ${offset * 100}%`)
-  return `linear-gradient(${angle}, ${parts.join(", ")})`
-}
-
-/** Merges overrides into the default spec, one section at a time. */
-export function resolveSpec(overrides: RenderOptions["spec"] = {}): BannerSpec {
-  return {
-    ...SPEC,
-    ...overrides,
-    pill: { ...SPEC.pill, ...overrides.pill },
-    content: { ...SPEC.content, ...overrides.content },
-  }
-}
-
-/** Builds the banner's element tree. */
-export function banner({
-  version,
-  spec: overrides,
-}: RenderOptions): BannerNode {
-  const spec = resolveSpec(overrides)
-
-  const scale = spec.width / SPEC.width
-  const px = (value: number): number => value * scale
+  const px = scaler(spec, RELEASE_SPEC)
 
   const logo = logoDataUri({
     height: px(spec.content.logoHeight),
