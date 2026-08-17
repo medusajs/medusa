@@ -404,6 +404,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInventoryLevelsWorkflow"
   },
   {
+    "title": "exportInventoryItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportInventoryItemsWorkflow"
+  },
+  {
     "title": "updateInventoryItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateInventoryItemsWorkflow"
   },
