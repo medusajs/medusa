@@ -19,6 +19,23 @@
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       }
+    },
+    "./components/*": {
+      "require": {
+        "types": "./dist/cjs/components/*/index.d.ts",
+        "default": "./dist/cjs/components/*/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/components/*/index.d.ts",
+        "default": "./dist/esm/components/*/index.js"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "components/*": [
+        "./dist/esm/components/*/index.d.ts"
+      ]
     }
   },
   "sideEffects": false,
@@ -69,6 +86,7 @@
     "@segment/analytics-next": "^1.75.0",
     "@uidotdev/usehooks": "^2.4.1",
     "algoliasearch": "^5.2.1",
+    "docs-utils": "*",
     "framer-motion": "^11.11.9",
     "mermaid": "^10.9.0",
     "minisearch": "^7.1.1",
