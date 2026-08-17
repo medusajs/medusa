@@ -1,7 +1,9 @@
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-08-10",
-  image: "https://res.cloudinary.com/dza7lstvk/image/upload/v1786952781/Cloud%20Changelog/aug-10.png",
+  title: "Webhook management and reorganized environment navigation",
+  image:
+    "https://res.cloudinary.com/dza7lstvk/image/upload/v1786952781/Cloud%20Changelog/aug-10.png",
   summary:
     "Environments gain Domains and Variables tabs, organizations can manage webhook endpoints and review webhook event deliveries, and environment cards report failed provisioning.",
   content: `- An environment's **Domains** and **Variables** are now tabs in the environment's navigation, rather than pages under the environment's **Settings** tab. The **Settings** tab now holds the environment's configuration, linked branch, and deploy rules on one page, and a project's **Previews** page moved out of the project's settings. Refer to [Environment Variables](/environments/environment-variables) and [Environment Custom Domains](/environments/custom-domains) for more details.

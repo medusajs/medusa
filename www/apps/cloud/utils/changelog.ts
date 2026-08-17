@@ -10,8 +10,14 @@ export type ChangelogEntry = {
    */
   date: string
   /**
-   * The entry's changes as Markdown, without the date heading. Links to other
-   * Cloud documentation pages are root-relative and omit the base path, such as
+   * A short headline for the entry, written alongside it — the changelog page
+   * uses it as the entry's heading. Optional, and falls back to the entry's
+   * formatted date.
+   */
+  title?: string
+  /**
+   * The entry's changes as Markdown, without the heading. Links to other Cloud
+   * documentation pages are root-relative and omit the base path, such as
    * `/environments/custom-domains`.
    */
   content: string
@@ -33,15 +39,25 @@ export type ChangelogEntry = {
  * A changelog entry as it's exposed to the changelog page and the public
  * `/api/changelog` endpoint.
  */
-export type PublicChangelogEntry = Omit<ChangelogEntry, "summary" | "image"> & {
+export type PublicChangelogEntry = Omit<
+  ChangelogEntry,
+  "title" | "summary" | "image"
+> & {
   /**
    * The entry's anchor ID on the changelog page, such as `august-10-2026`.
+   * Derived from the date rather than the title, so rewording a title doesn't
+   * break a permalink to the entry.
    */
   id: string
   /**
-   * The entry's date, formatted for display, such as `August 10, 2026`.
+   * The entry's headline, falling back to {@link displayDate} when it was
+   * written without one.
    */
   title: string
+  /**
+   * The entry's date, formatted for display, such as `August 10, 2026`.
+   */
+  displayDate: string
   /**
    * `null` when the entry was written without a summary.
    */
@@ -149,10 +165,13 @@ function toPublicEntry(
   entry: ChangelogEntry,
   baseUrl?: string
 ): PublicChangelogEntry {
+  const displayDate = formatChangelogDate(date)
+
   return {
     id: getChangelogEntryId(date),
-    title: formatChangelogDate(date),
+    title: entry.title?.trim() || displayDate,
     date,
+    displayDate,
     summary: entry.summary ?? null,
     image: entry.image ?? null,
     content: baseUrl ? absolutizeLinks(entry.content, baseUrl) : entry.content,
@@ -225,16 +244,14 @@ export async function getChangelogMarkdown(baseUrl?: string): Promise<string> {
     changelogEntries.map(async ({ date, load }) => {
       const { default: entry } = await load()
 
-      return {
-        title: formatChangelogDate(date),
-        content: baseUrl
-          ? absolutizeLinks(entry.content, baseUrl)
-          : entry.content,
-      }
+      return toPublicEntry(date, entry, baseUrl)
     })
   )
 
   return entries
-    .map((entry) => `## ${entry.title}\n\n${entry.content}`)
+    .map(
+      (entry) =>
+        `## ${entry.title}\n\n_${entry.displayDate}_\n\n${entry.content}`
+    )
     .join("\n\n---\n\n")
 }

@@ -156,25 +156,27 @@ The changelog page at \`${DASHBOARD_CHANGELOG_PAGE}\` holds only the intro and a
 **Entry file for this deployment:** \`${DASHBOARD_CHANGELOG_DIR}/${isoDate}.mjs\`
 
 Steps:
-1. If \`${DASHBOARD_CHANGELOG_DIR}/${isoDate}.mjs\` already exists (this deployment may be re-run), **merge** the new bullet points into its \`content\` and rewrite its \`summary\` to cover the merged entry, instead of overwriting or duplicating the file. Leave any \`image\` property it already has untouched. Otherwise, create it with exactly this shape:
+1. If \`${DASHBOARD_CHANGELOG_DIR}/${isoDate}.mjs\` already exists (this deployment may be re-run), **merge** the new bullet points into its \`content\` and rewrite its \`title\` and \`summary\` to cover the merged entry, instead of overwriting or duplicating the file. Leave any \`image\` property it already has untouched. Otherwise, create it with exactly this shape:
    \`\`\`js
    /** @type {import("../../utils/changelog").ChangelogEntry} */
    export default {
      date: "${isoDate}",
+     title: "Short headline for this entry",
      summary: "One sentence covering what this entry is about.",
      content: \`- First change of this deployment.
    - Second change of this deployment.\`,
    }
    \`\`\`
 2. \`date\` must match the file name exactly, in \`YYYY-MM-DD\` format.
-3. \`summary\` is **one plain sentence** summarizing what the entry covers as a whole, written for someone who hasn't read the bullets. Keep it under 160 characters, write it in the present tense, and don't use Markdown, links, or a trailing list of every change. When the entry has a single change, summarize that change; when it has several, name the theme they share. It's a double-quoted string, so it can't span lines.
-4. \`content\` is Markdown holding **only** the bullet points. Never write a date heading such as \`## ${heading}\` in it — the page renders the heading from \`date\`.
-5. Add one bullet point per user-facing dashboard change. Write each bullet in the present tense, describing what a user can now do or what now behaves differently.
-6. If the change is covered by a documentation page, link to that page in its bullet point. Links to Cloud documentation pages are **root-relative, without the \`/cloud\` base path and without the \`page.mdx\` suffix**, such as \`[Environment Variables](/environments/environment-variables)\`. Link to the page you updated for that change, and only link to pages that exist.
-7. \`content\` is a template literal, so escape any backtick or \`\${\` you write inside it.
-8. Never write an \`image\` property. The entry's banner image is rendered and attached by a later step of this workflow.
-9. Do not create, edit, or reorder \`${DASHBOARD_CHANGELOG_DIR}/index.mjs\`. It's a generated manifest, rebuilt by the \`yarn prep\` step that runs after you finish.
-10. If this deployment has no dashboard changes that qualify below, don't create an entry file.
+3. \`title\` is a **short headline** that the changelog page uses as the entry's heading. Name what shipped, not the date — the date is shown next to it. Aim for 3 to 8 words, under 60 characters, with no trailing period, no Markdown, and no link. Use sentence case, and don't start it with "Added", "New", or the date. When the entry has one change, name that change; when it has several, name the theme they share, or join the two biggest with "and".
+4. \`summary\` is **one plain sentence** summarizing what the entry covers as a whole, written for someone who hasn't read the bullets. Keep it under 160 characters, write it in the present tense, and don't use Markdown, links, or a trailing list of every change. It's a double-quoted string, so it can't span lines. Don't restate the \`title\` verbatim — the summary adds the detail the headline leaves out.
+5. \`content\` is Markdown holding **only** the bullet points. Never write a heading in it — the page renders the heading from \`title\`, so a \`## ${heading}\` or a \`## \` repeating the title would show up twice.
+6. Add one bullet point per user-facing dashboard change. Write each bullet in the present tense, describing what a user can now do or what now behaves differently.
+7. If the change is covered by a documentation page, link to that page in its bullet point. Links to Cloud documentation pages are **root-relative, without the \`/cloud\` base path and without the \`page.mdx\` suffix**, such as \`[Environment Variables](/environments/environment-variables)\`. Link to the page you updated for that change, and only link to pages that exist.
+8. \`content\` is a template literal, so escape any backtick or \`\${\` you write inside it.
+9. Never write an \`image\` property. The entry's banner image is rendered and attached by a later step of this workflow.
+10. Do not create, edit, or reorder \`${DASHBOARD_CHANGELOG_DIR}/index.mjs\`. It's a generated manifest, rebuilt by the \`yarn prep\` step that runs after you finish.
+11. If this deployment has no dashboard changes that qualify below, don't create an entry file.
 
 **What belongs in the changelog:**
 
@@ -196,6 +198,7 @@ Steps:
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-08-10",
+  title: "Build-time and runtime environment variables",
   summary: "Environment variables can be scoped to build time or runtime, and the sidebar is now grouped by project.",
   content: \`- You can now set an environment variable as available at build time, runtime, or both, which controls whether Medusa injects it into your build or your running application. Refer to [Environment Variables](/environments/environment-variables) for more details.
 - The dashboard's sidebar navigation is now grouped by project, so switching between a project's environments no longer requires going back to the organization's page.\`,
