@@ -69,6 +69,7 @@
     "@segment/analytics-next": "^1.75.0",
     "@uidotdev/usehooks": "^2.4.1",
     "algoliasearch": "^5.2.1",
+    "docs-utils": "*",
     "framer-motion": "^11.11.9",
     "mermaid": "^10.9.0",
     "minisearch": "^7.1.1",

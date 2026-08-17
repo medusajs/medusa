@@ -16,6 +16,19 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       }
+    },
+    "./global-config": {
+      "import": {
+        "types": "./dist/global-config.d.ts",
+        "default": "./dist/global-config.js"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "global-config": [
+        "./dist/global-config.d.ts"
+      ]
     }
   },
   "sideEffects": false,
