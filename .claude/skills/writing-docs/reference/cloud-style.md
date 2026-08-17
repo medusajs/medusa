@@ -318,6 +318,7 @@ Unlike the other two, the Cloud changelog isn't written in its page. `www/apps/c
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-08-10",
+  title: "Build-time environment variables and provisioning failures",
   summary:
     "Environment variables can be scoped to build time or runtime, and environment cards report failed provisioning.",
   content: `- You can now set an environment variable as available at build time, runtime, or both. Refer to [Environment Variables](/environments/environment-variables) for more details.
@@ -326,9 +327,10 @@ export default {
 ```
 
 - The file name is the entry's date, `{YYYY-MM-DD}.mjs`, and `date` matches it exactly
+- `title` is a **short headline** naming what shipped — 3–8 words, under 60 characters, sentence case, no trailing period, no Markdown. It's the entry's heading on the page, with the date shown next to it, so don't put the date in it. When merging into an existing entry, rewrite the title to cover the merged bullets
 - `summary` is **one plain sentence** covering the entry as a whole, under 160 characters, with no Markdown or links. It's never rendered on the page — it's returned by the public `/cloud/api/changelog` endpoint. When merging into an existing entry, rewrite the summary to cover the merged bullets
 - Never write an `image` property. The entry's banner is rendered from its date and patched in by the automation workflow, and it's returned by the endpoint rather than rendered on the page
-- `content` holds **only** the bullet points. The `## {Month} {Day}, {Year}` heading is rendered from `date`, so never write it in the content
+- `content` holds **only** the bullet points. The heading is rendered from `title`, so never write a `##` line in the content
 - One bullet point per change, written in the present tense from the user's perspective
 - When a change replaces earlier behavior, add a sentence on what it was before, as in "Previously, the card kept showing a loading preview"
 - If a documentation page covers the change, link to it with a **root-relative path that omits the `/cloud` base path and the `page.mdx` suffix**, such as `[Environment Variables](/environments/environment-variables)`. Links to other documentation projects are full URLs

@@ -19,6 +19,7 @@ import {
 } from "./banners/index.js"
 import { uploadBanner } from "./cloudinary.js"
 import { writePreview } from "./preview.js"
+import { withRandomSuffix } from "./public-id.js"
 import { renderPng, renderSvg } from "./render.js"
 
 const DEFAULT_OUT_DIR = "out"
@@ -255,10 +256,12 @@ withContentOptions(
     const definition = bannerOf(options.type)
     const input = definition.normalize(inputFrom(options)) as BannerInput
     const folder = options.folder ?? definition.folder
-    const publicId = definition.publicId(input)
+    const publicId = withRandomSuffix(definition.publicId(input))
     const png = await renderPng(input)
 
     if (options.dryRun) {
+      // The suffix is drawn fresh every run, so this reports the shape of the
+      // target rather than the ID a real upload would end up at.
       process.stdout.write(
         `would upload ${png.length} bytes to ${folder}/${publicId}\n`
       )

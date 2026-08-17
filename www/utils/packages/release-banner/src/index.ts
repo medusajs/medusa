@@ -41,7 +41,7 @@ export { h, linearGradient } from "./element.js"
 export { loadFonts } from "./fonts.js"
 export { logoDataUri, LOGO_ASPECT, LOGO_INK, LOGO_PATH } from "./logo.js"
 export { writePreview } from "./preview.js"
-export { toPublicId } from "./public-id.js"
+export { randomSuffix, toPublicId, withRandomSuffix } from "./public-id.js"
 export { renderPng, renderSvg } from "./render.js"
 export { mergeSpec, scaler } from "./spec.js"
 export type {

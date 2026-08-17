@@ -87,7 +87,7 @@ straight off:
 
 ```bash
 node dist/cli.js upload --version 2.19.0
-# https://res.cloudinary.com/<cloud>/image/upload/v.../Releases/v2-19-0.png
+# https://res.cloudinary.com/<cloud>/image/upload/v.../Releases/v2-19-0-6df68c.png
 ```
 
 | Flag | Description |
@@ -114,15 +114,20 @@ A variable that is already set always wins, so this changes nothing in CI, where
 the credentials arrive as real environment variables. Nothing else in the package
 reads `.env` — importing it as a library leaves your process environment alone.
 
-Public IDs are slugified: dots, spaces and punctuation become dashes, so
-`v2.19.0` becomes `Releases/v2-19-0`. Cloudinary reads the segment after a public
-ID's last dot as the file format, so `v2.19.0` would otherwise deliver as `v2.19`
-in a `0` format. Dashes also match the banners uploaded by hand before this was
-automated.
+Public IDs are slugified and then given a **random six-character suffix**:
+`v2.19.0` uploads as `Releases/v2-19-0-6df68c`. Slugifying is what makes the ID
+safe — Cloudinary reads the segment after a public ID's last dot as the file
+format, so `v2.19.0` would otherwise deliver as `v2.19` in a `0` format, and
+dashes match the banners uploaded by hand before this was automated.
 
-Re-running for the same public ID **overwrites in place**, so regenerating a
-draft updates the existing image instead of piling up variants, and invalidates
-the CDN copy so the new one is actually served.
+The suffix means **every upload gets its own URL**. A URL that has been published
+therefore keeps showing the image it showed when it was published, since nothing
+later can be uploaded over it. The trade-off is that re-running for the same
+version no longer updates the asset in place — it adds another one, and the
+previous one stays in the media library until someone clears it out.
+
+`--dry-run` draws a fresh suffix like any other run, so it reports the shape of
+the target rather than the ID a real upload would land on.
 
 ## Programmatic use
 
@@ -148,6 +153,8 @@ renders and uploads the release banner, then inserts it into the notes:
 
 1. `upload` runs **before** the Claude step, so a misconfigured upload surfaces
    before spending a Claude run. It needs the `CLOUDINARY_URL` repository secret.
+   Each run uploads a new asset, so re-running the workflow for a version leaves
+   the earlier banner behind in Cloudinary.
 2. After Claude writes the notes, a step splices `![<tag>](<url>)` into the CMS
    block, above the title heading — matching where the v2.13.0 banner sits. The
    banner is consumed by the CMS and never renders on the release page itself.

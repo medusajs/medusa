@@ -43,9 +43,10 @@ function configure(): void {
  * Uploads a banner to a folder in the media library and returns its delivery
  * URL. The folder and public ID come from the banner's definition.
  *
- * Re-running for the same public ID overwrites in place, so regenerating a draft
- * updates the existing image rather than piling up variants — and `invalidate`
- * purges the CDN so the new one is actually served.
+ * Uploading to a public ID that already exists overwrites it in place, and
+ * `invalidate` purges the CDN so the new image is actually served. The CLI gives
+ * every upload its own suffixed ID, so in practice that path is only taken if a
+ * caller passes an ID of its own.
  */
 export async function uploadBanner({
   png,
