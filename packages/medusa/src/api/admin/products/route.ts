@@ -2,10 +2,14 @@ import { createProductsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-  refetchEntities,
   refetchEntity,
+  searchEntityWithGraphFallback,
 } from "@medusajs/framework/http"
-import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
+import {
+  AdditionalData,
+  HttpTypes,
+  ProductDTO,
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
@@ -13,6 +17,8 @@ import {
 } from "@medusajs/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { remapKeysForProduct, remapProductResponse } from "./helpers"
+
+const PRODUCT_SEARCH_INDEX = "product"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductListParams>,
@@ -41,22 +47,24 @@ async function getProducts(
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductListParams>,
   res: MedusaResponse<HttpTypes.AdminProductListResponse>
 ) {
-  const selectFields = remapKeysForProduct(req.queryConfig.fields ?? [])
-
-  const { data: products, metadata } = await refetchEntities({
+  // Reads from the Search Module when it holds a product index that can answer
+  // the request, and from the database otherwise. Same shape either way.
+  const { data, count, offset, limit } =
+    await searchEntityWithGraphFallback<ProductDTO>({
     entity: "product",
-    idOrFilter: req.filterableFields,
+    index: PRODUCT_SEARCH_INDEX,
     scope: req.scope,
-    fields: selectFields,
+    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+    filters: req.filterableFields,
     pagination: req.queryConfig.pagination,
     withDeleted: req.queryConfig.withDeleted,
   })
 
   res.json({
-    products: products.map(remapProductResponse),
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    products: data.map(remapProductResponse),
+    count,
+    offset,
+    limit,
   })
 }
 
