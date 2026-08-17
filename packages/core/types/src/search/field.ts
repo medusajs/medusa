@@ -38,6 +38,16 @@ export interface SearchFieldDefinition {
    */
   retrievable?: boolean
 
+  /**
+   * The `query.graph` filter path this field stands in for, when the two differ.
+   * Lets a caller translate a database filter into an index one without the
+   * index having to mirror the graph's naming — e.g. a flat
+   * `variant_skus` field declaring `graph_path: "variants.sku"`.
+   *
+   * Defaults to the field's own path.
+   */
+  graph_path?: string
+
   // For `type: "object"`.
   fields?: Record<string, SearchFieldDefinition>
 

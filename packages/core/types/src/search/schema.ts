@@ -32,6 +32,7 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   retrievable?: boolean
   array?: boolean
   correlated?: boolean
+  graph_path?: string
   dimensions?: number
   provider_options?: Record<string, Record<string, unknown>>
   fields?: Record<string, SearchPropertyMetadata>

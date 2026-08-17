@@ -1321,6 +1321,31 @@ moduleIntegrationTestRunner<SearchService>({
         })
       })
 
+      describe("translateGraphFilters", () => {
+        it("flattens a nested filter into the index' dotted path", () => {
+          expect(
+            service.translateGraphFilters("product", {
+              q: "shoe",
+              variants: { color: "red" },
+            })
+          ).toEqual({ q: "shoe", "variants.color": "red" })
+        })
+
+        it("hands off a translated filter the index can then answer", async () => {
+          const filters = service.translateGraphFilters("product", {
+            variants: { color: "olive" },
+          })
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters,
+          })
+
+          expect(ids(result)).toEqual(["prod_3"])
+        })
+      })
+
       describe("searchMany", () => {
         it("runs several queries and preserves their order", async () => {
           const results = await service.searchMany([

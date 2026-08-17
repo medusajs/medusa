@@ -35,6 +35,7 @@ import {
   validateFieldUsage,
 } from "@utils"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
+import { translateGraphFilters } from "../utils/translate-graph-filters"
 import {
   createIndexMigrationPlan,
   executeIndexMigrationPlan,
@@ -298,6 +299,16 @@ export default class SearchModuleService
 
   getIndex(index: string): SearchTypes.ResolvedSearchIndexDefinition {
     return retrieveIndexDefinition(this.indexes_, index)
+  }
+
+  translateGraphFilters(
+    index: string,
+    filters: SearchTypes.SearchFilters
+  ): SearchTypes.SearchFilters {
+    return translateGraphFilters({
+      filters,
+      index: retrieveIndexDefinition(this.indexes_, index),
+    })
   }
 
   async reindex(

@@ -126,6 +126,17 @@ export interface ISearchModuleService extends IModuleService {
   getIndex(index: string): ResolvedSearchIndexDefinition
 
   /**
+   * Rewrites `query.graph`-shaped filters into the flat, dotted form an index
+   * takes, so a caller can hand over the filters it already built:
+   * `{ variants: { sku } }` becomes `{ "variants.sku": ... }`, and a field
+   * declaring `graph_path` is matched by that instead of its own path.
+   *
+   * Translating says nothing about whether the index holds those paths or the
+   * provider accepts those operators, running the search is what settles that.
+   */
+  translateGraphFilters(index: string, filters: SearchFilters): SearchFilters
+
+  /**
    * This method triggers a reindex operation for one or more search indexes.
    *
    * @param {SearchReindexInput} input - The reindex options, such as which indexes to rebuild and what strategy to use.

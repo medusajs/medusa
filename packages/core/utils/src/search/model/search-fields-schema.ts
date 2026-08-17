@@ -68,6 +68,9 @@ function metadataToFieldDefinition(
   if (metadata.facetable !== undefined) {
     field.facetable = metadata.facetable
   }
+  if (metadata.graph_path !== undefined) {
+    field.graph_path = metadata.graph_path
+  }
   if (metadata.retrievable !== undefined) {
     field.retrievable = metadata.retrievable
   }

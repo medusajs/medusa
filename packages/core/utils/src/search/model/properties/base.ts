@@ -23,10 +23,20 @@ export abstract class BaseSearchProperty<T>
   }
 
   #retrievable?: boolean
+  #graphPath?: string
   #providerOptions?: Record<string, Record<string, unknown>>
 
   retrievable(value: boolean = true) {
     this.#retrievable = value
+    return this
+  }
+
+  /**
+   * The `query.graph` filter path this field stands in for, when it is not the
+   * field's own path.
+   */
+  graphPath(path: string) {
+    this.#graphPath = path
     return this
   }
 
@@ -43,6 +53,9 @@ export abstract class BaseSearchProperty<T>
 
     if (this.#retrievable !== undefined) {
       metadata.retrievable = this.#retrievable
+    }
+    if (this.#graphPath !== undefined) {
+      metadata.graph_path = this.#graphPath
     }
     if (this.#providerOptions !== undefined) {
       metadata.provider_options = this.#providerOptions
