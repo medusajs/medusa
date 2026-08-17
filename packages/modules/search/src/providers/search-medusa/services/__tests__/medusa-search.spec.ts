@@ -1,4 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
+import { CloudServiceError } from "../../utils"
 import { MedusaSearchService } from "../medusa-search"
 
 const definition: SearchTypes.ResolvedSearchIndexDefinition = {
@@ -51,6 +52,65 @@ describe("MedusaSearchService", () => {
           } as any
         )
     ).toThrow(/environment_handle/)
+  })
+
+  it("creates missing indexes through the explicit create endpoint", async () => {
+    const service = createService()
+    const metadata = jest
+      .fn()
+      .mockRejectedValue(
+        new CloudServiceError(
+          "not_found",
+          "not_found",
+          {},
+          "Index not found",
+          404
+        )
+      )
+    const createIndex = jest.fn().mockResolvedValue(undefined)
+    const index = jest.fn(() => ({ metadata }))
+    ;(service as any).client_ = { createIndex, index }
+
+    await expect(service.upsertIndex({ index: definition })).resolves.toEqual({
+      index: "product",
+      status: "succeeded",
+    })
+
+    expect(createIndex).toHaveBeenCalledWith({
+      name: "product",
+      schema: expect.objectContaining({
+        title: expect.objectContaining({ full_text_search: true }),
+      }),
+      distance_metric: undefined,
+      sharding: undefined,
+    })
+  })
+
+  it("recreates indexes with incompatible schemas through the create endpoint", async () => {
+    const service = createService()
+    const metadata = jest.fn().mockResolvedValue({
+      schema: {
+        id: { type: "string" },
+        title: { type: "int" },
+        status: { type: "string" },
+      },
+    })
+    const deleteAll = jest.fn().mockResolvedValue(undefined)
+    const createIndex = jest.fn().mockResolvedValue(undefined)
+    const index = jest.fn(() => ({ deleteAll, metadata }))
+    ;(service as any).client_ = { createIndex, index }
+
+    await service.upsertIndex({ index: definition })
+
+    expect(deleteAll).toHaveBeenCalledTimes(1)
+    expect(createIndex).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "product",
+        schema: expect.objectContaining({
+          title: expect.objectContaining({ type: "string" }),
+        }),
+      })
+    )
   })
 
   it("passes Medusa index names through unchanged", async () => {

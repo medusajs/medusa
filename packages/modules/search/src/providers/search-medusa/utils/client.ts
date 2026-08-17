@@ -1,5 +1,6 @@
 import { MedusaError } from "@medusajs/framework/utils"
 import type {
+  IndexCreateParams,
   IndexMetadata,
   IndexMultiQueryParams,
   IndexMultiQueryResponse,
@@ -58,6 +59,10 @@ export class MedusaSearchClient {
 
   index(name: string): MedusaSearchIndex {
     return new MedusaSearchIndex(this, name)
+  }
+
+  createIndex(body: IndexCreateParams): Promise<unknown> {
+    return this.request("POST", "/indexes", { body })
   }
 
   async *indexes(): AsyncGenerator<IndexSummary> {

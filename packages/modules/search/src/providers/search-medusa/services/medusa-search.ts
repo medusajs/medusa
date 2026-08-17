@@ -73,10 +73,8 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         throw error
       }
 
-      // Create the index during migration so runtime ops can skip exists
-      // checks. Schema and sharding are only accepted on this inaugural write.
-      await remote.write({
-        upsert_rows: [],
+      await this.client_.createIndex({
+        name: index.physical_name,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
         sharding: plan.options.sharding,
@@ -88,8 +86,8 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       // The Search Module only calls this for an index that is about to be
       // seeded. Type changes and removals cannot be applied in place.
       await remote.deleteAll()
-      await remote.write({
-        upsert_rows: [],
+      await this.client_.createIndex({
+        name: index.physical_name,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
         sharding: plan.options.sharding,

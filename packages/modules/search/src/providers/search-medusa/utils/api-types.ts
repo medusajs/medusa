@@ -59,6 +59,13 @@ export type IndexMetadata = {
   [key: string]: unknown
 }
 
+export type IndexCreateParams = {
+  name: string
+  schema: Record<string, AttributeSchema>
+  distance_metric?: DistanceMetric
+  sharding?: ShardingConfig
+}
+
 export type IndexQuery = {
   rank_by?: RankBy
   filters?: Filter
