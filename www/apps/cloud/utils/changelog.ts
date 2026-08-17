@@ -143,6 +143,41 @@ function absolutizeLinks(content: string, baseUrl: string): string {
   )
 }
 
+/** Shapes an authored entry into what the page and the endpoints expose. */
+function toPublicEntry(
+  date: string,
+  entry: ChangelogEntry,
+  baseUrl?: string
+): PublicChangelogEntry {
+  return {
+    id: getChangelogEntryId(date),
+    title: formatChangelogDate(date),
+    date,
+    summary: entry.summary ?? null,
+    image: entry.image ?? null,
+    content: baseUrl ? absolutizeLinks(entry.content, baseUrl) : entry.content,
+  }
+}
+
+/**
+ * Loads a single entry by its `YYYY-MM-DD` date, or `null` when the changelog
+ * has no entry for that date. Only that entry's file is imported.
+ */
+export async function getChangelogEntry(
+  date: string,
+  baseUrl?: string
+): Promise<PublicChangelogEntry | null> {
+  const match = changelogEntries.find((entry) => entry.date === date)
+
+  if (!match) {
+    return null
+  }
+
+  const { default: entry } = await match.load()
+
+  return toPublicEntry(match.date, entry, baseUrl)
+}
+
 /**
  * Loads a page of changelog entries, newest first. Only the entries of the
  * requested page are imported, so the cost of loading a page doesn't grow with
@@ -165,16 +200,7 @@ export async function getChangelogPage({
     slice.map(async ({ date, load }) => {
       const { default: entry } = await load()
 
-      return {
-        id: getChangelogEntryId(date),
-        title: formatChangelogDate(date),
-        date,
-        summary: entry.summary ?? null,
-        image: entry.image ?? null,
-        content: baseUrl
-          ? absolutizeLinks(entry.content, baseUrl)
-          : entry.content,
-      }
+      return toPublicEntry(date, entry, baseUrl)
     })
   )
 

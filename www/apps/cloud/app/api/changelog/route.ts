@@ -4,12 +4,10 @@ import {
   CHANGELOG_PAGE_SIZE,
   getChangelogPage,
 } from "../../../utils/changelog"
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-}
+import {
+  PUBLIC_API_CACHE_CONTROL,
+  PUBLIC_API_CORS_HEADERS,
+} from "../../../utils/public-api"
 
 function parseNumber(value: string | null, fallback: number): number {
   const parsed = parseInt(value ?? "", 10)
@@ -40,7 +38,7 @@ export async function GET(req: NextRequest) {
       {
         message: `\`page\` must be at least 1, and \`limit\` must be between 1 and ${CHANGELOG_MAX_PAGE_SIZE}.`,
       },
-      { status: 400, headers: CORS_HEADERS }
+      { status: 400, headers: PUBLIC_API_CORS_HEADERS }
     )
   }
 
@@ -52,12 +50,15 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(data, {
     headers: {
-      ...CORS_HEADERS,
-      "Cache-Control": "public, max-age=3600, must-revalidate",
+      ...PUBLIC_API_CORS_HEADERS,
+      "Cache-Control": PUBLIC_API_CACHE_CONTROL,
     },
   })
 }
 
 export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: CORS_HEADERS })
+  return new NextResponse(null, {
+    status: 204,
+    headers: PUBLIC_API_CORS_HEADERS,
+  })
 }
