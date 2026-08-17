@@ -36,17 +36,17 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
     fields: ["id", "title", "thumbnail"],
   },
   {
-    name: "productVariant",
-    graphEntity: "variant",
+    name: "product_variant",
+    graphEntity: "product_variant",
     fields: ["id", "title", "sku", "product_id"],
   },
   {
-    name: "category",
+    name: "product_category",
     graphEntity: "product_category",
     fields: ["id", "name"],
   },
   {
-    name: "collection",
+    name: "product_collection",
     graphEntity: "product_collection",
     fields: ["id", "title"],
   },
@@ -56,12 +56,12 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
     fields: ["id", "email", "first_name", "last_name"],
   },
   {
-    name: "customerGroup",
+    name: "customer_group",
     graphEntity: "customer_group",
     fields: ["id", "name"],
   },
   {
-    name: "inventory",
+    name: "inventory_item",
     graphEntity: "inventory_item",
     fields: ["id", "title", "sku"],
   },
@@ -76,7 +76,7 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
     fields: ["id", "name"],
   },
   {
-    name: "priceList",
+    name: "price_list",
     graphEntity: "price_list",
     fields: ["id", "title"],
   },
@@ -91,48 +91,50 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
     fields: ["id", "name"],
   },
   {
-    name: "taxRegion",
+    name: "tax_region",
     graphEntity: "tax_region",
     fields: ["id", "country_code", "province_code"],
   },
   {
-    name: "returnReason",
+    name: "return_reason",
     graphEntity: "return_reason",
     fields: ["id", "label", "value"],
   },
   {
-    name: "salesChannel",
+    name: "sales_channel",
     graphEntity: "sales_channel",
     fields: ["id", "name"],
   },
   {
-    name: "productType",
+    name: "product_type",
     graphEntity: "product_type",
     fields: ["id", "value"],
   },
   {
-    name: "productTag",
+    name: "product_tag",
     graphEntity: "product_tag",
     fields: ["id", "value"],
   },
   {
-    name: "location",
+    name: "stock_location",
     graphEntity: "stock_location",
     fields: ["id", "name"],
   },
   {
-    name: "shippingProfile",
+    name: "shipping_profile",
     graphEntity: "shipping_profile",
     fields: ["id", "name"],
   },
   {
-    name: "publishableApiKey",
+    // graphEntity is shared with secret_api_key below; disambiguated by name
+    // since ADMIN_SEARCH_ENTITY_MAP and `entity=` both key on it.
+    name: "publishable_api_key",
     graphEntity: "api_key",
     fields: ["id", "title", "redacted"],
     filters: { type: ApiKeyType.PUBLISHABLE },
   },
   {
-    name: "secretApiKey",
+    name: "secret_api_key",
     graphEntity: "api_key",
     fields: ["id", "title", "redacted"],
     filters: { type: ApiKeyType.SECRET },
