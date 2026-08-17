@@ -7,6 +7,7 @@ import {
 } from "@medusajs/deps/mikro-orm/migrations"
 import { isFileDisabled, isFileSkipped } from "../../common/define-file-config"
 import { dynamicImport } from "../../common/dynamic-import"
+import { promiseAll } from "../../common/promise-all"
 
 export class CustomDBMigrator extends BaseMigrator {
   static register(orm: MikroORM): void {
@@ -64,14 +65,17 @@ export class CustomDBMigrator extends BaseMigrator {
   async getPendingMigrations(): Promise<UmzugMigration[]> {
     const pending = await super.getPendingMigrations()
 
-    // Filter out migrations that are disabled by file config
-    return pending.filter(async (pendingFile: UmzugMigration) => {
-      const migration = await dynamicImport(pendingFile.path!)
-      if (isFileSkipped(migration)) {
-        return false
-      }
+    // Filter out migrations that are disabled by file config.
+    // The predicate has to be resolved before filtering: an async callback
+    // returns a promise, every promise is truthy, so handing one to
+    // Array.prototype.filter keeps every entry.
+    const keep = await promiseAll(
+      pending.map(async (pendingFile: UmzugMigration) => {
+        const migration = await dynamicImport(pendingFile.path!)
+        return !isFileSkipped(migration)
+      })
+    )
 
-      return true
-    })
+    return pending.filter((_, index) => keep[index])
   }
 }
