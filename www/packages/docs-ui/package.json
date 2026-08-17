@@ -19,6 +19,23 @@
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       }
+    },
+    "./components/*": {
+      "require": {
+        "types": "./dist/cjs/components/*/index.d.ts",
+        "default": "./dist/cjs/components/*/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/components/*/index.d.ts",
+        "default": "./dist/esm/components/*/index.js"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "components/*": [
+        "./dist/esm/components/*/index.d.ts"
+      ]
     }
   },
   "sideEffects": false,
