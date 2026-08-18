@@ -8,6 +8,7 @@ import {
   deduplicate,
   GraphQLUtils,
   MedusaError,
+  promiseAll,
 } from "@medusajs/framework/utils"
 import { CachingDefaultProvider, InjectedDependencies } from "@types"
 import CacheProviderService from "./cache-provider"
@@ -318,17 +319,25 @@ export default class CachingModuleService implements ICachingModuleService {
       autoInvalidate?: boolean
     }
   ): Promise<void> {
-    for (const providerOptions of providers || []) {
-      const ttl_ = providerOptions.ttl ?? ttl ?? this.ttl
-      const provider = this.providerService.retrieveProvider(providerOptions.id)
-      void provider.set({
-        key,
-        tags,
-        data,
-        ttl: ttl_,
-        options,
+    // The write has to be awaited, otherwise `set` resolves before the provider
+    // has done any work: the `ongoingRequests` coalescing above can never dedupe
+    // and callers have no way of applying backpressure on a slow provider.
+    await promiseAll(
+      (providers || []).map((providerOptions) => {
+        const ttl_ = providerOptions.ttl ?? ttl ?? this.ttl
+        const provider = this.providerService.retrieveProvider(
+          providerOptions.id
+        )
+
+        return provider.set({
+          key,
+          tags,
+          data,
+          ttl: ttl_,
+          options,
+        })
       })
-    }
+    )
   }
 
   async clear(options: {
@@ -400,10 +409,15 @@ export default class CachingModuleService implements ICachingModuleService {
       providerIds_ = Array.isArray(providers) ? providers : [providers]
     }
 
-    for (const providerId of providerIds_) {
-      const provider = this.providerService.retrieveProvider(providerId)
-      void provider.clear({ key, tags, options })
-    }
+    // Same as `performCacheSet`, the clear has to be awaited so that concurrent
+    // invalidations are coalesced by `ongoingRequests` instead of piling up
+    // unbounded against the provider.
+    await promiseAll(
+      providerIds_.map((providerId) => {
+        const provider = this.providerService.retrieveProvider(providerId)
+        return provider.clear({ key, tags, options })
+      })
+    )
   }
 
   async computeKey(input: object): Promise<string> {
