@@ -1,0 +1,81 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Log Drains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to configure log drains to forward your project's logs to an external observability provider.
+
+## What are Log Drains?
+
+Log drains let you stream your project's application logs to an external service using the OpenTelemetry (OTLP) protocol. You can forward backend logs, storefront logs, or both, and filter by log level to control what gets sent. Only one log drain can be configured per project at a time.
+
+Supported providers include Sentry, Datadog, Grafana, GCP, and any generic OTLP-compatible endpoint.
+
+---
+
+## Create a Log Drain
+
+To create a log drain for a project:
+
+1. Open the project's dashboard.
+2. Click the **Settings** tab in the sidebar.
+3. Click **Log Drains** in the Settings navigation.
+4. Click **Create**.
+
+A full-screen modal opens with a two-step flow:
+
+### Step 1: Select a Provider
+
+Choose a provider from the grid. Available options are:
+
+- **Sentry**
+- **Datadog**
+- **Grafana**
+- **GCP**
+- **Other** (generic OTLP)
+
+### Step 2: Configure the Log Drain
+
+After selecting a provider, fill in the configuration form:
+
+- **Provider** (required) — The observability provider. You can change this after the initial selection.
+- **Name** (required) — A display name for the log drain. Defaults to the provider name.
+- **OTLP URL** (required) — The endpoint URL to send logs to. Provider-specific example URLs are shown as placeholders for Sentry, Datadog, and Grafana.
+- **Log Level** (optional) — Filters which log levels are forwarded. Select **All** to forward every level, or pick a specific level.
+- **Sources** — Two toggles that control which application logs are forwarded:
+  - **Backend** — Forwards backend application logs. Enabled by default.
+  - **Storefront** — Forwards storefront logs. Disabled by default.
+- **Headers** — Key/value pairs sent as HTTP headers with each log request. Provider-specific header keys are pre-filled (for example, `dd-api-key` for Datadog, `x-sentry-auth` for Sentry, and `Authorization` for Grafana and GCP). You can add rows with **Add Row**, mark a value as secret using the **Secret** toggle, remove individual rows, or clear all rows with **Clear All**.
+- **Resource Attributes** — OpenTelemetry resource attribute key/value pairs attached to every exported log. Several Medusa environment attributes are pre-populated. You can add or clear rows.
+
+Click **Create** to save the log drain, or **Cancel** to discard it.
+
+---
+
+## View and Edit a Log Drain
+
+Each configured log drain appears as a card on the **Log Drains** settings page, showing its name, provider, OTLP URL, log level, source toggles, header keys, and resource attribute keys.
+
+To edit a log drain:
+
+1. Click the pencil icon on the log drain card.
+2. The card switches to inline editing mode. You can update the name, OTLP URL, log level, source toggles, headers, and resource attributes.
+3. Click **Save** to apply the changes, or **Cancel** to discard them.
+
+---
+
+## Delete a Log Drain
+
+To delete a log drain:
+
+1. Click the trash icon on the log drain card.
+2. Confirm the deletion in the confirmation dialog.
+
+<Note type="warning">
+
+Deleting a log drain is permanent. Logs will stop being forwarded to the configured endpoint immediately.
+
+</Note>
