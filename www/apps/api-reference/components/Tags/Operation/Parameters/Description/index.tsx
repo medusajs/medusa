@@ -9,7 +9,7 @@ import { useArea } from "@/providers/area"
 import { resolveApiRefDocUrl } from "@/utils/resolve-doc-url"
 
 const InlineCode = dynamic<InlineCodeProps>(
-  async () => (await import("docs-ui")).InlineCode
+  async () => (await import("docs-ui/components/InlineCode")).InlineCode
 ) as React.FC<InlineCodeProps>
 
 export type TagOperationParametersDescriptionProps = {

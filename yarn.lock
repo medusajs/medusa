@@ -3894,6 +3894,7 @@ __metadata:
     "@medusajs/sales-channel": 2.19.0
     "@medusajs/search": 2.19.0
     "@medusajs/search-local": 2.19.0
+    "@medusajs/search-postgres": 2.19.0
     "@medusajs/settings": 2.19.0
     "@medusajs/stock-location": 2.19.0
     "@medusajs/store": 2.19.0
@@ -4114,6 +4115,17 @@ __metadata:
     "@medusajs/framework": 2.19.0
     "@medusajs/test-utils": 2.19.0
     "@orama/orama": ^3.1.18
+  peerDependencies:
+    "@medusajs/framework": 2.19.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/search-postgres@2.19.0, @medusajs/search-postgres@workspace:packages/modules/providers/search-postgres":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/search-postgres@workspace:packages/modules/providers/search-postgres"
+  dependencies:
+    "@medusajs/framework": 2.19.0
+    "@medusajs/test-utils": 2.19.0
   peerDependencies:
     "@medusajs/framework": 2.19.0
   languageName: unknown

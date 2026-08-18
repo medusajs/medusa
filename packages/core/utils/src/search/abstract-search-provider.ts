@@ -257,18 +257,23 @@ export class AbstractSearchProviderService
    *   // ...
    *   async upsertDocuments({
    *     index,
+   *     definition,
    *     documents,
    *   }: {
    *     index: string
+   *     definition: SearchTypes.ResolvedSearchIndexDefinition
    *     documents: SearchTypes.SearchDocument[]
    *   }): Promise<SearchTypes.SearchTask> {
-   *     const task = await this.client.addDocuments(index, documents)
+   *     const task = await this.client.addDocuments(index, documents, {
+   *       schema: definition.fields,
+   *     })
    *     return { id: `${task.uid}`, index, status: "enqueued" }
    *   }
    * }
    */
   async upsertDocuments(_input: {
     index: string
+    definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
   }): Promise<SearchTypes.SearchTask> {
     throw Error("upsertDocuments must be overridden by the child class")
