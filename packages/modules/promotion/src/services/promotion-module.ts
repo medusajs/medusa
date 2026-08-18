@@ -891,10 +891,17 @@ export default class PromotionModuleService
         const attributeValue = budgetUsageContext[attribute]
 
         if (!attributeValue) {
-          this.logger_.debug(
-            `Attribute value for "${attribute}" is required by promotion campaign budget`
-          )
-          continue
+          const message = `Attribute value for "${attribute}" is required by promotion campaing budget`
+
+          // Automatic promotions apply implicitly, so skip them quietly when the
+          // budget attribute is missing (e.g. a guest cart with no email). A
+          // code-applied promotion is intentional, so surface the error instead.
+          if (promotion.is_automatic) {
+            this.logger_.debug(message)
+            continue
+          }
+
+          throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
         }
 
         const [campaignBudgetUsagePerAttribute] =
