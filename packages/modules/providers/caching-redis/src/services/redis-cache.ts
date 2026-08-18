@@ -61,6 +61,9 @@ export class RedisCachingProvider {
     return `${this.keyNamePrefix}${key}`
   }
 
+  /**
+   * Forward index: tag -> set of cache entry keys
+   */
   #getTagKey(
     tag: string,
     { isHashed = false }: { isHashed?: boolean } = {}
@@ -68,152 +71,66 @@ export class RedisCachingProvider {
     return `${this.keyNamePrefix}tag:${isHashed ? tag : this.hasher(tag)}`
   }
 
+  /**
+   * Reverse index: cache entry key -> set of hashed tags
+   */
   #getTagsKey(key: string): string {
     return `${this.keyNamePrefix}tags:${key}`
   }
 
-  #getTagDictionaryKey(): string {
-    return `${this.keyNamePrefix}tag:dictionary`
+  #getLogicalKey(keyName: string): string {
+    return keyName.replace(this.keyNamePrefix, "")
   }
 
-  #getTagNextIdKey(): string {
-    return `${this.keyNamePrefix}tag:next_id`
-  }
-
-  #getTagRefCountKey(): string {
-    return `${this.keyNamePrefix}tag:refs`
-  }
-
-  #getTagReverseDictionaryKey(): string {
-    return `${this.keyNamePrefix}tag:reverse_dict`
-  }
-
-  async #internTags(tags: string[]): Promise<number[]> {
-    const pipeline = this.redisClient.pipeline()
-    const dictionaryKey = this.#getTagDictionaryKey()
-
-    const hashedTags = tags.map((tag) => this.hasher(tag))
-
-    // Get existing tag IDs
-    hashedTags.forEach((tag) => {
-      pipeline.hget(dictionaryKey, tag)
-    })
-
-    const results = await pipeline.exec()
-    const tagIds: number[] = []
-    const newTags: string[] = []
-
-    for (let i = 0; i < hashedTags.length; i++) {
-      const result = results?.[i]
-      if (result && result[1]) {
-        tagIds[i] = parseInt(result[1] as string)
-      } else {
-        const hashedTag = hashedTags[i]
-        newTags.push(hashedTag)
-        tagIds[i] = -1 // Placeholder for new tags
-      }
+  /**
+   * Remove keys from forward tag sets and drop their reverse indexes.
+   * Prefer running this before deleting entries so a failed/interrupted clear
+   * cannot leave entries that still exist but are unreachable for tag invalidation.
+   */
+  async #removeTagIndexes(keyNames: string[]): Promise<void> {
+    if (!keyNames.length) {
+      return
     }
 
-    // Create IDs for new tags
-    if (newTags.length) {
-      const nextIdKey = this.#getTagNextIdKey()
-      const reverseDictKey = this.#getTagReverseDictionaryKey()
-      const refCountKey = this.#getTagRefCountKey()
-      const startId = await this.redisClient.incrby(nextIdKey, newTags.length)
+    const tagsKeys = keyNames.map((keyName) =>
+      this.#getTagsKey(this.#getLogicalKey(keyName))
+    )
 
-      const batchPipeline = this.redisClient.pipeline()
-      newTags.forEach((tag, index) => {
-        const newId = startId - newTags.length + index + 1
+    const readPipeline = this.redisClient.pipeline()
+    tagsKeys.forEach((tagsKey) => {
+      readPipeline.smembers(tagsKey)
+    })
+    const tagResults = await readPipeline.exec()
 
-        // Store in both forward and reverse dictionaries
-        batchPipeline.hset(dictionaryKey, tag, newId.toString())
-        batchPipeline.hset(reverseDictKey, newId.toString(), tag)
-
-        // Update the tagIds array
-        const originalIndex = hashedTags.indexOf(tag)
-        tagIds[originalIndex] = newId
+    const cleanupPipeline = this.redisClient.pipeline()
+    keyNames.forEach((keyName, index) => {
+      const hashedTags = (tagResults?.[index]?.[1] as string[]) ?? []
+      hashedTags.forEach((hashedTag) => {
+        cleanupPipeline.srem(
+          this.#getTagKey(hashedTag, { isHashed: true }),
+          keyName
+        )
       })
-
-      // Add reference count increments to the same pipeline
-      tagIds.forEach((id) => {
-        if (id !== -1) {
-          batchPipeline.hincrby(refCountKey, id.toString(), 1)
-        }
-      })
-
-      await batchPipeline.exec()
-    } else {
-      // Only increment reference count for existing tags
-      const refCountKey = this.#getTagRefCountKey()
-      const refPipeline = this.redisClient.pipeline()
-      tagIds.forEach((id) => {
-        refPipeline.hincrby(refCountKey, id.toString(), 1)
-      })
-      await refPipeline.exec()
-    }
-
-    return tagIds
+      cleanupPipeline.unlink(tagsKeys[index])
+    })
+    await cleanupPipeline.exec()
   }
 
-  async #resolveTagIds(tagIds: number[]): Promise<string[]> {
-    if (tagIds.length === 0) return []
-
-    const reverseDictKey = this.#getTagReverseDictionaryKey()
-    const pipeline = this.redisClient.pipeline()
-
-    tagIds.forEach((id) => {
-      pipeline.hget(reverseDictKey, id.toString())
-    })
-
-    const results = await pipeline.exec()
-    return results?.map((result) => result?.[1] as string).filter(Boolean) || []
-  }
-
-  async #decrementTagRefs(tagIds: number[]): Promise<void> {
-    if (tagIds.length === 0) return
-
-    const refCountKey = this.#getTagRefCountKey()
-    const dictionaryKey = this.#getTagDictionaryKey()
-
-    // Decrement reference counts and collect tags with zero refs
-    const pipeline = this.redisClient.pipeline()
-    tagIds.forEach((id) => {
-      pipeline.hincrby(refCountKey, id.toString(), -1)
-    })
-
-    const results = await pipeline.exec()
-    const tagsToCleanup: number[] = []
-
-    // Find tags that now have zero references
-    results?.forEach((result, index) => {
-      if (result && result[1] === 0) {
-        tagsToCleanup.push(tagIds[index])
-      }
-    })
-
-    // Clean up tags with zero references
-    if (tagsToCleanup.length) {
-      const cleanupPipeline = this.redisClient.pipeline()
-      const reverseDictKey = this.#getTagReverseDictionaryKey()
-
-      // Get tag names before deleting them
-      const tagNames = await this.#resolveTagIds(tagsToCleanup)
-
-      tagsToCleanup.forEach((id, index) => {
-        const idStr = id.toString()
-
-        // Remove from reference count hash
-        cleanupPipeline.hdel(refCountKey, idStr)
-        // Remove from reverse dictionary
-        cleanupPipeline.hdel(reverseDictKey, idStr)
-        // Remove from forward dictionary
-        if (tagNames[index]) {
-          cleanupPipeline.hdel(dictionaryKey, tagNames[index])
-        }
-      })
-
-      await cleanupPipeline.exec()
+  /**
+   * Drop tag indexes first, then delete entry hashes.
+   */
+  async #deleteEntries(keyNames: string[]): Promise<void> {
+    if (!keyNames.length) {
+      return
     }
+
+    await this.#removeTagIndexes(keyNames)
+
+    const deletePipeline = this.redisClient.pipeline()
+    keyNames.forEach((keyName) => {
+      deletePipeline.unlink(keyName)
+    })
+    await deletePipeline.exec()
   }
 
   async #compressData(data: string): Promise<Buffer> {
@@ -350,7 +267,9 @@ export class RedisCachingProvider {
                 return JSON.parse(finalData)
               } catch (e) {
                 // If JSON parsing fails, skip this entry (corrupted data)
-                this.logger.warn(`[redis-cache] Skipping corrupted cache entry: ${e.message}`)
+                this.logger.warn(
+                  `[redis-cache] Skipping corrupted cache entry: ${e.message}`
+                )
                 return null
               }
             }
@@ -399,11 +318,7 @@ export class RedisCachingProvider {
       const effectiveTTL = ttl ?? this.defaultTTL
 
       const finalData = await this.#compressData(serializedData)
-
-      let tagIds: number[] = []
-      if (tags?.length) {
-        tagIds = await this.#internTags(tags)
-      }
+      const hashedTags = tags?.map((tag) => this.hasher(tag)) ?? []
 
       const setPipeline = this.redisClient.pipeline()
 
@@ -416,23 +331,17 @@ export class RedisCachingProvider {
         setPipeline.expire(keyName, effectiveTTL)
       }
 
-      // Store tag IDs if present
-      if (tags?.length && tagIds.length) {
+      // Bidirectional tag indexes (tag -> keys, key -> tags)
+      if (hashedTags.length) {
         const tagsKey = this.#getTagsKey(key)
-        const buffer = Buffer.alloc(tagIds.length * 4)
-        tagIds.forEach((id, index) => {
-          buffer.writeUInt32LE(id, index * 4)
-        })
 
+        setPipeline.sadd(tagsKey, ...hashedTags)
         if (effectiveTTL) {
-          setPipeline.set(tagsKey, buffer, "EX", effectiveTTL + 60, "NX")
-        } else {
-          setPipeline.setnx(tagsKey, buffer)
+          setPipeline.expire(tagsKey, effectiveTTL + 60)
         }
 
-        // Add tag operations to the same pipeline
-        tags.forEach((tag) => {
-          const tagKey = this.#getTagKey(tag)
+        hashedTags.forEach((hashedTag) => {
+          const tagKey = this.#getTagKey(hashedTag, { isHashed: true })
           setPipeline.sadd(tagKey, keyName)
           if (effectiveTTL) {
             setPipeline.expire(tagKey, effectiveTTL + 60)
@@ -467,45 +376,7 @@ export class RedisCachingProvider {
   }): Promise<void> {
     try {
       if (key) {
-        const keyName = this.#getKeyName(key)
-        const tagsKey = this.#getTagsKey(key)
-
-        const clearPipeline = this.redisClient.pipeline()
-
-        // Get tags for cleanup and delete main key in same pipeline
-        clearPipeline.getBuffer(tagsKey)
-        clearPipeline.unlink(keyName)
-
-        const results = await clearPipeline.exec()
-        const tagsBuffer = results?.[0]?.[1] as Buffer
-
-        if (tagsBuffer?.length) {
-          try {
-            // Binary format: array of 32-bit integers
-            const tagIds: number[] = []
-            for (let i = 0; i < tagsBuffer.length; i += 4) {
-              tagIds.push(tagsBuffer.readUInt32LE(i))
-            }
-
-            if (tagIds.length) {
-              const entryTags = await this.#resolveTagIds(tagIds)
-
-              const tagCleanupPipeline = this.redisClient.pipeline()
-              entryTags.forEach((tag) => {
-                const tagKey = this.#getTagKey(tag, { isHashed: true })
-                tagCleanupPipeline.srem(tagKey, keyName)
-              })
-              tagCleanupPipeline.unlink(tagsKey)
-              await tagCleanupPipeline.exec()
-
-              // Decrement reference counts and cleanup unused tags
-              await this.#decrementTagRefs(tagIds)
-            }
-          } catch (e) {
-            // noop - corrupted tag data, skip cleanup
-          }
-        }
-
+        await this.#deleteEntries([this.#getKeyName(key)])
         return
       }
 
@@ -536,57 +407,7 @@ export class RedisCachingProvider {
         if (allKeys.size) {
           // If no options provided (user explicit call), clear everything
           if (!options) {
-            const deletePipeline = this.redisClient.pipeline()
-
-            // Delete main keys and options
-            Array.from(allKeys).forEach((key) => {
-              deletePipeline.unlink(key)
-            })
-
-            // Clean up tag references for each key
-            const tagDataPromises = Array.from(allKeys).map(async (key) => {
-              const keyWithoutPrefix = key.replace(this.keyNamePrefix, "")
-              const tagsKey = this.#getTagsKey(keyWithoutPrefix)
-              const tagsData = await this.redisClient.getBuffer(tagsKey)
-              return { key, tagsKey, tagsData }
-            })
-
-            const tagResults = await Promise.all(tagDataPromises)
-
-            // Build single pipeline for all tag cleanup operations
-            const tagCleanupPipeline = this.redisClient.pipeline()
-            const cleanupPromises = tagResults.map(
-              async ({ key, tagsKey, tagsData }) => {
-                if (tagsData) {
-                  try {
-                    // Binary format: array of 32-bit integers
-                    const tagIds: number[] = []
-                    for (let i = 0; i < tagsData.length; i += 4) {
-                      tagIds.push(tagsData.readUInt32LE(i))
-                    }
-
-                    if (tagIds.length) {
-                      const entryTags = await this.#resolveTagIds(tagIds)
-                      entryTags.forEach((tag) => {
-                        const tagKey = this.#getTagKey(tag, { isHashed: true })
-                        tagCleanupPipeline.srem(tagKey, key)
-                      })
-                      tagCleanupPipeline.unlink(tagsKey)
-
-                      // Decrement reference counts and cleanup unused tags
-                      await this.#decrementTagRefs(tagIds)
-                    }
-                  } catch (e) {
-                    // noop
-                  }
-                }
-              }
-            )
-
-            await Promise.all(cleanupPromises)
-            await tagCleanupPipeline.exec()
-            await deletePipeline.exec()
-
+            await this.#deleteEntries(Array.from(allKeys))
             return
           }
 
@@ -626,62 +447,7 @@ export class RedisCachingProvider {
             })
 
             if (keysToDelete.length) {
-              const deletePipeline = this.redisClient.pipeline()
-
-              keysToDelete.forEach((key) => {
-                deletePipeline.unlink(key)
-              })
-
-              // Clean up tag references for each key to delete
-              const tagDataPromises = keysToDelete.map(async (key) => {
-                const keyWithoutPrefix = key.replace(this.keyNamePrefix, "")
-                const tagsKey = this.#getTagsKey(keyWithoutPrefix)
-                const tagsData = await this.redisClient.getBuffer(tagsKey)
-                return { key, tagsKey, tagsData }
-              })
-
-              // Wait for all tag data fetches
-              const tagResults = await Promise.all(tagDataPromises)
-
-              // Build single pipeline for all tag cleanup operations
-              const tagCleanupPipeline = this.redisClient.pipeline()
-
-              const cleanupPromises = tagResults.map(
-                async ({ key, tagsKey, tagsData }) => {
-                  if (tagsData) {
-                    try {
-                      // Binary format: array of 32-bit integers
-                      const tagIds: number[] = []
-                      for (let i = 0; i < tagsData.length; i += 4) {
-                        tagIds.push(tagsData.readUInt32LE(i))
-                      }
-
-                      if (tagIds.length) {
-                        const entryTags = await this.#resolveTagIds(tagIds)
-                        entryTags.forEach((tag) => {
-                          const tagKey = this.#getTagKey(tag, {
-                            isHashed: true,
-                          })
-                          tagCleanupPipeline.srem(tagKey, key)
-                        })
-                        tagCleanupPipeline.unlink(tagsKey) // Delete the tags key
-
-                        // Decrement reference counts and cleanup unused tags
-                        await this.#decrementTagRefs(tagIds)
-                      }
-                    } catch (e) {
-                      // noop
-                    }
-                  }
-                }
-              )
-
-              await Promise.all(cleanupPromises)
-              await tagCleanupPipeline.exec()
-
-              await deletePipeline.exec()
-
-              return
+              await this.#deleteEntries(keysToDelete)
             }
           }
         }
