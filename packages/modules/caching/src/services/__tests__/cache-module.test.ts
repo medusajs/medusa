@@ -49,11 +49,14 @@ describe("CachingModuleService provider dispatch (#16474)", () => {
     }
     const service = makeService(provider)
 
-    await Promise.all([
-      service.clear({ tags: ["Product:list:*"] }),
-      service.clear({ tags: ["Product:list:*"] }),
-      service.clear({ tags: ["Product:list:*"] }),
-    ])
+    // Staggered, not simultaneous: with `void` dispatch the in-flight entry
+    // was deleted while the provider was still working, so the second call
+    // re-invoked the provider — the real #16474 shape (events keep arriving
+    // while a slow clear runs). With awaited dispatch the entry lives until
+    // the provider finishes, so the second call coalesces.
+    const first = service.clear({ tags: ["Product:list:*"] })
+    await new Promise((r) => setTimeout(r, 5)) // clear still running (20ms)
+    await Promise.all([first, service.clear({ tags: ["Product:list:*"] })])
 
     expect(calls).toBe(1)
     expect(maxInFlight).toBe(1)
@@ -73,10 +76,9 @@ describe("CachingModuleService provider dispatch (#16474)", () => {
     }
     const service = makeService(provider)
 
-    await Promise.all([
-      service.set("k", ["t"], { a: 1 }),
-      service.set("k", ["t"], { a: 1 }),
-    ])
+    const first = service.set("k", ["t"], { a: 1 })
+    await new Promise((r) => setTimeout(r, 5)) // set still running (20ms)
+    await Promise.all([first, service.set("k", ["t"], { a: 1 })])
 
     expect(calls).toBe(1)
   })
