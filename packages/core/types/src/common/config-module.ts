@@ -306,6 +306,10 @@ export type MedusaCloudOptions = {
    */
   emailsEndpoint?: string
   /**
+   * The endpoint of the Medusa Cloud search service.
+   */
+  searchEndpoint?: string
+  /**
    * The authorization endpoint of the Medusa Cloud OAuth service.
    */
   oauthAuthorizeEndpoint?: string

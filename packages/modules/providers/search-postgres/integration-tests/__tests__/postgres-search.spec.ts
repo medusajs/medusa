@@ -35,7 +35,10 @@ const reseed = async (service: SearchService) => {
   resetDataset()
   const p = provider(service)
   await p.clearIndex({ index: "product" })
-  await p.upsertDocuments({ index: "product", documents: dataset.products })
+  await service.upsertDocuments({
+    index: "product",
+    documents: dataset.products,
+  })
 }
 
 moduleIntegrationTestRunner<SearchService>({

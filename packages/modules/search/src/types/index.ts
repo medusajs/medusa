@@ -24,6 +24,17 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }[]
 
+  /**
+   * Medusa Cloud search. When set, the module registers the built-in
+   * `search-medusa` provider automatically — same pattern as payment `cloud`
+   * and notification `cloud` email.
+   */
+  cloud?: {
+    api_key: string
+    endpoint: string
+    environment_handle: string
+  }
+
   // For definitions that name no provider. Defaults to the only registered one,
   // and is required when there is more than one.
   default_provider?: string

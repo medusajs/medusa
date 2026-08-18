@@ -29,8 +29,8 @@ export interface SearchDeleteDocumentsInput {
 
 /**
  * Contract implemented by a search engine provider. Optional methods
- * (`swapIndex`, `searchMany`, `waitForTask`) are omitted from the abstract
- * class on purpose — define only those your engine can back.
+ * (`swapIndex`, `searchMany`, `waitForTask`) are omitted from
+ * the abstract class on purpose — define only those your engine can back.
  */
 export interface ISearchProvider {
   /**
@@ -81,6 +81,12 @@ export interface ISearchProvider {
    */
   upsertDocuments(input: {
     index: string
+    /**
+     * The logical definition whose documents are being written. `index` can
+     * point at a shadow physical index during a swap, so providers must use
+     * this value for schema information and `index` for the destination.
+     */
+    definition: ResolvedSearchIndexDefinition
     documents: SearchDocument[]
   }): Promise<SearchTask>
 
