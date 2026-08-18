@@ -213,6 +213,7 @@ export default class SearchModuleService
 
     const task = await provider.upsertDocuments({
       index: definition.physical_name,
+      definition,
       documents,
     })
 

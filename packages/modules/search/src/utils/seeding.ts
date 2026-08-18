@@ -322,6 +322,7 @@ async function streamSeed(
 
     const task = await provider.upsertDocuments({
       index: target_index,
+      definition: index,
       documents: batch,
     })
 

@@ -346,6 +346,27 @@ function resolveModules(
         ],
       },
     },
+    // Self-hosted: native Postgres FTS. Cloud without a search endpoint: Lakebase.
+    // Cloud with MEDUSA_CLOUD_SEARCH_ENDPOINT: empty providers — the module
+    // loader registers search-medusa from options.cloud (same pattern as
+    // notification cloud email and Medusa Payments).
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.SEARCH],
+      options: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT
+        ? {
+            providers: [],
+            default_provider: "search-medusa",
+          }
+        : {
+            providers: [
+              {
+                resolve: "@medusajs/medusa/search-postgres",
+                id: "postgres",
+                options: { engine: isCloud ? "lakebase" : "native" },
+              },
+            ],
+          },
+    },
   ]
 
   const defaultModules = [
@@ -512,6 +533,7 @@ function normalizeProjectConfig(
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
     paymentsEndpoint: process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT,
+    searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
@@ -658,6 +680,16 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             environment_handle: config.environmentHandle,
             sandbox_handle: config.sandboxHandle,
+          },
+          ...(module.options ?? {}),
+        }
+        break
+      case Modules.SEARCH:
+        module.options = {
+          cloud: {
+            api_key: config.apiKey,
+            endpoint: config.searchEndpoint,
+            environment_handle: config.environmentHandle,
           },
           ...(module.options ?? {}),
         }
