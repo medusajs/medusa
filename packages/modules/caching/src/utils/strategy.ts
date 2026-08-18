@@ -92,8 +92,14 @@ export class DefaultCacheStrategy implements ICachingStrategy {
       }
     }
 
+    // Only the wildcard subscription, no interceptor (#16474). Interceptors
+    // run wherever an event is EMITTED: a `workerMode: "server"` process —
+    // documented as not processing events — would still run full cache
+    // invalidation inline for every write it serves, on top of its HTTP
+    // duties. The subscriber path runs where the event-bus worker exists, so
+    // invalidation happens exactly once in every topology: in-process for an
+    // in-memory bus, on the worker in a server/worker split.
     eventBus.subscribe("*", handleEvent)
-    eventBus.addInterceptor?.(handleEvent)
   }
 
   async computeKey(input: object) {

@@ -321,7 +321,11 @@ export default class CachingModuleService implements ICachingModuleService {
     for (const providerOptions of providers || []) {
       const ttl_ = providerOptions.ttl ?? ttl ?? this.ttl
       const provider = this.providerService.retrieveProvider(providerOptions.id)
-      void provider.set({
+      // Awaited on purpose (#16474): with `void`, this method resolved before
+      // the provider did anything, so the ongoingRequests coalescing in set_
+      // deleted the in-flight entry almost immediately and N concurrent sets
+      // each hit the provider — unbounded fan-out under bulk writes.
+      await provider.set({
         key,
         tags,
         data,
@@ -402,7 +406,12 @@ export default class CachingModuleService implements ICachingModuleService {
 
     for (const providerId of providerIds_) {
       const provider = this.providerService.retrieveProvider(providerId)
-      void provider.clear({ key, tags, options })
+      // Awaited on purpose (#16474): besides the backpressure this gives over
+      // a burst of events, `void` defeated the ongoingRequests coalescing in
+      // clear_ — for a hot tag like Product:list:*, every event in a bulk
+      // write then paid its own full SMEMBERS + per-member GET, with nothing
+      // bounding the concurrency.
+      await provider.clear({ key, tags, options })
     }
   }
 
