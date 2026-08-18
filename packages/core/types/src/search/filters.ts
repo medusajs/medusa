@@ -1,3 +1,6 @@
+/**
+ * A primitive value that can appear in a search filter.
+ */
 export type SearchFilterValue = string | number | boolean | Date | null
 
 /**
@@ -26,8 +29,15 @@ export type SearchOperatorMap<T> = {
   $like?: string
 }
 
+/**
+ * A valid operator key from {@link SearchOperatorMap}.
+ */
 export type SearchFilterOperator = keyof SearchOperatorMap<unknown>
 
+/**
+ * A structured filter tree used to express search query conditions.
+ * Supports logical combinators (`$and`, `$or`, `$not`) and per-field operator maps.
+ */
 export type SearchFilters = {
   $and?: SearchFilters[]
   $or?: SearchFilters[]
