@@ -1,0 +1,76 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Log Drains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to configure log drains to forward your environment's logs to an external observability provider.
+
+## What are Log Drains?
+
+A log drain forwards your Medusa application's logs from Cloud to an external provider using the OpenTelemetry Protocol (OTLP). You configure log drains per project under the project's **Settings › Log Drains** section.
+
+Each log drain consists of a provider, an endpoint (or service account for GCP), optional HTTP headers, and resource attributes that are sent alongside every log entry.
+
+---
+
+## Create a Log Drain
+
+To create a log drain for a project:
+
+1. Navigate to the project's settings in the Cloud dashboard.
+2. Click the **Log Drains** section.
+3. Click **Create Log Drain**.
+4. Select a **Provider** from the dropdown. The available providers include Datadog, New Relic, Google Cloud Platform (GCP), and others.
+5. If you selected a provider other than GCP, enter the **OTLP URL** — the endpoint where logs are sent.
+6. If you selected GCP, paste the full JSON content of your **Service Account** key into the text area. The service account key is used to authenticate with Google Cloud.
+7. If you selected a provider other than GCP, add any required **HTTP headers** by clicking **Add header** and entering the header name and value.
+8. Review the **Resource Attributes** table. Default attributes such as service name, service version, cloud region, Medusa version, project handle, and environment name are pre-populated. You can add or remove attributes as needed.
+9. Click **Create** to save the log drain.
+
+<Note>
+
+When pasting a header value that begins with the header name followed by `=` or `:` — for example, `dd-api-key=abc123` — Cloud automatically strips the prefix and inserts only the value.
+
+</Note>
+
+---
+
+## Edit a Log Drain
+
+To edit an existing log drain:
+
+1. Navigate to the project's **Settings › Log Drains**.
+2. Find the log drain you want to edit and click the edit icon or the log drain's card.
+3. Update the fields as needed:
+   - For GCP log drains, you can replace the **Service Account** key.
+   - For other providers, you can update the **OTLP URL** and **HTTP headers**.
+   - You can add, edit, or remove **Resource Attributes** for any provider.
+4. Click **Save** to apply your changes.
+
+---
+
+## View a Log Drain
+
+In a project's **Settings › Log Drains**, each log drain card shows a summary of its configuration:
+
+- For GCP log drains, the card shows a **Service Account** status indicator — either **configured** if a service account key has been provided, or empty if none has been set.
+- For other providers, the card shows the configured HTTP headers.
+
+---
+
+## Delete a Log Drain
+
+To delete a log drain:
+
+1. Navigate to the project's **Settings › Log Drains**.
+2. Find the log drain you want to delete and open its settings.
+3. Click **Delete** and confirm the deletion.
+
+<Note type="warning">
+
+Deleting a log drain immediately stops log forwarding to the associated provider. This action cannot be undone.
+
+</Note>

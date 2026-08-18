@@ -351,6 +351,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Log Drains",
+            path: "/log-drains",
+          },
+          {
+            type: "link",
             title: "Notifications",
             path: "/notifications",
           },

@@ -466,6 +466,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Log Drains",
+            "path": "/log-drains",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Notifications",
             "path": "/notifications",
             "children": []
