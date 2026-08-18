@@ -12,7 +12,7 @@ In this guide, you'll learn how to use the "Fix with AI" feature on Cloud to tro
 
 When your build or deployment fails on Cloud, you'll often need to look through the logs to identify the issue and find a solution. This can be time-consuming and may require searching through documentation or forums for similar issues to find a solution.
 
-With the "Fix with AI" feature, you can leverage Cloud's support agent to understand why your build or deployment failed and get suggestions on how to fix it. The AI agent analyzes the logs of your failed build or deployment, identifies the root cause of the issue, and provides you with actionable steps to resolve it.
+With the "Fix with AI" feature, you can leverage the [Cloud Assistant](../../assistant/page.mdx) to understand why your build or deployment failed and get suggestions on how to fix it. The AI agent analyzes the logs of your failed build or deployment, identifies the root cause of the issue, and provides you with actionable steps to resolve it.
 
 ---
 
@@ -54,6 +54,10 @@ You can also navigate to a project's deployments from the [command palette](../.
   </TabsContentWrapper>
 </Tabs>
 
-This will open a "Troubleshoot deployment" side window that shows the AI agent's analysis of the issue and suggestions on how to fix it. You can chat with the AI agent to ask follow-up questions or get more details about the issue and the suggested solutions.
+This opens the [Cloud Assistant](../../assistant/page.mdx) panel with the agent's analysis of the issue and suggestions on how to fix it. You can chat with the AI agent to ask follow-up questions or get more details about the issue and the suggested solutions.
+
+Each build has its own chat. So, if you click **Fix with AI** again for the same build, the assistant reopens the chat you already had about it instead of starting over.
 
 The AI agent will use its knowledge on your project and its expertise in Medusa to provide you with the best possible solutions to fix your build or deployment issues. You can then follow the suggested steps to resolve the issue and get your deployment up and running again.
+
+If the agent suggests code changes, click **Get instructions for local agent** under its message to generate a summary that you can copy into a local coding agent, such as Claude Code or Cursor.
