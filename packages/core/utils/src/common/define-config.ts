@@ -20,6 +20,7 @@ import { isProduction } from "./is-production"
 import { isString } from "./is-string"
 import { normalizeImportPathWithSource } from "./normalize-import-path-with-source"
 import { resolveExports } from "./resolve-exports"
+import { resolveFromProject } from "./resolve-from-project"
 import { tryConvertToNumber } from "./try-convert-to-number"
 
 const MEDUSA_CLOUD_EXECUTION_CONTEXT = "medusa-cloud"
@@ -80,7 +81,13 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
 
   const projectConfig = normalizeProjectConfig(config.projectConfig, options)
   const adminConfig = normalizeAdminConfig(config.admin)
-  const modules = resolveModules(config.modules, options, config.projectConfig)
+  const projectDir = process.cwd()
+  const modules = resolveModules(
+    config.modules,
+    options,
+    config.projectConfig,
+    projectDir
+  )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
   const plugins = resolvePlugins(config.plugins, options)
 
@@ -99,7 +106,8 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
  * take precedence in case of duplicate modules
  */
 export function transformModules(
-  modules: InputConfigModules
+  modules: InputConfigModules,
+  projectDir: string = process.cwd()
 ): Exclude<ConfigModule["modules"], undefined> {
   const remappedModules = modules.reduce((acc, moduleConfig) => {
     if (moduleConfig.scope === "external" && !moduleConfig.key) {
@@ -124,11 +132,21 @@ export function transformModules(
       }
 
       const resolution = isString(moduleConfig.resolve!)
-        ? normalizeImportPathWithSource(moduleConfig.resolve as string)
+        ? normalizeImportPathWithSource(
+            moduleConfig.resolve as string,
+            projectDir
+          )
         : moduleConfig.resolve
 
+      /**
+       * Plugin modules are referenced by a bare specifier
+       * ("<plugin>/.medusa/server/src/modules/<name>"), so they must be
+       * resolved from the project directory. Otherwise the lookup starts in
+       * whichever "node_modules" directory `@medusajs/utils` was hoisted into,
+       * which in a workspace monorepo does not contain the plugin.
+       */
       const moduleExport = isString(resolution)
-        ? require(resolution)
+        ? require(resolveFromProject(resolution, projectDir))
         : resolution
 
       const defaultExport = resolveExports(moduleExport).default
@@ -243,7 +261,8 @@ function resolvePlugins(
 function resolveModules(
   configModules: InputConfig["modules"],
   { isCloud }: { isCloud: boolean },
-  projectConfig: InputConfig["projectConfig"]
+  projectConfig: InputConfig["projectConfig"],
+  projectDir: string = process.cwd()
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
@@ -326,6 +345,27 @@ function resolveModules(
           },
         ],
       },
+    },
+    // Self-hosted: native Postgres FTS. Cloud without a search endpoint: Lakebase.
+    // Cloud with MEDUSA_CLOUD_SEARCH_ENDPOINT: empty providers — the module
+    // loader registers search-medusa from options.cloud (same pattern as
+    // notification cloud email and Medusa Payments).
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.SEARCH],
+      options: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT
+        ? {
+            providers: [],
+            default_provider: "search-medusa",
+          }
+        : {
+            providers: [
+              {
+                resolve: "@medusajs/medusa/search-postgres",
+                id: "postgres",
+                options: { engine: isCloud ? "lakebase" : "native" },
+              },
+            ],
+          },
     },
   ]
 
@@ -476,7 +516,7 @@ function resolveModules(
 
   applyDefaultAuthMfaOptions(modules, authModuleOptions)
 
-  return transformModules(modules)
+  return transformModules(modules, projectDir)
 }
 
 function normalizeProjectConfig(
@@ -493,6 +533,7 @@ function normalizeProjectConfig(
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
     paymentsEndpoint: process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT,
+    searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
@@ -639,6 +680,16 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             environment_handle: config.environmentHandle,
             sandbox_handle: config.sandboxHandle,
+          },
+          ...(module.options ?? {}),
+        }
+        break
+      case Modules.SEARCH:
+        module.options = {
+          cloud: {
+            api_key: config.apiKey,
+            endpoint: config.searchEndpoint,
+            environment_handle: config.environmentHandle,
           },
           ...(module.options ?? {}),
         }

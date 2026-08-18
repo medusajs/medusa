@@ -97,7 +97,7 @@ You can set the initial admin user's email and password only once if they aren't
 To set the initial admin user's email and password:
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you just created.
-2. In the environment's dashboard, click on the "Settings" tab.
+2. In the environment's dashboard, click on the **Environment variables** tab.
 3. In the "Add new environment variables" section, add the following environment variables:
 
 ```shell
@@ -267,7 +267,7 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 
 ## Manage Environment Variables
 
-In the environment's "Settings" tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
+In the environment's **Environment variables** tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
 
@@ -292,15 +292,14 @@ You can't change the branch of preview environments. This section only applies t
 
 </Note>
 
-In an environment's **Settings** tab, the **Deployment Rules** section lets you manage the branch the environment deploys from and configure conditions that control when deployments are triggered.
+In an environment's **Settings** tab, the **Linked Branch** section shows the branch the environment deploys from.
 
 To change the branch associated with an environment:
 
 1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
-2. Choose **Deployment Rules** from the sidebar.
-3. In the **Linked branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
-4. In the side window that opens, enter the new branch name in the **Branch** field.
-5. Click **Save**.
+2. In the **Linked Branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
+3. In the side window that opens, enter the new branch name in the **Branch** field.
+4. Click **Save**.
 
 Changes will take effect the next time you push a commit to the new branch. The environment will be redeployed with the latest changes from the new branch.
 

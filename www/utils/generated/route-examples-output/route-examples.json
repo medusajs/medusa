@@ -311,6 +311,9 @@
   "POST /admin/inventory-items/{id}": {
     "js-sdk": "sdk.admin.inventoryItem.update(\"iitem_123\", {\n  sku: \"SHIRT\"\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item)\n})"
   },
+  "POST /admin/inventory-items/export": {
+    "js-sdk": "sdk.admin.inventoryItem.export({})\n.then(({ transaction_id }) => {\n  console.log(transaction_id)\n})"
+  },
   "GET /admin/inventory-items": {
     "js-sdk": "sdk.admin.inventoryItem.list()\n.then(({ inventory_items, count, limit, offset }) => {\n  console.log(inventory_items)\n})"
   },
@@ -426,7 +429,7 @@
     "js-sdk": "sdk.admin.orderEdit.initiateRequest({\n  order_id: \"order_123\"\n})\n.then(({ order_change }) => {\n  console.log(order_change)\n})"
   },
   "POST /admin/order-edits/{id}/request": {
-    "js-sdk": "sdk.admin.orderEdit.request(\"order_123\")\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
+    "js-sdk": "sdk.admin.orderEdit.request(\"order_123\", {\n  no_notification: false\n})\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
   },
   "POST /admin/order-edits/{id}/confirm": {
     "js-sdk": "sdk.admin.orderEdit.confirm(\"order_123\")\n.then(({ order_preview }) => {\n  console.log(order_preview)\n})"
@@ -818,6 +821,9 @@
   "POST /admin/sales-channels/{id}/products": {
     "js-sdk": "sdk.admin.salesChannel.batchProducts(\"sc_123\", {\n  add: [\"prod_123\", \"prod_456\"],\n  remove: [\"prod_789\"]\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel)\n})"
   },
+  "GET /admin/search": {
+    "js-sdk": "sdk.admin.search.list({ q: \"shirt\", limit: 5 })\n.then(({ results }) => {\n  console.log(results)\n})"
+  },
   "POST /admin/shipping-options": {
     "js-sdk": "sdk.admin.shippingOption.create({\n  name: \"Standard Shipping\",\n  profile_id: \"shp_123\",\n})\n.then(({ shipping_option }) => {\n  console.log(shipping_option)\n})"
   },
@@ -1147,6 +1153,12 @@
   },
   "POST /auth/{actor}/{provider}/update": {
     "js-sdk": "sdk.auth.updateProvider(\n  \"customer\",\n  \"emailpass\",\n  {\n    password: \"supersecret\"\n  },\n  token\n)\n.then(() => {\n  // password updated\n})"
+  },
+  "GET /auth/{actor}/providers": {
+    "js-sdk": "const { providers } = await sdk.auth.listProviders(\"user\")"
+  },
+  "POST /auth/{provider}/user": {
+    "js-sdk": "const token = await sdk.auth.callback(\"user\", \"okta\", queryParams)\nawait sdk.auth.createUser(\"okta\", { Authorization: `Bearer ${token}` })\nawait sdk.auth.refresh()"
   },
   "GET /store/regions": {
     "js-sdk": "sdk.store.region.list()\n.then(({ regions, count, limit, offset }) => {\n  console.log(regions)\n})"

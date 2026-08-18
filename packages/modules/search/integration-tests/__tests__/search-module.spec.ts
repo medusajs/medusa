@@ -174,7 +174,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(await seedPlan(service)).toEqual([])
         })
 
-        it("derives the replacement index name from the definition hash", async () => {
+        it("targets the live index when the provider cannot swap", async () => {
           await stale()
 
           const registered = definition(service, "product")!
@@ -183,80 +183,28 @@ moduleIntegrationTestRunner<SearchService>({
           expect(action).toEqual({
             action: "migrate",
             index: "product",
-            // Deterministic, so a migration and the boot that finishes it agree
-            // without persisting the name.
-            physical_name: `product_${registered.definition_hash.slice(0, 8)}`,
+            // Nowhere to build alongside, so the live index is the target.
+            physical_name: "product",
             live_physical_name: "product",
             definition_hash: registered.definition_hash,
             live_definition_hash: "stale",
           })
         })
 
-        it("builds the replacement without disturbing the live index", async () => {
+        it("marks the live index pending when migrating in place", async () => {
           await stale()
 
           await migrate(service, await migrationPlan(service))
 
-          // Reads still go to the old index, fully populated.
-          const result = await service.search({
-            entity: "product",
-            fields: ["id"],
+          // Whether that actually empties the index is the provider's call —
+          // it only rebuilds if the schema really differs — so the module
+          // stops claiming the index is ready either way, and lets the seed
+          // settle it.
+          const [migrated] = await indexRecords(service, {
+            name: "product",
           })
-          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
-
-          // And the record still points at the old schema, which is what tells
-          // the next boot there is a seed to finish.
-          const [record] = await indexRecords(service, { name: "product" })
-          expect(record.definition_hash).toBe("stale")
-        })
-
-        it("targets the live index at migration time when the provider cannot swap", async () => {
-          const provider = (service as any).searchProviderService_.retrieve(
-            "search-local"
-          )
-          // Stand in for an engine with no alias support.
-          provider.swapIndex = undefined
-
-          try {
-            await stale()
-
-            const [action] = await migrationPlan(service)
-
-            expect(action).toMatchObject({
-              action: "migrate",
-              // Nowhere to build alongside, so the live index is the target.
-              physical_name: "product",
-              live_physical_name: "product",
-            })
-
-            await migrate(service, [action])
-
-            // Whether that actually empties the index is the provider's call —
-            // it only rebuilds if the schema really differs — so the module
-            // stops claiming the index is ready either way, and lets the seed
-            // settle it.
-            const [migrated] = await indexRecords(service, {
-              name: "product",
-            })
-            expect(migrated.status).toBe("pending")
-
-            await boot(service)
-
-            const registered = definition(service, "product")!
-            const [record] = await indexRecords(service, {
-              name: "product",
-            })
-            expect(record.status).toBe("ready")
-            expect(record.definition_hash).toBe(registered.definition_hash)
-
-            const result = await service.search({
-              entity: "product",
-              fields: ["id"],
-            })
-            expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
-          } finally {
-            delete provider.swapIndex
-          }
+          expect(migrated.status).toBe("pending")
+          expect(migrated.definition_hash).toBe("stale")
         })
 
         it("finishes a pending migration on the next boot", async () => {
@@ -266,10 +214,8 @@ moduleIntegrationTestRunner<SearchService>({
           expect(await seedPlan(service)).toEqual([
             {
               index: "product",
-              target_physical_name: `product_${
-                definition(service, "product")!.definition_hash.slice(0, 8)
-              }`,
-              swap: true,
+              target_physical_name: "product",
+              swap: false,
               reason: "schema_changed",
             },
           ])
@@ -319,6 +265,48 @@ moduleIntegrationTestRunner<SearchService>({
             fields: ["id"],
           })
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+        })
+
+        it("rebuilds the indexes of a provider that migrates on start", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-local"
+          )
+
+          // What the application inherits from `db:migrate`: a record saying the
+          // index was migrated, and a provider that lost it when that process
+          // exited.
+          await provider.deleteIndex({ index: "product" })
+          expect(await provider.listIndexes()).toEqual([])
+
+          await boot(service)
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+        })
+
+        it("leaves index creation to migrations for any other provider", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-local"
+          )
+          // Stand in for an engine whose indexes outlive `db:migrate`.
+          provider.migrate_on_startup = false
+
+          try {
+            await provider.deleteIndex({ index: "product" })
+
+            // Nothing creates the index on the way to seeding it, so the seed
+            // fails against the engine rather than papering over a migration
+            // that never ran.
+            await expect(boot(service)).rejects.toThrow(
+              /has no index "product"/
+            )
+            expect(await provider.listIndexes()).toEqual([])
+          } finally {
+            provider.migrate_on_startup = true
+          }
         })
 
         it("seeds an index that was created but never filled", async () => {
@@ -957,34 +945,25 @@ moduleIntegrationTestRunner<SearchService>({
       })
 
       describe("reindexing", () => {
-        it("rebuilds from the seed and drops documents it no longer yields", async () => {
-          await service.upsertDocuments({
-            index: "product",
-            documents: [{ ...baseProducts[0], id: "prod_stale" }],
-          })
-
-          const before = await service.search({
-            entity: "product",
-            fields: ["id"],
-          })
-          expect(ids(before)).toContain("prod_stale")
-
-          dataset.products = baseProducts.slice(0, 2)
+        it("rebuilds from the seed when the provider cannot swap", async () => {
+          dataset.products = [
+            { ...baseProducts[0], title: "Scarlet trail shoe" },
+            ...baseProducts.slice(1),
+          ]
 
           const { job_id, indexes } = await service.reindex()
 
           expect(indexes).toEqual(["product"])
           expect(job_id).toEqual(expect.any(String))
 
-          const after = await service.search({
+          // Without swapIndex the module falls back to in place, which refreshes
+          // what the seed still yields.
+          const result = await service.search({
             entity: "product",
             fields: ["id"],
+            filters: { q: "scarlet" },
           })
-
-          // A swap rebuild replaces the index wholesale, so both the stale
-          // document and the dropped product are gone.
-          expect(ids(after).sort()).toEqual(["prod_1", "prod_2"])
-          expect(after.metadata.count).toBe(2)
+          expect(ids(result)).toEqual(["prod_1"])
         })
 
         it("keeps the index searchable and the record ready after a rebuild", async () => {
@@ -1065,9 +1044,8 @@ moduleIntegrationTestRunner<SearchService>({
           expect(after.definition_hash).toBe(before.definition_hash)
           expect(after.status).toBe("ready")
 
-          // The migration runs upsertIndex → seed → swapIndex, so the index has
-          // to end up populated. An empty one would mean the upsert recreated it
-          // and the seed never refilled it.
+          // The rebuild has to end up populated. An empty one would mean the
+          // seed never refilled it.
           const result = await service.search({
             entity: "product",
             fields: ["id"],

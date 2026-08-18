@@ -157,7 +157,7 @@ export const GET = async (
   
   const { data: products } = await query.index({
     entity: "product",
-    fields: ["*", "sales_channels.*"],
+    fields: ["id", "title", "sales_channels.id"],
     filters: {
       sales_channels: {
         id: "sc_123",
@@ -176,6 +176,59 @@ The `index` method accepts an object with the same properties as the `graph` met
 - `entity`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
 - `fields`: An array of the data model’s properties, relations, and linked data models to retrieve in the result.
 - `filters`: An object with the filters to apply on the data model's properties, relations, and linked data models that are ingested.
+
+---
+
+## Select Specific Fields
+
+Always list in `fields` the properties you need, rather than passing `*` or `{relation}.*` to retrieve every property.
+
+Selecting specific fields keeps the query cheaper, the response smaller, and the cached result easier to invalidate. Retrieving all properties also loads relations and computed properties that you may not use.
+
+For example, instead of retrieving all properties of a product and its brand:
+
+```ts title="Avoid"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["*", "brand.*"],
+})
+```
+
+Retrieve only the properties you use:
+
+```ts title="Prefer"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: [
+    "id",
+    "title",
+    "brand.id",
+    "brand.name",
+  ],
+})
+```
+
+### Avoid Retrieving All Fields of Carts and Orders
+
+Selecting specific fields matters most for the `cart` and `order` data models, along with their related data models, such as `return` and `order_change`.
+
+These data models have computed total properties, such as `total`, `subtotal`, and `tax_total`. Medusa calculates these totals in the application, not the database, and it only calculates them when you request at least one total property, or when you pass `*`. Calculating them also loads relations, such as `items` and `shipping_methods` with their tax lines and adjustments, even if you don't use them.
+
+So, whenever you retrieve carts or orders, either with the `index` method or with [Query's `graph` method](../query/page.mdx#select-specific-fields), request total properties only when you display them:
+
+```ts title="Prefer"
+const { data: orders } = await query.index({
+  entity: "order",
+  fields: [
+    "id",
+    "display_id",
+    "status",
+    "currency_code",
+    // request totals only if you use them:
+    "total",
+  ],
+})
+```
 
 ---
 
@@ -251,7 +304,7 @@ export const GET = async (
   
   const { data: products } = await query.index({
     entity: "product",
-    fields: ["*", "brand.*"],
+    fields: ["id", "title", "brand.id", "brand.name"],
     filters: {
       brand: {
         name: "Acme",
@@ -270,11 +323,11 @@ This will return all products that are linked to the brand with the name `Acme`.
   "products": [
     {
       "id": "prod_123",
+      "title": "Shirt",
       "brand": {
         "id": "brand_123",
         "name": "Acme"
-      },
-      // ...
+      }
     }
   ]
 }
@@ -324,7 +377,7 @@ export const GET = async (
     metadata,
   } = await query.index({
     entity: "product",
-    fields: ["*", "brand.*"],
+    fields: ["id", "title", "brand.id", "brand.name"],
     filters: {
       brand: {
         name: "Acme",
@@ -426,7 +479,13 @@ Refer to the [Caching Module documentation](!resources!/infrastructure-modules/c
     {
       type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
       name: "tags",
-      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags based on the entity and its retrieved relations.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags based on the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless `computeAutomaticTags` is also set.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+    },
+    {
+      type: "`boolean`",
+      name: "computeAutomaticTags",
+      description: "Whether the automatically computed tags should be applied alongside the ones given in `tags`, rather than `tags` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their `id`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.\n\nHas no effect when `tags` is omitted, since tags are computed automatically in that case.",
+      defaultValue: "`false`"
     },
     {
       type: "`number` \| `((args: any[]) => number \| undefined)`",
@@ -704,14 +763,14 @@ The following sections show examples of how to use the `index` method in differe
 
 ### Retrieve Linked Data Models
 
-Retrieve the records of a linked data model by passing in fields the data model's name suffixed with `.*`.
+Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with the `.{field}` notation, where `{field}` is the property of the linked data model you want to retrieve.
 
 For example:
 
 ```ts title="src/api/custom/products/route.ts" highlights={[["3"]]}
 const { data: products } = await query.index({
   entity: "product",
-  fields: ["*", "brand.*"],
+  fields: ["id", "title", "brand.id", "brand.name"],
 })
 ```
 
@@ -728,7 +787,7 @@ const {
   data: products,
 } = await query.index({
   entity: "product",
-  fields: ["*", "brand.*"],
+  fields: ["id", "title", "brand.id", "brand.name"],
   filters: {
     brand: {
       id: {
@@ -748,7 +807,7 @@ const {
   data: products,
 } = await query.index({
   entity: "product",
-  fields: ["*", "brand.*"],
+  fields: ["id", "title", "brand.id", "brand.name"],
   filters: {
     brand: {
       name: {
@@ -824,7 +883,7 @@ const retrieveBrandsStep = createStep(
 
     const { data: brands } = await query.index({
       entity: "brand",
-      fields: ["*", "products.*"],
+      fields: ["id", "name", "products.id"],
       filters: {
         products: {
           id: {
@@ -859,7 +918,7 @@ For example, to filter vendor products by multiple sales channels:
 ```ts title="src/api/custom/vendor-products/route.ts"
 const { data: products } = await query.index({
   entity: "product",
-  fields: ["id", "sales_channels.*", "vendor.*"],
+  fields: ["id", "sales_channels.id", "vendor.id"],
   filters: {
     sales_channels: {
       id: ["sc_vendor_1", "sc_vendor_2"],

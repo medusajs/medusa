@@ -21,6 +21,7 @@ import {
 import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment"
+import { salesChannelStockLocationCacheTags } from "../../common/utils/fields"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../utils/fields"
 import { filterCartItemsByShippingProfile } from "../utils/filter-items-by-shipping-profile"
 import { shippingOptionsContextResult } from "../utils/schemas"
@@ -175,7 +176,8 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
       ],
       options: {
         cache: {
-          enable: true,
+          tags: salesChannelStockLocationCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "sales_channels-fulfillment-query" })

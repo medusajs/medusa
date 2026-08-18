@@ -115,7 +115,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/users", () => {
-      it("Deletes a user and updates associated auth identity", async () => {
+      it("Deletes a user and its auth identity when the user is the only associated actor", async () => {
         const userTwoAdminHeaders = {
           headers: { "x-medusa-access-token": "test_token" },
         }
@@ -124,6 +124,8 @@ medusaIntegrationTestRunner({
           await createAdminUser(dbConnection, userTwoAdminHeaders, container, {
             email: "test@test.com",
           })
+
+        const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
         const response = await api.delete(
           `/admin/users/${userTwo.id}`,
@@ -137,42 +139,85 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
+        // The user was the only actor associated with the auth identity, so the
+        // whole auth identity should be deleted.
+        await expect(
+          authModule.retrieveAuthIdentity(userTwoAuthIdentity.id)
+        ).rejects.toThrow()
+
+        // And its provider identity should be cascade-deleted along with it, so
+        // authentication with the old credentials should no longer succeed.
+        const authError = await api
+          .post(`/auth/user/emailpass`, {
+            email: userTwo.email,
+            password: "somepassword",
+          })
+          .catch((e) => e)
+
+        expect(authError.response.status).toEqual(401)
+
+        // And the provider identity should no longer exist.
+        const providerIdentities = await authModule.listProviderIdentities({
+          entity_id: userTwo.email,
+        })
+        expect(providerIdentities).toHaveLength(0)
+      })
+
+      it("Keeps the auth identity when another non-null actor type is still associated", async () => {
+        const userThreeAdminHeaders = {
+          headers: { "x-medusa-access-token": "test_token" },
+        }
+
+        const { user: userThree, authIdentity: userThreeAuthIdentity } =
+          await createAdminUser(dbConnection, userThreeAdminHeaders, container, {
+            email: "test-multi@test.com",
+          })
+
         const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
-        const updatedAuthIdentity = await authModule.retrieveAuthIdentity(
-          userTwoAuthIdentity.id
+        // Associate another (non-null) actor type with the same auth identity.
+        await authModule.updateAuthIdentities({
+          id: userThreeAuthIdentity.id,
+          app_metadata: {
+            user_id: userThree.id,
+            customer_id: "cus_123",
+          },
+        })
+
+        const response = await api.delete(
+          `/admin/users/${userThree.id}`,
+          adminHeaders
         )
 
-        // Ensure the auth identity has been updated to not contain the user's id
-        expect(updatedAuthIdentity).toEqual(
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          id: userThree.id,
+          object: "user",
+          deleted: true,
+        })
+
+        // The auth identity must be kept since another actor is still associated.
+        const authIdentity = await authModule.retrieveAuthIdentity(
+          userThreeAuthIdentity.id
+        )
+
+        expect(authIdentity).toEqual(
           expect.objectContaining({
-            id: userTwoAuthIdentity.id,
-            app_metadata: expect.not.objectContaining({
-              user_id: userTwo.id,
+            id: userThreeAuthIdentity.id,
+            app_metadata: expect.objectContaining({
+              // The other actor type keeps its value...
+              customer_id: "cus_123",
+              // ...while the deleted actor's entry is set to null.
+              user_id: null,
             }),
           })
         )
 
-        // Authentication should still succeed
-        const authenticateToken = (
-          await api.post(`/auth/user/emailpass`, {
-            email: userTwo.email,
-            password: "somepassword",
-          })
-        ).data.token
-
-        expect(authenticateToken).toEqual(expect.any(String))
-
-        // However, it should not be possible to access routes any longer
-        const meResponse = await api
-          .get(`/admin/users/me`, {
-            headers: {
-              authorization: `Bearer ${authenticateToken}`,
-            },
-          })
-          .catch((e) => e)
-
-        expect(meResponse.response.status).toEqual(401)
+        // The provider identity should still exist since the auth identity was kept.
+        const providerIdentities = await authModule.listProviderIdentities({
+          entity_id: userThree.email,
+        })
+        expect(providerIdentities).toHaveLength(1)
       })
 
       it("throws if you attempt to delete your own user", async () => {

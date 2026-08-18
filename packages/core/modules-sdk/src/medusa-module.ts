@@ -268,6 +268,13 @@ class MedusaModule {
   ): void {
     const existing = MedusaModule.searchIndexes_.get(definition.name)
 
+    // The same object arriving twice is one declaration, not a conflict:
+    // `defineSearchIndex` registers the definition it returns, and the returned
+    // value may come back through the Search Module's options.
+    if (existing?.definition === definition) {
+      return
+    }
+
     // Same source re-registering (a re-boot in one process) is fine; `filePath`
     // is undefined for both registrations of an inline definition.
     if (existing && existing.filePath !== filePath) {
