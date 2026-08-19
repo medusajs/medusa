@@ -1,4 +1,4 @@
-import { disallowedOrderSortFields } from "../../utils/sort-fields"
+import { disallowedStorePivotFields } from "../utils/disallowed-fields"
 
 // TODO: This is copied over from admin. Scope what fields and relations are allowed for store
 
@@ -67,11 +67,12 @@ export const defaultStoreRetrieveOrderFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreRetrieveOrderFields,
+  disallowed: disallowedStorePivotFields,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultStoreOrderFields,
-  disallowedOrderBy: disallowedOrderSortFields,
+  disallowed: disallowedStorePivotFields,
   isList: true,
 }
