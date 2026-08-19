@@ -550,6 +550,65 @@ moduleIntegrationTestRunner<IInventoryService>({
             `Not enough stock available for item ${inventoryItem.id} at location location-1`
           )
         })
+
+        it("rejects moving a reservation to a location without enough stock (#16488)", async () => {
+          // Shrink the destination below the reservation's quantity: the
+          // quantity is unchanged (delta 0), but the move re-homes the full
+          // reservation onto location-2, so the destination must be validated
+          // against the FULL quantity, not the delta.
+          await service.updateInventoryLevels({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            stocked_quantity: 1,
+          })
+
+          const error = await service
+            .updateReservationItems({
+              id: reservationItem.id,
+              location_id: "location-2",
+            })
+            .catch((e) => e)
+
+          expect(error.message).toEqual(
+            `Not enough stock available for item ${inventoryItem.id} at location location-2`
+          )
+
+          // The rejected move must not have moved any quantity.
+          const sourceLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+          const destinationLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-2"
+            )
+          expect(sourceLevel.reserved_quantity).toEqual(3)
+          expect(destinationLevel.reserved_quantity).toEqual(0)
+        })
+
+        it("allows moving a reservation when the destination has enough stock", async () => {
+          const updated = await service.updateReservationItems({
+            id: reservationItem.id,
+            location_id: "location-2",
+          })
+
+          expect(updated.location_id).toEqual("location-2")
+
+          const sourceLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+          const destinationLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-2"
+            )
+          expect(sourceLevel.reserved_quantity).toEqual(0)
+          expect(destinationLevel.reserved_quantity).toEqual(3)
+        })
       })
 
       describe("deleteReservationItems", () => {
