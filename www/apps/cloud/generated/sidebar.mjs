@@ -113,6 +113,13 @@ export const generatedSidebars = [
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Log Drains",
+                "path": "/projects/log-drains",
+                "children": []
               }
             ]
           },

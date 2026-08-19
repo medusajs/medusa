@@ -86,6 +86,11 @@ export const sidebar = [
                 title: "Rename Repository",
                 path: "/projects/rename-repo-branch",
               },
+              {
+                type: "link",
+                title: "Log Drains",
+                path: "/projects/log-drains",
+              },
             ],
           },
           {
