@@ -471,20 +471,11 @@ const NumberRenderer: CellRenderer = (value, _row, _column, _t) => {
  * `unit_of_measure_path` metadata entry. Defaults to the row's own field.
  */
 const QuantityRenderer: CellRenderer = (value, row, column, _t) => {
-  if (isEmpty(value)) {
-    return "-"
-  }
-
-  const num = typeof value === "string" ? parseFloat(value) : value
-  if (isNaN(num)) {
-    return "-"
-  }
-
   const unitOfMeasure = getUnitOfMeasurePath(column)
     .split(".")
     .reduce((acc: any, key: string) => acc?.[key], row)
 
-  return formatQuantity(num as number, unitOfMeasure)
+  return formatQuantity(value, unitOfMeasure)
 }
 
 const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {

@@ -1,3 +1,5 @@
+import { isEmpty } from "./is-empty"
+
 /**
  * Inventory quantities can be fractional when stock is held in a unit of
  * measure that is sold in fractions of itself, e.g. a pound sold as quarter
@@ -17,14 +19,22 @@ const quantityFormatter = new Intl.NumberFormat(undefined, {
  * "98.25 lb" rather than just "98.25" when the unit of measure is "lb".
  */
 export const formatQuantity = (
-  quantity?: number | null,
+  rawQuantity?: unknown,
   unitOfMeasure?: string | null
 ) => {
-  if (quantity === null || quantity === undefined || isNaN(quantity)) {
+  if (isEmpty(rawQuantity)) {
     return "-"
   }
 
-  const formatted = quantityFormatter.format(quantity)
+  if (typeof rawQuantity !== "number" && typeof rawQuantity !== "string") {
+    return "-"
+  }
+
+  const quantity = (
+    typeof rawQuantity === "string" ? parseFloat(rawQuantity) : rawQuantity
+  )!
+
+  const formatted = quantityFormatter.format(quantity!)
 
   return unitOfMeasure ? `${formatted} ${unitOfMeasure}` : formatted
 }
