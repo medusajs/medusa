@@ -9,6 +9,9 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 
+/**
+ * @since 2.19.1
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminUserResetPasswordTokenResponse>
