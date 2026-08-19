@@ -486,6 +486,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/prefer-workflow-event-over-module-event",
+                      "title": "prefer-workflow-event-over-module-event",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/prices-in-major-units",
                       "title": "prices-in-major-units",
                       "description": "",
@@ -789,6 +797,22 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/auth/callback",
                   "title": "callback",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/auth/createUser",
+                  "title": "createUser",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/auth/listProviders",
+                  "title": "listProviders",
                   "description": "",
                   "children": []
                 },
@@ -1261,6 +1285,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/salesChannel",
                   "title": "salesChannel",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/search",
+                  "title": "search",
                   "description": "",
                   "children": []
                 },

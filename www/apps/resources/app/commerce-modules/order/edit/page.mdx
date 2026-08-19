@@ -61,3 +61,49 @@ When an order edit is confirmed, the order’s [version](../order-versioning/pag
 Once the order edit is confirmed, any additional payment or refund required can be made on the original order.
 
 This is determined by the comparison between the `OrderSummary` and the order's transactions, as mentioned in the [Transactions guide](../transactions/page.mdx#checking-outstanding-amount).
+
+---
+
+## Suppress Customer Notification for an Order Edit
+
+<Note>
+
+This feature is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+When requesting an order edit, you can pass `no_notification: true` to the `requestOrderEditRequestWorkflow` to indicate that the customer should not be notified about the order edit request.
+
+The value is stored on the `OrderChange` record and forwarded to the `order-edit.requested` event's payload. Subscribers that send notifications to the customer can check `no_notification` before sending:
+
+```ts title="src/subscribers/order-edit-requested.ts"
+import {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+
+export default async function orderEditRequestedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ order_id: string; no_notification?: boolean }>) {
+  if (data.no_notification) {
+    return
+  }
+
+  // send notification to the customer
+}
+
+export const config: SubscriberConfig = {
+  event: "order-edit.requested",
+}
+```
+
+Similarly, when the order edit is confirmed, the `order-edit.confirmed` event receives a `no_notification` property that reflects the value set when the edit was originally requested.
+
+When requesting an order edit through the [JS SDK](../js-sdk/page.mdx), pass `no_notification` in the request body:
+
+```ts
+await sdk.admin.orderEdit.request(orderId, {
+  no_notification: true,
+})
+```

@@ -12,7 +12,7 @@ export const TaxRegionDetailBreadcrumb = (
   const { id } = props.params || {}
 
   const { tax_region } = useTaxRegion(id!, undefined, {
-    initialData: props.data,
+    initialData: props.loaderData,
     enabled: Boolean(id),
   })
 
@@ -29,7 +29,7 @@ export const TaxRegionDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminTaxRegionResponse>) => {
-  const taxRegion = match.data?.tax_region
+  const taxRegion = match.loaderData?.tax_region
 
   return {
     title: taxRegion

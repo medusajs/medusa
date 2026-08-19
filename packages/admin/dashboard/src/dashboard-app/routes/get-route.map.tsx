@@ -7,6 +7,7 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
+import { HydrateFallback } from "../../components/utilities/hydrate-fallback"
 
 export function getRouteMap({
   settingsRoutes,
@@ -19,6 +20,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           element: <MainLayout />,
@@ -1065,6 +1067,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           path: "/settings",

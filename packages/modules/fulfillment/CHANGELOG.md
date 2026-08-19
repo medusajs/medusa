@@ -1,5 +1,14 @@
 # @medusajs/fulfillment
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16139](https://github.com/medusajs/medusa/pull/16139) [`9fa4bd9eb941a266c560b35683e8230af33a3352`](https://github.com/medusajs/medusa/commit/9fa4bd9eb941a266c560b35683e8230af33a3352) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(fulfillment, core-flows, types, utils, medusa): support custom delivery address + pass additional data to createFulfillment
+
+- Updated dependencies [[`372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30`](https://github.com/medusajs/medusa/commit/372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30), [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982)]:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

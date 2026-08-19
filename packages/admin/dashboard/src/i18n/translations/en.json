@@ -1540,6 +1540,7 @@
       "markAsDelivered": "Mark as delivered",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "locationUnavailable": "Location deleted/unavailable",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
       "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
@@ -3711,8 +3712,12 @@
   },
   "auth": {
     "login": {
+      "noProviders": "Register an auth provider in your Medusa config to be able to login",
       "authenticationFailed": "Authentication failed",
-      "cloud": "Log in with Medusa Cloud"
+      "cloud": "Log in with Medusa Cloud",
+      "continueWithProvider": "Continue with {{provider}}",
+      "or": "or",
+      "provisioningFailed": "We couldn't complete your sign in. Please contact an administrator."
     }
   },
   "permissions": {
