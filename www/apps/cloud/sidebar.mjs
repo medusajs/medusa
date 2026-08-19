@@ -351,6 +351,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Status Page",
+            path: "/status",
+          },
+          {
+            type: "link",
             title: "Notifications",
             path: "/notifications",
           },
