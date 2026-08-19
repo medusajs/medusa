@@ -466,6 +466,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Status Page",
+            "path": "/status",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Notifications",
             "path": "/notifications",
             "children": []
