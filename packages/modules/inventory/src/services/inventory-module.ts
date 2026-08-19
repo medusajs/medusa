@@ -662,12 +662,25 @@ export default class InventoryModuleService
     const availabilityData = input.map((data) => {
       const reservation = reservationMap.get(data.id)!
 
-      let adjustment = data.quantity
-        ? MathBN.sub(data.quantity, reservation.quantity)
-        : 0
+      const isLocationChange =
+        isDefined(data.location_id) &&
+        data.location_id !== reservation.location_id
 
-      if (MathBN.lt(adjustment, 0)) {
-        adjustment = 0
+      // When moving a reservation to a different location, the destination must
+      // have availability for the full reservation quantity, since it is
+      // reserved there afresh. Only same-location quantity changes reserve the
+      // delta between the new and current quantity.
+      let adjustment
+      if (isLocationChange) {
+        adjustment = data.quantity ?? reservation.quantity
+      } else {
+        adjustment = data.quantity
+          ? MathBN.sub(data.quantity, reservation.quantity)
+          : 0
+
+        if (MathBN.lt(adjustment, 0)) {
+          adjustment = 0
+        }
       }
 
       return {
