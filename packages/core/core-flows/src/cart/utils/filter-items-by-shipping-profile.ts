@@ -1,3 +1,8 @@
+/**
+ * An item that has a shipping profile linked through its variant's product.
+ *
+ * @since 2.19.1
+ */
 export type ItemWithShippingProfile = {
   variant?: {
     product?: { shipping_profile?: { id?: string } | null } | null
