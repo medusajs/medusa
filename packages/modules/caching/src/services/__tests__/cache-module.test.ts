@@ -10,12 +10,12 @@ import {
 } from "../../types"
 
 /**
- * #16474: performCacheSet/performCacheClear dispatched provider calls with
+ * performCacheSet/performCacheClear dispatched provider calls with
  * `void`, so the method resolved before the provider did anything and the
  * ongoingRequests coalescing deleted the in-flight entry almost immediately —
  * N concurrent identical operations each hit the provider, unbounded.
  */
-describe("CachingModuleService provider dispatch (#16474)", () => {
+describe("CachingModuleService provider dispatch", () => {
   const makeService = (provider: any) => {
     const container = {
       cacheProviderService: {
@@ -51,7 +51,7 @@ describe("CachingModuleService provider dispatch (#16474)", () => {
 
     // Staggered, not simultaneous: with `void` dispatch the in-flight entry
     // was deleted while the provider was still working, so the second call
-    // re-invoked the provider — the real #16474 shape (events keep arriving
+    // re-invoked the provider — the reported shape (events keep arriving
     // while a slow clear runs). With awaited dispatch the entry lives until
     // the provider finishes, so the second call coalesces.
     const first = service.clear({ tags: ["Product:list:*"] })
@@ -76,9 +76,9 @@ describe("CachingModuleService provider dispatch (#16474)", () => {
     }
     const service = makeService(provider)
 
-    const first = service.set("k", ["t"], { a: 1 })
+    const first = service.set({ key: "k", tags: ["t"], data: { a: 1 } })
     await new Promise((r) => setTimeout(r, 5)) // set still running (20ms)
-    await Promise.all([first, service.set("k", ["t"], { a: 1 })])
+    await Promise.all([first, service.set({ key: "k", tags: ["t"], data: { a: 1 } })])
 
     expect(calls).toBe(1)
   })
@@ -107,13 +107,13 @@ describe("CachingModuleService provider dispatch (#16474)", () => {
 })
 
 /**
- * #16474: the invalidation handler was registered BOTH as a wildcard
+ * The invalidation handler was registered BOTH as a wildcard
  * subscriber and as an event-bus interceptor. Interceptors run wherever an
  * event is emitted, so a workerMode: "server" process ran full invalidation
  * inline for every write it served — OOMing the API container under bulk
  * writes — and in a server/worker split every event was invalidated twice.
  */
-describe("DefaultCacheStrategy invalidation registration (#16474)", () => {
+describe("DefaultCacheStrategy invalidation registration", () => {
   it("subscribes to the wildcard but registers no interceptor", async () => {
     const subscriptions: string[] = []
     const interceptors: number[] = []

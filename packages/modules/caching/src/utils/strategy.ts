@@ -92,7 +92,7 @@ export class DefaultCacheStrategy implements ICachingStrategy {
       }
     }
 
-    // Only the wildcard subscription, no interceptor (#16474). Interceptors
+    // Only the wildcard subscription, no interceptor. Interceptors
     // run wherever an event is EMITTED: a `workerMode: "server"` process —
     // documented as not processing events — would still run full cache
     // invalidation inline for every write it serves, on top of its HTTP
