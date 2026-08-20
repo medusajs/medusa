@@ -2,6 +2,7 @@ import { Event } from "../event-bus"
 import { IModuleService } from "../modules-sdk"
 import { SearchDocument, SearchTask } from "./common"
 import { SearchFilters } from "./filters"
+import { ResolvedSearchIndexDefinition } from "./index-definition"
 import { SearchIndexMigrationAction } from "./migration"
 import { SearchQuery } from "./query"
 import { SearchResult } from "./result"
@@ -72,10 +73,11 @@ export interface ISearchModuleService extends IModuleService {
   listRetrievableFields(index: string): string[]
 
   /**
-   * The field the index' documents are keyed by, which is what a hit's `id` holds.
-   * `query.search` filters on it to hydrate the non-indexed fields.
+   * One index' definition, with the module's defaults applied — the provider it
+   * resolved to, the physical index behind it, and the `primary_key` its
+   * documents are keyed by, which is what a hit's `id` holds.
    */
-  getIndexPrimaryKey(index: string): string
+  getIndex(index: string): ResolvedSearchIndexDefinition
 
   reindex(input?: SearchReindexInput): Promise<SearchReindexResult>
 

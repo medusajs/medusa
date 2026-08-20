@@ -263,8 +263,8 @@ export default class SearchModuleService
     )
   }
 
-  getIndexPrimaryKey(index: string): string {
-    return retrieveIndexDefinition(this.indexes_, index).primary_key
+  getIndex(index: string): SearchTypes.ResolvedSearchIndexDefinition {
+    return retrieveIndexDefinition(this.indexes_, index)
   }
 
   async reindex(

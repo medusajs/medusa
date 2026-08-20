@@ -229,7 +229,7 @@ export class Query {
       // A hit is identified by the index' primary key, and the fetched rows are
       // merged back onto the documents by it, so it has to be both filtered on
       // and selected — whether or not the caller asked for it.
-      const primaryKey = this.#searchModule.getIndexPrimaryKey(entity)
+      const { primary_key: primaryKey } = this.#searchModule.getIndex(entity)
       const hydrationFields = graphFields.includes(primaryKey)
         ? graphFields
         : [...graphFields, primaryKey]
