@@ -61,6 +61,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Cloud Assistant",
+            "path": "/assistant",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Changelog",
             "path": "/changelog",
             "children": []
@@ -105,6 +112,13 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Log Drains",
+                "path": "/projects/log-drains",
                 "children": []
               }
             ]
