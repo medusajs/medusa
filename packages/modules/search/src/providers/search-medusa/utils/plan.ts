@@ -174,11 +174,15 @@ export function buildIndexPlan(
         searchable.push(path)
       }
 
-      if (
-        configured.glob !== undefined ||
-        (indexed && (field.type === "keyword" || field.type === "text"))
-      ) {
-        attribute.glob = configured.glob ?? true
+      // Glob is an exact-string wildcard index. Keywords that are
+      // filtered/sorted/faceted get it by default; text fields only if
+      // opted in. `id` is the Cloud document key and cannot carry one.
+      if (path !== "id") {
+        if (configured.glob !== undefined) {
+          attribute.glob = configured.glob
+        } else if (indexed && field.type === "keyword") {
+          attribute.glob = true
+        }
       }
       if (configured.regex !== undefined) {
         attribute.regex = configured.regex

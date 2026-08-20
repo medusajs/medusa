@@ -47,14 +47,73 @@ describe("Medusa search utilities", () => {
 
   it("builds an explicit search schema", () => {
     expect(plan.schema).toMatchObject({
-      id: { type: "string", filterable: true, glob: true },
+      id: { type: "string", filterable: true },
       title: { type: "string", full_text_search: true },
+      status: { type: "string", filterable: true, glob: true },
       price: { type: "float", filterable: true },
-      tags: { type: "[]string", filterable: true },
+      tags: { type: "[]string", filterable: true, glob: true },
       created_at: { type: "datetime", filterable: true },
-      "variants.sku": { type: "[]string", filterable: true },
+      "variants.sku": { type: "[]string", filterable: true, glob: true },
       embedding: { type: "[3]f32", ann: true },
     })
+    expect(plan.schema.id).not.toHaveProperty("glob")
+    expect(plan.schema.title).not.toHaveProperty("glob")
+  })
+
+  it("does not put glob on text fields unless they opt in", () => {
+    const filterableText = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        title: { type: "text", searchable: true, filterable: true, sortable: true },
+      },
+    })
+    expect(filterableText.schema.title).not.toHaveProperty("glob")
+
+    const optedIn = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        title: {
+          type: "text",
+          searchable: true,
+          provider_options: { "search-medusa": { glob: true } },
+        },
+      },
+    })
+    expect(optedIn.schema.title).toMatchObject({ glob: true })
+  })
+
+  it("skips glob on the document id even when requested", () => {
+    const withGlob = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        id: {
+          type: "keyword",
+          filterable: true,
+          provider_options: { "search-medusa": { glob: true } },
+        },
+      },
+    })
+
+    expect(withGlob.schema.id).not.toHaveProperty("glob")
+  })
+
+  it("lets a field opt out of glob", () => {
+    const withoutGlob = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        status: {
+          type: "keyword",
+          filterable: true,
+          provider_options: { "search-medusa": { glob: false } },
+        },
+      },
+    })
+
+    expect(withoutGlob.schema.status).toMatchObject({ glob: false })
   })
 
   it("flattens documents and restores projected nested fields", () => {
