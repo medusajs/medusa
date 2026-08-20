@@ -36,3 +36,24 @@ export const toSnake = (input: string): string =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "")
+
+/**
+ * Mirrors the exact transform Medusa's `DmlEntity` constructor applies to the
+ * string passed to `model.define(name, ...)` to produce the model's runtime
+ * `.name` (`upperCaseFirst(toCamelCase(name))` in
+ * `packages/core/utils/src/dml/entity.ts` and
+ * `packages/core/utils/src/common/to-camel-case.ts`) — the PascalCase name
+ * that `MedusaService`'s generated method names are keyed on. Used to check
+ * that a `MedusaService({ Key: Model })` key agrees with it.
+ */
+export const dmlNameToServiceKey = (input: string): string => {
+  const alreadyCamel = /^([a-zA-Z][a-zA-Z0-9]*)(([A-Z][a-z0-9]+)+)$/.test(
+    input
+  )
+  const camel = alreadyCamel
+    ? input
+    : input
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr: string) => chr.toUpperCase())
+  return camel.charAt(0).toUpperCase() + camel.slice(1)
+}

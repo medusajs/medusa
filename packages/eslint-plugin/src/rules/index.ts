@@ -43,6 +43,7 @@ import { rule as scheduledJobDefaultExportRequired } from "./scheduled-job-defau
 import { rule as scheduledJobNameUnique } from "./scheduled-job-name-unique"
 import { rule as scheduledJobScheduleValidCron } from "./scheduled-job-schedule-valid-cron"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
+import { rule as serviceKeysMatchDataModelNames } from "./service-keys-match-data-model-names"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 import { rule as useMedusaErrorNotGenericError } from "./use-medusa-error-not-generic-error"
@@ -115,6 +116,7 @@ export const rules = {
   "scheduled-job-name-unique": scheduledJobNameUnique,
   "scheduled-job-schedule-valid-cron": scheduledJobScheduleValidCron,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
+  "service-keys-match-data-model-names": serviceKeysMatchDataModelNames,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
   "use-medusa-error-not-generic-error": useMedusaErrorNotGenericError,
