@@ -1344,6 +1344,177 @@ moduleIntegrationTestRunner<IOrderModuleService>({
       })
 
       describe("setShippingMethodAdjustments", () => {
+        it("should list projected shipping method adjustments", async () => {
+          const [createdOrder] = await service.createOrders([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [shippingMethod] = await service.createOrderShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
+
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [
+            {
+              shipping_method_id: shippingMethod.id,
+              amount: 100,
+              code: "FREE",
+            },
+          ])
+
+          const [order] = await service.listOrders(
+            { id: [createdOrder.id] },
+            {
+              select: ["id"],
+              relations: ["shipping_methods.adjustments"],
+            }
+          )
+
+          expect(order.shipping_methods).toEqual([
+            expect.objectContaining({
+              id: shippingMethod.id,
+              adjustments: [
+                expect.objectContaining({
+                  amount: 100,
+                  code: "FREE",
+                }),
+              ],
+            }),
+          ])
+        })
+
+        it("should list and count projected shipping method adjustments", async () => {
+          const [createdOrder] = await service.createOrders([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [shippingMethod] = await service.createOrderShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
+
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [
+            {
+              shipping_method_id: shippingMethod.id,
+              amount: 100,
+              code: "FREE",
+            },
+          ])
+
+          const [[order], count] = await service.listAndCountOrders(
+            { id: [createdOrder.id] },
+            {
+              select: ["id"],
+              relations: ["shipping_methods.adjustments"],
+            }
+          )
+
+          expect(count).toBe(1)
+          expect(order.shipping_methods).toEqual([
+            expect.objectContaining({
+              id: shippingMethod.id,
+              adjustments: [
+                expect.objectContaining({
+                  amount: 100,
+                  code: "FREE",
+                }),
+              ],
+            }),
+          ])
+        })
+
+        it("should return no projected adjustments when none exist", async () => {
+          const [createdOrder] = await service.createOrders([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [shippingMethod] = await service.createOrderShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
+
+          const [order] = await service.listOrders(
+            { id: [createdOrder.id] },
+            {
+              select: ["id"],
+              relations: ["shipping_methods.adjustments"],
+            }
+          )
+
+          expect(order.shipping_methods).toEqual([
+            expect.objectContaining({
+              id: shippingMethod.id,
+              adjustments: [],
+            }),
+          ])
+        })
+
+        it("should load adjustments with a selected version or no projection", async () => {
+          const [createdOrder] = await service.createOrders([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [shippingMethod] = await service.createOrderShippingMethods(
+            createdOrder.id,
+            [
+              {
+                amount: 100,
+                name: "test",
+              },
+            ]
+          )
+
+          await service.setOrderShippingMethodAdjustments(createdOrder.id, [
+            {
+              shipping_method_id: shippingMethod.id,
+              amount: 100,
+              code: "FREE",
+            },
+          ])
+
+          const [projectedOrder] = await service.listOrders(
+            { id: [createdOrder.id] },
+            {
+              select: ["id", "shipping_methods.version"],
+              relations: ["shipping_methods.adjustments"],
+            }
+          )
+          const [unprojectedOrder] = await service.listOrders(
+            { id: [createdOrder.id] },
+            { relations: ["shipping_methods.adjustments"] }
+          )
+
+          expect(projectedOrder.shipping_methods?.[0].adjustments).toHaveLength(
+            1
+          )
+          expect(
+            unprojectedOrder.shipping_methods?.[0].adjustments
+          ).toHaveLength(1)
+        })
+
         it("should set shipping method adjustments for an order", async () => {
           const [createdOrder] = await service.createOrders([
             {
