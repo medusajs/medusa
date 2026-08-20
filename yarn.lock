@@ -3418,6 +3418,7 @@ __metadata:
     "@types/qrcode": ^1.5.5
     "@typescript/native-preview": ^7.0.0-dev.20260423.1
     "@uiw/react-json-view": ^2.0.0-alpha.17
+    bignumber.js: ^9.1.2
     cmdk: ^0.2.0
     copy-to-clipboard: ^3.3.3
     date-fns: ^3.6.0

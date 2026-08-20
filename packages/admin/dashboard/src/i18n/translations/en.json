@@ -974,6 +974,8 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "quantityAcrossLocations": "{{quantity}} across {{locations}} locations",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "The unit stock is held and counted in. Shown next to quantities across the Admin.",
     "levelDeleted": "Inventory level deleted successfully.",
     "create": {
       "title": "Create Inventory Item",
@@ -3673,6 +3675,7 @@
     "barcode": "Barcode",
     "countryOfOrigin": "Country of origin",
     "material": "Material",
+    "unitOfMeasure": "Unit of measure",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
