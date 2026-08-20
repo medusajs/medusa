@@ -18,7 +18,6 @@ export interface EntityReference {
 export interface InvalidationEvent {
   entityType: string
   entityId: string | number
-  relatedEntities: EntityReference[]
   cacheKeys: string[]
 }
 
@@ -225,16 +224,11 @@ export class CacheInvalidationParser {
       }
       processedEntities.add(entityKey)
 
-      const relatedEntities = entities.filter(
-        (e) => e.type !== entity.type || e.id !== entity.id
-      )
-
       const affectedKeys = this.buildAffectedCacheKeys(entity, operation)
 
       events.push({
         entityType: entity.type,
         entityId: entity.id,
-        relatedEntities,
         cacheKeys: affectedKeys,
       })
     })

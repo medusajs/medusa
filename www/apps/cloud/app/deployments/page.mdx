@@ -1,4 +1,4 @@
-import { Table, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Note, Table, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -360,6 +360,12 @@ If a deployment's status is "Deploy failed", you can:
 - Check the [runtime logs](../logs/page.mdx) to understand why it failed. The runtime logs will show you the errors that occurred during the deployment process, which can help you fix the issue in your code.
 - Use the [Cloud CLI](../cli/commands/logs/page.mdx) to stream the deployment logs and identify the issue. This is useful when debugging the issue with your AI agent.
 - Contact support for help with the issue, if necessary.
+
+<Note>
+
+If the logs don't show a cause related to your application, [check the Cloud status page](../status/page.mdx) for ongoing Cloud incidents. If the **Build & Deploy** service isn't operational, wait for Cloud to resolve the incident, then [redeploy the deployment](#redeploy-a-deployment).
+
+</Note>
 
 ---
 

@@ -2,8 +2,8 @@ export type SearchFilterValue = string | number | boolean | Date | null
 
 /**
  * A tree rather than a string, because no two engines agree on a filter syntax —
- * Meilisearch, Typesense and Algolia each have their own DSL, Turbopuffer and
- * Elasticsearch take JSON. A tree compiles to all of them.
+ * Meilisearch, Typesense and Algolia each have their own DSL; engines that take
+ * JSON filters compile from the same tree. A tree compiles to all of them.
  *
  * `$prefix` and `$like` are not universal — Meilisearch has no substring filter
  * at all — so a provider without them rejects them.
