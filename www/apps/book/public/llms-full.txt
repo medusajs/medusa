@@ -15752,6 +15752,8 @@ To emit a service event:
 
 1. Resolve `event_bus` from the module's container in your service's constructor:
 
+The Event Module's service (`event_bus`) is available in every module's container by default. You don't need to add it to `dependencies` in `medusa-config.ts`.
+
 ### Extending Service Factory
 
 ```ts title="src/modules/blog/service.ts"
@@ -15807,59 +15809,6 @@ The method accepts an object having the following properties:
 
 - `name`: The event's name.
 - `data`: The data payload as an object. You can pass any properties in the object, and subscribers listening to the event will receive this data in the event's payload.
-
-3. By default, the Event Module's service isn't injected into your module's container. To add it to the container, pass it in the module's registration object in `medusa-config.ts` in the `dependencies` property:
-
-### Module Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "./src/modules/blog",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-    },
-  ],
-})
-```
-
-### Module Provider Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "@medusajs/medusa/payment",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-      options: {
-        providers: [
-          {
-            resolve: "./src/modules/my-provider",
-            id: "my-provider",
-            options: {
-              // ...
-            },
-          },
-        ],
-      },
-    },
-  ],
-})
-```
-
-The `dependencies` property accepts an array of module registration keys. The specified modules' main services are injected into the module's container.
-
-If a module has providers, the dependencies are also injected into the providers' containers.
 
 ### Test it Out
 
@@ -22411,13 +22360,14 @@ In the `createBrandsInCmsStep`, you resolve the CMS Module's service from the mo
 ### Injecting Dependencies to Module
 
 Some cases still require you to access external resources, mainly [Infrastructure Modules](undefined/resources/infrastructure-modules) or Framework tools, in your module.
-For example, you may need the [Event Module](undefined/resources/infrastructure-modules/event) to emit events from your module's service.
 
-In those cases, you can inject the dependencies to your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
+The following services are available in every module's container by default, without any `dependencies` declaration: `logger`, `event_bus`, `manager`, `configModule`, and `pgConnection`. Refer to the [Module Container Resources](undefined/resources/medusa-container-resources) for the full list.
+
+For other Infrastructure Modules not in the default set, you can inject them into your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
 
 Use this approach only when absolutely necessary, where workflows aren't sufficient for your use case. By injecting dependencies, you risk breaking your module if the dependency isn't provided, or if the dependency's API changes.
 
-For example:
+For example, to inject the Analytics Module:
 
 ```ts title="medusa-config.ts"
 import { Modules } from "@medusajs/framework/utils"
@@ -22428,36 +22378,37 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/blog",
       dependencies: [
-        Modules.EVENT_BUS,
+        Modules.ANALYTICS,
       ],
     },
   ],
 })
 ```
 
-In this example, you inject the Event Module's service to your module's container.
+In this example, you inject the Analytics Module's service into your module's container.
 
 Only the main service will be injected into the module's container.
 
-You can then use the Event Module's service in your module's service:
+You can then use the Analytics Module's service in your module's service:
 
 ```ts title="Example Service"
-class BlogModuleService {
-  protected eventBusService_: AbstractEventBusModuleService
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
 
-  constructor({ event_bus }) {
-    this.eventBusService_ = event_bus
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
   }
 
   performAction() {
     // TODO perform action
 
-    this.eventBusService_.emit({
-      name: "custom.event",
-      data: {
-        id: "123",
-        // other data payload
-      },
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe"
+      }
     })
   }
 }
