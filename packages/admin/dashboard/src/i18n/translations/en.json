@@ -2746,6 +2746,9 @@
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
+    "copyResetPasswordLink": "Copy reset password link",
+    "copyResetPasswordLinkSuccess": "Reset password link copied to clipboard",
+    "copyResetPasswordLinkHint": "The link expires shortly and invalidates any reset password link previously sent to this user.",
     "expiredOnDate": "Expired on {{date}}",
     "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Accepted on {{date}}",
@@ -3394,6 +3397,26 @@
         "dormant": "Dormant",
         "timeout": "Timeout"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Search",
+    "subtitle": "View registered search indexes and rebuild them from source data.",
+    "fieldsLabel": "Indexed fields",
+    "providerLabel": "Provider",
+    "reindex": "Reindex",
+    "reindexConfirmationTitle": "Reindex {{name}}?",
+    "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
+    "reindexSuccess": "Reindexed {{name}}",
+    "noFields": "No fields are indexed.",
+    "list": {
+      "noRecordsMessage": "No search indexes are registered."
+    },
+    "status": {
+      "pending": "Pending",
+      "building": "Building",
+      "ready": "Ready",
+      "error": "Error"
     }
   },
   "shippingOptionTypes": {

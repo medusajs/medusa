@@ -5,9 +5,17 @@ import { Query } from "../query"
 // have to be fetched through graph.
 const RETRIEVABLE = ["id", "title", "min_price"]
 
-function createSearchModule(hits: { id: string; document: any }[]) {
+function createSearchModule(
+  hits: { id: string; document: any }[],
+  index: { primary_key?: string; retrievable?: string[] } = {}
+) {
   return {
-    listRetrievableFields: jest.fn().mockReturnValue(RETRIEVABLE),
+    listRetrievableFields: jest
+      .fn()
+      .mockReturnValue(index.retrievable ?? RETRIEVABLE),
+    getIndex: jest
+      .fn()
+      .mockReturnValue({ primary_key: index.primary_key ?? "id" }),
     search: jest.fn().mockResolvedValue({
       hits,
       metadata: { skip: 0, take: 20, count: hits.length },
@@ -95,12 +103,42 @@ describe("Query.search", () => {
       expect.objectContaining({ fields: ["id", "title"] })
     )
 
-    // ...and the rest is fetched by id.
+    // ...and the rest is fetched by id. The primary key rides along even though
+    // the engine already returned it: without it the fetched rows cannot be
+    // merged back onto the documents they belong to.
     expect(graph).toHaveBeenCalledWith(
       expect.objectContaining({
         entity: "product",
-        fields: ["description", "variants.sku"],
+        fields: ["description", "variants.sku", "id"],
         filters: { id: ["prod_1"] },
+      }),
+      expect.anything()
+    )
+  })
+
+  it("hydrates on the index' own primary key", async () => {
+    // An index keyed by handle identifies its hits by handle, so that is what
+    // the hydration has to filter and select.
+    const searchModule = createSearchModule(
+      [
+        {
+          id: "red-shoe",
+          document: { handle: "red-shoe", title: "Red shoe" },
+        },
+      ],
+      { primary_key: "handle", retrievable: ["handle", "title"] }
+    )
+    const { query, graph } = createQueryInstance(searchModule)
+
+    await query.search({
+      entity: "product",
+      fields: ["handle", "title", "description"],
+    })
+
+    expect(graph).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fields: ["description", "handle"],
+        filters: { handle: ["red-shoe"] },
       }),
       expect.anything()
     )

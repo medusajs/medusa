@@ -226,11 +226,21 @@ export class Query {
     let data = searchResult.hits.map((hit) => hit.document) as any[]
 
     if (graphFields.length && data.length) {
+      // A hit is identified by the index' primary key, and the fetched rows are
+      // merged back onto the documents by it, so it has to be both filtered on
+      // and selected — whether or not the caller asked for it.
+      const { primary_key: primaryKey } = this.#searchModule.getIndex(entity)
+      const hydrationFields = graphFields.includes(primaryKey)
+        ? graphFields
+        : [...graphFields, primaryKey]
+
       const expanded = await this.graph(
         {
           entity,
-          fields: graphFields,
-          filters: { id: searchResult.hits.map((hit) => hit.id) } as any,
+          fields: hydrationFields,
+          filters: {
+            [primaryKey]: searchResult.hits.map((hit) => hit.id),
+          } as any,
           // `take` forces the select-in strategy, as in `index`.
           pagination: { take: searchResult.hits.length },
         } as RemoteQueryInput<TEntry>,
