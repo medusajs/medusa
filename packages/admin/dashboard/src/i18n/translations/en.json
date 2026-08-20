@@ -157,7 +157,8 @@
     "import": "Import",
     "cannotUndo": "This action cannot be undone",
     "manage": "Manage",
-    "goToProductOption": "Go to product option"
+    "goToProductOption": "Go to product option",
+    "update": "Update"
   },
   "operators": {
     "in": "In"
@@ -1669,7 +1670,9 @@
         "update_order": {
           "shipping_address": "Shipping address updated",
           "billing_address": "Billing address updated",
-          "email": "Email updated"
+          "email": "Email updated",
+          "customer_id": "Customer updated",
+          "sales_channel_id": "Sales channel updated"
         }
       }
     },
@@ -1714,7 +1717,16 @@
       "shippingPriceOverrideLabel": "Shipping price override",
       "shippingPriceOverrideHint": "Override the shipping price for the draft order.",
       "sendNotificationLabel": "Send notification",
-      "sendNotificationHint": "Send a notification to the customer when the draft order is created."
+      "sendNotificationHint": "Send a notification to the customer when the draft order is created.",
+      "chooseSalesChannelHint": "Choose sales channel",
+      "emailHint": "Input an email to associate with the order",
+      "emailDisabledTooltip": "You cannot change the email when a customer is selected",
+      "chooseExistingCustomerHint": "Choose an existing customer",
+      "shippingAddressHint": "Address used for shipping",
+      "billingAddressHint": "Address used for billing",
+      "sameAsShippingHint": "Use the same address for billing and shipping",
+      "savedAddressesLabel": "Saved addresses",
+      "savedAddressesHint": "Choose one of the customer's saved addresses."
     },
     "list": {
       "noRecordsMessage": "No draft orders found",
@@ -1728,6 +1740,120 @@
       "requiredEmailOrCustomer": "Email or customer is required.",
       "requiredItems": "At least one item is required.",
       "invalidEmail": "Email must be a valid email address."
+    },
+    "sidebarLabel": "Drafts",
+    "deleteAction": "Delete draft order",
+    "loading": "Loading data for the draft order, please wait...",
+    "details": {
+      "heading": "Draft Order #{{displayId}}"
+    },
+    "placeholders": {
+      "selectRegion": "Select region",
+      "selectSalesChannel": "Select sales channel",
+      "selectCustomer": "Select customer",
+      "selectShippingAddress": "Select shipping address",
+      "selectBillingAddress": "Select billing address",
+      "selectLocation": "Select location",
+      "selectShippingOption": "Select shipping option"
+    },
+    "email": {
+      "editHint": "Edit the email for the draft order"
+    },
+    "salesChannel": {
+      "editHint": "Update which sales channel the draft order is associated with"
+    },
+    "shippingAddress": {
+      "editHint": "Edit the shipping address for the draft order"
+    },
+    "billingAddress": {
+      "editHint": "Edit the billing address for the draft order"
+    },
+    "customItems": {
+      "editHeader": "Edit Custom Items"
+    },
+    "transferOwnership": {
+      "hint": "Transfer the ownership of this draft order to a new customer"
+    },
+    "promotions": {
+      "editHeader": "Edit Promotions",
+      "applyLabel": "Apply promotions",
+      "applyHint": "Manage promotions that should be applied to the order."
+    },
+    "summary": {
+      "total": "Total",
+      "editItemsAction": "Edit items",
+      "editPromotionsAction": "Edit promotions",
+      "convertToOrderAction": "Convert to order",
+      "convertWarning": "You are about to convert this draft order to an order. This action cannot be undone.",
+      "convertSuccess": "Draft order converted to order"
+    },
+    "edit": {
+      "pendingTitle": "Edit pending",
+      "pendingDescriptionNoChanges": "There is a pending edit on this draft order with no changes. Click below to cancel it, or open one of the menus to start making changes.",
+      "pendingDescriptionWithChanges": "There is a pending edit on this draft order with changes. Click below to cancel it, or continue to complete the edit.",
+      "cancelSuccess": "Edit cancelled"
+    },
+    "activity": {
+      "transferredLabel": "Transferred",
+      "transferredContent": "Draft order transferred",
+      "createdContent": "Draft order created",
+      "shippingMethodCount_one": "{{count}} shipping method",
+      "shippingMethodCount_other": "{{count}} shipping methods",
+      "promotionCount_one": "{{count}} promotion",
+      "promotionCount_other": "{{count}} promotions",
+      "added": "Added {{added}}",
+      "removed": "Removed {{removed}}",
+      "addedAndRemoved": "Added {{added}}, removed {{removed}}",
+      "labels": {
+        "itemsAdded": "Items added",
+        "itemsRemoved": "Items removed",
+        "itemsUpdated": "Items updated",
+        "shippingAdded": "Shipping methods added",
+        "shippingRemoved": "Shipping methods removed",
+        "shippingUpdated": "Shipping methods updated",
+        "promotionsAdded": "Promotions added",
+        "promotionsRemoved": "Promotions removed",
+        "promotionsUpdated": "Promotions updated"
+      }
+    },
+    "items": {
+      "editHeader": "Edit Items",
+      "editHint": "Edit the items in the draft order",
+      "chooseItemsHint": "Choose items from the product catalog.",
+      "emptyHeading": "There are no items in this order",
+      "emptyDescription": "Add items to the order to get started.",
+      "noResultsHeading": "No items found",
+      "noResultsDescription": "No items found for \"{{query}}\".",
+      "updateItemsAction": "Update items",
+      "chooseVariantsHint": "Choose product variants to add to the order.",
+      "addCustomItemHint": "Add a custom item to the order. This will add a new line item that is not associated with an existing product.",
+      "customItemTitleHint": "Enter the title of the item",
+      "customItemUnitPriceHint": "Enter the unit price of the item",
+      "customItemQuantityHint": "Enter the quantity of the item",
+      "addItemAction": "Add item"
+    },
+    "shipping": {
+      "editHeader": "Edit Shipping",
+      "editHint": "Choose which shipping method(s) to use for the items in the order.",
+      "noItemsHint": "This draft order currently has no items. Add items to the order before adding shipping.",
+      "actionColumn": "Action",
+      "editOptionAction": "Edit shipping option",
+      "removeOptionAction": "Remove shipping option",
+      "addOptionAction": "Add shipping option",
+      "addMethodHint": "Add a shipping method for the selected shipping profile. You can see the items that will be shipped using this method in the preview below.",
+      "itemsToShipLabel": "Items to ship",
+      "itemsToShipHint": "Items with the selected shipping profile.",
+      "noItemsForProfile": "There are no items with the selected shipping profile.",
+      "chooseLocationHint": "Choose where you want to ship the items from.",
+      "chooseLocationAndProfileFirst": "Choose a location and shipping profile first.",
+      "chooseLocationFirst": "Choose a location first.",
+      "chooseProfileFirst": "Choose a shipping profile first.",
+      "customAmountLabel": "Custom amount",
+      "customAmountHint": "Set a custom amount for the shipping option.",
+      "editAction": "Edit shipping",
+      "addAction": "Add shipping",
+      "quantityTimesItems_one": "{{quantity}}x item",
+      "quantityTimesItems_other": "{{quantity}}x items"
     }
   },
   "stockLocations": {

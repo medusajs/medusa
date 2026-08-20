@@ -1,6 +1,7 @@
 import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Avatar, Container, Copy, Heading, Text } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import {
   getFormattedAddress,
@@ -25,15 +26,17 @@ export const CustomerSection = ({ order }: CustomerSectionProps) => {
 }
 
 const Header = () => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex items-center justify-between px-6 py-4 gap-2">
-      <Heading level="h2">Customer</Heading>
+      <Heading level="h2">{t("fields.customer")}</Heading>
       <ActionMenu
         groups={[
           {
             actions: [
               {
-                label: "Transfer ownership",
+                label: t("transferOwnership.label"),
                 to: "transfer-ownership",
                 icon: <ArrowPath />,
               },
@@ -42,12 +45,12 @@ const Header = () => {
           {
             actions: [
               {
-                label: "Edit shipping address",
+                label: t("orders.customer.editShippingAddress"),
                 to: "shipping-address",
                 icon: <FlyingBox />,
               },
               {
-                label: "Edit billing address",
+                label: t("orders.customer.editBillingAddress"),
                 to: "billing-address",
                 icon: <CurrencyDollar />,
               },
@@ -56,7 +59,7 @@ const Header = () => {
           {
             actions: [
               {
-                label: "Edit email",
+                label: t("orders.customer.editEmail"),
                 to: `email`,
                 icon: <Envelope />,
               },
@@ -69,6 +72,7 @@ const Header = () => {
 }
 
 const ID = ({ order }: CustomerSectionProps) => {
+  const { t } = useTranslation()
   const id = order.customer_id
   const name = getOrderCustomer(order)
   const email = order.email
@@ -77,7 +81,7 @@ const ID = ({ order }: CustomerSectionProps) => {
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
       <Text size="small" leading="compact" weight="plus">
-        ID
+        {t("fields.id")}
       </Text>
       <Link
         to={`/customers/${id}`}
@@ -101,13 +105,14 @@ const ID = ({ order }: CustomerSectionProps) => {
 }
 
 const Contact = ({ order }: CustomerSectionProps) => {
+  const { t } = useTranslation()
   const phone = order.shipping_address?.phone || order.billing_address?.phone
   const email = order.email || ""
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
       <Text size="small" leading="compact" weight="plus">
-        Contact
+        {t("addresses.contactHeading")}
       </Text>
       <div className="flex flex-col gap-y-2">
         <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
@@ -152,10 +157,14 @@ const AddressPrint = ({
     | HttpTypes.AdminOrder["billing_address"]
   type: "shipping" | "billing"
 }) => {
+  const { t } = useTranslation()
+
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
       <Text size="small" leading="compact" weight="plus">
-        {type === "shipping" ? "Shipping address" : "Billing address"}
+        {type === "shipping"
+          ? t("addresses.shippingAddress.label")
+          : t("addresses.billingAddress.label")}
       </Text>
       {address ? (
         <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
@@ -186,6 +195,8 @@ const AddressPrint = ({
 }
 
 const Addresses = ({ order }: CustomerSectionProps) => {
+  const { t } = useTranslation()
+
   return (
     <div className="divide-y">
       <AddressPrint address={order.shipping_address} type="shipping" />
@@ -199,10 +210,10 @@ const Addresses = ({ order }: CustomerSectionProps) => {
             weight="plus"
             className="text-ui-fg-subtle"
           >
-            Billing address
+            {t("addresses.billingAddress.label")}
           </Text>
           <Text size="small" leading="compact" className="text-ui-fg-muted">
-            Same as shipping address
+            {t("addresses.billingAddress.sameAsShipping")}
           </Text>
         </div>
       )}

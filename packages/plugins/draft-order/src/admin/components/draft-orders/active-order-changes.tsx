@@ -1,5 +1,6 @@
 import { ExclamationCircleSolid } from "@medusajs/icons"
 import { Button, Container, Divider, Heading, Text, toast } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { useLocation } from "react-router-dom"
 import { useDraftOrderCancelEdit } from "../../hooks/api/draft-orders"
 import { useOrderPreview } from "../../hooks/api/orders"
@@ -10,6 +11,7 @@ interface ActiveOrderChangeProps {
 }
 
 export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
+  const { t } = useTranslation()
   const { order: preview } = useOrderPreview(orderId)
   const location = useLocation()
 
@@ -29,7 +31,7 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
         toast.error(e.message)
       },
       onSuccess: () => {
-        toast.success("Edit cancelled")
+        toast.success(t("draftOrders.edit.cancelSuccess"))
       },
     })
   }
@@ -48,14 +50,14 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
       <Container className="p-0 overflow-hidden">
         <div className="px-6 py-4 flex items-center gap-x-2">
           <ExclamationCircleSolid className="text-ui-fg-interactive" />
-          <Heading>Edit pending</Heading>
+          <Heading>{t("draftOrders.edit.pendingTitle")}</Heading>
         </div>
         <Divider variant="dashed" />
         <div className="px-6 py-4">
           <Text className="text-pretty">
             {noActions
-              ? "There is a pending edit on this draft order with no changes. Click below to cancel it, or open one of the menus to start making changes."
-              : "There is a pending edit on this draft order with changes. Click below to cancel it, or continue to complete the edit."}
+              ? t("draftOrders.edit.pendingDescriptionNoChanges")
+              : t("draftOrders.edit.pendingDescriptionWithChanges")}
           </Text>
         </div>
         <Divider variant="dashed" />
@@ -67,7 +69,7 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
               isLoading={isMutating}
               onClick={onCancel}
             >
-              Continue
+              {t("actions.continue")}
             </Button>
           )}
           <Button
@@ -76,7 +78,7 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
             isLoading={isMutating}
             onClick={onCancel}
           >
-            Cancel
+            {t("actions.cancel")}
           </Button>
         </div>
       </Container>
