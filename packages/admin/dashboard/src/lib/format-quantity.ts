@@ -34,6 +34,10 @@ export const formatQuantity = (
     typeof rawQuantity === "string" ? parseFloat(rawQuantity) : rawQuantity
   )!
 
+  if (isNaN(quantity)) {
+    return "-"
+  }
+
   const formatted = quantityFormatter.format(quantity!)
 
   return unitOfMeasure ? `${formatted} ${unitOfMeasure}` : formatted
