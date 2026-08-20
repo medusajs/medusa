@@ -6256,7 +6256,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/product-builder/page.mdx": "2026-07-28T05:43:12.292Z",
   "app/integrations/guides/payload/page.mdx": "2026-06-04T06:32:27.301Z",
   "references/js_sdk/admin/Client/methods/js_sdk.admin.Client.getToken/page.mdx": "2025-08-14T12:59:55.678Z",
-  "app/commerce-modules/order/draft-orders/page.mdx": "2026-07-23T17:19:14.613Z",
+  "app/commerce-modules/order/draft-orders/page.mdx": "2026-08-20T19:29:39.936Z",
   "app/troubleshooting/scheduled-job-not-running/page.mdx": "2025-12-04T14:15:34.338Z",
   "app/troubleshooting/pnpm/page.mdx": "2026-03-16T14:36:54.157Z",
   "app/how-to-tutorials/tutorials/product-feed/page.mdx": "2026-01-12T12:22:16.122Z",
