@@ -3,6 +3,7 @@ import { builtinModules } from "node:module"
 import path from "path"
 import type { UserConfig } from "vite"
 import { clearPluginBuild } from "../plugins/clear-plugin-build"
+import { getAdminTsConfigAliases } from "../utils/tsconfig-aliases"
 
 interface PluginOptions {
   root: string
@@ -39,6 +40,21 @@ export async function plugin(options: PluginOptions) {
   )
 
   /**
+   * TypeScript path aliases (e.g. "@/components") are only known to the
+   * TypeScript compiler, so they have to be forwarded to Vite as
+   * "resolve.alias" entries. Otherwise Rollup treats them as bare package
+   * specifiers and fails to resolve them.
+   */
+  const aliases = getAdminTsConfigAliases(options.root)
+  const matchesAlias = (id: string) => {
+    return aliases.some(({ find }) => {
+      return typeof find === "string"
+        ? id === find || id.startsWith(`${find}/`)
+        : find.test(id)
+    })
+  }
+
+  /**
    * We need to ensure that the NODE_ENV is set to production,
    * otherwise Vite will build the dev version of React.
    */
@@ -66,6 +82,15 @@ export async function plugin(options: PluginOptions) {
       outDir,
       rollupOptions: {
         external: (id, importer) => {
+          /**
+           * Aliased imports are always part of the plugin source, so they must
+           * never be externalized. Rollup consults "external" before the alias
+           * plugin gets a chance to resolve the import.
+           */
+          if (matchesAlias(id)) {
+            return false
+          }
+
           // If there's no importer, it's a direct dependency
           // Keep the existing external behavior
           if (!importer) {
@@ -103,6 +128,7 @@ export async function plugin(options: PluginOptions) {
         },
       },
     },
+    ...(aliases.length ? { resolve: { alias: aliases } } : {}),
     plugins: [
       react(),
       medusa({
