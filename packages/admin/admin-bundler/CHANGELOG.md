@@ -1,5 +1,24 @@
 # @medusajs/admin-bundler
 
+## 2.19.0
+
+### Minor Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(admin-bundler): upgrade to vite 7
+
+  Upgrades the admin build toolchain to Vite 7.3.6, `@vitejs/plugin-react` 5, and esbuild 0.27.
+
+  **Breaking:** the admin dashboard's supported browsers narrow to **Chrome ≥107, Edge ≥107, Firefox ≥104 and Safari ≥16** (previously 87 / 88 / 78 / 14). Vite 7 changed the default `build.target` from `modules` to `baseline-widely-available`; the bundler now pins that value explicitly so future Vite majors cannot move it silently. Override it via `admin.vite` → `build.target` if you need the old floor.
+
+  **Breaking:** the `admin.vite(config)` hook now receives a Vite 7 `InlineConfig`. `build.target: 'modules'` is no longer valid, `splitVendorChunkPlugin` has been removed, and `resolve.conditions` defaults have changed. If you install `vite` directly for typing, upgrade it to 7.x.
+
+### Patch Changes
+
+- Updated dependencies [[`60346987f74cc606d6864df765e7d4b007def3fe`](undefined), [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c), [`8f03b13a6137047ce36f61a9bb033879395f9345`](undefined), [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](undefined), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7), [`438271818d8a3d10470fe838a6ac5c994019620c`](undefined), [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](undefined), [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982)]:
+  - @medusajs/dashboard@2.19.0
+  - @medusajs/admin-shared@2.19.0
+  - @medusajs/admin-vite-plugin@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

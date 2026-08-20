@@ -5,8 +5,12 @@
   ],
   "include": ["../../../../packages/design-system/ui/src"],
   "exclude": [
-    "../../../../packages/design-system/ui/dist", 
-    "../../../../packages/design-system/ui/node_modules"
+    "../../../../packages/design-system/ui/dist",
+    "../../../../packages/design-system/ui/node_modules",
+    "../../../../packages/design-system/ui/src/**/*.stories.tsx",
+    "../../../../packages/design-system/ui/src/**/*.stories.ts",
+    "../../../../packages/design-system/ui/src/**/*.spec.tsx",
+    "../../../../packages/design-system/ui/src/**/*.spec.ts"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

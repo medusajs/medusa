@@ -10,7 +10,7 @@ import { SearchIndexDefinition, SearchSeedContext } from "./index-definition"
 /**
  * Schema of search index fields — key-value pairs of search properties.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type SearchSchema = Record<string, SearchPropertyType<any>>
 
@@ -18,7 +18,7 @@ export type SearchSchema = Record<string, SearchPropertyType<any>>
  * Runtime metadata produced by parsing a search property.
  * `T` types `defaultValue` to match `$dataType` (search fields rarely set one).
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   dataType: {
@@ -40,7 +40,7 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
 /**
  * A search property that can be parsed into SearchPropertyMetadata.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type SearchPropertyType<T> = {
   $dataType: T
@@ -51,7 +51,7 @@ export type SearchPropertyType<T> = {
  * Type-only marker `.array()` stamps on a property. It never exists at
  * runtime — document inference reads it to turn `$dataType` into an array.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export interface SearchArrayMarker {
   $isArray: true
@@ -62,7 +62,7 @@ export interface SearchArrayMarker {
  * `null` — engines treat null as absent, and real documents carry nulls for
  * missing data.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type InferSearchPropertyValue<P extends SearchPropertyType<any>> =
   | (P extends SearchArrayMarker ? P["$dataType"][] : P["$dataType"])
@@ -73,7 +73,7 @@ export type InferSearchPropertyValue<P extends SearchPropertyType<any>> =
  * keys are allowed — seeds commonly spread whole entities, and engines ignore
  * what the index does not declare.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type InferSearchObjectValue<Schema extends SearchSchema> = {
   [K in keyof Schema]?: InferSearchPropertyValue<Schema[K]>

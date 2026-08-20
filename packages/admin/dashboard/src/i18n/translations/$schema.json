@@ -5911,6 +5911,9 @@
         "fulfillment": {
           "type": "object",
           "properties": {
+            "locationUnavailable": {
+              "type": "string"
+            },
             "cancelWarning": {
               "type": "string"
             },
@@ -6122,6 +6125,7 @@
             }
           },
           "required": [
+            "locationUnavailable",
             "cancelWarning",
             "markAsDeliveredWarning",
             "differentOptionSelected",

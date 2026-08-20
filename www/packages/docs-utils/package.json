@@ -16,6 +16,23 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       }
+    },
+    "./global-config": {
+      "require": {
+        "types": "./dist/global-config.d.ts",
+        "default": "./dist/cjs/global-config.js"
+      },
+      "import": {
+        "types": "./dist/global-config.d.ts",
+        "default": "./dist/global-config.js"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "global-config": [
+        "./dist/global-config.d.ts"
+      ]
     }
   },
   "sideEffects": false,
@@ -23,7 +40,8 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && tsc && yarn build:global-config:cjs",
+    "build:global-config:cjs": "tsc -p tsconfig.cjs.json && node ./scripts/mark-cjs-dir.mjs",
     "clean": "rimraf dist",
     "watch": "tsc --watch",
     "test": "vitest --passWithNoTests"

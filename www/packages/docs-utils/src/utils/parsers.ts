@@ -1158,9 +1158,7 @@ const getChildDocsFirstLink = (
 const resolveChildDocsHref = (
   item: Sidebar.InteractiveSidebarItem
 ): string | undefined =>
-  isChildDocsLink(item)
-    ? item.path
-    : getChildDocsFirstLink(item.children)?.path
+  isChildDocsLink(item) ? item.path : getChildDocsFirstLink(item.children)?.path
 
 type ChildDocsRenderContext = {
   hideTitle: boolean
@@ -1444,4 +1442,45 @@ const formatNodeText = (node?: UnistNode): string => {
   }
 
   return node.value || ""
+}
+
+export type ChangelogListParserOptions = {
+  /**
+   * The Markdown of the changelog entries that the component renders. The
+   * component loads its entries from generated files, so the content can't be
+   * derived from the MDX file and must be passed by the consuming project.
+   */
+  content?: string
+}
+
+/**
+ * Replaces a `<ChangelogList />` component with the Markdown of the changelog
+ * entries it renders, so the Markdown version of a changelog page holds the
+ * same content as the page itself.
+ */
+export const parseChangelogList: ComponentParser<
+  ChangelogListParserOptions
+> = async (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree,
+  options
+): Promise<VisitorResult> => {
+  const content = options?.content?.trim()
+
+  if (!content) {
+    // no entries available: drop the component so no broken output remains
+    parent?.children.splice(index, 1)
+    return [SKIP, index]
+  }
+
+  const { unified } = await import("unified")
+  const { default: remarkParse } = await import("remark-parse")
+  const tree = unified().use(remarkParse).parse(content) as unknown as UnistTree
+
+  parent?.children.splice(index, 1, ...tree.children)
+
+  // Skip past the inserted nodes, since they're plain Markdown and don't need
+  // to be visited again.
+  return [SKIP, index + tree.children.length]
 }

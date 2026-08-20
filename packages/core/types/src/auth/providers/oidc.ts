@@ -3,7 +3,7 @@
  * in the OIDC ID token. The key is the target field, and the value is the
  * name of the claim to read it from.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export interface OidcClaimMappings {
   /**
@@ -41,7 +41,7 @@ export interface OidcClaimMappings {
  * Auth0, Keycloak, Google Workspace, ...) by resolving the provider's configuration
  * from its discovery document, unless the relevant endpoints are configured explicitly.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export interface OidcAuthProviderOptions {
   /**

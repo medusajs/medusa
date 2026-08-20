@@ -109,6 +109,7 @@ export class LocalSearchService extends AbstractSearchProviderService {
     documents,
   }: {
     index: string
+    definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
   }): Promise<SearchTypes.SearchTask> {
     const stored = this.retrieve(index)
