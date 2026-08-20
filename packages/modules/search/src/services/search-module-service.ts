@@ -263,6 +263,10 @@ export default class SearchModuleService
     )
   }
 
+  getIndex(index: string): SearchTypes.ResolvedSearchIndexDefinition {
+    return retrieveIndexDefinition(this.indexes_, index)
+  }
+
   async reindex(
     input: SearchTypes.SearchReindexInput = {}
   ): Promise<SearchTypes.SearchReindexResult> {
