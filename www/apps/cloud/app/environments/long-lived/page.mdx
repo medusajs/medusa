@@ -63,7 +63,6 @@ You can also navigate to the environment creation form from the [command palette
         - If you don't see the branch you want to use, refresh the page to load the latest branches from your repository.
     - **Custom subdomain**: Set the custom subdomain for the Medusa application (and, subsequently, storefront). Medusa applications are a subdomain of `medusajs.app`, and their storefront is a subdomain of `medusajs.site`.
         - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions) guide for reserved subdomains and restrictions.
-    - **Configuration Group** (optional): Select a compute tier for the environment. The cost estimate below the form updates to reflect the selected group. By default, the environment uses the compute tier of your organization's plan. You can choose a lighter tier to reduce costs, or a heavier tier for high-traffic environments.
     - **Infrastructure Specs** (optional): By default, your long-lived environment will use the infrastructure specs of your organization's plan. You can also choose to upgrade or downgrade these specs for a specific environment. For example, you can downgrade your long-lived environment to **Develop** if you want to reduce costs. When you enable the Infrastructure Specs toggle, you can choose a different spec. Refer to the [Plans and Pricing](../../pricing/page.mdx) to learn more about the specs of each plan.
 3. Once you're done, click the "Create" button.
 
@@ -98,7 +97,7 @@ You can set the initial admin user's email and password only once if they aren't
 To set the initial admin user's email and password:
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you just created.
-2. In the environment's dashboard, click **Variables** in the sidebar.
+2. In the environment's dashboard, click on the **Environment variables** tab.
 3. In the "Add new environment variables" section, add the following environment variables:
 
 ```shell
@@ -268,7 +267,7 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 
 ## Manage Environment Variables
 
-Click **Variables** in the environment sidebar to manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
+In the environment's **Environment variables** tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
 
@@ -281,7 +280,7 @@ Your long-lived environment has two types of domains:
 - **Medusa-provided subdomains**: The default `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains assigned to the environment. For example, `acme.medusajs.app` and `acme.medusajs.site`.
 - **Custom domains**: Your own domain names to serve the backend and storefront instead of the Medusa-provided subdomains. For example, `acme.com`.
 
-To update these domains, click **Domains** in the environment sidebar. See the [Subdomains](../subdomains/page.mdx) and [Custom Domains](../custom-domains/page.mdx) guides for details.
+To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custom Domains](../custom-domains/page.mdx) guides.
 
 ---
 
@@ -293,11 +292,11 @@ You can't change the branch of preview environments. This section only applies t
 
 </Note>
 
-In an environment's **Rules** tab, the **Linked Branch** section shows the branch the environment deploys from.
+In an environment's **Deployment Rules** tab, the **Linked Branch** section shows the branch the environment deploys from.
 
 To change the branch associated with an environment:
 
-1. In the [environment's dashboard](#open-environment-dashboard), click on the **Rules** tab.
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Deployment Rules** tab.
 2. In the **Linked Branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
 3. In the side window that opens, enter the new branch name in the **Branch** field.
 4. Click **Save**.
@@ -328,8 +327,8 @@ By default, long-lived environments that aren't the Production environment use t
 
 To change the infrastructure specs for a long-lived environment:
 
-1. In the [environment's dashboard](#open-environment-dashboard), click on the **Rules** tab.
-2. In the **Configuration Group** section, select the compute tier you'd like to use for the long-lived environment.
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Deployment Rules** tab.
+2. In the **Infrastructure Specs** section, select the plan you'd like to use its specs for the long-lived environment.
 3. Click **Save Changes**.
 
 The new specs for the environment will be applied afterward.
@@ -348,5 +347,5 @@ You can delete any environment in your project, except for the Production enviro
 
 To delete an environment:
 
-1. In the environment's dashboard, click on the **Rules** tab.
+1. In the environment's dashboard, click on the **Deployment Rules** tab.
 2. Click the "Delete" button.
