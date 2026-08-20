@@ -3,7 +3,7 @@ export const generatedEditDates = {
   "app/tips/bulk-editor/page.mdx": "2026-07-10T06:21:38.367Z",
   "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
-  "app/settings/users/page.mdx": "2026-06-09T08:36:17.375Z",
+  "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
   "app/page.mdx": "2025-02-26T14:18:27.755Z",
   "app/settings/page.mdx": "2025-10-09T07:25:58.554Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
