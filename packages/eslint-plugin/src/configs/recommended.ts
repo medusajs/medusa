@@ -21,6 +21,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-duplicate-step-id-in-workflow")]: "error",
         [ruleId("no-if-in-workflow-constructor")]: "error",
         [ruleId("no-loops-in-workflow")]: "error",
+        [ruleId("no-nested-when-in-workflow")]: "error",
         [ruleId("no-new-date-in-workflow")]: "error",
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
