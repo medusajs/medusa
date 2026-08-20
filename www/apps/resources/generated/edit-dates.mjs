@@ -28,7 +28,7 @@ export const generatedEditDates = {
   "app/commerce-modules/fulfillment/page.mdx": "2025-05-20T07:51:40.707Z",
   "app/commerce-modules/inventory/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/inventory/_events/page.mdx": "2024-07-03T19:27:13+03:00",
-  "app/commerce-modules/inventory/concepts/page.mdx": "2025-09-16T16:03:29.634Z",
+  "app/commerce-modules/inventory/concepts/page.mdx": "2026-08-20T21:21:10.104Z",
   "app/commerce-modules/inventory/inventory-in-flows/page.mdx": "2026-07-16T11:09:23.038Z",
   "app/commerce-modules/inventory/page.mdx": "2025-04-17T08:48:24.991Z",
   "app/commerce-modules/order/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
