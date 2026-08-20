@@ -3357,6 +3357,7 @@
     "domain": "Workflows",
     "subtitle": "View and keep track of workflow executions in your Medusa application.",
     "transactionIdLabel": "Transaction ID",
+    "stateLabel": "State",
     "workflowIdLabel": "Workflow ID",
     "progressLabel": "Progress",
     "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
