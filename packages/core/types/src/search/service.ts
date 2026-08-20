@@ -71,6 +71,12 @@ export interface ISearchModuleService extends IModuleService {
    */
   listRetrievableFields(index: string): string[]
 
+  /**
+   * The field the index' documents are keyed by, which is what a hit's `id` holds.
+   * `query.search` filters on it to hydrate the non-indexed fields.
+   */
+  getIndexPrimaryKey(index: string): string
+
   reindex(input?: SearchReindexInput): Promise<SearchReindexResult>
 
   /**

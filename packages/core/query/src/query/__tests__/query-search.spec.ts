@@ -8,6 +8,8 @@ const RETRIEVABLE = ["id", "title", "min_price"]
 function createSearchModule(hits: { id: string; document: any }[]) {
   return {
     listRetrievableFields: jest.fn().mockReturnValue(RETRIEVABLE),
+    // Part of `ISearchModuleService`, called by the hydration query.
+    getIndexPrimaryKey: jest.fn().mockReturnValue("id"),
     search: jest.fn().mockResolvedValue({
       hits,
       metadata: { skip: 0, take: 20, count: hits.length },
