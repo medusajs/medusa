@@ -137,6 +137,127 @@ moduleIntegrationTestRunner<SearchService>({
           expect(syncs[0].job_id).toEqual(expect.any(String))
           expect(syncs[0].completed_at).toBeTruthy()
         })
+
+        it("lists index info with status and indexed fields", async () => {
+          const infos = await service.listIndexes()
+
+          expect(infos).toHaveLength(1)
+          expect(infos[0]).toMatchObject({
+            name: "product",
+            entity: "product",
+            provider: "search-local",
+            status: "ready",
+          })
+          expect(infos[0].fields.map((field) => field.name).sort()).toEqual(
+            [
+              "brand",
+              "created_at",
+              "description",
+              "handle",
+              "id",
+              "min_price",
+              "status",
+              "tags",
+              "title",
+              "variants.color",
+              "variants.sku",
+            ].sort()
+          )
+          expect(
+            infos[0].fields.find((field) => field.name === "title")
+          ).toMatchObject({
+            type: "text",
+            searchable: true,
+            sortable: true,
+            filterable: false,
+          })
+        })
+
+        it("does not hold the application hook until seeding finishes", async () => {
+          const index = definition(service, "product")!
+          const originalSeed = index.seed
+
+          let release!: () => void
+          const hold = new Promise<void>((resolve) => {
+            release = resolve
+          })
+          let entered!: () => void
+          const enteredSeed = new Promise<void>((resolve) => {
+            entered = resolve
+          })
+          let finished!: () => void
+          const seedFinished = new Promise<void>((resolve) => {
+            finished = resolve
+          })
+
+          let started = false
+          index.seed = async function* (ctx) {
+            started = true
+            entered()
+            await hold
+            try {
+              yield* originalSeed(ctx)
+            } finally {
+              finished()
+            }
+          }
+
+          try {
+            await updateIndexRecords(service, {
+              selector: { name: "product" },
+              data: { status: "pending" },
+            })
+
+            const hook = (service as any).__hooks.onApplicationStart.call(
+              service
+            )
+
+            await enteredSeed
+            await hook
+
+            const [record] = await indexRecords(service, { name: "product" })
+            expect(record.status).toBe("building")
+          } finally {
+            release()
+            if (started) {
+              await seedFinished
+            }
+            index.seed = originalSeed
+          }
+        })
+
+        it("logs seeding failures from the application hook instead of rejecting", async () => {
+          const errorSpy = jest
+            .spyOn((service as any).logger_, "error")
+            .mockImplementation(() => {})
+
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-local"
+          )
+          provider.migrate_on_startup = false
+
+          try {
+            await provider.deleteIndex({ index: "product" })
+
+            await expect(
+              (service as any).__hooks.onApplicationStart.call(service)
+            ).resolves.toBeUndefined()
+
+            const deadline = Date.now() + 5000
+            while (errorSpy.mock.calls.length === 0 && Date.now() < deadline) {
+              await new Promise((resolve) => setTimeout(resolve, 25))
+            }
+
+            expect(errorSpy).toHaveBeenCalledWith(
+              expect.stringContaining("[Search] Failed to seed search indexes:"),
+              expect.any(Error)
+            )
+          } finally {
+            provider.migrate_on_startup = true
+            errorSpy.mockRestore()
+            await boot(service)
+          }
+        })
       })
 
       describe("migration and seeding lifecycle", () => {

@@ -258,5 +258,94 @@ medusaIntegrationTestRunner({
         expect(error.response.status).toEqual(401)
       })
     })
+
+    describe("GET /admin/search-indexes", () => {
+      it("lists registered indexes with their fields and status", async () => {
+        const response = await api.get("/admin/search-indexes", adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.enabled).toEqual(true)
+        expect(response.data.search_indexes.map((index) => index.name)).toEqual(
+          ["customer", "product"]
+        )
+
+        const product = response.data.search_indexes.find(
+          (index) => index.name === "product"
+        )
+        const customer = response.data.search_indexes.find(
+          (index) => index.name === "customer"
+        )
+
+        expect(product).toMatchObject({
+          name: "product",
+          entity: "product",
+          status: "ready",
+        })
+        expect(product.fields.map((field) => field.name).sort()).toEqual(
+          ["handle", "id", "status", "title"].sort()
+        )
+        expect(
+          product.fields.find((field) => field.name === "title")
+        ).toMatchObject({
+          type: "text",
+          searchable: true,
+          sortable: true,
+        })
+
+        expect(customer).toMatchObject({
+          name: "customer",
+          entity: "customer",
+          status: "ready",
+        })
+        expect(customer.fields.map((field) => field.name).sort()).toEqual(
+          ["email", "first_name", "id", "last_name"].sort()
+        )
+      })
+
+      it("requires authentication", async () => {
+        const error = await api.get("/admin/search-indexes").catch((e) => e)
+
+        expect(error.response.status).toEqual(401)
+      })
+    })
+
+    describe("POST /admin/search-indexes/:id/reindex", () => {
+      it("rebuilds a specific index from its seed", async () => {
+        const response = await api.post(
+          "/admin/search-indexes/product/reindex",
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          job_id: expect.any(String),
+          indexes: ["product"],
+        })
+
+        const listed = await api.get("/admin/search-indexes", adminHeaders)
+        const product = listed.data.search_indexes.find(
+          (index) => index.name === "product"
+        )
+        expect(product.status).toBe("ready")
+
+        const search = await api.get(
+          "/admin/search?q=zephyr&entity=product",
+          adminHeaders
+        )
+        expect(groupFor(search.data, "product").data).toEqual([
+          expect.objectContaining({ title: "Zephyr Shirt" }),
+        ])
+      })
+
+      it("fails when the index is not registered", async () => {
+        const error = await api
+          .post("/admin/search-indexes/nope/reindex", {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.message).toContain("nope")
+      })
+    })
   },
 })

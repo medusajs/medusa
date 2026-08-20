@@ -73,6 +73,7 @@ import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middl
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
 import { adminShippingOptionTypeRoutesMiddlewares } from "./admin/shipping-option-types/middlewares"
 import { adminIndexRoutesMiddlewares } from "./admin/index/middlewares"
+import { adminSearchIndexRoutesMiddlewares } from "./admin/search-indexes/middlewares"
 import { adminSearchRoutesMiddlewares } from "./admin/search/middlewares"
 import { setSecretApiKeyContext } from "@medusajs/framework"
 import { adminLocalesRoutesMiddlewares } from "./admin/locales/middlewares"
@@ -160,6 +161,7 @@ export default defineMiddlewares([
   ...entitiesRoutesMiddlewares,
   ...columnRoutesMiddlewares,
   ...adminIndexRoutesMiddlewares,
+  ...adminSearchIndexRoutesMiddlewares,
   ...adminSearchRoutesMiddlewares,
   ...cloudRoutesMiddlewares,
 ])

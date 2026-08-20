@@ -3,6 +3,7 @@ import { IModuleService } from "../modules-sdk"
 import { SearchDocument, SearchTask } from "./common"
 import { SearchFilters } from "./filters"
 import { ResolvedSearchIndexDefinition } from "./index-definition"
+import { SearchIndexDetails } from "./index-info"
 import { SearchIndexMigrationAction } from "./migration"
 import { SearchQuery } from "./query"
 import { SearchResult } from "./result"
@@ -98,18 +99,20 @@ export interface ISearchModuleService extends IModuleService {
   ingest(event: Event<any>): Promise<SearchTask[]>
 
   /**
-   * This method returns the names of all registered search indexes.
-   *
-   * @returns {string[]} The list of index names.
-   *
-   * @example
-   * const indexes = searchModuleService.listIndexes()
+   * Registered indexes with their status and the leaf fields each stores.
+   * Definitions that have not been migrated yet are included as `pending`.
    */
-  listIndexes(): string[]
+  listIndexes(): Promise<SearchIndexDetails[]>
 
   /**
-   * The field paths the index can return. `query.search` uses this to split what a
-   * caller asked for between the engine and `query.graph`.
+   * This method returns the field paths an index can return. `query.search` uses
+   * this to split what a caller asked for between the engine and `query.graph`.
+   *
+   * @param {string} index - The name of the index.
+   * @returns {string[]} The retrievable field paths.
+   *
+   * @example
+   * const fields = searchModuleService.listRetrievableFields("product")
    */
   listRetrievableFields(index: string): string[]
 
