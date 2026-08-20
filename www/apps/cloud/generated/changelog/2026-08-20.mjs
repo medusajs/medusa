@@ -1,9 +1,9 @@
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
-  date: "2026-08-19",
+  date: "2026-08-20",
   title: "Cloud Assistant and log drains",
   summary: "A new Cloud Assistant answers questions from any page, projects can forward logs to an observability provider, and environment variable pages show 15 rows.",
-  image: "https://res.cloudinary.com/dza7lstvk/image/upload/v1787142838/Cloud%20Changelog/aug-19-a53ddc.png",
+  image: "https://res.cloudinary.com/dza7lstvk/image/upload/v1787225508/Cloud%20Changelog/aug-20-5d9729.png",
   content: `- You can now open the Cloud Assistant from the **Agent** button in the top bar to ask about Medusa or your projects from any page. The Cloud Assistant can help you learn how to manage your projects and organizations, troubleshoot build and deployment issues, and remember information about your projects to help you better in the future. Previously, Cloud offered separate documentation and troubleshooting assistants. Refer to [Cloud Assistant](https://docs.medusajs.com/cloud/assistant) for more details.
 - The assistant uses the page you're on as context, shown in a badge in the message input, so you can ask about the project, environment, or build you're viewing without naming it.
 - The assistant now remembers details you share, such as your project's stack, and uses them in later chats. Memories are scoped to you within an organization.
