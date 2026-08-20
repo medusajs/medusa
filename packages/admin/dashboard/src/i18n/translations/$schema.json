@@ -12884,6 +12884,9 @@
         "transactionIdLabel": {
           "type": "string"
         },
+        "stateLabel": {
+          "type": "string"
+        },
         "workflowIdLabel": {
           "type": "string"
         },
