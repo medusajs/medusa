@@ -176,8 +176,13 @@ export default class LinkModuleService implements ILinkModule {
     return [rows, count]
   }
 
-  @InjectTransactionManager()
+  // `EmitEvents` must sit outside `InjectTransactionManager` so the `ATTACHED`
+  // event is flushed after the transaction commits. Emitting from inside the
+  // transaction lets subscribers read before the rows are visible: the index
+  // module re-fetches the link by id, gets nothing, and silently skips it.
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async create(
     primaryKeyOrBulkData:
       | string
