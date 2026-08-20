@@ -231,7 +231,7 @@ Use this approach only when absolutely necessary, where workflows aren't suffici
 
 </Note>
 
-For example, to inject the Cache Module:
+For example, to inject the Analytics Module:
 
 ```ts title="medusa-config.ts"
 import { Modules } from "@medusajs/framework/utils"
@@ -242,14 +242,14 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/blog",
       dependencies: [
-        Modules.CACHE,
+        Modules.ANALYTICS,
       ],
     },
   ],
 })
 ```
 
-In this example, you inject the Cache Module's service into your module's container.
+In this example, you inject the Analytics Module's service into your module's container.
 
 <Note>
 
@@ -257,4 +257,27 @@ Only the main service will be injected into the module's container.
 
 </Note>
 
-You can then resolve the injected module's service in your module's service constructor.
+You can then use the Analytics Module's service in your module's service:
+
+```ts title="Example Service"
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
+
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
+  }
+
+  performAction() {
+    // TODO perform action
+
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe"
+      }
+    })
+  }
+}
+```
