@@ -5911,9 +5911,6 @@
         "fulfillment": {
           "type": "object",
           "properties": {
-            "locationUnavailable": {
-              "type": "string"
-            },
             "cancelWarning": {
               "type": "string"
             },
@@ -5972,6 +5969,9 @@
               "type": "string"
             },
             "locationDescription": {
+              "type": "string"
+            },
+            "locationUnavailable": {
               "type": "string"
             },
             "sendNotificationHint": {
@@ -6125,7 +6125,6 @@
             }
           },
           "required": [
-            "locationUnavailable",
             "cancelWarning",
             "markAsDeliveredWarning",
             "differentOptionSelected",
@@ -6146,6 +6145,7 @@
             "markAsDelivered",
             "itemsToFulfillDesc",
             "locationDescription",
+            "locationUnavailable",
             "sendNotificationHint",
             "methodDescription",
             "error",
@@ -13060,6 +13060,81 @@
       ],
       "additionalProperties": false
     },
+    "searchIndexes": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "fieldsLabel": {
+          "type": "string"
+        },
+        "providerLabel": {
+          "type": "string"
+        },
+        "reindex": {
+          "type": "string"
+        },
+        "reindexConfirmationTitle": {
+          "type": "string"
+        },
+        "reindexConfirmation": {
+          "type": "string"
+        },
+        "reindexSuccess": {
+          "type": "string"
+        },
+        "noFields": {
+          "type": "string"
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "noRecordsMessage": {
+              "type": "string"
+            }
+          },
+          "required": ["noRecordsMessage"],
+          "additionalProperties": false
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "pending": {
+              "type": "string"
+            },
+            "building": {
+              "type": "string"
+            },
+            "ready": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            }
+          },
+          "required": ["pending", "building", "ready", "error"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "fieldsLabel",
+        "providerLabel",
+        "reindex",
+        "reindexConfirmationTitle",
+        "reindexConfirmation",
+        "reindexSuccess",
+        "noFields",
+        "list",
+        "status"
+      ],
+      "additionalProperties": false
+    },
     "shippingOptionTypes": {
       "type": "object",
       "properties": {
@@ -14592,6 +14667,7 @@
     "invite",
     "resetPassword",
     "workflowExecutions",
+    "searchIndexes",
     "shippingOptionTypes",
     "productTypes",
     "productTags",

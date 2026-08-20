@@ -146,5 +146,17 @@ medusaIntegrationTestRunner({
         expect(error.response.status).toEqual(401)
       })
     })
+
+    describe("GET /admin/search-indexes", () => {
+      it("reports that the Search Module is not enabled", async () => {
+        const response = await api.get("/admin/search-indexes", adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          search_indexes: [],
+          enabled: false,
+        })
+      })
+    })
   },
 })
