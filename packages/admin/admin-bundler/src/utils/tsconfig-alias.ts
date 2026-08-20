@@ -8,13 +8,27 @@ type Alias = { find: RegExp; replacement: string }
  * Handles // line comments and /* block comments, leaving both alone inside
  * string literals (a URL or a Windows path with "//" in it is not a comment).
  */
+/**
+ * Whether the quote at *index* is escaped: a quote preceded by an even number
+ * of backslashes closes the string, an odd count means the quote itself is
+ * escaped. Counting only the immediately preceding character misreads a value
+ * that ends in an escaped backslash and leaves the stripper inside the string.
+ */
+function isEscapedQuote(contents: string, index: number): boolean {
+  let backslashes = 0
+  for (let j = index - 1; j >= 0 && contents[j] === "\\"; j--) {
+    backslashes++
+  }
+  return backslashes % 2 === 1
+}
+
 function stripJsonComments(contents: string): string {
   let result = ""
   let inString = false
   for (let i = 0; i < contents.length; i++) {
     const char = contents[i]
     const next = contents[i + 1]
-    if (char === '"' && contents[i - 1] !== "\\") {
+    if (char === '"' && !isEscapedQuote(contents, i)) {
       inString = !inString
     }
     if (!inString && char === "/" && next === "/") {
@@ -57,7 +71,7 @@ function resolveAliasTarget(baseDir: string, target: string): string {
  * Used by `medusa plugin:build`: the admin extensions bundle is compiled by
  * Vite with the plugin package root as cwd, so Vite never sees the
  * `src/admin/tsconfig.json` the documented `@/*`-style aliases live in, and
- * Rollup treats them as bare package specifiers (#16487). Mapping them here
+ * Rollup treats them as bare package specifiers. Mapping them here
  * keeps a single source of truth — the admin tsconfig — for both the editor
  * and the bundler.
  *

@@ -47,7 +47,7 @@ export async function plugin(options: PluginOptions) {
   const pluginConfig: UserConfig = {
     /**
      * Path aliases from the admin tsconfig (`@/*` and friends) so the bundle
-     * resolves them the way the editor and the backend build do (#16487).
+     * resolves them the way the editor and the backend build do.
      * Vite runs with the package root as cwd, so without this the admin-only
      * tsconfig is never consulted and Rollup reads the aliases as bare
      * package specifiers.

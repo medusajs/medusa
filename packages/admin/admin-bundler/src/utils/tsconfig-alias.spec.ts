@@ -105,6 +105,24 @@ describe("readTsPathAliases", () => {
     expect(resolved).toBe(`${adminDir.replace(/\\/g, "/")}/hooks/api`)
   })
 
+  it("parses a comment after a string value that ends in an escaped backslash", () => {
+    // The JSON source text C:\\src\\ (the value C:\src\): its closing quote is
+    // preceded by two backslash characters but ZERO escape backslashes, so a
+    // single-character lookback would keep the stripper inside the string and
+    // eat the rest of the file (comments included) as string content.
+    const tsconfigPath = writeAdminTsconfig(
+        `{ // opening comment
+      "compilerOptions": {
+        "paths": { "@/*": ["./*"] },
+        "someRoot": "C:\\\\src\\\\"
+      }
+      // closing comment
+    }`)
+
+    const resolved = resolveAlias(readTsPathAliases(tsconfigPath), "@/hooks/api")
+    expect(resolved).toBe(`${adminDir.replace(/\\/g, "/")}/hooks/api`)
+  })
+
   it("returns an empty list for a missing file, invalid JSON, or no paths", () => {
     expect(readTsPathAliases(path.join(adminDir, "tsconfig.json"))).toEqual([])
 
