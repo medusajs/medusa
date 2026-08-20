@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Fix workflow execution state column using wrong i18n key shared with address state field
+fix(dashboard): separate workflow execution state label from address state field
