@@ -179,6 +179,60 @@ moduleIntegrationTestRunner<IInventoryService>({
           expect(inventoryLevel.reserved_quantity).toEqual(3)
         })
 
+        it("should check the summed demand of batch entries sharing an item and location", async () => {
+          // A bundle's line items can share one inventory item: the batch holds
+          // two entries for the same (item, location) whose combined quantity
+          // exceeds stock. Each entry alone fits, so validating them
+          // independently against the same undecremented available_quantity
+          // passed and the location was over-reserved.
+          const overReservingBatch = service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+          ])
+
+          await expect(overReservingBatch).rejects.toThrow(
+            `Not enough stock available for item ${inventoryItem.id} at location location-1`
+          )
+
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+          expect(inventoryLevel.reserved_quantity).toEqual(0)
+
+          // The same split batch that fits in stock passes and reserves the sum.
+          await service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 1,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 1,
+            },
+          ])
+
+          expect(
+            (
+              await service.retrieveInventoryLevelByItemAndLocation(
+                inventoryItem.id,
+                "location-1"
+              )
+            ).reserved_quantity
+          ).toEqual(2)
+        })
+
         it("should create reservationItems from array", async () => {
           const data = [
             {
