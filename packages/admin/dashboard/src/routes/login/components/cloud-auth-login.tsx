@@ -12,7 +12,7 @@ import {
 } from "../../../hooks/api/cloud"
 import { sdk } from "../../../lib/client"
 
-const CLOUD_AUTH_PROVIDER = "cloud"
+export const CLOUD_AUTH_PROVIDER = "cloud"
 
 type CloudAuthLoginProps = {
   onMfaChallenge?: (
