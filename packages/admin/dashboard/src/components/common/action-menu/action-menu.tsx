@@ -29,7 +29,7 @@ export type ActionGroup = {
   actions: Action[]
 }
 
-type ActionMenuProps = PropsWithChildren<{
+export type ActionMenuProps = PropsWithChildren<{
   groups: ActionGroup[]
   variant?: "transparent" | "primary"
 }>
