@@ -3798,6 +3798,12 @@
         "quantityAcrossLocations": {
           "type": "string"
         },
+        "unitOfMeasurePlaceholder": {
+          "type": "string"
+        },
+        "unitOfMeasureHint": {
+          "type": "string"
+        },
         "levelDeleted": {
           "type": "string"
         },
@@ -4028,6 +4034,8 @@
         "deleteWarning",
         "editItemDetails",
         "quantityAcrossLocations",
+        "unitOfMeasurePlaceholder",
+        "unitOfMeasureHint",
         "levelDeleted",
         "create",
         "reservation",
@@ -13941,6 +13949,9 @@
         "material": {
           "type": "string"
         },
+        "unitOfMeasure": {
+          "type": "string"
+        },
         "thumbnail": {
           "type": "string"
         },
@@ -14155,6 +14166,7 @@
         "barcode",
         "countryOfOrigin",
         "material",
+        "unitOfMeasure",
         "thumbnail",
         "sku",
         "managedInventory",
