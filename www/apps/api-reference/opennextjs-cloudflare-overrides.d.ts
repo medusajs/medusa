@@ -21,5 +21,14 @@ declare module "@opennextjs/cloudflare/overrides/incremental-cache/regional-cach
 interface CloudflareEnv {
   SPECS_R2_BUCKET?: {
     get(key: string): Promise<{ text(): Promise<string> } | null>
+    list(options?: {
+      prefix?: string
+      delimiter?: string
+      cursor?: string
+    }): Promise<{
+      delimitedPrefixes: string[]
+      truncated: boolean
+      cursor?: string
+    }>
   }
 }
