@@ -32,6 +32,12 @@ export type MedusaSearchFieldOptions = {
   filterable?: boolean
   full_text_search?: FullTextSearch
   fuzzy?: boolean
+  /**
+   * Build a trigram index so `$prefix` / `$like` filters can glob-match
+   * this string. Defaults to `true` for filterable, sortable, or
+   * facetable keywords. Text fields must set this to `true` explicitly.
+   * Always omitted on `id` — that column is the document key.
+   */
   glob?: boolean
   regex?: boolean
 }
