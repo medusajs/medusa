@@ -11,6 +11,44 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 {/* Entries are added automatically when webhook changes are deployed.
     Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
 
+## August 20, 2026
+
+### build.canceled
+
+- Added the `build.canceled` event. Delivered when a build is canceled before it completes.
+
+### build.created
+
+- Added the `build.created` event. Delivered when Cloud starts a new build for an environment.
+
+### build.failed
+
+- Added the `build.failed` event. Delivered when a build fails.
+
+### build.succeeded
+
+- Added the `build.succeeded` event. Delivered when a build completes successfully.
+
+### deployment.canceled
+
+- Added the `deployment.canceled` event. Delivered when a deployment is canceled before it completes.
+
+### deployment.created
+
+- Added the `deployment.created` event. Delivered when Cloud creates a new deployment for an environment.
+
+### deployment.failed
+
+- Added the `deployment.failed` event. Delivered when a deployment fails to complete.
+
+### deployment.succeeded
+
+- Added the `deployment.succeeded` event. Delivered when a deployment finishes and the environment is live.
+
+### Delivery
+
+Cloud delivers webhooks via HTTP POST with a 10-second timeout per attempt. Failed deliveries are retried automatically using exponential back-off starting at 5 minutes, doubling with each attempt, for up to 24 hours. Each request includes the headers X-Medusa-Signature (an HMAC-SHA256 signature of the form t=<timestamp>,v1=<hex> for verifying authenticity), X-Medusa-Event (the event type), X-Medusa-Delivery (the unique delivery ID), and User-Agent: MedusaCloud-Webhook/1.0. The signature is computed over <timestamp>.<raw JSON body> using the endpoint secret. Redirects are not followed.
+
 ## August 10, 2026
 
 Medusa released webhooks for Cloud organizations with the following events:
