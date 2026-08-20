@@ -679,7 +679,7 @@ export default class InventoryModuleService
       // delta is 0 when the quantity is unchanged — so the destination was
       // validated against available_quantity >= 0 and a move to a location
       // with less stock than the reservation over-reserved it, going
-      // negative (#16488). Validate the full incoming quantity against the
+      // negative. Validate the full incoming quantity against the
       // destination: the delta only stands in when the reservation stays put.
       const quantityToValidate = changesLocation
         ? data.quantity || reservation.quantity
