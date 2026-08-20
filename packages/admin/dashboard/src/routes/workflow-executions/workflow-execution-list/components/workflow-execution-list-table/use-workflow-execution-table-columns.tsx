@@ -12,11 +12,11 @@ import {
 } from "../../../../../components/table/table-cells/common/date-cell"
 
 const columnHelper =
-  createColumnHelper
+  createColumnHelper<
     HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
   >()
 
-export const useWorkflowExecutionTableColumns = (): ColumnDef
+export const useWorkflowExecutionTableColumns = (): ColumnDef<
   HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"],
   any
 >[] => {
