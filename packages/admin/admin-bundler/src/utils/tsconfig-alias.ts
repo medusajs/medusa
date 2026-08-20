@@ -4,11 +4,6 @@ import path from "path"
 type Alias = { find: RegExp; replacement: string }
 
 /**
- * Strips the comments tsconfig files are allowed to carry before JSON.parse.
- * Handles // line comments and /* block comments, leaving both alone inside
- * string literals (a URL or a Windows path with "//" in it is not a comment).
- */
-/**
  * Whether the quote at *index* is escaped: a quote preceded by an even number
  * of backslashes closes the string, an odd count means the quote itself is
  * escaped. Counting only the immediately preceding character misreads a value
@@ -22,6 +17,11 @@ function isEscapedQuote(contents: string, index: number): boolean {
   return backslashes % 2 === 1
 }
 
+/**
+ * Strips the comments tsconfig files are allowed to carry before JSON.parse.
+ * Handles // line comments and /* block comments, leaving both alone inside
+ * string literals (a URL or a Windows path with "//" in it is not a comment).
+ */
 function stripJsonComments(contents: string): string {
   let result = ""
   let inString = false
