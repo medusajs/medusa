@@ -10519,6 +10519,15 @@
         "copyInviteLink": {
           "type": "string"
         },
+        "copyResetPasswordLink": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkSuccess": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkHint": {
+          "type": "string"
+        },
         "expiredOnDate": {
           "type": "string"
         },
@@ -10614,6 +10623,9 @@
         "deleteInviteWarning",
         "resendInvite",
         "copyInviteLink",
+        "copyResetPasswordLink",
+        "copyResetPasswordLinkSuccess",
+        "copyResetPasswordLinkHint",
         "expiredOnDate",
         "validFromUntil",
         "acceptedOnDate",
@@ -14303,13 +14315,13 @@
         "login": {
           "type": "object",
           "properties": {
+            "noProviders": {
+              "type": "string"
+            },
             "authenticationFailed": {
               "type": "string"
             },
             "cloud": {
-              "type": "string"
-            },
-            "noProviders": {
               "type": "string"
             },
             "continueWithProvider": {
@@ -14323,9 +14335,9 @@
             }
           },
           "required": [
+            "noProviders",
             "authenticationFailed",
             "cloud",
-            "noProviders",
             "continueWithProvider",
             "or",
             "provisioningFailed"
