@@ -1,5 +1,12 @@
 # @medusajs/oas-github-ci
 
+## 2.19.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-import { ApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
+import { ApiKeyDTO, IApiKeyModuleService, Logger } from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import type {
@@ -45,6 +45,7 @@ export const authenticate = (
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const actorTypes = Array.isArray(actorType) ? actorType : [actorType]
     const req_ = req as AuthenticatedMedusaRequest
+    const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
@@ -85,7 +86,8 @@ export const authenticate = (
         authTypes,
         actorTypes,
         http.jwtPublicKey,
-        http.jwtVerifyOptions ?? http.jwtOptions
+        http.jwtVerifyOptions ?? http.jwtOptions,
+        logger
       )
     }
 
@@ -209,7 +211,8 @@ export const getAuthContextFromJwtToken = (
   authTypes: AuthType[],
   actorTypes: string[],
   jwtPublicKey?: Secret,
-  jwtOptions?: VerifyOptions | SignOptions
+  jwtOptions?: VerifyOptions | SignOptions,
+  logger?: Logger
 ): AuthContext | null => {
   if (!authTypes.includes(BEARER_AUTH)) {
     return null
@@ -260,6 +263,9 @@ export const getAuthContextFromJwtToken = (
           return verified as AuthContext
         }
       } catch (err) {
+        if (logger) {
+          logger.debug(`Failed to verify JWT token: ${err}`)
+        }
         return null
       }
     }

@@ -18,6 +18,12 @@ A return is the return of items delivered from the customer back to the merchant
 
 A return is requested either by the customer from the storefront, or the merchant from the admin. Medusa supports an automated Return Merchandise Authorization (RMA) flow.
 
+<Note>
+
+The [Create Return API route](!api!/store/returns/create-return) doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](../secure-return-creation/page.mdx).
+
+</Note>
+
 ![Diagram showcasing the automated RMA flow.](https://res.cloudinary.com/dza7lstvk/image/upload/v1719578128/Medusa%20Resources/return-rma_pzprwq.jpg)
 
 Once the merchant receives the returned items, they mark the return as received.

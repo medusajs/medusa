@@ -80,6 +80,7 @@ const Inner = ({
         onFocus={onFocus}
         type="number"
         inputMode="decimal"
+        step="any"
         className={clx(
           "txt-compact-small size-full bg-transparent outline-none",
           "placeholder:text-ui-fg-muted"

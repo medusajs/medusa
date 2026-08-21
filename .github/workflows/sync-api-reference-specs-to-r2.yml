@@ -73,3 +73,40 @@ jobs:
         run: |
           STRIPPED=$(echo "$DELETED_FILES" | tr ' ' '\n' | sed 's|^www/apps/api-reference/||' | tr '\n' ' ')
           node ./scripts/upload-specs-to-r2.mjs --remove $STRIPPED
+
+      # The `secrets` context isn't available in a step's `if`, so the check is
+      # done here and exposed as an output.
+      - name: Check whether the resync webhook is configured
+        id: webhook
+        if: steps.changed.outputs.any_changed == 'true' || steps.changed.outputs.any_deleted == 'true'
+        env:
+          MEDUSA_CLOUD_API_URL: ${{ secrets.MEDUSA_CLOUD_API_URL }}
+          MEDUSA_CLOUD_API_KEY: ${{ secrets.MEDUSA_CLOUD_API_KEY }}
+        run: |
+          if [ -n "$MEDUSA_CLOUD_API_URL" ] && [ -n "$MEDUSA_CLOUD_API_KEY" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping the resync trigger: MEDUSA_CLOUD_API_URL and/or MEDUSA_CLOUD_API_KEY aren't set."
+          fi
+
+      - name: Trigger specs resync
+        if: steps.webhook.outputs.configured == 'true'
+        env:
+          MEDUSA_CLOUD_API_URL: ${{ secrets.MEDUSA_CLOUD_API_URL }}
+          MEDUSA_CLOUD_API_KEY: ${{ secrets.MEDUSA_CLOUD_API_KEY }}
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
+        run: |
+          # the secret may hold a bare host, so the scheme is added when missing
+          BASE_URL="$MEDUSA_CLOUD_API_URL"
+          case "$BASE_URL" in
+            http://*|https://*) ;;
+            *) BASE_URL="https://$BASE_URL" ;;
+          esac
+          BASE_URL="${BASE_URL%/}"
+
+          curl --fail-with-body --silent --show-error --location \
+            --request POST "$BASE_URL/hooks/oas-specs" \
+            --header "Authorization: Basic $MEDUSA_CLOUD_API_KEY" \
+            --header "Content-Type: application/json" \
+            --data "{\"commit_sha\": \"$COMMIT_SHA\"}"

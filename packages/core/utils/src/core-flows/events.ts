@@ -279,6 +279,7 @@ export const OrderEditWorkflowEvents = {
    * {
    *   order_id, // The ID of the order
    *   actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+   *   no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.
    * }
    * ```
    */
@@ -293,6 +294,7 @@ export const OrderEditWorkflowEvents = {
    * {
    *   order_id, // The ID of the order
    *   actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+   *   no_notification, // (boolean) Whether the customer shouldn't be notified of the order edit, as stored on the order change when the edit was requested. Available since v2.19.0.
    * }
    * ```
    */
@@ -717,6 +719,39 @@ export const ProductOptionWorkflowEvents = {
    * ```
    */
   DELETED: "product-option.deleted",
+} as const
+
+/**
+ * @category Product Option Value
+ * @customNamespace Product
+ */
+export const ProductOptionValueWorkflowEvents = {
+  /**
+   * Emitted when product option values are updated.
+   *
+   * @since 2.19.1
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the product option value
+   * }
+   * ```
+   */
+  UPDATED: "product-option-value.updated",
+  /**
+   * Emitted when product option values are deleted.
+   *
+   * @since 2.19.1
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the product option value
+   * }
+   * ```
+   */
+  DELETED: "product-option-value.deleted",
 } as const
 
 /**
