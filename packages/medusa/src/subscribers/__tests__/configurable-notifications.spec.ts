@@ -46,7 +46,7 @@ const makeContainer = (overrides: Record<string, unknown> = {}) => {
 
 describe("configurable-notifications", () => {
   it("subscribes to order.placed, not the never-emitted order.created", () => {
-    // #16555: the order module has no CREATED workflow event, so the old
+    // The order module has no CREATED workflow event, so the old
     // subscription could never fire.
     expect(config.event).toEqual(["order.placed"])
   })

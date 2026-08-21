@@ -37,7 +37,7 @@ const handlerConfig: HandlerConfig[] = [
     // workflow event, and the ORM-derived `order.order.created` that does
     // fire would also cover drafts and admin-created orders. `order.placed`
     // is emitted by completeCartWorkflow (and draft-order conversion), which
-    // is when a confirmation email is actually wanted (#16555).
+    // is when a confirmation email is actually wanted.
     event: OrderWorkflowEvents.PLACED,
     template: "order-placed-template",
     channel: "email",
