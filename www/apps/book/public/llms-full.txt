@@ -53800,6 +53800,8 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Redis Caching Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis) instead.
 
+However, if you use OAuth-based authentication providers such as Google or GitHub login, keep the Redis Cache Module registered. The Auth Module uses the Cache Module to store OAuth state between the redirect and callback. Removing it without a Redis provider causes Medusa to use an in-memory fallback, which breaks OAuth flows in multi-instance or restarted deployments.
+
 ***
 
 ## Register the Redis Cache Module
@@ -55290,6 +55292,10 @@ This separation of concerns allows for greater flexibility and extensibility. Yo
 ### 1. Remove the Cache Module
 
 The first step is to remove the Cache Module from your `medusa-config.ts` file.
+
+If you use OAuth-based authentication providers such as Google or GitHub login, the Auth Module uses the Cache Module to store the OAuth state parameter between the redirect and the callback. Removing the Cache Module without a Redis provider causes Medusa to fall back to an in-memory cache, which breaks OAuth flows across multiple application instances or after a restart.
+
+Keep the Cache Module registered with a Redis provider until the Auth Module is updated to use the Caching Module instead.
 
 For example, if you set up the Redis Cache Module, remove the following code from `medusa-config.ts`:
 
@@ -162527,7 +162533,7 @@ This recipe provides the general steps to implement a marketplace in your Medusa
 
 A marketplace is an online commerce store that allows different vendors to sell their products within the same commerce system. Customers can purchase products from any of these vendors, and vendors can manage their orders separately.
 
-Medusa's [Framework](undefined/docs/learn/fundamentals/framework) for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
+The Medusa [Framework](undefined/docs/learn/fundamentals/framework) built for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
 
 [How Foraged built a custom marketplace with Medusa](https://medusajs.com/blog/foraged/).
 
@@ -166699,7 +166705,7 @@ Subscription-based purchase allows customers to purchase products for a specifie
 
 For example, a customer can purchase a book subscription box for a period of three months. Each month, the payment is captured for that order and, if the payment is successful, the fulfillment is processed.
 
-Medusa's [Framework](undefined/docs/learn/fundamentals/framework) for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
+The Medusa [Framework](undefined/docs/learn/fundamentals/framework) built for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
 
 You can also expose custom features using API routes, and implement complex flows using workflows.
 
@@ -166801,7 +166807,7 @@ This tutorial is divided into two parts: this part that covers the backend and a
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. The Medusa application's commerce features are built around [Commerce Modules](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules) that are available out-of-the-box.
 
-Medusa's [Framework](undefined/docs/learn/fundamentals/framework) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
+The Medusa [Framework](undefined/docs/learn/fundamentals/framework) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
 
 This tutorial provides an approach to implement a ticket booking system using Medusa. Depending on your specific requirements, you might need to adjust the implementation details or explore a different approach.
 
@@ -173328,7 +173334,7 @@ Follow the step-by-step [Ticket Booking System Example](undefined/home/runner/wo
 
 A ticket booking system allows customers to book tickets for events, such as shows or sports games. By using a ticket booking system, you can manage shows, venues, and seat availability, among other features.
 
-Medusa's [Framework](undefined/docs/learn/fundamentals/framework) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules).
+The Medusa [Framework](undefined/docs/learn/fundamentals/framework) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules).
 
 To support ticket-booking features, you can customize the Medusa application by creating a Ticket Booking Module, linking its data models to Medusa's existing models, and building flows around the module.
 
