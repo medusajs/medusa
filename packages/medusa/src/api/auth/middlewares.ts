@@ -83,6 +83,15 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/auth/:auth_provider/user",
+    middlewares: [
+      authenticate("user", "bearer", {
+        allowUnregistered: true,
+      }),
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/callback",
     middlewares: [validateScopeProviderAssociation()],
   },

@@ -1,6 +1,7 @@
 import {
   GraphResultSet,
   IIndexService,
+  ISearchModuleService,
   LoadedModule,
   MedusaContainer,
   ModuleJoinerConfig,
@@ -12,6 +13,8 @@ import {
   RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
+  SearchResultSet,
+  SearchTypes,
 } from "@medusajs/types"
 import {
   MedusaError,
@@ -49,6 +52,7 @@ export class Query {
   #remoteJoiner: RemoteJoiner
   #joinerConfigs: ModuleJoinerConfig[]
   #indexModule: IIndexService
+  #searchModule?: ISearchModuleService
   protected container: MedusaContainer
 
   static traceGraphQuery?: (
@@ -82,16 +86,19 @@ export class Query {
     remoteJoiner,
     joinerConfigs,
     indexModule,
+    searchModule,
     container,
   }: {
     remoteJoiner: RemoteJoiner
     joinerConfigs: ModuleJoinerConfig[]
     indexModule: IIndexService
+    searchModule?: ISearchModuleService
     container: MedusaContainer
   }) {
     this.#remoteJoiner = remoteJoiner
     this.#joinerConfigs = joinerConfigs
     this.#indexModule = indexModule
+    this.#searchModule = searchModule
     this.container = container
   }
 
@@ -182,6 +189,70 @@ export class Query {
     }
 
     return result
+  }
+
+  /**
+   * Runs a search and expands the hits with `query.graph`.
+   *
+   * The engine only holds what its index was defined with, so the requested
+   * fields are split: what the index can return comes back from the search, and
+   * the rest is fetched by id. Search order is preserved through the expand.
+   */
+  async search<const TEntry extends string>(
+    queryOptions: SearchTypes.SearchQuery<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<SearchResultSet<TEntry>> {
+    if (!this.#searchModule) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Search module is not loaded."
+      )
+    }
+
+    const entity = queryOptions.entity
+    const retrievableFields = this.#searchModule.listRetrievableFields(entity)
+    // Without an explicit selection, return what the index holds.
+    const requested = queryOptions.fields ?? retrievableFields
+    const retrievable = new Set(retrievableFields)
+
+    const indexFields = requested.filter((field) => retrievable.has(field))
+    const graphFields = requested.filter((field) => !retrievable.has(field))
+
+    const searchResult = await this.#searchModule.search({
+      ...queryOptions,
+      fields: indexFields,
+    })
+
+    let data = searchResult.hits.map((hit) => hit.document) as any[]
+
+    if (graphFields.length && data.length) {
+      // A hit is identified by the index' primary key, and the fetched rows are
+      // merged back onto the documents by it, so it has to be both filtered on
+      // and selected — whether or not the caller asked for it.
+      const { primary_key: primaryKey } = this.#searchModule.getIndex(entity)
+      const hydrationFields = graphFields.includes(primaryKey)
+        ? graphFields
+        : [...graphFields, primaryKey]
+
+      const expanded = await this.graph(
+        {
+          entity,
+          fields: hydrationFields,
+          filters: {
+            [primaryKey]: searchResult.hits.map((hit) => hit.id),
+          } as any,
+          // `take` forces the select-in strategy, as in `index`.
+          pagination: { take: searchResult.hits.length },
+        } as RemoteQueryInput<TEntry>,
+        // `initialData` merges what the engine returned into the fetched rows
+        // and keeps them in search order.
+        { ...options, initialData: data }
+      )
+
+      data = expanded.data
+    }
+
+    return { data, search_result: searchResult } as SearchResultSet<TEntry>
   }
 
   @Cached(queryCacheDecoratorOptions)
@@ -281,11 +352,13 @@ export function createQuery({
   modulesLoaded,
   relationMap,
   indexModule,
+  searchModule,
   container,
 }: {
   modulesLoaded: LoadedModule[]
   relationMap: RelationMap
   indexModule: IIndexService
+  searchModule?: ISearchModuleService
   container: MedusaContainer
 }) {
   const joinerConfigs: ModuleJoinerConfig[] = []
@@ -318,6 +391,7 @@ export function createQuery({
     remoteJoiner,
     joinerConfigs,
     indexModule,
+    searchModule,
     container,
   })
 
@@ -326,6 +400,7 @@ export function createQuery({
       remoteJoiner,
       joinerConfigs,
       indexModule,
+      searchModule,
       container,
     }).query.apply(query, args)
   }
@@ -333,6 +408,7 @@ export function createQuery({
   backwardCompatibleQuery.graph = query.graph.bind(query)
   backwardCompatibleQuery.gql = query.gql.bind(query)
   backwardCompatibleQuery.index = query.index.bind(query)
+  backwardCompatibleQuery.search = query.search.bind(query)
 
   return backwardCompatibleQuery as Omit<RemoteQueryFunction, symbol>
 }

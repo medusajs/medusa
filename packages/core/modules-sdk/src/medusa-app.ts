@@ -4,6 +4,7 @@ import {
   ExternalModuleDeclaration,
   FlagSettings,
   IIndexService,
+  ISearchModuleService,
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
@@ -14,6 +15,7 @@ import {
   ModuleExports,
   ModuleServiceInitializeOptions,
   RemoteQueryFunction,
+  SearchTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -210,6 +212,29 @@ export async function loadModules(args: {
       }
       declaration.options.database.debug ??=
         sharedResourcesConfig?.database?.debug
+    }
+
+    /**
+     * The Search Module does not discover its own definitions; the app loads them
+     * off the file system (`search/`) and passes them in, like links.
+     *
+     * Inline ones go through the registry too, so the registry holds everything indexed and
+     * not just what came off disk. The ingestion subscriber uses the registry to know what
+     * events to listen to.
+     */
+    if (moduleName === Modules.SEARCH) {
+      const configured = (declaration.options?.indexes ??
+        []) as SearchTypes.SearchIndexDefinition[]
+
+      for (const definition of configured) {
+        MedusaModule.setSearchIndex(definition)
+      }
+
+      const registered = MedusaModule.getSearchIndexes()
+
+      if (registered.length) {
+        declaration.options = { ...declaration.options, indexes: registered }
+      }
     }
 
     modulesToLoad.push({
@@ -732,6 +757,10 @@ async function MedusaApp_({
     allowUnregistered: true,
   }) as IIndexService
 
+  const searchModule = sharedContainer_.resolve(Modules.SEARCH, {
+    allowUnregistered: true,
+  }) as ISearchModuleService
+
   return {
     onApplicationShutdown,
     onApplicationPrepareShutdown,
@@ -742,6 +771,7 @@ async function MedusaApp_({
       modulesLoaded,
       relationMap,
       indexModule,
+      searchModule,
       container: sharedContainer_,
     }) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
     entitiesMap,

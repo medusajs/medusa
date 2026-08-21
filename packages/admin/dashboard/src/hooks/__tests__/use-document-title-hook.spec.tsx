@@ -32,7 +32,7 @@ describe("useDocumentTitle", () => {
         id: "products",
         pathname: "/products",
         params: {},
-        data: undefined,
+        loaderData: undefined,
         handle: { breadcrumb: () => "Products" },
       },
     ])
@@ -48,18 +48,18 @@ describe("useDocumentTitle", () => {
         id: "products",
         pathname: "/products",
         params: {},
-        data: undefined,
+        loaderData: undefined,
         handle: { breadcrumb: () => "Products" },
       },
       {
         id: "product-detail",
         pathname: "/products/prod_1",
         params: { id: "prod_1" },
-        data: { product: { title: "Medusa Sweatpants" } },
+        loaderData: { product: { title: "Medusa Sweatpants" } },
         handle: {
           breadcrumb: () => createElement("span", null, "Hidden"),
-          seo: (match: { data: { product: { title: string } } }) => ({
-            title: match.data?.product?.title,
+          seo: (match: { loaderData: { product: { title: string } } }) => ({
+            title: match.loaderData?.product?.title,
           }),
         },
       },
@@ -76,14 +76,14 @@ describe("useDocumentTitle", () => {
         id: "products",
         pathname: "/products",
         params: {},
-        data: undefined,
+        loaderData: undefined,
         handle: { breadcrumb: () => "Products" },
       },
       {
         id: "product-detail",
         pathname: "/products/prod_1",
         params: { id: "prod_1" },
-        data: { product: { title: "Medusa Sweatpants" } },
+        loaderData: { product: { title: "Medusa Sweatpants" } },
         handle: { seo: () => ({ title: "Medusa Sweatpants" }) },
       },
     ])
@@ -99,14 +99,14 @@ describe("useDocumentTitle", () => {
         id: "products",
         pathname: "/products",
         params: {},
-        data: undefined,
+        loaderData: undefined,
         handle: { breadcrumb: () => "Products" },
       },
       {
         id: "product-detail",
         pathname: "/products/prod_1",
         params: { id: "prod_1" },
-        data: undefined,
+        loaderData: undefined,
         handle: {
           breadcrumb: () => createElement("span", null, "Hidden"),
           seo: () => ({ title: undefined }),

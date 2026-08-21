@@ -5,14 +5,15 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
+import { useSearchIndexes } from "../../../hooks/api/search-indexes"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../providers/permissions-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../providers/permissions-provider"
 
 export const SettingsLayout = () => {
   return (
@@ -119,6 +120,7 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
+  const { enabled: isSearchEnabled } = useSearchIndexes()
 
   return useMemo(
     () => [
@@ -134,8 +136,16 @@ const useDeveloperRoutes = (): INavItem[] => {
         label: t("workflowExecutions.domain"),
         to: "/settings/workflows",
       },
+      ...(isSearchEnabled
+        ? [
+            {
+              label: t("searchIndexes.domain"),
+              to: "/settings/search",
+            },
+          ]
+        : []),
     ],
-    [t]
+    [t, isSearchEnabled]
   )
 }
 
