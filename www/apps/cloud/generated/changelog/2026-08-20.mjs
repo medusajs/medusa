@@ -12,5 +12,5 @@ export default {
 - Cloud no longer copies the generated instructions for your local agent automatically. Click **Get instructions for local agent** and copy them yourself.
 - You can now create a log drain for a project to forward its backend and storefront logs to an external observability provider over the OpenTelemetry (OTLP) protocol. Supported providers are Sentry, Datadog, Grafana, Google Cloud, and any generic OTLP-compatible endpoint. Refer to [Log Drains](https://docs.medusajs.com/cloud/projects/log-drains) for more details.
 - The environment variables table now displays 15 variables per page instead of 5, reducing the need to paginate through large variable sets. Refer to [Environment Variables](https://docs.medusajs.com/cloud/environments/environment-variables) for more details.
-- The sidebar navigation has been redesigned to improve discoverability of features and reduce clutter. To use the sidebar, you must have it enabled in [your profile settings](https://docs.medusajs.com/cloud/navigation#change-navigation-style-preference).`,
+- The sidebar navigation now has a redesigned structure that improves the discoverability of features and reduces clutter.`,
 }
