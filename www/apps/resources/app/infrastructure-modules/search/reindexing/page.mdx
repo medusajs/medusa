@@ -239,3 +239,67 @@ Use `swap` when the seed's output shrank, so removed documents don't linger.
 Passing `filters` always rebuilds in place, even if you set `strategy` to `swap`. A partial rebuild would only hold the filtered slice, so aliasing it over the live index would delete every other document.
 
 </Note>
+
+---
+
+## Keeping Indexes in Sync
+
+An index holds a copy of your data, so it can fall behind the database. The [`events` and `consume`](../index-definitions/page.mdx#keep-an-index-up-to-date) properties of an index definition close that gap as changes happen, and a reindex repairs it when the gap grows too wide.
+
+### Why an Index Diverges
+
+An index drifts from the database for one of the following reasons:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Reason
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Details
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        A change emits no declared event
+      </Table.Cell>
+      <Table.Cell>
+        Nothing routes a change whose event name is missing from the definition's `events` array. The same applies to a change that emits no event at all, such as a direct SQL update.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `consume` throws
+      </Table.Cell>
+      <Table.Cell>
+        The Event Bus Module logs the failure. The change never lands in the index.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        An in-place rebuild left documents behind
+      </Table.Cell>
+      <Table.Cell>
+        The `in_place` strategy writes over the documents the seed produces and keeps the rest. Documents the seed no longer produces stay in the index. Refer to [Reindex Strategies](#reindex-strategies).
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Recover with a Reindex
+
+A reindex is the repair path for a diverged index, since it rebuilds documents from the definition's `seed` function rather than from an event. Refer to [Seeding on Demand](#seeding-on-demand) for how to call it.
+
+Two details matter when you reindex to recover:
+
+- Pass `filters` to rebuild only the affected slice. A filtered run costs less than a full rebuild, and it always writes in place, so the documents outside the slice keep serving reads.
+- Omit `filters` and keep the default `swap` strategy for a full repair. `swap` drops documents that the seed no longer produces, which `in_place` leaves behind.
+
+<Note title="Tip">
+
+Query the `search_index_sync` table to find out whether a run succeeded, how many documents it wrote, and the error it failed with.
+
+</Note>
