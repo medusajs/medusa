@@ -71,6 +71,8 @@ export const exportProductsStep = createStep(
     const { sales_channel_id, ..._filters } = input.filter ?? {}
 
     while (true) {
+      let linkPageLength: number | undefined
+
       if (!!sales_channel_id) {
         const { data: salesChannelProducts } = await query.graph({
           entity: "product_sales_channel",
@@ -84,7 +86,12 @@ export const exportProductsStep = createStep(
           },
         })
 
+        linkPageLength = salesChannelProducts.length
         _filters.id = salesChannelProducts.map((product) => product.product_id)
+
+        if (linkPageLength === 0) {
+          break
+        }
       }
 
       const { data: products } = await query.graph({
@@ -100,30 +107,39 @@ export const exportProductsStep = createStep(
             },
       })
 
-      if (products.length === 0) {
+      if (products.length === 0 && linkPageLength === undefined) {
         break
       }
 
-      const normalizedProducts = normalizeForExport(products, { regions })
+      // A page of the link table can be emptied entirely by the remaining
+      // filters, which is not the end of the export.
+      if (products.length > 0) {
+        const normalizedProducts = normalizeForExport(products, { regions })
 
-      const batchCsv = json2csv(normalizedProducts, {
-        prependHeader: !hasHeader,
-        arrayIndexesAsKeys: true,
-        expandNestedObjects: true,
-        expandArrayObjects: true,
-        unwindArrays: false,
-        preventCsvInjection: true,
-        emptyFieldValue: "",
-      })
+        const batchCsv = json2csv(normalizedProducts, {
+          prependHeader: !hasHeader,
+          arrayIndexesAsKeys: true,
+          expandNestedObjects: true,
+          expandArrayObjects: true,
+          unwindArrays: false,
+          preventCsvInjection: true,
+          emptyFieldValue: "",
+        })
 
-      const ok = writeStream.write((hasHeader ? "\n" : "") + batchCsv)
-      if (!ok) {
-        await new Promise((resolve) => writeStream.once("drain", resolve))
+        const ok = writeStream.write((hasHeader ? "\n" : "") + batchCsv)
+        if (!ok) {
+          await new Promise((resolve) => writeStream.once("drain", resolve))
+        }
+
+        hasHeader = true
       }
 
-      hasHeader = true
-
-      if (products.length < pageSize) {
+      // When a sales channel is given, the cursor above advances over the
+      // product_sales_channel link table, so its page length is what says
+      // whether another page exists. The product query is filtered and
+      // de-duplicated, so it can return fewer rows than the link page
+      // without the channel being exhausted.
+      if ((linkPageLength ?? products.length) < pageSize) {
         break
       }
 
