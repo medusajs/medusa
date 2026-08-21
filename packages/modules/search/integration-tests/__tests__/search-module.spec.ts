@@ -16,8 +16,8 @@ jest.setTimeout(120000)
 
 type SearchService = SearchTypes.ISearchModuleService
 
-// The startup hook is what migration and seeding hang off, so the lifecycle
-// tests re-run it to simulate a boot.
+// The startup hook seeds indexes, so the lifecycle tests re-run it to simulate
+// a boot.
 const boot = (service: SearchService) =>
   (service as any).onApplicationStart_() as Promise<void>
 
