@@ -27,31 +27,41 @@ export type Logo = {
 }
 
 /**
- * Builds a standalone SVG of the logomark, filled with a vertical gradient, as a
- * data URI — which is how satori takes SVG.
+ * Builds a standalone SVG of the logomark as a data URI — which is how satori
+ * takes SVG.
+ *
+ * Pass a `gradient` for a vertical sheen, or a `color` for a flat fill; a
+ * gradient wins when both are given.
  */
 export function logoDataUri({
   height,
   gradient,
+  color = "#FFFFFF",
 }: {
   height: number
-  gradient: GradientStop[]
+  gradient?: GradientStop[]
+  color?: string
 }): Logo {
   const width = height * LOGO_ASPECT
   const { x, y, width: w, height: h } = LOGO_INK
 
-  const stops = gradient
+  const stops = (gradient ?? [])
     .map(
-      ([offset, color]) => `<stop offset="${offset}" stop-color="${color}"/>`
+      ([offset, stopColor]) =>
+        `<stop offset="${offset}" stop-color="${stopColor}"/>`
     )
     .join("")
+
+  const defs = gradient
+    ? `<defs><linearGradient id="m" x1="0" y1="${y}" x2="0" y2="${y + h}" ` +
+      `gradientUnits="userSpaceOnUse">${stops}</linearGradient></defs>`
+    : ""
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" ` +
     `height="${height}" viewBox="${x} ${y} ${w} ${h}">` +
-    `<defs><linearGradient id="m" x1="0" y1="${y}" x2="0" y2="${y + h}" ` +
-    `gradientUnits="userSpaceOnUse">${stops}</linearGradient></defs>` +
-    `<path fill="url(#m)" d="${LOGO_PATH}"/>` +
+    defs +
+    `<path fill="${gradient ? "url(#m)" : color}" d="${LOGO_PATH}"/>` +
     `</svg>`
 
   return {

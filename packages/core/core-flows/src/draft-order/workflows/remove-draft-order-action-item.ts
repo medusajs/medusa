@@ -22,6 +22,7 @@ import { validateDraftOrderRemoveActionItemStep } from "../steps/validate-draft-
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
 
 export const removeDraftOrderActionItemWorkflowId =
   "remove-draft-order-action-item"
@@ -97,6 +98,12 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "refetched-order-query" })
+
+    // Calculated shipping prices can depend on the order's items, so refresh
+    // them after the item is removed.
+    refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
+      input: { order_id: input.order_id },
+    })
 
     const appliedPromoCodes: string[] = transform(
       refetchedOrder,

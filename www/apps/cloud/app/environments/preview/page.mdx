@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper, InlineIcon } from "docs-ui"
+import { InlineIcon } from "docs-ui"
 import { XMark } from "@medusajs/icons"
 
 export const metadata = {
@@ -38,8 +38,6 @@ So, if you're testing scheduled jobs or events, they may not work as expected in
 
 To view the preview environments for a project, go to the [project's dashboard](../../projects/page.mdx#open-project-dashboard). You'll see a "Previews" card with all the preview environments for the project.
 
-![Project dashboard with the Previews card highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788489/Cloud/CleanShot_2026-01-07_at_14.21.14_2x_mhlotb.png)
-
 ---
 
 ## Create Preview Environment
@@ -49,8 +47,6 @@ To create a new preview environment, create a PR towards a branch that has an en
 Medusa will automatically create a preview environment for the PR and deploy the changes to that environment. Everytime you push a new commit to the PR, Medusa will redeploy the preview environment with the latest changes.
 
 You can also view the preview deployment and its status in the comment made on your PR in GitHub.
-
-![Preview environment deployment comment in GitHub PR](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789702/Cloud/CleanShot_2026-01-07_at_14.41.31_2x_kc2dms.png)
 
 ---
 
@@ -65,13 +61,11 @@ You can increase this limit either from the [Billing](../../billing/manage/page.
 To increase the concurrent previews limit from the project dashboard:
 
 1. Go to the [project's dashboard](../../projects/page.mdx#open-project-dashboard).
-2. In the "Previews" card, click the "Provision" button.
+2. In the "Previews" card, click the **Provision** button.
 3. In the pop-up that opens, you can see how much it would cost to increase the limit.
-4. Click the "Increase limit and deploy preview" button to confirm.
+4. Click the **Increase limit and deploy preview** button to confirm.
 
 This will increase the concurrent previews limit across projects in your organization, and you can view your updated bill in the [Invoices](../../billing/page.mdx#view-billing-history-and-invoices) settings.
-
-![Provision preview environments pop-up in the project dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1759410384/Cloud/CleanShot_2025-10-02_at_16.04.33_2x_z5zpw6.png)
 
 ---
 
@@ -81,41 +75,18 @@ Similar to long-lived environments, you can open a preview environment's dashboa
 
 To open a preview environment's dashboard:
 
-
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
-    2. In the "Previews" card, click on the preview environment you want to view.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
-    2. Click on the preview environment name in the sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
+2. In the "Previews" table, click on the row of the preview environment you want to view. This will open the preview environment's dashboard.
 
 Then, you can manage the preview environment just like any other long-lived environment. You can [manage its environment variables](../environment-variables/page.mdx) and [import/export its database dump](../../database/page.mdx).
-
-![Preview environment dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789877/Cloud/CleanShot_2026-01-07_at_14.44.30_2x_uswpei.png)
 
 ### Access Deployed Preview Environment
 
 Once the preview environment has finished deploying, you can access its Medusa Admin and storefront (if applicable) from the preview environment's dashboard. You can click on the URL of the backend or storefront to open them in a new tab.
 
-![Preview button in the project's dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789953/Cloud/CleanShot_2026-01-07_at_14.45.38_2x_bqe8k1.png)
-
 To log into the Medusa Admin of the preview environment, use the admin credentials of the Production or associated environment. If you [configured the shared previews settings](#manage-shared-previews-settings) to use a different environment's database, you can log in with the admin credentials of that environment instead.
 
-You can also [send requests to the preview deployment's API](../../deployments/page.mdx#send-requests-to-the-deployment).
+You can also [send requests to the preview deployment's API](../../deployments/page.mdx#access-live-deployment).
 
 ### Preview URL Format
 
@@ -154,8 +125,9 @@ Shared settings are also useful to specify when preview environments are created
 
 To manage the shared settings for preview environments:
 
-1. In a [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the **Previews** tab.
-2. This opens the shared settings page for both Backend and Storefront. You can change the view by toggling the **Backend** or **Storefront** tabs. It includes the following settings:
+1. Go to the [project's dashboard](../../projects/page.mdx#open-project-dashboard).
+2. Click **Preview Settings** in the sidebar.
+3. This opens the shared settings page for both Backend and Storefront. You can change the view by toggling the **Backend** or **Storefront** tabs. It includes the following settings:
   - **Environment variables**: Manage environment variables shared across all preview environments, as explained in the [Manage Environment Variables](../environment-variables/page.mdx) guide. All preview environments created after making changes will inherit these variables.
   - **Provisioning Rules**: (Backend tab) Define conditions that control when a preview environment is provisioned for a pull request (PR). To add new conditions:
     - Click **Add condition**.
@@ -166,7 +138,7 @@ To manage the shared settings for preview environments:
     - If you add multiple conditions, you can change how the conditions are joined. Choose **and** to match all conditions; choose **or** to match one of the conditions.
     - Once you're done, click the **Save** button.
   - **Deploy Rules**: Define conditions that control when a provisioned preview environment is deployed. Available fields are **Author** and **Commit message**. Use the same operators and logic options as provisioning rules. Click **Save** to apply changes.
-  - **Database base branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
+  - **Database source branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging. If you want preview environments to use a dedicated database that isn't linked to any long-lived environment, select **Preview Settings** and upload a data dump.
 
 <Note>
 

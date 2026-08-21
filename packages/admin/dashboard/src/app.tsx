@@ -19,6 +19,12 @@ import {
 
 import "./index.css"
 
+import { registerReloadOnPreloadError } from "./lib/reload-on-preload-error"
+
+if (typeof window !== "undefined") {
+  registerReloadOnPreloadError()
+}
+
 const localPlugin = {
   widgetModule,
   routeModule,

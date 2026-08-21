@@ -216,9 +216,14 @@ In the `createBrandsInCmsStep`, you resolve the CMS Module's service from the mo
 ### Injecting Dependencies to Module
 
 Some cases still require you to access external resources, mainly [Infrastructure Modules](!resources!/infrastructure-modules) or Framework tools, in your module.
-For example, you may need the [Event Module](!resources!/infrastructure-modules/event) to emit events from your module's service.
 
-In those cases, you can inject the dependencies to your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
+<Note>
+
+The following services are available in every module's container by default, without any `dependencies` declaration: `logger`, `event_bus`, `manager`, `configModule`, and `pgConnection`. Refer to the [Module Container Resources](!resources!/medusa-container-resources) for the full list.
+
+</Note>
+
+For other Infrastructure Modules not in the default set, you can inject them into your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
 
 <Note type="warning">
 
@@ -226,7 +231,7 @@ Use this approach only when absolutely necessary, where workflows aren't suffici
 
 </Note>
 
-For example:
+For example, to inject the Analytics Module:
 
 ```ts title="medusa-config.ts"
 import { Modules } from "@medusajs/framework/utils"
@@ -237,14 +242,14 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/blog",
       dependencies: [
-        Modules.EVENT_BUS,
+        Modules.ANALYTICS,
       ],
     },
   ],
 })
 ```
 
-In this example, you inject the Event Module's service to your module's container.
+In this example, you inject the Analytics Module's service into your module's container.
 
 <Note>
 
@@ -252,25 +257,26 @@ Only the main service will be injected into the module's container.
 
 </Note>
 
-You can then use the Event Module's service in your module's service:
+You can then use the Analytics Module's service in your module's service:
 
 ```ts title="Example Service"
-class BlogModuleService {
-  protected eventBusService_: AbstractEventBusModuleService
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
 
-  constructor({ event_bus }) {
-    this.eventBusService_ = event_bus
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
   }
 
   performAction() {
     // TODO perform action
 
-    this.eventBusService_.emit({
-      name: "custom.event",
-      data: {
-        id: "123",
-        // other data payload
-      },
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe"
+      }
     })
   }
 }

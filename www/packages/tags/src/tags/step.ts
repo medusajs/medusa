@@ -28,6 +28,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep"
   },
   {
+    "title": "deleteAuthIdentityStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteAuthIdentityStep"
+  },
+  {
     "title": "requestVerificationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
   },
@@ -86,6 +90,10 @@ export const step = [
   {
     "title": "getLineItemActionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemActionsStep"
+  },
+  {
+    "title": "getLineItemPricingQuantitiesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep"
   },
   {
     "title": "getPromotionCodesToApply",
@@ -214,6 +222,10 @@ export const step = [
   {
     "title": "validateGiftCardStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateGiftCardStep"
+  },
+  {
+    "title": "validateGiftCardsNotExpiredStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateGiftCardsNotExpiredStep"
   },
   {
     "title": "createEntitiesStep",
@@ -478,6 +490,10 @@ export const step = [
   {
     "title": "deleteInventoryItemStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteInventoryItemStep"
+  },
+  {
+    "title": "exportInventoryItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportInventoryItemsStep"
   },
   {
     "title": "updateInventoryItemsStep",

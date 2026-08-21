@@ -27,7 +27,9 @@ export const GET = async (
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  const indexes = new Set(searchModule?.listIndexes() ?? [])
+  const indexes = new Set(
+    ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
+  )
 
   // Caller narrows the set; otherwise search every index. If the module is on
   // but nothing is indexed yet, leave `entities` empty so we fall through to
@@ -99,6 +101,7 @@ async function searchIndexedEntities(
     fields: searchModule.listRetrievableFields(name),
     filters: q ? { q } : undefined,
     pagination: { skip, take },
+    search_options: q ? { match_strategy: "last" } : undefined,
   }))
 
   const results = await searchModule.searchMany(queries)

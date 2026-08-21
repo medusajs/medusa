@@ -24,6 +24,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-new-date-in-workflow")]: "error",
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
+        [ruleId("no-throw-in-workflow-constructor")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
         [ruleId("no-wildcard-with-specific-fields")]: "warn",
         [ruleId("import-from-framework-not-internal")]: "warn",
