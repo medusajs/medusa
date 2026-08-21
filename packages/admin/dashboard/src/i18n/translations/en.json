@@ -975,6 +975,8 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "quantityAcrossLocations": "{{quantity}} across {{locations}} locations",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "The unit stock is held and counted in. Shown next to quantities across the Admin.",
     "levelDeleted": "Inventory level deleted successfully.",
     "create": {
       "title": "Create Inventory Item",
@@ -1541,6 +1543,7 @@
       "markAsDelivered": "Mark as delivered",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "locationUnavailable": "Location deleted/unavailable",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
       "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
@@ -2746,6 +2749,9 @@
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
+    "copyResetPasswordLink": "Copy reset password link",
+    "copyResetPasswordLinkSuccess": "Reset password link copied to clipboard",
+    "copyResetPasswordLinkHint": "The link expires shortly and invalidates any reset password link previously sent to this user.",
     "expiredOnDate": "Expired on {{date}}",
     "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Accepted on {{date}}",
@@ -3396,6 +3402,26 @@
       }
     }
   },
+  "searchIndexes": {
+    "domain": "Search",
+    "subtitle": "View registered search indexes and rebuild them from source data.",
+    "fieldsLabel": "Indexed fields",
+    "providerLabel": "Provider",
+    "reindex": "Reindex",
+    "reindexConfirmationTitle": "Reindex {{name}}?",
+    "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
+    "reindexSuccess": "Reindexed {{name}}",
+    "noFields": "No fields are indexed.",
+    "list": {
+      "noRecordsMessage": "No search indexes are registered."
+    },
+    "status": {
+      "pending": "Pending",
+      "building": "Building",
+      "ready": "Ready",
+      "error": "Error"
+    }
+  },
   "shippingOptionTypes": {
     "domain": "Shipping Option Types",
     "subtitle": "Organize your shipping options into types.",
@@ -3650,6 +3676,7 @@
     "barcode": "Barcode",
     "countryOfOrigin": "Country of origin",
     "material": "Material",
+    "unitOfMeasure": "Unit of measure",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",

@@ -25,11 +25,13 @@ import {
 import {
   assertTaskAccepted,
   buildDisjunctiveFacetQueries,
+  listIndexedFields,
   listRetrievablePaths,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
+  SearchIndexState,
   validateFieldUsage,
 } from "@utils"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
@@ -134,8 +136,15 @@ export default class SearchModuleService
   }
 
   __hooks = {
-    onApplicationStart(this: SearchModuleService) {
-      return this.onApplicationStart_()
+    onApplicationStart: async () => {
+      // Seeding can take a long time on a large catalog and must not delay the
+      // worker from accepting jobs. Failures are logged rather than blocking boot.
+      void this.onApplicationStart_().catch((error) => {
+        this.logger_.error(
+          `[Search] Failed to seed search indexes: ${error.message}`,
+          error
+        )
+      })
     },
   }
 
@@ -213,6 +222,7 @@ export default class SearchModuleService
 
     const task = await provider.upsertDocuments({
       index: definition.physical_name,
+      definition,
       documents,
     })
 
@@ -252,14 +262,42 @@ export default class SearchModuleService
     })
   }
 
-  listIndexes(): string[] {
-    return [...this.indexes_.keys()]
+  async listIndexes(): Promise<SearchTypes.SearchIndexDetails[]> {
+    const definitions = [...this.indexes_.values()].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    )
+
+    if (!definitions.length) {
+      return []
+    }
+
+    const records = await this.context_.indexService.list(
+      { name: definitions.map((definition) => definition.name) },
+      { take: null }
+    )
+    const byName = new Map(records.map((record) => [record.name, record]))
+
+    return definitions.map((definition) => {
+      const record = byName.get(definition.name)
+
+      return {
+        name: definition.name,
+        entity: definition.entity,
+        provider: definition.provider,
+        status: record?.status ?? SearchIndexState.PENDING,
+        fields: listIndexedFields(definition.fields),
+      }
+    })
   }
 
   listRetrievableFields(index: string): string[] {
     return listRetrievablePaths(
       retrieveIndexDefinition(this.indexes_, index).fields
     )
+  }
+
+  getIndex(index: string): SearchTypes.ResolvedSearchIndexDefinition {
+    return retrieveIndexDefinition(this.indexes_, index)
   }
 
   async reindex(
@@ -272,25 +310,10 @@ export default class SearchModuleService
    * Seeds whatever needs data. Indexes that are not migrated yet are skipped —
    * creating and migrating physical indexes is the application's job
    * (e.g. `db:migrate`), not something a booting worker invents.
-   *
-   * The exception is a provider that asked for it through `migrate_on_startup`,
-   * whose indexes do not outlive the process that created them. Those are
-   * migrated here first, so the index and the data filling it are built by the
-   * same process.
    */
   protected async onApplicationStart_(): Promise<void> {
     if (!this.indexes_.size || !this.isWorkerMode) {
       return
-    }
-
-    // Unconditional for those providers: they start with nothing, so there is
-    // no state worth inspecting first.
-    for (const definition of this.indexes_.values()) {
-      const provider = this.searchProviderService_.retrieve(definition.provider)
-
-      if (provider.migrate_on_startup) {
-        await provider.upsertIndex({ index: definition })
-      }
     }
 
     const seeds = await this.createSeedPlan_()

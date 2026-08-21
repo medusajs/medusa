@@ -55,6 +55,14 @@ export interface SearchVectorOptions {
 export interface SearchOptions {
   // Defaults to every field marked `searchable` on the index.
   attributes_to_search_on?: string[]
+  /**
+   * How query terms combine.
+   *
+   * - `"all"` (default): every term must appear as a complete token.
+   * - `"any"`: at least one term must match.
+   * - `"last"`: typeahead. Completed terms must match in full; the last term
+   *   is a prefix, so `"my sear"` matches `"My search results"`.
+   */
   match_strategy?: SearchMatchStrategy
   typo_tolerance?: boolean
 
