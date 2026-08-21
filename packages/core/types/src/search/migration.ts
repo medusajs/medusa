@@ -3,7 +3,7 @@
  *
  * Planned and executed separately, like link migrations, so that `db:migrate`
  * can show what it is about to do. Every action is idempotent: running the plan
- * twice, or running it at startup after `db:migrate` already did, is a no-op.
+ * twice is a no-op.
  */
 export type SearchIndexMigrationAction =
   | {
