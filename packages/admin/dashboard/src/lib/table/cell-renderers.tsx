@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import ReactCountryFlag from "react-country-flag"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { getCountryByIso2 } from "../data/countries"
+import { getCountryDisplayName } from "../display-names"
 import { formatQuantity } from "../format-quantity"
 import { ProductCell } from "../../components/table/table-cells/product/product-cell"
 import { CollectionCell } from "../../components/table/table-cells/product/collection-cell"
@@ -418,7 +419,9 @@ const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
   }
 
   const country = getCountryByIso2(countryCode)
-  const displayName = country?.display_name || countryCode.toUpperCase()
+  const displayName =
+    getCountryDisplayName(countryCode, country?.display_name) ||
+    countryCode.toUpperCase()
 
   return (
     <Tooltip content={displayName}>

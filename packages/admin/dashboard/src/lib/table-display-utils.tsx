@@ -1,6 +1,7 @@
 import { Badge, StatusBadge, Tooltip } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 import { getCountryByIso2 } from "./data/countries"
+import { getCountryDisplayName } from "./display-names"
 import { getStylizedAmount } from "./money-amount-helpers"
 
 // Helper function to get nested value from object using dot notation
@@ -354,7 +355,9 @@ export const COMPUTED_COLUMN_FUNCTIONS = {
 
     // Get country information
     const country = getCountryByIso2(countryCode)
-    const displayName = country?.display_name || countryCode.toUpperCase()
+    const displayName =
+      getCountryDisplayName(countryCode, country?.display_name) ||
+      countryCode.toUpperCase()
 
     // Display country flag with tooltip - centered in the cell
     return (
