@@ -192,7 +192,7 @@ function fieldPredicate(
   }
 
   // Shorthand: bare value or list of values. On array fields this means
-  // membership ("array contains the value"), matching the local provider.
+  // membership ("array contains the value").
   if (raw === null || typeof raw !== "object" || Array.isArray(raw)) {
     const values = Array.isArray(raw) ? raw : [raw]
     return anyOfSql(planned, values, params)

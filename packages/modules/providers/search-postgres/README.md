@@ -101,7 +101,7 @@ await query.search({
 | ---------------- | ------------------------------------------------------- | ------------------------ |
 | Free text        | `ts_rank` + weights                                     | BM25 via `lakebase_bm25` |
 | Typo tolerance   | `pg_trgm` (`word_similarity`)                           | `pg_trgm` (same)         |
-| `match_strategy` | `"all"` (default), `"any"`                              | same                     |
+| `match_strategy` | `"all"` (default), `"any"`, `"last"`                    | same                     |
 | Filters          | `$eq` `$ne` `$in` `$nin` ranges, `$and`/`$or`/`$not`, … | same                     |
 | Facets           | value, range, stats — scoped to the query matches       | same                     |
 | `distinct`       | one hit per value, count follows                        | same                     |
@@ -109,7 +109,9 @@ await query.search({
 | Vector / hybrid  | —                                                       | ANN + RRF                |
 | `swapIndex`      | yes                                                     | yes                      |
 
-Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, correlated nested predicates, query-time locales, `match_strategy: "last"`.
+Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, correlated nested predicates, query-time locales.
+
+`"last"` is typeahead: completed terms must match in full and the last term is a prefix, so `"dtc sta"` matches `"Dtc starter"`.
 
 ### Filter semantics
 
@@ -117,8 +119,7 @@ Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination,
   `jsonb_path_ops` GIN index accelerates and which compares numbers and
   booleans natively.
 - On array fields, a bare value or `$eq` means membership — `{ tags: "sale" }`
-  matches documents whose `tags` array contains `"sale"`, the same collapse the
-  local provider uses.
+  matches documents whose `tags` array contains `"sale"`.
 - Range operators (`$gt`, …), `$prefix` and `$like` are rejected on array
   fields.
 

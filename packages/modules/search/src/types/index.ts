@@ -98,7 +98,7 @@ export type SearchIndexContext = {
 // Enough to resolve a definition and read its record — all the planners need.
 export type SearchIndexRegistry = Pick<
   SearchIndexContext,
-  "indexes" | "indexService" | "providers"
+  "indexes" | "indexService" | "providers" | "logger"
 >
 
 // What running a seed adds: the sync history it writes, the batch size, and the
