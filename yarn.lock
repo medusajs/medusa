@@ -3894,7 +3894,6 @@ __metadata:
     "@medusajs/region": 2.19.0
     "@medusajs/sales-channel": 2.19.0
     "@medusajs/search": 2.19.0
-    "@medusajs/search-local": 2.19.0
     "@medusajs/search-postgres": 2.19.0
     "@medusajs/settings": 2.19.0
     "@medusajs/stock-location": 2.19.0
@@ -4104,18 +4103,6 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.19.0
     "@medusajs/test-utils": 2.19.0
-  peerDependencies:
-    "@medusajs/framework": 2.19.0
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/search-local@2.19.0, @medusajs/search-local@workspace:packages/modules/providers/search-local":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/search-local@workspace:packages/modules/providers/search-local"
-  dependencies:
-    "@medusajs/framework": 2.19.0
-    "@medusajs/test-utils": 2.19.0
-    "@orama/orama": ^3.1.18
   peerDependencies:
     "@medusajs/framework": 2.19.0
   languageName: unknown
@@ -5257,13 +5244,6 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.1.0
   checksum: 1774930abdad57a716662a3feffe8a7aca8e4494303356f04c3e958fddcdb1df29d464ca91db890e0501728b4fb6c4b578f3ecb83004bcdc9d7e81b739d24459
-  languageName: node
-  linkType: hard
-
-"@orama/orama@npm:^3.1.18":
-  version: 3.1.18
-  resolution: "@orama/orama@npm:3.1.18"
-  checksum: 868be5143eb4a27e700d9cc866763d1cc04405ef0af6a6b6b6987dcf33ee5d4ba90d3a32cd134006d46d34d64e32500e13cd31436c718eadc396a940e793e7cd
   languageName: node
   linkType: hard
 
