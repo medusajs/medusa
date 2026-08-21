@@ -12,8 +12,11 @@ export type SearchIndexMigrationAction =
        * directly under its live name and filled in place.
        */
       action: "create"
+      /** The logical name of the index. */
       index: string
+      /** The name of the physical index to create. */
       physical_name: string
+      /** A hash of the index definition used to detect changes. */
       definition_hash: string
     }
   | {
@@ -32,8 +35,11 @@ export type SearchIndexMigrationAction =
       physical_name: string
       /** The index serving reads now. */
       live_physical_name: string
+      /** The logical name of the index. */
       index: string
+      /** A hash of the new index definition. */
       definition_hash: string
+      /** A hash of the currently-live index definition. */
       live_definition_hash: string
       /** The provider the definition now binds to. */
       provider: string
@@ -44,8 +50,14 @@ export type SearchIndexMigrationAction =
       previous_provider?: string
     }
   | {
+      /**
+       * The definition is unchanged. No work is required.
+       */
       action: "noop"
+      /** The logical name of the index. */
       index: string
+      /** The name of the physical index. */
       physical_name: string
+      /** A hash of the index definition. */
       definition_hash: string
     }
