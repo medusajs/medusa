@@ -8,7 +8,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 export type GetAllProductsStepInput = {
   /**
    * The fields to select. These fields will be passed to
-   * [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query), so you can
+   * [Query](https://docs.medusajs.com/learn/fundamentals/query), so you can
    * pass product properties or any relation names, including custom links.
    */
   select: string[]

@@ -46,7 +46,7 @@ export type GetOrdersListWorkflowOutput =
 export type GetOrdersListWorkflowInput = {
   /**
    * The fields and relations to retrieve in the order. These fields
-   * are passed to [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
+   * are passed to [Query](https://docs.medusajs.com/learn/fundamentals/query),
    * so you can pass names of custom models linked to the order.
    */
   fields: string[]
