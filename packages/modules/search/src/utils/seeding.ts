@@ -21,6 +21,9 @@ import { shadowIndexName } from "./migrations"
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
 type SyncContext = Pick<SearchIndexContext, "indexService" | "syncService">
 
+/** How often a long seed reports how many documents it has written. */
+const PROGRESS_LOG_INTERVAL_MS = 10_000
+
 /* -------------------------------- planning -------------------------------- */
 
 /**
@@ -131,6 +134,13 @@ async function runSeed(
   const provider = context.providers.retrieve(definition.provider)
   const record = await retrieveRecord(context, definition.name)
   const sync = await startSync(context, { record })
+  const startedAt = Date.now()
+
+  context.logger.info(
+    `[Search] Seeding "${definition.name}" (${action.reason}) into "${
+      action.target_physical_name
+    }"${formatResume(sync.last_key)}`
+  )
 
   await context.indexService.update({
     selector: { id: record.id },
@@ -149,6 +159,9 @@ async function runSeed(
     })
 
     if (action.swap) {
+      context.logger.info(
+        `[Search] Swapping "${definition.name}" onto "${definition.physical_name}"`
+      )
       await provider.swapIndex!({
         alias: definition.physical_name,
         index: action.target_physical_name,
@@ -167,6 +180,12 @@ async function runSeed(
         provider: definition.provider,
       },
     })
+
+    context.logger.info(
+      `[Search] Seeded "${definition.name}": ${formatCount(
+        documents_synced
+      )} in ${formatElapsed(Date.now() - startedAt)}`
+    )
   } catch (error) {
     await failSync(context, {
       sync_id: sync.id,
@@ -227,6 +246,7 @@ async function reindexOne(
     jobId,
     filters: input.filters,
   })
+  const startedAt = Date.now()
 
   // A partial rebuild must never swap: the replacement would only hold the
   // filtered slice, so aliasing over would delete everything else.
@@ -238,6 +258,12 @@ async function reindexOne(
   const target = useSwap
     ? shadowIndexName(definition)
     : definition.physical_name
+
+  context.logger.info(
+    `[Search] Reindexing "${definition.name}" into "${target}"${formatResume(
+      sync.last_key
+    )}`
+  )
 
   await context.indexService.update({
     selector: { id: record.id },
@@ -262,6 +288,9 @@ async function reindexOne(
     })
 
     if (useSwap) {
+      context.logger.info(
+        `[Search] Swapping "${definition.name}" onto "${definition.physical_name}"`
+      )
       await provider.swapIndex!({
         alias: definition.physical_name,
         index: target,
@@ -278,6 +307,12 @@ async function reindexOne(
         provider: definition.provider,
       },
     })
+
+    context.logger.info(
+      `[Search] Reindexed "${definition.name}": ${formatCount(
+        documents_synced
+      )} in ${formatElapsed(Date.now() - startedAt)}`
+    )
   } catch (error) {
     // Leave the replacement behind on failure; the live one is untouched.
     await failSync(context, { sync_id: sync.id, record_id: record.id, error })
@@ -311,6 +346,34 @@ async function streamSeed(
 
   let buffer: SearchTypes.SearchDocument[] = []
   let synced = 0
+  let lastKey: string | undefined
+  const startedAt = Date.now()
+  let lastLoggedAt = startedAt
+  let lastLoggedCount = 0
+
+  const reportProgress = (force = false) => {
+    const now = Date.now()
+    if (
+      !force &&
+      (synced === lastLoggedCount ||
+        now - lastLoggedAt < PROGRESS_LOG_INTERVAL_MS)
+    ) {
+      return
+    }
+
+    const elapsedMs = now - startedAt
+    const elapsedSec = Math.max(elapsedMs / 1000, 0.001)
+    const rate = Math.round(synced / elapsedSec)
+    const cursor = lastKey ? `, last key ${lastKey}` : ""
+
+    context.logger.info(
+      `[Search] "${index.name}": ${formatCount(synced)} synced in ${formatElapsed(
+        elapsedMs
+      )} (${rate}/s)${cursor}`
+    )
+    lastLoggedAt = now
+    lastLoggedCount = synced
+  }
 
   const flush = async () => {
     if (!buffer.length) {
@@ -332,14 +395,18 @@ async function streamSeed(
     await settle(context, index, task)
 
     synced += batch.length
+    lastKey = batch[batch.length - 1][index.primary_key] as string
 
     await context.syncService.update({
       selector: { id: sync_id },
       data: {
         documents_synced: synced,
-        last_key: batch[batch.length - 1][index.primary_key] as string,
+        last_key: lastKey,
       },
     })
+
+    // First flush so a long seed is visibly moving; then at most every 10s.
+    reportProgress(lastLoggedCount === 0)
   }
 
   for await (const documents of index.seed({
@@ -477,6 +544,31 @@ async function findResumableSync(
 }
 
 /* --------------------------------- helpers -------------------------------- */
+
+function formatCount(count: number): string {
+  return `${count.toLocaleString("en-US")} document${count === 1 ? "" : "s"}`
+}
+
+function formatElapsed(ms: number): string {
+  const seconds = Math.max(0, Math.round(ms / 1000))
+  if (seconds < 60) {
+    return `${seconds}s`
+  }
+
+  const minutes = Math.floor(seconds / 60)
+  const rest = seconds % 60
+  if (minutes < 60) {
+    return rest ? `${minutes}m ${rest}s` : `${minutes}m`
+  }
+
+  const hours = Math.floor(minutes / 60)
+  const minutesRest = minutes % 60
+  return minutesRest ? `${hours}h ${minutesRest}m` : `${hours}h`
+}
+
+function formatResume(lastKey: string | null | undefined): string {
+  return lastKey ? `, resuming after ${lastKey}` : ""
+}
 
 async function countDocuments(
   context: Pick<SearchIndexContext, "providers">,
