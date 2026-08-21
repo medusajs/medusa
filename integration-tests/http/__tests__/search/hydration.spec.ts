@@ -6,8 +6,6 @@ import {
   createAdminUser,
 } from "../../../helpers/create-admin-user"
 
-process.env.ENABLE_SEARCH_MODULE = "true"
-
 jest.setTimeout(120000)
 
 /**
@@ -78,10 +76,6 @@ medusaIntegrationTestRunner({
       )
 
       await searchModule.reindex()
-    })
-
-    afterAll(() => {
-      delete process.env.ENABLE_SEARCH_MODULE
     })
 
     describe("query.search", () => {

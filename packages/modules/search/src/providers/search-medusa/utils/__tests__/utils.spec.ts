@@ -190,6 +190,24 @@ describe("Medusa search utilities", () => {
     expect(query.query.limit).toBe(15)
   })
 
+  it("passes last_as_prefix for match_strategy last", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "dtc sta",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "last" },
+      },
+      plan
+    )
+
+    expect(query.query.rank_by).toEqual([
+      "Product",
+      3,
+      ["title", "BM25", "dtc sta", { last_as_prefix: true }],
+    ])
+  })
+
   it("builds and parses value and range facet queries", () => {
     const input: SearchTypes.ProviderSearchQuery = {
       index: definition,

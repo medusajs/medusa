@@ -13,6 +13,7 @@ import {
   createExtensionSql,
   extractPrimaryKeyFilter,
   IndexPlan,
+  keywordTsQuerySql,
   LAKEBASE_EXTENSIONS,
   mapFacetResult,
   normalizeFacetRequests,
@@ -939,7 +940,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const options = query.search_options ?? {}
     const q = query.q?.trim() || undefined
     const typo = !!(q && options.typo_tolerance)
-    const matchAny = options.match_strategy === "any"
+    const matchLast = options.match_strategy === "last"
     const searchOn = options.attributes_to_search_on ?? plan.searchable
     const searchAllFields =
       searchOn.length === plan.searchable.length &&
@@ -951,14 +952,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const textExpr = searchAllFields
       ? `"search_text"`
       : this.onTheFlyTextExpr(searchOn)
-    const useBm25 = this.isLakebase_ && !!q && searchAllFields
+    // Prefix queries (`match_strategy: "last"`) are expressed as a tsquery
+    // `:*`; BM25 ranks the raw query string and would score those hits 0.
+    const useBm25 = this.isLakebase_ && !!q && searchAllFields && !matchLast
 
     const tsquery = (params: unknown[]) => {
       params.push(q)
-      // plainto_tsquery ANDs every term; match_strategy "any" flips it to OR.
-      return matchAny
-        ? `replace(plainto_tsquery('${tsConfig}', ?)::text, ' & ', ' | ')::tsquery`
-        : `plainto_tsquery('${tsConfig}', ?)`
+      return keywordTsQuerySql(tsConfig, options.match_strategy)
     }
 
     const wordSim = (params: unknown[]) => {
