@@ -64,6 +64,16 @@ function resolve(
  */
 export function getCountryDisplayName(
   iso2: string | null | undefined,
+  fallback: string,
+  locale?: string
+): string
+export function getCountryDisplayName(
+  iso2: string | null | undefined,
+  fallback?: string,
+  locale?: string
+): string | undefined
+export function getCountryDisplayName(
+  iso2: string | null | undefined,
   fallback?: string,
   locale: string = i18n.language
 ): string | undefined {
@@ -74,6 +84,16 @@ export function getCountryDisplayName(
  * Translate an ISO 4217 currency code into the current admin language, falling back to the packaged
  * English name. Codes outside ISO 4217, such as `IRT`, resolve in no locale and always fall back.
  */
+export function getCurrencyDisplayName(
+  code: string | null | undefined,
+  fallback: string,
+  locale?: string
+): string
+export function getCurrencyDisplayName(
+  code: string | null | undefined,
+  fallback?: string,
+  locale?: string
+): string | undefined
 export function getCurrencyDisplayName(
   code: string | null | undefined,
   fallback?: string,
