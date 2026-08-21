@@ -27,7 +27,9 @@ export const GET = async (
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  const indexes = new Set(searchModule?.listIndexes() ?? [])
+  const indexes = new Set(
+    ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
+  )
 
   // Caller narrows the set; otherwise search every index. If the module is on
   // but nothing is indexed yet, leave `entities` empty so we fall through to

@@ -1,0 +1,95 @@
+import { Note, Kbd, InlineIcon } from "docs-ui"
+import { PlusMini, History, CommandLine, ThumbUp, ThumbDown } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Cloud Assistant`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the Cloud Assistant to ask questions about Medusa and your projects from anywhere in the Cloud dashboard.
+
+## What is the Cloud Assistant?
+
+The Cloud Assistant is an AI agent that answers questions about Medusa and about the projects in your organization. It can:
+
+- Help you find answers relevant to your organization, settings, and projects.
+- Diagnose why your builds and deployments are failing.
+- Remember important information about your projects to assist you better in the future.
+
+<Note>
+
+The Cloud Assistant can make mistakes. Verify its suggestions before you apply them to a production environment.
+
+</Note>
+
+---
+
+## Open the Cloud Assistant
+
+Click **Agent** at the top right of the Cloud dashboard to open the Cloud Assistant's panel.
+
+On wide screens, the panel docks next to the page, so you can keep browsing the dashboard while you chat. On smaller screens, the panel opens on top of the page, and you close it by pressing <Kbd>Esc</Kbd> or clicking outside it.
+
+Type your question in the message input at the bottom of the panel, then press <Kbd>↵</Kbd> to send it. To add a line break instead, press <Kbd>⇧</Kbd> + <Kbd>↵</Kbd>.
+
+---
+
+## Ask Questions in Context
+
+The Cloud Assistant knows which page you're on. A badge in the message input shows the context it uses, such as the project, environment, or build you're viewing.
+
+Since the Cloud Assistant has this context, you can ask questions like "Why did this build fail?" without naming the project or the build. You can still ask about other projects by naming them in your message.
+
+---
+
+## Manage Chats
+
+The Cloud Assistant's panel header holds the actions to manage your chats:
+
+- Click the <InlineIcon Icon={PlusMini} alt="plus" /> icon to start a new chat.
+- Click the <InlineIcon Icon={History} alt="history" /> icon to view your previous chats. Select a chat to continue it.
+
+Your chats are scoped to the organization you started them in. When you switch organizations, the assistant opens the last chat you had in the organization you switched to.
+
+### Avoid Long Chats
+
+When a chat gets long, the Cloud Assistant shows a **Starting a new task?** notice suggesting that you start a new chat for your next task. This is recommended to keep the assistant's context relevant to your current task.
+
+---
+
+## View AI Tools
+
+To view the AI tools available to Medusa Cloud users, such as the MCP server, skills, and migration prompts, click the <InlineIcon Icon={CommandLine} alt="command line" /> icon in the panel's header.
+
+This will open a side window with a list of the tools and how to use them.
+
+---
+
+## Assistant Memory
+
+The Cloud Assistant can record details you share, such as your stack or previous issues you ran into, and use them in later chats. It shows an **Updating memory** step in the chat when it records a memory.
+
+Memories are scoped to you within an organization, so a memory from one organization doesn't apply to another.
+
+The Cloud Assistant also knows how to update memories when their information changes. For example, if you change your project's stack, the Cloud Assistant will update its memory when it encounters the new stack in a chat.
+
+---
+
+## Get Instructions for a Local Agent
+
+When the Cloud Assistant suggests code changes, it shows a **Get instructions for local agent** button under its message. Click it to generate a summary of the suggested changes that you can copy into a local coding agent, such as Claude Code or Cursor.
+
+You can then pass the instructions as a prompt to the local agent to apply the changes in your codebase.
+
+---
+
+## Give Feedback
+
+At the bottom of the Cloud Assistant chat, click the <InlineIcon Icon={ThumbUp} alt="thumbs up" /> or <InlineIcon Icon={ThumbDown} alt="thumbs down" /> icon to rate it. The Medusa team uses this feedback to improve the Cloud Assistant.
+
+---
+
+## Contact Support
+
+If the Cloud Assistant can't resolve your issue, click **Contact support** under the message input to reach the Medusa team.

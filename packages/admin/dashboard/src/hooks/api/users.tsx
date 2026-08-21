@@ -16,6 +16,7 @@ const usersQueryKeys = {
   ...queryKeysFactory(USERS_QUERY_KEY),
   me: (query?: HttpTypes.AdminUserParams) =>
     [USERS_QUERY_KEY, "me", query ? { query } : undefined].filter((k) => !!k),
+  authProviders: (id: string) => [USERS_QUERY_KEY, id, "auth-providers"],
 }
 
 export const useMe = (
@@ -103,6 +104,41 @@ export const useUpdateUser = (
 
       options?.onSuccess?.(data, variables, context)
     },
+    ...options,
+  })
+}
+
+export const useUserAuthProviders = (
+  id: string,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminUserAuthProvidersResponse,
+      FetchError,
+      HttpTypes.AdminUserAuthProvidersResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.user.listAuthProviders(id),
+    queryKey: usersQueryKeys.authProviders(id),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useGenerateUserResetPasswordToken = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminUserResetPasswordTokenResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.user.generateResetPasswordToken(id),
     ...options,
   })
 }

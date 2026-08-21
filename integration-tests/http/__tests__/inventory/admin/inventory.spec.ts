@@ -927,6 +927,40 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create inventory items with a unit of measure", async () => {
+          const response = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "test-sku-lb",
+              unit_of_measure: "lb",
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku-lb",
+              unit_of_measure: "lb",
+            })
+          )
+
+          const updateResponse = await api.post(
+            `/admin/inventory-items/${response.data.inventory_item.id}`,
+            {
+              unit_of_measure: "kg",
+            },
+            adminHeaders
+          )
+
+          expect(updateResponse.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku-lb",
+              unit_of_measure: "kg",
+            })
+          )
+        })
+
         it("should create inventory items along with location levels", async () => {
           const response = await api.post(
             `/admin/inventory-items?fields=*location_levels`,

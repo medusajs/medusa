@@ -1,0 +1,203 @@
+import { Note, InlineIcon } from "docs-ui"
+import { PencilSquare, Trash } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Log Drains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to configure log drains to forward your project's logs to an external observability provider.
+
+<Note>
+
+Log drains are available on Scale and Enterprise plans. Learn more in the [plans an pricing](../../pricing/page.mdx) documentation.
+
+</Note>
+
+## What are Log Drains?
+
+Log drains let you stream your project's application logs to an external service. You can forward backend logs, storefront logs, or both, and filter by log level to control what gets sent. Only one log drain can be configured per project at a time.
+
+Supported providers include Sentry, Datadog, Grafana, Google Cloud Platform (GCP), and any generic OTLP-compatible endpoint.
+
+---
+
+## Create a Log Drain
+
+To create a log drain for a project:
+
+1. [Open the project's dashboard](../../projects/page.mdx#open-project-dashboard).
+2. Click the **Settings** tab.
+3. Click **Log Drains** in the sidebar.
+4. Click **Create log drain**.
+
+A full-screen modal opens with a two-step flow:
+
+### Step 1: Select a Provider
+
+Choose a provider from the grid. Available options are:
+
+- **Sentry**
+- **Datadog**
+- **Grafana**
+- **Google Cloud (GCP)**
+- **Other** (generic OTLP)
+
+### Step 2: Configure the Log Drain
+
+After selecting a provider, fill in the configuration form:
+
+- **Provider** (required): The observability provider. You can change this after the initial selection.
+- **Name** (required): A display name for the log drain.
+- **OTLP URL** (required, except for GCP which requires the service account JSON key): The endpoint URL to send logs to. For instructions on how to find the OTLP URL for each provider, see the [Find the OTLP URL and Headers](#find-the-otlp-url-and-headers) section below.
+- **Log Level** (optional): Filters which log levels are forwarded. Select **All** to forward every level, or pick a specific level:
+    - **Error**: Forwards only error logs.
+    - **Warn**: Forwards warning and error logs.
+    - **Info**: Forwards info, warning, and error logs.
+    - **HTTP**: Forwards HTTP request logs, which are a subset of info logs.
+    - **Verbose**: Forwards all logs, including debug and trace logs.
+- **Sources**: Two toggles that control which application logs are forwarded:
+  - **Backend**: Forwards backend application logs. Enabled by default.
+  - **Storefront**: Forwards storefront logs. Disabled by default.
+- **Environments**: Select which environments to forward logs from. By default, all environments are selected. You can select environment types like `Production`, `Long-lived`, and `Previews`. You can also select specific environments in your project by name. If you select specific environments, only logs from those environments are forwarded.
+- **Service account JSON key** (required for GCP): The JSON key for a GCP service account with the `roles/logging.logWriter` role. You can create a service account and download its key from the [GCP console](https://console.cloud.google.com/iam-admin/serviceaccounts).
+- **Headers** (Needed for OTLP only): Key/value pairs sent as HTTP headers with each log request. Provider-specific header keys are pre-filled (for example, `dd-api-key` for Datadog, `x-sentry-auth` for Sentry, and `Authorization` for Grafana and GCP). You can add rows with **Add Row**, mark a value as secret using the **Secret** toggle, remove individual rows, or clear all rows with **Clear All**.
+- **Resource Attributes**: OpenTelemetry resource attribute key/value pairs attached to every exported log. Several Medusa environment attributes are pre-populated. You can add or clear rows. You can set the value to a static value, to an environment variable using the `${VAR_NAME}` syntax, or one of the following built-in variables:
+  - `${_service_name}`: The name of the service that generated the log. Its value can be:
+    - `medusa-server` for logs coming from the server instance. For example, HTTP request logs.
+    - `medusa-worker` for logs coming from the worker instance. For example, background job logs.
+    - `medusa-db-migration` for logs coming from the database migration process. For example, logs generated when running migrations during deployment.
+    - `storefront` for logs coming from the storefront instance. For example, storefront request logs.
+  - `${_service_version}`: The version of the user's application, which is the commit hash of the deployment.
+  - `${_instance_id}`: The unique identifier of the service instance that generated the log. For example, for Medusa backend logs, this identifies the server that generated the log. Useful for log correlation.
+  - `${_region}`: The Cloud region where the service instance that generated the log is running. For example, if your project is in the `us-east-1` region, this variable resolves to `us-east-1`.
+  - `${_medusa_version}`: The version of Medusa running in the project. For example, `2.19.0`.
+  - `${_project_handle}`: The unique handle of the project.
+  - `${_project_name}`: The display name of the project. For example, `My Project`.
+  - `${_environment_handle}`: The unique handle of the environment.
+  - `${_environment_name}`: The display name of the environment. For example, `Production`.
+  - `${_environment_type}`: The type of the environment. It can be `production`, `long-lived`, or `preview-instance`.
+
+Click **Create log drain** to save the log drain. Afterwards, you must [redeploy](../../deployments/page.mdx#redeploy-a-deployment) every environment that the log drain applies to for the changes to take effect.
+
+---
+
+## Find the OTLP URL and Headers
+
+Each provider exposes its own OTLP logs endpoint and authentication header. Use the following sections to find the values to enter in the log drain form.
+
+<Note>
+
+Use the provider's OTLP **HTTP** endpoint for logs, which ends with `/v1/logs`, rather than its metrics or traces endpoint.
+
+</Note>
+
+### Setup OTLP Logs in Sentry
+
+Sentry accepts logs on a per-project OTLP endpoint:
+
+1. In Sentry, go to **Settings** > **Organization** > **Projects** and select your project.
+2. Click **Client Keys (DSN)** in the sidebar.
+3. In the **OpenTelemetry (OTLP)** tab of the key you want to use, click the **Expand** button to view all details.
+4. Copy the **OTLP Logs Endpoint** field. Its format is `https://o<organization-id>.ingest.sentry.io/api/<project-id>/integration/otlp/v1/logs`, where `<organization-id>` and `<project-id>` are your Sentry organization and project IDs, respectively.
+5. Copy the **OTLP Logs Endpoint Headers** field. It contains the `x-sentry-auth` header with the public key to use for authentication.
+
+Use the copied endpoint and header values in the [Configure the Log Drain](#step-2-configure-the-log-drain) form.
+
+Once you save the log drain and redeploy the log drain's environments, you can start seeing logs in Sentry by going to **Explore** > **Logs** in the Sentry dashboard.
+
+Refer to [Sentry's OTLP logs documentation](https://docs.sentry.io/concepts/otlp/direct/logs/) for more details.
+
+### Setup OTLP Logs in Datadog
+
+Datadog's OTLP logs intake endpoint differs per [Datadog site](https://docs.datadoghq.com/getting_started/site/), so read the endpoint from Datadog's documentation:
+
+1. Open [Datadog's OTLP logs intake documentation](https://docs.datadoghq.com/opentelemetry/setup/otlp_ingest/logs/).
+2. Select your Datadog site in the site selector at the top right of the page.
+3. Copy the endpoint shown for `${YOUR_ENDPOINT}` under the "Configuration" section, and append `/v1/logs` to it if the path isn't part of the endpoint already. For example, the endpoint may be `https://otlp.datadoghq.com/v1/logs` for the `datadoghq.com` site.
+
+Then, create the API key to authenticate with:
+
+1. In Datadog, hover over your avatar at the bottom right.
+2. Go to **Organization Settings** > **API Keys**.
+3. Click **New Key** button.
+4. Enter a name for the key, then click **Create Key**.
+5. In the list of API keys, click on the key you just created to view its details.
+6. Copy the API key at the top of the form. This is the value to use for the `dd-api-key` header.
+
+Back in the [Configure the Log Drain](#step-2-configure-the-log-drain) form, set the OTLP URL to the endpoint you copied, and add a header with key `dd-api-key` and value set to the API key you created.
+
+Once you save the log drain and redeploy the log drain's environments, you can start seeing logs in Datadog by going to **Logs** in the Datadog dashboard.
+
+### Setup OTLP Logs in Grafana
+
+Grafana Cloud generates the OTLP endpoint and token for you:
+
+1. Sign in to the [Grafana Cloud Portal](https://grafana.com/auth/sign-in/), and make sure you're in the correct Grafana Cloud stack.
+2. From the sidebar, go to **Connections** > **Integrations**.
+3. On the Integrations page, click **Add new integrations**.
+4. Search for **OpenTelemetry (OTLP)** and click on it.
+5. For "Where does your application run", select **Serverless/Other**.
+6. In the "Use an API Token" step, enter a name for the token, then click **Create token**.
+7. Copy the OTLP endpoint and headers from the code block, then click **Next**.
+
+The setup will finish and wait for logs to arrive in Grafana to confirm the integration is working.
+
+Back in the [Configure the Log Drain](#step-2-configure-the-log-drain) form, set the OTLP URL to the endpoint you copied, and add a header with key `Authorization` and value set to the token you created. It should be in the format `Basic <token>`.
+
+Once you save the log drain and redeploy the log drain's environments, go back to the OpenTelemetry setup page in Grafana. It should indicate that logs are being received. You can then view the logs in Grafana by going to **Explore** > **Logs**.
+
+### Setup OTLP Logs in GCP
+
+GCP doesn't use an OTLP URL or headers. Instead, Medusa writes logs with a service account key that you create in the GCP console:
+
+1. Open the [Create service account](https://console.cloud.google.com/iam-admin/serviceaccounts/create) page in the GCP console and select your project.
+2. Enter a name for the service account, then click **Create and continue**.
+3. In the Permissions step, grant the service account the **Logs Writer** (`roles/logging.logWriter`) role, then click **Done**.
+4. On the [Service accounts](https://console.cloud.google.com/iam-admin/serviceaccounts) page, click the new service account's email address.
+5. Open the **Keys** tab, click **Add key**, then click **Create new key**.
+6. Select **JSON** as the key type, then click **Create** to download the key file.
+
+Back in the [Configure the Log Drain](#step-2-configure-the-log-drain) form, click **Upload JSON key** and select the service account key file you downloaded. The key will be used to authenticate with GCP.
+
+Once you save the log drain and redeploy the log drain's environments, you can start seeing logs in GCP by going to **Monitoring** > **Logs Explorer** in the GCP console.
+
+<Note type="warning">
+
+You can't download the key file again after creating it, so store it securely. Refer to [Google's documentation](https://cloud.google.com/iam/docs/keys-create-delete) for more details.
+
+</Note>
+
+### Setup OTLP Logs in a Generic OTLP Provider
+
+For a generic OTLP provider, find the provider's OTLP HTTP logs endpoint, which ends with `/v1/logs`, and the authentication header it expects in the provider's OpenTelemetry documentation. Most providers expect an `Authorization` header or a vendor-specific API key header.
+
+---
+
+## View and Edit a Log Drain
+
+The configured log drain for a project appears as a card on the **Log Drains** settings page, showing its name, provider, OTLP URL, log level, source toggles, header keys, and resource attribute keys.
+
+To edit a log drain:
+
+1. Click the <InlineIcon Icon={PencilSquare} alt="edit" /> icon on the log drain card.
+2. The card switches to inline editing mode. You can update the name, OTLP URL, log level, source toggles, headers, and resource attributes, as explained in the [Configure the Log Drain](#step-2-configure-the-log-drain) section above.
+3. Click **Save** to apply the changes.
+
+After editing a log drain, you must [redeploy](../../deployments/page.mdx#redeploy-a-deployment) every environment that the log drain applies to for the changes to take effect.
+
+---
+
+## Delete a Log Drain
+
+<Note type="warning">
+
+Deleting a log drain is permanent. Logs will stop being forwarded to the configured endpoint immediately. You can create a new log drain afterwards.
+
+</Note>
+
+To delete a log drain:
+
+1. Click the <InlineIcon Icon={Trash} alt="delete" /> icon on the log drain card.
+2. Confirm the deletion in the confirmation dialog.
