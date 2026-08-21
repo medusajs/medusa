@@ -54,7 +54,7 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Navigation Styles",
+            "title": "Navigation",
             "path": "/navigation",
             "children": []
           },
