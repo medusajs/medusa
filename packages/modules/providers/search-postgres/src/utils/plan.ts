@@ -180,21 +180,40 @@ export function assertQuerySupported(
     )
   }
 
-  if (options.match_strategy === "last") {
-    fail(
-      `The postgres search provider does not support match_strategy: "last". Use "all" (default) or "any".`
-    )
-  }
-
   if (query.pagination?.cursor !== undefined) {
     fail("The postgres search provider does not support cursor pagination")
   }
 }
 
 /**
+ * Keyword match expression. The `?` placeholder is the raw query string.
+ *
+ * - `"all"` (default): `plainto_tsquery` ANDs every complete lexeme.
+ * - `"any"`: the same terms ORed.
+ * - `"last"`: AND, with `:*` on the last lexeme so `"dtc sta"` matches
+ *   `"Dtc starter"`.
+ */
+export function keywordTsQuerySql(
+  tsConfig: string,
+  matchStrategy?: SearchTypes.SearchMatchStrategy
+): string {
+  const parsed = `plainto_tsquery('${tsConfig}', ?)`
+
+  if (matchStrategy === "any") {
+    return `replace(${parsed}::text, ' & ', ' | ')::tsquery`
+  }
+
+  if (matchStrategy === "last") {
+    return `regexp_replace(${parsed}::text, '''([^'']+)''$', '''\\1'':*')::tsquery`
+  }
+
+  return parsed
+}
+
+/**
  * Flattens a definition into per-leaf field metadata. Nested objects become
- * dotted paths; arrays of objects collapse to per-leaf arrays, matching the
- * local provider's shape so definitions stay portable.
+ * dotted paths; arrays of objects collapse to per-leaf arrays so definitions
+ * stay portable across engines.
  */
 export function buildIndexPlan(
   definition: SearchTypes.ResolvedSearchIndexDefinition
