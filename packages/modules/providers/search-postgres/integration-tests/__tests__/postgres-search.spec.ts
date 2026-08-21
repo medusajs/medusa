@@ -125,6 +125,31 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(any).sort()).toEqual(["prod_1", "prod_3"])
         })
 
+        it("prefixes the last term with match_strategy last", async () => {
+          const prefix = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "sho" },
+            search_options: { match_strategy: "last" },
+          })
+          expect(ids(prefix)).toEqual(["prod_1"])
+
+          const twoTerms = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "red sho" },
+            search_options: { match_strategy: "last" },
+          })
+          expect(ids(twoTerms)).toEqual(["prod_1"])
+
+          const exact = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "sho" },
+          })
+          expect(ids(exact)).toEqual([])
+        })
+
         it("tolerates typos through trigram word similarity", async () => {
           const result = await service.search({
             entity: "product",
