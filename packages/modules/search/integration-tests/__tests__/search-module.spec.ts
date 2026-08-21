@@ -309,6 +309,7 @@ moduleIntegrationTestRunner<SearchService>({
             live_physical_name: "product",
             definition_hash: registered.definition_hash,
             live_definition_hash: "stale",
+            provider: "search-local",
           })
         })
 
@@ -406,6 +407,83 @@ moduleIntegrationTestRunner<SearchService>({
             fields: ["id"],
           })
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+        })
+
+        it("drops the previous provider's indexes when the engine changes", async () => {
+          const previous = {
+            identifier: "search-previous",
+            deleteIndex: jest.fn().mockResolvedValue({
+              index: "product",
+              status: "succeeded",
+            }),
+            listIndexes: jest.fn().mockResolvedValue([
+              { name: "product", document_count: 3 },
+              { name: "product_abcd1234", document_count: 0 },
+              { name: "product_reviews", document_count: 1 },
+            ]),
+          }
+          ;(service as any).searchProviderService_.providers_.set(
+            "search-previous",
+            previous
+          )
+
+          await updateIndexRecords(service, {
+            selector: { name: "product" },
+            data: { provider: "search-previous" },
+          })
+
+          const plan = await migrationPlan(service)
+          expect(plan).toEqual([
+            expect.objectContaining({
+              action: "migrate",
+              previous_provider: "search-previous",
+              provider: "search-local",
+            }),
+          ])
+
+          await migrate(service, plan)
+
+          expect(previous.deleteIndex).toHaveBeenCalledWith({
+            index: "product",
+          })
+          expect(previous.deleteIndex).toHaveBeenCalledWith({
+            index: "product_abcd1234",
+          })
+          expect(previous.deleteIndex).not.toHaveBeenCalledWith({
+            index: "product_reviews",
+          })
+
+          const [migrated] = await indexRecords(service, { name: "product" })
+          // The record keeps the old provider until the seed lands on the new one.
+          expect(migrated.provider).toBe("search-previous")
+          expect(migrated.status).toBe("pending")
+
+          await boot(service)
+
+          const [seeded] = await indexRecords(service, { name: "product" })
+          expect(seeded.provider).toBe("search-local")
+          expect(seeded.status).toBe("ready")
+        })
+
+        it("still migrates when the previous provider is no longer registered", async () => {
+          const warn = jest.spyOn((service as any).logger_, "warn")
+
+          await updateIndexRecords(service, {
+            selector: { name: "product" },
+            data: { provider: "search-gone" },
+          })
+
+          await migrate(service, await migrationPlan(service))
+
+          expect(warn).toHaveBeenCalledWith(
+            expect.stringContaining("search-gone")
+          )
+
+          const [migrated] = await indexRecords(service, { name: "product" })
+          expect(migrated.status).toBe("pending")
+          expect(migrated.provider).toBe("search-gone")
+
+          warn.mockRestore()
         })
 
         it("leaves index creation to migrations for any other provider", async () => {

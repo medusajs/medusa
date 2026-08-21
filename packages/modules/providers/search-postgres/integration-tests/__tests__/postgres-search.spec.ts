@@ -209,6 +209,27 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(composed)).toEqual(["prod_2"])
         })
 
+        it("deletes by primary key without treating the id list as a Postgres array literal", async () => {
+          await provider(service).deleteDocuments({
+            index: "product",
+            filters: { id: "prod_1" },
+          })
+
+          await provider(service).deleteDocuments({
+            index: "product",
+            filters: { id: ["prod_2", "prod_3"] },
+          })
+
+          const remaining = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(remaining)).toEqual([])
+
+          const [info] = await provider(service).listIndexes()
+          expect(info.document_count).toBe(0)
+        })
+
         it("deletes by filter without $exists leaking across the conjunction", async () => {
           await provider(service).deleteDocuments({
             index: "product",
