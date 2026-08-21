@@ -96,6 +96,24 @@ function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   }
 }
 
+function ensureShippingMethodVersionFieldSelection(
+  config: any,
+  isRelatedEntity: boolean
+) {
+  const fields = config.options?.fields
+  if (!fields) {
+    return
+  }
+
+  const versionField = isRelatedEntity
+    ? "order.shipping_methods.version"
+    : "shipping_methods.version"
+
+  if (!fields.includes(versionField)) {
+    fields.push(versionField)
+  }
+}
+
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
   klass.prototype.find = async function find(
     this: any,
@@ -223,18 +241,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
       config.options.populate.push("shipping_methods")
       config.options.populate.push("shipping_methods.shipping_method")
-
-      if (
-        config.options.fields?.some((f) =>
-          f.includes("shipping_methods.shipping_method.")
-        )
-      ) {
-        config.options.fields.push(
-          isRelatedEntity
-            ? "order.shipping_methods.version"
-            : "shipping_methods.version"
-        )
-      }
+      ensureShippingMethodVersionFieldSelection(config, isRelatedEntity)
     }
 
     if (!config.options.orderBy) {
@@ -366,17 +373,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       config.options.populate.push("shipping_methods.shipping_method")
 
       // make sure version is loaded if adjustments are requested
-      if (
-        config.options.fields?.some((f) =>
-          f.includes("shipping_methods.shipping_method.")
-        )
-      ) {
-        config.options.fields.push(
-          isRelatedEntity
-            ? "order.shipping_methods.version"
-            : "shipping_methods.version"
-        )
-      }
+      ensureShippingMethodVersionFieldSelection(config, isRelatedEntity)
     }
 
     configurePopulateWhere(
