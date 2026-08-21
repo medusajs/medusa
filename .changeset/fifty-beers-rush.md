@@ -2,4 +2,4 @@
 "@medusajs/caching-redis": patch
 ---
 
-redis provider overwrites on set
+fix(caching-redis): redis provider overwrites on set
