@@ -1,12 +1,4 @@
 import { jest } from "@jest/globals"
-
-jest.mock("../utils/lint-project", () => ({
-  __esModule: true,
-  lintProject: jest.fn(),
-  runLintStep: jest.requireActual("../utils/lint-project").runLintStep,
-}))
-
-import { lintProject } from "../utils/lint-project"
 import { runLintStep } from "../utils/lint-project"
 
 describe("runLintStep failOnError behavior", () => {
@@ -29,8 +21,8 @@ describe("runLintStep failOnError behavior", () => {
   })
 
   it("warns and continues when lint errors are found and failOnError is false", async () => {
-    ;(lintProject as jest.Mock).mockResolvedValue({
-      status: "linted",
+    const mockLintProject = jest.fn().mockResolvedValue({
+      status: "linted" as const,
       result: { errorCount: 1, warningCount: 0, formatted: "fake lint output" },
     })
 
@@ -41,6 +33,7 @@ describe("runLintStep failOnError behavior", () => {
       lint: true,
       failOnError: false,
       logger,
+      lintProject: mockLintProject,
     })
 
     expect(mockExit).not.toHaveBeenCalled()
@@ -50,8 +43,8 @@ describe("runLintStep failOnError behavior", () => {
   })
 
   it("calls process.exit(1) when lint errors are found and failOnError is true", async () => {
-    ;(lintProject as jest.Mock).mockResolvedValue({
-      status: "linted",
+    const mockLintProject = jest.fn().mockResolvedValue({
+      status: "linted" as const,
       result: { errorCount: 2, warningCount: 0, formatted: "fake lint output" },
     })
 
@@ -62,6 +55,7 @@ describe("runLintStep failOnError behavior", () => {
       lint: true,
       failOnError: true,
       logger,
+      lintProject: mockLintProject,
     })
 
     expect(mockExit).toHaveBeenCalledWith(1)
