@@ -1100,6 +1100,42 @@ export const filesMap = [
     "pathname": "/infrastructure-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/fields"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/modifiers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/page.mdx",
+    "pathname": "/infrastructure-modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/comparison/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers/comparison"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/local/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers/local"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/postgres/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers/postgres"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/reindexing/page.mdx",
+    "pathname": "/infrastructure-modules/search/reindexing"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/how-to-use/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/how-to-use"
   },

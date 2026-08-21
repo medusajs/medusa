@@ -753,7 +753,7 @@ You define the `syncStep` using the `createStep` function, which accepts two par
 
 The step function accepts the step's input as a first parameter, and an object of options as a second. The object of options has a `container` property, which is an instance of the Medusa container that you can use to resolve resources.
 
-In the step, you resolve from the Medusa container Sanity Module's service and [Query](!docs!/learn/fundamentals/module-links/query), which is a tool that allows you to retrieve data across modules and links.
+In the step, you resolve from the Medusa container Sanity Module's service and [Query](!docs!/learn/fundamentals/query), which is a tool that allows you to retrieve data across modules and links.
 
 You use Query's `graph` method to retrieve products, filtering them by their IDs and applying pagination configurations. The `graph` method accepts a `fields` property in its object parameter, which indicates the product data model's fields and relations to retrieve.
 

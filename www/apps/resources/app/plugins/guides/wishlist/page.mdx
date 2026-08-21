@@ -599,7 +599,7 @@ You create a step using `createStep` from the Workflows SDK. It accepts two para
    - The input data for the step, which in this case is an object having a `customer_id` property.
    - An object holding the workflow's context, including the [Medusa Container](!docs!/learn/fundamentals/medusa-container) that allows you to resolve Framework and commerce tools.
 
-In the step function, you use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the wishlist based on the specified customer ID. If a wishlist exists, you throw an error, stopping the workflow's execution.
+In the step function, you use [Query](!docs!/learn/fundamentals/query) to retrieve the wishlist based on the specified customer ID. If a wishlist exists, you throw an error, stopping the workflow's execution.
 
 You also try to retrieve the customer, and if they don't exist, you throw an error.
 
@@ -897,7 +897,7 @@ export async function GET(
 }
 ```
 
-In this route handler function, you use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the wishlist of the authenticated customer. For each wishlist, you retrieve its items, and the product variants of those items.
+In this route handler function, you use [Query](!docs!/learn/fundamentals/query) to retrieve the wishlist of the authenticated customer. For each wishlist, you retrieve its items, and the product variants of those items.
 
 If the wishlist doesn't exist, you throw an error. Otherwise, you return the wishlist in the response.
 

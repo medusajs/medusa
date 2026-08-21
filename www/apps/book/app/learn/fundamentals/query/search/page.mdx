@@ -1,0 +1,986 @@
+import { TypeList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Search Queries`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about Query's `search` method and how to use it to run full-text search queries with filters, facets, highlighting, and vector search.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    },
+    {
+      text: "A search index definition",
+      link: "!resources!/infrastructure-modules/search/index-definitions"
+    }
+  ]}
+/>
+
+## What is a Search Query?
+
+A search query asks a Search Module Provider for the documents matching a term, then ranks them by relevance. It's the `search` method of [Query](../page.mdx), registered in the Medusa container under the `query` key.
+
+`query.search` runs the query through the [Search Module](!resources!/infrastructure-modules/search) and retrieves the fields in the index. For requested fields and relations not in the index, it fetches them with [query.graph](../page.mdx).
+
+<Note title="Best Practices">
+
+Prefer `query.search` over `query.graph` when the request has a free-text term to rank by. `query.graph` filters records in the database without relevance ranking, whereas `query.search` delegates the ranking to a [Search Module Provider](!resources!/infrastructure-modules/search/providers).
+
+</Note>
+
+<Note title="Don't use query.search if" type="error">
+
+- The request has no search term and no relevance ordering. Use [`query.graph`](../page.mdx) instead.
+- You need fields that no index holds and no `entity` can hydrate. Use [`query.graph`](../page.mdx) instead.
+
+</Note>
+
+---
+
+## Search Example
+
+For example, create the [API route](../../api-routes/page.mdx) `src/api/store/products/search/route.ts` with the following content:
+
+export const exampleHighlights = [
+  ["13", "", "Resolve Query from the Medusa container."],
+  ["17", "search", "Run a search query and hydrate the hits."],
+  ["18", "entity", "The name of the index to search."],
+  ["19", "fields", "The fields to return on every result."],
+  ["27", "q", "The free-text term, passed among the filters."],
+  ["38", "metadata", "The pagination details the provider reported."],
+]
+
+```ts title="src/api/store/products/search/route.ts" highlights={exampleHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { data, search_result } = await query.search({
+    entity: "product",
+    fields: [
+      "id",
+      "title",
+      "handle",
+      "variants.id",
+      "variants.sku",
+    ],
+    filters: {
+      q: req.query.q as string,
+      status: "published",
+    },
+    pagination: {
+      skip: 0,
+      take: 20,
+    },
+  })
+
+  res.json({
+    products: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+<Note title="Tip">
+
+`query.search` throws an error if the Search Module isn't registered in your application. Refer to the [Search Module documentation](!resources!/infrastructure-modules/search) to set it up.
+
+</Note>
+
+In the above example, you resolve Query from the Medusa container using the `ContainerRegistrationKeys.QUERY` (`query`) key.
+
+Then, you run a search using its `search` method. This method accepts as a parameter an object with the following properties:
+
+- `entity` (required): The name of the index to search, as specified in the `name` property of the [index definition](!resources!/infrastructure-modules/search/index-definitions).
+- `fields`: The fields to return on every result, including fields that the index doesn't hold, such as `variants.sku`. If you omit `fields`, you'll receive every retrievable field the index holds.
+- `filters`: The filters to apply, with the free-text term passed as `q`.
+- `pagination`: The `skip` and `take` options that page through the results.
+
+The method returns an object with two properties:
+
+- `data`: The hydrated entities, in the relevance order the provider returned.
+- `search_result`: What the provider reported, including hits, scores, facets, and pagination metadata.
+
+For example, if you pass `q=t-shirt` in the request, the response may look like this:
+
+```json title="Returned Data"
+{
+  "data": [
+    {
+      "id": "prod_123",
+      "title": "Medusa T-Shirt",
+      "handle": "t-shirt",
+      "variants": [
+        {
+          "id": "variant_123",
+          "sku": "SHIRT-S"
+        }
+      ]
+    }
+  ],
+  "search_result": {
+    "hits": [
+      {
+        "id": "prod_123",
+        "document": {
+          "id": "prod_123",
+          "title": "Medusa T-Shirt",
+          "handle": "t-shirt"
+        }
+      }
+    ],
+    "metadata": {
+      "skip": 0,
+      "take": 20,
+      "count": 1,
+      "query": "t-shirt",
+      "processing_time_ms": 9
+    }
+  }
+}
+```
+
+### Search Usage in Workflows
+
+To run a search query in a workflow, create a step that resolves the Search Module's service from the container.
+
+For example:
+
+export const workflowHighlights = [
+  ["10", "resolve", "Resolve the Search Module's service."],
+  ["14", "search", "Run one query and return the provider's result."],
+]
+
+```ts title="src/workflows/steps/search-products.ts" highlights={workflowHighlights}
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+export const searchProductsStep = createStep(
+  "search-products",
+  async (input: { q: string }, { container }) => {
+    const searchModuleService = container.resolve(
+      Modules.SEARCH
+    )
+
+    const result = await searchModuleService.search({
+      entity: "product",
+      fields: ["id", "title"],
+      filters: { q: input.q },
+      pagination: { take: 20 },
+    })
+
+    return new StepResponse(result.hits)
+  }
+)
+```
+
+The service's `search` method accepts the same parameter as `query.search`, but it returns only the provider's result without hydrating it. Refer to the [Search with the Search Module's Service](#search-with-the-search-modules-service) section for the rest of the service's methods.
+
+---
+
+## How Search Queries Work
+
+When you pass `fields` to `query.search`, the Search Module splits them into two groups:
+
+1. The fields the index holds. The provider returns them on every hit.
+2. The remaining fields. `query.graph` fetches them by the index's primary key, then Query merges them into `data`.
+
+So you can request fields of relations that the index never stores, such as `variants.sku`, without adding them to the index definition.
+
+<Note title="Tip">
+
+Because Query hydrates the hits with `query.graph`, the entities in `data` keep the relevance order that the provider returned.
+
+</Note>
+
+---
+
+## Select Specific Fields
+
+Always list in `fields` the fields you need, rather than relying on the default or passing `{relation}.*`.
+
+Selecting specific fields keeps the hydration query cheaper, and it keeps the response smaller. For example, instead of retrieving all properties of a product and its variants:
+
+```ts title="Avoid"
+const { data } = await query.search({
+  entity: "product",
+  fields: ["*", "variants.*"],
+  filters: {
+    q: "shirt",
+  },
+})
+```
+
+Retrieve only the fields you use:
+
+```ts title="Prefer"
+const { data } = await query.search({
+  entity: "product",
+  fields: [
+    "id",
+    "title",
+    "variants.id",
+    "variants.sku",
+  ],
+  filters: {
+    q: "shirt",
+  },
+})
+```
+
+---
+
+## Apply Filters
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "running shoe",
+    status: "published",
+  },
+})
+```
+
+The `search` method accepts a `filters` property, whose value is an object of filters to apply. Its keys are index field names, and its values are the values to filter on.
+
+To perform a free-text search, pass the term in the `q` property. The Search Module lifts `q` out before it compiles the rest, so a provider never treats `q` as a field.
+
+<Note>
+
+You can only filter on fields that the index definition marks as `filterable`. The Search Module validates the query against the definition before it reaches the provider, so an unsupported field fails with a clear error.
+
+</Note>
+
+You can also filter by multiple values of a field. For example:
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"], ["9"], ["10"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    brand: [
+      "acme",
+      "borg",
+    ],
+  },
+})
+```
+
+### Filter Operators
+
+A filter value can be:
+
+- A literal value performing an equality check, such as `status: "published"`.
+
+  ```ts
+  const { data } = await query.search({
+    entity: "product",
+    fields: ["id", "title"],
+    filters: {
+      q: "shoe",
+      status: "published",
+    },
+  })
+  ```
+
+- An array performing an "is one of" check, such as `brand: ["acme", "borg"]`.
+
+  ```ts
+  const { data } = await query.search({
+    entity: "product",
+    fields: ["id", "title"],
+    filters: {
+      q: "shoe",
+      brand: [
+        "acme",
+        "borg",
+      ],
+    },
+  })
+  ```
+
+- An object of operators, such as `min_price: { $gte: 50 }`.
+
+  ```ts
+  const { data } = await query.search({
+    entity: "product",
+    fields: ["id", "title"],
+    filters: {
+      q: "shoe",
+      min_price: {
+        $gte: 50,
+      },
+    },
+  })
+  ```
+
+For object filters, you can use the following operators:
+
+<TypeList types={[
+  {
+    name: "$eq / $ne",
+    type: "`any`",
+    description: "Equals or doesn't equal a literal value."
+  },
+  {
+    name: "$in / $nin",
+    type: "`any[]`",
+    description: "Is or isn't one of the given values."
+  },
+  {
+    name: "$lt / $lte / $gt / $gte",
+    type: "`number` \| `Date`",
+    description: "Compares whether a number or a date is less than, less than or equal to, greater than, or greater than or equal to the given value."
+  },
+  {
+    name: "$exists",
+    type: "`boolean`",
+    description: "Whether the field has a value."
+  },
+  {
+    name: "$contains",
+    type: "`any` \| `any[]`",
+    description: "An array field contains all of the given values."
+  },
+  {
+    name: "$overlaps",
+    type: "`any[]`",
+    description: "An array field contains at least one of the given values."
+  },
+  {
+    name: "$prefix",
+    type: "`string`",
+    description: "The value starts with the given string."
+  },
+  {
+    name: "$like",
+    type: "`string`",
+    description: "The value matches the given pattern."
+  }
+]} sectionTitle="Filter Operators" />
+
+<Note title="Warning" type="warning">
+
+`$prefix` and `$like` aren't universal. A provider that can't filter on substrings rejects them rather than matching differently. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each provider supports.
+
+</Note>
+
+#### Filter by a Range
+
+```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    min_price: {
+      $gte: 50,
+      $lte: 200,
+    },
+  },
+})
+```
+
+In the example above, you retrieve the products whose `min_price` is between `50` and `200`.
+
+#### Filter an Array Field
+
+```ts highlights={[["6"], ["7"], ["8"], ["9"], ["10"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    tags: {
+      $overlaps: [
+        "summer",
+        "sale",
+      ],
+    },
+  },
+})
+```
+
+In the example above, you retrieve the products having at least one of the `summer` and `sale` tags. Use `$contains` instead to require all of them.
+
+#### Filter a Nested Field
+
+```ts highlights={[["6"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    "variants.color": "olive",
+  },
+})
+```
+
+In the example above, you filter on a nested field of the index. The index definition must declare `variants.color` as `filterable`.
+
+#### Combine Filters
+
+You can nest conditions with the `$and`, `$or`, and `$not` operators:
+
+```ts highlights={[["6"], ["7"], ["8"], ["9"], ["10"], ["11"], ["12"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    $or: [
+      { status: "published" },
+      { brand: { $eq: "acme" } },
+    ],
+    $not: {
+      tags: { $contains: "clearance" },
+    },
+  },
+})
+```
+
+In the example above, you retrieve the products that are either published or from the `acme` brand, excluding the ones tagged as `clearance`.
+
+---
+
+## Apply Pagination
+
+```ts highlights={[["9", "skip", "The number of hits to skip before returning the results."], ["10", "take", "The number of hits to return."]]}
+const {
+  data,
+  search_result: { metadata },
+} = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  pagination: {
+    skip: 0,
+    take: 20,
+  },
+})
+```
+
+The `search` method's object parameter accepts a `pagination` property to configure the pagination of returned hits.
+
+`pagination` is optional. If you omit it, or omit one of its properties, the Search Module applies `skip: 0` and `take: 20`. So a search returns at most `20` hits unless you raise `take`.
+
+<Note>
+
+This is unlike `query.graph`, which returns every matching record when you don't pass `pagination`.
+
+</Note>
+
+<TypeList types={[
+  {
+    name: "skip",
+    type: "`number`",
+    description: "The number of hits to skip.",
+    defaultValue: "0"
+  },
+  {
+    name: "take",
+    type: "`number`",
+    description: "The number of hits to return.",
+    defaultValue: "20"
+  },
+  {
+    name: "order",
+    type: "`Record<string, \"ASC\" \| \"DESC\">`",
+    description: "An object mapping a sortable field to its sort direction. Refer to [Sort Hits](#sort-hits)."
+  },
+  {
+    name: "cursor",
+    type: "`string`",
+    description: "An opaque cursor from a previous result's `next_cursor`, for deep pagination. You can't pass it along with `skip`."
+  }
+]} sectionTitle="Apply Pagination" />
+
+The result's `metadata` property is an object with the following properties:
+
+<TypeList types={[
+  {
+    name: "skip",
+    type: "`number`",
+    description: "The number of hits skipped."
+  },
+  {
+    name: "take",
+    type: "`number`",
+    description: "The number of hits requested."
+  },
+  {
+    name: "count",
+    type: "`number` \| `null`",
+    description: "The total number of matching documents. It's `null` when you set the `count` search option to `none`."
+  },
+  {
+    name: "next_cursor",
+    type: "`string`",
+    description: "The cursor to pass in the next request's `pagination.cursor`, if the provider supports cursors."
+  },
+  {
+    name: "query",
+    type: "`string`",
+    description: "The free-text term the provider ran."
+  },
+  {
+    name: "processing_time_ms",
+    type: "`number`",
+    description: "The time the provider took to run the query, in milliseconds."
+  }
+]} sectionTitle="Apply Pagination" />
+
+<Note>
+
+No provider that Medusa ships supports `pagination.cursor`, so paginate with `skip` and `take`.
+
+</Note>
+
+### Sort Hits
+
+```ts highlights={[["5"], ["6"], ["7"], ["8"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  pagination: {
+    order: {
+      min_price: "ASC",
+    },
+  },
+})
+```
+
+To sort the returned hits, pass an `order` property to `pagination`. Its value is an object whose keys are field names, and whose values are either `ASC` or `DESC`.
+
+The index definition must mark a field as `sortable` before you can order by it. The only exception is the reserved `_score` key, which orders by relevance:
+
+```ts highlights={[["6"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  pagination: {
+    order: { _score: "DESC" },
+  },
+})
+```
+
+<Note>
+
+Ordering by more than one field isn't universal. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each provider supports.
+
+</Note>
+
+### Change the Count Strategy
+
+Counting every matching document can be expensive on a large index, so the `count` search option tells the provider how accurate the count has to be:
+
+```ts highlights={[["6"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  search_options: {
+    count: "exact",
+  },
+})
+```
+
+`count` accepts one of the following values:
+
+- `estimated`: The provider returns whichever count its engine can produce cheaply, which may be an estimate. This is the default.
+- `exact`: The provider counts every matching document.
+- `none`: The provider skips the count query, and `metadata.count` is `null`. Use this when the page you're building never shows a total or page numbers, such as a storefront with a "Load more" button. To find out whether more hits exist, check whether the returned hits filled the page, meaning their number equals `take`.
+
+<Note>
+
+No provider that Medusa ships treats `exact` differently from `estimated`. All of them run a real count unless you pass `none`. The distinction only matters for a provider whose engine can't count exactly, which either rejects `exact` or runs it slowly.
+
+</Note>
+
+---
+
+## Search Options
+
+The `search_options` property of the `search` method's parameter object is an object of options passed to the provider to control how it treats the query. For example, you can tell it which fields to match the term against, whether to enable typo tolerance, and which facets to compute.
+
+If a provider doesn't support an option, it either ignores it or throws an error. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each one does with the options below.
+
+It accepts the following properties:
+
+<TypeList types={[
+  {
+    name: "attributes_to_search_on",
+    type: "`string[]`",
+    description: "The searchable fields to match the `q` filter against.",
+    defaultValue: "Every field marked `searchable`"
+  },
+  {
+    name: "match_strategy",
+    type: "`\"all\"` \| `\"any\"` \| `\"last\"`",
+    description: "Whether a hit must match `all` the terms in the `q` filter, `any` of them, or all but the `last` one. Matching all but the last term suits as-you-type search, where the final word is still incomplete.\n\nThe Search Module sets no default, so omitting it falls back to the provider's own behavior. The PostgreSQL provider requires every term to match, which is equivalent to `all`."
+  },
+  {
+    name: "typo_tolerance",
+    type: "`boolean`",
+    description: "Whether to allow approximate matches for the terms in the `q` filter. It has no effect on the field filters, which always match exactly."
+  },
+  {
+    name: "facets",
+    type: "`(string \| object)[]`",
+    description: "The facets to compute. Refer to [Facets](#facets)."
+  },
+  {
+    name: "disjunctive_facets",
+    type: "`boolean`",
+    description: "Whether to compute each facet while ignoring the filter on that same field. Refer to [Disjunctive Facets](#disjunctive-facets)."
+  },
+  {
+    name: "highlight",
+    type: "`object`",
+    description: "Wraps the matched terms in the returned fields. Refer to [Highlighting](#highlighting)."
+  },
+  {
+    name: "distinct",
+    type: "`string`",
+    description: "A field to deduplicate on, so the provider returns at most one hit per distinct value."
+  },
+  {
+    name: "min_score",
+    type: "`number`",
+    description: "Discards the hits scoring below this threshold."
+  },
+  {
+    name: "include_score",
+    type: "`boolean`",
+    description: "Whether to return each hit's relevance score in its `score` property. Scores aren't comparable across providers."
+  },
+  {
+    name: "locales",
+    type: "`string[]`",
+    description: "A language hint for this query, such as `[\"en\"]`.",
+    defaultValue: "The index's `settings.locales`"
+  },
+  {
+    name: "vector",
+    type: "`object`",
+    description: "Runs a similarity search. Refer to [Vector and Hybrid Search](#vector-and-hybrid-search)."
+  },
+  {
+    name: "count",
+    type: "`\"estimated\"` \| `\"exact\"` \| `\"none\"`",
+    description: "How to count the matching documents. Refer to [Change the Count Strategy](#change-the-count-strategy).",
+    defaultValue: "estimated"
+  },
+  {
+    name: "provider_options",
+    type: "`Record<string, Record<string, unknown>>`",
+    description: "Provider features that the interface doesn't model, keyed by provider identifier. For example, `{ \"search-medusa\": { consistency: \"strong\" } }` asks the Medusa Search Module Provider for a strongly consistent read. The PostgreSQL provider accepts no query-time options."
+  }
+]} sectionTitle="Search Options" />
+
+For example, to match any of the query's terms in the product's title only:
+
+```ts highlights={[["6"], ["7"], ["8"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "comfortable running shoe" },
+  search_options: {
+    attributes_to_search_on: ["title"],
+    match_strategy: "any",
+    include_score: true,
+  },
+})
+```
+
+---
+
+## Facets
+
+Facets return the distinct values of a field and how many documents fall into each one, which is what a storefront's filter sidebar shows.
+
+<Note>
+
+A field must be marked `facetable` in the index definition. Learn more in the [Search Index Field Modifiers](!resources!/infrastructure-modules/search/index-definitions/modifiers) guide.
+
+</Note>
+
+Pass a field name for a value facet, or an object for more control:
+
+```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
+const { search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  search_options: {
+    facets: [
+      "brand",
+      { field: "status", limit: 5, sort: "count" },
+    ],
+  },
+})
+```
+
+There are three facet types:
+
+- `value`: The distinct values of the field and their counts. This is the default.
+- `range`: The number of documents falling into each range you define. Available on numeric and date fields.
+- `stats`: The minimum, maximum, average, sum, and count of the field.
+
+For example, to compute a range facet and a stats facet on the same field:
+
+```ts
+const { search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "shoe" },
+  search_options: {
+    facets: [
+      {
+        field: "min_price",
+        type: "range",
+        ranges: [
+          { key: "cheap", to: 50 },
+          { key: "mid", from: 50, to: 200 },
+          { key: "expensive", from: 200 },
+        ],
+      },
+      { field: "min_price", type: "stats" },
+    ],
+  },
+})
+```
+
+The facets are in the result's `facets` property, keyed by field name. For example:
+
+```json title="Returned Facets"
+{
+  "facets": {
+    "min_price": {
+      "type": "range",
+      "ranges": [
+        { "key": "cheap", "to": 50, "count": 1 },
+        { "key": "mid", "from": 50, "to": 200, "count": 2 }
+      ]
+    }
+  }
+}
+```
+
+### Disjunctive Facets
+
+When a customer filters by one brand, a facet on `brand` normally returns only that brand. Set `disjunctive_facets` to `true` so the provider computes each facet while ignoring the filter on its own field, keeping the sibling values visible:
+
+```ts highlights={[["9"]]}
+const { search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    q: "shoe",
+    brand: "acme",
+  },
+  search_options: {
+    facets: ["brand", "status"],
+    disjunctive_facets: true,
+  },
+})
+```
+
+The result's `facets` property then holds the following:
+
+```json title="Returned Facets"
+{
+  "facets": {
+    "brand": {
+      "type": "value",
+      "values": [
+        { "value": "acme", "count": 12 },
+        { "value": "borg", "count": 7 },
+        { "value": "zeta", "count": 3 }
+      ]
+    },
+    "status": {
+      "type": "value",
+      "values": [
+        { "value": "published", "count": 10 },
+        { "value": "draft", "count": 2 }
+      ]
+    }
+  }
+}
+```
+
+The `brand` facet still lists `borg` and `zeta`, despite the `brand: "acme"` filter. A shopper can see how many results switching brands would give them.
+
+The `status` facet is unaffected because the query didn't filter on `status`. So, its results only show the counts of published and draft products whose brand is `acme`.
+
+---
+
+## Highlighting
+
+Highlighting wraps the matched terms in the fields you name, so a storefront can show why a result matched.
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"]]}
+const { search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title", "description"],
+  filters: { q: "shoe" },
+  search_options: {
+    highlight: {
+      fields: ["title", "description"],
+      pre_tag: "<mark>",
+      post_tag: "</mark>",
+      snippet: { length: 120 },
+    },
+  },
+})
+```
+
+`highlight` accepts the following properties:
+
+<TypeList types={[
+  {
+    name: "fields",
+    type: "`string[]`",
+    description: "The fields to highlight the matched terms in."
+  },
+  {
+    name: "pre_tag",
+    type: "`string`",
+    description: "The string to insert before every matched term.",
+    defaultValue: "<mark>"
+  },
+  {
+    name: "post_tag",
+    type: "`string`",
+    description: "The string to insert after every matched term.",
+    defaultValue: "</mark>"
+  },
+  {
+    name: "snippet",
+    type: "`boolean` \| `{ length: number }`",
+    description: "Whether to crop a fragment around the match instead of returning the whole field. Pass an object to set the fragment's length."
+  }
+]} sectionTitle="Highlighting" />
+
+The highlighted fragments are in each hit's `highlights` property, keyed by field name. Each key holds an array, since a field can match in more than one place:
+
+```json title="Returned Hits"
+{
+  "hits": [
+    {
+      "id": "prod_123",
+      "document": {
+        "id": "prod_123",
+        "title": "Trail Running Shoe",
+        "description": "A light shoe for trails."
+      },
+      "highlights": {
+        "title": ["Trail Running <mark>Shoe</mark>"],
+        "description": ["A light <mark>shoe</mark> for trails."]
+      }
+    }
+  ]
+}
+```
+
+The `document` property keeps the original values, so render the `highlights` fragments only where you want the matched terms marked.
+
+---
+
+## Vector and Hybrid Search
+
+A field declared with `search.vector(dimensions)` holds an embedding, which lets the provider rank results by semantic similarity instead of term matching.
+
+<Note>
+
+Learn more about vector fields in the [Search Index Fields](!resources!/infrastructure-modules/search/index-definitions/fields) guide.
+
+</Note>
+
+Pass text as `search_options.vector.query` for the provider's embedder to embed:
+
+```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      query: "comfortable shoes for long runs",
+      semantic_ratio: 0.7,
+    },
+  },
+})
+```
+
+Alternatively, pass a pre-computed embedding as `search_options.vector.value`:
+
+```ts highlights={[["7"]]}
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      value: [0.021, -0.113, 0.884],
+    },
+  },
+})
+```
+
+`search_options.vector` accepts the following properties:
+
+<TypeList types={[
+  {
+    name: "field",
+    type: "`string`",
+    description: "The vector field to compare the embedding against."
+  },
+  {
+    name: "value",
+    type: "`number[]`",
+    description: "Pre-computed embeddings. Its length must match the field's `dimensions`. You can't pass it along with `query`."
+  },
+  {
+    name: "query",
+    type: "`string`",
+    description: "The text to embed with the provider's configured embedder. You can't pass it along with `value`."
+  },
+  {
+    name: "semantic_ratio",
+    type: "`number`",
+    description: "How much the semantic ranking contributes to the result. `0` is keyword-only, `1` is semantic-only, and anything between is a hybrid search."
+  }
+]} sectionTitle="Vector and Hybrid Search" />
+
+<Note>
+
+Passing `query` instead of `value` requires the provider to have an embedder configured. Refer to the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres#vector-search-on-the-lakebase-engine) guide.
+
+</Note>

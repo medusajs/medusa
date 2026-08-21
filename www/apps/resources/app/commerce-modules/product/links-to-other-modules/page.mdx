@@ -256,7 +256,7 @@ Medusa defines read-only links between:
 
 ### Retrieve with Query
 
-To retrieve the variant of a line item with [Query](!docs!/learn/fundamentals/module-links/query), pass `variant.*` in `fields`:
+To retrieve the variant of a line item with [Query](!docs!/learn/fundamentals/query), pass `variant.*` in `fields`:
 
 <Note>
 
@@ -313,7 +313,7 @@ This link is introduced in [Medusa v2.5.0](https://github.com/medusajs/medusa/re
 
 ### Retrieve with Query
 
-To retrieve the shipping profile of a product with [Query](!docs!/learn/fundamentals/module-links/query), pass `shipping_profile.*` in `fields`:
+To retrieve the shipping profile of a product with [Query](!docs!/learn/fundamentals/query), pass `shipping_profile.*` in `fields`:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -414,7 +414,7 @@ Learn more about product variant's inventory management in [this guide](../varia
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
+To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -549,7 +549,7 @@ Medusa defines read-only links between:
 
 ### Retrieve with Query
 
-To retrieve the variant of a line item with [Query](!docs!/learn/fundamentals/module-links/query), pass `variant.*` in `fields`:
+To retrieve the variant of a line item with [Query](!docs!/learn/fundamentals/query), pass `variant.*` in `fields`:
 
 <Note>
 
@@ -606,7 +606,7 @@ So, to add prices for a product variant, create a price set and add the prices t
 
 ### Retrieve with Query
 
-To retrieve the price set of a variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `price_set.*` in `fields`:
+To retrieve the price set of a variant with [Query](!docs!/learn/fundamentals/query), pass `price_set.*` in `fields`:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -699,7 +699,7 @@ Medusa defines a link between the `Product` and `SalesChannel` data models. A pr
 
 ### Retrieve with Query
 
-To retrieve the sales channels of a product with [Query](!docs!/learn/fundamentals/module-links/query), pass `sales_channels.*` in `fields`:
+To retrieve the sales channels of a product with [Query](!docs!/learn/fundamentals/query), pass `sales_channels.*` in `fields`:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -806,7 +806,7 @@ Medusa defines read-only links from several data models in the Product Module to
 
 ### Retrieve with Query
 
-To retrieve the translations of a product with [Query](!docs!/learn/fundamentals/module-links/query), pass `translations.*` in `fields`:
+To retrieve the translations of a product with [Query](!docs!/learn/fundamentals/query), pass `translations.*` in `fields`:
 
 <Note>
 

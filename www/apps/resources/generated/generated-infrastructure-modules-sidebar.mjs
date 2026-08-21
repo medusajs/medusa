@@ -506,6 +506,79 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     {
       "loaded": true,
       "type": "category",
+      "title": "Search Module",
+      "initialOpen": true,
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search/index-definitions",
+          "title": "Index Definitions",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/index-definitions/fields",
+              "title": "Index Fields",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/index-definitions/modifiers",
+              "title": "Index Field Modifiers",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search/reindexing",
+          "title": "Reindexing and Migrations",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "title": "Providers",
+          "path": "/infrastructure-modules/search/providers",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/providers/postgres",
+              "title": "PostgreSQL",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/providers/local",
+              "title": "Local",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/providers/comparison",
+              "title": "Compare Providers",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "type": "category",
       "title": "Workflow Engine Module",
       "initialOpen": true,
       "children": [

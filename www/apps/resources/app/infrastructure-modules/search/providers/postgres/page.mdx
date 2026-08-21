@@ -1,0 +1,509 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `PostgreSQL Search Module Provider`,
+}
+
+# {metadata.title}
+
+The PostgreSQL Search Module Provider indexes and searches documents in your Medusa application's PostgreSQL database, using PostgreSQL's built-in full-text search. It can be used for development and in production.
+
+<Note title="Easier setup with Cloud">
+
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Cloud documentation](#).
+
+</Note>
+
+Refer to [Compare Search Module Providers](../comparison/page.mdx) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+---
+
+## Register the PostgreSQL Search Module Provider
+
+Medusa registers this provider by default, so you don't need to configure anything to use it. Its identifier is `search-postgres`.
+
+To change its options, register the [Search Module](../../page.mdx) with the provider in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        // Only needed with more than one provider.
+        // default_provider: "search-postgres",
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+            options: {
+              // requires a medusa_search_german text search configuration
+              language: "german",
+              engine: "native",
+            },
+          },
+          // ...
+        ],
+      },
+    },
+  ],
+})
+```
+
+### Run Migrations
+
+If you're registering the provider for the first time, such as in an existing Medusa application, run the following command to create the necessary database tables for the provider:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+### PostgreSQL Search Module Provider Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `language`
+      </Table.Cell>
+      <Table.Cell>
+        The text search configuration language used to analyze text, such as `english` or `german`. Refer to [Custom Languages](#support-custom-languages).
+      </Table.Cell>
+      <Table.Cell>
+        `english`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `engine`
+      </Table.Cell>
+      <Table.Cell>
+        The search backend to use, either `native` or `lakebase`. Refer to [Search Engines](#search-engines-in-the-postgresql-search-module-provider).
+      </Table.Cell>
+      <Table.Cell>
+        `native`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `embedder`
+      </Table.Cell>
+      <Table.Cell>
+        A function that turns text into an embedding. Required for [vector search](#vector-search-on-the-lakebase-engine) when a query passes text instead of a pre-computed embedding.
+      </Table.Cell>
+      <Table.Cell>
+        No embedder.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `vector_distance`
+      </Table.Cell>
+      <Table.Cell>
+        The distance metric for vector indexes, one of `cosine`, `l2`, or `inner_product`. Refer to [Choose a Distance Metric](#choose-a-distance-metric).
+      </Table.Cell>
+      <Table.Cell>
+        `cosine`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Test the PostgreSQL Search Module Provider
+
+Declare an index in your search provider. For example, in `src/search/product.ts`:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  // Only specify if using more than one provider.
+  // provider: "search-postgres",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    handle: search.keyword().filterable(),
+  }),
+  async *seed({ container }) {
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields: ["id", "title", "handle"],
+    })
+
+    yield data
+  },
+})
+```
+
+Then, create the physical index:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Next, add an API route that searches the index. For example, in `src/api/search-products/route.ts`:
+
+```ts title="src/api/search-products/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve("query")
+
+  const { data, search_result } = await query.search({
+    entity: "product",
+    fields: ["id", "title", "handle"],
+    filters: {
+      q: req.query.q as string,
+      status: "published",
+    },
+    pagination: { take: 20 },
+    search_options: {}
+  })
+
+  res.json({
+    products: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+Finally, start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+The Search Module fills the index while the application starts. Then, send a request to the route:
+
+```bash
+curl "http://localhost:9000/search-products?q=shirt"
+```
+
+You will receive the products whose titles match the query, ordered by relevance:
+
+```json title="Example Response"
+{
+  "products": [
+    {
+      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+      "title": "Medusa T-Shirt",
+      "handle": "t-shirt"
+    }
+  ],
+  "metadata": {
+    "skip": 0,
+    "take": 20,
+    "count": 1,
+    "query": "shirt",
+    "processing_time_ms": 9
+  }
+}
+```
+
+
+---
+
+## Search Engines in the PostgreSQL Search Module Provider
+
+An engine is the mechanism the provider uses inside PostgreSQL to index documents and rank matches, set with the `engine` option. It isn't a separate search service, since both engines read and write the same PostgreSQL database.
+
+The provider supports two engines:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Engine
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `native`
+      </Table.Cell>
+      <Table.Cell>
+        Portable PostgreSQL full-text search, using GIN indexes with `ts_rank` for relevance and `pg_trgm` for typo tolerance. Works on any PostgreSQL instance. This is the default.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `lakebase`
+      </Table.Cell>
+      <Table.Cell>
+        Neon Lakebase Search, using BM25 relevance ranking and approximate nearest neighbor vector indexes. Requires a Neon PostgreSQL 16 or later instance with the Lakebase extensions.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Database Requirements in the PostgreSQL Search Module Provider
+
+### What the Migration Creates
+
+Running `db:migrate` creates everything the `native` engine needs:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Object
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What it's For
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `pg_trgm` extension
+      </Table.Cell>
+      <Table.Cell>
+        Typo tolerance, which the provider applies with trigram word similarity.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `unaccent` extension
+      </Table.Cell>
+      <Table.Cell>
+        Accent-insensitive matching, so a search for `cafe` matches `café`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `medusa_search_english` text search configuration
+      </Table.Cell>
+      <Table.Cell>
+        The configuration the provider analyzes text with. It copies PostgreSQL's `english` configuration and adds `unaccent`.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The [Lakebase extensions](#lakebase-extensions) are the exception. The migration doesn't create them.
+
+<Note title="Warning" type="warning">
+
+Creating an extension needs privileges that your application's database role may not have on managed PostgreSQL. The migration doesn't fail in that case, so check its output. If it reports that it couldn't enable an extension, create it yourself with a privileged role before you search.
+
+</Note>
+
+### Support Custom Languages
+
+The migration only creates the `medusa_search_english` configuration. If you set `language` to something else, create a matching `medusa_search_<language>` text search configuration.
+
+To do that, add a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory. For example, create the file `src/migration-scripts/create-german-search-config.ts` for German:
+
+```ts title="src/migration-scripts/create-german-search-config.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export default async function createGermanSearchConfig({
+  container,
+}: ExecArgs) {
+  const knex = container.resolve(
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
+
+  await knex.raw(`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_ts_config
+        WHERE cfgname = 'medusa_search_german'
+      ) THEN
+        CREATE TEXT SEARCH CONFIGURATION
+          medusa_search_german (COPY = german);
+        ALTER TEXT SEARCH CONFIGURATION medusa_search_german
+          ALTER MAPPING FOR hword, hword_part, word
+          WITH unaccent, german_stem;
+      END IF;
+    END
+    $$;
+  `)
+}
+```
+
+Then, run the migrations:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+`db:migrate` runs migration scripts after it creates the search indexes, and the provider only reads the text search configuration when it writes documents. So the configuration exists by the time your application indexes anything.
+
+### Lakebase Extensions
+
+The migration doesn't install the Lakebase extensions, since they need Neon preload libraries. Create them yourself when you set `engine` to `lakebase`.
+
+To do that, add a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory. For example, create the file `src/migration-scripts/create-lakebase-extensions.ts`:
+
+```ts title="src/migration-scripts/create-lakebase-extensions.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export default async function createLakebaseExtensions({
+  container,
+}: ExecArgs) {
+  const knex = container.resolve(
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
+
+  await knex.raw(
+    `CREATE EXTENSION IF NOT EXISTS lakebase_text;`
+  )
+
+  await knex.raw(
+    `CREATE EXTENSION IF NOT EXISTS lakebase_vector CASCADE;`
+  )
+}
+```
+
+Then, run the migrations:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+`CASCADE` installs the `vector` extension that `lakebase_vector` depends on.
+
+<Note title="Warning" type="warning">
+
+`db:migrate` creates the search indexes before it runs migration scripts. If an index declares a `vector` field, the provider builds its approximate nearest neighbor index during that earlier step. So create the `lakebase_vector` extension with a privileged role before you run `db:migrate` for the first time.
+
+</Note>
+
+---
+
+## Vector Search on the Lakebase Engine
+
+<Note title="Warning" type="warning">
+
+Vector search requires the `lakebase` engine. On the `native` engine, the provider rejects any query that uses `search_options.vector`, and it rejects an index that declares a `search.vector()` field, so your application fails to start.
+
+</Note>
+
+A field declared with `search.vector(dimensions)` holds an embedding, which the provider indexes for similarity search.
+
+A vector search compares embeddings, so the provider needs the search terms as an array of numbers before it can run one. The `search_options.vector` option that you pass to [Query](!docs!/learn/fundamentals/query) gives you two ways to supply it:
+
+1. `value`: an embedding you computed yourself. The provider uses it directly, and it only checks that its length matches the field's `dimensions`.
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      value: [0.021, -0.113, 0.884],
+    },
+  },
+})
+```
+
+2. `query`: the text to search for. The provider has no way to turn text into an embedding on its own, so it calls the `embedder` function you configure. Without an `embedder`, the provider throws an error.
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      query: "shoes for long runs",
+    },
+  },
+})
+```
+
+So you only need an `embedder` if you want callers to pass text with `search_options.vector.query`. Configure it in the provider's options:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+            options: {
+              engine: "lakebase",
+              vector_distance: "cosine",
+              embedder: async (text: string) => {
+                return await myEmbeddingClient.embed(text)
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### Choose a Distance Metric
+
+The `vector_distance` option sets how the provider measures the distance between two embeddings. It accepts one of the following:
+
+- `cosine`: compares the angle between the embeddings and ignores their magnitude. This is the default, and it's what most text embedding models expect.
+- `l2`: the straight-line distance between the embeddings, so magnitude counts.
+- `inner_product`: the dot product of the embeddings, for models whose embeddings are already normalized.
+
+Set it to whatever the model producing your embeddings recommends.
+
+<Note title="Warning" type="warning">
+
+The provider bakes the metric into the approximate nearest neighbor index when it creates it. Changing `vector_distance` afterwards doesn't rebuild that index, so rebuild the index yourself with the Search Module's [reindex method](../../reindexing/page.mdx#seeding-on-demand).
+
+</Note>
+
+Learn how to run a similarity search in the [Search Queries guide](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

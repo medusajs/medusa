@@ -497,6 +497,21 @@ const redirects = async () => {
         "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify",
       permanent: true,
     },
+    {
+      source: "/learn/fundamentals/module-links/query",
+      destination: "/learn/fundamentals/query",
+      permanent: true,
+    },
+    {
+      source: "/learn/fundamentals/module-links/query-context",
+      destination: "/learn/fundamentals/query/query-context",
+      permanent: true,
+    },
+    {
+      source: "/learn/fundamentals/module-links/index-module",
+      destination: "/learn/fundamentals/query/index-module",
+      permanent: true,
+    },
   ]
 }
 

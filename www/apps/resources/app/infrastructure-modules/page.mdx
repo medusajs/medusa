@@ -218,6 +218,56 @@ The Notification Module has module providers that implement the underlying logic
 
 ---
 
+## Search Module
+
+<Note>
+
+The Search Module is available starting [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
+The Search Module provides full-text search functionality in your Medusa application through its providers. You declare which data to index, and the module keeps the search engine current and serves queries with relevance ranking, filters, and facets. Refer to the [Search Module documentation](./search/page.mdx) to learn more about it.
+
+The Search Module has module providers that implement the underlying logic of indexing and searching documents in a search engine. The following Search Module Providers are provided by Medusa. You can also create a custom provider as explained in the [Create Search Module Provider guide](#).
+
+<CardList
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "/infrastructure-modules/search/providers/postgres",
+    },
+    {
+      title: "Medusa Search",
+      href: "#",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+  ]}
+/>
+
+### Search Module Guides
+
+<CardList
+  items={[
+    {
+      title: "Index Definitions",
+      href: "/infrastructure-modules/search/index-definitions"
+    },
+    {
+      title: "Search Queries",
+      href: "!docs!/learn/fundamentals/query/search"
+    },
+    {
+      title: "Reindexing and Migrations",
+      href: "/infrastructure-modules/search/reindexing"
+    }
+  ]}
+/>
+
+---
+
 ## Workflow Engine Module
 
 A Workflow Engine Module handles tracking and recording the transactions and statuses of workflows and their steps. Learn more about it in the [Workflow Engine Module documentation](./workflow-engine/page.mdx).

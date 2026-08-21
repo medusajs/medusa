@@ -1785,7 +1785,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Retrieve the Medusa products using the `useQueryGraphStep` helper step. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the product IDs to retrieve.
+1. Retrieve the Medusa products using the `useQueryGraphStep` helper step. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the product IDs to retrieve.
 2. Extract unique options from all products using `transform`.
 3. Extract option IDs from the unique options using `transform`.
 4. Get the existing options from Contentful using the `getOptionsContentfulStep` step.
@@ -1973,7 +1973,7 @@ export const config: SubscriberConfig = {
 
 You create a subscriber that listens to the `products.sync` event.
 
-In the subscriber function, you use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve all the products in Medusa with pagination. Then, for each batch of products, you execute the `createProductsContentfulWorkflow` workflow, passing the product IDs to the workflow.
+In the subscriber function, you use [Query](!docs!/learn/fundamentals/query) to retrieve all the products in Medusa with pagination. Then, for each batch of products, you execute the `createProductsContentfulWorkflow` workflow, passing the product IDs to the workflow.
 
 Finally, you log a message to the console to indicate that the products were synced to Contentful.
 
@@ -2703,7 +2703,7 @@ Then, you format the retrieved products to:
 
 <Note title="Tip">
 
-To paginate the retrieved products, implement a `listAndCount` method as explained in the [Query Context](!docs!/learn/fundamentals/module-links/query-context#using-pagination-with-query) documentation.
+To paginate the retrieved products, implement a `listAndCount` method as explained in the [Query Context](!docs!/learn/fundamentals/query/query-context#using-pagination-with-query) documentation.
 
 </Note>
 
@@ -2763,14 +2763,14 @@ export const GET = async (
 
 Since you export a `GET` route handler function, you expose a `GET` route at `/store/products/[id]/[locale]`. The route accepts two path parameters: the product's ID and the locale code.
 
-In the route handler, you retrieve the `locale` and `id` path parameters from the request. Then, you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container.
+In the route handler, you retrieve the `locale` and `id` path parameters from the request. Then, you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container.
 
 Next, you use Query to retrieve the localized details of the specified product. To do that, you pass an object with the following properties:
 
 - `entity`: The entity to retrieve, which is `product`.
 - `fields`: The fields to retrieve. Notice that you include the `contentful_product.*` field, which is available through the module link you created earlier.
 - `filters`: The filter to apply on the retrieved products. You apply the product's ID as a filter.
-- `context`: An additional context to be passed to the methods retrieving the data. To pass a context, you use [Query Context](!docs!/learn/fundamentals/module-links/query-context).
+- `context`: An additional context to be passed to the methods retrieving the data. To pass a context, you use [Query Context](!docs!/learn/fundamentals/query/query-context).
 
 By specifying `contentful_product.*` in the `fields` property, Medusa will retrieve the product's entry from Contentful using the `list` method you added to the Contentful Module's service.
 

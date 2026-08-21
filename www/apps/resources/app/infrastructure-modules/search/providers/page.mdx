@@ -1,0 +1,186 @@
+import { CardList, Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Module Providers`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about Search Module Providers in Medusa, including how to register them and choose which one holds each index.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+<Note title="Easier setup with Cloud">
+
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Cloud documentation](#).
+
+</Note>
+
+## What is a Search Module Provider?
+
+A Search Module Provider implements the logic of talking to a search engine, including creating indexes, writing documents, and running queries. The [Search Module](../page.mdx) then uses the registered providers to serve every index.
+
+Medusa provides the following Search Module Providers:
+
+<CardList
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "/infrastructure-modules/search/providers/postgres",
+    },
+    {
+      title: "Medusa Search",
+      href: "#",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+  ]}
+/>
+
+### Custom Search Module Providers
+
+You can also create a custom provider as explained in the [Create Search Module Provider guide](#).
+
+---
+
+## Register Multiple Providers
+
+The Search Module supports more than one provider at a time. Each [index definition](../index-definitions/page.mdx) picks one through its `provider` property, so a high-traffic index can live on a dedicated engine while quieter indexes stay on PostgreSQL.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        default_provider: "search-postgres",
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+            options: {
+              language: "english",
+            },
+          },
+          {
+            resolve: "./src/modules/my-search-provider",
+            id: "my-engine",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### Select a Provider by its Identifier
+
+Every provider declares its own identifier, such as `search-postgres` for the PostgreSQL provider and `search-medusa` for the Medusa Search provider. A custom provider declares one too, as a static `identifier` property on the service it exports:
+
+```ts title="src/modules/my-search-provider/service.ts"
+import {
+  AbstractSearchProviderService,
+} from "@medusajs/framework/utils"
+
+export class MySearchService
+  extends AbstractSearchProviderService
+{
+  static identifier = "my-engine"
+  // ...
+}
+```
+
+`AbstractSearchProviderService` is the base class that every Search Module Provider extends. Medusa exports it from `@medusajs/framework/utils`.
+
+An index definition then selects a provider by that identifier:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  provider: "my-engine",
+  // ...
+})
+```
+
+---
+
+## Default Search Module Provider
+
+An index definition that names no provider uses the module's default provider. The Search Module resolves the default once when it initializes, so a misconfiguration fails at startup rather than on the first query.
+
+The module only resolves it when at least one index definition exists. So a project with no files under `src/search` starts even if its provider configuration is incomplete.
+
+### How is the Default Provider Selected?
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Scenario
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default Provider
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        One provider is registered.
+      </Table.Cell>
+      <Table.Cell>
+        The registered provider.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module has a `default_provider` option.
+      </Table.Cell>
+      <Table.Cell>
+        The provider whose identifier matches `default_provider`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module doesn't have a `default_provider` option.
+      </Table.Cell>
+      <Table.Cell>
+        The module throws at startup because it can't determine a default provider.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module has a `default_provider` option that doesn't match any registered provider.
+      </Table.Cell>
+      <Table.Cell>
+        The module throws at startup because it can't determine a default provider.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+If you register one provider, you can leave `default_provider` unset. The Search Module selects that provider for every index definition that names none.
+
+---
+
+## Provider Capabilities Differ
+
+The Search Module models a search engine's features behind one interface, but not every engine backs all of them. A provider that can't serve part of a query rejects it, rather than returning results that quietly differ. Some features, such as index swapping, are optional: the module takes a slower path instead of failing when a provider doesn't back them.
+
+So the provider you pick decides which index definitions you can declare, which query features you can pass, and how a schema change reaches the index. Refer to [Compare Search Module Providers](./comparison/page.mdx) for what each provider Medusa ships does with every feature they treat differently.

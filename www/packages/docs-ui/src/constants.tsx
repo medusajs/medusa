@@ -39,7 +39,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Index Module",
-            link: "/learn/fundamentals/module-links/index-module",
+            link: "/learn/fundamentals/query/index-module",
           },
           {
             type: "link",
@@ -64,7 +64,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Query",
-            link: "/learn/fundamentals/module-links/query",
+            link: "/learn/fundamentals/query",
           },
           {
             type: "link",
@@ -235,6 +235,11 @@ export const navDropdownItems: NavigationItem[] = [
             type: "link",
             title: "Notification",
             link: "/resources/infrastructure-modules/notification",
+          },
+          {
+            type: "link",
+            title: "Search",
+            link: "/resources/infrastructure-modules/search",
           },
           {
             type: "link",

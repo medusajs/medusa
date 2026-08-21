@@ -1,0 +1,241 @@
+import { Table, TypeList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Reindexing and Migrations`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how the Search Module creates physical indexes, fills them, and rebuilds them when a definition changes.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+## Index Migrations
+
+A [search index definition](../index-definitions/page.mdx) declares what an index should look like. The physical index in the search engine is a separate thing, so the [Search Module](../page.mdx) has to bring the two in line. It does that with an index migration.
+
+Index migrations run as part of the `db:migrate` command:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+<Note title="Tip">
+
+You can pass `--skip-search` to `db:migrate` to skip search migrations.
+
+</Note>
+
+You can also run them on their own with the following command:
+
+```bash npm2yarn
+npx medusa db:migrate:search
+```
+
+The command plans the actions first, then prints what it did:
+
+```bash
+info:    Migrating search indexes...
+┌────────────────────────────────────┐
+│                                    │
+│   Created following search indexes │
+│     - product (product)            │
+│                                    │
+└────────────────────────────────────┘
+info:    Search indexes migrated. They are filled when the application starts
+```
+
+Every action is idempotent, so running it twice is a no-op. When the physical indexes already match every definition, the command prints `Search indexes already up-to-date` and changes nothing.
+
+The command reports each action under one of the following:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Action
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        When it Happens
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `create`
+      </Table.Cell>
+      <Table.Cell>
+        The index doesn't exist yet. Nothing serves it, so the module builds it under its live name.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `migrate`
+      </Table.Cell>
+      <Table.Cell>
+        The definition's `fields` or `settings` changed. The module rebuilds the index to match.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `noop`
+      </Table.Cell>
+      <Table.Cell>
+        The physical index already matches the definition.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### How Index Changes Are Handled
+
+When a definition changes and the provider supports index swapping, the module builds the new schema alongside the live index, fills it, then aliases it over. Reads keep hitting the old index throughout and never see a half-built one.
+
+A provider without swapping support has nowhere to build alongside, so the module replaces the live index in place. That index holds nothing until the seed runs either [at application start](#seeding-at-application-start) or [on demand](#seeding-on-demand). Refer to [Compare Search Module Providers](../providers/comparison/page.mdx#index-lifecycle-and-write-support) for which providers support swapping.
+
+<Note title="Warning" type="warning">
+
+Seeding at application start only runs in worker or shared mode. If you rebuild in place on an application running in server mode, the index serves nothing until you seed it [on demand](#seeding-on-demand).
+
+</Note>
+
+### Providers That Migrate at Startup
+
+Some providers hold indexes in the memory of the process that created them. Since `db:migrate` runs in its own process, everything it built is gone by the time your application boots.
+
+The Search Module migrates their indexes when the application starts, right before it seeds them, so the index and the data filling it are built by the same process. 
+
+---
+
+## Seeding at Application Start
+
+When your application starts in worker or shared mode, the Search Module checks every index and fills the ones that need data. An application running in server mode skips this entirely, so at least one worker or shared process has to run for an index to be filled.
+
+The module seeds an index for one of the following reasons:
+
+1. A migration created the index and nothing has filled it yet.
+2. The index exists and holds no documents, such as after an engine restart wiped it.
+3. A migration built a new index that the module has to fill, then swap in.
+4. The previous seed didn't complete, so the module resumes it.
+
+The module records every seed run, so an interrupted run passes its `last_key` back to the definition's `seed` function and resumes where it stopped. Refer to [Fill the Index with `seed`](../index-definitions/page.mdx#fill-the-index-with-seed).
+
+---
+
+## Seeding on Demand
+
+Use the `reindex` method of the Search Module's service to rebuild an index manually.
+
+For example, the following workflow step rebuilds only the published products in the `product` index:
+
+export const highlights = [
+  ["15", "index", "The indexes to rebuild. Defaults to every index."],
+  ["16", "filters", "Passed to the definition's `seed` function."],
+]
+
+```ts title="src/workflows/steps/reindex-products.ts" highlights={highlights}
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+export const reindexProductsStep = createStep(
+  "reindex-products",
+  async (_, { container }) => {
+    const searchModuleService = container.resolve(
+      Modules.SEARCH
+    )
+
+    const result = await searchModuleService.reindex({
+      index: "product",
+      filters: { status: "published" },
+    })
+
+    return new StepResponse(result)
+  }
+)
+```
+
+`reindex` accepts the following input:
+
+<TypeList
+  types={[
+    {
+      name: "index",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      defaultValue: "Every registered index",
+      description: "The name of an index, or an array of names, to rebuild."
+    },
+    {
+      name: "strategy",
+      type: "`\"swap\"` \\| `\"in_place\"`",
+      optional: true,
+      defaultValue: "swap",
+      description: "How to rebuild the index. Refer to [Reindex Strategies](#reindex-strategies)."
+    },
+    {
+      name: "filters",
+      type: "`Record<string, unknown>`",
+      optional: true,
+      description: "Filters passed to the definition's `seed` function for a partial rebuild."
+    }
+  ]}
+  sectionTitle="Seeding on Demand"
+/>
+
+It returns the names of the indexes it rebuilt, and a `job_id`. The method waits for every index to finish before it resolves, so there's nothing to poll.
+
+The Search Module records the run in its `search_index_sync` table, writing one row per index and stamping every row with the `job_id`. Each row holds that index's status, how many documents it wrote, its `last_key`, and the error if it failed. The module exposes no method to read those rows, so query the table directly when you need them.
+
+### Reindex Strategies
+
+You can specify how the module rebuilds an index with the `strategy` option. The two strategies are:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Strategy
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `swap`
+      </Table.Cell>
+      <Table.Cell>
+        Fills a shadow index, then aliases it over the live one. The live index keeps serving reads throughout. This is the default.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `in_place`
+      </Table.Cell>
+      <Table.Cell>
+        Writes into the live index. Cheaper, but it leaves stale documents behind for anything the seed no longer produces.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note title="Tip">
+
+Use `swap` when the seed's output shrank, so removed documents don't linger.
+
+Passing `filters` always rebuilds in place, even if you set `strategy` to `swap`. A partial rebuild would only hold the filtered slice, so aliasing it over the live index would delete every other document.
+
+</Note>

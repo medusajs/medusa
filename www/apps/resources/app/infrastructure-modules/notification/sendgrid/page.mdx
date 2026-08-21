@@ -231,7 +231,7 @@ export const config: SubscriberConfig = {
 
 In this subscriber, you:
 
-- Resolve the Notification Module's main service and [Query](!docs!/learn/fundamentals/module-links/query) from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
+- Resolve the Notification Module's main service and [Query](!docs!/learn/fundamentals/query) from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
 - Retrieve the product's details using Query to pass them to the template in SendGrid.
 - Use the `createNotifications` method of the Notification Module's main service to create a notification to be sent to the specified email. By specifying the `email` channel, the SendGrid Notification Module Provider is used to send the notification.
 - The `template` property of the `createNotifications` method's parameter specifies the ID of the template defined in SendGrid.

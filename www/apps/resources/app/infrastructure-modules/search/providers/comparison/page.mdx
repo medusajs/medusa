@@ -1,0 +1,786 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Compare Search Module Providers`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find what each Search Module Provider that Medusa ships does with the parts of the Search Module interface that providers implement differently.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+## The Providers in this Comparison
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Provider
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Identifier
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        How You Register It
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [PostgreSQL](../postgres/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        `search-postgres`
+      </Table.Cell>
+      <Table.Cell>
+        In the module's `providers` array. Registered by default for non-Cloud users with `engine: "native"`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Medusa Search](#)
+      </Table.Cell>
+      <Table.Cell>
+        `search-medusa`
+      </Table.Cell>
+      <Table.Cell>
+        Registered by default to [Cloud](#) users.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Search Features at a Glance
+
+This section compares the features of the Search Module interface that providers implement differently. The rest of the guide details each feature and how each provider handles it. Refer to [searchable()](../../index-definitions/modifiers/page.mdx#searchable) for how each provider reads a field's weight.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Feature
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        What you configure
+      </Table.Cell>
+      <Table.Cell>
+        Registered by default, but you run `db:migrate` to create its tables, extensions, and text search configuration. A language other than English, the `lakebase` engine, and vector search each need more setup.
+      </Table.Cell>
+      <Table.Cell>
+        Nothing. Cloud registers and configures it for you.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Where the index lives](#index-lifecycle-and-write-support)
+      </Table.Cell>
+      <Table.Cell>
+        Your PostgreSQL database.
+      </Table.Cell>
+      <Table.Cell>
+        The Medusa Search service.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Full-text search
+      </Table.Cell>
+      <Table.Cell>
+        Yes. Weights collapse onto four relevance tiers.
+      </Table.Cell>
+      <Table.Cell>
+        Yes. Relevance is multiplied by the weight.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Typo tolerance
+      </Table.Cell>
+      <Table.Cell>
+        Yes.
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Vector and hybrid search
+      </Table.Cell>
+      <Table.Cell>
+        On the `lakebase` engine only, including a hybrid of text and vector search.
+      </Table.Cell>
+      <Table.Cell>
+        Vector search only, on embeddings you compute yourself.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Geo fields
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Filters
+      </Table.Cell>
+      <Table.Cell>
+        Every operator, including `$or`, `$not`, and several operators on one field.
+      </Table.Cell>
+      <Table.Cell>
+        Every operator, including `$or`, `$not`, and several operators on one field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Sorting
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, alongside a text query.
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, but not alongside a text or vector query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Facets
+      </Table.Cell>
+      <Table.Cell>
+        Value, range, and stats.
+      </Table.Cell>
+      <Table.Cell>
+        Value and range. The hits, the count, and every facet share a budget of 16 queries per search.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Highlighting and synonyms
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        How deep you can paginate
+      </Table.Cell>
+      <Table.Cell>
+        No limit.
+      </Table.Cell>
+      <Table.Cell>
+        Up to the 10,000th result.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Zero-downtime schema changes](#index-lifecycle-and-write-support)
+      </Table.Cell>
+      <Table.Cell>
+        Yes.
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## How to Read the Rest of this Comparison
+
+The sections below say what each provider does with one feature, rather than whether it backs it. A provider that can't serve part of a request rejects it instead of answering differently, so each cell says when the rejection happens:
+
+- **Fails at startup**: the provider throws while the Search Module creates or migrates the index, so your application doesn't boot or `db:migrate` fails.
+- **Fails per query**: the provider throws for the requests that use the feature. Other requests are unaffected.
+- **Ignored**: the provider accepts the request and doesn't act on the feature, so results look as if you never passed it.
+
+A "No" in the table above means one of the three. Find the feature below for which.
+
+---
+
+## Index Definition Support
+
+What each provider does with an [index definition](../../index-definitions/page.mdx) that declares the following features:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Declaration
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        A [`search.vector()`](../../index-definitions/fields/page.mdx#searchvector) field
+      </Table.Cell>
+      <Table.Cell>
+        On the `lakebase` engine, holds the embedding and builds an approximate nearest neighbor index for it. On `native`, fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Holds the embedding as a fixed-width float vector. Fails at startup if the field is an array or declares no positive `dimensions`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A [`search.geo()`](../../index-definitions/fields/page.mdx#searchgeo) field
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `settings.synonyms` or `settings.stop_words`
+      </Table.Cell>
+      <Table.Cell>
+        Ignored.
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `settings.distinct_attribute`
+      </Table.Cell>
+      <Table.Cell>
+        Ignored. Pass `distinct` per query instead.
+      </Table.Cell>
+      <Table.Cell>
+        Applied to every query that doesn't pass its own `distinct`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `settings.provider_options` and [`providerOptions()`](../../index-definitions/modifiers/page.mdx#provideroptions)
+      </Table.Cell>
+      <Table.Cell>
+        Ignored. The provider reads no entry of its own.
+      </Table.Cell>
+      <Table.Cell>
+        Reads its own entry on the index, on a field, and on a query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A field that sets [`correlated()`](../../index-definitions/modifiers/page.mdx#correlated)
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A document whose primary key is longer than 64 bytes
+      </Table.Cell>
+      <Table.Cell>
+        Written as-is.
+      </Table.Cell>
+      <Table.Cell>
+        Throws when the document is written, which fails the seed or the write.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Search Option Support
+
+What each provider does with the [search options](!docs!/learn/fundamentals/query/search#search-options) of a `query.search` call.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `vector`
+      </Table.Cell>
+      <Table.Cell>
+        On the `lakebase` engine, runs a similarity search, and blends it with the text query by `semantic_ratio`. On `native`, fails per query.
+      </Table.Cell>
+      <Table.Cell>
+        Runs a similarity search when you pass `value`. Fails per query if you pass `query` text, if the search also passes `q`, or if the search also orders by a field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `typo_tolerance`
+      </Table.Cell>
+      <Table.Cell>
+        Widens the match with trigram word similarity, on both engines.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `min_score`
+      </Table.Cell>
+      <Table.Cell>
+        Discards hits below the threshold before paginating, so the count stays truthful.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `match_strategy`
+      </Table.Cell>
+      <Table.Cell>
+        Serves `all` and `any`. Fails per query for `last`.
+      </Table.Cell>
+      <Table.Cell>
+        Serves `any` and `last`. Fails per query for `all`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `count: "none"`
+      </Table.Cell>
+      <Table.Cell>
+        Skips the count query and returns `null` as the count.
+      </Table.Cell>
+      <Table.Cell>
+        Skips the count query and returns `null` as the count.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `distinct`
+      </Table.Cell>
+      <Table.Cell>
+        Keeps one hit per value, picked by the query's order. Fails per query on an unknown, array, or vector field.
+      </Table.Cell>
+      <Table.Cell>
+        Keeps one hit per value.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [`highlight`](!docs!/learn/fundamentals/query/search#highlighting)
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. The provider doesn't implement highlighting.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. The provider doesn't implement highlighting.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `locales`
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Set `language` in the provider options instead.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Configure the language on the index's fields instead.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Pagination and Sorting Support
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Request
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [Ordering](!docs!/learn/fundamentals/query/search#apply-pagination) by more than one field
+      </Table.Cell>
+      <Table.Cell>
+        Applies every key in the order you list them.
+      </Table.Cell>
+      <Table.Cell>
+        Sends every key to the service in the order you list them.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ordering by a field alongside a text query
+      </Table.Cell>
+      <Table.Cell>
+        Orders by the field. A hybrid text and vector search fails per query, since its results are rank-fused and only `_score` can order them.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Relevance and attribute order are separate rankings.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ordering by an array field
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+      <Table.Cell>
+        Sends the field to the service as a rank key without checking it first.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A page beyond the 10,000th result
+      </Table.Cell>
+      <Table.Cell>
+        Served.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query when `skip` plus `take` is above 10,000.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Paginating with `pagination.cursor`
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Paginate with `skip` and `take`.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Paginate with `skip` and `take`.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Filter Support
+
+What each provider does with a [filter](!docs!/learn/fundamentals/query/search#apply-filters) tree. Refer to [Filter Operators](!docs!/learn/fundamentals/query/search#filter-operators) for what each operator means.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Filter
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `$or` or `$not`
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into the query.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into the query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Two operators on one field, such as `$gt` with `$ne`
+      </Table.Cell>
+      <Table.Cell>
+        Both applied, combined with `AND`.
+      </Table.Cell>
+      <Table.Cell>
+        Both applied, combined with `AND`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `$exists`
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a presence check.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a comparison against no value.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `$prefix` or `$like`
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a pattern match. Fails per query on an array field.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a glob match, with `%` and `_` translated for `$like`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `$ne` or `$nin` on a numeric, boolean, or array field
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a negated match.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a negated match.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Several values for one numeric or boolean field, with `$in` or a plain array
+      </Table.Cell>
+      <Table.Cell>
+        Matches any of the values.
+      </Table.Cell>
+      <Table.Cell>
+        Matches any of the values.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Facet Support
+
+What each provider does with the [facets](!docs!/learn/fundamentals/query/search#facets) a query requests.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Request
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        A `stats` facet
+      </Table.Cell>
+      <Table.Cell>
+        Returns the minimum, maximum, average, sum, and count. Fails per query on a field that isn't numeric.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A `range` facet
+      </Table.Cell>
+      <Table.Cell>
+        Counts each bucket in one query. Fails per query on a field that isn't numeric.
+      </Table.Cell>
+      <Table.Cell>
+        Counts each bucket with its own query, so a facet with five buckets costs five queries.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Many facets in one query
+      </Table.Cell>
+      <Table.Cell>
+        Runs one extra query per facet.
+      </Table.Cell>
+      <Table.Cell>
+        Batches the hits, the count, and every facet query into one request, and fails per query above 16 of them.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A facet value `sort` or `limit`
+      </Table.Cell>
+      <Table.Cell>
+        Applied by the query that computes the facet.
+      </Table.Cell>
+      <Table.Cell>
+        Applied by the provider after it reads every group back.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Disjunctive facets](!docs!/learn/fundamentals/query/search#disjunctive-facets)
+      </Table.Cell>
+      <Table.Cell>
+        Runs the fan-out as one request, since the provider accepts more than one query per request.
+      </Table.Cell>
+      <Table.Cell>
+        Runs the fan-out as one request, since the provider accepts more than one query per request.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Index Lifecycle and Write Support
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Behavior
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Where the index lives
+      </Table.Cell>
+      <Table.Cell>
+        A table per index in your PostgreSQL database, tracked in a catalog table.
+      </Table.Cell>
+      <Table.Cell>
+        The Medusa Search service, scoped to the environment handle you configure.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Zero-downtime schema changes](../../reindexing/page.mdx#how-index-changes-are-handled)
+      </Table.Cell>
+      <Table.Cell>
+        Supported. The module fills a shadow index, then the provider renames it over the live one.
+      </Table.Cell>
+      <Table.Cell>
+        Not supported, so the module rebuilds in place and the index holds nothing until the seed finishes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Migrating at application start](../../reindexing/page.mdx#providers-that-migrate-at-startup)
+      </Table.Cell>
+      <Table.Cell>
+        No. `db:migrate` creates the indexes.
+      </Table.Cell>
+      <Table.Cell>
+        No. `db:migrate` creates the indexes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Bringing an existing index up to a changed schema
+      </Table.Cell>
+      <Table.Cell>
+        Drops and recreates the table when the schema fingerprint changed.
+      </Table.Cell>
+      <Table.Cell>
+        Updates the schema in place when no field changed type, and recreates the index otherwise.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        How a batch of documents is written
+      </Table.Cell>
+      <Table.Cell>
+        200 documents per statement.
+      </Table.Cell>
+      <Table.Cell>
+        Split into requests of at most 480 MiB. A single document above that limit throws.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Deleting documents by a filter
+      </Table.Cell>
+      <Table.Cell>
+        Deletes by ID when the filter is a primary-key match, and otherwise runs one delete statement using the same filter compilation as a search.
+      </Table.Cell>
+      <Table.Cell>
+        Repeats a delete-by-filter request until the service reports no rows left. Throws when you pass no filters.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        The task a write returns
+      </Table.Cell>
+      <Table.Cell>
+        Always `succeeded`, since the provider doesn't defer its writes. Nothing to wait on.
+      </Table.Cell>
+      <Table.Cell>
+        Always `succeeded`, since the provider doesn't defer its writes. Nothing to wait on.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

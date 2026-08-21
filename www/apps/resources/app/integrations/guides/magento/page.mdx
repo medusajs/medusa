@@ -882,7 +882,7 @@ const { data: shippingProfiles } = useQueryGraphStep({
 // TODO retrieve existing products
 ```
 
-You use the `useQueryGraphStep` step to retrieve the store details and shipping profiles. `useQueryGraphStep` is a Medusa step that wraps [Query](!docs!/learn/fundamentals/module-links/query), allowing you to use it in a workflow. Query is a tool that retrieves data across modules.
+You use the `useQueryGraphStep` step to retrieve the store details and shipping profiles. `useQueryGraphStep` is a Medusa step that wraps [Query](!docs!/learn/fundamentals/query), allowing you to use it in a workflow. Query is a tool that retrieves data across modules.
 
 When retrieving the store details, you specifically retrieve its supported currencies and default sales channel ID. You'll associate the products with the store's default sales channel, and set their variant prices in the supported currencies. You'll also associate the products with a shipping profile.
 

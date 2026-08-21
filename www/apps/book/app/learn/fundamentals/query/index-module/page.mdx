@@ -135,7 +135,7 @@ Notice the `estimate_count` property, which is the estimated total number of pro
 
 ## How to Use the Index Module
 
-The Index Module adds a new `index` method to [Query](../query/page.mdx) and it has the same API as the `graph` method.
+The Index Module adds a new `index` method to [Query](../page.mdx) and it has the same API as the `graph` method.
 
 For example, to filter products by a sales channel ID:
 
@@ -214,7 +214,7 @@ Selecting specific fields matters most for the `cart` and `order` data models, a
 
 These data models have computed total properties, such as `total`, `subtotal`, and `tax_total`. Medusa calculates these totals in the application, not the database, and it only calculates them when you request at least one total property, or when you pass `*`. Calculating them also loads relations, such as `items` and `shipping_methods` with their tax lines and adjustments, even if you don't use them.
 
-So, whenever you retrieve carts or orders, either with the `index` method or with [Query's `graph` method](../query/page.mdx#select-specific-fields), request total properties only when you display them:
+So, whenever you retrieve carts or orders, either with the `index` method or with [Query's `graph` method](../page.mdx#select-specific-fields), request total properties only when you display them:
 
 ```ts title="Prefer"
 const { data: orders } = await query.index({
@@ -822,9 +822,9 @@ This will return all products whose brand name starts with `Acme`.
 
 ### Use Request Query Configurations
 
-API routes using the `graph` method can configure default [query configurations](../query/page.mdx#request-query-configurations), such as which fields to retrieve, while also allowing clients to override them using query parameters.
+API routes using the `graph` method can configure default [query configurations](../page.mdx#request-query-configurations), such as which fields to retrieve, while also allowing clients to override them using query parameters.
 
-The `index` method supports the same configurations. For example, if you add the request query configuration as explained in the [Query documentation](../query/page.mdx#request-query-configurations), you can use those configurations in the `index` method:
+The `index` method supports the same configurations. For example, if you add the request query configuration as explained in the [Query documentation](../page.mdx#request-query-configurations), you can use those configurations in the `index` method:
 
 ```ts title="src/api/custom/products/route.ts" highlights={[["17"]]}
 import {

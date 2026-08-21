@@ -802,7 +802,7 @@ You create a workflow using `createWorkflow` from the Workflows SDK. It accepts 
 
 As a second parameter, it accepts a constructor function, which is the workflow's implementation. The function can accept input, which in this case is the order ID.
 
-So far, you retrieve the order's details using the `useQueryGraphStep`. It uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood to retrieve data across modules.
+So far, you retrieve the order's details using the `useQueryGraphStep`. It uses [Query](!docs!/learn/fundamentals/query) under the hood to retrieve data across modules.
 
 Next, you'll prepare the transaction input, create the transaction, and update the order with the transaction code. Replace the `// TODO create transaction` comment with the following:
 

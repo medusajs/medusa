@@ -690,7 +690,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Execute `useQueryGraphStep` to retrieve products from Medusa's database. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
+1. Execute `useQueryGraphStep` to retrieve products from Medusa's database. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
 2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare two lists: one for published products to index in Algolia and another for unpublished products to delete from Algolia.
 2. Execute `syncProductsStep` to index the published products in Algolia.
 3. Execute `deleteProductsFromAlgoliaStep` to delete unpublished products from Algolia.

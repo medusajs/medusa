@@ -601,7 +601,7 @@ export const getProductFeedItemsStep = createStep(
 
 In the step, you:
 
-1. Retrieve products with pagination using [Query](!docs!/learn/fundamentals/module-links/query). Query allows you to retrieve data across modules. You retrieve the fields necessary for the product field.
+1. Retrieve products with pagination using [Query](!docs!/learn/fundamentals/query). Query allows you to retrieve data across modules. You retrieve the fields necessary for the product field.
 2. For each product, you loop over its variants to add them to the product feed. You add information related to pricing, availability, and other attributes.
     - Some of the fields are hardcoded or left empty. You can update them based on your setup.
     - For more information on the fields, refer to the [Product Feed specifications](https://developers.openai.com/commerce/specs/feed).

@@ -1,0 +1,440 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Index Fields`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the field types and modifiers you can use in a [search index definition](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+<Note>
+
+Refer to the [Search Index Field Modifiers guide](../modifiers/page.mdx) for details on what each modifier does and which types it applies to.
+
+</Note>
+
+## Define Index Fields
+
+A search index definition's `fields` property declares what the search engine holds. Use `search.define` to create a schema of field types and modifiers.
+
+For example:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable({ weight: 3 }),
+    min_price: search.float().sortable().facetable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+Each field has a type, such as `search.text()`, and any number of chained modifiers, such as `.searchable()`. A type sets what the field holds, and a modifier declares what the engine can do with it.
+
+---
+
+## Modifiers and Facet Types by Field Type
+
+A modifier that doesn't apply to a field type isn't available on it, so an invalid combination fails to compile. The following table shows which [modifiers](../modifiers/page.mdx) apply to which field types, and which [facet types](../modifiers/page.mdx#facet-types) each type allows.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Field Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Modifiers it Accepts
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Facet Types it Allows
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `keyword`, `text`
+      </Table.Cell>
+      <Table.Cell>
+        `searchable`, `filterable`, `sortable`, `facetable`, `array`, `retrievable`, `providerOptions`
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `integer`, `float`, `date`
+      </Table.Cell>
+      <Table.Cell>
+        `filterable`, `sortable`, `facetable`, `array`, `retrievable`, `providerOptions`
+      </Table.Cell>
+      <Table.Cell>
+        `value`, `range`, `stats`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `boolean`, `geo`
+      </Table.Cell>
+      <Table.Cell>
+        `filterable`, `sortable`, `facetable`, `array`, `retrievable`, `providerOptions`
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `object`
+      </Table.Cell>
+      <Table.Cell>
+        `filterable`, `sortable`, `facetable`, `array`, `correlated`, `retrievable`, `providerOptions`
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `vector`
+      </Table.Cell>
+      <Table.Cell>
+        `retrievable`, `providerOptions`
+      </Table.Cell>
+      <Table.Cell>
+        None
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Only `integer`, `float`, and `date` accept a `types` option on `facetable`. Every other type takes `facetable()` as a boolean and allows `value` facets. Refer to [Facet Types](../modifiers/page.mdx#facet-types) for what each kind returns.
+
+<Note>
+
+Adding, removing, or changing a field changes the definition's hash, which the Search Module treats as a schema change. Refer to the [Reindexing and Migrations guide](../../reindexing/page.mdx) to learn how it rebuilds the index.
+
+</Note>
+
+---
+
+## search.keyword()
+
+The `keyword` identifier indicates a string that is treated as a whole value. Use it for IDs, handles, statuses, and any value you filter or facet on.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    status: search.keyword().filterable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, `status` is a `keyword` field, so a query can filter on it with `{ status: "published" }`.
+
+---
+
+## search.text()
+
+The `text` identifier indicates a string analyzed for free-text matching. Use it for titles, descriptions, and other prose.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+A `text` field only participates in free-text matching once you add the [searchable](../modifiers/page.mdx#searchable) modifier. Here `title` carries a higher weight than `description`, so a product matching a query in its title outranks one matching only in its description.
+
+---
+
+## search.integer()
+
+The `integer` identifier indicates a whole number such as an inventory quantity. Useful for filtering, sorting, and faceting. It isn't matched as free text.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    inventory_quantity: search
+      .integer()
+      .filterable()
+      .sortable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `inventory_quantity` and order results by it with `pagination.order`. Adding `facetable()` would also let a query summarize the matched documents by quantity brackets.
+
+---
+
+## search.float()
+
+The `float` identifier indicates a decimal number, such as a price. Useful for filtering, sorting, and faceting. It isn't matched as free text.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    min_price: search
+      .float()
+      .filterable()
+      .sortable()
+      .facetable({ types: ["range"] }),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `min_price`, order results by it with `pagination.order`, and facet on it to summarize the matched documents by price brackets.
+
+A range facet on a price turns into the price brackets a storefront shows beside its results. Learn more in the [Search Index Field Modifiers guide](../modifiers/page.mdx#facet-types).
+
+---
+
+## search.boolean()
+
+The `boolean` identifier indicates a `true` or `false` value. Use it for flags such as whether a product is a gift card. Useful for filtering and faceting. It isn't matched as free text.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    is_giftcard: search.boolean().filterable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `is_giftcard` to find only gift cards or the opposite.
+
+---
+
+## search.date()
+
+The `date` identifier indicates a date. A document can hold either a `Date` object or an ISO string, since `query.graph` returns `Date` objects while an event payload carries a string. Useful for filtering, sorting, and faceting. It isn't matched as free text.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    created_at: search.date().filterable().sortable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `created_at` and order results by it with `pagination.order`. Adding `facetable()` would also let a query summarize the matched documents by date brackets.
+
+---
+
+## search.geo()
+
+The `geo` identifier searches over `{ lat, lng }` coordinate pairs. Use it for locations such as warehouses or stores. Useful for filtering by proximity. It isn't matched as free text.
+
+```ts title="src/search/warehouse.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const warehouseIndex = defineSearchIndex({
+  fields: search.define({
+    location: search.geo().filterable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `location` to find documents within a radius of a point.
+
+<Note title="Warning" type="warning">
+
+No provider that Medusa ships supports geo fields. Each of them rejects an index that declares one, so your application fails to start. Refer to [Compare Search Module Providers](../../providers/comparison/page.mdx#index-definition-support) for what each provider does with a `geo` field.
+
+</Note>
+
+### Yield a Coordinate Pair
+
+A field's type describes the document your index holds, not a property on your data models. So the `{ lat, lng }` shape is what `seed` and `consume` must yield, no matter how you store the coordinates.
+
+For example, if your data model holds `latitude` and `longitude` as separate properties, combine them into the pair when you yield the documents:
+
+```ts title="src/search/warehouse.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const warehouseIndex = defineSearchIndex({
+  name: "warehouse",
+  entity: "warehouse",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable(),
+    location: search.geo().filterable(),
+  }),
+  async *seed({ container }) {
+    const { data } = await container.query.graph({
+      entity: "warehouse",
+      fields: ["id", "name", "latitude", "longitude"],
+    })
+
+    yield data.map((warehouse) => ({
+      id: warehouse.id,
+      name: warehouse.name,
+      location: {
+        lat: warehouse.latitude,
+        lng: warehouse.longitude,
+      },
+    }))
+  },
+})
+```
+
+`search.define` type-checks what you yield against the fields you declared, so a document whose `location` isn't a `{ lat, lng }` pair fails to compile.
+
+---
+
+## search.object()
+
+The `object` identifier indicates a nested object. Pass its sub-fields as a schema, using the same types and [modifiers](../modifiers/page.mdx) as top-level fields.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    brand: search.object({
+      name: search.keyword().searchable().facetable(),
+      country: search.keyword().filterable(),
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `brand.country`, search on `brand.name`, and facet on `brand.name` to summarize the matched documents by brand.
+
+### Define as an Array of Objects
+
+Add the [array](../modifiers/page.mdx#array) modifier to an `object` field to indicate that the field holds an array of objects, rather than a single object.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    variants: search
+      .object({
+        title: search.text().searchable(),
+        sku: search.keyword().filterable(),
+      })
+      .array(),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a query can filter on `variants.sku` to find products that have a variant with a specific SKU.
+
+You can also use the [correlated](../modifiers/page.mdx#correlated) modifier to ensure that a filter on one property of an object in the array matches the same object as a filter on another property.
+
+---
+
+## search.vector()
+
+The `vector` identifier indicates an embedding, used for [vector search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search). Unlike other types, a `vector` field can't be filtered, sorted, faceted, or turned into an array, so those modifiers aren't available on it.
+
+`vector` accepts the number of dimensions in the embedding, which is how many numbers are in the list.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title_embedding: search.vector(1536).retrievable(false),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, `title_embedding` is a `vector` field with 1536 dimensions, matching the output of OpenAI's `text-embedding-3-small` model.
+
+You also set [retrievable](../modifiers/page.mdx#retrievable) to `false` to keep the embedding out of every hit, since a list of 1536 numbers is rarely useful to the caller.
+
+### Why the Number of Dimensions Matters
+
+You must declare the number of dimensions in a `vector` field because the provider needs to know how to store and compare the embeddings:
+
+- The provider creates a column or index sized for exactly that many numbers, so it needs the value before any document exists.
+- Two embeddings are only comparable if they have the same number of dimensions, so the provider rejects a document or query whose embedding is a different length.

@@ -356,6 +356,58 @@ export const infrastructureModulesSidebar = [
   },
   {
     type: "category",
+    title: "Search Module",
+    initialOpen: true,
+    children: [
+      {
+        type: "link",
+        path: "/infrastructure-modules/search",
+        title: "Overview",
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/search/index-definitions",
+        title: "Index Definitions",
+        children: [
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/index-definitions/fields",
+            title: "Index Fields",
+          },
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/index-definitions/modifiers",
+            title: "Index Field Modifiers",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/search/reindexing",
+        title: "Reindexing and Migrations",
+      },
+      {
+        type: "link",
+        title: "Providers",
+        path: "/infrastructure-modules/search/providers",
+        children: [
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/providers/postgres",
+            title: "PostgreSQL",
+          },
+          // TODO add ref link to medusa search
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/providers/comparison",
+            title: "Compare Providers",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "category",
     title: "Workflow Engine Module",
     initialOpen: true,
     children: [

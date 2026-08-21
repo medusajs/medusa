@@ -670,7 +670,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Retrieve products from Medusa's database using `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
+1. Retrieve products from Medusa's database using `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
 2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare two lists: one for published products to index in Meilisearch and another for unpublished products to delete from Meilisearch.
 3. Index the published products in Meilisearch using `syncProductsStep`.
 4. Delete unpublished products from Meilisearch using `deleteProductsFromMeilisearchStep`.
