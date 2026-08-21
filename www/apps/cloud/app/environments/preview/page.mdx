@@ -166,7 +166,7 @@ To manage the shared settings for preview environments:
     - If you add multiple conditions, you can change how the conditions are joined. Choose **and** to match all conditions; choose **or** to match one of the conditions.
     - Once you're done, click the **Save** button.
   - **Deploy Rules**: Define conditions that control when a provisioned preview environment is deployed. Available fields are **Author** and **Commit message**. Use the same operators and logic options as provisioning rules. Click **Save** to apply changes.
-  - **Database base branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
+  - **Database source branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging. If you want preview environments to use a dedicated database that isn't linked to any long-lived environment, select **Preview Settings** and upload a data dump.
 
 <Note>
 
