@@ -1,5 +1,5 @@
-import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { EllipsisHorizontal, ChevronUpDown, PencilSquare } from "@medusajs/icons"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { EllipsisHorizontal, PencilSquare } from "@medusajs/icons"
 
 export const metadata = {
   title: `Long-Lived Environments`,
@@ -62,11 +62,9 @@ You can also navigate to the environment creation form from the [command palette
     - **Branch**: Select the branch you want to associate with this environment. For example, `staging`.
         - If you don't see the branch you want to use, refresh the page to load the latest branches from your repository.
     - **Custom subdomain**: Set the custom subdomain for the Medusa application (and, subsequently, storefront). Medusa applications are a subdomain of `medusajs.app`, and their storefront is a subdomain of `medusajs.site`.
-        - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions) guide for reserved subdomains and restrictions.
+        - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions-for-projects) guide for reserved subdomains and restrictions.
     - **Infrastructure Specs** (optional): By default, your long-lived environment will use the infrastructure specs of your organization's plan. You can also choose to upgrade or downgrade these specs for a specific environment. For example, you can downgrade your long-lived environment to **Develop** if you want to reduce costs. When you enable the Infrastructure Specs toggle, you can choose a different spec. Refer to the [Plans and Pricing](../../pricing/page.mdx) to learn more about the specs of each plan.
 3. Once you're done, click the "Create" button.
-
-![Side window with the form to create an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1749812846/Cloud/CleanShot_2025-06-13_at_14.04.53_2x_apb634.png)
 
 The created environment will appear in the [project's dashboard](../../projects/page.mdx) as a card.
 
@@ -97,7 +95,7 @@ You can set the initial admin user's email and password only once if they aren't
 To set the initial admin user's email and password:
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you just created.
-2. In the environment's dashboard, click on the **Environment variables** tab.
+2. In the environment's dashboard, click **Environment variables** in the sidebar.
 3. In the "Add new environment variables" section, add the following environment variables:
 
 ```shell
@@ -119,12 +117,10 @@ Make sure to replace the values with your desired email and password.
 
 If you added the initial admin user's email and password environment variables, you need to redeploy the environment for the changes to take effect:
 
-1. Go back to the environment's dashboard by clicking the "Overview" tab.
-2. Click on the "Redeploy" button to redeploy the environment with the new environment variables.
+1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you want to redeploy.
+2. In the environment's dashboard, click on the "Redeploy" button to redeploy the environment with the new environment variables.
 
 This will redeploy the environment's live deployment with the new admin user credentials.
-
-![Redeploy button at the top right of the environment's dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787939/Cloud/CleanShot_2026-01-07_at_14.11.56_2x_bw5p1w.png)
 
 Then, wait for the deployment to finish. You can check its status in the "Deployments" section. Once it's deployed, you can [access the environment](#access-deployed-environment) using its URL.
 
@@ -144,40 +140,15 @@ On the environment's dashboard, you can view its details, logs, and settings. Yo
 
 To open an environment's dashboard:
 
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. In the project's dashboard, click on the environment's card.
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-    2. Click on the project that contains the environment you want to view.
-    3. In the project's dashboard, click on the environment you want to view.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-    2. Click on the project in the sidebar.
-    3. Click on **Overview** in the sidebar under the project.
-    4. Click on the environment you want to view in the updated sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-This will open the environment's dashboard. You can see the environment's name at the top of the Cloud dashboard.
-
-![Environment dashboard with the name at the top left](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787987/Cloud/CleanShot_2026-01-07_at_14.12.59_2x_gocehp.png)
+This will open the environment's dashboard.
 
 ### Find Environment Details
 
 On the environment's dashboard, you can find the following details:
-
-![Environment dashboard with sections highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788225/Cloud/CleanShot_2026-01-07_at_14.14.22_2x_o0at9s.png)
 
 1. **Environment Medusa Backend URL**: The URL to access the environment. You can find it below the environment's name.
 2. **Environment Storefront URL**: The URL to access the environment's storefront. You can find it below the "Storefront" title in the environment's card.
@@ -187,40 +158,9 @@ On the environment's dashboard, you can find the following details:
 
 <Note title="Why are there two Medusa Backend URLs?">
 
-Aside from the subdomain you set when [creating the environment](../../environments/long-lived/page.mdx#create-a-long-lived-environment), Medusa also provides a unique, randomly generated URL for each environment. Both of these URLs point to the same deployment.
+Aside from the subdomain you set when [creating the environment](../../environments/long-lived/page.mdx#create-a-long-lived-environment-on-cloud), Medusa also provides a unique, randomly generated URL for each environment. Both of these URLs point to the same deployment.
 
 </Note>
-
-### Switch Environments
-
-The environment's name at the top of the dashboard is also an environment switcher.
-
-To switch to a different environment:
-
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch environment" /> icon next to the environment's name at the top of the Cloud dashboard.
-    2. Choose the environment you want to switch to from the dropdown.
-
-    ![Environment switcher dropdown at the top of the dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788275/Cloud/CleanShot_2026-01-07_at_14.17.45_2x_nkemhm.png)
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Click on the current environment's name at the top of the sidebar to go back to the project's dashboard.
-    2. Click on the environment name in the sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-This will change the view to the selected environment, and you'll see its details, logs, and settings.
 
 ---
 
@@ -267,7 +207,7 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 
 ## Manage Environment Variables
 
-In the environment's **Environment variables** tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
+In the environment's **Environment variables** settings, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
 
@@ -286,28 +226,25 @@ To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custo
 
 ## Change Environment's Branch
 
-<Note>
+You can't change the branch of preview environments. You can only change it for long-lived environments, such as Production or Staging.
 
-You can't change the branch of preview environments. This section only applies to long-lived environments, such as Production or Staging.
+To change the branch associated with a long-lived environment:
 
-</Note>
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Deployment Rules** in the sidebar under the environment's section.
+5. In the "Linked branch" section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon to change the branch.
+6. In the side window that opens, enter the name of the branch you want to link to the environment.
+7. Click **Save** to apply the changes.
 
-In an environment's **Settings** tab, the **Linked Branch** section shows the branch the environment deploys from.
-
-To change the branch associated with an environment:
-
-1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
-2. In the **Linked Branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
-3. In the side window that opens, enter the new branch name in the **Branch** field.
-4. Click **Save**.
-
-Changes will take effect the next time you push a commit to the new branch. The environment will be redeployed with the latest changes from the new branch.
+The next time you push a commit to the new branch, Medusa will create a new deployment for the environment. Pushes to the previous branch will no longer trigger new deployments for the environment.
 
 ---
 
 ## Import and Export Environment's Database Dump
 
-In the environment's **Database & Storage** tab, you can export a database dump of the environment. This is useful for backing up the environment's data, debugging issues, or migrating the data to another environment.
+In the environment's **Database & Storage** settings, you can export a database dump of the environment. This is useful for backing up the environment's data, debugging issues, or migrating the data to another environment.
 
 You can also import a database dump to use existing data that you have, or to restore the environment to a previous state.
 
@@ -327,7 +264,7 @@ By default, long-lived environments that aren't the Production environment use t
 
 To change the infrastructure specs for a long-lived environment:
 
-1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
+1. In the [environment's dashboard](#open-environment-dashboard), click **Deployment Rules** in the sidebar.
 2. In the **Infrastructure Specs** section, select the plan you'd like to use its specs for the long-lived environment.
 3. Click **Save Changes**.
 
@@ -347,5 +284,5 @@ You can delete any environment in your project, except for the Production enviro
 
 To delete an environment:
 
-1. In the environment's dashboard, click on the "Settings" tab.
-2. Click the "Delete" button.
+1. In the environment's dashboard, click **Deployment Rules** in the sidebar.
+2. Click the **Delete** button in the "Delete Environment" section.

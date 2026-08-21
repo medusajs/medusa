@@ -64,8 +64,12 @@ export function getMikroOrmConfig({
       min: 2,
     },
     migrations: {
+      path: pathToMigrations,
       pathTs: pathToMigrations,
       silent: true,
+      // Snapshots only matter when generating migrations, and writing them
+      // leaves stray `.snapshot-<test db>.json` files in the source tree.
+      snapshot: false,
     },
     extensions: [CustomDBMigrator],
   })
@@ -73,7 +77,7 @@ export function getMikroOrmConfig({
 
 export interface TestDatabase {
   mikroOrmEntities: any[]
-  pathToMigrations?: string
+  pathToMigrations?: string | string[]
   schema?: string
   clientUrl?: string
 
@@ -87,6 +91,33 @@ export interface TestDatabase {
   getOrm(): MikroORM
 }
 
+/**
+ * Applies the migrations of a single directory. Used when a suite lists several
+ * migration sources (e.g. a module plus the provider under test), since a
+ * MikroORM instance only ever reads one migrations directory.
+ */
+async function runMigrationsFromPath(
+  pathToMigrations: string,
+  clientUrl?: string,
+  schema?: string
+): Promise<void> {
+  const orm = await MikroORM.init({
+    ...getMikroOrmConfig({
+      mikroOrmEntities: [],
+      pathToMigrations,
+      clientUrl,
+      schema,
+    }),
+    discovery: { warnWhenNoEntities: false },
+  })
+
+  try {
+    await orm.getMigrator().up()
+  } finally {
+    await orm.close()
+  }
+}
+
 export function getMikroOrmWrapper({
   mikroOrmEntities,
   pathToMigrations,
@@ -94,7 +125,7 @@ export function getMikroOrmWrapper({
   schema,
 }: {
   mikroOrmEntities: any[]
-  pathToMigrations?: string
+  pathToMigrations?: string | string[]
   clientUrl?: string
   schema?: string
 }): TestDatabase {
@@ -132,9 +163,15 @@ export function getMikroOrmWrapper({
     },
 
     async setupDatabase() {
+      const migrationPaths = Array.isArray(this.pathToMigrations)
+        ? this.pathToMigrations
+        : this.pathToMigrations
+        ? [this.pathToMigrations]
+        : []
+
       const OrmConfig = getMikroOrmConfig({
         mikroOrmEntities: this.mikroOrmEntities,
-        pathToMigrations: this.pathToMigrations,
+        pathToMigrations: migrationPaths[0],
         clientUrl: this.clientUrl,
         schema: this.schema,
       })
@@ -153,6 +190,20 @@ export function getMikroOrmWrapper({
         await this.manager?.execute(
           `CREATE SCHEMA IF NOT EXISTS "${this.schema ?? "public"}";`
         )
+
+        if (migrationPaths.length > 1) {
+          // Explicit sources own the schema, so the entity-derived schema is
+          // never generated on top of them.
+          for (const migrationPath of migrationPaths) {
+            await runMigrationsFromPath(
+              migrationPath,
+              this.clientUrl,
+              this.schema
+            )
+          }
+
+          return
+        }
 
         const pendingMigrations = await this.orm
           .getMigrator()

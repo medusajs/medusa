@@ -852,6 +852,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/validateGiftCardsNotExpiredStep",
+                  "title": "validateGiftCardsNotExpiredStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/validateStoreCreditAccountStep",
                   "title": "validateStoreCreditAccountStep",
                   "description": "",

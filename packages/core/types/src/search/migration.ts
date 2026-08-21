@@ -3,7 +3,7 @@
  *
  * Planned and executed separately, like link migrations, so that `db:migrate`
  * can show what it is about to do. Every action is idempotent: running the plan
- * twice, or running it at startup after `db:migrate` already did, is a no-op.
+ * twice is a no-op.
  */
 export type SearchIndexMigrationAction =
   | {
@@ -35,6 +35,13 @@ export type SearchIndexMigrationAction =
       index: string
       definition_hash: string
       live_definition_hash: string
+      /** The provider the definition now binds to. */
+      provider: string
+      /**
+       * The provider that currently holds this index. Set only when it differs
+       * from `provider`, so execute can drop the previous engine's data.
+       */
+      previous_provider?: string
     }
   | {
       action: "noop"

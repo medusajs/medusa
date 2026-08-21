@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.19.0
   title: Medusa Storefront API
   license:
     name: MIT
@@ -272,6 +272,8 @@ tags:
 paths:
   /auth/customer/emailpass/verification/confirm:
     $ref: paths/auth_customer_emailpass_verification_confirm.yaml
+  /auth/customer/providers:
+    $ref: paths/auth_customer_providers.yaml
   /auth/customer/{auth_provider}:
     $ref: paths/auth_customer_{auth_provider}.yaml
   /auth/customer/{auth_provider}/callback:

@@ -507,6 +507,75 @@ describe("prepareConfirmInventoryInput", () => {
     })
   })
 
+  it("should compute availability with fractional required quantities", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 0.25,
+              inventory: [
+                {
+                  location_levels: {
+                    stocked_quantity: 0.5, // 0.5 - 0.25 = 0.25 < 0.5: no availability
+                    reserved_quantity: 0.25,
+                    location_id: "sl_1",
+                    stock_locations: [
+                      {
+                        id: "sl_1",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+                {
+                  location_levels: {
+                    stocked_quantity: 98.25, // 98.25 - 0 = 98.25 >= 0.5: availability
+                    reserved_quantity: 0,
+                    location_id: "sl_2",
+                    stock_locations: [
+                      {
+                        id: "sl_2",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 2,
+          id: "item_1",
+        },
+      ],
+    }
+
+    const result = prepareConfirmInventoryInput({ input })
+
+    expect(result).toEqual({
+      items: [
+        {
+          id: "item_1",
+          inventory_item_id: "ii_1",
+          required_quantity: 0.25,
+          quantity: 2,
+          allow_backorder: false,
+          location_ids: ["sl_2"],
+        },
+      ],
+    })
+  })
+
   it("should return all locations if none has availability", () => {
     const input = {
       sales_channel_id: "sc_1",

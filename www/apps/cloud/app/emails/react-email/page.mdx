@@ -1,5 +1,3 @@
-import { Prerequisites } from "docs-ui"
-
 export const metadata = {
   title: `Set Up React Email Templates for Cloud Projects`,
 }
@@ -25,7 +23,7 @@ You'll also find examples of common email templates built with React Email at th
 
 <Note>
 
-Medusa Emails is available for all Cloud organizations and projects, given you [don't have another Notification Module Provider for the `email` channel configured](../page.mdx#remove-other-email-notification-module-providers). You also optionally need to [verify your sending domain](../page.mdx#verify-email-sender-domain-on-cloud) to send emails to users outside your organization. Verified sender domains are available for Launch, Scale, and Enterprise plans only.
+Medusa Emails is available for all Cloud organizations and projects, given you [don't have another Notification Module Provider for the `email` channel configured](../page.mdx#remove-other-email-notification-module-providers). You also optionally need to [verify your sending domain](../page.mdx#add-email-sender-domain-to-cloud) to send emails to users outside your organization. Verified sender domains are available for Launch, Scale, and Enterprise plans only.
 
 </Note>
 
@@ -268,7 +266,7 @@ Then, [invite a new admin user](!user-guide!/settings/users/invites) to your Clo
 
 If everything is set up correctly, the new admin user should receive the invite email using your React Email template.
 
-Otherwise, refer to the [Troubleshooting Medusa Emails on Cloud](../page.mdx#troubleshooting-medusa-emails-on-cloud) guide for help resolving common issues.
+Otherwise, refer to the [Troubleshooting Medusa Emails on Cloud](../page.mdx#troubleshoot-email-delivery-issues-on-cloud) guide for help resolving common issues.
 
 ---
 
@@ -726,10 +724,7 @@ export default function getResetPasswordTemplate(props?: ResetPasswordEmailProps
 Then, to send the Reset Password email when a password reset is requested, create a subscriber at `src/subscribers/reset-password.ts` with the following content:
 
 ```ts title="src/subscribers/reset-password.ts"
-import {
-  SubscriberArgs,
-  type SubscriberConfig,
-} from "@medusajs/medusa"
+import { SubscriberArgs } from "@medusajs/medusa"
 import { Modules } from "@medusajs/framework/utils"
 import { render, pretty } from "@react-email/render"
 import getResetPasswordTemplate from "../emails/reset-password"

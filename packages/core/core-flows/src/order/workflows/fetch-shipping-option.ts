@@ -66,8 +66,9 @@ export type FetchShippingOptionForOrderWorkflowInput = AdditionalData & {
   order_id: string
   /**
    * The context of the RMA flow, which can be useful for retrieving the shipping option's price.
+   * Optional for non-RMA flows such as draft orders.
    */
-  context: CalculatedRMAShippingContext
+  context?: CalculatedRMAShippingContext
 }
 
 /**

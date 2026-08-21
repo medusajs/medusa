@@ -254,7 +254,7 @@
     "name": "order-edit.requested",
     "parentName": "OrderEditWorkflowEvents",
     "propertyName": "REQUESTED",
-    "payload": "```ts\n{\n  order_id, // The ID of the order\n  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order\n}\n```",
+    "payload": "```ts\n{\n  order_id, // The ID of the order\n  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order\n  no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.\n}\n```",
     "description": "Emitted when an order edit is requested.",
     "workflows": [
       "requestOrderEditRequestWorkflow"
@@ -266,7 +266,7 @@
     "name": "order-edit.confirmed",
     "parentName": "OrderEditWorkflowEvents",
     "propertyName": "CONFIRMED",
-    "payload": "```ts\n{\n  order_id, // The ID of the order\n  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order\n}\n```",
+    "payload": "```ts\n{\n  order_id, // The ID of the order\n  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order\n  no_notification, // (boolean) Whether the customer shouldn't be notified of the order edit, as stored on the order change when the edit was requested. Available since v2.19.0.\n}\n```",
     "description": "Emitted when an order edit request is confirmed.",
     "workflows": [
       "confirmOrderEditRequestWorkflow"

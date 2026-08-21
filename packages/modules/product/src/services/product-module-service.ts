@@ -383,10 +383,6 @@ export default class ProductModuleService
       await this.filterOptionValues(serializedProducts, sharedContext)
     }
 
-    if (shouldFilterOptionValues) {
-      await this.filterOptionValues(serializedProducts, sharedContext)
-    }
-
     return [serializedProducts, count]
   }
 
