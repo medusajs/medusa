@@ -41,7 +41,7 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Navigation Styles",
+            title: "Navigation",
             path: "/navigation",
           },
           {

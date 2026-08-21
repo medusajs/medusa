@@ -55,7 +55,7 @@ export const generatedEditDates = {
   "app/cli/commands/whoami/page.mdx": "2026-07-15T14:44:20.960Z",
   "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
   "app/cli/agents/page.mdx": "2026-07-15T14:47:29.910Z",
-  "app/navigation/page.mdx": "2026-05-06T10:14:13.715Z",
+  "app/navigation/page.mdx": "2026-08-21T09:23:24.662Z",
   "public/raw-mdx/access-keys/page.mdx": "2026-05-12T10:49:54.264Z",
   "public/raw-mdx/billing/manage/page.mdx": "2026-05-12T10:49:54.265Z",
   "public/raw-mdx/billing/page.mdx": "2026-05-12T10:49:54.265Z",
@@ -124,6 +124,6 @@ export const generatedEditDates = {
   "app/webhooks/reference/page.mdx": "2026-08-11T12:41:02.857Z",
   "app/changelog/page.mdx": "2026-08-17T06:19:52.836Z",
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
-  "app/projects/log-drains/page.mdx": "2026-08-20T11:46:44.699Z",
+  "app/projects/log-drains/page.mdx": "2026-08-21T09:24:06.227Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z"
 }
