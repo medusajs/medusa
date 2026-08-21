@@ -25,11 +25,13 @@ import {
 import {
   assertTaskAccepted,
   buildDisjunctiveFacetQueries,
+  listIndexedFields,
   listRetrievablePaths,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
+  SearchIndexState,
   validateFieldUsage,
 } from "@utils"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
@@ -134,8 +136,15 @@ export default class SearchModuleService
   }
 
   __hooks = {
-    onApplicationStart(this: SearchModuleService) {
-      return this.onApplicationStart_()
+    onApplicationStart: async () => {
+      // Seeding can take a long time on a large catalog and must not delay the
+      // worker from accepting jobs. Failures are logged rather than blocking boot.
+      void this.onApplicationStart_().catch((error) => {
+        this.logger_.error(
+          `[Search] Failed to seed search indexes: ${error.message}`,
+          error
+        )
+      })
     },
   }
 
@@ -253,14 +262,42 @@ export default class SearchModuleService
     })
   }
 
-  listIndexes(): string[] {
-    return [...this.indexes_.keys()]
+  async listIndexes(): Promise<SearchTypes.SearchIndexDetails[]> {
+    const definitions = [...this.indexes_.values()].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    )
+
+    if (!definitions.length) {
+      return []
+    }
+
+    const records = await this.context_.indexService.list(
+      { name: definitions.map((definition) => definition.name) },
+      { take: null }
+    )
+    const byName = new Map(records.map((record) => [record.name, record]))
+
+    return definitions.map((definition) => {
+      const record = byName.get(definition.name)
+
+      return {
+        name: definition.name,
+        entity: definition.entity,
+        provider: definition.provider,
+        status: record?.status ?? SearchIndexState.PENDING,
+        fields: listIndexedFields(definition.fields),
+      }
+    })
   }
 
   listRetrievableFields(index: string): string[] {
     return listRetrievablePaths(
       retrieveIndexDefinition(this.indexes_, index).fields
     )
+  }
+
+  getIndex(index: string): SearchTypes.ResolvedSearchIndexDefinition {
+    return retrieveIndexDefinition(this.indexes_, index)
   }
 
   async reindex(

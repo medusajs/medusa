@@ -3450,7 +3450,15 @@ describe("defineConfig", function () {
           endpoint: "https://search.medusa.cloud",
           environment_handle: "test-environment",
         },
-        providers: [],
+        providers: [
+          {
+            id: "postgres",
+            options: {
+              engine: "lakebase",
+            },
+            resolve: "@medusajs/medusa/search-postgres",
+          },
+        ],
         default_provider: "search-medusa",
       },
     })

@@ -318,17 +318,17 @@ export default class CachingModuleService implements ICachingModuleService {
       autoInvalidate?: boolean
     }
   ): Promise<void> {
-    for (const providerOptions of providers || []) {
-      const ttl_ = providerOptions.ttl ?? ttl ?? this.ttl
-      const provider = this.providerService.retrieveProvider(providerOptions.id)
-      void provider.set({
-        key,
-        tags,
-        data,
-        ttl: ttl_,
-        options,
-      })
-    }
+    await Promise.all(
+      (providers || []).map((providerOptions) =>
+        this.providerService.retrieveProvider(providerOptions.id).set({
+          key,
+          tags,
+          data,
+          ttl: providerOptions.ttl ?? ttl ?? this.ttl,
+          options,
+        })
+      )
+    )
   }
 
   async clear(options: {
@@ -400,10 +400,11 @@ export default class CachingModuleService implements ICachingModuleService {
       providerIds_ = Array.isArray(providers) ? providers : [providers]
     }
 
-    for (const providerId of providerIds_) {
-      const provider = this.providerService.retrieveProvider(providerId)
-      void provider.clear({ key, tags, options })
-    }
+    await Promise.all(
+      providerIds_
+        .map((id) => this.providerService.retrieveProvider(id))
+        .map((provider) => provider.clear({ key, tags, options }))
+    )
   }
 
   async computeKey(input: object): Promise<string> {

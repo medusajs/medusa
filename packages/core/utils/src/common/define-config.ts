@@ -347,25 +347,24 @@ function resolveModules(
       },
     },
     // Self-hosted: native Postgres FTS. Cloud without a search endpoint: Lakebase.
-    // Cloud with MEDUSA_CLOUD_SEARCH_ENDPOINT: empty providers — the module
-    // loader registers search-medusa from options.cloud (same pattern as
-    // notification cloud email and Medusa Payments).
+    // Cloud with MEDUSA_CLOUD_SEARCH_ENDPOINT: search-medusa is the default
+    // (registered from options.cloud, same pattern as notification cloud email
+    // and Medusa Payments). Postgres stays registered so a provider switch can
+    // drop the previous engine's indexes during `db:migrate`.
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.SEARCH],
-      options: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT
-        ? {
-            providers: [],
-            default_provider: "search-medusa",
-          }
-        : {
-            providers: [
-              {
-                resolve: "@medusajs/medusa/search-postgres",
-                id: "postgres",
-                options: { engine: isCloud ? "lakebase" : "native" },
-              },
-            ],
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "postgres",
+            options: { engine: isCloud ? "lakebase" : "native" },
           },
+        ],
+        ...(process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT
+          ? { default_provider: "search-medusa" }
+          : {}),
+      },
     },
   ]
 

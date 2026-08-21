@@ -103,6 +103,26 @@ export function listRetrievablePaths(
     .map(({ path }) => path)
 }
 
+/**
+ * Leaf fields the index stores, with the capabilities declared on each. Object
+ * containers are omitted — only their leaves are indexed.
+ */
+export function listIndexedFields(
+  fields: Record<string, SearchTypes.SearchFieldDefinition>
+): SearchTypes.SearchIndexFieldInfo[] {
+  return flattenFields(fields)
+    .filter(({ field }) => field.type !== "object")
+    .map(({ path, field }) => ({
+      name: path,
+      type: field.type,
+      searchable: isSearchable(field),
+      filterable: !!field.filterable,
+      sortable: !!field.sortable,
+      facetable:
+        field.facetable === true || typeof field.facetable === "object",
+    }))
+}
+
 // Key order must not change the hash, so object keys are emitted sorted.
 function stableStringify(value: unknown): string {
   if (value === null || typeof value !== "object") {

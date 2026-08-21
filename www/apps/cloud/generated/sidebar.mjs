@@ -54,8 +54,15 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Navigation Styles",
+            "title": "Navigation",
             "path": "/navigation",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cloud Assistant",
+            "path": "/assistant",
             "children": []
           },
           {
@@ -105,6 +112,13 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Log Drains",
+                "path": "/projects/log-drains",
                 "children": []
               }
             ]
@@ -461,6 +475,13 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Logs",
             "path": "/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Status Page",
+            "path": "/status",
             "children": []
           },
           {
