@@ -71,3 +71,5 @@ Join our [Discord server](https://discord.gg/medusajs) to meet and discuss with 
 ## License
 
 Medusa uses an open-core model. The core is licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE). The RBAC-based Enterprise Edition materials identified in [ENTERPRISE-LICENSE.md](https://github.com/medusajs/medusa/blob/develop/ENTERPRISE-LICENSE.md) require a commercial agreement with MedusaJS, Inc.
+
+<!-- Helix Ops addressed issue: [Bug]: custgom path aliases breaks plugin dev hot reload -->
