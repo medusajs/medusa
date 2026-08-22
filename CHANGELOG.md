@@ -10,3 +10,5 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * ignore files ([eca1e00](https://github.com/medusajs/medusa/commit/eca1e006a77472c9402cd85bb879f08134af200b))
 * updates license ([db519fb](https://github.com/medusajs/medusa/commit/db519fbaa6f8ad02c19cbecba5d4f28ba1ee81aa))
+
+<!-- Helix Ops addressed issue: [Bug]: Admin translations are missing plural categories in 9 -->
