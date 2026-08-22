@@ -4,6 +4,7 @@ import {
   buildFacetQuery,
   buildIndexPlan,
   extractPrimaryKeyFilter,
+  keywordTsQuerySql,
   normalizeFacetRequests,
   projectIndexedDocument,
   sameSchema,
@@ -303,7 +304,7 @@ describe("postgres search utils", () => {
           attributes_to_retrieve: ["id"],
           search_options: { match_strategy: "last" },
         })
-      ).toThrow(/match_strategy/)
+      ).not.toThrow()
 
       expect(() =>
         assertQuerySupported({
@@ -312,6 +313,18 @@ describe("postgres search utils", () => {
           search_options: { match_strategy: "any" },
         })
       ).not.toThrow()
+    })
+
+    it("builds a prefix tsquery for match_strategy last", () => {
+      expect(keywordTsQuerySql("medusa_search_english")).toBe(
+        `plainto_tsquery('medusa_search_english', ?)`
+      )
+      expect(keywordTsQuerySql("medusa_search_english", "any")).toBe(
+        `replace(plainto_tsquery('medusa_search_english', ?)::text, ' & ', ' | ')::tsquery`
+      )
+      expect(keywordTsQuerySql("medusa_search_english", "last")).toBe(
+        `regexp_replace(plainto_tsquery('medusa_search_english', ?)::text, '''([^'']+)''$', '''\\1'':*')::tsquery`
+      )
     })
   })
 })

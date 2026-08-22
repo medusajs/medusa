@@ -279,10 +279,12 @@ If the storefront build fails immediately (within 1-2 seconds) with no build log
 
 To verify and fix the storefront root directory:
 
-1. In the [Cloud dashboard](../../organizations/page.mdx), open your project and go to **Settings**.
-2. Check the **Storefront root directory** field and confirm it matches the actual path of your storefront in the repository. For example, if your storefront is at `apps/storefront`, the field should contain `apps/storefront`.
-3. If the path is incorrect, update it and save.
-4. Trigger a new deployment.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project.
+3. Click **Settings** in the sidebar.
+4. Check the **Storefront root directory** field and confirm it matches the actual path of your storefront in the repository. For example, if your storefront is at `apps/storefront`, the field should contain `apps/storefront`.
+5. If the path is incorrect, update it and save.
+6. Trigger a new deployment.
 
 Refer to the [Projects](../../projects/page.mdx) guide for details on editing the storefront root directory setting.
 
@@ -617,10 +619,11 @@ Retry the build. The error is transient and the build typically succeeds on the 
 
 To retry a deployment from the Cloud dashboard:
 
-1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the **Deployments** tab.
-3. Find the failed deployment and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> button to open the deployment actions menu. 
-4. Click **Redeploy** to trigger a new build.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the failed deployment.
+3. Click **Deployments** in the sidebar under the project.
+4. Find the failed deployment and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> button to open the deployment actions menu. 
+5. Click **Redeploy** to trigger a new build.
 
 <Note>
 
@@ -639,16 +642,6 @@ If your deployment fails with a database connection error such as `KnexTimeoutEr
 Medusa automatically provisions and manages the database for each environment on Cloud. You do not need to create or configure a database yourself. The `DATABASE_URL` is set automatically by Cloud when your environment is created.
 
 </Note>
-
-### Check Your Environment Variables
-
-If you have manually set a `DATABASE_URL` in your environment variables, it may conflict with the one Cloud sets automatically. To resolve this:
-
-1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the name of the environment.
-3. In the environment's dashboard, click on the **Settings** tab.
-4. In the settings, click the **Environment variables** sidebar item.
-5. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
 
 ---
 

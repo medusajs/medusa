@@ -1,5 +1,5 @@
-import { Note, Table, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { EllipsisHorizontal } from "@medusajs/icons"
+import { Note, Table, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { XMarkMini } from "@medusajs/icons"
 
 export const metadata = {
   title: `Deployments`,
@@ -112,33 +112,11 @@ You can also navigate to a project's deployments from the [command palette](../c
 
 </Note>
 
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. Click **Deployments** in the sidebar under the project.
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project you want to view its deployments.
-    3. Click on the "Deployments" tab in the project's dashboard.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on "Deployments" in the sidebar under the project.
-    3. In the search bar, search for the project you want to view its deployments, then click on it.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-You'll find all deployments for the project's environments in the "Deployments" tab, sorted in descending order. For each deployment, you can see its branch, environment, status, and more.
-
-![Cloud project dashboard showing the Deployments tab interface with a table displaying deployment history including columns for branch names, target environments, deployment status indicators, commit information, and timestamps for tracking project deployment activity](https://res.cloudinary.com/dza7lstvk/image/upload/v1750343899/Cloud/CleanShot_2025-06-19_at_17.37.45_2x_dwimzq.png)
+You'll find all deployments for the project's environments on the Deployments page, sorted in descending order. For each deployment, you can see its branch, environment, status, and more.
 
 ---
 
@@ -148,32 +126,11 @@ You can find the deployments for an environment in the project and environment d
 
 For example, to find the deployments for the Production environment:
 
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. [Go to its project's dashboard](../projects/page.mdx#open-project-dashboard).
-    2. Click on the "Production" environment card.
-    3. You'll find the deployments in the "Deployments" table on the environment's dashboard.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on "Deployments" in the sidebar under the project.
-    3. In the search bar, search for the project you want to view its deployments, then click on it.
-    4. In the Deployments list, change the **All environments** filter to "Production" to see only the deployments for the Production environment.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-![Production environment details page with deployment cards highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790909/Cloud/CleanShot_2026-01-07_at_15.01.37_2x_dixi9u.png)
+You'll find a table of all deployments for the environment, sorted in descending order. For each deployment, you can see its commit, status, and more.
 
 ---
 
@@ -184,53 +141,19 @@ You'll often need to check a deployment's details, such as its status, commit in
 To view a deployment's details:
 
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. [Go to its project's dashboard](../projects/page.mdx#open-project-dashboard).
-    2. Click on the "Deployments" tab.
-    3. Click on the deployment in the deployments table.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on "Deployments" in the sidebar under the project.
-    3. In the search bar, search for the project you want to view its deployments, then click on it.
-    4. In the Deployments list, click on the deployment you want to view.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. Click **Deployments** in the sidebar under the project.
+4. Click on the deployment you want to view. You can also search deployments by their commit hash.
 
 This will open the deployment's details page, where you can also see the deployment's commit at the top of the page.
 
 On the deployment details page, you'll find:
 
-![Deployment details page with key sections highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791012/Cloud/CleanShot_2026-01-07_at_15.02.49_2x_aiatds.png)
-
-1. **Commit**: The commit that the deployment was created from. This is the page's title.
-2. **Status**: The current [status](#deployment-statuses-and-lifecycle) of the deployment. For example, "Live" or "Build Failed". You can see it next to the "Redeploy" button.
-3. **Author**: The GitHub user who pushed the commit that created the deployment. You can see the user name when you hover over the user's avatar.
-4. **Activity**: This section shows the build logs for the backend and storefront (if applicable). They are useful to understand why a deployment failed. Errors from either the backend or storefront build processes will cause the deployment to show a failed status. Learn more in the [Logs](../logs/page.mdx) guide.
-
-### Switch Between Deployments
-
-The deployment's commit at the top of the Cloud dashboard is also a deployment switcher.
-
-To switch to a different deployment:
-
-1. Click on the deployment's commit at the top of the Cloud dashboard, next to the environment's name.
-2. Choose the deployment you want to switch to from the dropdown.
-
-![Deployment switcher at the top of the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791120/Cloud/CleanShot_2026-01-07_at_15.05.15_2x_tblb0s.png)
-
-This will change the view to the selected deployment and you'll see its details and logs.
+1. **Backend**: The status of the backend deployment.
+2. **Storefront**: The status of the storefront deployment, if applicable. If the storefront is not deployed, this section will show "Not deployed".
+3. **Duration**: The time it took to build and deploy the deployment.
+4. **Commit**: The commit hash that the deployment was created from, with the name of the branch, the commit message, the author, and when the commit was pushed.
 
 ---
 
@@ -386,8 +309,6 @@ To redeploy a deployment:
 1. [Go to the deployment's details page](#find-deployment-details).
 2. Click the "Redeploy" button at the top right of the page.
 
-![Redeploy button highlighted on the deployment details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791243/Cloud/CleanShot_2026-01-07_at_15.07.12_2x_popu4f.png)
-
 This will trigger the redeployment process for the selected deployment. The deployment will go through [the same lifecycle](#deployment-statuses-and-lifecycle) as a new deployment.
 
 Once the redeployment is complete, the deployment's status will change to "Live" and it will become the new live version of the environment.
@@ -398,24 +319,22 @@ Once the redeployment is complete, the deployment's status will change to "Live"
 
 For each environment, you can change the rules that trigger a new deployment. For example, you can change the branch that the environment is connected to, which changes when a new deployment is created.
 
-<Note>
+To change the branch that triggers a deployment for an environment, refer to the [Change Environment's Branch](../environments/long-lived/page.mdx#change-environments-branch) guide.
 
-Changing the branch associated with an environment only works for [long-lived environments](../environments/long-lived/page.mdx).
-
-</Note>
+### Change Environment Deployment Rules
 
 To change the deployment rules for an environment:
 
-1. [Go to the environment's dashboard](#find-environment-deployments).
-2. Click on the "Settings" tab.
-3. Click on the "Deployment rules" tab in the sidebar.
-4. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
-
-![Deployment rules section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767791296/Cloud/CleanShot_2026-01-07_at_15.08.11_2x_f3pkm1.png)
-
-5. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Deployment Rules** in the sidebar under the environment's section.
+5. In the "Deploy rules" section, you can click **Add condition** to add a new deployment rule. You can then select:
+    - **Condition Type**: Either **Author** or **Commit Message**. This determines what the condition will check for when a new commit is pushed to the environment's branch.
+    - **Operator**: Either **Is**, **Is not**, or **Contains**. This determines how the condition will check the commit's author or message.
+    - **Value**: The value to compare against. For example, if the condition type is **Author** and the operator is **Is**, you would enter the author's name here.
+    - To remove a condition, click the <InlineIcon Icon={XMarkMini} alt="x" /> icon next to the condition.
 6. Click "Save" to apply the changes.
 
-The deployment rules will take effect for next deployments. For example, if you change the branch to `staging`, the next deployment will be created from the latest commit in the `staging` branch.
+The deployment rules will take effect for next deployments. For example, if you change the author that triggers a deployment, the next deployment will only be created if a commit is pushed to the environment's branch by that author.
 
-![Change environment branch in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1750170517/Cloud/CleanShot_2025-06-17_at_17.28.25_2x_nfx79a.png)

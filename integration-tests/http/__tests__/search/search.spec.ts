@@ -6,8 +6,6 @@ import {
   createAdminUser,
 } from "../../../helpers/create-admin-user"
 
-process.env.ENABLE_SEARCH_MODULE = "true"
-
 jest.setTimeout(120000)
 
 medusaIntegrationTestRunner({
@@ -75,10 +73,6 @@ medusaIntegrationTestRunner({
       await searchModule.reindex()
     })
 
-    afterAll(() => {
-      delete process.env.ENABLE_SEARCH_MODULE
-    })
-
     describe("GET /admin/search", () => {
       it("searches every indexed entity and groups the results", async () => {
         const response = await api.get("/admin/search?q=zephyr", adminHeaders)
@@ -115,6 +109,23 @@ medusaIntegrationTestRunner({
         expect(groupFor(response.data, "customer")).toEqual(
           expect.objectContaining({ entity: "customer", data: [], count: 0 })
         )
+      })
+
+      it("matches a prefix of the last query term", async () => {
+        const prefix = await api.get("/admin/search?q=zep", adminHeaders)
+
+        expect(groupFor(prefix.data, "product").data).toEqual([
+          expect.objectContaining({ title: "Zephyr Shirt" }),
+        ])
+
+        const twoTerms = await api.get(
+          "/admin/search?q=zephyr sh",
+          adminHeaders
+        )
+
+        expect(groupFor(twoTerms.data, "product").data).toEqual([
+          expect.objectContaining({ title: "Zephyr Shirt" }),
+        ])
       })
 
       it("restricts the search to the requested entities", async () => {

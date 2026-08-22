@@ -1,4 +1,4 @@
-import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ArrowDownTray, ArrowPath, Brackets } from "@medusajs/icons"
 
 export const metadata = {
@@ -32,42 +32,12 @@ Build logs help you identify issues when a deployment fails with the status "Bui
 
 You can view the build logs for any deployment in your environment, including older deployments.
 
-To view the build logs for a deployment:
-
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project that the deployment belongs to.
-    3. Click on the environment that the deployment belongs to, such as "Production".
-    4. In the "Deployments" table, find the deployment you want to view the build logs for and click on it.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on "Deployments" in the sidebar under the project.
-    3. In the search bar, search for the project you want to view its deployments, then click on it.
-    4. In the Deployments list, change the **All environments** filter to the environment that the deployment belongs to, such as "Production".
-    5. Find the deployment you want to view the build logs for and click on it.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-This will open the deployment details page, where you can see the deployment's activity:
+To view the build logs for a deployment, go to the [deployment's details page](../deployments/page.mdx#find-deployment-details), where you can see the deployment's activity:
 
 - **Backend build logs**: Logs for building the Medusa backend.
 - **Storefront build logs**: If you deployed a storefront alongside the Medusa application, this shows the logs for building the storefront.
 
 The build logs are updated in real time as the build process runs, so you can see the progress and any errors that occur during the build.
-
-![Build Logs for a deployment](https://res.cloudinary.com/dza7lstvk/image/upload/v1767862882/Cloud/CleanShot_2026-01-08_at_11.01.17_2x_x5mfvn.png)
 
 ### Search Build Logs on Cloud
 
@@ -77,23 +47,15 @@ For example, you can search for keywords like "error" or "warning" to quickly lo
 
 When you enter the search term, you'll see how the results matching your search. You can move between the results using the up and down arrows next to the search bar. The matching text will be highlighted in the logs.
 
-![Search Build Logs with results highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863066/Cloud/CleanShot_2026-01-08_at_11.04.21_2x_ldiem6.png)
-
 ### Expand and Collapse Build Logs on Cloud
 
 Logs for steps in the build process can be expanded or collapsed to improve readability. This is useful when you have many log messages and want to focus on specific parts of the build process.
 
 By default, logs for all steps in the build process are expanded. You can collapse all logs by clicking the "Collapse all" button at the top right of the logs. This will hide all the detailed logs and only show the titles of each step.
 
-![Build logs collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863208/Cloud/CleanShot_2026-01-08_at_11.06.39_2x_guwi4v.png)
-
 You can also expand the logs of all steps in the build process by clicking the "Expand all" button at the top right. This will show all the detailed logs for each step.
 
-![Build logs expanded](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863142/Cloud/CleanShot_2026-01-08_at_11.05.29_2x_epkwit.png)
-
 In addition, you can expand or collapse individual steps by clicking the arrow next to a step's title. This gives you more control over which parts of the logs you want to see or hide.
-
-![Build logs with one step collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863176/Cloud/CleanShot_2026-01-08_at_11.06.06_2x_yo9zni.png)
 
 ### Pause Build Logs on Cloud
 
@@ -106,8 +68,6 @@ To pause the build logs, click the "Pause" button at the bottom right of the pag
 You can download the build logs as a `.log` file for offline analysis, sharing with your team, or sharing with Cloud support if you need help debugging a build issue.
 
 To download build logs, click the <InlineIcon Icon={ArrowDownTray} alt="download" /> button at the top right of the logs. This will download the logs in a `.log` file format, which you can open with any text editor.
-
-![Download Build Logs button](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863250/Cloud/CleanShot_2026-01-08_at_11.07.20_2x_yuklfj.png)
 
 ---
 
@@ -130,33 +90,12 @@ You can also navigate to an environment's runtime logs from the [command palette
 
 </Note>
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project that the environment belongs to.
-    3. Click on the environment, such as "Production".
-    4. Click the "Logs" tab at the top of the environment's dashboard.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on "Logs" in the sidebar under the environment.
-    3. In the search bar, search for the project you want to view its logs, then click on it.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Logs** in the sidebar.
 
 This will open the runtime logs page, where you can see the logs for the live deployment of the environment.
-
-![Runtime Logs for an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317226/Cloud/CleanShot_2025-06-19_at_10.13.36_2x_rfvows.png)
 
 ### Switch Between Backend and Storefront Runtime Logs
 
@@ -165,8 +104,6 @@ The runtime logs page shows logs for both the Medusa backend and, if you deploye
 - **Backend**: Logs from the Medusa backend application, such as HTTP requests, errors, and startup messages.
 - **Storefront**: Logs from the storefront application. This option is only available if you deployed a storefront alongside the Medusa application.
 
-![Runtime logs page with the backend and storefront toggle highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1773825145/Cloud/CleanShot_2026-03-18_at_11.12.05_2x_pop7tp.png)
-
 ### Search Runtime Logs
 
 You can search the runtime logs using the search bar at the top of the Logs page. This is useful for finding specific messages or errors in the logs.
@@ -174,8 +111,6 @@ You can search the runtime logs using the search bar at the top of the Logs page
 For example, you can search for keywords like "error" or an informational message that you log in your customizations to quickly locate issues in the runtime logs.
 
 When you enter the search term, you'll only see the logs that match your search.
-
-![Search Runtime Logs](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317345/Cloud/CleanShot_2025-06-19_at_10.15.35_2x_cbtnnr.png)
 
 ### Filter Runtime Logs
 
@@ -190,15 +125,11 @@ You can filter the runtime logs by:
 
 Apply filters from the "Filters" sidebar. You can select multiple filters at once to narrow down the logs further.
 
-![Filter Runtime Logs](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317829/Cloud/CleanShot_2025-06-19_at_10.23.31_2x_xjfdbk.png)
-
 ### Refresh Runtime Logs
 
 You can refresh the runtime logs to fetch the latest logs from the live deployment or to update the view after applying filters or search terms.
 
 To refresh the logs, click the <InlineIcon Icon={ArrowPath} alt="refresh" /> button at the top right of the Logs page. This will fetch the latest logs from the live deployment and update the view.
-
-![Refresh Runtime Logs button](https://res.cloudinary.com/dza7lstvk/image/upload/v1750318063/Cloud/CleanShot_2025-06-19_at_10.27.10_2x_xtjj5l.png)
 
 ### View Log Details
 
@@ -221,11 +152,7 @@ You can copy the log message or JSON details to share them with your team or the
 
 When you [view a log's details](#view-log-details), you can click on any of its metadata values to filter the logs by that value. This gives you a quick way to find all logs that share the same metadata, such as the same user agent or client IP.
 
-![Filter by log metadata such as client IP](https://res.cloudinary.com/dza7lstvk/image/upload/v1750318729/Cloud/CleanShot_2025-06-19_at_10.37.41_2x_skgglx.png)
-
 When you click on a metadata value, it will be added to the Filters sidebar, and the logs will be updated by that filter.
-
-![Metadata filter applied to the logs](https://res.cloudinary.com/dza7lstvk/image/upload/v1750318819/Cloud/CleanShot_2025-06-19_at_10.40.03_2x_nwpg4w.png)
 
 ### Download Runtime Logs
 
@@ -238,5 +165,3 @@ To download runtime logs, click the <InlineIcon Icon={ArrowDownTray} alt="downlo
 If you applied filters or search terms, only the logs shown that match those criteria will be downloaded. This allows you to download a specific subset of logs that are relevant to your debugging needs.
 
 </Note>
-
-![Download Runtime Logs button](https://res.cloudinary.com/dza7lstvk/image/upload/v1750319018/Cloud/CleanShot_2025-06-19_at_10.43.05_2x_hj7muv.png)
