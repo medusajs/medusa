@@ -1,0 +1,72 @@
+{
+  "name": "theunrealfusion-store",
+  "private": false,
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "start": "turbo start",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "backend:seed": "turbo seed --filter=@dtc/backend",
+    "backend:dev": "turbo dev --filter=@dtc/backend",
+    "storefront:dev": "turbo dev --filter=@dtc/storefront"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.0.5",
+      "@types/react-dom": "19.0.5"
+    }
+  },
+  "devDependencies": {
+    "@medusajs/eslint-plugin": "2.19.0",
+    "eslint": "^9.39.4",
+    "jiti": "^2.7.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.14",
+    "ajv": "^8.13.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "workspaces": [
+    "apps/**",
+    "!apps/backend/.medusa/**"
+  ],
+  "overrides": {
+    "eslint": {
+      "ajv": "^6.12.4"
+    },
+    "@eslint/eslintrc": {
+      "ajv": "^6.12.4"
+    },
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@dtc/storefront": {
+      "react": "19.0.5",
+      "react-dom": "19.0.5",
+      "next": {
+        "react": "19.0.5",
+        "react-dom": "19.0.5"
+      },
+      "@headlessui/react": {
+        "react": "19.0.5",
+        "react-dom": "19.0.5"
+      },
+      "@stripe/react-stripe-js": {
+        "react": "19.0.5",
+        "react-dom": "19.0.5"
+      },
+      "@radix-ui/react-accordion": {
+        "react": "19.0.5",
+        "react-dom": "19.0.5"
+      },
+      "react-country-flag": {
+        "react": "19.0.5",
+        "react-dom": "19.0.5"
+      }
+    }
+  }
+}
