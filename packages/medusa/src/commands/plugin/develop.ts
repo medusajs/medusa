@@ -108,10 +108,10 @@ export default async function developPlugin({
   /**
    * Transforms a given file using @swc/core
    */
-  async function transformFile(filePath: string) {
+  const transformFile = async (filePath: string) => {
     const output = await swcCore.transformFile(
       filePath,
-      buildSwcTransformOptions(directory, parsedConfig!)
+      buildSwcTransformOptions(directory, parsedConfig)
     )
     return output.code
   }
