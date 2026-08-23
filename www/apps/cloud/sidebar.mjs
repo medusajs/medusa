@@ -41,11 +41,6 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Navigation Styles",
-            path: "/navigation",
-          },
-          {
-            type: "link",
             title: "Cloud Assistant",
             path: "/assistant",
           },

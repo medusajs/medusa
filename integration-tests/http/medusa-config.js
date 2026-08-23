@@ -109,12 +109,11 @@ const modules = {
   },
   [Modules.SEARCH]: {
     resolve: "@medusajs/search",
-    disable: process.env.ENABLE_SEARCH_MODULE !== "true",
     options: {
       providers: [
         {
-          resolve: "@medusajs/search-local",
-          id: "local",
+          resolve: "@medusajs/search-postgres",
+          id: "postgres",
         },
       ],
       // Passed in rather than discovered: this app has no `search/` folder, and

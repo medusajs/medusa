@@ -323,7 +323,7 @@ export class RedisCachingProvider {
       const setPipeline = this.redisClient.pipeline()
 
       // Main data with conditional operations
-      setPipeline.hsetnx(keyName, "data", finalData)
+      setPipeline.hset(keyName, "data", finalData)
       if (options && Object.keys(options).length) {
         setPipeline.hset(keyName, "options", JSON.stringify(options))
       }

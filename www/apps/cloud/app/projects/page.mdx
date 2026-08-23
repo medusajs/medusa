@@ -1,4 +1,4 @@
-import { Note, Prerequisites, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Note, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -14,8 +14,6 @@ In this guide, you'll learn about projects, how to create them, view their detai
 A project is the collection of resources, environments, deployments, and settings related to a Medusa application deployed to the Cloud. The project is linked to a GitHub repository that hosts the Medusa application's code.
 
 To deploy a Medusa application to the Cloud, you create a project for it. Medusa will automatically set up and configure the necessary resources in the project to run the application, such as PostgreSQL, Redis, and S3.
-
-{/* TODO add links */}
 
 You can deploy either a Medusa application (server and admin dashboard) only, or a Medusa application along with a [storefront](../storefront/page.mdx).
 
@@ -200,36 +198,14 @@ Learn how to do that in the [Clone a Cloud Project Locally](./clone-locally/page
 
 To open a project's dashboard:
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project. This will open the project's dashboard.
 
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project card in the organization's dashboard.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project name in the sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-When you open a project's dashboard, its name will be shown at the top left next to the [organization switcher](../organizations/page.mdx#organization-switcher).
-
-![The project name at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786526/Cloud/CleanShot_2026-01-07_at_13.48.01_2x_gegnmb.png)
+When you open a project's dashboard, its name will be shown at the top left next to the [organization switcher](../organizations/page.mdx#switch-organization).
 
 ### Find Project Details
 
 On the project's dashboard, you can view the following details:
-
-![The project dashboard with the details of a project](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786975/Cloud/CleanShot_2026-01-07_at_13.49.11_2x_f6yppu.png)
 
 1. **Region**: The region where the project is deployed. You'll find it below the project name.
 2. **Long-Lived Environments**: The long-lived environments for the project are shown as cards. By default, you'll find the Production environment. You can learn more about environments in the [Environments](../environments/page.mdx) guide.
@@ -250,28 +226,8 @@ The project's name at the top left of the dashboard is also a project switcher.
 
 To switch to a different project:
 
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch project" /> icon next to the project's name at the top left of the Cloud dashboard, next to the organization name.
-    2. Choose the project you want to switch to from the dropdown.
-
-    ![Project switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787268/Cloud/CleanShot_2026-01-07_at_14.00.01_2x_hylol3.png)
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Click on the current project's name at the top of the sidebar to go back to the organization's dashboard.
-    2. Click on the project name in the sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch project" /> icon next to the project's name at the top left of the Cloud dashboard, next to the organization name.
+2. Choose the project you want to switch to from the dropdown.
 
 This will change the view to the selected project, and you'll see its details, environments, and settings.
 
@@ -279,7 +235,7 @@ This will change the view to the selected project, and you'll see its details, e
 
 ## View Project Deployments
 
-To view the deployments of a project, click on the "Deployments" tab in the project's dashboard. This will show you a list of all deployments for the project, including their status, environment, and how long the deployment took.
+To view the deployments of a project, click **Deployments** in the sidebar of the project's dashboard. This will show you a list of all deployments for the project, including their status, environment, and how long the deployment took.
 
 Learn more in the [Deployments](../deployments/page.mdx) guide.
 
@@ -293,17 +249,12 @@ Before adding a storefront, make sure you've changed your repository structure t
 
 Then, to add a storefront to an existing project:
 
-1. Open the project's dashboard.
+1. [Open the project's dashboard](#open-project-dashboard).
 2. Click on the "Add storefront" button at the Production environment card.
-
-![The Add storefront button at the Production environment card](https://res.cloudinary.com/dza7lstvk/image/upload/v1767859152/Cloud/CleanShot_2026-01-08_at_09.58.56_2x_nuqs8s.png)
-
 3. In the "Add Storefront" form, enter the following details:
     - **Storefront root directory**: The path to the storefront project in the repository.
     - **Environment variables**: (Optional) Expand this section to add any necessary environment variables.
 4. Once you're done, click the "Create" button.
-
-![Form to add a storefront to an existing project](https://res.cloudinary.com/dza7lstvk/image/upload/v1767859257/Cloud/CleanShot_2026-01-08_at_10.00.52_2x_j2t5mp.png)
 
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
 
@@ -317,17 +268,15 @@ After creating a project, you can edit its general details, such as the project 
 
 To edit a project's general details:
 
-1. Open the project's dashboard.
-2. Click on the "Settings" tab.
-3. In the "General" tab of the Settings page, you can edit the project's name and root directories of the backend and storefront in the repository.
+1. [Open the project's dashboard](#open-project-dashboard).
+2. Click **Settings** > **General** in the sidebar.
+3. You can edit the project's name and root directories of the backend and storefront in the repository.
     - Changing the root directory is useful if the structure of your repository has changed.
 4. Once you're done making changes, click the "Save changes" button next to the input field.
 
-![The project settings with the General tab selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787375/Cloud/CleanShot_2026-01-07_at_14.02.50_2x_gr7a9r.png)
-
 ### Editing Previews Settings
 
-You can also edit the "Previews" settings of a project from the "Settings" tab, which are general settings related to Previews environments.
+You can also edit a project's preview settings, which are general settings related to Previews environments, by clicking **Settings** > **Preview Settings** in the sidebar.
 
 Learn more in the [Preview Environments](../environments/preview/page.mdx) guide.
 
@@ -339,13 +288,12 @@ You can change the GitHub repository connected to your project from the Connecti
 
 To change the connected repository:
 
-1. Open the project's dashboard.
-2. Click on the **Settings** tab.
-3. Click on the **Connections** tab in the Settings page.
-4. Under the connected GitHub repository, click the **Change** button.
-5. In the modal that opens, choose the new repository to connect.
+1. [Open the project's dashboard](#open-project-dashboard).
+2. Click **Settings** in the sidebar.
+3. In the "Connected GitHub Repository" section, click the **Change** button.
+4. In the modal that opens, choose the new repository to connect.
     - If you're not connected to GitHub yet, you'll need to connect first.
-6. Click **Save Changes**.
+5. Click **Save Changes**.
 
 The next time you push to the new repository, your project will be built from there.
 
@@ -361,19 +309,19 @@ You can also change the infrastructure specifications of a project to use heavie
 
 To change the infrastructure specifications of a project:
 
-1. Open the project's dashboard.
-2. Click on the "Settings" tab.
-3. In the "General" tab of the Settings page, enable the "Infrastructure specs" toggle.
+1. [Open the project's dashboard](#open-project-dashboard).
+2. Click **Settings** > **General** in the sidebar.
+3. Enable the "Infrastructure specs" toggle.
 4. In the dropdown that shows, select the plan that you want to use its specs for the project. Below the dropdown, the cost estimates will change based on the plan you select.
     - You can learn more about the available plans and their specifications in the [Plans & Pricing](../pricing/page.mdx) guide.
     - If your organization is on a bespoke plan and you haven't selected a custom infrastructure override, you'll see a bespoke-specific note instead of a standard cost estimate. Once you select a custom override, the standard cost estimate is shown.
-5. Once you're done, click the "Save changes" button.
+5. Once you're done making changes, click the "Save changes" button next to the input field.
 
 The infrastructure specifications of the project will be updated based on the selected plan.
 
 ### Revert to Organization's Plan Specs
 
-If you want to revert the infrastructure specifications of a project to use the specifications defined in your organization's plan, you can do so by disabling the "Infrastructure specs" toggle in the "General" tab of the Settings page.
+If you want to revert the infrastructure specifications of a project to use the specifications defined in your organization's plan, you can do so by disabling the "Infrastructure specs" toggle in the **Settings** > **General** page.
 
 The project will then use the specifications defined in your organization's plan.
 
@@ -391,9 +339,9 @@ If your project has a storefront deployed, you can permanently delete it from th
 
 To delete the storefront:
 
-1. Open the project's dashboard.
-2. Click on the **Settings** tab.
-3. In the **General** tab of the Settings page, click the **Delete** button in the **Delete Storefront** section.
+1. [Open the project's dashboard](#open-project-dashboard).
+2. Click **Settings** > **General** in the sidebar.
+3. Click the **Delete** button in the **Delete Storefront** section.
 4. Confirm the deletion by entering the verification phrase in the confirmation prompt, then click **Delete**.
 
 This will remove your storefront from the project. Future deployments include the backend only.
@@ -409,9 +357,7 @@ This will remove your storefront from the project. Future deployments include th
 
 To delete a project:
 
-1. Open the project's dashboard.
-2. Click on the "Settings" tab.
-3. In the "General" tab of the Settings page, click the "Delete" button in the "Delete project" section at the bottom.
+1. [Open the project's dashboard](#open-project-dashboard).
+2. Click **Settings** > **General** in the sidebar.
+3. Click the "Delete" button in the "Delete project" section at the bottom.
 4. Confirm the deletion by typing "delete project" in the confirmation input, then click the "Delete" button.
-
-![The project settings with the General tab selected and the Delete project section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787425/Cloud/CleanShot_2026-01-07_at_14.03.28_2x_b6wkxb.png)
