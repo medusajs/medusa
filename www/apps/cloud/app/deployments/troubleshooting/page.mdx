@@ -581,6 +581,68 @@ Replace `".."` with the relative path from your storefront directory to the mono
 
 ---
 
+## Workspace Package Lifecycle Scripts Fail in Turborepo Builds
+
+If your Turborepo monorepo build fails during `npm ci` (or `yarn install` / `pnpm install`) with an error similar to the following, a workspace dependency has a `prepare` or `build` lifecycle script that runs during installation but the package's source files are not available at that point:
+
+```bash
+error TS6053: File 'src/index.ts' not found.
+```
+
+or
+
+```bash
+Cannot find src/index.ts
+```
+
+When Medusa prunes a Turborepo monorepo with `turbo prune`, the pruned output includes only the workspace packages that the target package depends on. For each of those workspace packages, only the `package.json` and any already-built `dist/` output are copied — the source files (for example, `src/`) are not included. If a workspace package has a `prepare` script that compiles source (such as `tsup build` or `tsc`), the script runs during dependency installation but fails because `src/index.ts` is absent from the pruned output.
+
+### Fix Option 1: Remove the Lifecycle Script
+
+Remove the `prepare` script from the workspace package's `package.json` and rely on Turbo's build pipeline to compile the package in the correct order before other packages use it:
+
+```json title="packages/domain/package.json"
+{
+  "scripts": {
+    "build": "tsup"
+  }
+}
+```
+
+Make sure your `turbo.json` pipeline declares the dependency so that Turbo compiles the workspace package before the packages that depend on it:
+
+```json title="turbo.json"
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    }
+  }
+}
+```
+
+With this setup, Turbo builds the workspace package (producing `dist/`) before it builds the target package, and no lifecycle script runs during installation.
+
+### Fix Option 2: Pre-build and Commit the dist Directory
+
+Build the workspace package locally and commit the compiled `dist/` output to your repository. The pruned build context then includes the pre-built output, so the `prepare` script can find it:
+
+```bash
+cd packages/domain
+npm run build
+git add dist/
+git commit -m "Add pre-built dist output for domain package"
+```
+
+<Note type="warning">
+
+You must rebuild and re-commit `dist/` every time you change the package source. If you forget, the build uses stale output.
+
+</Note>
+
+---
+
 ## Missing Root Files in Turborepo Monorepo Builds (TS5083)
 
 If your `turbo` monorepo build fails with an error similar to the following, but succeeds locally, a file at the root of your monorepo isn't available during the build:
