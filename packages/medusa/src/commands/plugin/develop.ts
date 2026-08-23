@@ -3,6 +3,53 @@ import { logger } from "@medusajs/framework/logger"
 import * as swcCore from "@swc/core"
 import { execFile } from "child_process"
 import path from "path"
+import type { ParsedCommandLine } from "typescript"
+
+/**
+ * Builds the SWC options used by the plugin:develop per-file transform.
+ *
+ * The plugin's tsconfig `baseUrl` and `paths` mappings are forwarded so that
+ * hot-reloaded files resolve aliased imports exactly like the full
+ * TypeScript build does.
+ */
+export function buildSwcTransformOptions(
+  directory: string,
+  parsedConfig: ParsedCommandLine
+) {
+  return {
+    sourceMaps: "inline",
+    module: {
+      type: "commonjs",
+      strictMode: true,
+      noInterop: false,
+    },
+    jsc: {
+      externalHelpers: false,
+      target: "es2021",
+      parser: {
+        syntax: "typescript",
+        tsx: true,
+        decorators: true,
+        dynamicImport: true,
+      },
+      transform: {
+        legacyDecorator: true,
+        decoratorMetadata: true,
+        react: {
+          throwIfNamespace: false,
+          useBuiltins: false,
+          pragma: "React.createElement",
+          pragmaFrag: "React.Fragment",
+          importSource: "react",
+          runtime: "automatic",
+        },
+      },
+      keepClassNames: true,
+      baseUrl: parsedConfig.options?.baseUrl ?? directory,
+      paths: parsedConfig.options?.paths,
+    },
+  } as const
+}
 
 export default async function developPlugin({
   directory,
@@ -62,38 +109,10 @@ export default async function developPlugin({
    * Transforms a given file using @swc/core
    */
   async function transformFile(filePath: string) {
-    const output = await swcCore.transformFile(filePath, {
-      sourceMaps: "inline",
-      module: {
-        type: "commonjs",
-        strictMode: true,
-        noInterop: false,
-      },
-      jsc: {
-        externalHelpers: false,
-        target: "es2021",
-        parser: {
-          syntax: "typescript",
-          tsx: true,
-          decorators: true,
-          dynamicImport: true,
-        },
-        transform: {
-          legacyDecorator: true,
-          decoratorMetadata: true,
-          react: {
-            throwIfNamespace: false,
-            useBuiltins: false,
-            pragma: "React.createElement",
-            pragmaFrag: "React.Fragment",
-            importSource: "react",
-            runtime: "automatic",
-          },
-        },
-        keepClassNames: true,
-        baseUrl: directory,
-      },
-    })
+    const output = await swcCore.transformFile(
+      filePath,
+      buildSwcTransformOptions(directory, parsedConfig!)
+    )
     return output.code
   }
 
