@@ -81,27 +81,6 @@ export class AbstractSearchProviderService
   static identifier: string
 
   /**
-   * Whether the Search Module should migrate your indexes when the application
-   * starts, instead of relying on `db:migrate`.
-   *
-   * Set this to `true` if your indexes don't outlive the process that created
-   * them, which is the case for an in-memory engine: `db:migrate` runs in its own
-   * process, so anything it created is gone once it exits. The module then
-   * migrates your indexes right before it seeds them, in the process that serves
-   * searches.
-   *
-   * Leave it out if your engine holds indexes outside the Medusa process.
-   *
-   * @example
-   * class MySearchProviderService extends AbstractSearchProviderService {
-   *   static identifier = "my-search"
-   *   readonly migrate_on_startup = true
-   *   // ...
-   * }
-   */
-  readonly migrate_on_startup?: boolean
-
-  /**
    * @ignore
    */
   get identifier(): string {

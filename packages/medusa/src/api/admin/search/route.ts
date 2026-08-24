@@ -101,6 +101,7 @@ async function searchIndexedEntities(
     fields: searchModule.listRetrievableFields(name),
     filters: q ? { q } : undefined,
     pagination: { skip, take },
+    search_options: q ? { match_strategy: "last" } : undefined,
   }))
 
   const results = await searchModule.searchMany(queries)
