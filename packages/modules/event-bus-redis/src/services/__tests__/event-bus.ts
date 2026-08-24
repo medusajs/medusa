@@ -19,6 +19,32 @@ const redisMock = {
   disconnect: () => jest.fn(),
   expire: () => jest.fn(),
   unlink: () => jest.fn(),
+  /**
+   * The pipeline forwards to the same methods as the connection, so a test can assert on
+   * redis.rpush or redis.expire without caring whether the call was pipelined. Commands are
+   * queued and only run on exec, which is what ioredis does.
+   */
+  pipeline: () => {
+    const queued: (() => unknown)[] = []
+
+    const pipeline = {
+      del: (...args: unknown[]) => {
+        queued.push(() => (redisMock as any).del(...args))
+        return pipeline
+      },
+      rpush: (...args: unknown[]) => {
+        queued.push(() => (redisMock as any).rpush(...args))
+        return pipeline
+      },
+      expire: (...args: unknown[]) => {
+        queued.push(() => (redisMock as any).expire(...args))
+        return pipeline
+      },
+      exec: async () => queued.map((run) => [null, run()]),
+    }
+
+    return pipeline
+  },
 } as unknown as Redis
 
 const moduleDeps = {
@@ -378,6 +404,103 @@ describe("RedisEventBusService", () => {
         ])
         expect(redis.unlink).toHaveBeenCalledTimes(1)
         expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-2")
+      })
+
+      it("should set the TTL after the push that creates the staging list", async () => {
+        redis.expire = jest.fn()
+
+        await eventBus.emit({
+          name: "eventName",
+          data: { hi: "1234" },
+          metadata: { eventGroupId: "test-group-1" },
+        })
+
+        expect(redis.rpush).toHaveBeenCalledWith(
+          "staging:test-group-1",
+          expect.any(String)
+        )
+        expect(redis.expire).toHaveBeenCalledTimes(1)
+        expect(redis.expire).toHaveBeenCalledWith("staging:test-group-1", 600)
+
+        // EXPIRE on a key that does not exist is ignored, so it has to run after the push
+        expect(redis.expire.mock.invocationCallOrder[0]).toBeGreaterThan(
+          redis.rpush.mock.invocationCallOrder[0]
+        )
+      })
+
+      it("should honour a custom groupedEventsTTL", async () => {
+        redis.expire = jest.fn()
+
+        await eventBus.emit(
+          {
+            name: "eventName",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-1" },
+          },
+          { groupedEventsTTL: 30 }
+        )
+
+        expect(redis.expire).toHaveBeenCalledWith("staging:test-group-1", 30)
+      })
+
+      it("should skip the TTL when groupedEventsTTL is 0", async () => {
+        redis.expire = jest.fn()
+
+        await eventBus.emit(
+          {
+            name: "eventName",
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-1" },
+          },
+          { groupedEventsTTL: 0 }
+        )
+
+        expect(redis.rpush).toHaveBeenCalledTimes(1)
+        expect(redis.expire).not.toHaveBeenCalled()
+      })
+    })
+
+    describe("clearGroupedEvents", () => {
+      beforeEach(async () => {
+        jest.clearAllMocks()
+
+        eventBus = new RedisEventBusService(moduleDeps, {}, moduleDeclaration)
+
+        redis = (eventBus as any).eventBusRedisConnection_
+        redis.rpush = jest.fn()
+        redis.del = jest.fn()
+        redis.unlink = jest.fn()
+      })
+
+      it("should keep the events that do not match the given names", async () => {
+        redis.lrange = jest.fn().mockResolvedValue([
+          JSON.stringify({ name: "keep-me", data: {} }),
+          JSON.stringify({ name: "drop-me", data: {} }),
+        ])
+
+        await eventBus.clearGroupedEvents("test-group-1", {
+          eventNames: ["drop-me"],
+        })
+
+        expect(redis.del).toHaveBeenCalledWith("staging:test-group-1")
+        expect(redis.rpush).toHaveBeenCalledWith(
+          "staging:test-group-1",
+          JSON.stringify({ name: "keep-me", data: {} })
+        )
+      })
+
+      it("should drop the key instead of pushing nothing when every event matches", async () => {
+        redis.lrange = jest
+          .fn()
+          .mockResolvedValue([JSON.stringify({ name: "drop-me", data: {} })])
+
+        await eventBus.clearGroupedEvents("test-group-1", {
+          eventNames: ["drop-me"],
+        })
+
+        // RPUSH with no members is an error, so the key is unlinked instead
+        expect(redis.rpush).not.toHaveBeenCalled()
+        expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-1")
       })
     })
 
