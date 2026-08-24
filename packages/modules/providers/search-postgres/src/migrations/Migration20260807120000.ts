@@ -8,9 +8,8 @@ import { Migration } from "@medusajs/framework/mikro-orm/migrations"
  * - `unaccent` — accent-insensitive FTS
  * - `medusa_search_english` — unaccent-backed text search config
  *
- * Lakebase extensions (`lakebase_text`, `lakebase_vector`) are **not** installed
- * here — they require Neon preload libraries and must be created when
- * `engine: "lakebase"` is used (Medusa Cloud).
+ * Lakebase extensions (`lakebase_vector`, `lakebase_text`) are enabled in a
+ * later migration via `CREATE EXTENSION ... CASCADE`.
  */
 export class Migration20260807120000 extends Migration {
   override async up(): Promise<void> {
