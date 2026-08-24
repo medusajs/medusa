@@ -3,4 +3,4 @@
 "@medusajs/dashboard": patch
 ---
 
-chore(admin): name admin search entities after their graph entity
+chore(dashboard,medusa): name admin search entities after their graph entity
