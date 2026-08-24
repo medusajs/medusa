@@ -4,6 +4,7 @@ import { LoaderFunctionArgs } from "react-router-dom"
 import { productTagsQueryKeys } from "../../../hooks/api"
 import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
+import { getProductTagListQueryParams } from "./query-params"
 
 const productTagListQuery = (query?: HttpTypes.AdminProductTagListParams) => ({
   queryKey: productTagsQueryKeys.list(query),
@@ -13,19 +14,7 @@ const productTagListQuery = (query?: HttpTypes.AdminProductTagListParams) => ({
 export const productTagListLoader = async ({ request }: LoaderFunctionArgs) => {
   const searchParams = new URL(request.url).searchParams
 
-  const queryObject: Record<string, string> = {}
-
-  searchParams.forEach((value, key) => {
-    try {
-      queryObject[key] = JSON.parse(value)
-    } catch (_e) {
-      queryObject[key] = value
-    }
-  })
-
-  const query = productTagListQuery(
-    queryObject as HttpTypes.AdminProductTagListParams
-  )
+  const query = productTagListQuery(getProductTagListQueryParams(searchParams))
 
   return (
     queryClient.getQueryData<any>(query.queryKey) ??
