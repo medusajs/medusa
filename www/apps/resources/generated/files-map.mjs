@@ -1120,10 +1120,6 @@ export const filesMap = [
     "pathname": "/infrastructure-modules/search/providers/comparison"
   },
   {
-    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/local/page.mdx",
-    "pathname": "/infrastructure-modules/search/providers/local"
-  },
-  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/page.mdx",
     "pathname": "/infrastructure-modules/search/providers"
   },
@@ -17264,6 +17260,14 @@ export const filesMap = [
     "pathname": "/references/sales-channel/models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/search/page.json",
+    "pathname": "/references/modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/search_provider/page.json",
+    "pathname": "/references/modules/search_provider"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/settings/page.json",
     "pathname": "/references/modules/settings"
   },
@@ -21478,6 +21482,26 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json",
     "pathname": "/references/sales-channel/models/SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.ISearchModuleService/page.json",
+    "pathname": "/references/search/service"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexInput/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexResult/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexResult"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/types/search.SearchReindexStrategy/page.json",
+    "pathname": "/references/search/types/search.SearchReindexStrategy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search_provider/classes/search_provider.AbstractSearchProviderService/page.json",
+    "pathname": "/references/search/provider"
   },
   {
     "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages/page.json",
@@ -27704,6 +27728,14 @@ export const filesMap = [
     "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDefinition"
   },
   {
+    "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDetails/page.json",
+    "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDetails"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexFieldInfo/page.json",
+    "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexFieldInfo"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexInfo/page.json",
     "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexInfo"
   },
@@ -27814,6 +27846,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchIndexMigrationAction/page.json",
     "pathname": "/references/types/SearchTypes/types/types.SearchTypes.SearchIndexMigrationAction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchIndexStatus/page.json",
+    "pathname": "/references/types/SearchTypes/types/types.SearchTypes.SearchIndexStatus"
   },
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchMatchStrategy/page.json",

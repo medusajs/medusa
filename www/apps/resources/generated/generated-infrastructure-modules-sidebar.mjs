@@ -561,15 +561,29 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "link",
-              "path": "/infrastructure-modules/search/providers/local",
-              "title": "Local",
+              "path": "/infrastructure-modules/search/providers/comparison",
+              "title": "Compare Providers",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "sub-category",
+          "title": "Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/references/search/provider",
+              "title": "Create Search Module Provider",
               "children": []
             },
             {
               "loaded": true,
               "type": "link",
-              "path": "/infrastructure-modules/search/providers/comparison",
-              "title": "Compare Providers",
+              "path": "/references/search/service",
+              "title": "Use Search Module",
               "children": []
             }
           ]

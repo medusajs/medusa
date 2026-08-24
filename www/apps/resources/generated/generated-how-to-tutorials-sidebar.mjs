@@ -275,6 +275,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Use Search Module",
+              "path": "https://docs.medusajs.com/resources/references/search/service",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Use Workflow Engine Module",
               "path": "https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/how-to-use",
               "children": []

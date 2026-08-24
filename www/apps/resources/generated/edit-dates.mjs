@@ -7648,14 +7648,15 @@ export const generatedEditDates = {
   "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-21T06:05:37.103Z",
   "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z",
   "app/infrastructure-modules/search/index-definitions/fields/page.mdx": "2026-08-21T06:24:28.546Z",
-  "app/infrastructure-modules/search/index-definitions/modifiers/page.mdx": "2026-08-21T08:10:41.263Z",
-  "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-08-21T06:24:28.547Z",
-  "app/infrastructure-modules/search/page.mdx": "2026-08-21T06:24:13.466Z",
-  "app/infrastructure-modules/search/providers/comparison/page.mdx": "2026-08-21T08:10:43.376Z",
+  "app/infrastructure-modules/search/index-definitions/modifiers/page.mdx": "2026-08-21T15:05:16.597Z",
+  "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-08-21T15:07:26.836Z",
+  "app/infrastructure-modules/search/page.mdx": "2026-08-21T15:05:16.598Z",
+  "app/infrastructure-modules/search/providers/comparison/page.mdx": "2026-08-21T15:05:16.597Z",
   "app/infrastructure-modules/search/providers/local/page.mdx": "2026-08-21T08:13:27.579Z",
-  "app/infrastructure-modules/search/providers/page.mdx": "2026-08-21T06:23:50.097Z",
+  "app/infrastructure-modules/search/providers/page.mdx": "2026-08-21T15:05:32.879Z",
   "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-08-21T08:10:48.742Z",
   "app/infrastructure-modules/search/reindexing/page.mdx": "2026-08-21T06:24:04.997Z",
   "app/commerce-modules/loyalty/links-to-other-modules/page.mdx": "2026-08-21T06:05:37.118Z",
-  "app/commerce-modules/store-credit/links-to-other-modules/page.mdx": "2026-08-21T06:05:37.132Z"
+  "app/commerce-modules/store-credit/links-to-other-modules/page.mdx": "2026-08-21T06:05:37.132Z",
+  "app/infrastructure-modules/search/providers/medusa/page.mdx": "2026-08-21T15:08:28.068Z"
 }
