@@ -2,10 +2,10 @@
 
 Search provider for Medusa backed by PostgreSQL, with two engines:
 
-| Engine             | When to use                              | Keyword                     | Vector               |
-| ------------------ | ---------------------------------------- | --------------------------- | -------------------- |
-| `native` (default) | Local / self-hosted / any Postgres       | GIN + `ts_rank` + `pg_trgm` | Not supported        |
-| `lakebase`         | Medusa Cloud / Neon with Lakebase Search | `lakebase_bm25` (BM25)      | `lakebase_ann` (ANN) |
+| Engine             | When to use                        | Keyword                     | Vector               |
+| ------------------ | ---------------------------------- | --------------------------- | -------------------- |
+| `native` (default) | Local / self-hosted / any Postgres | GIN + `ts_rank` + `pg_trgm` | Not supported        |
+| `lakebase`         | Medusa Cloud / Lakebase Search     | `lakebase_bm25` (BM25)      | `lakebase_ann` (ANN) |
 
 ## Enable it
 
@@ -53,7 +53,7 @@ npx medusa db:migrate
 npx medusa db:migrate-search
 ```
 
-The migration always enables `pg_trgm` + `unaccent` and creates the catalog. Lakebase extensions are created at runtime when `engine: "lakebase"` (they need preloaded libraries that migrations alone cannot enable).
+The migration enables `pg_trgm` + `unaccent` and creates the catalog. On Medusa Cloud it also enables `lakebase_vector` and `lakebase_text` (`CREATE EXTENSION ... CASCADE`). Those statements soft-fail on engines that do not ship Lakebase Search.
 
 ## Provider options
 
