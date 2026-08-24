@@ -80,6 +80,7 @@ const sidebarMappings: {
       "/references/analytics",
       "/references/caching-service",
       "/references/caching-module-provider",
+      "/references/search",
     ],
   },
   {

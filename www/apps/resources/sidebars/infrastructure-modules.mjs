@@ -404,6 +404,22 @@ export const infrastructureModulesSidebar = [
           },
         ],
       },
+      {
+        type: "sub-category",
+        title: "Guides",
+        children: [
+          {
+            type: "link",
+            path: "/references/search/provider",
+            title: "Create Search Module Provider",
+          },
+          {
+            type: "link",
+            path: "/references/search/service",
+            title: "Use Search Module",
+          },
+        ],
+      },
     ],
   },
   {
