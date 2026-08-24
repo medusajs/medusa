@@ -2,4 +2,4 @@
 "@medusajs/inventory": patch
 ---
 
-Lock inventory level rows while creating, updating, or deleting reservations so concurrent service calls can no longer oversubscribe stock or desynchronize `reserved_quantity` from the live reservation rows.
+fix(@medusajs/inventory): lock inventory level rows during reservation mutations to prevent oversubscription
