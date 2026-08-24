@@ -63,6 +63,7 @@ import { rule as subscriberDefaultExportRequired } from "./subscriber-default-ex
 import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
 import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
 import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
+import { rule as whenBlockMustHaveName } from "./when-block-must-have-name"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 import { rule as widgetMustExportConfig } from "./widget-must-export-config"
@@ -136,6 +137,7 @@ export const rules = {
   "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
   "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
   "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
+  "when-block-must-have-name": whenBlockMustHaveName,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
   "widget-must-export-config": widgetMustExportConfig,
