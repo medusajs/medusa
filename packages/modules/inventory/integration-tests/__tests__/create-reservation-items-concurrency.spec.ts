@@ -55,14 +55,6 @@ moduleIntegrationTestRunner<IInventoryService>({
         const fulfilled = results.filter((r) => r.status === "fulfilled")
         const rejected = results.filter((r) => r.status === "rejected")
 
-        console.log(
-          "CONCURRENCY SUMMARY:",
-          JSON.stringify({
-            fulfilled: fulfilled.length,
-            rejected: rejected.length,
-          })
-        )
-
         expect(fulfilled.length).toEqual(1)
         expect(rejected.length).toEqual(1)
 
@@ -70,10 +62,6 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventory_item_id: inventoryItemId,
           location_id: locationId,
         })
-        console.log(
-          "LEVEL AFTER CREATE:",
-          JSON.stringify(levels[0].reserved_quantity)
-        )
         expect(levels[0].reserved_quantity).toEqual(1)
       })
 
@@ -94,10 +82,6 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventory_item_id: inventoryItemId,
           location_id: locationId,
         })
-        console.log(
-          "LEVEL AFTER BACKORDERED CREATES:",
-          JSON.stringify(levelsAfterCreate[0].reserved_quantity)
-        )
         expect(levelsAfterCreate[0].reserved_quantity).toEqual(2)
 
         const reservations = await service.listReservationItems({
@@ -111,10 +95,6 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventory_item_id: inventoryItemId,
           location_id: locationId,
         })
-        console.log(
-          "LEVEL AFTER DELETE:",
-          JSON.stringify(levels[0].reserved_quantity)
-        )
         expect(levels[0].reserved_quantity).toEqual(0)
       })
     })
