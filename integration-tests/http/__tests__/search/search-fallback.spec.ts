@@ -54,14 +54,14 @@ medusaIntegrationTestRunner({
 
       it("searches unindexed entities and groups the results", async () => {
         const response = await api.get(
-          "/admin/search?q=zephyr&entity=region,returnReason",
+          "/admin/search?q=zephyr&entity=region,return_reason",
           adminHeaders
         )
 
         expect(response.status).toEqual(200)
         expect(response.data.results.map((g: any) => g.entity)).toEqual([
           "region",
-          "returnReason",
+          "return_reason",
         ])
 
         expect(groupFor(response.data, "region").data).toEqual(
@@ -71,9 +71,9 @@ medusaIntegrationTestRunner({
           ])
         )
         expect(groupFor(response.data, "region").data).toHaveLength(2)
-        expect(groupFor(response.data, "returnReason")).toEqual(
+        expect(groupFor(response.data, "return_reason")).toEqual(
           expect.objectContaining({
-            entity: "returnReason",
+            entity: "return_reason",
             data: [],
             count: 0,
           })
@@ -82,7 +82,7 @@ medusaIntegrationTestRunner({
 
       it("returns a group with no hits rather than dropping the entity", async () => {
         const response = await api.get(
-          "/admin/search?q=aurora&entity=region,returnReason",
+          "/admin/search?q=aurora&entity=region,return_reason",
           adminHeaders
         )
 
@@ -90,9 +90,9 @@ medusaIntegrationTestRunner({
         expect(groupFor(response.data, "region").data).toEqual([
           expect.objectContaining({ name: "Aurora" }),
         ])
-        expect(groupFor(response.data, "returnReason")).toEqual(
+        expect(groupFor(response.data, "return_reason")).toEqual(
           expect.objectContaining({
-            entity: "returnReason",
+            entity: "return_reason",
             data: [],
             count: 0,
           })
