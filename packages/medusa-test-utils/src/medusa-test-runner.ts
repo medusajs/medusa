@@ -86,6 +86,7 @@ class MedusaTestRunner {
   private hooks: TestRunnerConfig["hooks"] = {}
   private databaseTemplateReady = false
   private skipNextRestore = false
+  private restoreEnvVars: (() => void) | null = null
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -282,6 +283,11 @@ class MedusaTestRunner {
       }
     } catch (error) {
       logger.error("Error during cleanup:", error?.message)
+    } finally {
+      // Runs even when a step above threw, otherwise a failing teardown is
+      // enough to leak this suite's env into the next one.
+      this.restoreEnvVars?.()
+      this.restoreEnvVars = null
     }
   }
 
@@ -289,7 +295,7 @@ class MedusaTestRunner {
     try {
       this.setupProcessHandlers()
       await configLoaderOverride(this.cwd, this.dbConfig)
-      applyEnvVarsToProcess(this.env)
+      this.restoreEnvVars = applyEnvVarsToProcess(this.env)
       await this.setupApplication()
     } catch (error) {
       await this.cleanup()
