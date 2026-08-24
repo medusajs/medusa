@@ -1226,8 +1226,6 @@ export default class AuthModuleService
         }
 
         // 20 minutes default. Can be overridden per call, but this is a good default.
-        // The write has to be awaited, otherwise the provider redirects before
-        // the state is stored and a failing write is silently swallowed.
         await this.cache_.set(key, value, ttlSeconds ?? 1200)
       },
       getState: async (key: string) => {
