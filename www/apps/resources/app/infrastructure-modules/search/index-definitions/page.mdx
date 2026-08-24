@@ -147,17 +147,17 @@ npx medusa db:migrate
         No
       </Table.Cell>
     </Table.Row>
-    {/* <Table.Row>
+    <Table.Row>
       <Table.Cell>
         `settings`
       </Table.Cell>
       <Table.Cell>
-        Engine settings for this index, such as synonyms and typo tolerance. Refer to [Index Settings](#index-settings).
+        Engine settings for this index, such as the field to deduplicate results on. Only the [Medusa Search](!cloud!/search) provider supports them. Refer to [Index Settings](!cloud!/search#index-settings) for the settings it accepts.
       </Table.Cell>
       <Table.Cell>
         No
       </Table.Cell>
-    </Table.Row> */}
+    </Table.Row>
     <Table.Row>
       <Table.Cell>
         `events`
@@ -183,95 +183,11 @@ npx medusa db:migrate
   </Table.Body>
 </Table>
 
-{/* TODO: move to medusa cloud docs */}
-
-{/* ## Index Settings for Medusa Search Provider
-
-The `settings` property configures how the engine treats the whole index. These settings are only supported by the [Medusa Search Provider available for Cloud users](#).
-
-For example:
-
-```ts title="src/search/product.ts"
-export const productIndex = defineSearchIndex({
-  name: "product",
-  entity: "product",
-  fields: search.define({
-    id: search.keyword().filterable(),
-    title: search.text().searchable(),
-    brand: search.keyword().filterable(),
-  }),
-  settings: {
-    distinct_attribute: "brand",
-    provider_options: {
-      "search-medusa": {
-        distance_metric: "cosine",
-      },
-    },
-  },
-  async *seed({ container }) {
-    // ...
-  },
-})
-```
-
-The example declares two settings for the `product` index:
-
-- `distinct_attribute` deduplicates results on `brand`, so a search returns at most one product per brand instead of every product the brand sells.
-- `provider_options` passes options that only the `search-medusa` provider understands, in this case the distance metric it uses to compare embeddings.
-
-You can set the following properties:
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-        Setting
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Description
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Supported by
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-        `distinct_attribute`
-      </Table.Cell>
-      <Table.Cell>
-        A field to deduplicate on, so the engine returns at most one hit per distinct value. A query's `distinct` [search option](!docs!/learn/fundamentals/query/search#search-options) overrides it.
-      </Table.Cell>
-      <Table.Cell>
-        `search-medusa`
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        `provider_options`
-      </Table.Cell>
-      <Table.Cell>
-        Engine-specific index options, keyed by provider identifier. Each provider reads only its own entry, so one definition can carry options for several providers.
-      </Table.Cell>
-      <Table.Cell>
-        `search-medusa`
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-<Note>
-
-The `settings` type also accepts `synonyms`, `stop_words`, `typo_tolerance`, `faceting`, `pagination`, and `locales`, but no provider Medusa ships implements them yet. `search-medusa` rejects an index that sets `synonyms` or `stop_words`, as shown in [Compare Search Module Providers](../providers/comparison/page.mdx#index-definition-support). To control typo tolerance today, pass `typo_tolerance` in a query's [search options](!docs!/learn/fundamentals/query/search#search-options) instead.
-
-</Note>
-
 <Note>
 
 Changing `fields` or `settings` changes the definition's hash, which the Search Module treats as a schema change. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) to learn how it rebuilds the index.
 
-</Note> */}
+</Note>
 
 ---
 

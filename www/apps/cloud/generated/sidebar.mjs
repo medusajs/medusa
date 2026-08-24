@@ -388,6 +388,13 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Search",
+            "path": "/search",
+            "children": []
           }
         ]
       },

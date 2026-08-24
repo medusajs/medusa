@@ -19,7 +19,7 @@ In this guide, you'll learn about the Search Module, its providers, and its inde
 
 <Note title="Easier setup with Cloud">
 
-Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Cloud documentation](#).
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](!cloud!/search) documentation.
 
 </Note>
 
@@ -29,7 +29,7 @@ The Search Module provides full-text search functionality in your Medusa applica
 
 For example, you can use the Search Module to power a storefront's product search with typo tolerance and category facets, or to let admin users find orders by customer name.
 
-The Search Module writes to and reads from the search engine you integrate, such as [PostgreSQL](./providers/postgres/page.mdx) or [Medusa Search](#) for Cloud users. This gives you flexibility in choosing the search infrastructure that matches your performance and scalability requirements.
+The Search Module writes to and reads from the search engine you integrate, such as [PostgreSQL](./providers/postgres/page.mdx) or [Medusa Search](!cloud!/search) for Cloud users. This gives you flexibility in choosing the search infrastructure that matches your performance and scalability requirements.
 
 ### How the Search Module Works
 
@@ -46,7 +46,7 @@ Learn how the module builds an index, fills it, and rebuilds it when a definitio
 
 ## Configure the Search Module
 
-The Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can define an index and start searching without extra configuration. On Cloud, the [Medusa Search Module Provider](#) is registered by default instead.
+The Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can define an index and start searching without extra configuration. On Cloud, [Medusa Search](!cloud!/search) is registered by default instead.
 
 To change its configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
 
@@ -154,7 +154,7 @@ npx medusa db:migrate
 
 A Search Module Provider implements the logic of indexing and searching documents in a search engine. The Search Module uses the provider that each index definition resolves to.
 
-Medusa ships the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), and the [Medusa Search Module Provider](#) that's available for Cloud users only. You can also create your own.
+Medusa ships the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), and [Medusa Search](!cloud!/search) that's available for Cloud users only. You can also create your own.
 
 Providers don't back the same set of features, so the provider you pick decides which index definitions you can declare and which query features you can pass. Refer to [Compare Search Module Providers](./providers/comparison/page.mdx) for what each provider does with every feature they treat differently.
 

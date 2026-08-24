@@ -85,7 +85,7 @@ In this example, a product matching a query in its title outranks one matching o
 <Note title="How much a weight changes ranking depends on the provider">
 
 - The [PostgreSQL provider](../../providers/postgres/page.mdx) maps the weight onto PostgreSQL's four relevance labels. A weight of `3` or more is the highest label, `2` the next, anything above `1` the next, and `1` or less the lowest. So there are four tiers, and raising a weight past `3` changes nothing.
-- The [Medusa Search provider available for Cloud users](#) multiplies the field's relevance by the weight, so a weight of `5` does outrank a weight of `3`.
+- The [Medusa Search provider available for Cloud users](!cloud!/search) multiplies the field's relevance by the weight, so a weight of `5` does outrank a weight of `3`.
 
 Refer to [Compare Search Module Providers](../../providers/comparison/page.mdx) for the other features providers treat differently.
 
@@ -370,7 +370,7 @@ export const productIndex = defineSearchIndex({
 
 The options are passed to the targeted provider only, so you can pass different options to different providers for the same field.
 
-An option only does something if the provider consumes it. A provider that doesn't read the `providerOptions` modifier ignores whatever you pass, so check the provider's documentation for the options it accepts. Of the providers Medusa ships, the [Medusa Search provider available for Cloud users](#) is the only one that reads them, and its guide lists the full set.
+An option only does something if the provider consumes it. A provider that doesn't read the `providerOptions` modifier ignores whatever you pass, so check the provider's documentation for the options it accepts. Of the providers Medusa ships, the [Medusa Search provider available for Cloud users](!cloud!/search) is the only one that reads them, and its [guide lists the full set](!cloud!/search#field-options).
 
 <Note title="Tip">
 

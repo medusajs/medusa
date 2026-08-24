@@ -290,6 +290,11 @@ export const sidebar = [
               },
             ],
           },
+          {
+            type: "link",
+            title: "Search",
+            path: "/search",
+          },
         ],
       },
       {

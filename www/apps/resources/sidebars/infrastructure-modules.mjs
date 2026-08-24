@@ -396,7 +396,11 @@ export const infrastructureModulesSidebar = [
             path: "/infrastructure-modules/search/providers/postgres",
             title: "PostgreSQL",
           },
-          // TODO add ref link to medusa search
+          {
+            type: "ref",
+            path: "https://docs.medusajs.com/cloud/search",
+            title: "Medusa Search",
+          },
           {
             type: "link",
             path: "/infrastructure-modules/search/providers/comparison",

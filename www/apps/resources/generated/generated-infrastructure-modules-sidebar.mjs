@@ -560,6 +560,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "ref",
+              "path": "https://docs.medusajs.com/cloud/search",
+              "title": "Medusa Search",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "link",
               "path": "/infrastructure-modules/search/providers/comparison",
               "title": "Compare Providers",
