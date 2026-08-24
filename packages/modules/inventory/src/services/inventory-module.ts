@@ -1047,6 +1047,15 @@ export default class InventoryModuleService
     adjustment: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<InferEntityType<typeof InventoryLevel>> {
+    // Serialize concurrent adjustments on the same level so the
+    // read-modify-write below cannot lose another caller's increment. The
+    // lock precedes the first read of the level in this transaction, so the
+    // snapshot below already reflects any committed adjustment.
+    await this.lockInventoryLevelsForUpdate_(
+      [{ inventory_item_id: inventoryItemId, location_id: locationId }],
+      context
+    )
+
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
       {},
