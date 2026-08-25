@@ -65,17 +65,18 @@ export class CustomDBMigrator extends BaseMigrator {
   async getPendingMigrations(): Promise<UmzugMigration[]> {
     const pending = await super.getPendingMigrations()
 
-    // Filter out migrations that are disabled by file config.
-    // The predicate has to be resolved before filtering: an async callback
-    // returns a promise, every promise is truthy, so handing one to
-    // Array.prototype.filter keeps every entry.
-    const keep = await promiseAll(
+    const result: UmzugMigration[] = []
+
+    await promiseAll(
       pending.map(async (pendingFile: UmzugMigration) => {
         const migration = await dynamicImport(pendingFile.path!)
-        return !isFileSkipped(migration)
+
+        if (!isFileSkipped(migration)) {
+          result.push(pendingFile)
+        }
       })
     )
 
-    return pending.filter((_, index) => keep[index])
+    return result
   }
 }
