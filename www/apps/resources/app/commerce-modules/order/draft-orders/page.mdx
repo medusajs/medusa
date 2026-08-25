@@ -119,7 +119,12 @@ Medusa automatically keeps calculated shipping prices up to date during the edit
 
 Shipping methods with a custom amount (`is_custom_amount: true`) and flat-rate methods are never repriced automatically.
 
-The `fetchShippingOptionForDraftOrderWorkflow` exposes a `setPricingContext` hook you can use to inject additional context (for example, a `location_id`) before the fulfillment provider calculates the price. The context is merged with the order's `currency_code`.
+The `fetchShippingOptionForDraftOrderWorkflow` exposes two hooks you can use to inject additional context before the fulfillment provider calculates the price:
+
+- `setPricingContext` — inject additional pricing context (for example, a `location_id`) used when resolving flat-rate prices from the Pricing Module. The context is merged with the order's `currency_code`.
+- `setCalculatedShippingPricingContext` — inject custom context that is forwarded to the fulfillment provider's `calculatePrice` method when pricing a calculated shipping option. The returned object is merged into the `context` parameter of `calculatePrice`; framework-provided properties take precedence on any naming conflict.
+
+The `refreshConfirmedDraftOrderShippingMethodsWorkflow` and `refreshPendingDraftOrderShippingMethodsWorkflow` workflows also expose a `setCalculatedShippingPricingContext` hook for the same purpose when repricing already-applied or pending calculated shipping methods.
 
 ### Draft Order Locale
 
