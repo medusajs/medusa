@@ -60,6 +60,9 @@ export interface SearchReindexResult {
   indexes: string[]
 }
 
+/**
+ * The main service interface for the Search Module.
+ */
 export interface ISearchModuleService extends IModuleService {
   /**
    * This method searches an index for documents matching the given query. The
