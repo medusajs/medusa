@@ -105,6 +105,11 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Rules",
+                path: "/environments/rules",
+              },
+              {
+                type: "link",
                 title: "Environment Variables",
                 path: "/environments/environment-variables",
               },

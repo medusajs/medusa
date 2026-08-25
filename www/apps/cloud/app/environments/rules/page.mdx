@@ -1,0 +1,53 @@
+import { InlineIcon, Note } from "docs-ui"
+import { PencilSquare } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Environment Rules`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage the deployment rules for a long-lived environment, including its linked Git branch and build rules.
+
+## Rules Overview
+
+The **Rules** tab of an environment's dashboard shows the deployment configuration for that environment. It has two sections:
+
+- **Linked Branch**: The Git branch the environment deploys from. You can change this branch for production and long-lived environments.
+- **Build Rules**: The deploy-stage rules configured for the environment.
+
+To open an environment's Rules tab:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. In the project's dashboard, click on the environment's card.
+4. Click **Rules** in the environment's navigation.
+
+---
+
+## Change the Linked Branch
+
+The **Linked Branch** section shows which Git branch the environment currently deploys from. For production and long-lived environments, you can change this branch.
+
+To change the linked branch:
+
+1. In the environment's [Rules tab](#rules-overview), find the **Linked Branch** section.
+2. Click the <InlineIcon Icon={PencilSquare} alt="edit" /> icon next to the branch name.
+3. In the drawer that opens, enter the name of the branch you want to link. The branch name must be between 2 and 511 characters.
+4. Click **Save** to apply the change.
+
+A notification confirms whether the update was successful.
+
+The next time you push a commit to the new branch, Medusa creates a new deployment for the environment. Pushes to the previous branch no longer trigger new deployments for the environment.
+
+<Note>
+
+You cannot change the linked branch of preview environments. This setting only applies to production and long-lived environments.
+
+</Note>
+
+---
+
+## Build Rules
+
+The **Build Rules** section displays the deploy-stage rules configured for the environment. These rules control how Medusa builds and deploys your application.

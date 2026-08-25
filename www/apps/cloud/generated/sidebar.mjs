@@ -139,6 +139,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Rules",
+                "path": "/environments/rules",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
                 "children": []
