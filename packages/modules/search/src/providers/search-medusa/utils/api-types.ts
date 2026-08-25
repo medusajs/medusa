@@ -6,7 +6,24 @@ export type AttributeType = string
 
 export type AttributeSchema = AttributeType | AttributeSchemaConfig
 
-export type FullTextSearch = boolean | Record<string, unknown>
+// Every field is optional and falls back to Medusa's own default (in particular,
+// `case_sensitive` defaults to `false` — BM25 matching is case-insensitive
+// out of the box). Tokenizer selection is not exposed — it's always the
+// engine's default (word_v4).
+export type FullTextSearchConfig = {
+  language?: string
+  case_sensitive?: boolean
+  stemming?: boolean
+  remove_stopwords?: boolean
+  ascii_folding?: boolean
+  max_token_length?: number
+  // BM25 configuration knobs, see BM25 definition for more info.
+  k1?: number
+  b?: number
+  k3?: number
+}
+
+export type FullTextSearch = boolean | FullTextSearchConfig
 
 export type DistanceMetric = "cosine_distance" | "euclidean_squared"
 
@@ -17,7 +34,9 @@ export type ShardingConfig = {
 
 export type AttributeSchemaConfig = {
   type: AttributeType
-  ann?: boolean | { distance_metric?: DistanceMetric; late_interaction?: boolean }
+  ann?:
+    | boolean
+    | { distance_metric?: DistanceMetric; late_interaction?: boolean }
   filterable?: boolean
   full_text_search?: FullTextSearch
   fuzzy?: boolean
@@ -30,12 +49,48 @@ export type Row = Record<string, unknown> & {
   $dist?: number
 }
 
+export type FuzzyEditDistanceThreshold = {
+  min_query_chars: number
+  distance: number
+}
+
+export type FuzzyFilterOptions = {
+  max_edit_distance: FuzzyEditDistanceThreshold[]
+  case_sensitive?: boolean
+}
+
 export type Filter =
   | [string, string, unknown]
+  | [string, "Fuzzy", string, FuzzyFilterOptions]
   | ["And" | "Or", Filter[]]
   | ["Not", Filter]
 
 export type RankBy = unknown
+
+export type HighlightFragmentGranularity =
+  | "word"
+  | "sentence"
+  | "paragraph"
+  | "none"
+
+export type HighlightExpression = [
+  "Highlight",
+  string,
+  {
+    fragment_by?: HighlightFragmentGranularity
+    rank_fragments_by?: RankBy
+    fragment_limit?: number
+    include_offsets?: "utf-8" | "utf-16" | "codepoints"
+  }
+]
+
+export type HighlightFragment = {
+  text: string
+  fragment_range?: [number, number]
+  match_ranges?: [number, number][]
+}
+
+export type ComputeAttributes = Record<string, HighlightExpression>
 
 export type Limit =
   | number
@@ -76,6 +131,7 @@ export type IndexQuery = {
   group_by?: Array<Record<string, unknown>>
   consistency?: { level: "strong" | "eventual" }
   distance_metric?: DistanceMetric
+  compute_attributes?: ComputeAttributes
 }
 
 export type IndexMultiQueryParams = {

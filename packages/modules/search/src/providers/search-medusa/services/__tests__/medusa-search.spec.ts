@@ -254,4 +254,57 @@ describe("MedusaSearchService", () => {
       metadata: { count: 1, processing_time_ms: 4 },
     })
   })
+
+  it("boosts typo-tolerant matches into rank_by and surfaces highlighted fragments", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        {
+          rows: [
+            {
+              id: "prod_1",
+              title: "Red running shoe",
+              __medusa_highlight_0__: [
+                {
+                  text: "Red running shoe",
+                  match_ranges: [[4, 11]],
+                },
+              ],
+            },
+          ],
+        },
+        { aggregations: { count: 1 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 2 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      q: "runing",
+      attributes_to_retrieve: ["title"],
+      search_options: {
+        typo_tolerance: true,
+        highlight: { fields: ["title"] },
+      },
+    })
+
+    expect(result.hits).toEqual([
+      {
+        id: "prod_1",
+        score: undefined,
+        document: { title: "Red running shoe" },
+        highlights: { title: ["Red <mark>running</mark> shoe"] },
+      },
+    ])
+
+    const sentQuery = multiQuery.mock.calls[0][0].queries[0]
+    expect(sentQuery.rank_by[0]).toBe("Sum")
+    expect(sentQuery.compute_attributes).toHaveProperty(
+      "__medusa_highlight_0__"
+    )
+  })
 })
