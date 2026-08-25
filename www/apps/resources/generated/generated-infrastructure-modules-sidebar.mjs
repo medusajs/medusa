@@ -563,14 +563,29 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
               "type": "ref",
               "path": "https://docs.medusajs.com/cloud/search",
               "title": "Medusa Search",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "link",
-              "path": "/infrastructure-modules/search/providers/comparison",
-              "title": "Compare Providers",
-              "children": []
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/postgres",
+                  "title": "Compare to PostgreSQL",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/algolia",
+                  "title": "Compare to Algolia",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/meilisearch",
+                  "title": "Compare to Meilisearch",
+                  "children": []
+                }
+              ]
             }
           ]
         },

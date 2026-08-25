@@ -278,7 +278,6 @@ export const sitemapUrls = [
   "/infrastructure-modules/search/index-definitions/modifiers",
   "/infrastructure-modules/search/index-definitions",
   "/infrastructure-modules/search",
-  "/infrastructure-modules/search/providers/comparison",
   "/infrastructure-modules/search/providers",
   "/infrastructure-modules/search/providers/postgres",
   "/infrastructure-modules/search/reindexing",

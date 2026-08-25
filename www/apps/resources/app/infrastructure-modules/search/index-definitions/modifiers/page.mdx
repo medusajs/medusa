@@ -87,7 +87,7 @@ In this example, a product matching a query in its title outranks one matching o
 - The [PostgreSQL provider](../../providers/postgres/page.mdx) maps the weight onto PostgreSQL's four relevance labels. A weight of `3` or more is the highest label, `2` the next, anything above `1` the next, and `1` or less the lowest. So there are four tiers, and raising a weight past `3` changes nothing.
 - The [Medusa Search provider available for Cloud users](!cloud!/search) multiplies the field's relevance by the weight, so a weight of `5` does outrank a weight of `3`.
 
-Refer to [Compare Search Module Providers](../../providers/comparison/page.mdx) for the other features providers treat differently.
+Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for the other features providers treat differently.
 
 </Note>
 
@@ -308,7 +308,7 @@ Requires that filters on an object's sub-fields all match within a single elemen
 
 <Note>
 
-No provider Medusa ships supports this modifier, so every one of them rejects an index that sets it and your application fails to start. Refer to [Compare Search Module Providers](../../providers/comparison/page.mdx#index-definition-support).
+No provider Medusa ships supports this modifier, so every one of them rejects an index that sets it and your application fails to start. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres#index-definition-support).
 
 </Note>
 

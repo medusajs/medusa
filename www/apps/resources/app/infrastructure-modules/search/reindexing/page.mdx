@@ -99,7 +99,7 @@ The command reports each action under one of the following:
 
 When a definition changes and the provider supports index swapping, the module builds the new schema alongside the live index, fills it, then aliases it over. Reads keep hitting the old index throughout and never see a half-built one.
 
-A provider without swapping support has nowhere to build alongside, so the module replaces the live index in place. That index holds nothing until the seed runs either [at application start](#seeding-at-application-start) or [on demand](#seeding-on-demand). Refer to [Compare Search Module Providers](../providers/comparison/page.mdx#index-lifecycle-and-write-support) for which providers support swapping.
+A provider without swapping support has nowhere to build alongside, so the module replaces the live index in place. That index holds nothing until the seed runs either [at application start](#seeding-at-application-start) or [on demand](#seeding-on-demand). Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres#indexing-and-synchronization) for which providers support swapping.
 
 <Note title="Warning" type="warning">
 

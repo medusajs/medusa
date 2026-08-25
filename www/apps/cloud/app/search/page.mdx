@@ -1,4 +1,4 @@
-import { Note, Prerequisites, TypeList } from "docs-ui"
+import { CardList, Note, Prerequisites, TypeList } from "docs-ui"
 
 export const metadata = {
   title: `Medusa Search`,
@@ -46,6 +46,30 @@ Preview environments are the exception, since they can start from another enviro
 
 ---
 
+## Compare Medusa Search to Other Search Engines
+
+If you're considering or already using another search engine, the following guides compare Medusa Search with common engines across setup, integration, search capabilities, and cost:
+
+<CardList
+  itemsPerRow={3}
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "./postgres/page.mdx",
+    },
+    {
+      title: "Algolia",
+      href: "./algolia/page.mdx",
+    },
+    {
+      title: "Meilisearch",
+      href: "./meilisearch/page.mdx",
+    },
+  ]}
+/>
+
+---
+
 ## Set Up Medusa Search in Cloud Projects
 
 <Prerequisites
@@ -75,7 +99,7 @@ npx medusa db:migrate
 
 <Note>
 
-The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `typo_tolerance`. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) before you rely on a feature in your storefront.
+The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `typo_tolerance`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
 
 </Note>
 

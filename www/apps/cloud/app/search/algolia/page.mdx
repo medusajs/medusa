@@ -1,0 +1,666 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Search vs Algolia`,
+  keywords: [
+    "search",
+    "medusa search",
+    "algolia",
+    "comparison",
+    "search engine",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll compare [Medusa Search](../page.mdx) to Algolia so you can decide which one to use for your Medusa project.
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../../sign-up/page.mdx) to use Medusa Search and other Cloud features.
+
+</Note>
+
+## What is Medusa Search?
+
+Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them, from full-text queries with relevance ranking to vector search over embeddings.
+
+The [Search Module](!resources!/infrastructure-modules/search) drives it through a provider that ships with Medusa. Cloud registers and configures that provider for every environment, so Medusa Search needs no setup. You declare an index definition in your codebase, and query it with [`query.search`](!docs!/learn/fundamentals/query/search).
+
+---
+
+## Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Concern
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Algolia
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [Setup](#setup-and-infrastructure)
+
+      </Table.Cell>
+      <Table.Cell>
+        None. Cloud provisions the service and passes the credentials to your application.
+      </Table.Cell>
+      <Table.Cell>
+        Create an account, provision an index, generate keys, and add them to every environment.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Local development](#local-development)
+
+      </Table.Cell>
+      <Table.Cell>
+        The PostgreSQL provider indexes into your local database, so no service to run.
+      </Table.Cell>
+      <Table.Cell>
+        No local engine. Local development points at a real Algolia index.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Integration code you maintain](#integration-with-medusa)
+
+      </Table.Cell>
+      <Table.Cell>
+        An index definition per entity.
+      </Table.Cell>
+      <Table.Cell>
+        A Search Module Provider you build and maintain.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Keeping the index current](#indexing-and-synchronization)
+
+      </Table.Cell>
+      <Table.Cell>
+        The Search Module applies the events you declare on the index.
+      </Table.Cell>
+      <Table.Cell>
+        The module applies the same events, and your provider writes them to the engine.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Relevance tuning](#search-capabilities)
+
+      </Table.Cell>
+      <Table.Cell>
+        A weight per searchable field.
+      </Table.Cell>
+      <Table.Cell>
+        Ranking rules, custom ranking, synonyms, rules, and merchandising controls.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Typo tolerance and highlighting](#search-capabilities)
+
+      </Table.Cell>
+      <Table.Cell>
+        Not supported.
+      </Table.Cell>
+      <Table.Cell>
+        Supported and configurable per index.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Sorting by an attribute](#search-capabilities)
+
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, but not alongside a text or vector query.
+      </Table.Cell>
+      <Table.Cell>
+        Needs a replica index per sort order.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Storefront querying](#querying-and-storefront-integration)
+
+      </Table.Cell>
+      <Table.Cell>
+        Through your API routes only.
+      </Table.Cell>
+      <Table.Cell>
+        Through your API routes, or from the browser with a search-only key and InstantSearch.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Admin dashboard search](#admin-dashboard-search)
+
+      </Table.Cell>
+      <Table.Cell>
+        Uses your indexes automatically.
+      </Table.Cell>
+      <Table.Cell>
+        Uses your indexes too, once your provider is in place.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Per-environment isolation](#environments-and-previews)
+
+      </Table.Cell>
+      <Table.Cell>
+        One set of indexes per environment, created for you.
+      </Table.Cell>
+      <Table.Cell>
+        You name and provision an index per environment.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [What you pay for](#cost-and-packaging)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No separate subscription. Your plan includes a monthly allowance of search requests, and anything above it is Flex Usage.
+
+      </Table.Cell>
+      <Table.Cell>
+        A separate subscription, priced on the records you store and the search requests you make.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Setup and Infrastructure
+
+Medusa Search is part of Cloud, so there's nothing to provision. Cloud creates the search resources for every environment and passes the credentials to your Medusa application, which registers the provider for you.
+
+Algolia takes considerably more work before you can run a single search. Algolia has no self-hosted option, so it operates the servers, but you configure and maintain everything around them:
+
+1. Create an Algolia account and application.
+2. Provision an index for every environment, and pick a naming scheme that keeps them apart.
+3. Generate an admin key for writes and a search-only key for reads, then store both as environment variables in every Cloud environment.
+4. Configure the index settings, including searchable attributes, faceting, ranking rules, and typo tolerance.
+5. Repeat steps 2 to 4 for every environment you add, and keep the settings identical across all of them.
+
+Step 4 is the one that keeps costing you. Index settings are dashboard configuration in Algolia by default, so they live outside your codebase and drift out of version control unless you push them through the API as part of a deployment.
+
+Only after all of that do you connect Algolia to Medusa, which requires creating a Search Module Provider as explained in the [Integration with Medusa](#integration-with-medusa) section.
+
+### Local Development
+
+Medusa Search runs on Cloud only. In local development, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) instead, which indexes into your local database. You declare and test an index without running a search engine on your machine.
+
+Algolia has no local engine, so local development points at a real Algolia index, usually a separate development one. Every developer either shares that index or gets their own, and both choices cost you records.
+
+---
+
+## Integration with Medusa
+
+This is the largest difference between the two, since it decides how much search code you own.
+
+### With Medusa Search
+
+The [Search Module](!resources!/infrastructure-modules/search) is part of Medusa, and Medusa Search is one of its providers. By default, Medusa only declares an index for the `product` data model. You can also declare an [index](!resources!/infrastructure-modules/search/index-definitions) for other core or custom data models. Medusa creates the index, fills it, applies events to it, and compiles a query into what the provider understands.
+
+A definition names the entity, the fields the engine holds, the events that change it, and how to read the documents:
+
+```ts title="src/search/brand.ts"
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+  }),
+  events: ["brand.created", "brand.updated"],
+  async consume(event, { container }) {
+    // return the documents to upsert or delete
+  },
+  async *seed({ container }) {
+    // yield the documents that fill the index
+  },
+})
+```
+
+Because the definition is declarative, the index schema, the field weights, and the sync logic all live in your repository and travel with a deployment. Switching providers doesn't change the definition either, so the same file runs against the PostgreSQL provider locally and against Medusa Search on Cloud.
+
+<Note>
+
+Refer to [Searching Custom Data Models](../page.mdx#searching-custom-data-models) for the full example.
+
+</Note>
+
+### With Algolia
+
+Medusa doesn't maintain a Search Module Provider for Algolia, so you have to build a custom one. A [Search Module Provider](!resources!/infrastructure-modules/search/providers) implements the interface the Search Module calls. Once you register yours, the module drives Algolia the way it drives any provider, so index definitions, event-driven sync, reindexing, and `query.search` all keep working, and admin dashboard search picks up your indexes.
+
+That keeps search idiomatic in your project, and the provider itself is a project of its own. The interface is wide:
+
+1. Create, migrate, and delete a physical index from an index definition, including translating each field type and modifier into Algolia's index settings.
+2. Upsert and delete documents in batches, and delete by a filter.
+3. Compile the Search Module's filter tree, including `$or`, `$not`, and several operators on one field, into Algolia's filter syntax.
+4. Compile facets, sorting, pagination, and search options into Algolia queries, and decide what to reject when Algolia can't serve a request.
+5. Map Algolia's response back into the shape the module expects, including the relevance score and the facet results.
+
+Refer to [Search Module Providers](!resources!/infrastructure-modules/search/providers) for how the module loads and calls a provider, and to [Create Search Module Provider](!resources!/references/search/provider) for the interface to implement.
+
+---
+
+## Indexing and Synchronization
+
+With a provider in place, the Search Module drives both engines through the same flow. What differs is that your provider implements every call the module makes against Algolia, so each row below is behavior you own.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Concern
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Algolia
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Initial fill
+      </Table.Cell>
+      <Table.Cell>
+
+       The Search Module calls the index definition's `seed` generator after it creates the index, during the deployment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The module calls `seed` the same way, and your provider turns each batch it yields into Algolia writes.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Incremental updates
+      </Table.Cell>
+      <Table.Cell>
+
+        The Search Module routes the events listed in `events` to the index definition's `consume` function.
+
+      </Table.Cell>
+      <Table.Cell>
+        The module routes the events the same way, and your provider implements the upserts and deletes it asks for in Algolia.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Schema changes
+      </Table.Cell>
+      <Table.Cell>
+
+        The module detects the changed definition and rebuilds the index. Refer to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing).
+
+      </Table.Cell>
+      <Table.Cell>
+        The module decides to rebuild, and your provider applies the changed definition to Algolia's index settings.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Rebuild on demand
+      </Table.Cell>
+      <Table.Cell>
+
+        Call the Search Module's `reindex` method.
+
+      </Table.Cell>
+      <Table.Cell>
+        Call the same `reindex` method.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Index availability during a rebuild
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search rebuilds in place, so the index holds nothing until the seed finishes.
+      </Table.Cell>
+      <Table.Cell>
+        Your provider decides. Algolia supports filling a temporary index and replacing the live one with it.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Write acknowledgment
+      </Table.Cell>
+      <Table.Cell>
+        The provider doesn't defer its writes, so there's nothing to wait on.
+      </Table.Cell>
+      <Table.Cell>
+        Algolia returns a task for a write, so your provider decides whether to wait on it before reporting success.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Search Capabilities
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Capability
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Algolia
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Full-text relevance
+      </Table.Cell>
+      <Table.Cell>
+        Relevance scales with the weight you set on each field.
+      </Table.Cell>
+      <Table.Cell>
+        Configurable ranking rules and custom ranking on top of the default tie-breaking.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Typo tolerance
+      </Table.Cell>
+      <Table.Cell>
+        Not supported. A query that requests it fails.
+      </Table.Cell>
+      <Table.Cell>
+        Supported and configurable per index and per attribute.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Filters
+      </Table.Cell>
+      <Table.Cell>
+
+        Every operator the Search Module offers, including `$or`, `$not`, and several operators on one field.
+
+      </Table.Cell>
+      <Table.Cell>
+        A filter syntax with numeric, tag, and facet filters, on attributes you mark as facetable.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Synonyms
+      </Table.Cell>
+      <Table.Cell>
+        Not supported. An index that declares them fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, with one-way, alternative-form, and placeholder synonyms.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Facets
+      </Table.Cell>
+      <Table.Cell>
+        Value and range facets. The hits, the count, and every facet share a budget of 16 queries per search.
+      </Table.Cell>
+      <Table.Cell>
+        Facet counts and facet value search on faceted attributes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Highlighting and snippets
+      </Table.Cell>
+      <Table.Cell>
+        Not supported. A query that requests it fails.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, and the front-end libraries render it for you.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Sorting by an attribute
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, but not alongside a text or vector query.
+      </Table.Cell>
+      <Table.Cell>
+        Needs a replica index per sort order. A standard replica holds its own copy of the records.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Merchandising and rules
+      </Table.Cell>
+      <Table.Cell>
+        Not supported. Order results with your own logic in an API route.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, with rules that pin, boost, or filter results for a given query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Vector and semantic search
+      </Table.Cell>
+      <Table.Cell>
+        Vector search on embeddings you compute and store in the index.
+      </Table.Cell>
+      <Table.Cell>
+        Available through Algolia's AI search features, on higher plans.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Geo search
+      </Table.Cell>
+      <Table.Cell>
+        Not supported. An index that declares a geo field fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, with radius and bounding-box queries.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Deep pagination
+      </Table.Cell>
+      <Table.Cell>
+        Up to the 10,000th result.
+      </Table.Cell>
+      <Table.Cell>
+        A configurable pagination limit caps it, and the plan bounds that limit.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Analytics and A/B testing
+      </Table.Cell>
+      <Table.Cell>
+        Not part of the service. Track queries in your own analytics.
+      </Table.Cell>
+      <Table.Cell>
+        Built in, including click and conversion analytics and index A/B tests.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Querying and Storefront Integration
+
+{/* TODO change information once we have the instantsearch plugin */}
+
+With Medusa Search, you query through [`query.search`](!docs!/learn/fundamentals/query/search) from an API route, which keeps the search credentials on the backend and gives the storefront one endpoint to call:
+
+```ts title="src/api/search-brands/route.ts"
+const { data, search_result } = await query.search({
+  entity: "brand",
+  fields: ["id", "name", "country"],
+  filters: { q: req.query.q as string },
+  pagination: { take: 20 },
+})
+```
+
+The storefront then calls your route, so search results pass through the same layer as the rest of your commerce data. You can apply your own authorization, shape the response, and mix in data that isn't in the index.
+
+With a provider in place, `query.search` reaches Algolia the same way, so the backend pattern is identical. Algolia also supports querying from the browser with a search-only key, which bypasses your provider entirely. That's where its front-end libraries come in. InstantSearch gives you a search box, facet widgets, pagination, and highlighted results as components, so a rich instant-search interface takes far less code than building the same thing against your own API route.
+
+The tradeoff is exposure and control:
+
+- A browser-side key makes the index publicly readable, so anything you index becomes public. Secured API keys can scope what a key returns, but that scoping lives in Algolia's key configuration instead of your backend.
+- Rate limiting moves to the key rather than your API route.
+- Every keystroke that fires a query is a billed search request.
+
+Medusa Search has no browser-side mode, so it always runs behind your API routes. That costs you the ready-made widgets and gives you one place to enforce authorization and shape results.
+
+---
+
+## Admin Dashboard Search
+
+The Medusa admin dashboard's global search calls the `/admin/search` API route, which uses the Search Module for every entity that has an index and falls back to database queries for the rest. Declaring an index for an entity therefore improves admin search with no extra work.
+
+Because an Algolia [Search Module Provider](!resources!/references/search/provider) sits inside the module, admin search uses it for every entity you index, the same way it uses Medusa Search. The difference is that the provider is yours, so an entity's admin search is only as good as the query compilation you wrote for it.
+
+---
+
+## Environments and Previews
+
+Cloud gives each environment its own set of Medusa Search indexes, scoped by the environment's handle, so a preview environment never writes to production indexes. When you configure a base environment in the [shared previews settings](../../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment along with its database.
+
+With Algolia, index isolation is your responsibility. The usual approach is an index name prefix per environment, set through an environment variable, plus a decision about what a preview environment searches. A preview that points at the production index is a write risk, and a preview with an empty index needs a full sync before search works. Each environment's records also count toward your record allowance, so preview environments have a price.
+
+---
+
+## Cost and Packaging
+
+The two options bill for different things, which makes a direct price comparison misleading. Compare the shape of the cost instead:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What you pay for
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What drives the cost up
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Medusa Search
+      </Table.Cell>
+      <Table.Cell>
+
+      {/* TODO confirm */}
+
+      No separate subscription, since Medusa Search is available on all Cloud plans. Each plan includes a monthly allowance of search requests. Refer to [Plans & Pricing](../../pricing/page.mdx) for the allowance your plan includes.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Search requests beyond your plan's allowance, which count as [Flex Usage](../../usage/page.mdx#what-is-flex-usage).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Algolia
+      </Table.Cell>
+      <Table.Cell>
+        A separate subscription, priced on the records you store and the search requests you make.
+      </Table.Cell>
+      <Table.Cell>
+        Catalog size, replica indexes, non-production indexes, traffic, and the plan tier that a feature requires.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Three things are worth checking before you commit:
+
+- **Sorting.** Each sort order needs its own replica index in Algolia, and a standard replica holds its own copy of the records. Several sort orders on a large catalog multiply the records that Algolia bills you for.
+- **Record count, not product count.** If you flatten variants or localized fields into separate records in Algolia, your record count grows much faster than your catalog does.
+- **Search requests on either option.** A storefront that searches on every keystroke makes many more requests than one that searches on submit. Refer to [Usage](../../usage/page.mdx) to monitor your search requests on Medusa Search before you tune the storefront's behavior.
+
+### Other Cloud Usage This Affects
+
+Moving search to Algolia doesn't move it off your Cloud bill, it moves it to different metrics. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so Algolia requests never appear there. They land here instead:
+
+- **Data Transfer** covers external service communications, so every index write and every search your backend sends to Algolia counts toward it, along with the responses. A storefront that searches through your API routes puts every query on this metric.
+- **Compute** covers the indexing work, since the seed and the event handlers that write to Algolia run in your Medusa application.
+
+Querying Algolia from the browser keeps those searches off your Data Transfer, since they never reach your Medusa server. Refer to [Usage](../../usage/page.mdx) to monitor both metrics.
+
+---
+
+## Which One to Choose
+
+**Choose Medusa Search if:**
+
+- Your project runs on Cloud and you want search without a second vendor to provision, key, and bill.
+- You want the index schema and the sync logic in your repository, reviewed and deployed with the rest of your code.
+- Filters, facets, sorting, and weighted full-text search cover your requirements.
+- You want admin dashboard search to improve as you index more entities.
+
+**Choose Algolia if:**
+
+- Relevance tuning is a core part of your product, and you want ranking rules, synonyms, and merchandising controls.
+- You want built-in search analytics and A/B testing.
+- You accept a second vendor, a second set of credentials, and the integration code that connects them.
+
+You can also use both. The Search Module accepts more than one provider, so you can keep admin search and most indexes on Medusa Search while a storefront index runs on Algolia through your own integration. Refer to [Configure the Search Module](!resources!/infrastructure-modules/search#configure-the-search-module) for how to register providers and set a default.
+
+---
+
+## Comparisons to Other Search Engines
+
+- [Medusa vs PostgreSQL](../postgres/page.mdx)
+- [Medusa vs Meilisearch](../meilisearch/page.mdx)

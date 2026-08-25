@@ -384,7 +384,7 @@ For object filters, you can use the following operators:
 
 <Note title="Warning" type="warning">
 
-`$prefix` and `$like` aren't universal. A provider that can't filter on substrings rejects them rather than matching differently. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each provider supports.
+`$prefix` and `$like` aren't universal. A provider that can't filter on substrings rejects them rather than matching differently. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider supports.
 
 </Note>
 
@@ -591,7 +591,7 @@ const { data } = await query.search({
 
 <Note>
 
-Ordering by more than one field isn't universal. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each provider supports.
+Ordering by more than one field isn't universal. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider supports.
 
 </Note>
 
@@ -628,7 +628,7 @@ No provider that Medusa ships treats `exact` differently from `estimated`. All o
 
 The `search_options` property of the `search` method's parameter object is an object of options passed to the provider to control how it treats the query. For example, you can tell it which fields to match the term against, whether to enable typo tolerance, and which facets to compute.
 
-If a provider doesn't support an option, it either ignores it or throws an error. Refer to [Compare Search Module Providers](!resources!/infrastructure-modules/search/providers/comparison) for what each one does with the options below.
+If a provider doesn't support an option, it either ignores it or throws an error. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each one does with the options below.
 
 It accepts the following properties:
 

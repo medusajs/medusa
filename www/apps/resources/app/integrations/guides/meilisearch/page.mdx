@@ -3,7 +3,7 @@ products:
   - product
 ---
 
-import { Card, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
+import { Card, Note, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
 import { Github, PlaySolid } from "@medusajs/icons"
 
 export const metadata = {
@@ -13,6 +13,19 @@ export const metadata = {
 # {metadata.title}
 
 In this tutorial, you'll learn how to integrate Meilisearch with Medusa to enable advanced search capabilities in your storefront.
+
+<Note title="Deprecated" type="warning">
+
+This guide is deprecated as of Medusa v2.20.0, which introduced the [Search Module](/infrastructure-modules/search). Rather than the custom module this guide builds, consider one of the following instead:
+
+- [Medusa Search](!cloud!/search), the managed search service for Cloud projects. Refer to [Medusa Search vs Meilisearch](!cloud!/search/meilisearch) for a comparison.
+- A [Search Module Provider](/references/search/provider) for Meilisearch, which keeps Meilisearch behind the Search Module's index definitions and `query.search`.
+
+If you already followed this guide, refer to [Migrate from Meilisearch to the Search Module](#) for the migration steps.
+
+{/* TODO add the link to the Meilisearch migration guide once it's written */}
+
+</Note>
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa's architecture supports integrating third-party services, such as search engines, allowing you to build custom features around core commerce flows.
 

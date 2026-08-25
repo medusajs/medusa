@@ -400,11 +400,23 @@ export const infrastructureModulesSidebar = [
             type: "ref",
             path: "https://docs.medusajs.com/cloud/search",
             title: "Medusa Search",
-          },
-          {
-            type: "link",
-            path: "/infrastructure-modules/search/providers/comparison",
-            title: "Compare Providers",
+            children: [
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/postgres",
+                title: "Compare to PostgreSQL",
+              },
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/algolia",
+                title: "Compare to Algolia",
+              },
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/meilisearch",
+                title: "Compare to Meilisearch",
+              },
+            ],
           },
         ],
       },
