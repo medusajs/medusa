@@ -65,18 +65,13 @@ export class CustomDBMigrator extends BaseMigrator {
   async getPendingMigrations(): Promise<UmzugMigration[]> {
     const pending = await super.getPendingMigrations()
 
-    const result: UmzugMigration[] = []
-
-    await promiseAll(
+    const keep = await promiseAll(
       pending.map(async (pendingFile: UmzugMigration) => {
         const migration = await dynamicImport(pendingFile.path!)
-
-        if (!isFileSkipped(migration)) {
-          result.push(pendingFile)
-        }
+        return !isFileSkipped(migration)
       })
     )
 
-    return result
+    return pending.filter((_, index) => keep[index])
   }
 }
