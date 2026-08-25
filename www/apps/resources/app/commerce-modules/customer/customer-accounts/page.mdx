@@ -20,6 +20,12 @@ When a guest customer places an order, a new `Customer` record is created with `
 
 When this or another guest customer registers an account with the same email, a new `Customer` record is created with `has_account` set to `true`.
 
+<Note title="Read-only after creation">
+
+`has_account` is a read-only field after a customer is created. Medusa manages it automatically based on whether a customer has an account. You can set it when creating a customer using `CreateCustomerDTO`, but you cannot update it afterward. It is not included in `UpdateCustomerDTO` or `CustomerUpdatableFields`.
+
+</Note>
+
 ---
 
 ## Email Uniqueness
