@@ -84,6 +84,46 @@ if (apiKey && endpoint && environmentHandle) {
             values: expect.arrayContaining([{ value: "sport", count: 2 }]),
           })
         })
+
+        it("matches text case-insensitively", async () => {
+          const result = await service.search({
+            entity: productIndex.name,
+            filters: { q: "RED RUNNING" },
+          })
+
+          expect(result.hits.map((hit) => hit.id)).toContain("prod_medusa_1")
+        })
+
+        it("tolerates typos through the Fuzzy fallback when typo_tolerance is on", async () => {
+          const withTypo = await service.search({
+            entity: productIndex.name,
+            filters: { q: "runing shurt" },
+            search_options: { typo_tolerance: true },
+          })
+          expect(withTypo.hits.map((hit) => hit.id)).toContain(
+            "prod_medusa_2"
+          )
+
+          const withoutTypo = await service.search({
+            entity: productIndex.name,
+            filters: { q: "runing shurt" },
+          })
+          expect(withoutTypo.hits).toHaveLength(0)
+        })
+
+        it("returns highlighted fragments around the matched terms", async () => {
+          const result = await service.search({
+            entity: productIndex.name,
+            filters: { q: "running" },
+            search_options: { highlight: { fields: ["title"] } },
+          })
+
+          const hit = result.hits.find((h) => h.id === "prod_medusa_1")
+          expect(hit?.highlights?.title?.[0]).toContain("<mark>")
+          expect(hit?.highlights?.title?.[0].toLowerCase()).toContain(
+            "<mark>running</mark>"
+          )
+        })
       }),
   })
 } else {

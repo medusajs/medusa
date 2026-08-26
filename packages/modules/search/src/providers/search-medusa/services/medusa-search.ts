@@ -12,6 +12,7 @@ import {
   CloudServiceError,
   MedusaSearchProviderOptions,
   parseFacetResults,
+  parseHighlights,
   sameSchemaType,
   toSearchDocument,
   toSearchFilter,
@@ -258,6 +259,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
           row as Row,
           input.attributes_to_retrieve
         ),
+        highlights: parseHighlights(row as Row, base.highlight),
       })),
       facets: parsedFacets,
       metadata: {
