@@ -227,6 +227,7 @@ export class WorkflowOrchestratorService {
       logOnError,
       events: eventHandlers,
       container,
+      queue,
     } = options ?? {}
 
     let { throwOnError, context } = options ?? {}
@@ -257,6 +258,37 @@ export class WorkflowOrchestratorService {
         MedusaError.Types.NOT_FOUND,
         `Workflow with id "${workflowId}" not found.`
       )
+    }
+
+    if (queue) {
+      if (eventHandlers) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `"events" cannot be combined with "queue". Subscribe to the workflow execution through the workflow engine instead.`
+        )
+      }
+
+      await this.redisDistributedTransactionStorage_.queueWorkflowExecution({
+        workflowId,
+        transactionId: context.transactionId,
+        input,
+        context: {
+          eventGroupId: context.eventGroupId,
+          parentStepIdempotencyKey: context.parentStepIdempotencyKey,
+          preventReleaseEvents: context.preventReleaseEvents,
+          requestId: context.requestId,
+        },
+      })
+
+      const acknowledgement = {
+        transactionId: context.transactionId,
+        workflowId,
+        hasFinished: false,
+        hasFailed: false,
+        queued: true,
+      }
+
+      return { acknowledgement }
     }
 
     const { onFinish, ...restEvents } = events

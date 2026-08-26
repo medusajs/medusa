@@ -13,6 +13,14 @@ type FlowRunOptions<TData = unknown> = {
   throwOnError?: boolean
   logOnError?: boolean
   events?: Record<string, Function>
+  /**
+   * When enabled, the workflow run is added to the workflow engine's queue and
+   * executed by an instance running in worker mode, instead of being executed
+   * in the current process. The call resolves immediately with an
+   * acknowledgement and no result. The input must be JSON-serializable, and
+   * `events` cannot be combined with this option.
+   */
+  queue?: boolean
 }
 
 export type Acknowledgement = {
@@ -21,6 +29,11 @@ export type Acknowledgement = {
   parentStepIdempotencyKey?: string
   hasFinished: boolean
   hasFailed: boolean
+  /**
+   * Whether the workflow run was queued for execution instead of being
+   * executed in the current process.
+   */
+  queued?: boolean
 }
 
 export interface WorkflowOrchestratorRunDTO<T = unknown>

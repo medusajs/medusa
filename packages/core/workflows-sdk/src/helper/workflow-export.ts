@@ -16,6 +16,7 @@ import {
   ContainerRegistrationKeys,
   isPresent,
   MedusaContextType,
+  MedusaError,
   Modules,
   TransactionHandlerType,
 } from "@medusajs/utils"
@@ -200,6 +201,64 @@ function createContextualWorkflowRunner<
     }
   }
 
+  const queuedRun = async ({
+    input,
+    context,
+    events,
+    container,
+  }: {
+    input: unknown
+    context: Context
+    events?: DistributedTransactionEvents
+    container?: LoadedModule[] | MedusaContainer
+  }) => {
+    if (isPresent(events)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `"events" cannot be combined with "queue". Subscribe to the workflow execution through the workflow engine instead.`
+      )
+    }
+
+    let workflowEngine
+    const container_ = (container ?? flow.container) as MedusaContainer
+
+    if (container_ && "resolve" in container_) {
+      workflowEngine = container_.resolve(Modules.WORKFLOW_ENGINE, {
+        allowUnregistered: true,
+      })
+    }
+
+    workflowEngine ??= getCachedLoadedModules().find(
+      (mod) => mod?.__definition?.key === Modules.WORKFLOW_ENGINE
+    )
+
+    if (!workflowEngine?.run) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Running workflow "${workflowId}" with "queue" requires the Workflow Engine module to be available.`
+      )
+    }
+
+    const { acknowledgement } = await workflowEngine.run(workflowId, {
+      input,
+      queue: true,
+      transactionId: context.transactionId,
+      context: {
+        eventGroupId: context.eventGroupId,
+        parentStepIdempotencyKey: context.parentStepIdempotencyKey,
+        preventReleaseEvents: context.preventReleaseEvents,
+        requestId: context.requestId,
+      },
+    })
+
+    return {
+      errors: [],
+      transaction: undefined as any,
+      result: undefined as any,
+      acknowledgement,
+    }
+  }
+
   const newRun = async ({
     input,
     context: outerContext,
@@ -208,6 +267,7 @@ function createContextualWorkflowRunner<
     resultFrom,
     events,
     container,
+    queue,
   }: FlowRunOptions = {}) => {
     resultFrom ??= defaultResult
     throwOnError ??= true
@@ -222,6 +282,10 @@ function createContextualWorkflowRunner<
 
     context.transactionId ??= "auto-" + uniqId
     context.eventGroupId ??= uniqId
+
+    if (queue) {
+      return await queuedRun({ input, context, events, container })
+    }
 
     return await originalExecution(
       originalRun,

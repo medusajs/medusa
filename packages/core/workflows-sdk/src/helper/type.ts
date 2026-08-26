@@ -17,6 +17,26 @@ type BaseFlowRunOptions = {
 
 export type FlowRunOptions<TData = unknown> = BaseFlowRunOptions & {
   input?: TData
+  /**
+   * When enabled, the workflow run is added to the workflow engine's queue and
+   * executed by an instance running in worker mode, instead of being executed
+   * in the current process. The call resolves immediately with an
+   * acknowledgement and no result. The input must be JSON-serializable, and
+   * `events` cannot be combined with this option.
+   */
+  queue?: boolean
+}
+
+/**
+ * The acknowledgement returned when a workflow run is queued with `queue: true`.
+ */
+export type WorkflowRunQueuedAcknowledgement = {
+  workflowId: string
+  transactionId: string
+  parentStepIdempotencyKey?: string
+  hasFinished: boolean
+  hasFailed: boolean
+  queued?: boolean
 }
 
 export type FlowRegisterStepSuccessOptions<TData = unknown> =
@@ -62,6 +82,12 @@ export type WorkflowResult<TResult = unknown> = {
    * The result returned by the workflow.
    */
   result: TResult
+  /**
+   * The acknowledgement of a queued run. Only set when the workflow was run
+   * with `queue: true`, in which case `result` and `transaction` are not
+   * available.
+   */
+  acknowledgement?: WorkflowRunQueuedAcknowledgement
 }
 
 export type ExportedWorkflow<

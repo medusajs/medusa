@@ -181,6 +181,7 @@ export class WorkflowOrchestratorService {
       logOnError,
       events: eventHandlers,
       container,
+      queue,
     } = options ?? {}
 
     let { throwOnError, context } = options ?? {}
@@ -211,6 +212,39 @@ export class WorkflowOrchestratorService {
         MedusaError.Types.NOT_FOUND,
         `Workflow with id "${workflowId}" not found.`
       )
+    }
+
+    if (queue) {
+      if (eventHandlers) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `"events" cannot be combined with "queue". Subscribe to the workflow execution through the workflow engine instead.`
+        )
+      }
+
+      const acknowledgement = {
+        transactionId: context.transactionId,
+        workflowId,
+        hasFinished: false,
+        hasFailed: false,
+        queued: true,
+      }
+
+      // The in-memory engine has no shared queue and no separate worker
+      // instance, so the run is executed detached in the current process.
+      setImmediate(() => {
+        void this.run(workflowId, {
+          ...options,
+          queue: false,
+          transactionId: context!.transactionId,
+          throwOnError: false,
+          logOnError: true,
+        }).catch((error) => {
+          this.#logger.error(error)
+        })
+      })
+
+      return { acknowledgement }
     }
 
     const ret = await exportedWorkflow.run({

@@ -14,7 +14,7 @@ import {
   TransactionStep,
   TransactionStepError,
 } from "@medusajs/framework/orchestration"
-import { Logger, ModulesSdkTypes } from "@medusajs/framework/types"
+import { Context, Logger, ModulesSdkTypes } from "@medusajs/framework/types"
 import {
   isDefined,
   isPresent,
@@ -38,6 +38,7 @@ enum JobType {
   RETRY = "retry",
   STEP_TIMEOUT = "step_timeout",
   TRANSACTION_TIMEOUT = "transaction_timeout",
+  EXECUTE = "execute",
 }
 
 const THIRTY_MINUTES_IN_MS = 1000 * 60 * 30
@@ -211,6 +212,25 @@ export class RedisDistributedTransactionStorage
                 job.data.workflowId,
                 job.data.transactionId,
                 job.data.transactionMetadata
+              )
+            } catch (error) {
+              if (!SkipExecutionError.isSkipExecutionError(error)) {
+                throw error
+              }
+            }
+          }
+
+          if (job.name === JobType.EXECUTE) {
+            try {
+              await this.workflowOrchestratorService_.run(
+                job.data.workflowId,
+                {
+                  transactionId: job.data.transactionId,
+                  input: job.data.input,
+                  logOnError: true,
+                  throwOnError: false,
+                  context: job.data.context ?? {},
+                }
               )
             } catch (error) {
               if (!SkipExecutionError.isSkipExecutionError(error)) {
@@ -644,6 +664,18 @@ export class RedisDistributedTransactionStorage
         await this.#releaseLock(key)
       }
     }
+  }
+
+  async queueWorkflowExecution(data: {
+    workflowId: string
+    transactionId: string
+    input?: unknown
+    context?: Context
+  }): Promise<void> {
+    await this.queue.add(JobType.EXECUTE, data, {
+      jobId: `${JobType.EXECUTE}:${data.workflowId}:${data.transactionId}`,
+      removeOnComplete: true,
+    })
   }
 
   async scheduleRetry(
