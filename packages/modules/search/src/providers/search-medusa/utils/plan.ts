@@ -4,11 +4,7 @@ import {
   readDocumentPath,
   setDocumentPath,
 } from "@medusajs/framework/utils"
-import type {
-  AttributeSchema,
-  AttributeSchemaConfig,
-  Row,
-} from "./api-types"
+import type { AttributeSchema, AttributeSchemaConfig, Row } from "./api-types"
 import type {
   MedusaSearchFieldOptions,
   MedusaSearchIndexOptions,
@@ -22,16 +18,42 @@ export type PlannedField = {
   field: SearchTypes.SearchFieldDefinition
 }
 
+export type TypoToleranceSettings = {
+  enabled: boolean
+  min_word_size_for_one_typo: number
+  min_word_size_for_two_typos: number
+  disabled_on_attributes: Set<string>
+}
+
 export type IndexPlan = {
   fields: Map<string, PlannedField>
   schema: Record<string, AttributeSchema>
   searchable: string[]
   primary_key: string
   options: MedusaSearchIndexOptions
+  typo_tolerance: TypoToleranceSettings
 }
 
 function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
+}
+
+// Inspired by Meilisearch's own typo-tolerance defaults.
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 5
+const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
+
+function resolveTypoTolerance(
+  settings: SearchTypes.SearchIndexSettings
+): TypoToleranceSettings {
+  const typo = settings.typo_tolerance
+  return {
+    enabled: typo?.enabled ?? true,
+    min_word_size_for_one_typo:
+      typo?.min_word_size_for_one_typo ?? DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO,
+    min_word_size_for_two_typos:
+      typo?.min_word_size_for_two_typos ?? DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS,
+    disabled_on_attributes: new Set(typo?.disabled_on_attributes ?? []),
+  }
 }
 
 export function isSearchable(
@@ -40,15 +62,13 @@ export function isSearchable(
   return field.searchable === true || typeof field.searchable === "object"
 }
 
-export function isFacetable(
-  field: SearchTypes.SearchFieldDefinition
-): boolean {
+export function isFacetable(field: SearchTypes.SearchFieldDefinition): boolean {
   return field.facetable === true || typeof field.facetable === "object"
 }
 
-function providerOptions<T>(
-  value: { provider_options?: Record<string, Record<string, unknown>> }
-): T {
+function providerOptions<T>(value: {
+  provider_options?: Record<string, Record<string, unknown>>
+}): T {
   return (value.provider_options?.["search-medusa"] ?? {}) as T
 }
 
@@ -118,9 +138,7 @@ export function assertIndexSupported(
     fail("The Medusa search provider does not support synonyms")
   }
   if (definition.settings.stop_words?.length) {
-    fail(
-      "The Medusa search provider does not support custom stop-word lists"
-    )
+    fail("The Medusa search provider does not support custom stop-word lists")
   }
 
   walk(definition.fields, "")
@@ -134,6 +152,7 @@ export function buildIndexPlan(
   const fields = new Map<string, PlannedField>()
   const schema: Record<string, AttributeSchema> = {}
   const searchable: string[] = []
+  const typoTolerance = resolveTypoTolerance(definition.settings)
 
   const walk = (
     group: Record<string, SearchTypes.SearchFieldDefinition>,
@@ -172,6 +191,16 @@ export function buildIndexPlan(
       if (searchableField) {
         attribute.full_text_search = configured.full_text_search ?? true
         searchable.push(path)
+
+        // Typo tolerance needs a fuzzy index on the field it matches
+        // against — built by default alongside full-text search unless the
+        // index or the field opts out.
+        if (
+          typoTolerance.enabled &&
+          !typoTolerance.disabled_on_attributes.has(path)
+        ) {
+          attribute.fuzzy = true
+        }
       }
 
       // Glob is an exact-string wildcard index. Keywords that are
@@ -210,6 +239,7 @@ export function buildIndexPlan(
     searchable,
     primary_key: definition.primary_key,
     options: providerOptions<MedusaSearchIndexOptions>(definition.settings),
+    typo_tolerance: typoTolerance,
   }
 }
 
@@ -277,7 +307,9 @@ export function sameSchemaType(
 ): boolean {
   for (const [path, schema] of Object.entries(desired)) {
     const desiredType =
-      typeof schema === "string" ? schema : (schema as AttributeSchemaConfig).type
+      typeof schema === "string"
+        ? schema
+        : (schema as AttributeSchemaConfig).type
     if (current[path] && current[path].type !== desiredType) {
       return false
     }
