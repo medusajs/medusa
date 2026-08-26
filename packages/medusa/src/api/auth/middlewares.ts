@@ -45,9 +45,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/auth/mfa/factors",
-    middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
-    ],
+    middlewares: [authenticate("*", ["session", "bearer"])],
   },
   {
     method: ["POST"],
@@ -69,7 +67,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/auth/mfa/factors/:id",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"]),
       validateAndTransformBody(AuthMfaDisableFactorRequest),
     ],
   },
@@ -77,7 +75,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/recovery-codes",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"]),
       validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
     ],
   },
