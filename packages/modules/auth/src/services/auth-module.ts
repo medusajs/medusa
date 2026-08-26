@@ -1226,7 +1226,7 @@ export default class AuthModuleService
         }
 
         // 20 minutes default. Can be overridden per call, but this is a good default.
-        this.cache_.set(key, value, ttlSeconds ?? 1200)
+        await this.cache_.set(key, value, ttlSeconds ?? 1200)
       },
       getState: async (key: string) => {
         if (!this.cache_) {
