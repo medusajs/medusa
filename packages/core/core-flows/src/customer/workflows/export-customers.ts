@@ -8,10 +8,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
-import {
-  collectCustomerIdsToExportStep,
-  exportCustomersStep,
-} from "../steps"
+import { collectCustomerIdsToExportStep, exportCustomersStep } from "../steps"
 
 /**
  * The data to export customers.
@@ -37,6 +34,11 @@ export type ExportCustomersDTO = {
    * without loss. Use `csv` for a flattened, spreadsheet-friendly export.
    */
   format?: "csv" | "json"
+  /**
+   * The user id or email to send the notification to. If not provided, the
+   * notification will be sent to all admin users.
+   */
+  to?: string
 }
 
 /**
@@ -87,10 +89,10 @@ export const exportCustomersWorkflowId = "export-customers"
  * custom modules hold for the exported customers. Return an object keyed by
  * customer ID, where each value is an object of named sections to include in
  * the export.
- * 
+ *
  * For example, a reviews module could contribute the reviews of the exported
  * customers like this:
- * 
+ *
  * import { exportCustomersWorkflow } from "@medusajs/medusa/core-flows"
  * import { MedusaModule } from "@medusajs/framework/modules-sdk"
  *
@@ -118,10 +120,10 @@ export const exportCustomersWorkflow = createWorkflow(
   (input: WorkflowData<ExportCustomersDTO>) => {
     // Register the failure notification first so its compensation runs if any
     // subsequent step (or the workflow as a whole) fails.
-    const failureNotification = transform({ input }, () => {
+    const failureNotification = transform({ input }, (data) => {
       return [
         {
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {
@@ -176,30 +178,25 @@ export const exportCustomersWorkflow = createWorkflow(
       options: { isList: false },
     })
 
-    const notifications = transform(
-      { fileDetails, file, input },
-      (data) => {
-        return [
-          {
-            to: "",
-            channel: "feed",
-            template: "admin-ui",
-            data: {
-              title: "Customer export",
-              description: "Customer export completed successfully!",
-              file: {
-                filename: data.file.filename,
-                url: data.fileDetails.url,
-                mimeType:
-                  data.input.format === "csv"
-                    ? "text/csv"
-                    : "application/json",
-              },
+    const notifications = transform({ fileDetails, file, input }, (data) => {
+      return [
+        {
+          to: data.input.to ?? "",
+          channel: "feed",
+          template: "admin-ui",
+          data: {
+            title: "Customer export",
+            description: "Customer export completed successfully!",
+            file: {
+              filename: data.file.filename,
+              url: data.fileDetails.url,
+              mimeType:
+                data.input.format === "csv" ? "text/csv" : "application/json",
             },
           },
-        ]
-      }
-    )
+        },
+      ]
+    })
 
     sendNotificationsStep(notifications)
 

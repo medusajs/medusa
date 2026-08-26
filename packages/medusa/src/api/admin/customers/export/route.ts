@@ -19,6 +19,7 @@ export const POST = async (
     filter: req.filterableFields as FilterableCustomerProps,
     format: req.validatedBody?.format,
     batch_size: req.validatedBody?.batch_size,
+    to: req.auth_context.actor_id,
   }
 
   const { transaction } = await exportCustomersWorkflow(req.scope).run({

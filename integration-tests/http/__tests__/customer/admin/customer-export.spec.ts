@@ -46,9 +46,6 @@ medusaIntegrationTestRunner({
 
     beforeAll(async () => {
       eventBus = getContainer().resolve(Modules.EVENT_BUS)
-    })
-
-    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       customer = (
@@ -163,7 +160,9 @@ medusaIntegrationTestRunner({
           "-customer-exports.csv"
         )
 
-        const rows = csv2json(await readExportFile(notifications[0].data.file.url))
+        const rows = csv2json(
+          await readExportFile(notifications[0].data.file.url)
+        )
 
         expect(rows).toHaveLength(1)
         expect(rows[0]).toEqual(
@@ -174,10 +173,10 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should only export the customers matching the filter", async () => {
+      it("should export a file containing all customers when no id is provided", async () => {
         const res = await api.post(
-          `/admin/customers/export?id=${otherCustomer.id}`,
-          { format: "json" },
+          `/admin/customers/export`,
+          { format: "csv" },
           adminHeaders
         )
 
@@ -185,13 +184,28 @@ medusaIntegrationTestRunner({
 
         const notifications = await waitForExportNotification(api, eventBus)
 
-        const contents = JSON.parse(
+        expect(notifications[0].data.file.mimeType).toBe("text/csv")
+        expect(notifications[0].data.file.url).toContain(
+          "-customer-exports.csv"
+        )
+
+        const rows = csv2json(
           await readExportFile(notifications[0].data.file.url)
         )
 
-        expect(contents).toHaveLength(1)
-        expect(contents[0].id).toBe(otherCustomer.id)
-        expect(contents[0].email).toBe("john@example.com")
+        expect(rows).toHaveLength(2)
+        expect(rows).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: customer.id,
+              email: "jane@example.com",
+            }),
+            expect.objectContaining({
+              id: otherCustomer.id,
+              email: "john@example.com",
+            }),
+          ])
+        )
       })
     })
   },
