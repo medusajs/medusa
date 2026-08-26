@@ -228,8 +228,9 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(links)) as unknown[]
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async dismiss(
     primaryKeyOrBulkData: string | string[] | [string | string[], string][],
     foreignKeyData?: string,
@@ -264,8 +265,9 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(links)) as unknown[]
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -286,8 +288,9 @@ export default class LinkModuleService implements ILinkModule {
     })
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async softDelete(
     data: any,
     { returnLinkableKeys }: SoftDeleteReturn = {},
@@ -344,8 +347,9 @@ export default class LinkModuleService implements ILinkModule {
     return await this.linkService_.softDelete(data, sharedContext)
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async restore(
     data: any,
     { returnLinkableKeys }: RestoreReturn = {},
