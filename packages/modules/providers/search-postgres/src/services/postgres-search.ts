@@ -12,6 +12,7 @@ import {
   CATALOG_TABLE,
   extractPrimaryKeyFilter,
   IndexPlan,
+  keywordTsQuerySql,
   mapFacetResult,
   normalizeFacetRequests,
   PostgresSearchEngine,
@@ -97,7 +98,7 @@ const UPSERT_CHUNK_SIZE = 200
  * PostgreSQL search provider with two engines:
  *
  * - `native` (default) — portable GIN + `ts_rank` + `pg_trgm`
- * - `lakebase` — Neon Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
+ * - `lakebase` — Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
  *
  * Medusa Cloud uses `engine: "lakebase"`. Local / self-hosted stick to native.
  */
@@ -562,6 +563,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     documents,
   }: {
     index: string
+    definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
   }): Promise<SearchTypes.SearchTask> {
     const catalog = await this.retrieve(index)
@@ -626,9 +628,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
           )
         }
 
-        const vectorCols = vectors.map(
-          (path) => `"${vectorColumnName(path)}"`
-        )
+        const vectorCols = vectors.map((path) => `"${vectorColumnName(path)}"`)
         const vectorUpdates = vectorCols.map(
           (col) => `${col} = EXCLUDED.${col}`
         )
@@ -681,9 +681,12 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
       if (ids) {
         if (ids.length) {
+          // Bind each id as its own `?`. A single array binding with `ANY(?::text[])`
+          // is inlined by MikroORM as `ANY('id'::text[])`, which Postgres rejects.
+          const placeholders = ids.map(() => "?").join(", ")
           deleted = await manager.execute(
-            `DELETE FROM "${catalog.table_name}" WHERE "id" = ANY(?::text[]) RETURNING "id"`,
-            [ids]
+            `DELETE FROM "${catalog.table_name}" WHERE "id" = ANY(ARRAY[${placeholders}]::text[]) RETURNING "id"`,
+            ids
           )
         }
       } else {
@@ -743,8 +746,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const q = input.q?.trim()
     const vectorOpts = options.vector
     const semanticRatio =
-      vectorOpts?.semantic_ratio ??
-      (q && vectorOpts ? 0.5 : vectorOpts ? 1 : 0)
+      vectorOpts?.semantic_ratio ?? (q && vectorOpts ? 0.5 : vectorOpts ? 1 : 0)
 
     if (q && !plan.searchable.length && semanticRatio < 1) {
       throw new MedusaError(
@@ -895,7 +897,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const options = query.search_options ?? {}
     const q = query.q?.trim() || undefined
     const typo = !!(q && options.typo_tolerance)
-    const matchAny = options.match_strategy === "any"
+    const matchLast = options.match_strategy === "last"
     const searchOn = options.attributes_to_search_on ?? plan.searchable
     const searchAllFields =
       searchOn.length === plan.searchable.length &&
@@ -907,14 +909,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const textExpr = searchAllFields
       ? `"search_text"`
       : this.onTheFlyTextExpr(searchOn)
-    const useBm25 = this.isLakebase_ && !!q && searchAllFields
+    // Prefix queries (`match_strategy: "last"`) are expressed as a tsquery
+    // `:*`; BM25 ranks the raw query string and would score those hits 0.
+    const useBm25 = this.isLakebase_ && !!q && searchAllFields && !matchLast
 
     const tsquery = (params: unknown[]) => {
       params.push(q)
-      // plainto_tsquery ANDs every term; match_strategy "any" flips it to OR.
-      return matchAny
-        ? `replace(plainto_tsquery('${tsConfig}', ?)::text, ' & ', ' | ')::tsquery`
-        : `plainto_tsquery('${tsConfig}', ?)`
+      return keywordTsQuerySql(tsConfig, options.match_strategy)
     }
 
     const wordSim = (params: unknown[]) => {
@@ -1222,9 +1223,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         : `COUNT(*)`
 
       const rows = await this.manager_.execute(
-        `SELECT ${countExpr}::int AS count FROM "${catalog.table_name}" WHERE ${conditions.join(
-          " AND "
-        )}`,
+        `SELECT ${countExpr}::int AS count FROM "${
+          catalog.table_name
+        }" WHERE ${conditions.join(" AND ")}`,
         params
       )
       count = Number(rows[0]?.count ?? 0)
@@ -1332,9 +1333,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
       const hitRows = await manager.execute(hitsSql, hitsParams)
       const count = countSql
-        ? Number(
-            (await manager.execute(countSql, countParams))[0]?.count ?? 0
-          )
+        ? Number((await manager.execute(countSql, countParams))[0]?.count ?? 0)
         : null
 
       return { hitRows, count }
@@ -1342,7 +1341,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     // set_config in the prelude is transaction-local, so it needs the hits
     // query inside the same transaction. Plain reads skip the overhead.
-    return parts.prelude ? await this.withTransaction(run) : await run(this.manager_)
+    return parts.prelude
+      ? await this.withTransaction(run)
+      : await run(this.manager_)
   }
 
   async searchMany(
@@ -1455,9 +1456,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const order = Object.entries(input.pagination?.order ?? {})
 
     if (!order.length) {
-      return hasScore
-        ? `score DESC NULLS LAST, "id" ASC`
-        : `"id" ASC`
+      return hasScore ? `score DESC NULLS LAST, "id" ASC` : `"id" ASC`
     }
 
     const clauses: string[] = []
@@ -1535,8 +1534,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     indexed: unknown,
     path: string
   ): string | undefined {
-    const parsed =
-      typeof indexed === "string" ? JSON.parse(indexed) : indexed
+    const parsed = typeof indexed === "string" ? JSON.parse(indexed) : indexed
 
     const value = path
       .split(".")

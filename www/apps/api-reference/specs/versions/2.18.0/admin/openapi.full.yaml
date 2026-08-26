@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.18.0
   title: Medusa Admin API
   license:
     name: MIT

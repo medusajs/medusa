@@ -3364,6 +3364,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.19.0
     csv-parse: ^5.6.0
+    deeks: ^3.2.1
     json-2-csv: ^5.5.11
   peerDependencies:
     "@medusajs/framework": 2.19.0
@@ -3418,6 +3419,7 @@ __metadata:
     "@types/qrcode": ^1.5.5
     "@typescript/native-preview": ^7.0.0-dev.20260423.1
     "@uiw/react-json-view": ^2.0.0-alpha.17
+    bignumber.js: ^9.1.2
     cmdk: ^0.2.0
     copy-to-clipboard: ^3.3.3
     date-fns: ^3.6.0
@@ -3893,7 +3895,6 @@ __metadata:
     "@medusajs/region": 2.19.0
     "@medusajs/sales-channel": 2.19.0
     "@medusajs/search": 2.19.0
-    "@medusajs/search-local": 2.19.0
     "@medusajs/search-postgres": 2.19.0
     "@medusajs/settings": 2.19.0
     "@medusajs/stock-location": 2.19.0
@@ -4103,18 +4104,6 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.19.0
     "@medusajs/test-utils": 2.19.0
-  peerDependencies:
-    "@medusajs/framework": 2.19.0
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/search-local@2.19.0, @medusajs/search-local@workspace:packages/modules/providers/search-local":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/search-local@workspace:packages/modules/providers/search-local"
-  dependencies:
-    "@medusajs/framework": 2.19.0
-    "@medusajs/test-utils": 2.19.0
-    "@orama/orama": ^3.1.18
   peerDependencies:
     "@medusajs/framework": 2.19.0
   languageName: unknown
@@ -5256,13 +5245,6 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.1.0
   checksum: 1774930abdad57a716662a3feffe8a7aca8e4494303356f04c3e958fddcdb1df29d464ca91db890e0501728b4fb6c4b578f3ecb83004bcdc9d7e81b739d24459
-  languageName: node
-  linkType: hard
-
-"@orama/orama@npm:^3.1.18":
-  version: 3.1.18
-  resolution: "@orama/orama@npm:3.1.18"
-  checksum: 868be5143eb4a27e700d9cc866763d1cc04405ef0af6a6b6b6987dcf33ee5d4ba90d3a32cd134006d46d34d64e32500e13cd31436c718eadc396a940e793e7cd
   languageName: node
   linkType: hard
 
@@ -13788,7 +13770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deeks@npm:3.2.1":
+"deeks@npm:3.2.1, deeks@npm:^3.2.1":
   version: 3.2.1
   resolution: "deeks@npm:3.2.1"
   checksum: 502e999e9ca3aa9b2e740d99bbb20b3654e8e1b5398c5cb61419700ee26ecf1a037de4dd89d40a93ef324442b303adce446cc3e584258d8abb271cd891943357

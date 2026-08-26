@@ -3269,6 +3269,321 @@ medusaIntegrationTestRunner({
               )
             })
           })
+
+          describe("with fractional inventory kit", () => {
+            let stockLocation
+            let inventoryItem
+            let product
+            let cart
+            let quarterPound
+            let halfPound
+            let pound
+
+            beforeEach(async () => {
+              stockLocation = (
+                await api.post(
+                  `/admin/stock-locations`,
+                  { name: "test location" },
+                  adminHeaders
+                )
+              ).data.stock_location
+
+              inventoryItem = (
+                await api.post(
+                  `/admin/inventory-items`,
+                  { sku: "strain", unit_of_measure: "lb" },
+                  adminHeaders
+                )
+              ).data.inventory_item
+
+              await api.post(
+                `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+                {
+                  location_id: stockLocation.id,
+                  stocked_quantity: 100,
+                },
+                adminHeaders
+              )
+
+              await api.post(
+                `/admin/stock-locations/${stockLocation.id}/sales-channels`,
+                { add: [salesChannel.id] },
+                adminHeaders
+              )
+
+              // Three sizes sold out of a single shared pound pool
+              product = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: `Test fractional fixture ${shippingProfile.id}`,
+                    status: ProductStatus.PUBLISHED,
+                    shipping_profile_id: shippingProfile.id,
+                    options: [
+                      { title: "size", values: ["quarter", "half", "pound"] },
+                    ],
+                    variants: [
+                      {
+                        title: "quarter-pound",
+                        sku: "quarter-pound",
+                        inventory_items: [
+                          {
+                            inventory_item_id: inventoryItem.id,
+                            required_quantity: 0.25,
+                          },
+                        ],
+                        prices: [{ currency_code: "usd", amount: 100 }],
+                        options: { size: "quarter" },
+                      },
+                      {
+                        title: "half-pound",
+                        sku: "half-pound",
+                        inventory_items: [
+                          {
+                            inventory_item_id: inventoryItem.id,
+                            required_quantity: 0.5,
+                          },
+                        ],
+                        prices: [{ currency_code: "usd", amount: 180 }],
+                        options: { size: "half" },
+                      },
+                      {
+                        title: "pound",
+                        sku: "pound",
+                        inventory_items: [
+                          {
+                            inventory_item_id: inventoryItem.id,
+                            required_quantity: 1,
+                          },
+                        ],
+                        prices: [{ currency_code: "usd", amount: 340 }],
+                        options: { size: "pound" },
+                      },
+                    ],
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              quarterPound = product.variants.find(
+                (v) => v.sku === "quarter-pound"
+              )
+              halfPound = product.variants.find((v) => v.sku === "half-pound")
+              pound = product.variants.find((v) => v.sku === "pound")
+
+              cart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    shipping_address: shippingAddressData,
+                    items: [
+                      { variant_id: quarterPound.id, quantity: 1 },
+                      { variant_id: halfPound.id, quantity: 1 },
+                      { variant_id: pound.id, quantity: 1 },
+                    ],
+                  },
+                  storeHeadersWithCustomer
+                )
+              ).data.cart
+
+              const fulfillmentSets = (
+                await api.post(
+                  `/admin/stock-locations/${stockLocation.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                  {
+                    name: `Test-fractional-inventory`,
+                    type: "test-type",
+                  },
+                  adminHeaders
+                )
+              ).data.stock_location.fulfillment_sets
+
+              const fulfillmentSet = (
+                await api.post(
+                  `/admin/fulfillment-sets/${fulfillmentSets[0].id}/service-zones`,
+                  {
+                    name: `Test-fractional-inventory`,
+                    geo_zones: [{ type: "country", country_code: "US" }],
+                  },
+                  adminHeaders
+                )
+              ).data.fulfillment_set
+
+              await api.post(
+                `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+                { add: ["manual_test-provider"] },
+                adminHeaders
+              )
+
+              const shippingOption = (
+                await api.post(
+                  `/admin/shipping-options`,
+                  {
+                    name: `Test shipping option ${fulfillmentSet.id}`,
+                    service_zone_id: fulfillmentSet.service_zones[0].id,
+                    shipping_profile_id: shippingProfile.id,
+                    provider_id: "manual_test-provider",
+                    price_type: "flat",
+                    type: {
+                      label: "Test type",
+                      description: "Test description",
+                      code: "test-code",
+                    },
+                    prices: [{ currency_code: "usd", amount: 1000 }],
+                    rules: [],
+                  },
+                  adminHeaders
+                )
+              ).data.shipping_option
+
+              await api.post(
+                `/store/carts/${cart.id}/shipping-methods`,
+                { option_id: shippingOption.id },
+                storeHeaders
+              )
+
+              const paymentCollection = (
+                await api.post(
+                  `/store/payment-collections`,
+                  { cart_id: cart.id },
+                  storeHeaders
+                )
+              ).data.payment_collection
+
+              await api.post(
+                `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+                { provider_id: "pp_system_default" },
+                storeHeaders
+              )
+            })
+
+            it("should respect fractional availability when adding line items", async () => {
+              // Drop the pool down to a single pound
+              await api.post(
+                `/admin/inventory-items/${inventoryItem.id}/location-levels/${stockLocation.id}`,
+                { stocked_quantity: 1 },
+                adminHeaders
+              )
+
+              const emptyCart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    shipping_address: shippingAddressData,
+                  },
+                  storeHeadersWithCustomer
+                )
+              ).data.cart
+
+              // 4 x 0.25 lb consumes exactly the 1 lb available
+              const response = await api.post(
+                `/store/carts/${emptyCart.id}/line-items`,
+                { variant_id: quarterPound.id, quantity: 4 },
+                storeHeaders
+              )
+
+              expect(response.status).toEqual(200)
+
+              // a fifth quarter pound would need 1.25 lb
+              const { response: errorResponse } = await api
+                .post(
+                  `/store/carts/${emptyCart.id}/line-items`,
+                  { variant_id: quarterPound.id, quantity: 1 },
+                  storeHeaders
+                )
+                .catch((e) => e)
+
+              expect(errorResponse.status).toEqual(400)
+              expect(errorResponse.data.message).toEqual(
+                "Some variant does not have the required inventory"
+              )
+            })
+
+            it("should complete a cart consuming fractional quantities of a shared inventory item", async () => {
+              const response = await api.post(
+                `/store/carts/${cart.id}/complete`,
+                {},
+                storeHeaders
+              )
+
+              expect(response.status).toEqual(200)
+              expect(response.data.order).toEqual(
+                expect.objectContaining({
+                  items: expect.arrayContaining([
+                    expect.objectContaining({
+                      subtitle: "quarter-pound",
+                      quantity: 1,
+                    }),
+                    expect.objectContaining({
+                      subtitle: "half-pound",
+                      quantity: 1,
+                    }),
+                    expect.objectContaining({
+                      subtitle: "pound",
+                      quantity: 1,
+                    }),
+                  ]),
+                })
+              )
+
+              const reservations = (
+                await api.get(`/admin/reservations`, adminHeaders)
+              ).data.reservations
+
+              // 0.25 + 0.5 + 1 = 1.75 lb reserved against a 100 lb pool
+              const reservedRollup = expect.objectContaining({
+                id: inventoryItem.id,
+                sku: "strain",
+                unit_of_measure: "lb",
+                reserved_quantity: 1.75,
+                stocked_quantity: 100,
+              })
+
+              expect(reservations).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    location_id: stockLocation.id,
+                    inventory_item_id: inventoryItem.id,
+                    quantity: 0.25, // quarter-pound
+                    inventory_item: reservedRollup,
+                  }),
+                  expect.objectContaining({
+                    location_id: stockLocation.id,
+                    inventory_item_id: inventoryItem.id,
+                    quantity: 0.5, // half-pound
+                    inventory_item: reservedRollup,
+                  }),
+                  expect.objectContaining({
+                    location_id: stockLocation.id,
+                    inventory_item_id: inventoryItem.id,
+                    quantity: 1, // pound
+                    inventory_item: reservedRollup,
+                  }),
+                ])
+              )
+
+              const levels = (
+                await api.get(
+                  `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+                  adminHeaders
+                )
+              ).data.inventory_levels
+
+              expect(levels).toEqual([
+                expect.objectContaining({
+                  location_id: stockLocation.id,
+                  stocked_quantity: 100,
+                  reserved_quantity: 1.75,
+                  available_quantity: 98.25,
+                }),
+              ])
+            })
+          })
         })
 
         it("should preserve tax line data field on order after cart completion", async () => {

@@ -169,9 +169,14 @@ medusaIntegrationTestRunner({
         }
 
         const { user: userThree, authIdentity: userThreeAuthIdentity } =
-          await createAdminUser(dbConnection, userThreeAdminHeaders, container, {
-            email: "test-multi@test.com",
-          })
+          await createAdminUser(
+            dbConnection,
+            userThreeAdminHeaders,
+            container,
+            {
+              email: "test-multi@test.com",
+            }
+          )
 
         const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
@@ -267,6 +272,89 @@ medusaIntegrationTestRunner({
               anonymize: false,
             }),
           ])
+        )
+      })
+    })
+
+    describe("GET /admin/users/:id/auth-providers", () => {
+      it("lists the auth providers the user can authenticate with", async () => {
+        const response = await api.get(
+          `/admin/users/${user.id}/auth-providers`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.providers).toEqual(["emailpass"])
+      })
+
+      it("returns an empty list for a user without an auth identity", async () => {
+        const userModule = container.resolve(Modules.USER)
+        const providerlessUser = await userModule.createUsers({
+          email: "no-auth-identity@test.com",
+        })
+
+        const response = await api.get(
+          `/admin/users/${providerlessUser.id}/auth-providers`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.providers).toEqual([])
+      })
+    })
+
+    describe("POST /admin/users/:id/reset-password", () => {
+      it("returns a token that the user can use to reset their password", async () => {
+        const email = "reset-link@test.com"
+
+        const resetUserHeaders = {
+          headers: { "x-medusa-access-token": "test_token" },
+        }
+
+        const { user: resetUser } = await createAdminUser(
+          dbConnection,
+          resetUserHeaders,
+          container,
+          { email }
+        )
+
+        const response = await api.post(
+          `/admin/users/${resetUser.id}/reset-password`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({ token: expect.any(String) })
+
+        const updateResponse = await api.post(
+          `/auth/user/emailpass/update`,
+          { password: "new_password" },
+          { headers: { authorization: `Bearer ${response.data.token}` } }
+        )
+
+        expect(updateResponse.status).toEqual(200)
+
+        const loginResponse = await api.post("/auth/user/emailpass", {
+          email,
+          password: "new_password",
+        })
+
+        expect(loginResponse.status).toEqual(200)
+      })
+
+      it("throws when the user does not exist", async () => {
+        const error = await api
+          .post(
+            `/admin/users/usr_does-not-exist/reset-password`,
+            {},
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.message).toEqual(
+          "User with id: usr_does-not-exist was not found"
         )
       })
     })

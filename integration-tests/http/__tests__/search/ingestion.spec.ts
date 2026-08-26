@@ -6,8 +6,6 @@ import {
   createAdminUser,
 } from "../../../helpers/create-admin-user"
 
-process.env.ENABLE_SEARCH_MODULE = "true"
-
 jest.setTimeout(120000)
 
 medusaIntegrationTestRunner({
@@ -37,15 +35,9 @@ medusaIntegrationTestRunner({
       searchModule = container.resolve(Modules.SEARCH)
       eventBus = container.resolve(Modules.EVENT_BUS)
 
-      // What `medusa db:migrate` does for search — the test runner only runs the
-      // modules' own database migrations, so no physical index exists yet.
       await searchModule.executeIndexMigrationPlan(
         await searchModule.createIndexMigrationPlan()
       )
-    })
-
-    afterAll(() => {
-      delete process.env.ENABLE_SEARCH_MODULE
     })
 
     describe("built-in search ingestion subscriber", () => {

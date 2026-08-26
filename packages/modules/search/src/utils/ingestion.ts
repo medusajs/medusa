@@ -61,6 +61,7 @@ export async function ingestEvent(
         mutation.action === "upsert"
           ? await provider.upsertDocuments({
               index: definition.physical_name,
+              definition,
               documents: mutation.documents,
             })
           : await provider.deleteDocuments({
