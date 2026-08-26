@@ -51,6 +51,19 @@ export function instrumentHttpLayer() {
 
       try {
         await requestHandler()
+        // The request handler (express app dispatch) resolves long before the
+        // response is written, so wait for the response to complete before
+        // closing the span. Otherwise the recorded status code and duration
+        // only cover request dispatch.
+        await new Promise<void>((resolve) => {
+          // A handler that completed the response synchronously has already
+          // emitted these events before we got a chance to listen
+          if (res.writableFinished) {
+            return resolve()
+          }
+          res.once("finish", resolve)
+          res.once("close", resolve)
+        })
       } finally {
         if (res.statusCode >= 500) {
           span.setStatus({
