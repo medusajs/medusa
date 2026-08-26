@@ -107,21 +107,36 @@ search behavior intact.
    calls `query.search`, with a Zod validation middleware for
    its body. The storefront queried Meilisearch from the
    browser, so this route is new rather than a rewrite.
+   Respond with `{ products, count, limit, offset }`, where
+   `products` holds the hydrated records from `data` and the
+   other three come from `search_result.metadata`. Do not
+   also return `search_result.hits`, since each hit's
+   `document` repeats a record already in `products`. Add
+   `search_result.facets` only when the storefront renders
+   facet counts, and a hit's `highlights` only when the
+   query asks for highlighting.
 7. Replace any manual sync trigger with a workflow step that
    calls the Search Module's `reindex` method.
 8. Delete the Meilisearch module, the sync workflows and
    steps, the product subscribers, the module's entry in
    `medusa-config.ts`, and the `meilisearch` dependency.
-   Leave the Meilisearch environment variables in place and
-   tell the user to remove them after the cutover.
+   Do this here and not earlier, since the application fails
+   to boot while the module is still registered and the
+   package is gone. Leave the Meilisearch environment
+   variables in place and tell the user to remove them after
+   the cutover.
 9. Update the storefront to call the new search route through
    the JS SDK instead of the Meilisearch client, debouncing
    the input, and read the route's response shape. Remove the
    `@meilisearch/instant-meilisearch` and `react-instantsearch`
    packages, the `searchClient` export, and the
    `NEXT_PUBLIC_MEILISEARCH_*` variables.
-10. Run the project's type check and tests, and report the
-    result.
+10. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
 </steps>
 
 <constraints>
@@ -133,6 +148,13 @@ search behavior intact.
 - Do not expose the search index to the browser. Every query
   goes through an API route on the Medusa backend.
 - Do not run a deployment or push to any branch.
+- Never run a Medusa CLI command that can prompt without the
+  flag that skips its prompts. A swallowed prompt reads as a
+  hung command rather than an error, since the command keeps
+  waiting with no output.
+- Keep every package the current integration imports
+  installed until step 8, so the application boots at every
+  point before it.
 - Consult the Medusa documentation at
   https://docs.medusajs.com or the Medusa MCP server for any
   API details you need, including the index definition
@@ -180,6 +202,8 @@ environment variables, validating relevance, and deploying.
   product index, or listed as an intentional removal.
 - The storefront searches through the new API route, and no
   Meilisearch key reaches the browser.
+- The search route documents its response shape and returns
+  each record once.
 - Every unsupported Meilisearch behavior appears under
   "Behavior differences".
 </success_criteria>

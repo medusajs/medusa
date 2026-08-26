@@ -101,20 +101,35 @@ storefront's search behavior intact.
    route's path and its validation middleware, and add
    pagination. Move every filter, facet, and sort that the
    storefront's search widgets applied into the query.
+   Respond with `{ products, count, limit, offset }`, where
+   `products` holds the hydrated records from `data` and the
+   other three come from `search_result.metadata`. Do not
+   also return `search_result.hits`, since each hit's
+   `document` repeats a record already in `products`. Add
+   `search_result.facets` only when the storefront renders
+   facet counts, and a hit's `highlights` only when the
+   query asks for highlighting.
 7. Replace any manual sync trigger with a workflow step that
    calls the Search Module's `reindex` method.
 8. Delete the Algolia module, the sync workflows and steps,
    the product subscribers, the module's entry in
    `medusa-config.ts`, and the `algoliasearch` dependency.
-   Leave the Algolia environment variables in place and tell
-   the user to remove them after the cutover.
+   Do this here and not earlier, since the application fails
+   to boot while the module is still registered and the
+   package is gone. Leave the Algolia environment variables
+   in place and tell the user to remove them after the
+   cutover.
 9. Update the storefront to call the search route directly
    and read the route's new response shape, which returns
    the hydrated records and the search metadata rather than
    Algolia's `hits`. Remove the Algolia packages, the search
    client, and the Algolia environment variables from it.
-10. Run the project's type check and tests, and report the
-    result.
+10. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
 </steps>
 
 <constraints>
@@ -126,6 +141,13 @@ storefront's search behavior intact.
 - Do not change the search route's path or its request body
   parameters, since a live storefront depends on them.
 - Do not run a deployment or push to any branch.
+- Never run a Medusa CLI command that can prompt without the
+  flag that skips its prompts. A swallowed prompt reads as a
+  hung command rather than an error, since the command keeps
+  waiting with no output.
+- Keep every package the current integration imports
+  installed until step 8, so the application boots at every
+  point before it.
 - Consult the Medusa documentation at
   https://docs.medusajs.com or the Medusa MCP server for any
   API details you need, including the index definition
@@ -171,6 +193,8 @@ environment variables, validating relevance, and deploying.
   product index, or listed as an intentional removal.
 - The search route responds to the same request body as
   before and returns results from `query.search`.
+- The search route documents its response shape and returns
+  each record once.
 - Every unsupported Algolia behavior appears under
   "Behavior differences".
 </success_criteria>
