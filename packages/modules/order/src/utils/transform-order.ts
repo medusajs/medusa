@@ -202,6 +202,20 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
 
   const conf = { ...config }
 
+  // The fields that are part of the "items" relation, and not the "item" relation
+  const ORDER_ITEM_FIELDS = [
+    "quantity",
+    "unit_price",
+    "compare_at_unit_price",
+    "fulfilled_quantity",
+    "shipped_quantity",
+    "delivered_quantity",
+    "return_requested_quantity",
+    "return_received_quantity",
+    "return_dismissed_quantity",
+    "written_off_quantity",
+  ]
+
   function replace(obj, type): string[] | undefined {
     if (!isDefined(obj[type])) {
       return
@@ -247,19 +261,12 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       item: conf.where?.items,
     }
 
-    if (original.quantity) {
-      conf.where.items.quantity = original.quantity
-      delete conf.where.items.item.quantity
-    }
-
-    if (original.unit_price) {
-      conf.where.items.unit_price = original.unit_price
-      delete conf.where.items.item.unit_price
-    }
-
-    if (original.compare_at_unit_price) {
-      conf.where.items.compare_at_unit_price = original.compare_at_unit_price
-      delete conf.where.items.item.compare_at_unit_price
+    // rather than mapping each field individually, we can loop through the ORDER_ITEM_FIELDS array and check if the field exists in the original object. If it does, we add it to the new where.items object and delete it from the original object.
+    for (const field of ORDER_ITEM_FIELDS) {
+      if (isDefined(original[field])) {
+        conf.where.items[field] = original[field]
+        delete conf.where.items.item[field]
+      }
     }
 
     if (original.detail) {
