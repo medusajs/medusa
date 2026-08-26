@@ -893,9 +893,9 @@ The integration guide's admin page triggers a full sync through the `meilisearch
 
 A manual rebuild is only for repairing a diverged index, such as after a `consume` call failed or a change reached the database without emitting an event.
 
-{/* TODO mention admin page if we add it */}
+For a manual rebuild, you can drop the custom admin page entirely: admin users can rebuild any index from Settings -> Search in the Medusa Admin dashboard. Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide.
 
-Replace the `syncProductsWorkflow` with a step that calls the Search Module's [`reindex`](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) method.
+If you'd rather trigger the rebuild from your own code, replace the `syncProductsWorkflow` with a step that calls the Search Module's [`reindex`](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) method.
 
 Create the file `src/workflows/steps/reindex-products.ts` with the following content:
 

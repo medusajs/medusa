@@ -527,7 +527,9 @@ Set `eventual` for queries where a slightly stale result is fine, such as a stor
 
 ## Reindex on Medusa Search
 
-Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand with the Search Module's `reindex` method. Refer to the [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) guide for both flows.
+Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one in code with the Search Module's `reindex` method.
+
+Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide for the dashboard flow, and to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) for how Medusa creates, fills, and rebuilds an index.
 
 ---
 

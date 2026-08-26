@@ -166,15 +166,17 @@ Refer to the [Search Module Providers guide](./providers/page.mdx) to learn how 
 
 ### 1. Define a Search Index
 
-Before you can search, define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, and a `seed` generator that fills the index.
+Before you can search, define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, a `seed` generator that fills the index, and the events that keep it up-to-date.
 
 For example, create the file `src/search/product.ts`:
 
 export const definitionHighlights = [
-  ["7", "name", "The index name that a search query resolves against."],
-  ["8", "entity", "The Query entity used to hydrate non-indexed fields."],
-  ["9", "fields", "The fields the search engine holds."],
-  ["15", "seed", "Yields the documents that fill the index."],
+  ["9", "name", "The index name that a search query resolves against."],
+  ["10", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["11", "fields", "The fields the search engine holds."],
+  ["17", "events", "The events that change the data the index holds."],
+  ["22", "consume", "Turns each of those events into document writes."],
+  ["38", "seed", "Yields the documents that fill the index."],
 ]
 
 ```ts title="src/search/product.ts" highlights={definitionHighlights}
@@ -182,6 +184,8 @@ import {
   defineSearchIndex,
   search,
 } from "@medusajs/framework/utils"
+
+const fields = ["id", "title", "handle", "status"]
 
 export const productIndex = defineSearchIndex({
   name: "product",
@@ -192,10 +196,31 @@ export const productIndex = defineSearchIndex({
     handle: search.keyword().filterable(),
     status: search.keyword().filterable().facetable(),
   }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  async consume(event, { container }) {
+    if (event.name === "product.deleted") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields,
+      filters: { id: event.data.id },
+    })
+
+    return [{ action: "upsert", documents: data }]
+  },
   async *seed({ container }) {
     const { data } = await container.query.graph({
       entity: "product",
-      fields: ["id", "title", "handle", "status"],
+      fields,
     })
 
     yield data
@@ -203,7 +228,7 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
-Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
+Medusa subscribes to the events in `events` and routes each one to `consume`, so the index reflects changes as they happen. `seed` fills the index in full when Medusa creates or rebuilds it. Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
 
 ### 2. Run Migrations (Optional)
 

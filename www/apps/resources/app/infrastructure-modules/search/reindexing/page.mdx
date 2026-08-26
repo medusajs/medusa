@@ -107,12 +107,6 @@ Seeding at application start only runs in worker or shared mode. If you rebuild 
 
 </Note>
 
-### Providers That Migrate at Startup
-
-Some providers hold indexes in the memory of the process that created them. Since `db:migrate` runs in its own process, everything it built is gone by the time your application boots.
-
-The Search Module migrates their indexes when the application starts, right before it seeds them, so the index and the data filling it are built by the same process. 
-
 ---
 
 ## Seeding at Application Start
@@ -132,7 +126,15 @@ The module records every seed run, so an interrupted run passes its `last_key` b
 
 ## Seeding on Demand
 
-Use the `reindex` method of the Search Module's service to rebuild an index manually.
+You can rebuild an index manually from the Medusa Admin dashboard, or programmatically with the `reindex` method of the Search Module's service.
+
+### Reindex from the Dashboard
+
+The quickest way to rebuild your index is from the admin dashboard. Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide for the steps to do that.
+
+### Reindex Programmatically
+
+You can also use the `reindex` method of the Search Module's service to rebuild an index in your own code.
 
 For example, the following workflow step rebuilds only the published products in the `product` index:
 

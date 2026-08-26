@@ -271,7 +271,7 @@ If you omit `events` and `consume`, the Search Module only fills an index in the
 
 <Note>
 
-A restart doesn't refill an index that already has documents, unless the provider's indexes don't outlive the process. For example, a provider that holds indexes in memory always leaves an empty index after a restart, so the module refills it.
+A restart doesn't refill an index that already has documents. The module only seeds an index that holds no documents, or one whose previous seed didn't finish.
 
 </Note>
 

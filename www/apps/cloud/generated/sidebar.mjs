@@ -293,6 +293,20 @@ export const generatedSidebars = [
                 "title": "Compare to Meilisearch",
                 "path": "/search/meilisearch",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Algolia",
+                "path": "/search/migrate-from-algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Meilisearch",
+                "path": "/search/migrate-from-meilisearch",
+                "children": []
               }
             ]
           }

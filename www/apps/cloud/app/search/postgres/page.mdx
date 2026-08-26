@@ -181,7 +181,7 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
       </Table.Cell>
       <Table.Cell>
 
-      On the `lakebase` engine only, including a hybrid of text and vector search.
+      Supported, including a hybrid of text and vector search, but only on an engine that you set up yourself. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#vector-search-on-the-lakebase-engine).
 
       </Table.Cell>
     </Table.Row>
@@ -192,10 +192,10 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Up to the 10,000th result.
+        Up to the 10,000th result, which is well past what a storefront paginates through.
       </Table.Cell>
       <Table.Cell>
-        No limit.
+        No limit, though a deep offset gets slower as the query scans and discards more rows.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -205,7 +205,7 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Not supported. The module rebuilds in place.
+        Not supported yet. The module rebuilds in place.
       </Table.Cell>
       <Table.Cell>
         Supported, through a shadow index the provider renames over the live one.
@@ -237,7 +237,7 @@ The PostgreSQL provider needs no external service, since it indexes into the dat
 
 1. Run `db:migrate` to create the provider's tables, its extensions, and its text search configuration. The command also creates the index for every definition you declared.
 2. Run `db:migrate` again after you create or change an index definition, since the physical table follows the definition.
-3. Choose an engine. The default `native` engine covers full-text search, and the `lakebase` engine adds vector and hybrid search.
+3. Choose an engine, if you need vector or hybrid search. The provider's default engine covers full-text search only. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#search-engines-in-the-postgresql-search-module-provider) for the engines it supports.
 4. Configure a language other than English, if your catalog needs one, through the provider's `language` option.
 5. Size your database for the extra work, since every search query and every index write runs against it.
 
@@ -310,7 +310,7 @@ What each provider does with an index definition that declares the following:
       </Table.Cell>
       <Table.Cell>
 
-      On the `lakebase` engine, holds the embedding and builds an approximate nearest neighbor index for it. On `native`, fails at startup.
+      Fails at startup on the provider's default engine. On an engine that supports vector search, holds the embedding and builds an approximate nearest neighbor index for it.
 
       </Table.Cell>
     </Table.Row>
@@ -436,27 +436,10 @@ The Search Module drives both providers through the same flow, so an initial fil
 
       </Table.Cell>
       <Table.Cell>
-        Not supported, so the module rebuilds in place and the index holds nothing until the seed finishes.
+        Not supported yet, so the module rebuilds in place and the index holds nothing until the seed finishes.
       </Table.Cell>
       <Table.Cell>
         Supported. The module fills a shadow index, then the provider renames it over the live one.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      [Migrating at application start](!resources!/infrastructure-modules/search/reindexing#providers-that-migrate-at-startup)
-
-      </Table.Cell>
-      <Table.Cell>
-
-      No. `db:migrate` creates the indexes.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      No. `db:migrate` creates the indexes.
-
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -554,7 +537,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
       </Table.Cell>
       <Table.Cell>
 
-      On the `lakebase` engine, runs a similarity search, and blends it with the text query by `semantic_ratio`. On `native`, fails per query.
+      Fails per query on the provider's default engine. On an engine that supports vector search, runs a similarity search and blends it with the text query by `semantic_ratio`.
 
       </Table.Cell>
     </Table.Row>
@@ -570,7 +553,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
 
       </Table.Cell>
       <Table.Cell>
-        Widens the match with trigram word similarity, on both engines.
+        Widens the match with trigram word similarity.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -1055,7 +1038,7 @@ Medusa Search keeps both off your database and meters the queries under Search i
 **Choose the PostgreSQL provider if:**
 
 - You self-host your Medusa application, since Medusa Search runs on Cloud only.
-- You want vector or hybrid search that the provider serves for you on the `lakebase` engine.
+- You want vector or hybrid search that the provider serves for you.
 - Your search volume is modest enough that your database absorbs it without a bigger tier.
 
 You don't have to pick one for everything. The Search Module accepts more than one provider, so you can point a high-traffic storefront index at Medusa Search and keep a low-traffic admin index on PostgreSQL.
