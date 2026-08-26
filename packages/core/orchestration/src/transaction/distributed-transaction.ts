@@ -579,8 +579,8 @@ class DistributedTransaction extends EventEmitter {
          * TransactionStep instance, taken from the flow at the time they were
          * scheduled. Swapping `this.flow` for a freshly built object graph
          * would detach those references, so any state transition applied to them
-         * while this save is being retried would written to an orphaned object and
-         * silently lost, leaving the transaction stuck.
+         * while this save is being retried would be written to an orphaned object 
+         * and silently lost, leaving the transaction stuck.
          */
         TransactionCheckpoint.mergeCheckpoints(
           new TransactionCheckpoint(this.flow, this.context, this.errors),
