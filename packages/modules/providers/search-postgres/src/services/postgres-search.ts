@@ -10,11 +10,9 @@ import {
   buildFacetQuery,
   buildIndexPlan,
   CATALOG_TABLE,
-  createExtensionSql,
   extractPrimaryKeyFilter,
   IndexPlan,
   keywordTsQuerySql,
-  LAKEBASE_EXTENSIONS,
   mapFacetResult,
   normalizeFacetRequests,
   PostgresSearchEngine,
@@ -100,7 +98,7 @@ const UPSERT_CHUNK_SIZE = 200
  * PostgreSQL search provider with two engines:
  *
  * - `native` (default) — portable GIN + `ts_rank` + `pg_trgm`
- * - `lakebase` — Neon Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
+ * - `lakebase` — Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
  *
  * Medusa Cloud uses `engine: "lakebase"`. Local / self-hosted stick to native.
  */
@@ -113,7 +111,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   protected readonly engine_: PostgresSearchEngine
   protected readonly embedder_?: PostgresSearchEmbedder
   protected readonly vectorDistance_: PostgresVectorDistance
-  protected lakebaseExtensionsReady_: Promise<void> | null = null
 
   constructor(
     { manager, logger }: InjectedDependencies,
@@ -159,42 +156,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
   protected get isLakebase_(): boolean {
     return this.engine_ === "lakebase"
-  }
-
-  /**
-   * Lakebase access methods (`lakebase_bm25`, `lakebase_ann`) come from
-   * extensions that need preloaded libraries, so they are created here rather
-   * than in the provider migration. Always uses the outer manager so this is
-   * not nested inside a transaction.
-   */
-  protected async ensureLakebaseExtensions(): Promise<void> {
-    if (!this.isLakebase_) {
-      return
-    }
-
-    this.lakebaseExtensionsReady_ ??= this.createLakebaseExtensions_()
-
-    try {
-      await this.lakebaseExtensionsReady_
-    } catch (error) {
-      this.lakebaseExtensionsReady_ = null
-      throw error
-    }
-  }
-
-  protected async createLakebaseExtensions_(): Promise<void> {
-    for (const extension of LAKEBASE_EXTENSIONS) {
-      try {
-        await this.manager_.execute(createExtensionSql(extension))
-      } catch (error) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          `The postgres search provider could not enable the "${extension}" extension required by engine: "lakebase". Lakebase Search is only available on Medusa Cloud. ${
-            (error as Error).message
-          }`
-        )
-      }
-    }
   }
 
   protected serializePlan(plan: IndexPlan): string {
@@ -437,7 +398,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     index: SearchTypes.ResolvedSearchIndexDefinition
   }): Promise<SearchTypes.SearchTask> {
     assertIndexSupported(index, this.engine_)
-    await this.ensureLakebaseExtensions()
     const plan = buildIndexPlan(index)
     const table = tableNameForIndex(index.physical_name)
     const existing = await this.getCatalog(index.physical_name)
@@ -522,7 +482,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     alias: string
     index: string
   }): Promise<SearchTypes.SearchTask> {
-    await this.ensureLakebaseExtensions()
     const shadow = await this.getCatalog(index)
     if (!shadow) {
       throw new MedusaError(
@@ -704,7 +663,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     // Create the BM25 index once documents exist (corpus stats need rows).
     if (this.isLakebase_) {
-      await this.ensureLakebaseExtensions()
       await this.ensureBm25Index(catalog.table_name)
     }
 
@@ -765,7 +723,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     input: SearchTypes.ProviderSearchQuery
   ): Promise<SearchTypes.SearchResult> {
     assertQuerySupported(input, this.engine_)
-    await this.ensureLakebaseExtensions()
 
     const catalog = await this.retrieve(input.index.physical_name)
     const plan = catalog.plan

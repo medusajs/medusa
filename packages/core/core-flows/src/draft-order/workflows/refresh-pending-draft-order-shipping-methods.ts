@@ -5,6 +5,8 @@ import {
   ShippingOptionPriceType,
 } from "@medusajs/framework/utils"
 import {
+  Hook,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -26,6 +28,7 @@ import {
   LINE_ITEM_FIELDS_FOR_SHIPPING_PRICE_CALCULATION,
   SHIPPING_OPTION_FIELDS_FOR_PRICE_CALCULATION,
 } from "../utils/enrich-preview-line-items-for-shipping-price-calculation"
+import { calculatedShippingPricingContextResult } from "../../cart/utils/schemas"
 
 export const refreshPendingDraftOrderShippingMethodsWorkflowId =
   "refresh-pending-draft-order-shipping-methods"
@@ -39,6 +42,15 @@ export interface RefreshPendingDraftOrderShippingMethodsWorkflowInput {
    */
   order_id: string
 }
+
+/**
+ * The `setCalculatedShippingPricingContext` hook of {@link refreshPendingDraftOrderShippingMethodsWorkflow}.
+ */
+type SetCalculatedShippingPricingContextHook = Hook<
+  "setCalculatedShippingPricingContext",
+  { input: RefreshPendingDraftOrderShippingMethodsWorkflowInput },
+  Record<string, any> | undefined
+>
 
 /**
  * This workflow refreshes the prices of *pending* calculated shipping methods
@@ -58,12 +70,18 @@ export interface RefreshPendingDraftOrderShippingMethodsWorkflowInput {
  * @summary
  *
  * Refresh pending calculated shipping method prices on a draft order edit.
+ *
+ * @property hooks.setCalculatedShippingPricingContext - This hook is executed before the
+ * pending calculated shipping methods' prices are refreshed. You can consume it to
+ * return any custom context that is merged into the `context` parameter of the
+ * fulfillment provider's `calculatePrice` method (framework-provided properties
+ * take precedence on a naming conflict).
  */
 export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
   refreshPendingDraftOrderShippingMethodsWorkflowId,
   function (
     input: WorkflowData<RefreshPendingDraftOrderShippingMethodsWorkflowInput>
-  ): WorkflowResponse<void> {
+  ): WorkflowResponse<void, [SetCalculatedShippingPricingContextHook]> {
     const { data: orderChange } = useQueryGraphStep({
       entity: "order_change",
       fields: [
@@ -94,6 +112,14 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
       filters: { id: pendingMethodIds, is_custom_amount: false },
       fields: ["id", "shipping_option_id"],
     }).config({ name: "refresh-pending-methods-query" })
+
+    const setCalculatedShippingPricingContext = createHook(
+      "setCalculatedShippingPricingContext",
+      { input },
+      { resultValidator: calculatedShippingPricingContextResult }
+    )
+    const setCalculatedShippingPricingContextResult =
+      setCalculatedShippingPricingContext.getResult()
 
     const plan = when(
       { shippingMethods },
@@ -128,7 +154,14 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
       // keeping method/action ids aligned with the calculation array so prices
       // can be mapped back after the provider responds.
       return transform(
-        { orderChange, shippingMethods, shippingOptions, preview, lineItems },
+        {
+          orderChange,
+          shippingMethods,
+          shippingOptions,
+          preview,
+          lineItems,
+          setCalculatedShippingPricingContextResult,
+        },
         (data) => {
           const orderChange = data.orderChange
           const methods = data.shippingMethods
@@ -166,6 +199,7 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
               id: option.id,
               optionData: option.data,
               context: {
+                ...data.setCalculatedShippingPricingContextResult,
                 id: order.id,
                 shipping_address: order.shipping_address,
                 items: filterCartItemsByShippingProfile(
@@ -229,6 +263,8 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
       }
     )
 
-    return new WorkflowResponse(void 0)
+    return new WorkflowResponse(void 0, {
+      hooks: [setCalculatedShippingPricingContext],
+    })
   }
 )

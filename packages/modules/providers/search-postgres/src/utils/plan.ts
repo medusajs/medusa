@@ -47,7 +47,7 @@ export type PostgresSearchProviderOptions = {
   /**
    * Search engine backend.
    * - `native` — portable Postgres FTS (GIN + `ts_rank`) + `pg_trgm`. Default.
-   * - `lakebase` — Neon Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
+   * - `lakebase` — Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
    * @default "native"
    */
   engine?: PostgresSearchEngine
@@ -73,9 +73,7 @@ export function isSearchable(
   return field.searchable === true || typeof field.searchable === "object"
 }
 
-export function isFacetable(
-  field: SearchTypes.SearchFieldDefinition
-): boolean {
+export function isFacetable(field: SearchTypes.SearchFieldDefinition): boolean {
   return field.facetable === true || typeof field.facetable === "object"
 }
 
@@ -353,9 +351,7 @@ export function vectorColumnName(path: string): string {
   return `v_${safe}`
 }
 
-export function vectorOpClass(
-  distance: PostgresVectorDistance
-): string {
+export function vectorOpClass(distance: PostgresVectorDistance): string {
   switch (distance) {
     case "l2":
       return "vector_l2_ops"
