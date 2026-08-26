@@ -122,6 +122,7 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
       setCalculatedShippingPricingContext.getResult()
 
     const plan = when(
+      "should-create-calculated-amounts-plan",
       { shippingMethods },
       ({ shippingMethods }) => !!shippingMethods.length
     ).then(() => {
@@ -219,49 +220,51 @@ export const refreshPendingDraftOrderShippingMethodsWorkflow = createWorkflow(
       )
     })
 
-    when({ plan }, ({ plan }) => !!plan && plan.calculateData.length > 0).then(
-      () => {
-        const resolvedPlan = plan!
-        const prices = calculateShippingOptionsPricesStep(
-          resolvedPlan.calculateData
-        )
+    when(
+      "should-execute-calculated-amounts-plan",
+      { plan },
+      ({ plan }) => !!plan && plan.calculateData.length > 0
+    ).then(() => {
+      const resolvedPlan = plan!
+      const prices = calculateShippingOptionsPricesStep(
+        resolvedPlan.calculateData
+      )
 
-        const updates = transform(
-          { resolvedPlan, prices },
-          ({ resolvedPlan, prices }) => {
-            const methodUpdates = resolvedPlan.methodIds.map((id, index) => ({
-              id,
-              amount: prices[index].calculated_amount,
-              is_custom_amount: false,
-            }))
+      const updates = transform(
+        { resolvedPlan, prices },
+        ({ resolvedPlan, prices }) => {
+          const methodUpdates = resolvedPlan.methodIds.map((id, index) => ({
+            id,
+            amount: prices[index].calculated_amount,
+            is_custom_amount: false,
+          }))
 
-            const actionUpdates = resolvedPlan.actionIds.map((id, index) => ({
-              id,
-              amount: prices[index].calculated_amount,
-            }))
+          const actionUpdates = resolvedPlan.actionIds.map((id, index) => ({
+            id,
+            amount: prices[index].calculated_amount,
+          }))
 
-            return {
-              methodUpdates,
-              actionUpdates,
-              methodIds: resolvedPlan.methodIds,
-            }
+          return {
+            methodUpdates,
+            actionUpdates,
+            methodIds: resolvedPlan.methodIds,
           }
-        )
+        }
+      )
 
-        parallelize(
-          updateOrderShippingMethodsStep(updates.methodUpdates),
-          updateOrderChangeActionsStep(updates.actionUpdates)
-        )
+      parallelize(
+        updateOrderShippingMethodsStep(updates.methodUpdates),
+        updateOrderChangeActionsStep(updates.actionUpdates)
+      )
 
-        // Keep shipping tax lines in sync with the refreshed amounts.
-        updateOrderTaxLinesWorkflow.runAsStep({
-          input: {
-            order_id: input.order_id,
-            shipping_method_ids: updates.methodIds,
-          },
-        })
-      }
-    )
+      // Keep shipping tax lines in sync with the refreshed amounts.
+      updateOrderTaxLinesWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+          shipping_method_ids: updates.methodIds,
+        },
+      })
+    })
 
     return new WorkflowResponse(void 0, {
       hooks: [setCalculatedShippingPricingContext],
