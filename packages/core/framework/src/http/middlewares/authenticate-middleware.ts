@@ -123,7 +123,18 @@ export const authenticate = (
       return next()
     }
 
-    // If we allow unauthenticated requests (i.e public endpoints), just continue
+    // If we allow unauthenticated requests (i.e public endpoints), just continue.
+    // A request that presents bearer credentials is claiming an identity though,
+    // so when those credentials fail verification (expired, forged or malformed),
+    // reject it instead of silently continuing as a guest.
+    if (
+      options.allowUnauthenticated &&
+      hasBearerCredentials(req.headers.authorization)
+    ) {
+      res.status(401).json({ message: "Unauthorized" })
+      return
+    }
+
     if (options.allowUnauthenticated) {
       return next()
     }
@@ -228,6 +239,15 @@ const isBearerSecretApiKey = (authHeader: string | undefined): boolean => {
 
   const [tokenType, token] = authHeader.split(" ")
   return tokenType?.toLowerCase() === BEARER_AUTH && !!token?.startsWith("sk_")
+}
+
+const hasBearerCredentials = (authHeader: string | undefined): boolean => {
+  if (!authHeader) {
+    return false
+  }
+
+  const [tokenType, token] = authHeader.split(" ")
+  return tokenType?.toLowerCase() === BEARER_AUTH && !!token
 }
 
 const getAuthContextFromSession = (
