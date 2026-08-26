@@ -130,5 +130,18 @@ describe("authenticate middleware", () => {
       expect(next).not.toHaveBeenCalled()
       expect(res.status).toHaveBeenCalledWith(401)
     })
+
+    it("continues as a guest when the route does not accept bearer auth, even if a bearer header is present", async () => {
+      const req = createRequest({ authorization: "Bearer not.a.jwt" })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate(["customer"], ["session"], {
+        allowUnauthenticated: true,
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(res.status).not.toHaveBeenCalled()
+    })
   })
 })

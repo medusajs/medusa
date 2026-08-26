@@ -129,6 +129,7 @@ export const authenticate = (
     // reject it instead of silently continuing as a guest.
     if (
       options.allowUnauthenticated &&
+      authTypes.includes(BEARER_AUTH) &&
       hasBearerCredentials(req.headers.authorization)
     ) {
       res.status(401).json({ message: "Unauthorized" })
