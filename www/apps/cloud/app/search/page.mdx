@@ -99,7 +99,7 @@ npx medusa db:migrate
 
 <Note>
 
-The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `typo_tolerance`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
+The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `min_score`, and it can't enforce `match_strategy: "all"`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
 
 </Note>
 
@@ -311,6 +311,93 @@ The example declares two settings for the `product` index:
   sectionTitle="Index Settings"
 />
 
+### Typo Tolerance
+
+Medusa Search matches misspelled terms with a fuzzy index that it builds on every searchable field by default, so an index tolerates typos without declaring any setting. A query is the opposite: it matches terms exactly until you opt in, as explained in [Opt a Query Into Typo Tolerance](#opt-a-query-into-typo-tolerance).
+
+Set the `typo_tolerance` index setting to change the thresholds Medusa Search applies, to exempt a field, or to turn the fuzzy index off:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    sku: search.keyword().searchable(),
+  }),
+  settings: {
+    typo_tolerance: {
+      min_word_size_for_one_typo: 5,
+      min_word_size_for_two_typos: 9,
+      disabled_on_attributes: ["sku"],
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The setting accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "enabled",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search builds a fuzzy index for the index's searchable fields. Set it to \`false\` to keep the index smaller when no query needs typo tolerance.`,
+      defaultValue: "true",
+    },
+    {
+      name: "min_word_size_for_one_typo",
+      type: "`number`",
+      optional: true,
+      description: `The shortest term length that tolerates a single typo.`,
+      defaultValue: "5",
+    },
+    {
+      name: "min_word_size_for_two_typos",
+      type: "`number`",
+      optional: true,
+      description: `The shortest term length that tolerates two typos.`,
+      defaultValue: "9",
+    },
+    {
+      name: "disabled_on_attributes",
+      type: "`string[]`",
+      optional: true,
+      description: `The dotted paths of the fields that must always match exactly, such as a SKU or a serial number where a single character changes the meaning.`,
+      defaultValue: "[]",
+    },
+  ]}
+  sectionTitle="Typo Tolerance"
+/>
+
+#### Opt a Query Into Typo Tolerance
+
+The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options), which is what a search engine that tolerates typos by default, such as Algolia or Meilisearch, does for you:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshrit" },
+  search_options: {
+    typo_tolerance: true,
+  },
+})
+```
+
+Medusa Search ranks a fuzzy match below every exact match, so enabling the option adds results rather than reordering the ones you already had.
+
+<Note title="Errors to expect">
+
+- A query that passes `typo_tolerance` without a `q` filter fails, since there are no terms to match approximately.
+- A query fails when none of the fields it searches has a fuzzy index, such as when the index sets `enabled: false` or exempts every searched field.
+
+</Note>
+
 ### Field Options
 
 Use a field's [`providerOptions()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#provideroptions) modifier to configure how Medusa Search indexes that field.
@@ -354,8 +441,8 @@ Medusa Search reads the following field options:
       name: "fuzzy",
       type: "`boolean`",
       optional: true,
-      description: `Whether full-text search on the field tolerates small differences in spelling.`,
-      defaultValue: "false",
+      description: `Whether full-text search on the field tolerates small differences in spelling. Medusa Search sets it from the index's [typo tolerance setting](#typo-tolerance), so only set it to override that field's behavior.`,
+      defaultValue: "true for a searchable field when the index's typo tolerance is enabled, and false otherwise",
     },
     {
       name: "glob",

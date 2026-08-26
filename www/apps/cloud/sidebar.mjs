@@ -221,6 +221,16 @@ export const sidebar = [
                 title: "Compare to Meilisearch",
                 path: "/search/meilisearch",
               },
+              {
+                type: "link",
+                title: "Migrate from Algolia",
+                path: "/search/migrate-from-algolia",
+              },
+              {
+                type: "link",
+                title: "Migrate from Meilisearch",
+                path: "/search/migrate-from-meilisearch",
+              },
             ],
           },
         ],

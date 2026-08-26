@@ -118,7 +118,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        Not supported.
+        Both supported, and you opt into each one per query.
       </Table.Cell>
       <Table.Cell>
         Supported and configurable per index.
@@ -421,7 +421,9 @@ With a provider in place, the Search Module drives both engines through the same
         Typo tolerance
       </Table.Cell>
       <Table.Cell>
-        Not supported. A query that requests it fails.
+
+        Supported, with the same word-length thresholds Meilisearch defaults to. Opt in per query with `typo_tolerance`, and tune or exempt a field with the index's [typo tolerance setting](../page.mdx#typo-tolerance).
+
       </Table.Cell>
       <Table.Cell>
         Supported, and you can tune or disable it per index and per attribute.
@@ -469,7 +471,9 @@ With a provider in place, the Search Module drives both engines through the same
         Highlighting and cropping
       </Table.Cell>
       <Table.Cell>
-        Not supported. A query that requests it fails.
+
+        Supported per query on searchable fields, with configurable markers and optional snippets. Refer to [Highlighting](!docs!/learn/fundamentals/query/search#highlighting).
+
       </Table.Cell>
       <Table.Cell>
         Supported per query, with configurable markers.
@@ -673,6 +677,8 @@ Querying Meilisearch from the browser keeps those searches off your Data Transfe
 - You want the same engine locally and in production, with identical relevance in both.
 - You have a reason to keep search inside your own infrastructure, such as data residency.
 - You have the capacity to operate the engine, or you're ready to pay for Meilisearch Cloud instead.
+
+Already using Meilisearch and moving to Medusa Search? Refer to [Migrate from Meilisearch to Medusa Search](../migrate-from-meilisearch/page.mdx) for the end-to-end steps.
 
 You can also use both. The Search Module accepts more than one provider, so you can keep admin search and most indexes on Medusa Search while a storefront index runs on Meilisearch through your own integration. Refer to [Configure the Search Module](!resources!/infrastructure-modules/search#configure-the-search-module) for how to register providers and set a default.
 

@@ -118,7 +118,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        Not supported.
+        Both supported, and you opt into each one per query.
       </Table.Cell>
       <Table.Cell>
         Supported and configurable per index.
@@ -406,7 +406,9 @@ With a provider in place, the Search Module drives both engines through the same
         Typo tolerance
       </Table.Cell>
       <Table.Cell>
-        Not supported. A query that requests it fails.
+
+        Supported. Opt in per query with `typo_tolerance`, and set the word-length thresholds or exempt a field with the index's [typo tolerance setting](../page.mdx#typo-tolerance). Fuzzy matches rank below exact ones.
+
       </Table.Cell>
       <Table.Cell>
         Supported and configurable per index and per attribute.
@@ -452,7 +454,9 @@ With a provider in place, the Search Module drives both engines through the same
         Highlighting and snippets
       </Table.Cell>
       <Table.Cell>
-        Not supported. A query that requests it fails.
+
+        Supported on searchable fields, with your own markers and optional snippets. Refer to [Highlighting](!docs!/learn/fundamentals/query/search#highlighting).
+
       </Table.Cell>
       <Table.Cell>
         Supported, and the front-end libraries render it for you.
@@ -655,6 +659,8 @@ Querying Algolia from the browser keeps those searches off your Data Transfer, s
 - Relevance tuning is a core part of your product, and you want ranking rules, synonyms, and merchandising controls.
 - You want built-in search analytics and A/B testing.
 - You accept a second vendor, a second set of credentials, and the integration code that connects them.
+
+Already using Algolia and moving to Medusa Search? Refer to [Migrate from Algolia to Medusa Search](../migrate-from-algolia/page.mdx) for the end-to-end steps.
 
 You can also use both. The Search Module accepts more than one provider, so you can keep admin search and most indexes on Medusa Search while a storefront index runs on Algolia through your own integration. Refer to [Configure the Search Module](!resources!/infrastructure-modules/search#configure-the-search-module) for how to register providers and set a default.
 

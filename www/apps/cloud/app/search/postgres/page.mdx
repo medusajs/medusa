@@ -121,7 +121,7 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Not supported.
+        Supported, through fuzzy matching that ranks below exact matches.
       </Table.Cell>
       <Table.Cell>
         Supported, through trigram word similarity.
@@ -565,7 +565,9 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
 
       </Table.Cell>
       <Table.Cell>
-        Fails per query.
+
+      Widens the match with fuzzy matching on every searchable field that carries a fuzzy index, ranking those hits below the exact ones. Fails per query without a `q` filter, or when no searched field has a fuzzy index.
+
       </Table.Cell>
       <Table.Cell>
         Widens the match with trigram word similarity, on both engines.
@@ -638,7 +640,9 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
 
       </Table.Cell>
       <Table.Cell>
-        Fails per query. The provider doesn't implement highlighting.
+
+      Returns a fragment per highlighted field. Fails per query without a `q` filter, on an empty `fields` array, or on a field that isn't searchable.
+
       </Table.Cell>
       <Table.Cell>
         Fails per query. The provider doesn't implement highlighting.
@@ -939,16 +943,6 @@ What each provider does with the [facets](!docs!/learn/fundamentals/query/search
     </Table.Row>
   </Table.Body>
 </Table>
-
-<Note title="Don't use Medusa Search if" type="warning">
-
-- Typo tolerance is a requirement for your storefront search.
-- You need to sort by an attribute and rank by relevance in the same query.
-- You need a `stats` facet, `min_score`, or `match_strategy: "all"`.
-- You paginate beyond the 10,000th result.
-- You can't accept an index that empties while it rebuilds.
-
-</Note>
 
 ---
 
