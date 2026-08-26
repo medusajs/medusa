@@ -84,6 +84,7 @@ describe("StripeBase", () => {
 
       expect(() =>
         service.constructWebhookEvent({
+          data: {},
           rawData: "{}",
           headers: { "stripe-signature": "invalid-signature" },
         } as ProviderWebhookPayload["payload"])
