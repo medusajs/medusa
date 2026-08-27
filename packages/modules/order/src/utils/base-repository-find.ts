@@ -96,7 +96,7 @@ function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   }
 }
 
-function ensureShippingMethodVersionFieldSelection(
+function ensureShippingMethodFieldsSelection(
   config: any,
   isRelatedEntity: boolean
 ) {
@@ -105,12 +105,12 @@ function ensureShippingMethodVersionFieldSelection(
     return
   }
 
-  const versionField = isRelatedEntity
-    ? "order.shipping_methods.version"
-    : "shipping_methods.version"
+  const shippingMethodFields = isRelatedEntity
+    ? "order.shipping_methods.*"
+    : "shipping_methods.*"
 
-  if (!fields.includes(versionField)) {
-    fields.push(versionField)
+  if (!fields.includes(shippingMethodFields)) {
+    fields.push(shippingMethodFields)
   }
 }
 
@@ -241,7 +241,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
       config.options.populate.push("shipping_methods")
       config.options.populate.push("shipping_methods.shipping_method")
-      ensureShippingMethodVersionFieldSelection(config, isRelatedEntity)
+      ensureShippingMethodFieldsSelection(config, isRelatedEntity)
     }
 
     if (!config.options.orderBy) {
@@ -372,8 +372,8 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       config.options.populate.push("shipping_methods")
       config.options.populate.push("shipping_methods.shipping_method")
 
-      // make sure version is loaded if adjustments are requested
-      ensureShippingMethodVersionFieldSelection(config, isRelatedEntity)
+      // make sure shipping method fields are loaded if adjustments are requested
+      ensureShippingMethodFieldsSelection(config, isRelatedEntity)
     }
 
     configurePopulateWhere(
