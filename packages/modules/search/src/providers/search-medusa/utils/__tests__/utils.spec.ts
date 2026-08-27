@@ -219,6 +219,7 @@ describe("Medusa search utilities", () => {
       attributes_to_retrieve: ["title"],
       search_options: {
         facets: [
+          { field: "status", limit: 5 },
           { field: "tags", limit: 2 },
           {
             field: "price",
@@ -230,21 +231,39 @@ describe("Medusa search utilities", () => {
     }
     const queries = buildFacetQueries(input, plan)
 
-    expect(queries).toHaveLength(2)
-    expect(queries[0].query.group_by).toEqual([
+    expect(queries).toHaveLength(3)
+    expect(queries[0].query.group_by).toEqual(["status"])
+    expect(queries[0].query.top_k).toBe(10000)
+    expect(queries[0].query).not.toHaveProperty("limit")
+    expect(queries[1].query.group_by).toEqual([
       { value: ["ForEachUnique", "tags"] },
     ])
+    expect(queries[1].query.top_k).toBe(10000)
+    expect(queries[1].query).not.toHaveProperty("limit")
     expect(
       parseFacetResults(queries, [
         {
           aggregation_groups: [
+            { status: "published", count: 2 },
+            { status: ["draft"], count: 1 },
+          ],
+        },
+        {
+          aggregation_groups: [
             { value: "shoe", count: 3 },
-            { value: "sale", count: 1 },
+            { tags: ["sale"], count: 1 },
           ],
         },
         { aggregations: { count: 2 } },
       ])
     ).toEqual({
+      status: {
+        type: "value",
+        values: [
+          { value: "published", count: 2 },
+          { value: "draft", count: 1 },
+        ],
+      },
       tags: {
         type: "value",
         values: [
@@ -257,6 +276,22 @@ describe("Medusa search utilities", () => {
         ranges: [{ key: "cheap", from: undefined, to: 100, count: 2 }],
       },
     })
+  })
+
+  it("caps alphabetically sorted facet groups with top_k", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [{ field: "status", sort: "alpha", limit: 5 }],
+        },
+      },
+      plan
+    )
+
+    expect(queries[0].query.top_k).toBe(5)
+    expect(queries[0].query).not.toHaveProperty("limit")
   })
 
   describe("typo tolerance", () => {
@@ -317,7 +352,7 @@ describe("Medusa search utilities", () => {
               "shoo",
               {
                 max_edit_distance: [
-                  { min_query_chars: 5, distance: 1 },
+                  { min_query_chars: 6, distance: 1 },
                   { min_query_chars: 9, distance: 2 },
                 ],
                 case_sensitive: false,
@@ -333,8 +368,8 @@ describe("Medusa search utilities", () => {
         ...definition,
         settings: {
           typo_tolerance: {
-            min_word_size_for_one_typo: 3,
-            min_word_size_for_two_typos: 6,
+            min_word_size_for_one_typo: 8,
+            min_word_size_for_two_typos: 12,
           },
         },
       })
@@ -365,8 +400,8 @@ describe("Medusa search utilities", () => {
                   "red",
                   {
                     max_edit_distance: [
-                      { min_query_chars: 3, distance: 1 },
-                      { min_query_chars: 6, distance: 2 },
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
                     ],
                     case_sensitive: false,
                   },
@@ -377,8 +412,8 @@ describe("Medusa search utilities", () => {
                   "shoo",
                   {
                     max_edit_distance: [
-                      { min_query_chars: 3, distance: 1 },
-                      { min_query_chars: 6, distance: 2 },
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
                     ],
                     case_sensitive: false,
                   },
@@ -387,6 +422,34 @@ describe("Medusa search utilities", () => {
             ],
           ],
         ],
+      ])
+    })
+
+    it("clamps Fuzzy min_query_chars to Cloud's 3 * (distance + 1) floor", () => {
+      const custom = buildIndexPlan({
+        ...definition,
+        settings: {
+          typo_tolerance: {
+            min_word_size_for_one_typo: 3,
+            min_word_size_for_two_typos: 6,
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        custom
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause[3].max_edit_distance).toEqual([
+        { min_query_chars: 6, distance: 1 },
+        { min_query_chars: 9, distance: 2 },
       ])
     })
 

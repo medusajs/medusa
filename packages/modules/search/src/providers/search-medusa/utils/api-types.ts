@@ -128,7 +128,7 @@ export type IndexQuery = {
   limit?: number | Limit
   top_k?: number
   aggregate_by?: Record<string, unknown>
-  group_by?: Array<Record<string, unknown>>
+  group_by?: Array<string | Record<string, unknown>>
   consistency?: { level: "strong" | "eventual" }
   distance_metric?: DistanceMetric
   compute_attributes?: ComputeAttributes

@@ -80,6 +80,28 @@ function textRank(
 
 const TYPO_TOLERANCE_RANK_WEIGHT = 0.01
 
+function minQueryCharsForDistance(distance: number): number {
+  // Cloud/Turbopuffer: min_query_chars must be at least 3 * (distance + 1).
+  return 3 * (distance + 1)
+}
+
+function fuzzyMaxEditDistance(plan: IndexPlan) {
+  const one = Math.max(
+    plan.typo_tolerance.min_word_size_for_one_typo,
+    minQueryCharsForDistance(1)
+  )
+  const two = Math.max(
+    plan.typo_tolerance.min_word_size_for_two_typos,
+    minQueryCharsForDistance(2),
+    one
+  )
+
+  return [
+    { min_query_chars: one, distance: 1 },
+    { min_query_chars: two, distance: 2 },
+  ]
+}
+
 function boostWithTypoTolerance(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan,
@@ -98,16 +120,7 @@ function boostWithTypoTolerance(
     )
   }
 
-  const maxEditDistance = [
-    {
-      min_query_chars: plan.typo_tolerance.min_word_size_for_one_typo,
-      distance: 1,
-    },
-    {
-      min_query_chars: plan.typo_tolerance.min_word_size_for_two_typos,
-      distance: 2,
-    },
-  ]
+  const maxEditDistance = fuzzyMaxEditDistance(plan)
 
   const words = input.q!.trim().split(/\s+/).filter(Boolean)
   const wordClauses = words.map((word): Filter => {
