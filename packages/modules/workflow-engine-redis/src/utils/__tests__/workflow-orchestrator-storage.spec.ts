@@ -318,4 +318,35 @@ describe("RedisDistributedTransactionStorage", () => {
       expect(Worker).not.toHaveBeenCalled()
     })
   })
+
+  describe("shouldExecuteAsyncStepsLocally", () => {
+    it("should execute async steps locally in worker mode", () => {
+      const storage = new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+
+      expect(storage.shouldExecuteAsyncStepsLocally()).toBe(true)
+    })
+
+    it("should defer async steps to the job queue when not in worker mode", () => {
+      const storage = new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        isWorkerMode: false,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+
+      expect(storage.shouldExecuteAsyncStepsLocally()).toBe(false)
+    })
+  })
 })

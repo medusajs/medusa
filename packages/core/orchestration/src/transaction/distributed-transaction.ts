@@ -616,6 +616,13 @@ class DistributedTransaction extends EventEmitter {
     return null
   }
 
+  public shouldExecuteAsyncStepsLocally(): boolean {
+    return (
+      DistributedTransaction.keyValueStore.shouldExecuteAsyncStepsLocally?.() ??
+      true
+    )
+  }
+
   public async scheduleRetry(
     step: TransactionStep,
     interval: number
