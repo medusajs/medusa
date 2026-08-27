@@ -90,6 +90,25 @@ describe("search fields DSL", () => {
     expect(registered[0].definition.fields).toEqual(definition.fields)
   })
 
+  test("vector fields can declare an embed source", () => {
+    const definition = defineSearchIndex({
+      name: "product",
+      entity: "product",
+      fields: search.define({
+        id: search.keyword(),
+        title: search.text().searchable(),
+        embedding: search.vector(1536).embed("title"),
+      }),
+      async *seed() {},
+    })
+
+    expect(definition.fields.embedding).toEqual({
+      type: "vector",
+      dimensions: 1536,
+      embed: "title",
+    })
+  })
+
   test("range facet types are preserved on numeric fields", () => {
     const definition = defineSearchIndex({
       name: "product",
@@ -217,6 +236,22 @@ describe("search fields DSL", () => {
       min_price: "10",
     }
     void badDocument
+
+    const embeddedFields = search.define({
+      id: search.keyword(),
+      title: search.text(),
+      embedding: search.vector(3).embed("title"),
+    })
+
+    // Engine-embedded fields are omitted from the document type — seeds pass
+    // the source text, not a vector.
+    const embeddedDocument: SearchTypes.InferSearchDocumentType<
+      typeof embeddedFields
+    > = {
+      id: "1",
+      title: "Shirt",
+    }
+    void embeddedDocument
 
     expect(true).toBe(true)
   })
