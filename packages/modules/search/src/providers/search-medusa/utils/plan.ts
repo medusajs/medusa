@@ -38,8 +38,8 @@ function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-// Inspired by Meilisearch's own typo-tolerance defaults.
-const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 5
+// Cloud requires min_query_chars >= 3 * (distance + 1) for typos
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 6
 const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
 
 function resolveTypoTolerance(
