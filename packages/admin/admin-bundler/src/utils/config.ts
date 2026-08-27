@@ -30,6 +30,19 @@ export async function getViteConfig(
   const baseConfig: InlineConfig = {
     root,
     base: options.path,
+    resolve: {
+      /**
+       * The admin's Vite root lives inside the user's project, and admin
+       * extensions can pull in dependencies that resolve to a second React
+       * copy elsewhere in the workspace — e.g. a React 19 storefront in the
+       * same monorepo, hoisted to the workspace root. Without deduping, that
+       * copy gets pre-bundled alongside the dashboard's React, and every
+       * admin page crashes at runtime with "Objects are not valid as a React
+       * child" (React 19 elements use a different $$typeof symbol than the
+       * React 18 reconciler expects). Force a single copy of react/react-dom.
+       */
+      dedupe: ["react", "react-dom"],
+    },
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),
