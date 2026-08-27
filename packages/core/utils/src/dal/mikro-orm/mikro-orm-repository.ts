@@ -1533,10 +1533,15 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       }
 
       if (!("strategy" in findOptions_.options)) {
-        // MikroORM v7 defaults to BALANCED, so we are defaulting to it as it is a good
-        // balance between performance and behavior consistency
+        // Default to SELECT_IN whenever a strategy isn't explicitly set. This
+        // matches MikroORM v7's intended default and avoids the JOINED strategy
+        // LEFT-JOINing all sibling to-many collections into a cartesian result
+        // set, which can allocate gigabytes and OOM on retrieve-by-id paths
+        // (no limit/offset) for entities with many nested to-many relations.
+        // Modules that need JOINED semantics (e.g. the order module's versioned
+        // repository) set the strategy explicitly and are unaffected.
         Object.assign(findOptions_.options, {
-          strategy: LoadStrategy.BALANCED,
+          strategy: LoadStrategy.SELECT_IN,
         })
       }
 
