@@ -25,10 +25,14 @@ const definition: SearchTypes.ResolvedSearchIndexDefinition = {
     price: {
       type: "float",
       filterable: true,
-      facetable: { types: ["range"] },
+      facetable: { types: ["range", "stats"] },
     },
     tags: { type: "keyword", array: true, filterable: true, facetable: true },
-    created_at: { type: "date", filterable: true },
+    created_at: {
+      type: "date",
+      filterable: true,
+      facetable: { types: ["stats"] },
+    },
     variants: {
       type: "object",
       array: true,
@@ -444,6 +448,136 @@ describe("Medusa search utilities", () => {
       "And",
       [textAndStatus, ["price", "Lt", 100]],
     ])
+  })
+
+  it("builds stats facets as min/max rank queries plus a Count/Sum aggregation", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [{ field: "price", type: "stats" }],
+        },
+      },
+      plan
+    )
+
+    expect(queries).toHaveLength(3)
+    expect(queries.map((query) => query.stats)).toEqual(["min", "max", "agg"])
+
+    const present: unknown = [
+      "And",
+      [
+        ["title", "ContainsAllTokens", "chair"],
+        ["price", "NotEq", null],
+      ],
+    ]
+
+    expect(queries[0].query).toEqual({
+      rank_by: ["price", "asc"],
+      limit: 1,
+      include_attributes: ["price"],
+      filters: present,
+    })
+    expect(queries[1].query).toEqual({
+      rank_by: ["price", "desc"],
+      limit: 1,
+      include_attributes: ["price"],
+      filters: present,
+    })
+    expect(queries[2].query).toEqual({
+      aggregate_by: { count: ["Count"], sum: ["Sum", "price"] },
+      filters: ["title", "ContainsAllTokens", "chair"],
+    })
+  })
+
+  it("parses numeric stats facets and converts date min/max to epoch milliseconds", () => {
+    const numeric = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "price", type: "stats" }] },
+      },
+      plan
+    )
+    const dated = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "created_at", type: "stats" }] },
+      },
+      plan
+    )
+
+    expect(dated[2].query.aggregate_by).toEqual({ count: ["Count"] })
+    expect(
+      parseFacetResults(numeric, [
+        { rows: [{ id: "prod_1", price: 10 }] },
+        { rows: [{ id: "prod_2", price: 80 }] },
+        { aggregations: { count: 3, sum: 90 } },
+      ])
+    ).toEqual({
+      price: { type: "stats", min: 10, max: 80, count: 3, sum: 90 },
+    })
+    expect(
+      parseFacetResults(dated, [
+        { rows: [{ id: "prod_1", created_at: "2024-01-15T00:00:00.000Z" }] },
+        { rows: [{ id: "prod_2", created_at: "2024-06-01T00:00:00.000Z" }] },
+        { aggregations: { count: 2 } },
+      ])
+    ).toEqual({
+      created_at: {
+        type: "stats",
+        min: Date.parse("2024-01-15T00:00:00.000Z"),
+        max: Date.parse("2024-06-01T00:00:00.000Z"),
+        count: 2,
+      },
+    })
+  })
+
+  it("treats missing min/max rows as zero", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "price", type: "stats" }] },
+      },
+      plan
+    )
+
+    expect(
+      parseFacetResults(queries, [
+        { rows: [] },
+        { rows: [] },
+        { aggregations: { count: 0 } },
+      ])
+    ).toEqual({
+      price: { type: "stats", min: 0, max: 0, count: 0 },
+    })
+  })
+
+  it("rejects stats facets on non-numeric or array fields", () => {
+    expect(() =>
+      buildFacetQueries(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { facets: [{ field: "status", type: "stats" }] },
+        },
+        plan
+      )
+    ).toThrow(/scalar numeric field/)
+    expect(() =>
+      buildFacetQueries(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { facets: [{ field: "tags", type: "stats" }] },
+        },
+        plan
+      )
+    ).toThrow(/scalar numeric field/)
   })
 
   describe("typo tolerance", () => {

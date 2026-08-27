@@ -314,4 +314,65 @@ describe("MedusaSearchService", () => {
       "__medusa_highlight_0__"
     )
   })
+
+  it("maps stats facets from min/max rank queries and a Count/Sum aggregation", async () => {
+    const service = createService()
+    const priced: SearchTypes.ResolvedSearchIndexDefinition = {
+      ...definition,
+      fields: {
+        ...definition.fields,
+        price: {
+          type: "float",
+          filterable: true,
+          facetable: { types: ["stats"] },
+        },
+      },
+    }
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe", price: 20 }] },
+        { aggregations: { count: 2 } },
+        { rows: [{ id: "prod_1", price: 10 }] },
+        { rows: [{ id: "prod_2", price: 40 }] },
+        { aggregations: { count: 2, sum: 50 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 5 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    await expect(
+      service.search({
+        index: priced,
+        attributes_to_retrieve: ["title", "price"],
+        search_options: {
+          facets: [{ field: "price", type: "stats" }],
+        },
+      })
+    ).resolves.toMatchObject({
+      facets: {
+        price: { type: "stats", min: 10, max: 40, count: 2, sum: 50 },
+      },
+      metadata: { count: 2, processing_time_ms: 5 },
+    })
+
+    const queries = multiQuery.mock.calls[0][0].queries
+    expect(queries).toHaveLength(5)
+    expect(queries[2]).toMatchObject({
+      rank_by: ["price", "asc"],
+      limit: 1,
+      include_attributes: ["price"],
+    })
+    expect(queries[2].filters).toEqual(["price", "NotEq", null])
+    expect(queries[3]).toMatchObject({
+      rank_by: ["price", "desc"],
+      limit: 1,
+    })
+    expect(queries[4].aggregate_by).toEqual({
+      count: ["Count"],
+      sum: ["Sum", "price"],
+    })
+  })
 })
