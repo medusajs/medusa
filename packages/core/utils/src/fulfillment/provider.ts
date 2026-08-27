@@ -250,7 +250,10 @@ export class AbstractFulfillmentProviderService
    *
    * @param optionData - The `data` property of a shipping option.
    * @param data - The shipping method's `data` property with custom data passed from the frontend.
-   * @param context - The context details, such as the cart details.
+   * @param context - The context details, such as the cart details. If the workflow that triggered
+   * the calculation consumed the `setCalculatedShippingPricingContext` hook, its returned properties
+   * are merged into this object as well, with the framework-provided properties always taking
+   * precedence if there's a naming conflict.
    * @returns The calculated price's details.
    *
    * @example
@@ -264,7 +267,7 @@ export class AbstractFulfillmentProviderService
    *   ): Promise<CalculatedShippingOptionPrice> {
    *     // assuming the client can calculate the price using
    *     // the third-party service
-   *     const price = await this.client.calculate(data)
+   *     const price = await this.client.calculate(data, context)
    *     return {
    *       calculated_amount: price,
    *       // Update this boolean value based on your logic

@@ -1,5 +1,13 @@
-// `keyword` is exact-match — ids, handles, enum and facet values. `text` is
-// analyzed for free-text matching. Every engine draws the same line.
+/**
+ * The type of a field in a search index:
+ *
+ * - `keyword`: exact-match text, such as IDs, handles, and enum or facet values.
+ * - `text`: text analyzed for free-text matching.
+ * - `integer`, `float`, `boolean`, `date`: scalar values.
+ * - `geo`: a geographic point.
+ * - `object`: a nested object, whose fields are declared in `fields`.
+ * - `vector`: an embedding, whose dimensionality is declared in `dimensions`.
+ */
 export type SearchFieldKind =
   | "keyword"
   | "text"
@@ -11,22 +19,53 @@ export type SearchFieldKind =
   | "object"
   | "vector"
 
+/**
+ * The type of faceting supported on a field:
+ *
+ * - `value`: counts per distinct value.
+ * - `range`: counts per numeric or date range.
+ * - `stats`: aggregations, such as the minimum and maximum, over the field.
+ */
 export type SearchFacetKind = "value" | "range" | "stats"
 
+/**
+ * A field in a search index, and what the index can do with it.
+ */
 export interface SearchFieldDefinition {
+  /**
+   * The field's type.
+   */
   type: SearchFieldKind
+
+  /**
+   * Whether the field holds an array of the declared `type`.
+   */
   array?: boolean
 
-  // `weight` lands at build time on some engines (Meilisearch and Algolia),
-  // and at query time on others (Typesense and Elasticsearch).
+  /**
+   * Whether the field is matched against a free-text query, optionally with a
+   * `weight` boosting its relevance. The weight is applied at build time on some
+   * engines, such as Meilisearch and Algolia, and at query time on others, such
+   * as Typesense and Elasticsearch.
+   */
   searchable?: boolean | { weight?: number }
 
+  /**
+   * Whether the field can be used in a query's filters.
+   */
   filterable?: boolean
+
+  /**
+   * Whether results can be sorted by the field.
+   */
   sortable?: boolean
 
-  // Defaults to `["value"]`, or `["range"]` for numeric and date fields.
-  // `"stats"` is opt-in: implying it would make numeric fields unusable on
-  // providers without aggregations.
+  /**
+   * Whether the field can be faceted, and which facet types it supports.
+   * Defaults to `["value"]`, or `["range"]` for numeric and date fields.
+   * `"stats"` is opt-in, since implying it would make numeric fields unusable on
+   * providers without aggregations.
+   */
   facetable?: boolean | { types?: SearchFacetKind[] }
 
   /**
@@ -38,7 +77,9 @@ export interface SearchFieldDefinition {
    */
   retrievable?: boolean
 
-  // For `type: "object"`.
+  /**
+   * The fields of a nested object, only used when `type` is `object`.
+   */
   fields?: Record<string, SearchFieldDefinition>
 
   /**
@@ -58,6 +99,9 @@ export interface SearchFieldDefinition {
    */
   dimensions?: number
 
-  // Keyed by provider identifier, e.g. `{ meilisearch: { ... } }`.
+  /**
+   * Field options specific to a search engine, keyed by provider identifier, such
+   * as `{ meilisearch: { ... } }`.
+   */
   provider_options?: Record<string, Record<string, unknown>>
 }

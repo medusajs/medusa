@@ -28,9 +28,8 @@ Supported providers include Sentry, Datadog, Grafana, Google Cloud Platform (GCP
 To create a log drain for a project:
 
 1. [Open the project's dashboard](../../projects/page.mdx#open-project-dashboard).
-2. Click the **Settings** tab.
-3. Click **Log Drains** in the sidebar.
-4. Click **Create log drain**.
+2. Click **Log Drains** in the sidebar.
+3. Click **Create log drain**.
 
 A full-screen modal opens with a two-step flow:
 
@@ -48,7 +47,7 @@ Choose a provider from the grid. Available options are:
 
 After selecting a provider, fill in the configuration form:
 
-- **Provider** (required): The observability provider. You can change this after the initial selection.
+- **Provider** (required): The observability provider. You can change this after the initial selection. Once a provider is selected, a **Docs** link appears next to the **Provider** field label. Click it to open the provider's setup documentation in a new tab.
 - **Name** (required): A display name for the log drain.
 - **OTLP URL** (required, except for GCP which requires the service account JSON key): The endpoint URL to send logs to. For instructions on how to find the OTLP URL for each provider, see the [Find the OTLP URL and Headers](#find-the-otlp-url-and-headers) section below.
 - **Log Level** (optional): Filters which log levels are forwarded. Select **All** to forward every level, or pick a specific level:
@@ -177,7 +176,7 @@ For a generic OTLP provider, find the provider's OTLP HTTP logs endpoint, which 
 
 ## View and Edit a Log Drain
 
-The configured log drain for a project appears as a card on the **Log Drains** settings page, showing its name, provider, OTLP URL, log level, source toggles, header keys, and resource attribute keys.
+The configured log drain for a project appears as a card on the **Log Drains** settings page, showing its name, provider, OTLP URL, log level, source toggles, header keys, and resource attribute keys. The provider row displays the provider's icon and name alongside a documentation link. Click it to open the provider's setup documentation in a new tab.
 
 To edit a log drain:
 

@@ -29,6 +29,7 @@ import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-defaul
 import { rule as noServiceMutationsInApiRoute } from "./no-service-mutations-in-api-route"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
+import { rule as noThrowInWorkflowConstructor } from "./no-throw-in-workflow-constructor"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
@@ -101,6 +102,7 @@ export const rules = {
   "no-service-mutations-in-api-route": noServiceMutationsInApiRoute,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
+  "no-throw-in-workflow-constructor": noThrowInWorkflowConstructor,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,

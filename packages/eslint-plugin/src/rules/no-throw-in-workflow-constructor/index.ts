@@ -1,0 +1,1 @@
+export { rule } from "./rule"

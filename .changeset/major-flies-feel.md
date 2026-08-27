@@ -1,7 +1,6 @@
 ---
 "@medusajs/search": patch
 "@medusajs/search-postgres": patch
-"@medusajs/search-local": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
 "@medusajs/medusa": patch

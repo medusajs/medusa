@@ -5,6 +5,7 @@ import {
   buildQueryPlan,
   fromSearchDocument,
   parseFacetResults,
+  parseHighlights,
   toSearchDocument,
   toSearchFilter,
 } from ".."
@@ -58,6 +59,10 @@ describe("Medusa search utilities", () => {
     })
     expect(plan.schema.id).not.toHaveProperty("glob")
     expect(plan.schema.title).not.toHaveProperty("glob")
+  })
+
+  it("builds a fuzzy index on searchable fields by default", () => {
+    expect(plan.schema.title).toMatchObject({ fuzzy: true })
   })
 
   it("does not put glob on text fields unless they opt in", () => {
@@ -187,7 +192,138 @@ describe("Medusa search utilities", () => {
       3,
       ["title", "BM25", "red shoe"],
     ])
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "red shoe",
+    ])
     expect(query.query.limit).toBe(15)
+  })
+
+  it("ANDs the text match filter with attribute filters", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        filters: { status: "published" },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "And",
+      [
+        ["status", "Eq", "published"],
+        ["title", "ContainsAllTokens", "chair"],
+      ],
+    ])
+  })
+
+  it("uses ContainsAnyToken when match_strategy is any", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "red shoe",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "any" },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAnyToken",
+      "red shoe",
+    ])
+  })
+
+  it("sorts text matches by an attribute instead of BM25", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        pagination: { order: { price: "ASC" } },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "chair",
+    ])
+    expect(query.query.rank_by).toEqual(["price", "asc"])
+  })
+
+  it("keeps BM25 ranking when order is only _score", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        pagination: { order: { _score: "DESC" } },
+      },
+      plan
+    )
+
+    expect(query.query.rank_by).toEqual([
+      "Product",
+      3,
+      ["title", "BM25", "chair"],
+    ])
+  })
+
+  it("ORs ContainsAllTokens across searchable fields for match_strategy all", () => {
+    const multi = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        description: { type: "text", searchable: true },
+      },
+    })
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "red chair",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "all" },
+      },
+      multi
+    )
+
+    expect(query.query.filters).toEqual([
+      "Or",
+      [
+        ["title", "ContainsAllTokens", "red chair"],
+        ["description", "ContainsAllTokens", "red chair"],
+      ],
+    ])
+  })
+
+  it("passes last_as_prefix for match_strategy last", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "dtc sta",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "last" },
+      },
+      plan
+    )
+
+    expect(query.query.rank_by).toEqual([
+      "Product",
+      3,
+      ["title", "BM25", "dtc sta", { last_as_prefix: true }],
+    ])
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "dtc sta",
+      { last_as_prefix: true },
+    ])
   })
 
   it("builds and parses value and range facet queries", () => {
@@ -196,6 +332,7 @@ describe("Medusa search utilities", () => {
       attributes_to_retrieve: ["title"],
       search_options: {
         facets: [
+          { field: "status", limit: 5 },
           { field: "tags", limit: 2 },
           {
             field: "price",
@@ -207,21 +344,40 @@ describe("Medusa search utilities", () => {
     }
     const queries = buildFacetQueries(input, plan)
 
-    expect(queries).toHaveLength(2)
-    expect(queries[0].query.group_by).toEqual([
+    expect(queries).toHaveLength(3)
+    expect(queries[0].query.group_by).toEqual(["status"])
+    expect(queries[0].query.top_k).toBe(10000)
+    expect(queries[0].query).not.toHaveProperty("limit")
+    expect(queries[1].query.group_by).toEqual([
       { value: ["ForEachUnique", "tags"] },
     ])
+    expect(queries[1].query.top_k).toBe(10000)
+    expect(queries[1].query).not.toHaveProperty("limit")
+    expect(queries[0].query.filters).toBeUndefined()
     expect(
       parseFacetResults(queries, [
         {
           aggregation_groups: [
+            { status: "published", count: 2 },
+            { status: ["draft"], count: 1 },
+          ],
+        },
+        {
+          aggregation_groups: [
             { value: "shoe", count: 3 },
-            { value: "sale", count: 1 },
+            { tags: ["sale"], count: 1 },
           ],
         },
         { aggregations: { count: 2 } },
       ])
     ).toEqual({
+      status: {
+        type: "value",
+        values: [
+          { value: "published", count: 2 },
+          { value: "draft", count: 1 },
+        ],
+      },
       tags: {
         type: "value",
         values: [
@@ -233,6 +389,416 @@ describe("Medusa search utilities", () => {
         type: "range",
         ranges: [{ key: "cheap", from: undefined, to: 100, count: 2 }],
       },
+    })
+  })
+
+  it("caps alphabetically sorted facet groups with top_k", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [{ field: "status", sort: "alpha", limit: 5 }],
+        },
+      },
+      plan
+    )
+
+    expect(queries[0].query.top_k).toBe(5)
+    expect(queries[0].query).not.toHaveProperty("limit")
+  })
+
+  it("applies the text match filter to value and range facet queries", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        q: "chair",
+        filters: { status: "published" },
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [
+            { field: "tags" },
+            {
+              field: "price",
+              type: "range",
+              ranges: [{ key: "cheap", to: 100 }],
+            },
+          ],
+        },
+      },
+      plan
+    )
+
+    const textAndStatus: unknown = [
+      "And",
+      [
+        ["status", "Eq", "published"],
+        ["title", "ContainsAllTokens", "chair"],
+      ],
+    ]
+
+    expect(queries[0].query.filters).toEqual(textAndStatus)
+    expect(queries[1].query.filters).toEqual([
+      "And",
+      [textAndStatus, ["price", "Lt", 100]],
+    ])
+  })
+
+  describe("typo tolerance", () => {
+    it("disables the fuzzy index for attributes opted out at the index level", () => {
+      const disabled = buildIndexPlan({
+        ...definition,
+        settings: {
+          typo_tolerance: { disabled_on_attributes: ["title"] },
+        },
+      })
+      expect(disabled.schema.title).not.toHaveProperty("fuzzy")
+    })
+
+    it("disables the fuzzy index entirely when typo tolerance is off", () => {
+      const disabled = buildIndexPlan({
+        ...definition,
+        settings: { typo_tolerance: { enabled: false } },
+      })
+      expect(disabled.schema.title).not.toHaveProperty("fuzzy")
+    })
+
+    it("lets a field explicitly opt out of the fuzzy index", () => {
+      const disabled = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          title: {
+            type: "text",
+            searchable: true,
+            provider_options: { "search-medusa": { fuzzy: false } },
+          },
+        },
+      })
+      expect(disabled.schema.title).toMatchObject({ fuzzy: false })
+    })
+
+    it("boosts BM25 rank_by with a Fuzzy filter using the default edit-distance thresholds", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "Sum",
+        [
+          ["Product", 3, ["title", "BM25", "shoo"]],
+          [
+            "Product",
+            0.01,
+            [
+              "title",
+              "Fuzzy",
+              "shoo",
+              {
+                max_edit_distance: [
+                  { min_query_chars: 6, distance: 1 },
+                  { min_query_chars: 9, distance: 2 },
+                ],
+                case_sensitive: false,
+              },
+            ],
+          ],
+        ],
+      ])
+      expect(query.query.filters).toEqual([
+        "Or",
+        [
+          ["title", "ContainsAllTokens", "shoo"],
+          [
+            "title",
+            "Fuzzy",
+            "shoo",
+            {
+              max_edit_distance: [
+                { min_query_chars: 6, distance: 1 },
+                { min_query_chars: 9, distance: 2 },
+              ],
+              case_sensitive: false,
+            },
+          ],
+        ],
+      ])
+    })
+
+    it("honors custom index-level edit-distance thresholds and requires every word to match", () => {
+      const custom = buildIndexPlan({
+        ...definition,
+        settings: {
+          typo_tolerance: {
+            min_word_size_for_one_typo: 8,
+            min_word_size_for_two_typos: 12,
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        custom
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "Sum",
+        [
+          ["Product", 3, ["title", "BM25", "red shoo"]],
+          [
+            "Product",
+            0.01,
+            [
+              "And",
+              [
+                [
+                  "title",
+                  "Fuzzy",
+                  "red",
+                  {
+                    max_edit_distance: [
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
+                    ],
+                    case_sensitive: false,
+                  },
+                ],
+                [
+                  "title",
+                  "Fuzzy",
+                  "shoo",
+                  {
+                    max_edit_distance: [
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
+                    ],
+                    case_sensitive: false,
+                  },
+                ],
+              ],
+            ],
+          ],
+        ],
+      ])
+    })
+
+    it("clamps Fuzzy min_query_chars to Cloud's 3 * (distance + 1) floor", () => {
+      const custom = buildIndexPlan({
+        ...definition,
+        settings: {
+          typo_tolerance: {
+            min_word_size_for_one_typo: 3,
+            min_word_size_for_two_typos: 6,
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        custom
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause[3].max_edit_distance).toEqual([
+        { min_query_chars: 6, distance: 1 },
+        { min_query_chars: 9, distance: 2 },
+      ])
+    })
+
+    it("requires only one word to match when match_strategy is any", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true, match_strategy: "any" },
+        },
+        plan
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause[0]).toBe("Or")
+    })
+
+    it("rejects typo tolerance when no searchable field has a fuzzy index", () => {
+      const noFuzzy = buildIndexPlan({
+        ...definition,
+        settings: { typo_tolerance: { enabled: false } },
+      })
+
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            q: "shoo",
+            attributes_to_retrieve: ["title"],
+            search_options: { typo_tolerance: true },
+          },
+          noFuzzy
+        )
+      ).toThrow(/no fuzzy-enabled fields/)
+    })
+
+    it("rejects typo tolerance without a text query", () => {
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            attributes_to_retrieve: ["title"],
+            search_options: { typo_tolerance: true },
+          },
+          plan
+        )
+      ).toThrow(/require a text query/)
+    })
+  })
+
+  describe("highlighting", () => {
+    it("builds a Highlight compute_attributes expression with default tags", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red",
+          attributes_to_retrieve: ["title"],
+          search_options: { highlight: { fields: ["title"] } },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toEqual({
+        __medusa_highlight_0__: [
+          "Highlight",
+          "title",
+          {
+            fragment_by: "none",
+            rank_fragments_by: ["$fragment", "BM25", "red"],
+            fragment_limit: 1,
+            include_offsets: "utf-16",
+          },
+        ],
+      })
+      expect(query.highlight).toEqual({
+        pre_tag: "<mark>",
+        post_tag: "</mark>",
+        fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+      })
+    })
+
+    it("crops fragments and honors custom tags when snippet is requested", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red",
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            highlight: {
+              fields: ["title"],
+              pre_tag: "<b>",
+              post_tag: "</b>",
+              snippet: true,
+            },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes?.__medusa_highlight_0__).toEqual([
+        "Highlight",
+        "title",
+        {
+          fragment_by: "sentence",
+          rank_fragments_by: ["$fragment", "BM25", "red"],
+          fragment_limit: 3,
+          include_offsets: "utf-16",
+        },
+      ])
+      expect(query.highlight).toMatchObject({
+        pre_tag: "<b>",
+        post_tag: "</b>",
+      })
+    })
+
+    it("rejects highlighting a field that is not searchable", () => {
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            q: "red",
+            attributes_to_retrieve: ["status"],
+            search_options: { highlight: { fields: ["status"] } },
+          },
+          plan
+        )
+      ).toThrow(/not searchable/)
+    })
+
+    it("rejects highlighting without a text query", () => {
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            attributes_to_retrieve: ["title"],
+            search_options: { highlight: { fields: ["title"] } },
+          },
+          plan
+        )
+      ).toThrow(/require a text query/)
+    })
+
+    it("tags matched ranges in returned fragments, applied back to front", () => {
+      const highlighted = parseHighlights(
+        {
+          id: "prod_1",
+          __medusa_highlight_0__: [
+            {
+              text: "Red running shoe",
+              fragment_range: [0, 17],
+              match_ranges: [
+                [4, 11],
+                [0, 3],
+              ],
+            },
+          ],
+        },
+        {
+          pre_tag: "<mark>",
+          post_tag: "</mark>",
+          fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+        }
+      )
+
+      expect(highlighted).toEqual({
+        title: ["<mark>Red</mark> <mark>running</mark> shoe"],
+      })
+    })
+
+    it("omits fields with no highlight fragments", () => {
+      expect(
+        parseHighlights(
+          { id: "prod_1" },
+          {
+            pre_tag: "<mark>",
+            post_tag: "</mark>",
+            fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+          }
+        )
+      ).toBeUndefined()
     })
   })
 })
