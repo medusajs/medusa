@@ -70,7 +70,12 @@ describe("Medusa search utilities", () => {
       ...definition,
       fields: {
         ...definition.fields,
-        title: { type: "text", searchable: true, filterable: true, sortable: true },
+        title: {
+          type: "text",
+          searchable: true,
+          filterable: true,
+          sortable: true,
+        },
       },
     })
     expect(filterableText.schema.title).not.toHaveProperty("glob")
@@ -137,6 +142,7 @@ describe("Medusa search utilities", () => {
       id: "prod_1",
       created_at: "2026-01-01T00:00:00.000Z",
       "variants.sku": ["red-41", "red-42"],
+      embedding: [0.1, 0.2, 0.3],
     })
     expect(fromSearchDocument(row, ["title", "variants.sku"])).toEqual({
       title: "Red shoe",
@@ -249,11 +255,7 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(query.query.filters).toEqual([
-      "title",
-      "ContainsAllTokens",
-      "chair",
-    ])
+    expect(query.query.filters).toEqual(["title", "ContainsAllTokens", "chair"])
     expect(query.query.rank_by).toEqual(["price", "asc"])
   })
 
@@ -799,6 +801,179 @@ describe("Medusa search utilities", () => {
           }
         )
       ).toBeUndefined()
+    })
+  })
+
+  describe("vector search", () => {
+    it("ranks by a client-supplied embedding", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["embedding", "ANN", [0.1, 0.2, 0.3]])
+    })
+
+    it("infers the vector field when the index has exactly one", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["embedding", "ANN", [0.1, 0.2, 0.3]])
+    })
+
+    it("rejects vector.query when the field does not declare embed", () => {
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            attributes_to_retrieve: ["title"],
+            search_options: {
+              vector: { field: "embedding", query: "red shoes" },
+            },
+          },
+          plan
+        )
+      ).toThrow(/declare "embed"/)
+    })
+
+    it("hybrids BM25 and ANN when a text query is also present", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoe",
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "Sum",
+        [
+          ["Product", 0.5, ["Product", 3, ["title", "BM25", "red shoe"]]],
+          ["Product", 0.5, ["embedding", "ANN", [0.1, 0.2, 0.3]]],
+        ],
+      ])
+      expect(query.query.filters).toBeUndefined()
+    })
+
+    it("puts embed on the source field and omits the vector column", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: "title",
+          },
+        },
+      })
+
+      expect(embedded.schema.embedding).toBeUndefined()
+      expect(embedded.schema.title).toEqual(
+        expect.objectContaining({
+          embed: { dims: 3 },
+        })
+      )
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", query: "red shoes" },
+          },
+        },
+        embedded
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "title",
+        "ANN",
+        ["Embed", "red shoes"],
+      ])
+    })
+
+    it("ranks by a client-supplied embedding against an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: "title",
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        embedded
+      )
+
+      expect(query.query.rank_by).toEqual(["title", "ANN", [0.1, 0.2, 0.3]])
+    })
+
+    it("does not write client embeddings for engine-embedded fields", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: "title",
+          },
+        },
+      })
+
+      expect(
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
+            embedding: [0.1, 0.2, 0.3],
+          },
+          embedded
+        )
+      ).not.toHaveProperty("embedding")
+    })
+
+    it("rejects client embeddings whose dimensions do not match", () => {
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
+            embedding: [0.1, 0.2],
+          },
+          plan
+        )
+      ).toThrow(/expected 3 dimensions/)
     })
   })
 })
