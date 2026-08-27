@@ -192,7 +192,114 @@ describe("Medusa search utilities", () => {
       3,
       ["title", "BM25", "red shoe"],
     ])
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "red shoe",
+    ])
     expect(query.query.limit).toBe(15)
+  })
+
+  it("ANDs the text match filter with attribute filters", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        filters: { status: "published" },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "And",
+      [
+        ["status", "Eq", "published"],
+        ["title", "ContainsAllTokens", "chair"],
+      ],
+    ])
+  })
+
+  it("uses ContainsAnyToken when match_strategy is any", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "red shoe",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "any" },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAnyToken",
+      "red shoe",
+    ])
+  })
+
+  it("sorts text matches by an attribute instead of BM25", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        pagination: { order: { price: "ASC" } },
+      },
+      plan
+    )
+
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "chair",
+    ])
+    expect(query.query.rank_by).toEqual(["price", "asc"])
+  })
+
+  it("keeps BM25 ranking when order is only _score", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        pagination: { order: { _score: "DESC" } },
+      },
+      plan
+    )
+
+    expect(query.query.rank_by).toEqual([
+      "Product",
+      3,
+      ["title", "BM25", "chair"],
+    ])
+  })
+
+  it("ORs ContainsAllTokens across searchable fields for match_strategy all", () => {
+    const multi = buildIndexPlan({
+      ...definition,
+      fields: {
+        ...definition.fields,
+        description: { type: "text", searchable: true },
+      },
+    })
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "red chair",
+        attributes_to_retrieve: ["title"],
+        search_options: { match_strategy: "all" },
+      },
+      multi
+    )
+
+    expect(query.query.filters).toEqual([
+      "Or",
+      [
+        ["title", "ContainsAllTokens", "red chair"],
+        ["description", "ContainsAllTokens", "red chair"],
+      ],
+    ])
   })
 
   it("passes last_as_prefix for match_strategy last", () => {
@@ -211,6 +318,12 @@ describe("Medusa search utilities", () => {
       3,
       ["title", "BM25", "dtc sta", { last_as_prefix: true }],
     ])
+    expect(query.query.filters).toEqual([
+      "title",
+      "ContainsAllTokens",
+      "dtc sta",
+      { last_as_prefix: true },
+    ])
   })
 
   it("builds and parses value and range facet queries", () => {
@@ -219,6 +332,7 @@ describe("Medusa search utilities", () => {
       attributes_to_retrieve: ["title"],
       search_options: {
         facets: [
+          { field: "status", limit: 5 },
           { field: "tags", limit: 2 },
           {
             field: "price",
@@ -230,21 +344,40 @@ describe("Medusa search utilities", () => {
     }
     const queries = buildFacetQueries(input, plan)
 
-    expect(queries).toHaveLength(2)
-    expect(queries[0].query.group_by).toEqual([
+    expect(queries).toHaveLength(3)
+    expect(queries[0].query.group_by).toEqual(["status"])
+    expect(queries[0].query.top_k).toBe(10000)
+    expect(queries[0].query).not.toHaveProperty("limit")
+    expect(queries[1].query.group_by).toEqual([
       { value: ["ForEachUnique", "tags"] },
     ])
+    expect(queries[1].query.top_k).toBe(10000)
+    expect(queries[1].query).not.toHaveProperty("limit")
+    expect(queries[0].query.filters).toBeUndefined()
     expect(
       parseFacetResults(queries, [
         {
           aggregation_groups: [
+            { status: "published", count: 2 },
+            { status: ["draft"], count: 1 },
+          ],
+        },
+        {
+          aggregation_groups: [
             { value: "shoe", count: 3 },
-            { value: "sale", count: 1 },
+            { tags: ["sale"], count: 1 },
           ],
         },
         { aggregations: { count: 2 } },
       ])
     ).toEqual({
+      status: {
+        type: "value",
+        values: [
+          { value: "published", count: 2 },
+          { value: "draft", count: 1 },
+        ],
+      },
       tags: {
         type: "value",
         values: [
@@ -257,6 +390,58 @@ describe("Medusa search utilities", () => {
         ranges: [{ key: "cheap", from: undefined, to: 100, count: 2 }],
       },
     })
+  })
+
+  it("caps alphabetically sorted facet groups with top_k", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [{ field: "status", sort: "alpha", limit: 5 }],
+        },
+      },
+      plan
+    )
+
+    expect(queries[0].query.top_k).toBe(5)
+    expect(queries[0].query).not.toHaveProperty("limit")
+  })
+
+  it("applies the text match filter to value and range facet queries", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        q: "chair",
+        filters: { status: "published" },
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [
+            { field: "tags" },
+            {
+              field: "price",
+              type: "range",
+              ranges: [{ key: "cheap", to: 100 }],
+            },
+          ],
+        },
+      },
+      plan
+    )
+
+    const textAndStatus: unknown = [
+      "And",
+      [
+        ["status", "Eq", "published"],
+        ["title", "ContainsAllTokens", "chair"],
+      ],
+    ]
+
+    expect(queries[0].query.filters).toEqual(textAndStatus)
+    expect(queries[1].query.filters).toEqual([
+      "And",
+      [textAndStatus, ["price", "Lt", 100]],
+    ])
   })
 
   describe("typo tolerance", () => {
@@ -317,12 +502,30 @@ describe("Medusa search utilities", () => {
               "shoo",
               {
                 max_edit_distance: [
-                  { min_query_chars: 5, distance: 1 },
+                  { min_query_chars: 6, distance: 1 },
                   { min_query_chars: 9, distance: 2 },
                 ],
                 case_sensitive: false,
               },
             ],
+          ],
+        ],
+      ])
+      expect(query.query.filters).toEqual([
+        "Or",
+        [
+          ["title", "ContainsAllTokens", "shoo"],
+          [
+            "title",
+            "Fuzzy",
+            "shoo",
+            {
+              max_edit_distance: [
+                { min_query_chars: 6, distance: 1 },
+                { min_query_chars: 9, distance: 2 },
+              ],
+              case_sensitive: false,
+            },
           ],
         ],
       ])
@@ -333,8 +536,8 @@ describe("Medusa search utilities", () => {
         ...definition,
         settings: {
           typo_tolerance: {
-            min_word_size_for_one_typo: 3,
-            min_word_size_for_two_typos: 6,
+            min_word_size_for_one_typo: 8,
+            min_word_size_for_two_typos: 12,
           },
         },
       })
@@ -365,8 +568,8 @@ describe("Medusa search utilities", () => {
                   "red",
                   {
                     max_edit_distance: [
-                      { min_query_chars: 3, distance: 1 },
-                      { min_query_chars: 6, distance: 2 },
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
                     ],
                     case_sensitive: false,
                   },
@@ -377,8 +580,8 @@ describe("Medusa search utilities", () => {
                   "shoo",
                   {
                     max_edit_distance: [
-                      { min_query_chars: 3, distance: 1 },
-                      { min_query_chars: 6, distance: 2 },
+                      { min_query_chars: 8, distance: 1 },
+                      { min_query_chars: 12, distance: 2 },
                     ],
                     case_sensitive: false,
                   },
@@ -387,6 +590,34 @@ describe("Medusa search utilities", () => {
             ],
           ],
         ],
+      ])
+    })
+
+    it("clamps Fuzzy min_query_chars to Cloud's 3 * (distance + 1) floor", () => {
+      const custom = buildIndexPlan({
+        ...definition,
+        settings: {
+          typo_tolerance: {
+            min_word_size_for_one_typo: 3,
+            min_word_size_for_two_typos: 6,
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        custom
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause[3].max_edit_distance).toEqual([
+        { min_query_chars: 6, distance: 1 },
+        { min_query_chars: 9, distance: 2 },
       ])
     })
 

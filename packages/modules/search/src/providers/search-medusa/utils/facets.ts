@@ -1,12 +1,14 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import type {
+  AggregationGroup,
   Filter,
   IndexQuery,
   IndexQueryResult,
 } from "./api-types"
-import { toSearchFilter } from "./filters"
+import { mergeFilters } from "./filters"
 import { IndexPlan } from "./plan"
+import { buildQueryFilters } from "./query"
 
 type RangeFacetRequest = Extract<
   SearchTypes.SearchFacetRequest,
@@ -31,12 +33,15 @@ function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-function and(filters: (Filter | undefined)[]): Filter | undefined {
-  const present = filters.filter((item): item is Filter => !!item)
-  if (!present.length) {
-    return undefined
+function aggregationGroupValue(
+  group: AggregationGroup,
+  field: string
+): string {
+  const raw = group.value ?? group[field]
+  if (Array.isArray(raw)) {
+    return String(raw[0] ?? "")
   }
-  return present.length === 1 ? present[0] : ["And", present]
+  return String(raw ?? "")
 }
 
 export function buildFacetQueries(
@@ -45,7 +50,7 @@ export function buildFacetQueries(
 ): FacetQuery[] {
   const requests = (input.search_options?.facets ?? []) as
     | SearchTypes.SearchFacetRequest[]
-  const base = toSearchFilter(input.filters, plan)
+  const base = buildQueryFilters(input, plan)
   const result: FacetQuery[] = []
 
   for (const request of requests) {
@@ -82,7 +87,7 @@ export function buildFacetQueries(
           range,
           query: {
             aggregate_by: { count: ["Count"] },
-            filters: and([base, ...bounds]),
+            filters: mergeFilters([base, ...bounds]),
           },
         })
       }
@@ -94,13 +99,17 @@ export function buildFacetQueries(
       request,
       query: {
         aggregate_by: { count: ["Count"] },
+        // Untagged enum: a field name, or `{ alias: ["ForEachUnique", field] }`
+        // for array attributes. `{ value: "field" }` matches neither variant.
         group_by: field.is_array
           ? [{ value: ["ForEachUnique", request.field] }]
-          : [{ value: request.field }],
+          : [request.field],
         filters: base,
         // Groups are returned by key, not count. Fetch all available groups
         // before applying count sorting or a facet-value query locally.
-        limit:
+        // Cloud's aggregation schema rejects `limit`; `top_k` is the
+        // documented alias for `limit.total` (max 10,000).
+        top_k:
           request.sort === "alpha" && !request.query
             ? Math.min(Math.max(request.limit ?? 10, 1), 10000)
             : 10000,
@@ -142,7 +151,7 @@ export function parseFacetResults(
     }
 
     let values = (response?.aggregation_groups ?? []).map((group) => ({
-      value: String(group.value),
+      value: aggregationGroupValue(group, query.field),
       count: Number(group.count ?? 0),
     }))
 

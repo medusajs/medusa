@@ -36,21 +36,14 @@ describe("MedusaSearchService", () => {
       /explicit "api_key"/
     )
     expect(
-      () =>
-        new MedusaSearchService(
-          {},
-          { api_key: "medusa_test" } as any
-        )
+      () => new MedusaSearchService({}, { api_key: "medusa_test" } as any)
     ).toThrow(/explicit "endpoint"/)
     expect(
       () =>
-        new MedusaSearchService(
-          {},
-          {
-            api_key: "medusa_test",
-            endpoint: "https://search.medusa.example",
-          } as any
-        )
+        new MedusaSearchService({}, {
+          api_key: "medusa_test",
+          endpoint: "https://search.medusa.example",
+        } as any)
     ).toThrow(/environment_handle/)
   })
 
@@ -217,7 +210,7 @@ describe("MedusaSearchService", () => {
         { rows: [{ id: "prod_1", title: "Red shoe", $dist: 1.5 }] },
         { aggregations: { count: 1 } },
         {
-          aggregation_groups: [{ value: "published", count: 1 }],
+          aggregation_groups: [{ status: "published", count: 1 }],
         },
       ],
       billing: {},
@@ -253,6 +246,16 @@ describe("MedusaSearchService", () => {
       },
       metadata: { count: 1, processing_time_ms: 4 },
     })
+
+    const [hitsQuery, countQuery, facetQuery] =
+      multiQuery.mock.calls[0][0].queries
+    const textFilter = ["title", "ContainsAllTokens", "red"]
+    expect(hitsQuery.filters).toEqual(textFilter)
+    expect(countQuery.filters).toEqual(textFilter)
+    expect(facetQuery.filters).toEqual(textFilter)
+    expect(facetQuery.group_by).toEqual(["status"])
+    expect(facetQuery.top_k).toBe(10000)
+    expect(facetQuery).not.toHaveProperty("limit")
   })
 
   it("boosts typo-tolerant matches into rank_by and surfaces highlighted fragments", async () => {
@@ -303,6 +306,10 @@ describe("MedusaSearchService", () => {
 
     const sentQuery = multiQuery.mock.calls[0][0].queries[0]
     expect(sentQuery.rank_by[0]).toBe("Sum")
+    expect(sentQuery.rank_by[1][1][2][3].max_edit_distance).toEqual([
+      { min_query_chars: 6, distance: 1 },
+      { min_query_chars: 9, distance: 2 },
+    ])
     expect(sentQuery.compute_attributes).toHaveProperty(
       "__medusa_highlight_0__"
     )
