@@ -21,7 +21,9 @@ import {
   PostgresVectorDistance,
   projectDocument,
   projectIndexedDocument,
+  resolveVectorField,
   sameSchema,
+  sourceTextForEmbed,
   SqlFragment,
   tableNameForIndex,
   textSearchConfigName,
@@ -399,6 +401,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }): Promise<SearchTypes.SearchTask> {
     assertIndexSupported(index, this.engine_)
     const plan = buildIndexPlan(index)
+    this.assertEmbedderForPlan(plan)
     const table = tableNameForIndex(index.physical_name)
     const existing = await this.getCatalog(index.physical_name)
     const rebuilt =
@@ -586,6 +589,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       projections.set(projection.id, { document, projection })
     }
 
+    await this.applyEngineEmbeddings(projections, catalog.plan)
+
     const vectors = catalog.plan.vectors
     const entries = [...projections.values()]
 
@@ -719,6 +724,70 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     return this.task(index)
   }
 
+  protected engineEmbeddedPaths(plan: IndexPlan): string[] {
+    return plan.vectors.filter((path) => !!plan.fields.get(path)?.field.embed)
+  }
+
+  /**
+   * Engine-embedded vector fields are produced from a source text field via
+   * the configured `embedder`. Without one the columns would stay null.
+   */
+  protected assertEmbedderForPlan(plan: IndexPlan): void {
+    const embedded = this.engineEmbeddedPaths(plan)
+    if (!embedded.length || this.embedder_) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Vector field "${embedded[0]}" declares "embed", which requires an "embedder" function on the postgres search provider options`
+    )
+  }
+
+  protected async applyEngineEmbeddings(
+    projections: Map<
+      string,
+      {
+        document: SearchTypes.SearchDocument
+        projection: ReturnType<typeof projectIndexedDocument>
+      }
+    >,
+    plan: IndexPlan
+  ): Promise<void> {
+    const embedded = this.engineEmbeddedPaths(plan)
+    if (!embedded.length) {
+      return
+    }
+
+    this.assertEmbedderForPlan(plan)
+    const embedder = this.embedder_!
+
+    const jobs: Promise<void>[] = []
+    for (const { document, projection } of projections.values()) {
+      for (const path of embedded) {
+        const planned = plan.fields.get(path)!
+        const text = sourceTextForEmbed(document, planned.field.embed!)
+        if (!text) {
+          continue
+        }
+
+        jobs.push(
+          embedder(text).then((embedding) => {
+            if (planned.dimensions && embedding.length !== planned.dimensions) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Embedder returned ${embedding.length} dimensions for "${path}", expected ${planned.dimensions}`
+              )
+            }
+            projection.vectors[path] = embedding
+          })
+        )
+      }
+    }
+
+    await Promise.all(jobs)
+  }
+
   async search(
     input: SearchTypes.ProviderSearchQuery
   ): Promise<SearchTypes.SearchResult> {
@@ -834,18 +903,14 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     vectorOpts: NonNullable<SearchTypes.SearchOptions["vector"]>,
     plan: IndexPlan
   ): Promise<number[]> {
-    const field = vectorOpts.field
-    const planned = plan.fields.get(field)
-
-    if (!planned || planned.kind !== "vector") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Vector search field "${field}" is not a vector field on this index`
-      )
-    }
+    const field = resolveVectorField(vectorOpts, plan)
+    const planned = plan.fields.get(field)!
 
     if (vectorOpts.value) {
-      if (vectorOpts.value.length !== planned.dimensions) {
+      if (
+        planned.dimensions &&
+        vectorOpts.value.length !== planned.dimensions
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Vector value for "${field}" expected ${planned.dimensions} dimensions, got ${vectorOpts.value.length}`
@@ -861,6 +926,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       )
     }
 
+    if (!planned.field.embed) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `search_options.vector.query requires vector field "${field}" to declare "embed"`
+      )
+    }
+
     if (!this.embedder_) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -869,7 +941,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     const embedding = await this.embedder_(vectorOpts.query)
-    if (embedding.length !== planned.dimensions) {
+    if (planned.dimensions && embedding.length !== planned.dimensions) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Embedder returned ${embedding.length} dimensions for "${field}", expected ${planned.dimensions}`
@@ -1019,14 +1091,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }): Promise<{ hitRows: any[]; count: number | null }> {
     const { input: query, catalog, queryEmbedding, skip, take } = input
     const options = query.search_options ?? {}
-    const field = options.vector?.field
-    if (!field) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `search_options.vector.field is required for vector search`
-      )
-    }
-
+    const field = resolveVectorField(options.vector!, catalog.plan)
     const col = vectorColumnName(field)
     const op = vectorDistanceOperator(this.vectorDistance_)
     const filterWhere = toWhereClause(query.filters, catalog.plan)
@@ -1202,7 +1267,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     let count: number | null = null
     if (options.count !== "none") {
       const fragments = this.keywordFragments({ query, catalog })
-      const col = vectorColumnName(options.vector!.field)
+      const col = vectorColumnName(resolveVectorField(options.vector!, plan))
       const filterWhere = toWhereClause(query.filters, plan)
       const params: unknown[] = []
       const conditions = [
@@ -1370,7 +1435,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       ? this.keywordFragments({ query, catalog }).matchSql
       : undefined
     const vectorCond = useVector
-      ? `"${vectorColumnName(query.search_options!.vector!.field)}" IS NOT NULL`
+      ? `"${vectorColumnName(
+          resolveVectorField(query.search_options!.vector!, catalog.plan)
+        )}" IS NOT NULL`
       : undefined
 
     if (matchSql && vectorCond) {

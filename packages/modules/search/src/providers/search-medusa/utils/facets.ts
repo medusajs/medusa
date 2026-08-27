@@ -1,16 +1,22 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import type {
+  AggregationGroup,
   Filter,
   IndexQuery,
   IndexQueryResult,
 } from "./api-types"
-import { toSearchFilter } from "./filters"
-import { IndexPlan } from "./plan"
+import { mergeFilters } from "./filters"
+import { IndexPlan, PlannedField } from "./plan"
+import { buildQueryFilters } from "./query"
 
 type RangeFacetRequest = Extract<
   SearchTypes.SearchFacetRequest,
   { type: "range" }
+>
+type StatsFacetRequest = Extract<
+  SearchTypes.SearchFacetRequest,
+  { type: "stats" }
 >
 type ValueFacetRequest = {
   field: string
@@ -22,8 +28,14 @@ type ValueFacetRequest = {
 
 export type FacetQuery = {
   field: string
-  request: RangeFacetRequest | ValueFacetRequest
+  request: RangeFacetRequest | ValueFacetRequest | StatsFacetRequest
   range?: RangeFacetRequest["ranges"][number]
+  /**
+   * Medusa Search has no Min/Max aggregates yet, so a stats facet is three
+   * sub-queries: attribute order for min and max, then Count/Sum.
+   */
+  stats?: "min" | "max" | "agg"
+  is_date?: boolean
   query: IndexQuery
 }
 
@@ -31,12 +43,43 @@ function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-function and(filters: (Filter | undefined)[]): Filter | undefined {
-  const present = filters.filter((item): item is Filter => !!item)
-  if (!present.length) {
-    return undefined
+function aggregationGroupValue(group: AggregationGroup, field: string): string {
+  const raw = group.value ?? group[field]
+  if (Array.isArray(raw)) {
+    return String(raw[0] ?? "")
   }
-  return present.length === 1 ? present[0] : ["And", present]
+  return String(raw ?? "")
+}
+
+function assertStatsField(field: PlannedField, path: string): void {
+  const numeric =
+    field.type === "int" || field.type === "float" || field.is_date
+  if (!numeric || field.is_array) {
+    fail(`Stats facets require a scalar numeric field ("${path}")`)
+  }
+}
+
+function toStatsNumber(value: unknown, isDate?: boolean): number {
+  if (value == null || value === "") {
+    return 0
+  }
+  if (isDate) {
+    if (typeof value === "number") {
+      return value
+    }
+    const ms =
+      value instanceof Date ? value.getTime() : Date.parse(String(value))
+    return Number.isNaN(ms) ? 0 : ms
+  }
+  const n = Number(value)
+  return Number.isNaN(n) ? 0 : n
+}
+
+function emptyStatsResult(): Extract<
+  SearchTypes.SearchFacetResult,
+  { type: "stats" }
+> {
+  return { type: "stats", min: 0, max: 0, count: 0 }
 }
 
 export function buildFacetQueries(
@@ -45,7 +88,7 @@ export function buildFacetQueries(
 ): FacetQuery[] {
   const requests = (input.search_options?.facets ?? []) as
     | SearchTypes.SearchFacetRequest[]
-  const base = toSearchFilter(input.filters, plan)
+  const base = buildQueryFilters(input, plan)
   const result: FacetQuery[] = []
 
   for (const request of requests) {
@@ -54,7 +97,47 @@ export function buildFacetQueries(
       fail(`Unknown facet field "${request.field}"`)
     }
     if (request.type === "stats") {
-      fail('Medusa search does not expose the min/max needed for "stats" facets')
+      assertStatsField(field, request.field)
+      const present = mergeFilters([base, [request.field, "NotEq", null]])
+      result.push({
+        field: request.field,
+        request,
+        stats: "min",
+        is_date: field.is_date,
+        query: {
+          rank_by: [request.field, "asc"],
+          limit: 1,
+          include_attributes: [request.field],
+          filters: present,
+        },
+      })
+      result.push({
+        field: request.field,
+        request,
+        stats: "max",
+        is_date: field.is_date,
+        query: {
+          rank_by: [request.field, "desc"],
+          limit: 1,
+          include_attributes: [request.field],
+          filters: present,
+        },
+      })
+      result.push({
+        field: request.field,
+        request,
+        stats: "agg",
+        is_date: field.is_date,
+        query: {
+          // Sum is scalar numeric only. Dates get Count so the result still
+          // has a document total; min/max come from the rank_by queries.
+          aggregate_by: field.is_date
+            ? { count: ["Count"] }
+            : { count: ["Count"], sum: ["Sum", request.field] },
+          filters: base,
+        },
+      })
+      continue
     }
 
     if (request.type === "range") {
@@ -82,7 +165,7 @@ export function buildFacetQueries(
           range,
           query: {
             aggregate_by: { count: ["Count"] },
-            filters: and([base, ...bounds]),
+            filters: mergeFilters([base, ...bounds]),
           },
         })
       }
@@ -94,13 +177,17 @@ export function buildFacetQueries(
       request,
       query: {
         aggregate_by: { count: ["Count"] },
+        // Untagged enum: a field name, or `{ alias: ["ForEachUnique", field] }`
+        // for array attributes. `{ value: "field" }` matches neither variant.
         group_by: field.is_array
           ? [{ value: ["ForEachUnique", request.field] }]
-          : [{ value: request.field }],
+          : [request.field],
         filters: base,
         // Groups are returned by key, not count. Fetch all available groups
         // before applying count sorting or a facet-value query locally.
-        limit:
+        // Cloud's aggregation schema rejects `limit`; `top_k` is the
+        // documented alias for `limit.total` (max 10,000).
+        top_k:
           request.sort === "alpha" && !request.query
             ? Math.min(Math.max(request.limit ?? 10, 1), 10000)
             : 10000,
@@ -141,8 +228,31 @@ export function parseFacetResults(
       return
     }
 
+    if (query.request.type === "stats") {
+      const current = (result[query.field] ?? emptyStatsResult()) as Extract<
+        SearchTypes.SearchFacetResult,
+        { type: "stats" }
+      >
+
+      if (query.stats === "min" || query.stats === "max") {
+        current[query.stats] = toStatsNumber(
+          response?.rows?.[0]?.[query.field],
+          query.is_date
+        )
+      } else {
+        current.count = Number(response?.aggregations?.count ?? 0)
+        const sum = response?.aggregations?.sum
+        if (sum !== undefined && sum !== null) {
+          current.sum = Number(sum)
+        }
+      }
+
+      result[query.field] = current
+      return
+    }
+
     let values = (response?.aggregation_groups ?? []).map((group) => ({
-      value: String(group.value),
+      value: aggregationGroupValue(group, query.field),
       count: Number(group.count ?? 0),
     }))
 
