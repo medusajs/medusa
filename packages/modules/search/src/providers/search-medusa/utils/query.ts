@@ -94,7 +94,7 @@ function textRank(
 const TYPO_TOLERANCE_RANK_WEIGHT = 0.01
 
 function minQueryCharsForDistance(distance: number): number {
-  // Cloud/Turbopuffer: min_query_chars must be at least 3 * (distance + 1).
+  // Cloud: min_query_chars must be at least 3 * (distance + 1).
   return 3 * (distance + 1)
 }
 

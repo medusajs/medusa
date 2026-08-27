@@ -161,7 +161,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
         })
 
-        it("rejects vector search on the native engine", async () => {
+        it("rejects vector search when the index has no vector field", async () => {
           await expect(
             service.search({
               entity: "product",
@@ -170,7 +170,7 @@ moduleIntegrationTestRunner<SearchService>({
                 vector: { field: "embedding", value: [0.1] },
               },
             })
-          ).rejects.toThrow(/lakebase/)
+          ).rejects.toThrow(/Unknown field "embedding"/)
         })
       })
 
