@@ -36,21 +36,14 @@ describe("MedusaSearchService", () => {
       /explicit "api_key"/
     )
     expect(
-      () =>
-        new MedusaSearchService(
-          {},
-          { api_key: "medusa_test" } as any
-        )
+      () => new MedusaSearchService({}, { api_key: "medusa_test" } as any)
     ).toThrow(/explicit "endpoint"/)
     expect(
       () =>
-        new MedusaSearchService(
-          {},
-          {
-            api_key: "medusa_test",
-            endpoint: "https://search.medusa.example",
-          } as any
-        )
+        new MedusaSearchService({}, {
+          api_key: "medusa_test",
+          endpoint: "https://search.medusa.example",
+        } as any)
     ).toThrow(/environment_handle/)
   })
 
@@ -254,7 +247,12 @@ describe("MedusaSearchService", () => {
       metadata: { count: 1, processing_time_ms: 4 },
     })
 
-    const facetQuery = multiQuery.mock.calls[0][0].queries[2]
+    const [hitsQuery, countQuery, facetQuery] =
+      multiQuery.mock.calls[0][0].queries
+    const textFilter = ["title", "ContainsAllTokens", "red"]
+    expect(hitsQuery.filters).toEqual(textFilter)
+    expect(countQuery.filters).toEqual(textFilter)
+    expect(facetQuery.filters).toEqual(textFilter)
     expect(facetQuery.group_by).toEqual(["status"])
     expect(facetQuery.top_k).toBe(10000)
     expect(facetQuery).not.toHaveProperty("limit")

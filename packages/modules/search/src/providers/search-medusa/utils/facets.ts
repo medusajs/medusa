@@ -6,8 +6,9 @@ import type {
   IndexQuery,
   IndexQueryResult,
 } from "./api-types"
-import { toSearchFilter } from "./filters"
+import { mergeFilters } from "./filters"
 import { IndexPlan } from "./plan"
+import { buildQueryFilters } from "./query"
 
 type RangeFacetRequest = Extract<
   SearchTypes.SearchFacetRequest,
@@ -32,14 +33,6 @@ function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-function and(filters: (Filter | undefined)[]): Filter | undefined {
-  const present = filters.filter((item): item is Filter => !!item)
-  if (!present.length) {
-    return undefined
-  }
-  return present.length === 1 ? present[0] : ["And", present]
-}
-
 function aggregationGroupValue(
   group: AggregationGroup,
   field: string
@@ -57,7 +50,7 @@ export function buildFacetQueries(
 ): FacetQuery[] {
   const requests = (input.search_options?.facets ?? []) as
     | SearchTypes.SearchFacetRequest[]
-  const base = toSearchFilter(input.filters, plan)
+  const base = buildQueryFilters(input, plan)
   const result: FacetQuery[] = []
 
   for (const request of requests) {
@@ -94,7 +87,7 @@ export function buildFacetQueries(
           range,
           query: {
             aggregate_by: { count: ["Count"] },
-            filters: and([base, ...bounds]),
+            filters: mergeFilters([base, ...bounds]),
           },
         })
       }

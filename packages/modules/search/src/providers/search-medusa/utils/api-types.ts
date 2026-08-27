@@ -59,9 +59,19 @@ export type FuzzyFilterOptions = {
   case_sensitive?: boolean
 }
 
+export type TokenFilterOptions = {
+  last_as_prefix?: boolean
+}
+
 export type Filter =
   | [string, string, unknown]
   | [string, "Fuzzy", string, FuzzyFilterOptions]
+  | [
+      string,
+      "ContainsAllTokens" | "ContainsAnyToken",
+      string,
+      TokenFilterOptions
+    ]
   | ["And" | "Or", Filter[]]
   | ["Not", Filter]
 
