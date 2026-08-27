@@ -42,6 +42,14 @@ export type AttributeSchemaConfig = {
   fuzzy?: boolean
   glob?: boolean
   regex?: boolean
+  embed?:
+    | string
+    | {
+        model?: string
+        dims?: number
+        attribute?: string
+      }
+    | null
 }
 
 export type Row = Record<string, unknown> & {
