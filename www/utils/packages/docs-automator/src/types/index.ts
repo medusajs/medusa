@@ -66,6 +66,20 @@ export interface CloudAnalysisResult {
   featureFlaggedFeatures: string[]
   /** Present only when a CLI-release changelog entry should be written. */
   changelog?: { version: string; notes: string; date?: string }
+  /**
+   * The dashboard changelog entry this deployment should produce. Present only
+   * when the dispatch carries dashboard changes. The workflow reads it to find
+   * the entry file Claude was asked to write, so it can render and attach the
+   * entry's banner image.
+   */
+  changelogEntry?: {
+    /** The entry's date, in `YYYY-MM-DD` format. */
+    date: string
+    /** The same date formatted for display, e.g. `August 17, 2026`. */
+    displayDate: string
+    /** The entry file's path, relative to the repository root. */
+    file: string
+  }
 }
 
 export interface AnalyzeCloudOptions {

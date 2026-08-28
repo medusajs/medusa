@@ -10,13 +10,14 @@ import {
   inventoryItemsQueryKeys,
 } from "../../../../../hooks/api"
 import { sdk } from "../../../../../lib/client"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 import { queryClient } from "../../../../../lib/query-client"
 import { useNavigate } from "react-router-dom"
 import { useInventoryLevelPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const columnHelper = createDataTableColumnHelper<AdminInventoryLevel>()
 
-export const useLocationListTableColumns = () => {
+export const useLocationListTableColumns = (unitOfMeasure?: string | null) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { canUpdate, canDelete } = useInventoryLevelPermissions()
@@ -91,7 +92,9 @@ export const useLocationListTableColumns = () => {
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{quantity}</span>
+              <span className="truncate">
+                {formatQuantity(quantity, unitOfMeasure)}
+              </span>
             </div>
           )
         },
@@ -108,7 +111,9 @@ export const useLocationListTableColumns = () => {
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{stockedQuantity}</span>
+              <span className="truncate">
+                {formatQuantity(stockedQuantity, unitOfMeasure)}
+              </span>
             </div>
           )
         },
@@ -125,7 +130,9 @@ export const useLocationListTableColumns = () => {
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{availableQuantity}</span>
+              <span className="truncate">
+                {formatQuantity(availableQuantity, unitOfMeasure)}
+              </span>
             </div>
           )
         },
@@ -169,6 +176,6 @@ export const useLocationListTableColumns = () => {
           ]
         : []),
     ],
-    [t, canUpdate, canDelete, navigate]
+    [t, canUpdate, canDelete, navigate, unitOfMeasure]
   )
 }

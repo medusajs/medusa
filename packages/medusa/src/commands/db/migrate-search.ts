@@ -32,14 +32,16 @@ function describeAction(
     return `${index} ${chalk.dim(`(${action.physical_name})`)}`
   }
 
-  // A rebuild that lands on the live name has nowhere to build alongside, so the
-  // index serves nothing between here and the seed at startup.
-  const target =
+  const destination =
     action.physical_name === action.live_physical_name
-      ? chalk.dim(`(${action.physical_name}, replaced in place)`)
-      : chalk.dim(`(${action.live_physical_name} -> ${action.physical_name})`)
+      ? `${action.physical_name}, replaced in place`
+      : `${action.live_physical_name} -> ${action.physical_name}`
 
-  return `${index} ${target}`
+  const detail = action.previous_provider
+    ? `${action.previous_provider} -> ${action.provider}, ${destination}`
+    : destination
+
+  return `${index} ${chalk.dim(`(${detail})`)}`
 }
 
 function logActions(

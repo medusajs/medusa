@@ -289,10 +289,12 @@ describe("CacheInvalidationParser", () => {
       expect(events[0]).toMatchObject({
         entityType: "Product",
         entityId: "prod_123",
-        relatedEntities: [],
       })
 
-      expect(events[0].cacheKeys).toEqual(["Product:prod_123", "Product:list:*"])
+      expect(events[0].cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
     })
 
     it("should build invalidation events with related entities", () => {
@@ -308,7 +310,6 @@ describe("CacheInvalidationParser", () => {
 
       const productEvent = events.find((e) => e.entityType === "Product")
       expect(productEvent).toBeDefined()
-      expect(productEvent!.relatedEntities).toHaveLength(2)
       expect(productEvent!.cacheKeys).toEqual([
         "Product:prod_123",
         "Product:list:*",

@@ -90,6 +90,30 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["GET"],
+    matcher: "/admin/users/:id/auth-providers",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.read,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/users/:id/reset-password",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["GET"],
     matcher: "/admin/users/:id/roles",
     middlewares: [
       authorize([

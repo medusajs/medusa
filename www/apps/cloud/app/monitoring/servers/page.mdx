@@ -1,4 +1,4 @@
-import { InlineIcon, Table } from "docs-ui"
+import { InlineIcon, Note, Table } from "docs-ui"
 import { ArrowPath } from "@medusajs/icons"
 
 export const metadata = {
@@ -106,14 +106,20 @@ The following table outlines common server performance issues, their potential c
   </Table.Body>
 </Table>
 
+<Note>
+
+If the metrics don't show a cause related to your application, [check the Cloud status page](../../status/page.mdx) for ongoing Cloud incidents that may be affecting your environment.
+
+</Note>
+
 ---
 
 ## View Server Metrics
 
 To view your project environment's server performance:
 
-1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click on the "Monitoring" tab.
-2. Select "Servers" from the sidebar.
+1. Go to the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard).
+2. Click **Monitoring** > **Servers** in the sidebar.
 
 This opens the Servers monitoring dashboard, where you can analyze your environment's server performance across any time range.
 

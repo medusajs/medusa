@@ -8,6 +8,7 @@ import {
   TextCell,
   TextHeader,
 } from "../../../../../components/table/table-cells/common/text-cell"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 import { ReservationActions } from "./reservation-actions"
 import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
 
@@ -21,7 +22,13 @@ export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
 
 const columnHelper = createColumnHelper<ExtendedReservationItem>()
 
-export const useReservationTableColumn = ({ sku }: { sku: string }) => {
+export const useReservationTableColumn = ({
+  sku,
+  unitOfMeasure,
+}: {
+  sku: string
+  unitOfMeasure?: string | null
+}) => {
   const { t } = useTranslation()
   const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
@@ -83,7 +90,12 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
       columnHelper.accessor("quantity", {
         header: () => <TextHeader text={t("fields.quantity")} align="right" />,
         cell: ({ getValue }) => {
-          return <TextCell text={getValue()} align="right" />
+          return (
+            <TextCell
+              text={formatQuantity(getValue(), unitOfMeasure)}
+              align="right"
+            />
+          )
         },
       }),
       columnHelper.display({
@@ -91,6 +103,6 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
         cell: ({ row }) => <ReservationActions reservation={row.original} />,
       }),
     ],
-    [t, canReadStockLocations]
+    [t, canReadStockLocations, sku, unitOfMeasure]
   )
 }

@@ -2245,6 +2245,15 @@ export function getRouteMap({
               ],
             },
             {
+              path: "search",
+              errorElement: <ErrorBoundary />,
+              handle: {
+                breadcrumb: () => t("searchIndexes.domain"),
+              },
+              lazy: () =>
+                import("../../routes/search-indexes/search-index-list"),
+            },
+            {
               path: "product-types",
               errorElement: <ErrorBoundary />,
               element: (

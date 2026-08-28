@@ -9,6 +9,7 @@ describe("defineConfig", function () {
     "MEDUSA_CLOUD_WEBHOOK_SECRET",
     "MEDUSA_CLOUD_EMAILS_ENDPOINT",
     "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
+    "MEDUSA_CLOUD_SEARCH_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
@@ -147,6 +148,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -488,6 +503,20 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -683,6 +712,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -881,6 +924,20 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -1065,6 +1122,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -1253,6 +1324,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -1489,6 +1574,20 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "lakebase",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -1693,6 +1792,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "lakebase",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -1930,6 +2043,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "lakebase",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -2188,6 +2315,20 @@ describe("defineConfig", function () {
           },
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
+          },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "lakebase",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
           },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
@@ -2482,6 +2623,20 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -2708,6 +2863,25 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "cloud": {
+                "api_key": "test-api-key",
+                "endpoint": undefined,
+                "environment_handle": "test-environment",
+              },
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -2756,6 +2930,7 @@ describe("defineConfig", function () {
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": undefined,
+            "searchEndpoint": undefined,
             "webhookSecret": "test-webhook-secret",
           },
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -2939,6 +3114,25 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "cloud": {
+                "api_key": "test-api-key",
+                "endpoint": undefined,
+                "environment_handle": undefined,
+              },
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -2987,6 +3181,7 @@ describe("defineConfig", function () {
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": "test-sandbox",
+            "searchEndpoint": undefined,
             "webhookSecret": "test-webhook-secret",
           },
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -3179,6 +3374,25 @@ describe("defineConfig", function () {
           "sales_channel": {
             "resolve": "@medusajs/medusa/sales-channel",
           },
+          "search": {
+            "options": {
+              "cloud": {
+                "api_key": "overriden-api-key",
+                "endpoint": undefined,
+                "environment_handle": "overriden-environment",
+              },
+              "providers": [
+                {
+                  "id": "postgres",
+                  "options": {
+                    "engine": "native",
+                  },
+                  "resolve": "@medusajs/medusa/search-postgres",
+                },
+              ],
+            },
+            "resolve": "@medusajs/medusa/search",
+          },
           "settings": {
             "resolve": "@medusajs/medusa/settings",
           },
@@ -3227,6 +3441,7 @@ describe("defineConfig", function () {
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
             "paymentsEndpoint": "overriden-payments-endpoint",
             "sandboxHandle": undefined,
+            "searchEndpoint": undefined,
             "webhookSecret": "overriden-webhook-secret",
           },
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -3255,6 +3470,43 @@ describe("defineConfig", function () {
         },
       }
     `)
+  })
+
+  it("should use Medusa Cloud search when MEDUSA_CLOUD_SEARCH_ENDPOINT is set in cloud", function () {
+    const originalEnv = { ...process.env }
+
+    process.env.EXECUTION_CONTEXT = "medusa-cloud"
+    process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE = "test-environment"
+    process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
+    process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT = "https://search.medusa.cloud"
+
+    const config = defineConfig()
+
+    process.env = { ...originalEnv }
+
+    expect(config.modules!["search"]).toEqual({
+      resolve: "@medusajs/medusa/search",
+      options: {
+        cloud: {
+          api_key: "test-api-key",
+          endpoint: "https://search.medusa.cloud",
+          environment_handle: "test-environment",
+        },
+        providers: [
+          {
+            id: "postgres",
+            options: {
+              engine: "lakebase",
+            },
+            resolve: "@medusajs/medusa/search-postgres",
+          },
+        ],
+        default_provider: "search-medusa",
+      },
+    })
+    expect(config.projectConfig.cloud?.searchEndpoint).toBe(
+      "https://search.medusa.cloud"
+    )
   })
 
   describe("secret defaults", function () {

@@ -25,7 +25,10 @@ export const InventoryItemLocationLevelsSection = ({
           </Button>
         )}
       </div>
-      <ItemLocationListTable inventory_item_id={inventoryItem.id} />
+      <ItemLocationListTable
+        inventory_item_id={inventoryItem.id}
+        unit_of_measure={inventoryItem.unit_of_measure}
+      />
     </Container>
   )
 }

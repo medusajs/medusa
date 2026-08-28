@@ -8,6 +8,7 @@ import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 import { useReservationItemPermissions } from "../../../../../hooks/use-resource-permissions"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 
 type ReservationGeneralSectionProps = {
   reservation: AdminReservationResponse["reservation"]
@@ -76,15 +77,24 @@ export const ReservationGeneralSection = ({
       />
       <SectionRow
         title={t("inventory.reservation.inStockAtLocation")}
-        value={locationLevel?.stocked_quantity}
+        value={formatQuantity(
+          locationLevel?.stocked_quantity,
+          inventoryItem.unit_of_measure
+        )}
       />
       <SectionRow
         title={t("inventory.reservation.availableAtLocation")}
-        value={locationLevel?.available_quantity}
+        value={formatQuantity(
+          locationLevel?.available_quantity,
+          inventoryItem.unit_of_measure
+        )}
       />
       <SectionRow
         title={t("inventory.reservation.reservedAtLocation")}
-        value={locationLevel?.reserved_quantity}
+        value={formatQuantity(
+          locationLevel?.reserved_quantity,
+          inventoryItem.unit_of_measure
+        )}
       />
     </Container>
   )

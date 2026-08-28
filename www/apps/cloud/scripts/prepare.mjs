@@ -4,11 +4,13 @@ import {
   copyMdxToPublic,
 } from "build-scripts"
 import { sidebar } from "../sidebar.mjs"
+import { generateChangelogManifest } from "./generate-changelog-manifest.mjs"
 import path from "path"
 
 async function main() {
   await generateSidebar(sidebar)
   await generateEditedDates()
+  await generateChangelogManifest()
   if (process.env.CLOUDFLARE_ENV) {
     await copyMdxToPublic({
       srcDir: path.join(process.cwd(), "app"),

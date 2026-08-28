@@ -3801,6 +3801,12 @@
         "quantityAcrossLocations": {
           "type": "string"
         },
+        "unitOfMeasurePlaceholder": {
+          "type": "string"
+        },
+        "unitOfMeasureHint": {
+          "type": "string"
+        },
         "levelDeleted": {
           "type": "string"
         },
@@ -4031,6 +4037,8 @@
         "deleteWarning",
         "editItemDetails",
         "quantityAcrossLocations",
+        "unitOfMeasurePlaceholder",
+        "unitOfMeasureHint",
         "levelDeleted",
         "create",
         "reservation",
@@ -5974,6 +5982,9 @@
             "locationDescription": {
               "type": "string"
             },
+            "locationUnavailable": {
+              "type": "string"
+            },
             "sendNotificationHint": {
               "type": "string"
             },
@@ -6145,6 +6156,7 @@
             "markAsDelivered",
             "itemsToFulfillDesc",
             "locationDescription",
+            "locationUnavailable",
             "sendNotificationHint",
             "methodDescription",
             "error",
@@ -10518,6 +10530,15 @@
         "copyInviteLink": {
           "type": "string"
         },
+        "copyResetPasswordLink": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkSuccess": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkHint": {
+          "type": "string"
+        },
         "expiredOnDate": {
           "type": "string"
         },
@@ -10613,6 +10634,9 @@
         "deleteInviteWarning",
         "resendInvite",
         "copyInviteLink",
+        "copyResetPasswordLink",
+        "copyResetPasswordLinkSuccess",
+        "copyResetPasswordLinkHint",
         "expiredOnDate",
         "validFromUntil",
         "acceptedOnDate",
@@ -12874,6 +12898,9 @@
         "workflowIdLabel": {
           "type": "string"
         },
+        "stateLabel": {
+          "type": "string"
+        },
         "progressLabel": {
           "type": "string"
         },
@@ -13038,12 +13065,88 @@
         "subtitle",
         "transactionIdLabel",
         "workflowIdLabel",
+        "stateLabel",
         "progressLabel",
         "list",
         "history",
         "state",
         "transaction",
         "step"
+      ],
+      "additionalProperties": false
+    },
+    "searchIndexes": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "fieldsLabel": {
+          "type": "string"
+        },
+        "providerLabel": {
+          "type": "string"
+        },
+        "reindex": {
+          "type": "string"
+        },
+        "reindexConfirmationTitle": {
+          "type": "string"
+        },
+        "reindexConfirmation": {
+          "type": "string"
+        },
+        "reindexSuccess": {
+          "type": "string"
+        },
+        "noFields": {
+          "type": "string"
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "noRecordsMessage": {
+              "type": "string"
+            }
+          },
+          "required": ["noRecordsMessage"],
+          "additionalProperties": false
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "pending": {
+              "type": "string"
+            },
+            "building": {
+              "type": "string"
+            },
+            "ready": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            }
+          },
+          "required": ["pending", "building", "ready", "error"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "fieldsLabel",
+        "providerLabel",
+        "reindex",
+        "reindexConfirmationTitle",
+        "reindexConfirmation",
+        "reindexSuccess",
+        "noFields",
+        "list",
+        "status"
       ],
       "additionalProperties": false
     },
@@ -13853,6 +13956,9 @@
         "material": {
           "type": "string"
         },
+        "unitOfMeasure": {
+          "type": "string"
+        },
         "thumbnail": {
           "type": "string"
         },
@@ -14067,6 +14173,7 @@
         "barcode",
         "countryOfOrigin",
         "material",
+        "unitOfMeasure",
         "thumbnail",
         "sku",
         "managedInventory",
@@ -14302,13 +14409,13 @@
         "login": {
           "type": "object",
           "properties": {
+            "noProviders": {
+              "type": "string"
+            },
             "authenticationFailed": {
               "type": "string"
             },
             "cloud": {
-              "type": "string"
-            },
-            "noProviders": {
               "type": "string"
             },
             "continueWithProvider": {
@@ -14322,9 +14429,9 @@
             }
           },
           "required": [
+            "noProviders",
             "authenticationFailed",
             "cloud",
-            "noProviders",
             "continueWithProvider",
             "or",
             "provisioningFailed"
@@ -14592,6 +14699,7 @@
     "invite",
     "resetPassword",
     "workflowExecutions",
+    "searchIndexes",
     "shippingOptionTypes",
     "productTypes",
     "productTags",

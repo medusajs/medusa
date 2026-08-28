@@ -5,6 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
+import { formatQuantity } from "../../../../lib/format-quantity"
 import { InventoryActions } from "./inventory-actions"
 
 const columnHelper = createColumnHelper<AdminInventoryItem>()
@@ -92,7 +93,7 @@ export const useInventoryTableColumns = ({
         ? [
             columnHelper.accessor("reserved_quantity", {
               header: t("inventory.reserved"),
-              cell: ({ getValue }) => {
+              cell: ({ getValue, row }) => {
                 const quantity = getValue()
 
                 if (Number.isNaN(quantity)) {
@@ -101,14 +102,16 @@ export const useInventoryTableColumns = ({
 
                 return (
                   <div className="flex size-full items-center overflow-hidden">
-                    <span className="truncate">{quantity}</span>
+                    <span className="truncate">
+                      {formatQuantity(quantity, row.original.unit_of_measure)}
+                    </span>
                   </div>
                 )
               },
             }),
             columnHelper.accessor("stocked_quantity", {
               header: t("fields.inStock"),
-              cell: ({ getValue }) => {
+              cell: ({ getValue, row }) => {
                 const quantity = getValue()
 
                 if (Number.isNaN(quantity)) {
@@ -117,7 +120,9 @@ export const useInventoryTableColumns = ({
 
                 return (
                   <div className="flex size-full items-center overflow-hidden">
-                    <span className="truncate">{quantity}</span>
+                    <span className="truncate">
+                      {formatQuantity(quantity, row.original.unit_of_measure)}
+                    </span>
                   </div>
                 )
               },

@@ -5,13 +5,14 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
+import { useSearchIndexes } from "../../../hooks/api/search-indexes"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import {
   useApiKeyPermissions,
   useProductTagPermissions,
@@ -203,6 +204,7 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
+  const { enabled: isSearchEnabled } = useSearchIndexes()
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()
   const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
@@ -229,8 +231,16 @@ const useDeveloperRoutes = (): INavItem[] => {
             },
           ]
         : []),
+      ...(isSearchEnabled
+        ? [
+            {
+              label: t("searchIndexes.domain"),
+              to: "/settings/search",
+            },
+          ]
+        : []),
     ],
-    [t, canReadApiKeys, canReadWorkflows]
+    [t, canReadApiKeys, canReadWorkflows, isSearchEnabled]
   )
 }
 

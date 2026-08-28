@@ -68,6 +68,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep"
   },
   {
+    "title": "deleteAuthIdentityStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteAuthIdentityStep"
+  },
+  {
     "title": "requestVerificationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
   },
@@ -110,6 +114,14 @@ export const auth = [
   {
     "title": "callback",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/callback"
+  },
+  {
+    "title": "createUser",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/createUser"
+  },
+  {
+    "title": "listProviders",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/listProviders"
   },
   {
     "title": "login",

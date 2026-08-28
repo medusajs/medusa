@@ -10,6 +10,7 @@ import {
   useInventoryLevelPermissions,
   useStockLocationPermissions,
 } from "../../../../hooks/use-resource-permissions"
+import { formatQuantity } from "../../../../lib/format-quantity"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
@@ -26,12 +27,12 @@ export const InventoryItemGeneralSection = ({
     if (quantity !== undefined && !isNaN(quantity)) {
       if (canReadInventoryLevels && canReadStockLocations) {
         return t("inventory.quantityAcrossLocations", {
-          quantity,
+          quantity: formatQuantity(quantity, inventoryItem.unit_of_measure),
           locations: inventoryItem.location_levels?.length,
         })
       }
 
-      return String(quantity)
+      return formatQuantity(quantity, inventoryItem.unit_of_measure)
     }
 
     return "-"

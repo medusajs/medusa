@@ -4016,6 +4016,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/validateGiftCardStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateGiftCardsNotExpiredStep/page.json",
+    "pathname": "/references/medusa-workflows/validateGiftCardsNotExpiredStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateStoreCreditAccountStep/page.json",
     "pathname": "/references/medusa-workflows/validateStoreCreditAccountStep"
   },
@@ -11666,6 +11670,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardStepInput/page.json",
     "pathname": "/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardsNotExpiredStepInput/page.json",
+    "pathname": "/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardsNotExpiredStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateStoreCreditAccountStepInput/page.json",
