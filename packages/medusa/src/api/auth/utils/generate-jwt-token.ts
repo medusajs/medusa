@@ -2,6 +2,7 @@ import {
   AuthIdentityDTO,
   AuthMfaChallengeDTO,
   ConfigModule,
+  IAuthModuleService,
   MedusaContainer,
   ProjectConfigOptions,
 } from "@medusajs/framework/types"
@@ -9,16 +10,11 @@ import {
   ContainerRegistrationKeys,
   FeatureFlag,
   generateJwtToken,
+  Modules,
 } from "@medusajs/framework/utils"
 import { type Secret } from "jsonwebtoken"
 import RbacFeatureFlag from "../../../feature-flags/rbac"
 import { validateVerification } from "./validate-verification"
-
-/**
- * Purpose claim carried by the token issued after the first factor is verified
- * and before the MFA challenge is completed.
- */
-export const MFA_TOKEN_PURPOSE = "mfa"
 
 export async function generateJwtTokenWithChecks(
   container: MedusaContainer,
@@ -39,16 +35,13 @@ export async function generateJwtTokenWithChecks(
   )
   const { http } = config.projectConfig
 
-  const generateActorlessToken = async (
-    claims: { purpose?: string; mfaChallengeId?: string } = {}
-  ) =>
+  const generateActorlessToken = async () =>
     await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
         actorType: actorType,
         authProvider: authProvider,
         container: container,
-        ...claims,
       },
       {
         secret: http.jwtSecret!,
@@ -79,16 +72,10 @@ export async function generateJwtTokenWithChecks(
   }
 
   if (mfaChallenge) {
-    // The first factor has been verified, but the MFA challenge has not. The
-    // token is bound to that challenge so it authorizes nothing else, otherwise
-    // knowing the password alone would be enough to mint or remove a factor.
     return {
       mfa_required: true,
       mfa_challenge: mfaChallenge,
-      token: await generateActorlessToken({
-        purpose: MFA_TOKEN_PURPOSE,
-        mfaChallengeId: mfaChallenge.id,
-      }),
+      token: await generateActorlessToken(),
     }
   }
 
@@ -115,15 +102,13 @@ export async function generateJwtTokenForAuthIdentity(
     actorType,
     authProvider,
     container,
-    purpose,
-    mfaChallengeId,
+    mfaChallengeCompletedAt,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
     authProvider?: string
     container?: MedusaContainer
-    purpose?: string
-    mfaChallengeId?: string
+    mfaChallengeCompletedAt?: Date | string | null
   },
   {
     secret,
@@ -148,6 +133,21 @@ export async function generateJwtTokenForAuthIdentity(
     : authIdentity.provider_identities?.filter(
         (identity) => identity.provider === authProvider
       )[0]
+
+  let mfaEnabled = false
+
+  if (container && authIdentity?.id) {
+    const authModule = container.resolve<IAuthModuleService>(Modules.AUTH)
+    const enabledFactors = await authModule.listAuthMfa(
+      {
+        auth_identity_id: authIdentity.id,
+        status: "enabled",
+      },
+      { select: ["id"] }
+    )
+
+    mfaEnabled = enabledFactors.length > 0
+  }
 
   let roles: string[] | undefined
 
@@ -178,8 +178,10 @@ export async function generateJwtTokenForAuthIdentity(
       actor_type: actorType,
       auth_identity_id: authIdentity?.id ?? "",
       ...(authProvider ? { auth_provider: authProvider } : {}),
-      ...(purpose ? { purpose } : {}),
-      ...(mfaChallengeId ? { mfa_challenge_id: mfaChallengeId } : {}),
+      mfa_enabled: mfaEnabled,
+      mfa_challenge_completed_at: mfaChallengeCompletedAt
+        ? new Date(mfaChallengeCompletedAt).toISOString()
+        : null,
       app_metadata: {
         ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,

@@ -151,42 +151,30 @@ medusaIntegrationTestRunner({
     })
 
     describe("The token issued before an MFA challenge is completed", () => {
-      it("does not complete a challenge it was not issued for", async () => {
-        const { secret } = await enrollTotpFactor(api)
+      it("still refreshes into a token that requires the challenge", async () => {
+        await enrollTotpFactor(api)
 
-        const first = await loginWithoutCompletingMfa(api)
-        const second = await loginWithoutCompletingMfa(api)
+        const pending = await loginWithoutCompletingMfa(api)
+
+        const refreshed = await api.post(
+          "/auth/token/refresh",
+          {},
+          pending.headers
+        )
+
+        expect(refreshed.status).toEqual(200)
+        expect(refreshed.data.mfa_required).toBe(true)
+        expect(
+          (jwt.decode(refreshed.data.token) as Record<string, unknown>)
+            .mfa_challenge_completed_at
+        ).toBeNull()
 
         const err = await api
           .post(
-            `/auth/mfa/challenges/${first.challenge.id}/verify`,
-            { method: "totp", code: generateTotpCode({ secret }) },
-            second.headers
+            "/auth/mfa/recovery-codes",
+            { count: 10 },
+            { headers: { authorization: `Bearer ${refreshed.data.token}` } }
           )
-          .catch((e) => e)
-
-        expect(err.response.status).toEqual(404)
-      })
-
-      it("does not create a session", async () => {
-        await enrollTotpFactor(api)
-
-        const pending = await loginWithoutCompletingMfa(api)
-
-        const err = await api
-          .post("/auth/session", {}, pending.headers)
-          .catch((e) => e)
-
-        expect(err.response.status).toEqual(401)
-      })
-
-      it("does not refresh into a new token", async () => {
-        await enrollTotpFactor(api)
-
-        const pending = await loginWithoutCompletingMfa(api)
-
-        const err = await api
-          .post("/auth/token/refresh", {}, pending.headers)
           .catch((e) => e)
 
         expect(err.response.status).toEqual(401)
@@ -246,6 +234,39 @@ medusaIntegrationTestRunner({
           data: {},
         })
         expect(disabled.data.mfa_factor.status).toEqual("disabled")
+      })
+
+      it("records when the challenge was completed and preserves it on refresh", async () => {
+        const { secret } = await enrollTotpFactor(api)
+
+        const session = await completeMfa(api, secret)
+
+        const completedAt = (
+          jwt.decode(
+            session.headers.headers.authorization.replace("Bearer ", "")
+          ) as Record<string, unknown>
+        ).mfa_challenge_completed_at
+
+        expect(completedAt).toEqual(expect.any(String))
+
+        const refreshed = await api.post(
+          "/auth/token/refresh",
+          {},
+          session.headers
+        )
+
+        expect(
+          (jwt.decode(refreshed.data.token) as Record<string, unknown>)
+            .mfa_challenge_completed_at
+        ).toEqual(completedAt)
+
+        const codes = await api.post(
+          "/auth/mfa/recovery-codes",
+          { count: 10 },
+          { headers: { authorization: `Bearer ${refreshed.data.token}` } }
+        )
+
+        expect(codes.status).toEqual(200)
       })
 
       it("generates recovery codes for an identity that has no actor yet", async () => {

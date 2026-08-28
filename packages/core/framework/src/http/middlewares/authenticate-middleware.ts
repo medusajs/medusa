@@ -38,7 +38,7 @@ export const authenticate = (
   options: {
     allowUnauthenticated?: boolean
     allowUnregistered?: boolean
-    allowedPurposes?: string[]
+    requireMfa?: boolean | { maxAgeSeconds: number }
   } = {}
 ): RequestHandler => {
   const authenticateMiddleware = async (
@@ -95,14 +95,13 @@ export const authenticate = (
       )
     }
 
-    if (
-      authContext?.purpose &&
-      !(options.allowedPurposes ?? []).includes(authContext.purpose)
-    ) {
-      logger.debug(
-        `Discarding token with purpose "${authContext.purpose}" on ${req.method} ${req.path}`
-      )
-      authContext = null
+    if (options.requireMfa && authContext?.mfa_enabled) {
+      const mfaError = getMfaRequirementError(authContext, options.requireMfa)
+
+      if (mfaError) {
+        res.status(401).json({ message: mfaError })
+        return
+      }
     }
 
     // If the entity is authenticated, and it is a registered actor we can continue
@@ -146,6 +145,35 @@ export const authenticate = (
   }
 
   return authenticateMiddleware as unknown as RequestHandler
+}
+
+const getMfaRequirementError = (
+  authContext: AuthContext,
+  requireMfa: boolean | { maxAgeSeconds: number }
+): string | undefined => {
+  const completedAt = authContext.mfa_challenge_completed_at
+
+  if (!completedAt) {
+    return "MFA verification is required to complete this request"
+  }
+
+  const maxAgeSeconds =
+    typeof requireMfa === "object" ? requireMfa.maxAgeSeconds : undefined
+
+  if (!maxAgeSeconds) {
+    return
+  }
+
+  const completedAtMs = new Date(completedAt).getTime()
+
+  if (
+    Number.isNaN(completedAtMs) ||
+    Date.now() - completedAtMs > maxAgeSeconds * 1000
+  ) {
+    return "MFA was verified too long ago to complete this request"
+  }
+
+  return
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {

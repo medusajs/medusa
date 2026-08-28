@@ -5,4 +5,4 @@
 "@medusajs/types": patch
 ---
 
-fix(framework,medusa,auth,types): bind the pre-MFA token to the MFA challenge it was issued for
+fix(framework,medusa,auth,types): require a completed MFA challenge on MFA routes
