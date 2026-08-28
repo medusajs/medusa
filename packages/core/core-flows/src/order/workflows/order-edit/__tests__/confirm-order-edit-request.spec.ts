@@ -9,12 +9,14 @@ const buildContainer = ({
   refreshedOrder,
   orderPreview,
   inventoryOverrides = {},
+  reservationLineItemIds = ["item_1"],
 }: {
   order: any
   orderChange: any
   refreshedOrder: any
   orderPreview: any
   inventoryOverrides?: Record<string, any>
+  reservationLineItemIds?: string[]
 }): { container: MedusaContainer; calls: Record<string, any[]> } => {
   const calls: Record<string, any[]> = {
     listReservationItems: [],
@@ -54,7 +56,7 @@ const buildContainer = ({
     asFunction(() => ({
       listReservationItems: async (filters: any) => {
         calls.listReservationItems.push(filters)
-        if (filters.line_item_id?.includes("item_1")) {
+        if (filters.line_item_id?.some((id: string) => reservationLineItemIds.includes(id))) {
           return [{ id: "res_1", inventory_item_id: "inv_1", line_item_id: "item_1" }]
         }
         return []
@@ -207,6 +209,29 @@ describe("confirmOrderEditRequestWorkflow - Inventory", () => {
     expect(result).toBeDefined()
     expect(calls.deleteReservationItemsByLineItem).toHaveLength(0)
     expect(calls.createReservationItems).toHaveLength(0)
+
+    order.items[0].detail.fulfilled_quantity = 0
+    order.items[0].detail.raw_fulfilled_quantity = { value: "0" }
+
+    const missingReservation = buildContainer({
+      order,
+      orderChange,
+      refreshedOrder: order,
+      orderPreview,
+      reservationLineItemIds: [],
+    })
+
+    await confirmOrderEditRequestWorkflow(missingReservation.container).run({
+      input: { order_id: "order_1" },
+    })
+
+    expect(missingReservation.calls.createReservationItems).toHaveLength(1)
+    expect(missingReservation.calls.createReservationItems[0][0].line_item_id).toBe(
+      "item_1"
+    )
+    expect(
+      MathBN.eq(missingReservation.calls.createReservationItems[0][0].quantity, 2)
+    ).toBe(true)
   })
 
   it("should subtract fulfilled quantity on partially fulfilled items when quantity increases", async () => {

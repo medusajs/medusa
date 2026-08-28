@@ -26,7 +26,10 @@ import {
 } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { emitEventStep, useQueryGraphStep } from "../../../common"
 import { acquireLockStep, releaseLockStep } from "../../../locking"
-import { deleteReservationsByLineItemsStep } from "../../../reservation/steps"
+import {
+  deleteReservationsByLineItemsStep,
+  listReservationsByLineItemsStep,
+} from "../../../reservation/steps"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -198,9 +201,54 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       },
     }).config({ name: "order-items-query" })
 
+    const itemsWithUnchangedQuantity = transform(
+      { refreshedOrder, orderPreview },
+      ({ refreshedOrder, orderPreview }) => {
+        return refreshedOrder.items
+          .filter((ordItem) => {
+            const itemAction = orderPreview.items?.find(
+              (item) =>
+                item.id === ordItem.id &&
+                item.actions?.some(
+                  (a) => a.action === ChangeActionType.ITEM_UPDATE
+                )
+            )
+
+            const updateActions =
+              itemAction?.actions?.filter(
+                (a) => a.action === ChangeActionType.ITEM_UPDATE
+              ) ?? []
+
+            return (
+              updateActions.length > 0 &&
+              updateActions.every((a) =>
+                MathBN.eq((a.details as any)?.quantity_diff ?? 0, 0)
+              )
+            )
+          })
+          .map(({ id }) => id)
+      }
+    )
+
+    const existingReservationLineItemIds = listReservationsByLineItemsStep(
+      itemsWithUnchangedQuantity
+    )
+
     const { variants, items, toRemoveReservationLineItemIds } = transform(
-      { refreshedOrder, previousOrderItems: order.items, orderPreview },
-      ({ refreshedOrder, previousOrderItems, orderPreview }) => {
+      {
+        refreshedOrder,
+        previousOrderItems: order.items,
+        orderPreview,
+        existingReservationLineItemIds,
+      },
+      (
+        {
+          refreshedOrder,
+          previousOrderItems,
+          orderPreview,
+          existingReservationLineItemIds,
+        }
+      ) => {
         const allItems: any[] = []
         const allVariants: any[] = []
 
@@ -244,7 +292,10 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
               MathBN.eq((a.details as any)?.quantity_diff ?? 0, 0)
             )
 
-          if (isQuantityUnchanged) {
+          if (
+            isQuantityUnchanged &&
+            existingReservationLineItemIds.includes(ordItem.id)
+          ) {
             return
           }
 
