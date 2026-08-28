@@ -571,16 +571,21 @@ class DistributedTransaction extends EventEmitter {
           throw new SkipExecutionError("Transaction already finished")
         }
 
-        TransactionCheckpoint.mergeCheckpoints(checkpoint, lastCheckpoint)
-
-        const [steps] = TransactionOrchestrator.buildSteps(
-          checkpoint.flow.definition,
-          checkpoint.flow.steps
+        /**
+         * Merge the stored checkpoint into the live flow, context and errors,
+         * mutating them in place.
+         *
+         * Steps that run concurrently hold a reference to their own
+         * TransactionStep instance, taken from the flow at the time they were
+         * scheduled. Swapping `this.flow` for a freshly built object graph
+         * would detach those references, so any state transition applied to them
+         * while this save is being retried would be written to an orphaned object 
+         * and silently lost, leaving the transaction stuck.
+         */
+        TransactionCheckpoint.mergeCheckpoints(
+          new TransactionCheckpoint(this.flow, this.context, this.errors),
+          lastCheckpoint
         )
-        checkpoint.flow.steps = steps
-        this.flow = checkpoint.flow
-        this.errors = checkpoint.errors
-        this.context = checkpoint.context
 
         continue
       }
