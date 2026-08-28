@@ -221,10 +221,15 @@ export class TransactionCheckpoint {
           if (storedStateIndex > currentStateIndex) {
             currentTransactionData.flow.state = storedData.flow.state
           } else if (
-            currentStateIndex < storedStateIndex &&
+            currentStateIndex > storedStateIndex &&
             currentTransactionData.flow.state !==
               TransactionState.WAITING_TO_COMPENSATE
           ) {
+            // Mirror of the step-version check below: when the local copy has
+            // moved past the stored state, abandon this execution and let the
+            // other one finish. WAITING_TO_COMPENSATE is exempt because a
+            // transaction that is mid-compensation should not be flagged as
+            // "behind".
             throw new SkipExecutionError(
               `Transaction is behind another execution`
             )
@@ -579,7 +584,7 @@ class DistributedTransaction extends EventEmitter {
          * TransactionStep instance, taken from the flow at the time they were
          * scheduled. Swapping `this.flow` for a freshly built object graph
          * would detach those references, so any state transition applied to them
-         * while this save is being retried would be written to an orphaned object 
+         * while this save is being retried would be written to an orphaned object
          * and silently lost, leaving the transaction stuck.
          */
         TransactionCheckpoint.mergeCheckpoints(
