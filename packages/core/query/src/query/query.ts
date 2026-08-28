@@ -22,6 +22,7 @@ import {
   Cached,
   GraphQLUtils,
   isObject,
+  promiseAll,
   remoteQueryObjectFromString,
   unflattenObjectKeys,
   isString,
@@ -197,11 +198,24 @@ export class Query {
    * The engine only holds what its index was defined with, so the requested
    * fields are split: what the index can return comes back from the search, and
    * the rest is fetched by id. Search order is preserved through the expand.
+   *
+   * Pass an array to run several queries in one provider round-trip — InstantSearch
+   * extra facet requests, or `disjunctive_facets` expansion, go through this path.
    */
+  async search<const TEntry extends string>(
+    queryOptions: SearchTypes.SearchQuery<TEntry>[],
+    options?: RemoteJoinerOptions
+  ): Promise<SearchResultSet<TEntry>[]>
   async search<const TEntry extends string>(
     queryOptions: SearchTypes.SearchQuery<TEntry>,
     options?: RemoteJoinerOptions
-  ): Promise<SearchResultSet<TEntry>> {
+  ): Promise<SearchResultSet<TEntry>>
+  async search<const TEntry extends string>(
+    queryOptions:
+      | SearchTypes.SearchQuery<TEntry>
+      | SearchTypes.SearchQuery<TEntry>[],
+    options?: RemoteJoinerOptions
+  ): Promise<SearchResultSet<TEntry> | SearchResultSet<TEntry>[]> {
     if (!this.#searchModule) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -209,34 +223,67 @@ export class Query {
       )
     }
 
+    const isMany = Array.isArray(queryOptions)
+    const queries = isMany ? queryOptions : [queryOptions]
+    const prepared = queries.map((query) => this.prepareSearchQuery(query))
+
+    const searchResults = await this.#searchModule.searchMany(
+      prepared.map((item) => item.engineQuery)
+    )
+
+    const results = await promiseAll(
+      searchResults.map((searchResult, i) =>
+        this.hydrateSearchResult(prepared[i], searchResult, options)
+      )
+    )
+
+    return isMany ? results : results[0]
+  }
+
+  private prepareSearchQuery<const TEntry extends string>(
+    queryOptions: SearchTypes.SearchQuery<TEntry>
+  ): {
+    entity: string
+    engineQuery: SearchTypes.SearchQuery<TEntry>
+    graphFields: string[]
+  } {
     const entity = queryOptions.entity
-    const retrievableFields = this.#searchModule.listRetrievableFields(entity)
+    const retrievableFields = this.#searchModule!.listRetrievableFields(entity)
     // Without an explicit selection, return what the index holds.
     const requested = queryOptions.fields ?? retrievableFields
     const retrievable = new Set(retrievableFields)
 
-    const indexFields = requested.filter((field) => retrievable.has(field))
-    const graphFields = requested.filter((field) => !retrievable.has(field))
+    return {
+      entity,
+      engineQuery: {
+        ...queryOptions,
+        fields: requested.filter((field) => retrievable.has(field)),
+      },
+      graphFields: requested.filter((field) => !retrievable.has(field)),
+    }
+  }
 
-    const searchResult = await this.#searchModule.search({
-      ...queryOptions,
-      fields: indexFields,
-    })
-
+  private async hydrateSearchResult<const TEntry extends string>(
+    prepared: { entity: string; graphFields: string[] },
+    searchResult: SearchTypes.SearchResult,
+    options?: RemoteJoinerOptions
+  ): Promise<SearchResultSet<TEntry>> {
     let data = searchResult.hits.map((hit) => hit.document) as any[]
 
-    if (graphFields.length && data.length) {
+    if (prepared.graphFields.length && data.length) {
       // A hit is identified by the index' primary key, and the fetched rows are
       // merged back onto the documents by it, so it has to be both filtered on
       // and selected — whether or not the caller asked for it.
-      const { primary_key: primaryKey } = this.#searchModule.getIndex(entity)
-      const hydrationFields = graphFields.includes(primaryKey)
-        ? graphFields
-        : [...graphFields, primaryKey]
+      const { primary_key: primaryKey } = this.#searchModule!.getIndex(
+        prepared.entity
+      )
+      const hydrationFields = prepared.graphFields.includes(primaryKey)
+        ? prepared.graphFields
+        : [...prepared.graphFields, primaryKey]
 
       const expanded = await this.graph(
         {
-          entity,
+          entity: prepared.entity,
           fields: hydrationFields,
           filters: {
             [primaryKey]: searchResult.hits.map((hit) => hit.id),

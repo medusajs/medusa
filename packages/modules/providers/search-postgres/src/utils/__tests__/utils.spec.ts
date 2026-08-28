@@ -7,7 +7,9 @@ import {
   keywordTsQuerySql,
   normalizeFacetRequests,
   projectIndexedDocument,
+  resolveVectorField,
   sameSchema,
+  sourceTextForEmbed,
   tableNameForIndex,
   toWhereClause,
   weightLabel,
@@ -30,7 +32,12 @@ const baseDefinition = (
       id: { type: "keyword", filterable: true },
       title: { type: "text", searchable: { weight: 3 }, filterable: true },
       status: { type: "keyword", filterable: true, facetable: true },
-      price: { type: "float", filterable: true, sortable: true, facetable: true },
+      price: {
+        type: "float",
+        filterable: true,
+        sortable: true,
+        facetable: true,
+      },
       tags: { type: "keyword", array: true, filterable: true, facetable: true },
       sizes: { type: "integer", array: true, filterable: true },
       deleted_at: { type: "date", filterable: true },
@@ -43,7 +50,7 @@ const baseDefinition = (
       },
     },
     ...overrides,
-  }) as SearchTypes.ResolvedSearchIndexDefinition
+  } as SearchTypes.ResolvedSearchIndexDefinition)
 
 describe("postgres search utils", () => {
   describe("buildIndexPlan", () => {
@@ -142,6 +149,40 @@ describe("postgres search utils", () => {
       expect(projected.search_text).toContain("Red shoe")
       expect(projected.weighted_parts[0].weight).toBe("A")
     })
+
+    it("does not store client embeddings for engine-embedded fields", () => {
+      const plan = buildIndexPlan(
+        baseDefinition({
+          fields: {
+            id: { type: "keyword", filterable: true },
+            title: { type: "text", searchable: true },
+            embedding: {
+              type: "vector",
+              dimensions: 3,
+              embed: "title",
+            },
+          },
+        })
+      )
+
+      const projected = projectIndexedDocument(
+        {
+          id: "prod_1",
+          title: "Red shoe",
+          embedding: [0.1, 0.2, 0.3],
+        },
+        plan
+      )
+
+      expect(projected.vectors).toEqual({})
+    })
+
+    it("reads the source text an embedder should encode", () => {
+      expect(
+        sourceTextForEmbed({ id: "prod_1", title: "Red shoe" }, "title")
+      ).toBe("Red shoe")
+      expect(sourceTextForEmbed({ id: "prod_1" }, "title")).toBeUndefined()
+    })
   })
 
   describe("toWhereClause", () => {
@@ -232,7 +273,10 @@ describe("postgres search utils", () => {
           {
             field: "price",
             type: "range",
-            ranges: [{ key: "low", from: 0, to: 50 }, { key: "high", from: 50 }],
+            ranges: [
+              { key: "low", from: 0, to: 50 },
+              { key: "high", from: 50 },
+            ],
           },
         ],
         plan
@@ -266,6 +310,42 @@ describe("postgres search utils", () => {
       expect(
         extractPrimaryKeyFilter({ id: { $in: ["a"] }, status: "x" }, plan)
       ).toBeUndefined()
+    })
+  })
+
+  describe("resolveVectorField", () => {
+    const vectorPlan = buildIndexPlan(
+      baseDefinition({
+        fields: {
+          id: { type: "keyword", filterable: true },
+          embedding: { type: "vector", dimensions: 3 },
+        },
+      })
+    )
+
+    it("infers the field when the index has a single vector field", () => {
+      expect(resolveVectorField({ value: [0.1, 0.2, 0.3] }, vectorPlan)).toBe(
+        "embedding"
+      )
+    })
+
+    it("requires field when more than one vector is declared", () => {
+      const multi = buildIndexPlan(
+        baseDefinition({
+          fields: {
+            id: { type: "keyword", filterable: true },
+            embedding: { type: "vector", dimensions: 3 },
+            image: { type: "vector", dimensions: 3 },
+          },
+        })
+      )
+
+      expect(() =>
+        resolveVectorField({ value: [0.1, 0.2, 0.3] }, multi)
+      ).toThrow(/more than one vector field/)
+      expect(
+        resolveVectorField({ field: "image", value: [0.1, 0.2, 0.3] }, multi)
+      ).toBe("image")
     })
   })
 
