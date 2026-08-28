@@ -1,5 +1,4 @@
 import {
-  DEFAULT_SEARCH_PATH,
   InstantSearchAdapterOptions,
   PUBLISHABLE_KEY_HEADER,
   SearchQuery,
@@ -110,13 +109,15 @@ async function postJson(
 export function assertAdapterTransport(
   options: InstantSearchAdapterOptions
 ): void {
-  const path = options.path ?? DEFAULT_SEARCH_PATH
-  if (
-    !options.requester &&
-    !options.sdk &&
-    !options.baseUrl &&
-    !isAbsoluteUrl(path)
-  ) {
+  if (options.requester) {
+    return
+  }
+
+  if (!options.path) {
+    throw new Error("@medusajs/instantsearch-adapter: provide `path`")
+  }
+
+  if (!options.sdk && !options.baseUrl && !isAbsoluteUrl(options.path)) {
     throw new Error(
       "@medusajs/instantsearch-adapter: provide `sdk`, `requester`, or `baseUrl`"
     )
@@ -130,7 +131,11 @@ export function createSearchRequester(
     return options.requester
   }
 
-  const path = options.path ?? DEFAULT_SEARCH_PATH
+  const path = options.path
+  if (!path) {
+    throw new Error("@medusajs/instantsearch-adapter: provide `path`")
+  }
+
   const batch = options.batch !== false
 
   if (options.sdk) {

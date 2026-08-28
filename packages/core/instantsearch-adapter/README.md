@@ -58,7 +58,7 @@ import {
 import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
 import { sdk } from "./sdk"
 
-const { searchClient } = createInstantSearchAdapter({ sdk })
+const { searchClient } = createInstantSearchAdapter({ sdk, path: "/store/search" })
 
 export function ProductSearch() {
   return (
@@ -79,7 +79,7 @@ createInstantSearchAdapter({
   sdk, // preferred
   // requester,                     // custom (queries) => results
   // baseUrl, publishableApiKey,    // native fetch fallback
-  path: "/store/search", // default
+  path: "/store/search",
   batch: true, // POST `{ queries }` in one request
   placeholderSearch: true, // empty query still searches
   numericAttributes: ["min_price"], // range widgets: request stats facets
@@ -97,6 +97,8 @@ createInstantSearchAdapter({
   transformResponse: (response, result, request) => response,
 })
 ```
+
+`path` is required when using `sdk` or `baseUrl`. If InstantSearch does not send `hitsPerPage`, the adapter omits `pagination.take` so the backend default applies.
 
 `indexName` is the Search index `name` (the `entity` sent to Medusa). For `sortBy`, encode the sort in the index name:
 
@@ -126,7 +128,6 @@ x-publishable-api-key: pk_...
     {
       "entity": "product",
       "filters": { "q": "shoes", "brand": { "$in": ["nike"] } },
-      "pagination": { "skip": 0, "take": 20 },
       "search_options": {
         "facets": [{ "field": "brand", "type": "value", "limit": 10 }]
       }

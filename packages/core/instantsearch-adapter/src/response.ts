@@ -1,6 +1,5 @@
 import { parseSearchParams, stringifyParams } from "./request"
 import {
-  DEFAULT_HITS_PER_PAGE,
   HighlightResultNode,
   InstantSearchFacetHit,
   InstantSearchFacetSearchResponse,
@@ -212,16 +211,18 @@ export function adaptSearchResponse(
   options: { primaryKey?: string } = {}
 ): InstantSearchSearchResponse {
   const params = parseSearchParams(request.params)
-  const hitsPerPage =
-    params.hitsPerPage ?? result.metadata.take ?? DEFAULT_HITS_PER_PAGE
+  const hitsPerPage = params.hitsPerPage ?? result.metadata.take
   const skip = result.metadata.skip ?? 0
   const page =
     params.page ?? (hitsPerPage > 0 ? Math.floor(skip / hitsPerPage) : 0)
+  const hitCount = result.hits.length
+  // No total from the engine (`count: "none"`). A full page means there may
+  // be more hits — InstantSearch needs nbHits past this page to show "next".
   const nbHits =
     result.metadata.count ??
-    (result.hits.length < hitsPerPage
-      ? skip + result.hits.length
-      : skip + result.hits.length + 1)
+    (hitsPerPage > 0 && hitCount >= hitsPerPage
+      ? skip + hitCount + 1
+      : skip + hitCount)
   const nbPages =
     hitsPerPage > 0 && nbHits > 0 ? Math.ceil(nbHits / hitsPerPage) : 0
   const preTag = params.highlightPreTag ?? DEFAULT_PRE_TAG
@@ -253,7 +254,7 @@ export function createEmptySearchResponse(
   request: InstantSearchRequest
 ): InstantSearchSearchResponse {
   const params = parseSearchParams(request.params)
-  const hitsPerPage = params.hitsPerPage ?? DEFAULT_HITS_PER_PAGE
+  const hitsPerPage = params.hitsPerPage ?? 0
   const page = params.page ?? 0
 
   return {

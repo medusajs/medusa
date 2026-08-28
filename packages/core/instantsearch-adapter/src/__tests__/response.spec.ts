@@ -117,6 +117,59 @@ describe("adaptSearchResponse", () => {
     })
   })
 
+  it("uses the backend page size when InstantSearch does not send hitsPerPage", () => {
+    const adapted = adaptSearchResponse(
+      result({
+        hits: [{ id: "prod_1", document: {} }],
+        metadata: { skip: 0, take: 12, count: 12 },
+      }),
+      { indexName: "product", params: { query: "hat" } }
+    )
+
+    expect(adapted.hitsPerPage).toEqual(12)
+    expect(adapted.nbPages).toEqual(1)
+  })
+
+  it("estimates nbHits past the current page when the engine omitted a total", () => {
+    const fullPage = adaptSearchResponse(
+      result({
+        hits: Array.from({ length: 10 }, (_, i) => ({
+          id: `prod_${i}`,
+          document: {},
+        })),
+        metadata: { skip: 20, take: 10, count: null },
+      }),
+      { indexName: "product", params: { hitsPerPage: 10, page: 2 } }
+    )
+
+    expect(fullPage.nbHits).toEqual(31)
+    expect(fullPage.nbPages).toEqual(4)
+    expect(fullPage.exhaustiveNbHits).toBe(false)
+
+    const lastPage = adaptSearchResponse(
+      result({
+        hits: [{ id: "prod_1", document: {} }],
+        metadata: { skip: 20, take: 10, count: null },
+      }),
+      { indexName: "product", params: { hitsPerPage: 10, page: 2 } }
+    )
+
+    expect(lastPage.nbHits).toEqual(21)
+    expect(lastPage.nbPages).toEqual(3)
+    expect(lastPage.exhaustiveNbHits).toBe(false)
+
+    const noHitsQuery = adaptSearchResponse(
+      result({
+        hits: [],
+        metadata: { skip: 0, take: 0, count: null },
+      }),
+      { indexName: "product", params: { hitsPerPage: 0 } }
+    )
+
+    expect(noHitsQuery.nbHits).toEqual(0)
+    expect(noHitsQuery.nbPages).toEqual(0)
+  })
+
   it("nests dotted highlight paths", () => {
     const adapted = adaptSearchResponse(
       result({

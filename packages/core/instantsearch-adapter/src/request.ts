@@ -4,13 +4,15 @@ import {
   mergeFiltersAnd,
   withQuery,
 } from "./filters"
-import { DEFAULT_HITS_PER_PAGE } from "./types"
 import type {
   InstantSearchAdapterOptions,
   InstantSearchRequest,
   InstantSearchSearchParams,
+  SearchFacetRequest,
+  SearchHighlightOptions,
   SearchOptions,
   SearchOrderBy,
+  SearchPagination,
   SearchQuery,
 } from "./types"
 
@@ -146,77 +148,114 @@ type MappingOptions = Pick<
   | "indexSpecificSearchParameters"
 >
 
-function asFacetNames(
-  facets: InstantSearchSearchParams["facets"]
-): string[] {
+function eachFacetName(
+  facets: InstantSearchSearchParams["facets"],
+  visit: (field: string) => void
+): void {
   if (facets == null || facets === "") {
-    return []
+    return
   }
-  const names = Array.isArray(facets) ? facets : [facets]
-  return names.filter((facet) => facet && facet !== "*")
+
+  if (Array.isArray(facets)) {
+    for (const facet of facets) {
+      if (facet && facet !== "*") {
+        visit(facet)
+      }
+    }
+    return
+  }
+
+  if (facets !== "*") {
+    visit(facets)
+  }
 }
 
 function buildSearchOptions(
   params: InstantSearchSearchParams,
   options: MappingOptions
 ): SearchOptions | undefined {
-  const result: SearchOptions = {}
-  const facetNames = asFacetNames(params.facets)
-  const numericAttributes = new Set(options.numericAttributes ?? [])
+  let result: SearchOptions | undefined
+  const numericAttributes = options.numericAttributes
 
-  if (facetNames.length) {
-    result.facets = facetNames.map((field) => {
-      if (numericAttributes.has(field)) {
-        return { field, type: "stats" as const }
-      }
+  eachFacetName(params.facets, (field) => {
+    result ??= {}
+    const facets = (result.facets ??= [])
 
-      return {
-        field,
-        type: "value" as const,
-        ...(params.maxValuesPerFacet != null
-          ? { limit: params.maxValuesPerFacet }
-          : {}),
-        ...(params.sortFacetValuesBy ? { sort: params.sortFacetValuesBy } : {}),
-      }
-    })
+    if (numericAttributes?.includes(field)) {
+      facets.push({ field, type: "stats" })
+      return
+    }
+
+    const facet: SearchFacetRequest = { field, type: "value" }
+    if (params.maxValuesPerFacet != null) {
+      facet.limit = params.maxValuesPerFacet
+    }
+    if (params.sortFacetValuesBy) {
+      facet.sort = params.sortFacetValuesBy
+    }
+    facets.push(facet)
+  })
+
+  const highlightFields: string[] = []
+  let snippetConfigured = false
+  let snippetLength: number | undefined
+
+  const addHighlightField = (field: string) => {
+    if (!field || field === "*" || highlightFields.includes(field)) {
+      return
+    }
+    highlightFields.push(field)
   }
 
-  const highlightFields = (params.attributesToHighlight ?? []).filter(
-    (field) => field !== "*"
-  )
-  const snippets = (params.attributesToSnippet ?? []).map(parseSnippetAttribute)
-  const snippetFields = snippets.map((snippet) => snippet.field)
-  const fields = Array.from(new Set([...highlightFields, ...snippetFields]))
-
-  if (fields.length) {
-    const snippetLength = snippets.find(
-      (snippet) => snippet.length != null
-    )?.length
-    result.highlight = {
-      fields,
-      ...(params.highlightPreTag ? { pre_tag: params.highlightPreTag } : {}),
-      ...(params.highlightPostTag ? { post_tag: params.highlightPostTag } : {}),
-      ...(snippets.length
-        ? { snippet: snippetLength != null ? { length: snippetLength } : true }
-        : {}),
+  if (params.attributesToHighlight) {
+    for (const field of params.attributesToHighlight) {
+      addHighlightField(field)
     }
   }
 
+  if (params.attributesToSnippet) {
+    for (const attribute of params.attributesToSnippet) {
+      snippetConfigured = true
+      const snippet = parseSnippetAttribute(attribute)
+      addHighlightField(snippet.field)
+      if (snippetLength == null && snippet.length != null) {
+        snippetLength = snippet.length
+      }
+    }
+  }
+
+  if (highlightFields.length) {
+    const highlight: SearchHighlightOptions = { fields: highlightFields }
+    if (params.highlightPreTag) {
+      highlight.pre_tag = params.highlightPreTag
+    }
+    if (params.highlightPostTag) {
+      highlight.post_tag = params.highlightPostTag
+    }
+    if (snippetConfigured) {
+      highlight.snippet =
+        snippetLength != null ? { length: snippetLength } : true
+    }
+    result ??= {}
+    result.highlight = highlight
+  }
+
   if (params.restrictSearchableAttributes?.length) {
+    result ??= {}
     result.attributes_to_search_on = params.restrictSearchableAttributes
   }
 
-  if (params.typoTolerance === false) {
-    result.typo_tolerance = false
-  } else if (params.typoTolerance === true) {
-    result.typo_tolerance = true
+  if (params.typoTolerance === false || params.typoTolerance === true) {
+    result ??= {}
+    result.typo_tolerance = params.typoTolerance
   }
 
   if (params.distinct && options.distinctAttribute) {
+    result ??= {}
     result.distinct = options.distinctAttribute
   }
 
-  return Object.keys(result).length ? result : undefined
+  return result
 }
 
 function mergeSearchOptions(
@@ -238,34 +277,42 @@ function mergeSearchOptions(
   }
 }
 
+function applyLayer(
+  query: SearchQuery,
+  layer?: Partial<Omit<SearchQuery, "entity">>
+): void {
+  if (!layer) {
+    return
+  }
+
+  const filters = mergeFiltersAnd(query.filters, layer.filters)
+  if (filters) {
+    query.filters = filters
+  }
+
+  query.fields ??= layer.fields
+
+  if (layer.pagination) {
+    const pagination = (query.pagination ??= {})
+    pagination.skip ??= layer.pagination.skip
+    pagination.take ??= layer.pagination.take
+    pagination.order ??= layer.pagination.order
+    pagination.cursor ??= layer.pagination.cursor
+  }
+
+  query.search_options = mergeSearchOptions(
+    layer.search_options,
+    query.search_options
+  )
+}
+
 function applyConfiguredParameters(
-  adapted: SearchQuery,
+  query: SearchQuery,
   options: MappingOptions
 ): SearchQuery {
-  const layers = [
-    options.additionalSearchParameters,
-    options.indexSpecificSearchParameters?.[adapted.entity],
-  ].filter(Boolean) as Partial<SearchQuery>[]
-
-  let filters = adapted.filters
-  let fields = adapted.fields
-  let pagination = { ...adapted.pagination }
-  let searchOptions = adapted.search_options
-
-  for (const layer of layers) {
-    filters = mergeFiltersAnd(filters, layer.filters)
-    fields = fields ?? layer.fields
-    pagination = { ...layer.pagination, ...pagination }
-    searchOptions = mergeSearchOptions(layer.search_options, searchOptions)
-  }
-
-  return {
-    entity: adapted.entity,
-    ...(fields ? { fields } : {}),
-    ...(filters ? { filters } : {}),
-    pagination,
-    ...(searchOptions ? { search_options: searchOptions } : {}),
-  }
+  applyLayer(query, options.additionalSearchParameters)
+  applyLayer(query, options.indexSpecificSearchParameters?.[query.entity])
+  return query
 }
 
 function fromInstantSearch(
@@ -274,16 +321,18 @@ function fromInstantSearch(
 ): SearchQuery {
   const params = parseSearchParams(request.params)
   const { entity, order } = parseIndexName(request.indexName)
-  const hitsPerPage = params.hitsPerPage ?? DEFAULT_HITS_PER_PAGE
-  const page = params.page ?? 0
+  const query: SearchQuery = { entity }
 
-  const query: SearchQuery = {
-    entity,
-    pagination: {
-      skip: page * hitsPerPage,
-      take: hitsPerPage,
-      ...(order ? { order } : {}),
-    },
+  if (params.hitsPerPage != null || order) {
+    const pagination: SearchPagination = {}
+    if (params.hitsPerPage != null) {
+      pagination.take = params.hitsPerPage
+      pagination.skip = (params.page ?? 0) * params.hitsPerPage
+    }
+    if (order) {
+      pagination.order = order
+    }
+    query.pagination = pagination
   }
 
   const filters = withQuery(
@@ -329,22 +378,21 @@ export function adaptFacetSearchRequest(
     )
   }
 
-  query.pagination = {
-    ...query.pagination,
-    skip: 0,
-    take: 0,
+  const pagination = (query.pagination ??= {})
+  pagination.skip = 0
+  pagination.take = 0
+
+  const facet: SearchFacetRequest = {
+    field: params.facetName,
+    type: "value",
+    limit: params.maxFacetHits ?? params.maxValuesPerFacet ?? 10,
   }
-  query.search_options = {
-    ...query.search_options,
-    facets: [
-      {
-        field: params.facetName,
-        type: "value",
-        ...(params.facetQuery ? { query: params.facetQuery } : {}),
-        limit: params.maxFacetHits ?? params.maxValuesPerFacet ?? 10,
-      },
-    ],
+  if (params.facetQuery) {
+    facet.query = params.facetQuery
   }
+
+  const searchOptions = (query.search_options ??= {})
+  searchOptions.facets = [facet]
 
   return query
 }

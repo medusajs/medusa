@@ -10,9 +10,16 @@ const emptyResult = (overrides: Partial<SearchResult> = {}): SearchResult => ({
 
 describe("createInstantSearchAdapter", () => {
   it("requires a transport option", () => {
-    expect(() => createInstantSearchAdapter({})).toThrow(
+    expect(() => createInstantSearchAdapter({ path: "/store/search" })).toThrow(
       /provide `sdk`, `requester`, or `baseUrl`/
     )
+  })
+
+  it("requires path unless a requester is provided", () => {
+    expect(() =>
+      createInstantSearchAdapter({ sdk: { client: { fetch: jest.fn() } } })
+    ).toThrow(/provide `path`/)
+    expect(() => createInstantSearchAdapter({ requester: jest.fn() })).not.toThrow()
   })
 
   it("translates InstantSearch requests and returns adapted results", async () => {
@@ -21,7 +28,6 @@ describe("createInstantSearchAdapter", () => {
         {
           entity: "product",
           filters: { q: "shoe" },
-          pagination: { skip: 0, take: 20 },
         },
       ])
       return [
@@ -132,7 +138,6 @@ describe("createInstantSearchAdapter", () => {
         {
           entity: "product",
           filters: { min_price: { $gte: 10, $lte: 50 } },
-          pagination: { skip: 0, take: 20 },
           search_options: {
             facets: [{ field: "min_price", type: "stats" }],
           },
@@ -259,6 +264,7 @@ describe("createInstantSearchAdapter", () => {
 
     const { searchClient } = createInstantSearchAdapter({
       sdk: { client: { fetch } },
+      path: "/store/search",
       headers: { "x-custom": "1" },
     })
 
@@ -273,7 +279,6 @@ describe("createInstantSearchAdapter", () => {
           {
             entity: "product",
             filters: { q: "sdk" },
-            pagination: { skip: 0, take: 20 },
           },
         ],
       },
@@ -299,6 +304,7 @@ describe("createInstantSearchAdapter", () => {
     try {
       const { searchClient } = createInstantSearchAdapter({
         baseUrl: "http://localhost:9000",
+        path: "/store/search",
         publishableApiKey: "pk_test",
       })
 

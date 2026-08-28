@@ -289,9 +289,7 @@ export type InstantSearchAdapterOptions = {
    */
   baseUrl?: string
   /**
-   * Search route path or absolute URL.
-   *
-   * @default "/store/search"
+   * Search route path or absolute URL. Required unless `requester` is set.
    */
   path?: string
   /**
@@ -369,7 +367,5 @@ export type InstantSearchAdapterOptions = {
   ) => InstantSearchSearchResponse
 }
 
-export const DEFAULT_SEARCH_PATH = "/store/search"
-export const DEFAULT_HITS_PER_PAGE = 20
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
 export const SEARCH_SCORE_KEY = "_score"

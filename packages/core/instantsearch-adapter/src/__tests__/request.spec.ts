@@ -90,10 +90,20 @@ describe("adaptSearchRequest", () => {
       entity: "product",
       filters: { q: "hat" },
       pagination: {
-        skip: 0,
-        take: 20,
         order: { min_price: "ASC" },
       },
+    })
+  })
+
+  it("omits take when InstantSearch does not send hitsPerPage", () => {
+    expect(
+      adaptSearchRequest({
+        indexName: "product",
+        params: { query: "hat" },
+      })
+    ).toEqual({
+      entity: "product",
+      filters: { q: "hat" },
     })
   })
 
