@@ -3,8 +3,13 @@ import { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections"
+import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 export const CollectionProductRowActions = ({
   product,
@@ -15,7 +20,14 @@ export const CollectionProductRowActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { hasAllPermissions } = usePermissions()
+  const { canUpdate: canEditProduct } = useProductPermissions()
   const { mutateAsync } = useUpdateCollectionProducts(collectionId)
+
+  const canManageCollectionProducts = hasAllPermissions([
+    "product:update",
+    "product_collection:update",
+  ])
 
   const handleRemove = async () => {
     const res = await prompt({
@@ -46,28 +58,35 @@ export const CollectionProductRowActions = ({
     )
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canEditProduct) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/products/${product.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/products/${product.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canManageCollectionProducts) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.remove"),
-              onClick: handleRemove,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.remove"),
+          onClick: handleRemove,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { FetchError } from "@medusajs/js-sdk"
+import { useNotificationPermissions } from "../use-resource-permissions"
 
 const NOTIFICATION_QUERY_KEY = "notification" as const
 export const notificationQueryKeys = queryKeysFactory(NOTIFICATION_QUERY_KEY)
@@ -42,10 +43,13 @@ export const useNotifications = (
     "queryFn" | "queryKey"
   >
 ) => {
+  const { canRead } = useNotificationPermissions()
+
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.notification.list(query),
     queryKey: notificationQueryKeys.list(query),
     ...options,
+    enabled: (options?.enabled ?? true) && canRead,
   })
 
   return { ...data, ...rest }

@@ -1,4 +1,5 @@
 export { default as RbacPolicy } from "./rbac-policy"
 export { default as RbacRole } from "./rbac-role"
+export { default as RbacRoleAssignment } from "./rbac-role-assignment"
 export { default as RbacRoleParent } from "./rbac-role-parent"
 export { default as RbacRolePolicy } from "./rbac-role-policy"

@@ -6,10 +6,10 @@ import {
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import { UpdateRbacRoleDTO } from "@medusajs/types"
+import { UpdateRbacRoleDTO } from "@medusajs/framework/types"
 import { createRbacRolePoliciesStep, setRoleParentStep } from "../steps"
 import { updateRbacRolesStep } from "../steps/update-rbac-roles"
-import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
+import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
  * @ignore
@@ -50,7 +50,7 @@ export const updateRbacRolesWorkflow = createWorkflow(
     when({ validationData }, ({ validationData }) => {
       return !!validationData?.actor_id && !!validationData?.policy_ids?.length
     }).then(() => {
-      validateUserPermissionsStep(validationData)
+      validateActorPermissionsStep(validationData)
     })
 
     const roleUpdateData = transform({ input }, ({ input }) => ({

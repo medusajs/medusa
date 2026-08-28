@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -16,27 +16,29 @@ import {
 export const adminPricePreferencesRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/price-preferences/*",
-    policies: [
-      {
-        resource: Entities.price_preference,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.price_preference,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/price-preferences",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.price_preference,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetPricePreferencesParams,
         QueryConfig.listPricePreferenceQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.price_preference,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -53,45 +55,46 @@ export const adminPricePreferencesRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/price-preferences",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.price_preference,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreatePricePreference),
       validateAndTransformQuery(
         AdminGetPricePreferenceParams,
         QueryConfig.retrivePricePreferenceQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.price_preference,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/price-preferences/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.price_preference,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdatePricePreference),
       validateAndTransformQuery(
         AdminGetPricePreferenceParams,
         QueryConfig.retrivePricePreferenceQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.price_preference,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/price-preferences/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.price_preference,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.price_preference,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

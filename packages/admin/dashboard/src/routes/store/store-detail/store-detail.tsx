@@ -8,6 +8,7 @@ import { storeLoader } from "./loader"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { StoreCurrencySection } from "./components/store-currency-section"
 import { StoreLocaleSection } from "./components/store-locale-section"
 
@@ -39,11 +40,15 @@ export const StoreDetail = () => {
               <StoreGeneralSection store={store} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="StoreCurrencySection">
-              <StoreCurrencySection store={store} />
+              <PermissionGuard permission="currency:read">
+                <StoreCurrencySection store={store} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {isTranslationsEnabled && (
               <LayoutComposer.Entry id="StoreLocaleSection">
-                <StoreLocaleSection store={store} />
+                <PermissionGuard permission="store_locale:read">
+                  <StoreLocaleSection store={store} />
+                </PermissionGuard>
               </LayoutComposer.Entry>
             )}
             {detailPageDefaultEntries(store, { permissions: false })}

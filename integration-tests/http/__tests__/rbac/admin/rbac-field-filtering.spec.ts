@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -177,15 +177,13 @@ medusaIntegrationTestRunner({
         { role_id: testRole[0].id, policy_id: salesChannelUpdatePolicy[0].id },
       ])
 
-      const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-      await remoteLink.create({
-        [Modules.USER]: {
-          user_id: testUser.id,
+      await rbacModule.createRbacRoleAssignments([
+        {
+          role_id: testRole[0].id,
+          reference: "user",
+          reference_id: testUser.id,
         },
-        [Modules.RBAC]: {
-          rbac_role_id: testRole[0].id,
-        },
-      })
+      ])
 
       // Login the user to get a proper JWT token with roles
       const loginResponse = await api.post("/auth/user/emailpass", {

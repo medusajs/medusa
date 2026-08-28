@@ -9,6 +9,8 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateRbacPolicy } from "../../../../../hooks/api/rbac-policies"
+import { PermissionOperation } from "../../../../../lib/permissions"
+import { PermissionResource } from "../../../../../lib/permissions"
 
 const EditPolicySchema = z.object({
   key: z.string().min(1),
@@ -43,16 +45,14 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
     await mutateAsync(
       {
         key: data.key.trim(),
-        resource: data.resource.trim(),
-        operation: data.operation.trim(),
+        resource: data.resource.trim() as PermissionResource,
+        operation: data.operation.trim() as PermissionOperation,
         name: data.name?.trim() || null,
         description: data.description?.trim() || null,
       },
       {
         onSuccess: ({ policy: updated }) => {
-          toast.success(
-            t("policies.edit.successToast", { key: updated.key })
-          )
+          toast.success(t("policies.edit.successToast", { key: updated.key }))
           handleSuccess()
         },
         onError: (error) => {
@@ -126,9 +126,7 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
             name="description"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label optional>
-                  {t("fields.description")}
-                </Form.Label>
+                <Form.Label optional>{t("fields.description")}</Form.Label>
                 <Form.Control>
                   <Textarea {...field} rows={4} />
                 </Form.Control>

@@ -135,23 +135,14 @@ export class MiddlewareFileLoader {
           })
         }
 
-        if (route.middlewares || route.policies) {
-          const middlewares = route.middlewares ?? []
-          if (route.policies && !route.middlewares?.length) {
-            middlewares.push((_, __, next) => {
-              next()
-            })
-          }
-
-          middlewares.forEach((middleware) => {
-            result.middleware.push({
-              handler: middleware,
-              matcher: matcher,
-              methods: route.methods,
-              policies: route.policies,
-            })
+        route.middlewares?.forEach((middleware) => {
+          result.middleware.push({
+            handler: middleware,
+            matcher: matcher,
+            methods: route.methods,
           })
-        }
+        })
+
         return result
       },
       {

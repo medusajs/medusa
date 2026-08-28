@@ -9,7 +9,10 @@ import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { Listicle } from "../../../../../components/common/listicle"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { useDeleteCustomerAddress } from "../../../../../hooks/api/customers"
-import { useCustomerPermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useCustomerAddressPermissions,
+  useCustomerPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type CustomerAddressSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -21,7 +24,9 @@ export const CustomerAddressSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-  const { canDelete } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomer } = useCustomerPermissions()
+  const { canDelete: canDeleteAddress } = useCustomerAddressPermissions()
+  const canDelete = canDeleteAddress && canUpdateCustomer
   const { mutateAsync: deleteAddress } = useDeleteCustomerAddress(customer.id)
 
   const addresses = customer.addresses ?? []
@@ -61,8 +66,9 @@ export const CustomerAddressSection = ({
     <Container className="p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("addresses.title")}</Heading>
-        {/* Only show add link if user has update permission */}
-        <PermissionGuard resource="customer" operation="update">
+        <PermissionGuard
+          permissions={["customer:update", "customer_address:create"]}
+        >
           <Link to={`create-address`} className="text-ui-fg-muted text-xs">
             Add
           </Link>

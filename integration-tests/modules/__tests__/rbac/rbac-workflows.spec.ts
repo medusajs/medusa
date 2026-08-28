@@ -4,20 +4,9 @@ import {
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { IRbacModuleService, MedusaContainer } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  definePolicies,
-  Modules,
-  Policy,
-} from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(60000)
-
-function clearPolicies() {
-  for (const policy of Object.keys(Policy)) {
-    delete Policy[policy]
-  }
-}
 
 medusaIntegrationTestRunner({
   env: { MEDUSA_FF_RBAC: true },
@@ -827,14 +816,13 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Forbidden")
+          expect(error.message).toContain(
+            "You do not have access to some of the policies you are trying to assign"
+          )
         })
 
         it("should prevent user from assigning policies they don't have access to", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -885,14 +873,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: limitedRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: limitedRoles[0].id,
-            },
-          })
+          ])
 
           // Try to create a role with write permission
           let error: any
@@ -920,9 +907,6 @@ medusaIntegrationTestRunner({
 
         it("should allow user to create roles with policies they have access to", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -967,14 +951,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: adminRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: adminRoles[0].id,
-            },
-          })
+          ])
 
           // User should be able to create a role with read permission (which they have)
           const { result: newRoles } = await rolesWorkflow.run({
@@ -1002,9 +985,6 @@ medusaIntegrationTestRunner({
 
         it("should allow user with inherited permissions to create roles", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -1062,14 +1042,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: managerRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: managerRoles[0].id,
-            },
-          })
+          ])
 
           // User should be able to create a role with read permission (inherited)
           const { result: newRoles } = await rolesWorkflow.run({
@@ -1086,363 +1065,6 @@ medusaIntegrationTestRunner({
 
           expect(newRoles).toHaveLength(1)
           expect(newRoles[0].name).toBe("New Reader")
-        })
-      })
-
-      describe("Policy Registration and Synchronization", () => {
-        beforeEach(() => {
-          // Clear global policy registries before each test
-          clearPolicies()
-        })
-
-        it("should register policies using definePolicies", () => {
-          // Register policies
-          definePolicies([
-            {
-              name: "ReadBrand",
-              resource: "brand",
-              operation: "read",
-              description: "Read brand data",
-            },
-            {
-              name: "WriteBrand",
-              resource: "brand",
-              operation: "write",
-              description: "Write brand data",
-            },
-            {
-              name: "ReadCategory",
-              resource: "category",
-              operation: "read",
-              description: "Read category data",
-            },
-          ])
-
-          // Verify Policy object contains named policies
-          expect(Object.keys(Policy).length).toBe(3)
-          expect(Policy["ReadBrand"]).toEqual({
-            resource: "brand",
-            name: "ReadBrand",
-            operation: "read",
-            description: "Read brand data",
-          })
-          expect(Policy["WriteBrand"]).toEqual({
-            resource: "brand",
-            name: "WriteBrand",
-            operation: "write",
-            description: "Write brand data",
-          })
-          expect(Policy["ReadCategory"]).toEqual({
-            resource: "category",
-            name: "ReadCategory",
-            operation: "read",
-            description: "Read category data",
-          })
-        })
-
-        it("should sync registered policies to database on application start", async () => {
-          // Register policies
-          definePolicies([
-            {
-              name: "ReadProduct",
-              resource: "product",
-              operation: "read",
-            },
-            {
-              name: "WriteProduct",
-              resource: "product",
-              operation: "write",
-            },
-            {
-              name: "DeleteProduct",
-              resource: "product",
-              operation: "delete",
-            },
-          ])
-
-          // Trigger sync by calling onApplicationStart
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Verify policies were created in database
-          const policies = await rbacService.listRbacPolicies({
-            key: ["product:read", "product:write", "product:delete"],
-          })
-
-          expect(policies).toHaveLength(3)
-
-          const policyMap = new Map(policies.map((p) => [p.key, p]))
-          expect(policyMap.get("product:read")).toMatchObject({
-            name: "ReadProduct",
-            resource: "product",
-            operation: "read",
-          })
-          expect(policyMap.get("product:write")).toMatchObject({
-            name: "WriteProduct",
-            resource: "product",
-            operation: "write",
-          })
-          expect(policyMap.get("product:delete")).toMatchObject({
-            name: "DeleteProduct",
-            resource: "product",
-            operation: "delete",
-          })
-        })
-
-        it("should soft delete policies that are no longer registered", async () => {
-          // First sync: Register 3 policies
-          definePolicies([
-            {
-              name: "ReadOrder",
-              resource: "order",
-              operation: "read",
-            },
-            {
-              name: "WriteOrder",
-              resource: "order",
-              operation: "write",
-            },
-            {
-              name: "DeleteOrder",
-              resource: "order",
-              operation: "delete",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          let policies = await rbacService.listRbacPolicies({
-            key: ["order:read", "order:write", "order:delete"],
-          })
-          expect(policies).toHaveLength(3)
-
-          // Second sync: Remove one policy from code
-
-          clearPolicies()
-          definePolicies([
-            {
-              name: "ReadOrder",
-              resource: "order",
-              operation: "read",
-            },
-            {
-              name: "WriteOrder",
-              resource: "order",
-              operation: "write",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Verify the removed policy is soft-deleted
-          policies = await rbacService.listRbacPolicies({
-            key: ["order:read", "order:write", "order:delete"],
-          })
-          expect(policies).toHaveLength(2) // Only active policies
-
-          // Verify soft-deleted policy exists with deleted_at
-          const allPolicies = await rbacService.listRbacPolicies(
-            { key: "order:delete" },
-            { withDeleted: true }
-          )
-          expect(allPolicies).toHaveLength(1)
-          expect(allPolicies[0].deleted_at).toBeTruthy()
-        })
-
-        it("should restore soft-deleted policies when they are re-registered", async () => {
-          // First sync: Register policies
-          definePolicies([
-            {
-              name: "ReadCustomer",
-              resource: "customer",
-              operation: "read",
-            },
-            {
-              name: "WriteCustomer",
-              resource: "customer",
-              operation: "write",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          let policies = await rbacService.listRbacPolicies({
-            resource: "customer",
-          })
-          expect(policies).toHaveLength(2)
-          const originalWritePolicy = policies.find(
-            (p) => p.operation === "write"
-          )
-
-          // Second sync: Remove WriteCustomer
-          clearPolicies()
-
-          definePolicies({
-            name: "ReadCustomer",
-            resource: "customer",
-            operation: "read",
-          })
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          policies = await rbacService.listRbacPolicies({
-            resource: "customer",
-          })
-          expect(policies).toHaveLength(1)
-
-          // Third sync: Re-add WriteCustomer
-          clearPolicies()
-
-          definePolicies([
-            {
-              name: "ReadCustomer",
-              resource: "customer",
-              operation: "read",
-            },
-            {
-              name: "WriteCustomer",
-              resource: "customer",
-              operation: "write",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Verify policy was restored (same ID)
-          policies = await rbacService.listRbacPolicies({
-            resource: "customer",
-          })
-          expect(policies).toHaveLength(2)
-
-          const restoredWritePolicy = policies.find(
-            (p) => p.operation === "write"
-          )
-          expect(restoredWritePolicy!.id).toBe(originalWritePolicy!.id)
-          expect(restoredWritePolicy!.deleted_at).toBeNull()
-        })
-
-        it("should update policy name if it changes in code", async () => {
-          // First sync: Register with original name
-          definePolicies({
-            name: "ReadInventory",
-            resource: "inventory",
-            operation: "read",
-          })
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          let policies = await rbacService.listRbacPolicies({
-            key: "inventory:read",
-          })
-          expect(policies).toHaveLength(1)
-          expect(policies[0].name).toBe("ReadInventory")
-          const policyId = policies[0].id
-
-          // Second sync: Change the name
-          clearPolicies()
-
-          definePolicies({
-            name: "ViewInventory",
-            resource: "inventory",
-            operation: "read",
-          })
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Verify name was updated but ID remains the same
-          policies = await rbacService.listRbacPolicies({
-            key: "inventory:read",
-          })
-          expect(policies).toHaveLength(1)
-          expect(policies[0].id).toBe(policyId)
-          expect(policies[0].name).toBe("ViewInventory")
-        })
-
-        it("should preserve role associations when policy is soft-deleted and restored", async () => {
-          // Register and sync policies
-          definePolicies([
-            {
-              name: "ReadStore",
-              resource: "store",
-              operation: "read",
-            },
-            {
-              name: "WriteStore",
-              resource: "store",
-              operation: "write",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          const policies = await rbacService.listRbacPolicies({
-            resource: "store",
-          })
-          expect(policies).toHaveLength(2)
-
-          // Create a role with these policies
-          const rolesWorkflow = createRbacRolesWorkflow(appContainer)
-          const { result: roles } = await rolesWorkflow.run({
-            input: {
-              roles: [
-                {
-                  name: "Store Manager",
-                  policy_ids: policies.map((p) => p.id),
-                },
-              ],
-            },
-          })
-
-          const storeManagerRole = roles[0]
-
-          // Verify role has both policies
-          let roleWithPolicies = await rbacService.listRbacRoles(
-            { id: storeManagerRole.id },
-            { relations: ["policies"] }
-          )
-          expect(roleWithPolicies[0].policies).toHaveLength(2)
-
-          // Soft delete WriteStore policy
-          clearPolicies()
-
-          definePolicies({
-            name: "ReadStore",
-            resource: "store",
-            operation: "read",
-          })
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Role should now have only 1 active policy
-          roleWithPolicies = await rbacService.listRbacRoles(
-            { id: storeManagerRole.id },
-            { relations: ["policies"] }
-          )
-          expect(roleWithPolicies[0].policies).toHaveLength(1)
-
-          // Restore WriteStore policy
-          clearPolicies()
-
-          definePolicies([
-            {
-              name: "ReadStore",
-              resource: "store",
-              operation: "read",
-            },
-            {
-              name: "WriteStore",
-              resource: "store",
-              operation: "write",
-            },
-          ])
-
-          await rbacService.__hooks?.onApplicationStart?.()
-
-          // Role should have both policies again (association preserved)
-          roleWithPolicies = await rbacService.listRbacRoles(
-            { id: storeManagerRole.id },
-            { relations: ["policies"] }
-          )
-          expect(roleWithPolicies[0].policies).toHaveLength(2)
         })
       })
     })

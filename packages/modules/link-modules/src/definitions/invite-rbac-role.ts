@@ -1,6 +1,16 @@
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import { LINKS, Modules } from "@medusajs/framework/utils"
+import {
+  defineFileConfig,
+  FeatureFlag,
+  LINKS,
+  Modules,
+} from "@medusajs/framework/utils"
 
+// Legacy link, superseded by rbac_role_assignment (see invite-rbac-role-assignment.ts).
+// Kept registered WITHOUT its former `extends` field aliases (those now belong to the
+// read-only assignment link) so that link-sync keeps owning the invite_rbac_role table
+// and `db:migrate` does not prompt to drop it before the role-assignment migration
+// script has copied its rows. Will be deleted in the future.
 export const InviteRbacRole: ModuleJoinerConfig = {
   serviceName: LINKS.InviteRbacRole,
   isLink: true,
@@ -41,34 +51,8 @@ export const InviteRbacRole: ModuleJoinerConfig = {
       hasMany: true,
     },
   ],
-  extends: [
-    {
-      serviceName: Modules.USER,
-      entity: "Invite",
-      fieldAlias: {
-        rbac_roles: {
-          path: "rbac_roles_link.rbac_role",
-          isList: true,
-        },
-      },
-      relationship: {
-        serviceName: LINKS.InviteRbacRole,
-        primaryKey: "invite_id",
-        foreignKey: "id",
-        alias: "rbac_roles_link",
-        isList: true,
-      },
-    },
-    {
-      serviceName: Modules.RBAC,
-      entity: "RbacRole",
-      relationship: {
-        serviceName: LINKS.InviteRbacRole,
-        primaryKey: "rbac_role_id",
-        foreignKey: "id",
-        alias: "invites_link",
-        isList: true,
-      },
-    },
-  ],
 }
+
+defineFileConfig({
+  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+})

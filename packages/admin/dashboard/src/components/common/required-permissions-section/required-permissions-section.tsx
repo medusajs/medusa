@@ -16,6 +16,9 @@ export const RequiredPermissionsSection = () => {
   const isRbacEnabled = useFeatureFlag("rbac")
   const requirements = useRequiredPermissions()
 
+  // TODO: Remove once we rework this component
+  return null
+
   if (!isRbacEnabled) {
     return null
   }

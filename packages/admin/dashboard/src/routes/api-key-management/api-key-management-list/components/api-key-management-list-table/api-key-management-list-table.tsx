@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useApiKeys } from "../../../../../hooks/api/api-keys"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useApiKeyPermissions } from "../../../../../hooks/use-resource-permissions"
 import { useApiKeyManagementTableColumns } from "./use-api-key-management-table-columns"
 import { useApiKeyManagementTableFilters } from "./use-api-key-management-table-filters"
 import { useApiKeyManagementTableQuery } from "./use-api-key-management-table-query"
@@ -17,6 +18,7 @@ export const ApiKeyManagementListTable = ({
   keyType: "secret" | "publishable"
 }) => {
   const { t } = useTranslation()
+  const { canCreate } = useApiKeyPermissions()
 
   const { searchParams, raw } = useApiKeyManagementTableQuery({
     pageSize: PAGE_SIZE,
@@ -64,11 +66,13 @@ export const ApiKeyManagementListTable = ({
               : t("apiKeyManagement.subtitle.secret")}
           </Text>
         </div>
-        <Link to="create">
-          <Button variant="secondary" size="small">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="create">
+            <Button variant="secondary" size="small">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
       <_DataTable
         table={table}

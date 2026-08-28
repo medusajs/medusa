@@ -1,3 +1,5 @@
+import { PolicyOperationValue, PolicyResourceValue } from "../../../rbac"
+
 export interface AdminCreateRbacRole {
   /**
    * The role's name.
@@ -63,6 +65,48 @@ export interface AdminRemoveRoleUsers {
   users: string[]
 }
 
+export interface AdminCreateRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to assign the role to.
+   */
+  reference_ids: string[]
+  /**
+   * The type of scope entity the assignments are constrained to (e.g.
+   * `sales_channel`). Must be provided together with `scope_id`.
+   */
+  scope?: string
+  /**
+   * The ID of the scope entity the assignments are constrained to. Must be
+   * provided together with `scope`.
+   */
+  scope_id?: string
+}
+
+export interface AdminRemoveRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to remove the role from.
+   */
+  reference_ids: string[]
+  /**
+   * When provided together with `scope_id`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope?: string
+  /**
+   * When provided together with `scope`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope_id?: string
+}
+
 export interface AdminCreateRbacPolicy {
   /**
    * The policy's unique key.
@@ -71,11 +115,11 @@ export interface AdminCreateRbacPolicy {
   /**
    * The resource the policy applies to.
    */
-  resource: string
+  resource: PolicyResourceValue
   /**
    * The operation the policy allows.
    */
-  operation: string
+  operation: PolicyOperationValue
   /**
    * The policy's name.
    */
@@ -98,11 +142,11 @@ export interface AdminUpdateRbacPolicy {
   /**
    * The resource the policy applies to.
    */
-  resource?: string
+  resource?: PolicyResourceValue
   /**
    * The operation the policy allows.
    */
-  operation?: string
+  operation?: PolicyOperationValue
   /**
    * The policy's name.
    */

@@ -1,21 +1,22 @@
 import { PropsWithChildren, useCallback, useMemo } from "react"
 import {
   buildPermission,
-  OPERATION_IMPLICATIONS,
-  parsePermission,
+  buildPermissionLookup,
   type Permission,
   type PermissionOperation,
   type PermissionResource,
   type PermissionsContextValue,
-  type UserPolicy,
+  type ActorPolicy,
+  ActorRole,
+  type RoleMatch,
 } from "../../lib/permissions"
 import { PermissionsContext } from "./permissions-context"
 
 interface PermissionsProviderProps extends PropsWithChildren {
   /**
-   * The user's policy containing their permissions.
+   * The actor's policy containing their permissions.
    */
-  policy: UserPolicy | null
+  policy: ActorPolicy | null
   /**
    * Whether the policy is currently being loaded.
    */
@@ -33,25 +34,10 @@ export const PermissionsProvider = ({
   isRbacEnabled = true,
   children,
 }: PermissionsProviderProps) => {
-  const permissionsMap = useMemo(() => {
-    const index: Record<Permission, true> = Object.create(null)
-
-    for (const granted of policy?.permissions ?? []) {
-      const parsed = parsePermission(granted)
-      if (!parsed) {
-        continue
-      }
-
-      const { resource, operation } = parsed
-      const impliedOperations = OPERATION_IMPLICATIONS[operation] || [operation]
-
-      for (const impliedOperation of impliedOperations) {
-        index[buildPermission(resource, impliedOperation)] = true
-      }
-    }
-
-    return index
-  }, [policy])
+  const permissionsMap = useMemo(
+    () => buildPermissionLookup(policy?.permissions ?? []),
+    [policy]
+  )
 
   const hasPermission = useCallback(
     (permission: Permission): boolean => {
@@ -101,6 +87,57 @@ export const PermissionsProvider = ({
     [isRbacEnabled, permissionsMap]
   )
 
+  const roles: ActorRole[] = useMemo(() => policy?.roles ?? [], [policy])
+
+  const assignedRoleNames = useMemo(
+    () => new Set(roles.map((role) => role.name)),
+    [roles]
+  )
+
+  const coveredRoleNames = useMemo(
+    () => new Set(policy?.covered_roles ?? []),
+    [policy]
+  )
+
+  const hasRole = useCallback(
+    (role: string, match: RoleMatch = "covers"): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      const names = match === "assigned" ? assignedRoleNames : coveredRoleNames
+      return names.has(role)
+    },
+    [isRbacEnabled, assignedRoleNames, coveredRoleNames]
+  )
+
+  const hasAnyRole = useCallback(
+    (requiredRoles: string[], match: RoleMatch = "covers"): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      if (!requiredRoles?.length) {
+        return false
+      }
+
+      return requiredRoles.some((role) => hasRole(role, match))
+    },
+    [isRbacEnabled, hasRole]
+  )
+
+  const hasAllRoles = useCallback(
+    (requiredRoles: string[], match: RoleMatch = "covers"): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      if (!requiredRoles?.length) {
+        return false
+      }
+
+      return requiredRoles.every((role) => hasRole(role, match))
+    },
+    [isRbacEnabled, hasRole]
+  )
+
   const value: PermissionsContextValue = useMemo(
     () => ({
       policy,
@@ -109,8 +146,23 @@ export const PermissionsProvider = ({
       hasAnyPermission,
       hasAllPermissions,
       can,
+      roles,
+      hasRole,
+      hasAnyRole,
+      hasAllRoles,
     }),
-    [policy, isLoading, hasPermission, hasAnyPermission, hasAllPermissions, can]
+    [
+      policy,
+      isLoading,
+      hasPermission,
+      hasAnyPermission,
+      hasAllPermissions,
+      can,
+      roles,
+      hasRole,
+      hasAnyRole,
+      hasAllRoles,
+    ]
   )
 
   return (

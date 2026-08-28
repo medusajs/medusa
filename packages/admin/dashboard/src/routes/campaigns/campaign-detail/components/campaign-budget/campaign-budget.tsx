@@ -3,6 +3,7 @@ import { AdminCampaign } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useCampaignPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type CampaignBudgetProps = {
   campaign: AdminCampaign
@@ -10,6 +11,7 @@ type CampaignBudgetProps = {
 
 export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = useCampaignPermissions()
 
   const getTranslation = () => {
     const budget = campaign.budget
@@ -40,19 +42,21 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
           <Heading level="h2">{getTranslation()}</Heading>
         </div>
 
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: `edit-budget`,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
+                    to: `edit-budget`,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       <div>

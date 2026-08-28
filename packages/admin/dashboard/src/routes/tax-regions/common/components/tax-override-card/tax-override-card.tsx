@@ -18,7 +18,14 @@ import { ComponentPropsWithoutRef } from "react"
 import { useTranslation } from "react-i18next"
 
 import { FetchError } from "@medusajs/js-sdk"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
+import {
+  useTaxRatePermissions,
+  useTaxRegionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
@@ -33,10 +40,39 @@ interface TaxOverrideCardProps extends ComponentPropsWithoutRef<"div"> {
 
 export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateTaxRegion, canDelete } = useTaxRegionPermissions()
+  const { canUpdate: canUpdateTaxRates } = useTaxRatePermissions()
+  const canUpdate = canUpdateTaxRegion && canUpdateTaxRates
   const handleDelete = useDeleteTaxRateAction(taxRate)
 
   if (taxRate.is_default) {
     return null
+  }
+
+  const actionGroups: ActionGroup[] = []
+
+  if (canUpdate) {
+    actionGroups.push({
+      actions: [
+        {
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: `overrides/${taxRate.id}/edit`,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    actionGroups.push({
+      actions: [
+        {
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: handleDelete,
+        },
+      ],
+    })
   }
 
   const groupedRules = taxRate.rules.reduce((acc, rule) => {
@@ -91,28 +127,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
               ? t("taxRegions.fields.isCombinable.true")
               : t("taxRegions.fields.isCombinable.false")}
           </StatusBadge>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    icon: <PencilSquare />,
-                    to: `overrides/${taxRate.id}/edit`,
-                  },
-                ],
-              },
-              {
-                actions: [
-                  {
-                    label: t("actions.delete"),
-                    icon: <Trash />,
-                    onClick: handleDelete,
-                  },
-                ],
-              },
-            ]}
-          />
+          {actionGroups.length > 0 && <ActionMenu groups={actionGroups} />}
         </div>
       </div>
       <RadixCollapsible.Content>

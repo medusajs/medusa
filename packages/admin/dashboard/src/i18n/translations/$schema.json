@@ -572,6 +572,9 @@
         "edit": {
           "type": "string"
         },
+        "view": {
+          "type": "string"
+        },
         "addItems": {
           "type": "string"
         },
@@ -14459,6 +14462,19 @@
             }
           },
           "required": ["title", "description", "requiredPermission", "action"],
+          "additionalProperties": false
+        },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
           "additionalProperties": false
         },
         "requiredPermissions": {

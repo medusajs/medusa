@@ -1,3 +1,5 @@
+import { PolicyOperationValue, PolicyResourceValue } from "./common"
+
 export type CreateRbacRoleDTO = {
   name: string
   description?: string | null
@@ -10,8 +12,8 @@ export type UpdateRbacRoleDTO = Partial<CreateRbacRoleDTO> & {
 
 export type CreateRbacPolicyDTO = {
   key: string
-  resource: string
-  operation: string
+  resource: PolicyResourceValue
+  operation: PolicyOperationValue
   name?: string | null
   description?: string | null
   metadata?: Record<string, unknown> | null
@@ -40,3 +42,17 @@ export type CreateRbacRoleParentDTO = {
 export type UpdateRbacRoleParentDTO = Partial<CreateRbacRoleParentDTO> & {
   id: string
 }
+
+export type CreateRbacRoleAssignmentDTO = {
+  role_id: string
+  reference: string
+  reference_id: string
+  scope?: string | null
+  scope_id?: string | null
+  metadata?: Record<string, unknown> | null
+}
+
+export type UpdateRbacRoleAssignmentDTO =
+  Partial<CreateRbacRoleAssignmentDTO> & {
+    id: string
+  }

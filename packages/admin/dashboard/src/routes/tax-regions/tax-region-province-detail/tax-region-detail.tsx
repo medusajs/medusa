@@ -8,6 +8,7 @@ import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const TaxRegionDetail = () => {
   const { province_id } = useParams()
@@ -43,7 +44,9 @@ export const TaxRegionDetail = () => {
               <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="TaxRegionProvinceOverrideSection">
-              <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+              <PermissionGuard permission="tax_rate:read">
+                <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
           </>

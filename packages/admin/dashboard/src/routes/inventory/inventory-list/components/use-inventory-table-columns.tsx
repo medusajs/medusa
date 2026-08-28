@@ -10,39 +10,53 @@ import { InventoryActions } from "./inventory-actions"
 
 const columnHelper = createColumnHelper<AdminInventoryItem>()
 
-export const useInventoryTableColumns = () => {
+export const useInventoryTableColumns = ({
+  showSelectColumn,
+  showStockLevels,
+  canUpdate,
+  canDelete,
+}: {
+  showSelectColumn: boolean
+  showStockLevels: boolean
+  canUpdate: boolean
+  canDelete: boolean
+}) => {
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(showSelectColumn
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("title", {
         header: t("fields.title"),
         cell: ({ getValue }) => {
@@ -75,47 +89,61 @@ export const useInventoryTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("reserved_quantity", {
-        header: t("inventory.reserved"),
-        cell: ({ getValue, row }) => {
-          const quantity = getValue()
+      ...(showStockLevels
+        ? [
+            columnHelper.accessor("reserved_quantity", {
+              header: t("inventory.reserved"),
+              cell: ({ getValue, row }) => {
+                const quantity = getValue()
 
-          if (Number.isNaN(quantity)) {
-            return <PlaceholderCell />
-          }
+                if (Number.isNaN(quantity)) {
+                  return <PlaceholderCell />
+                }
 
-          return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">
-                {formatQuantity(quantity, row.original.unit_of_measure)}
-              </span>
-            </div>
-          )
-        },
-      }),
-      columnHelper.accessor("stocked_quantity", {
-        header: t("fields.inStock"),
-        cell: ({ getValue, row }) => {
-          const quantity = getValue()
+                return (
+                  <div className="flex size-full items-center overflow-hidden">
+                    <span className="truncate">
+                      {formatQuantity(quantity, row.original.unit_of_measure)}
+                    </span>
+                  </div>
+                )
+              },
+            }),
+            columnHelper.accessor("stocked_quantity", {
+              header: t("fields.inStock"),
+              cell: ({ getValue, row }) => {
+                const quantity = getValue()
 
-          if (Number.isNaN(quantity)) {
-            return <PlaceholderCell />
-          }
+                if (Number.isNaN(quantity)) {
+                  return <PlaceholderCell />
+                }
 
-          return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">
-                {formatQuantity(quantity, row.original.unit_of_measure)}
-              </span>
-            </div>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => <InventoryActions item={row.original} />,
-      }),
+                return (
+                  <div className="flex size-full items-center overflow-hidden">
+                    <span className="truncate">
+                      {formatQuantity(quantity, row.original.unit_of_measure)}
+                    </span>
+                  </div>
+                )
+              },
+            }),
+          ]
+        : []),
+      ...(canUpdate || canDelete
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row }) => (
+                <InventoryActions
+                  item={row.original}
+                  canUpdate={canUpdate}
+                  canDelete={canDelete}
+                />
+              ),
+            }),
+          ]
+        : []),
     ],
-    [t]
+    [t, showSelectColumn, showStockLevels, canUpdate, canDelete]
   )
 }

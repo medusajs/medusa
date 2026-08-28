@@ -516,7 +516,7 @@ medusaIntegrationTestRunner({
               users: [
                 {
                   email: "test-role@medusa.js",
-                  roles: ["non_existent_role_id"],
+                  roles: [{ role_id: "non_existent_role_id" }],
                 },
               ],
             },
@@ -546,7 +546,7 @@ medusaIntegrationTestRunner({
               users: [
                 {
                   email: "test-with-role@medusa.js",
-                  roles: [superAdminRoles[0].id],
+                  roles: [{ role_id: superAdminRoles[0].id }],
                 },
               ],
             },
@@ -555,6 +555,54 @@ medusaIntegrationTestRunner({
 
         expect(users).toHaveLength(1)
         expect(users[0].email).toEqual("test-with-role@medusa.js")
+      })
+
+      it("should create user with scoped roles", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+        const superAdminRoles = await rbacService.listRbacRoles({
+          id: "role_super_admin",
+        })
+
+        const { result: users } = await createUsersWorkflow(container).run({
+          input: {
+            users: [
+              {
+                email: "test-with-scoped-role@medusa.js",
+                roles: [
+                  {
+                    role_id: superAdminRoles[0].id,
+                    scopes: [
+                      { type: "organization", id: "org_1" },
+                      { type: "organization", id: "org_2" },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        })
+
+        const assignments = await rbacService.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: users[0].id,
+        })
+
+        // One assignment per scope
+        expect(assignments).toHaveLength(2)
+        expect(assignments).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: superAdminRoles[0].id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: superAdminRoles[0].id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+          ])
+        )
       })
     })
 
@@ -567,11 +615,10 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         const rbacModule = container.resolve(Modules.RBAC)
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
 
         // Create policies
         const policy1 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "read:products",
             resource: "product",
@@ -582,7 +629,7 @@ medusaIntegrationTestRunner({
         )
 
         const policy2 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "write:products",
             resource: "product",
@@ -593,7 +640,7 @@ medusaIntegrationTestRunner({
         )
 
         const policy3 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "delete:products",
             resource: "product",
@@ -611,7 +658,7 @@ medusaIntegrationTestRunner({
 
         // Create roles with different policies
         const viewerRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Viewer",
             description: "Can view products",
@@ -621,7 +668,7 @@ medusaIntegrationTestRunner({
         viewerRole = viewerRoleResponse.data.role
 
         const editorRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Editor",
             description: "Can edit products",
@@ -631,7 +678,7 @@ medusaIntegrationTestRunner({
         editorRole = editorRoleResponse.data.role
 
         const adminRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Admin",
             description: "Full product access",
@@ -654,11 +701,14 @@ medusaIntegrationTestRunner({
           { role_id: adminRole.id, policy_id: policies[2].id },
         ])
 
-        // Link the admin user to the admin role (so they have all policies)
-        await remoteLink.create({
-          [Modules.USER]: { user_id: user.id },
-          [Modules.RBAC]: { rbac_role_id: adminRole.id },
-        })
+        // Assign the admin user the admin role (so they have all policies)
+        await rbacModule.createRbacRoleAssignments([
+          {
+            role_id: adminRole.id,
+            reference: "user",
+            reference_id: user.id,
+          },
+        ])
 
         // Create a test user
         const { result: users } = await createUsersWorkflow(container).run({
@@ -677,17 +727,19 @@ medusaIntegrationTestRunner({
 
       describe("GET /admin/users/:id/roles", () => {
         it("should list roles for a user", async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Assign roles to test user
-          await remoteLink.create([
+          await rbacModule.createRbacRoleAssignments([
             {
-              [Modules.USER]: { user_id: testUser.id },
-              [Modules.RBAC]: { rbac_role_id: viewerRole.id },
+              role_id: viewerRole.id,
+              reference: "user",
+              reference_id: testUser.id,
             },
             {
-              [Modules.USER]: { user_id: testUser.id },
-              [Modules.RBAC]: { rbac_role_id: editorRole.id },
+              role_id: editorRole.id,
+              reference: "user",
+              reference_id: testUser.id,
             },
           ])
 
@@ -738,7 +790,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should fail to assign roles when actor lacks required policies", async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Create a limited user with only viewer role
           const { result: limitedUsers } = await createUsersWorkflow(
@@ -757,10 +809,13 @@ medusaIntegrationTestRunner({
           const limitedUser = limitedUsers[0]
 
           // Assign only viewer role to limited user
-          await remoteLink.create({
-            [Modules.USER]: { user_id: limitedUser.id },
-            [Modules.RBAC]: { rbac_role_id: viewerRole.id },
-          })
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: viewerRole.id,
+              reference: "user",
+              reference_id: limitedUser.id,
+            },
+          ])
 
           // Create auth identity and generate JWT for limited user
           const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
@@ -827,13 +882,16 @@ medusaIntegrationTestRunner({
 
       describe("DELETE /admin/users/:id/roles/:role_id", () => {
         it("should remove a role from a user", async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // First assign a role
-          await remoteLink.create({
-            [Modules.USER]: { user_id: testUser.id },
-            [Modules.RBAC]: { rbac_role_id: viewerRole.id },
-          })
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: viewerRole.id,
+              reference: "user",
+              reference_id: testUser.id,
+            },
+          ])
 
           // Verify role was assigned
           const beforeResponse = await api.get(
@@ -866,17 +924,19 @@ medusaIntegrationTestRunner({
 
       describe("DELETE /admin/users/:id/roles (batch)", () => {
         it("should remove multiple roles from a user", async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Assign multiple roles to test user
-          await remoteLink.create([
+          await rbacModule.createRbacRoleAssignments([
             {
-              [Modules.USER]: { user_id: testUser.id },
-              [Modules.RBAC]: { rbac_role_id: viewerRole.id },
+              role_id: viewerRole.id,
+              reference: "user",
+              reference_id: testUser.id,
             },
             {
-              [Modules.USER]: { user_id: testUser.id },
-              [Modules.RBAC]: { rbac_role_id: editorRole.id },
+              role_id: editorRole.id,
+              reference: "user",
+              reference_id: testUser.id,
             },
           ])
 
@@ -912,13 +972,16 @@ medusaIntegrationTestRunner({
         })
 
         it("should fail to remove a role when actor lacks required policies", async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Assign admin role to test user (has policies A, B, C)
-          await remoteLink.create({
-            [Modules.USER]: { user_id: testUser.id },
-            [Modules.RBAC]: { rbac_role_id: adminRole.id },
-          })
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: adminRole.id,
+              reference: "user",
+              reference_id: testUser.id,
+            },
+          ])
 
           // Create a limited user with only viewer role (has policy A only)
           const { result: limitedUsers } = await createUsersWorkflow(
@@ -937,10 +1000,13 @@ medusaIntegrationTestRunner({
           const limitedUser = limitedUsers[0]
 
           // Assign only viewer role to limited user
-          await remoteLink.create({
-            [Modules.USER]: { user_id: limitedUser.id },
-            [Modules.RBAC]: { rbac_role_id: viewerRole.id },
-          })
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: viewerRole.id,
+              reference: "user",
+              reference_id: limitedUser.id,
+            },
+          ])
 
           // Create auth identity and generate JWT for limited user
           const authModule: IAuthModuleService = container.resolve(Modules.AUTH)

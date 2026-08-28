@@ -10,7 +10,7 @@ import {
   createRbacRolePoliciesStep,
   createRbacRolesStep,
 } from "../steps"
-import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
+import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
  * @ignore
@@ -56,7 +56,7 @@ export const createRbacRolesWorkflow = createWorkflow(
     when({ validationData }, ({ validationData }) => {
       return !!validationData?.actor_id && !!validationData?.policy_ids?.length
     }).then(() => {
-      validateUserPermissionsStep(validationData)
+      validateActorPermissionsStep(validationData)
     })
 
     const roleData = transform({ input }, ({ input }) => ({

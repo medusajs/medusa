@@ -1,4 +1,9 @@
-import { FindConfig, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import {
+  FindConfig,
+  QueryConfig,
+  RbacContext,
+  RequestQueryFields,
+} from "@medusajs/types"
 import {
   buildOrder,
   FeatureFlag,
@@ -6,7 +11,6 @@ import {
   isPresent,
   MedusaError,
   pickDeep,
-  PolicyDefinition,
   promiseAll,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
@@ -19,6 +23,7 @@ import {
   RestrictedFieldFilter,
 } from "./field-filtering"
 import { RBACFieldFilter } from "./policies/rbac-field-filter"
+import { resolveRoles } from "./resolve-roles"
 
 export function pickByConfig<TModel>(
   obj: TModel | TModel[],
@@ -40,8 +45,8 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> & { restricted?: string[] } = {},
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const {
@@ -69,11 +74,21 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
   const filters: IFieldFilter[] = []
 
-  if (req?.policies && entity && rbacFilterFieldsFeatureFlag) {
+  if (
+    req?.rbac_context?.policies &&
+    req?.auth_context &&
+    entity &&
+    rbacFilterFieldsFeatureFlag
+  ) {
     filters.push(
       new RBACFieldFilter({
-        policies: req.policies,
-        userRoles: (req.auth_context?.app_metadata?.roles as string[]) || [],
+        policies: req.rbac_context.policies,
+        getActorRoles: async () =>
+          resolveRoles({
+            authContext: req.auth_context!,
+            container: req.scope,
+            scope: req.rbac_context?.scope,
+          }),
         container: req.scope,
       })
     )
@@ -176,8 +191,8 @@ export async function prepareRetrieveQuery<
   validated: T,
   queryConfig?: QueryConfig<TEntity> & { restricted?: string[] },
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const { listConfig, remoteQueryConfig } = await prepareListQuery(

@@ -1,4 +1,5 @@
 import { model } from "@medusajs/framework/utils"
+import RbacRoleAssignment from "./rbac-role-assignment"
 import RbacRoleParent from "./rbac-role-parent"
 import RbacRolePolicy from "./rbac-role-policy"
 
@@ -14,6 +15,15 @@ const RbacRole = model
     parents: model.hasMany(() => RbacRoleParent, {
       mappedBy: "role",
     }),
+    children: model.hasMany(() => RbacRoleParent, {
+      mappedBy: "parent",
+    }),
+    assignments: model.hasMany(() => RbacRoleAssignment, {
+      mappedBy: "role",
+    }),
+  })
+  .cascades({
+    delete: ["policies", "parents", "children", "assignments"],
   })
   .indexes([
     {

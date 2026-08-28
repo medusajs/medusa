@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -44,11 +45,15 @@ export const CollectionDetail = () => {
               <CollectionGeneralSection collection={collection} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CollectionProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableCollectionProductSection collection={collection} />
-              ) : (
-                <CollectionProductSection collection={collection} />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCollectionProductSection
+                    collection={collection}
+                  />
+                ) : (
+                  <CollectionProductSection collection={collection} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(collection, { permissions: false })}
           </>

@@ -30,6 +30,20 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import {
+  useCampaignPermissions,
+  useCustomerGroupPermissions,
+  useCustomerPermissions,
+  useInventoryItemPermissions,
+  useOrderPermissions,
+  usePriceListPermissions,
+  useProductCategoryPermissions,
+  useProductCollectionPermissions,
+  useProductPermissions,
+  usePromotionPermissions,
+  useReservationItemPermissions,
+  useResourcePermissions,
+} from "../../../hooks/use-resource-permissions"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 
 export const MainLayout = () => {
@@ -180,82 +194,132 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
+  const { canRead: canReadCustomers } = useCustomerPermissions()
+  const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
+  const { canRead: canReadOrders } = useOrderPermissions()
+  const { canRead: canReadInventory } = useInventoryItemPermissions()
+  const { canRead: canReadReservations } = useReservationItemPermissions()
+  const { canRead: canReadPromotions } = usePromotionPermissions()
+  const { canRead: canReadCampaigns } = useCampaignPermissions()
+  const { canRead: canReadPriceLists } = usePriceListPermissions()
+  const { canRead: canReadProducts } = useProductPermissions()
+  const { canRead: canReadProductCollections } =
+    useProductCollectionPermissions()
+  const { canRead: canReadProductCategories } = useProductCategoryPermissions()
+  const { canRead: canReadProductOptions } =
+    useResourcePermissions("product_option")
 
   return [
-    {
-      icon: <ShoppingCart />,
-      label: t("orders.domain"),
-      to: "/orders",
-      items: [
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("draftOrders.domain"),
-        //   to: "/draft-orders",
-        // },
-      ],
-    },
-    {
-      icon: <Tag />,
-      label: t("products.domain"),
-      to: "/products",
-      items: [
-        {
-          label: t("collections.domain"),
-          to: "/collections",
-        },
-        {
-          label: t("categories.domain"),
-          to: "/categories",
-        },
-        {
-          label: t("productOptions.domain"),
-          to: "/product-options",
-        },
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("giftCards.domain"),
-        //   to: "/gift-cards",
-        // },
-      ],
-    },
-    {
-      icon: <Buildings />,
-      label: t("inventory.domain"),
-      to: "/inventory",
-      items: [
-        {
-          label: t("reservations.domain"),
-          to: "/reservations",
-        },
-      ],
-    },
-    {
-      icon: <Users />,
-      label: t("customers.domain"),
-      to: "/customers",
-      items: [
-        {
-          label: t("customerGroups.domain"),
-          to: "/customer-groups",
-        },
-      ],
-    },
-    {
-      icon: <ReceiptPercent />,
-      label: t("promotions.domain"),
-      to: "/promotions",
-      items: [
-        {
-          label: t("campaigns.domain"),
-          to: "/campaigns",
-        },
-      ],
-    },
-    {
-      icon: <CurrencyDollar />,
-      label: t("priceLists.domain"),
-      to: "/price-lists",
-    },
+    ...(canReadOrders
+      ? [
+          {
+            icon: <ShoppingCart />,
+            label: t("orders.domain"),
+            to: "/orders",
+          },
+        ]
+      : []),
+    ...(canReadProducts
+      ? [
+          {
+            icon: <Tag />,
+            label: t("products.domain"),
+            to: "/products",
+            items: [
+              ...(canReadProductCollections
+                ? [
+                    {
+                      label: t("collections.domain"),
+                      to: "/collections",
+                    },
+                  ]
+                : []),
+              ...(canReadProductCategories
+                ? [
+                    {
+                      label: t("categories.domain"),
+                      to: "/categories",
+                    },
+                  ]
+                : []),
+              ...(canReadProductOptions
+                ? [
+                    {
+                      label: t("productOptions.domain"),
+                      to: "/product-options",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadInventory
+      ? [
+          {
+            icon: <Buildings />,
+            label: t("inventory.domain"),
+            to: "/inventory",
+            items: [
+              ...(canReadReservations
+                ? [
+                    {
+                      label: t("reservations.domain"),
+                      to: "/reservations",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadCustomers
+      ? [
+          {
+            icon: <Users />,
+            label: t("customers.domain"),
+            to: "/customers",
+            items: [
+              ...(canReadCustomerGroups
+                ? [
+                    {
+                      label: t("customerGroups.domain"),
+                      to: "/customer-groups",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadPromotions
+      ? [
+          {
+            icon: <ReceiptPercent />,
+            label: t("promotions.domain"),
+            to: "/promotions",
+            items: [
+              ...(canReadCampaigns
+                ? [
+                    {
+                      label: t("campaigns.domain"),
+                      to: "/campaigns",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadPriceLists
+      ? [
+          {
+            icon: <CurrencyDollar />,
+            label: t("priceLists.domain"),
+            to: "/price-lists",
+          },
+        ]
+      : []),
   ]
 }
 

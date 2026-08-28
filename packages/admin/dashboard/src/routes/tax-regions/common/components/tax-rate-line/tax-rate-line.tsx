@@ -2,8 +2,15 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
+import {
+  useTaxRatePermissions,
+  useTaxRegionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useDeleteTaxRateAction } from "../../hooks"
 
 type TaxRateLineProps = {
@@ -53,30 +60,40 @@ export const TaxRateLine = ({
 
 const TaxRateActions = ({ taxRate }: { taxRate: HttpTypes.AdminTaxRate }) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateTaxRegion } = useTaxRegionPermissions()
+  const { canUpdate: canUpdateTaxRates, canDelete } = useTaxRatePermissions()
+  const canUpdate = canUpdateTaxRegion && canUpdateTaxRates
   const handleDelete = useDeleteTaxRateAction(taxRate)
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              icon: <PencilSquare />,
-              to: `tax-rates/${taxRate.id}/edit`,
-            },
-          ],
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: `tax-rates/${taxRate.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              icon: <Trash />,
-              onClick: handleDelete,
-            },
-          ],
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

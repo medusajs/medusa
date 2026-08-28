@@ -11,8 +11,12 @@ import {
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteCampaign } from "../../../../../hooks/api/campaigns"
+import { useCampaignPermissions } from "../../../../../hooks/use-resource-permissions"
 import { currencies } from "../../../../../lib/data/currencies"
 import {
   campaignStatus,
@@ -29,6 +33,7 @@ export const CampaignGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useCampaignPermissions()
   const { mutateAsync } = useDeleteCampaign(campaign.id)
 
   const handleDelete = async () => {
@@ -73,9 +78,11 @@ export const CampaignGeneralSection = ({
             {t(`campaigns.status.${status}`)}
           </StatusBadge>
 
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     icon: <PencilSquare />,
@@ -83,8 +90,11 @@ export const CampaignGeneralSection = ({
                     to: `/campaigns/${campaign.id}/edit`,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     icon: <Trash />,
@@ -92,9 +102,11 @@ export const CampaignGeneralSection = ({
                     onClick: handleDelete,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
 

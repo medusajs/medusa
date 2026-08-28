@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
@@ -34,7 +35,9 @@ export const SalesChannelDetail = () => {
               <SalesChannelGeneralSection salesChannel={sales_channel} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="SalesChannelProductSection">
-              <SalesChannelProductSection salesChannel={sales_channel} />
+              <PermissionGuard permission="product:read">
+                <SalesChannelProductSection salesChannel={sales_channel} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(sales_channel, { permissions: false })}
           </>

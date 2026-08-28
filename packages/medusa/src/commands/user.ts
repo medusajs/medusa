@@ -33,7 +33,7 @@ export default async function ({
     const provider = "emailpass"
 
     // Check if RBAC is enabled and get super admin role
-    let userRoles: string[] = []
+    let userRoles: { role_id: string }[] = []
     const rbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
 
     if (rbacEnabled) {
@@ -43,7 +43,7 @@ export default async function ({
       })
 
       if (superAdminRoles.length > 0) {
-        userRoles = [superAdminRoles[0].id]
+        userRoles = [{ role_id: superAdminRoles[0].id }]
       }
     }
 

@@ -12,6 +12,7 @@ import { ProductTypeGeneralSection } from "./components/product-type-general-sec
 import { ProductTypeProductSection } from "./components/product-type-product-section"
 import { ConfigurableProductTypeProductSection } from "./components/product-type-product-section/configurable-product-type-product-section"
 import { productTypeLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductTypeDetail = () => {
   const { id } = useParams()
@@ -48,13 +49,15 @@ export const ProductTypeDetail = () => {
               <ProductTypeGeneralSection productType={product_type} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductTypeProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableProductTypeProductSection
-                  productType={product_type}
-                />
-              ) : (
-                <ProductTypeProductSection productType={product_type} />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableProductTypeProductSection
+                    productType={product_type}
+                  />
+                ) : (
+                  <ProductTypeProductSection productType={product_type} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_type, { permissions: false })}
           </>

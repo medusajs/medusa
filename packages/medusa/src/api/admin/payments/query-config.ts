@@ -2,6 +2,7 @@ export enum Entities {
   payment = "payment",
   capture = "capture",
   refund = "refund",
+  order = "order",
 }
 
 export const defaultAdminPaymentFields = [

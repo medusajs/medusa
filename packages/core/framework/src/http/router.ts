@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  DEFAULT_RBAC_ACTOR_TYPES,
   FeatureFlag,
   isFileDisabled,
   parseCorsOrigins,
@@ -30,7 +31,6 @@ import { configManager } from "../config"
 import { MiddlewareFileLoader } from "./middleware-file-loader"
 import { applyLocale, authenticate, AuthType } from "./middlewares"
 import { createBodyParserMiddlewaresStack } from "./middlewares/bodyparser"
-import { wrapWithPoliciesCheck } from "./middlewares/check-permissions"
 import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import { errorHandler } from "./middlewares/error-handler"
 import { RoutesFinder } from "./routes-finder"
@@ -176,21 +176,14 @@ export class ApiLoader {
       return
     }
 
-    const isRbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
     if (!route.methods) {
       this.#logger.debug(`registering global middleware for ${route.matcher}`)
 
-      // Wrap with permission check if policies are defined
-      let handlerToUse = route.handler
-      if (route.policies && isRbacEnabled) {
-        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
-      }
-
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(handlerToUse, {
+        ? (ApiLoader.traceMiddleware(route.handler, {
             route: String(route.matcher),
           }) as RequestHandler)
-        : (handlerToUse as RequestHandler)
+        : (route.handler as RequestHandler)
 
       this.#app.use(route.matcher, wrapHandler(handler))
       return
@@ -212,17 +205,12 @@ export class ApiLoader {
         `registering route middleware ${method} ${route.matcher}`
       )
 
-      let handlerToUse = route.handler
-      if (route.policies && isRbacEnabled) {
-        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
-      }
-
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(wrapHandler(handlerToUse), {
+        ? (ApiLoader.traceMiddleware(wrapHandler(route.handler), {
             route: String(route.matcher),
             method: method,
           }) as RequestHandler)
-        : wrapHandler(handlerToUse)
+        : wrapHandler(route.handler)
 
       this.#app[method.toLowerCase()](route.matcher, handler)
     })
@@ -243,6 +231,15 @@ export class ApiLoader {
     }) as unknown as RequestHandler)
 
     this.#app.use("/admin", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.restrictedFields = new RestrictedFields()
+      next()
+    }) as unknown as RequestHandler)
+
+    this.#app.use("/rbac", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -420,7 +417,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering publishable key middleware for namespace ${namespace}`
     )
-    let middleware = ApiLoader.traceMiddleware
+    const middleware = ApiLoader.traceMiddleware
       ? ApiLoader.traceMiddleware(ensurePublishableApiKeyMiddleware, {
           route: namespace,
         })
@@ -433,7 +430,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering locale middleware for namespace ${namespace}`
     )
-    let middleware = ApiLoader.traceMiddleware
+    const middleware = ApiLoader.traceMiddleware
       ? ApiLoader.traceMiddleware(applyLocale, {
           route: namespace,
         })
@@ -505,6 +502,29 @@ export class ApiLoader {
       "session",
       "api-key",
     ])
+
+    /**
+     * CORS and Auth setup for the RBAC routes. They are not admin routes, but
+     * they are consumed by the admin dashboard and therefore reuse its CORS
+     * configuration.
+     *
+     * Unlike the admin routes, they are not restricted to the "user" actor.
+     * The allowed actor types are configured via "http.rbacActorTypes", and
+     * secret API keys are not supported (they only authenticate as "user").
+     */
+    this.#applyCorsMiddleware(
+      routesFinder,
+      "/rbac",
+      "shouldAppendAdminCors",
+      this.#createCorsOptions(configManager.config.projectConfig.http.adminCors)
+    )
+    this.#applyAuthMiddleware(
+      routesFinder,
+      "/rbac",
+      configManager.config.projectConfig.http.rbacActorTypes ??
+        DEFAULT_RBAC_ACTOR_TYPES,
+      ["bearer", "session"]
+    )
 
     this.#applyCorsMiddleware(
       routesFinder,

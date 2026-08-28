@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -49,13 +50,15 @@ export const CustomerGroupDetail = () => {
               <CustomerGroupGeneralSection group={customer_group} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CustomerGroupCustomerSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableCustomerGroupCustomerSection
-                  group={customer_group}
-                />
-              ) : (
-                <CustomerGroupCustomerSection group={customer_group} />
-              )}
+              <PermissionGuard permission="customer:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCustomerGroupCustomerSection
+                    group={customer_group}
+                  />
+                ) : (
+                  <CustomerGroupCustomerSection group={customer_group} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(customer_group, { permissions: false })}
           </>

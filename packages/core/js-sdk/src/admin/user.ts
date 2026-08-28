@@ -231,7 +231,7 @@ export class User {
     queryParams?: HttpTypes.AdminRbacRoleUserListParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminGetUserRolesParams>(
+    return this.client.fetch<HttpTypes.AdminUserRoleListResponse>(
       `/admin/users/${id}/roles`,
       {
         query: queryParams,
@@ -316,7 +316,7 @@ export class User {
    */
   async removeRoles(
     id: string,
-    body: HttpTypes.AdminRemoveUserRoles,
+    body: HttpTypes.AdminUnassignUserRoles,
     headers?: ClientHeaders
   ) {
     return this.client.fetch<HttpTypes.AdminUserRolesDeleteResponse>(

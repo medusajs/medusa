@@ -1,4 +1,9 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import {
+  CreateActorRoleDTO,
+  IRbacModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -15,7 +20,9 @@ export interface GetInviteRolesStepInput {
  */
 export const getInviteRolesStepId = "get-invite-roles-step"
 /**
- * This step retrieves the roles associated with an invite.
+ * This step retrieves the roles associated with an invite, each carrying the
+ * scope of its assignment, so the roles can be re-assigned as-is to the user
+ * created when the invite is accepted.
  *
  * @example
  * const data = getInviteRolesStep({
@@ -27,25 +34,26 @@ export const getInviteRolesStepId = "get-invite-roles-step"
 export const getInviteRolesStep = createStep(
   getInviteRolesStepId,
   async (input: GetInviteRolesStepInput, { container }) => {
-    const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-
-    const linkService = remoteLink.getLinkModule(
-      Modules.USER,
-      "invite_id",
-      Modules.RBAC,
-      "rbac_role_id"
-    )
-
-    if (!linkService) {
+    if (!MedusaModule.isInstalled(Modules.RBAC)) {
       return new StepResponse([])
     }
 
-    const inviteRoles = await linkService.list({
-      invite_id: input.invite_id,
+    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
+
+    const assignments = await service.listRbacRoleAssignments({
+      reference: "invite",
+      reference_id: input.invite_id,
     })
 
-    const roleIds = inviteRoles.map((link: any) => link.rbac_role_id)
+    const roles = assignments.map((assignment): CreateActorRoleDTO => {
+      return assignment.scope && assignment.scope_id
+        ? {
+            role_id: assignment.role_id,
+            scopes: [{ type: assignment.scope, id: assignment.scope_id }],
+          }
+        : { role_id: assignment.role_id }
+    })
 
-    return new StepResponse(roleIds)
+    return new StepResponse(roles)
   }
 )

@@ -12,6 +12,7 @@ import { ProductTagGeneralSection } from "./components/product-tag-general-secti
 import { ProductTagProductSection } from "./components/product-tag-product-section"
 import { ConfigurableProductTagProductSection } from "./components/product-tag-product-section/configurable-product-tag-product-section"
 import { productTagLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductTagDetail = () => {
   const { id } = useParams()
@@ -49,13 +50,15 @@ export const ProductTagDetail = () => {
               <ProductTagGeneralSection productTag={product_tag} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductTagProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableProductTagProductSection
-                  productTag={product_tag}
-                />
-              ) : (
-                <ProductTagProductSection productTag={product_tag} />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableProductTagProductSection
+                    productTag={product_tag}
+                  />
+                ) : (
+                  <ProductTagProductSection productTag={product_tag} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_tag, { permissions: false })}
           </>

@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next"
 
 import { useTaxRates } from "../../../../../hooks/api/tax-rates"
 import { useTaxRateTableQuery } from "../../../../../hooks/table/query/use-tax-rate-table-query"
+import {
+  useTaxRatePermissions,
+  useTaxRegionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { TaxOverrideTable } from "../../../common/components/tax-override-table"
 import { useTaxOverrideTable } from "../../../common/hooks/use-tax-override-table"
 
@@ -19,6 +23,9 @@ export const TaxRegionOverrideSection = ({
   taxRegion,
 }: TaxRegionOverrideSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateTaxRegion } = useTaxRegionPermissions()
+  const { canCreate: canCreateTaxRates } = useTaxRatePermissions()
+  const canCreate = canUpdateTaxRegion && canCreateTaxRates
 
   const { searchParams, raw } = useTaxRateTableQuery({
     pageSize: PAGE_SIZE,
@@ -52,10 +59,14 @@ export const TaxRegionOverrideSection = ({
         isPending={isPending}
         table={table}
         count={count}
-        action={{
-          label: t("actions.create"),
-          to: "overrides/create",
-        }}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "overrides/create",
+              }
+            : undefined
+        }
         queryObject={raw}
         prefix={PREFIX}
       >

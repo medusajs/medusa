@@ -6,15 +6,21 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
-import { createInviteStep, validateRolesExistStep } from "../steps"
+import { createInviteStep } from "../steps"
+import {
+  createRoleAssignmentsStep,
+  validateRolesExistStep,
+} from "../../rbac/steps"
+import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the
  * [Create Invite Admin API Route](https://docs.medusajs.com/api/admin/invites/create-invite).
  *
  * You can provide roles to be assigned to each user when the invite is accepted.
+ * Each role can be constrained to one or more scopes, creating one role
+ * assignment per scope.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create invites within your custom flows.
@@ -26,7 +32,13 @@ export const createInvitesWorkflowId = "create-invite-step"
  *     invites: [
  *       {
  *         email: "example@gmail.com",
- *         roles: ["role_super_admin"]
+ *         roles: [
+ *           { role_id: "role_super_admin" },
+ *           {
+ *             role_id: "role_editor",
+ *             scopes: [{ type: "organization", id: "org_123" }]
+ *           }
+ *         ]
  *       }
  *     ]
  *   }
@@ -44,8 +56,8 @@ export const createInvitesWorkflow = createWorkflow(
     const allRoleIds = transform({ input }, ({ input }) => {
       const roleIds = new Set<string>()
       input.invites.forEach((invite) => {
-        for (const roleId of invite.roles || []) {
-          roleIds.add(roleId)
+        for (const role of invite.roles || []) {
+          roleIds.add(role.role_id)
         }
       })
       return Array.from(roleIds)
@@ -55,26 +67,16 @@ export const createInvitesWorkflow = createWorkflow(
 
     const createdInvites = createInviteStep(input.invites)
 
-    const inviteRoleLinks = transform(
+    const inviteRoleAssignments = transform(
       { input, createdInvites },
       ({ input, createdInvites }) => {
-        const links: {
-          [key: string]: { invite_id?: string; rbac_role_id?: string }
-        }[] = []
-        input.invites.forEach((invite, index) => {
-          const inviteId = createdInvites[index].id
-          for (const roleId of invite.roles || []) {
-            links.push({
-              user: { invite_id: inviteId },
-              rbac: { rbac_role_id: roleId },
-            })
-          }
-        })
-        return links
+        return input.invites.flatMap((invite, index) =>
+          buildRoleAssignments(invite.roles, "invite", createdInvites[index].id)
+        )
       }
     )
 
-    createRemoteLinkStep(inviteRoleLinks)
+    createRoleAssignmentsStep(inviteRoleAssignments)
 
     const invitesIdEvents = transform(
       { createdInvites },

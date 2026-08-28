@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteShippingProfile } from "../../../../../hooks/api/shipping-profiles"
+import { useShippingProfilePermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ShippingProfileGeneralSectionProps = {
   profile: AdminShippingProfileResponse["shipping_profile"]
@@ -17,6 +18,7 @@ export const ShippingProfileGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canDelete } = useShippingProfilePermissions()
 
   const { mutateAsync } = useDeleteShippingProfile(profile.id)
 
@@ -56,19 +58,21 @@ export const ShippingProfileGeneralSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{profile.name}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <Trash />,
-                  label: t("actions.delete"),
-                  onClick: handleDelete,
-                },
-              ],
-            },
-          ]}
-        />
+        {canDelete && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <Trash />,
+                    label: t("actions.delete"),
+                    onClick: handleDelete,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <SectionRow title={t("fields.type")} value={profile.type} />
     </Container>

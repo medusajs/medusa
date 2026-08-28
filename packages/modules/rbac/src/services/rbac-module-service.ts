@@ -2,26 +2,31 @@ import {
   Context,
   FilterableRbacRoleProps,
   FindConfig,
+  InternalModuleDeclaration,
   RbacRoleDTO,
 } from "@medusajs/framework/types"
 import {
   InjectManager,
-  InjectTransactionManager,
   MedusaContext,
   MedusaService,
-  Policy,
-  promiseAll,
-  WILDCARD,
 } from "@medusajs/framework/utils"
 import {
+  AuthzContextConfig,
   CreateRbacRoleParentDTO,
   InferEntityType,
   IRbacModuleService,
+  IRbacModuleServiceOptions,
   ModulesSdkTypes,
   RbacRoleParentDTO,
   UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
-import { RbacPolicy, RbacRole, RbacRoleParent, RbacRolePolicy } from "@models"
+import {
+  RbacPolicy,
+  RbacRole,
+  RbacRoleAssignment,
+  RbacRoleParent,
+  RbacRolePolicy,
+} from "@models"
 import { RbacRepository } from "../repositories"
 
 type InjectedDependencies = {
@@ -37,14 +42,13 @@ type InjectedDependencies = {
   >
 }
 
-const SUPER_ADMIN_KEY = `${WILDCARD}:${WILDCARD}`
-
 export default class RbacModuleService
   extends MedusaService({
     RbacRole,
     RbacPolicy,
     RbacRoleParent,
     RbacRolePolicy,
+    RbacRoleAssignment,
   })
   implements IRbacModuleService
 {
@@ -58,111 +62,41 @@ export default class RbacModuleService
   protected readonly rbacPolicyService: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof RbacPolicy>
   >
+  protected readonly options_: IRbacModuleServiceOptions
 
-  constructor({
-    rbacRepository,
-    rbacRoleService,
-    rbacPolicyService,
-    rbacRolePolicyService,
-  }: InjectedDependencies) {
-    // @ts-ignore
+  constructor(
+    {
+      rbacRepository,
+      rbacRoleService,
+      rbacPolicyService,
+      rbacRolePolicyService,
+    }: InjectedDependencies,
+    options: IRbacModuleServiceOptions = {
+      actors: {},
+    },
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     super(...arguments)
     this.rbacRepository_ = rbacRepository
     this.rbacRolePolicyService = rbacRolePolicyService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
-  }
 
-  __hooks = {
-    onApplicationStart: async () => {
-      await this.syncRegisteredPolicies()
-    },
-  }
-
-  @InjectTransactionManager()
-  private async syncRegisteredPolicies(
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    const registeredPolicies = Object.entries(Policy).map(
-      ([name, { resource, operation, description }]) => ({
-        key: `${resource}:${operation}`,
-        name,
-        resource,
-        operation,
-        description,
-      })
-    )
-
-    const registeredKeys = registeredPolicies.map((p) => p.key)
-
-    // Fetch all existing policies (including soft-deleted ones)
-    const existingPolicies = await this.listRbacPolicies(
-      {},
-      { withDeleted: true },
-      sharedContext
-    )
-
-    const existingPoliciesMap = new Map(existingPolicies.map((p) => [p.key, p]))
-
-    const policiesToCreate: any[] = []
-    const policiesToUpdate: any[] = []
-    const policiesToRestore: string[] = []
-
-    // Process registered policies
-    for (const registeredPolicy of registeredPolicies) {
-      if (registeredPolicy.key === SUPER_ADMIN_KEY) {
-        continue
-      }
-
-      const existing = existingPoliciesMap.get(registeredPolicy.key)
-
-      const hasChanges =
-        existing &&
-        (existing.name !== registeredPolicy.name ||
-          existing.description !== registeredPolicy.description)
-
-      if (!existing) {
-        policiesToCreate.push(registeredPolicy)
-      } else if (existing.deleted_at) {
-        policiesToRestore.push(existing.id)
-        if (hasChanges) {
-          policiesToUpdate.push({
-            id: existing.id,
-            name: registeredPolicy.name,
-            description: registeredPolicy.description,
-          })
-        }
-      } else if (hasChanges) {
-        policiesToUpdate.push({
-          id: existing.id,
-          name: registeredPolicy.name,
-          description: registeredPolicy.description,
-        })
-      }
+    // We always auto inject the user actor authz config
+    this.options_ = {
+      ...options,
+      actors: {
+        ...(options.actors ?? {}),
+        user: {
+          grantees: [
+            {
+              entity: "user",
+              path: "id",
+            },
+          ],
+        },
+      },
     }
-
-    const policiesToSoftDelete = existingPolicies
-      .filter(
-        (p) =>
-          !p.deleted_at &&
-          !registeredKeys.includes(p.key) &&
-          p.key !== SUPER_ADMIN_KEY
-      )
-      .map((p) => p.id)
-
-    // First restore any soft-deleted policies
-    if (policiesToRestore.length > 0) {
-      await this.restoreRbacPolicies(policiesToRestore, {}, sharedContext)
-    }
-
-    await promiseAll([
-      policiesToCreate.length > 0 &&
-        this.rbacPolicyService.create(policiesToCreate, sharedContext),
-      policiesToUpdate.length > 0 &&
-        this.rbacPolicyService.upsert(policiesToUpdate, sharedContext),
-      policiesToSoftDelete.length > 0 &&
-        this.rbacPolicyService.softDelete(policiesToSoftDelete, sharedContext),
-    ])
   }
 
   @InjectManager()
@@ -299,5 +233,11 @@ export default class RbacModuleService
     }
 
     return await super.updateRbacRoleParents(data, sharedContext)
+  }
+
+  async retrieveActorAutzContextConfig(
+    actorType: string
+  ): Promise<AuthzContextConfig | undefined> {
+    return this.options_.actors?.[actorType]
   }
 }

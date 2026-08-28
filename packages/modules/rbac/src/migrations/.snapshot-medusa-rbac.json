@@ -406,13 +406,61 @@
           "enumItems": [],
           "mappedType": "text"
         },
-        "inherited_role_id": {
-          "name": "inherited_role_id",
+        "reference": {
+          "name": "reference",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "reference_id": {
+          "name": "reference_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "scope_id": {
+          "name": "scope_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -487,47 +535,65 @@
           "mappedType": "datetime"
         }
       },
-      "name": "rbac_role_inheritance",
+      "name": "rbac_role_assignment",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_rbac_role_inheritance_role_id",
+          "keyName": "IDX_rbac_role_assignment_role_id",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_role_id\" ON \"rbac_role_inheritance\" (\"role_id\") WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_role_id\" ON \"rbac_role_assignment\" (\"role_id\") WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_rbac_role_inheritance_inherited_role_id",
+          "keyName": "IDX_rbac_role_assignment_deleted_at",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_inherited_role_id\" ON \"rbac_role_inheritance\" (\"inherited_role_id\") WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_deleted_at\" ON \"rbac_role_assignment\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_rbac_role_inheritance_deleted_at",
+          "keyName": "IDX_rbac_role_assignment_role_id_scope_scope_id",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_deleted_at\" ON \"rbac_role_inheritance\" (\"deleted_at\") WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_role_id_scope_scope_id\" ON \"rbac_role_assignment\" (\"role_id\", \"scope\", \"scope_id\") WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_rbac_role_inheritance_role_id_inherited_role_id_unique",
+          "keyName": "IDX_rbac_role_assignment_scope_scope_id_reference_reference_id",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_role_id_inherited_role_id_unique\" ON \"rbac_role_inheritance\" (\"role_id\", \"inherited_role_id\") WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_scope_scope_id_reference_reference_id\" ON \"rbac_role_assignment\" (\"scope\", \"scope_id\", \"reference\", \"reference_id\") WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "rbac_role_inheritance_pkey",
+          "keyName": "IDX_rbac_role_assignment_reference_reference_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_reference_reference_id\" ON \"rbac_role_assignment\" (\"reference\", \"reference_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_assignment_role_id_scope_scope_id_reference_reference_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_assignment_role_id_scope_scope_id_reference_reference_id_unique\" ON \"rbac_role_assignment\" (\"role_id\", \"scope\", \"scope_id\", \"reference\", \"reference_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_role_assignment_pkey",
           "columnNames": [
             "id"
           ],
@@ -539,28 +605,17 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "rbac_role_inheritance_role_id_foreign": {
-          "constraintName": "rbac_role_inheritance_role_id_foreign",
+        "rbac_role_assignment_role_id_foreign": {
+          "constraintName": "rbac_role_assignment_role_id_foreign",
           "columnNames": [
             "role_id"
           ],
-          "localTableName": "public.rbac_role_inheritance",
+          "localTableName": "public.rbac_role_assignment",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.rbac_role",
-          "updateRule": "cascade"
-        },
-        "rbac_role_inheritance_inherited_role_id_foreign": {
-          "constraintName": "rbac_role_inheritance_inherited_role_id_foreign",
-          "columnNames": [
-            "inherited_role_id"
-          ],
-          "localTableName": "public.rbac_role_inheritance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.rbac_role",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       },
@@ -743,6 +798,7 @@
             "id"
           ],
           "referencedTableName": "public.rbac_role",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "rbac_role_parent_parent_id_foreign": {
@@ -755,6 +811,7 @@
             "id"
           ],
           "referencedTableName": "public.rbac_role",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       },
@@ -937,6 +994,7 @@
             "id"
           ],
           "referencedTableName": "public.rbac_role",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "rbac_role_policy_policy_id_foreign": {

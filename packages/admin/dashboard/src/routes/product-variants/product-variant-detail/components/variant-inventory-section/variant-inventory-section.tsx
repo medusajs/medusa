@@ -9,6 +9,7 @@ import { _DataTable } from "../../../../../components/table/data-table"
 
 import { LinkButton } from "../../../../../components/common/link-button"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 import { useInventoryTableColumns } from "./use-inventory-table-columns"
 
 const PAGE_SIZE = 20
@@ -24,6 +25,14 @@ export function VariantInventorySection({
   inventoryItems,
 }: VariantInventorySectionProps) {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+
+  const canUpdate = hasAllPermissions([
+    "inventory_item:create",
+    "inventory_item:update",
+    "inventory_item:delete",
+    "product_variant:update",
+  ])
 
   const columns = useInventoryTableColumns()
 
@@ -45,23 +54,25 @@ export function VariantInventorySection({
           <Heading level="h2">{t("fields.inventoryItems")}</Heading>
         </div>
         <div className="flex items-center gap-x-4">
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t(
-                      hasKit
-                        ? "products.variant.inventory.manageKit"
-                        : "products.variant.inventory.manageItems"
-                    ),
-                    to: "manage-items",
-                    icon: hasKit ? <Component /> : <Buildings />,
-                  },
-                ],
-              },
-            ]}
-          />
+          {canUpdate && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t(
+                        hasKit
+                          ? "products.variant.inventory.manageKit"
+                          : "products.variant.inventory.manageItems"
+                      ),
+                      to: "manage-items",
+                      icon: hasKit ? <Component /> : <Buildings />,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
 
@@ -78,6 +89,13 @@ export function VariantInventorySection({
 
 export function InventorySectionPlaceholder() {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+  // The "edit" link targets the variant edit form (updateProductVariant), which
+  // is gated product_variant:update + product:update at the HTTP layer.
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+  ])
 
   return (
     <Container className="divide-y p-0">
@@ -88,9 +106,13 @@ export function InventorySectionPlaceholder() {
             {t("products.variant.inventory.notManagedDesc")}
           </span>
         </div>
-        <div className="flex items-center gap-x-4">
-          <LinkButton to="edit">{t("products.variant.edit.header")}</LinkButton>
-        </div>
+        {canUpdate && (
+          <div className="flex items-center gap-x-4">
+            <LinkButton to="edit">
+              {t("products.variant.edit.header")}
+            </LinkButton>
+          </div>
+        )}
       </div>
     </Container>
   )

@@ -33,6 +33,7 @@ import {
   useUpdateExchangeOutboundShipping,
 } from "../../../../../hooks/api/exchanges"
 import { useUpdateOrderChange } from "../../../../../hooks/api/orders"
+import { useOrderPermissions } from "../../../../../hooks/use-resource-permissions"
 import { currencies } from "../../../../../lib/data/currencies"
 import { ExchangeInboundSection } from "./exchange-inbound-section.tsx"
 import { ExchangeOutboundSection } from "./exchange-outbound-section"
@@ -54,6 +55,7 @@ export const ExchangeCreateForm = ({
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { canUpdate: canConfirm } = useOrderPermissions()
 
   /**
    * STATE
@@ -642,15 +644,17 @@ export const ExchangeCreateForm = ({
                 </Button>
               </RouteFocusModal.Close>
 
-              <Button
-                key="submit-button"
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isRequestLoading}
-              >
-                {t("orders.exchanges.confirm")}
-              </Button>
+              {canConfirm && (
+                <Button
+                  key="submit-button"
+                  type="submit"
+                  variant="primary"
+                  size="small"
+                  isLoading={isRequestLoading}
+                >
+                  {t("orders.exchanges.confirm")}
+                </Button>
+              )}
             </div>
           </div>
         </RouteFocusModal.Footer>

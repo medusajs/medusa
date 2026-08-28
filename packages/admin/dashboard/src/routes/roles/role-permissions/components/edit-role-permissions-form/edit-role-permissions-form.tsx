@@ -91,7 +91,7 @@ export const EditRolePermissionsForm = ({
   // Unpaginated assignable id set, used only to scope the diff on submit so we
   // never strip policies the actor cannot see.
   const { data: allAssignable, isPending: isAssignableSetLoading } =
-    useRbacAssignablePolicies()
+    useRbacAssignablePolicies({ limit: 9999 })
   const assignableIds = useMemo(
     () => new Set((allAssignable?.policies ?? []).map((p) => p.id)),
     [allAssignable?.policies]

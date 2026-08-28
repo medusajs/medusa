@@ -1,5 +1,6 @@
 export enum Entities {
   tax_rate = "tax_rate",
+  tax_region = "tax_region",
 }
 
 export const defaults = [

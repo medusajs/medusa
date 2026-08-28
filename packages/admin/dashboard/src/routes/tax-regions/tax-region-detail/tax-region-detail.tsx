@@ -12,6 +12,7 @@ import { TaxRegionOverrideSection } from "./components/tax-region-override-secti
 import { TaxRegionSublevelAlert } from "./components/tax-region-sublevel-alert"
 import { TaxRegionProviderSection } from "./tax-region-provider-section"
 import { taxRegionLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const TaxRegionDetail = () => {
   const { id } = useParams()
@@ -61,7 +62,9 @@ export const TaxRegionDetail = () => {
               />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="TaxRegionOverrideSection">
-              <TaxRegionOverrideSection taxRegion={taxRegion} />
+              <PermissionGuard permission="tax_rate:read">
+                <TaxRegionOverrideSection taxRegion={taxRegion} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="TaxRegionProviderSection">
               <TaxRegionProviderSection taxRegion={taxRegion} />

@@ -1,6 +1,11 @@
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
-import { CreateRbacPolicyDTO, IRbacModuleService } from "@medusajs/types"
+import {
+  CreateRbacPolicyDTO,
+  IRbacModuleService,
+  PolicyOperationValue,
+  PolicyResourceValue,
+} from "@medusajs/framework/types"
 
 /**
  * @ignore
@@ -25,11 +30,11 @@ export const createRbacPoliciesStep = createStep(
   async (data: CreateRbacPoliciesStepInput, { container }) => {
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
-    // Normalize resource and operation to lowercase
+    // Normalize resource and operation to lowercase.
     const normalizedPolicies = data.policies.map((policy) => ({
       ...policy,
-      resource: policy.resource.toLowerCase(),
-      operation: policy.operation.toLowerCase(),
+      resource: policy.resource.toLowerCase() as PolicyResourceValue,
+      operation: policy.operation.toLowerCase() as PolicyOperationValue,
     }))
 
     const created = await service.createRbacPolicies(normalizedPolicies)

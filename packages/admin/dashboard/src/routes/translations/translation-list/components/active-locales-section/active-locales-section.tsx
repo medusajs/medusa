@@ -5,6 +5,7 @@ import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { LinkButton } from "../../../../../components/common/link-button"
+import { useStorePermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ActiveLocalesSectionProps = {
   locales: HttpTypes.AdminLocale[]
@@ -14,6 +15,7 @@ export const ActiveLocalesSection = ({
   locales,
 }: ActiveLocalesSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canManageLocales } = useStorePermissions()
   const [isHovered, setIsHovered] = useState(false)
 
   const renderLocales = useCallback(() => {
@@ -34,13 +36,15 @@ export const ActiveLocalesSection = ({
     <Container className="flex flex-col p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("translations.activeLocales.heading")}</Heading>
-        <LinkButton
-          variant="interactive"
-          className="text-ui-fg-subtle hover:text-ui-fg-subtle-hover"
-          to="/settings/translations/add-locales"
-        >
-          {t("translations.activeLocales.noLocalesTipConfigureAction")}
-        </LinkButton>
+        {canManageLocales && (
+          <LinkButton
+            variant="interactive"
+            className="text-ui-fg-subtle hover:text-ui-fg-subtle-hover"
+            to="/settings/translations/add-locales"
+          >
+            {t("translations.activeLocales.noLocalesTipConfigureAction")}
+          </LinkButton>
+        )}
       </div>
       {hasLocales && (
         <div className="px-1 pb-1">

@@ -5,9 +5,16 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import { RouteFocusModal, useRouteModal } from "../../../../../components/modals"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateRbacPolicy } from "../../../../../hooks/api/rbac-policies"
+import {
+  PermissionOperation,
+  PermissionResource,
+} from "../../../../../lib/permissions"
 
 const CreatePolicySchema = z.object({
   key: z.string().min(1),
@@ -40,8 +47,8 @@ export const CreatePolicyForm = () => {
     try {
       const { policy } = await mutateAsync({
         key: values.key.trim(),
-        resource: values.resource.trim(),
-        operation: values.operation.trim(),
+        resource: values.resource.trim() as PermissionResource,
+        operation: values.operation.trim() as PermissionOperation,
         name: values.name?.trim() || null,
         description: values.description?.trim() || null,
       })

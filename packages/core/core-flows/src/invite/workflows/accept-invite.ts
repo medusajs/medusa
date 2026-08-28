@@ -9,9 +9,11 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { deleteRoleAssignmentsStep } from "../../rbac/steps"
 import { createUsersWorkflow } from "../../user"
 import { deleteInvitesStep, getInviteRolesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
+import { useQueryGraphStep } from "../../common"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 /**
@@ -82,9 +84,29 @@ export const acceptInviteWorkflow = createWorkflow(
       }
     })
 
+    // The created user's role assignments are created by createUsersWorkflow
+    // from the invite's roles. Transfer completes by removing the invite's own
+    // assignments once the user has been created.
+    const { data: roleAssignmentsToDelete } = useQueryGraphStep({
+      entity: "rbac_role_assignment",
+      fields: ["id"],
+      filters: {
+        reference: "invite",
+        reference_id: [invite.id],
+      },
+    }).config({ name: "query-role-assignments-to-delete" })
+
     parallelize(
       setAuthAppMetadataStep(authUserInput),
       deleteInvitesStep([invite.id]),
+      deleteRoleAssignmentsStep(
+        transform(
+          { roleAssignmentsToDelete },
+          ({ roleAssignmentsToDelete }) => ({
+            id: roleAssignmentsToDelete.map((assignment) => assignment.id),
+          })
+        )
+      ),
       emitEventStep({
         eventName: InviteWorkflowEvents.ACCEPTED,
         data: { id: invite.id },

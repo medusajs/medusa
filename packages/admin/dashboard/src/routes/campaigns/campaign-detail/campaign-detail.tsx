@@ -9,6 +9,7 @@ import { ConfigurableCampaignPromotionSection } from "./components/campaign-prom
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -58,11 +59,13 @@ export const CampaignDetail = () => {
               <CampaignGeneralSection campaign={campaign} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CampaignPromotionSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableCampaignPromotionSection campaign={campaign} />
-              ) : (
-                <CampaignPromotionSection campaign={campaign} />
-              )}
+              <PermissionGuard permission="promotion:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCampaignPromotionSection campaign={campaign} />
+                ) : (
+                  <CampaignPromotionSection campaign={campaign} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(campaign)}
           </>

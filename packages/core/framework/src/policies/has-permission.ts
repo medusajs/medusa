@@ -1,9 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  useCache,
-  WILDCARD,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, useCache, WILDCARD } from "@medusajs/utils"
 import { FlagRouter } from "../feature-flags/flag-router"
 
 export type PermissionAction = {
@@ -32,6 +28,11 @@ export type ResolvePermissionsInput = {
    * actor is granted, with wildcards (`*:*`, `*:op`, `resource:*`) expanded.
    */
   universe: { resource: string; operation: string }[]
+  container: MedusaContainer
+}
+
+export type ListRolePermissionsInput = {
+  roles: string | string[]
   container: MedusaContainer
 }
 
@@ -168,6 +169,47 @@ export async function resolvePermissions(
 }
 
 /**
+ * Lists the permissions the given roles grant, as `resource:operation` strings.
+ *
+ * Wildcards are listed as they are stored (e.g. `product:*`, `*:*`), because
+ * expanding them requires the universe of persisted policies. Use
+ * {@link resolvePermissions} when the expanded set is needed.
+ *
+ * @example
+ * ```ts
+ * const permissions = await listRolePermissions({
+ *   roles: ["role_123"],
+ *   container,
+ * })
+ * // permissions = ["product:delete", "product:read"]
+ * ```
+ */
+export async function listRolePermissions(
+  input: ListRolePermissionsInput
+): Promise<string[]> {
+  const { roles, container } = input
+
+  const roleIds = Array.isArray(roles) ? roles : [roles]
+
+  if (!roleIds.length) {
+    return []
+  }
+
+  const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
+  const permissions = new Set<string>()
+
+  for (const resourceMap of rolePoliciesMap.values()) {
+    for (const [resource, operations] of resourceMap) {
+      for (const operation of operations) {
+        permissions.add(`${resource}:${operation}`)
+      }
+    }
+  }
+
+  return Array.from(permissions).sort()
+}
+
+/**
  * Fetches a single role's policies from cache or database.
  */
 async function fetchSingleRolePolicies(
@@ -176,7 +218,12 @@ async function fetchSingleRolePolicies(
 ): Promise<Map<string, Set<string>>> {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-  const tags: string[] = []
+  const tags: string[] = [
+    `RbacRole:${roleId}`,
+    "RbacRoleParent:list:*",
+    "RbacRolePolicy:list:*",
+  ]
+
   return await useCache<Map<string, Set<string>>>(
     async () => {
       const { data: roles } = await query.graph({
@@ -188,19 +235,14 @@ async function fetchSingleRolePolicies(
       const role = roles[0]
       const resourceMap = new Map<string, Set<string>>()
 
-      tags.push(`rbac_role:${roleId}`)
       if (role?.policies && Array.isArray(role.policies)) {
-        const policyIds: string[] = []
-
         for (const policy of role.policies) {
-          policyIds.push(policy.id)
-
           if (!resourceMap.has(policy.resource)) {
             resourceMap.set(policy.resource, new Set())
           }
           resourceMap.get(policy.resource)!.add(policy.operation)
 
-          tags.push(`rbac_policy:${policy.id}`)
+          tags.push(`RbacPolicy:${policy.id}`)
         }
       }
 
@@ -210,6 +252,46 @@ async function fetchSingleRolePolicies(
       container,
       key: roleId,
       tags,
+      enable: true,
+      ttl: 60 * 60 * 24 * 7,
+      providers: ["cache-memory"],
+    }
+  )
+}
+
+/**
+ * Fetches the set of governed resources: every distinct `rbac_policy.resource`
+ * from cache or database.
+ */
+export async function fetchPolicyResources(
+  container: MedusaContainer
+): Promise<Set<string>> {
+  const ffRouter = container.resolve(
+    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
+  ) as FlagRouter
+
+  if (!ffRouter.isFeatureEnabled("rbac")) {
+    return new Set()
+  }
+
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+  return await useCache<Set<string>>(
+    async () => {
+      const { data: policies } = await query.graph({
+        entity: "rbac_policy",
+        fields: ["resource"],
+      })
+
+      return new Set(
+        (policies ?? []).map((policy) => policy.resource as string)
+      )
+    },
+    {
+      container,
+      key: "rbac-policy-resources",
+      tags: ["RbacPolicy:list:*"],
+      enable: true,
       ttl: 60 * 60 * 24 * 7,
       providers: ["cache-memory"],
     }
