@@ -315,7 +315,7 @@ describe("MedusaSearchService", () => {
     )
   })
 
-  it("maps stats facets from min/max rank queries and a Count/Sum aggregation", async () => {
+  it("maps stats facets from min/max rank queries and separate Count and Sum aggregations", async () => {
     const service = createService()
     const priced: SearchTypes.ResolvedSearchIndexDefinition = {
       ...definition,
@@ -334,7 +334,8 @@ describe("MedusaSearchService", () => {
         { aggregations: { count: 2 } },
         { rows: [{ id: "prod_1", price: 10 }] },
         { rows: [{ id: "prod_2", price: 40 }] },
-        { aggregations: { count: 2, sum: 50 } },
+        { aggregations: { count: 2 } },
+        { aggregations: { sum: 50 } },
       ],
       billing: {},
       performance: { server_total_ms: 5 },
@@ -359,7 +360,7 @@ describe("MedusaSearchService", () => {
     })
 
     const queries = multiQuery.mock.calls[0][0].queries
-    expect(queries).toHaveLength(5)
+    expect(queries).toHaveLength(6)
     expect(queries[2]).toMatchObject({
       rank_by: ["price", "asc"],
       limit: 1,
@@ -370,9 +371,7 @@ describe("MedusaSearchService", () => {
       rank_by: ["price", "desc"],
       limit: 1,
     })
-    expect(queries[4].aggregate_by).toEqual({
-      count: ["Count"],
-      sum: ["Sum", "price"],
-    })
+    expect(queries[4].aggregate_by).toEqual({ count: ["Count"] })
+    expect(queries[5].aggregate_by).toEqual({ sum: ["Sum", "price"] })
   })
 })
