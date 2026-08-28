@@ -15,10 +15,12 @@ import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
 import { useStore } from "../../../../../hooks/api/store"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import { useLocaleTag } from "../../../../../hooks/use-locale-tag"
 import {
   currencies,
   getCurrencySymbol,
 } from "../../../../../lib/data/currencies"
+import { getCurrencyDisplayName } from "../../../../../lib/display-names"
 import { Combobox } from "../../../../../components/inputs/combobox"
 
 export const CreateCampaignFormFields = ({
@@ -31,6 +33,7 @@ export const CreateCampaignFormFields = ({
   const { t } = useTranslation()
   const { store } = useStore()
   const direction = useDocumentDirection()
+  const localeTag = useLocaleTag()
   const watchValueType = useWatch({
     control: form.control,
     name: `${fieldScope}budget.type`,
@@ -285,7 +288,10 @@ export const CreateCampaignFormFields = ({
                               value={currency.code.toLowerCase()}
                               key={currency.code}
                             >
-                              {currency.name}
+                              {getCurrencyDisplayName(
+                                currency.code,
+                                localeTag
+                              ) ?? currency.name}
                             </Select.Item>
                           ))}
                       </Select.Content>
