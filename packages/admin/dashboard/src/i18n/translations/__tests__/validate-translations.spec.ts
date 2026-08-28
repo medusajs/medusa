@@ -161,13 +161,13 @@ describe("translation schema validation", () => {
  * screen. Every translation file must supply every plural category its
  * locale requires.
  *
- * The test is initially informational across the board: every locale's
- * plural-form coverage is logged via console.warn but does not fail the
- * build. The intent is to surface the gap so contributors can see which
- * locales need work. A locale can be promoted to strict mode (the test
- * fails on a missing form) by adding it to READY_LOCALES. Promoting a
- * locale should be done in the same PR that brings the locale up to
- * spec, so the test enforces what the PR claims to fix.
+ * Locales listed in READY_LOCALES are enforced strictly: a missing plural
+ * form fails the test. Locales not in READY_LOCALES are reported-only:
+ * incomplete coverage is logged via console.warn but does not fail the
+ * build, so contributors can see which locales need work without blocking
+ * unrelated PRs. A locale should be promoted to READY_LOCALES in the same
+ * PR that brings its plural coverage up to spec, so the test enforces what
+ * the PR claims to fix.
  */
 const READY_LOCALES: Set<string> = new Set(["pl"])
 
