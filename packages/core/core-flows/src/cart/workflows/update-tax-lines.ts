@@ -18,6 +18,7 @@ import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setTaxLinesForItemsStep, validateCartStep } from "../steps"
 import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
 import { taxLineContextResult } from "../utils/schemas"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 const cartFields = [
   "id",
@@ -110,6 +111,18 @@ export type UpdateTaxLinesWorkflowInput = {
    * @defaultValue false
    */
   force_tax_calculation?: boolean
+  /**
+   * Whether to refresh the cart's payment collection after the tax lines are set.
+   * Since setting tax lines changes the cart's total, the payment collection must be
+   * refreshed to avoid completing the cart with a payment session that was created
+   * for the pre-tax total.
+   *
+   * Only set this to `false` if the caller refreshes the payment collection itself
+   * after running this workflow.
+   *
+   * @defaultValue true
+   */
+  force_refresh_payment_collection?: boolean
 }
 
 export const updateTaxLinesWorkflowId = "update-tax-lines"
@@ -201,6 +214,16 @@ export const updateTaxLinesWorkflow = createWorkflow(
       item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
       shipping_tax_lines:
         translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
+    })
+
+    when(
+      "should-refresh-payment-collection",
+      { input },
+      ({ input }) => input.force_refresh_payment_collection !== false
+    ).then(() => {
+      refreshPaymentCollectionForCartWorkflow.runAsStep({
+        input: { cart_id: cart.id },
+      })
     })
 
     releaseLockStep({
