@@ -4,7 +4,6 @@ import {
 } from "@medusajs/framework/http"
 import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
-import { assertMfaEnrollmentAllowed } from "../../utils/assert-mfa-enrollment-allowed"
 import { AuthMfaCreateFactorRequestType } from "../../validators"
 
 /**
@@ -29,8 +28,6 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaCreateFactorRequestType>,
   res: MedusaResponse
 ) => {
-  await assertMfaEnrollmentAllowed(req)
-
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
   const enrollment = await authService.startAuthMfa({
     auth_identity_id: req.auth_context.auth_identity_id,

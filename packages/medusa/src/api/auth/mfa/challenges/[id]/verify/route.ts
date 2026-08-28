@@ -8,7 +8,10 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
+import {
+  generateJwtTokenForAuthIdentity,
+  MFA_TOKEN_PURPOSE,
+} from "../../../../utils/generate-jwt-token"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
 /**
@@ -20,6 +23,16 @@ export const POST = async (
 ) => {
   const { id } = req.params
   const { method, code } = req.validatedBody
+
+  if (
+    req.auth_context.purpose === MFA_TOKEN_PURPOSE &&
+    req.auth_context.mfa_challenge_id !== id
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `MFA challenge with id "${id}" was not found`
+    )
+  }
 
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
   const challenge = await authService.verifyAuthMfaChallenge({

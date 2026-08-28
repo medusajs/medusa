@@ -150,6 +150,49 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("The token issued before an MFA challenge is completed", () => {
+      it("does not complete a challenge it was not issued for", async () => {
+        const { secret } = await enrollTotpFactor(api)
+
+        const first = await loginWithoutCompletingMfa(api)
+        const second = await loginWithoutCompletingMfa(api)
+
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${first.challenge.id}/verify`,
+            { method: "totp", code: generateTotpCode({ secret }) },
+            second.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(404)
+      })
+
+      it("does not create a session", async () => {
+        await enrollTotpFactor(api)
+
+        const pending = await loginWithoutCompletingMfa(api)
+
+        const err = await api
+          .post("/auth/session", {}, pending.headers)
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(401)
+      })
+
+      it("does not refresh into a new token", async () => {
+        await enrollTotpFactor(api)
+
+        const pending = await loginWithoutCompletingMfa(api)
+
+        const err = await api
+          .post("/auth/token/refresh", {}, pending.headers)
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(401)
+      })
+    })
+
     describe("MFA challenge ownership", () => {
       it("does not verify a challenge belonging to another auth identity", async () => {
         const { secret } = await enrollTotpFactor(api)
@@ -203,6 +246,67 @@ medusaIntegrationTestRunner({
           data: {},
         })
         expect(disabled.data.mfa_factor.status).toEqual("disabled")
+      })
+
+      it("generates recovery codes for an identity that has no actor yet", async () => {
+        const email = "no-actor@medusa.js"
+        const password = "somepassword"
+
+        // Registering yields a token for an auth identity with no actor behind
+        // it, which is enough to enroll the first factor.
+        const registered = await api.post("/auth/user/emailpass/register", {
+          email,
+          password,
+        })
+
+        const registrationHeaders = {
+          headers: { authorization: `Bearer ${registered.data.token}` },
+        }
+
+        expect(
+          (jwt.decode(registered.data.token) as Record<string, unknown>)
+            .actor_id
+        ).toEqual("")
+
+        const setup = await api.post(
+          "/auth/mfa/factors",
+          { provider: "totp", label: "Authenticator app" },
+          registrationHeaders
+        )
+
+        await api.post(
+          `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
+          { code: generateTotpCode({ secret: setup.data.secret }) },
+          registrationHeaders
+        )
+
+        const login = await api.post("/auth/user/emailpass", {
+          email,
+          password,
+        })
+
+        const completed = await api.post(
+          `/auth/mfa/challenges/${login.data.mfa_challenge.id}/verify`,
+          {
+            method: "totp",
+            code: generateTotpCode({ secret: setup.data.secret }),
+          },
+          { headers: { authorization: `Bearer ${login.data.token}` } }
+        )
+
+        // Still no actor, but the MFA challenge is completed.
+        expect(
+          (jwt.decode(completed.data.token) as Record<string, unknown>).actor_id
+        ).toEqual("")
+
+        const codes = await api.post(
+          "/auth/mfa/recovery-codes",
+          { count: 10 },
+          { headers: { authorization: `Bearer ${completed.data.token}` } }
+        )
+
+        expect(codes.status).toEqual(200)
+        expect(codes.data.recovery_codes).toHaveLength(10)
       })
     })
   },

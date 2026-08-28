@@ -35,7 +35,11 @@ type MedusaSession = {
 export const authenticate = (
   actorType: string | string[],
   authType: AuthType | AuthType[],
-  options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
+  options: {
+    allowUnauthenticated?: boolean
+    allowUnregistered?: boolean
+    allowedPurposes?: string[]
+  } = {}
 ): RequestHandler => {
   const authenticateMiddleware = async (
     req: MedusaRequest,
@@ -89,6 +93,16 @@ export const authenticate = (
         http.jwtVerifyOptions ?? http.jwtOptions,
         logger
       )
+    }
+
+    if (
+      authContext?.purpose &&
+      !(options.allowedPurposes ?? []).includes(authContext.purpose)
+    ) {
+      logger.debug(
+        `Discarding token with purpose "${authContext.purpose}" on ${req.method} ${req.path}`
+      )
+      authContext = null
     }
 
     // If the entity is authenticated, and it is a registered actor we can continue

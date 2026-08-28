@@ -216,6 +216,7 @@ export interface AuthContext {
   entity_id?: string
   purpose?: string
   jti?: string
+  mfa_challenge_id?: string
 }
 
 export interface PublishableKeyContext {

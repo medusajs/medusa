@@ -14,6 +14,12 @@ import { type Secret } from "jsonwebtoken"
 import RbacFeatureFlag from "../../../feature-flags/rbac"
 import { validateVerification } from "./validate-verification"
 
+/**
+ * Purpose claim carried by the token issued after the first factor is verified
+ * and before the MFA challenge is completed.
+ */
+export const MFA_TOKEN_PURPOSE = "mfa"
+
 export async function generateJwtTokenWithChecks(
   container: MedusaContainer,
   {
@@ -33,22 +39,26 @@ export async function generateJwtTokenWithChecks(
   )
   const { http } = config.projectConfig
 
-  const actorlessToken = await generateJwtTokenForAuthIdentity(
-    {
-      authIdentity,
-      actorType: actorType,
-      authProvider: authProvider,
-      container: container,
-    },
-    {
-      secret: http.jwtSecret!,
-      expiresIn: http.jwtExpiresIn,
-      // Running a verification is about the auth identity, so we return a token to be able to authenticate the requests
-      // without having an actor tied to it until the verification is completed.
-      skipActorType: true,
-      options: http.jwtOptions,
-    }
-  )
+  const generateActorlessToken = async (
+    claims: { purpose?: string; mfaChallengeId?: string } = {}
+  ) =>
+    await generateJwtTokenForAuthIdentity(
+      {
+        authIdentity,
+        actorType: actorType,
+        authProvider: authProvider,
+        container: container,
+        ...claims,
+      },
+      {
+        secret: http.jwtSecret!,
+        expiresIn: http.jwtExpiresIn,
+        // Running a verification is about the auth identity, so we return a token to be able to authenticate the requests
+        // without having an actor tied to it until the verification is completed.
+        skipActorType: true,
+        options: http.jwtOptions,
+      }
+    )
 
   // Check if verification of the provider entity data is required (such as email verification)
   const { requiresVerification, verification } = await validateVerification(
@@ -64,15 +74,21 @@ export async function generateJwtTokenWithChecks(
     return {
       verification_required: true,
       verification,
-      token: actorlessToken,
+      token: await generateActorlessToken(),
     }
   }
 
   if (mfaChallenge) {
+    // The first factor has been verified, but the MFA challenge has not. The
+    // token is bound to that challenge so it authorizes nothing else, otherwise
+    // knowing the password alone would be enough to mint or remove a factor.
     return {
       mfa_required: true,
       mfa_challenge: mfaChallenge,
-      token: actorlessToken,
+      token: await generateActorlessToken({
+        purpose: MFA_TOKEN_PURPOSE,
+        mfaChallengeId: mfaChallenge.id,
+      }),
     }
   }
 
@@ -99,11 +115,15 @@ export async function generateJwtTokenForAuthIdentity(
     actorType,
     authProvider,
     container,
+    purpose,
+    mfaChallengeId,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
     authProvider?: string
     container?: MedusaContainer
+    purpose?: string
+    mfaChallengeId?: string
   },
   {
     secret,
@@ -158,6 +178,8 @@ export async function generateJwtTokenForAuthIdentity(
       actor_type: actorType,
       auth_identity_id: authIdentity?.id ?? "",
       ...(authProvider ? { auth_provider: authProvider } : {}),
+      ...(purpose ? { purpose } : {}),
+      ...(mfaChallengeId ? { mfa_challenge_id: mfaChallengeId } : {}),
       app_metadata: {
         ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,

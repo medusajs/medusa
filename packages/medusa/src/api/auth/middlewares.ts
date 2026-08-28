@@ -3,6 +3,7 @@ import {
   MiddlewareRoute,
   validateAndTransformBody,
 } from "@medusajs/framework/http"
+import { MFA_TOKEN_PURPOSE } from "./utils/generate-jwt-token"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
 import {
@@ -38,14 +39,19 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/challenges/:id/verify",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"], {
+        allowUnregistered: true,
+        allowedPurposes: [MFA_TOKEN_PURPOSE],
+      }),
       validateAndTransformBody(AuthMfaVerifyChallengeRequest),
     ],
   },
   {
     method: ["GET"],
     matcher: "/auth/mfa/factors",
-    middlewares: [authenticate("*", ["session", "bearer"])],
+    middlewares: [
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+    ],
   },
   {
     method: ["POST"],
@@ -67,7 +73,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/auth/mfa/factors/:id",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaDisableFactorRequest),
     ],
   },
@@ -75,7 +81,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/recovery-codes",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
     ],
   },
