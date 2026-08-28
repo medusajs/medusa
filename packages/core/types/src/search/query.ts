@@ -195,7 +195,8 @@ export interface SearchOptions {
   /**
    * Compute each facet ignoring the filter on that same field, so a storefront
    * keeps showing sibling values of an active filter. Needs one query per facet
-   * on every engine reviewed, so the module fans out over `searchMany`.
+   * on every engine reviewed, so the module expands them and hands the set to
+   * `provider.searchMany`.
    */
   disjunctive_facets?: boolean
 

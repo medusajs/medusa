@@ -2,6 +2,7 @@ import { Logger, SearchTypes } from "@medusajs/framework/types"
 import {
   AbstractSearchProviderService,
   MedusaError,
+  promiseAll,
 } from "@medusajs/framework/utils"
 import {
   assertIndexSupported,
@@ -1396,7 +1397,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         await parts.prelude(manager)
       }
 
-      const hitRows = await manager.execute(hitsSql, hitsParams)
+      const hitRows =
+        take === 0 ? [] : await manager.execute(hitsSql, hitsParams)
       const count = countSql
         ? Number((await manager.execute(countSql, countParams))[0]?.count ?? 0)
         : null
@@ -1414,7 +1416,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   async searchMany(
     inputs: SearchTypes.ProviderSearchQuery[]
   ): Promise<SearchTypes.SearchResult[]> {
-    return await Promise.all(inputs.map((input) => this.search(input)))
+    // Postgres has no multi-query protocol; concurrent statements through the
+    // pool are the batch. Facet-only extras (`take: 0`) skip the hits query.
+    return await promiseAll(inputs.map((input) => this.search(input)))
   }
 
   /**
@@ -1471,17 +1475,22 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     const result: Record<string, SearchTypes.SearchFacetResult> = {}
-
-    for (const request of requests) {
-      const query = buildFacetQuery({
-        table: input.table,
-        whereSql: input.scopeWhere?.sql,
-        whereParams: input.scopeWhere?.params ?? [],
-        request,
-        plan: input.plan,
+    const entries = await promiseAll(
+      requests.map(async (request) => {
+        const query = buildFacetQuery({
+          table: input.table,
+          whereSql: input.scopeWhere?.sql,
+          whereParams: input.scopeWhere?.params ?? [],
+          request,
+          plan: input.plan,
+        })
+        const rows = await this.manager_.execute(query.sql, query.params)
+        return [request.field, mapFacetResult(request, rows)] as const
       })
-      const rows = await this.manager_.execute(query.sql, query.params)
-      result[request.field] = mapFacetResult(request, rows)
+    )
+
+    for (const [field, facet] of entries) {
+      result[field] = facet
     }
 
     return result
