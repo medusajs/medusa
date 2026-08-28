@@ -175,35 +175,90 @@ export default class SearchModuleService
       return { normalized, provider }
     })
 
-    return await promiseAll(
-      prepared.map(async ({ normalized, provider }) => {
-        if (!normalized.search_options?.disjunctive_facets) {
-          return await provider.search(normalized)
-        }
+    // Expand disjunctive facets into extra queries, then send the whole set to
+    // `provider.searchMany` so the engine can pack them into one round-trip.
+    type FlatQuery = {
+      provider: SearchTypes.ISearchProvider
+      query: SearchTypes.ProviderSearchQuery
+      originalIndex: number
+      facetField?: string
+    }
 
-        const { base, per_facet } = buildDisjunctiveFacetQueries(normalized)
+    const flattened: FlatQuery[] = []
 
-        if (!per_facet.size) {
-          return await provider.search(base)
-        }
+    prepared.forEach(({ normalized, provider }, originalIndex) => {
+      if (!normalized.search_options?.disjunctive_facets) {
+        flattened.push({ provider, query: normalized, originalIndex })
+        return
+      }
 
-        // The base query carries the hits; the per-facet ones only recompute one
-        // facet each with that facet's own filter lifted.
-        const fields = [...per_facet.keys()]
-        const inputs = [base, ...fields.map((field) => per_facet.get(field)!)]
+      const { base, per_facet } = buildDisjunctiveFacetQueries(normalized)
+      flattened.push({ provider, query: base, originalIndex })
 
-        const [baseResult, ...facetResults] = provider.searchMany
+      for (const [field, facetQuery] of per_facet) {
+        flattened.push({
+          provider,
+          query: facetQuery,
+          originalIndex,
+          facetField: field,
+        })
+      }
+    })
+
+    const groups = new Map<
+      SearchTypes.ISearchProvider,
+      { item: FlatQuery; flatIndex: number }[]
+    >()
+
+    flattened.forEach((item, flatIndex) => {
+      const group = groups.get(item.provider)
+      if (group) {
+        group.push({ item, flatIndex })
+        return
+      }
+      groups.set(item.provider, [{ item, flatIndex }])
+    })
+
+    const flatResults: SearchTypes.SearchResult[] = new Array(flattened.length)
+
+    await promiseAll(
+      [...groups].map(async ([provider, group]) => {
+        const inputs = group.map(({ item }) => item.query)
+        const results = provider.searchMany
           ? await provider.searchMany(inputs)
           : await promiseAll(inputs.map((input) => provider.search(input)))
 
-        return mergeDisjunctiveFacetResults({
-          base: baseResult,
-          per_facet: new Map(
-            fields.map((field, i) => [field, facetResults[i]])
-          ),
+        group.forEach(({ flatIndex }, i) => {
+          flatResults[flatIndex] = results[i]
         })
       })
     )
+
+    const results: SearchTypes.SearchResult[] = new Array(queries.length)
+    const pendingFacets = new Map<
+      number,
+      Map<string, SearchTypes.SearchResult>
+    >()
+
+    flattened.forEach((item, flatIndex) => {
+      if (!item.facetField) {
+        results[item.originalIndex] = flatResults[flatIndex]
+        return
+      }
+
+      const perFacet = pendingFacets.get(item.originalIndex) ?? new Map()
+      perFacet.set(item.facetField, flatResults[flatIndex])
+      pendingFacets.set(item.originalIndex, perFacet)
+    })
+
+    for (const [index, perFacet] of pendingFacets) {
+      results[index] = mergeDisjunctiveFacetResults({
+        base: results[index],
+        per_facet: perFacet,
+      })
+    }
+
+    return results
   }
 
   async upsertDocuments({

@@ -17,7 +17,10 @@ import {
   toSearchDocument,
   toSearchFilter,
   validateMedusaSearchOptions,
+  type FacetQuery,
   type IndexQuery,
+  type IndexMultiQueryResponse,
+  type QueryPlan,
   type Row,
 } from "../utils"
 
@@ -27,6 +30,16 @@ type InjectedDependencies = {
 
 const MAX_WRITE_BYTES = 480 * 1024 * 1024
 const MAX_MULTI_QUERIES = 16
+
+type BuiltMultiQuery = {
+  input: SearchTypes.ProviderSearchQuery
+  base: QueryPlan
+  facets: FacetQuery[]
+  queries: IndexQuery[]
+  hitsIndex: number
+  countIndex: number
+  facetOffset: number
+}
 
 export class MedusaSearchService extends AbstractSearchProviderService {
   static identifier = "search-medusa"
@@ -215,11 +228,114 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   async search(
     input: SearchTypes.ProviderSearchQuery
   ): Promise<SearchTypes.SearchResult> {
+    const [result] = await this.searchMany([input])
+    return result
+  }
+
+  async searchMany(
+    inputs: SearchTypes.ProviderSearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
+    if (!inputs.length) {
+      return []
+    }
+
+    const built = inputs.map((input) => this.buildMultiQuery(input))
+    const results: SearchTypes.SearchResult[] = new Array(inputs.length)
+    const emptyResponse: IndexMultiQueryResponse = {
+      results: [],
+      performance: {},
+    }
+
+    const groups = new Map<string, { item: BuiltMultiQuery; index: number }[]>()
+
+    built.forEach((item, index) => {
+      if (!item.queries.length) {
+        results[index] = this.parseMultiQueryResult(emptyResponse, item)
+        return
+      }
+
+      const key = `${item.input.index.physical_name}::${
+        item.base.options.consistency ?? ""
+      }`
+      const group = groups.get(key)
+      if (group) {
+        group.push({ item, index })
+        return
+      }
+      groups.set(key, [{ item, index }])
+    })
+
+    await Promise.all(
+      [...groups].map(async ([, group]) => {
+        const chunks: { item: BuiltMultiQuery; index: number }[][] = []
+        let current: { item: BuiltMultiQuery; index: number }[] = []
+        let currentCount = 0
+
+        for (const entry of group) {
+          const size = entry.item.queries.length
+          if (current.length && currentCount + size > MAX_MULTI_QUERIES) {
+            chunks.push(current)
+            current = []
+            currentCount = 0
+          }
+          current.push(entry)
+          currentCount += size
+        }
+
+        if (current.length) {
+          chunks.push(current)
+        }
+
+        const physicalName = group[0].item.input.index.physical_name
+        const consistency = group[0].item.base.options.consistency
+
+        await Promise.all(
+          chunks.map(async (chunk) => {
+            const queries = chunk.flatMap((entry) => entry.item.queries)
+            const response = await this.index(physicalName).multiQuery({
+              queries,
+              consistency: consistency ? { level: consistency } : undefined,
+            })
+
+            let offset = 0
+            for (const entry of chunk) {
+              const sliced: IndexMultiQueryResponse = {
+                results: response.results.slice(
+                  offset,
+                  offset + entry.item.queries.length
+                ),
+                billing: response.billing,
+                performance: response.performance,
+              }
+              offset += entry.item.queries.length
+              results[entry.index] = this.parseMultiQueryResult(
+                sliced,
+                entry.item
+              )
+            }
+          })
+        )
+      })
+    )
+
+    return results
+  }
+
+  protected buildMultiQuery(
+    input: SearchTypes.ProviderSearchQuery
+  ): BuiltMultiQuery {
     const plan = buildIndexPlan(input.index)
     const base = buildQueryPlan(input, plan)
     const facets = buildFacetQueries(input, plan)
+    const includeHits = (input.pagination?.take ?? 20) > 0
     const includeCount = input.search_options?.count !== "none"
-    const queries: IndexQuery[] = [base.query]
+    const queries: IndexQuery[] = []
+    const hitsIndex = includeHits ? queries.length : -1
+
+    if (includeHits) {
+      queries.push(base.query)
+    }
+
     const countIndex = includeCount ? queries.length : -1
 
     if (includeCount) {
@@ -228,6 +344,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         filters: base.query.filters,
       })
     }
+
     const facetOffset = queries.length
     queries.push(...facets.map((facet) => facet.query))
 
@@ -238,13 +355,23 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       )
     }
 
-    const response = await this.index(input.index.physical_name).multiQuery({
+    return {
+      input,
+      base,
+      facets,
       queries,
-      consistency: base.options.consistency
-        ? { level: base.options.consistency }
-        : undefined,
-    })
-    const hitResult = response.results[0]
+      hitsIndex,
+      countIndex,
+      facetOffset,
+    }
+  }
+
+  protected parseMultiQueryResult(
+    response: IndexMultiQueryResponse,
+    built: BuiltMultiQuery
+  ): SearchTypes.SearchResult {
+    const { input, base, facets, hitsIndex, countIndex, facetOffset } = built
+    const hitResult = hitsIndex === -1 ? undefined : response.results[hitsIndex]
     const rows = (hitResult?.rows ?? []).slice(base.skip, base.skip + base.take)
     const parsedFacets = parseFacetResults(
       facets,
@@ -255,10 +382,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       hits: rows.map((row) => ({
         id: String(row.id),
         score: input.search_options?.include_score ? row.$dist : undefined,
-        document: fromSearchDocument(
-          row as Row,
-          input.attributes_to_retrieve
-        ),
+        document: fromSearchDocument(row as Row, input.attributes_to_retrieve),
         highlights: parseHighlights(row as Row, base.highlight),
       })),
       facets: parsedFacets,
@@ -277,12 +401,6 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         performance: response.performance,
       },
     }
-  }
-
-  async searchMany(
-    inputs: SearchTypes.ProviderSearchQuery[]
-  ): Promise<SearchTypes.SearchResult[]> {
-    return await Promise.all(inputs.map((input) => this.search(input)))
   }
 
   protected chunkRows(rows: Row[]): Row[][] {

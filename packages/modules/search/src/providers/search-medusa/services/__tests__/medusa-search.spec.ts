@@ -374,4 +374,87 @@ describe("MedusaSearchService", () => {
     expect(queries[4].aggregate_by).toEqual({ count: ["Count"] })
     expect(queries[5].aggregate_by).toEqual({ sum: ["Sum", "price"] })
   })
+
+  it("packs searchMany into one multiQuery per index", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe" }] },
+        { aggregations: { count: 1 } },
+        { rows: [{ id: "prod_2", title: "Blue shirt" }] },
+        { aggregations: { count: 1 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 3 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const results = await service.searchMany([
+      {
+        index: definition,
+        q: "red",
+        attributes_to_retrieve: ["title"],
+      },
+      {
+        index: definition,
+        q: "blue",
+        attributes_to_retrieve: ["title"],
+      },
+    ])
+
+    expect(multiQuery).toHaveBeenCalledTimes(1)
+    expect(multiQuery.mock.calls[0][0].queries).toHaveLength(4)
+    expect(results).toHaveLength(2)
+    expect(results[0].hits[0]).toMatchObject({ id: "prod_1" })
+    expect(results[1].hits[0]).toMatchObject({ id: "prod_2" })
+    expect(results[0].metadata.count).toBe(1)
+    expect(results[1].metadata.count).toBe(1)
+  })
+
+  it("skips hits and count for facet-only searchMany extras", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe" }] },
+        { aggregations: { count: 1 } },
+        {
+          aggregation_groups: [{ status: "published", count: 2 }],
+        },
+      ],
+      billing: {},
+      performance: { server_total_ms: 2 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const results = await service.searchMany([
+      {
+        index: definition,
+        q: "red",
+        attributes_to_retrieve: ["title"],
+      },
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        pagination: { skip: 0, take: 0 },
+        search_options: {
+          count: "none",
+          facets: [{ field: "status" }],
+        },
+      },
+    ])
+
+    expect(multiQuery).toHaveBeenCalledTimes(1)
+    // hits + count for the first query, facet only for the second
+    expect(multiQuery.mock.calls[0][0].queries).toHaveLength(3)
+    expect(results[0].hits).toHaveLength(1)
+    expect(results[1].hits).toEqual([])
+    expect(results[1].metadata.count).toBeNull()
+    expect(results[1].facets).toMatchObject({
+      status: { type: "value" },
+    })
+  })
 })
