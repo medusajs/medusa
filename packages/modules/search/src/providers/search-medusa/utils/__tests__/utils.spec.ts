@@ -450,7 +450,7 @@ describe("Medusa search utilities", () => {
     ])
   })
 
-  it("builds stats facets as min/max rank queries plus a Count/Sum aggregation", () => {
+  it("builds stats facets as min/max rank queries plus separate Count and Sum aggregations", () => {
     const queries = buildFacetQueries(
       {
         index: definition,
@@ -463,8 +463,13 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(queries).toHaveLength(3)
-    expect(queries.map((query) => query.stats)).toEqual(["min", "max", "agg"])
+    expect(queries).toHaveLength(4)
+    expect(queries.map((query) => query.stats)).toEqual([
+      "min",
+      "max",
+      "count",
+      "sum",
+    ])
 
     const present: unknown = [
       "And",
@@ -487,7 +492,11 @@ describe("Medusa search utilities", () => {
       filters: present,
     })
     expect(queries[2].query).toEqual({
-      aggregate_by: { count: ["Count"], sum: ["Sum", "price"] },
+      aggregate_by: { count: ["Count"] },
+      filters: ["title", "ContainsAllTokens", "chair"],
+    })
+    expect(queries[3].query).toEqual({
+      aggregate_by: { sum: ["Sum", "price"] },
       filters: ["title", "ContainsAllTokens", "chair"],
     })
   })
@@ -510,12 +519,14 @@ describe("Medusa search utilities", () => {
       plan
     )
 
+    expect(dated.map((query) => query.stats)).toEqual(["min", "max", "count"])
     expect(dated[2].query.aggregate_by).toEqual({ count: ["Count"] })
     expect(
       parseFacetResults(numeric, [
         { rows: [{ id: "prod_1", price: 10 }] },
         { rows: [{ id: "prod_2", price: 80 }] },
-        { aggregations: { count: 3, sum: 90 } },
+        { aggregations: { count: 3 } },
+        { aggregations: { sum: 90 } },
       ])
     ).toEqual({
       price: { type: "stats", min: 10, max: 80, count: 3, sum: 90 },
