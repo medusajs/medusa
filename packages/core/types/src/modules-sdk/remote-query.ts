@@ -14,9 +14,21 @@ import {
 
 /*type ExcludedProps = "__typename"*/
 
+/**
+ * The pagination metadata returned alongside a remote query result.
+ */
 export type RemoteQueryFunctionReturnPagination = {
+  /**
+   * The number of records skipped.
+   */
   skip: number
+  /**
+   * The maximum number of records returned.
+   */
   take: number
+  /**
+   * The total number of matching records.
+   */
   count: number
 }
 
