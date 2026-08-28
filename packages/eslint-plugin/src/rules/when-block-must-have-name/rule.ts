@@ -3,24 +3,12 @@ import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import {
   createWorkflowSdkBindings,
+  isWorkflowSdkHelperCall,
   trackWorkflowSdkImports,
   WorkflowSdkBindings,
 } from "../../util/workflow-scope"
 
 type MessageIds = "whenBlockMissingName"
-
-const SDK_HELPER_BUCKETS: (keyof WorkflowSdkBindings)[] = [
-  "createWorkflow",
-  "createStep",
-  "transform",
-  "when",
-]
-
-const isSdkHelperCallee = (
-  calleeName: string,
-  bindings: WorkflowSdkBindings
-): boolean =>
-  SDK_HELPER_BUCKETS.some((bucket) => bindings[bucket].has(calleeName))
 
 type FunctionLike =
   | TSESTree.ArrowFunctionExpression
@@ -103,7 +91,7 @@ const isStepLikeReturn = (
   }
   const callee = unwrapped.callee
   if (callee.type === AST_NODE_TYPES.Identifier) {
-    return !isSdkHelperCallee(callee.name, bindings)
+    return !isWorkflowSdkHelperCall(callee.name, bindings)
   }
   if (
     callee.type === AST_NODE_TYPES.MemberExpression &&
