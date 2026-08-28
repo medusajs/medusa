@@ -16,6 +16,8 @@ export type PlannedField = {
   is_array: boolean
   is_date: boolean
   field: SearchTypes.SearchFieldDefinition
+  dimensions?: number
+  embed?: string
 }
 
 export type TypoToleranceSettings = {
@@ -32,14 +34,15 @@ export type IndexPlan = {
   primary_key: string
   options: MedusaSearchIndexOptions
   typo_tolerance: TypoToleranceSettings
+  vectors: string[]
 }
 
 function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-// Inspired by Meilisearch's own typo-tolerance defaults.
-const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 5
+// Cloud requires min_query_chars >= 3 * (distance + 1) for typos
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 6
 const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
 
 function resolveTypoTolerance(
@@ -220,18 +223,51 @@ export function buildIndexPlan(
         attribute.fuzzy = configured.fuzzy
       }
 
-      schema[path] = attribute
       fields.set(path, {
         path,
         type,
         is_array: isArray,
         is_date: field.type === "date",
         field,
+        dimensions: field.dimensions,
+        embed: field.embed,
       })
+
+      // Engine-embedded vector fields are not stored as client-supplied
+      // `[N]f32` columns — the source text field carries `embed` instead.
+      if (field.type === "vector" && field.embed) {
+        continue
+      }
+
+      schema[path] = attribute
     }
   }
 
   walk(definition.fields, "", false)
+
+  const vectors: string[] = []
+  for (const planned of fields.values()) {
+    if (planned.field.type !== "vector") {
+      continue
+    }
+
+    vectors.push(planned.path)
+
+    if (!planned.embed) {
+      continue
+    }
+
+    const source = schema[planned.embed]
+    if (!source || typeof source === "string") {
+      fail(
+        `Vector field "${planned.path}" embeds source "${planned.embed}", which is not in the index schema`
+      )
+    }
+
+    source.embed = {
+      ...(planned.dimensions ? { dims: planned.dimensions } : {}),
+    }
+  }
 
   return {
     fields,
@@ -240,6 +276,7 @@ export function buildIndexPlan(
     primary_key: definition.primary_key,
     options: providerOptions<MedusaSearchIndexOptions>(definition.settings),
     typo_tolerance: typoTolerance,
+    vectors,
   }
 }
 
@@ -253,6 +290,27 @@ function coerce(value: unknown, planned: PlannedField): unknown {
   return value
 }
 
+function coerceVector(value: unknown, planned: PlannedField): number[] {
+  if (!Array.isArray(value) || !value.length) {
+    fail(
+      `Vector field "${planned.path}" must be a numeric array of length ${planned.dimensions}`
+    )
+  }
+
+  const nums = value.map((entry) => Number(entry))
+  if (nums.some((n) => Number.isNaN(n))) {
+    fail(`Vector field "${planned.path}" contains non-numeric components`)
+  }
+
+  if (planned.dimensions && nums.length !== planned.dimensions) {
+    fail(
+      `Vector field "${planned.path}" expected ${planned.dimensions} dimensions, got ${nums.length}`
+    )
+  }
+
+  return nums
+}
+
 export function toSearchDocument(
   document: SearchTypes.SearchDocument,
   plan: IndexPlan
@@ -260,13 +318,38 @@ export function toSearchDocument(
   const target: Record<string, unknown> = {}
 
   for (const planned of plan.fields.values()) {
+    // Engine-embedded fields are produced from `embed` — never send a
+    // client-supplied vector for them.
+    if (planned.field.type === "vector" && planned.embed) {
+      continue
+    }
+
+    if (planned.field.type === "vector") {
+      // `readDocumentPath` flattens arrays; a vector is one value.
+      const raw = planned.path
+        .split(".")
+        .reduce<unknown>(
+          (value, segment) =>
+            value && typeof value === "object"
+              ? (value as Record<string, unknown>)[segment]
+              : undefined,
+          document
+        )
+      if (raw !== undefined && raw !== null) {
+        target[planned.path] = coerceVector(raw, planned)
+      }
+      continue
+    }
+
     const values = readDocumentPath(document, planned.path.split("."))
       .map((value) => coerce(value, planned))
       .filter((value) => value !== undefined)
 
-    if (values.length) {
-      target[planned.path] = planned.is_array ? values : values[0]
+    if (!values.length) {
+      continue
     }
+
+    target[planned.path] = planned.is_array ? values : values[0]
   }
 
   const primaryKey = document[plan.primary_key]

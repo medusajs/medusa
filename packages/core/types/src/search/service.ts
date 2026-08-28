@@ -114,9 +114,10 @@ export interface ISearchModuleService extends IModuleService {
    * queries against different indexes, or the same index with different filters,
    * without paying for a round trip per query.
    *
-   * If the index's provider implements `searchMany`, the queries are batched into
-   * a single request to the search engine. Otherwise, the module runs them in
-   * parallel.
+   * Disjunctive facets are expanded here, then every query targeting the same
+   * provider is handed to that provider's `searchMany` so the engine can pack
+   * them into one request. Prefer `query.search` from application code, which
+   * hydrates the hits through graph.
    *
    * @param {SearchQuery[]} queries - The queries to run against search indexes.
    * @returns {Promise<SearchResult[]>} The list of search results, in the same

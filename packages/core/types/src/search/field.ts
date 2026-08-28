@@ -93,11 +93,20 @@ export interface SearchFieldDefinition {
   correlated?: boolean
 
   /**
-   * The dimensionality of the embedding stored in a `type: "vector"` field —
-   * every vector written to it must have exactly this many components. Required
-   * for vector fields; meaningless on any other type.
+   * The dimensionality of the embedding stored in a `type: "vector"` field.
+   * Required for vector fields; meaningless on any other type. When `embed` is
+   * omitted, every vector written to the field must have exactly this many
+   * components.
    */
   dimensions?: number
+
+  /**
+   * When set on a vector field, the dotted path of the text or keyword field
+   * the engine embeds at write and query time. Documents must not include this
+   * field's values — pass the raw text on that source field instead. Omit
+   * `embed` to supply embeddings yourself.
+   */
+  embed?: string
 
   /**
    * Field options specific to a search engine, keyed by provider identifier, such
