@@ -216,6 +216,15 @@ export interface AuthContext {
   entity_id?: string
   purpose?: string
   jti?: string
+  /**
+   * Whether the auth identity had an enabled MFA factor when the token was issued.
+   */
+  mfa_enabled?: boolean
+  /**
+   * When the MFA challenge was completed, or null when it has not been. Routes
+   * can require a recent completion to gate elevated actions.
+   */
+  mfa_challenge_completed_at?: string | null
 }
 
 export interface PublishableKeyContext {
