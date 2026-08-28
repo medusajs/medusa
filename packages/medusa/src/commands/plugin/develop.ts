@@ -62,6 +62,7 @@ export default async function developPlugin({
   if (!parsedConfig) {
     return
   }
+  const config = parsedConfig
 
   const yalcBin = path.join(path.dirname(require.resolve("yalc")), "yalc.js")
 
@@ -108,10 +109,10 @@ export default async function developPlugin({
   /**
    * Transforms a given file using @swc/core
    */
-  const transformFile = async (filePath: string) => {
+  async function transformFile(filePath: string) {
     const output = await swcCore.transformFile(
       filePath,
-      buildSwcTransformOptions(directory, parsedConfig)
+      buildSwcTransformOptions(directory, config)
     )
     return output.code
   }
