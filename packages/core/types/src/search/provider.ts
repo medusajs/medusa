@@ -49,8 +49,10 @@ export interface SearchDeleteDocumentsInput {
 
 /**
  * Contract implemented by a search engine provider. Optional methods
- * (`swapIndex`, `searchMany`, `waitForTask`) are omitted from
- * the abstract class on purpose — define only those your engine can back.
+ * (`swapIndex` and `waitForTask`) are omitted from the abstract class on
+ * purpose — define only those your engine can back. `searchMany` has a default
+ * that runs `search` concurrently; override it to pack queries into one
+ * engine round-trip.
  */
 export interface ISearchProvider {
   /**
@@ -328,11 +330,12 @@ export interface ISearchProvider {
 
   /**
    * This method runs multiple queries in a single request to the search engine.
-   * The Search Module uses it for its `searchMany` method, and for disjunctive
-   * faceting, which needs one query per facet.
+   * The Search Module uses it for its `searchMany` method, including the extra
+   * queries produced by disjunctive faceting.
    *
    * Implementing this method is optional. When it's not implemented, the module
-   * runs the queries in parallel `search` calls instead.
+   * runs the queries in parallel `search` calls instead. Override it to pack the
+   * queries into one engine round-trip.
    *
    * @param {ProviderSearchQuery[]} inputs - The queries to run.
    * @returns {Promise<SearchResult[]>} A result for each query, in the same order

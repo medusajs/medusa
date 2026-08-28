@@ -287,8 +287,10 @@ function withoutFieldFilter(
 /**
  * The base query plus one per faceted field with that field's own filter dropped.
  * Every engine reviewed needs a query per facet, so the fan-out lives here rather
- * than in each provider. `disjunctive_facets` is stripped from what is handed on —
- * a provider should never see an option it is not expected to act on.
+ * than in each provider. The expanded set is then handed to `provider.searchMany`
+ * so the engine can pack them into one round-trip. `disjunctive_facets` is
+ * stripped from what is handed on — a provider should never see an option it is
+ * not expected to act on.
  */
 export function buildDisjunctiveFacetQueries(
   query: SearchTypes.ProviderSearchQuery
@@ -317,9 +319,9 @@ export function buildDisjunctiveFacetQueries(
     perFacet.set(facet.field, {
       ...base,
       filters: relaxed,
-      // Only the facet is wanted; skip the hits.
+      // Only the facet is wanted; skip the hits and the count.
       pagination: { ...query.pagination, skip: 0, take: 0 },
-      search_options: { ...searchOptions, facets: [facet] },
+      search_options: { ...searchOptions, facets: [facet], count: "none" },
     })
   }
 
