@@ -255,6 +255,13 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
         {
           "loaded": true,
           "type": "link",
+          "path": "/integrations/guides/instantsearch-adapter",
+          "title": "InstantSearch Adapter",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
           "path": "/integrations/guides/meilisearch",
           "title": "Meilisearch",
           "children": []

@@ -1128,6 +1128,10 @@ export const filesMap = [
     "pathname": "/integrations/guides/contentful"
   },
   {
+    "filePath": "/www/apps/resources/app/integrations/guides/instantsearch-adapter/page.mdx",
+    "pathname": "/integrations/guides/instantsearch-adapter"
+  },
+  {
     "filePath": "/www/apps/resources/app/integrations/guides/magento/page.mdx",
     "pathname": "/integrations/guides/magento"
   },

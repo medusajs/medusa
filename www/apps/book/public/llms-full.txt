@@ -109836,6 +109836,224 @@ If you encounter issues not covered in the troubleshooting guides:
 3. Contact the [sales team](https://medusajs.com/contact/) to get help from the Medusa team.
 
 
+# Algolia InstantSearch Adapter
+
+In this guide, you'll learn how to use the `@medusajs/instantsearch-adapter` package to connect Algolia's [InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/react/) UI library to Medusa's own search backend.
+
+The adapter translates InstantSearch queries into the format that Medusa's search API expects and maps the responses back so that all InstantSearch widgets, such as `<SearchBox>`, `<Hits>`, `<RefinementList>`, and `<RangeInput>`, work out of the box.
+
+This adapter targets **Medusa's built-in search backend** (the Postgres provider or `search-medusa` module), not the Algolia or Meilisearch backends directly. To integrate Algolia or Meilisearch as a search engine for Medusa, refer to the [Algolia](undefined/resources/integrations/guides/algolia) or [Meilisearch](undefined/resources/integrations/guides/meilisearch) guides instead.
+
+***
+
+## Install the Package
+
+Run the following command in your storefront directory:
+
+```bash
+npm install @medusajs/instantsearch-adapter react-instantsearch
+```
+
+***
+
+## Create the Search Client
+
+Use `createInstantSearchAdapter` to create a search client that you can pass to the `<InstantSearch>` component.
+
+```ts title="src/lib/search-client.ts"
+import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
+
+const { searchClient } = createInstantSearchAdapter({
+  path: "/store/search",
+  baseUrl: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000",
+  publishableApiKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
+})
+
+export { searchClient }
+```
+
+The adapter sends requests to the Medusa search route you specify in `path`. Each request uses Medusa's search query format, and the responses are transformed back into the shape that InstantSearch expects.
+
+***
+
+## Use the Search Client in a Component
+
+Pass the `searchClient` to `<InstantSearch>` and use any InstantSearch widget inside:
+
+```tsx title="src/components/search.tsx"
+"use client"
+
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch"
+import { searchClient } from "../lib/search-client"
+
+type ProductHit = {
+  objectID: string
+  title: string
+  handle: string
+  thumbnail?: string
+}
+
+function Hit({ hit }: { hit: ProductHit }) {
+  return (
+    <a href={`/products/${hit.handle}`}>
+      {hit.thumbnail && (
+        <img src={hit.thumbnail} alt={hit.title} width={80} height={80} />
+      )}
+      <span>{hit.title}</span>
+    </a>
+  )
+}
+
+export default function Search() {
+  return (
+    <InstantSearch searchClient={searchClient} indexName="product">
+      <SearchBox />
+      <Hits hitComponent={Hit} />
+    </InstantSearch>
+  )
+}
+```
+
+The `indexName` corresponds to the entity name in Medusa's search index — use `"product"` to search products.
+
+***
+
+## Adapter Options
+
+`createInstantSearchAdapter` accepts an `InstantSearchAdapterOptions` object with the following properties:
+
+### Transport options (one is required)
+
+| Option | Type | Description |
+|---|---|---|
+| `path` | `string` | Route path on your Medusa backend (for example, `"/store/search"`). Required when `requester` is not set. |
+| `baseUrl` | `string` | Medusa backend origin. Required when `path` is a relative URL and `sdk` is not provided. |
+| `sdk` | `MedusaSdkLike` | Medusa JS SDK instance. When provided, the SDK handles the request, including sending the publishable API key header automatically. |
+| `requester` | `SearchRequester` | Custom transport function. Receives the adapted `SearchQuery` list and returns one `SearchResult` per query. |
+
+### Authentication
+
+| Option | Type | Description |
+|---|---|---|
+| `publishableApiKey` | `string` | Sent as `x-publishable-api-key` on every request when using native `fetch`. Not needed when passing `sdk`. |
+| `headers` | `Record<string, string>` | Extra headers merged into every request. |
+
+### Search behavior
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `placeholderSearch` | `boolean` | `true` | When `false`, empty queries return no results without calling the backend. |
+| `cacheSearchResultsForSeconds` | `number` | `0` | Client-side TTL in seconds for caching search responses. Set to `0` to disable. |
+| `batch` | `boolean` | `true` | When `true`, multiple concurrent InstantSearch requests are batched into a single `{ queries }` POST request. Set to `false` to send each query separately. |
+| `primaryKey` | `string` | `"id"` | The document field used as `objectID` when a hit lacks an `id` property. |
+| `numericAttributes` | `string[]` | | Fields that InstantSearch range widgets use. Those facets are requested as `stats` facets so that `facets_stats` is populated for `<RangeInput>` widgets. |
+| `distinctAttribute` | `string` | | Field used when InstantSearch sends `distinct: true`. |
+
+### Query customization
+
+| Option | Type | Description |
+|---|---|---|
+| `additionalSearchParameters` | `Partial<Omit<SearchQuery, "entity">>` | Defaults merged into every adapted query. Filters are ANDed with InstantSearch-derived filters; InstantSearch pagination and sort win over overlapping values. |
+| `indexSpecificSearchParameters` | `Record<string, Partial<Omit<SearchQuery, "entity">>>` | Per-index overlay, keyed by InstantSearch `indexName` (without the `/sort/...` suffix). Follows the same merge rules as `additionalSearchParameters`. |
+| `transformQuery` | `(query: SearchQuery, request: InstantSearchRequest) => SearchQuery` | Escape hatch called after InstantSearch params are mapped to a `SearchQuery`. Use to make final adjustments before the request is sent. |
+| `transformResponse` | `(response: InstantSearchSearchResponse, result: SearchResult, request: InstantSearchRequest) => InstantSearchSearchResponse` | Escape hatch called after a `SearchResult` is mapped to the InstantSearch response shape. |
+
+***
+
+## Sort by Index Name
+
+InstantSearch's [SortBy](https://www.algolia.com/doc/api-reference/widgets/sort-by/react/) widget switches between indices to apply a sort order. The adapter parses the sort order from the index name using the pattern `<entity>/sort/<field>:<direction>`.
+
+```tsx title="src/components/search.tsx"
+import { SortBy } from "react-instantsearch"
+
+<SortBy
+  items={[
+    { label: "Relevance", value: "product" },
+    { label: "Price (low to high)", value: "product/sort/price:asc" },
+    { label: "Price (high to low)", value: "product/sort/price:desc" },
+    { label: "Newest", value: "product/sort/created_at:desc" },
+  ]}
+/>
+```
+
+The adapter strips the `/sort/...` suffix from the index name and forwards the order to Medusa's pagination.
+
+***
+
+## Using the JS SDK
+
+When your storefront already uses the [Medusa JS SDK](undefined/resources/js-sdk), pass the SDK instance instead of `baseUrl` to avoid duplicate configuration:
+
+```ts title="src/lib/search-client.ts"
+import Medusa from "@medusajs/js-sdk"
+import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
+
+const sdk = new Medusa({
+  baseUrl: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000",
+  publishableApiKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
+})
+
+const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+})
+
+export { searchClient }
+```
+
+The SDK automatically attaches the publishable API key and locale headers to every request, so you don't need to set `publishableApiKey` separately.
+
+***
+
+## Filtering and Facets
+
+InstantSearch widgets such as `<RefinementList>` produce facet filters automatically. The adapter converts them to Medusa's filter format.
+
+To enable facets, your Medusa search route must return facet data and your search index configuration must declare the fields as facetable.
+
+```tsx title="src/components/search.tsx"
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  RefinementList,
+} from "react-instantsearch"
+import { searchClient } from "../lib/search-client"
+
+export default function Search() {
+  return (
+    <InstantSearch searchClient={searchClient} indexName="product">
+      <SearchBox />
+      <RefinementList attribute="categories.name" />
+      <Hits hitComponent={Hit} />
+    </InstantSearch>
+  )
+}
+```
+
+For numeric range widgets such as `<RangeInput>`, add the field to `numericAttributes` so the adapter requests stats facets:
+
+```ts title="src/lib/search-client.ts"
+const { searchClient } = createInstantSearchAdapter({
+  path: "/store/search",
+  baseUrl: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000",
+  publishableApiKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
+  numericAttributes: ["variants.prices.amount"],
+})
+```
+
+***
+
+## Clearing the Cache
+
+Call `searchClient.clearCache()` to invalidate the client-side cache manually. This is useful after write operations that may affect search results:
+
+```ts
+searchClient.clearCache()
+```
+
+
 # How to Build Magento Data Migration Plugin
 
 In this tutorial, you'll learn how to build a [plugin](undefined/docs/learn/fundamentals/plugins) that migrates data, such as products, from Magento to Medusa.
@@ -130698,6 +130916,7 @@ Learn how to integrate a third-party payment provider in the [Create Payment Mod
 Integrate a search engine to index and search products or other types of data in your Medusa application.
 
 - [Algolia](undefined/integrations/guides/algolia)
+- [InstantSearch Adapter](undefined/integrations/guides/instantsearch-adapter)
 - [Meilisearch](undefined/integrations/guides/meilisearch)
 
 ***

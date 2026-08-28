@@ -103,7 +103,7 @@ export const generatedEditDates = {
   "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
   "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
   "app/deployment/page.mdx": "2026-01-08T09:19:58.734Z",
-  "app/integrations/page.mdx": "2025-12-02T12:33:55.600Z",
+  "app/integrations/page.mdx": "2026-08-28T13:26:29.330Z",
   "app/medusa-cli/page.mdx": "2026-08-12T11:55:16.813Z",
   "app/medusa-container-resources/page.mdx": "2025-07-31T13:24:15.786Z",
   "app/medusa-workflows-reference/page.mdx": "2025-01-20T08:21:29.962Z",
@@ -7648,5 +7648,6 @@ export const generatedEditDates = {
   "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z",
   "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
-  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z"
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
+  "app/integrations/guides/instantsearch-adapter/page.mdx": "2026-08-28T13:26:10.515Z"
 }
