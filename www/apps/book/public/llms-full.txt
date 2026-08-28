@@ -1853,6 +1853,8 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
+
 For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
 
 ```bash
@@ -2722,6 +2724,8 @@ For modules that are part of a plugin, learn about registering them in the [Regi
 ### Example
 
 To register a custom module:
+
+Environment variables used in module `options` are read during the build phase. When deploying to Cloud, make sure each variable has the **Build** flag enabled in your [environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). A variable that is only enabled at runtime will be `undefined` when the module loads, causing errors such as "Option `apiKey` is required".
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -15752,6 +15756,8 @@ To emit a service event:
 
 1. Resolve `event_bus` from the module's container in your service's constructor:
 
+The Event Module's service (`event_bus`) is available in every module's container by default. You don't need to add it to `dependencies` in `medusa-config.ts`.
+
 ### Extending Service Factory
 
 ```ts title="src/modules/blog/service.ts"
@@ -15807,59 +15813,6 @@ The method accepts an object having the following properties:
 
 - `name`: The event's name.
 - `data`: The data payload as an object. You can pass any properties in the object, and subscribers listening to the event will receive this data in the event's payload.
-
-3. By default, the Event Module's service isn't injected into your module's container. To add it to the container, pass it in the module's registration object in `medusa-config.ts` in the `dependencies` property:
-
-### Module Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "./src/modules/blog",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-    },
-  ],
-})
-```
-
-### Module Provider Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "@medusajs/medusa/payment",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-      options: {
-        providers: [
-          {
-            resolve: "./src/modules/my-provider",
-            id: "my-provider",
-            options: {
-              // ...
-            },
-          },
-        ],
-      },
-    },
-  ],
-})
-```
-
-The `dependencies` property accepts an array of module registration keys. The specified modules' main services are injected into the module's container.
-
-If a module has providers, the dependencies are also injected into the providers' containers.
 
 ### Test it Out
 
@@ -22411,13 +22364,14 @@ In the `createBrandsInCmsStep`, you resolve the CMS Module's service from the mo
 ### Injecting Dependencies to Module
 
 Some cases still require you to access external resources, mainly [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) or Framework tools, in your module.
-For example, you may need the [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/index.html.md) to emit events from your module's service.
 
-In those cases, you can inject the dependencies to your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
+The following services are available in every module's container by default, without any `dependencies` declaration: `logger`, `event_bus`, `manager`, `configModule`, and `pgConnection`. Refer to the [Module Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) for the full list.
+
+For other Infrastructure Modules not in the default set, you can inject them into your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
 
 Use this approach only when absolutely necessary, where workflows aren't sufficient for your use case. By injecting dependencies, you risk breaking your module if the dependency isn't provided, or if the dependency's API changes.
 
-For example:
+For example, to inject the Analytics Module:
 
 ```ts title="medusa-config.ts"
 import { Modules } from "@medusajs/framework/utils"
@@ -22428,36 +22382,37 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/blog",
       dependencies: [
-        Modules.EVENT_BUS,
+        Modules.ANALYTICS,
       ],
     },
   ],
 })
 ```
 
-In this example, you inject the Event Module's service to your module's container.
+In this example, you inject the Analytics Module's service into your module's container.
 
 Only the main service will be injected into the module's container.
 
-You can then use the Event Module's service in your module's service:
+You can then use the Analytics Module's service in your module's service:
 
 ```ts title="Example Service"
-class BlogModuleService {
-  protected eventBusService_: AbstractEventBusModuleService
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
 
-  constructor({ event_bus }) {
-    this.eventBusService_ = event_bus
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
   }
 
   performAction() {
     // TODO perform action
 
-    this.eventBusService_.emit({
-      name: "custom.event",
-      data: {
-        id: "123",
-        // other data payload
-      },
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe"
+      }
     })
   }
 }
@@ -53817,6 +53772,8 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Redis Caching Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis/index.html.md) instead.
 
+However, if you use OAuth-based authentication providers such as Google or GitHub login, keep the Redis Cache Module registered. The Auth Module uses the Cache Module to store OAuth state between the redirect and callback. Removing it without a Redis provider causes Medusa to use an in-memory fallback, which breaks OAuth flows in multi-instance or restarted deployments.
+
 ***
 
 ## Register the Redis Cache Module
@@ -55307,6 +55264,10 @@ This separation of concerns allows for greater flexibility and extensibility. Yo
 ### 1. Remove the Cache Module
 
 The first step is to remove the Cache Module from your `medusa-config.ts` file.
+
+If you use OAuth-based authentication providers such as Google or GitHub login, the Auth Module uses the Cache Module to store the OAuth state parameter between the redirect and the callback. Removing the Cache Module without a Redis provider causes Medusa to fall back to an in-memory cache, which breaks OAuth flows across multiple application instances or after a restart.
+
+Keep the Cache Module registered with a Redis provider until the Auth Module is updated to use the Caching Module instead.
 
 For example, if you set up the Redis Cache Module, remove the following code from `medusa-config.ts`:
 
@@ -69702,7 +69663,7 @@ When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll rec
 
 #### getSignature Method
 
-Next, you'll add the `getSignature` method to the service. This method generates signatures for use in request headers when sending webhook events to AI agents.
+Next, you'll add the `getSignature` method to the service. This method generates a base64 signature for a payload in the same format that AI agents use for inbound requests, which is useful to test the checkout APIs locally.
 
 Add the following method to the `AgenticCommerceService` class:
 
@@ -69716,7 +69677,7 @@ export default class AgenticCommerceService {
 }
 ```
 
-This method receives webhook event data and generates signatures using HMAC-SHA256 with the module's `signatureKey` option.
+This method receives a payload and generates a signature using HMAC-SHA256 with the module's `signatureKey` option.
 
 #### sendWebhookEvent Method
 
@@ -69726,23 +69687,52 @@ First, add the following type at the top of the `src/modules/agentic-commerce/se
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export type AgenticCommerceWebhookEvent = {
-  type: "order.created" | "order.updated"
+  type: "order_create" | "order_update"
   data: {
     type: "order"
+    id: string
     checkout_session_id: string
     permalink_url: string
-    status: "created" | "manual_review" | "confirmed" | "canceled" | "shipping" | "fulfilled"
-    refunds: {
-      type: "store_credit" | "original_payment"
-      amount: number
+    status: "created" | "manual_review" |
+      "confirmed" | "processing" | "shipped" |
+      "completed" | "canceled"
+    adjustments: {
+      id: string
+      type: "refund"
+      occurred_at: string
+      status: "completed"
+      amount?: number
     }[]
   }
 }
 ```
 
-This type defines the structure of webhook events that you can send to AI agents based on [Agentic Commerce specifications](https://developers.openai.com/commerce/specs/webhooks).
+This type defines the structure of webhook events that you can send to AI agents based on the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 
 Then, add the following method to the `AgenticCommerceService` class:
+
+```ts title="src/modules/agentic-commerce/service.ts"
+export default class AgenticCommerceService {
+  // ...
+  getWebhookSignature(
+    rawBody: string,
+    timestamp = Math.floor(Date.now() / 1000)
+  ) {
+    const digest = crypto
+      .createHmac("sha256", this.options.signatureKey)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    return `t=${timestamp},v1=${digest}`
+  }
+}
+```
+
+Outbound webhook events use a different signature format than inbound requests. This method builds the `Merchant-Signature` header value that the ACP `2026-04-17` release expects, which is a hexadecimal HMAC-SHA256 digest of the timestamp and the raw request body, joined by a period.
+
+Sign the exact raw body string that you send in the request, not a re-serialized copy of the payload. Any difference in key order or whitespace produces a different digest that the receiver can't verify.
+
+Finally, add the following method to the `AgenticCommerceService` class:
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export default class AgenticCommerceService {
@@ -69751,15 +69741,17 @@ export default class AgenticCommerceService {
     type,
     data,
   }: AgenticCommerceWebhookEvent) {
-    // Create signature
-    const signature = this.getSignature(data)
+    const rawBody = JSON.stringify({ type, data })
+    const signature = this.getWebhookSignature(rawBody)
     // TODO send order webhook event
-    console.log(`Sent order webhook event ${type} with signature ${signature} and data ${JSON.stringify(data)}`)
+    console.log(
+      `Prepared order webhook event ${type} with Merchant-Signature ${signature}`
+    )
   }
 }
 ```
 
-This method receives webhook event types and data, generates signatures using the `getSignature` method, and logs events to the console.
+This method receives webhook event types and data, serializes the payload once, signs that exact string using the `getWebhookSignature` method, and logs events to the console.
 
 When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll get access to endpoints for sending webhook events and can implement the logic in this method.
 
@@ -72571,6 +72563,12 @@ export default async function orderWebhookHandler({
   const configModule = container.resolve("configModule")
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
+  if (!storefrontUrl) {
+    throw new Error(
+      "A storefront URL is required to send ACP order webhooks"
+    )
+  }
+
   // retrieve order
   const { data: [order] } = await query.graph({
     entity: "order",
@@ -72592,34 +72590,49 @@ export default async function orderWebhookHandler({
     return
   }
 
-  // prepare webhook event
-  const webhookEvent: AgenticCommerceWebhookEvent = {
-    type: name === "order.placed" ? "order.created" : "order.updated",
-    data: {
-      type: "order",
-      checkout_session_id: order.cart.id,
-      permalink_url: `${storefrontUrl}/orders/${order.id}`,
-      status: "confirmed",
-      refunds: order.transactions?.filter(
-        (transaction) => transaction?.reference === "refund"
-      ).map((transaction) => ({
-        type: "original_payment",
-        amount: transaction!.amount * -1,
-      })) || [],
-    },
+  // set status based on order and fulfillments
+  const fulfillments = (order.fulfillments || []).filter(
+    (fulfillment) => !!fulfillment
+  )
+  let status: AgenticCommerceWebhookEvent["data"]["status"] =
+    "confirmed"
+
+  if (order.status === "canceled") {
+    status = "canceled"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.delivered_at)
+  ) {
+    status = "completed"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.shipped_at)
+  ) {
+    status = "shipped"
   }
 
-  // set status based on order, fulfillments and transactions
-  if (order.status === "canceled") {
-    webhookEvent.data.status = "canceled"
-  } else {
-    const allFulfillmentsShipped = order.fulfillments?.every((fulfillment) => !!fulfillment?.shipped_at)
-    const allFulfillmentsDelivered = order.fulfillments?.every((fulfillment) => !!fulfillment?.delivered_at)
-    if (allFulfillmentsShipped) {
-      webhookEvent.data.status = "shipping"
-    } else if (allFulfillmentsDelivered) {
-      webhookEvent.data.status = "fulfilled"
-    }
+  // prepare webhook event
+  const webhookEvent: AgenticCommerceWebhookEvent = {
+    type: name === "order.placed" ?
+      "order_create" : "order_update",
+    data: {
+      type: "order",
+      id: order.id,
+      checkout_session_id: order.cart.id,
+      permalink_url: `${storefrontUrl}/orders/${order.id}`,
+      status,
+      adjustments: order.transactions?.filter(
+        (transaction) => transaction?.reference === "refund"
+      ).map((transaction) => ({
+        id: transaction!.id,
+        type: "refund",
+        occurred_at: new Date(
+          transaction!.created_at
+        ).toISOString(),
+        status: "completed",
+        amount: Math.abs(transaction!.amount) * 100,
+      })) || [],
+    },
   }
 
   // send webhook event
@@ -72642,8 +72655,12 @@ In the subscriber function, you:
 
 - Retrieve orders using Query. You filter by order IDs received in event data.
 - If orders don't exist or if order carts don't have the `is_checkout_session` metadata field, you return early since orders are not associated with checkout sessions.
-- Prepare webhook event payloads based on order data, following [Agentic Commerce webhook specifications](https://developers.openai.com/commerce/specs/checkout#webhooks).
+- Map the order's status and fulfillments to an ACP order status. You check the `completed` case before the `shipped` case, since delivered fulfillments are also shipped. You also require at least one fulfillment, because `Array.prototype.every` returns `true` for an empty array and would otherwise report an unfulfilled order as shipped.
+- Map refund transactions to the `adjustments` array. Medusa stores refunds as negative amounts, so you use the absolute value.
+- Prepare webhook event payloads based on order data, following the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 - Send webhook events to AI agents using the `sendWebhookEvent` method of the Agentic Commerce Module's service.
+
+Extract the payload-building logic into an exported function, such as `buildOrderWebhookEvent`, if you want to unit test the status and adjustment mapping without emitting events. You can find an example in the [tutorial's repository](https://github.com/medusajs/examples/tree/main/agentic-commerce).
 
 ### Use Order Webhook Events in ChatGPT
 
@@ -162544,7 +162561,7 @@ This recipe provides the general steps to implement a marketplace in your Medusa
 
 A marketplace is an online commerce store that allows different vendors to sell their products within the same commerce system. Customers can purchase products from any of these vendors, and vendors can manage their orders separately.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) built for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
 
 [How Foraged built a custom marketplace with Medusa](https://medusajs.com/blog/foraged/).
 
@@ -166716,7 +166733,7 @@ Subscription-based purchase allows customers to purchase products for a specifie
 
 For example, a customer can purchase a book subscription box for a period of three months. Each month, the payment is captured for that order and, if the payment is successful, the fulfillment is processed.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) built for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
 
 You can also expose custom features using API routes, and implement complex flows using workflows.
 
@@ -166818,7 +166835,7 @@ This tutorial is divided into two parts: this part that covers the backend and a
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. The Medusa application's commerce features are built around [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md) that are available out-of-the-box.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
 
 This tutorial provides an approach to implement a ticket booking system using Medusa. Depending on your specific requirements, you might need to adjust the implementation details or explore a different approach.
 
@@ -173345,7 +173362,7 @@ Follow the step-by-step [Ticket Booking System Example](https://docs.medusajs.co
 
 A ticket booking system allows customers to book tickets for events, such as shows or sports games. By using a ticket booking system, you can manage shows, venues, and seat availability, among other features.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md).
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md).
 
 To support ticket-booking features, you can customize the Medusa application by creating a Ticket Booking Module, linking its data models to Medusa's existing models, and building flows around the module.
 
