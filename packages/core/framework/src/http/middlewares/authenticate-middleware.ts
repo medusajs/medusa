@@ -95,8 +95,10 @@ export const authenticate = (
       )
     }
 
-    if (options.requireMfa && authContext?.mfa_enabled) {
-      const mfaError = getMfaRequirementError(authContext, options.requireMfa)
+    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+
+    if (requireMfa && authContext?.mfa_enabled) {
+      const mfaError = getMfaRequirementError(authContext, requireMfa)
 
       if (mfaError) {
         res.status(401).json({ message: mfaError })

@@ -66,6 +66,7 @@ export const POST = async (
       authProvider:
         req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
       container: req.scope,
+      mfaEnabled: true,
       mfaChallengeCompletedAt: challenge.completed_at,
     },
     {

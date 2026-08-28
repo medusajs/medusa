@@ -81,6 +81,56 @@ medusaIntegrationTestRunner({
       await dbUtils.snapshot()
     })
 
+    describe("An identity without MFA enabled", () => {
+      it("authenticates and manages factors without completing a challenge", async () => {
+        const login = await api.post("/auth/user/emailpass", {
+          email: EMAIL,
+          password: PASSWORD,
+        })
+
+        expect(login.data.mfa_required).toBeUndefined()
+
+        const decoded = jwt.decode(login.data.token) as Record<string, unknown>
+        expect(decoded.mfa_enabled).toBe(false)
+        expect(decoded.mfa_challenge_completed_at).toBeNull()
+
+        const headers = {
+          headers: { authorization: `Bearer ${login.data.token}` },
+        }
+
+        const me = await api.get("/admin/users/me", headers)
+        expect(me.status).toEqual(200)
+
+        const factors = await api.get("/auth/mfa/factors", headers)
+        expect(factors.status).toEqual(200)
+        expect(factors.data.mfa_factors).toEqual([])
+
+        // Enrolling the first factor has no challenge to complete first.
+        const setup = await api.post(
+          "/auth/mfa/factors",
+          { provider: "totp", label: "Authenticator app" },
+          headers
+        )
+        expect(setup.status).toEqual(200)
+
+        const verified = await api.post(
+          `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
+          { code: generateTotpCode({ secret: setup.data.secret }) },
+          headers
+        )
+        expect(verified.data.mfa_factor.status).toEqual("enabled")
+
+        // The session that enabled MFA can still read its recovery codes.
+        const codes = await api.post(
+          "/auth/mfa/recovery-codes",
+          { count: 10 },
+          headers
+        )
+        expect(codes.status).toEqual(200)
+        expect(codes.data.recovery_codes).toHaveLength(10)
+      })
+    })
+
     describe("MFA routes with an incomplete MFA challenge", () => {
       it("does not generate recovery codes", async () => {
         await enrollTotpFactor(api)

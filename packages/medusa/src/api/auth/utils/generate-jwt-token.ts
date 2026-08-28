@@ -42,6 +42,7 @@ export async function generateJwtTokenWithChecks(
         actorType: actorType,
         authProvider: authProvider,
         container: container,
+        mfaEnabled: !!mfaChallenge,
       },
       {
         secret: http.jwtSecret!,
@@ -85,6 +86,7 @@ export async function generateJwtTokenWithChecks(
       actorType: actorType,
       authProvider: authProvider,
       container,
+      mfaEnabled: !!mfaChallenge,
     },
     {
       secret: http.jwtSecret!,
@@ -102,12 +104,14 @@ export async function generateJwtTokenForAuthIdentity(
     actorType,
     authProvider,
     container,
+    mfaEnabled,
     mfaChallengeCompletedAt,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
     authProvider?: string
     container?: MedusaContainer
+    mfaEnabled?: boolean
     mfaChallengeCompletedAt?: Date | string | null
   },
   {
@@ -134,9 +138,9 @@ export async function generateJwtTokenForAuthIdentity(
         (identity) => identity.provider === authProvider
       )[0]
 
-  let mfaEnabled = false
+  let mfaEnabled_ = mfaEnabled ?? false
 
-  if (container && authIdentity?.id) {
+  if (mfaEnabled === undefined && container && authIdentity?.id) {
     const authModule = container.resolve<IAuthModuleService>(Modules.AUTH)
     const enabledFactors = await authModule.listAuthMfa(
       {
@@ -146,7 +150,7 @@ export async function generateJwtTokenForAuthIdentity(
       { select: ["id"] }
     )
 
-    mfaEnabled = enabledFactors.length > 0
+    mfaEnabled_ = enabledFactors.length > 0
   }
 
   let roles: string[] | undefined
@@ -178,7 +182,7 @@ export async function generateJwtTokenForAuthIdentity(
       actor_type: actorType,
       auth_identity_id: authIdentity?.id ?? "",
       ...(authProvider ? { auth_provider: authProvider } : {}),
-      mfa_enabled: mfaEnabled,
+      mfa_enabled: mfaEnabled_,
       mfa_challenge_completed_at: mfaChallengeCompletedAt
         ? new Date(mfaChallengeCompletedAt).toISOString()
         : null,
