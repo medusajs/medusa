@@ -541,6 +541,21 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         )
         expect(orders4.length).toEqual(0)
       })
+
+      it("should list orders with totals without selecting shipping method fields", async function () {
+        const createdOrder = await service.createOrders(input)
+
+        const [orders, count] = await service.listAndCountOrders(
+          { id: createdOrder.id },
+          {
+            select: ["id", "total"],
+          }
+        )
+
+        expect(count).toEqual(1)
+        expect(orders[0].id).toEqual(createdOrder.id)
+        expect(Number(orders[0].total)).toEqual(58.9)
+      })
     })
   },
 })

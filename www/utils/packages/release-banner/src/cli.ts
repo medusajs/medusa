@@ -1,19 +1,26 @@
 #!/usr/bin/env node
+// Loaded before anything reads the environment, so a local `.env` can hold the
+// Cloudinary credentials. It never overwrites a variable that is already set,
+// which leaves CI — where they arrive as real environment variables — alone.
+import "dotenv/config"
+
 import { spawn } from "node:child_process"
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 
-import { Command } from "commander"
+import { Command, InvalidArgumentError } from "commander"
 
 import {
-  CLOUDINARY_FOLDER,
-  uploadBanner,
-  versionToPublicId,
-} from "./cloudinary.js"
+  bannerOf,
+  BANNER_TYPES,
+  DEFAULT_BANNER_TYPE,
+  type BannerInput,
+  type BannerType,
+} from "./banners/index.js"
+import { uploadBanner } from "./cloudinary.js"
 import { writePreview } from "./preview.js"
-import { normalizeVersion, renderPng, renderSvg } from "./render.js"
-import { SPEC } from "./spec.js"
-import type { BannerSpecOverrides } from "./types.js"
+import { withRandomSuffix } from "./public-id.js"
+import { renderPng, renderSvg } from "./render.js"
 
 const DEFAULT_OUT_DIR = "out"
 
@@ -48,55 +55,152 @@ function openInBrowser(target: string): void {
   child.unref()
 }
 
+function parseType(value: string): BannerType {
+  if (!(BANNER_TYPES as string[]).includes(value)) {
+    throw new InvalidArgumentError(`expected one of ${BANNER_TYPES.join(", ")}`)
+  }
+
+  return value as BannerType
+}
+
+type ContentOptions = {
+  type: BannerType
+  version?: string
+  date?: string
+}
+
+/**
+ * Builds a banner input from the flags that describe its content.
+ *
+ * This is the one place that knows which flags belong to which type; everything
+ * downstream goes through the type's definition.
+ */
+function inputFrom(options: ContentOptions): BannerInput {
+  switch (options.type) {
+    case "release":
+      if (!options.version) {
+        throw new Error("--version is required for the release banner")
+      }
+
+      return { type: "release", version: options.version }
+
+    case "cloud-changelog":
+      if (!options.date) {
+        throw new Error("--date is required for the cloud-changelog banner")
+      }
+
+      return { type: "cloud-changelog", date: options.date }
+  }
+}
+
+/** Builds an input from a bare positional value, for the preview command. */
+function inputFromValue(type: BannerType, value: string): BannerInput {
+  switch (type) {
+    case "release":
+      return { type, version: value }
+    case "cloud-changelog":
+      return { type, date: value }
+  }
+}
+
+type SpecOptions = {
+  type: BannerType
+  width?: string
+  fontSize?: string
+  gap?: string
+}
+
+/**
+ * Turns the design flags into spec overrides.
+ *
+ * The values are checked against the spec the type actually declares, so a flag
+ * that means nothing for a type is reported instead of silently ignored.
+ */
+function specFrom(options: SpecOptions): BannerInput["spec"] {
+  const { spec: defaults } = bannerOf(options.type)
+  const overrides: Record<string, unknown> = {}
+  const content: Record<string, unknown> = {}
+
+  if (options.width) {
+    const width = Number(options.width)
+
+    // Hold the reference aspect ratio so the spec's proportions survive.
+    overrides.width = width
+    overrides.height = Math.round((width * defaults.height) / defaults.width)
+  }
+
+  if (options.fontSize) {
+    content.fontSize = Number(options.fontSize)
+  }
+
+  if (options.gap) {
+    content.gap = Number(options.gap)
+  }
+
+  if (Object.keys(content).length) {
+    if (!defaults.content) {
+      throw new Error(
+        `the ${options.type} banner has no content section to override`
+      )
+    }
+
+    overrides.content = content
+  }
+
+  return overrides as BannerInput["spec"]
+}
+
 const program = new Command()
 
 program
   .name("release-banner")
-  .description("Generates the banner image used in Medusa release notes")
+  .description("Generates the banner images used in Medusa release notes")
 
-program
-  .command("render")
-  .description("Render a banner for a single version")
-  .requiredOption(
-    "-v, --version <version>",
-    `version to render, with or without the leading "v"`
-  )
-  .option("-o, --out <path>", "output file; defaults to out/<version>.png")
+/** Flags shared by every command that renders a banner from content. */
+function withContentOptions(command: Command): Command {
+  return command
+    .option(
+      "--type <type>",
+      `banner type: ${BANNER_TYPES.join(" | ")}`,
+      parseType,
+      DEFAULT_BANNER_TYPE
+    )
+    .option(
+      "-v, --version <version>",
+      `release: version to render, with or without the leading "v"`
+    )
+    .option(
+      "-d, --date <date>",
+      "cloud-changelog: date shown after the wordmark, rendered as given"
+    )
+}
+
+withContentOptions(
+  program.command("render").description("Render a single banner")
+)
+  .option("-o, --out <path>", "output file; defaults to out/<label>.png")
   .option(
     "-f, --format <format>",
     `"png" or "svg"; inferred from --out when it ends in .svg`,
     "png"
   )
   .option("-w, --width <px>", "canvas width; the height scales with it")
-  .option("--font-size <px>", "override the version text size")
-  .option("--gap <px>", "override the space between logo and version text")
+  .option("--font-size <px>", "override the main text size")
+  .option("--gap <px>", "override the space between the logo and the text")
   .action(async (options) => {
-    const version = normalizeVersion(options.version)
-    const out = resolve(options.out ?? `${DEFAULT_OUT_DIR}/${version}.png`)
+    const definition = bannerOf(options.type)
+    const input = definition.normalize(inputFrom(options)) as BannerInput
+    const out = resolve(
+      options.out ?? `${DEFAULT_OUT_DIR}/${definition.label(input)}.png`
+    )
     const format = out.endsWith(".svg") ? "svg" : options.format
 
-    const spec: BannerSpecOverrides = {}
-
-    if (options.width) {
-      const width = Number(options.width)
-
-      // Hold the reference aspect ratio so the spec's proportions survive.
-      spec.width = width
-      spec.height = Math.round((width * SPEC.height) / SPEC.width)
-    }
-
-    if (options.fontSize) {
-      spec.content = { ...spec.content, fontSize: Number(options.fontSize) }
-    }
-
-    if (options.gap) {
-      spec.content = { ...spec.content, gap: Number(options.gap) }
-    }
+    const withSpec = { ...input, spec: specFrom(options) } as BannerInput
 
     const output =
       format === "svg"
-        ? Buffer.from(await renderSvg({ version, spec }))
-        : await renderPng({ version, spec })
+        ? Buffer.from(await renderSvg(withSpec))
+        : await renderPng(withSpec)
 
     await mkdir(dirname(out), { recursive: true })
     await writeFile(out, output)
@@ -106,17 +210,24 @@ program
 
 program
   .command("preview")
-  .description("Render a spread of versions and a page to review them on")
+  .description("Render a spread of banners and a page to review them on")
   .argument(
-    "[versions...]",
-    "versions to render alongside the reference; defaults to a set spread"
+    "[values...]",
+    "versions or titles to render; defaults to a set spread"
+  )
+  .option(
+    "--type <type>",
+    `banner type: ${BANNER_TYPES.join(" | ")}`,
+    parseType,
+    DEFAULT_BANNER_TYPE
   )
   .option("-o, --out-dir <path>", "output directory", DEFAULT_OUT_DIR)
   .option("--no-open", "write the page without opening it")
-  .action(async (versions: string[], options) => {
+  .action(async (values: string[], options) => {
     const out = await writePreview({
+      type: options.type,
       outDir: resolve(options.outDir),
-      versions: versions.length ? versions : undefined,
+      inputs: values.map((value) => inputFromValue(options.type, value)),
       onRender: (file) => process.stdout.write(`rendered ${file}\n`),
     })
 
@@ -128,38 +239,36 @@ program
     }
   })
 
-program
-  .command("upload")
-  .description("Render a banner and upload it to Cloudinary")
-  .requiredOption(
-    "-v, --version <version>",
-    `version to render, with or without the leading "v"`
-  )
+withContentOptions(
+  program
+    .command("upload")
+    .description("Render a banner and upload it to Cloudinary")
+)
   .option(
     "--folder <folder>",
-    "Cloudinary folder to upload into",
-    CLOUDINARY_FOLDER
+    "Cloudinary folder to upload into; defaults to the type's own folder"
   )
   .option(
     "--dry-run",
     "render and report the target public ID without uploading"
   )
   .action(async (options) => {
-    const version = normalizeVersion(options.version)
-    const png = await renderPng({ version })
+    const definition = bannerOf(options.type)
+    const input = definition.normalize(inputFrom(options)) as BannerInput
+    const folder = options.folder ?? definition.folder
+    const publicId = withRandomSuffix(definition.publicId(input))
+    const png = await renderPng(input)
 
     if (options.dryRun) {
-      const publicId = `${options.folder}/${versionToPublicId(version)}`
-
-      process.stdout.write(`would upload ${png.length} bytes to ${publicId}\n`)
+      // The suffix is drawn fresh every run, so this reports the shape of the
+      // target rather than the ID a real upload would end up at.
+      process.stdout.write(
+        `would upload ${png.length} bytes to ${folder}/${publicId}\n`
+      )
       return
     }
 
-    const { url } = await uploadBanner({
-      png,
-      version,
-      folder: options.folder,
-    })
+    const { url } = await uploadBanner({ png, folder, publicId })
 
     // The URL is the point of this command — keep it the only thing on stdout so
     // a caller can read it straight off.

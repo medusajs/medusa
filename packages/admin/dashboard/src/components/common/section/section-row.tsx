@@ -32,7 +32,9 @@ export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
           {value ?? "-"}
         </Text>
       ) : (
-        <div className="flex flex-wrap gap-1 min-w-0">{value}</div>
+        <div className="txt-compact-small flex min-w-0 flex-wrap gap-1">
+          {value}
+        </div>
       )}
 
       {actions && <div>{actions}</div>}

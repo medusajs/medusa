@@ -41,7 +41,10 @@ export const ReservationItemTable = ({
     }))
   }, [reservations, stock_locations])
 
-  const columns = useReservationTableColumn({ sku: inventoryItem.sku! })
+  const columns = useReservationTableColumn({
+    sku: inventoryItem.sku!,
+    unitOfMeasure: inventoryItem.unit_of_measure,
+  })
 
   const { table } = useDataTable({
     data: data ?? [],

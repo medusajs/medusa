@@ -47,13 +47,14 @@ export type PostgresSearchProviderOptions = {
   /**
    * Search engine backend.
    * - `native` — portable Postgres FTS (GIN + `ts_rank`) + `pg_trgm`. Default.
-   * - `lakebase` — Neon Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
+   * - `lakebase` — Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
    * @default "native"
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for `search_options.vector.query`. Required on the lakebase
-   * engine when callers pass a query string instead of a pre-computed `value`.
+   * Embeds text for engine-embedded vector fields (`embed` on the field) at
+   * write time, and for `search_options.vector.query` at query time. Required
+   * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
   /**
@@ -73,9 +74,7 @@ export function isSearchable(
   return field.searchable === true || typeof field.searchable === "object"
 }
 
-export function isFacetable(
-  field: SearchTypes.SearchFieldDefinition
-): boolean {
+export function isFacetable(field: SearchTypes.SearchFieldDefinition): boolean {
   return field.facetable === true || typeof field.facetable === "object"
 }
 
@@ -180,21 +179,40 @@ export function assertQuerySupported(
     )
   }
 
-  if (options.match_strategy === "last") {
-    fail(
-      `The postgres search provider does not support match_strategy: "last". Use "all" (default) or "any".`
-    )
-  }
-
   if (query.pagination?.cursor !== undefined) {
     fail("The postgres search provider does not support cursor pagination")
   }
 }
 
 /**
+ * Keyword match expression. The `?` placeholder is the raw query string.
+ *
+ * - `"all"` (default): `plainto_tsquery` ANDs every complete lexeme.
+ * - `"any"`: the same terms ORed.
+ * - `"last"`: AND, with `:*` on the last lexeme so `"dtc sta"` matches
+ *   `"Dtc starter"`.
+ */
+export function keywordTsQuerySql(
+  tsConfig: string,
+  matchStrategy?: SearchTypes.SearchMatchStrategy
+): string {
+  const parsed = `plainto_tsquery('${tsConfig}', ?)`
+
+  if (matchStrategy === "any") {
+    return `replace(${parsed}::text, ' & ', ' | ')::tsquery`
+  }
+
+  if (matchStrategy === "last") {
+    return `regexp_replace(${parsed}::text, '''([^'']+)''$', '''\\1'':*')::tsquery`
+  }
+
+  return parsed
+}
+
+/**
  * Flattens a definition into per-leaf field metadata. Nested objects become
- * dotted paths; arrays of objects collapse to per-leaf arrays, matching the
- * local provider's shape so definitions stay portable.
+ * dotted paths; arrays of objects collapse to per-leaf arrays so definitions
+ * stay portable across engines.
  */
 export function buildIndexPlan(
   definition: SearchTypes.ResolvedSearchIndexDefinition
@@ -252,6 +270,7 @@ export function buildIndexPlan(
       is_array: planned.is_array,
       is_date: planned.is_date,
       dimensions: planned.dimensions,
+      embed: planned.field.embed,
       searchable: isSearchable(planned.field),
       filterable: !!planned.field.filterable,
       sortable: !!planned.field.sortable,
@@ -323,6 +342,34 @@ export function bm25IndexName(table: string): string {
 }
 
 /**
+ * Resolves which vector field a query targets. `vector.field` is optional when
+ * the index declares exactly one vector field.
+ */
+export function resolveVectorField(
+  vector: NonNullable<SearchTypes.SearchOptions["vector"]>,
+  plan: IndexPlan
+): string {
+  if (vector.field) {
+    if (!plan.vectors.includes(vector.field)) {
+      fail(
+        `Vector search field "${vector.field}" is not a vector field on this index`
+      )
+    }
+    return vector.field
+  }
+
+  if (plan.vectors.length === 1) {
+    return plan.vectors[0]
+  }
+
+  fail(
+    plan.vectors.length
+      ? `search_options.vector.field is required when the index has more than one vector field`
+      : `search_options.vector requires a vector field on this index`
+  )
+}
+
+/**
  * Physical column name for a vector field path.
  * `embedding` → `v_embedding`, `meta.vec` → `v_meta_vec`.
  */
@@ -334,9 +381,7 @@ export function vectorColumnName(path: string): string {
   return `v_${safe}`
 }
 
-export function vectorOpClass(
-  distance: PostgresVectorDistance
-): string {
+export function vectorOpClass(distance: PostgresVectorDistance): string {
   switch (distance) {
     case "l2":
       return "vector_l2_ops"

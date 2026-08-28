@@ -10465,6 +10465,7 @@ __metadata:
     algoliasearch: ^5.2.1
     clsx: ^2.0.0
     cpy-cli: ^5.0.0
+    docs-utils: "*"
     eslint: ^9.13.0
     framer-motion: ^11.11.9
     mermaid: ^10.9.0
