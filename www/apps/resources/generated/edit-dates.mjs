@@ -6304,7 +6304,7 @@ export const generatedEditDates = {
   "app/data-model-repository-reference/methods/upsert/page.mdx": "2025-10-28T16:02:28.730Z",
   "app/data-model-repository-reference/methods/update/page.mdx": "2025-10-28T16:02:27.582Z",
   "app/data-model-repository-reference/methods/upsertWithReplace/page.mdx": "2025-10-28T16:02:30.479Z",
-  "app/how-to-tutorials/tutorials/agentic-commerce/page.mdx": "2026-01-12T12:19:56.501Z",
+  "app/how-to-tutorials/tutorials/agentic-commerce/page.mdx": "2026-08-28T13:56:38.691Z",
   "app/storefront-development/production-optimizations/page.mdx": "2025-10-03T13:28:37.909Z",
   "app/how-to-tutorials/tutorials/category-images/page.mdx": "2026-07-28T05:43:12.305Z",
   "app/infrastructure-modules/caching/page.mdx": "2025-11-13T14:18:03.173Z",
