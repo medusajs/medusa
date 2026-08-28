@@ -169,7 +169,7 @@ describe("translation schema validation", () => {
  * locale should be done in the same PR that brings the locale up to
  * spec, so the test enforces what the PR claims to fix.
  */
-const READY_LOCALES: Set<string> = new Set()
+const READY_LOCALES: Set<string> = new Set(["pl"])
 
 describe("translation plural-form coverage per locale", () => {
   Object.entries(pluralConfig).forEach(([locale, requiredForms]) => {
