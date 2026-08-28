@@ -152,3 +152,71 @@ describe("translation schema validation", () => {
     expect(errors).toEqual([])
   })
 })
+
+/**
+ * Per-locale plural-form coverage. i18next resolves a plural key by appending
+ * the CLDR plural category for the count (e.g. `count_few` for Czech 2-4).
+ * When a translation file is missing a category its plural-config.json
+ * declares, i18next falls back to English inside an otherwise-translated
+ * screen. Every translation file must supply every plural category its
+ * locale requires.
+ *
+ * The test is initially informational across the board: every locale's
+ * plural-form coverage is logged via console.warn but does not fail the
+ * build. The intent is to surface the gap so contributors can see which
+ * locales need work. A locale can be promoted to strict mode (the test
+ * fails on a missing form) by adding it to READY_LOCALES. Promoting a
+ * locale should be done in the same PR that brings the locale up to
+ * spec, so the test enforces what the PR claims to fix.
+ */
+const READY_LOCALES: Set<string> = new Set()
+
+describe("translation plural-form coverage per locale", () => {
+  Object.entries(pluralConfig).forEach(([locale, requiredForms]) => {
+    if (locale === "en") {
+      return
+    }
+
+    // I/O is performed inside the test() callback (not at describe time) so
+    // that a missing or unreadable translation file fails only that locale's
+    // test, not the entire describe block.
+    test(`${locale}.json plural keys should match required forms`, () => {
+      const localePath = path.join(translationsDir, `${locale}.json`)
+      const translations = JSON.parse(fs.readFileSync(localePath, "utf-8"))
+      const pluralGroups = findPluralGroups(translations)
+
+      const errors: string[] = []
+
+      pluralGroups.forEach((forms, baseKey) => {
+        requiredForms.forEach((form) => {
+          if (!forms.has(form)) {
+            errors.push(
+              `${baseKey}_${form} - missing required form for ${locale}`
+            )
+          }
+        })
+        forms.forEach((form) => {
+          if (!requiredForms.includes(form)) {
+            errors.push(
+              `${baseKey}_${form} - ${locale} doesn't use "${form}" form`
+            )
+          }
+        })
+      })
+
+      if (READY_LOCALES.has(locale)) {
+        if (errors.length > 0) {
+          console.error(`\nPlural form errors in ${locale}.json:`, errors)
+        }
+        expect(errors).toEqual([])
+      } else if (errors.length > 0) {
+        // Report-only mode: surface the missing forms so the next contributor
+        // can pick a locale and fix it, but do not block CI.
+        console.warn(
+          `\n[${locale}] ${errors.length} plural form(s) incomplete (reported, not enforced):`
+        )
+        errors.forEach((e) => console.warn(`  - ${e}`))
+      }
+    })
+  })
+})
