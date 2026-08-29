@@ -624,9 +624,14 @@ export default class FulfillmentModuleService
       // copies an item (`{ ...item }`, `Object.assign`, `structuredClone`) to
       // build a vendor payload silently drops `quantity` and the third-party
       // API receives 0.
+      // `items` is a MikroORM entity (with `fulfillment.shipping_option` as a
+      // different shape than the FulfillmentItemDTO's `fulfillment` field), so
+      // the input cast has to go through `unknown` first. Letting the
+      // serializer project the entity into the DTO matches the call at the
+      // end of this method (line ~656 below) and at line 1247.
       const providerItems = await this.baseRepository_.serialize<
         FulfillmentTypes.FulfillmentItemDTO[]
-      >(items as FulfillmentTypes.FulfillmentItemDTO[])
+      >(items as unknown as FulfillmentTypes.FulfillmentItemDTO[])
 
       const providerResult =
         await this.fulfillmentProviderService_.createFulfillment(
