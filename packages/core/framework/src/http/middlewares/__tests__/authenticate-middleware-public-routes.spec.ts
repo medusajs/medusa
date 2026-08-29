@@ -189,5 +189,82 @@ describe("authenticate middleware", () => {
         })
       )
     })
+
+    it("preserves session-over-JWT priority when both credentials are present", async () => {
+      const sessionToken = sign(
+        {
+          actor_id: "cus_session",
+          actor_type: "customer",
+          auth_identity_id: "auth_session",
+          mfa_enabled: true,
+        },
+        "test-secret"
+      )
+      const bearerToken = sign(
+        {
+          actor_id: "cus_bearer",
+          actor_type: "customer",
+          auth_identity_id: "auth_bearer",
+        },
+        "test-secret"
+      )
+      const req = createRequest({
+        authorization: `Bearer ${bearerToken}`,
+        session: {
+          auth_context: {
+            actor_id: "cus_session",
+            actor_type: "customer",
+            auth_identity_id: "auth_session",
+            app_metadata: {},
+            user_metadata: {},
+            mfa_enabled: true,
+          },
+        },
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate(["customer"], authTypes, {
+        allowUnauthenticated: true,
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(res.status).not.toHaveBeenCalled()
+      // Session-derived auth context wins, NOT the bearer-derived one.
+      expect((req as any).auth_context).toEqual(
+        expect.objectContaining({
+          actor_id: "cus_session",
+          auth_identity_id: "auth_session",
+        })
+      )
+      expect((req as any).auth_context.actor_id).not.toBe("cus_bearer")
+    })
+
+    it("does not accept an API key on a non-admin (session-only) public route", async () => {
+      // The second API key branch must be gated on isExclusivelyUser
+      // (actor_type === "user"); on a customer route, a valid admin API key
+      // sent as Basic auth must not silently authenticate the request.
+      const req = createRequest(
+        { authorization: "Basic c2tfdGVzdA==" },
+        {
+          apiKeyModule: {
+            authenticate: jest.fn().mockResolvedValue({
+              id: "apk_1",
+              token: "sk_test",
+            }),
+          },
+        }
+      )
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate(["customer"], ["session", "api-key"], {
+        allowUnauthenticated: true,
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(res.status).not.toHaveBeenCalled()
+      expect((req as any).auth_context).toBeUndefined()
+    })
   })
 })

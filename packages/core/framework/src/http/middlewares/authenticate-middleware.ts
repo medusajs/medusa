@@ -102,7 +102,10 @@ export const authenticate = (
         verified &&
         isActorTypePermitted(actorTypes, verified.actor_type)
       ) {
-        authContext = verified as AuthContext
+        // Preserve the established session-over-JWT priority: a valid session
+        // (resolved above) outranks a valid bearer token when both are present
+        // on the same request, so that MFA state is derived from the session.
+        authContext = authContext ?? (verified as AuthContext)
       }
     }
 
@@ -116,14 +119,14 @@ export const authenticate = (
         )
     }
 
-    if (authTypes.includes(API_KEY_AUTH)) {
+    if (authTypes.includes(API_KEY_AUTH) && isExclusivelyUser) {
       const apiKey = await getApiKeyInfo(req_)
 
       if (apiKey) {
         authContext = {
           actor_id: apiKey.id,
           actor_type: "api-key",
-          auth_identity_id: apiKey.id,
+          auth_identity_id: "",
           app_metadata: {},
           user_metadata: {},
         }
@@ -268,15 +271,6 @@ const isBearerSecretApiKey = (authHeader: string | undefined): boolean => {
 
   const [tokenType, token] = authHeader.split(" ")
   return tokenType?.toLowerCase() === BEARER_AUTH && !!token?.startsWith("sk_")
-}
-
-const hasBearerCredentials = (authHeader: string | undefined): boolean => {
-  if (!authHeader) {
-    return false
-  }
-
-  const [tokenType, token] = authHeader.split(" ")
-  return tokenType?.toLowerCase() === BEARER_AUTH && !!token
 }
 
 const getAuthContextFromSession = (
