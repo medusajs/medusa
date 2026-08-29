@@ -618,11 +618,21 @@ export default class FulfillmentModuleService
     } = fulfillment
 
     try {
+      // Serialize the items before handing them to the provider so the
+      // bigNumber `quantity` column is a normal enumerable number, not a
+      // MikroORM accessor on the raw entity. Without this, a provider that
+      // copies an item (`{ ...item }`, `Object.assign`, `structuredClone`) to
+      // build a vendor payload silently drops `quantity` and the third-party
+      // API receives 0.
+      const providerItems = await this.baseRepository_.serialize<
+        FulfillmentTypes.FulfillmentItemDTO[]
+      >(items as FulfillmentTypes.FulfillmentItemDTO[])
+
       const providerResult =
         await this.fulfillmentProviderService_.createFulfillment(
           provider_id!, // TODO: should we add a runtime check on provider_id being provided?
           fulfillmentData || {},
-          items.map((i) => i),
+          providerItems,
           order,
           fulfillmentRest as unknown as Partial<FulfillmentDTO>,
           additional_data
