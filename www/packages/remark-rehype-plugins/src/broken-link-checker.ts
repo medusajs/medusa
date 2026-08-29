@@ -68,7 +68,9 @@ function checkLocalLinkExists({
   // check if the file exists (references are the JSON doc-model, page.json)
   if (
     existsSync(linkedFilePath) ||
-    existsSync(path.join(path.dirname(linkedFilePath), "page.json"))
+    existsSync(
+      linkedFilePath.replace(/[\\/]page\.mdx$/, `${path.sep}page.json`)
+    )
   ) {
     return
   }
