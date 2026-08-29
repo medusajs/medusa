@@ -32,12 +32,12 @@ const createCheckpoint = (
 
 describe("TransactionCheckpoint", () => {
   describe("mergeCheckpoints - state conflict resolution", () => {
-    it("throws when the current flow state is ahead of the stored state", () => {
-      // current is DONE (index 2), stored is INVOKING (index 1).
-      // This is the conflict case: the local copy has moved on while a
-      // concurrent save still has the older state.
-      const currentCheckpoint = createCheckpoint(TransactionState.DONE)
-      const storedCheckpoint = createCheckpoint(TransactionState.INVOKING)
+    it("throws when the stored flow state is ahead of the current state", () => {
+      // current is INVOKING (index 1), stored is DONE (index 2).
+      // This is the conflict case: another worker has progressed the transaction
+      // past the current local execution.
+      const currentCheckpoint = createCheckpoint(TransactionState.INVOKING)
+      const storedCheckpoint = createCheckpoint(TransactionState.DONE)
 
       expect(() =>
         TransactionCheckpoint.mergeCheckpoints(
@@ -47,27 +47,28 @@ describe("TransactionCheckpoint", () => {
       ).toThrow(SkipExecutionError)
     })
 
-    it("does not throw when the current state is WAITING_TO_COMPENSATE even if ahead", () => {
+    it("does not throw and adopts the stored state when current is WAITING_TO_COMPENSATE", () => {
       // WAITING_TO_COMPENSATE is exempt: a transaction that is waiting to
-      // compensate should not be flagged as being "behind" another execution.
+      // compensate should adopt the more advanced state without throwing.
       const currentCheckpoint = createCheckpoint(
         TransactionState.WAITING_TO_COMPENSATE
       )
-      const storedCheckpoint = createCheckpoint(TransactionState.INVOKING)
+      const storedCheckpoint = createCheckpoint(TransactionState.COMPENSATING)
 
-      expect(() =>
-        TransactionCheckpoint.mergeCheckpoints(
-          currentCheckpoint,
-          storedCheckpoint
-        )
-      ).not.toThrow()
+      const result = TransactionCheckpoint.mergeCheckpoints(
+        currentCheckpoint,
+        storedCheckpoint
+      )
+
+      expect(result).toBe(currentCheckpoint)
+      expect(result.flow.state).toBe(TransactionState.COMPENSATING)
     })
 
-    it("adopts the stored flow state when the stored state is farther along", () => {
-      // stored is DONE (index 2), current is INVOKING (index 1): the stored
-      // copy has moved on, so the current checkpoint should adopt it.
-      const currentCheckpoint = createCheckpoint(TransactionState.INVOKING)
-      const storedCheckpoint = createCheckpoint(TransactionState.DONE)
+    it("retains the current flow state when the current state is ahead of the stored state", () => {
+      // current is DONE (index 2), stored is INVOKING (index 1):
+      // The current execution finished and should retain its DONE state to persist it.
+      const currentCheckpoint = createCheckpoint(TransactionState.DONE)
+      const storedCheckpoint = createCheckpoint(TransactionState.INVOKING)
 
       const result = TransactionCheckpoint.mergeCheckpoints(
         currentCheckpoint,

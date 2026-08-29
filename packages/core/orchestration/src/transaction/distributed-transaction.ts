@@ -219,20 +219,15 @@ export class TransactionCheckpoint {
             stateFlowOrderMap.get(storedData.flow.state) ?? -1
 
           if (storedStateIndex > currentStateIndex) {
-            currentTransactionData.flow.state = storedData.flow.state
-          } else if (
-            currentStateIndex > storedStateIndex &&
-            currentTransactionData.flow.state !==
+            if (
+              currentTransactionData.flow.state !==
               TransactionState.WAITING_TO_COMPENSATE
-          ) {
-            // Mirror of the step-version check below: when the local copy has
-            // moved past the stored state, abandon this execution and let the
-            // other one finish. WAITING_TO_COMPENSATE is exempt because a
-            // transaction that is mid-compensation should not be flagged as
-            // "behind".
-            throw new SkipExecutionError(
-              `Transaction is behind another execution`
-            )
+            ) {
+              throw new SkipExecutionError(
+                `Transaction is behind another execution`
+              )
+            }
+            currentTransactionData.flow.state = storedData.flow.state
           }
         } else if (
           storedData.flow[prop] &&
