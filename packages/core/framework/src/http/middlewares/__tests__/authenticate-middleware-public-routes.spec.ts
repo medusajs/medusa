@@ -191,15 +191,6 @@ describe("authenticate middleware", () => {
     })
 
     it("preserves session-over-JWT priority when both credentials are present", async () => {
-      const sessionToken = sign(
-        {
-          actor_id: "cus_session",
-          actor_type: "customer",
-          auth_identity_id: "auth_session",
-          mfa_enabled: true,
-        },
-        "test-secret"
-      )
       const bearerToken = sign(
         {
           actor_id: "cus_bearer",
