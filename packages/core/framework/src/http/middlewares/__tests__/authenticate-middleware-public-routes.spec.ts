@@ -143,5 +143,51 @@ describe("authenticate middleware", () => {
       expect(next).toHaveBeenCalledTimes(1)
       expect(res.status).not.toHaveBeenCalled()
     })
+
+    it("continues as a guest when a valid token for a different actor type is presented", async () => {
+      const token = sign(
+        { actor_id: "usr_1", actor_type: "user", auth_identity_id: "auth_1" },
+        "test-secret"
+      )
+      const req = createRequest({ authorization: `Bearer ${token}` })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate(["customer"], authTypes, {
+        allowUnauthenticated: true,
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(res.status).not.toHaveBeenCalled()
+      expect((req as any).auth_context).toBeUndefined()
+    })
+
+    it("authenticates when a valid token for the matching actor type is presented on a public route", async () => {
+      const token = sign(
+        {
+          actor_id: "cus_1",
+          actor_type: "customer",
+          auth_identity_id: "auth_1",
+        },
+        "test-secret"
+      )
+      const req = createRequest({ authorization: `Bearer ${token}` })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate(["customer"], authTypes, {
+        allowUnauthenticated: true,
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(res.status).not.toHaveBeenCalled()
+      expect((req as any).auth_context).toEqual(
+        expect.objectContaining({
+          actor_id: "cus_1",
+          actor_type: "customer",
+          auth_identity_id: "auth_1",
+        })
+      )
+    })
   })
 })

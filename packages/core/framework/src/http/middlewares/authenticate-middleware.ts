@@ -50,6 +50,7 @@ export const authenticate = (
     const actorTypes = Array.isArray(actorType) ? actorType : [actorType]
     const req_ = req as AuthenticatedMedusaRequest
     const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
+    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
@@ -77,25 +78,57 @@ export const authenticate = (
       actorTypes
     )
 
-    if (!authContext) {
+    let hasInvalidBearerCredentials = false
+
+    if (authTypes.includes(BEARER_AUTH)) {
       const {
         projectConfig: { http },
       } = req.scope.resolve<ConfigModule>(
         ContainerRegistrationKeys.CONFIG_MODULE
       )
 
-      authContext = getAuthContextFromJwtToken(
+      const { verified, error } = verifyBearerJwt(
         req.headers.authorization,
         http.jwtSecret!,
         authTypes,
-        actorTypes,
         http.jwtPublicKey,
         http.jwtVerifyOptions ?? http.jwtOptions,
         logger
       )
+
+      if (error) {
+        hasInvalidBearerCredentials = true
+      } else if (
+        verified &&
+        isActorTypePermitted(actorTypes, verified.actor_type)
+      ) {
+        authContext = verified as AuthContext
+      }
     }
 
-    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+    if (authTypes.includes(SESSION_AUTH)) {
+      authContext =
+        authContext ??
+        getAuthContextFromSession(
+          req_.session as Partial<MedusaSession>,
+          authTypes,
+          actorTypes
+        )
+    }
+
+    if (authTypes.includes(API_KEY_AUTH)) {
+      const apiKey = await getApiKeyInfo(req_)
+
+      if (apiKey) {
+        authContext = {
+          actor_id: apiKey.id,
+          actor_type: "api-key",
+          auth_identity_id: apiKey.id,
+          app_metadata: {},
+          user_metadata: {},
+        }
+      }
+    }
 
     if (requireMfa && authContext?.mfa_enabled) {
       const mfaError = getMfaRequirementError(authContext, requireMfa)
@@ -123,23 +156,6 @@ export const authenticate = (
       return next()
     }
 
-    // If we allow unauthenticated requests (i.e public endpoints), just continue.
-    // A request that presents bearer credentials is claiming an identity though,
-    // so when those credentials fail verification (expired, forged or malformed),
-    // reject it instead of silently continuing as a guest.
-    if (
-      options.allowUnauthenticated &&
-      authTypes.includes(BEARER_AUTH) &&
-      hasBearerCredentials(req.headers.authorization)
-    ) {
-      res.status(401).json({ message: "Unauthorized" })
-      return
-    }
-
-    if (options.allowUnauthenticated) {
-      return next()
-    }
-
     // A common mistake is sending a secret API key as a Bearer token. Secret API
     // keys are only accepted using HTTP Basic auth, so we return a helpful hint
     // instead of a generic "Unauthorized" message when we detect this case.
@@ -153,6 +169,18 @@ export const authenticate = (
           "A secret API key was passed as a Bearer token. Secret API keys must be sent using HTTP Basic authentication instead (Authorization: Basic <secret-api-key>).",
       })
       return
+    }
+
+    // If bearer credentials were sent but failed verification (expired, forged or malformed),
+    // reject the request even if the route allows unauthenticated requests.
+    if (hasInvalidBearerCredentials) {
+      res.status(401).json({ message: "Unauthorized" })
+      return
+    }
+
+    // If we allow unauthenticated requests (i.e public endpoints), just continue.
+    if (options.allowUnauthenticated) {
+      return next()
     }
 
     res.status(401).json({ message: "Unauthorized" })
@@ -270,21 +298,20 @@ const getAuthContextFromSession = (
   return null
 }
 
-export const getAuthContextFromJwtToken = (
+const verifyBearerJwt = (
   authHeader: string | undefined,
   jwtSecret: Secret,
   authTypes: AuthType[],
-  actorTypes: string[],
   jwtPublicKey?: Secret,
   jwtOptions?: VerifyOptions | SignOptions,
   logger?: Logger
-): AuthContext | null => {
+): { verified?: JwtPayload; error?: unknown } => {
   if (!authTypes.includes(BEARER_AUTH)) {
-    return null
+    return {}
   }
 
   if (!authHeader) {
-    return null
+    return {}
   }
 
   const re = /(\S+)\s+(\S+)/
@@ -324,16 +351,39 @@ export const getAuthContextFromJwtToken = (
           jwtPublicKey ?? jwtSecret!,
           options
         ) as JwtPayload
-        if (isActorTypePermitted(actorTypes, verified.actor_type)) {
-          return verified as AuthContext
-        }
+        return { verified }
       } catch (err) {
         if (logger) {
           logger.debug(`Failed to verify JWT token: ${err}`)
         }
-        return null
+        return { error: err }
       }
     }
+  }
+
+  return {}
+}
+
+export const getAuthContextFromJwtToken = (
+  authHeader: string | undefined,
+  jwtSecret: Secret,
+  authTypes: AuthType[],
+  actorTypes: string[],
+  jwtPublicKey?: Secret,
+  jwtOptions?: VerifyOptions | SignOptions,
+  logger?: Logger
+): AuthContext | null => {
+  const { verified } = verifyBearerJwt(
+    authHeader,
+    jwtSecret,
+    authTypes,
+    jwtPublicKey,
+    jwtOptions,
+    logger
+  )
+
+  if (verified && isActorTypePermitted(actorTypes, verified.actor_type)) {
+    return verified as AuthContext
   }
 
   return null
