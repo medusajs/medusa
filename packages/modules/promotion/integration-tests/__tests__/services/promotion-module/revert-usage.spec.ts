@@ -123,6 +123,32 @@ moduleIntegrationTestRunner({
 
           expect(response).toEqual(undefined)
         })
+
+        it("should serialize concurrent revertUsage and registerUsage without losing updates", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          await service.updateCampaigns({
+            id: "campaign-id-1",
+            budget: { used: 900, limit: 1000 },
+          })
+
+          await Promise.all([
+            service.revertUsage(
+              [{ amount: 900, code: createdPromotion.code! }],
+              { customer_email: null, customer_id: null }
+            ),
+            service.registerUsage(
+              [{ amount: 100, code: createdPromotion.code! }],
+              { customer_email: null, customer_id: null }
+            ),
+          ])
+
+          const campaign = await service.retrieveCampaign("campaign-id-1", {
+            relations: ["budget"],
+          })
+
+          expect(campaign.budget?.used).toEqual(100)
+        })
       })
     })
   },

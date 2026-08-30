@@ -547,17 +547,66 @@ export default class PromotionModuleService
     registrationContext: PromotionTypes.CampaignBudgetUsageContext,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
+    const promotionCodes = computedActions
+      .map((computedAction) => computedAction.code)
+      .filter(Boolean)
+
     const promotionCodeUsageMap = new Map<string, boolean>()
     const campaignBudgetMap = new Map<string, UpdateCampaignBudgetDTO>()
     const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
-    const existingPromotions = await this.listActivePromotions_(
-      {
-        code: computedActions
-          .map((computedAction) => computedAction.code)
-          .filter(Boolean),
-      },
+    let existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
       { relations: ["campaign", "campaign.budget"] },
+      sharedContext
+    )
+
+    // Serialize concurrent usage reversion and registration against the same
+    // promotions and budgets. Locking the rows prevents lost updates when a
+    // revertUsage runs concurrently with a registerUsage. Rows are locked in
+    // a stable id order with SET LOCAL lock_timeout = '3s'.
+    const lockPromotionIds = existingPromotions
+      .filter((promotion) => typeof promotion.limit === "number")
+      .map((promotion) => promotion.id)
+    const lockBudgetIds = Array.from(
+      new Set(
+        existingPromotions
+          .map((promotion) => promotion.campaign?.budget?.id)
+          .filter(Boolean) as string[]
+      )
+    )
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "revertUsage must run inside a transaction to serialize concurrent usage registration."
+      )
+    }
+
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    if (lockPromotionIds.length) {
+      await knex("promotion")
+        .whereIn("id", lockPromotionIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+    if (lockBudgetIds.length) {
+      await knex("promotion_campaign_budget")
+        .whereIn("id", lockBudgetIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+
+    existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
+      {
+        relations: ["campaign", "campaign.budget"],
+        options: { refresh: true },
+      },
       sharedContext
     )
 
