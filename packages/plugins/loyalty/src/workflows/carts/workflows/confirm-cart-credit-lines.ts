@@ -8,6 +8,7 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import { ModuleGiftCard } from "../../../types/loyalty";
 import { ModuleAccountStats } from "../../../types/store-credit";
+import { isGiftCardExpired } from "../../../utils/gift-card";
 import { debitAccountsWorkflow } from "../../store-credit/workflows/debit-accounts";
 
 /**
@@ -66,6 +67,46 @@ export const validateStoreCreditAccountStep = createStep(
 );
 
 /**
+ * Input to validate that none of the gift cards applied to a cart have expired.
+ */
+export interface ValidateGiftCardsNotExpiredStepInput {
+  /**
+   * The gift cards applied to the cart.
+   */
+  giftCards: Pick<ModuleGiftCard, "code" | "expires_at">[]
+}
+
+/**
+ * This step validates that none of the gift cards applied to the cart have
+ * expired. It throws an error for any gift card whose expiration date has
+ * passed, preventing its remaining balance from being debited at checkout.
+ *
+ * @example
+ * const data = validateGiftCardsNotExpiredStep({
+ *   giftCards: [
+ *     {
+ *       code: "GC-XXXX",
+ *       expires_at: null,
+ *       // other gift card properties...
+ *     }
+ *   ],
+ * })
+ */
+export const validateGiftCardsNotExpiredStep = createStep(
+  "validate-gift-cards-not-expired",
+  async function ({ giftCards }: ValidateGiftCardsNotExpiredStepInput) {
+    for (const giftCard of giftCards) {
+      if (isGiftCardExpired(giftCard)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Gift card (${giftCard.code}) has expired`
+        );
+      }
+    }
+  }
+);
+
+/**
  * Input to confirm and debit the credit lines on a cart.
  */
 export interface ConfirmCartCreditLinesWorkflowInput {
@@ -109,7 +150,9 @@ export const confirmCartCreditLinesWorkflow = createWorkflow(
         "credit_lines.reference",
         "credit_lines.reference_id",
         "credit_lines.amount",
+        "gift_cards.id",
         "gift_cards.code",
+        "gift_cards.expires_at",
       ],
       options: { throwIfKeyNotFound: true },
     }).config({ name: "get-existing-cart-query" });
@@ -117,6 +160,8 @@ export const confirmCartCreditLinesWorkflow = createWorkflow(
     const cart = transform({ cartQuery }, ({ cartQuery }) => {
       return cartQuery.data[0];
     });
+
+    validateGiftCardsNotExpiredStep({ giftCards: cart.gift_cards });
 
     const giftCardIds = transform({ cart }, ({ cart }) => {
       return cart.gift_cards.map((gc) => gc.id);

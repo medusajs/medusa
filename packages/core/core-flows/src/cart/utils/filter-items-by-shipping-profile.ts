@@ -1,9 +1,7 @@
-type ItemWithShippingProfile = {
-  variant?:
-    | {
-        product?: { shipping_profile?: { id?: string } | null } | null
-      }
-    | null
+export type ItemWithShippingProfile = {
+  variant?: {
+    product?: { shipping_profile?: { id?: string } | null } | null
+  } | null
 }
 
 /**
@@ -16,7 +14,9 @@ type ItemWithShippingProfile = {
  * aren't shippable in Medusa's link-module model). A falsy `shippingProfileId`
  * returns `[]` rather than the full list to fail closed.
  */
-export const filterCartItemsByShippingProfile = <T extends ItemWithShippingProfile>(
+export const filterCartItemsByShippingProfile = <
+  T extends ItemWithShippingProfile
+>(
   items: T[] | undefined | null,
   shippingProfileId: string | undefined | null
 ): T[] => {

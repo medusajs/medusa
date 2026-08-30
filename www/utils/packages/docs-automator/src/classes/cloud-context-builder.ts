@@ -1,14 +1,21 @@
 import { CloudAnalysisResult, CloudDispatchPayload } from "../types/index.js"
 
+const DASHBOARD_CHANGELOG_DIR = "www/apps/cloud/generated/changelog"
 const DASHBOARD_CHANGELOG_PAGE = "www/apps/cloud/app/changelog/page.mdx"
 
 export class CloudContextBuilder {
   build(
     payload: CloudDispatchPayload,
-    releaseDate?: string
+    releaseDate?: string,
+    isoReleaseDate?: string
   ): CloudAnalysisResult {
     const changelog = this.getChangelog(payload, releaseDate)
-    const claudePrompt = this.buildPrompt(payload, changelog, releaseDate)
+    const claudePrompt = this.buildPrompt(
+      payload,
+      changelog,
+      releaseDate,
+      isoReleaseDate
+    )
 
     return {
       affectedProjects: [
@@ -20,6 +27,17 @@ export class CloudContextBuilder {
       claudePrompt,
       featureFlaggedFeatures: payload.featureFlaggedFeatures ?? [],
       ...(changelog ? { changelog } : {}),
+      // Only dashboard changes produce a changelog entry, and only then does
+      // the workflow have a banner to render.
+      ...(payload.descriptions?.trim() && releaseDate && isoReleaseDate
+        ? {
+            changelogEntry: {
+              date: isoReleaseDate,
+              displayDate: releaseDate,
+              file: `${DASHBOARD_CHANGELOG_DIR}/${isoReleaseDate}.mjs`,
+            },
+          }
+        : {}),
     }
   }
 
@@ -43,7 +61,8 @@ export class CloudContextBuilder {
   private buildPrompt(
     payload: CloudDispatchPayload,
     changelog?: { version: string; notes: string; date?: string },
-    releaseDate?: string
+    releaseDate?: string,
+    isoReleaseDate?: string
   ): string {
     const sections: string[] = []
 
@@ -57,7 +76,9 @@ export class CloudContextBuilder {
     )
 
     if (payload.descriptions?.trim()) {
-      sections.push(this.buildDashboardChangelogSection(releaseDate))
+      sections.push(
+        this.buildDashboardChangelogSection(releaseDate, isoReleaseDate)
+      )
     }
 
     if (changelog) {
@@ -86,7 +107,7 @@ Your job is to:
 2. Review the feature descriptions below
 3. For each described change, determine whether a documentation update is needed
 4. **Dashboard changes**: If an existing page covers the feature, update it. If a new feature has no existing page and is substantial enough, create one and add it to \`www/apps/cloud/sidebar.mjs\`
-5. **Dashboard changelog**: Record the dashboard changes in the Cloud changelog page, as explained in the "Cloud Changelog" section below
+5. **Dashboard changelog**: Record the dashboard changes as a changelog entry file, as explained in the "Cloud Changelog" section below
 6. **CLI changes**: Update the relevant command page under \`www/apps/cloud/app/cli/commands/\`. If a new command was added, create a new page and add it to the sidebar under the CLI category. If a command was removed, remove its page and sidebar entry. Follow the existing CLI page format (see the CLI section in \`reference/cloud-style.md\`)
 7. If a described change is too vague or clearly internal, skip it rather than guess`
   }
@@ -116,31 +137,46 @@ Your job is to:
   /**
    * Instructs Claude to record the dashboard changes of this deployment in the
    * Cloud changelog. The changelog is dated rather than versioned, since the
-   * dashboard has no user-facing version number.
+   * dashboard has no user-facing version number, and each date is its own
+   * entry file that the changelog page renders.
    */
-  private buildDashboardChangelogSection(releaseDate?: string): string {
+  private buildDashboardChangelogSection(
+    releaseDate?: string,
+    isoReleaseDate?: string
+  ): string {
     const heading = releaseDate ?? "{Month} {Day}, {Year}"
+    const isoDate = isoReleaseDate ?? "{YYYY-MM-DD}"
 
     return `## Cloud Changelog
 
-Record the **dashboard** changes of this deployment in the Cloud changelog page. This changelog covers the Cloud dashboard only — CLI and webhook changes have their own changelog pages and must never be added here.
+Record the **dashboard** changes of this deployment in the Cloud changelog. This changelog covers the Cloud dashboard only — CLI and webhook changes have their own changelog pages and must never be added here.
 
-**Changelog page:** \`${DASHBOARD_CHANGELOG_PAGE}\`
+The changelog page at \`${DASHBOARD_CHANGELOG_PAGE}\` holds only the intro and a \`<ChangelogList />\` component. **Never add entries to that page.** Each dated entry is its own file in \`${DASHBOARD_CHANGELOG_DIR}\`, named after its date.
+
+**Entry file for this deployment:** \`${DASHBOARD_CHANGELOG_DIR}/${isoDate}.mjs\`
 
 Steps:
-1. If \`${DASHBOARD_CHANGELOG_PAGE}\` does not exist, create it first: a \`metadata\` export with the title \`Cloud Changelog\`, an \`# {metadata.title}\` heading, a one-sentence intro explaining that it lists notable changes to the Cloud dashboard, newest first, and a short list linking to the [Cloud CLI Changelog](../cli/changelog/page.mdx) and the [Webhooks Changelog](../webhooks/changelog/page.mdx). Then add a sidebar entry for it in \`www/apps/cloud/sidebar.mjs\` as a top-level link at the end of the \`items\` array:
+1. If \`${DASHBOARD_CHANGELOG_DIR}/${isoDate}.mjs\` already exists (this deployment may be re-run), **merge** the new bullet points into its \`content\` and rewrite its \`title\` and \`summary\` to cover the merged entry, instead of overwriting or duplicating the file. Leave any \`image\` property it already has untouched. Otherwise, create it with exactly this shape:
    \`\`\`js
-   {
-     type: "link",
-     title: "Changelog",
-     path: "/changelog",
-   },
+   /** @type {import("../../utils/changelog").ChangelogEntry} */
+   export default {
+     date: "${isoDate}",
+     title: "Short headline for this entry",
+     summary: "One sentence covering what this entry is about.",
+     content: \`- First change of this deployment.
+   - Second change of this deployment.\`,
+   }
    \`\`\`
-2. Add a \`## ${heading}\` heading for this deployment, placed **newest-first** — directly below the intro and above any existing dated section, separated from the section below it by a \`---\` divider.
-3. Under that heading, add one bullet point per user-facing dashboard change. Write each bullet in the present tense, describing what a user can now do or what now behaves differently.
-4. If the change is covered by a documentation page, link to that page in its bullet point using a relative path, such as \`[Environment Variables](../environments/environment-variables/page.mdx)\`. Link to the page you updated for that change, and only link to pages that exist.
-5. If a section for **${heading}** already exists (this deployment may be re-run), merge the bullet points into it instead of adding a duplicate section.
-6. If this deployment has no dashboard changes that qualify below, leave the changelog page untouched.
+2. \`date\` must match the file name exactly, in \`YYYY-MM-DD\` format.
+3. \`title\` is a **short headline** that the changelog page uses as the entry's heading. Name what shipped, not the date — the date is shown next to it. Aim for 3 to 8 words, under 60 characters, with no trailing period, no Markdown, and no link. Use sentence case, and don't start it with "Added", "New", or the date. When the entry has one change, name that change; when it has several, name the theme they share, or join the two biggest with "and".
+4. \`summary\` is **one plain sentence** summarizing what the entry covers as a whole, written for someone who hasn't read the bullets. Keep it under 160 characters, write it in the present tense, and don't use Markdown, links, or a trailing list of every change. It's a double-quoted string, so it can't span lines. Don't restate the \`title\` verbatim — the summary adds the detail the headline leaves out.
+5. \`content\` is Markdown holding **only** the bullet points. Never write a heading in it — the page renders the heading from \`title\`, so a \`## ${heading}\` or a \`## \` repeating the title would show up twice.
+6. Add one bullet point per user-facing dashboard change. Write each bullet in the present tense, describing what a user can now do or what now behaves differently.
+7. If the change is covered by a documentation page, link to that page in its bullet point. Links to Cloud documentation pages are **root-relative, without the \`/cloud\` base path and without the \`page.mdx\` suffix**, such as \`[Environment Variables](/environments/environment-variables)\`. Link to the page you updated for that change, and only link to pages that exist.
+8. \`content\` is a template literal, so escape any backtick or \`\${\` you write inside it.
+9. Never write an \`image\` property. The entry's banner image is rendered and attached by a later step of this workflow.
+10. Do not create, edit, or reorder \`${DASHBOARD_CHANGELOG_DIR}/index.mjs\`. It's a generated manifest, rebuilt by the \`yarn prep\` step that runs after you finish.
+11. If this deployment has no dashboard changes that qualify below, don't create an entry file.
 
 **What belongs in the changelog:**
 
@@ -156,13 +192,17 @@ Steps:
 - Bug fixes with no user-visible behavior change, performance work, and internal refactors
 - Anything not visible to users in the dashboard
 
-**Example entry:**
+**Example entry file** (\`${DASHBOARD_CHANGELOG_DIR}/2026-08-10.mjs\`):
 
-\`\`\`mdx
-## August 10, 2026
-
-- You can now set an environment variable as available at build time, runtime, or both, which controls whether Medusa injects it into your build or your running application. Refer to [Environment Variables](../environments/environment-variables/page.mdx) for more details.
-- The dashboard's sidebar navigation is now grouped by project, so switching between a project's environments no longer requires going back to the organization's page.
+\`\`\`js
+/** @type {import("../../utils/changelog").ChangelogEntry} */
+export default {
+  date: "2026-08-10",
+  title: "Build-time and runtime environment variables",
+  summary: "Environment variables can be scoped to build time or runtime, and the sidebar is now grouped by project.",
+  content: \`- You can now set an environment variable as available at build time, runtime, or both, which controls whether Medusa injects it into your build or your running application. Refer to [Environment Variables](/environments/environment-variables) for more details.
+- The dashboard's sidebar navigation is now grouped by project, so switching between a project's environments no longer requires going back to the organization's page.\`,
+}
 \`\`\``
   }
 
@@ -210,6 +250,7 @@ ${changelog.notes}`
 **Writable directories (only modify files within these):**
 - \`www/apps/cloud/app/\` — dashboard docs and CLI docs (CLI pages live under \`www/apps/cloud/app/cli/\`)
 - \`www/apps/cloud/sidebar.mjs\`
+- \`${DASHBOARD_CHANGELOG_DIR}/\` — dashboard changelog entry files only, never its generated \`index.mjs\`
 
 **CLI docs structure:**
 - \`www/apps/cloud/app/cli/page.mdx\` — CLI overview and installation
@@ -218,7 +259,7 @@ ${changelog.notes}`
 - Each command page documents all subcommands for that topic (e.g. \`deployments list\`, \`deployments get\`, \`deployments build-logs\` all on the same page)
 
 **Changelog pages:**
-- \`${DASHBOARD_CHANGELOG_PAGE}\` — dated changelog of dashboard changes
+- \`${DASHBOARD_CHANGELOG_DIR}/{YYYY-MM-DD}.mjs\` — dated changelog of dashboard changes, one file per date, rendered by \`${DASHBOARD_CHANGELOG_PAGE}\`
 - \`www/apps/cloud/app/cli/changelog/page.mdx\` — versioned changelog of Cloud CLI releases
 - \`www/apps/cloud/app/webhooks/changelog/page.mdx\` — dated changelog of webhook event changes (never write to it from this workflow)`
   }

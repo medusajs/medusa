@@ -48,7 +48,13 @@ export type SearchEntityDefinition<TItem = any> = {
    * for entities that have no page of their own (e.g. nested entities).
    */
   shortcut?: SearchEntityShortcut
-  transform: SearchEntityTransform<TItem>
+  /**
+   * Maps a result from `/admin/search` to a palette item. Omit it for entries
+   * that only contribute a `shortcut`, i.e. pages that are navigable but hold
+   * nothing worth matching on (e.g. reservations). Such entries are skipped
+   * when the palette decides what to query and which areas to offer.
+   */
+  transform?: SearchEntityTransform<TItem>
 }
 
 /**
@@ -125,12 +131,22 @@ export function getSearchEntity(
   return searchEntities.get(name)
 }
 
+/**
+ * The entities that can actually be searched, in registration order.
+ * Shortcut-only entries are left out — there is nothing to query for them.
+ */
 export function getSearchEntityNames(): string[] {
-  return [...searchEntities.keys()]
+  return [...searchEntities.entries()]
+    .filter(([, definition]) => !!definition.transform)
+    .map(([name]) => name)
 }
 
+/**
+ * Whether `name` is registered as a searchable entity. False for shortcut-only
+ * entries.
+ */
 export function hasSearchEntity(name: string): boolean {
-  return searchEntities.has(name)
+  return !!searchEntities.get(name)?.transform
 }
 
 export function resolveSearchEntityGroupLabel(

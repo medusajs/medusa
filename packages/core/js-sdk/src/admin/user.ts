@@ -156,6 +156,62 @@ export class User {
   }
 
   /**
+   * This method retrieves the auth providers a user can authenticate with. It sends a
+   * request to the List User Auth Providers API route.
+   *
+   * @param id - The user's ID.
+   * @param headers - Headers to pass in the request.
+   * @returns The IDs of the user's auth providers.
+   *
+   * @example
+   * sdk.admin.user.listAuthProviders("user_123")
+   * .then(({ providers }) => {
+   *   console.log(providers)
+   * })
+   *
+   * @since 2.19.1
+   */
+  async listAuthProviders(id: string, headers?: ClientHeaders) {
+    return this.client.fetch<HttpTypes.AdminUserAuthProvidersResponse>(
+      `/admin/users/${id}/auth-providers`,
+      {
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method generates a reset password token for a user. It sends a request to the
+   * Generate Reset Password Token for a User API route.
+   *
+   * Useful for constructing the reset password link without sending an email.
+   *
+   * The token is short-lived, can only be used once, and generating it invalidates
+   * any reset password token previously issued for the user.
+   *
+   * @param id - The ID of the user to generate the token for.
+   * @param headers - Headers to pass in the request.
+   * @returns The generated reset password token.
+   *
+   * @example
+   * sdk.admin.user.generateResetPasswordToken("user_123")
+   * .then(({ token }) => {
+   *   console.log(token)
+   * })
+   *
+   * @since 2.19.1
+   */
+  async generateResetPasswordToken(id: string, headers?: ClientHeaders) {
+    return this.client.fetch<HttpTypes.AdminUserResetPasswordTokenResponse>(
+      `/admin/users/${id}/reset-password`,
+      {
+        method: "POST",
+        headers,
+      }
+    )
+  }
+
+  /**
    * This method retrieves a paginated list of roles assigned to a user. It sends a request to the
    * List User Roles API route.
    *

@@ -95,7 +95,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   resolve: __dirname + "/../..",
   moduleOptions: {
     redis: {
-      url: "localhost:6379",
+      redisUrl: "localhost:6379",
       queueName: `medusa-workflows-${
         process.env.JEST_WORKER_ID ?? "1"
       }-${testRunId}`,

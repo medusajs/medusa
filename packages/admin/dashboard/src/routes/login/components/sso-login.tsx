@@ -11,6 +11,7 @@ import { AuthProvider, provisionAuthUser } from "../../../hooks/api"
 import { isFetchError } from "../../../lib/is-fetch-error"
 import { sdk } from "../../../lib/client"
 import { getRedirectProviders, hasEmailPassProvider } from "../utils"
+import { CLOUD_AUTH_PROVIDER } from "./cloud-auth-login"
 
 type SsoLoginProps = {
   providers: AuthProvider[]
@@ -25,13 +26,17 @@ export const SsoLogin = ({ providers, onMfaChallenge }: SsoLoginProps) => {
   const [searchParams] = useSearchParams()
 
   const redirectProviders = useMemo(
-    () => getRedirectProviders(providers),
+    () =>
+      getRedirectProviders(providers).filter(
+        (provider) => provider.id !== CLOUD_AUTH_PROVIDER
+      ),
     [providers]
   )
 
   const callbackProviderId = searchParams.get("auth_provider")
   const isCallback =
     !!callbackProviderId &&
+    callbackProviderId !== CLOUD_AUTH_PROVIDER &&
     (searchParams.has("code") || searchParams.has("error"))
 
   const showDivider = hasEmailPassProvider(providers)
