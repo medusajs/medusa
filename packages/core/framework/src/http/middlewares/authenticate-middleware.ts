@@ -109,30 +109,6 @@ export const authenticate = (
       }
     }
 
-    if (authTypes.includes(SESSION_AUTH)) {
-      authContext =
-        authContext ??
-        getAuthContextFromSession(
-          req_.session as Partial<MedusaSession>,
-          authTypes,
-          actorTypes
-        )
-    }
-
-    if (authTypes.includes(API_KEY_AUTH) && isExclusivelyUser) {
-      const apiKey = await getApiKeyInfo(req_)
-
-      if (apiKey) {
-        authContext = {
-          actor_id: apiKey.id,
-          actor_type: "api-key",
-          auth_identity_id: "",
-          app_metadata: {},
-          user_metadata: {},
-        }
-      }
-    }
-
     if (requireMfa && authContext?.mfa_enabled) {
       const mfaError = getMfaRequirementError(authContext, requireMfa)
 
