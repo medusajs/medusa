@@ -12898,6 +12898,9 @@
         "workflowIdLabel": {
           "type": "string"
         },
+        "stateLabel": {
+          "type": "string"
+        },
         "progressLabel": {
           "type": "string"
         },
@@ -13062,6 +13065,7 @@
         "subtitle",
         "transactionIdLabel",
         "workflowIdLabel",
+        "stateLabel",
         "progressLabel",
         "list",
         "history",

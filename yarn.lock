@@ -3704,6 +3704,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/instantsearch-adapter@workspace:packages/core/instantsearch-adapter":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/instantsearch-adapter@workspace:packages/core/instantsearch-adapter"
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/inventory@2.19.0, @medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/modules/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/modules/inventory"

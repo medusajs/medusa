@@ -56,13 +56,20 @@ export type SearchResultSet<TEntry extends string> = {
 
 /**
  * QuerySearchFunction runs a search through the Search Module and expands the
- * results with `query.graph`.
+ * results with `query.graph`. Pass an array to run several queries in one
+ * provider round-trip.
  */
 export type QuerySearchFunction = {
-  <const TEntry extends string>(
-    queryOptions: SearchQuery<TEntry>,
+  <TInput extends readonly SearchQuery[] | SearchQuery>(
+    queryOptions: TInput,
     options?: RemoteJoinerOptions
-  ): Promise<Prettify<SearchResultSet<TEntry>>>
+  ): Promise<
+    [TInput] extends [readonly SearchQuery[]]
+      ? Prettify<SearchResultSet<string>>[]
+      : TInput extends SearchQuery<infer TEntry>
+      ? Prettify<SearchResultSet<TEntry>>
+      : never
+  >
 }
 
 /**
