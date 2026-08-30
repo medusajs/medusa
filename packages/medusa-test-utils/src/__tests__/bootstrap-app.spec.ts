@@ -2,15 +2,11 @@ const loadersMock = jest.fn()
 const mockGracefulServer = { shutdown: jest.fn().mockResolvedValue(undefined) }
 
 let listeningHandler: (() => void) | undefined
-let errorHandler: ((err: Error) => void) | undefined
 
 const mockServer = {
   on: jest.fn(function (this: any, event: string, handler: any) {
     if (event === "listening") {
       listeningHandler = handler
-    }
-    if (event === "error") {
-      errorHandler = handler
     }
     return this
   }),
@@ -53,7 +49,6 @@ describe("startApp", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     listeningHandler = undefined
-    errorHandler = undefined
   })
 
   afterEach(() => {
