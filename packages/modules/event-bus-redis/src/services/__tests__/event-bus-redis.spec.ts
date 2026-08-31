@@ -49,7 +49,7 @@ describe("RedisEventBusService", () => {
         eventBusRedisJobOptions: {},
       },
       {
-        groupedEventsTTL: 600,
+        redisUrl: "redis://localhost:6379",
       },
       {
         worker_mode: "server",

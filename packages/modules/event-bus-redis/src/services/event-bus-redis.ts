@@ -275,14 +275,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     await promiseAll(promises)
   }
 
-  private async setExpire(eventGroupId: string, ttl: number) {
-    if (!eventGroupId) {
-      return
-    }
-
-    await this.eventBusRedisConnection_.expire(`staging:${eventGroupId}`, ttl)
-  }
-
   private async groupEvents<T = unknown>(
     eventGroupId: string,
     events: IORedisEventType<T>[],
