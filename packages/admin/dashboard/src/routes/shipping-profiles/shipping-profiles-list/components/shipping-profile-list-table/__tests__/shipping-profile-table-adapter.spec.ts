@@ -17,7 +17,7 @@ describe("createShippingProfileTableAdapter", () => {
   it("should generate the correct detail route with /settings/locations/ prefix", () => {
     const adapter = createShippingProfileTableAdapter({ t: mockT })
 
-    expect(adapter.getRowHref({ id: "sp_123" } as any)).toEqual(
+    expect(adapter.getRowHref?.({ id: "sp_123" } as any)).toEqual(
       "/settings/locations/shipping-profiles/sp_123"
     )
   })
