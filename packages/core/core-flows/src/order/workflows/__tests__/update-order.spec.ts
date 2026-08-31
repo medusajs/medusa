@@ -1,10 +1,6 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { createContainer } from "@medusajs/framework/awilix"
-import { MedusaError } from "@medusajs/framework/utils"
-import {
-  createWorkflow,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk"
 import { updateOrderValidationStep } from "../update-order"
 
 const runStep = async (
@@ -13,12 +9,12 @@ const runStep = async (
 ): Promise<any> => {
   const workflow = createWorkflow(
     `update-order-val-test-${Math.random().toString(36).slice(2)}`,
-    (wfInput: any) => {
-      const out = updateOrderValidationStep(wfInput)
+    () => {
+      const out = updateOrderValidationStep(input)
       return new WorkflowResponse(out)
     }
   )
-  return workflow(container).run({ input })
+  return workflow(container).run({ input: {} })
 }
 
 describe("updateOrderValidationStep", () => {
