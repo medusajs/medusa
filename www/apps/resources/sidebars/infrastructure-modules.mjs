@@ -387,6 +387,11 @@ export const infrastructureModulesSidebar = [
         title: "Reindexing and Migrations",
       },
       {
+        type: "ref",
+        path: "/instantsearch",
+        title: "InstantSearch Adapter",
+      },
+      {
         type: "link",
         title: "Providers",
         path: "/infrastructure-modules/search/providers",

@@ -163,7 +163,7 @@ export const generatedEditDates = {
   "app/storefront-development/products/collections/products/page.mdx": "2025-03-27T14:46:51.466Z",
   "app/storefront-development/products/collections/retrieve/page.mdx": "2025-03-27T14:46:51.458Z",
   "app/storefront-development/products/collections/page.mdx": "2024-06-11T19:55:56+02:00",
-  "app/storefront-development/products/list/page.mdx": "2026-06-04T06:33:51.785Z",
+  "app/storefront-development/products/list/page.mdx": "2026-08-31T14:16:33.293Z",
   "app/storefront-development/products/price/examples/sale-price/page.mdx": "2025-03-27T14:47:14.308Z",
   "app/storefront-development/products/price/examples/show-price/page.mdx": "2025-03-27T14:47:14.292Z",
   "app/storefront-development/products/price/examples/tax-price/page.mdx": "2025-03-27T14:47:14.292Z",
@@ -175,7 +175,7 @@ export const generatedEditDates = {
   "app/storefront-development/regions/list/page.mdx": "2025-03-27T14:46:52.029Z",
   "app/storefront-development/regions/store-retrieve-region/page.mdx": "2025-03-27T13:29:54.041Z",
   "app/storefront-development/regions/page.mdx": "2024-06-09T15:19:09+02:00",
-  "app/storefront-development/tips/page.mdx": "2025-12-09T13:33:33.997Z",
+  "app/storefront-development/tips/page.mdx": "2026-08-31T14:21:34.360Z",
   "app/storefront-development/page.mdx": "2026-02-02T12:34:41.022Z",
   "app/troubleshooting/cors-errors/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/create-medusa-app-errors/page.mdx": "2026-01-14T08:32:33.242Z",
@@ -6420,7 +6420,7 @@ export const generatedEditDates = {
   "references/promotion/types/promotion.ComputeActions/page.mdx": "2025-12-01T18:33:06.048Z",
   "references/utils/PromotionUtils/enums/utils.PromotionUtils.ComputedActions/page.mdx": "2025-12-01T18:33:07.491Z",
   "app/integrations/guides/strapi/page.mdx": "2026-08-21T06:05:37.095Z",
-  "app/storefront-development/products/options/page.mdx": "2026-06-04T06:34:03.017Z",
+  "app/storefront-development/products/options/page.mdx": "2026-08-31T14:24:33.182Z",
   "app/commerce-modules/store/locales/page.mdx": "2025-12-16T07:13:12.389Z",
   "app/commerce-modules/translation/concepts/page.mdx": "2026-08-21T06:05:37.108Z",
   "app/commerce-modules/translation/link-to-other-modules/page.mdx": "2025-12-10T13:23:44.262Z",
@@ -7657,5 +7657,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/reindexing/page.mdx": "2026-08-25T09:37:58.906Z",
   "app/commerce-modules/loyalty/links-to-other-modules/page.mdx": "2026-08-21T06:05:37.118Z",
   "app/commerce-modules/store-credit/links-to-other-modules/page.mdx": "2026-08-21T06:05:37.132Z",
-  "app/infrastructure-modules/search/providers/medusa/page.mdx": "2026-08-21T15:08:28.068Z"
+  "app/infrastructure-modules/search/providers/medusa/page.mdx": "2026-08-21T15:08:28.068Z",
+  "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-08-31T14:36:49.691Z",
+  "app/instantsearch/page.mdx": "2026-08-31T14:36:43.565Z"
 }

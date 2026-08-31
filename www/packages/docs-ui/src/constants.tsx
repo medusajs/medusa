@@ -299,7 +299,17 @@ export const navDropdownItems: NavigationItem[] = [
             title: "Medusa CLI",
             link: "/resources/medusa-cli",
           },
+          {
+            type: "link",
+            title: "Medusa Cloud CLI",
+            link: "/cloud/cli",
+          },
         ],
+      },
+      {
+        type: "link",
+        title: "InstantSearch Adapter",
+        link: "/resources/instantsearch",
       },
       {
         type: "link",

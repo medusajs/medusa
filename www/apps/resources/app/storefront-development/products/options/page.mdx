@@ -6,7 +6,7 @@ products:
   - product
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Use Product Options in Storefront`,
@@ -19,6 +19,14 @@ In this guide, you'll learn how to list and retrieve product options in your sto
 <Note>
 
 This feature is available since [Medusa v2.17.0](https://github.com/medusajs/medusa/releases/tag/v2.17.0).
+
+</Note>
+
+<Note title="Recommended Approach" type="success">
+
+If you're building option filters, the recommended approach since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0) is the [InstantSearch adapter](../../../instantsearch/page.mdx), which returns the option values and how many products match each one in the same response as the products.
+
+The Product Options API routes covered in this guide are still supported, and are the approach to use if your Medusa application doesn't have the [Search Module](../../../infrastructure-modules/search/page.mdx) configured. Refer to the [Filter by Options with InstantSearch](#filter-by-options-with-instantsearch) section for the adapter's equivalent.
 
 </Note>
 
@@ -292,7 +300,78 @@ The response has a `product_option` field, which is a [product option object](!a
 
 ## Use Product Options for Filtering
 
-Product options are commonly used to add filtering functionality to your storefront. You can display the available options and their values, then allow customers to filter products by selecting specific option values.
+Product options are commonly used to add filtering functionality to your storefront.
+
+### Filter by Options with InstantSearch
+
+<Prerequisites
+  items={[
+    {
+      text: "Search Module configured with a provider in the Medusa backend",
+      link: "/infrastructure-modules/search"
+    },
+    {
+      text: "InstantSearch adapter installed and configured",
+      link: "/instantsearch"
+    }
+  ]}
+/>
+
+As of [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0), the [InstantSearch adapter](../../../instantsearch/page.mdx) is the recommended approach to filter products by options. The adapter asks the search engine for the option values as a facet, so one response holds the products, the values to filter by, and how many products match each value.
+
+The search index holds a product's options in one field, with each value indexed as `{option}:{value}`, such as `Size:Large`. So, use the `useRefinementList` hook on that field:
+
+export const optionRefinementHighlights = [
+  ["7", "attribute", "The index field holding the option values."],
+  ["8", "limit", "Every option value is one facet value, so raise the limit."],
+  ["19", "refine", "Toggle the value in the search query's filters."],
+  ["22", "count", "How many products carry this value."],
+]
+
+```tsx title="src/components/option-filters.tsx" highlights={optionRefinementHighlights}
+"use client" // include with Next.js 13+
+
+import { useRefinementList } from "react-instantsearch"
+
+export default function OptionFilters() {
+  const { items, refine } = useRefinementList({
+    attribute: "option_values",
+    limit: 200,
+    sortBy: ["name:asc"],
+  })
+
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.value}>
+          <input
+            type="checkbox"
+            checked={item.isRefined}
+            onChange={() => refine(item.value)}
+          />
+          <label>
+            {item.label} ({item.count})
+          </label>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+The component must sit inside the same `InstantSearch` provider as the product list it filters. You don't pass the selected values to the list yourself, as both read from the same search state.
+
+Since every option's values arrive in one facet, `item.label` is the full `Size:Large` string. Split it on the first colon to group the values under their option's title, as explained in the [Filter by Product Options](../../../instantsearch/examples/filtering-sorting-pagination/page.mdx#filter-by-product-options) section of the Filtering, Sorting, and Pagination guide.
+
+<Note>
+
+The field must be marked `filterable()` and `facetable()` in your [index definition](../../../infrastructure-modules/search/index-definitions/page.mdx), or the hook returns no values. Use the field name your own index declares, which may differ from `option_values`.
+
+</Note>
+
+### Filter by Options with the Product Options API Routes
+
+For small datasets, you can display the available options and their values, then allow customers to filter products by selecting specific option values.
 
 For example, you can create a `ProductFilters` component that retrieves options and allows selecting filters:
 

@@ -285,6 +285,8 @@ export const sitemapUrls = [
   "/infrastructure-modules/workflow-engine/in-memory",
   "/infrastructure-modules/workflow-engine",
   "/infrastructure-modules/workflow-engine/redis",
+  "/instantsearch/examples/filtering-sorting-pagination",
+  "/instantsearch",
   "/integrations/guides/algolia",
   "/integrations/guides/avalara",
   "/integrations/guides/contentful",

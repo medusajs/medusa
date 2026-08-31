@@ -1144,6 +1144,14 @@ export const filesMap = [
     "pathname": "/infrastructure-modules/workflow-engine/redis"
   },
   {
+    "filePath": "/www/apps/resources/app/instantsearch/examples/filtering-sorting-pagination/page.mdx",
+    "pathname": "/instantsearch/examples/filtering-sorting-pagination"
+  },
+  {
+    "filePath": "/www/apps/resources/app/instantsearch/page.mdx",
+    "pathname": "/instantsearch"
+  },
+  {
     "filePath": "/www/apps/resources/app/integrations/guides/algolia/page.mdx",
     "pathname": "/integrations/guides/algolia"
   },

@@ -1,0 +1,1054 @@
+import { Table, Prerequisites, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `InstantSearch Adapter`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to install and configure the InstantSearch adapter to build a search experience in your storefront.
+
+<Note>
+
+If you installed your Medusa application after v2.20.0, its storefront already has the search functionalities explained in this guide. You can still follow this guide to understand how the search works and customize it.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "Search Module configured with a provider",
+      link: "/infrastructure-modules/search"
+    },
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+## Integrate with an AI Agent
+
+If you use an AI coding agent, such as Claude Code or Cursor, pass it the following prompt to add the integration to your storefront. Then, use the rest of this guide to understand what the agent changed and to customize the search experience.
+
+```md collapsed noLineNumbers
+<role>
+You are a front-end engineer integrating search into an existing Medusa storefront. You work within the storefront's current framework, conventions, and styling rather than introducing new ones.
+</role>
+
+<task>
+Add a product search experience to this storefront using the `@medusajs/instantsearch-adapter` package.
+</task>
+
+<context>
+- Medusa's Search Module indexes data in a search engine and serves queries with filters, facets, sorting, and pagination.
+- Medusa exposes a `/store/search` API route with a default `product` index. The route scopes every query to the storefront's context, so you don't create a route for product search.
+- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/search`, and converts the results back.
+- InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
+- Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
+- A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+</context>
+
+<input>
+You have access to the storefront's codebase. Before writing code, determine from it:
+- The framework and package manager in use.
+- Whether a Medusa JS SDK instance already exists, and where.
+- The environment variables holding the Medusa backend URL and publishable API key.
+- The components the search will live in or next to, and the UI primitives the storefront already depends on.
+- The fields the `product` search index holds, from the Medusa application's index definition if it's available.
+</input>
+
+<steps>
+1. Ask the user where the search should live and how it should behave. Offer the common shapes and let them pick or describe their own:
+   - A control in the navbar that opens a panel, such as a drawer or a modal.
+   - A field in the navbar that shows results in a dropdown beneath it.
+   - A dedicated search page with the results as the page body.
+   Ask in the same message which parts of the search they want beyond the field and the results, such as filters, sorting, or pagination. Don't start writing code until they answer.
+2. Install `@medusajs/instantsearch-adapter` and the InstantSearch library matching the storefront's framework, using the storefront's package manager. Install `@medusajs/js-sdk` only if the storefront doesn't already have it.
+3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/search`, and export the index name as a constant so the UI never repeats the string.
+4. Export the client from a shared module, so every search surface in the storefront uses the same one.
+5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
+6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
+7. Make the search feel responsive: don't send a request per keystroke, and don't let the results flicker or empty while the next search runs.
+8. Give every state its own treatment: no query yet, search in flight, results, no results, and a failed search. An empty list must never stand in for any of the others.
+9. Place the finished component where the user asked for it.
+10. Report what you changed and how to test it.
+</steps>
+
+<constraints>
+- Never decide the search's placement or interaction yourself. That's the user's call in step 1.
+- Never place a filter in the storefront that exists to protect data. Customers can change anything the client sends.
+- Never hardcode the publishable API key, the backend URL, or the index name. Read the first two from environment variables and the third from the exported constant.
+- Never invent index field names. Use only fields you confirmed in an index definition or in a search response.
+- Never add these widgets, as the adapter doesn't support them: `geoSearch`, Insights and Analytics widgets, Query Rules, related-items widgets, autocomplete, vector-search widgets, and Algolia `filters` strings.
+- Never add a CSS framework, component library, state-management library, or UI primitive that the storefront doesn't already use. Style the search with the storefront's existing approach.
+- Never create more than one search client or more than one `InstantSearch` provider for the same search.
+- Never modify the Medusa application's `/store/search` route.
+- Create a custom API route only when searching an index other than the ones `/store/search` exposes. In that route, build the hits from the `data` that `query.search` returns.
+</constraints>
+
+<error_handling>
+- If the user doesn't answer step 1, ask again rather than picking a placement. It's the decision the rest of the work depends on.
+- If you can't determine the storefront's framework, ask the user instead of guessing.
+- If the chosen shape needs a UI primitive the storefront doesn't have, ask the user before installing a library.
+- If no index definition is available, ask the user which fields the index holds. Don't infer field names from the storefront's product types.
+- If the search request fails at runtime, surface the error in the UI and report the status code and response body. Don't fall back to an empty state that hides it.
+- If the storefront already has a search implementation, ask whether to replace it or add alongside it before changing any file.
+</error_handling>
+
+<output_format>
+Report in this structure:
+
+## Approach
+The placement and behavior the user chose, in one or two sentences.
+
+## Changes
+A list of the files you created or modified, each with a one-line description.
+
+## Setup
+Any environment variables the user must set, and any command they must run.
+
+## How to Test
+Numbered steps that end in an observable result, including one that checks the results don't flicker while typing.
+
+## Skipped
+Any widget or feature you left out, each with the reason. Write "None" if there are none.
+</output_format>
+
+<success_criteria>
+- The search is placed and behaves the way the user described in step 1.
+- Typing shows matching products, and the previous results stay on screen until the new ones arrive.
+- A burst of typing sends one search request, not one per character.
+- Each of the five states in step 8 shows something distinct from the others.
+- A failed search shows an error message rather than an empty list.
+- Every field referenced in the code exists in a search index definition.
+- The storefront builds and type-checks with no new errors.
+</success_criteria>
+```
+
+---
+
+## What is the InstantSearch Adapter?
+
+[InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) is a family of open source UI libraries that render search interfaces from small widgets, such as a search box, a hit list, facet filters, and pagination. It's available for plain JavaScript, React, Vue, and Angular.
+
+The `@medusajs/instantsearch-adapter` package provides a search client for Medusa. It translates each InstantSearch request into a Medusa-compatible search query, sends it to Medusa's `/store/search` API route, then maps the result back into the shape the widgets expect.
+
+So, you install the adapter and add InstantSearch widgets instead of writing the data fetching, filter serialization, and pagination logic yourself.
+
+<Note>
+
+The adapter doesn't provide UI components. You install an InstantSearch library alongside it and use its widgets.
+
+</Note>
+
+---
+
+## Step 1: Install the Adapter
+
+In your storefront project, install the adapter and the InstantSearch library that matches your storefront's framework.
+
+For example, if you're using a Next.js project, install the React library in the storefront:
+
+```bash npm2yarn title="apps/storefront"
+npm install @medusajs/instantsearch-adapter react-instantsearch instantsearch.js
+```
+
+You install `instantsearch.js` alongside `react-instantsearch` for the types it exports, such as `Hit` and `SearchClient`. The same adapter also works with `vue-instantsearch` and `angular-instantsearch`.
+
+---
+
+## Step 2: Create the Search Client
+
+Next, create the search client that the InstantSearch widgets use.
+
+The adapter needs a way to send requests to your Medusa application. Pass an instance of the [Medusa JS SDK](../js-sdk/page.mdx), as it sends the publishable API key and other headers for you.
+
+For example, if you're using the default starter, it already exports an SDK instance from `apps/storefront/src/lib/config.ts`. So, create the file `apps/storefront/src/lib/search-client.ts` with the following content:
+
+export const clientHighlights = [
+  ["7", "PRODUCT_INDEX_NAME", "The name of the index to search."],
+  ["10", "sdk", "The storefront's existing SDK instance."],
+  ["11", "path", "Medusa's storefront search route."],
+]
+
+<CodeTabs group="client">
+  <CodeTab label="Default Starter" value="starter">
+
+```ts title="apps/storefront/src/lib/search-client.ts" highlights={clientHighlights}
+import {
+  createInstantSearchAdapter,
+  type MedusaSdkLike,
+} from "@medusajs/instantsearch-adapter"
+import { sdk } from "@lib/config"
+
+export const PRODUCT_INDEX_NAME = "product"
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk: sdk,
+  path: "/store/search",
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```ts title="src/lib/search-client.ts"
+import {
+  createInstantSearchAdapter,
+} from "@medusajs/instantsearch-adapter"
+import { sdk } from "./sdk"
+
+export const PRODUCT_INDEX_NAME = "product"
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The `createInstantSearchAdapter` function accepts the adapter's options and returns an object with a `searchClient` property, which you pass to InstantSearch. Export the client once and import it wherever you need it. Every search surface in your storefront uses the same one.
+
+<Note>
+
+If your storefront doesn't use the JS SDK, pass `baseUrl` and `publishableApiKey` instead, and the adapter uses the native `fetch` function. You can also pass a `requester` function to control the transport yourself. Refer to the [Adapter Configuration Options](#adapter-configuration-options) section for details.
+
+</Note>
+
+---
+
+## Step 3: Add the Search Interface
+
+Finally, add the search interface. This example puts a search button in the navbar that opens a drawer holding the search field and its results.
+
+### Render a Hit
+
+Start with the component that renders a single result. Each hit's fields come from the index, so only reference the fields your index definition holds.
+
+For example, if you're using the default starter, create the file `apps/storefront/src/modules/layout/components/search/hit.tsx` with the following content:
+
+export const hitHighlights = [
+  ["6", "ProductHit", "The fields the `product` index holds."],
+  ["21", "handle", "Link the hit to its product page."],
+]
+
+<CodeTabs group="hit">
+  <CodeTab label="Default Starter" value="starter">
+
+```tsx title="apps/storefront/src/modules/layout/components/search/hit.tsx" highlights={hitHighlights}
+"use client"
+
+import type { Hit as HitType } from "instantsearch.js"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
+export type ProductHit = HitType<{
+  title: string | null
+  handle: string | null
+  thumbnail: string | null
+}>
+
+type SearchHitProps = {
+  hit: ProductHit
+  onNavigate?: () => void
+}
+
+const SearchHit = ({ hit, onNavigate }: SearchHitProps) => {
+  return (
+    <li>
+      <LocalizedClientLink
+        href={`/products/${hit.handle}`}
+        onClick={onNavigate}
+      >
+        {hit.title}
+      </LocalizedClientLink>
+    </li>
+  )
+}
+
+export default SearchHit
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```tsx title="src/components/search/hit.tsx"
+import type { Hit as HitType } from "instantsearch.js"
+
+export type ProductHit = HitType<{
+  title: string | null
+  handle: string | null
+  thumbnail: string | null
+}>
+
+const SearchHit = ({ hit }: { hit: ProductHit }) => (
+  <li>
+    <a href={`/products/${hit.handle}`}>{hit.title}</a>
+  </li>
+)
+
+export default SearchHit
+```
+
+  </CodeTab>
+</CodeTabs>
+
+InstantSearch's `Hit` type adds `objectID` to the fields you pass it, so use `hit.objectID` as the key when you render a list of hits.
+
+### Create the Drawer
+
+Next, add the drawer that the search opens in.
+
+The default starter depends on [Headless UI](https://headlessui.com/react/dialog), whose `Dialog` component brings the focus trap, the Escape key, and the backdrop click. So, the drawer only describes its own layout.
+
+<Note>
+
+The search doesn't depend on Headless UI. Use whichever dialog primitive your storefront has, as long as it traps focus while open.
+
+</Note>
+
+Create the file `apps/storefront/src/modules/layout/components/search/drawer.tsx` with the following content:
+
+<CodeTabs group="drawer">
+  <CodeTab label="Default Starter" value="starter">
+
+```tsx title="apps/storefront/src/modules/layout/components/search/drawer.tsx"
+"use client"
+
+import { Dialog, Transition } from "@headlessui/react"
+import { XMark } from "@medusajs/icons"
+import React, { Fragment } from "react"
+
+type SearchDrawerProps = {
+  isOpen: boolean
+  close: () => void
+  children: React.ReactNode
+}
+
+const SearchDrawer = ({
+  isOpen,
+  close,
+  children,
+}: SearchDrawerProps) => {
+  return (
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-[75]"
+        onClose={close}
+      >
+        <div className="fixed inset-0 bg-ui-bg-overlay" />
+
+        <div className="fixed inset-0 overflow-hidden">
+          <div className="fixed inset-y-0 right-0 flex pl-10">
+            <Transition.Child
+              as={Fragment}
+              enterFrom="translate-x-full"
+              enterTo="translate-x-0"
+              leaveFrom="translate-x-0"
+              leaveTo="translate-x-full"
+            >
+              <Dialog.Panel className="w-screen max-w-md">
+                <div className="flex h-full flex-col">
+                  <div className="flex justify-between">
+                    <Dialog.Title>Search</Dialog.Title>
+                    <button
+                      type="button"
+                      onClick={close}
+                      aria-label="Close search"
+                    >
+                      <XMark />
+                    </button>
+                  </div>
+                  {children}
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  )
+}
+
+export default SearchDrawer
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```tsx title="src/components/search/drawer.tsx"
+// Any dialog primitive works. It only has to trap focus
+// while open and close on Escape or a backdrop click.
+const SearchDrawer = ({ isOpen, close, children }) => (
+  <Dialog open={isOpen} onClose={close}>
+    {/* ... */}
+    <DialogPanel className="drawer">
+      {children}
+    </DialogPanel>
+  </Dialog>
+)
+
+export default SearchDrawer
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### Render the Search Panel
+
+Next, add the panel that holds the search field and its results, then the button that opens the drawer.
+
+This example uses the `useSearchBox` and `useHits` hooks rather than the `SearchBox` and `Hits` widgets, which gives you the same behavior with your own markup.
+
+Create the file `apps/storefront/src/modules/layout/components/search/index.tsx` with the following content:
+
+export const searchHighlights = [
+  ["30", "useSearchSettled", "Whether the results match the current query."],
+  ["49", "queryHook", "Wait for a pause in typing before searching."],
+  ["63", "useSearchBox", "The current query and a function to change it."],
+  ["68", "inputValue", "The field's value, ahead of the debounced query."],
+  ["75", "hasInput", "Tell the panel's states apart."],
+  ["76", "isPending", "The field has changed, the query hasn't caught up."],
+]
+
+<CodeTabs group="panel">
+  <CodeTab label="Default Starter" value="starter">
+
+```tsx title="apps/storefront/src/modules/layout/components/search/index.tsx" highlights={searchHighlights}
+"use client"
+
+import { MagnifyingGlass } from "@medusajs/icons"
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
+import type { SearchClient } from "instantsearch.js"
+import {
+  Configure,
+  InstantSearch,
+  useHits,
+  useInstantSearch,
+  useSearchBox,
+} from "react-instantsearch"
+
+import useToggleState from "@lib/hooks/use-toggle-state"
+import {
+  PRODUCT_INDEX_NAME,
+  searchClient,
+} from "@lib/search-client"
+import SearchDrawer from "./drawer"
+import SearchHit, { ProductHit } from "./hit"
+
+const HITS_PER_PAGE = 12
+const DEBOUNCE_MS = 250
+
+const useSearchSettled = () => {
+  const { status, results } = useInstantSearch()
+
+  const isSearching =
+    status !== "idle" && status !== "error"
+  const hasNoResultsYet = Boolean(
+    (results as unknown as {
+      __isArtificial?: boolean
+    })?.__isArtificial
+  )
+
+  return !isSearching && !hasNoResultsYet
+}
+
+const SearchPanel = ({ onNavigate }: {
+  onNavigate: () => void
+}) => {
+  const timer = useRef<number | undefined>(undefined)
+
+  const queryHook = useCallback(
+    (
+      nextQuery: string,
+      search: (value: string) => void
+    ) => {
+      window.clearTimeout(timer.current)
+      timer.current = window.setTimeout(
+        () => search(nextQuery),
+        DEBOUNCE_MS
+      )
+    },
+    []
+  )
+
+  const { query, refine } = useSearchBox({ queryHook })
+  const { items } = useHits<ProductHit>()
+  const { status, error } = useInstantSearch()
+  const isSettled = useSearchSettled()
+
+  const [inputValue, setInputValue] = useState(query)
+
+  useEffect(
+    () => () => window.clearTimeout(timer.current),
+    []
+  )
+
+  const hasInput = Boolean(inputValue.trim())
+  const isPending = inputValue.trim() !== query.trim()
+  const hasResults = Boolean(query.trim()) && items.length > 0
+
+  return (
+    <>
+      <div className="flex items-center gap-x-3 px-4">
+        <MagnifyingGlass className="shrink-0" />
+        <input
+          type="search"
+          value={inputValue}
+          onChange={(event) => {
+            setInputValue(event.target.value)
+            refine(event.target.value)
+          }}
+          placeholder="Search products"
+          aria-label="Search products"
+          autoFocus
+          className="w-full bg-transparent py-4 outline-none"
+        />
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+        {!hasInput ? (
+          <span>Start typing to search for products.</span>
+        ) : status === "error" ? (
+          <span>
+            Couldn&apos;t search products
+            {error?.message ? `: ${error.message}` : "."}
+          </span>
+        ) : !isSettled ? (
+          <span>Searching&hellip;</span>
+        ) : hasResults ? (
+          <ul className="py-2">
+            {items.map((hit) => (
+              <SearchHit
+                key={hit.objectID}
+                hit={hit}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </ul>
+        ) : isPending || !query.trim() ? (
+          <span>Searching&hellip;</span>
+        ) : (
+          <span>No products found</span>
+        )}
+      </div>
+    </>
+  )
+}
+
+const Search = () => {
+  const { state: isOpen, open, close } = useToggleState()
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={open}
+        aria-label="Search products"
+      >
+        <MagnifyingGlass />
+      </button>
+
+      <SearchDrawer isOpen={isOpen} close={close}>
+        <InstantSearch
+          indexName={PRODUCT_INDEX_NAME}
+          searchClient={searchClient as unknown as SearchClient}
+          future={{ preserveSharedStateOnUnmount: true }}
+        >
+          <Configure hitsPerPage={HITS_PER_PAGE} />
+          <SearchPanel onNavigate={close} />
+        </InstantSearch>
+      </SearchDrawer>
+    </>
+  )
+}
+
+export default Search
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```tsx title="src/components/search/index.tsx"
+import {
+  Configure,
+  InstantSearch,
+  useHits,
+  useSearchBox,
+} from "react-instantsearch"
+
+import {
+  PRODUCT_INDEX_NAME,
+  searchClient,
+} from "../../lib/search-client"
+
+const SearchPanel = () => {
+  const { query, refine } = useSearchBox()
+  const { items } = useHits()
+
+  return (
+    <>
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => refine(e.target.value)}
+      />
+      {/* render the states: empty, loading, results */}
+    </>
+  )
+}
+
+const Search = () => (
+  <InstantSearch
+    indexName={PRODUCT_INDEX_NAME}
+    searchClient={searchClient}
+  >
+    <Configure hitsPerPage={12} />
+    <SearchPanel />
+  </InstantSearch>
+)
+
+export default Search
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The `indexName` prop is the `name` property of your [search index definition](../infrastructure-modules/search/index-definitions/page.mdx), which the adapter sends as the query's `entity`. For the products index that Medusa provides, use `product`.
+
+Each widget and hook then contributes to the query the adapter builds. `useSearchBox`'s `refine` function sets the free-text `q` filter, and `Configure` sets the query's `take` through its `hitsPerPage` prop.
+
+The field stays at the top of the drawer while the results scroll below it.
+
+<Note title="Important">
+
+A field must be `searchable`, `filterable`, or `facetable` in your index definition before a widget can use it. Learn more in the [Index Field Modifiers guide](../infrastructure-modules/search/index-definitions/modifiers/page.mdx).
+
+</Note>
+
+### Add the Search to the Navbar
+
+Finally, render the search component in your storefront's navbar.
+
+For example, if you're using the default starter, add it to `apps/storefront/src/modules/layout/templates/nav/index.tsx`:
+
+<CodeTabs group="navbar">
+  <CodeTab label="Default Starter" value="starter">
+
+```tsx title="apps/storefront/src/modules/layout/templates/nav/index.tsx"
+import Search from "@modules/layout/components/search"
+
+export default async function Nav() {
+  // ...
+  return (
+    <div>
+      <header>
+        <nav>
+          <Search />
+          {/* other navbar items */}
+        </nav>
+      </header>
+    </div>
+  )
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```tsx title="src/components/navbar.tsx"
+import Search from "./search"
+
+const Navbar = () => (
+  <nav>
+    {/* ... */}
+    <Search />
+  </nav>
+)
+```
+
+  </CodeTab>
+</CodeTabs>
+
+To show the full results on a dedicated search page, use the same `InstantSearch` provider with the `Pagination`, `RefinementList`, and `SortBy` widgets. Learn more in the [Supported Widgets](#supported-widgets) section.
+
+---
+
+## Step 4: Test the Search
+
+To test the search integration:
+
+1. Start the Medusa backend and the storefront.
+2. Open the storefront in a browser and click the search button in the navbar.
+3. Type a product's title or other searchable field into the search box. The panel should show matching products as you type.
+
+---
+
+## Adapter Configuration Options
+
+`createInstantSearchAdapter` accepts the following options:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `sdk`
+      </Table.Cell>
+      <Table.Cell>
+        A Medusa JS SDK instance. The adapter sends requests through it, so the publishable API key and other headers are included.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `path`
+      </Table.Cell>
+      <Table.Cell>
+        The path of the search route, or an absolute URL. Use `/store/search` unless you added a custom route. Required unless you pass `requester`.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `baseUrl`
+      </Table.Cell>
+      <Table.Cell>
+        The Medusa backend's URL. Use it with `publishableApiKey` when you don't pass `sdk`.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `publishableApiKey`
+      </Table.Cell>
+      <Table.Cell>
+        The publishable API key sent in the `x-publishable-api-key` header. Only used with `baseUrl`.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `requester`
+      </Table.Cell>
+      <Table.Cell>
+        A custom transport function that receives the adapted queries and returns one result per query, in the same order.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `headers`
+      </Table.Cell>
+      <Table.Cell>
+        Extra headers to send with every request.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `batch`
+      </Table.Cell>
+      <Table.Cell>
+        Whether to send all queries in one request as `{ queries }`. When disabled, the adapter sends each query as its own request body.
+      </Table.Cell>
+      <Table.Cell>
+        `true`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `placeholderSearch`
+      </Table.Cell>
+      <Table.Cell>
+        Whether to search when the query is empty. When disabled, the adapter returns empty results without calling the backend.
+      </Table.Cell>
+      <Table.Cell>
+        `true`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `numericAttributes`
+      </Table.Cell>
+      <Table.Cell>
+        The fields that range widgets use. The adapter requests them as `stats` facets. The index must also mark them as `facetable({ types: ["stats"] })`.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `distinctAttribute`
+      </Table.Cell>
+      <Table.Cell>
+        The index field to deduplicate on when a widget sends `distinct`.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `primaryKey`
+      </Table.Cell>
+      <Table.Cell>
+        The document field that the adapter falls back to for InstantSearch's `objectID`. The adapter uses the hit's `id` first, so this option only applies when a hit has no `id`, such as when you pass a custom `requester`.
+      </Table.Cell>
+      <Table.Cell>
+        `"id"`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `cacheSearchResultsForSeconds`
+      </Table.Cell>
+      <Table.Cell>
+        How long the adapter caches results in the browser. `0` disables caching.
+      </Table.Cell>
+      <Table.Cell>
+        `0`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `additionalSearchParameters`
+      </Table.Cell>
+      <Table.Cell>
+        Defaults merged into every query. The adapter combines its filters with the widgets' filters using `$and`, and the widgets' pagination and sorting take precedence.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `indexSpecificSearchParameters`
+      </Table.Cell>
+      <Table.Cell>
+        The same as `additionalSearchParameters`, but applied per index. The object's keys are index names.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `transformQuery`
+      </Table.Cell>
+      <Table.Cell>
+        A function that receives the adapted query and the original InstantSearch request, and returns the query to send.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `transformResponse`
+      </Table.Cell>
+      <Table.Cell>
+        A function that receives the adapted response, the raw search result, and the original request, and returns the response to hand to the widgets.
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Set Default Query Parameters
+
+Use `additionalSearchParameters` to add filters or search options that every query must include, and `indexSpecificSearchParameters` to scope them to one index.
+
+For example:
+
+<CodeTabs group="defaults">
+  <CodeTab label="Default Starter" value="starter">
+
+```ts title="apps/storefront/src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+  additionalSearchParameters: {
+    search_options: {
+      match_strategy: "last",
+      typo_tolerance: true,
+    },
+  },
+  indexSpecificSearchParameters: {
+    product: {
+      fields: ["id", "title", "handle", "thumbnail"],
+    },
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```ts title="src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+  additionalSearchParameters: {
+    search_options: {
+      match_strategy: "last",
+      typo_tolerance: true,
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Every query then uses the `last` match strategy and typo tolerance, and the product index only returns the fields listed.
+
+<Note title="Warning" type="warning">
+
+Filters you set in the storefront's client are visible to customers, who can change them. The `/store/search` route already scopes queries to the storefront's context, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data.
+
+</Note>
+
+---
+
+## Search a Custom Index
+
+The `/store/search` route exposes the indexes that Medusa considers safe for customers. To search an index you defined yourself, add an API route for it and point the adapter's `path` option to it.
+
+For example, assuming you have an API route at `/store/article-search` that searches through articles using [query.search](!docs!/learn/fundamentals/query/search), point the InstantSearch adapter in the storefront to the route:
+
+<CodeTabs group="custom-path">
+  <CodeTab label="Default Starter" value="starter">
+
+```ts title="apps/storefront/src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/article-search",
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Other Storefronts" value="other">
+
+```ts title="src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/article-search",
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+<Note title="Warning" type="warning">
+
+Apply the filters that protect data in the route, not in the storefront. Customers can change any filter the client sends.
+
+</Note>
+
+---
+
+## Supported InstantSearch Widgets
+
+The adapter supports the following widgets:
+
+- [searchBox](https://www.algolia.com/doc/api-reference/widgets/search-box/js/)
+- [hits](https://www.algolia.com/doc/api-reference/widgets/hits/js/) and [infiniteHits](https://www.algolia.com/doc/api-reference/widgets/infinite-hits/js/)
+- [pagination](https://www.algolia.com/doc/api-reference/widgets/pagination/js/) and [hitsPerPage](https://www.algolia.com/doc/api-reference/widgets/hits-per-page/js/)
+- [stats](https://www.algolia.com/doc/api-reference/widgets/stats/js/)
+- [configure](https://www.algolia.com/doc/api-reference/widgets/configure/js/)
+- [index](https://www.algolia.com/doc/api-reference/widgets/index-widget/js/)
+- [refinementList](https://www.algolia.com/doc/api-reference/widgets/refinement-list/js/), including its searchable variant
+- [menu](https://www.algolia.com/doc/api-reference/widgets/menu/js/) and [menuSelect](https://www.algolia.com/doc/api-reference/widgets/menu-select/js/)
+- [toggleRefinement](https://www.algolia.com/doc/api-reference/widgets/toggle-refinement/js/)
+- [currentRefinements](https://www.algolia.com/doc/api-reference/widgets/current-refinements/js/) and [clearRefinements](https://www.algolia.com/doc/api-reference/widgets/clear-refinements/js/)
+- [sortBy](https://www.algolia.com/doc/api-reference/widgets/sort-by/js/)
+- [highlight](https://www.algolia.com/doc/api-reference/widgets/highlight/js/) and [snippet](https://www.algolia.com/doc/api-reference/widgets/snippet/js/), if the provider supports highlighting
+- [routing](https://www.algolia.com/doc/guides/building-search-ui/going-further/routing-urls/js/)
+
+### Widgets with Requirements
+
+The following widgets work, but they need extra setup:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Widget
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Requirement
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [rangeSlider](https://www.algolia.com/doc/api-reference/widgets/range-slider/js/), [rangeInput](https://www.algolia.com/doc/api-reference/widgets/range-input/js/), [numericMenu](https://www.algolia.com/doc/api-reference/widgets/numeric-menu/js/), and [ratingMenu](https://www.algolia.com/doc/api-reference/widgets/rating-menu/js/)
+      </Table.Cell>
+      <Table.Cell>
+        List the field in the adapter's `numericAttributes` option, and mark it as `facetable({ types: ["stats"] })` in the index definition. Stats facets are opt-in, and both the PostgreSQL and Medusa Search providers support them.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [hierarchicalMenu](https://www.algolia.com/doc/api-reference/widgets/hierarchical-menu/js/) and [breadcrumb](https://www.algolia.com/doc/api-reference/widgets/breadcrumb/js/)
+      </Table.Cell>
+      <Table.Cell>
+        The index must hold the level fields the widgets expect, such as `categories.lvl0` and `categories.lvl1`. Build them in the index definition's `consume` and `seed` functions.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `highlight` and `snippet`
+      </Table.Cell>
+      <Table.Cell>
+        The provider must support highlighting. [Medusa Search](!cloud!/search) supports it, while the PostgreSQL provider doesn't.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Filtering, Sorting, and Pagination
+
+With this adapter, you can add widgets to a product listing page that allow customers to filter, sort, and paginate through products. The adapter translates the widgets' state into Medusa-compatible search queries, so you don't have to write the logic yourself.
+
+Learn more in the [Filtering, Sorting, and Pagination guide](./examples/filtering-sorting-pagination/page.mdx).

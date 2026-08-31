@@ -1,0 +1,1038 @@
+import { Prerequisites, Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Filtering, Sorting, and Pagination`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to let customers refine a storefront's search results by a field's values, change the order of the results, and move through them a page at a time.
+
+<Note>
+
+If you installed your Medusa application after v2.20.0, its storefront already has the search functionalities explained in this guide. You can still follow this guide to understand how the search works and customize it.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "InstantSearch adapter installed and configured",
+      link: "/instantsearch"
+    }
+  ]}
+/>
+
+## Integrate with an AI Agent
+
+If you use an AI coding agent, pass it the following prompt to add filters, sorting, and pagination to your storefront. Then, use the rest of this guide to understand the changes and customize them.
+
+```md collapsed noLineNumbers
+<role>
+You are a front-end engineer adding faceted filtering, sorting, and pagination to a Medusa storefront's search results.
+</role>
+
+<task>
+Let customers narrow a list of search results by a field's values, change the order of the results, and move through them a page at a time.
+</task>
+
+<context>
+- The storefront already has the InstantSearch adapter installed, and exports a search client and an index name constant from a shared module, such as `src/lib/search-client.ts`.
+- Every component that reads or changes the search must sit inside the same `InstantSearch` provider as the results it refines.
+- A surface that lists results without a query, such as a store or category page, relies on the search client searching on an empty query. That's the adapter's default, and the same client serves every search surface in the storefront.
+- A facet is a field the search engine groups and counts. The adapter asks the engine for a field's values, and turns a customer's selection into a filter on the search query.
+- A field only works with a filter widget if the Medusa application's search index definition marks it `facetable()`. Range refinements additionally need `facetable({ types: ["stats"] })`, and the field must be listed in the search client's `numericAttributes` option.
+- `react-instantsearch` exports the `RangeInput` component and the `useRange` and `useNumericMenu` hooks. `RangeSlider`, `NumericMenu`, and `RatingMenu` are instantsearch.js widgets, and importing those names from `react-instantsearch` fails. For a refinement with no React hook, such as a rating menu, build one with `react-instantsearch`'s `useConnector` and the instantsearch.js connector.
+- The adapter reads `facetFilters` and `numericFilters`. It ignores an Algolia `filters` string silently, so a filter passed that way never reaches the search query.
+- InstantSearch's sort control switches between indexes, while the Search Module sorts through the query's `pagination.order`. The adapter bridges the two by reading the sort from the index name, in the format `{index}/sort/{field}:{direction}`. The bare index name sorts by relevance. A field must be `sortable()` in the index definition to appear in a sort value.
+- InstantSearch works in pages. The adapter turns the page number and page size into the search query's `skip` and `take`.
+- The number of pages comes from the total count the search provider reports. The query's `search_options.count` chooses the counting strategy: `exact`, `estimated`, or `none`.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+</context>
+
+<input>
+You have access to the storefront's codebase, and to the Medusa application's index definition if it's available. Before writing code, determine:
+- The pages that list search results, and the component each one renders.
+- Which fields the index marks as `facetable()`, which of those allow `stats`, and which are `sortable()`.
+- The storefront's existing result card or list component, and the page size its other lists use.
+</input>
+
+<steps>
+1. List the facetable and sortable fields available on the index. If you can't read the index definition, ask the user which fields to use before writing any code.
+2. Ask the user which pages to cover, which fields to expose as filters, which sort options to offer, and whether they want numbered pages or an endless list. Don't start writing code until they answer.
+3. Wrap each page's contents in an `InstantSearch` provider using the shared search client, with the filters beside the results. Enable `routing` on the provider so the filters, sort, and page appear in the URL. Replace the page's existing data fetching, don't run both.
+4. Add a filter for each field the user chose. Use a checkbox list for a field with many values, a single-select list for a field where only one value applies at a time, and a toggle for an on/off condition.
+5. Add controls that show the applied filters and clear them.
+6. If the user asked for a numeric range filter, confirm the field allows stats facets and appears in the search client's `numericAttributes`. If either is missing, add the field to `numericAttributes`, and report that the index definition needs `facetable({ types: ["stats"] })`.
+7. Add the sort control. Build each option's value from the index name constant. Include the bare index name, relevance, among the options and list it first, so the control matches the provider's `indexName`, which is what makes relevance the default.
+8. Set the page size to match the storefront's other lists.
+9. Add the pagination the user chose. Use one approach or the other, never both on the same surface.
+10. Check that the query, filters, and sort still apply after moving to another page, and that changing a filter or the sort returns the customer to the first page.
+11. Report what you changed and how to test it.
+</steps>
+
+<constraints>
+- Never add a filter widget for a field you haven't confirmed is facetable, or a sort option for a field you haven't confirmed is sortable. Both render empty or have no effect otherwise.
+- Never filter, sort, or paginate the returned hits in the browser. Every refinement must reach the search query, or the customer never sees the results it excluded.
+- Never place a filter in the storefront that exists to protect data, such as the sales channel or a publication status. Enforce those in the Medusa application's search route.
+- Never hardcode the index name in a sort value. Build it from the exported constant.
+- Never pass a pinned filter as an Algolia `filters` string on `Configure`. Use `facetFilters`, with one inner array per filter, which the adapter combines with AND.
+- Never make a field-based sort the default. Relevance is the default for search results.
+- Never call a range refinement's `refine` from a slider's continuous change event. Track the dragged value in local state and refine once, when the customer releases it, or every pixel of the drag sends a search.
+- Never render two pagination approaches on the same surface. They fight over the same page state.
+- Never assume the total result count is exact. Check the provider's counting strategy before rendering a "page X of Y" label.
+- Never create a second search client or a second `InstantSearch` provider. Every surface imports the one exported from the shared module.
+- Never leave a page's old data fetching in place beside the search. The list must come from one source.
+- Never add a CSS framework or component library the storefront doesn't already use.
+</constraints>
+
+<error_handling>
+- If a filter widget renders no values, report that the field may not be facetable in the index definition rather than removing the widget silently.
+- If a range refinement renders no bounds, report that the field needs `facetable({ types: ["stats"] })` and an entry in `numericAttributes`.
+- If a pinned filter has no effect and every document still renders, check that it's passed as `facetFilters` rather than as a `filters` string.
+- If a sort option has no effect on the results, report that the field may not be sortable rather than sorting in the browser.
+- If the last page number changes as the customer moves through pages, report that the provider is counting approximately rather than hiding the pagination.
+- If you can't read the index definition, ask the user for the list of facetable and sortable fields.
+- If the results reset to the first page when a filter or the sort changes, that's correct behavior. Don't work around it.
+</error_handling>
+
+<output_format>
+Report in this structure:
+
+## Changes
+A list of the files you created or modified, each with a one-line description.
+
+## Filters
+Each field you added a filter for, with the widget type.
+
+## Sort Options
+Each option you added, with its label and index name value.
+
+## Pagination
+Which approach you used, the page size, and whether the total count is exact.
+
+## Index Changes Needed
+Any modifier the Medusa application's index definition is missing. Write "None" if there are none.
+
+## How to Test
+Numbered steps that end in an observable result, including one that checks the list renders results before any filter is applied, and one that checks a filter and a sort both still apply on the second page.
+</output_format>
+
+<success_criteria>
+- The list renders every document when no filter is applied.
+- Selecting a filter value narrows the results and updates the result count.
+- The filter values show counts, and the counts change as other filters are applied.
+- Clearing all filters restores the unfiltered results.
+- The sort control defaults to relevance, and choosing another option reorders the results.
+- Moving to another page shows different results, with the query, filters, and sort still applied.
+- Changing a filter or the sort returns the customer to the first page.
+- The filters, sort, and current page appear in the URL and survive a reload.
+- Every field with a filter widget is facetable, and every field in a sort value is sortable.
+- The storefront builds and type-checks with no new errors.
+</success_criteria>
+```
+
+---
+
+## Field Modifiers a Refinement Requires
+
+A field supports a refinement only if your [index definition](../../../infrastructure-modules/search/index-definitions/page.mdx) marks it with the matching [modifier](../../../infrastructure-modules/search/index-definitions/modifiers/page.mdx):
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Refinement
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required Modifier
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Filter by a field's values
+      </Table.Cell>
+      <Table.Cell>
+        `filterable()` and `facetable()`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Filter by a numeric range
+      </Table.Cell>
+      <Table.Cell>
+        `filterable()` and `facetable({ types: ["stats"] })`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Sort by a field
+      </Table.Cell>
+      <Table.Cell>
+        `sortable()`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The field names in this guide's examples, such as `collection_title` or `option_values`, are the ones a typical product index holds. Use the names your own index definition declares instead, as a widget pointed at a field the index doesn't hold renders nothing.
+
+---
+
+## Set Up the Search Context
+
+Every component in this guide reads from and writes to one search state, so wrap the page's contents in a single `InstantSearch` provider. The filters, the sort, and the pagination then stay in step without wiring them together.
+
+For example:
+
+export const providerHighlights = [
+  ["13", "indexName", "The `name` of the index to list from."],
+  ["14", "searchClient", "The client the whole storefront shares."],
+  ["15", "routing", "Sync the refinements with the URL."],
+  ["17", "Configure", "The number of results per page."],
+]
+
+```tsx title="src/components/product-list.tsx" highlights={providerHighlights}
+import { Configure, InstantSearch } from "react-instantsearch"
+
+import {
+  PRODUCT_INDEX_NAME,
+  searchClient,
+} from "../lib/search-client"
+// Components that show filters and results
+import Filters from "./filters"
+import ProductHits from "./product-hits"
+
+const ProductList = () => (
+  <InstantSearch
+    indexName={PRODUCT_INDEX_NAME}
+    searchClient={searchClient}
+    routing
+  >
+    <Configure hitsPerPage={12} />
+    <Filters />
+    <ProductHits />
+  </InstantSearch>
+)
+
+export default ProductList
+```
+
+Note the following about this snippet:
+
+- `indexName` is the `name` of the index the page lists from, and the adapter sends it as the query's `entity`. For the product index that Medusa provides, use `product`.
+- `searchClient` is the client you created in the [InstantSearch Adapter guide](../../page.mdx). Every surface imports the same one if they share the same options.
+- `routing` writes the search state to the URL's query parameters and restores it on load, so a customer can share a filtered list, and the browser's back button undoes one refinement at a time.
+- `Configure` sets search parameters that the customer doesn't control, such as the page size.
+
+The page no longer fetches its own data. Replace its existing fetching rather than running both, as two sources produce two different lists.
+
+<Note>
+
+A page that lists results without a query, such as a store page, relies on the search client searching on an empty query. That's the adapter's default behavior.
+
+</Note>
+
+---
+
+## Filter by a Field's Values
+
+The `useRefinementList` hook returns a field's values, their counts, and a `refine` function that toggles a value in the search query's filters. Use it for any field whose values the customer picks from a list, such as a collection, a category, a type, or a tag.
+
+The following component takes the field as a prop, so you can render it once per field:
+
+export const groupHighlights = [
+  ["10", "attribute", "The facetable field to filter by."],
+  ["12", "sortBy", "Most common values first, ties broken by name."],
+  ["15", "items.length", "Render nothing when the field has no values."],
+  ["27", "refine", "Toggle the value in the search query's filters."],
+  ["29", "count", "How many results carry this value."],
+]
+
+```tsx title="src/components/refinement-group.tsx" highlights={groupHighlights}
+import { useRefinementList } from "react-instantsearch"
+
+type Props = {
+  attribute: string
+  title: string
+}
+
+const RefinementGroup = ({ attribute, title }: Props) => {
+  const { items, refine } = useRefinementList({
+    attribute,
+    limit: 20,
+    sortBy: ["count:desc", "name:asc"],
+  })
+
+  if (!items.length) {
+    return null
+  }
+
+  return (
+    <div>
+      <span>{title}</span>
+      {items.map((item) => (
+        <label key={item.value}>
+          <input
+            type="checkbox"
+            checked={item.isRefined}
+            onChange={() => refine(item.value)}
+          />
+          {item.label} ({item.count})
+        </label>
+      ))}
+    </div>
+  )
+}
+
+export default RefinementGroup
+```
+
+`useRefinementList` accepts an object with the following properties:
+
+- `attribute`: the facetable field to filter by.
+- `limit`: how many values to request.
+- `sortBy`: how to order the values. `["count:desc", "name:asc"]` shows the most common values first, with ties broken alphabetically.
+
+It returns an object with the following properties:
+
+- `items`: the field's values, each with a `label`, a `value`, a `count`, and an `isRefined` flag.
+- `refine`: a function that toggles a value in the search query's filters.
+
+A field returns no values when nothing in the current results carries it, so the component renders nothing in that case.
+
+### Render a Filter per Field
+
+Render the component once per field you want to expose. For a product index, that's typically the collection, the categories, and the tags:
+
+```tsx title="src/components/filters.tsx"
+import RefinementGroup from "./refinement-group"
+
+const Filters = () => (
+  <div>
+    <RefinementGroup
+      attribute="collection_title"
+      title="Collection"
+    />
+    <RefinementGroup
+      attribute="category_names"
+      title="Category"
+    />
+    <RefinementGroup attribute="tags" title="Tags" />
+  </div>
+)
+
+export default Filters
+```
+
+Each filter reads from the same provider, so selecting a collection updates the category and tag counts in the same response.
+
+<Note title="Tip">
+
+`limit` caps how many values the filter requests. Pair it with the `showMore` option to let customers expand the list.
+
+</Note>
+
+### Choose the Widget for the Field
+
+`useRefinementList` suits a field whose values combine, but not every field does. Choose the hook by how the customer picks a value:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Hook
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Use it for
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [useRefinementList](https://www.algolia.com/doc/api-reference/widgets/refinement-list/react#hook)
+      </Table.Cell>
+      <Table.Cell>
+        A field whose values combine, such as tags or categories. The customer selects any number of them.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useMenu](https://www.algolia.com/doc/api-reference/widgets/menu/react#hook)
+      </Table.Cell>
+      <Table.Cell>
+        A field where one value applies at a time, such as a product type. Selecting a value replaces the previous one.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useToggleRefinement](https://www.algolia.com/doc/api-reference/widgets/toggle-refinement/react#hook)
+      </Table.Cell>
+      <Table.Cell>
+        An on/off condition, such as "In stock only". The customer switches one value on.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useHierarchicalMenu](https://www.algolia.com/doc/api-reference/widgets/hierarchical-menu/react#hook)
+      </Table.Cell>
+      <Table.Cell>
+        A nested category tree. The index must hold the level fields the hook expects, such as `categories.lvl0` and `categories.lvl1`, which you build in the index definition.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Each of these hooks writes to the same search state, so they all work beside each other in one provider.
+
+---
+
+## Filter by Product Options
+
+A product's options, such as size and color, live in one index field. Indexing them as `Size:Large` and `Color:Red` keeps them filterable as one facet, so split each value on the colon and group by the part in front of it.
+
+For example, the following component groups the values and renders a button for each one:
+
+export const optionHighlights = [
+  ["11", "separator", "Split `Size:Large` into a group and a value."],
+  ["31", "limit", "Every value is one facet, so raise the limit."],
+  ["32", "sortBy", "Alphabetical keeps the list stable as counts move."],
+]
+
+```tsx title="src/components/option-refinements.tsx" highlights={optionHighlights}
+import { useRefinementList } from "react-instantsearch"
+
+type Item = ReturnType<
+  typeof useRefinementList
+>["items"][0]
+
+function groupItems(items: Item[]) {
+  const groups = new Map<string, Item[]>()
+
+  for (const item of items) {
+    const separator = item.label.indexOf(":")
+
+    if (separator < 1) {
+      continue
+    }
+
+    const title = item.label.slice(0, separator)
+
+    groups.set(title, [
+      ...(groups.get(title) ?? []),
+      item,
+    ])
+  }
+
+  return Array.from(groups.entries())
+}
+
+const OptionRefinements = () => {
+  const { items, refine } = useRefinementList({
+    attribute: "option_values",
+    limit: 200,
+    sortBy: ["name:asc"],
+  })
+
+  const groups = groupItems(items)
+
+  if (!groups.length) {
+    return null
+  }
+
+  return (
+    <div>
+      {groups.map(([title, values]) => (
+        <div key={title}>
+          <span>{title}</span>
+          {values.map((value) => (
+            <button
+              key={value.value}
+              onClick={() => refine(value.value)}
+              aria-pressed={value.isRefined}
+            >
+              {value.label.slice(
+                value.label.indexOf(":") + 1
+              )}
+              <span>({value.count})</span>
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default OptionRefinements
+```
+
+The engine returns one facet holding every option value, so `limit` must cover them all. Ten options of ten values each need a limit of a hundred.
+
+`name:asc` keeps the values in a fixed order, rather than reordering them as counts change.
+
+<Note title="Tip">
+
+The same approach works for any field that packs a group and a value into one string, such as a custom attribute or a specification. Only the separator changes.
+
+</Note>
+
+---
+
+## Filter by a Numeric Range
+
+A range refinement needs a field's lowest and highest values before it can render. The engine reports those as a stats facet, which is opt-in on both sides.
+
+First, mark the field in your index definition:
+
+```ts title="src/search/product.ts"
+min_price: search
+  .float()
+  .filterable()
+  .facetable({ types: ["stats"] }),
+```
+
+Then, list the field in the search client's `numericAttributes` option, so the adapter requests it as a stats facet rather than a value facet:
+
+```ts title="src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+  numericAttributes: ["min_price"],
+})
+```
+
+Finally, add the widget to your filters. `RangeInput` is the only range widget `react-instantsearch` ships, and it renders two number fields the customer types a minimum and a maximum into:
+
+```tsx title="src/components/filters.tsx"
+import { RangeInput } from "react-instantsearch"
+
+// ...
+
+<RangeInput attribute="min_price" />
+```
+
+The adapter turns the selected range into `$gte` and `$lte` operators on the field.
+
+<Note title="Warning" type="warning">
+
+If either side is missing, the widget renders with no bounds and the customer can't move it. Both the PostgreSQL and Medusa Search providers support stats facets, but the field has to opt in.
+
+</Note>
+
+### Build a Price Slider with useRange
+
+`react-instantsearch` ships no slider, so build one on the `useRange` hook. It returns the field's bounds from the stats facet, the current selection, and a `refine` function that sets a new one.
+
+A slider's `onChange` fires on every pixel the customer drags, and calling `refine` from it sends a search per pixel. So track the dragged value in local state, and call `refine` once, when the customer lets go.
+
+For example, the following component renders a single slider for the maximum price, and searches once per drag:
+
+export const rangeHighlights = [
+  ["6", "attribute", "The field with the stats facet."],
+  ["10", "draft", "The dragged value, before it reaches the search."],
+  ["14", "canRefine", "Render nothing until the bounds arrive."],
+  ["18", "start", "Unrefined bounds are `-Infinity` and `Infinity`."],
+  ["28", "refine", "Set the new range, `undefined` for an open bound."],
+  ["43", "onPointerUp", "Search on release, not on every drag."],
+]
+
+```tsx title="src/components/price-slider.tsx" highlights={rangeHighlights}
+import { useState } from "react"
+import { useRange } from "react-instantsearch"
+
+const PriceSlider = () => {
+  const { range, start, refine, canRefine } = useRange({
+    attribute: "min_price",
+  })
+
+  // `null` while the customer isn't dragging.
+  const [draft, setDraft] = useState<number | null>(null)
+
+  const { min, max } = range
+
+  if (!canRefine || min == null || max == null) {
+    return null
+  }
+
+  const selectedMax = Number.isFinite(start[1])
+    ? (start[1] as number)
+    : max
+
+  const value = draft ?? selectedMax
+
+  const commit = () => {
+    setDraft(null)
+
+    if (value !== selectedMax) {
+      refine([undefined, value])
+    }
+  }
+
+  return (
+    <label>
+      <span>Max price: {value}</span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) =>
+          setDraft(Number(e.target.value))
+        }
+        onPointerUp={commit}
+        onKeyUp={commit}
+      />
+    </label>
+  )
+}
+
+export default PriceSlider
+```
+
+The slider renders `draft` while the customer drags it, so it moves without searching. `commit` clears `draft` and calls `refine` only if the value changed, and the slider follows the refinement again from the next response. `onKeyUp` covers the customer who moves the slider with the arrow keys.
+
+`useRange` returns an object with the following properties:
+
+- `range`: the field's lowest and highest values, as reported by the stats facet.
+- `start`: the current selection, as a `[min, max]` tuple. An unset bound is `-Infinity` or `Infinity`, so check it with `Number.isFinite` before rendering it.
+- `refine`: a function that sets a new `[min, max]` range. Pass `undefined` for a bound you want to leave open.
+- `canRefine`: `false` when the lowest and highest values are equal, which includes the empty bounds before the first response arrives.
+
+
+### Range React Widgets
+
+Of the range refinements InstantSearch offers, `react-instantsearch` exports the `RangeInput` component, and the `useRange` and `useNumericMenu` hooks. `RangeSlider`, `NumericMenu`, and `RatingMenu` are instantsearch.js widgets, so importing those names from `react-instantsearch` fails.
+
+Any instantsearch.js connector still works in React through the `useConnector` hook, which turns a connector into a hook you own. That's how you cover a refinement `react-instantsearch` ships no hook for:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Refinement
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Use it for
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        In react-instantsearch
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [RangeInput](https://www.algolia.com/doc/api-reference/widgets/range-input/react)
+      </Table.Cell>
+      <Table.Cell>
+        Two number fields the customer types a minimum and maximum into.
+      </Table.Cell>
+      <Table.Cell>
+        Yes, as a component.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useRange](https://www.algolia.com/doc/api-reference/widgets/range-slider/react)
+      </Table.Cell>
+      <Table.Cell>
+        Any range control you build yourself, such as a draggable slider between the field's lowest and highest values.
+      </Table.Cell>
+      <Table.Cell>
+        Yes, as a hook. `RangeSlider` itself is an instantsearch.js widget, so build the slider on this hook.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useNumericMenu](https://www.algolia.com/doc/api-reference/widgets/numeric-menu/react)
+      </Table.Cell>
+      <Table.Cell>
+        Ranges you define yourself, such as "Under $50" and "$50 to $100".
+      </Table.Cell>
+      <Table.Cell>
+        Yes, as a hook. There's no `NumericMenu` component, so render the hook's items yourself.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [useRatingMenu](https://www.algolia.com/doc/api-reference/widgets/rating-menu/react)
+      </Table.Cell>
+      <Table.Cell>
+        A star rating, filtering by "this rating and above".
+      </Table.Cell>
+      <Table.Cell>
+        Not as an export. Build the hook yourself with `useConnector` and instantsearch.js's `connectRatingMenu`, as shown in Algolia's React reference.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Show and Clear the Applied Filters
+
+Once a customer applies more than one filter, they need to see what's applied and undo it without hunting through the sidebar.
+
+The `useCurrentRefinements` hook returns every applied refinement, grouped by field, with a `refine` function that removes one:
+
+```tsx title="src/components/current-refinements.tsx"
+import { useCurrentRefinements } from "react-instantsearch"
+
+const CurrentRefinements = () => {
+  const { items } = useCurrentRefinements()
+
+  return (
+    <div>
+      {items.map((item) =>
+        item.refinements.map((refinement) => (
+          <button
+            key={refinement.label}
+            onClick={() => item.refine(refinement)}
+          >
+            {refinement.label} &times;
+          </button>
+        ))
+      )}
+    </div>
+  )
+}
+
+export default CurrentRefinements
+```
+
+The `useClearRefinements` hook removes every applied filter at once. Its `canRefine` flag is `false` when there's nothing to clear:
+
+```tsx title="src/components/clear-refinements.tsx"
+import { useClearRefinements } from "react-instantsearch"
+
+const ClearRefinements = () => {
+  const { canRefine, refine } = useClearRefinements()
+
+  if (!canRefine) {
+    return null
+  }
+
+  return (
+    <button onClick={refine}>Clear all filters</button>
+  )
+}
+
+export default ClearRefinements
+```
+
+It removes the filters but keeps the sort and the query. To clear a subset instead, pass `includedAttributes` with the fields to reset.
+
+---
+
+## Sort the Results
+
+InstantSearch and the Search Module express sorting differently:
+
+- InstantSearch's sort switches between indexes. In Algolia, each sort order is a separate index.
+- The Search Module sorts within one index, through the search query's `pagination.order`.
+
+The adapter bridges the two by reading the sort from the index name. An index name of the format `{index}/sort/{field}:{direction}` becomes a query on `{index}` ordered by `{field}`.
+
+The `useSortBy` hook takes the options and returns the current one used for sorting, with a `refine` function that changes it, so you can render them with any control, such as a select or a radio group:
+
+export const sortHighlights = [
+  ["6", "PRODUCT_INDEX_NAME", "Relevance, matching the provider's `indexName`."],
+  ["8", "sort", "The suffix the adapter turns into `pagination.order`."],
+]
+
+```tsx title="src/components/sort-products.tsx" highlights={sortHighlights}
+import { useSortBy } from "react-instantsearch"
+
+import { PRODUCT_INDEX_NAME } from "../lib/search-client"
+
+const SORT_OPTIONS = [
+  { value: PRODUCT_INDEX_NAME, label: "Relevance" },
+  {
+    value: `${PRODUCT_INDEX_NAME}/sort/created_at:desc`,
+    label: "Latest Arrivals",
+  },
+  {
+    value: `${PRODUCT_INDEX_NAME}/sort/title:asc`,
+    label: "Title: A to Z",
+  },
+  {
+    value: `${PRODUCT_INDEX_NAME}/sort/title:desc`,
+    label: "Title: Z to A",
+  },
+]
+
+const SortProducts = () => {
+  const { currentRefinement, refine } = useSortBy({
+    items: SORT_OPTIONS,
+  })
+
+  return (
+    <select
+      value={currentRefinement}
+      onChange={(e) => refine(e.target.value)}
+    >
+      {SORT_OPTIONS.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  )
+}
+
+export default SortProducts
+```
+
+Build every value from the exported index name constant, so renaming the index changes one line.
+
+To break ties, list more fields in the suffix, separated by commas. The adapter applies them in the order you list them.
+
+For example, the following value sorts by `min_price` ascending, then by `title` ascending:
+
+```ts
+const SORT_OPTIONS = [
+  // ...
+  {
+    value: `${PRODUCT_INDEX_NAME}/sort/min_price:asc,title:asc`,
+    label: "Price: Low to High",
+  },
+]
+```
+
+The chosen sort appears in the URL alongside the filters, and it stays applied as the customer moves through pages.
+
+<Note title="Tip">
+
+A field with no direction defaults to ascending, so `title` and `title:asc` mean the same thing.
+
+</Note>
+
+---
+
+## Paginate the Results
+
+The `usePagination` hook returns the page numbers to render, the current page, and a `refine` function that moves between pages:
+
+export const paginationHighlights = [
+  ["5", "padding", "How many pages to show on each side."],
+  ["7", "nbPages", "Render nothing when one page holds everything."],
+  ["17", "refine", "Move to a page, which sets the query's `skip`."],
+]
+
+```tsx title="src/components/pagination.tsx" highlights={paginationHighlights}
+import { usePagination } from "react-instantsearch"
+
+const SearchPagination = () => {
+  const { pages, currentRefinement, nbPages, refine } =
+    usePagination({ padding: 2 })
+
+  if (nbPages <= 1) {
+    return null
+  }
+
+  const lastPage = nbPages - 1
+
+  const renderPage = (page: number) => (
+    <button
+      key={page}
+      disabled={page === currentRefinement}
+      onClick={() => refine(page)}
+    >
+      {page + 1}
+    </button>
+  )
+
+  return (
+    <div>
+      {!pages.includes(0) && renderPage(0)}
+      {pages.map(renderPage)}
+      {!pages.includes(lastPage) && renderPage(lastPage)}
+    </div>
+  )
+}
+
+export default SearchPagination
+```
+
+`pages` holds the window of page numbers around the current one, sized by `padding`. Render the first and last page outside that window so customers can jump to either end.
+
+The numbers are zero-based, so add one when you render them.
+
+<Note>
+
+Moving to another page keeps the query, the filters, and the sort, as they're all part of the same search state. Changing a filter resets the page.
+
+</Note>
+
+### Load More Instead of Pages
+
+For an endless list, use the `useInfiniteHits` hook rather than `useHits`. It appends each page to the results already rendered:
+
+```tsx title="src/components/product-hits.tsx"
+import { useInfiniteHits } from "react-instantsearch"
+
+const ProductHits = () => {
+  const { items, showMore, isLastPage } = useInfiniteHits()
+
+  return (
+    <>
+      <ul>
+        {items.map((hit) => (
+          <li key={hit.objectID}>{hit.title}</li>
+        ))}
+      </ul>
+      {!isLastPage && (
+        <button type="button" onClick={showMore}>
+          Load more
+        </button>
+      )}
+    </>
+  )
+}
+
+export default ProductHits
+```
+
+To load the next page as the customer scrolls, call `showMore` from an intersection observer on a sentinel element at the end of the list, rather than from a button.
+
+<Note title="Warning" type="warning">
+
+Don't render the pagination controls and infinite hits on the same surface. They both write the page number to the search state, so they overwrite each other.
+
+</Note>
+
+### Show Placeholders Only When They Help
+
+InstantSearch keeps the previous results in `items` while the next search runs. Keeping them on screen works when the customer changes a filter, but not when they move to another page, where the old page's results sit under new page numbers.
+
+To tell the two apart, compare the current page and refinements to the last settled ones:
+
+export const settledHighlights = [
+  ["11", "hasNoResponse", "No response has arrived yet."],
+  ["13", "indexUiState", "Everything the customer has refined so far."],
+  ["28", "isPagingOnly", "Only the page changed, the filters didn't."],
+]
+
+```tsx title="src/components/use-paging-state.ts" highlights={settledHighlights}
+import { useEffect, useRef } from "react"
+import { useInstantSearch } from "react-instantsearch"
+
+export function usePagingState() {
+  const { status, results, indexUiState } =
+    useInstantSearch()
+
+  const isSearching =
+    status !== "idle" && status !== "error"
+
+  const hasNoResponse = Boolean(results.__isArtificial)
+
+  const { page, ...refinements } = indexUiState
+  const currentPage = page ?? 1
+  const refinementKey = JSON.stringify(refinements)
+
+  const settled = useRef({
+    page: currentPage,
+    refinementKey,
+  })
+
+  useEffect(() => {
+    if (!isSearching) {
+      settled.current = { page: currentPage, refinementKey }
+    }
+  }, [isSearching, currentPage, refinementKey])
+
+  const isPagingOnly =
+    refinementKey === settled.current.refinementKey &&
+    currentPage !== settled.current.page
+
+  return { isSearching, isPagingOnly, hasNoResponse }
+}
+```
+
+`results.__isArtificial` marks the empty result set InstantSearch creates before the first response arrives, so there are no previous results to keep on screen.
+
+Render placeholders when `hasNoResponse` is true, or when `isSearching` and `isPagingOnly` are both true. Keep the previous results on screen otherwise.
+
+`indexUiState` holds every refinement, so comparing it is one `JSON.stringify` rather than a check per filter. Adding a filter needs no change here.
+
+---
+
+## Apply a Filter the Customer Can't Change
+
+Some filters aren't a customer's choice, such as a category page listing only that category's products, or a collection page listing only that collection's. Pass those to the `Configure` widget alongside the page size, rather than adding a filter component for them.
+
+So, a category page is the same component as the store page, with one extra prop on `Configure`:
+
+export const pinnedHighlights = [
+  ["22", "facetFilters", "The pinned filter the customer can't change."],
+  ["24", "Filters", "The same components the store page renders."],
+]
+
+```tsx title="src/components/category-products.tsx" highlights={pinnedHighlights}
+import { Configure, InstantSearch } from "react-instantsearch"
+
+import {
+  PRODUCT_INDEX_NAME,
+  searchClient,
+} from "../lib/search-client"
+import Filters from "./filters"
+import ProductHits from "./product-hits"
+
+type Props = {
+  categoryName: string
+}
+
+const CategoryProducts = ({ categoryName }: Props) => (
+  <InstantSearch
+    indexName={PRODUCT_INDEX_NAME}
+    searchClient={searchClient}
+    routing
+  >
+    <Configure
+      hitsPerPage={12}
+      facetFilters={[[`category_names:${categoryName}`]]}
+    />
+    <Filters />
+    <ProductHits />
+  </InstantSearch>
+)
+
+export default CategoryProducts
+```
+
+The provider, the filters, the sort, and the pagination stay the same on every listing page. Only the pinned filter differs, so one set of components serves the store page, the category pages, and the collection pages.
+
+To pin more than one filter, add an inner array per filter. The adapter combines the inner arrays with `AND`, and the values inside one inner array with `OR`. For example, `` facetFilters={[[`category_names:${categoryName}`], ["tags:sale"]]} `` narrows to products that are in the category *and* carry the `sale` tag.
+
+---
+
+## Exact Result Counts
+
+The number of pages depends on the total count the search provider reports. Providers can count in three ways, which the query's `search_options.count` chooses:
+
+- `estimated`: the engine approximates the total. This is the default, and the last page number may shift as the customer moves through the list.
+- `exact`: the engine counts every match. The page count is right, at the cost of a slower search on large indexes.
+- `none`: the engine returns no total. The adapter then estimates from the current page, so InstantSearch only knows whether another page exists.
+
+To count exactly, set it in the search client's `additionalSearchParameters`:
+
+```ts title="src/lib/search-client.ts"
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+  additionalSearchParameters: {
+    search_options: {
+      count: "exact",
+    },
+  },
+})
+```
+
+<Note>
+
+A page that renders "X results" reads the same total, so the counting strategy decides whether that number is exact.
+
+</Note>

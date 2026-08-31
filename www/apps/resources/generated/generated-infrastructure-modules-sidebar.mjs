@@ -547,6 +547,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
+          "type": "ref",
+          "path": "/instantsearch",
+          "title": "InstantSearch Adapter",
+          "children": []
+        },
+        {
+          "loaded": true,
           "type": "link",
           "title": "Providers",
           "path": "/infrastructure-modules/search/providers",
