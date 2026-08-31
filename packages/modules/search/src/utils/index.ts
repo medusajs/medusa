@@ -98,7 +98,13 @@ export function listRetrievablePaths(
 ): string[] {
   return flattenFields(fields)
     .filter(
-      ({ field }) => field.type !== "object" && field.retrievable !== false
+      ({ field }) =>
+        field.type !== "object" &&
+        field.retrievable !== false &&
+        // Engine-embedded vectors are not stored under their own path —
+        // the source field carries the embedding — so they cannot be
+        // projected back onto hits.
+        !field.embed
     )
     .map(({ path }) => path)
 }
@@ -201,6 +207,18 @@ export function normalizeSearchQuery({
     typeof facet === "string" ? { field: facet, type: "value" as const } : facet
   )
 
+  if (searchOptions.vector && !searchOptions.vector.field) {
+    const vectorFields = flattenFields(index.fields).filter(
+      ({ field }) => field.type === "vector"
+    )
+    if (vectorFields.length === 1) {
+      searchOptions.vector = {
+        ...searchOptions.vector,
+        field: vectorFields[0].path,
+      }
+    }
+  }
+
   return {
     index,
     // Taken as given when set: `query.search` has already dropped anything the
@@ -269,8 +287,10 @@ function withoutFieldFilter(
 /**
  * The base query plus one per faceted field with that field's own filter dropped.
  * Every engine reviewed needs a query per facet, so the fan-out lives here rather
- * than in each provider. `disjunctive_facets` is stripped from what is handed on —
- * a provider should never see an option it is not expected to act on.
+ * than in each provider. The expanded set is then handed to `provider.searchMany`
+ * so the engine can pack them into one round-trip. `disjunctive_facets` is
+ * stripped from what is handed on — a provider should never see an option it is
+ * not expected to act on.
  */
 export function buildDisjunctiveFacetQueries(
   query: SearchTypes.ProviderSearchQuery
@@ -299,9 +319,9 @@ export function buildDisjunctiveFacetQueries(
     perFacet.set(facet.field, {
       ...base,
       filters: relaxed,
-      // Only the facet is wanted; skip the hits.
+      // Only the facet is wanted; skip the hits and the count.
       pagination: { ...query.pagination, skip: 0, take: 0 },
-      search_options: { ...searchOptions, facets: [facet] },
+      search_options: { ...searchOptions, facets: [facet], count: "none" },
     })
   }
 
@@ -365,7 +385,7 @@ export function validateFieldUsage({
 }): void {
   const fieldMap = buildFieldMap(index)
 
-  const fail = (message: string) => {
+  function fail(message: string): never {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
 
@@ -376,7 +396,7 @@ export function validateFieldUsage({
         `Unknown field "${path}" used in ${usage} on search index "${index.name}"`
       )
     }
-    return known!.field
+    return known.field
   }
 
   if (query.filters) {
@@ -423,6 +443,62 @@ export function validateFieldUsage({
 
   if (query.search_options?.distinct) {
     lookup(query.search_options.distinct, "search_options.distinct")
+  }
+
+  const vector = query.search_options?.vector
+  if (vector) {
+    if (!vector.field) {
+      const vectorFields = [...fieldMap.values()].filter(
+        ({ field }) => field.type === "vector"
+      )
+      fail(
+        vectorFields.length
+          ? `search_options.vector.field is required when the index has more than one vector field`
+          : `search_options.vector requires a vector field on search index "${index.name}"`
+      )
+    }
+
+    const field = lookup(vector.field, "search_options.vector.field")
+    if (field.type !== "vector") {
+      fail(
+        `Field "${vector.field}" is not a vector field on search index "${index.name}"`
+      )
+    }
+
+    if (vector.value && vector.query) {
+      fail(
+        `search_options.vector.value and search_options.vector.query are mutually exclusive`
+      )
+    }
+
+    if (!vector.value && !vector.query) {
+      fail(
+        `search_options.vector requires either "value" (embedding) or "query" (text to embed)`
+      )
+    }
+
+    if (vector.query && !field.embed) {
+      fail(
+        `search_options.vector.query requires vector field "${vector.field}" to declare "embed"`
+      )
+    }
+
+    if (
+      vector.value &&
+      field.dimensions &&
+      vector.value.length !== field.dimensions
+    ) {
+      fail(
+        `Vector value for "${vector.field}" expected ${field.dimensions} dimensions, got ${vector.value.length}`
+      )
+    }
+
+    if (
+      vector.semantic_ratio !== undefined &&
+      (vector.semantic_ratio < 0 || vector.semantic_ratio > 1)
+    ) {
+      fail("search_options.vector.semantic_ratio must be between 0 and 1")
+    }
   }
 }
 
@@ -503,7 +579,7 @@ function validateIndexDefinition({
 }: {
   definition: SearchTypes.ResolvedSearchIndexDefinition
 }): void {
-  const fail = (message: string) => {
+  function fail(message: string): never {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Invalid search index definition "${definition.name}": ${message}`
@@ -536,6 +612,14 @@ function validateIndexDefinition({
       fail(`vector field "${path}" cannot be an array`)
     }
 
+    if (field.embed) {
+      if (field.type !== "vector") {
+        fail(
+          `field "${path}" sets "embed", which only applies to vector fields`
+        )
+      }
+    }
+
     if (field.type === "object" && !field.fields) {
       fail(`object field "${path}" must declare its "fields"`)
     }
@@ -553,6 +637,23 @@ function validateIndexDefinition({
     if (isSearchable(field) && !["text", "keyword"].includes(field.type)) {
       fail(
         `field "${path}" is of type "${field.type}", which cannot be searched as free text`
+      )
+    }
+  }
+
+  const fieldMap = buildFieldMap(definition)
+  for (const { path, field } of fieldMap.values()) {
+    if (!field.embed) {
+      continue
+    }
+
+    const source = fieldMap.get(field.embed)
+    if (!source) {
+      fail(`vector field "${path}" embeds unknown source "${field.embed}"`)
+    }
+    if (!["text", "keyword"].includes(source.field.type)) {
+      fail(
+        `vector field "${path}" can only embed a text or keyword field, not "${source.field.type}"`
       )
     }
   }

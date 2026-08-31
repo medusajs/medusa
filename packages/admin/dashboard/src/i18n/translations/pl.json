@@ -303,9 +303,9 @@
     "errors": {
       "fixError": "Napraw błąd",
       "count_one": "{{count}} błąd",
-      "numberOfKeys_few": "{{count}} błędy",
-      "numberOfKeys_many": "{{count}} błędów",
-      "count_other": "{{count}} błędów"
+      "count_other": "{{count}} błędów",
+      "count_few": "{{count}} błędy",
+      "count_many": "{{count}} błędów"
     }
   },
   "filters": {
@@ -1419,6 +1419,9 @@
       "methodDescription": "Wybierz inną metodę wysyłki niż wybrana przez klienta",
       "error": {
         "wrongQuantity": "Tylko jeden produkt jest dostępny do realizacji",
+        "wrongQuantity_one": "Tylko jeden produkt jest dostępny do realizacji",
+        "wrongQuantity_few": "Ilość powinna być liczbą od 1 do {{number}}",
+        "wrongQuantity_many": "Ilość powinna być liczbą od 1 do {{number}}",
         "wrongQuantity_other": "Ilość powinna być liczbą od 1 do {{number}}",
         "noItems": "Brak produktów do realizacji.",
         "noShippingOption": "Opcja dostawy jest wymagana",

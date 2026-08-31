@@ -1853,6 +1853,8 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
+
 For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
 
 ```bash
@@ -2722,6 +2724,8 @@ For modules that are part of a plugin, learn about registering them in the [Regi
 ### Example
 
 To register a custom module:
+
+Environment variables used in module `options` are read during the build phase. When deploying to Cloud, make sure each variable has the **Build** flag enabled in your [environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). A variable that is only enabled at runtime will be `undefined` when the module loads, causing errors such as "Option `apiKey` is required".
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -24081,8 +24085,1837 @@ import {
   ContainerRegistrationKeys,
 } from "@medusajs/framework/utils"
 
-export const GET = async (
-  req: MedusaRequest,
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  logger.info("[helloWorldLoader]: Hello, World!")
+}
+```
+
+You can then use the logger in the loader's code.
+
+***
+
+## Caveat: Resolving Module Services in Loaders
+
+Consider a module that has a main service `BrandModuleService`, and an internal service `CmsService`. Medusa will register both of these services in the module's container.
+
+However, loaders are executed before any services are initialized and registered in the module's container. So, you can't resolve the `BrandModuleService` and `CmsService` in a loader.
+
+Instead, if your main service extends the `MedusaService` [service factory](https://docs.medusajs.com/learn/fundamentals/modules/service-factory/index.html.md), you can resolve the internal services generated for each data model passed to the `MedusaService` function.
+
+For example, if the `BrandModuleService` is defined as follows:
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import Brand from "./models/brand"
+
+class BrandModuleService extends MedusaService({
+  Brand,
+}) {
+}
+
+export default BrandModuleService
+```
+
+Then, you can resolve the `brandService` that allows you to manage brands in the module's loader:
+
+```ts
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const brandService = container.resolve("brandService")
+
+  const brands = await brandService.list()
+
+  console.log("[helloWorldLoader]: Brands:", brands)
+}
+```
+
+Refer to the [Service Factory reference](https://docs.medusajs.com/resources/service-factory-reference/index.html.md) for details on the available methods in the generated services.
+
+***
+
+## Alternative to Resolving Other Modules' Services
+
+Since modules are [isolated](https://docs.medusajs.com/learn/fundamentals/modules/isolation/index.html.md), you can't resolve resources that belong to other modules from the module's container. For example, you can't resolve the Product Module's service in the Blog Module's service.
+
+Instead, to build commerce features that span multiple modules, you can create [workflows](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md). In those workflows, you can resolve services of all modules registered in the Medusa application, including the services of the Product and Blog modules.
+
+Then, you can execute the workflows in [API routes](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md), [subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/index.html.md), or [scheduled jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/index.html.md).
+
+Learn more and find examples in the [Module Isolation](https://docs.medusajs.com/learn/fundamentals/modules/isolation/index.html.md) chapter.
+
+***
+
+## Avoid Circular Dependencies
+
+When resolving resources in a module's services, make sure you don't create circular dependencies. For example, if `BlogModuleService` resolves `CmsService`, and `CmsService` resolves `BlogModuleService`, it will cause a circular dependency error.
+
+Instead, you should generally only resolve services within the main service. For example, `BlogModuleService` can resolve `CmsService`, but `CmsService` should not resolve `BlogModuleService`.
+
+
+# Perform Database Operations in a Service
+
+In this chapter, you'll learn how to perform database operations in a module's service.
+
+This chapter is intended for more advanced database use-cases where you need more control over queries and operations. For basic database operations, such as creating or retrieving data of a model, use the [Service Factory](https://docs.medusajs.com/learn/fundamentals/modules/service-factory/index.html.md) instead.
+
+## Run Queries
+
+[MikroORM's entity manager](https://mikro-orm.io/docs/entity-manager) is a class that has methods to run queries on the database and perform operations.
+
+Medusa provides an `InjectManager` decorator from the Modules SDK that injects a service's method with a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
+
+So, to run database queries in a service:
+
+1. Add the `InjectManager` decorator to the method.
+2. Add as a last parameter an optional `sharedContext` parameter that has the `MedusaContext` decorator from the Modules SDK. This context holds database-related context, including the manager injected by `InjectManager`
+
+For example, in your service, add the following methods:
+
+As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), MikroORM dependencies are included in the `@medusajs/framework` package. If you're using an older version of Medusa, change the import statement to `@mikro-orm/knex`.
+
+```ts
+// other imports...
+import { 
+  InjectManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+
+  @InjectManager()
+  async getCount(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number | undefined> {
+    return await sharedContext?.manager?.count("my_custom")
+  }
+  
+  @InjectManager()
+  async getCountSql(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number> {
+    const data = await sharedContext?.manager?.execute(
+      "SELECT COUNT(*) as num FROM my_custom"
+    ) 
+    
+    return parseInt(data?.[0].num || 0)
+  }
+}
+```
+
+You add two methods `getCount` and `getCountSql` that have the `InjectManager` decorator. Each of the methods also accept the `sharedContext` parameter which has the `MedusaContext` decorator.
+
+The entity manager is injected to the `sharedContext.manager` property, which is an instance of [EntityManager from the `@medusajs/framework/mikro-orm/knex` package](https://mikro-orm.io/api/knex/class/EntityManager).
+
+You use the manager in the `getCount` method to retrieve the number of records in a table, and in the `getCountSql` to run a PostgreSQL query that retrieves the count.
+
+Refer to [MikroORM's reference](https://mikro-orm.io/api/knex/class/EntityManager) for a full list of the entity manager's methods.
+
+***
+
+## Perform Database Operations
+
+There are two ways to perform database operations in transactional methods:
+
+1. Using the [data model repositories](#perform-database-operations-with-data-model-repositories) in your module.
+2. Using the [transactional entity manager](#perform-database-operations-with-the-transactional-entity-manager) injected into the method's shared context.
+
+For both approaches, you must wrap the method performing the database operations in a transaction.
+
+### Wrap Database Operations in Transactions
+
+When performing database operations without using the [Service Factory](https://docs.medusajs.com/learn/fundamentals/modules/service-factory/index.html.md), you must wrap the method performing the database operations in a transaction.
+
+To wrap database operations in a transaction, you create two methods:
+
+1. A private or protected method that's wrapped in a transaction. To wrap it in a transaction, you use the `InjectTransactionManager` decorator from the Modules SDK.
+2. A public method that calls the transactional method. You use on it the `InjectManager` decorator as explained in the previous section.
+
+Both methods must accept as a last parameter an optional `sharedContext` parameter that has the `MedusaContext` decorator from the Modules SDK. It holds database-related contexts passed through the Medusa application.
+
+For example:
+
+```ts
+import { 
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    const transactionManager = sharedContext?.transactionManager
+    
+    // TODO: update the record
+  }
+
+  @InjectManager()
+  async update(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    return await this.update_(input, sharedContext)
+  }
+}
+```
+
+The `BlogModuleService` has two methods:
+
+- A protected `update_` that performs the database operations inside a transaction.
+- A public `update` that executes the transactional protected method.
+
+You can then perform in the transactional method the database operations either using the [data model repository](#perform-database-operations-with-data-model-repositories) or the [transactional entity manager](#perform-database-operations-with-the-transactional-entity-manager).
+
+#### Why Wrap a Transactional Method
+
+The variables in the transactional method (such as `update_`) hold values that are uncommitted to the database. They're only committed once the method finishes execution.
+
+So, if in your method you perform database operations, then use their result to perform other actions, such as connecting to a third-party service, you'll be working with uncommitted data.
+
+By placing only the database operations in a method that has the `InjectTransactionManager` and using it in a wrapper method, the wrapper method receives the committed result of the transactional method.
+
+This is also useful if you perform heavy data normalization outside of the database operations. In that case, you don't hold the transaction for a longer time than needed.
+
+For example, the `update` method may call other methods than `update_` to perform other actions:
+
+```ts
+// other imports...
+import { 
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async update_(
+    // ...
+  ): Promise<any> {
+    // ...
+  }
+  @InjectManager()
+  async update(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    const newData = await this.update_(input, sharedContext)
+
+    // example method that sends data to another system
+    await this.sendNewDataToSystem(newData)
+
+    return newData
+  }
+}
+```
+
+In this case, only the `update_` method is wrapped in a transaction. The returned value `newData` holds the committed result, which can be used for other operations, such as passed to a `sendNewDataToSystem` method.
+
+#### Using Methods in Transactional Methods
+
+If your protected transactional method uses other methods that accept a Medusa context, pass the shared context to those methods.
+
+For example:
+
+```ts
+// other imports...
+import { 
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async anotherMethod(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    // ...
+  }
+  
+  @InjectTransactionManager()
+  protected async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    this.anotherMethod(sharedContext)
+  }
+}
+```
+
+You use the `anotherMethod` transactional method in the `update_` transactional method, so you pass it the shared context.
+
+The `anotherMethod` now runs in the same transaction as the `update_` method.
+
+### Perform Database Operations with Data Model Repositories
+
+For every data model in your module, Medusa generates a data model repository that has methods to perform database operations.
+
+For example, if your module has a `Post` model, it has a `postRepository` in the container.
+
+The data model repository is a wrapper around the [entity manager](https://mikro-orm.io/api/knex/class/EntityManager) that provides a higher-level API for performing database operations.
+
+To use the low-level entity manager, use the [transactional entity manager](#perform-database-operations-with-the-transactional-entity-manager) instead.
+
+#### Resolve Data Model Repository
+
+When the Medusa application injects a data model repository into a module's container, it formats the registration name by:
+
+- Taking the data model's name that's passed as the first parameter of `model.define`
+- Lower-casing the first character
+- Suffixing the result with `Repository`.
+
+For example:
+
+- `Post` model: `postRepository`
+- `My_Custom` model: `my_CustomRepository`
+
+So, to resolve a data model repository from a module's container, pass the expected registration name of the repository in the first parameter of the module's constructor (the container).
+
+For example:
+
+### Extending Service Factory
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import { InferTypeOf, DAL } from "@medusajs/framework/types"
+import Post from "./models/post"
+
+type Post = InferTypeOf<typeof Post>
+
+type InjectedDependencies = {
+  postRepository: DAL.RepositoryService<Post>
+}
+
+class BlogModuleService extends MedusaService({
+  Post,
+}){
+  protected postRepository_: DAL.RepositoryService<Post>
+
+  constructor({ 
+    postRepository, 
+  }: InjectedDependencies) {
+    super(...arguments)
+    this.postRepository_ = postRepository
+  }
+}
+
+export default BlogModuleService
+```
+
+### Without Service Factory
+
+```ts
+import { InferTypeOf, DAL } from "@medusajs/framework/types"
+import Post from "./models/post"
+
+type Post = InferTypeOf<typeof Post>
+
+type InjectedDependencies = {
+  postRepository: DAL.RepositoryService<Post>
+}
+
+class BlogModuleService {
+  protected postRepository_: DAL.RepositoryService<Post>
+
+  constructor({ 
+    postRepository, 
+  }: InjectedDependencies) {
+    super(...arguments)
+    this.postRepository_ = postRepository
+  }
+}
+
+export default BlogModuleService
+```
+
+You can then use the data model repository in your service to perform database operations.
+
+#### Data Model Repository Methods
+
+A data model repository has methods that allows you to create, update, and delete records, among other operations.
+
+To learn about the methods available in a data model repository, refer to the [Data Model Repository](https://docs.medusajs.com/resources/data-model-repository-reference/index.html.md) reference.
+
+### Perform Database Operations with the Transactional Entity Manager
+
+Your transactional method can use the transactional entity manager injected into the method's shared context to perform database operations. It's an instance of the [MikroORM EntityManager](https://mikro-orm.io/api/knex/class/EntityManager) class.
+
+To use an easier higher-level API focused on each data model, use the [data model repository](#perform-database-operations-with-data-model-repositories) instead.
+
+For example:
+
+```ts
+import { 
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    const transactionManager = sharedContext?.transactionManager
+    await transactionManager?.nativeUpdate(
+      "my_custom",
+      {
+        id: input.id,
+      },
+      {
+        name: input.name,
+      }
+    )
+
+    // retrieve again
+    const updatedRecord = await transactionManager?.execute(
+      `SELECT * FROM my_custom WHERE id = '${input.id}'`
+    )
+
+    return updatedRecord
+  }
+
+  @InjectManager()
+  async update(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    return await this.update_(input, sharedContext)
+  }
+}
+```
+
+The `update_` method uses the transactional entity manager injected into the `sharedContext.transactionManager` property to perform the database operations.
+
+Find all available methods in the [MikroORM EntityManager](https://mikro-orm.io/api/knex/class/EntityManager) reference.
+
+***
+
+## Configure Transactions with the Base Repository
+
+To configure the transaction, such as its [isolation level](https://www.postgresql.org/docs/current/transaction-iso.html), use the `baseRepository` class registered in your module's container.
+
+The `baseRepository` is an instance of a repository class that provides methods to create transactions, run database operations, and more.
+
+The `baseRepository` has a `transaction` method that allows you to run a function within a transaction and configure that transaction.
+
+For example, resolve the `baseRepository` in your service's constructor:
+
+### Extending Service Factory
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+import { DAL } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  baseRepository: DAL.RepositoryService
+}
+
+class BlogModuleService extends MedusaService({
+  Post,
+}){
+  protected baseRepository_: DAL.RepositoryService
+
+  constructor({ baseRepository }: InjectedDependencies) {
+    super(...arguments)
+    this.baseRepository_ = baseRepository
+  }
+}
+
+export default BlogModuleService
+```
+
+### Without Service Factory
+
+```ts
+import { DAL } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  baseRepository: DAL.RepositoryService
+}
+
+class BlogModuleService {
+  protected baseRepository_: DAL.RepositoryService
+
+  constructor({ baseRepository }: InjectedDependencies) {
+    this.baseRepository_ = baseRepository
+  }
+}
+
+export default BlogModuleService
+```
+
+Then, use it in the service's transactional methods:
+
+```ts
+// ...
+import { 
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  protected async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    return await this.baseRepository_.transaction(
+      async (transactionManager) => {
+        await transactionManager.nativeUpdate(
+          "my_custom",
+          {
+            id: input.id,
+          },
+          {
+            name: input.name,
+          }
+        )
+
+        // retrieve again
+        const updatedRecord = await transactionManager.execute(
+          `SELECT * FROM my_custom WHERE id = '${input.id}'`
+        )
+
+        return updatedRecord
+      },
+      {
+        transaction: sharedContext?.transactionManager,
+      }
+    )
+  }
+
+  @InjectManager()
+  async update(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ) {
+    return await this.update_(input, sharedContext)
+  }
+}
+```
+
+The `update_` method uses the `baseRepository_.transaction` method to wrap a function in a transaction.
+
+The function parameter receives a transactional entity manager as a parameter. Use it to perform the database operations.
+
+The `baseRepository_.transaction` method also receives as a second parameter an object of options. You must pass in it the `transaction` property and set its value to the `sharedContext.transactionManager` property so that the function wrapped in the transaction uses the injected transaction manager.
+
+Refer to [MikroORM's reference](https://mikro-orm.io/api/knex/class/EntityManager) for a full list of the entity manager's methods.
+
+### Transaction Options
+
+The second parameter of the `baseRepository_.transaction` method is an object of options that accepts the following properties:
+
+1. `transaction`: Set the transactional entity manager passed to the function. You must provide this option as explained in the previous section.
+
+```ts
+// other imports...
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+import { 
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    return await this.baseRepository_.transaction<EntityManager>(
+      async (transactionManager) => {
+        // ...
+      },
+      {
+        transaction: sharedContext?.transactionManager,
+      }
+    )
+  }
+}
+```
+
+2. `isolationLevel`: Sets the transaction's [isolation level](https://www.postgresql.org/docs/current/transaction-iso.html). Its values can be:
+   - `read committed`
+   - `read uncommitted`
+   - `snapshot`
+   - `repeatable read`
+   - `serializable`
+
+```ts
+// other imports...
+import { 
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+import { IsolationLevel } from "@medusajs/framework/mikro-orm/core"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    return await this.baseRepository_.transaction<EntityManager>(
+      async (transactionManager) => {
+        // ...
+      },
+      {
+        isolationLevel: IsolationLevel.READ_COMMITTED,
+      }
+    )
+  }
+}
+```
+
+3. `enableNestedTransactions`: (default: `false`) whether to allow using nested transactions.
+   - If `transaction` is provided and this is disabled, the manager in `transaction` is re-used.
+
+```ts
+// other imports...
+import { 
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+import { EntityManager } from "@medusajs/framework/mikro-orm/knex"
+
+class BlogModuleService {
+  // ...
+  @InjectTransactionManager()
+  async update_(
+    input: {
+      id: string,
+      name: string
+    },
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<any> {
+    return await this.baseRepository_.transaction<EntityManager>(
+      async (transactionManager) => {
+        // ...
+      },
+      {
+        enableNestedTransactions: false,
+      }
+    )
+  }
+}
+```
+
+
+# Infrastructure Modules
+
+In this chapter, you’ll learn about Infrastructure Modules.
+
+## What is an Infrastructure Module?
+
+An Infrastructure Module implements features and mechanisms related to the Medusa application’s architecture and infrastructure.
+
+Since modules are interchangeable, you have more control over Medusa’s architecture. For example, you can choose to use Memcached for event handling instead of Redis.
+
+***
+
+## Infrastructure Module Types
+
+There are different Infrastructure Module types including:
+
+![Diagram illustrating how the modules connect to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762284/Medusa%20Book/service-infra_k3fcy0.jpg)
+
+- [Analytics Module](https://docs.medusajs.com/resources/infrastructure-modules/analytics/index.html.md): Integrates a third-party service to track and analyze user interactions and system events.
+- [Caching Module](https://docs.medusajs.com/resources/infrastructure-modules/caching/index.html.md): Defines the caching mechanism or logic to cache computational results.
+- [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/index.html.md): Integrates a pub/sub service to handle subscribing to and emitting events.
+- [Workflow Engine Module](https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/index.html.md): Integrates a service to store and track workflow executions and steps.
+- [File Module](https://docs.medusajs.com/resources/infrastructure-modules/file/index.html.md): Integrates a storage service to handle uploading and managing files.
+- [Notification Module](https://docs.medusajs.com/resources/infrastructure-modules/notification/index.html.md): Integrates a third-party service or defines custom logic to send notifications to users and customers.
+- [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking/index.html.md): Integrates a service that manages access to shared resources by multiple processes or threads.
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
+
+***
+
+## Infrastructure Modules List
+
+Refer to the [Infrastructure Modules reference](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) for a list of Medusa’s Infrastructure Modules, available modules to install, and how to create an Infrastructure Module.
+
+
+# Module Isolation
+
+In this chapter, you'll learn how modules are isolated, and what that means for your custom development.
+
+- Modules can't access resources, such as services or data models, from other modules.
+- Use [Module Links](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md) to extend an existing module's data models, and [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md) to retrieve data across modules.
+- Use [workflows](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md) to build features that depend on functionalities from different modules.
+
+## How are Modules Isolated?
+
+A module is unaware of any resources other than its own, such as services or data models. This means it can't access these resources if they're implemented in another module.
+
+For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to the Product Module's data models.
+
+A module has its own container, as explained in the [Module Container](https://docs.medusajs.com/learn/fundamentals/modules/container/index.html.md) chapter. This container includes the module's resources, such as services and data models, and some Framework resources that the Medusa application provides.
+
+Refer to the [Module Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) for a list of resources registered in a module's container.
+
+***
+
+## Why are Modules Isolated
+
+Some of the module isolation's benefits include:
+
+- Integrate your module into any Medusa application without side-effects to your setup.
+- Replace existing modules with your custom implementation if your use case is drastically different.
+- Use modules in other environments, such as Edge functions and Next.js apps.
+
+***
+
+## How to Extend Data Model of Another Module?
+
+To extend the data model of another module, such as the `Product` data model of the Product Module, use [Module Links](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md). Module Links allow you to build associations between data models of different modules without breaking the module isolation.
+
+Then, you can retrieve data across modules using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md).
+
+***
+
+## How to Use Services of Other Modules?
+
+You'll often build feature that uses functionalities from different modules. For example, if you may need to retrieve brands, then sync them to a third-party service.
+
+To build functionalities spanning across modules and systems, create a [workflow](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md) whose steps resolve the modules' services to perform these functionalities.
+
+Workflows ensure data consistency through their roll-back mechanism and tracking of each execution's status, steps, input, and output.
+
+### Example
+
+For example, consider you have two modules:
+
+1. A module that stores and manages brands in your application.
+2. A module that integrates a third-party Content Management System (CMS).
+
+To sync brands from your application to the third-party system, create the following steps:
+
+```ts title="Example Steps"
+const retrieveBrandsStep = createStep(
+  "retrieve-brands",
+  async (_, { container }) => {
+    const brandModuleService = container.resolve(
+      "brand"
+    )
+
+    const brands = await brandModuleService.listBrands()
+
+    return new StepResponse(brands)
+  }
+)
+
+const createBrandsInCmsStep = createStep(
+  "create-brands-in-cms",
+  async ({ brands }, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cms"
+    )
+
+    const cmsBrands = await cmsModuleService.createBrands(brands)
+
+    return new StepResponse(cmsBrands, cmsBrands)
+  },
+  async (brands, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cms"
+    )
+
+    await cmsModuleService.deleteBrands(
+      brands.map((brand) => brand.id)
+    )
+  }
+)
+```
+
+The `retrieveBrandsStep` retrieves the brands from a Brand Module, and the `createBrandsInCmsStep` creates the brands in a third-party system using a CMS Module.
+
+Then, create the following workflow that uses these steps:
+
+```ts title="Example Workflow"
+export const syncBrandsWorkflow = createWorkflow(
+  "sync-brands",
+  () => {
+    const brands = retrieveBrandsStep()
+
+    createBrandsInCmsStep({ brands })
+  }
+)
+```
+
+You can then use this workflow in an API route, scheduled job, or other resources that use this functionality.
+
+***
+
+## How to Use Framework APIs and Tools in Module?
+
+### Framework Tools in Module Container
+
+A module has in its container some Framework APIs and tools, such as [Logger](https://docs.medusajs.com/learn/debugging-and-testing/logging/index.html.md). You can refer to the [Module Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) for a list of resources registered in a module's container.
+
+You can resolve those resources in the module's services and loaders.
+
+For example:
+
+```ts title="Example Service"
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export default class BlogModuleService {
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+
+    this.logger_.info("[BlogModuleService]: Hello World!")
+  }
+
+  // ...
+}
+```
+
+In this example, the `BlogModuleService` class resolves the `Logger` service from the module's container and uses it to log a message.
+
+### Using Framework Tools in Workflows
+
+Some Framework APIs and tools are not registered in the module's container. For example, [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md) is only registered in the Medusa container.
+
+You should, instead, build workflows that use these APIs and tools along with your module's service.
+
+For example, you can create a workflow that retrieves data using Query, then pass the data to your module's service to perform some action.
+
+```ts title="Example Workflow"
+import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+const createBrandsInCmsStep = createStep(
+  "create-brands-in-cms",
+  async ({ brands }, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cms"
+    )
+
+    const cmsBrands = await cmsModuleService.createBrands(brands)
+
+    return new StepResponse(cmsBrands, cmsBrands)
+  },
+  async (brands, { container }) => {
+    const cmsModuleService = container.resolve(
+      "cms"
+    )
+
+    await cmsModuleService.deleteBrands(
+      brands.map((brand) => brand.id)
+    )
+  }
+)
+
+const syncBrandsWorkflow = createWorkflow(
+  "sync-brands",
+  () => {
+    const { data: brands } = useQueryGraphStep({
+      entity: "brand",
+      fields: [
+        "*",
+        "products.*",
+      ],
+    })
+
+    createBrandsInCmsStep({ brands })
+  }
+)
+```
+
+In this example, you use the `useQueryGraphStep` to retrieve brands with their products, then pass the brands to the `createBrandsInCmsStep` step.
+
+In the `createBrandsInCmsStep`, you resolve the CMS Module's service from the module's container and use it to create the brands in the third-party system. You pass the brands you retrieved using Query to the module's service.
+
+### Injecting Dependencies to Module
+
+Some cases still require you to access external resources, mainly [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) or Framework tools, in your module.
+
+The following services are available in every module's container by default, without any `dependencies` declaration: `logger`, `event_bus`, `manager`, `configModule`, and `pgConnection`. Refer to the [Module Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) for the full list.
+
+For other Infrastructure Modules not in the default set, you can inject them into your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
+
+Use this approach only when absolutely necessary, where workflows aren't sufficient for your use case. By injecting dependencies, you risk breaking your module if the dependency isn't provided, or if the dependency's API changes.
+
+For example, to inject the Analytics Module:
+
+```ts title="medusa-config.ts"
+import { Modules } from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/blog",
+      dependencies: [
+        Modules.ANALYTICS,
+      ],
+    },
+  ],
+})
+```
+
+In this example, you inject the Analytics Module's service into your module's container.
+
+Only the main service will be injected into the module's container.
+
+You can then use the Analytics Module's service in your module's service:
+
+```ts title="Example Service"
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
+
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
+  }
+
+  performAction() {
+    // TODO perform action
+
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe"
+      }
+    })
+  }
+}
+```
+
+
+# Loaders
+
+In this chapter, you’ll learn about loaders and how to use them.
+
+## What is a Loader?
+
+When building a commerce application, you'll often need to execute an action the first time the application starts. For example, if your application needs to connect to databases other than Medusa's PostgreSQL database, you might need to establish a connection on application startup.
+
+In Medusa, you can execute an action when the application starts using a loader. A loader is a function exported by a [module](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md), which is a package of business logic for a single domain. When the Medusa application starts, it executes all loaders exported by configured modules.
+
+Loaders are useful to register custom resources, such as database connections, in the [module's container](https://docs.medusajs.com/learn/fundamentals/modules/container/index.html.md), which is similar to the [Medusa container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md) but includes only [resources available to the module](https://docs.medusajs.com/resources/medusa-container-resources#module-container-resources/index.html.md). Modules are isolated, so they can't access resources outside of them, such as a service in another module.
+
+Medusa isolates modules to ensure that they're re-usable across applications, aren't tightly coupled to other resources, and don't have implications when integrated into the Medusa application. Learn more about why modules are isolated in [this chapter](https://docs.medusajs.com/learn/fundamentals/modules/isolation/index.html.md), and check out [this reference for the list of resources in the module's container](https://docs.medusajs.com/resources/medusa-container-resources#module-container-resources/index.html.md).
+
+***
+
+## How to Create a Loader?
+
+### 1. Implement Loader Function
+
+You create a loader function in a TypeScript or JavaScript file under a module's `loaders` directory.
+
+For example, consider you have a `hello` module, you can create a loader at `src/modules/hello/loaders/hello-world.ts` with the following content:
+
+![Example of loader file in the application's directory structure](https://res.cloudinary.com/dza7lstvk/image/upload/v1732865671/Medusa%20Book/loader-dir-overview_eg6vtu.jpg)
+
+Learn how to create a module in [this chapter](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md).
+
+```ts title="src/modules/hello/loaders/hello-world.ts"
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+
+export default async function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const logger = container.resolve("logger")
+
+  logger.info("[HELLO MODULE] Just started the Medusa application!")
+}
+```
+
+The loader file exports an async function, which is the function executed when the application loads.
+
+The function receives an object parameter that has a `container` property, which is the module's container that you can use to resolve resources from. In this example, you resolve the Logger utility to log a message in the terminal.
+
+Find the list of resources in the module's container in [this reference](https://docs.medusajs.com/resources/medusa-container-resources#module-container-resources/index.html.md).
+
+### 2. Export Loader in Module Definition
+
+After implementing the loader, you must export it in the module's definition in the `index.ts` file at the root of the module's directory. Otherwise, the Medusa application will not run it.
+
+So, to export the loader you implemented above in the `hello` module, add the following to `src/modules/hello/index.ts`:
+
+```ts title="src/modules/hello/index.ts"
+// other imports...
+import helloWorldLoader from "./loaders/hello-world"
+
+export default Module("hello", {
+  // ...
+  loaders: [helloWorldLoader],
+})
+```
+
+The second parameter of the `Module` function accepts a `loaders` property whose value is an array of loader functions. The Medusa application will execute these functions when it starts.
+
+### Test the Loader
+
+Assuming your module is [added to Medusa's configuration](https://docs.medusajs.com/learn/fundamentals/modules#4-add-module-to-medusas-configurations/index.html.md), you can test the loader by starting the Medusa application:
+
+```bash
+npm run dev
+```
+
+Then, you'll find the following message logged in the terminal:
+
+```plain
+info:   [HELLO MODULE] Just started the Medusa application!
+```
+
+This indicates that the loader in the `hello` module ran and logged this message.
+
+***
+
+## When are Loaders Executed?
+
+### Loaders Executed on Application Startup
+
+When you start the Medusa application, it executes the loaders of all modules in their registration order.
+
+A loader is executed before the module's main service is instantiated. So, you can use loaders to register in the module's container resources that you want to use in the module's service. For example, you can register a database connection.
+
+Loaders are also useful to only load a module if a certain condition is met. For example, if you try to connect to a database in a loader but the connection fails, you can throw an error in the loader to prevent the module from being loaded. This is useful if your module depends on an external service to work.
+
+### Loaders Executed with Migrations
+
+Loaders are also executed when you run [migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md). This can be useful if you need to run some task before the migrations, or you want to migrate some data to an integrated third-party system as part of the migration process.
+
+***
+
+## Avoid Heavy Operations in Loaders
+
+Since loaders are executed when the Medusa application starts, heavy operations will increase the startup time of the application.
+
+So, avoid operations that take a long time to complete, such as fetching a large amount of data from an external API or database, in loaders.
+
+### Alternative Solutions
+
+Instead of performing heavy operations in loaders, consider one of the following solutions:
+
+- Use a [scheduled job](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/index.html.md) to perform the operation at specified intervals. This way, the operation is performed asynchronously and doesn't block the application startup.
+- [Emit custom events](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/emit-event/index.html.md) in an [API route](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md), then handle the event in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/index.html.md) to perform the operation asynchronously. You can then send a request to the API route to trigger the operation when needed.
+
+***
+
+## Example: Register Custom MongoDB Connection
+
+As mentioned in this chapter's introduction, loaders are most useful when you need to register a custom resource in the module's container to re-use it in other customizations in the module.
+
+Consider your have a MongoDB module that allows you to perform operations on a MongoDB database.
+
+### Prerequisites
+
+- [MongoDB database that you can connect to from a local machine.](https://www.mongodb.com)
+- [Install the MongoDB SDK in your Medusa application.](https://www.mongodb.com/docs/drivers/node/current/quick-start/download-and-install/#install-the-node.js-driver)
+
+To connect to the database, you create the following loader in your module:
+
+As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), Awilix dependencies are included in the `@medusajs/framework` package. If you're using an older version of Medusa, change the import statement to `awilix`.
+
+```ts title="src/modules/mongo/loaders/connection.ts"
+import { LoaderOptions } from "@medusajs/framework/types"
+import { asValue } from "@medusajs/framework/awilix"
+import { MongoClient } from "mongodb"
+
+type ModuleOptions = {
+  connection_url?: string
+  db_name?: string
+}
+
+export default async function mongoConnectionLoader({
+  container,
+  options,
+}: LoaderOptions<ModuleOptions>) {
+  if (!options.connection_url) {
+    throw new Error(`[MONGO MDOULE]: connection_url option is required.`)
+  }
+  if (!options.db_name) {
+    throw new Error(`[MONGO MDOULE]: db_name option is required.`)
+  }
+  const logger = container.resolve("logger")
+  
+  try {
+    const clientDb = (
+      await (new MongoClient(options.connection_url)).connect()
+    ).db(options.db_name)
+
+    logger.info("Connected to MongoDB")
+
+    container.register(
+      "mongoClient",
+      asValue(clientDb)
+    )
+  } catch (e) {
+    logger.error(
+      `[MONGO MDOULE]: An error occurred while connecting to MongoDB: ${e}`
+    )
+  }
+}
+```
+
+The loader function accepts in its object parameter an `options` property, which is the options passed to the module in Medusa's configurations. For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/mongo",
+      options: {
+        connection_url: process.env.MONGO_CONNECTION_URL,
+        db_name: process.env.MONGO_DB_NAME,
+      },
+    },
+  ],
+})
+```
+
+Passing options is useful when your module needs information like connection URLs or API keys, as it ensures your module can be re-usable across applications. For the MongoDB Module, you expect two options:
+
+- `connection_url`: the URL to connect to the MongoDB database.
+- `db_name`: The name of the database to connect to.
+
+In the loader, you check first that these options are set before proceeding. Then, you create an instance of the MongoDB client and connect to the database specified in the options.
+
+After creating the client, you register it in the module's container using the container's `register` method. The method accepts two parameters:
+
+1. The key to register the resource under, which in this case is `mongoClient`. You'll use this name later to resolve the client.
+2. The resource to register in the container, which is the MongoDB client you created. However, you don't pass the resource as-is. Instead, you need to use an `asValue` function imported from the [`@medusajs/framework/awilix` package](https://github.com/jeffijoe/awilix), which is the package used to implement the container functionality in Medusa.
+
+### Use Custom Registered Resource in Module's Service
+
+After registering the custom MongoDB client in the module's container, you can now resolve and use it in the module's service.
+
+For example:
+
+```ts title="src/modules/mongo/service.ts"
+import type { Db } from "mongodb"
+
+type InjectedDependencies = {
+  mongoClient: Db
+}
+
+export default class MongoModuleService {
+  private mongoClient_: Db
+
+  constructor({ mongoClient }: InjectedDependencies) {
+    this.mongoClient_ = mongoClient
+  }
+
+  async createMovie({ title }: {
+    title: string
+  }) {
+    const moviesCol = this.mongoClient_.collection("movie")
+
+    const insertedMovie = await moviesCol.insertOne({
+      title,
+    })
+
+    const movie = await moviesCol.findOne({
+      _id: insertedMovie.insertedId,
+    })
+
+    return movie
+  }
+
+  async deleteMovie(id: string) {
+    const moviesCol = this.mongoClient_.collection("movie")
+
+    await moviesCol.deleteOne({
+      _id: {
+        equals: id,
+      },
+    })
+  }
+}
+```
+
+The service `MongoModuleService` resolves the `mongoClient` resource you registered in the loader and sets it as a class property. You then use it in the `createMovie` and `deleteMovie` methods, which create and delete a document in a `movie` collection in the MongoDB database, respectively.
+
+Make sure to export the loader in the module's definition in the `index.ts` file at the root directory of the module:
+
+```ts title="src/modules/mongo/index.ts"
+import { Module } from "@medusajs/framework/utils"
+import MongoModuleService from "./service"
+import mongoConnectionLoader from "./loaders/connection"
+
+export const MONGO_MODULE = "mongo"
+
+export default Module(MONGO_MODULE, {
+  service: MongoModuleService,
+  loaders: [mongoConnectionLoader],
+})
+```
+
+### Test it Out
+
+You can test the connection out by starting the Medusa application. If it's successful, you'll see the following message logged in the terminal:
+
+```bash
+info:    Connected to MongoDB
+```
+
+You can now resolve the MongoDB Module's main service in your customizations to perform operations on the MongoDB database.
+
+
+# Modules Directory Structure
+
+In this chapter, you'll learn about the expected files and directories in your module.
+
+![Module Directory Structure Example](https://res.cloudinary.com/dza7lstvk/image/upload/v1714379976/Medusa%20Book/modules-dir-overview_nqq7ne.jpg)
+
+## index.ts
+
+The `index.ts` file is in the root of your module's directory and exports the module's definition as explained in the [Modules](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md) chapter.
+
+***
+
+## service.ts
+
+A module must have a main service that contains the module's business logic. It's created in the `service.ts` file at the root of your module directory as explained in the [Modules](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md) chapter.
+
+***
+
+## Other Directories
+
+The following directories are optional and you can choose to create them based on your module's functionality:
+
+- `models`: Holds the [data models](https://docs.medusajs.com/learn/fundamentals/data-models/index.html.md) representing tables in the database.
+- `migrations`: Holds the [migration](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md) files used to reflect changes on the database.
+- `loaders`: Holds the [script files to run on the application's startup](https://docs.medusajs.com/learn/fundamentals/modules/loaders/index.html.md) when Medusa loads the module.
+
+
+# Multiple Services in a Module
+
+In this chapter, you'll learn how to use multiple services in a module.
+
+## Module's Main and Internal Services
+
+A module has one main service only, which is the service exported in the module's definition.
+
+However, you may use other services in your module to better organize your code or split functionalities. These are called internal services that can be resolved within your module, but not in external resources.
+
+***
+
+## How to Add an Internal Service
+
+### 1. Create Service
+
+To add an internal service, create it in the `services` directory of your module.
+
+For example, create the file `src/modules/blog/services/client.ts` with the following content:
+
+```ts title="src/modules/blog/services/client.ts"
+export class ClientService {
+  async getMessage(): Promise<string> {
+    return "Hello, World!"
+  }
+}
+```
+
+### 2. Export Service in Index
+
+Next, create an `index.ts` file under the `services` directory of the module that exports your internal services.
+
+For example, create the file `src/modules/blog/services/index.ts` with the following content:
+
+```ts title="src/modules/blog/services/index.ts"
+export * from "./client"
+```
+
+This exports the `ClientService`.
+
+### 3. Resolve Internal Service
+
+Internal services exported in the `services/index.ts` file of your module are now registered in the container and can be resolved in other services in the module as well as loaders.
+
+For example, in your main service:
+
+```ts title="src/modules/blog/service.ts"
+// other imports...
+import { ClientService } from "./services"
+
+type InjectedDependencies = {
+  clientService: ClientService
+}
+
+class BlogModuleService extends MedusaService({
+  Post,
+}){
+  protected clientService_: ClientService
+
+  constructor({ clientService }: InjectedDependencies) {
+    super(...arguments)
+    this.clientService_ = clientService
+  }
+}
+```
+
+You can now use your internal service in your main service.
+
+***
+
+## Resolve Resources in Internal Service
+
+Resolve dependencies from your module's container in the constructor of your internal service.
+
+For example:
+
+```ts
+import { Logger } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export class ClientService {
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+  }
+}
+```
+
+***
+
+## Access Module Options
+
+Your internal service can't access the module's options.
+
+To retrieve the module's options, use the `configModule` registered in the module's container, which is the configurations in `medusa-config.ts`.
+
+For example:
+
+```ts
+import { ConfigModule } from "@medusajs/framework/types"
+import { BLOG_MODULE } from ".."
+
+export type InjectedDependencies = {
+  configModule: ConfigModule
+}
+
+export class ClientService {
+  protected options: Record<string, any>
+
+  constructor({ configModule }: InjectedDependencies) {
+    const moduleDef = configModule.modules[BLOG_MODULE]
+
+    if (typeof moduleDef !== "boolean") {
+      this.options = moduleDef.options
+    }
+  }
+}
+```
+
+The `configModule` has a `modules` property that includes all registered modules. Retrieve the module's configuration using its registration key.
+
+If its value is not a `boolean`, set the service's options to the module configuration's `options` property.
+
+
+# Module Options
+
+In this chapter, you’ll learn about passing options to your module from the Medusa application’s configurations and using them in the module’s resources.
+
+## What are Module Options?
+
+A module can receive options to customize or configure its functionality. For example, if you’re creating a module that integrates a third-party service, you’ll want to receive the integration credentials in the options rather than adding them directly in your code.
+
+***
+
+## How to Pass Options to a Module?
+
+To pass options to a module, add an `options` property to the module’s configuration in `medusa-config.ts`.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/blog",
+      options: {
+        capitalize: true,
+      },
+    },
+  ],
+})
+```
+
+The `options` property’s value is an object. You can pass any properties you want.
+
+### Pass Options to a Module in a Plugin
+
+If your module is part of a plugin, you can pass options to the module in the plugin’s configuration.
+
+For example:
+
+```ts title="medusa-config.ts"
+import { defineConfig } from "@medusajs/framework/utils"
+module.exports = defineConfig({
+  plugins: [
+    {
+      resolve: "@myorg/plugin-name",
+      options: {
+        capitalize: true,
+      },
+    },
+  ],
+})
+```
+
+The `options` property in the plugin configuration is passed to all modules in a plugin.
+
+***
+
+## Access Module Options in Main Service
+
+The module’s main service receives the module options as a second parameter.
+
+For example:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+// recommended to define type in another file
+type ModuleOptions = {
+  capitalize?: boolean
+}
+
+export default class BlogModuleService extends MedusaService({
+  Post,
+}){
+  protected options_: ModuleOptions
+
+  constructor({}, options?: ModuleOptions) {
+    super(...arguments)
+
+    this.options_ = options || {
+      capitalize: false,
+    }
+  }
+
+  // ...
+}
+```
+
+***
+
+## Access Module Options in Loader
+
+The object that a module’s loaders receive as a parameter has an `options` property holding the module's options.
+
+For example:
+
+```ts title="src/modules/blog/loaders/hello-world.ts"
+import {
+  LoaderOptions,
+} from "@medusajs/framework/types"
+
+// recommended to define type in another file
+type ModuleOptions = {
+  capitalize?: boolean
+}
+
+export default async function helloWorldLoader({
+  options,
+}: LoaderOptions<ModuleOptions>) {
+  
+  console.log(
+    "[BLOG MODULE] Just started the Medusa application!",
+    options
+  )
+}
+```
+
+***
+
+## Validate Module Options
+
+If you expect a certain option and want to throw an error if it's not provided or isn't valid, it's recommended to perform the validation in a loader. The module's service is only instantiated when it's used, whereas the loader runs when the Medusa application starts.
+
+So, by performing the validation in the loader, you ensure you can throw an error at an early point, rather than when the module is used.
+
+For example, to validate that the Hello Module received an `apiKey` option, create the loader `src/modules/loaders/validate.ts`:
+
+```ts title="src/modules/blog/loaders/validate.ts"
+import { LoaderOptions } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
+
+// recommended to define type in another file
+type ModuleOptions = {
+  apiKey?: string
+}
+
+export default async function validationLoader({
+  options,
+}: LoaderOptions<ModuleOptions>) {
+  if (!options.apiKey) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Hello Module requires an apiKey option."
+    )
+  }
+}
+```
+
+Then, export the loader in the module's definition file, as explained in [this chapter](https://docs.medusajs.com/learn/fundamentals/modules/loaders/index.html.md):
+
+```ts title="src/modules/blog/index.ts"
+// other imports...
+import validationLoader from "./loaders/validate"
+
+export const BLOG_MODULE = "blog"
+
+export default Module(BLOG_MODULE, {
+  // ...
+  loaders: [validationLoader],
+})
+```
+
+Now, when the Medusa application starts, the loader will run, validating the module's options and throwing an error if the `apiKey` option is missing.
+
+
+# Modules
+
+In this chapter, you’ll learn about modules and how to create them.
+
+## What is a Module?
+
+A module is a reusable package of functionalities related to a single domain or integration. Medusa comes with multiple pre-built modules for core commerce needs, such as the [Cart Module](https://docs.medusajs.com/resources/commerce-modules/cart/index.html.md) that holds the data models and business logic for cart operations.
+
+When building a commerce application, you often need to introduce custom behavior specific to your products, tech stack, or your general ways of working. In other commerce platforms, introducing custom business logic and data models requires setting up separate applications to manage these customizations.
+
+Medusa removes this overhead by allowing you to easily write custom modules that integrate into the Medusa application without affecting the existing setup. You can also re-use your modules across Medusa projects.
+
+As you learn more about Medusa, you will see that modules are central to customizations and integrations. With modules, your Medusa application can turn into a middleware solution for your commerce ecosystem.
+
+- You want to build a custom feature related to a single domain or integrate a third-party service.
+
+- You want to create a reusable package of customizations that include not only modules, but also API routes, workflows, and other customizations. Instead, use a [plugin](https://docs.medusajs.com/learn/fundamentals/plugins/index.html.md).
+
+***
+
+## How to Create a Module?
+
+In a module, you define data models that represent new tables in the database, and you manage these models in a class called a service. Then, the Medusa application registers the module's service in the [Medusa container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md) so that you can build commerce flows and features around the functionalities provided by the module.
+
+In this section, you'll build a Blog Module that has a `Post` data model and a service to manage that data model. You'll also expose an API endpoint to create a blog post.
+
+Modules are created in a sub-directory of `src/modules`. So, start by creating the directory `src/modules/blog`.
+
+### 1. Create Data Model
+
+A data model represents a table in the database. You create data models using Medusa's data modeling language (DML). It simplifies defining a table's columns, relations, and indexes with straightforward methods and configurations.
+
+You create a data model in a TypeScript or JavaScript file under the `models` directory of a module. So, to create a `Post` data model in the Blog Module, create the file `src/modules/blog/models/post.ts` with the following content:
+
+![Blog module directory structure showing the organized file hierarchy with the newly created 'models' folder containing the 'post.ts' data model file, which defines the data model for blog posts using Medusa's data modeling language](https://res.cloudinary.com/dza7lstvk/image/upload/v1732806790/Medusa%20Book/blog-dir-overview-1_jfvovj.jpg)
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text(),
+})
+
+export default Post
+```
+
+You define the data model using the `define` method of the DML. It accepts two parameters:
+
+1. The first one is the name of the data model's table in the database. Use snake-case names.
+2. The second is an object, which is the data model's schema. The schema's properties are defined using the `model`'s methods, such as `text` and `id`.
+   - Data models automatically have the date properties `created_at`, `updated_at`, and `deleted_at`, so you don't need to add them manually.
+
+Learn about other property types in [this chapter](https://docs.medusajs.com/learn/fundamentals/data-models/properties#property-types/index.html.md).
+
+The code snippet above defines a `Post` data model with `id` and `title` properties.
+
+### 2. Create Service
+
+You perform database operations on your data models in a service, which is a class exported by the module and acts like an interface to its functionalities. Medusa registers the service in its [container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), allowing you to resolve and use it when building custom commerce flows.
+
+You define a service in a `service.ts` or `service.js` file at the root of your module's directory. So, to create the Blog Module's service, create the file `src/modules/blog/service.ts` with the following content:
+
+![Updated directory overview after adding the service](https://res.cloudinary.com/dza7lstvk/image/upload/v1732807230/Medusa%20Book/blog-dir-overview-2_avzb9l.jpg)
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+class BlogModuleService extends MedusaService({
+  Post,
+}){
+}
+
+export default BlogModuleService
+```
+
+Your module's service extends a class generated by `MedusaService` from the Modules SDK. This class comes with generated methods for data-management Create, Read, Update, and Delete (CRUD) operations on each of your modules, saving you time that can be spent on building custom business logic.
+
+The `MedusaService` function accepts an object of data models to generate methods for. You can pass all data models in your module in this object.
+
+For example, the `BlogModuleService` now has a `createPosts` method to create post records, and a `retrievePost` method to retrieve a post record. The suffix of each method (except for `retrieve`) is the pluralized name of the data model.
+
+Find all methods generated by the `MedusaService` in [this reference](https://docs.medusajs.com/resources/service-factory-reference/index.html.md)
+
+If a module doesn't have data models, such as when it's integrating a third-party service, it doesn't need to extend `MedusaService`.
+
+### 3. Export Module Definition
+
+The final piece to a module is its definition, which is exported in an `index.ts` file at its root directory. This definition tells Medusa the name of the module and its main service. Medusa will then register the main service in the container under the module's name.
+
+So, to export the definition of the Blog Module, create the file `src/modules/blog/index.ts` with the following content:
+
+![Updated directory overview after adding the module definition](https://res.cloudinary.com/dza7lstvk/image/upload/v1732808511/Medusa%20Book/blog-dir-overview-3_dcgjaa.jpg)
+
+```ts title="src/modules/blog/index.ts"
+import BlogModuleService from "./service"
+import { Module } from "@medusajs/framework/utils"
+
+export const BLOG_MODULE = "blog"
+
+export default Module(BLOG_MODULE, {
+  service: BlogModuleService,
+})
+```
+
+You use `Module` from the Modules SDK to create the module's definition. It accepts two parameters:
+
+1. The name that the module's main service is registered under (`blog`). The module name can contain only alphanumeric characters and underscores.
+2. An object with a required property `service` indicating the module's main service.
+
+You export `BLOG_MODULE` to reference the module's name more reliably when resolving its service in other customizations.
+
+### 4. Add Module to Medusa's Configurations
+
+If you're creating the module in a plugin, this step isn't required as the module is registered when the plugin is registered. Learn more about plugins in [this documentation](https://docs.medusajs.com/learn/fundamentals/plugins/index.html.md).
+
+Once you finish building the module, add it to Medusa's configurations to start using it. Medusa will then register the module's main service in the Medusa container, allowing you to resolve and use it in other customizations.
+
+In `medusa-config.ts`, add a `modules` property and pass an array with your custom module:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    // ...
+  },
+  modules: [
+    {
+      resolve: "./src/modules/blog",
+    },
+  ],
+})
+```
+
+Each object in the `modules` array has a `resolve` property, whose value is either a path to the module's directory, or an `npm` package’s name.
+
+### 5. Generate Migrations
+
+Since data models represent tables in the database, you define how they're created in the database with migrations. A migration is a TypeScript or JavaScript file that defines database changes made by a module.
+
+Migrations are useful when you re-use a module or you're working in a team, so that when one member of a team makes a database change, everyone else can reflect it on their side by running the migrations.
+
+You don't have to write migrations yourself. Medusa's CLI tool has a command that generates the migrations for you. You can also use this command again when you make changes to the module at a later point, and it will generate new migrations for that change.
+
+To generate a migration for the Blog Module, run the following command in your Medusa application's directory:
+
+If you're creating the module in a plugin, use the [plugin:db:generate command](https://docs.medusajs.com/resources/medusa-cli/commands/plugin#plugindbgenerate/index.html.md) instead.
+
+```bash
+npx medusa db:generate blog
+```
+
+The `db:generate` command of the Medusa CLI accepts one or more module names to generate the migration for. It will create a migration file for the Blog Module in the directory `src/modules/blog/migrations` similar to the following:
+
+As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), MikroORM dependencies are included in the `@medusajs/framework` package. If you're using an older version of Medusa, change the import statement to `@mikro-orm/migrations`.
+
+```ts
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20241121103722 extends Migration {
+
+  async up(): Promise<void> {
+    this.addSql("create table if not exists \"post\" (\"id\" text not null, \"title\" text not null, \"created_at\" timestamptz not null default now(), \"updated_at\" timestamptz not null default now(), \"deleted_at\" timestamptz null, constraint \"post_pkey\" primary key (\"id\"));")
+  }
+
+  async down(): Promise<void> {
+    this.addSql("drop table if exists \"post\" cascade;")
+  }
+
+}
+```
+
+In the migration class, the `up` method creates the table `post` and defines its columns using PostgreSQL syntax. The `down` method drops the table.
+
+### 6. Run Migrations
+
+To reflect the changes in the generated migration file on the database, run the `db:migrate` command:
+
+If you're creating the module in a plugin, run this command on the Medusa application that the plugin is installed in.
+
+```bash
+npx medusa db:migrate
+```
+
+This creates the `post` table in the database.
+
+***
+
+## Test the Module
+
+Since the module's main service is registered in the Medusa container, you can resolve it in other customizations to use its methods.
+
+To test out the Blog Module, you'll add the functionality to create a post in a [workflow](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md), which is a special function that performs a task in a series of steps with rollback logic. Then, you'll expose an [API route](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md) that creates a blog post by executing the workflow.
+
+By building a commerce feature in a workflow, you can execute it in other customizations while ensuring data consistency across systems. If an error occurs during execution, every step has its own rollback logic to undo its actions. Workflows have other special features which you can learn about in [this chapter](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md).
+
+To create the workflow, create the file `src/workflows/create-post.ts` with the following content:
+
+```ts title="src/workflows/create-post.ts"
+import { 
+  createStep, 
+  createWorkflow, 
+  StepResponse, 
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { BLOG_MODULE } from "../modules/blog"
+import BlogModuleService from "../modules/blog/service"
+
+type CreatePostWorkflowInput = {
+  title: string
+}
+
+const createPostStep = createStep(
+  "create-post",
+  async ({ title }: CreatePostWorkflowInput, { container }) => {
+    const blogModuleService: BlogModuleService = container.resolve(BLOG_MODULE)
+
+    const post = await blogModuleService.createPosts({
+      title,
+    })
+
+    return new StepResponse(post, post)
+  },
+  async (post, { container }) => {
+    if (!post) {
+      return
+    }
+    const blogModuleService: BlogModuleService = container.resolve(BLOG_MODULE)
+
+    await blogModuleService.deletePosts(post.id)
+  }
+)
+
+export const createPostWorkflow = createWorkflow(
+  "create-post",
+  (postInput: CreatePostWorkflowInput) => {
+    const post = createPostStep(postInput)
+
+    return new WorkflowResponse(post)
+  }
+)
+```
+
+The workflow has a single step `createPostStep` that creates a post. In the step, you resolve the Blog Module's service from the Medusa container, which the step receives as a parameter. Then, you create the post using the method `createPosts` of the service, which was generated by `MedusaService`.
+
+The step also has a compensation function, which is a function passed as a third-parameter to `createStep` that implements the logic to rollback the change made by a step in case an error occurs during the workflow's execution.
+
+You'll now execute that workflow in an API route to expose the feature of creating blog posts to clients. To create an API route, create the file `src/api/blog/posts/route.ts` with the following content:
+
+```ts title="src/api/blog/posts/route.ts"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { 
+  createPostWorkflow,
+} from "../../../workflows/create-post"
+
+export async function POST(
+  req: MedusaRequest, 
   res: MedusaResponse
 ) => {
   const query = req.scope.resolve(
@@ -54503,6 +56336,8 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Redis Caching Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis/index.html.md) instead.
 
+However, if you use OAuth-based authentication providers such as Google or GitHub login, keep the Redis Cache Module registered. The Auth Module uses the Cache Module to store OAuth state between the redirect and callback. Removing it without a Redis provider causes Medusa to use an in-memory fallback, which breaks OAuth flows in multi-instance or restarted deployments.
+
 ***
 
 ## Register the Redis Cache Module
@@ -55993,6 +57828,10 @@ This separation of concerns allows for greater flexibility and extensibility. Yo
 ### 1. Remove the Cache Module
 
 The first step is to remove the Cache Module from your `medusa-config.ts` file.
+
+If you use OAuth-based authentication providers such as Google or GitHub login, the Auth Module uses the Cache Module to store the OAuth state parameter between the redirect and the callback. Removing the Cache Module without a Redis provider causes Medusa to fall back to an in-memory cache, which breaks OAuth flows across multiple application instances or after a restart.
+
+Keep the Cache Module registered with a Redis provider until the Auth Module is updated to use the Caching Module instead.
 
 For example, if you set up the Redis Cache Module, remove the following code from `medusa-config.ts`:
 
@@ -72277,7 +74116,7 @@ When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll rec
 
 #### getSignature Method
 
-Next, you'll add the `getSignature` method to the service. This method generates signatures for use in request headers when sending webhook events to AI agents.
+Next, you'll add the `getSignature` method to the service. This method generates a base64 signature for a payload in the same format that AI agents use for inbound requests, which is useful to test the checkout APIs locally.
 
 Add the following method to the `AgenticCommerceService` class:
 
@@ -72291,7 +74130,7 @@ export default class AgenticCommerceService {
 }
 ```
 
-This method receives webhook event data and generates signatures using HMAC-SHA256 with the module's `signatureKey` option.
+This method receives a payload and generates a signature using HMAC-SHA256 with the module's `signatureKey` option.
 
 #### sendWebhookEvent Method
 
@@ -72301,23 +74140,52 @@ First, add the following type at the top of the `src/modules/agentic-commerce/se
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export type AgenticCommerceWebhookEvent = {
-  type: "order.created" | "order.updated"
+  type: "order_create" | "order_update"
   data: {
     type: "order"
+    id: string
     checkout_session_id: string
     permalink_url: string
-    status: "created" | "manual_review" | "confirmed" | "canceled" | "shipping" | "fulfilled"
-    refunds: {
-      type: "store_credit" | "original_payment"
-      amount: number
+    status: "created" | "manual_review" |
+      "confirmed" | "processing" | "shipped" |
+      "completed" | "canceled"
+    adjustments: {
+      id: string
+      type: "refund"
+      occurred_at: string
+      status: "completed"
+      amount?: number
     }[]
   }
 }
 ```
 
-This type defines the structure of webhook events that you can send to AI agents based on [Agentic Commerce specifications](https://developers.openai.com/commerce/specs/webhooks).
+This type defines the structure of webhook events that you can send to AI agents based on the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 
 Then, add the following method to the `AgenticCommerceService` class:
+
+```ts title="src/modules/agentic-commerce/service.ts"
+export default class AgenticCommerceService {
+  // ...
+  getWebhookSignature(
+    rawBody: string,
+    timestamp = Math.floor(Date.now() / 1000)
+  ) {
+    const digest = crypto
+      .createHmac("sha256", this.options.signatureKey)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    return `t=${timestamp},v1=${digest}`
+  }
+}
+```
+
+Outbound webhook events use a different signature format than inbound requests. This method builds the `Merchant-Signature` header value that the ACP `2026-04-17` release expects, which is a hexadecimal HMAC-SHA256 digest of the timestamp and the raw request body, joined by a period.
+
+Sign the exact raw body string that you send in the request, not a re-serialized copy of the payload. Any difference in key order or whitespace produces a different digest that the receiver can't verify.
+
+Finally, add the following method to the `AgenticCommerceService` class:
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export default class AgenticCommerceService {
@@ -72326,15 +74194,17 @@ export default class AgenticCommerceService {
     type,
     data,
   }: AgenticCommerceWebhookEvent) {
-    // Create signature
-    const signature = this.getSignature(data)
+    const rawBody = JSON.stringify({ type, data })
+    const signature = this.getWebhookSignature(rawBody)
     // TODO send order webhook event
-    console.log(`Sent order webhook event ${type} with signature ${signature} and data ${JSON.stringify(data)}`)
+    console.log(
+      `Prepared order webhook event ${type} with Merchant-Signature ${signature}`
+    )
   }
 }
 ```
 
-This method receives webhook event types and data, generates signatures using the `getSignature` method, and logs events to the console.
+This method receives webhook event types and data, serializes the payload once, signs that exact string using the `getWebhookSignature` method, and logs events to the console.
 
 When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll get access to endpoints for sending webhook events and can implement the logic in this method.
 
@@ -75146,6 +77016,12 @@ export default async function orderWebhookHandler({
   const configModule = container.resolve("configModule")
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
+  if (!storefrontUrl) {
+    throw new Error(
+      "A storefront URL is required to send ACP order webhooks"
+    )
+  }
+
   // retrieve order
   const { data: [order] } = await query.graph({
     entity: "order",
@@ -75167,34 +77043,49 @@ export default async function orderWebhookHandler({
     return
   }
 
-  // prepare webhook event
-  const webhookEvent: AgenticCommerceWebhookEvent = {
-    type: name === "order.placed" ? "order.created" : "order.updated",
-    data: {
-      type: "order",
-      checkout_session_id: order.cart.id,
-      permalink_url: `${storefrontUrl}/orders/${order.id}`,
-      status: "confirmed",
-      refunds: order.transactions?.filter(
-        (transaction) => transaction?.reference === "refund"
-      ).map((transaction) => ({
-        type: "original_payment",
-        amount: transaction!.amount * -1,
-      })) || [],
-    },
+  // set status based on order and fulfillments
+  const fulfillments = (order.fulfillments || []).filter(
+    (fulfillment) => !!fulfillment
+  )
+  let status: AgenticCommerceWebhookEvent["data"]["status"] =
+    "confirmed"
+
+  if (order.status === "canceled") {
+    status = "canceled"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.delivered_at)
+  ) {
+    status = "completed"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.shipped_at)
+  ) {
+    status = "shipped"
   }
 
-  // set status based on order, fulfillments and transactions
-  if (order.status === "canceled") {
-    webhookEvent.data.status = "canceled"
-  } else {
-    const allFulfillmentsShipped = order.fulfillments?.every((fulfillment) => !!fulfillment?.shipped_at)
-    const allFulfillmentsDelivered = order.fulfillments?.every((fulfillment) => !!fulfillment?.delivered_at)
-    if (allFulfillmentsShipped) {
-      webhookEvent.data.status = "shipping"
-    } else if (allFulfillmentsDelivered) {
-      webhookEvent.data.status = "fulfilled"
-    }
+  // prepare webhook event
+  const webhookEvent: AgenticCommerceWebhookEvent = {
+    type: name === "order.placed" ?
+      "order_create" : "order_update",
+    data: {
+      type: "order",
+      id: order.id,
+      checkout_session_id: order.cart.id,
+      permalink_url: `${storefrontUrl}/orders/${order.id}`,
+      status,
+      adjustments: order.transactions?.filter(
+        (transaction) => transaction?.reference === "refund"
+      ).map((transaction) => ({
+        id: transaction!.id,
+        type: "refund",
+        occurred_at: new Date(
+          transaction!.created_at
+        ).toISOString(),
+        status: "completed",
+        amount: Math.abs(transaction!.amount) * 100,
+      })) || [],
+    },
   }
 
   // send webhook event
@@ -75217,8 +77108,12 @@ In the subscriber function, you:
 
 - Retrieve orders using Query. You filter by order IDs received in event data.
 - If orders don't exist or if order carts don't have the `is_checkout_session` metadata field, you return early since orders are not associated with checkout sessions.
-- Prepare webhook event payloads based on order data, following [Agentic Commerce webhook specifications](https://developers.openai.com/commerce/specs/checkout#webhooks).
+- Map the order's status and fulfillments to an ACP order status. You check the `completed` case before the `shipped` case, since delivered fulfillments are also shipped. You also require at least one fulfillment, because `Array.prototype.every` returns `true` for an empty array and would otherwise report an unfulfilled order as shipped.
+- Map refund transactions to the `adjustments` array. Medusa stores refunds as negative amounts, so you use the absolute value.
+- Prepare webhook event payloads based on order data, following the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 - Send webhook events to AI agents using the `sendWebhookEvent` method of the Agentic Commerce Module's service.
+
+Extract the payload-building logic into an exported function, such as `buildOrderWebhookEvent`, if you want to unit test the status and adjustment mapping without emitting events. You can find an example in the [tutorial's repository](https://github.com/medusajs/examples/tree/main/agentic-commerce).
 
 ### Use Order Webhook Events in ChatGPT
 
