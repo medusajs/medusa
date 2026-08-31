@@ -36,6 +36,12 @@ interface ModuleTestRunnerConfig<TService = any> {
   resolve?: string
   debug?: boolean
   cwd?: string
+  /**
+   * Migration directories to apply instead of deriving the schema from the
+   * module models. Needed when the schema under test spans more than one
+   * package, e.g. a module and the provider being tested.
+   */
+  pathToMigrations?: string | string[]
   hooks?: {
     beforeModuleInit?: () => Promise<void>
     afterModuleInit?: (medusaApp: any, service: TService) => Promise<void>
@@ -47,6 +53,7 @@ function createMikroOrmWrapper(options: {
   resolve?: string
   dbConfig: any
   cwd?: string
+  pathToMigrations?: string | string[]
 }): {
   MikroOrmWrapper: TestDatabase
   models: (Function | DmlEntity<any, any>)[]
@@ -76,6 +83,7 @@ function createMikroOrmWrapper(options: {
 
   const MikroOrmWrapper = getMikroOrmWrapper({
     mikroOrmEntities: moduleModels,
+    pathToMigrations: options.pathToMigrations,
     clientUrl: options.dbConfig.clientUrl,
     schema: options.dbConfig.schema,
   })
@@ -98,6 +106,7 @@ class ModuleTestRunner<TService = any> {
   private moduleOptions: Record<string, any>
   private moduleDependencies?: string[]
   private injectedDependencies: Record<string, any>
+  private pathToMigrations?: string | string[]
   private hooks: ModuleTestRunnerConfig<TService>["hooks"] = {}
 
   private connection: any = null
@@ -124,6 +133,7 @@ class ModuleTestRunner<TService = any> {
     this.moduleOptions = config.moduleOptions ?? {}
     this.moduleDependencies = config.moduleDependencies
     this.injectedDependencies = config.injectedDependencies ?? {}
+    this.pathToMigrations = config.pathToMigrations
     this.hooks = config.hooks ?? {}
 
     this.dbConfig = {
@@ -159,6 +169,7 @@ class ModuleTestRunner<TService = any> {
       resolve: this.resolve,
       dbConfig: this.dbConfig,
       cwd: this.cwd,
+      pathToMigrations: this.pathToMigrations,
     })
 
     this.MikroOrmWrapper = MikroOrmWrapper
@@ -245,8 +256,10 @@ class ModuleTestRunner<TService = any> {
         await this.hooks.afterModuleInit(this.medusaApp, this.moduleService)
       }
     } catch (error) {
+      // Deliberately not cleaning up: the shared connection lives for the whole
+      // suite, so destroying it here would replace every later failure with an
+      // unrelated "Unable to acquire a connection". `afterAll` still cleans up.
       logger.error("Error in beforeEach:", error?.message)
-      await this.cleanup()
       throw error
     }
   }
@@ -311,6 +324,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   injectedDependencies = {},
   cwd,
   hooks,
+  pathToMigrations,
 }: {
   moduleName: string
   moduleModels?: any[]
@@ -323,6 +337,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   debug?: boolean
   cwd?: string
   hooks?: ModuleTestRunnerConfig<TService>["hooks"]
+  pathToMigrations?: string | string[]
   testSuite: (options: SuiteOptions<TService>) => void
 }) {
   const runner = new ModuleTestRunner<TService>({
@@ -337,6 +352,7 @@ export function moduleIntegrationTestRunner<TService = any>({
     injectedDependencies,
     cwd,
     hooks,
+    pathToMigrations,
   })
 
   return describe("", () => {

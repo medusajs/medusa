@@ -54,7 +54,7 @@ export function calculateCreditLinesTotal({
     defaultCurrencies[upperCurCode]?.decimal_digits
   )
 
-  const isZero = MathBN.lte(creditLinesTotal, currencyEpsilon)
+  const isZero = MathBN.lte(MathBN.abs(creditLinesTotal), currencyEpsilon)
   return {
     creditLinesTotal: isZero ? MathBN.convert(0) : creditLinesTotal,
     creditLinesSubtotal: isZero ? MathBN.convert(0) : creditLinesSubtotal,

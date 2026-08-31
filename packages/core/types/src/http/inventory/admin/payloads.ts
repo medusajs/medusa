@@ -38,6 +38,10 @@ export interface AdminCreateInventoryItem {
    */
   material?: string | null
   /**
+   * The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+   */
+  unit_of_measure?: string | null
+  /**
    * The inventory item's title.
    */
   title?: string | null

@@ -47,6 +47,12 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
+<Note title="Cloud users">
+
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](!cloud!/environments/environment-variables). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
+
+</Note>
+
 For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
 
 ```bash
@@ -1173,6 +1179,12 @@ For modules that are part of a plugin, learn about registering them in the [Regi
 ### Example
 
 To register a custom module:
+
+<Note title="Cloud users">
+
+Environment variables used in module `options` are read during the build phase. When deploying to Cloud, make sure each variable has the **Build** flag enabled in your [environment variables settings](!cloud!/environments/environment-variables). A variable that is only enabled at runtime will be `undefined` when the module loads, causing errors such as "Option `apiKey` is required".
+
+</Note>
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({

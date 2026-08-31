@@ -1101,6 +1101,13 @@ export const apiRefPaths = {
             "title": "Create Inventory Item",
             "method": "post"
           },
+          "PostInventoryItemsExport": {
+            "slug": "create-inventory-item-2",
+            "path": "/admin/inventory-items/create-inventory-item-2",
+            "oldHash": "inventory-items_postinventoryitemsexport",
+            "title": "Create Inventory Item",
+            "method": "post"
+          },
           "PostInventoryItemsIdLocationLevels": {
             "slug": "create-inventory-level",
             "path": "/admin/inventory-items/create-inventory-level",
@@ -2671,6 +2678,20 @@ export const apiRefPaths = {
           }
         }
       },
+      "search": {
+        "name": "Search",
+        "path": "/admin/search",
+        "schemaPath": null,
+        "operations": {
+          "GetSearch": {
+            "slug": "list-search",
+            "path": "/admin/search/list-search",
+            "oldHash": "search_getsearch",
+            "title": "List Search",
+            "method": "get"
+          }
+        }
+      },
       "shipping-option-types": {
         "name": "Shipping Option Types",
         "path": "/admin/shipping-option-types",
@@ -4180,6 +4201,7 @@ export const apiRefRedirects = {
     "inventory-items_getinventoryitems": "/admin/inventory-items/list-inventory-items",
     "inventory-items_getinventoryitemsidlocationlevels": "/admin/inventory-items/list-inventory-levels",
     "inventory-items_postinventoryitems": "/admin/inventory-items/create-inventory-item",
+    "inventory-items_postinventoryitemsexport": "/admin/inventory-items/create-inventory-item-2",
     "inventory-items_postinventoryitemsidlocationlevels": "/admin/inventory-items/create-inventory-level",
     "inventory-items_postinventoryitemslocationlevelsbatch": "/admin/inventory-items/manage-inventory-levels",
     "inventory-items_postinventoryitemsidlocationlevelsbatch": "/admin/inventory-items/manage-inventory-levels-2",
@@ -4430,6 +4452,8 @@ export const apiRefRedirects = {
     "sales-channels_deletesaleschannelsid": "/admin/sales-channels/delete-a-sales-channel",
     "sales-channels_saleschannel_schema": "/admin/sales-channels/schema",
     "sales-channels": "/admin/sales-channels",
+    "search_getsearch": "/admin/search/list-search",
+    "search": "/admin/search",
     "shipping-option-types_getshippingoptiontypesid": "/admin/shipping-option-types/get-a-shipping-option-type",
     "shipping-option-types_getshippingoptiontypes": "/admin/shipping-option-types/list-shipping-option-types",
     "shipping-option-types_postshippingoptiontypes": "/admin/shipping-option-types/create-shipping-option-type",

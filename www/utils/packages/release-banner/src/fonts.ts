@@ -4,9 +4,9 @@ import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
 /**
- * Inter is read from the copy the admin dashboard already vendors, so the banner
- * needs no font download at render time and there is no second copy of the
- * typeface to keep in step.
+ * Inter and Roboto Mono are read from the copies the admin dashboard already
+ * vendors, so the banners need no font download at render time and there is no
+ * second copy of either typeface to keep in step.
  */
 const FONT_DIR = join(
   "packages",
@@ -17,9 +17,11 @@ const FONT_DIR = join(
   "fonts"
 )
 
-const FONT_FILES: { file: string; weight: FontWeight }[] = [
-  { file: "Inter-Regular.ttf", weight: 400 },
-  { file: "Inter-Medium.ttf", weight: 500 },
+const FONT_FILES: { file: string; name: string; weight: FontWeight }[] = [
+  { file: "Inter-Regular.ttf", name: "Inter", weight: 400 },
+  { file: "Inter-Medium.ttf", name: "Inter", weight: 500 },
+  { file: "RobotoMono-Regular.ttf", name: "Roboto Mono", weight: 400 },
+  { file: "RobotoMono-Medium.ttf", name: "Roboto Mono", weight: 500 },
 ]
 
 /** The weights satori accepts. */
@@ -62,14 +64,19 @@ function findRepoRoot(): string {
 
 let cache: LoadedFont[] | undefined
 
-/** Loads Inter, once per process. */
+/**
+ * Loads every typeface a banner might ask for, once per process.
+ *
+ * They are handed to satori together and picked by `fontFamily`, so a template
+ * only has to name the one it wants.
+ */
 export async function loadFonts(): Promise<LoadedFont[]> {
   if (!cache) {
     const fontDir = join(findRepoRoot(), FONT_DIR)
 
     cache = await Promise.all(
-      FONT_FILES.map(async ({ file, weight }) => ({
-        name: "Inter",
+      FONT_FILES.map(async ({ file, name, weight }) => ({
+        name,
         weight,
         style: "normal" as const,
         data: await readFile(join(fontDir, file)),

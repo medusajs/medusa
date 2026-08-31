@@ -34,10 +34,9 @@ To rename the branch associated with an environment of your Cloud project:
 
 1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Deployment rules" tab from the sidebar.
-5. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
-6. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
-7. Click "Save" to apply the changes.
+3. In the environment's dashboard, click **Deployment rules** in the sidebar.
+4. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
+5. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
+6. Click "Save" to apply the changes.
 
 The deployment rules will take effect for next deployments. So, the next time you push a commit to the renamed branch, it will trigger a new deployment of the environment.
