@@ -34,10 +34,13 @@ Medusa registers this provider by default, so you don't need to configure anythi
 To change its options, register the [Search Module](../../page.mdx) with the provider in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
+// To register only for development. This is necessary to use Medusa Search in Cloud
+const isDev = process.env.NODE_ENV !== "production"
+
 module.exports = defineConfig({
   // ...
   modules: [
-    {
+    isDev && {
       resolve: "@medusajs/medusa/search",
       options: {
         // Only needed with more than one provider.
@@ -56,7 +59,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  ],
+  ].filter(Boolean),
 })
 ```
 
@@ -105,17 +108,6 @@ npx medusa db:migrate
       </Table.Cell>
       <Table.Cell>
         `native`
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        `vector_distance`
-      </Table.Cell>
-      <Table.Cell>
-        The distance metric for vector indexes, one of `cosine`, `l2`, or `inner_product`. Refer to [Choose a Distance Metric](#choose-a-distance-metric).
-      </Table.Cell>
-      <Table.Cell>
-        `cosine`
       </Table.Cell>
     </Table.Row>
   </Table.Body>
