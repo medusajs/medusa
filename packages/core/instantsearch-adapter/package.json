@@ -1,0 +1,43 @@
+{
+  "name": "@medusajs/instantsearch-adapter",
+  "version": "2.19.0",
+  "description": "Algolia InstantSearch adapter for Medusa Search",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/core/instantsearch-adapter"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "author": "Medusa",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "build": "yarn run -T tsup",
+    "watch": "yarn run -T tsup --watch",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --detectOpenHandles"
+  }
+}

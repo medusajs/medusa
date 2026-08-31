@@ -67,11 +67,13 @@ import { SearchTypes } from "@medusajs/types"
  *
  * @privateRemarks
  *
- * `swapIndex`, `searchMany` and `waitForTask` are optional and
- * left out of this class on purpose: the Search Module treats their presence as support,
- * so only define the ones your engine can back. Implementing `swapIndex`, for example,
- * lets the module reindex without downtime instead of rebuilding in place. Refer to the
- * `ISearchProvider` interface for their expected parameters and return values.
+ * `swapIndex` and `waitForTask` are optional and left out of this class on
+ * purpose: the Search Module treats their presence as support, so only define
+ * the ones your engine can back. `searchMany` has a default that runs `search`
+ * concurrently; override it to pack the queries into one engine round-trip.
+ * Implementing `swapIndex`, for example, lets the module reindex without
+ * downtime instead of rebuilding in place. Refer to the `ISearchProvider`
+ * interface for their expected parameters and return values.
  */
 export class AbstractSearchProviderService
   implements SearchTypes.ISearchProvider
@@ -146,6 +148,41 @@ export class AbstractSearchProviderService
     _input: SearchTypes.ProviderSearchQuery
   ): Promise<SearchTypes.SearchResult> {
     throw Error("search must be overridden by the child class")
+  }
+
+  /**
+   * This method runs multiple queries in a single request to the search engine.
+   * The Search Module uses it for its `searchMany` method, including the extra
+   * queries produced by disjunctive faceting.
+   *
+   * The default runs `search` concurrently. Override it to pack the queries into
+   * one engine round-trip.
+   *
+   * @param {SearchTypes.ProviderSearchQuery[]} inputs - The queries to run.
+   * @returns {Promise<SearchTypes.SearchResult[]>} A result for each query, in
+   * the same order as the queries.
+   *
+   * @example
+   * class MySearchProviderService extends AbstractSearchProviderService {
+   *   // ...
+   *   async searchMany(
+   *     inputs: SearchTypes.ProviderSearchQuery[]
+   *   ): Promise<SearchTypes.SearchResult[]> {
+   *     const { results } = await this.client.multiSearch(
+   *       inputs.map((input) => ({
+   *         indexUid: input.index.physical_name,
+   *         query: input.q,
+   *       }))
+   *     )
+   *
+   *     return results.map((result, i) => this.buildResult(result, inputs[i]))
+   *   }
+   * }
+   */
+  async searchMany(
+    inputs: SearchTypes.ProviderSearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
+    return await Promise.all(inputs.map((input) => this.search(input)))
   }
 
   /**

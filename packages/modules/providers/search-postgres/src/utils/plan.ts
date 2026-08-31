@@ -52,8 +52,9 @@ export type PostgresSearchProviderOptions = {
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for `search_options.vector.query`. Required on the lakebase
-   * engine when callers pass a query string instead of a pre-computed `value`.
+   * Embeds text for engine-embedded vector fields (`embed` on the field) at
+   * write time, and for `search_options.vector.query` at query time. Required
+   * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
   /**
@@ -269,6 +270,7 @@ export function buildIndexPlan(
       is_array: planned.is_array,
       is_date: planned.is_date,
       dimensions: planned.dimensions,
+      embed: planned.field.embed,
       searchable: isSearchable(planned.field),
       filterable: !!planned.field.filterable,
       sortable: !!planned.field.sortable,
@@ -337,6 +339,34 @@ export function tableNameForIndex(physicalName: string): string {
 /** BM25 index name for a document table (lakebase engine). */
 export function bm25IndexName(table: string): string {
   return `${table}_bm25`
+}
+
+/**
+ * Resolves which vector field a query targets. `vector.field` is optional when
+ * the index declares exactly one vector field.
+ */
+export function resolveVectorField(
+  vector: NonNullable<SearchTypes.SearchOptions["vector"]>,
+  plan: IndexPlan
+): string {
+  if (vector.field) {
+    if (!plan.vectors.includes(vector.field)) {
+      fail(
+        `Vector search field "${vector.field}" is not a vector field on this index`
+      )
+    }
+    return vector.field
+  }
+
+  if (plan.vectors.length === 1) {
+    return plan.vectors[0]
+  }
+
+  fail(
+    plan.vectors.length
+      ? `search_options.vector.field is required when the index has more than one vector field`
+      : `search_options.vector requires a vector field on this index`
+  )
 }
 
 /**
