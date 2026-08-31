@@ -285,15 +285,26 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     }
 
     const key = `staging:${eventGroupId}`
-    const pipeline = this.eventBusRedisConnection_.pipeline()
+    if (typeof this.eventBusRedisConnection_.pipeline === "function") {
+      const pipeline = this.eventBusRedisConnection_.pipeline()
 
-    pipeline.rpush(key, ...events.map((event) => JSON.stringify(event)))
+      pipeline.rpush(key, ...events.map((event) => JSON.stringify(event)))
 
-    if (ttl) {
-      pipeline.expire(key, ttl)
+      if (ttl) {
+        pipeline.expire(key, ttl)
+      }
+
+      await pipeline.exec()
+    } else {
+      await (this.eventBusRedisConnection_.rpush as any)(
+        key,
+        ...events.map((event) => JSON.stringify(event))
+      )
+
+      if (ttl) {
+        await this.eventBusRedisConnection_.expire(key, ttl)
+      }
     }
-
-    await pipeline.exec()
   }
 
   private async getGroupedEvents(
