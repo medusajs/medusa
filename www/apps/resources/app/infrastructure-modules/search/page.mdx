@@ -51,10 +51,13 @@ The Search Module is registered by default in your Medusa application with the [
 To change its configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
+// To register only for development. This is necessary to use Medusa Search in Cloud
+const isDev = process.env.NODE_ENV !== "production"
+
 module.exports = defineConfig({
   // ...
   modules: [
-    {
+    isDev && {
       resolve: "@medusajs/medusa/search",
       options: {
         index_prefix: "prod_",
@@ -66,7 +69,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  ],
+  ].filter(Boolean),
 })
 ```
 
@@ -228,9 +231,9 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
-Medusa subscribes to the events in `events` and routes each one to `consume`, so the index reflects changes as they happen. `seed` fills the index in full when Medusa creates or rebuilds it. Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
+Medusa subscribes to the workflow events in `events` and routes each one to `consume`, so the index reflects changes as they happen. `seed` fills the index in full when Medusa creates or rebuilds it. Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
 
-### 2. Run Migrations (Optional)
+### 2. Run Migrations
 
 If you're using the PostgreSQL provider (default) or another provider that requires modifications to the database when you make changes to an index definition, run the migrations command to create or update the physical index:
 
@@ -316,6 +319,8 @@ You'll receive a JSON response like the following:
 {/* TODO move to main docs */}
 
 Learn about filters, facets, highlighting, and vector search in the [Search Queries guide](!docs!/learn/fundamentals/query/search).
+
+To build the search experience in your storefront, use the [InstantSearch adapter](../../instantsearch/page.mdx). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into Medusa search queries.
 
 ### 4. Keeping Indexes Up to Date
 

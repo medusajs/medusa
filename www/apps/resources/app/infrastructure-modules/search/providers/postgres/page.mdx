@@ -101,21 +101,10 @@ npx medusa db:migrate
         `engine`
       </Table.Cell>
       <Table.Cell>
-        The search backend to use, either `native` or `lakebase`. Refer to [Search Engines](#search-engines-in-the-postgresql-search-module-provider).
+        The search backend to use, which can be `native`.
       </Table.Cell>
       <Table.Cell>
         `native`
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        `embedder`
-      </Table.Cell>
-      <Table.Cell>
-        A function that turns text into an embedding. Required for [vector search](#vector-search-on-the-lakebase-engine) when a query passes text instead of a pre-computed embedding.
-      </Table.Cell>
-      <Table.Cell>
-        No embedder.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -236,46 +225,6 @@ You will receive the products whose titles match the query, ordered by relevance
 }
 ```
 
-
----
-
-## Search Engines in the PostgreSQL Search Module Provider
-
-An engine is the mechanism the provider uses inside PostgreSQL to index documents and rank matches, set with the `engine` option. It isn't a separate search service, since both engines read and write the same PostgreSQL database.
-
-The provider supports two engines:
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-        Engine
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Description
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-        `native`
-      </Table.Cell>
-      <Table.Cell>
-        Portable PostgreSQL full-text search, using GIN indexes with `ts_rank` for relevance and `pg_trgm` for typo tolerance. Works on any PostgreSQL instance. This is the default.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        `lakebase`
-      </Table.Cell>
-      <Table.Cell>
-        Neon Lakebase Search, using BM25 relevance ranking and approximate nearest neighbor vector indexes. Requires a Neon PostgreSQL 16 or later instance with the Lakebase extensions.
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
 ---
 
 ## Database Requirements in the PostgreSQL Search Module Provider
@@ -322,8 +271,6 @@ Running `db:migrate` creates everything the `native` engine needs:
     </Table.Row>
   </Table.Body>
 </Table>
-
-The [Lakebase extensions](#lakebase-extensions) are the exception. The migration doesn't create them.
 
 <Note title="Warning" type="warning">
 
@@ -376,134 +323,3 @@ npx medusa db:migrate
 ```
 
 `db:migrate` runs migration scripts after it creates the search indexes, and the provider only reads the text search configuration when it writes documents. So the configuration exists by the time your application indexes anything.
-
-### Lakebase Extensions
-
-The migration doesn't install the Lakebase extensions, since they need Neon preload libraries. Create them yourself when you set `engine` to `lakebase`.
-
-To do that, add a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory. For example, create the file `src/migration-scripts/create-lakebase-extensions.ts`:
-
-```ts title="src/migration-scripts/create-lakebase-extensions.ts"
-import { ExecArgs } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
-
-export default async function createLakebaseExtensions({
-  container,
-}: ExecArgs) {
-  const knex = container.resolve(
-    ContainerRegistrationKeys.PG_CONNECTION
-  )
-
-  await knex.raw(
-    `CREATE EXTENSION IF NOT EXISTS lakebase_text;`
-  )
-
-  await knex.raw(
-    `CREATE EXTENSION IF NOT EXISTS lakebase_vector CASCADE;`
-  )
-}
-```
-
-Then, run the migrations:
-
-```bash npm2yarn
-npx medusa db:migrate
-```
-
-`CASCADE` installs the `vector` extension that `lakebase_vector` depends on.
-
-<Note title="Warning" type="warning">
-
-`db:migrate` creates the search indexes before it runs migration scripts. If an index declares a `vector` field, the provider builds its approximate nearest neighbor index during that earlier step. So create the `lakebase_vector` extension with a privileged role before you run `db:migrate` for the first time.
-
-</Note>
-
----
-
-## Vector Search on the Lakebase Engine
-
-<Note title="Warning" type="warning">
-
-Vector search requires the `lakebase` engine. On the `native` engine, the provider rejects any query that uses `search_options.vector`, and it rejects an index that declares a `search.vector()` field, so your application fails to start.
-
-</Note>
-
-A field declared with `search.vector(dimensions)` holds an embedding, which the provider indexes for similarity search.
-
-A vector search compares embeddings, so the provider needs the search terms as an array of numbers before it can run one. The `search_options.vector` option that you pass to [Query](!docs!/learn/fundamentals/query) gives you two ways to supply it:
-
-1. `value`: an embedding you computed yourself. The provider uses it directly, and it only checks that its length matches the field's `dimensions`.
-
-```ts
-const { data } = await query.search({
-  entity: "product",
-  search_options: {
-    vector: {
-      field: "title_embedding",
-      value: [0.021, -0.113, 0.884],
-    },
-  },
-})
-```
-
-2. `query`: the text to search for. The provider has no way to turn text into an embedding on its own, so it calls the `embedder` function you configure. Without an `embedder`, the provider throws an error.
-
-```ts
-const { data } = await query.search({
-  entity: "product",
-  search_options: {
-    vector: {
-      field: "title_embedding",
-      query: "shoes for long runs",
-    },
-  },
-})
-```
-
-So you only need an `embedder` if you want callers to pass text with `search_options.vector.query`. Configure it in the provider's options:
-
-```ts title="medusa-config.ts"
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "@medusajs/medusa/search",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/medusa/search-postgres",
-            id: "search-postgres",
-            options: {
-              engine: "lakebase",
-              vector_distance: "cosine",
-              embedder: async (text: string) => {
-                return await myEmbeddingClient.embed(text)
-              },
-            },
-          },
-        ],
-      },
-    },
-  ],
-})
-```
-
-### Choose a Distance Metric
-
-The `vector_distance` option sets how the provider measures the distance between two embeddings. It accepts one of the following:
-
-- `cosine`: compares the angle between the embeddings and ignores their magnitude. This is the default, and it's what most text embedding models expect.
-- `l2`: the straight-line distance between the embeddings, so magnitude counts.
-- `inner_product`: the dot product of the embeddings, for models whose embeddings are already normalized.
-
-Set it to whatever the model producing your embeddings recommends.
-
-<Note title="Warning" type="warning">
-
-The provider bakes the metric into the approximate nearest neighbor index when it creates it. Changing `vector_distance` afterwards doesn't rebuild that index, so rebuild the index yourself with the Search Module's [reindex method](../../reindexing/page.mdx#seeding-on-demand).
-
-</Note>
-
-Learn how to run a similarity search in the [Search Queries guide](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

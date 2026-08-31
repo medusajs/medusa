@@ -8,6 +8,7 @@ export const metadata = {
     "cloud search",
     "full-text search",
     "vector search",
+    "semantic search",
     "search module",
     "search provider",
   ],
@@ -32,7 +33,7 @@ Medusa Search gives your commerce application a search engine that serves storef
 Medusa Search provides the following features:
 
 - **Full-text search** with relevance ranking that respects the weight you set on each field.
-- **Vector search** over embeddings that you compute and store in your index.
+- **Semantic search** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
 - **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
 - **Facets** for values and ranges, so a storefront can show counts per category or price bucket.
 - **Sorting** by any number of fields.
@@ -40,9 +41,9 @@ Medusa Search provides the following features:
 
 ### Search Indexes per Environment
 
-Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle.
+Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle. Preview environments are the exception, since they can start from another environment's data.
 
-Preview environments are the exception, since they can start from another environment's data. When you configure a base environment in the [shared previews settings](../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment, similar to how it creates the preview environment's database.
+{/* Preview environments are the exception, since they can start from another environment's data. When you configure a base environment in the [shared previews settings](../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment, similar to how it creates the preview environment's database. */}
 
 ---
 
@@ -525,6 +526,60 @@ Set `eventual` for queries where a slightly stale result is fine, such as a stor
 
 ---
 
+## Semantic Search with Medusa Search
+
+[Semantic search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) ranks results by meaning rather than by matching terms, which needs an embedding of the text you search over. Medusa Search can create those embeddings for you, so you don't run an embedding model or store its output yourself.
+
+<Note>
+
+This feature is available for the Enterprise plan only. Refer to the [Plans & Pricing](../pricing/page.mdx) guide for what your plan includes.
+
+</Note>
+
+To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier with the path of the `text` or `keyword` field to embed:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed("title"),
+    // ...
+  }),
+  // ...
+})
+```
+
+Medusa Search now embeds each document's `title` into `title_embedding` as it indexes the document. Your documents must leave `title_embedding` out, since Medusa Search produces it.
+
+Then, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "comfortable running shoe" },
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      query: "comfortable shoes for long runs",
+      semantic_ratio: 0.7,
+    },
+  },
+})
+```
+
+`semantic_ratio` balances the semantic score against the full-text score, where `0` is full-text only and `1` is semantic only. So this query blends both.
+
+Without `embed` on the field, a query must pass a pre-computed embedding as `search_options.vector.value` instead, and Medusa Search rejects a query that passes `query`.
+
+<Note>
+
+Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-modules/search/index-definitions/fields#let-medusa-search-create-the-embedding) for the full details of the modifier, including how it changes the documents your index holds.
+
+</Note>
+
+---
+
 ## Reindex on Medusa Search
 
 Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one in code with the Search Module's `reindex` method.
@@ -535,6 +590,6 @@ Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide fo
 
 ## Medusa Search Usage
 
-Medusa Search is available on all Cloud plans, and the number of search requests your Medusa application makes is a metered resource. Every plan includes an allowance of search requests, and requests beyond it count as [Flex Usage](../usage/page.mdx#what-is-flex-usage).
+Medusa Search is available on all Cloud plans, with the exception of vector search which is only available to Enterprise plans. The number of search requests your Medusa application makes is a metered resource. Every plan includes an allowance of search requests, and requests beyond it count as [Flex Usage](../usage/page.mdx#what-is-flex-usage).
 
 Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organization's usage, and to the [Plans & Pricing](../pricing/page.mdx) guide for the allowance your plan includes.

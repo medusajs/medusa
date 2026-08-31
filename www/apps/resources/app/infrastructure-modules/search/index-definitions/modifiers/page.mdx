@@ -345,6 +345,38 @@ Most providers flatten arrays and can't express correlated filtering. A provider
 
 ---
 
+## embed()
+
+Asks [Medusa Search](!cloud!/search) to create the field's embedding from another field, rather than having your documents supply it. Available on a `vector` field only.
+
+Pass the path of the `text` or `keyword` field to embed:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed("title"),
+    // ...
+  }),
+  // ...
+})
+```
+
+With `embed`, your documents must leave the vector field out, and a query can search it by passing raw text as `search_options.vector.query`. Refer to [Let Medusa Search Create the Embedding](../fields/page.mdx#let-medusa-search-create-the-embedding) for the full details.
+
+<Note>
+
+`embed` is a [Medusa Search](!cloud!/search#let-medusa-search-create-the-embedding) feature, available for Cloud projects on the Enterprise plan.
+
+</Note>
+
+---
+
 ## providerOptions()
 
 Pass provider-specific options for one field, keyed by provider identifier. Use it to reach a feature the field definition doesn't model. Available on every type.

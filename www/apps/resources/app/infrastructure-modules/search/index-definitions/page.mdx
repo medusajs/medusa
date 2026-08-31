@@ -163,7 +163,7 @@ npx medusa db:migrate
         `events`
       </Table.Cell>
       <Table.Cell>
-        The events that change the data this index holds. Medusa subscribes to them and routes each one to `consume`. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date) for details.
+        The workflow events that change the data this index holds. Medusa subscribes to them and routes each one to `consume`. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date) for details.
       </Table.Cell>
       <Table.Cell>
         No
@@ -240,27 +240,35 @@ Yield in batches using the `yield` keyword so the module writes to the engine as
 For example, the following `seed` reads every product in batches of `500` and yields them to the index:
 
 ```ts title="src/search/product.ts"
-async *seed({ container, filters }) {
-  const limit = 500
-  let offset = 0
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
 
-  while (true) {
-    const { data } = await container.query.graph({
-      entity: "product",
-      fields: ["id", "title", "handle", "status"],
-      filters,
-      pagination: { skip: offset, take: limit },
-    })
+export const productIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, filters }) {
+    const limit = 500
+    let offset = 0
 
-    if (!data.length) {
-      break
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: ["id", "title", "handle", "status"],
+        filters,
+        pagination: { skip: offset, take: limit },
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      yield data
+
+      offset += limit
     }
-
-    yield data
-
-    offset += limit
   }
-}
+})
 ```
 
 ---
@@ -277,7 +285,7 @@ A restart doesn't refill an index that already has documents. The module only se
 
 To ensure your index is always up-to-date, you must add the following to your index definition:
 
-- `events`: an array of event names that change the data the index holds. Medusa subscribes to them and calls `consume` for each one.
+- `events`: an array of workflow event names that change the data the index holds. Medusa subscribes to them and calls `consume` for each one.
     - See the [Events Reference](/references/events) for the full list of events Medusa emits and their payloads. You can also use custom events that you emit.
 - `consume`: a function that turns an event into document writes.
 
