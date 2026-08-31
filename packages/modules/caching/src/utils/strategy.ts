@@ -172,6 +172,7 @@ export class DefaultCacheStrategy implements ICachingStrategy {
       this.#pendingFlush ??= this.#flushPendingTags()
       await this.#pendingFlush
     }
+  }
 
   async #flushPendingTags(): Promise<void> {
     try {

@@ -8,7 +8,6 @@ import {
   deduplicate,
   GraphQLUtils,
   MedusaError,
-  promiseAll,
 } from "@medusajs/framework/utils"
 import { CachingDefaultProvider, InjectedDependencies } from "@types"
 import CacheProviderService from "./cache-provider"
@@ -319,24 +318,16 @@ export default class CachingModuleService implements ICachingModuleService {
       autoInvalidate?: boolean
     }
   ): Promise<void> {
-    // The write has to be awaited, otherwise `set` resolves before the provider
-    // has done any work: the `ongoingRequests` coalescing above can never dedupe
-    // and callers have no way of applying backpressure on a slow provider.
-    await promiseAll(
-      (providers || []).map((providerOptions) => {
-        const ttl_ = providerOptions.ttl ?? ttl ?? this.ttl
-        const provider = this.providerService.retrieveProvider(
-          providerOptions.id
-        )
-
-        return provider.set({
+    await Promise.all(
+      (providers || []).map((providerOptions) =>
+        this.providerService.retrieveProvider(providerOptions.id).set({
           key,
           tags,
           data,
-          ttl: ttl_,
+          ttl: providerOptions.ttl ?? ttl ?? this.ttl,
           options,
         })
-      })
+      )
     )
   }
 
@@ -409,14 +400,10 @@ export default class CachingModuleService implements ICachingModuleService {
       providerIds_ = Array.isArray(providers) ? providers : [providers]
     }
 
-    // Same as `performCacheSet`, the clear has to be awaited so that concurrent
-    // invalidations are coalesced by `ongoingRequests` instead of piling up
-    // unbounded against the provider.
-    await promiseAll(
-      providerIds_.map((providerId) => {
-        const provider = this.providerService.retrieveProvider(providerId)
-        return provider.clear({ key, tags, options })
-      })
+    await Promise.all(
+      providerIds_
+        .map((id) => this.providerService.retrieveProvider(id))
+        .map((provider) => provider.clear({ key, tags, options }))
     )
   }
 
