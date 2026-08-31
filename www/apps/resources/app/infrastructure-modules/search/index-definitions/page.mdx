@@ -217,7 +217,65 @@ The first four cases run when your application starts. Refer to the [Reindexing 
       name: "index",
       type: "`object`",
       optional: false,
-      description: "The index definition being filled."
+      description: "The definition of the index being filled, as you passed it to `defineSearchIndex`. Refer to [Index Definition Properties](#index-definition-properties) for more details on each property.",
+      children: [
+        {
+          name: "name",
+          type: "`string`",
+          optional: false,
+          description: "The index's unique name, which is the `entity` that `query.search` resolves against."
+        },
+        {
+          name: "entity",
+          type: "`string`",
+          optional: false,
+          description: "The [Query](!docs!/learn/fundamentals/query) entry point that hydrates the fields the index doesn't hold."
+        },
+        {
+          name: "fields",
+          type: "`Record<string, object>`",
+          optional: false,
+          description: "The fields the index holds, keyed by their path in the document. Read them to build the documents you yield, rather than hard-coding the field list twice. Refer to [Search Index Fields](./fields/page.mdx) for a field definition's shape."
+        },
+        {
+          name: "seed",
+          type: "`function`",
+          optional: false,
+          description: "The generator function that yields the index's documents, which is the function receiving this context."
+        },
+        {
+          name: "primary_key",
+          type: "`string`",
+          optional: true,
+          description: "The field holding each document's unique identifier. The Search Module reads it from every document you yield to track the run's `last_key`.",
+          defaultValue: "id"
+        },
+        {
+          name: "provider",
+          type: "`string`",
+          optional: true,
+          description: "The identifier of the [Search Module Provider](../providers/page.mdx) holding this index, such as `search-postgres`.",
+          defaultValue: "The module's default provider"
+        },
+        {
+          name: "settings",
+          type: "`object`",
+          optional: true,
+          description: "The engine settings applied to this index. Refer to [Index Settings](!cloud!/search#index-settings) for the settings [Medusa Search](!cloud!/search) accepts."
+        },
+        {
+          name: "events",
+          type: "`string[]`",
+          optional: true,
+          description: "The workflow events that change the data this index holds."
+        },
+        {
+          name: "consume",
+          type: "`function`",
+          optional: true,
+          description: "The function that turns one of those events into document writes. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date)."
+        }
+      ]
     },
     {
       name: "filters",
