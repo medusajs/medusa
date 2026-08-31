@@ -183,4 +183,4 @@ If you register one provider, you can leave `default_provider` unset. The Search
 
 The Search Module models a search engine's features behind one interface, but not every engine backs all of them. A provider that can't serve part of a query rejects it, rather than returning results that quietly differ. Some features, such as index swapping, are optional: the module takes a slower path instead of failing when a provider doesn't back them.
 
-So the provider you pick decides which index definitions you can declare, which query features you can pass, and how a schema change reaches the index. Refer to [Compare Search Module Providers](./comparison/page.mdx) for what each provider Medusa ships does with every feature they treat differently.
+So the provider you pick decides which index definitions you can declare, which query features you can pass, and how a schema change reaches the index. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider Medusa ships does with every feature they treat differently.
