@@ -403,10 +403,13 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
 
   const { mutateAsync: updateActionItem, isPending: isUpdatingActionItem } =
     useDraftOrderUpdateActionItem(preview.id)
+  const { mutateAsync: removeActionItem, isPending: isRemovingActionItem } =
+    useDraftOrderRemoveActionItem(preview.id)
   const { mutateAsync: updateOriginalItem, isPending: isUpdatingOriginalItem } =
     useDraftOrderUpdateItem(preview.id)
 
-  const isPending = isUpdatingActionItem || isUpdatingOriginalItem
+  const isPending =
+    isUpdatingActionItem || isUpdatingOriginalItem || isRemovingActionItem
 
   const onSubmit = form.handleSubmit(async (data) => {
     /**
@@ -437,6 +440,19 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
           },
         }
       )
+
+      return
+    }
+
+    if (data.quantity === 0) {
+      await removeActionItem(actionId, {
+        onSuccess: () => {
+          setEditing(false)
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      })
 
       return
     }
