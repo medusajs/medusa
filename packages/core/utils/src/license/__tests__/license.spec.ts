@@ -206,13 +206,12 @@ describe("checkLicenseRemote", () => {
   })
 
   it("returns null when the request times out", async () => {
-    ;(global.fetch as jest.Mock).mockImplementation(
-      (_url: string, init: { signal?: AbortSignal }) =>
-        new Promise((_resolve, reject) => {
-          init.signal?.addEventListener("abort", () => {
-            reject(new Error("aborted"))
-          })
-        })
+    // The rejection AbortSignal.timeout() produces, without the real wait.
+    ;(global.fetch as jest.Mock).mockRejectedValue(
+      new DOMException(
+        "The operation was aborted due to timeout",
+        "TimeoutError"
+      )
     )
 
     await expect(checkLicenseRemote("token")).resolves.toBeNull()

@@ -32,7 +32,8 @@
     "openid-client": "^5.7.1"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.19.0"
+    "@medusajs/framework": "2.19.0",
+    "@medusajs/test-utils": "2.19.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.19.0"
