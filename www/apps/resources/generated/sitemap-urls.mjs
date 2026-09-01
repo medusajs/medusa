@@ -364,6 +364,7 @@ export const sitemapUrls = [
   "/lint/rules/use-medusa-error-not-generic-error",
   "/lint/rules/use-query-context-utility",
   "/lint/rules/use-validated-body-or-query",
+  "/lint/rules/when-block-must-have-name",
   "/lint/rules/widget-must-export-config",
   "/lint/rules/widget-must-have-default-export",
   "/lint/rules/widget-zone-must-be-string-literal",

@@ -1460,6 +1460,10 @@ export const filesMap = [
     "pathname": "/lint/rules/use-validated-body-or-query"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/when-block-must-have-name/page.mdx",
+    "pathname": "/lint/rules/when-block-must-have-name"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/widget-must-export-config/page.mdx",
     "pathname": "/lint/rules/widget-must-export-config"
   },

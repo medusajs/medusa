@@ -702,6 +702,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/when-block-must-have-name",
+                      "title": "when-block-must-have-name",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/widget-must-export-config",
                       "title": "widget-must-export-config",
                       "description": "",
