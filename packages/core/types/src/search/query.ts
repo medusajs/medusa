@@ -148,8 +148,8 @@ export interface SearchVectorOptions {
   value?: number[]
 
   /**
-   * Text the engine embeds at query time. Requires the vector field to declare
-   * `embed`. Mutually exclusive with `value`.
+   * Text the engine embeds at query time. Requires the vector field to set
+   * `embed: true`. Mutually exclusive with `value`.
    */
   query?: string
 
