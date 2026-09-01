@@ -24,10 +24,14 @@ export default async function build({
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  assertConfiguredLicenses(
-    container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
-    logger
-  )
+  try {
+    assertConfiguredLicenses(
+      container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
+    )
+  } catch (error) {
+    logger.error((error as Error).message)
+    process.exit(1)
+  }
 
   try {
     await generateTypes({

@@ -10,6 +10,7 @@ import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { fork } from "child_process"
 import path, { join } from "path"
 import { initializeContainer } from "../../loaders"
+import { assertConfiguredLicenses } from "../utils/assert-license"
 import { isSearchModuleEnabled } from "../../loaders/search"
 import { ensureDbExists, isPgstreamEnabled } from "../utils"
 import { syncLinks } from "./sync-links"
@@ -48,6 +49,10 @@ export async function migrate({
   /**
    * Setup
    */
+
+  assertConfiguredLicenses(
+    container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
+  )
 
   await ensureDbExists(container)
 

@@ -1,4 +1,4 @@
-import { ConfigModule, Logger } from "@medusajs/framework/types"
+import { ConfigModule } from "@medusajs/framework/types"
 import {
   assertLicensed,
   isString,
@@ -53,20 +53,11 @@ export function getConfiguredLicensedFeatures(
 }
 
 /**
- * Fails the build when a configured license gated feature is not covered by
- * the license key in the environment, so a misconfiguration surfaces in the
- * deploy pipeline instead of at boot.
+ * Throws when a configured license gated feature is not covered by the license
+ * key in the environment.
  */
-export function assertConfiguredLicenses(
-  configModule: ConfigModule,
-  logger: Logger
-): void {
+export function assertConfiguredLicenses(configModule: ConfigModule): void {
   for (const feature of getConfiguredLicensedFeatures(configModule.modules)) {
-    try {
-      assertLicensed(feature)
-    } catch (error) {
-      logger.error((error as Error).message)
-      process.exit(1)
-    }
+    assertLicensed(feature)
   }
 }
