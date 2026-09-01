@@ -47,6 +47,7 @@ Add a product search experience to this storefront using the `@medusajs/instants
 - InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
 - Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
 - A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
+- A range or stats widget needs the field listed in the search client's `numericAttributes` option, on top of being `facetable({ types: ["stats"] })` in the index definition. Without it, the adapter asks for value facets instead of stats, so the widget never receives `facets_stats` and renders no bounds.
 - Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
 </context>
 
@@ -70,14 +71,16 @@ You have access to the storefront's codebase. Before writing code, determine fro
 4. Export the client from a shared module, so every search surface in the storefront uses the same one.
 5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
 6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
-7. Make the search feel responsive: don't send a request per keystroke, and don't let the results flicker or empty while the next search runs.
-8. Give every state its own treatment: no query yet, search in flight, results, no results, and a failed search. An empty list must never stand in for any of the others.
-9. Place the finished component where the user asked for it.
-10. Report what you changed and how to test it.
+7. Make the search feel responsive: debounce the query so a burst of typing sends one request rather than one per keystroke, and keep the results already on screen while the next search runs.
+8. Gate what you render on the query the visible results were fetched for, not the query last sent. Results fetched for a different query are stale, and rendering them is a bug even though they're the "previous results" step 7 keeps. This bites hardest on an empty initial query: those previous results are the entire index, so the whole catalogue flashes the moment the first real query goes out. Compare the two queries and treat a mismatch as "nothing valid to show".
+9. Give every state its own treatment: no query yet, results, no results, and a failed search. An empty list must never stand in for any of the others. Add an in-flight treatment, such as a spinner or skeleton, only for the case where there's nothing valid to show: the first search of a session, or a search whose visible results are stale per step 8. While a search runs over results that are still valid, leave those results on screen; a loading state that replaces them is the flicker step 7 avoids, and it barely appears in practice.
+10. Place the finished component where the user asked for it.
+11. Report what you changed and how to test it.
 </steps>
 
 <constraints>
 - Never decide the search's placement or interaction yourself. That's the user's call in step 1.
+- Never render hits that were fetched for a query other than the current one.
 - Never place a filter in the storefront that exists to protect data. Customers can change anything the client sends.
 - Never hardcode the publishable API key, the backend URL, or the index name. Read the first two from environment variables and the third from the exported constant.
 - Never invent index field names. Use only fields you confirmed in an index definition or in a search response.
@@ -95,6 +98,8 @@ You have access to the storefront's codebase. Before writing code, determine fro
 - If no index definition is available, ask the user which fields the index holds. Don't infer field names from the storefront's product types.
 - If the search request fails at runtime, surface the error in the UI and report the status code and response body. Don't fall back to an empty state that hides it.
 - If the storefront already has a search implementation, ask whether to replace it or add alongside it before changing any file.
+- If a range or stats widget renders no bounds, add the field to the search client's `numericAttributes` and report that the index definition needs `facetable({ types: ["stats"] })`. Don't remove the widget silently.
+- If the work needs migrations in the Medusa application, ask the user to run `npx medusa db:migrate` themselves. The command can end in an interactive prompt to sync module links, so it hangs when you run it unattended.
 </error_handling>
 
 <output_format>
@@ -110,7 +115,7 @@ A list of the files you created or modified, each with a one-line description.
 Any environment variables the user must set, and any command they must run.
 
 ## How to Test
-Numbered steps that end in an observable result, including one that checks the results don't flicker while typing.
+Numbered steps that end in an observable result, including one that checks the results don't flicker while typing, and one that types a query from an empty search and confirms the full catalogue never flashes before the matches.
 
 ## Skipped
 Any widget or feature you left out, each with the reason. Write "None" if there are none.
@@ -119,8 +124,9 @@ Any widget or feature you left out, each with the reason. Write "None" if there 
 <success_criteria>
 - The search is placed and behaves the way the user described in step 1.
 - Typing shows matching products, and the previous results stay on screen until the new ones arrive.
+- Typing the first query from an empty search never flashes results from the empty query.
 - A burst of typing sends one search request, not one per character.
-- Each of the five states in step 8 shows something distinct from the others.
+- Each of the four states in step 9 shows something distinct from the others, and the in-flight treatment only appears when no valid results are on screen.
 - A failed search shows an error message rather than an empty list.
 - Every field referenced in the code exists in a search index definition.
 - The storefront builds and type-checks with no new errors.
