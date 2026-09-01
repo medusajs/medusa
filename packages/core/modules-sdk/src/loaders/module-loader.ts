@@ -53,7 +53,7 @@ async function loadModule(
   migrationOnly?: boolean,
   loaderOnly?: boolean,
   schemaOnly?: boolean
-): Promise<{ error?: Error } | void> {
+): Promise<{ error?: Error; identifiers?: string[] } | void> {
   const modDefinition = resolution.definition
 
   if (!modDefinition.key) {
@@ -103,6 +103,9 @@ async function loadModule(
     trackInstallation(
       {
         module: resolution.definition.key,
+        ...(result?.identifiers?.length
+          ? { providers: result.identifiers }
+          : {}),
       },
       "module"
     )

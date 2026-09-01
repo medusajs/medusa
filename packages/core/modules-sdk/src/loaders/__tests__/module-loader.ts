@@ -3,6 +3,15 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { trackInstallation } from "@medusajs/telemetry"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
+import { loadInternalModule } from "../utils"
+
+jest.mock("../utils", () => {
+  const actual = jest.requireActual("../utils")
+  return {
+    ...actual,
+    loadInternalModule: jest.fn(actual.loadInternalModule),
+  }
+})
 
 jest.mock("@medusajs/telemetry", () => ({
   trackInstallation: jest.fn(),
@@ -84,6 +93,39 @@ describe("modules loader", () => {
     )
     expect(testService).toBeTruthy()
     expect(typeof testService).toEqual("object")
+  })
+
+  it("should track the module's providers alongside the module", async () => {
+    const moduleResolutions: Record<string, ModuleResolution> = {
+      payment: {
+        resolutionPath: require.resolve("../__mocks__/@modules/default"),
+        definition: {
+          key: "payment",
+          defaultPackage: "payment",
+          label: "Payment",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+          },
+        },
+        moduleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+      },
+    }
+
+    ;(loadInternalModule as jest.Mock).mockResolvedValueOnce({
+      identifiers: ["stripe"],
+    })
+
+    await moduleLoader({ container, moduleResolutions, logger })
+
+    expect(trackInstallation).toHaveBeenCalledWith(
+      {
+        module: "payment",
+        providers: ["stripe"],
+      },
+      "module"
+    )
   })
 
   it("should run the defined loaders and logs the errors if something fails", async () => {
