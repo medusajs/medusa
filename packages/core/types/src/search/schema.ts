@@ -33,7 +33,7 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   array?: boolean
   correlated?: boolean
   dimensions?: number
-  embed?: string
+  embed?: boolean
   provider_options?: Record<string, Record<string, unknown>>
   fields?: Record<string, SearchPropertyMetadata>
 }
@@ -59,17 +59,6 @@ export interface SearchArrayMarker {
 }
 
 /**
- * Type-only marker `.embed()` stamps on a vector property. Document inference
- * omits the field — the engine embeds the source, so documents must not send
- * embeddings for it.
- *
- * @since 2.19.0
- */
-export interface SearchEmbedMarker {
-  $embed: true
-}
-
-/**
  * The document value a single search property accepts. Every field may be
  * `null` — engines treat null as absent, and real documents carry nulls for
  * missing data.
@@ -88,9 +77,7 @@ export type InferSearchPropertyValue<P extends SearchPropertyType<any>> =
  * @since 2.19.0
  */
 export type InferSearchObjectValue<Schema extends SearchSchema> = {
-  [K in keyof Schema as Schema[K] extends SearchEmbedMarker
-    ? never
-    : K]?: InferSearchPropertyValue<Schema[K]>
+  [K in keyof Schema]?: InferSearchPropertyValue<Schema[K]>
 } & Record<string, unknown>
 
 /**

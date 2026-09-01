@@ -89,6 +89,20 @@ function defaultFacetKinds(
 }
 
 /**
+ * Whether a field is returned on hits. Vectors default to off — embeddings
+ * are not useful on hits. Set `retrievable: true` to return them.
+ */
+function isRetrievableField(field: SearchTypes.SearchFieldDefinition): boolean {
+  if (field.type === "object") {
+    return false
+  }
+  if (field.type === "vector") {
+    return field.retrievable === true
+  }
+  return field.retrievable !== false
+}
+
+/**
  * The dotted paths an index can hand back on hits. Object containers are
  * excluded — only their declared leaves are stored, so returning the container
  * would silently hand back a partial object.
@@ -97,15 +111,7 @@ export function listRetrievablePaths(
   fields: Record<string, SearchTypes.SearchFieldDefinition>
 ): string[] {
   return flattenFields(fields)
-    .filter(
-      ({ field }) =>
-        field.type !== "object" &&
-        field.retrievable !== false &&
-        // Engine-embedded vectors are not stored under their own path —
-        // the source field carries the embedding — so they cannot be
-        // projected back onto hits.
-        !field.embed
-    )
+    .filter(({ field }) => isRetrievableField(field))
     .map(({ path }) => path)
 }
 
@@ -612,6 +618,12 @@ function validateIndexDefinition({
       fail(`vector field "${path}" cannot be an array`)
     }
 
+    if (typeof (field.embed as unknown) === "string") {
+      fail(
+        `vector field "${path}" "embed" must be true; pass the text on this field rather than naming a source`
+      )
+    }
+
     if (field.embed) {
       if (field.type !== "vector") {
         fail(
@@ -637,23 +649,6 @@ function validateIndexDefinition({
     if (isSearchable(field) && !["text", "keyword"].includes(field.type)) {
       fail(
         `field "${path}" is of type "${field.type}", which cannot be searched as free text`
-      )
-    }
-  }
-
-  const fieldMap = buildFieldMap(definition)
-  for (const { path, field } of fieldMap.values()) {
-    if (!field.embed) {
-      continue
-    }
-
-    const source = fieldMap.get(field.embed)
-    if (!source) {
-      fail(`vector field "${path}" embeds unknown source "${field.embed}"`)
-    }
-    if (!["text", "keyword"].includes(source.field.type)) {
-      fail(
-        `vector field "${path}" can only embed a text or keyword field, not "${source.field.type}"`
       )
     }
   }
