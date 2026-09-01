@@ -43,12 +43,10 @@ export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
     }
 
     if (response.status === "invalid") {
-      // A definitive negative, but a key mismatch between environments must
-      // not take a working instance down. Surface it loudly instead.
       logger.error(
-        "Medusa Cloud does not recognize the configured license key. Verify MEDUSA_LICENSE_KEY, or regenerate the key from the Medusa Cloud dashboard."
+        "The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Set a license key obtained from the Medusa Cloud dashboard."
       )
-      return
+      process.exit(1)
     }
 
     const expiredAt = response.expires_at ? ` on ${response.expires_at}` : ""
@@ -57,7 +55,7 @@ export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
       : null
 
     if (graceUntil && graceUntil.getTime() > Date.now()) {
-      logger.error(
+      logger.warn(
         `The configured license key no longer entitles this instance: the license is ${
           response.status
         }${expiredAt}. Licensed features stop loading at boot after ${graceUntil.toISOString()}. Renew the license in the Medusa Cloud dashboard.`

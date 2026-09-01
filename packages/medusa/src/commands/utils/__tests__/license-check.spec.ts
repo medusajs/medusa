@@ -25,9 +25,19 @@ const validLicense = {
 }
 
 function run(): Promise<void> & {
-  logger: { debug: jest.Mock; error: jest.Mock }
+  logger: {
+    debug: jest.Mock
+    info: jest.Mock
+    warn: jest.Mock
+    error: jest.Mock
+  }
 } {
-  const logger = { debug: jest.fn(), error: jest.fn() }
+  const logger = {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  }
 
   return Object.assign(startLicenseRemoteCheck(logger as unknown as Logger), {
     logger,
@@ -105,16 +115,16 @@ describe("startLicenseRemoteCheck", () => {
     expect(exit).not.toHaveBeenCalled()
   })
 
-  it("warns without exiting on a key Cloud does not recognize", async () => {
+  it("exits on a key Cloud does not recognize", async () => {
     mockResponse({ status: "invalid" })
 
     const task = run()
     await task
 
     expect(task.logger.error).toHaveBeenCalledWith(
-      expect.stringContaining("does not recognize the configured license key")
+      expect.stringContaining("was not issued by Medusa")
     )
-    expect(exit).not.toHaveBeenCalled()
+    expect(exit).toHaveBeenCalledWith(1)
   })
 
   it("warns without exiting on an expired license within its grace window", async () => {
@@ -128,7 +138,7 @@ describe("startLicenseRemoteCheck", () => {
     const task = run()
     await task
 
-    expect(task.logger.error).toHaveBeenCalledWith(
+    expect(task.logger.warn).toHaveBeenCalledWith(
       expect.stringContaining(graceUntil.toISOString())
     )
     expect(exit).not.toHaveBeenCalled()
