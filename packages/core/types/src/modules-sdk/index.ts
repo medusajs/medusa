@@ -87,6 +87,11 @@ export type ModuleResolution = {
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
   moduleExports?: ModuleExports | ModuleProviderExports
+  /**
+   * The package name or path as specified in the `resolve` option of the
+   * module's configuration, before it is resolved to an absolute path.
+   */
+  resolve?: string
 }
 
 export type ModuleDefinition = {

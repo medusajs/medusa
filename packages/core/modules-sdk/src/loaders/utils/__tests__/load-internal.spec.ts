@@ -422,7 +422,12 @@ describe("load internal", () => {
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
       expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider1)
       expect(result).toEqual({
-        identifiers: [ModuleServiceWithProviderProvider1.identifier],
+        providers: [
+          {
+            identifier: ModuleServiceWithProviderProvider1.identifier,
+            package: moduleResolution.options!.providers![0].resolve,
+          },
+        ],
       })
     })
 

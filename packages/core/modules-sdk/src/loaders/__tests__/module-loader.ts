@@ -95,10 +95,11 @@ describe("modules loader", () => {
     expect(typeof testService).toEqual("object")
   })
 
-  it("should track the module's providers alongside the module", async () => {
+  it("should track the module's package and providers alongside the module", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       payment: {
         resolutionPath: require.resolve("../__mocks__/@modules/default"),
+        resolve: "@medusajs/payment",
         definition: {
           key: "payment",
           defaultPackage: "payment",
@@ -114,7 +115,9 @@ describe("modules loader", () => {
     }
 
     ;(loadInternalModule as jest.Mock).mockResolvedValueOnce({
-      identifiers: ["stripe"],
+      providers: [
+        { identifier: "stripe", package: "@medusajs/payment-stripe" },
+      ],
     })
 
     await moduleLoader({ container, moduleResolutions, logger })
@@ -122,7 +125,10 @@ describe("modules loader", () => {
     expect(trackInstallation).toHaveBeenCalledWith(
       {
         module: "payment",
-        providers: ["stripe"],
+        package: "@medusajs/payment",
+        providers: [
+          { identifier: "stripe", package: "@medusajs/payment-stripe" },
+        ],
       },
       "module"
     )
