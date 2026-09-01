@@ -52,8 +52,8 @@ export type PostgresSearchProviderOptions = {
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for engine-embedded vector fields (`embed` on the field) at
-   * write time, and for `search_options.vector.query` at query time. Required
+   * Embeds text for engine-embedded vector fields (`embed: true` on the field)
+   * at write time, and for `search_options.vector.query` at query time. Required
    * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
