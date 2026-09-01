@@ -1,6 +1,7 @@
 import { Compiler } from "@medusajs/framework/build-tools"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
+import { assertConfiguredLicenses } from "./utils/assert-license"
 import { generateTypes } from "./utils/generate-types"
 import { runLintStep } from "./utils/lint-project"
 
@@ -22,6 +23,11 @@ export default async function build({
     throwOnValidationError: false,
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  assertConfiguredLicenses(
+    container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
+    logger
+  )
 
   try {
     await generateTypes({
