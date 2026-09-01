@@ -16,6 +16,13 @@ export type ModuleProviderExports<Service = any> = {
   module?: string
   services: Constructor<Service>[]
   loaders?: ModuleProviderLoaderFunction[]
+  /**
+   * The licensed feature handle covering this provider. When set, the
+   * provider only loads when the license key in the environment covers the
+   * feature. The value must equal the feature handle encoded in the license
+   * key's `features` claim.
+   */
+  licensedFeature?: string
   runMigrations?(
     options: ProviderLoaderOptions<Service>,
     moduleDeclaration?: any

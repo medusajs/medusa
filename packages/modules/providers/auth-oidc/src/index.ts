@@ -1,11 +1,13 @@
-import { ModuleProvider, Modules } from "@medusajs/framework/utils"
-import licenseLoader from "./loaders/license"
+import {
+  LicenseFeature,
+  ModuleProvider,
+  Modules,
+} from "@medusajs/framework/utils"
 import { OidcAuthService } from "./services/oidc"
 
 const services = [OidcAuthService]
-const loaders = [licenseLoader]
 
 export default ModuleProvider(Modules.AUTH, {
   services,
-  loaders,
+  licensedFeature: LicenseFeature.AUTH_OIDC,
 })
