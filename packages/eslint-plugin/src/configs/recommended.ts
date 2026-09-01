@@ -37,6 +37,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
         [ruleId("step-must-return-step-response")]: "error",
+        [ruleId("when-block-must-have-name")]: "warn",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
         [ruleId("workflow-must-return-workflow-response")]: "error",
         [ruleId("zod-import-source")]: "warn",
