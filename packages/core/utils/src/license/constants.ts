@@ -13,3 +13,5 @@ export const LicenseKeyEnvVars = {
   KEY: "MEDUSA_LICENSE_KEY",
   PUBLIC_KEY: "MEDUSA_LICENSE_PUBLIC_KEY",
 } as const
+
+export const LICENSE_CHECK_ERROR_CODE = "LICENSE_CHECK_ERROR"
