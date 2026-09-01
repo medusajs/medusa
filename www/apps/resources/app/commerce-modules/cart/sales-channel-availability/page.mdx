@@ -33,6 +33,12 @@ A product's [availability in a sales channel](../../sales-channel/links-to-other
 
 Medusa applies it when you retrieve products. For example, the [List Products Store API route](!api!/store/products/list-products) only returns the products available in the sales channels of the publishable API key in the request. So, a product that you remove from a sales channel disappears from that channel's storefront.
 
+<Note title="Warning" type="warning">
+
+If your store has only one sales channel, the List Products API route skips the sales channel filter as an optimisation and returns all products, including those with no sales channel link. The retrieve route (`GET /store/products/:id`) always applies the filter. This means a product that has no sales channel assigned can appear in list results but return a 404 on retrieve. To avoid this inconsistency, make sure every product is assigned to at least one sales channel.
+
+</Note>
+
 Medusa doesn't apply that filter when a variant is added to a cart or when a cart is completed. A customer who knows a variant's ID can still add it to a cart scoped to a sales channel that the variant's product isn't available in.
 
 <Note title="Warning" type="warning">
