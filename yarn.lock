@@ -3948,6 +3948,7 @@ __metadata:
   dependencies:
     "@medusajs/deps": 2.19.0
     "@medusajs/query": 2.19.0
+    "@medusajs/telemetry": 2.19.0
     "@medusajs/types": 2.19.0
     "@medusajs/utils": 2.19.0
   languageName: unknown
