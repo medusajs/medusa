@@ -119,5 +119,69 @@ medusaIntegrationTestRunner({
         })
       })
     })
+
+    describe("published products", () => {
+      const seed = async (collectionId) => {
+        const create = async (title, status) =>
+          (
+            await api.post(
+              "/admin/products",
+              {
+                title,
+                status,
+                options: [{ title: "size", values: ["one"] }],
+                variants: [
+                  {
+                    title: "one",
+                    options: { size: "one" },
+                    prices: [{ currency_code: "usd", amount: 10 }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+        const draft = await create("draft product", "draft")
+        const published = await create("published product", "published")
+
+        await api.post(
+          `/admin/collections/${collectionId}/products`,
+          { add: [draft.id, published.id] },
+          adminHeaders
+        )
+      }
+
+      const titlesOf = (collection) =>
+        (collection?.products ?? []).map((product) => product.title).sort()
+
+      it("does not expand unpublished products on a collection", async () => {
+        await seed(baseCollection.id)
+
+        const response = await api.get(
+          `/store/collections/${baseCollection.id}?fields=id,products.title`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(titlesOf(response.data.collection)).toEqual([
+          "published product",
+        ])
+      })
+
+      it("does not expand unpublished products when listing collections", async () => {
+        await seed(baseCollection.id)
+
+        const response = await api.get(
+          "/store/collections?fields=id,title,products.title",
+          storeHeaders
+        )
+
+        const collection = response.data.collections.find(
+          (c) => c.id === baseCollection.id
+        )
+        expect(titlesOf(collection)).toEqual(["published product"])
+      })
+    })
   },
 })
