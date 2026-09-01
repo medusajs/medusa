@@ -79,6 +79,42 @@ describe("MedusaSearchService", () => {
     })
   })
 
+  it("recreates indexes when a vector attribute is added", async () => {
+    const service = createService()
+    const withEmbedding: SearchTypes.ResolvedSearchIndexDefinition = {
+      ...definition,
+      fields: {
+        ...definition.fields,
+        embedding: { type: "vector", dimensions: 768, embed: true },
+      },
+    }
+    const metadata = jest.fn().mockResolvedValue({
+      schema: {
+        id: { type: "string" },
+        title: { type: "string" },
+        status: { type: "string" },
+      },
+    })
+    const deleteAll = jest.fn().mockResolvedValue(undefined)
+    const updateSchema = jest.fn()
+    const createIndex = jest.fn().mockResolvedValue(undefined)
+    const index = jest.fn(() => ({ deleteAll, metadata, updateSchema }))
+    ;(service as any).client_ = { createIndex, index }
+
+    await service.upsertIndex({ index: withEmbedding })
+
+    expect(deleteAll).toHaveBeenCalledTimes(1)
+    expect(updateSchema).not.toHaveBeenCalled()
+    expect(createIndex).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "product",
+        schema: expect.objectContaining({
+          embedding: expect.objectContaining({ type: "[768]f32" }),
+        }),
+      })
+    )
+  })
+
   it("recreates indexes with incompatible schemas through the create endpoint", async () => {
     const service = createService()
     const metadata = jest.fn().mockResolvedValue({

@@ -98,7 +98,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
     if (!sameSchemaType(metadata.schema, plan.schema)) {
       // The Search Module only calls this for an index that is about to be
-      // seeded. Type changes and removals cannot be applied in place.
+      // seeded. Type changes, removals, and new vector columns cannot be
+      // applied in place — the engine rejects adding a vector attribute to
+      // an existing namespace.
       await remote.deleteAll()
       await this.client_.createIndex({
         name: index.physical_name,
