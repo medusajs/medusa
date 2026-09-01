@@ -4,7 +4,7 @@ import { loadLicense } from "./license-state"
 
 // TODO: confirm wording
 const OBTAIN_KEY_HINT =
-  "Reach out support@medusajs.com to obtain a license key."
+  "Reach out to support@medusajs.com to learn more."
 
 function licenseCheckError(message: string): MedusaError {
   return new MedusaError(
