@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Include `shipping_address` in the order list query so the Country column renders instead of "-".
+fix(dashboard): include shipping_address in order list query so Country column renders
