@@ -79,7 +79,6 @@ describe("modules loader", () => {
     expect(trackInstallation).toHaveBeenCalledWith(
       {
         module: moduleResolutions.testService.definition.key,
-        resolution: moduleResolutions.testService.resolutionPath,
       },
       "module"
     )

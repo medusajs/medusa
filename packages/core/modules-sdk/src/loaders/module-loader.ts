@@ -1,7 +1,7 @@
-import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
 import { asValue } from "@medusajs/deps/awilix"
 import { trackInstallation } from "@medusajs/telemetry"
+import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { EOL } from "os"
 import { MODULE_SCOPE } from "../types"
 import { loadInternalModule } from "./utils"
@@ -103,7 +103,6 @@ async function loadModule(
     trackInstallation(
       {
         module: resolution.definition.key,
-        resolution: resolution.resolutionPath,
       },
       "module"
     )
