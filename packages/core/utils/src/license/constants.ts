@@ -7,7 +7,7 @@ export type LicenseFeature =
   (typeof LicenseFeature)[keyof typeof LicenseFeature]
 
 export const LICENSE_CHECK_URL =
-  "https://api.medusa-cloud.com/v1/subscriptions/license/check"
+  "https://api.prod.medusajs.cloud/v1/subscriptions/license/check"
 
 export const LicenseKeyEnvVars = {
   KEY: "MEDUSA_LICENSE_KEY",
