@@ -1,7 +1,13 @@
 import { ModuleResolution } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
+import { trackInstallation } from "@medusajs/telemetry"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
+
+jest.mock("@medusajs/telemetry", () => ({
+  trackInstallation: jest.fn(),
+  trackFeatureFlag: jest.fn(),
+}))
 
 const logger = {
   warn: jest.fn(),
@@ -70,7 +76,6 @@ describe("modules loader", () => {
       {}
     )
 
-    /*
     expect(trackInstallation).toHaveBeenCalledWith(
       {
         module: moduleResolutions.testService.definition.key,
@@ -78,7 +83,6 @@ describe("modules loader", () => {
       },
       "module"
     )
-    */
     expect(testService).toBeTruthy()
     expect(typeof testService).toEqual("object")
   })
