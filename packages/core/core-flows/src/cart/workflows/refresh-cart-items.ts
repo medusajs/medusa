@@ -203,7 +203,10 @@ export const refreshCartItemsWorkflow = createWorkflow(
       return !!input.force_refresh
     }).then(() => {
       updateTaxLinesWorkflow.runAsStep({
-        input: { cart_id: input.cart_id },
+        input: {
+          cart_id: input.cart_id,
+          force_refresh_payment_collection: false,
+        },
       })
     })
 

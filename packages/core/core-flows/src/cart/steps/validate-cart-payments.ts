@@ -39,7 +39,12 @@ export const validateCartPaymentsStep = createStep(
   validateCartPaymentsStepId,
   async (data: ValidateCartPaymentsStepInput) => {
     const {
-      cart: { payment_collection: paymentCollection, total, credit_line_total },
+      cart: {
+        payment_collection: paymentCollection,
+        total,
+        raw_total: rawTotal,
+        credit_line_total,
+      },
     } = data
 
     const canSkipPayment =
@@ -74,6 +79,21 @@ export const validateCartPaymentsStep = createStep(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Payment sessions are required to complete cart`
+      )
+    }
+
+    // The payment sessions' amounts are locked in when they are created, so a cart
+    // whose total increased afterwards (e.g. taxes calculated after the session was
+    // created) would otherwise be completed while being underpaid.
+    const authorizedAmount = paymentsToProcess.reduce(
+      (sum, ps) => MathBN.add(sum, (ps as any).raw_amount ?? ps.amount ?? 0),
+      MathBN.convert(0)
+    )
+
+    if (MathBN.lt(authorizedAmount, rawTotal ?? total)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The payment sessions of the cart do not cover its total. Refresh the cart's payment collection and try again.`
       )
     }
 
