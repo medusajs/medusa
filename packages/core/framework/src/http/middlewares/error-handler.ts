@@ -14,6 +14,90 @@ const API_ERROR = "api_error"
 const INVALID_REQUEST_ERROR = "invalid_request_error"
 const INVALID_STATE_ERROR = "invalid_state_error"
 
+export type ErrorHttpResponse = {
+  statusCode: number
+  body: { code?: string; type?: string; message?: string }
+}
+
+/**
+ * Resolves the status code and the response body an error will be converted
+ * into by the error handler.
+ *
+ * The error handler runs at the very end of the request lifecycle, whereas
+ * instrumentation has to classify an error the moment it is thrown (eg. to
+ * know whether a handled 4xx or an internal error is being reported to a
+ * tracing backend). Exposing the mapping lets both agree on the outcome
+ * without duplicating it.
+ */
+export function getHttpResponseFromError(err: any): ErrorHttpResponse {
+  // errors from body-parser and other express internals
+  if (createHttpError.isHttpError(err)) {
+    return {
+      statusCode: err.statusCode,
+      body: {
+        message:
+          err.statusCode < 500 ? err.message : "An unknown error occurred.",
+        type: mapStatusCodeToErrorType(err.statusCode),
+      },
+    }
+  }
+
+  const error = formatException(err)
+  const errorType = error.type || error.name
+  const body: ErrorHttpResponse["body"] = {
+    code: error.code,
+    type: error.type,
+    message: error.message,
+  }
+
+  let statusCode = 500
+  switch (errorType) {
+    case QUERY_RUNNER_RELEASED:
+    case TRANSACTION_STARTED:
+    case TRANSACTION_NOT_STARTED:
+    case MedusaError.Types.CONFLICT:
+      statusCode = 409
+      body.code = INVALID_STATE_ERROR
+      body.message =
+        "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
+      break
+    case MedusaError.Types.UNAUTHORIZED:
+      statusCode = 401
+      break
+    case MedusaError.Types.FORBIDDEN:
+      statusCode = 403
+      break
+    case MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR:
+      statusCode = 422
+      break
+    case MedusaError.Types.DUPLICATE_ERROR:
+      statusCode = 422
+      body.code = INVALID_REQUEST_ERROR
+      break
+    case MedusaError.Types.NOT_ALLOWED:
+    case MedusaError.Types.INVALID_DATA:
+      statusCode = 400
+      break
+    case MedusaError.Types.NOT_FOUND:
+      statusCode = 404
+      break
+    case MedusaError.Types.DB_ERROR:
+      statusCode = 500
+      body.code = API_ERROR
+      break
+    case MedusaError.Types.UNEXPECTED_STATE:
+    case MedusaError.Types.INVALID_ARGUMENT:
+      break
+    default:
+      body.code = "unknown_error"
+      body.message = "An unknown error occurred."
+      body.type = "unknown_error"
+      break
+  }
+
+  return { statusCode, body }
+}
+
 export function errorHandler() {
   return function coreErrorHandler(
     err: MedusaError,
@@ -31,75 +115,21 @@ export function errorHandler() {
       )
     }
 
+    const { statusCode, body } = getHttpResponseFromError(err)
+
     // handle errors from body-parser
     if (createHttpError.isHttpError(err)) {
-      if (err.statusCode >= 500) {
-        logger.error(`Error ${err.statusCode} at ${req.path}`, err)
+      if (statusCode >= 500) {
+        logger.error(`Error ${statusCode} at ${req.path}`, err)
       } else {
-        logger.info(`Error ${err.statusCode} at ${req.path}: ${err.message}`)
+        logger.info(`Error ${statusCode} at ${req.path}: ${err.message}`)
       }
 
-      res.status(err.statusCode).json({
-        message:
-          err.statusCode < 500 ? err.message : "An unknown error occurred.",
-        type: mapStatusCodeToErrorType(err.statusCode),
-      })
+      res.status(statusCode).json(body)
       return
     }
 
     err = formatException(err)
-
-    const errorType = err.type || err.name
-    const errObj = {
-      code: err.code,
-      type: err.type,
-      message: err.message,
-    }
-
-    let statusCode = 500
-    switch (errorType) {
-      case QUERY_RUNNER_RELEASED:
-      case TRANSACTION_STARTED:
-      case TRANSACTION_NOT_STARTED:
-      case MedusaError.Types.CONFLICT:
-        statusCode = 409
-        errObj.code = INVALID_STATE_ERROR
-        errObj.message =
-          "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
-        break
-      case MedusaError.Types.UNAUTHORIZED:
-        statusCode = 401
-        break
-      case MedusaError.Types.FORBIDDEN:
-        statusCode = 403
-        break
-      case MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR:
-        statusCode = 422
-        break
-      case MedusaError.Types.DUPLICATE_ERROR:
-        statusCode = 422
-        errObj.code = INVALID_REQUEST_ERROR
-        break
-      case MedusaError.Types.NOT_ALLOWED:
-      case MedusaError.Types.INVALID_DATA:
-        statusCode = 400
-        break
-      case MedusaError.Types.NOT_FOUND:
-        statusCode = 404
-        break
-      case MedusaError.Types.DB_ERROR:
-        statusCode = 500
-        errObj.code = API_ERROR
-        break
-      case MedusaError.Types.UNEXPECTED_STATE:
-      case MedusaError.Types.INVALID_ARGUMENT:
-        break
-      default:
-        errObj.code = "unknown_error"
-        errObj.message = "An unknown error occurred."
-        errObj.type = "unknown_error"
-        break
-    }
 
     if (statusCode >= 500) {
       logger.error(err)
@@ -116,7 +146,7 @@ export function errorHandler() {
       return
     }
 
-    res.status(statusCode).json(errObj)
+    res.status(statusCode).json(body)
   } as unknown as ErrorRequestHandler
 }
 

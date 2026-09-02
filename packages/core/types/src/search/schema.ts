@@ -33,6 +33,7 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   array?: boolean
   correlated?: boolean
   dimensions?: number
+  embed?: boolean
   provider_options?: Record<string, Record<string, unknown>>
   fields?: Record<string, SearchPropertyMetadata>
 }

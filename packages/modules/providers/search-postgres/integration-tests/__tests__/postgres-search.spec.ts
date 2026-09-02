@@ -12,8 +12,8 @@ jest.setTimeout(120000)
 
 type SearchService = SearchTypes.ISearchModuleService
 
-// The startup hook is what migration and seeding hang off, so the lifecycle
-// tests re-run it to simulate a boot.
+// The startup hook seeds indexes, so the lifecycle tests re-run it to simulate
+// a boot.
 const boot = (service: SearchService) =>
   (service as any).onApplicationStart_() as Promise<void>
 
@@ -161,7 +161,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
         })
 
-        it("rejects vector search on the native engine", async () => {
+        it("rejects vector search when the index has no vector field", async () => {
           await expect(
             service.search({
               entity: "product",
@@ -170,7 +170,7 @@ moduleIntegrationTestRunner<SearchService>({
                 vector: { field: "embedding", value: [0.1] },
               },
             })
-          ).rejects.toThrow(/lakebase/)
+          ).rejects.toThrow(/Unknown field "embedding"/)
         })
       })
 

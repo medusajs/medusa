@@ -93,6 +93,26 @@ export function getEnclosingFunction(node: TSESTree.Node): FunctionLike | null {
   return null
 }
 
+const CALLABLE_SDK_BUCKETS: (keyof WorkflowSdkBindings)[] = [
+  "createWorkflow",
+  "createStep",
+  "transform",
+  "when",
+]
+
+/**
+ * Returns true when `calleeName` resolves to any tracked workflows-sdk
+ * function binding (`createWorkflow`, `createStep`, `transform`, `when`) —
+ * as opposed to `StepResponse`/`WorkflowResponse`, which are only ever used
+ * via `new`, never called directly.
+ */
+export function isWorkflowSdkHelperCall(
+  calleeName: string,
+  bindings: WorkflowSdkBindings
+): boolean {
+  return CALLABLE_SDK_BUCKETS.some((bucket) => bindings[bucket].has(calleeName))
+}
+
 /**
  * Returns true when `fn` is the second argument to a `createWorkflow(...)`
  * call whose callee resolves to a tracked import binding.

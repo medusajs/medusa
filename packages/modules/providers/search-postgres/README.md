@@ -2,10 +2,10 @@
 
 Search provider for Medusa backed by PostgreSQL, with two engines:
 
-| Engine             | When to use                              | Keyword                     | Vector               |
-| ------------------ | ---------------------------------------- | --------------------------- | -------------------- |
-| `native` (default) | Local / self-hosted / any Postgres       | GIN + `ts_rank` + `pg_trgm` | Not supported        |
-| `lakebase`         | Medusa Cloud / Neon with Lakebase Search | `lakebase_bm25` (BM25)      | `lakebase_ann` (ANN) |
+| Engine             | When to use                        | Keyword                     | Vector               |
+| ------------------ | ---------------------------------- | --------------------------- | -------------------- |
+| `native` (default) | Local / self-hosted / any Postgres | GIN + `ts_rank` + `pg_trgm` | Not supported        |
+| `lakebase`         | Medusa Cloud / Lakebase Search     | `lakebase_bm25` (BM25)      | `lakebase_ann` (ANN) |
 
 ## Enable it
 
@@ -53,7 +53,7 @@ npx medusa db:migrate
 npx medusa db:migrate-search
 ```
 
-The migration always enables `pg_trgm` + `unaccent` and creates the catalog. Lakebase extensions are created at runtime when `engine: "lakebase"` (they need preloaded libraries that migrations alone cannot enable).
+The migration enables `pg_trgm` + `unaccent` and creates the catalog. On Medusa Cloud it also enables `lakebase_vector` and `lakebase_text` (`CREATE EXTENSION ... CASCADE`). Those statements soft-fail on engines that do not ship Lakebase Search.
 
 ## Provider options
 
@@ -65,6 +65,8 @@ The migration always enables `pg_trgm` + `unaccent` and creates the catalog. Lak
 | `vector_distance` | `"cosine"`  | ANN metric: `cosine`, `l2`, or `inner_product`.                                        |
 
 ## Vector fields (lakebase only)
+
+Supply embeddings yourself:
 
 ```ts
 defineSearchIndex({
@@ -79,7 +81,28 @@ defineSearchIndex({
 })
 ```
 
-Documents must include the embedding array on upsert. Query with:
+Documents must include the embedding array on upsert. Query with `search_options.vector.value`.
+
+Or let the provider embed a string on the same field (`embed: true` requires `embedder`):
+
+```ts
+embedding: { type: "vector", dimensions: 1536, embed: true }
+
+// documents: { embedding: "title and description to encode" }
+
+await query.search({
+  entity: "product",
+  search_options: {
+    vector: {
+      field: "embedding",
+      query: "red shoes",
+      semantic_ratio: 0.5, // 0 = keyword, 1 = vector, in between = RRF hybrid
+    },
+  },
+})
+```
+
+Query with a client-supplied embedding against either kind of field:
 
 ```ts
 await query.search({
@@ -88,8 +111,8 @@ await query.search({
   search_options: {
     vector: {
       field: "embedding",
-      value: embeddingArray, // or query: "red shoes" with embedder configured
-      semantic_ratio: 0.5, // 0 = keyword, 1 = vector, in between = RRF hybrid
+      value: embeddingArray,
+      semantic_ratio: 0.5,
     },
   },
 })

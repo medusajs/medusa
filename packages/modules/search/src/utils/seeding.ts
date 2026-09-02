@@ -277,6 +277,18 @@ async function reindexOne(
       await provider.upsertIndex({
         index: { ...definition, physical_name: target },
       })
+    } else if (!sync.last_key && !input.filters) {
+      // In place has no shadow to discard, so anything the new seed stream
+      // doesn't re-emit (a deleted record, say) would otherwise survive as
+      // stale data. Clear first - but only for a full rebuild: `input.filters`
+      // selects source records for the seed, not search-engine filter syntax,
+      // so it can't be reused to delete a matching subset here. And skip this
+      // entirely when resuming an interrupted run, since the target already
+      // holds that run's progress.
+      const clearTask = await provider.clearIndex({ index: target })
+
+      assertTaskAccepted(clearTask, definition.name)
+      await settle(context, definition, clearTask)
     }
 
     const { documents_synced } = await streamSeed(context, {

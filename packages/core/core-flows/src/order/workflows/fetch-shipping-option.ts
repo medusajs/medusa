@@ -15,7 +15,10 @@ import {
 import { BigNumber, ShippingOptionPriceType } from "@medusajs/framework/utils"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment/steps"
 import { useQueryGraphStep, useRemoteQueryStep } from "../../common"
-import { pricingContextResult } from "../../cart/utils/schemas"
+import {
+  pricingContextResult,
+  calculatedShippingPricingContextResult,
+} from "../../cart/utils/schemas"
 
 const COMMON_OPTIONS_FIELDS = [
   "id",
@@ -156,6 +159,24 @@ export const fetchShippingOptionsForOrderWorkflowId = "fetch-shipping-option"
  *
  * :::
  *
+ * @property hooks.setCalculatedShippingPricingContext - This hook is executed before a calculated shipping option's price is calculated.
+ * You can consume this hook to return any custom context that is forwarded as-is to the fulfillment provider's `calculatePrice` method.
+ *
+ * ```ts
+ * import { fetchShippingOptionForOrderWorkflow } from "@medusajs/medusa/core-flows"
+ * import { StepResponse } from "@medusajs/workflows-sdk"
+ *
+ * fetchShippingOptionForOrderWorkflow.hooks.setCalculatedShippingPricingContext(
+ *   async ({ input }, { container }) => {
+ *     return new StepResponse({
+ *       account_number: "acc_123",
+ *     })
+ *   }
+ * )
+ * ```
+ *
+ * The returned object is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method, with framework-provided properties taking precedence on a naming conflict.
+ *
  * @privateRemarks
  * There can be 3 cases:
  * 1. The shipping option is a flat rate shipping option.
@@ -179,6 +200,14 @@ export const fetchShippingOptionForOrderWorkflow = createWorkflow(
       initialOption,
       (option) => option.price_type === ShippingOptionPriceType.CALCULATED
     )
+
+    const setCalculatedShippingPricingContext = createHook(
+      "setCalculatedShippingPricingContext",
+      { input },
+      { resultValidator: calculatedShippingPricingContextResult }
+    )
+    const setCalculatedShippingPricingContextResult =
+      setCalculatedShippingPricingContext.getResult()
 
     const calculatedPriceShippingOption = when(
       "option-calculated",
@@ -204,13 +233,20 @@ export const fetchShippingOptionForOrderWorkflow = createWorkflow(
           shippingOption,
           order,
           input,
+          setCalculatedShippingPricingContextResult,
         },
-        ({ shippingOption, order, input }) => {
+        ({
+          shippingOption,
+          order,
+          input,
+          setCalculatedShippingPricingContextResult,
+        }) => {
           return [
             {
               id: shippingOption.id as string,
               optionData: shippingOption.data,
               context: {
+                ...setCalculatedShippingPricingContextResult,
                 ...order,
                 ...input.context,
                 from_location:
@@ -293,6 +329,8 @@ export const fetchShippingOptionForOrderWorkflow = createWorkflow(
       }
     )
 
-    return new WorkflowResponse(result, { hooks: [setPricingContext] as const })
+    return new WorkflowResponse(result, {
+      hooks: [setPricingContext, setCalculatedShippingPricingContext] as const,
+    })
   }
 )
