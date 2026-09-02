@@ -103,6 +103,14 @@ const actions = await promotionModuleService.computeActions(
 
 The `computeActions` method accepts the existing adjustments of line items and shipping methods to compute the actions accurately.
 
+<Note>
+
+The `adjustment.code !== undefined` filter separates promotion-based adjustments (those with a promotion code) from code-less adjustments. Code-less adjustments are created without a `code` property and are used for custom discounts not tied to any promotion. For example, a custom pricing engine that writes its own discount lines alongside native promotions. The `computeActions` method only recomputes promotion-based adjustments, so code-less adjustments must be excluded to avoid them being overwritten.
+
+The [LineItemAdjustment](/references/cart/models/LineItemAdjustment) data model stores `code` as an optional field, so code-less adjustments can exist on a cart. Note that code-less adjustments are not tracked by the Promotion Module's campaign budget or usage limits.
+
+</Note>
+
 Then, use the returned `addItemAdjustment` and `addShippingMethodAdjustment` actions to set the cart’s line item and the shipping method’s adjustments.
 
 ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
