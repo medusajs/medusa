@@ -75,6 +75,7 @@ export const updateOrderValidationStep = createStep(
 
     if (
       input.shipping_address?.country_code &&
+      order.shipping_address?.country_code &&
       order.shipping_address?.country_code !==
         input.shipping_address?.country_code
     ) {
@@ -86,6 +87,7 @@ export const updateOrderValidationStep = createStep(
 
     if (
       input.billing_address?.country_code &&
+      order.billing_address?.country_code &&
       order.billing_address?.country_code !==
         input.billing_address?.country_code
     ) {
