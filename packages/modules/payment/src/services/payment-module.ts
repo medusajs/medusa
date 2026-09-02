@@ -253,9 +253,9 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
-          ...(data.currency_code ? 
-            { currency_code: normalizeCurrencyCode(data.currency_code) } :
-            {}),
+          ...(data.currency_code
+            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+            : {}),
         },
       ]
     } else {
@@ -268,10 +268,9 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
-        ...(data.currency_code ?
-          { currency_code: normalizeCurrencyCode(data.currency_code) } :
-          {}
-        ),
+        ...(data.currency_code
+          ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+          : {}),
       }))
     }
 
@@ -328,10 +327,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
     const forCreate = input
       .filter(
@@ -339,10 +337,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
@@ -770,6 +767,44 @@ export default class PaymentModuleService
     return await this.baseRepository_.serialize(capturedPayment)
   }
 
+  /**
+   * Lock the given rows `FOR UPDATE` for the remainder of the current
+   * transaction
+   *
+   * The transaction context is required: a FOR UPDATE issued on a pooled
+   * (autocommit) connection would release the lock immediately and silently
+   * stop serializing, so fail explicitly instead of falling back.
+   */
+  private async lockRowsForUpdate_(
+    table: string,
+    ids: string[],
+    missingTransactionMessage: string,
+    sharedContext: Context,
+    lockTimeoutMs: number = 3000
+  ): Promise<void> {
+    if (!ids.length) {
+      return
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        missingTransactionMessage
+      )
+    }
+
+    // Bound the wait for the row lock so a contended op fails fast instead
+    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    // `set_config(..., true)` is `SET LOCAL`, scoped to this
+    // transaction, but takes a bind parameter, which `SET LOCAL` cannot.
+    await knex.raw("SELECT set_config('lock_timeout', ?, true)", [
+      String(lockTimeoutMs),
+    ])
+    await knex(table).whereIn("id", ids).orderBy("id").forUpdate().select("id")
+  }
+
   @InjectTransactionManager()
   protected async capturePayment_(
     data: CreateCaptureDTO,
@@ -808,30 +843,24 @@ export default class PaymentModuleService
     // read a stale total and each pass the guard, over-capturing the payment.
     // The provider is called afterwards from `capturePaymentFromProvider_` in a
     // separate context, so the lock is never held across the provider call.
-    // The transaction context is required: a FOR UPDATE issued on a pooled
-    // (autocommit) connection would release the lock immediately and silently
-    // stop serializing, so fail explicitly instead of falling back.
-    const manager = sharedContext.transactionManager as SqlEntityManager
-    const knex = manager?.getTransactionContext()
-    if (!knex) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "capturePayment_ must run inside a transaction to serialize concurrent captures."
-      )
-    }
-    // Bound the wait for the row lock so a contended capture fails fast instead
-    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
-    await knex.raw("SET LOCAL lock_timeout = '3s'")
-    await knex("payment").where("id", payment.id).forUpdate().select("id")
+    await this.lockRowsForUpdate_(
+      "payment",
+      [payment.id],
+      "capturePayment_ must run inside a transaction to serialize concurrent captures.",
+      sharedContext
+    )
 
     const lockedPayment = await this.paymentService_.retrieve(
       data.payment_id,
       { select: ["id"], relations: ["captures.raw_amount"] },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    const capturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
+      },
+      MathBN.convert(0)
+    )
 
     const authorizedAmount = new BigNumber(payment.raw_amount as BigNumberInput)
     const newCaptureAmount = new BigNumber(data.amount)
@@ -952,11 +981,17 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.retrievePayment(
+    // Re-fetch the payment so the freshly created refund is reflected in the
+    // returned payload. `refresh` is required because, under the select-in load
+    // strategy, the refund created above is not automatically re-populated on
+    // the managed payment entity within the same context.
+    const refundedPayment = await this.paymentService_.retrieve(
       payment.id,
-      { relations: ["refunds"] },
+      { relations: ["refunds"], options: { refresh: true } },
       sharedContext
     )
+
+    return await this.baseRepository_.serialize(refundedPayment)
   }
 
   @InjectTransactionManager()
@@ -983,21 +1018,12 @@ export default class PaymentModuleService
     // a stale refunded total and each pass the guard, over-refunding the payment.
     // The provider is called afterwards from `refundPaymentFromProvider_` in a
     // separate context, so the lock is never held across the provider call.
-    // The transaction context is required: a FOR UPDATE issued on a pooled
-    // (autocommit) connection would release the lock immediately and silently
-    // stop serializing, so fail explicitly instead of falling back.
-    const manager = sharedContext.transactionManager as SqlEntityManager
-    const knex = manager?.getTransactionContext()
-    if (!knex) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "refundPayment_ must run inside a transaction to serialize concurrent refunds."
-      )
-    }
-    // Bound the wait for the row lock so a contended refund fails fast instead
-    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
-    await knex.raw("SET LOCAL lock_timeout = '3s'")
-    await knex("payment").where("id", payment.id).forUpdate().select("id")
+    await this.lockRowsForUpdate_(
+      "payment",
+      [payment.id],
+      "refundPayment_ must run inside a transaction to serialize concurrent refunds.",
+      sharedContext
+    )
 
     const lockedPayment = await this.paymentService_.retrieve(
       data.payment_id,
@@ -1007,13 +1033,21 @@ export default class PaymentModuleService
       },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
-      return MathBN.add(captureAmount, amountAsBigNumber)
-    }, MathBN.convert(0))
-    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
-      return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    const capturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        const amountAsBigNumber = new BigNumber(
+          next.raw_amount as BigNumberInput
+        )
+        return MathBN.add(captureAmount, amountAsBigNumber)
+      },
+      MathBN.convert(0)
+    )
+    const refundedAmount = lockedPayment.refunds.reduce(
+      (refundedAmount, next) => {
+        return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
+      },
+      MathBN.convert(0)
+    )
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
@@ -1104,11 +1138,28 @@ export default class PaymentModuleService
     return await this.retrievePayment(payment.id, {}, sharedContext)
   }
 
-  @InjectManager()
+  @InjectTransactionManager()
   protected async maybeUpdatePaymentCollection_(
     paymentCollectionId: string,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ) {
+    // Serialize concurrent rollups of the same payment collection: lock the
+    // payment collection row for the remainder of this transaction so the
+    // read-sum-write below runs as a critical section, then re-read the sessions,
+    // captures and refunds under the lock so the totals see every committed row.
+    // Without this, two concurrent rollups both read a stale snapshot and the one
+    // that writes last drops the amounts the other had already counted. The
+    // per-payment locks taken by `capturePayment_` / `refundPayment_` do not
+    // cover this: they serialize each payment's own guard, not this rollup, which
+    // is shared by every payment of the collection.
+    await this.lockRowsForUpdate_(
+      "payment_collection",
+      [paymentCollectionId],
+      "maybeUpdatePaymentCollection_ must run inside a transaction to serialize concurrent payment collection updates.",
+      sharedContext,
+      10000
+    )
+
     const paymentCollection = await this.paymentCollectionService_.retrieve(
       paymentCollectionId,
       {
@@ -1120,7 +1171,11 @@ export default class PaymentModuleService
         // right after sessions/captures/refunds were created, and select-in
         // does not otherwise re-populate collections that are already loaded on
         // the managed entities in the shared context.
-        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        relations: [
+          "payment_sessions",
+          "payments.captures",
+          "payments.refunds",
+        ],
         options: { refresh: true },
       },
       sharedContext
