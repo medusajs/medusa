@@ -86,15 +86,45 @@ export class RestrictedFieldFilter implements IFieldFilter {
  * Filter that disallows specific fields as a hard security boundary.
  * Any requested field whose path contains a disallowed segment is returned as
  * not allowed (e.g. `orders` matches both `orders` and `orders.customer.email`).
+ *
+ * A disallowed entry is either a string, matched against a whole segment, or a
+ * regular expression, tested against each segment. Regular expressions are useful to
+ * block a whole family of relations at once, e.g. `/_link$/` blocks the link entities
+ * that would otherwise resolve the same data under a different segment
+ * (`order_link.order`, `payment_collection_link.payment_collection`, ...).
+ *
  * Behaves like {@link RestrictedFieldFilter}, but is enforced independently of
  * any feature flag so it can be relied upon to keep sensitive relations off
  * unauthenticated endpoints.
  */
 export class DisallowedFieldFilter implements IFieldFilter {
-  private disallowed: string[]
+  private disallowedSegments: Set<string>
+  private disallowedPatterns: RegExp[]
 
-  constructor({ disallowed }: { disallowed: string[] }) {
-    this.disallowed = disallowed
+  constructor({ disallowed }: { disallowed: (string | RegExp)[] }) {
+    this.disallowedSegments = new Set(
+      disallowed.filter((field): field is string => typeof field === "string")
+    )
+    this.disallowedPatterns = disallowed
+      .filter((field): field is RegExp => field instanceof RegExp)
+      .map(DisallowedFieldFilter.toStatelessRegex)
+  }
+
+  /**
+   * The `g` and `y` flags make a regex stateful across `test` calls through its
+   * `lastIndex`, which would make a field's outcome depend on the fields checked
+   * before it. Those flags are dropped so matching is always deterministic.
+   */
+  private static toStatelessRegex(pattern: RegExp): RegExp {
+    const flags = pattern.flags.replace(/[gy]/g, "")
+    return flags === pattern.flags ? pattern : new RegExp(pattern.source, flags)
+  }
+
+  private isDisallowedSegment(segment: string): boolean {
+    return (
+      this.disallowedSegments.has(segment) ||
+      this.disallowedPatterns.some((pattern) => pattern.test(segment))
+    )
   }
 
   getNotAllowedFields(context: FieldFilterContext): string[] {
@@ -102,11 +132,8 @@ export class DisallowedFieldFilter implements IFieldFilter {
     const { fields, starFields } = parsedFields
     const fieldsToCheck = [...fields, ...Array.from(starFields)]
 
-    return fieldsToCheck.filter((field) => {
-      const fieldSegments = field.split(".")
-      return this.disallowed.some((disallowedField) =>
-        fieldSegments.includes(disallowedField)
-      )
-    })
+    return fieldsToCheck.filter((field) =>
+      field.split(".").some((segment) => this.isDisallowedSegment(segment))
+    )
   }
 }
