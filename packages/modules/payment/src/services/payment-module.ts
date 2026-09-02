@@ -938,12 +938,48 @@ export default class PaymentModuleService
       },
       sharedContext
     )
-    const refund = await this.refundPayment_(payment, data, sharedContext)
+    const { refund, reusedFailedRefund } = await this.refundPayment_(
+      payment,
+      data,
+      sharedContext
+    )
 
     try {
       await this.refundPaymentFromProvider_(payment, refund, sharedContext)
     } catch (error) {
-      await super.deleteRefunds({ id: refund.id }, sharedContext)
+      // Mark the refund as failed instead of deleting it. The provider was
+      // already given this refund's id as its idempotency key, so if this
+      // failure was ambiguous (e.g. a timeout after the provider actually
+      // processed the request), a subsequent retry must reuse that same
+      // id/idempotency key -- deleting it here would force a retry to mint a
+      // new key, defeating provider-side deduplication and risking a double
+      // refund. See `refundPayment_` for where a retry finds and reuses a
+      // failed refund; while this refund is failed (not deleted, not
+      // confirmed), a *concurrent* refund attempt still counts it toward the
+      // refunded total until this call's own failure is recorded, so it can't
+      // be raced by another call mistaking it for a stale, reusable attempt.
+      if (reusedFailedRefund) {
+        // This attempt already reused a previously-failed refund's key and the
+        // provider failed AGAIN. If the failure is deterministic, the provider
+        // has bound an error response to this key (Stripe replays a stored 4xx
+        // verbatim), so keeping it would brick every future retry. Rotate:
+        // delete the row so the next retry mints a fresh key. The one same-key
+        // retry already performed is what makes this safe for the ambiguous
+        // case -- a processed-but-lost refund was recovered by that retry, not
+        // re-executed.
+        await super.deleteRefunds({ id: refund.id }, sharedContext)
+      } else {
+        await this.refundService_.update(
+          {
+            id: refund.id,
+            metadata: {
+              ...(refund.metadata as object | null),
+              __refund_status: "failed",
+            },
+          },
+          sharedContext
+        )
+      }
       throw error
     }
 
@@ -952,11 +988,19 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.retrievePayment(
+    // Re-fetch the payment so the refund bookkeeping above (including the
+    // stripped retry marker) is reflected in the returned payload. `refresh`
+    // is required because, under the select-in load strategy, entities updated
+    // through the internal services are not automatically re-populated on the
+    // managed payment entity within the same context (see `capturePayment`
+    // for the same pattern).
+    const refundedPayment = await this.paymentService_.retrieve(
       payment.id,
-      { relations: ["refunds"] },
+      { relations: ["refunds"], options: { refresh: true } },
       sharedContext
     )
+
+    return await this.baseRepository_.serialize(refundedPayment)
   }
 
   @InjectTransactionManager()
@@ -964,7 +1008,10 @@ export default class PaymentModuleService
     payment: InferEntityType<typeof Payment>,
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<InferEntityType<typeof Refund>> {
+  ): Promise<{
+    refund: InferEntityType<typeof Refund>
+    reusedFailedRefund: boolean
+  }> {
     // If no amount is passed, we assume the full payment amount needs to be
     // refunded. An explicit amount, however, must be strictly positive.
     if (data.amount == null) {
@@ -1011,7 +1058,21 @@ export default class PaymentModuleService
       const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
+    // A refund whose owning call caught a provider-call failure (see the catch
+    // block in `refundPayment`) is marked failed rather than deleted, so its
+    // idempotency key can be reused by a genuine retry below. Until a refund
+    // is marked failed, it still counts toward the refunded total -- it may be
+    // a live, in-flight refund from a *concurrent* call whose provider request
+    // hasn't resolved yet, and treating it as "not really refunded" here would
+    // let a concurrent second call race past the over-refund guard serialized
+    // by the row lock above. Only a refund this payment's own failed attempt
+    // marked `failed` is safe to treat as reusable/excluded.
+    const isFailed = (r: InferEntityType<typeof Refund>) =>
+      (r.metadata as Record<string, unknown> | null)?.__refund_status ===
+      "failed"
+    const nonFailedRefunds = lockedPayment.refunds.filter((r) => !isFailed(r))
+
+    const refundedAmount = nonFailedRefunds.reduce((refundedAmount, next) => {
       return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
@@ -1034,19 +1095,55 @@ export default class PaymentModuleService
       )
     }
 
-    const refund = await this.refundService_.create(
-      {
-        payment: data.payment_id,
-        amount: data.amount,
-        created_by: data.created_by,
-        note: data.note,
-        refund_reason_id: data.refund_reason_id,
-        metadata: data.metadata,
-      },
-      sharedContext
+    // Reuse the refund from a prior *failed* attempt on this payment instead
+    // of minting a fresh id, so the idempotency key handed to the provider in
+    // `refundPaymentFromProvider_` stays stable across a retry of the same
+    // logical refund. Reuse is only safe when the retry IS the same logical
+    // refund -- the amounts must match, otherwise a different refund must not
+    // inherit a key the provider may have bound to the earlier request. Unlike
+    // a capture, a payment routinely carries several refunds, so the amount
+    // match is what identifies "the same logical refund".
+    // New refunds start `pending`; `refundPaymentFromProvider_` strips the
+    // marker once the provider call actually succeeds. On failure,
+    // `refundPayment`'s catch block marks a first-attempt refund `failed`
+    // (keeping the key reusable for one retry) but DELETES a refund whose
+    // reused-key retry failed again, so the next retry mints a fresh key and a
+    // deterministic provider failure cannot brick the refund forever.
+    const reusableFailedRefund = lockedPayment.refunds.find(
+      (r) =>
+        isFailed(r) && MathBN.eq(r.raw_amount as BigNumberInput, data.amount!)
     )
 
-    return refund
+    const refund = reusableFailedRefund
+      ? await this.refundService_.update(
+          {
+            id: reusableFailedRefund.id,
+            created_by: data.created_by,
+            note: data.note,
+            refund_reason_id: data.refund_reason_id,
+            metadata: {
+              ...(data.metadata ?? {}),
+              __refund_status: "pending",
+            },
+          },
+          sharedContext
+        )
+      : await this.refundService_.create(
+          {
+            payment: data.payment_id,
+            amount: data.amount,
+            created_by: data.created_by,
+            note: data.note,
+            refund_reason_id: data.refund_reason_id,
+            metadata: {
+              ...(data.metadata ?? {}),
+              __refund_status: "pending",
+            },
+          },
+          sharedContext
+        )
+
+    return { refund, reusedFailedRefund: !!reusableFailedRefund }
   }
 
   @InjectManager()
@@ -1070,6 +1167,30 @@ export default class PaymentModuleService
       { id: payment.id, data: paymentData.data },
       sharedContext
     )
+
+    // The provider call above succeeded, so this refund is confirmed -- strip
+    // the `pending`/`failed` marker `refundPayment_` set so a future refund on
+    // this payment can never mistake it for a reusable failed attempt. Only
+    // the internal marker is removed: unlike captures, refunds carry
+    // caller-provided metadata that must survive (which is why this cannot
+    // simply set `metadata: null` the way a confirmed capture could).
+    // Updates go through `assign` with `mergeObjectProperties: true`, so a
+    // partial update can never remove a key -- clear the object first, then
+    // write back everything except the internal marker.
+    const refundMetadata = refund.metadata as Record<string, unknown> | null
+    if (refundMetadata?.__refund_status) {
+      const { __refund_status, ...remainingMetadata } = refundMetadata
+      await this.refundService_.update(
+        { id: refund.id, metadata: null },
+        sharedContext
+      )
+      if (Object.keys(remainingMetadata).length) {
+        await this.refundService_.update(
+          { id: refund.id, metadata: remainingMetadata },
+          sharedContext
+        )
+      }
+    }
 
     return payment
   }
@@ -1150,6 +1271,15 @@ export default class PaymentModuleService
     }
 
     for (const refund of refunds) {
+      // A refund marked failed is a kept-for-idempotency record of a
+      // provider-side failure (see `refundPayment`); no money moved, so it
+      // must not count toward the collection's refunded total.
+      if (
+        (refund.metadata as Record<string, unknown> | null)?.__refund_status ===
+        "failed"
+      ) {
+        continue
+      }
       refundedAmount = MathBN.add(refundedAmount, refund.amount)
     }
 
