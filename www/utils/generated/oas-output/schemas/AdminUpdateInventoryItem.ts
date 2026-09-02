@@ -61,6 +61,10 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   unit_of_measure:
+ *     type: string
+ *     title: unit_of_measure
+ *     description: The inventory item's unit of measure.
  * x-schemaName: AdminUpdateInventoryItem
  * 
 */

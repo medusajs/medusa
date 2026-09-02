@@ -81,6 +81,10 @@
  *     type: number
  *     title: reserved_quantity
  *     description: The inventory item's reserved quantity.
+ *   unit_of_measure:
+ *     type: string
+ *     title: unit_of_measure
+ *     description: The inventory's unit of measure.
  * 
 */
 
