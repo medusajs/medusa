@@ -15,6 +15,24 @@ medusaIntegrationTestRunner({
     const groupFor = (data: any, entity: string) =>
       data.results.find((group) => group.entity === entity)
 
+    // Reindexing runs in the background, so tests that trigger it have to
+    // poll for completion rather than assume it's done when the request
+    // returns.
+    const waitForIndexReady = async (name: string) => {
+      const deadline = Date.now() + 10000
+      while (Date.now() < deadline) {
+        const listed = await api.get("/admin/search-indexes", adminHeaders)
+        const index = listed.data.search_indexes.find(
+          (i: any) => i.name === name
+        )
+        if (index?.status === "ready") {
+          return index
+        }
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      }
+      throw new Error(`Index "${name}" did not become ready in time`)
+    }
+
     beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
@@ -328,16 +346,15 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(response.status).toEqual(200)
+        // The reindex runs in the background, so the route responds as soon
+        // as it's triggered rather than waiting for the rebuild to finish.
+        expect(response.status).toEqual(202)
         expect(response.data).toEqual({
           job_id: expect.any(String),
           indexes: ["product"],
         })
 
-        const listed = await api.get("/admin/search-indexes", adminHeaders)
-        const product = listed.data.search_indexes.find(
-          (index) => index.name === "product"
-        )
+        const product = await waitForIndexReady("product")
         expect(product.status).toBe("ready")
 
         const search = await api.get(

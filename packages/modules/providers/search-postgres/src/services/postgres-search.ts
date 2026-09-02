@@ -730,7 +730,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }
 
   /**
-   * Engine-embedded vector fields are produced from a source text field via
+   * Engine-embedded vector fields are produced from the field's own text via
    * the configured `embedder`. Without one the columns would stay null.
    */
   protected assertEmbedderForPlan(plan: IndexPlan): void {
@@ -767,7 +767,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     for (const { document, projection } of projections.values()) {
       for (const path of embedded) {
         const planned = plan.fields.get(path)!
-        const text = sourceTextForEmbed(document, planned.field.embed!)
+        const text = sourceTextForEmbed(document, path)
         if (!text) {
           continue
         }

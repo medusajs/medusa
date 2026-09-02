@@ -1220,7 +1220,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
-        it("rebuilds in place, keeping documents the seed no longer produces", async () => {
+        it("rebuilds in place, clearing documents the seed no longer produces", async () => {
           await service.upsertDocuments({
             index: "product",
             documents: [{ ...baseProducts[0], id: "prod_stale" }],
@@ -1233,8 +1233,9 @@ moduleIntegrationTestRunner<SearchService>({
 
           await service.reindex({ strategy: "in_place" })
 
-          // `in_place` upserts over the live index, so the seed's documents are
-          // refreshed...
+          // `in_place` writes into the live index rather than a shadow, but a
+          // full (unfiltered) rebuild still clears it first, so the seed's
+          // documents are refreshed...
           const refreshed = await service.search({
             entity: "product",
             fields: ["id"],
@@ -1242,15 +1243,9 @@ moduleIntegrationTestRunner<SearchService>({
           })
           expect(ids(refreshed)).toEqual(["prod_1"])
 
-          // ...but anything it no longer produces is left behind. That is the
-          // documented cost of `in_place` over `swap`, which drops it.
+          // ...and anything the seed no longer produces is gone too.
           const all = await service.search({ entity: "product", fields: ["id"] })
-          expect(ids(all).sort()).toEqual([
-            "prod_1",
-            "prod_2",
-            "prod_3",
-            "prod_stale",
-          ])
+          expect(ids(all).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
         it("rejects reindexing an unknown index", async () => {

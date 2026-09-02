@@ -17,7 +17,7 @@ export type PlannedField = {
   is_date: boolean
   field: SearchTypes.SearchFieldDefinition
   dimensions?: number
-  embed?: string
+  embed?: boolean
 }
 
 export type TypoToleranceSettings = {
@@ -189,6 +189,11 @@ export function buildIndexPlan(
 
       if (field.type === "vector") {
         attribute.ann = configured.ann ?? true
+        if (field.embed) {
+          attribute.embed = {
+            ...(field.dimensions ? { dims: field.dimensions } : {}),
+          }
+        }
       }
 
       if (searchableField) {
@@ -233,12 +238,6 @@ export function buildIndexPlan(
         embed: field.embed,
       })
 
-      // Engine-embedded vector fields are not stored as client-supplied
-      // `[N]f32` columns — the source text field carries `embed` instead.
-      if (field.type === "vector" && field.embed) {
-        continue
-      }
-
       schema[path] = attribute
     }
   }
@@ -247,25 +246,8 @@ export function buildIndexPlan(
 
   const vectors: string[] = []
   for (const planned of fields.values()) {
-    if (planned.field.type !== "vector") {
-      continue
-    }
-
-    vectors.push(planned.path)
-
-    if (!planned.embed) {
-      continue
-    }
-
-    const source = schema[planned.embed]
-    if (!source || typeof source === "string") {
-      fail(
-        `Vector field "${planned.path}" embeds source "${planned.embed}", which is not in the index schema`
-      )
-    }
-
-    source.embed = {
-      ...(planned.dimensions ? { dims: planned.dimensions } : {}),
+    if (planned.field.type === "vector") {
+      vectors.push(planned.path)
     }
   }
 
@@ -318,12 +300,6 @@ export function toSearchDocument(
   const target: Record<string, unknown> = {}
 
   for (const planned of plan.fields.values()) {
-    // Engine-embedded fields are produced from `embed` — never send a
-    // client-supplied vector for them.
-    if (planned.field.type === "vector" && planned.embed) {
-      continue
-    }
-
     if (planned.field.type === "vector") {
       // `readDocumentPath` flattens arrays; a vector is one value.
       const raw = planned.path
@@ -335,9 +311,24 @@ export function toSearchDocument(
               : undefined,
           document
         )
-      if (raw !== undefined && raw !== null) {
-        target[planned.path] = coerceVector(raw, planned)
+      if (raw === undefined || raw === null) {
+        continue
       }
+
+      // Engine-embedded fields accept the source text; the proxy embeds it
+      // into the `[N]f32` column before storage.
+      if (planned.embed) {
+        if (typeof raw !== "string") {
+          fail(`Vector field "${planned.path}" with embed must be a string`)
+        }
+        const text = raw.trim()
+        if (text) {
+          target[planned.path] = text
+        }
+        continue
+      }
+
+      target[planned.path] = coerceVector(raw, planned)
       continue
     }
 
@@ -384,15 +375,31 @@ export function fromSearchDocument(
   return result
 }
 
+function attributeType(schema: AttributeSchema): string | undefined {
+  return typeof schema === "string"
+    ? schema
+    : (schema as AttributeSchemaConfig).type
+}
+
+// turbopuffer vector columns look like `[768]f32` / `[][768]f32`. The column
+// count is fixed at namespace creation — adding one later is rejected.
+function isVectorAttributeType(type: string | undefined): boolean {
+  return typeof type === "string" && /\[\d+\]/.test(type)
+}
+
 export function sameSchemaType(
   current: Record<string, AttributeSchemaConfig>,
   desired: Record<string, AttributeSchema>
 ): boolean {
   for (const [path, schema] of Object.entries(desired)) {
-    const desiredType =
-      typeof schema === "string"
-        ? schema
-        : (schema as AttributeSchemaConfig).type
+    const desiredType = attributeType(schema)
+
+    // Additive non-vector attributes can be patched in place. A new vector
+    // column cannot — the engine refuses `updateSchema` for those.
+    if (!current[path] && isVectorAttributeType(desiredType)) {
+      return false
+    }
+
     if (current[path] && current[path].type !== desiredType) {
       return false
     }

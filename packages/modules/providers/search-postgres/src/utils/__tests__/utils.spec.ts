@@ -159,7 +159,7 @@ describe("postgres search utils", () => {
             embedding: {
               type: "vector",
               dimensions: 3,
-              embed: "title",
+              embed: true,
             },
           },
         })
@@ -169,7 +169,7 @@ describe("postgres search utils", () => {
         {
           id: "prod_1",
           title: "Red shoe",
-          embedding: [0.1, 0.2, 0.3],
+          embedding: "comfortable red running shoe",
         },
         plan
       )
@@ -177,11 +177,20 @@ describe("postgres search utils", () => {
       expect(projected.vectors).toEqual({})
     })
 
-    it("reads the source text an embedder should encode", () => {
+    it("reads the text an embedder should encode from the vector field", () => {
       expect(
-        sourceTextForEmbed({ id: "prod_1", title: "Red shoe" }, "title")
+        sourceTextForEmbed(
+          { id: "prod_1", embedding: "Red shoe" },
+          "embedding"
+        )
       ).toBe("Red shoe")
-      expect(sourceTextForEmbed({ id: "prod_1" }, "title")).toBeUndefined()
+      expect(sourceTextForEmbed({ id: "prod_1" }, "embedding")).toBeUndefined()
+      expect(() =>
+        sourceTextForEmbed(
+          { id: "prod_1", embedding: [0.1, 0.2, 0.3] },
+          "embedding"
+        )
+      ).toThrow(/must be a string/)
     })
   })
 

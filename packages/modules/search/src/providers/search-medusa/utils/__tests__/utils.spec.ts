@@ -6,6 +6,7 @@ import {
   fromSearchDocument,
   parseFacetResults,
   parseHighlights,
+  sameSchemaType,
   toSearchDocument,
   toSearchFilter,
 } from ".."
@@ -1018,7 +1019,7 @@ describe("Medusa search utilities", () => {
       expect(query.query.filters).toBeUndefined()
     })
 
-    it("puts embed on the source field and omits the vector column", () => {
+    it("puts embed on the vector column", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1026,17 +1027,19 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
 
-      expect(embedded.schema.embedding).toBeUndefined()
-      expect(embedded.schema.title).toEqual(
+      expect(embedded.schema.embedding).toEqual(
         expect.objectContaining({
+          type: "[3]f32",
+          ann: true,
           embed: { dims: 3 },
         })
       )
+      expect(embedded.schema.title).not.toHaveProperty("embed")
 
       const query = buildQueryPlan(
         {
@@ -1050,7 +1053,7 @@ describe("Medusa search utilities", () => {
       )
 
       expect(query.query.rank_by).toEqual([
-        "title",
+        "embedding",
         "ANN",
         ["Embed", "red shoes"],
       ])
@@ -1064,7 +1067,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1080,10 +1083,14 @@ describe("Medusa search utilities", () => {
         embedded
       )
 
-      expect(query.query.rank_by).toEqual(["title", "ANN", [0.1, 0.2, 0.3]])
+      expect(query.query.rank_by).toEqual([
+        "embedding",
+        "ANN",
+        [0.1, 0.2, 0.3],
+      ])
     })
 
-    it("does not write client embeddings for engine-embedded fields", () => {
+    it("writes source text on engine-embedded vector fields", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1091,7 +1098,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1101,11 +1108,38 @@ describe("Medusa search utilities", () => {
           {
             id: "prod_1",
             title: "Red shoe",
+            embedding: "comfortable red running shoe",
+          },
+          embedded
+        )
+      ).toMatchObject({
+        embedding: "comfortable red running shoe",
+      })
+    })
+
+    it("rejects a vector array on an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
             embedding: [0.1, 0.2, 0.3],
           },
           embedded
         )
-      ).not.toHaveProperty("embedding")
+      ).toThrow(/must be a string/)
     })
 
     it("rejects client embeddings whose dimensions do not match", () => {
@@ -1119,6 +1153,43 @@ describe("Medusa search utilities", () => {
           plan
         )
       ).toThrow(/expected 3 dimensions/)
+    })
+  })
+
+  describe("sameSchemaType", () => {
+    const current = {
+      id: { type: "string" },
+      title: { type: "string" },
+    }
+
+    it("allows adding a non-vector attribute in place", () => {
+      expect(
+        sameSchemaType(current, {
+          id: { type: "string" },
+          title: { type: "string" },
+          brand: { type: "string" },
+        })
+      ).toBe(true)
+    })
+
+    it("rejects adding a vector attribute to an existing namespace", () => {
+      expect(
+        sameSchemaType(current, {
+          id: { type: "string" },
+          title: { type: "string" },
+          embedding: { type: "[768]f32", ann: true, embed: { dims: 768 } },
+        })
+      ).toBe(false)
+    })
+
+    it("rejects a type change or a removed attribute", () => {
+      expect(
+        sameSchemaType(current, {
+          id: { type: "string" },
+          title: { type: "int" },
+        })
+      ).toBe(false)
+      expect(sameSchemaType(current, { id: { type: "string" } })).toBe(false)
     })
   })
 })

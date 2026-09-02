@@ -41,42 +41,28 @@ describe("resolveIndexDefinitions validation", () => {
     ).toThrow(/cannot be an array/)
   })
 
-  test("accepts a vector field that embeds a text source", () => {
+  test("accepts a vector field that embeds its own text", () => {
     const resolved = resolve({
-      title: { type: "text", searchable: true },
       embedding: {
         type: "vector",
         dimensions: 1536,
-        embed: "title",
+        embed: true,
       },
     })
 
-    expect(resolved.get("product")?.fields.embedding.embed).toEqual("title")
+    expect(resolved.get("product")?.fields.embedding.embed).toEqual(true)
   })
 
-  test("rejects embedding a non-text source field", () => {
-    expect(() =>
-      resolve({
-        price: { type: "float" },
-        embedding: {
-          type: "vector",
-          dimensions: 3,
-          embed: "price",
-        },
-      })
-    ).toThrow(/text or keyword/)
-  })
-
-  test("rejects embedding an unknown source field", () => {
+  test("rejects embedding a source field path", () => {
     expect(() =>
       resolve({
         embedding: {
           type: "vector",
           dimensions: 3,
-          embed: "title",
+          embed: "title" as unknown as true,
         },
       })
-    ).toThrow(/unknown source/)
+    ).toThrow(/must be true/)
   })
 
   test("rejects correlated on anything but an array of objects", () => {

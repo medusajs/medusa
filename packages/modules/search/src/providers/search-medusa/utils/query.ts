@@ -354,15 +354,13 @@ function vectorRank(
     )
   }
 
-  const rankField = planned.embed ?? field
-
   if (vector.value) {
     if (planned.dimensions && vector.value.length !== planned.dimensions) {
       fail(
         `Vector value for "${field}" expected ${planned.dimensions} dimensions, got ${vector.value.length}`
       )
     }
-    return [rankField, "ANN", vector.value] as RankBy
+    return [field, "ANN", vector.value] as RankBy
   }
 
   const text = vector.query
@@ -378,7 +376,7 @@ function vectorRank(
     )
   }
 
-  return [rankField, "ANN", ["Embed", text]] as RankBy
+  return [field, "ANN", ["Embed", text]] as RankBy
 }
 
 export function buildQueryPlan(
