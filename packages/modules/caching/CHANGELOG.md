@@ -1,5 +1,16 @@
 # @medusajs/caching
 
+## 2.20.0
+
+### Patch Changes
+
+- [#16547](https://github.com/medusajs/medusa/pull/16547) [`c4a823a19e4787bb69f2c3238a3cb5cb0918d7cc`](https://github.com/medusajs/medusa/commit/c4a823a19e4787bb69f2c3238a3cb5cb0918d7cc) Thanks [@peterlgh7](https://github.com/peterlgh7)! - await set and clear in caching module
+
+- [#16496](https://github.com/medusajs/medusa/pull/16496) [`2aa3e3d57b8c10acddf9a5516032758b9a2ccaa9`](https://github.com/medusajs/medusa/commit/2aa3e3d57b8c10acddf9a5516032758b9a2ccaa9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(caching): remove unnecessary quadratic computation
+
+- Updated dependencies [[`847612908fdd1c11a4df09ccc2e8ab44d338bb04`](https://github.com/medusajs/medusa/commit/847612908fdd1c11a4df09ccc2e8ab44d338bb04), [`785fd2b8a978201638a4d8d5ae9eea483958c0fb`](https://github.com/medusajs/medusa/commit/785fd2b8a978201638a4d8d5ae9eea483958c0fb), [`706ce874672c9cd1d8fc0c5429fc0dd24e6910a9`](https://github.com/medusajs/medusa/commit/706ce874672c9cd1d8fc0c5429fc0dd24e6910a9), [`6a2fce501f3bcd459c21a67f586c7a15b905ff0f`](https://github.com/medusajs/medusa/commit/6a2fce501f3bcd459c21a67f586c7a15b905ff0f), [`5e06e544a296b9033f20f71f11c559f81a0e5739`](https://github.com/medusajs/medusa/commit/5e06e544a296b9033f20f71f11c559f81a0e5739)]:
+  - @medusajs/framework@2.20.0
+
 ## 2.19.0
 
 ### Patch Changes

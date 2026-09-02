@@ -1,5 +1,16 @@
 # @medusajs/settings
 
+## 2.20.0
+
+### Patch Changes
+
+- [#16477](https://github.com/medusajs/medusa/pull/16477) [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings): support fractional quantities and unit of measure in dashboard
+
+- [#16254](https://github.com/medusajs/medusa/pull/16254) [`b2eaae16e512c0a82390dad6d072330852b2e3c4`](https://github.com/medusajs/medusa/commit/b2eaae16e512c0a82390dad6d072330852b2e3c4) Thanks [@Nidhi-Gahlawat](https://github.com/Nidhi-Gahlawat)! - fix(settings): include campaign budget type in configurable promotion status
+  columns
+- Updated dependencies [[`847612908fdd1c11a4df09ccc2e8ab44d338bb04`](https://github.com/medusajs/medusa/commit/847612908fdd1c11a4df09ccc2e8ab44d338bb04), [`785fd2b8a978201638a4d8d5ae9eea483958c0fb`](https://github.com/medusajs/medusa/commit/785fd2b8a978201638a4d8d5ae9eea483958c0fb), [`706ce874672c9cd1d8fc0c5429fc0dd24e6910a9`](https://github.com/medusajs/medusa/commit/706ce874672c9cd1d8fc0c5429fc0dd24e6910a9), [`6a2fce501f3bcd459c21a67f586c7a15b905ff0f`](https://github.com/medusajs/medusa/commit/6a2fce501f3bcd459c21a67f586c7a15b905ff0f), [`5e06e544a296b9033f20f71f11c559f81a0e5739`](https://github.com/medusajs/medusa/commit/5e06e544a296b9033f20f71f11c559f81a0e5739)]:
+  - @medusajs/framework@2.20.0
+
 ## 2.19.0
 
 ### Patch Changes
