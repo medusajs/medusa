@@ -1,0 +1,34 @@
+{
+	"SearchIndexSync": {
+		"filePath": "packages/modules/search/src/models/search-index-sync.ts",
+		"properties": {
+			"id": "The ID of the search index sync.",
+			"job_id": "The job id of the search index sync",
+			"status": "The status of the search index sync",
+			"filters": "The filters of the search index sync",
+			"last_key": "The last key of the search index sync",
+			"documents_synced": "The documents synced of the search index sync",
+			"started_at": "The started at of the search index sync",
+			"completed_at": "The completed at of the search index sync",
+			"error": "The error of the search index sync",
+			"search_index": "The associated search_index.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"SearchIndex": {
+		"filePath": "packages/modules/search/src/models/search-index.ts",
+		"properties": {
+			"id": "The ID of the search index.",
+			"name": "The name of the search index",
+			"provider": "The provider of the search index",
+			"status": "The status of the search index",
+			"definition_hash": "The definition hash of the search index",
+			"syncs": "The associated syncs.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	}
+}
