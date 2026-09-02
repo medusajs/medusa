@@ -2,4 +2,4 @@
 "@medusajs/workflow-engine-redis": patch
 ---
 
-fix: align the workflow engine module config type with its nested Redis options
+fix(workflow-engine-redis): align module config type with nested Redis options
