@@ -57,7 +57,7 @@ export const generatedEditDates = {
   "app/settings/developer/workflows/page.mdx": "2025-02-25T15:52:48.349Z",
   "app/reset-password/page.mdx": "2025-11-12T15:30:48.331Z",
   "app/orders/draft-orders/create/page.mdx": "2025-08-26T09:34:53.621Z",
-  "app/orders/draft-orders/manage/page.mdx": "2026-04-10T21:41:56.060Z",
+  "app/orders/draft-orders/manage/page.mdx": "2026-09-02T10:01:17.983Z",
   "app/orders/draft-orders/page.mdx": "2025-08-26T09:31:53.784Z",
   "app/settings/locations-and-shipping/shipping-option-types/page.mdx": "2025-08-28T14:03:13.999Z",
   "app/settings/refund-reasons/page.mdx": "2025-10-09T07:29:52.837Z",
