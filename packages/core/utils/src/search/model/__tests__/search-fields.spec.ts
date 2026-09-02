@@ -144,21 +144,18 @@ describe("search fields DSL", () => {
     })
   })
 
-  test("defineSearchIndex still accepts plain JSON fields", () => {
-    const definition = defineSearchIndex({
-      name: "product",
-      entity: "product",
-      fields: {
-        id: { type: "keyword", filterable: true },
-        title: { type: "text", searchable: true },
-      },
-      async *seed() {},
-    })
-
-    expect(definition.fields).toEqual({
-      id: { type: "keyword", filterable: true },
-      title: { type: "text", searchable: true },
-    })
+  test("defineSearchIndex rejects plain JSON fields", () => {
+    expect(() =>
+      defineSearchIndex({
+        name: "product",
+        entity: "product",
+        fields: {
+          // @ts-expect-error — fields must come from `search.define({ ... })`.
+          id: { type: "keyword", filterable: true },
+        },
+        async *seed() {},
+      })
+    ).toThrow("`defineSearchIndex` fields must come from `search.define({ ... })`")
   })
 
   test("provider options and correlated object arrays", () => {
