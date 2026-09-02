@@ -823,6 +823,47 @@ medusaIntegrationTestRunner({
         expect(orderChangesResult.length).toEqual(0)
       })
 
+      it("should add a shipping address with country code to an order without a shipping address", async () => {
+        const orderService = container.resolve(ModuleRegistrationName.ORDER)
+        const orderWithoutShippingAddress = await orderService.createOrders({
+          region_id: seeder.region.id,
+          currency_code: "usd",
+          items: [
+            {
+              title: "Test Item",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        })
+
+        const response = await api.post(
+          `/admin/orders/${orderWithoutShippingAddress.id}?fields=*shipping_address`,
+          {
+            shipping_address: {
+              first_name: "Test",
+              last_name: "Test",
+              address_1: "Test street",
+              city: "Test city",
+              country_code: "US",
+              postal_code: "12345",
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.data.order.shipping_address).toEqual(
+          expect.objectContaining({
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test street",
+            city: "Test city",
+            country_code: "US",
+            postal_code: "12345",
+          })
+        )
+      })
+
       it("should update billing address on an order (by creating a new Address record)", async () => {
         const addressBefore = order.billing_address
 
@@ -922,6 +963,47 @@ medusaIntegrationTestRunner({
         ).data.order_changes
 
         expect(orderChangesResult.length).toEqual(0)
+      })
+
+      it("should add a billing address with country code to an order without a billing address", async () => {
+        const orderService = container.resolve(ModuleRegistrationName.ORDER)
+        const orderWithoutBillingAddress = await orderService.createOrders({
+          region_id: seeder.region.id,
+          currency_code: "usd",
+          items: [
+            {
+              title: "Test Item",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        })
+
+        const response = await api.post(
+          `/admin/orders/${orderWithoutBillingAddress.id}?fields=*billing_address`,
+          {
+            billing_address: {
+              first_name: "Test",
+              last_name: "Test",
+              address_1: "Test street",
+              city: "Test city",
+              country_code: "US",
+              postal_code: "12345",
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.data.order.billing_address).toEqual(
+          expect.objectContaining({
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test street",
+            city: "Test city",
+            country_code: "US",
+            postal_code: "12345",
+          })
+        )
       })
 
       it("should update orders email and shipping address and create 2 change records", async () => {
