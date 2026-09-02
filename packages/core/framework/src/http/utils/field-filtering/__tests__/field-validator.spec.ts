@@ -96,6 +96,29 @@ describe("DisallowedFieldFilter", () => {
     ).toEqual([])
   })
 
+  it("matches regardless of casing", () => {
+    const filter = new DisallowedFieldFilter({
+      disallowed: ["orders", /_link$/],
+    })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor(["Orders.customer.email", "order_Link.order"], ["ORDERS"])
+      )
+    ).toEqual(["Orders.customer.email", "order_Link.order", "ORDERS"])
+  })
+
+  it("matches through compatibility characters and stray whitespace", () => {
+    const filter = new DisallowedFieldFilter({ disallowed: ["orders"] })
+
+    expect(
+      filter.getNotAllowedFields(
+        // U+FF4F FULLWIDTH LATIN SMALL LETTER O, and a tab around a segment
+        contextFor(["\uFF4Frders.customer.email", "region.\torders\t.email"])
+      )
+    ).toEqual(["\uFF4Frders.customer.email", "region.\torders\t.email"])
+  })
+
   it("doesn't let a stateful regex change a field's outcome", () => {
     const filter = new DisallowedFieldFilter({ disallowed: [/_link$/g] })
 

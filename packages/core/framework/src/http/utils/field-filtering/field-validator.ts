@@ -108,11 +108,17 @@ export class DisallowedFieldFilter implements IFieldFilter {
 
   constructor({ disallowed }: { disallowed: (string | RegExp)[] }) {
     this.disallowedSegments = new Set(
-      disallowed.filter((field): field is string => typeof field === "string")
+      disallowed
+        .filter((field): field is string => typeof field === "string")
+        .map(DisallowedFieldFilter.normalize)
     )
     this.disallowedPatterns = disallowed
       .filter((field): field is RegExp => field instanceof RegExp)
       .map(DisallowedFieldFilter.toStatelessRegex)
+  }
+
+  private static normalize(value: string): string {
+    return value.normalize("NFKC").trim().toLowerCase()
   }
 
   /**
@@ -133,14 +139,20 @@ export class DisallowedFieldFilter implements IFieldFilter {
   }
 
   private isDisallowedField(field: string): boolean {
+    const normalized = DisallowedFieldFilter.normalize(field)
+
     // A segment never contains a `.`, so a pattern that spans separators can only
     // ever match here. Patterns meant for a single segment match both ways, which
     // leaves segment-scoped entries such as `/_link$/` behaving as before.
-    if (this.disallowedPatterns.some((pattern) => pattern.test(field))) {
+    if (this.disallowedPatterns.some((pattern) => pattern.test(normalized))) {
       return true
     }
 
-    return field.split(".").some((segment) => this.isDisallowedSegment(segment))
+    return normalized
+      .split(".")
+      .some((segment) =>
+        this.isDisallowedSegment(DisallowedFieldFilter.normalize(segment))
+      )
   }
 
   getNotAllowedFields(context: FieldFilterContext): string[] {
