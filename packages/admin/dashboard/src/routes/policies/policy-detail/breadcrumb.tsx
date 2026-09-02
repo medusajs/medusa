@@ -15,7 +15,7 @@ export const PolicyDetailBreadcrumb = (props: PolicyDetailBreadcrumbProps) => {
       fields: POLICY_DETAIL_FIELDS,
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )

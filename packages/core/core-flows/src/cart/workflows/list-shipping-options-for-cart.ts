@@ -10,6 +10,7 @@ import {
   useRemoteQueryStep,
   validatePresenceOfStep,
 } from "../../common"
+import { salesChannelStockLocationCacheTags } from "../../common/utils/fields"
 import { cartFieldsForPricingContext } from "../utils/fields"
 import {
   AdditionalData,
@@ -174,7 +175,8 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       ],
       options: {
         cache: {
-          enable: true,
+          tags: salesChannelStockLocationCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "sales_channels-fulfillment-query" })

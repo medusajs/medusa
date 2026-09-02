@@ -1,5 +1,25 @@
 # @medusajs/draft-order
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16208](https://github.com/medusajs/medusa/pull/16208) [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard,draft-order): update @hookform/resolvers and react-hook-form to show validation errors in admin forms
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(plugins): widen the react-router-dom peer range to v6 and v7
+
+  The optional `react-router-dom` peer is now `^6.30.4 || ^7.0.0`, so these plugins install cleanly whether the host project is on react-router 6 or 7.
+
+- Updated dependencies [[`be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d`](https://github.com/medusajs/medusa/commit/be4ccf3f6a5ae40eff1ed55743d3518bdefeb07d), [`7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9`](https://github.com/medusajs/medusa/commit/7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9), [`60346987f74cc606d6864df765e7d4b007def3fe`](undefined), [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c), [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](undefined), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30`](https://github.com/medusajs/medusa/commit/372a1ab8fa4c8415f1eda294e3c4c5d9dbee4a30), [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7), [`438271818d8a3d10470fe838a6ac5c994019620c`](undefined), [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](undefined), [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](undefined), [`5f4d93c374b0ad0b0a31e75de98c7557e0415677`](https://github.com/medusajs/medusa/commit/5f4d93c374b0ad0b0a31e75de98c7557e0415677), [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23), [`39fac16bfa77374e3158842f64aeff4031e4f37b`](https://github.com/medusajs/medusa/commit/39fac16bfa77374e3158842f64aeff4031e4f37b), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982)]:
+  - @medusajs/test-utils@2.19.0
+  - @medusajs/dashboard@2.19.0
+  - @medusajs/icons@2.19.0
+  - @medusajs/js-sdk@2.19.0
+  - @medusajs/framework@2.19.0
+  - @medusajs/cli@2.19.0
+  - @medusajs/admin-sdk@2.19.0
+  - @medusajs/ui@4.2.1
+
 ## 2.18.0
 
 ### Patch Changes

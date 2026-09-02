@@ -6,7 +6,7 @@ import {
   MedusaError,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import { Logger } from "@medusajs/types"
+import { Logger } from "@medusajs/framework/types"
 import { join } from "path"
 import { initializeContainer } from "../../loaders"
 import { ensureDbExists } from "../utils"
@@ -33,7 +33,7 @@ const main = async function ({ directory, modules }) {
     )
 
     const plugins = await getResolvedPlugins(directory, configModule, true)
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, directory)
 
     const linksSourcePaths = plugins.map((plugin) =>
       join(plugin.resolve, "links")

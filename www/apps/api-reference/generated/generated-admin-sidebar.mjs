@@ -1619,6 +1619,16 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/admin/inventory-items/create-inventory-item-2",
+          "title": "Create Inventory Item",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/inventory-items/create-inventory-level",
           "title": "Create Inventory Level",
           "loaded": true,
@@ -4041,6 +4051,24 @@ const generatedgeneratedAdminSidebarSidebar = {
           "badge": {
             "variant": "red",
             "text": "Del"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search",
+      "path": "/admin/search",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/search/list-search",
+          "title": "List Search",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
           }
         }
       ]

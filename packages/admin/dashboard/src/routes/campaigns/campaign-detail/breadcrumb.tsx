@@ -16,7 +16,7 @@ export const CampaignDetailBreadcrumb = (
       fields: CAMPAIGN_DETAIL_FIELDS,
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )
@@ -29,5 +29,5 @@ export const CampaignDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminCampaignResponse>) => ({
-  title: match.data?.campaign?.name,
+  title: match.loaderData?.campaign?.name,
 })

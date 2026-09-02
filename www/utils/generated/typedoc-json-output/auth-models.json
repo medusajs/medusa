@@ -1,5 +1,5 @@
 {
-	"id": 1003,
+	"id": 1013,
 	"name": "auth-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 1004,
+			"id": 1014,
 			"name": "AuthIdentity",
 			"variant": "declaration",
 			"kind": 32,
@@ -30,7 +30,7 @@
 					"fileName": "auth-identity.ts",
 					"line": 8,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L8"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L8"
 				}
 			],
 			"type": {
@@ -50,14 +50,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1005,
+									"id": 1015,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1006,
+											"id": 1016,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -75,7 +75,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L10"
 												}
 											],
 											"type": {
@@ -101,7 +101,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1007,
+											"id": 1017,
 											"name": "provider_identities",
 											"variant": "declaration",
 											"kind": 1024,
@@ -122,7 +122,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L11"
 												}
 											],
 											"type": {
@@ -134,7 +134,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1168,
+														"target": 1178,
 														"name": "ProviderIdentity"
 													}
 												],
@@ -144,7 +144,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1022,
+											"id": 1032,
 											"name": "mfa_factors",
 											"variant": "declaration",
 											"kind": 1024,
@@ -165,7 +165,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L14"
 												}
 											],
 											"type": {
@@ -177,7 +177,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1115,
+														"target": 1125,
 														"name": "AuthMfaFactor"
 													}
 												],
@@ -187,7 +187,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1034,
+											"id": 1044,
 											"name": "mfa_recovery_codes",
 											"variant": "declaration",
 											"kind": 1024,
@@ -208,7 +208,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L17"
 												}
 											],
 											"type": {
@@ -220,7 +220,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1143,
+														"target": 1153,
 														"name": "AuthMfaRecoveryCode"
 													}
 												],
@@ -230,7 +230,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1043,
+											"id": 1053,
 											"name": "verifications",
 											"variant": "declaration",
 											"kind": 1024,
@@ -251,7 +251,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L20"
 												}
 											],
 											"type": {
@@ -263,7 +263,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1210,
+														"target": 1220,
 														"name": "AuthVerification"
 													}
 												],
@@ -273,7 +273,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1058,
+											"id": 1068,
 											"name": "password_reset_tokens",
 											"variant": "declaration",
 											"kind": 1024,
@@ -294,7 +294,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 23,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L23"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L23"
 												}
 											],
 											"type": {
@@ -306,7 +306,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1073,
+														"target": 1083,
 														"name": "AuthPasswordResetToken"
 													}
 												],
@@ -316,7 +316,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1072,
+											"id": 1082,
 											"name": "app_metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -336,7 +336,7 @@
 													"fileName": "auth-identity.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L26"
 												}
 											],
 											"type": {
@@ -345,6 +345,38 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -355,13 +387,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												1006,
-												1007,
-												1022,
-												1034,
-												1043,
-												1058,
-												1072
+												1016,
+												1017,
+												1032,
+												1044,
+												1053,
+												1068,
+												1082
 											]
 										}
 									],
@@ -370,7 +402,7 @@
 											"fileName": "auth-identity.ts",
 											"line": 9,
 											"character": 27,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-identity.ts#L9"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-identity.ts#L9"
 										}
 									]
 								}
@@ -390,7 +422,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 1115,
+			"id": 1125,
 			"name": "AuthMfaFactor",
 			"variant": "declaration",
 			"kind": 32,
@@ -402,7 +434,7 @@
 					"fileName": "auth-mfa-factor.ts",
 					"line": 4,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L4"
 				}
 			],
 			"type": {
@@ -422,14 +454,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1116,
+									"id": 1126,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1117,
+											"id": 1127,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -447,7 +479,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L6"
 												}
 											],
 											"type": {
@@ -473,7 +505,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1118,
+											"id": 1128,
 											"name": "auth_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -494,7 +526,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L7"
 												}
 											],
 											"type": {
@@ -506,7 +538,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1004,
+														"target": 1014,
 														"name": "AuthIdentity"
 													}
 												],
@@ -516,7 +548,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1139,
+											"id": 1149,
 											"name": "provider",
 											"variant": "declaration",
 											"kind": 1024,
@@ -534,7 +566,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L10"
 												}
 											],
 											"type": {
@@ -549,7 +581,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1140,
+											"id": 1150,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -567,7 +599,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L11"
 												}
 											],
 											"type": {
@@ -582,7 +614,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1141,
+											"id": 1151,
 											"name": "provider_metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -602,7 +634,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L12"
 												}
 											],
 											"type": {
@@ -611,13 +643,45 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
 										},
 										{
-											"id": 1142,
+											"id": 1152,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -637,7 +701,7 @@
 													"fileName": "auth-mfa-factor.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L13"
 												}
 											],
 											"type": {
@@ -646,6 +710,38 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -656,12 +752,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												1117,
-												1118,
-												1139,
-												1140,
-												1141,
-												1142
+												1127,
+												1128,
+												1149,
+												1150,
+												1151,
+												1152
 											]
 										}
 									],
@@ -670,7 +766,7 @@
 											"fileName": "auth-mfa-factor.ts",
 											"line": 5,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-factor.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-factor.ts#L5"
 										}
 									]
 								}
@@ -690,7 +786,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 1143,
+			"id": 1153,
 			"name": "AuthMfaRecoveryCode",
 			"variant": "declaration",
 			"kind": 32,
@@ -702,7 +798,7 @@
 					"fileName": "auth-mfa-recovery-code.ts",
 					"line": 4,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L4"
 				}
 			],
 			"type": {
@@ -722,14 +818,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1144,
+									"id": 1154,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1145,
+											"id": 1155,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -747,7 +843,7 @@
 													"fileName": "auth-mfa-recovery-code.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L6"
 												}
 											],
 											"type": {
@@ -773,7 +869,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1146,
+											"id": 1156,
 											"name": "auth_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -794,7 +890,7 @@
 													"fileName": "auth-mfa-recovery-code.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L7"
 												}
 											],
 											"type": {
@@ -806,7 +902,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1004,
+														"target": 1014,
 														"name": "AuthIdentity"
 													}
 												],
@@ -816,7 +912,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1167,
+											"id": 1177,
 											"name": "code_hash",
 											"variant": "declaration",
 											"kind": 1024,
@@ -834,7 +930,7 @@
 													"fileName": "auth-mfa-recovery-code.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L10"
 												}
 											],
 											"type": {
@@ -853,9 +949,9 @@
 										{
 											"title": "Properties",
 											"children": [
-												1145,
-												1146,
-												1167
+												1155,
+												1156,
+												1177
 											]
 										}
 									],
@@ -864,7 +960,7 @@
 											"fileName": "auth-mfa-recovery-code.ts",
 											"line": 5,
 											"character": 36,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-mfa-recovery-code.ts#L5"
 										}
 									]
 								}
@@ -884,7 +980,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 1073,
+			"id": 1083,
 			"name": "AuthPasswordResetToken",
 			"variant": "declaration",
 			"kind": 32,
@@ -896,7 +992,7 @@
 					"fileName": "auth-password-reset-token.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L5"
 				}
 			],
 			"type": {
@@ -916,14 +1012,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1074,
+									"id": 1084,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1075,
+											"id": 1085,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -941,7 +1037,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L7"
 												}
 											],
 											"type": {
@@ -967,7 +1063,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1076,
+											"id": 1086,
 											"name": "auth_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -988,7 +1084,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L8"
 												}
 											],
 											"type": {
@@ -1000,7 +1096,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1004,
+														"target": 1014,
 														"name": "AuthIdentity"
 													}
 												],
@@ -1010,7 +1106,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1097,
+											"id": 1107,
 											"name": "provider_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1031,7 +1127,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L11"
 												}
 											],
 											"type": {
@@ -1043,7 +1139,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1168,
+														"target": 1178,
 														"name": "ProviderIdentity"
 													}
 												],
@@ -1053,7 +1149,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1112,
+											"id": 1122,
 											"name": "entity_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1071,7 +1167,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L14"
 												}
 											],
 											"type": {
@@ -1086,7 +1182,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1113,
+											"id": 1123,
 											"name": "token_hash",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1104,7 +1200,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L15"
 												}
 											],
 											"type": {
@@ -1119,7 +1215,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1114,
+											"id": 1124,
 											"name": "expires_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1137,7 +1233,7 @@
 													"fileName": "auth-password-reset-token.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L16"
 												}
 											],
 											"type": {
@@ -1156,12 +1252,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												1075,
-												1076,
-												1097,
-												1112,
-												1113,
-												1114
+												1085,
+												1086,
+												1107,
+												1122,
+												1123,
+												1124
 											]
 										}
 									],
@@ -1170,7 +1266,7 @@
 											"fileName": "auth-password-reset-token.ts",
 											"line": 6,
 											"character": 39,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-password-reset-token.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-password-reset-token.ts#L6"
 										}
 									]
 								}
@@ -1190,7 +1286,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 1210,
+			"id": 1220,
 			"name": "AuthVerification",
 			"variant": "declaration",
 			"kind": 32,
@@ -1202,7 +1298,7 @@
 					"fileName": "auth-verification.ts",
 					"line": 4,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L4"
 				}
 			],
 			"type": {
@@ -1222,14 +1318,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1211,
+									"id": 1221,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1212,
+											"id": 1222,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1247,7 +1343,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L6"
 												}
 											],
 											"type": {
@@ -1273,7 +1369,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1213,
+											"id": 1223,
 											"name": "auth_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1294,7 +1390,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L7"
 												}
 											],
 											"type": {
@@ -1306,7 +1402,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1004,
+														"target": 1014,
 														"name": "AuthIdentity"
 													}
 												],
@@ -1316,7 +1412,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1234,
+											"id": 1244,
 											"name": "entity_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1334,7 +1430,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L10"
 												}
 											],
 											"type": {
@@ -1349,7 +1445,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1235,
+											"id": 1245,
 											"name": "entity_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1367,7 +1463,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L11"
 												}
 											],
 											"type": {
@@ -1382,7 +1478,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1236,
+											"id": 1246,
 											"name": "code_provider",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1400,7 +1496,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L12"
 												}
 											],
 											"type": {
@@ -1415,7 +1511,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1237,
+											"id": 1247,
 											"name": "verified_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1435,7 +1531,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L13"
 												}
 											],
 											"type": {
@@ -1450,7 +1546,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1238,
+											"id": 1248,
 											"name": "requested_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1468,7 +1564,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L14"
 												}
 											],
 											"type": {
@@ -1483,7 +1579,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1239,
+											"id": 1249,
 											"name": "provider_metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1503,7 +1599,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L15"
 												}
 											],
 											"type": {
@@ -1512,13 +1608,45 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
 										},
 										{
-											"id": 1240,
+											"id": 1250,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1538,7 +1666,7 @@
 													"fileName": "auth-verification.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L16"
 												}
 											],
 											"type": {
@@ -1547,6 +1675,38 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -1557,15 +1717,15 @@
 										{
 											"title": "Properties",
 											"children": [
-												1212,
-												1213,
-												1234,
-												1235,
-												1236,
-												1237,
-												1238,
-												1239,
-												1240
+												1222,
+												1223,
+												1244,
+												1245,
+												1246,
+												1247,
+												1248,
+												1249,
+												1250
 											]
 										}
 									],
@@ -1574,7 +1734,7 @@
 											"fileName": "auth-verification.ts",
 											"line": 5,
 											"character": 31,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/auth-verification.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/auth-verification.ts#L5"
 										}
 									]
 								}
@@ -1594,7 +1754,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 1168,
+			"id": 1178,
 			"name": "ProviderIdentity",
 			"variant": "declaration",
 			"kind": 32,
@@ -1606,7 +1766,7 @@
 					"fileName": "provider-identity.ts",
 					"line": 5,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L5"
 				}
 			],
 			"type": {
@@ -1626,14 +1786,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1169,
+									"id": 1179,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1170,
+											"id": 1180,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1651,7 +1811,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L7"
 												}
 											],
 											"type": {
@@ -1677,7 +1837,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1171,
+											"id": 1181,
 											"name": "entity_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1695,7 +1855,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L8"
 												}
 											],
 											"type": {
@@ -1710,7 +1870,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1172,
+											"id": 1182,
 											"name": "provider",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1728,7 +1888,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L9"
 												}
 											],
 											"type": {
@@ -1743,7 +1903,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1173,
+											"id": 1183,
 											"name": "auth_identity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1764,7 +1924,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L10"
 												}
 											],
 											"type": {
@@ -1776,7 +1936,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1004,
+														"target": 1014,
 														"name": "AuthIdentity"
 													}
 												],
@@ -1786,7 +1946,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1194,
+											"id": 1204,
 											"name": "password_reset_tokens",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1807,7 +1967,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L13"
 												}
 											],
 											"type": {
@@ -1819,7 +1979,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 1073,
+														"target": 1083,
 														"name": "AuthPasswordResetToken"
 													}
 												],
@@ -1829,7 +1989,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1208,
+											"id": 1218,
 											"name": "user_metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1849,7 +2009,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L16"
 												}
 											],
 											"type": {
@@ -1858,13 +2018,45 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
 										},
 										{
-											"id": 1209,
+											"id": 1219,
 											"name": "provider_metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1884,7 +2076,7 @@
 													"fileName": "provider-identity.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L17"
 												}
 											],
 											"type": {
@@ -1893,6 +2085,38 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -1903,13 +2127,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												1170,
-												1171,
-												1172,
-												1173,
-												1194,
-												1208,
-												1209
+												1180,
+												1181,
+												1182,
+												1183,
+												1204,
+												1218,
+												1219
 											]
 										}
 									],
@@ -1918,7 +2142,7 @@
 											"fileName": "provider-identity.ts",
 											"line": 6,
 											"character": 31,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/auth/src/models/provider-identity.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87d77fa1b56ec287aa6655aaa2f54245387aa2f2/packages/modules/auth/src/models/provider-identity.ts#L6"
 										}
 									]
 								}
@@ -1942,312 +2166,272 @@
 		{
 			"title": "Variables",
 			"children": [
-				1004,
-				1115,
-				1143,
-				1073,
-				1210,
-				1168
+				1014,
+				1125,
+				1153,
+				1083,
+				1220,
+				1178
 			]
 		}
 	],
 	"packageName": "@medusajs/auth",
 	"symbolIdMap": {
-		"1003": {
+		"1013": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1004": {
+		"1014": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "AuthIdentity"
 		},
-		"1005": {
+		"1015": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__object"
 		},
-		"1006": {
+		"1016": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__object.id"
 		},
-		"1007": {
+		"1017": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__object.provider_identities"
 		},
-		"1008": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1009": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1010": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object"
-		},
-		"1011": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1012": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.entity_id"
-		},
-		"1013": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider"
-		},
-		"1014": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1015": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1016": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1017": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
-		},
 		"1018": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1019": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1020": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.user_metadata"
+			"qualifiedName": "__object"
 		},
 		"1021": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider_metadata"
-		},
-		"1022": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
-		},
-		"1023": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1024": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1025": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object"
-		},
-		"1026": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__object.id"
 		},
-		"1027": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+		"1022": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.entity_id"
+		},
+		"1023": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.provider"
+		},
+		"1024": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__object.auth_identity"
 		},
+		"1025": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1026": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1027": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
 		"1028": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1029": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1030": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.provider"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.user_metadata"
 		},
 		"1031": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.status"
-		},
-		"1032": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__object.provider_metadata"
 		},
+		"1032": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.mfa_factors"
+		},
 		"1033": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.metadata"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1034": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_recovery_codes"
+			"qualifiedName": "__function"
 		},
 		"1035": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1036": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1037": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__object"
 		},
-		"1038": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+		"1036": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__object.id"
 		},
-		"1039": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+		"1037": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__object.auth_identity"
 		},
-		"1040": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+		"1038": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__function"
+		},
+		"1039": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__function"
+		},
+		"1040": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.provider"
 		},
 		"1041": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.status"
 		},
 		"1042": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__object.code_hash"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.provider_metadata"
 		},
 		"1043": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"1044": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_recovery_codes"
 		},
 		"1045": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1046": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object"
-		},
-		"1047": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1048": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1049": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
+		"1047": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object"
+		},
+		"1048": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.id"
+		},
+		"1049": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.auth_identity"
+		},
 		"1050": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
 			"qualifiedName": "__function"
 		},
 		"1051": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.entity_id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__function"
 		},
 		"1052": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.entity_type"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.code_hash"
 		},
 		"1053": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.code_provider"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
 		},
 		"1054": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.verified_at"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1055": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.requested_at"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1056": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.provider_metadata"
+			"qualifiedName": "__object"
 		},
 		"1057": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.id"
 		},
 		"1058": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.auth_identity"
 		},
 		"1059": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__function"
 		},
 		"1060": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__function"
 		},
 		"1061": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object"
-		},
-		"1062": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1063": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1064": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1065": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1066": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.provider_identity"
-		},
-		"1067": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1068": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1069": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.entity_id"
 		},
+		"1062": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.entity_type"
+		},
+		"1063": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.code_provider"
+		},
+		"1064": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.verified_at"
+		},
+		"1065": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.requested_at"
+		},
+		"1066": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.provider_metadata"
+		},
+		"1067": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"1068": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1069": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
 		"1070": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.token_hash"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1071": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.expires_at"
-		},
-		"1072": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
-		},
-		"1073": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "AuthPasswordResetToken"
-		},
-		"1074": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__object"
 		},
-		"1075": {
+		"1072": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__object.id"
 		},
-		"1076": {
+		"1073": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__object.auth_identity"
+		},
+		"1074": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1075": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1076": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.provider_identity"
 		},
 		"1077": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
@@ -2258,56 +2442,56 @@
 			"qualifiedName": "__function"
 		},
 		"1079": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.entity_id"
 		},
 		"1080": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.token_hash"
 		},
 		"1081": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.provider_identities"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.expires_at"
 		},
 		"1082": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.app_metadata"
 		},
 		"1083": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "AuthPasswordResetToken"
 		},
 		"1084": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object"
 		},
 		"1085": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.id"
 		},
 		"1086": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.auth_identity"
 		},
 		"1087": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_recovery_codes"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
 		},
 		"1088": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__function"
 		},
 		"1089": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"1090": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"qualifiedName": "__object.id"
 		},
 		"1091": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider_identities"
 		},
 		"1092": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2315,11 +2499,11 @@
 		},
 		"1093": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"qualifiedName": "__function"
 		},
 		"1094": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_factors"
 		},
 		"1095": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2327,155 +2511,155 @@
 		},
 		"1096": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
+			"qualifiedName": "__function"
 		},
 		"1097": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.provider_identity"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.mfa_recovery_codes"
 		},
 		"1098": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1099": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1100": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
 		},
 		"1101": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1102": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.entity_id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1103": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
 		},
 		"1104": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.auth_identity"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1105": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1106": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.app_metadata"
 		},
 		"1107": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.provider_identity"
 		},
 		"1108": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__function"
 		},
 		"1109": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
 			"qualifiedName": "__function"
 		},
 		"1110": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.user_metadata"
+			"qualifiedName": "__object"
 		},
 		"1111": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider_metadata"
+			"qualifiedName": "__object.id"
 		},
 		"1112": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__object.entity_id"
 		},
 		"1113": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.token_hash"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.provider"
 		},
 		"1114": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.expires_at"
-		},
-		"1115": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "AuthMfaFactor"
-		},
-		"1116": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object"
-		},
-		"1117": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1118": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__object.auth_identity"
 		},
+		"1115": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1116": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1117": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1118": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
 		"1119": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1120": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.user_metadata"
+		},
+		"1121": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.provider_metadata"
+		},
+		"1122": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.entity_id"
+		},
+		"1123": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.token_hash"
+		},
+		"1124": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.expires_at"
+		},
+		"1125": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "AuthMfaFactor"
+		},
+		"1126": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object"
+		},
+		"1127": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.id"
+		},
+		"1128": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.auth_identity"
+		},
+		"1129": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__function"
 		},
-		"1121": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object"
-		},
-		"1122": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1123": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.provider_identities"
-		},
-		"1124": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1125": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1126": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
-		},
-		"1127": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1128": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1129": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_recovery_codes"
-		},
 		"1130": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
 			"qualifiedName": "__function"
 		},
 		"1131": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"1132": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"qualifiedName": "__object.id"
 		},
 		"1133": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider_identities"
 		},
 		"1134": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2483,11 +2667,11 @@
 		},
 		"1135": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"qualifiedName": "__function"
 		},
 		"1136": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_factors"
 		},
 		"1137": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2495,99 +2679,99 @@
 		},
 		"1138": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
+			"qualifiedName": "__function"
 		},
 		"1139": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.provider"
-		},
-		"1140": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.status"
-		},
-		"1141": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.provider_metadata"
-		},
-		"1142": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"1143": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "AuthMfaRecoveryCode"
-		},
-		"1144": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__object"
-		},
-		"1145": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1146": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1147": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__function"
-		},
-		"1148": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__function"
-		},
-		"1149": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object"
-		},
-		"1150": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1151": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.provider_identities"
-		},
-		"1152": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1153": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1154": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
-		},
-		"1155": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1156": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1157": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__object.mfa_recovery_codes"
 		},
-		"1158": {
+		"1140": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1141": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1142": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
+		},
+		"1143": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1144": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1145": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1146": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1147": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1148": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.app_metadata"
+		},
+		"1149": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.provider"
+		},
+		"1150": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.status"
+		},
+		"1151": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.provider_metadata"
+		},
+		"1152": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-factor.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"1153": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "AuthMfaRecoveryCode"
+		},
+		"1154": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object"
+		},
+		"1155": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.id"
+		},
+		"1156": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.auth_identity"
+		},
+		"1157": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__function"
+		},
+		"1158": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
 			"qualifiedName": "__function"
 		},
 		"1159": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"1160": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"qualifiedName": "__object.id"
 		},
 		"1161": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider_identities"
 		},
 		"1162": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2595,11 +2779,11 @@
 		},
 		"1163": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"qualifiedName": "__function"
 		},
 		"1164": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_factors"
 		},
 		"1165": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2607,95 +2791,95 @@
 		},
 		"1166": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
+			"qualifiedName": "__function"
 		},
 		"1167": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
-			"qualifiedName": "__object.code_hash"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.mfa_recovery_codes"
 		},
 		"1168": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "ProviderIdentity"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1169": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1170": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
 		},
 		"1171": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.entity_id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1172": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1173": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.auth_identity"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
 		},
 		"1174": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1175": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1176": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.app_metadata"
 		},
 		"1177": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-mfa-recovery-code.ts",
+			"qualifiedName": "__object.code_hash"
 		},
 		"1178": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.provider_identities"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "ProviderIdentity"
 		},
 		"1179": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object"
 		},
 		"1180": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.id"
 		},
 		"1181": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.entity_id"
 		},
 		"1182": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.provider"
 		},
 		"1183": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.auth_identity"
 		},
 		"1184": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_recovery_codes"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
 		},
 		"1185": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "__function"
 		},
 		"1186": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"1187": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"qualifiedName": "__object.id"
 		},
 		"1188": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider_identities"
 		},
 		"1189": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2703,11 +2887,11 @@
 		},
 		"1190": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"qualifiedName": "__function"
 		},
 		"1191": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_factors"
 		},
 		"1192": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2715,147 +2899,147 @@
 		},
 		"1193": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
+			"qualifiedName": "__function"
 		},
 		"1194": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
-		},
-		"1195": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1196": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1197": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object"
-		},
-		"1198": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1199": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1200": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1201": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1202": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.provider_identity"
-		},
-		"1203": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1204": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__function"
-		},
-		"1205": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.entity_id"
-		},
-		"1206": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.token_hash"
-		},
-		"1207": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
-			"qualifiedName": "__object.expires_at"
-		},
-		"1208": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.user_metadata"
-		},
-		"1209": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "__object.provider_metadata"
-		},
-		"1210": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "AuthVerification"
-		},
-		"1211": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object"
-		},
-		"1212": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1213": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__object.auth_identity"
-		},
-		"1214": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__function"
-		},
-		"1215": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
-			"qualifiedName": "__function"
-		},
-		"1216": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object"
-		},
-		"1217": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.id"
-		},
-		"1218": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.provider_identities"
-		},
-		"1219": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1220": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1221": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.mfa_factors"
-		},
-		"1222": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1223": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
-		},
-		"1224": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
 			"qualifiedName": "__object.mfa_recovery_codes"
 		},
-		"1225": {
+		"1195": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1196": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1197": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
+		},
+		"1198": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1199": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1200": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1201": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1202": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1203": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.app_metadata"
+		},
+		"1204": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1205": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1206": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1207": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object"
+		},
+		"1208": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.id"
+		},
+		"1209": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.auth_identity"
+		},
+		"1210": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1211": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1212": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.provider_identity"
+		},
+		"1213": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1214": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__function"
+		},
+		"1215": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.entity_id"
+		},
+		"1216": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.token_hash"
+		},
+		"1217": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-password-reset-token.ts",
+			"qualifiedName": "__object.expires_at"
+		},
+		"1218": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.user_metadata"
+		},
+		"1219": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "__object.provider_metadata"
+		},
+		"1220": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "AuthVerification"
+		},
+		"1221": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object"
+		},
+		"1222": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.id"
+		},
+		"1223": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__object.auth_identity"
+		},
+		"1224": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
+			"qualifiedName": "__function"
+		},
+		"1225": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__function"
 		},
 		"1226": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"1227": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.verifications"
+			"qualifiedName": "__object.id"
 		},
 		"1228": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.provider_identities"
 		},
 		"1229": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2863,11 +3047,11 @@
 		},
 		"1230": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.password_reset_tokens"
+			"qualifiedName": "__function"
 		},
 		"1231": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.mfa_factors"
 		},
 		"1232": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
@@ -2875,33 +3059,73 @@
 		},
 		"1233": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "__object.app_metadata"
+			"qualifiedName": "__function"
 		},
 		"1234": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.mfa_recovery_codes"
+		},
+		"1235": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1236": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1237": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.verifications"
+		},
+		"1238": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1239": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1240": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.password_reset_tokens"
+		},
+		"1241": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1242": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__function"
+		},
+		"1243": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "__object.app_metadata"
+		},
+		"1244": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.entity_id"
 		},
-		"1235": {
+		"1245": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.entity_type"
 		},
-		"1236": {
+		"1246": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.code_provider"
 		},
-		"1237": {
+		"1247": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.verified_at"
 		},
-		"1238": {
+		"1248": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.requested_at"
 		},
-		"1239": {
+		"1249": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.provider_metadata"
 		},
-		"1240": {
+		"1250": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-verification.ts",
 			"qualifiedName": "__object.metadata"
 		}
@@ -2911,7 +3135,7 @@
 			"1": "../../../../packages/modules/auth/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 1003
+			"1": 1013
 		}
 	}
 }

@@ -173,6 +173,11 @@ export const sidebar = [
             title: "Manage Reservations",
             path: "/inventory/reservations",
           },
+          {
+            type: "link",
+            title: "Export Inventory Items",
+            path: "/inventory/export",
+          },
         ],
       },
       {

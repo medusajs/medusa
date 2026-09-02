@@ -51,6 +51,7 @@ export const SiteConfigProvider = ({
         contentMenuSections: {
           products: true,
           whatsNew: true,
+          cloudStatus: true,
         },
       },
       globalConfig,
