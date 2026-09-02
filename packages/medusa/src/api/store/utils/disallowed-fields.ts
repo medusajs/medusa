@@ -54,6 +54,8 @@ export const disallowedStoreFields = [
   // Link entities resolve the same data as the segments above, but under a different
   // name (e.g. `order_link.order`), which would otherwise bypass this list entirely.
   /_link$/,
+  "fulfillments",
+  "delivery_address",
   ...internalOperationsFields,
 ]
 
