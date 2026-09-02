@@ -323,6 +323,7 @@ export const sitemapUrls = [
   "/lint/rules/no-if-in-workflow-constructor",
   "/lint/rules/no-loops-in-workflow",
   "/lint/rules/no-mikroorm-direct-import",
+  "/lint/rules/no-nested-when-in-workflow",
   "/lint/rules/no-new-date-in-workflow",
   "/lint/rules/no-non-serializable-step-return",
   "/lint/rules/no-reserved-default-properties-in-model",

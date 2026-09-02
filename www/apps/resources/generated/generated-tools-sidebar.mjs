@@ -382,6 +382,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/no-nested-when-in-workflow",
+                      "title": "no-nested-when-in-workflow",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/no-new-date-in-workflow",
                       "title": "no-new-date-in-workflow",
                       "description": "",
