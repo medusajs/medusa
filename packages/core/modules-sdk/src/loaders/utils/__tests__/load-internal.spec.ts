@@ -405,7 +405,7 @@ describe("load internal", () => {
       }
 
       const container = createMedusaContainer()
-      await loadInternalModule({
+      const result = await loadInternalModule({
         container: container,
         resolution: moduleResolution,
         logger: console as any,
@@ -421,6 +421,14 @@ describe("load internal", () => {
 
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
       expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider1)
+      expect(result).toEqual({
+        providers: [
+          {
+            identifier: ModuleServiceWithProviderProvider1.identifier,
+            package: moduleResolution.options!.providers![0].resolve,
+          },
+        ],
+      })
     })
 
     test("should load the module and its providers using the provided id", async () => {

@@ -18,10 +18,12 @@ import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
   GraphQLSchema,
+  MEDUSA_PROJECT_NAME,
   mergePluginModules,
   promiseAll,
   validateModuleName,
 } from "@medusajs/framework/utils"
+import { trackInstallation } from "@medusajs/telemetry"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
 import { Express, NextFunction, Request, Response } from "express"
 import { join } from "path"
@@ -180,6 +182,15 @@ export default async ({
 
   const plugins = await getResolvedPlugins(rootDirectory, configModule, true)
   mergePluginModules(configModule, plugins, rootDirectory)
+
+  plugins
+    .filter((plugin) => plugin.name !== MEDUSA_PROJECT_NAME)
+    .forEach((plugin) => {
+      trackInstallation(
+        { name: plugin.name, version: plugin.version },
+        "plugin"
+      )
+    })
 
   Object.keys(configModule.modules ?? {}).forEach((key) => {
     validateModuleName(key)

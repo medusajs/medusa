@@ -45,6 +45,11 @@ type ModuleResource = {
   normalizedPath: string
 }
 
+type ProviderTelemetry = {
+  identifier: string
+  package?: string
+}
+
 type LoadInternalArgs = {
   container: MedusaContainer
   resolution: ModuleResolution
@@ -126,12 +131,16 @@ export async function resolveModuleExports({
 async function loadInternalProvider(
   args: LoadInternalArgs,
   providers: ModuleProvider[]
-): Promise<{ error?: Error } | void> {
+): Promise<{ error?: Error; providers?: ProviderTelemetry[] } | void> {
   const { container, resolution, logger, migrationOnly, schemaOnly } = args
 
   const errors: { error?: Error }[] = []
+  const loadedProviders: ProviderTelemetry[] = []
   for (const provider of providers) {
     const providerRes = provider.resolve as ModuleProviderExports
+    const providerPackage = isString(provider.resolve)
+      ? provider.resolve
+      : undefined
 
     const canLoadProvider =
       providerRes && (isString(providerRes) || !providerRes?.services)
@@ -161,8 +170,12 @@ async function loadInternalProvider(
       loadingProviders: true,
     })
 
-    if (res) {
+    if (res?.error) {
       errors.push(res)
+    } else {
+      for (const identifier of res?.identifiers ?? []) {
+        loadedProviders.push({ identifier, package: providerPackage })
+      }
     }
   }
 
@@ -175,7 +188,7 @@ async function loadInternalProvider(
           stack: errors.map((e) => e.error?.stack).join("\n"),
         },
       }
-    : undefined
+    : { providers: loadedProviders }
 }
 
 export async function loadInternalModule(args: {
@@ -186,7 +199,11 @@ export async function loadInternalModule(args: {
   loaderOnly?: boolean
   loadingProviders?: boolean
   schemaOnly?: boolean
-}): Promise<{ error?: Error } | void> {
+}): Promise<{
+  error?: Error
+  identifiers?: string[]
+  providers?: ProviderTelemetry[]
+} | void> {
   const {
     container,
     resolution,
@@ -269,6 +286,7 @@ export async function loadInternalModule(args: {
 
   // if module has providers, load them
   let providerOptions: any = undefined
+  let loadedProviders: ProviderTelemetry[] = []
   if (!loadingProviders) {
     const providers = (resolution?.options?.providers as any[]) ?? []
 
@@ -283,6 +301,8 @@ export async function loadInternalModule(args: {
     if (res?.error) {
       return res
     }
+
+    loadedProviders = res?.providers ?? []
   } else {
     providerOptions = (resolution?.options?.providers as any[]).find(
       (p) => p.id === resolution.definition.key
@@ -340,6 +360,8 @@ export async function loadInternalModule(args: {
       return
     }
 
+    const identifiers: string[] = []
+
     for (const moduleProviderService of moduleProviderServices) {
       const modProvider_ = moduleProviderService as any
 
@@ -384,7 +406,11 @@ export async function loadInternalModule(args: {
           )
         }).singleton(),
       })
+
+      identifiers.push(originalIdentifier)
     }
+
+    return { identifiers }
   } else {
     const moduleService = moduleResources.moduleService ?? loadedModule_.service
     container.register({
@@ -404,6 +430,10 @@ export async function loadInternalModule(args: {
     const service = container.resolve<IModuleService>(keyName)
     await service.__hooks?.onApplicationPrepareShutdown?.()
     await service.__hooks?.onApplicationShutdown?.()
+  }
+
+  if (!loadingProviders && loadedProviders.length) {
+    return { providers: loadedProviders }
   }
 }
 

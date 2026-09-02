@@ -74,10 +74,10 @@ function getCustomModuleResolution(
   moduleConfig: InternalModuleDeclaration | string,
   cwd: string = process.cwd()
 ): ModuleResolution {
-  const originalPath = normalizeImportPathWithSource(
-    (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string,
-    cwd
-  )
+  const resolve = (
+    isString(moduleConfig) ? moduleConfig : moduleConfig.resolve
+  ) as string
+  const originalPath = normalizeImportPathWithSource(resolve, cwd)
   const resolutionPath = require.resolve(originalPath, {
     paths: [cwd],
   })
@@ -90,6 +90,7 @@ function getCustomModuleResolution(
 
   return {
     resolutionPath,
+    resolve,
     definition: {
       key,
       label: `Custom: ${key}`,
@@ -149,14 +150,15 @@ function getInternalModuleResolution(
 
   const isObj = isObject(moduleConfig)
   let resolutionPath = definition.defaultPackage
+  let resolve = definition.defaultPackage || undefined
 
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
   if (isStr || (isObj && moduleConfig.resolve)) {
-    const originalPath = normalizeImportPathWithSource(
-      (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string,
-      cwd
-    )
+    resolve = (
+      isString(moduleConfig) ? moduleConfig : moduleConfig.resolve
+    ) as string
+    const originalPath = normalizeImportPathWithSource(resolve, cwd)
     resolutionPath = require.resolve(originalPath, {
       paths: [cwd],
     })
@@ -167,6 +169,7 @@ function getInternalModuleResolution(
 
   return {
     resolutionPath,
+    resolve,
     definition,
     dependencies: [
       ...new Set(

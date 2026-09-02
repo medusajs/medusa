@@ -1,6 +1,7 @@
+import { asValue } from "@medusajs/deps/awilix"
+import { trackInstallation } from "@medusajs/telemetry"
 import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
-import { asValue } from "@medusajs/deps/awilix"
 import { EOL } from "os"
 import { MODULE_SCOPE } from "../types"
 import { loadInternalModule } from "./utils"
@@ -52,7 +53,10 @@ async function loadModule(
   migrationOnly?: boolean,
   loaderOnly?: boolean,
   schemaOnly?: boolean
-): Promise<{ error?: Error } | void> {
+): Promise<{
+  error?: Error
+  providers?: { identifier: string; package?: string }[]
+} | void> {
   const modDefinition = resolution.definition
 
   if (!modDefinition.key) {
@@ -89,7 +93,7 @@ async function loadModule(
     return
   }
 
-  return await loadInternalModule({
+  const result = await loadInternalModule({
     container,
     resolution,
     logger,
@@ -97,4 +101,17 @@ async function loadModule(
     loaderOnly,
     schemaOnly,
   })
+
+  if (!result?.error) {
+    trackInstallation(
+      {
+        module: resolution.definition.key,
+        ...(resolution.resolve ? { package: resolution.resolve } : {}),
+        ...(result?.providers?.length ? { providers: result.providers } : {}),
+      },
+      "module"
+    )
+  }
+
+  return result
 }
