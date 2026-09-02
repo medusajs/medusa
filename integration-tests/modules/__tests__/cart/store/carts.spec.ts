@@ -27,6 +27,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { linkRegionPaymentProviders } from "../../../../helpers/link-region-payment-providers"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
@@ -1243,6 +1244,8 @@ medusaIntegrationTestRunner({
             countries: ["US"],
             currency_code: "usd",
           })
+
+          await linkRegionPaymentProviders(appContainer, region.id)
 
           salesChannel = (
             await api.post(
