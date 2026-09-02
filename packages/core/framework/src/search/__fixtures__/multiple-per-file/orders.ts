@@ -1,4 +1,4 @@
-import { defineSearchIndex } from "@medusajs/utils"
+import { defineSearchIndex, search } from "@medusajs/utils"
 
 // Two indexes out of one file: they share a caller path, so nothing may key off
 // the file alone.
@@ -6,19 +6,19 @@ import { defineSearchIndex } from "@medusajs/utils"
 export const orderIndex = defineSearchIndex({
   name: "order",
   entity: "order",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    display_id: { type: "integer", sortable: true },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    display_id: search.integer().sortable(),
+  }),
   async *seed() {},
 })
 
 export const returnIndex = defineSearchIndex({
   name: "return",
   entity: "return",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    status: { type: "keyword", filterable: true },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    status: search.keyword().filterable(),
+  }),
   async *seed() {},
 })

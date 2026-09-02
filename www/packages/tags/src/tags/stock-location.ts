@@ -16,6 +16,14 @@ export const stockLocation = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/variant-inventory"
   },
   {
+    "title": "exportInventoryItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportInventoryItemsStep"
+  },
+  {
+    "title": "exportInventoryItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportInventoryItemsWorkflow"
+  },
+  {
     "title": "createStockLocations",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createStockLocations"
   },

@@ -16,7 +16,7 @@ export const CategoryDetailBreadcrumb = (
       fields: "name",
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )
@@ -31,5 +31,5 @@ export const CategoryDetailBreadcrumb = (
 export const seo = (
   match: UIMatch<HttpTypes.AdminProductCategoryResponse>
 ) => ({
-  title: match.data?.product_category?.name,
+  title: match.loaderData?.product_category?.name,
 })

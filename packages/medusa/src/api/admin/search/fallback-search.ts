@@ -19,7 +19,8 @@ type FallbackSearchInput = {
 
 /**
  * Fans out free-text `q` queries across the admin search entity registry via
- * `query.graph`. Used when the Search Module is not registered.
+ * `query.graph`. Used when the Search Module is not registered, or for entities
+ * that do not have an index.
  */
 export async function searchWithGraphFallback(
   scope: MedusaContainer,

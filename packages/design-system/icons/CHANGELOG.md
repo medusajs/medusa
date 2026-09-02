@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(icons): pin the React devDependency to v18 so tests resolve a single React copy
+
 ## 2.18.0
 
 ## 2.17.2

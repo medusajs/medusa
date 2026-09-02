@@ -1,20 +1,23 @@
-import { SearchTypes } from "@medusajs/types"
-import { ProductEvents } from "@medusajs/utils"
+import "@medusajs/modules-sdk"
+import { defineSearchIndex, ProductEvents, search } from "@medusajs/utils"
 
 const BATCH_SIZE = 100
 
 const PRODUCT_FIELDS = ["id", "title", "handle", "status"]
 const CUSTOMER_FIELDS = ["id", "email", "first_name", "last_name"]
 
-const productIndex: SearchTypes.SearchIndexDefinition = {
+// Declared like user code: `defineSearchIndex` compiles the DSL schemas and
+// registers the definitions, and medusa-config passes the returned (normalized)
+// definitions to the Search Module as options.
+const productIndex = defineSearchIndex({
   name: "product",
   entity: "product",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    title: { type: "text", searchable: { weight: 3 }, sortable: true },
-    handle: { type: "keyword", filterable: true },
-    status: { type: "keyword", filterable: true, facetable: true },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }).sortable(),
+    handle: search.keyword().filterable(),
+    status: search.keyword().filterable().facetable(),
+  }),
 
   events: [
     ProductEvents.PRODUCT_CREATED,
@@ -61,7 +64,7 @@ const productIndex: SearchTypes.SearchIndexDefinition = {
         return
       }
 
-      yield data as SearchTypes.SearchDocument[]
+      yield data
 
       if (data.length < BATCH_SIZE) {
         return
@@ -70,21 +73,21 @@ const productIndex: SearchTypes.SearchIndexDefinition = {
       skip += BATCH_SIZE
     }
   },
-}
+})
 
 /**
  * A second index, so grouped results across entities are observable. No `events`:
  * ingestion is covered by the product index, and this one is filled by a reindex.
  */
-const customerIndex: SearchTypes.SearchIndexDefinition = {
+const customerIndex = defineSearchIndex({
   name: "customer",
   entity: "customer",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    email: { type: "keyword", searchable: true },
-    first_name: { type: "text", searchable: true },
-    last_name: { type: "text", searchable: true },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    email: search.keyword().searchable(),
+    first_name: search.text().searchable(),
+    last_name: search.text().searchable(),
+  }),
 
   async *seed({ container, filters }) {
     let skip = 0
@@ -101,7 +104,7 @@ const customerIndex: SearchTypes.SearchIndexDefinition = {
         return
       }
 
-      yield data as SearchTypes.SearchDocument[]
+      yield data
 
       if (data.length < BATCH_SIZE) {
         return
@@ -110,6 +113,6 @@ const customerIndex: SearchTypes.SearchIndexDefinition = {
       skip += BATCH_SIZE
     }
   },
-}
+})
 
 export default [productIndex, customerIndex]

@@ -29,6 +29,7 @@ import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-defaul
 import { rule as noServiceMutationsInApiRoute } from "./no-service-mutations-in-api-route"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
+import { rule as noThrowInWorkflowConstructor } from "./no-throw-in-workflow-constructor"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
@@ -62,6 +63,7 @@ import { rule as subscriberDefaultExportRequired } from "./subscriber-default-ex
 import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
 import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
 import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
+import { rule as whenBlockMustHaveName } from "./when-block-must-have-name"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 import { rule as widgetMustExportConfig } from "./widget-must-export-config"
@@ -101,6 +103,7 @@ export const rules = {
   "no-service-mutations-in-api-route": noServiceMutationsInApiRoute,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
+  "no-throw-in-workflow-constructor": noThrowInWorkflowConstructor,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,
@@ -134,6 +137,7 @@ export const rules = {
   "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
   "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
   "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
+  "when-block-must-have-name": whenBlockMustHaveName,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
   "widget-must-export-config": widgetMustExportConfig,
