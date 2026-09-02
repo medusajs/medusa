@@ -1176,23 +1176,45 @@ export default class PaymentModuleService
     // simply set `metadata: null` the way a confirmed capture could).
     // Updates go through `assign` with `mergeObjectProperties: true`, so a
     // partial update can never remove a key -- clear the object first, then
-    // write back everything except the internal marker.
-    const refundMetadata = refund.metadata as Record<string, unknown> | null
-    if (refundMetadata?.__refund_status) {
-      const { __refund_status, ...remainingMetadata } = refundMetadata
-      await this.refundService_.update(
-        { id: refund.id, metadata: null },
-        sharedContext
-      )
-      if (Object.keys(remainingMetadata).length) {
-        await this.refundService_.update(
-          { id: refund.id, metadata: remainingMetadata },
-          sharedContext
-        )
-      }
-    }
+    // write back everything except the internal marker. Both writes have to
+    // land together, hence the transactional helper below.
+    await this.stripRefundStatusMarker_(refund, sharedContext)
 
     return payment
+  }
+
+  /**
+   * Remove the internal `__refund_status` marker while preserving any
+   * caller-provided metadata.
+   *
+   * This is two writes -- clear, then write back the rest -- because a partial
+   * update merges rather than removes. They must be atomic: `refundPayment_`'s
+   * transaction has already committed by the time the provider call returns, so
+   * without a transaction of its own each write would auto-commit separately
+   * and a crash between them would leave the row with permanently null
+   * metadata, silently discarding what the caller passed in.
+   */
+  @InjectTransactionManager()
+  protected async stripRefundStatusMarker_(
+    refund: InferEntityType<typeof Refund>,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const refundMetadata = refund.metadata as Record<string, unknown> | null
+    if (!refundMetadata?.__refund_status) {
+      return
+    }
+
+    const { __refund_status, ...remainingMetadata } = refundMetadata
+    await this.refundService_.update(
+      { id: refund.id, metadata: null },
+      sharedContext
+    )
+    if (Object.keys(remainingMetadata).length) {
+      await this.refundService_.update(
+        { id: refund.id, metadata: remainingMetadata },
+        sharedContext
+      )
+    }
   }
 
   @InjectManager()
