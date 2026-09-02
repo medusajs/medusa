@@ -23,6 +23,7 @@ import { rule as middlewareMustCallNext } from "./middleware-must-call-next"
 import { rule as middlewaresFileLocationAndName } from "./middlewares-file-location-and-name"
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noMikroormDirectImport } from "./no-mikroorm-direct-import"
+import { rule as noNestedWhenInWorkflow } from "./no-nested-when-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
@@ -97,6 +98,7 @@ export const rules = {
   "middlewares-file-location-and-name": middlewaresFileLocationAndName,
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-mikroorm-direct-import": noMikroormDirectImport,
+  "no-nested-when-in-workflow": noNestedWhenInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
