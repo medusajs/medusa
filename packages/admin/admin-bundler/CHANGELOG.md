@@ -1,5 +1,18 @@
 # @medusajs/admin-bundler
 
+## 2.20.0
+
+### Patch Changes
+
+- [#16449](https://github.com/medusajs/medusa/pull/16449) [`2101adb7eac34bdb90fa9606e875995105cf7f7c`](https://github.com/medusajs/medusa/commit/2101adb7eac34bdb90fa9606e875995105cf7f7c) Thanks [@lazerg](https://github.com/lazerg)! - fix(admin-bundler): allow zooming in the generated admin HTML
+
+  The viewport meta tag written to `.medusa/client/index.html` set `user-scalable=no`, which blocked pinch-to-zoom and browser zoom in the admin dashboard and failed WCAG 1.4.4.
+
+- Updated dependencies [[`b33f14a334769e9265b2c7ff1b120db183bc1e07`](https://github.com/medusajs/medusa/commit/b33f14a334769e9265b2c7ff1b120db183bc1e07), [`a1a784b66ac872b1a863ae23180630ebf2bf839a`](https://github.com/medusajs/medusa/commit/a1a784b66ac872b1a863ae23180630ebf2bf839a), [`1a9fe477d265e8861ca68ef9a445b40d006b28ca`](https://github.com/medusajs/medusa/commit/1a9fe477d265e8861ca68ef9a445b40d006b28ca), [`e528fc5bd2cbcd9995694953580a20e525eafb9c`](https://github.com/medusajs/medusa/commit/e528fc5bd2cbcd9995694953580a20e525eafb9c), [`5796a0c00f35eba2533847f6697fae8d7c282ae7`](https://github.com/medusajs/medusa/commit/5796a0c00f35eba2533847f6697fae8d7c282ae7), [`01e23d60538bd97b1bde471ddd3e5196a5b56094`](https://github.com/medusajs/medusa/commit/01e23d60538bd97b1bde471ddd3e5196a5b56094), [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4), [`9dd56bf579747aa1f191c4990c90e91a168b634e`](https://github.com/medusajs/medusa/commit/9dd56bf579747aa1f191c4990c90e91a168b634e), [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55), [`321efe20e56d1d11b88974d80cd713e928763e80`](https://github.com/medusajs/medusa/commit/321efe20e56d1d11b88974d80cd713e928763e80), [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964), [`3914a322c5257742c977468d9aa5bf088953b511`](https://github.com/medusajs/medusa/commit/3914a322c5257742c977468d9aa5bf088953b511)]:
+  - @medusajs/dashboard@2.20.0
+  - @medusajs/admin-shared@2.20.0
+  - @medusajs/admin-vite-plugin@2.20.0
+
 ## 2.19.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @medusajs/admin-shared
 
+## 2.20.0
+
+### Patch Changes
+
+- [#16425](https://github.com/medusajs/medusa/pull/16425) [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55) Thanks [@sradevski](https://github.com/sradevski)! - Add support for configuring the global search in admin
+
 ## 2.19.0
 
 ### Patch Changes

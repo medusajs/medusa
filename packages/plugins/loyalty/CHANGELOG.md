@@ -1,5 +1,25 @@
 # @medusajs/loyalty-plugin
 
+## 2.20.0
+
+### Patch Changes
+
+- [`094b2ed4e1442f67a345269ba32bbc1a26dacf97`](undefined) - fix(loyalty-plugin): lock account on debit
+
+- [`0451e065e7ae393e3b6a963894b04c43316eb366`](undefined) - fix(loyalty-plugin): edit gift card product following global product options change
+
+- [`ac38ab4d7f430498d09e77a8a267a41b1dcf3d19`](undefined) - fix(loyalty-plugin): validate gift card expiry dates
+
+- Updated dependencies [[`4857d15bdcaf5a0648e7adc5b0b40312e23b5c02`](https://github.com/medusajs/medusa/commit/4857d15bdcaf5a0648e7adc5b0b40312e23b5c02), [`b33f14a334769e9265b2c7ff1b120db183bc1e07`](https://github.com/medusajs/medusa/commit/b33f14a334769e9265b2c7ff1b120db183bc1e07), [`a1a784b66ac872b1a863ae23180630ebf2bf839a`](https://github.com/medusajs/medusa/commit/a1a784b66ac872b1a863ae23180630ebf2bf839a), [`884e8a810d75be52a255d58bfcf01581e738d7d8`](https://github.com/medusajs/medusa/commit/884e8a810d75be52a255d58bfcf01581e738d7d8), [`1a9fe477d265e8861ca68ef9a445b40d006b28ca`](https://github.com/medusajs/medusa/commit/1a9fe477d265e8861ca68ef9a445b40d006b28ca), [`e528fc5bd2cbcd9995694953580a20e525eafb9c`](https://github.com/medusajs/medusa/commit/e528fc5bd2cbcd9995694953580a20e525eafb9c), [`4857d15bdcaf5a0648e7adc5b0b40312e23b5c02`](https://github.com/medusajs/medusa/commit/4857d15bdcaf5a0648e7adc5b0b40312e23b5c02), [`51c48dcb472c3b232b88337030945b2b651e90f8`](https://github.com/medusajs/medusa/commit/51c48dcb472c3b232b88337030945b2b651e90f8), [`5796a0c00f35eba2533847f6697fae8d7c282ae7`](https://github.com/medusajs/medusa/commit/5796a0c00f35eba2533847f6697fae8d7c282ae7), [`01e23d60538bd97b1bde471ddd3e5196a5b56094`](https://github.com/medusajs/medusa/commit/01e23d60538bd97b1bde471ddd3e5196a5b56094), [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4), [`847612908fdd1c11a4df09ccc2e8ab44d338bb04`](https://github.com/medusajs/medusa/commit/847612908fdd1c11a4df09ccc2e8ab44d338bb04), [`9dd56bf579747aa1f191c4990c90e91a168b634e`](https://github.com/medusajs/medusa/commit/9dd56bf579747aa1f191c4990c90e91a168b634e), [`785fd2b8a978201638a4d8d5ae9eea483958c0fb`](https://github.com/medusajs/medusa/commit/785fd2b8a978201638a4d8d5ae9eea483958c0fb), [`693310310610cf439fabb73230187028f2755696`](https://github.com/medusajs/medusa/commit/693310310610cf439fabb73230187028f2755696), [`706ce874672c9cd1d8fc0c5429fc0dd24e6910a9`](https://github.com/medusajs/medusa/commit/706ce874672c9cd1d8fc0c5429fc0dd24e6910a9), [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55), [`578a5416ad7d789966d68f1525bc9d55d3a53020`](https://github.com/medusajs/medusa/commit/578a5416ad7d789966d68f1525bc9d55d3a53020), [`321efe20e56d1d11b88974d80cd713e928763e80`](https://github.com/medusajs/medusa/commit/321efe20e56d1d11b88974d80cd713e928763e80), [`c1e5a8f63988698df7f92b8f1e75f63ab8fdee64`](https://github.com/medusajs/medusa/commit/c1e5a8f63988698df7f92b8f1e75f63ab8fdee64), [`f3b3bd838ed53b6b2e1adead27d6b1006ea6e6e4`](https://github.com/medusajs/medusa/commit/f3b3bd838ed53b6b2e1adead27d6b1006ea6e6e4), [`7479b07071e51f4fc6a7ddafe2c778e85c6eb61d`](https://github.com/medusajs/medusa/commit/7479b07071e51f4fc6a7ddafe2c778e85c6eb61d), [`6a2fce501f3bcd459c21a67f586c7a15b905ff0f`](https://github.com/medusajs/medusa/commit/6a2fce501f3bcd459c21a67f586c7a15b905ff0f), [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964), [`2ba41aac170a47c4a6b858531ec9439f2a6cf66e`](undefined), [`5e06e544a296b9033f20f71f11c559f81a0e5739`](https://github.com/medusajs/medusa/commit/5e06e544a296b9033f20f71f11c559f81a0e5739), [`e01b039f256cb8224dd70a99662a49d0e8cf65d1`](https://github.com/medusajs/medusa/commit/e01b039f256cb8224dd70a99662a49d0e8cf65d1), [`3914a322c5257742c977468d9aa5bf088953b511`](https://github.com/medusajs/medusa/commit/3914a322c5257742c977468d9aa5bf088953b511)]:
+  - @medusajs/medusa@2.20.0
+  - @medusajs/dashboard@2.20.0
+  - @medusajs/test-utils@2.20.0
+  - @medusajs/framework@2.20.0
+  - @medusajs/cli@2.20.0
+  - @medusajs/admin-sdk@2.20.0
+  - @medusajs/icons@2.20.0
+  - @medusajs/ui@4.2.2
+
 ## 2.19.0
 
 ### Patch Changes
