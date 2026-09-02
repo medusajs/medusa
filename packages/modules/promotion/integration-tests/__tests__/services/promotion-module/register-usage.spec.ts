@@ -48,6 +48,39 @@ moduleIntegrationTestRunner({
           )
         })
 
+        // Custom, calculated adjustments carry no code, so they can't be
+        // attributed to a promotion. registerUsage must skip them instead of
+        // failing, and leave the campaign budget untouched.
+        it("should skip usage entries without a code", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          await service.registerUsage(
+            [
+              {
+                amount: 200,
+                code: createdPromotion.code!,
+              },
+              {
+                amount: 500,
+                code: null,
+              },
+            ] as any,
+            { customer_email: null, customer_id: null }
+          )
+
+          const campaign = await service.retrieveCampaign("campaign-id-1", {
+            relations: ["budget"],
+          })
+
+          expect(campaign.budget).toEqual(
+            expect.objectContaining({
+              type: "spend",
+              limit: 1000,
+              used: 200,
+            })
+          )
+        })
+
         it("should not allow concurrent registrations to exceed a spend budget", async () => {
           const createdPromotion = await createDefaultPromotion(service, {})
 

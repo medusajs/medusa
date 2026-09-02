@@ -45,11 +45,9 @@ Learn more about actions in the [Promotion Module’s documentation](../../promo
 
 For example:
 
-```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
+```ts collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
-  ComputeActionAdjustmentLine,
-  ComputeActionItemLine,
-  ComputeActionShippingLine,
+  ComputeActionContext,
   // ...
 } from "@medusajs/framework/types"
 
@@ -61,47 +59,14 @@ const cart = await cartModuleService.retrieveCart("cart_123", {
   ],
 })
 
-// retrieve line item adjustments
-const lineItemAdjustments: ComputeActionItemLine[] = []
-cart.items.forEach((item) => {
-  const filteredAdjustments = item.adjustments?.filter(
-    (adjustment) => adjustment.code !== undefined
-  ) as unknown as ComputeActionAdjustmentLine[]
-  if (filteredAdjustments.length) {
-    lineItemAdjustments.push({
-      ...item,
-      adjustments: filteredAdjustments,
-    })
-  }
-})
-
-// retrieve shipping method adjustments
-const shippingMethodAdjustments: ComputeActionShippingLine[] =
-  []
-cart.shipping_methods.forEach((shippingMethod) => {
-  const filteredAdjustments =
-    shippingMethod.adjustments?.filter(
-      (adjustment) => adjustment.code !== undefined
-    ) as unknown as ComputeActionAdjustmentLine[]
-  if (filteredAdjustments.length) {
-    shippingMethodAdjustments.push({
-      ...shippingMethod,
-      adjustments: filteredAdjustments,
-    })
-  }
-})
-
 // compute actions
 const actions = await promotionModuleService.computeActions(
   ["promo_123"],
-  {
-    items: lineItemAdjustments,
-    shipping_methods: shippingMethodAdjustments,
-  }
+  cart as unknown as ComputeActionContext
 )
 ```
 
-The `computeActions` method accepts the existing adjustments of line items and shipping methods to compute the actions accurately.
+The `computeActions` method accepts the existing adjustments of line items and shipping methods to compute the actions accurately. It only considers adjustments that have a `code`, since the `code` links the adjustment to the promotion that created it.
 
 Then, use the returned `addItemAdjustment` and `addShippingMethodAdjustment` actions to set the cart’s line item and the shipping method’s adjustments.
 
@@ -129,3 +94,39 @@ await cartModuleService.setShippingMethodAdjustments(
   ) as AddShippingMethodAdjustment[]
 )
 ```
+
+<Note title="Warning" type="warning">
+
+The `setLineItemAdjustments` and `setShippingMethodAdjustments` methods replace all existing adjustments. They delete every adjustment of the cart that you don't pass in the second parameter, including [custom adjustments](#custom-adjustments). To keep other adjustments, pass them along with the computed ones, or use the `addLineItemAdjustments` and `softDeleteLineItemAdjustments` methods to change only the adjustments of the applied promotions.
+
+</Note>
+
+---
+
+## Custom Adjustments
+
+<Note>
+
+Creating an adjustment without a `code` is supported since Medusa [v2.19.1](https://github.com/medusajs/medusa/releases/tag/v2.19.1). In previous versions, the `code` property was required in the create input types, even though the underlying data model allowed omitting it.
+
+</Note>
+
+The `code` property of an adjustment holds the code of the promotion that created the adjustment. If you calculate a discount yourself, such as a custom bundle or a loyalty discount that promotions can't express, create the adjustment without a `code`:
+
+```ts
+await cartModuleService.addLineItemAdjustments([
+  {
+    item_id: "litem_123",
+    amount: 10,
+    description: "Bundle discount",
+  },
+])
+```
+
+An adjustment without a `code` behaves as follows:
+
+- The Promotion Module ignores it when computing actions, so it stays on the cart when a customer applies or removes a promotion.
+- The cart's totals include it, so it reduces the item's or shipping method's total like any other adjustment.
+- The Promotion Module doesn't count it toward a promotion's usage limit or a campaign's budget, since no promotion is associated with it.
+
+If you need to track the spending of custom adjustments, store the details you need in the adjustment's `metadata` property and aggregate them in your own logic.
