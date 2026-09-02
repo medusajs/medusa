@@ -72,3 +72,12 @@ export const disallowedStorePivotFields = [
   /_link$/,
   ...internalOperationsFields,
 ]
+
+export const disallowedStoreCustomerFields = [
+  /\.orders(?:\.|$)/,
+  "carts",
+  "order_items",
+  "cart_items",
+  /_link$/,
+  ...internalOperationsFields,
+]

@@ -88,10 +88,15 @@ export class RestrictedFieldFilter implements IFieldFilter {
  * not allowed (e.g. `orders` matches both `orders` and `orders.customer.email`).
  *
  * A disallowed entry is either a string, matched against a whole segment, or a
- * regular expression, tested against each segment. Regular expressions are useful to
- * block a whole family of relations at once, e.g. `/_link$/` blocks the link entities
- * that would otherwise resolve the same data under a different segment
- * (`order_link.order`, `payment_collection_link.payment_collection`, ...).
+ * regular expression, tested against each segment *and* against the full dotted
+ * path. Matching a segment blocks a whole family of relations at once, e.g.
+ * `/_link$/` blocks the link entities that would otherwise resolve the same data
+ * under a different segment (`order_link.order`,
+ * `payment_collection_link.payment_collection`, ...). Matching the full path makes
+ * a relation's position expressible, which a segment can't capture: e.g.
+ * `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root, so a route can
+ * expose the caller's own `orders` without it becoming a pivot into everyone
+ * else's through `orders.region.orders`.
  *
  * Behaves like {@link RestrictedFieldFilter}, but is enforced independently of
  * any feature flag so it can be relied upon to keep sensitive relations off
@@ -127,13 +132,22 @@ export class DisallowedFieldFilter implements IFieldFilter {
     )
   }
 
+  private isDisallowedField(field: string): boolean {
+    // A segment never contains a `.`, so a pattern that spans separators can only
+    // ever match here. Patterns meant for a single segment match both ways, which
+    // leaves segment-scoped entries such as `/_link$/` behaving as before.
+    if (this.disallowedPatterns.some((pattern) => pattern.test(field))) {
+      return true
+    }
+
+    return field.split(".").some((segment) => this.isDisallowedSegment(segment))
+  }
+
   getNotAllowedFields(context: FieldFilterContext): string[] {
     const { parsedFields } = context
     const { fields, starFields } = parsedFields
     const fieldsToCheck = [...fields, ...Array.from(starFields)]
 
-    return fieldsToCheck.filter((field) =>
-      field.split(".").some((segment) => this.isDisallowedSegment(segment))
-    )
+    return fieldsToCheck.filter((field) => this.isDisallowedField(field))
   }
 }

@@ -70,6 +70,32 @@ describe("DisallowedFieldFilter", () => {
     ).toEqual(["orders.id", "variants.inventory_items.id"])
   })
 
+  it("tests a regex entry against the full path so a relation's position is expressible", () => {
+    const filter = new DisallowedFieldFilter({
+      disallowed: [/\.orders(?:\.|$)/],
+    })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor([
+          "orders.id",
+          "orders.region.orders.email",
+          "orders.customer.orders",
+        ])
+      )
+    ).toEqual(["orders.region.orders.email", "orders.customer.orders"])
+  })
+
+  it("leaves a root segment untouched when the regex requires a preceding separator", () => {
+    const filter = new DisallowedFieldFilter({
+      disallowed: [/\.orders(?:\.|$)/],
+    })
+
+    expect(
+      filter.getNotAllowedFields(contextFor(["orders"], ["orders.items"]))
+    ).toEqual([])
+  })
+
   it("doesn't let a stateful regex change a field's outcome", () => {
     const filter = new DisallowedFieldFilter({ disallowed: [/_link$/g] })
 

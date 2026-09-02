@@ -1034,7 +1034,7 @@ export type ProjectConfigOptions = {
      *
      * Routes can override this limit through their query configuration's `storeRelationsLimit` property.
      *
-     * The default value is `2`.
+     * The default value is `3`.
      *
      * @since v2.20.0
      *
@@ -1044,7 +1044,7 @@ export type ProjectConfigOptions = {
      * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
-     *       storeRelationsLimit: 3,
+     *       storeRelationsLimit: 4,
      *     }
      *     // ...
      *   },

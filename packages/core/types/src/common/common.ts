@@ -469,7 +469,9 @@ export type QueryConfig<TEntity> = {
    * endpoints.
    *
    * An entry is either a string, matched against a whole segment, or a regular
-   * expression, tested against each segment (e.g. `/_link$/`).
+   * expression, tested against each segment (e.g. `/_link$/`) and against the full
+   * dotted path, which lets a relation's position be expressed (e.g.
+   * `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root).
    */
   disallowed?: (string | RegExp)[]
   defaultLimit?: number
