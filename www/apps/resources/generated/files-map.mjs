@@ -1292,6 +1292,10 @@ export const filesMap = [
     "pathname": "/lint/rules/no-mikroorm-direct-import"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/no-nested-when-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-nested-when-in-workflow"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/no-new-date-in-workflow/page.mdx",
     "pathname": "/lint/rules/no-new-date-in-workflow"
   },
@@ -1454,6 +1458,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/lint/rules/use-validated-body-or-query/page.mdx",
     "pathname": "/lint/rules/use-validated-body-or-query"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/when-block-must-have-name/page.mdx",
+    "pathname": "/lint/rules/when-block-must-have-name"
   },
   {
     "filePath": "/www/apps/resources/app/lint/rules/widget-must-export-config/page.mdx",
