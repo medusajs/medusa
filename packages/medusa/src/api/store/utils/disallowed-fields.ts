@@ -51,6 +51,8 @@ export const disallowedStoreFields = [
   "payment_collections",
   "account_holder",
   "account_holders",
+  "groups",
+  "customers",
   // Link entities resolve the same data as the segments above, but under a different
   // name (e.g. `order_link.order`), which would otherwise bypass this list entirely.
   /_link$/,
@@ -69,6 +71,7 @@ export const disallowedStoreFields = [
 export const disallowedStorePivotFields = [
   "orders",
   "carts",
+  "customers",
   /_link$/,
   ...internalOperationsFields,
 ]
@@ -76,6 +79,8 @@ export const disallowedStorePivotFields = [
 export const disallowedStoreCustomerFields = [
   /\.orders(?:\.|$)/,
   "carts",
+  "groups",
+  "customers",
   "order_items",
   "cart_items",
   /_link$/,
