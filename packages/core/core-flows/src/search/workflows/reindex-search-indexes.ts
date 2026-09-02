@@ -26,8 +26,9 @@ export const reindexSearchIndexesWorkflowId = "reindex-search-indexes"
 /**
  * This workflow rebuilds one or more search indexes from their seed.
  *
+ *
  * @example
- * const { result } = await reindexSearchIndexesWorkflow(container)
+ * const { transaction } = await reindexSearchIndexesWorkflow(container)
  *   .run({
  *     input: {
  *       index: "product",
@@ -45,13 +46,17 @@ export const reindexSearchIndexesWorkflow = createWorkflow(
   reindexSearchIndexesWorkflowId,
   function (input: WorkflowData<ReindexSearchIndexesWorkflowInput>) {
     validateSearchIndexesExistStep(input)
-    const result = reindexSearchIndexesStep(input)
+    const result = reindexSearchIndexesStep(input).config({
+      async: true,
+      backgroundExecution: true,
+    })
+
     const searchIndexesReindexed = createHook("searchIndexesReindexed", {
       job_id: result.job_id,
       indexes: result.indexes,
     })
 
-    return new WorkflowResponse(result, {
+    return new WorkflowResponse(void 0, {
       hooks: [searchIndexesReindexed],
     })
   }
