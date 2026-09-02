@@ -24,11 +24,14 @@ export const POST = async (
     )
   }
 
-  const { result } = await reindexSearchIndexesWorkflow(req.scope).run({
+  const { transaction } = await reindexSearchIndexesWorkflow(req.scope).run({
     input: {
       index: req.params.id,
     },
   })
 
-  res.json(result)
+  res.status(202).json({
+    job_id: transaction.transactionId,
+    indexes: [req.params.id],
+  })
 }

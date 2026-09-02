@@ -1,6 +1,11 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { AdminShippingOption } from "@medusajs/types"
-import { ModuleRegistrationName, Modules, ProductStatus } from "@medusajs/utils"
+import {
+  ApiKeyType,
+  ModuleRegistrationName,
+  Modules,
+  ProductStatus,
+} from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -30,13 +35,15 @@ medusaIntegrationTestRunner({
       productOverride3,
       shippingProfile,
       productOverride4,
-      container
+      container,
+      userId
 
     beforeAll(async () => {
       container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
-      await createAdminUser(dbConnection, adminHeaders, container)
+      userId = (await createAdminUser(dbConnection, adminHeaders, container))
+        .user.id
 
       shippingProfile = (
         await api.post(
@@ -598,6 +605,96 @@ medusaIntegrationTestRunner({
         expect(listed).toBeTruthy()
         expect(listed.shipping_total).toBe(0)
         expect(listed.total).toBe(detail.total)
+      })
+    })
+
+    describe("created_by attribution on fulfillment and shipment creation", () => {
+      beforeEach(async () => {
+        seeder = await createOrderSeeder({ api, container: getContainer() })
+        order = seeder.order
+      })
+
+      it("should set created_by to the authenticated user on the fulfillment and its shipment", async () => {
+        const fulfillment = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id,fulfillments.created_by`,
+            {
+              shipping_option_id: seeder.shippingOption.id,
+              location_id: seeder.stockLocation.id,
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+        ).data.order.fulfillments[0]
+
+        expect(fulfillment.created_by).toBe(userId)
+
+        const shipped = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments/${fulfillment.id}/shipments?fields=fulfillments.id,fulfillments.created_by`,
+            {
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+        ).data.order.fulfillments[0]
+
+        expect(shipped.created_by).toBe(userId)
+      })
+
+      it("should use the secret key's linked user to set created_by when authenticating with an api key", async () => {
+        const apiKey = (
+          await api.post(
+            "/admin/api-keys",
+            {
+              title: "secret-key",
+              type: ApiKeyType.SECRET,
+            },
+            adminHeaders
+          )
+        ).data.api_key
+
+        const apiKeyHeaders = {
+          headers: { Authorization: `Basic ${apiKey.token}` },
+        }
+
+        const fulfillment = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id,fulfillments.created_by`,
+            {
+              shipping_option_id: seeder.shippingOption.id,
+              location_id: seeder.stockLocation.id,
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            apiKeyHeaders
+          )
+        ).data.order.fulfillments[0]
+
+        expect(fulfillment.created_by).toBe(userId)
+
+        const shipment = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments/${fulfillment.id}/shipments?fields=fulfillments.id,fulfillments.created_by`,
+            {
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            apiKeyHeaders
+          )
+        ).data.order.fulfillments[0]
+
+        expect(shipment.created_by).toBe(userId)
       })
     })
 

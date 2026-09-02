@@ -54,13 +54,6 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Navigation Styles",
-            "path": "/navigation",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
             "title": "Cloud Assistant",
             "path": "/assistant",
             "children": []

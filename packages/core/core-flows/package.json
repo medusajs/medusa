@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "csv-parse": "^5.6.0",
+    "deeks": "^3.2.1",
     "json-2-csv": "^5.5.11"
   },
   "peerDependencies": {

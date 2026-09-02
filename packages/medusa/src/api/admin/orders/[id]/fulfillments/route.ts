@@ -22,6 +22,8 @@ export const POST = async (
     input: {
       ...req.validatedBody,
       order_id: req.params.id,
+      created_by:
+        req.secret_key_context?.created_by ?? req.auth_context.actor_id,
     },
   })
 
