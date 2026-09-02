@@ -195,11 +195,6 @@ export const integrationsSidebar = [
       },
       {
         type: "link",
-        path: "/integrations/guides/instantsearch-adapter",
-        title: "InstantSearch Adapter",
-      },
-      {
-        type: "link",
         path: "/integrations/guides/meilisearch",
         title: "Meilisearch",
       },

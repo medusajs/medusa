@@ -7649,7 +7649,6 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
-  "app/integrations/guides/instantsearch-adapter/page.mdx": "2026-08-28T13:26:10.515Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
   "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z"
 }

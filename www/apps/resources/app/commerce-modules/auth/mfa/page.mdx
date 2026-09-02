@@ -336,6 +336,12 @@ The response includes each factor's `id`, `provider`, `status`, and metadata. Us
 
 ## Require MFA on Custom API Routes
 
+<Note>
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
 By default, authenticated routes enforce MFA for any identity that has MFA enabled. You can customize this behavior when registering an `authenticate` middleware on your custom routes by passing the `requireMfa` option:
 
 ```ts title="src/api/middlewares.ts"
@@ -376,6 +382,8 @@ The `requireMfa` option accepts:
 - `false`: skip MFA enforcement regardless of whether the identity has MFA enabled.
 
 When `requireMfa` is not set, it defaults to `true` for routes that require authentication (`allowUnauthenticated: false`) and to `false` for routes that allow unauthenticated access.
+
+Disabling MFA enforcement on a route is useful for routes that are part of the authentication flow (for example, login or MFA challenge verification) that require the user to be authenticated but not yet verified with MFA.
 
 ---
 

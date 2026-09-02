@@ -281,7 +281,6 @@ export const sitemapUrls = [
   "/integrations/guides/algolia",
   "/integrations/guides/avalara",
   "/integrations/guides/contentful",
-  "/integrations/guides/instantsearch-adapter",
   "/integrations/guides/magento",
   "/integrations/guides/mailchimp",
   "/integrations/guides/meilisearch",

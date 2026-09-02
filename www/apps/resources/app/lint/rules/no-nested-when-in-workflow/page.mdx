@@ -52,7 +52,8 @@ createWorkflow("my-workflow", (input) => {
     outerStep(input)
   )
 
-  const inner = when({ input }, (d) => d.input.flag).then(() => someStep(input))
+  const inner = when({ input }, (d) => d.input.items.length > 0 && d.input.flag)
+    .then(() => someStep(input))
 
   return new WorkflowResponse(result)
 })
