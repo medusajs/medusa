@@ -40,7 +40,7 @@ Let customers narrow a list of search results by a field's values, change the or
 - The storefront already has the InstantSearch adapter installed, and exports a search client and an index name constant from a shared module, such as `src/lib/search-client.ts`.
 - Every component that reads or changes the search must sit inside the same `InstantSearch` provider as the results it refines.
 - An empty query matches every document in the index, and the adapter searches on an empty query by default, through its `placeholderSearch` option. This is the hinge the whole UI turns on: a surface with no query renders the entire catalogue, and the "previous results" of an empty query are the entire catalogue too. A surface that lists results without a query, such as a store or category page, relies on exactly this, and the same client serves every search surface in the storefront.
-- InstantSearch keeps the previous response in `results` while the next search runs, and `results.query` is the query that response was fetched for. Gate rendering on `results.query`, never on the query last sent. Otherwise the first real query renders the empty query's hits for a beat, which is the entire catalogue flashing on screen.
+- InstantSearch keeps the previous response in `results` while the next search runs, and `results.query` is the query that response was fetched for. Keep those previous results on screen, except when `results.query` is empty and the customer has typed, such as `hasInput && !results.query`. That's the one case where the previous results are the entire catalogue, flashing on screen for a beat before the matches arrive. Don't treat every difference between `results.query` and the query last sent as stale: after a debounce the two differ on nearly every keystroke, so the list blanks as the customer types.
 - A facet is a field the search engine groups and counts. The adapter asks the engine for a field's values, and turns a customer's selection into a filter on the search query.
 - A field only works with a filter widget if the Medusa application's search index definition marks it `facetable()`. Range refinements additionally need `facetable({ types: ["stats"] })`, and the field must be listed in the search client's `numericAttributes` option.
 - `react-instantsearch` exports the `RangeInput` component and the `useRange` and `useNumericMenu` hooks. `RangeSlider`, `NumericMenu`, and `RatingMenu` are instantsearch.js widgets, and importing those names from `react-instantsearch` fails. For a refinement with no React hook, such as a rating menu, build one with `react-instantsearch`'s `useConnector` and the instantsearch.js connector.
@@ -85,7 +85,8 @@ You have access to the storefront's codebase, and to the Medusa application's in
 - Never place a filter in the storefront that exists to protect data, such as the sales channel or a publication status. Enforce those in the Medusa application's search route.
 - Never hardcode the index name in a sort value. Build it from the exported constant.
 - Never pass a pinned filter as an Algolia `filters` string on `Configure`. Use `facetFilters`, with one inner array per filter, which the adapter combines with AND.
-- Never render hits from a response fetched for a different query than the current one. Compare `results.query` to the current query.
+- Never render hits from a response whose `results.query` is empty once the customer has typed.
+- Never blank the results because the query moved on. Only the empty query's results are stale.
 - Never decide what an empty query shows. That's the user's call in step 2.
 - Never add a loading visual that replaces results still valid for the current query.
 - Never make a field-based sort the default. Relevance is the default for search results.
@@ -101,7 +102,8 @@ You have access to the storefront's codebase, and to the Medusa application's in
 - If a filter widget renders no values, report that the field may not be facetable in the index definition rather than removing the widget silently.
 - If a range refinement renders no bounds, report that the field needs `facetable({ types: ["stats"] })` and an entry in `numericAttributes`.
 - If a pinned filter has no effect and every document still renders, check that it's passed as `facetFilters` rather than as a `filters` string, and that a ticked refinement hasn't merged into the pin's inner array. Move the pin to `transformQuery` if it has.
-- If the full list flashes before a query's results arrive, the render is gated on the query last sent rather than on `results.query`. Fix the gate; don't hide it with a loading state.
+- If the full list flashes before a query's results arrive, the gate misses the empty-query case. Fix the gate; don't hide it with a loading state.
+- If the list blanks between keystrokes, the gate is comparing `results.query` to the current query rather than checking for the empty query. Narrow it.
 - If a sort option has no effect on the results, report that the field may not be sortable rather than sorting in the browser.
 - If the last page number changes as the customer moves through pages, report that the provider is counting approximately rather than hiding the pagination.
 - If you can't read the index definition, ask the user for the list of facetable and sortable fields.
@@ -533,7 +535,27 @@ The adapter turns the selected range into `$gte` and `$lte` operators on the fie
 
 <Note title="Warning" type="warning">
 
-If either side is missing, the widget renders with no bounds and the customer can't move it. Both the PostgreSQL and Medusa Search providers support stats facets, but the field has to opt in.
+InstantSearch merges `Configure`'s `facetFilters` with the filters the refinement components build, so a pinned value can end up in the same inner array as a value the customer ticked. The adapter then combines the two with `OR`, and the pinned filter stops narrowing the results.
+
+So, after you pin a filter, tick a refinement on the same page and check that the list still respects the pin. If it doesn't, apply the pin in the adapter's `transformQuery` option instead, where no component's filters merge into it:
+
+```ts title="src/lib/search-client.ts"
+export const createPinnedClient = (
+  pinned: SearchFilters
+) =>
+  createInstantSearchAdapter({
+    sdk,
+    path: "/store/search",
+    transformQuery: (query) => ({
+      ...query,
+      filters: query.filters
+        ? { $and: [pinned, query.filters] }
+        : pinned,
+    }),
+  }).searchClient
+```
+
+Each listing page then passes its own pinned filter, such as `` createPinnedClient({ category_names: categoryName }) ``, and drops `facetFilters` from its `Configure`. Create the client once per page, outside the component or in a memo, so it doesn't change on every render.
 
 </Note>
 
@@ -1021,6 +1043,31 @@ export default CategoryProducts
 The provider, the filters, the sort, and the pagination stay the same on every listing page. Only the pinned filter differs, so one set of components serves the store page, the category pages, and the collection pages.
 
 To pin more than one filter, add an inner array per filter. The adapter combines the inner arrays with `AND`, and the values inside one inner array with `OR`. For example, `` facetFilters={[[`category_names:${categoryName}`], ["tags:sale"]]} `` narrows to products that are in the category *and* carry the `sale` tag.
+
+<Note title="Warning" type="warning">
+
+InstantSearch merges `Configure`'s `facetFilters` with the filters the refinement components build, so a pinned value can end up in the same inner array as a value the customer ticked. The adapter then combines the two with `OR`, and the pinned filter stops narrowing the results.
+
+So, after you pin a filter, tick a refinement on the same page and check that the list still respects the pin. If it doesn't, apply the pin in the search client's `transformQuery` option instead, where no component's filters merge into it:
+
+```ts title="src/lib/search-client.ts"
+export const { searchClient } =
+  createInstantSearchAdapter({
+    sdk,
+    path: "/store/search",
+    transformQuery: (query) => ({
+      ...query,
+      filters: {
+        $and: [
+          { category_names: categoryName },
+          query.filters ?? {},
+        ],
+      },
+    }),
+  })
+```
+
+</Note>
 
 ---
 

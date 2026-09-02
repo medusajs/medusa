@@ -72,15 +72,16 @@ You have access to the storefront's codebase. Before writing code, determine fro
 5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
 6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
 7. Make the search feel responsive: debounce the query so a burst of typing sends one request rather than one per keystroke, and keep the results already on screen while the next search runs.
-8. Gate what you render on the query the visible results were fetched for, not the query last sent. Results fetched for a different query are stale, and rendering them is a bug even though they're the "previous results" step 7 keeps. This bites hardest on an empty initial query: those previous results are the entire index, so the whole catalogue flashes the moment the first real query goes out. Compare the two queries and treat a mismatch as "nothing valid to show".
-9. Give every state its own treatment: no query yet, results, no results, and a failed search. An empty list must never stand in for any of the others. Add an in-flight treatment, such as a spinner or skeleton, only for the case where there's nothing valid to show: the first search of a session, or a search whose visible results are stale per step 8. While a search runs over results that are still valid, leave those results on screen; a loading state that replaces them is the flicker step 7 avoids, and it barely appears in practice.
+8. Keep the previous results on screen, with one exception: results fetched for the empty query, once the customer has typed. The empty query matches every document, so those "previous results" are the entire index, and rendering them flashes the whole catalogue the moment the first real query goes out. Gate on that case alone, from the query the visible results were fetched for and whether there's input, such as `hasInput && !resultsQuery`. Don't treat every mismatch between the results' query and the query last sent as stale: after a debounce the two differ on nearly every keystroke, so an equality check blanks the list as the customer types, which is the flicker step 7 forbids. Leave a comment on the gate saying which case it covers, so nobody widens it later.
+9. Give every state its own treatment: no query yet, results, no results, and a failed search. An empty list must never stand in for any of the others. Add an in-flight treatment, such as a spinner or skeleton, only for the case where there's nothing valid to show: the first search of a session, or the empty-query results that step 8 gates out. While a search runs over results that are still valid, leave those results on screen; a loading state that replaces them is the flicker step 7 avoids, and it barely appears in practice.
 10. Place the finished component where the user asked for it.
 11. Report what you changed and how to test it.
 </steps>
 
 <constraints>
 - Never decide the search's placement or interaction yourself. That's the user's call in step 1.
-- Never render hits that were fetched for a query other than the current one.
+- Never render the empty query's hits once the customer has typed.
+- Never blank the results because the query moved on. Only the empty query's results are stale.
 - Never place a filter in the storefront that exists to protect data. Customers can change anything the client sends.
 - Never hardcode the publishable API key, the backend URL, or the index name. Read the first two from environment variables and the third from the exported constant.
 - Never invent index field names. Use only fields you confirmed in an index definition or in a search response.
@@ -115,7 +116,7 @@ A list of the files you created or modified, each with a one-line description.
 Any environment variables the user must set, and any command they must run.
 
 ## How to Test
-Numbered steps that end in an observable result, including one that checks the results don't flicker while typing, and one that types a query from an empty search and confirms the full catalogue never flashes before the matches.
+Numbered steps that end in an observable result, including one that types a query from an empty search and confirms the full catalogue never flashes before the matches, and one that keeps typing and confirms the list never blanks between keystrokes.
 
 ## Skipped
 Any widget or feature you left out, each with the reason. Write "None" if there are none.
@@ -125,6 +126,7 @@ Any widget or feature you left out, each with the reason. Write "None" if there 
 - The search is placed and behaves the way the user described in step 1.
 - Typing shows matching products, and the previous results stay on screen until the new ones arrive.
 - Typing the first query from an empty search never flashes results from the empty query.
+- Typing further characters never blanks the list. The previous matches stay until the new ones arrive.
 - A burst of typing sends one search request, not one per character.
 - Each of the four states in step 9 shows something distinct from the others, and the in-flight treatment only appears when no valid results are on screen.
 - A failed search shows an error message rather than an empty list.
