@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCampaign } from "../../../../../hooks/api/campaigns"
 import { currencies } from "../../../../../lib/data/currencies"
+import { getTranslatedCurrencyName } from "../../../../../lib/utils/intl"
 import {
   campaignStatus,
   statusColor,
@@ -127,7 +128,11 @@ export const CampaignGeneralSection = ({
           <div>
             <Badge size="xsmall">{campaign?.budget.currency_code}</Badge>
             <Text className="inline pl-3" size="small" leading="compact">
-              {currencies[campaign?.budget.currency_code?.toUpperCase()]?.name}
+              {getTranslatedCurrencyName(
+                campaign?.budget.currency_code?.toUpperCase() || "",
+                currencies[campaign?.budget.currency_code?.toUpperCase()]
+                  ?.name || ""
+              )}
             </Text>
           </div>
         </div>

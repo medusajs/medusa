@@ -34,6 +34,7 @@ import {
   StaticCountry,
 } from "../../../../../lib/data/countries"
 import { CurrencyInfo } from "../../../../../lib/data/currencies"
+import { getTranslatedCurrencyName } from "../../../../../lib/utils/intl"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
@@ -251,7 +252,10 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
                                     value={currency.code}
                                     key={currency.code}
                                   >
-                                    {currency.name}
+                                    {getTranslatedCurrencyName(
+                                      currency.code,
+                                      currency.name
+                                    )}
                                   </Select.Item>
                                 ))}
                               </Select.Content>
