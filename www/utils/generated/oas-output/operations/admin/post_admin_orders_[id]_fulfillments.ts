@@ -76,7 +76,8 @@
  *                 description: Whether to send the customer a notification about the created fulfillment.
  *               delivery_address:
  *                 $ref: "#/components/schemas/AdminFulfillmentDeliveryAddress"
- *                 description: The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider.
+ *                 description: The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the
+ *                   fulfillment provider.
  *               metadata:
  *                 type: object
  *                 description: The order's metadata. Can hold custom key-value pairs.

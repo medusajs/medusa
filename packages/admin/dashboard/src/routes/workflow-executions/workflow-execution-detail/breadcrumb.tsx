@@ -12,7 +12,7 @@ export const WorkflowExecutionDetailBreadcrumb = (
   const { id } = props.params || {}
 
   const { workflow_execution } = useWorkflowExecution(id!, {
-    initialData: props.data,
+    initialData: props.loaderData,
     enabled: Boolean(id),
   })
 
@@ -28,5 +28,5 @@ export const WorkflowExecutionDetailBreadcrumb = (
 export const seo = (
   match: UIMatch<HttpTypes.AdminWorkflowExecutionResponse>
 ) => ({
-  title: match.data?.workflow_execution?.id?.replace("wf_exec_", ""),
+  title: match.loaderData?.workflow_execution?.id?.replace("wf_exec_", ""),
 })

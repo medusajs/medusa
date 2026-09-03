@@ -2,11 +2,14 @@
  * The meta-data returned by a shared schema property parse method.
  * Domain-specific metadata (DML indexes, search facets, etc.) extends this.
  *
- * @since 2.18.1
+ * `TDataType` types `defaultValue` to match the property's `$dataType`.
+ * Defaults to `any` so untyped call sites (compilers, helpers) keep working.
+ *
+ * @since 2.19.0
  */
-export type SchemaPropertyMetadata = {
+export type SchemaPropertyMetadata<TDataType = any> = {
   fieldName: string
-  defaultValue?: any
+  defaultValue?: TDataType
   nullable: boolean
   computed: boolean
   dataType: {
@@ -20,9 +23,9 @@ export type SchemaPropertyMetadata = {
  * method to get the metadata and a type-only property
  * to get its static type.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export type SchemaPropertyType<T> = {
   $dataType: T
-  parse(fieldName: string): SchemaPropertyMetadata
+  parse(fieldName: string): SchemaPropertyMetadata<T>
 }

@@ -26,7 +26,7 @@ const TagsOperationParametersNested =
   ) as React.FC<TagsOperationParametersNestedProps>
 
 const Details = dynamic<DetailsProps>(
-  async () => (await import("docs-ui")).Details,
+  async () => (await import("docs-ui/components/Details")).Details,
   {
     loading: () => <Loading />,
   }

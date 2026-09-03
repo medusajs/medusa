@@ -35,8 +35,8 @@ export abstract class BaseSearchProperty<T>
     return this
   }
 
-  parse(fieldName: string): SearchPropertyMetadata {
-    const metadata: SearchPropertyMetadata = {
+  parse(fieldName: string): SearchPropertyMetadata<T> {
+    const metadata: SearchPropertyMetadata<T> = {
       ...super.parse(fieldName),
       dataType: this.dataType,
     }
@@ -90,7 +90,7 @@ export abstract class ScalarSearchProperty<T> extends BaseSearchProperty<T> {
     return this as this & SearchArrayMarker
   }
 
-  parse(fieldName: string): SearchPropertyMetadata {
+  parse(fieldName: string): SearchPropertyMetadata<T> {
     const metadata = super.parse(fieldName)
 
     if (this.#filterable !== undefined) {
@@ -121,7 +121,7 @@ export abstract class StringSearchProperty extends ScalarSearchProperty<string> 
     return this
   }
 
-  parse(fieldName: string): SearchPropertyMetadata {
+  parse(fieldName: string): SearchPropertyMetadata<string> {
     const metadata = super.parse(fieldName)
 
     if (this.#searchable !== undefined) {

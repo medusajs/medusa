@@ -17,6 +17,7 @@ import {
   formatError,
   initDb,
   migrateDatabase,
+  migrateSearchIndexes,
   startApp,
   syncLinks,
 } from "./medusa-test-runner-utils"
@@ -85,6 +86,7 @@ class MedusaTestRunner {
   private hooks: TestRunnerConfig["hooks"] = {}
   private databaseTemplateReady = false
   private skipNextRestore = false
+  private restoreEnvVars: () => void = () => void 0
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -170,7 +172,7 @@ class MedusaTestRunner {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
     const plugins = await getResolvedPlugins(this.cwd, configModule)
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, this.cwd)
 
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),
@@ -186,7 +188,7 @@ class MedusaTestRunner {
     await migrator.ensureMigrationsTable()
 
     logger.info(
-      `Migrating database with core migrations and links ${this.dbName}`
+      `Migrating database with core migrations, links, and search indexes ${this.dbName}`
     )
     await migrateDatabase(appLoader)
     await syncLinks(appLoader, this.modulesConfigPath, container, logger)
@@ -204,6 +206,10 @@ class MedusaTestRunner {
     })
 
     this.loadedApplication = await appLoader.load()
+
+    // Same role as `db:migrate:search` / link sync: create physical indexes
+    // before the HTTP app starts (and before suites seed data that is ingested).
+    await migrateSearchIndexes(container, logger)
 
     try {
       const {
@@ -277,6 +283,9 @@ class MedusaTestRunner {
       }
     } catch (error) {
       logger.error("Error during cleanup:", error?.message)
+    } finally {
+      this.restoreEnvVars()
+      this.restoreEnvVars = () => void 0
     }
   }
 
@@ -284,7 +293,7 @@ class MedusaTestRunner {
     try {
       this.setupProcessHandlers()
       await configLoaderOverride(this.cwd, this.dbConfig)
-      applyEnvVarsToProcess(this.env)
+      this.restoreEnvVars = applyEnvVarsToProcess(this.env)
       await this.setupApplication()
     } catch (error) {
       await this.cleanup()

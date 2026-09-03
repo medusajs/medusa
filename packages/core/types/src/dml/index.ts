@@ -81,8 +81,9 @@ export type IsNullableRelation<T> = T extends () => IDmlEntity<any, any> | null
 /**
  * The meta-data returned by the property parse method.
  * Extends the shared SchemaPropertyMetadata with DML-specific fields.
+ * `T` types `defaultValue` to match the property's `$dataType`.
  */
-export type PropertyMetadata = SchemaPropertyMetadata & {
+export type PropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>
@@ -102,7 +103,7 @@ export type PropertyMetadata = SchemaPropertyMetadata & {
  */
 export type PropertyType<T> = {
   $dataType: T
-  parse(fieldName: string): PropertyMetadata
+  parse(fieldName: string): PropertyMetadata<T>
 }
 
 /**
@@ -336,6 +337,9 @@ export type CheckConstraint<Schema extends DMLSchema> =
       property?: string
     }
 
+/**
+ * An index definition on a DML entity.
+ */
 export type EntityIndex<
   Schema extends DMLSchema = DMLSchema,
   Where = string

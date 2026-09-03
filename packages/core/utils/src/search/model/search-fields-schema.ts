@@ -77,6 +77,9 @@ function metadataToFieldDefinition(
   if (metadata.dimensions !== undefined) {
     field.dimensions = metadata.dimensions
   }
+  if (metadata.embed !== undefined) {
+    field.embed = metadata.embed
+  }
   if (metadata.provider_options !== undefined) {
     field.provider_options = metadata.provider_options
   }

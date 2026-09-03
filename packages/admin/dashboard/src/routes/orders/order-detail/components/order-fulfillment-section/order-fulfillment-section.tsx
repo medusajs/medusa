@@ -217,7 +217,7 @@ const Fulfillment = ({
     fulfillment.shipping_option?.service_zone?.fulfillment_set?.type ===
     FulfillmentSetType.Pickup
 
-  const { stock_location, isError, error } = useStockLocation(
+  const { stock_location, isError } = useStockLocation(
     fulfillment.location_id!,
     undefined,
     {
@@ -322,10 +322,6 @@ const Fulfillment = ({
     }
   }
 
-  if (isError) {
-    throw error
-  }
-
   const isValidUrl = (url?: string) => {
     if (!url || url.length === 0 || url === "#") {
       return false
@@ -395,7 +391,11 @@ const Fulfillment = ({
           <Text size="small" leading="compact" weight="plus">
             {t("orders.fulfillment.shippingFromLabel")}
           </Text>
-          {stock_location ? (
+          {isError ? (
+            <Text size="small" leading="compact">
+              {t("orders.fulfillment.locationUnavailable")}
+            </Text>
+          ) : stock_location ? (
             <Link
               to={`/settings/locations/${stock_location.id}`}
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"

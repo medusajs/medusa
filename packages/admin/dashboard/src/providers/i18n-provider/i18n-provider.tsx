@@ -21,5 +21,9 @@ export const I18nProvider = ({ children }: I18nProviderProps) => {
     document.documentElement.setAttribute("dir", direction)
   }, [direction])
 
+  useEffect(() => {
+    document.documentElement.setAttribute("lang", formatLocaleCode(locale))
+  }, [locale])
+
   return <Provider locale={formatLocaleCode(locale)}>{children}</Provider>
 }

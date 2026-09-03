@@ -9,6 +9,7 @@ Open-source commerce platform. TypeScript monorepo with 30+ modular commerce pac
 ### 1. Codebase Structure
 
 **Monorepo Organization:**
+
 ```
 /packages/
 ├── medusa/              # Main Medusa package
@@ -31,6 +32,7 @@ Open-source commerce platform. TypeScript monorepo with 30+ modular commerce pac
 ```
 
 **Key Directories:**
+
 - `packages/core/framework/` - Core runtime, HTTP, database
 - `packages/medusa/src/api/` - API routes
 - `packages/modules/` - Commerce feature modules
@@ -41,6 +43,7 @@ Open-source commerce platform. TypeScript monorepo with 30+ modular commerce pac
 **Package Manager**: Yarn 3.2.1 with node-modules linker
 
 **Essential Commands:**
+
 ```bash
 # Install dependencies
 yarn install
@@ -53,6 +56,7 @@ yarn watch
 ```
 
 **Testing Commands:**
+
 ```bash
 # All unit tests
 yarn test
@@ -66,26 +70,41 @@ yarn test:integration:api
 yarn test:integration:modules
 ```
 
+**Migrations:**
+
+Whenever you create, modify, or delete a data model file inside a module (under `packages/modules`), generate the migration by running the module package's migration script from within that package — NEVER write migration files by hand:
+
+```bash
+cd packages/modules/<module> && yarn migration:create
+```
+
+NEVER edit the migration file by hand. If new changes land in the model, re run the script.
+
 **Generated Files:**
 
 After adding or removing keys in `packages/admin/dashboard/src/i18n/translations/en.json`, regenerate the JSON schema that validates all translation files:
+
 ```bash
 cd packages/admin/dashboard && yarn i18n:schema
 ```
+
 Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, since `translations/$schema.json` is generated from `en.json` and lists every key in both `properties` and `required`. Commit the regenerated `$schema.json` with the translation change.
 
 ### 3. Testing Conventions
 
 **Frameworks:**
+
 - Jest 29.7.0 (backend/core)
 - Vitest 3.0.5 (admin/frontend)
 
 **Test Locations:**
+
 - Unit tests: `__tests__/` directories alongside source
 - Package integration tests: `packages/*/integration-tests/__tests__/`
 - HTTP integration tests: `integration-tests/http/__tests__/`
 
 **Patterns:**
+
 - File extension: `.spec.ts` or `.test.ts`
 - Unit test structure: `describe/it` blocks
 - Integration tests: Use custom test runners with DB setup
@@ -93,6 +112,7 @@ Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, sinc
 ### 4. Code Style Conventions
 
 **Formatting (Prettier):**
+
 - No semicolons
 - Double quotes
 - 2 space indentation
@@ -100,12 +120,14 @@ Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, sinc
 - Always use parens in arrow functions
 
 **TypeScript:**
+
 - Target: ES2021
 - Module: Node16
 - Strict null checks enabled
 - Decorators enabled (experimental)
 
 **Naming Conventions:**
+
 - Files: kebab-case (`define-config.ts`)
 - Types/Interfaces/Classes: PascalCase
 - Functions/Variables: camelCase
@@ -114,6 +136,7 @@ Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, sinc
 
 **Branch Naming:**
 Branch names must be prefixed by type, since the prefix drives the labels automatically applied to the PR:
+
 - `feat/readable-name`: new features
 - `fix/readable-name`: bug fixes
 - `chore/readable-name`: refactors, clean-ups, and similar work
@@ -122,10 +145,12 @@ Branch names must be prefixed by type, since the prefix drives the labels automa
 `readable-name` must describe the PR's changes (kebab-case). Do NOT use just the ticket number (e.g. use `fix/loyalty-admin-auth-type`, not `dx-2801`).
 
 **Export Patterns:**
+
 - Barrel exports via `export * from`
 - Named re-exports for specific items
 
 **General Conventions:**
+
 - NEVER use emojos.
 
 ### 5. Architecture Patterns
@@ -133,17 +158,20 @@ Branch names must be prefixed by type, since the prefix drives the labels automa
 #### 5.1 Module Pattern - Services with Decorators
 
 **Service Structure:**
+
 - Extend `MedusaService<T>` with typed model definitions
 - Inject dependencies via constructor
 - Use decorators for cross-cutting concerns
 
 **Key Decorators:**
+
 - `@InjectManager()` - Inject entity manager (use on public methods)
 - `@InjectTransactionManager()` - Inject transaction manager (use on protected methods)
 - `@MedusaContext()` - Inject shared context as parameter
 - `@EmitEvents()` - Emit domain events after operation
 
 **Example:**
+
 ```typescript
 export class OrderModuleService
   extends MedusaService<{ Order: { dto: OrderDTO } }>({ Order })
@@ -169,12 +197,14 @@ export class OrderModuleService
 ```
 
 **Reference Files:**
+
 - `packages/modules/order/src/services/order-module-service.ts`
 - `packages/modules/api-key/src/services/api-key-module-service.ts`
 
 #### 5.2 API Route Pattern
 
 **Route Structure:**
+
 - Named exports for HTTP methods: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`
 - Type request: `AuthenticatedMedusaRequest<T>` or `MedusaRequest<T>`
 - Type response: `MedusaResponse<T>`
@@ -182,6 +212,7 @@ export class OrderModuleService
 - Use workflows from `@medusajs/core-flows`
 
 **Example:**
+
 ```typescript
 import { deleteOrderWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/framework/types"
@@ -209,23 +240,27 @@ export const DELETE = async (
 ```
 
 **Common Patterns:**
+
 - Filters: `req.filterableFields`
 - Pagination: `req.queryConfig.pagination`
 - Fields: `req.queryConfig.fields`
 - Resolve services: `req.scope.resolve(ContainerRegistrationKeys.QUERY)`
 
 **Reference Files:**
+
 - `packages/medusa/src/api/admin/orders/route.ts`
 - `packages/medusa/src/api/admin/payment-collections/[id]/route.ts`
 
 #### 5.3 Workflow Pattern
 
 **Step Definition:**
+
 - Create steps with `createStep(id, mainAction, compensationAction?)`
 - Return `StepResponse(result, compensationData)`
 - Compensation function handles rollback
 
 **Workflow Composition:**
+
 - Create workflows with `createWorkflow(id, function)`
 - Use `WorkflowData<T>` for typed input
 - Return `WorkflowResponse<T>` for typed output
@@ -234,6 +269,7 @@ export const DELETE = async (
 - Emit events with `createHook()`
 
 **Example Step:**
+
 ```typescript
 export const deletePromotionsStep = createStep(
   "delete-promotions",
@@ -255,6 +291,7 @@ export const deletePromotionsStep = createStep(
 ```
 
 **Example Workflow:**
+
 ```typescript
 export const deletePromotionsWorkflow = createWorkflow(
   "delete-promotions",
@@ -271,6 +308,7 @@ export const deletePromotionsWorkflow = createWorkflow(
 ```
 
 **Reference Files:**
+
 - `packages/core/core-flows/src/promotion/steps/delete-promotions.ts`
 - `packages/core/core-flows/src/promotion/workflows/delete-promotions.ts`
 - `packages/core/core-flows/src/order/workflows/update-order.ts`
@@ -278,16 +316,19 @@ export const deletePromotionsWorkflow = createWorkflow(
 #### 5.4 Error Handling
 
 **MedusaError Pattern:**
+
 - Use `new MedusaError(type, message)` for all error throwing
 - Provide contextual, user-friendly error messages
 - Validate inputs early in services and workflow steps
 
 **Common Error Types:**
+
 - `MedusaError.Types.NOT_FOUND` - Resource not found
 - `MedusaError.Types.INVALID_DATA` - Invalid input or state
 - `MedusaError.Types.NOT_ALLOWED` - Operation not permitted
 
 **Example:**
+
 ```typescript
 import { MedusaError, validateEmail } from "@medusajs/framework/utils"
 
@@ -313,12 +354,14 @@ if (order.status === "cancelled") {
 ```
 
 **Reference Files:**
+
 - `packages/core/utils/src/modules-sdk/medusa-internal-service.ts`
 - `packages/core/core-flows/src/order/workflows/update-order.ts`
 
 #### 5.5 Common Import Patterns
 
 **Path Aliases (configured in tsconfig.json):**
+
 - `@models` - Entity models
 - `@types` - DTO and type definitions
 - `@services` - Service dependencies
@@ -326,6 +369,7 @@ if (order.status === "cancelled") {
 - `@utils` - Utility functions
 
 **Framework Imports:**
+
 ```typescript
 // Utils and decorators
 import {

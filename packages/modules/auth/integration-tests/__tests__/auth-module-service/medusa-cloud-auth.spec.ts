@@ -240,6 +240,27 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           )
         })
 
+        it("should consume the state so it can only be used once", async () => {
+          const first = await service.validateCallback("cloud", {
+            query: {
+              code: "code1",
+              state: state,
+            },
+          })
+          expect(first.success).toBe(true)
+
+          // The state is single-use: replaying it must fail because it was
+          // consumed (deleted) on the first read.
+          const second = await service.validateCallback("cloud", {
+            query: {
+              code: "code1",
+              state: state,
+            },
+          })
+          expect(second.success).toBe(false)
+          expect(second.error).toBe("No state provided, or session expired")
+        })
+
         it("should return an error if the code is not provided", async () => {
           const response = await service.validateCallback("cloud", {
             query: {

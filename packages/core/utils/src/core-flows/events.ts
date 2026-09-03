@@ -722,6 +722,39 @@ export const ProductOptionWorkflowEvents = {
 } as const
 
 /**
+ * @category Product Option Value
+ * @customNamespace Product
+ */
+export const ProductOptionValueWorkflowEvents = {
+  /**
+   * Emitted when product option values are updated.
+   *
+   * @since 2.19.1
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the product option value
+   * }
+   * ```
+   */
+  UPDATED: "product-option-value.updated",
+  /**
+   * Emitted when product option values are deleted.
+   *
+   * @since 2.19.1
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the product option value
+   * }
+   * ```
+   */
+  DELETED: "product-option-value.deleted",
+} as const
+
+/**
  * @category Invite
  * @customNamespace User
  */

@@ -1,0 +1,409 @@
+import { SearchTypes } from "@medusajs/framework/types"
+import {
+  MedusaError,
+  readDocumentPath,
+  setDocumentPath,
+} from "@medusajs/framework/utils"
+import type { AttributeSchema, AttributeSchemaConfig, Row } from "./api-types"
+import type {
+  MedusaSearchFieldOptions,
+  MedusaSearchIndexOptions,
+} from "./options"
+
+export type PlannedField = {
+  path: string
+  type: string
+  is_array: boolean
+  is_date: boolean
+  field: SearchTypes.SearchFieldDefinition
+  dimensions?: number
+  embed?: boolean
+}
+
+export type TypoToleranceSettings = {
+  enabled: boolean
+  min_word_size_for_one_typo: number
+  min_word_size_for_two_typos: number
+  disabled_on_attributes: Set<string>
+}
+
+export type IndexPlan = {
+  fields: Map<string, PlannedField>
+  schema: Record<string, AttributeSchema>
+  searchable: string[]
+  primary_key: string
+  options: MedusaSearchIndexOptions
+  typo_tolerance: TypoToleranceSettings
+  vectors: string[]
+}
+
+function fail(message: string): never {
+  throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
+}
+
+// Cloud requires min_query_chars >= 3 * (distance + 1) for typos
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 6
+const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
+
+function resolveTypoTolerance(
+  settings: SearchTypes.SearchIndexSettings
+): TypoToleranceSettings {
+  const typo = settings.typo_tolerance
+  return {
+    enabled: typo?.enabled ?? true,
+    min_word_size_for_one_typo:
+      typo?.min_word_size_for_one_typo ?? DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO,
+    min_word_size_for_two_typos:
+      typo?.min_word_size_for_two_typos ?? DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS,
+    disabled_on_attributes: new Set(typo?.disabled_on_attributes ?? []),
+  }
+}
+
+export function isSearchable(
+  field: SearchTypes.SearchFieldDefinition
+): boolean {
+  return field.searchable === true || typeof field.searchable === "object"
+}
+
+export function isFacetable(field: SearchTypes.SearchFieldDefinition): boolean {
+  return field.facetable === true || typeof field.facetable === "object"
+}
+
+function providerOptions<T>(value: {
+  provider_options?: Record<string, Record<string, unknown>>
+}): T {
+  return (value.provider_options?.["search-medusa"] ?? {}) as T
+}
+
+function fieldType(
+  field: SearchTypes.SearchFieldDefinition,
+  isArray: boolean
+): string {
+  const array = isArray ? "[]" : ""
+
+  switch (field.type) {
+    case "keyword":
+    case "text":
+      return `${array}string`
+    case "integer":
+      return `${array}int`
+    case "float":
+      return `${array}float`
+    case "boolean":
+      return `${array}bool`
+    case "date":
+      return `${array}datetime`
+    case "vector":
+      if (isArray) {
+        fail("Medusa search vector fields cannot be arrays")
+      }
+      if (!field.dimensions || field.dimensions < 1) {
+        fail("Medusa search vector fields must declare positive dimensions")
+      }
+      return `[${field.dimensions}]f32`
+    case "geo":
+      return fail("The Medusa search provider does not support geo fields")
+    default:
+      return fail(
+        `The Medusa search provider does not support fields of type "${field.type}"`
+      )
+  }
+}
+
+export function assertIndexSupported(
+  definition: SearchTypes.ResolvedSearchIndexDefinition
+): void {
+  const walk = (
+    group: Record<string, SearchTypes.SearchFieldDefinition>,
+    prefix: string
+  ) => {
+    for (const [name, field] of Object.entries(group)) {
+      const path = prefix ? `${prefix}.${name}` : name
+
+      if (field.correlated) {
+        fail(
+          `The Medusa search provider cannot correlate predicates per array element ("${path}")`
+        )
+      }
+
+      if (field.type === "object") {
+        if (field.fields) {
+          walk(field.fields, path)
+        }
+        continue
+      }
+
+      fieldType(field, !!field.array)
+    }
+  }
+
+  if (definition.settings.synonyms) {
+    fail("The Medusa search provider does not support synonyms")
+  }
+  if (definition.settings.stop_words?.length) {
+    fail("The Medusa search provider does not support custom stop-word lists")
+  }
+
+  walk(definition.fields, "")
+}
+
+export function buildIndexPlan(
+  definition: SearchTypes.ResolvedSearchIndexDefinition
+): IndexPlan {
+  assertIndexSupported(definition)
+
+  const fields = new Map<string, PlannedField>()
+  const schema: Record<string, AttributeSchema> = {}
+  const searchable: string[] = []
+  const typoTolerance = resolveTypoTolerance(definition.settings)
+
+  const walk = (
+    group: Record<string, SearchTypes.SearchFieldDefinition>,
+    prefix: string,
+    inArray: boolean
+  ) => {
+    for (const [name, field] of Object.entries(group)) {
+      const path = prefix ? `${prefix}.${name}` : name
+      const isArray = inArray || field.array === true
+
+      if (field.type === "object") {
+        if (field.fields) {
+          walk(field.fields, path, isArray)
+        }
+        continue
+      }
+
+      const configured = providerOptions<MedusaSearchFieldOptions>(field)
+      const type = configured.type ?? fieldType(field, isArray)
+      const searchableField = isSearchable(field)
+      const indexed =
+        field.filterable ||
+        field.sortable ||
+        isFacetable(field) ||
+        path === definition.primary_key
+
+      const attribute: AttributeSchemaConfig = {
+        type,
+        filterable: configured.filterable ?? !!indexed,
+      }
+
+      if (field.type === "vector") {
+        attribute.ann = configured.ann ?? true
+        if (field.embed) {
+          attribute.embed = {
+            ...(field.dimensions ? { dims: field.dimensions } : {}),
+          }
+        }
+      }
+
+      if (searchableField) {
+        attribute.full_text_search = configured.full_text_search ?? true
+        searchable.push(path)
+
+        // Typo tolerance needs a fuzzy index on the field it matches
+        // against — built by default alongside full-text search unless the
+        // index or the field opts out.
+        if (
+          typoTolerance.enabled &&
+          !typoTolerance.disabled_on_attributes.has(path)
+        ) {
+          attribute.fuzzy = true
+        }
+      }
+
+      // Glob is an exact-string wildcard index. Keywords that are
+      // filtered/sorted/faceted get it by default; text fields only if
+      // opted in. `id` is the Cloud document key and cannot carry one.
+      if (path !== "id") {
+        if (configured.glob !== undefined) {
+          attribute.glob = configured.glob
+        } else if (indexed && field.type === "keyword") {
+          attribute.glob = true
+        }
+      }
+      if (configured.regex !== undefined) {
+        attribute.regex = configured.regex
+      }
+      if (configured.fuzzy !== undefined) {
+        attribute.fuzzy = configured.fuzzy
+      }
+
+      fields.set(path, {
+        path,
+        type,
+        is_array: isArray,
+        is_date: field.type === "date",
+        field,
+        dimensions: field.dimensions,
+        embed: field.embed,
+      })
+
+      schema[path] = attribute
+    }
+  }
+
+  walk(definition.fields, "", false)
+
+  const vectors: string[] = []
+  for (const planned of fields.values()) {
+    if (planned.field.type === "vector") {
+      vectors.push(planned.path)
+    }
+  }
+
+  return {
+    fields,
+    schema,
+    searchable,
+    primary_key: definition.primary_key,
+    options: providerOptions<MedusaSearchIndexOptions>(definition.settings),
+    typo_tolerance: typoTolerance,
+    vectors,
+  }
+}
+
+function coerce(value: unknown, planned: PlannedField): unknown {
+  if (value instanceof Date) {
+    return value.toISOString()
+  }
+  if (planned.is_date && typeof value === "string") {
+    return new Date(value).toISOString()
+  }
+  return value
+}
+
+function coerceVector(value: unknown, planned: PlannedField): number[] {
+  if (!Array.isArray(value) || !value.length) {
+    fail(
+      `Vector field "${planned.path}" must be a numeric array of length ${planned.dimensions}`
+    )
+  }
+
+  const nums = value.map((entry) => Number(entry))
+  if (nums.some((n) => Number.isNaN(n))) {
+    fail(`Vector field "${planned.path}" contains non-numeric components`)
+  }
+
+  if (planned.dimensions && nums.length !== planned.dimensions) {
+    fail(
+      `Vector field "${planned.path}" expected ${planned.dimensions} dimensions, got ${nums.length}`
+    )
+  }
+
+  return nums
+}
+
+export function toSearchDocument(
+  document: SearchTypes.SearchDocument,
+  plan: IndexPlan
+): Row {
+  const target: Record<string, unknown> = {}
+
+  for (const planned of plan.fields.values()) {
+    if (planned.field.type === "vector") {
+      // `readDocumentPath` flattens arrays; a vector is one value.
+      const raw = planned.path
+        .split(".")
+        .reduce<unknown>(
+          (value, segment) =>
+            value && typeof value === "object"
+              ? (value as Record<string, unknown>)[segment]
+              : undefined,
+          document
+        )
+      if (raw === undefined || raw === null) {
+        continue
+      }
+
+      // Engine-embedded fields accept the source text; the proxy embeds it
+      // into the `[N]f32` column before storage.
+      if (planned.embed) {
+        if (typeof raw !== "string") {
+          fail(`Vector field "${planned.path}" with embed must be a string`)
+        }
+        const text = raw.trim()
+        if (text) {
+          target[planned.path] = text
+        }
+        continue
+      }
+
+      target[planned.path] = coerceVector(raw, planned)
+      continue
+    }
+
+    const values = readDocumentPath(document, planned.path.split("."))
+      .map((value) => coerce(value, planned))
+      .filter((value) => value !== undefined)
+
+    if (!values.length) {
+      continue
+    }
+
+    target[planned.path] = planned.is_array ? values : values[0]
+  }
+
+  const primaryKey = document[plan.primary_key]
+  if (primaryKey === undefined || primaryKey === null || primaryKey === "") {
+    fail(
+      `A document written to Medusa search is missing primary key "${plan.primary_key}"`
+    )
+  }
+
+  const id = String(primaryKey)
+  if (Buffer.byteLength(id, "utf8") > 64) {
+    fail(`Medusa search document IDs cannot exceed 64 bytes ("${id}")`)
+  }
+
+  target.id = id
+  return target as Row
+}
+
+export function fromSearchDocument(
+  row: Row,
+  attributes: string[]
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+
+  for (const path of attributes) {
+    const value = row[path]
+    if (value !== undefined) {
+      setDocumentPath(result, path, value)
+    }
+  }
+
+  return result
+}
+
+function attributeType(schema: AttributeSchema): string | undefined {
+  return typeof schema === "string"
+    ? schema
+    : (schema as AttributeSchemaConfig).type
+}
+
+// turbopuffer vector columns look like `[768]f32` / `[][768]f32`. The column
+// count is fixed at namespace creation — adding one later is rejected.
+function isVectorAttributeType(type: string | undefined): boolean {
+  return typeof type === "string" && /\[\d+\]/.test(type)
+}
+
+export function sameSchemaType(
+  current: Record<string, AttributeSchemaConfig>,
+  desired: Record<string, AttributeSchema>
+): boolean {
+  for (const [path, schema] of Object.entries(desired)) {
+    const desiredType = attributeType(schema)
+
+    // Additive non-vector attributes can be patched in place. A new vector
+    // column cannot — the engine refuses `updateSchema` for those.
+    if (!current[path] && isVectorAttributeType(desiredType)) {
+      return false
+    }
+
+    if (current[path] && current[path].type !== desiredType) {
+      return false
+    }
+  }
+
+  return Object.keys(current).every((path) => path in desired)
+}

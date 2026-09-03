@@ -1,4 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { SearchIndexRegistry } from "@types"
 import { retrieveIndexDefinition, SearchIndexState } from "./index"
 
@@ -13,6 +14,23 @@ export function shadowIndexName(
   // `physical_name` already carries the module's index prefix, so appending the
   // schema fingerprint is enough — the prefix never has to be passed in.
   return `${definition.physical_name}_${definition.definition_hash.slice(0, 8)}`
+}
+
+const SHADOW_SUFFIX = /^_[a-f0-9]{8}$/
+
+/**
+ * True when `name` is a swap shadow of `livePhysicalName` (`{live}_{8 hex}`),
+ * and not a different index that merely shares a prefix (`product_reviews`).
+ */
+export function isShadowIndexName(
+  name: string,
+  livePhysicalName: string
+): boolean {
+  if (!name.startsWith(livePhysicalName)) {
+    return false
+  }
+
+  return SHADOW_SUFFIX.test(name.slice(livePhysicalName.length))
 }
 
 export async function createIndexMigrationPlan(
@@ -60,6 +78,7 @@ export async function createIndexMigrationPlan(
     }
 
     const provider = context.providers.retrieve(definition.provider)
+    const providerChanged = record.provider !== definition.provider
 
     return {
       ...shared,
@@ -72,6 +91,8 @@ export async function createIndexMigrationPlan(
         : definition.physical_name,
       live_physical_name: definition.physical_name,
       live_definition_hash: record.definition_hash,
+      provider: definition.provider,
+      ...(providerChanged ? { previous_provider: record.provider } : {}),
     }
   })
 }
@@ -119,5 +140,50 @@ export async function executeIndexMigrationPlan(
         data: { status: SearchIndexState.PENDING },
       })
     }
+
+    await cleanupPreviousProviderIndex(context, action)
+  }
+}
+
+type MigrateAction = Extract<
+  SearchTypes.SearchIndexMigrationAction,
+  { action: "migrate" }
+>
+
+async function cleanupPreviousProviderIndex(
+  context: SearchIndexRegistry,
+  action: MigrateAction
+): Promise<void> {
+  if (!action.previous_provider) {
+    return
+  }
+
+  let previous: SearchTypes.ISearchProvider
+  try {
+    previous = context.providers.retrieve(action.previous_provider)
+  } catch (error) {
+    if (
+      error instanceof MedusaError &&
+      error.type === MedusaError.Types.NOT_FOUND
+    ) {
+      context.logger.warn(
+        `[Search] Cannot clean up previous search provider "${action.previous_provider}" for index "${action.index}": it is no longer registered`
+      )
+      return
+    }
+
+    throw error
+  }
+
+  const names = new Set<string>([action.live_physical_name])
+
+  for (const info of await previous.listIndexes()) {
+    if (isShadowIndexName(info.name, action.live_physical_name)) {
+      names.add(info.name)
+    }
+  }
+
+  for (const name of names) {
+    await previous.deleteIndex({ index: name })
   }
 }

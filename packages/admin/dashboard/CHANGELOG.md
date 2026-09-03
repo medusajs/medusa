@@ -1,5 +1,97 @@
 # @medusajs/dashboard
 
+## 2.20.0
+
+### Patch Changes
+
+- [#16455](https://github.com/medusajs/medusa/pull/16455) [`b33f14a334769e9265b2c7ff1b120db183bc1e07`](https://github.com/medusajs/medusa/commit/b33f14a334769e9265b2c7ff1b120db183bc1e07) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): reload on preload error
+
+- [#16557](https://github.com/medusajs/medusa/pull/16557) [`a1a784b66ac872b1a863ae23180630ebf2bf839a`](https://github.com/medusajs/medusa/commit/a1a784b66ac872b1a863ae23180630ebf2bf839a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,draft-order): show inventory availability in relevant screens
+
+- [#16513](https://github.com/medusajs/medusa/pull/16513) [`1a9fe477d265e8861ca68ef9a445b40d006b28ca`](https://github.com/medusajs/medusa/commit/1a9fe477d265e8861ca68ef9a445b40d006b28ca) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): remove duplicate Medusa Cloud auth button
+
+- [#16450](https://github.com/medusajs/medusa/pull/16450) [`e528fc5bd2cbcd9995694953580a20e525eafb9c`](https://github.com/medusajs/medusa/commit/e528fc5bd2cbcd9995694953580a20e525eafb9c) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): set the lang attribute on the html element
+
+- [#16006](https://github.com/medusajs/medusa/pull/16006) [`5796a0c00f35eba2533847f6697fae8d7c282ae7`](https://github.com/medusajs/medusa/commit/5796a0c00f35eba2533847f6697fae8d7c282ae7) Thanks [@iruzen-dono](https://github.com/iruzen-dono)! - fix(dashboard): handle deleted stock locations in order fulfillment section
+
+- [#16638](https://github.com/medusajs/medusa/pull/16638) [`01e23d60538bd97b1bde471ddd3e5196a5b56094`](https://github.com/medusajs/medusa/commit/01e23d60538bd97b1bde471ddd3e5196a5b56094) Thanks [@PranshulSoni](https://github.com/PranshulSoni)! - fix(dashboard): fill missing plural forms in Polish translations
+
+  The Polish (`pl`) translation file was missing several CLDR plural categories
+  its own plural-config.json declares, so a count that resolved to a category
+  the file did not define (e.g. `few` for 2-4 items in `dataGrid.errors.count`)
+  fell through to the English fallback inside an otherwise Polish screen.
+
+  - `dataGrid.errors.count`: add `count_few` and `count_many`. Polish CLDR
+    plural rules: 1 -> `one`, 2-4 and 22-24 -> `few`, 5-21 and 25+ -> `many`.
+    The file had only `count_one` and `count_other`, so counts of 2, 3, 4,
+    22, 23, or 24 rendered in English.
+  - `orders.fulfillment.error.wrongQuantity`: add `wrongQuantity_one`,
+    `wrongQuantity_few`, and `wrongQuantity_many`. The file had only the
+    bare `wrongQuantity` (which is itself the `_one` form, "Tylko jeden
+    produkt jest dostępny do realizacji") and `wrongQuantity_other`, so
+    counts of 2-4 and 5-21/25+ rendered in English.
+  - Remove the orphan `dataGrid.errors.numberOfKeys_few` and
+    `dataGrid.errors.numberOfKeys_many`. The English source of truth
+    (`en.json`) does not declare a `dataGrid.errors.numberOfKeys` key, so
+    these Polish variants were dead code i18next could never reach. The
+    issue's own table identified these as part of Polish's
+    `incomplete=3` count even though they were not real missing forms
+    and could not be fixed by adding translations.
+
+- [#16477](https://github.com/medusajs/medusa/pull/16477) [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings): support fractional quantities and unit of measure in dashboard
+
+- [#16495](https://github.com/medusajs/medusa/pull/16495) [`9dd56bf579747aa1f191c4990c90e91a168b634e`](https://github.com/medusajs/medusa/commit/9dd56bf579747aa1f191c4990c90e91a168b634e) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): fix create fulfillment form select pagination issues
+
+- [#16425](https://github.com/medusajs/medusa/pull/16425) [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55) Thanks [@sradevski](https://github.com/sradevski)! - Add support for configuring the global search in admin
+
+- [#16402](https://github.com/medusajs/medusa/pull/16402) [`321efe20e56d1d11b88974d80cd713e928763e80`](https://github.com/medusajs/medusa/commit/321efe20e56d1d11b88974d80cd713e928763e80) Thanks [@lvkmsk](https://github.com/lvkmsk)! - Update Russian (ru) admin translations: add missing keys, add Russian plural forms (\_few/\_many), fix mistranslations
+
+- [#16415](https://github.com/medusajs/medusa/pull/16415) [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,js-sdk,types): request and copy reset password link from dashboard
+
+- [#16594](https://github.com/medusajs/medusa/pull/16594) [`3914a322c5257742c977468d9aa5bf088953b511`](https://github.com/medusajs/medusa/commit/3914a322c5257742c977468d9aa5bf088953b511) Thanks [@dhruvdavest07](https://github.com/dhruvdavest07)! - fix(dashboard): give the workflow execution state column its own translation key
+
+- Updated dependencies [[`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55), [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964)]:
+  - @medusajs/admin-shared@2.20.0
+  - @medusajs/js-sdk@2.20.0
+  - @medusajs/icons@2.20.0
+  - @medusajs/ui@4.2.2
+
+## 2.19.0
+
+### Minor Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard): upgrade to react-router 7
+
+  **Breaking:** projects must bump their own `react-router-dom` dependency to 7.x.
+
+  Left at v6, a project ends up with two router installations: its own v6 plus v7 for the dashboard. The dashboard is built against v7 while the admin bundler resolves `react-router-dom` from the project root, so plugin admin extensions get v6 hooks inside a v7 router and fail with _"useNavigate() may be used only in the context of a Router"_. Bumping the project's own dependency collapses this back to a single copy.
+
+  For admin extension authors: `json()` and `defer()` were removed in react-router 7 — return a `Response` and a plain object respectively. `UIMatch.data` is deprecated in favour of `UIMatch.loaderData`. `react-router-dom` remains a valid import specifier and is still externalized by `medusa plugin:build`, but it is removed in react-router 8, so plan to import from `react-router` instead.
+
+### Patch Changes
+
+- [`60346987f74cc606d6864df765e7d4b007def3fe`](undefined) - fix(dashboard): fix active sidebar link detection
+
+- [#16208](https://github.com/medusajs/medusa/pull/16208) [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard,draft-order): update @hookform/resolvers and react-hook-form to show validation errors in admin forms
+
+- [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](undefined) - fix(dashboard): hide Property Labels settings item unless view_configurations is enabled
+
+- [#16223](https://github.com/medusajs/medusa/pull/16223) [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,medusa,dashboard,js-sdk,types): add inventory item export with per-location levels
+
+- [#16238](https://github.com/medusajs/medusa/pull/16238) [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,dashboard,js-sdk, medusa,types,utils): support notification preferences for order edits
+
+- [`438271818d8a3d10470fe838a6ac5c994019620c`](undefined) - fix(dashboard): use order's own currency code in the configurable order list total column
+
+- [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](undefined) - fix(dashboard): show full product/variant name via tooltip in the price list and variant pricing grids
+
+- [#16023](https://github.com/medusajs/medusa/pull/16023) [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(auth-oidc,dashboard,auth,js-sdk,types,medusa): generic OIDC auth provider
+
+- Updated dependencies [[`8f03b13a6137047ce36f61a9bb033879395f9345`](undefined), [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`18e02fb06f5c925c0b3ebc1943407bf58f83e7b7`](https://github.com/medusajs/medusa/commit/18e02fb06f5c925c0b3ebc1943407bf58f83e7b7), [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](undefined), [`3ff26b6f7f036392ad1a97e67daea6b83c3fee23`](https://github.com/medusajs/medusa/commit/3ff26b6f7f036392ad1a97e67daea6b83c3fee23)]:
+  - @medusajs/admin-shared@2.19.0
+  - @medusajs/icons@2.19.0
+  - @medusajs/js-sdk@2.19.0
+  - @medusajs/ui@4.2.1
+
 ## 2.18.0
 
 ### Minor Changes
