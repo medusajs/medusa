@@ -25,10 +25,14 @@ const definition: SearchTypes.ResolvedSearchIndexDefinition = {
     price: {
       type: "float",
       filterable: true,
-      facetable: { types: ["range"] },
+      facetable: { types: ["range", "stats"] },
     },
     tags: { type: "keyword", array: true, filterable: true, facetable: true },
-    created_at: { type: "date", filterable: true },
+    created_at: {
+      type: "date",
+      filterable: true,
+      facetable: { types: ["stats"] },
+    },
     variants: {
       type: "object",
       array: true,
@@ -70,7 +74,12 @@ describe("Medusa search utilities", () => {
       ...definition,
       fields: {
         ...definition.fields,
-        title: { type: "text", searchable: true, filterable: true, sortable: true },
+        title: {
+          type: "text",
+          searchable: true,
+          filterable: true,
+          sortable: true,
+        },
       },
     })
     expect(filterableText.schema.title).not.toHaveProperty("glob")
@@ -137,6 +146,7 @@ describe("Medusa search utilities", () => {
       id: "prod_1",
       created_at: "2026-01-01T00:00:00.000Z",
       "variants.sku": ["red-41", "red-42"],
+      embedding: [0.1, 0.2, 0.3],
     })
     expect(fromSearchDocument(row, ["title", "variants.sku"])).toEqual({
       title: "Red shoe",
@@ -249,11 +259,7 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(query.query.filters).toEqual([
-      "title",
-      "ContainsAllTokens",
-      "chair",
-    ])
+    expect(query.query.filters).toEqual(["title", "ContainsAllTokens", "chair"])
     expect(query.query.rank_by).toEqual(["price", "asc"])
   })
 
@@ -442,6 +448,147 @@ describe("Medusa search utilities", () => {
       "And",
       [textAndStatus, ["price", "Lt", 100]],
     ])
+  })
+
+  it("builds stats facets as min/max rank queries plus separate Count and Sum aggregations", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        q: "chair",
+        attributes_to_retrieve: ["title"],
+        search_options: {
+          facets: [{ field: "price", type: "stats" }],
+        },
+      },
+      plan
+    )
+
+    expect(queries).toHaveLength(4)
+    expect(queries.map((query) => query.stats)).toEqual([
+      "min",
+      "max",
+      "count",
+      "sum",
+    ])
+
+    const present: unknown = [
+      "And",
+      [
+        ["title", "ContainsAllTokens", "chair"],
+        ["price", "NotEq", null],
+      ],
+    ]
+
+    expect(queries[0].query).toEqual({
+      rank_by: ["price", "asc"],
+      limit: 1,
+      include_attributes: ["price"],
+      filters: present,
+    })
+    expect(queries[1].query).toEqual({
+      rank_by: ["price", "desc"],
+      limit: 1,
+      include_attributes: ["price"],
+      filters: present,
+    })
+    expect(queries[2].query).toEqual({
+      aggregate_by: { count: ["Count"] },
+      filters: ["title", "ContainsAllTokens", "chair"],
+    })
+    expect(queries[3].query).toEqual({
+      aggregate_by: { sum: ["Sum", "price"] },
+      filters: ["title", "ContainsAllTokens", "chair"],
+    })
+  })
+
+  it("parses numeric stats facets and converts date min/max to epoch milliseconds", () => {
+    const numeric = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "price", type: "stats" }] },
+      },
+      plan
+    )
+    const dated = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "created_at", type: "stats" }] },
+      },
+      plan
+    )
+
+    expect(dated.map((query) => query.stats)).toEqual(["min", "max", "count"])
+    expect(dated[2].query.aggregate_by).toEqual({ count: ["Count"] })
+    expect(
+      parseFacetResults(numeric, [
+        { rows: [{ id: "prod_1", price: 10 }] },
+        { rows: [{ id: "prod_2", price: 80 }] },
+        { aggregations: { count: 3 } },
+        { aggregations: { sum: 90 } },
+      ])
+    ).toEqual({
+      price: { type: "stats", min: 10, max: 80, count: 3, sum: 90 },
+    })
+    expect(
+      parseFacetResults(dated, [
+        { rows: [{ id: "prod_1", created_at: "2024-01-15T00:00:00.000Z" }] },
+        { rows: [{ id: "prod_2", created_at: "2024-06-01T00:00:00.000Z" }] },
+        { aggregations: { count: 2 } },
+      ])
+    ).toEqual({
+      created_at: {
+        type: "stats",
+        min: Date.parse("2024-01-15T00:00:00.000Z"),
+        max: Date.parse("2024-06-01T00:00:00.000Z"),
+        count: 2,
+      },
+    })
+  })
+
+  it("treats missing min/max rows as zero", () => {
+    const queries = buildFacetQueries(
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        search_options: { facets: [{ field: "price", type: "stats" }] },
+      },
+      plan
+    )
+
+    expect(
+      parseFacetResults(queries, [
+        { rows: [] },
+        { rows: [] },
+        { aggregations: { count: 0 } },
+      ])
+    ).toEqual({
+      price: { type: "stats", min: 0, max: 0, count: 0 },
+    })
+  })
+
+  it("rejects stats facets on non-numeric or array fields", () => {
+    expect(() =>
+      buildFacetQueries(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { facets: [{ field: "status", type: "stats" }] },
+        },
+        plan
+      )
+    ).toThrow(/scalar numeric field/)
+    expect(() =>
+      buildFacetQueries(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { facets: [{ field: "tags", type: "stats" }] },
+        },
+        plan
+      )
+    ).toThrow(/scalar numeric field/)
   })
 
   describe("typo tolerance", () => {
@@ -799,6 +946,212 @@ describe("Medusa search utilities", () => {
           }
         )
       ).toBeUndefined()
+    })
+  })
+
+  describe("vector search", () => {
+    it("ranks by a client-supplied embedding", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["embedding", "ANN", [0.1, 0.2, 0.3]])
+    })
+
+    it("infers the vector field when the index has exactly one", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["embedding", "ANN", [0.1, 0.2, 0.3]])
+    })
+
+    it("rejects vector.query when the field does not declare embed", () => {
+      expect(() =>
+        buildQueryPlan(
+          {
+            index: definition,
+            attributes_to_retrieve: ["title"],
+            search_options: {
+              vector: { field: "embedding", query: "red shoes" },
+            },
+          },
+          plan
+        )
+      ).toThrow(/declare "embed"/)
+    })
+
+    it("hybrids BM25 and ANN when a text query is also present", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoe",
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "Sum",
+        [
+          ["Product", 0.5, ["Product", 3, ["title", "BM25", "red shoe"]]],
+          ["Product", 0.5, ["embedding", "ANN", [0.1, 0.2, 0.3]]],
+        ],
+      ])
+      expect(query.query.filters).toBeUndefined()
+    })
+
+    it("puts embed on the vector column", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(embedded.schema.embedding).toEqual(
+        expect.objectContaining({
+          type: "[3]f32",
+          ann: true,
+          embed: { dims: 3 },
+        })
+      )
+      expect(embedded.schema.title).not.toHaveProperty("embed")
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", query: "red shoes" },
+          },
+        },
+        embedded
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "embedding",
+        "ANN",
+        ["Embed", "red shoes"],
+      ])
+    })
+
+    it("ranks by a client-supplied embedding against an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            vector: { field: "embedding", value: [0.1, 0.2, 0.3] },
+          },
+        },
+        embedded
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "embedding",
+        "ANN",
+        [0.1, 0.2, 0.3],
+      ])
+    })
+
+    it("writes source text on engine-embedded vector fields", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
+            embedding: "comfortable red running shoe",
+          },
+          embedded
+        )
+      ).toMatchObject({
+        embedding: "comfortable red running shoe",
+      })
+    })
+
+    it("rejects a vector array on an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
+            embedding: [0.1, 0.2, 0.3],
+          },
+          embedded
+        )
+      ).toThrow(/must be a string/)
+    })
+
+    it("rejects client embeddings whose dimensions do not match", () => {
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
+            embedding: [0.1, 0.2],
+          },
+          plan
+        )
+      ).toThrow(/expected 3 dimensions/)
     })
   })
 })

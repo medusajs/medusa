@@ -2,10 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Check, PencilSquare, Plus } from "@medusajs/icons"
+import { Check, Component, PencilSquare, Plus } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
   Button,
+  clx,
   createDataTableColumnHelper,
   CurrencyInput,
   DataTableRowSelectionState,
@@ -406,10 +407,13 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
 
   const { mutateAsync: updateActionItem, isPending: isUpdatingActionItem } =
     useDraftOrderUpdateActionItem(preview.id)
+  const { mutateAsync: removeActionItem, isPending: isRemovingActionItem } =
+    useDraftOrderRemoveActionItem(preview.id)
   const { mutateAsync: updateOriginalItem, isPending: isUpdatingOriginalItem } =
     useDraftOrderUpdateItem(preview.id)
 
-  const isPending = isUpdatingActionItem || isUpdatingOriginalItem
+  const isPending =
+    isUpdatingActionItem || isUpdatingOriginalItem || isRemovingActionItem
 
   const onSubmit = form.handleSubmit(async (data) => {
     /**
@@ -440,6 +444,19 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
           },
         }
       )
+
+      return
+    }
+
+    if (data.quantity === 0) {
+      await removeActionItem(actionId, {
+        onSuccess: () => {
+          setEditing(false)
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      })
 
       return
     }
@@ -840,6 +857,8 @@ const ExistingItemsForm = ({ orderId, items }: ExistingItemsFormProps) => {
       order,
       offset: offset ? parseInt(offset) : undefined,
       limit: LIMIT,
+      fields:
+        "*inventory_items.inventory.location_levels,+inventory_quantity,+manage_inventory",
     },
     {
       placeholderData: keepPreviousData,
@@ -940,6 +959,36 @@ const ExistingItemsForm = ({ orderId, items }: ExistingItemsFormProps) => {
 const columnHelper =
   createDataTableColumnHelper<HttpTypes.AdminProductVariant>()
 
+const getVariantInventory = (variant: HttpTypes.AdminProductVariant) => {
+  if (!variant.manage_inventory) {
+    return { text: "Not managed", hasInventoryKit: false, notManaged: true }
+  }
+
+  const quantity = variant.inventory_quantity
+
+  const inventoryItems = (variant.inventory_items
+    ?.map((i) => i.inventory)
+    .filter(Boolean) ?? []) as HttpTypes.AdminInventoryItem[]
+
+  const hasInventoryKit = inventoryItems.length > 1
+
+  const locations: Record<string, boolean> = {}
+  inventoryItems.forEach((i) => {
+    i.location_levels?.forEach((l) => {
+      locations[l.id] = true
+    })
+  })
+  const locationCount = Object.keys(locations).length
+
+  const text = hasInventoryKit
+    ? `${quantity} available`
+    : `${quantity} available at ${locationCount} location${
+        locationCount === 1 ? "" : "s"
+      }`
+
+  return { text, hasInventoryKit, quantity, notManaged: false }
+}
+
 const useColumns = () => {
   const { t } = useTranslation()
 
@@ -1001,6 +1050,29 @@ const useColumns = () => {
         enableSorting: true,
         sortAscLabel: t("filters.sorting.dateDesc"),
         sortDescLabel: t("filters.sorting.dateAsc"),
+      }),
+      columnHelper.display({
+        id: "inventory",
+        header: "Stock",
+        cell: ({ row }) => {
+          const { text, hasInventoryKit, quantity, notManaged } =
+            getVariantInventory(row.original)
+
+          return (
+            <Tooltip content={text}>
+              <div className="flex h-full w-full items-center gap-2 overflow-hidden">
+                {hasInventoryKit && <Component />}
+                <span
+                  className={clx("truncate", {
+                    "text-ui-fg-error": !quantity && !notManaged,
+                  })}
+                >
+                  {text}
+                </span>
+              </div>
+            </Tooltip>
+          )
+        },
       }),
     ]
   }, [t])
