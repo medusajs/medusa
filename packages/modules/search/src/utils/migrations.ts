@@ -11,11 +11,7 @@ import {
   SearchIndexState,
 } from "./index"
 
-/**
- * The physical index a version is built under. Every version — including the
- * first — gets one, so `definition.physical_name` is never itself a physical
- * index: it is only the root every version's name is derived from.
- */
+/** The physical index a version is built under; every version gets one, including the first. */
 export function versionPhysicalName(
   definition: SearchTypes.ResolvedSearchIndexDefinition,
   version: number
@@ -130,9 +126,7 @@ export async function executeIndexMigrationPlan(
 ): Promise<void> {
   for (const action of actions) {
     if (action.action === "noop") {
-      // Nothing changed for this index, but a version below the active one —
-      // left behind by an earlier migration's swap — still needs cleaning up.
-      // That cannot wait for the index to drift again.
+      // Still clean up any stale version left over from a previous swap.
       const record = await getOrCreateIndexRecord(context, action.index)
       await cleanupStaleVersions(context, record)
       continue
@@ -182,11 +176,7 @@ async function getOrCreateIndexRecord(
   return created
 }
 
-/**
- * Deletes every version older than the one currently serving reads. Runs on
- * every migration, not only when the provider changes — versions that lost
- * the swap on a previous migration accumulate otherwise.
- */
+/** Deletes every version older than the one currently serving reads. */
 async function cleanupStaleVersions(
   context: SearchIndexRegistry,
   record: SearchIndexRecord
@@ -221,9 +211,7 @@ async function cleanupStaleVersions(
     }
 
     await provider.deleteIndex({ index: version.physical_name })
-    // Soft delete: a hard delete would violate the foreign key from any
-    // `SearchIndexSync` row still pointing at this version's append-only
-    // history.
+    // Soft delete: a hard delete would violate the FK from SearchIndexSync rows.
     await context.versionService.softDelete([version.id])
   }
 }

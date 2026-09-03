@@ -242,6 +242,22 @@
           ],
           "mappedType": "enum"
         },
+        "build_seq": {
+          "name": "build_seq",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
         "search_index_id": {
           "name": "search_index_id",
           "type": "text",

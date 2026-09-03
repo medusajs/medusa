@@ -295,6 +295,8 @@ export class AbstractSearchProviderService
    * definition of the logical index the documents belong to. Use it for schema
    * information, such as the index's `fields` or `primary_key`.
    * @param {SearchTypes.SearchDocument[]} _input.documents - The documents, each with an `id`.
+   * @param {SearchTypes.SearchOrderedWrite} _input.ordered - Whether this write
+   * must be ordered against concurrent writes to the same documents.
    * @returns {Promise<SearchTypes.SearchTask>} The write's task.
    *
    * @example
@@ -304,10 +306,12 @@ export class AbstractSearchProviderService
    *     index,
    *     definition,
    *     documents,
+   *     ordered,
    *   }: {
    *     index: string
    *     definition: SearchTypes.ResolvedSearchIndexDefinition
    *     documents: SearchTypes.SearchDocument[]
+   *     ordered: SearchTypes.SearchOrderedWrite
    *   }): Promise<SearchTypes.SearchTask> {
    *     const task = await this.client.addDocuments(index, documents, {
    *       schema: definition.fields,
@@ -320,6 +324,7 @@ export class AbstractSearchProviderService
     index: string
     definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
+    ordered: SearchTypes.SearchOrderedWrite
   }): Promise<SearchTypes.SearchTask> {
     throw Error("upsertDocuments must be overridden by the child class")
   }
@@ -377,5 +382,37 @@ export class AbstractSearchProviderService
    */
   async clearIndex(_input: { index: string }): Promise<SearchTypes.SearchTask> {
     throw Error("clearIndex must be overridden by the child class")
+  }
+
+  /**
+   * This method removes every document whose stored `seq` is less than
+   * `seq` — see {@link SearchTypes.ISearchProvider.sweepStale}.
+   *
+   * @param {object} _input - The sweep to perform.
+   * @param {string} _input.index - The index's physical name.
+   * @param {string} _input.seq - The cutoff. Anything stored with a lower
+   * value is removed.
+   * @returns {Promise<SearchTypes.SearchTask>} The write's task.
+   *
+   * @example
+   * class MySearchProviderService extends AbstractSearchProviderService {
+   *   // ...
+   *   async sweepStale({
+   *     index,
+   *     seq,
+   *   }: {
+   *     index: string
+   *     seq: string
+   *   }): Promise<SearchTypes.SearchTask> {
+   *     await this.client.deleteWhere(index, { seq: { lt: seq } })
+   *     return { index, status: "succeeded" }
+   *   }
+   * }
+   */
+  async sweepStale(_input: {
+    index: string
+    seq: string
+  }): Promise<SearchTypes.SearchTask> {
+    throw Error("sweepStale must be overridden by the child class")
   }
 }

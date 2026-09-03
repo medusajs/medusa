@@ -11,10 +11,10 @@ import { SearchResult } from "./result"
 /**
  * The strategy used to rebuild a search index:
  *
- * - `swap` seeds a new version of the index and makes it active on completion,
- * keeping the current version serving reads throughout.
- * - `in_place` upserts into the active version directly, which is cheaper but
- * leaves stale documents behind for anything the seed no longer produces.
+ * - `swap` seeds a new version and makes it active on completion, so the
+ *   current version keeps serving reads throughout.
+ * - `in_place` upserts into the active version directly — cheaper, but leaves
+ *   stale documents behind for anything the seed no longer produces.
  */
 export type SearchReindexStrategy = "swap" | "in_place"
 
@@ -262,9 +262,8 @@ export interface ISearchModuleService extends IModuleService {
 
   /**
    * This method retrieves an index's definition with the module's defaults
-   * applied: the provider it resolved to, the root physical index name its
-   * versions are derived from, and the `primary_key` its documents are keyed
-   * by, which is what a hit's `id` holds.
+   * applied: the provider it resolved to, its root physical index name, and
+   * the `primary_key` its documents are keyed by.
    *
    * @param {string} index - The name of the index.
    * @returns {ResolvedSearchIndexDefinition} The resolved index definition.

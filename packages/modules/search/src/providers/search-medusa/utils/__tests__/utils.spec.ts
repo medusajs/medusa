@@ -8,7 +8,14 @@ import {
   parseHighlights,
   toSearchDocument,
   toSearchFilter,
+  type Filter,
 } from ".."
+
+// Every query filter is ANDed with this — see `buildQueryFilters` — so a
+// tombstoned document never surfaces. Wrap an otherwise-expected filter with
+// it, or use it bare where the query has no other filter of its own.
+const NOT_DELETED: Filter = ["_deleted", "NotEq", true]
+const withNotDeleted = (filter: Filter): Filter => ["And", [NOT_DELETED, filter]]
 
 const definition: SearchTypes.ResolvedSearchIndexDefinition = {
   name: "product",
@@ -202,11 +209,9 @@ describe("Medusa search utilities", () => {
       3,
       ["title", "BM25", "red shoe"],
     ])
-    expect(query.query.filters).toEqual([
-      "title",
-      "ContainsAllTokens",
-      "red shoe",
-    ])
+    expect(query.query.filters).toEqual(
+      withNotDeleted(["title", "ContainsAllTokens", "red shoe"])
+    )
     expect(query.query.limit).toBe(15)
   })
 
@@ -224,6 +229,7 @@ describe("Medusa search utilities", () => {
     expect(query.query.filters).toEqual([
       "And",
       [
+        NOT_DELETED,
         ["status", "Eq", "published"],
         ["title", "ContainsAllTokens", "chair"],
       ],
@@ -241,11 +247,9 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(query.query.filters).toEqual([
-      "title",
-      "ContainsAnyToken",
-      "red shoe",
-    ])
+    expect(query.query.filters).toEqual(
+      withNotDeleted(["title", "ContainsAnyToken", "red shoe"])
+    )
   })
 
   it("sorts text matches by an attribute instead of BM25", () => {
@@ -259,7 +263,9 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(query.query.filters).toEqual(["title", "ContainsAllTokens", "chair"])
+    expect(query.query.filters).toEqual(
+      withNotDeleted(["title", "ContainsAllTokens", "chair"])
+    )
     expect(query.query.rank_by).toEqual(["price", "asc"])
   })
 
@@ -299,13 +305,15 @@ describe("Medusa search utilities", () => {
       multi
     )
 
-    expect(query.query.filters).toEqual([
-      "Or",
-      [
-        ["title", "ContainsAllTokens", "red chair"],
-        ["description", "ContainsAllTokens", "red chair"],
-      ],
-    ])
+    expect(query.query.filters).toEqual(
+      withNotDeleted([
+        "Or",
+        [
+          ["title", "ContainsAllTokens", "red chair"],
+          ["description", "ContainsAllTokens", "red chair"],
+        ],
+      ])
+    )
   })
 
   it("passes last_as_prefix for match_strategy last", () => {
@@ -324,12 +332,14 @@ describe("Medusa search utilities", () => {
       3,
       ["title", "BM25", "dtc sta", { last_as_prefix: true }],
     ])
-    expect(query.query.filters).toEqual([
-      "title",
-      "ContainsAllTokens",
-      "dtc sta",
-      { last_as_prefix: true },
-    ])
+    expect(query.query.filters).toEqual(
+      withNotDeleted([
+        "title",
+        "ContainsAllTokens",
+        "dtc sta",
+        { last_as_prefix: true },
+      ])
+    )
   })
 
   it("builds and parses value and range facet queries", () => {
@@ -359,7 +369,7 @@ describe("Medusa search utilities", () => {
     ])
     expect(queries[1].query.top_k).toBe(10000)
     expect(queries[1].query).not.toHaveProperty("limit")
-    expect(queries[0].query.filters).toBeUndefined()
+    expect(queries[0].query.filters).toEqual(NOT_DELETED)
     expect(
       parseFacetResults(queries, [
         {
@@ -438,6 +448,7 @@ describe("Medusa search utilities", () => {
     const textAndStatus: unknown = [
       "And",
       [
+        NOT_DELETED,
         ["status", "Eq", "published"],
         ["title", "ContainsAllTokens", "chair"],
       ],
@@ -471,13 +482,8 @@ describe("Medusa search utilities", () => {
       "sum",
     ])
 
-    const present: unknown = [
-      "And",
-      [
-        ["title", "ContainsAllTokens", "chair"],
-        ["price", "NotEq", null],
-      ],
-    ]
+    const base = withNotDeleted(["title", "ContainsAllTokens", "chair"])
+    const present: unknown = ["And", [base, ["price", "NotEq", null]]]
 
     expect(queries[0].query).toEqual({
       rank_by: ["price", "asc"],
@@ -493,11 +499,11 @@ describe("Medusa search utilities", () => {
     })
     expect(queries[2].query).toEqual({
       aggregate_by: { count: ["Count"] },
-      filters: ["title", "ContainsAllTokens", "chair"],
+      filters: base,
     })
     expect(queries[3].query).toEqual({
       aggregate_by: { sum: ["Sum", "price"] },
-      filters: ["title", "ContainsAllTokens", "chair"],
+      filters: base,
     })
   })
 
@@ -658,24 +664,26 @@ describe("Medusa search utilities", () => {
           ],
         ],
       ])
-      expect(query.query.filters).toEqual([
-        "Or",
-        [
-          ["title", "ContainsAllTokens", "shoo"],
+      expect(query.query.filters).toEqual(
+        withNotDeleted([
+          "Or",
           [
-            "title",
-            "Fuzzy",
-            "shoo",
-            {
-              max_edit_distance: [
-                { min_query_chars: 6, distance: 1 },
-                { min_query_chars: 9, distance: 2 },
-              ],
-              case_sensitive: false,
-            },
+            ["title", "ContainsAllTokens", "shoo"],
+            [
+              "title",
+              "Fuzzy",
+              "shoo",
+              {
+                max_edit_distance: [
+                  { min_query_chars: 6, distance: 1 },
+                  { min_query_chars: 9, distance: 2 },
+                ],
+                case_sensitive: false,
+              },
+            ],
           ],
-        ],
-      ])
+        ])
+      )
     })
 
     it("honors custom index-level edit-distance thresholds and requires every word to match", () => {
@@ -1015,7 +1023,7 @@ describe("Medusa search utilities", () => {
           ["Product", 0.5, ["embedding", "ANN", [0.1, 0.2, 0.3]]],
         ],
       ])
-      expect(query.query.filters).toBeUndefined()
+      expect(query.query.filters).toEqual(NOT_DELETED)
     })
 
     it("puts embed on the vector column", () => {

@@ -6,55 +6,70 @@ export type ActiveIndexVersion = {
   version: number
 }
 
+type IndexVersionState = {
+  active?: ActiveIndexVersion
+  building?: ActiveIndexVersion
+}
+
 const SOFT_TTL_MS = 30_000
 const HARD_TTL_MS = 10 * 60_000
 
 /**
- * Caches which physical index currently serves reads for every logical index,
- * since that can change out from under a running process when another
- * replica finishes seeding and flips it.
- *
- * Populated in one bulk fetch rather than one per index: there are never many
- * search indexes in an app, so listing them all is cheap, and it means
- * refreshing because of one index refreshes every other one for free.
- *
- * Fresh for `SOFT_TTL_MS`. Stale beyond that but still served while a
- * background refresh runs (stale-while-revalidate) — a failed refresh leaves
- * `fetchedAt_` untouched, so the age keeps counting from the last *successful*
- * fetch rather than resetting. Never served past `HARD_TTL_MS` since that last
- * success; a caller waits on a synchronous refetch instead.
+ * Per-index cache of the active and (if any) currently-building version,
+ * since either can change from another replica finishing/starting a build.
+ * Fresh for SOFT_TTL_MS, stale-while-revalidate until HARD_TTL_MS, then
+ * blocks for a fresh fetch. A failed background refresh doesn't reset the
+ * clock.
  */
 export class ActiveIndexVersionCache {
-  protected values_ = new Map<string, ActiveIndexVersion>()
-  protected fetchedAt_ = 0
+  protected values_ = new Map<string, IndexVersionState>()
+  // `null`, not `0` — `0` is falsy too, and a mocked clock could start there.
+  protected fetchedAt_: number | null = null
   protected refreshing_?: Promise<void>
 
   constructor(
-    protected readonly fetchAll_: () => Promise<Map<string, ActiveIndexVersion>>
+    protected readonly fetchAll_: () => Promise<Map<string, IndexVersionState>>
   ) {}
 
   async get(name: string): Promise<ActiveIndexVersion> {
-    const age = Date.now() - this.fetchedAt_
+    const state = await this.resolve(name)
 
-    if (!this.fetchedAt_ || age >= HARD_TTL_MS) {
-      await this.refresh()
-    } else if (age >= SOFT_TTL_MS && !this.refreshing_) {
-      this.refreshing_ = this.refresh().catch(() => {
-        // Left stale on purpose — `fetchedAt_` is untouched, so `HARD_TTL_MS`
-        // keeps counting from the last success, not this failure.
-      })
-    }
-
-    const value = this.values_.get(name)
-
-    if (!value) {
+    if (!state.active) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Search index "${name}" has no active version yet. It has to be migrated and seeded first.`
       )
     }
 
-    return value
+    return state.active
+  }
+
+  /** The version currently being built for this index, if any. Never throws. */
+  async getBuilding(name: string): Promise<ActiveIndexVersion | undefined> {
+    return (await this.resolve(name)).building
+  }
+
+  protected async resolve(name: string): Promise<IndexVersionState> {
+    if (this.fetchedAt_ === null) {
+      await this.refresh()
+      return this.values_.get(name) ?? {}
+    }
+
+    const age = Date.now() - this.fetchedAt_
+
+    if (age >= HARD_TTL_MS) {
+      await this.refresh()
+    } else if (age >= SOFT_TTL_MS && !this.refreshing_) {
+      this.refreshing_ = this.refresh()
+        // Left stale on purpose: `fetchedAt_` stays untouched on failure.
+        .catch(() => {})
+        // Cleared here since `refresh()`'s own clear never runs on rejection.
+        .finally(() => {
+          this.refreshing_ = undefined
+        })
+    }
+
+    return this.values_.get(name) ?? {}
   }
 
   protected async refresh(): Promise<void> {
@@ -63,13 +78,18 @@ export class ActiveIndexVersionCache {
     this.refreshing_ = undefined
   }
 
-  /** Sets one value directly, e.g. right after this process itself flips it. */
-  set(name: string, value: ActiveIndexVersion): void {
-    this.values_.set(name, value)
+  /** Sets the active value directly, e.g. right after this process itself flips it. */
+  setActive(name: string, value: ActiveIndexVersion): void {
+    this.values_.set(name, { ...this.values_.get(name), active: value })
+  }
+
+  /** Marks, or clears, the version currently building for one index. */
+  setBuilding(name: string, value: ActiveIndexVersion | undefined): void {
+    this.values_.set(name, { ...this.values_.get(name), building: value })
   }
 
   invalidate(): void {
-    this.fetchedAt_ = 0
+    this.fetchedAt_ = null
     this.values_.clear()
   }
 }

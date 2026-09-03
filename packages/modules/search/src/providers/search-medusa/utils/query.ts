@@ -185,7 +185,11 @@ export function buildQueryFilters(
       ? mergeFilters([text, fuzzyMatchFilter(input, plan)], "Or")
       : text
 
-  return mergeFilters([toSearchFilter(input.filters, plan), match])
+  // Every hit/count/facet query funnels through here, so this keeps
+  // tombstoned documents out of all of them.
+  const notDeleted: Filter = ["_deleted", "NotEq", true]
+
+  return mergeFilters([notDeleted, toSearchFilter(input.filters, plan), match])
 }
 
 const DEFAULT_HIGHLIGHT_PRE_TAG = "<mark>"

@@ -62,6 +62,14 @@ export interface SearchTask {
 }
 
 /**
+ * Whether a write must apply unconditionally (`false`, the normal case), or
+ * only if `seq` is higher than what's already stored for that document
+ * (used while a version is being built, so a live write can't be reverted
+ * by an older write landing after it).
+ */
+export type SearchOrderedWrite = false | { seq: string }
+
+/**
  * The details of a physical index that a provider holds.
  */
 export interface SearchIndexInfo {

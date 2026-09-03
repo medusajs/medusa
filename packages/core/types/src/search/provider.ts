@@ -1,4 +1,9 @@
-import { SearchDocument, SearchIndexInfo, SearchTask } from "./common"
+import {
+  SearchDocument,
+  SearchIndexInfo,
+  SearchOrderedWrite,
+  SearchTask,
+} from "./common"
 import { SearchFilters } from "./filters"
 import { ResolvedSearchIndexDefinition } from "./index-definition"
 import { SearchQuery } from "./query"
@@ -45,6 +50,13 @@ export interface SearchDeleteDocumentsInput {
    * the index's primary key, such as `{ id: ["prod_1", "prod_2"] }`.
    */
   filters: SearchFilters
+
+  /**
+   * See {@link SearchOrderedWrite}. When set, a matching document is
+   * tombstoned rather than removed, so a late, older upsert for the same id
+   * can't resurrect it.
+   */
+  ordered: SearchOrderedWrite
 }
 
 /**
@@ -175,6 +187,9 @@ export interface ISearchProvider {
    * the logical index the documents belong to. Use it for schema information,
    * such as the index's `fields` or `primary_key`.
    * @param {SearchDocument[]} input.documents - The documents, each with an `id`.
+   * @param {SearchOrderedWrite} input.ordered - Whether this write must be
+   * ordered against concurrent writes to the same documents. See
+   * {@link SearchOrderedWrite}.
    * @returns {Promise<SearchTask>} The write's task.
    *
    * @example
@@ -184,13 +199,16 @@ export interface ISearchProvider {
    *     index,
    *     definition,
    *     documents,
+   *     ordered,
    *   }: {
    *     index: string
    *     definition: SearchTypes.ResolvedSearchIndexDefinition
    *     documents: SearchTypes.SearchDocument[]
+   *     ordered: SearchTypes.SearchOrderedWrite
    *   }): Promise<SearchTypes.SearchTask> {
    *     const task = await this.client.addDocuments(index, documents, {
    *       schema: definition.fields,
+   *       onlyIfNewer: ordered ? ordered.seq : undefined,
    *     })
    *     return { id: `${task.uid}`, index, status: "enqueued" }
    *   }
@@ -206,6 +224,11 @@ export interface ISearchProvider {
      */
     definition: ResolvedSearchIndexDefinition
     documents: SearchDocument[]
+    /**
+     * Whether this write must be ordered against concurrent writes to the
+     * same documents. See {@link SearchOrderedWrite}.
+     */
+    ordered: SearchOrderedWrite
   }): Promise<SearchTask>
 
   /**
@@ -216,8 +239,9 @@ export interface ISearchProvider {
    * delete-by-ID path, which is usually much faster. If your engine can't delete by
    * arbitrary filters, either search first and delete the matching IDs, or throw.
    *
-   * @param {SearchDeleteDocumentsInput} input - The index and the filters
-   * selecting the documents to remove.
+   * @param {SearchDeleteDocumentsInput} input - The index, the filters
+   * selecting the documents to remove, and whether the delete must be
+   * ordered against concurrent writes.
    * @returns {Promise<SearchTask>} The write's task.
    *
    * @example
@@ -226,8 +250,13 @@ export interface ISearchProvider {
    *   async deleteDocuments({
    *     index,
    *     filters,
+   *     ordered,
    *   }: SearchTypes.SearchDeleteDocumentsInput): Promise<SearchTypes.SearchTask> {
-   *     await this.client.deleteDocumentsByFilter(index, filters)
+   *     if (ordered) {
+   *       await this.client.tombstoneByFilter(index, filters, ordered.seq)
+   *     } else {
+   *       await this.client.deleteDocumentsByFilter(index, filters)
+   *     }
    *     return { index, status: "succeeded" }
    *   }
    * }
@@ -256,6 +285,36 @@ export interface ISearchProvider {
    * }
    */
   clearIndex(input: { index: string }): Promise<SearchTask>
+
+  /**
+   * This method removes every document whose stored `seq` is less than
+   * `input.seq` — the ones an `in_place` rebuild's `seed()` pass (and any
+   * live write racing it) didn't touch. Called once, after that rebuild
+   * finishes. Never called for a rebuild that swaps in a new version, since
+   * that version starts empty.
+   *
+   * @param {object} input - The sweep to perform.
+   * @param {string} input.index - The index's physical name.
+   * @param {string} input.seq - The cutoff. Anything stored with a lower
+   * value is removed.
+   * @returns {Promise<SearchTask>} The write's task.
+   *
+   * @example
+   * class MySearchProviderService extends AbstractSearchProviderService {
+   *   // ...
+   *   async sweepStale({
+   *     index,
+   *     seq,
+   *   }: {
+   *     index: string
+   *     seq: string
+   *   }): Promise<SearchTypes.SearchTask> {
+   *     await this.client.deleteWhere(index, { seq: { lt: seq } })
+   *     return { index, status: "succeeded" }
+   *   }
+   * }
+   */
+  sweepStale(input: { index: string; seq: string }): Promise<SearchTask>
 
   /**
    * This method runs a search against an index. The Search Module will use this method in

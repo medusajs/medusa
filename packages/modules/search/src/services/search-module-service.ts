@@ -16,6 +16,7 @@ import {
   promiseAll,
 } from "@medusajs/framework/utils"
 import {
+  SearchDbManager,
   SearchEventRoutes,
   SearchIndexContext,
   SearchIndexes,
@@ -31,6 +32,7 @@ import {
   listVersionsByIndexId,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
+  planWrites,
   resolveActiveDefinition,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
@@ -62,6 +64,7 @@ type InjectedDependencies = {
   searchIndexService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexVersionService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
+  manager: SearchDbManager
 }
 
 export default class SearchModuleService
@@ -83,10 +86,8 @@ export default class SearchModuleService
   // migration rather than a race.
   protected readonly indexes_: SearchIndexes
 
-  // Which physical index currently serves reads for each logical index. A
-  // cache rather than a value resolved once, because — unlike `indexes_` — it
-  // can change out from under this process when another replica finishes
-  // seeding and flips it.
+  // Which physical index is active per logical index; cached, not resolved
+  // once, since another replica can flip it out from under this process.
   protected readonly activeVersionCache_: ActiveIndexVersionCache
 
   // Passed down for migrations and seeding, among other things.
@@ -144,19 +145,22 @@ export default class SearchModuleService
       indexService: container.searchIndexService,
       versionService: container.searchIndexVersionService,
       syncService: container.searchIndexSyncService,
+      manager: container.manager,
       locking: resolveLocking(container),
       activeVersionCache: this.activeVersionCache_,
     }
   }
 
-  // Reads the DB directly, for every index at once — there are never many
-  // search indexes in an app, so listing them all is cheap, and it lets one
-  // refresh (triggered by any index) serve every index. Called by
-  // `activeVersionCache_` on a cache miss or refresh — never on the request
-  // path itself.
+  // Reads every index's active/building version in one query. Called by
+  // `activeVersionCache_` on a miss or refresh, never on the request path.
   protected async fetchActiveVersions_(
     container: InjectedDependencies
-  ): Promise<Map<string, ActiveIndexVersion>> {
+  ): Promise<
+    Map<
+      string,
+      { active?: ActiveIndexVersion; building?: ActiveIndexVersion }
+    >
+  > {
     const records = (await container.searchIndexService.list(
       {},
       { take: null }
@@ -167,34 +171,49 @@ export default class SearchModuleService
       records.map((record) => record.id)
     )
 
-    const values = new Map<string, ActiveIndexVersion>()
+    const values = new Map<
+      string,
+      { active?: ActiveIndexVersion; building?: ActiveIndexVersion }
+    >()
 
     for (const record of records) {
-      if (record.active_version == null) {
+      const versions = versionsByIndexId.get(record.id) ?? []
+
+      const active =
+        record.active_version != null
+          ? versions.find(
+              (candidate) => candidate.version === record.active_version
+            )
+          : undefined
+
+      // `BUILDING`, not `PENDING`: double-writes only matter once the bulk
+      // seed has actually started.
+      const building = versions.find(
+        (candidate) => candidate.status === SearchIndexState.BUILDING
+      )
+
+      if (!active && !building) {
         continue
       }
 
-      const version = versionsByIndexId
-        .get(record.id)
-        ?.find((candidate) => candidate.version === record.active_version)
-
-      if (version) {
-        values.set(record.name, {
-          physical_name: version.physical_name,
-          provider: version.provider,
-          version: version.version,
-        })
-      }
+      values.set(record.name, {
+        active: active && {
+          physical_name: active.physical_name,
+          provider: active.provider,
+          version: active.version,
+        },
+        building: building && {
+          physical_name: building.physical_name,
+          provider: building.provider,
+          version: building.version,
+        },
+      })
     }
 
     return values
   }
 
-  // Merges in the physical index and provider currently serving reads. Every
-  // *live* read or write goes through this rather than `definition.physical_name`
-  // directly, since the active version can change out from under this process.
-  // Shared with the ingestion path (`resolveActiveDefinition` in `@utils`) so
-  // the two can't drift apart.
+  // Shared with the ingestion path so the two can't drift apart.
   protected async resolveActiveDefinition_(
     name: string
   ): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
@@ -346,16 +365,34 @@ export default class SearchModuleService
       return { index, status: "succeeded" }
     }
 
-    const definition = await this.resolveActiveDefinition_(index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    const definition = retrieveIndexDefinition(this.indexes_, index)
+    const writes = await planWrites(this.context_, index)
 
-    const task = await provider.upsertDocuments({
-      index: definition.physical_name,
-      definition,
-      documents,
-    })
+    let primary: SearchTypes.SearchTask | undefined
 
-    return assertTaskAccepted(task, index)
+    for (const write of writes) {
+      const provider = this.searchProviderService_.retrieve(
+        write.target.provider
+      )
+
+      const task = await provider.upsertDocuments({
+        index: write.target.physical_name,
+        definition: {
+          ...definition,
+          physical_name: write.target.physical_name,
+          provider: write.target.provider,
+        },
+        documents,
+        ordered: write.ordered,
+      })
+
+      assertTaskAccepted(task, index)
+      if (write.isActive) {
+        primary = task
+      }
+    }
+
+    return primary!
   }
 
   async deleteDocuments({
@@ -372,15 +409,27 @@ export default class SearchModuleService
       )
     }
 
-    const definition = await this.resolveActiveDefinition_(index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    const writes = await planWrites(this.context_, index)
+    let primary: SearchTypes.SearchTask | undefined
 
-    const task = await provider.deleteDocuments({
-      index: definition.physical_name,
-      filters,
-    })
+    for (const write of writes) {
+      const provider = this.searchProviderService_.retrieve(
+        write.target.provider
+      )
 
-    return assertTaskAccepted(task, index)
+      const task = await provider.deleteDocuments({
+        index: write.target.physical_name,
+        filters,
+        ordered: write.ordered,
+      })
+
+      assertTaskAccepted(task, index)
+      if (write.isActive) {
+        primary = task
+      }
+    }
+
+    return primary!
   }
 
   // Waits for its writes, so awaiting this acknowledges the event.

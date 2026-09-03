@@ -173,6 +173,12 @@ export type IndexMultiQueryResponse = {
   }
 }
 
+/** References the incoming row's own value, e.g. `["_seq", "Lt", { $ref_new: "_seq" }]`. */
+export type WriteConditionRef = { $ref_new: string }
+
+/** Same shape as `Filter`, evaluated against the row already stored for an id. */
+export type WriteCondition = Filter
+
 export type IndexWriteParams = {
   upsert_rows?: Row[]
   schema?: Record<string, AttributeSchema>
@@ -180,6 +186,12 @@ export type IndexWriteParams = {
   sharding?: ShardingConfig
   delete_by_filter?: Filter
   delete_by_filter_allow_partial?: boolean
+  /**
+   * Gates `upsert_rows` per row: applies only if this evaluates true against
+   * what's currently stored for its id. Pair with an `Eq: null` branch to
+   * still allow a fresh insert.
+   */
+  upsert_condition?: WriteCondition
 }
 
 export type IndexWriteResponse = {

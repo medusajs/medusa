@@ -9,6 +9,7 @@ import {
   buildQueryPlan,
   fromSearchDocument,
   MedusaSearchClient,
+  MedusaSearchIndex,
   CloudServiceError,
   MedusaSearchProviderOptions,
   parseFacetResults,
@@ -17,10 +18,12 @@ import {
   toSearchFilter,
   validateMedusaSearchOptions,
   type FacetQuery,
+  type Filter,
   type IndexQuery,
   type IndexMultiQueryResponse,
   type QueryPlan,
   type Row,
+  type WriteCondition,
 } from "../utils"
 
 type InjectedDependencies = {
@@ -29,6 +32,16 @@ type InjectedDependencies = {
 
 const MAX_WRITE_BYTES = 480 * 1024 * 1024
 const MAX_MULTI_QUERIES = 16
+
+// Turbopuffer's native conditional write: apply only if newer, or nothing's
+// stored yet. See https://turbopuffer.com/docs/quickstart#conditional-writes.
+const KEEP_IF_NEWER: WriteCondition = [
+  "Or",
+  [
+    ["_seq", "Lt", { $ref_new: "_seq" }],
+    ["_seq", "Eq", null],
+  ],
+]
 
 type BuiltMultiQuery = {
   input: SearchTypes.ProviderSearchQuery
@@ -76,15 +89,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     const plan = buildIndexPlan(index)
     const remote = this.index(index.physical_name)
 
-    // Migration is the only place that reconciles schema / existence. Runtime
-    // writes and clears assume the index is already there.
-    //
-    // Every version gets its own namespace (see `versionPhysicalName` in the
-    // Search Module), so this only ever finds a namespace that doesn't exist
-    // yet, or — on a migration re-run after a crash — one that was already
-    // created with this same, unchanging schema. Medusa can't apply a
-    // schema change in place anyway, which is exactly why a new namespace is
-    // used instead of trying to.
+    // Every version gets its own namespace, so this only ever finds one that
+    // doesn't exist yet, or (a migration retry) one already created with
+    // this same schema.
     try {
       await remote.metadata()
     } catch (error) {
@@ -150,20 +157,30 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     index,
     definition,
     documents,
+    ordered,
   }: {
     index: string
     definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
+    ordered: SearchTypes.SearchOrderedWrite
   }): Promise<SearchTypes.SearchTask> {
     const plan = buildIndexPlan(definition)
-    const rows = documents.map((document) => toSearchDocument(document, plan))
     const remote = this.index(index)
+    const rows = documents.map((document) => toSearchDocument(document, plan))
+
+    if (ordered) {
+      for (const row of rows) {
+        row._seq = Number(ordered.seq)
+        row._deleted = false
+      }
+    }
 
     for (const chunk of this.chunkRows(rows)) {
       await remote.write({
         upsert_rows: chunk,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
+        ...(ordered ? { upsert_condition: KEEP_IF_NEWER } : {}),
       })
     }
 
@@ -173,6 +190,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   async deleteDocuments({
     index,
     filters,
+    ordered,
   }: SearchTypes.SearchDeleteDocumentsInput): Promise<SearchTypes.SearchTask> {
     const compiled = toSearchFilter(filters)
     if (!compiled) {
@@ -182,13 +200,27 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       )
     }
 
-    let remaining = true
-    while (remaining) {
-      const response = await this.index(index).write({
-        delete_by_filter: compiled,
-        delete_by_filter_allow_partial: true,
-      })
-      remaining = response.rows_remaining === true
+    if (!ordered) {
+      let remaining = true
+      while (remaining) {
+        const response = await this.index(index).write({
+          delete_by_filter: compiled,
+          delete_by_filter_allow_partial: true,
+        })
+        remaining = response.rows_remaining === true
+      }
+      return this.task(index)
+    }
+
+    // An id-based delete names its ids directly rather than resolving them
+    // by querying — a query would only find ids that already have a row,
+    // missing the case `tombstone()` exists for.
+    const remote = this.index(index)
+    const ids =
+      this.extractIdFilter(filters) ?? (await this.matchingIds(remote, compiled))
+
+    if (ids.length) {
+      await this.tombstone(remote, ids, ordered.seq)
     }
 
     return this.task(index)
@@ -215,6 +247,95 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     }
 
     return this.task(index)
+  }
+
+  async sweepStale({
+    index,
+    seq,
+  }: {
+    index: string
+    seq: string
+  }): Promise<SearchTypes.SearchTask> {
+    // Unconditional by nature — see `ISearchProvider.sweepStale`.
+    let remaining = true
+    while (remaining) {
+      const response = await this.index(index).write({
+        delete_by_filter: ["_seq", "Lt", Number(seq)],
+        delete_by_filter_allow_partial: true,
+      })
+      remaining = response.rows_remaining === true
+    }
+
+    return this.task(index)
+  }
+
+  // The common case for a delete: `{ id: [...] }` (or a single id, or its
+  // `$in`/`$eq` operator forms) names ids directly — see `SearchFilters` —
+  // so those can be used as-is instead of resolved by querying.
+  protected extractIdFilter(
+    filters: SearchTypes.SearchFilters
+  ): string[] | undefined {
+    const keys = Object.keys(filters)
+    if (keys.length !== 1 || keys[0] !== "id") {
+      return undefined
+    }
+
+    const value = filters.id as unknown
+
+    if (typeof value === "string" || typeof value === "number") {
+      return [String(value)]
+    }
+    if (Array.isArray(value)) {
+      return value.map(String)
+    }
+    if (value && typeof value === "object") {
+      const operand = (value as Record<string, unknown>).$in ??
+        (value as Record<string, unknown>).$eq
+      if (Array.isArray(operand)) {
+        return operand.map(String)
+      }
+      if (typeof operand === "string" || typeof operand === "number") {
+        return [String(operand)]
+      }
+    }
+
+    return undefined
+  }
+
+  // No id-listing endpoint and no server-side offset, so a filter matching
+  // more than this only tombstones the first batch. Edge case of an edge case.
+  protected static readonly MAX_MATCHING_IDS = 10_000
+
+  protected async matchingIds(
+    remote: MedusaSearchIndex,
+    filters: Filter
+  ): Promise<string[]> {
+    const result = await remote.query({
+      filters,
+      include_attributes: ["id"],
+      limit: MedusaSearchService.MAX_MATCHING_IDS,
+    })
+
+    return (result.rows ?? []).map((row) => String(row.id))
+  }
+
+  // Upserts a placeholder tombstone for an id with no row yet. Gated by the
+  // same `upsert_condition` as `upsertDocuments`.
+  protected async tombstone(
+    remote: MedusaSearchIndex,
+    ids: string[],
+    seq: string
+  ): Promise<void> {
+    const numericSeq = Number(seq)
+    const rows: Row[] = ids.map((id) => ({
+      id,
+      _seq: numericSeq,
+      _deleted: true,
+    }))
+
+    for (const chunk of this.chunkRows(rows)) {
+      await remote.write({ upsert_rows: chunk, upsert_condition: KEEP_IF_NEWER })
+    }
   }
 
   async search(

@@ -59,10 +59,8 @@ const updateVersionRecords = (service: SearchService, input: any) =>
 const softDeleteIndexRecords = (service: SearchService, ids: string[]) =>
   (service as any).context_.indexService.softDelete(ids) as Promise<any>
 
-// The version currently serving reads for a logical index. Every version —
-// including the first — has its own physical name, so this is what a raw
-// provider call (rather than one going through the module service, which
-// resolves this itself) has to look up.
+// The version currently serving reads. Every version has its own physical
+// name, so a raw provider call has to look this up.
 const activeVersion = async (service: SearchService, name: string) => {
   const [record] = await indexRecords(service, { name })
   const [version] = await versionRecords(service, {

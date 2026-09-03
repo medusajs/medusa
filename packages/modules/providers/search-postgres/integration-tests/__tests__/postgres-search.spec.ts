@@ -20,9 +20,8 @@ const boot = (service: SearchService) =>
 const migrate = async (service: SearchService) =>
   service.executeIndexMigrationPlan(await service.createIndexMigrationPlan())
 
-// Every version — including the first — gets its own physical table, so a
-// raw provider call (rather than one going through the module service, which
-// resolves this itself) has to look up whichever version is currently active.
+// Every version gets its own physical table, so a raw provider call has to
+// look up whichever version is currently active.
 const activeVersion = async (service: SearchService, name: string) => {
   const [record] = await (service as any).context_.indexService.list({ name })
   const [version] = await (service as any).context_.versionService.list({
@@ -61,6 +60,50 @@ const reseed = async (service: SearchService) => {
     index: "product",
     documents: dataset.products,
   })
+}
+
+const documentCountFor = async (service: SearchService, physicalName: string) => {
+  const indexes = await provider(service).listIndexes()
+  return (
+    indexes.find((info: { name: string }) => info.name === physicalName)
+      ?.document_count ?? 0
+  )
+}
+
+// Stands in for a migration + seed creating a building version, without
+// running the whole pipeline, so writes can be sequenced deterministically.
+const beginTestBuild = async (service: SearchService) => {
+  const definition = service.getIndex("product")
+  const active = await activeVersion(service, "product")
+  const version = active.version + 1
+  const physicalName = `${definition.physical_name}_v${version}`
+
+  await provider(service).upsertIndex({
+    index: { ...definition, physical_name: physicalName },
+  })
+
+  const [created] = await (service as any).context_.versionService.create([
+    {
+      search_index_id: active.search_index_id,
+      version,
+      provider: "search-postgres",
+      physical_name: physicalName,
+      definition_hash: definition.definition_hash,
+      status: "building",
+    },
+  ])
+
+  ;(service as any).activeVersionCache_.setBuilding("product", {
+    physical_name: physicalName,
+    provider: "search-postgres",
+    version,
+  })
+
+  return created
+}
+
+const endTestBuild = (service: SearchService) => {
+  (service as any).activeVersionCache_.setBuilding("product", undefined)
 }
 
 moduleIntegrationTestRunner<SearchService>({
@@ -412,6 +455,168 @@ moduleIntegrationTestRunner<SearchService>({
           // Cheapest per brand: prod_2 (borg, 50) and prod_1 (acme, 100).
           expect(ids(result)).toEqual(["prod_2", "prod_1"])
           expect(result.metadata.count).toBe(2)
+        })
+      })
+
+      describe("ordered writes", () => {
+        beforeEach(async () => reseed(service))
+
+        const write = (documents: any[], seq: string) =>
+          activePhysicalName(service, "product").then((index) =>
+            provider(service).upsertDocuments({
+              index,
+              definition: service.getIndex("product"),
+              documents,
+              ordered: { seq },
+            })
+          )
+
+        const remove = (idList: string[], seq: string) =>
+          activePhysicalName(service, "product").then((index) =>
+            provider(service).deleteDocuments({
+              index,
+              filters: { id: idList },
+              ordered: { seq },
+            })
+          )
+
+        it("applies a newer upsert after an older one for the same id", async () => {
+          await write([{ ...baseProducts[0], title: "Older title" }], "10")
+          await write([{ ...baseProducts[0], title: "Newer title" }], "20")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { id: "prod_1" },
+          })
+          expect(result.hits[0].document.title).toBe("Newer title")
+        })
+
+        it("rejects an older upsert arriving after a newer one for the same id", async () => {
+          await write([{ ...baseProducts[0], title: "Newer title" }], "20")
+          await write([{ ...baseProducts[0], title: "Older title" }], "10")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { id: "prod_1" },
+          })
+          expect(result.hits[0].document.title).toBe("Newer title")
+        })
+
+        it("rejects an older delete arriving after a newer upsert", async () => {
+          await write([{ ...baseProducts[0] }], "20")
+          await remove(["prod_1"], "10")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { id: "prod_1" },
+          })
+          expect(ids(result)).toEqual(["prod_1"])
+        })
+
+        it("applies a newer delete arriving after an older upsert, tombstoning the document", async () => {
+          await write([{ ...baseProducts[0] }], "10")
+          await remove(["prod_1"], "20")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { id: "prod_1" },
+          })
+          expect(ids(result)).toEqual([])
+        })
+
+        it("tombstones an id with no row yet, rejecting a later, older upsert for it", async () => {
+          // Stands in for the bulk seed's own stale snapshot of an id a live
+          // delete has already removed arriving after that delete.
+          await remove(["prod_ghost"], "20")
+          await write([{ ...baseProducts[0], id: "prod_ghost" }], "10")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { id: "prod_ghost" },
+          })
+          expect(ids(result)).toEqual([])
+        })
+
+        it("accepts a newer upsert for a tombstoned id that never had a row", async () => {
+          await remove(["prod_ghost"], "10")
+          await write([{ ...baseProducts[0], id: "prod_ghost" }], "20")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { id: "prod_ghost" },
+          })
+          expect(ids(result)).toEqual(["prod_ghost"])
+        })
+
+        it("sweepStale removes only documents older than the cutoff", async () => {
+          // prod_1/2/3 were seeded unordered, so they carry the default
+          // `_seq` of 0. Touch prod_1 as if a rebuild (or a live write
+          // racing it) had reached it.
+          await write([{ ...baseProducts[0] }], "5")
+
+          const physicalName = await activePhysicalName(service, "product")
+          await provider(service).sweepStale({ index: physicalName, seq: "5" })
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result)).toEqual(["prod_1"])
+
+          const [info] = await provider(service).listIndexes()
+          expect(info.document_count).toBe(1)
+        })
+      })
+
+      describe("double-writes into a version being built", () => {
+        beforeEach(async () => reseed(service))
+
+        it("writes a live upsert into both the active and the building version", async () => {
+          const building = await beginTestBuild(service)
+          try {
+            const activePhysical = await activePhysicalName(service, "product")
+
+            await service.upsertDocuments({
+              index: "product",
+              documents: [{ ...baseProducts[0], id: "prod_new" }],
+            })
+
+            expect(await documentCountFor(service, activePhysical)).toBe(4)
+            expect(
+              await documentCountFor(service, building.physical_name)
+            ).toBe(1)
+          } finally {
+            endTestBuild(service)
+          }
+        })
+
+        it("tombstones a live delete on the building version while really deleting it on the active one", async () => {
+          const building = await beginTestBuild(service)
+          try {
+            const activePhysical = await activePhysicalName(service, "product")
+
+            await service.upsertDocuments({
+              index: "product",
+              documents: [{ ...baseProducts[0], id: "prod_new" }],
+            })
+            await service.deleteDocuments({
+              index: "product",
+              filters: { id: ["prod_new"] },
+            })
+
+            expect(await documentCountFor(service, activePhysical)).toBe(3)
+            expect(
+              await documentCountFor(service, building.physical_name)
+            ).toBe(0)
+          } finally {
+            endTestBuild(service)
+          }
         })
       })
 

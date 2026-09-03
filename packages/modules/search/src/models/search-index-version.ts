@@ -19,6 +19,9 @@ export const SearchIndexVersion = model
     // Used to detect schema drift against the loaded definition.
     definition_hash: model.text(),
     status: model.enum(SearchIndexState).default(SearchIndexState.PENDING),
+    // Ordering value the current build started with. Reused across a resume
+    // rather than reissued, so earlier writes still compare as current.
+    build_seq: model.text().nullable(),
     search_index: model.belongsTo(() => SearchIndex, { mappedBy: "versions" }),
     syncs: model.hasMany(() => SearchIndexSync, {
       mappedBy: "search_index_version",

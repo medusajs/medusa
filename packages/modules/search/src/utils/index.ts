@@ -1,6 +1,7 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
+  SearchDbManager,
   SearchIndexContext,
   SearchIndexes,
   SearchIndexVersionRecord,
@@ -678,12 +679,10 @@ export async function listVersionsByIndexId(
 }
 
 /**
- * The definition merged with whichever physical index and provider currently
- * serve reads/writes. Every *live* operation (a direct write, an event
- * ingested, a query) must resolve through this rather than
- * `definition.physical_name` directly — that field is only the root a
- * version's name is derived from, and which version is active can change out
- * from under this process.
+ * The definition merged with whichever physical index/provider is currently
+ * active. Every live operation must resolve through this, not
+ * `definition.physical_name` directly — that's just the root, and the active
+ * version can change at any time.
  */
 export async function resolveActiveDefinition(
   context: Pick<SearchIndexContext, "indexes" | "activeVersionCache">,
@@ -702,6 +701,75 @@ export async function resolveActiveDefinition(
     physical_name: active.physical_name,
     provider: active.provider,
   }
+}
+
+/** A monotonic value from the module's own sequence, comparable across processes. */
+export async function nextSeq(manager: SearchDbManager): Promise<string> {
+  const [row] = await manager.execute(
+    `SELECT nextval('search_index_write_seq') AS seq`
+  )
+  return String(row.seq)
+}
+
+export type SearchWriteTarget = { physical_name: string; provider: string }
+
+/** Where a live write must land: the active version, plus a building one, if any. */
+export async function resolveWriteTargets(
+  context: Pick<SearchIndexContext, "activeVersionCache">,
+  name: string
+): Promise<{ active: SearchWriteTarget; building?: SearchWriteTarget }> {
+  if (!context.activeVersionCache) {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      `Search index "${name}" has no active-version cache configured`
+    )
+  }
+
+  const [active, building] = await Promise.all([
+    context.activeVersionCache.get(name),
+    context.activeVersionCache.getBuilding(name),
+  ])
+
+  return { active, building }
+}
+
+export type SearchWrite = {
+  target: SearchWriteTarget
+  ordered: SearchTypes.SearchOrderedWrite
+  /** Whether `target` is the version currently serving reads. */
+  isActive: boolean
+}
+
+/**
+ * One write per physical index a live mutation must reach: usually a single
+ * unordered write to the active version; an ordered write too while a
+ * separate version is building, or a single ordered write if the version
+ * building is the active one (`in_place`).
+ */
+export async function planWrites(
+  context: Pick<SearchIndexContext, "activeVersionCache" | "manager">,
+  name: string
+): Promise<SearchWrite[]> {
+  const { active, building } = await resolveWriteTargets(context, name)
+
+  if (!building || building.physical_name === active.physical_name) {
+    return [
+      {
+        target: building ?? active,
+        ordered: building ? { seq: await nextSeq(context.manager) } : false,
+        isActive: true,
+      },
+    ]
+  }
+
+  return [
+    { target: active, ordered: false, isActive: true },
+    {
+      target: building,
+      ordered: { seq: await nextSeq(context.manager) },
+      isActive: false,
+    },
+  ]
 }
 
 export function retrieveIndexDefinition(

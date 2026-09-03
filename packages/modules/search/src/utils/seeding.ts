@@ -15,6 +15,7 @@ import {
   assertTaskAccepted,
   DEFAULT_REINDEX_BATCH_SIZE,
   listVersionsByIndexId,
+  nextSeq,
   retrieveIndexDefinition,
   SearchIndexState,
   SearchSyncStatus,
@@ -30,12 +31,9 @@ const PROGRESS_LOG_INTERVAL_MS = 10_000
 /* -------------------------------- planning -------------------------------- */
 
 /**
- * Which indexes need data, and which version it goes into. The highest version
- * above the active one is what a migration built for a schema or provider
- * change; it needs filling and then becoming active. Otherwise an index needs
- * seeding in place if its active version was never filled, its last attempt
- * failed, or it holds nothing — the last catching an engine that lost its data
- * while the record still says ready.
+ * Which indexes need data, and which version it goes into: the highest
+ * version above the active one, if a migration built one; otherwise the
+ * active version itself, if it was never filled, last failed, or is empty.
  */
 export async function createSeedPlan(
   context: SearchIndexRegistry
@@ -167,9 +165,10 @@ async function runSeed(
     }"${formatResume(sync.last_key)}`
   )
 
-  await context.versionService.update({
-    selector: { id: target.id },
-    data: { status: SearchIndexState.BUILDING },
+  const seq = await beginBuild(context, {
+    indexName: definition.name,
+    target,
+    resuming: !!sync.last_key,
   })
 
   try {
@@ -178,6 +177,7 @@ async function runSeed(
       sync_id: sync.id,
       target_index: target.physical_name,
       last_key: sync.last_key ?? undefined,
+      ordered: { seq },
     })
 
     await context.versionService.update({
@@ -193,12 +193,14 @@ async function runSeed(
         selector: { name: definition.name },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      context.activeVersionCache?.setActive(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
       })
     }
+
+    endBuild(context, definition.name)
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
 
@@ -208,6 +210,7 @@ async function runSeed(
       )} in ${formatElapsed(Date.now() - startedAt)}`
     )
   } catch (error) {
+    endBuild(context, definition.name)
     await failSync(context, {
       sync_id: sync.id,
       version_id: target.id,
@@ -284,33 +287,33 @@ async function reindexOne(
     }"${formatResume(sync.last_key)}`
   )
 
-  await context.versionService.update({
-    selector: { id: target.id },
-    data: { status: SearchIndexState.BUILDING },
+  const seq = await beginBuild(context, {
+    indexName: definition.name,
+    target,
+    resuming: !!sync.last_key,
   })
 
   try {
-    // A fresh version has nothing to discard. Rebuilding in place does, so a
-    // record the new seed stream doesn't re-emit (a deleted row, say) doesn't
-    // survive as stale data — but only for a full rebuild: `input.filters`
-    // selects source records for the seed, not search-engine filter syntax,
-    // so it can't be reused to delete a matching subset here. And skip this
-    // entirely when resuming an interrupted run, since the target already
-    // holds that run's progress.
-    if (!useSwap && !sync.last_key && !input.filters) {
-      const clearTask = await provider.clearIndex({ index: target.physical_name })
-
-      assertTaskAccepted(clearTask, definition.name)
-      await settle(context, definition, clearTask)
-    }
-
     const { documents_synced } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
       target_index: target.physical_name,
       filters: input.filters,
       last_key: sync.last_key ?? undefined,
+      ordered: { seq },
     })
+
+    // Only an unfiltered in_place rebuild needs a sweep — a fresh (swap)
+    // version starts empty, and a filtered one only covers a subset.
+    if (!useSwap && !input.filters) {
+      const sweepTask = await provider.sweepStale({
+        index: target.physical_name,
+        seq,
+      })
+
+      assertTaskAccepted(sweepTask, definition.name)
+      await settle(context, definition, sweepTask)
+    }
 
     await context.versionService.update({
       selector: { id: target.id },
@@ -325,12 +328,14 @@ async function reindexOne(
         selector: { id: record.id },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      context.activeVersionCache?.setActive(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
       })
     }
+
+    endBuild(context, definition.name)
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
 
@@ -341,9 +346,48 @@ async function reindexOne(
     )
   } catch (error) {
     // Leave the new version behind on failure; the active one is untouched.
+    endBuild(context, definition.name)
     await failSync(context, { sync_id: sync.id, version_id: target.id, error })
     throw error
   }
+}
+
+/**
+ * Marks a version as building and returns the seq its writes must use.
+ * Reused across a resume instead of reissued, so earlier writes stay current.
+ */
+async function beginBuild(
+  context: SearchSeedRuntime,
+  {
+    indexName,
+    target,
+    resuming,
+  }: {
+    indexName: string
+    target: SearchIndexVersionRecord
+    resuming: boolean
+  }
+): Promise<string> {
+  const seq =
+    resuming && target.build_seq ? target.build_seq : await nextSeq(context.manager)
+
+  await context.versionService.update({
+    selector: { id: target.id },
+    data: { status: SearchIndexState.BUILDING, build_seq: seq },
+  })
+
+  context.activeVersionCache?.setBuilding(indexName, {
+    physical_name: target.physical_name,
+    provider: target.provider,
+    version: target.version,
+  })
+
+  return seq
+}
+
+// Cleared on both success and failure; a retry calls `beginBuild` again.
+function endBuild(context: SearchSeedRuntime, indexName: string): void {
+  context.activeVersionCache?.setBuilding(indexName, undefined)
 }
 
 /** Builds a brand-new version, whether or not the definition actually drifted. */
@@ -422,12 +466,14 @@ async function streamSeed(
     target_index,
     filters,
     last_key,
+    ordered,
   }: {
     index: SearchTypes.ResolvedSearchIndexDefinition
     sync_id: string
     target_index: string
     filters?: Record<string, unknown>
     last_key?: string
+    ordered: SearchTypes.SearchOrderedWrite
   }
 ): Promise<{ documents_synced: number }> {
   const provider = context.providers.retrieve(index.provider)
@@ -477,6 +523,7 @@ async function streamSeed(
       index: target_index,
       definition: index,
       documents: batch,
+      ordered,
     })
 
     // Per batch rather than once at the end: it bounds how much can be in

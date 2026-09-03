@@ -6,7 +6,7 @@ import {
 } from "@types"
 import {
   assertTaskAccepted,
-  resolveActiveDefinition,
+  planWrites,
   retrieveIndexDefinition,
 } from "./index"
 
@@ -48,10 +48,8 @@ export async function ingestEvent(
 
   for (const name of names) {
     const definition = retrieveIndexDefinition(context.indexes, name)
-    // The active version, merged in — resolving `definition` alone would
-    // target the never-queried root physical name.
-    const active = await resolveActiveDefinition(context, name)
-    const provider = context.providers.retrieve(active.provider)
+
+    const writes = await planWrites(context, name)
 
     // Resolving a definition rejects `events` without `consume`, so there is one.
     const mutations = await definition.consume!(event, {
@@ -64,21 +62,32 @@ export async function ingestEvent(
         continue
       }
 
-      const task =
-        mutation.action === "upsert"
-          ? await provider.upsertDocuments({
-              index: active.physical_name,
-              definition: active,
-              documents: mutation.documents,
-            })
-          : await provider.deleteDocuments({
-              index: active.physical_name,
-              filters: mutation.filters,
-            })
+      for (const write of writes) {
+        const provider = context.providers.retrieve(write.target.provider)
+        const targetDefinition: SearchTypes.ResolvedSearchIndexDefinition = {
+          ...definition,
+          physical_name: write.target.physical_name,
+          provider: write.target.provider,
+        }
 
-      tasks.push(
-        await settleTask(provider, assertTaskAccepted(task, name), name)
-      )
+        const task =
+          mutation.action === "upsert"
+            ? await provider.upsertDocuments({
+                index: write.target.physical_name,
+                definition: targetDefinition,
+                documents: mutation.documents,
+                ordered: write.ordered,
+              })
+            : await provider.deleteDocuments({
+                index: write.target.physical_name,
+                filters: mutation.filters,
+                ordered: write.ordered,
+              })
+
+        tasks.push(
+          await settleTask(provider, assertTaskAccepted(task, name), name)
+        )
+      }
     }
   }
 

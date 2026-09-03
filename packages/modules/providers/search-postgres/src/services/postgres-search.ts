@@ -257,6 +257,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         ${vectorColumns ? `${vectorColumns},` : ""}
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now(),
+        "_seq" bigint NOT NULL DEFAULT 0,
+        "_deleted" boolean NOT NULL DEFAULT false,
         CONSTRAINT "${table}_pkey" PRIMARY KEY ("id")
       )
     `)
@@ -270,6 +272,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         ADD COLUMN IF NOT EXISTS "${col}" vector(${planned.dimensions})
       `)
     }
+
+    // Defensive, same as the vector columns above.
+    await manager.execute(`
+      ALTER TABLE "${table}"
+      ADD COLUMN IF NOT EXISTS "_seq" bigint NOT NULL DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS "_deleted" boolean NOT NULL DEFAULT false
+    `)
 
     if (this.isLakebase_) {
       // BM25 index is created lazily after documents exist (corpus stats).
@@ -471,10 +480,12 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   async upsertDocuments({
     index,
     documents,
+    ordered,
   }: {
     index: string
     definition: SearchTypes.ResolvedSearchIndexDefinition
     documents: SearchTypes.SearchDocument[]
+    ordered: SearchTypes.SearchOrderedWrite
   }): Promise<SearchTypes.SearchTask> {
     const catalog = await this.retrieve(index)
 
@@ -531,12 +542,18 @@ export class PostgresSearchService extends AbstractSearchProviderService {
             return `?::vector`
           })
 
+          let seqSql = ""
+          if (ordered) {
+            params.push(ordered.seq)
+            seqSql = `, ?::bigint, false`
+          }
+
           rowsSql.push(
             `(?, ?::jsonb, ?::jsonb, ${vectorSql}, ?${
               vectorPlaceholders.length
                 ? `, ${vectorPlaceholders.join(", ")}`
                 : ""
-            }, now())`
+            }, now()${seqSql})`
           )
         }
 
@@ -545,12 +562,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
           (col) => `${col} = EXCLUDED.${col}`
         )
 
+        // Ordered writes only apply if genuinely newer (the `WHERE` clause).
         const rows = await manager.execute(
           `
           INSERT INTO "${catalog.table_name}"
             ("id", "document", "indexed", "search_vector", "search_text"${
               vectorCols.length ? `, ${vectorCols.join(", ")}` : ""
-            }, "updated_at")
+            }, "updated_at"${ordered ? `, "_seq", "_deleted"` : ""})
           VALUES ${rowsSql.join(",\n")}
           ON CONFLICT ("id") DO UPDATE SET
             "document" = EXCLUDED."document",
@@ -559,7 +577,16 @@ export class PostgresSearchService extends AbstractSearchProviderService {
             "search_text" = EXCLUDED."search_text"${
               vectorUpdates.length ? `, ${vectorUpdates.join(", ")}` : ""
             },
-            "updated_at" = now()
+            "updated_at" = now()${
+              ordered
+                ? `, "_seq" = EXCLUDED."_seq", "_deleted" = EXCLUDED."_deleted"`
+                : ""
+            }
+          ${
+            ordered
+              ? `WHERE EXCLUDED."_seq" > "${catalog.table_name}"."_seq"`
+              : ""
+          }
           RETURNING (xmax = 0)::int AS inserted
           `,
           params
@@ -584,37 +611,102 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   async deleteDocuments({
     index,
     filters,
+    ordered,
   }: SearchTypes.SearchDeleteDocumentsInput): Promise<SearchTypes.SearchTask> {
     const catalog = await this.retrieve(index)
 
     await this.withTransaction(async (manager) => {
       const ids = extractPrimaryKeyFilter(filters, catalog.plan)
-      let deleted: any[] = []
+      let affected: any[] = []
 
-      if (ids) {
-        if (ids.length) {
-          // Bind each id as its own `?`. A single array binding with `ANY(?::text[])`
-          // is inlined by MikroORM as `ANY('id'::text[])`, which Postgres rejects.
-          const placeholders = ids.map(() => "?").join(", ")
-          deleted = await manager.execute(
-            `DELETE FROM "${catalog.table_name}" WHERE "id" = ANY(ARRAY[${placeholders}]::text[]) RETURNING "id"`,
-            ids
-          )
+      if (!ordered) {
+        if (ids) {
+          if (ids.length) {
+            // Bind each id as its own `?`. A single array binding with `ANY(?::text[])`
+            // is inlined by MikroORM as `ANY('id'::text[])`, which Postgres rejects.
+            const placeholders = ids.map(() => "?").join(", ")
+            affected = await manager.execute(
+              `DELETE FROM "${catalog.table_name}" WHERE "id" = ANY(ARRAY[${placeholders}]::text[]) RETURNING "id"`,
+              ids
+            )
+          }
+        } else {
+          const where = toWhereClause(filters, catalog.plan)
+          if (where?.sql) {
+            affected = await manager.execute(
+              `DELETE FROM "${catalog.table_name}" WHERE ${where.sql} RETURNING "id"`,
+              where.params
+            )
+          }
         }
-      } else {
-        const where = toWhereClause(filters, catalog.plan)
-        if (where?.sql) {
-          deleted = await manager.execute(
-            `DELETE FROM "${catalog.table_name}" WHERE ${where.sql} RETURNING "id"`,
-            where.params
-          )
-        }
+
+        await this.adjustDocumentCount(index, -affected.length, manager)
+        return
       }
 
-      await this.adjustDocumentCount(index, -deleted.length, manager)
+      // Tombstone rather than remove, even for an id with no row yet — see
+      // `tombstone()`.
+      const targetIds =
+        ids ?? (await this.matchingIds(catalog, filters, manager))
+
+      if (targetIds.length) {
+        affected = await this.tombstone(
+          catalog.table_name,
+          targetIds,
+          ordered.seq,
+          manager
+        )
+      }
+
+      await this.adjustDocumentCount(index, -affected.length, manager)
     })
 
     return this.task(index)
+  }
+
+  // Resolves a non-id filter to matching ids, so a tombstone can target them.
+  protected async matchingIds(
+    catalog: StoredIndex,
+    filters: SearchTypes.SearchFilters,
+    manager: DbManager
+  ): Promise<string[]> {
+    const where = toWhereClause(filters, catalog.plan)
+    if (!where?.sql) {
+      return []
+    }
+
+    const rows = await manager.execute(
+      `SELECT "id" FROM "${catalog.table_name}" WHERE ${where.sql}`,
+      where.params
+    )
+
+    return rows.map((row) => row.id)
+  }
+
+  // Marks ids deleted without removing the row (upserting a placeholder if
+  // one doesn't exist yet), so a late, older write can't resurrect them.
+  protected async tombstone(
+    table: string,
+    ids: string[],
+    seq: string,
+    manager: DbManager
+  ): Promise<{ id: string }[]> {
+    const rowsSql = ids.map(() => `(?, '{}'::jsonb, '{}'::jsonb, ?::bigint, true, now())`)
+    const params = ids.flatMap((id) => [id, seq])
+
+    return await manager.execute(
+      `
+      INSERT INTO "${table}" ("id", "document", "indexed", "_seq", "_deleted", "updated_at")
+      VALUES ${rowsSql.join(",\n")}
+      ON CONFLICT ("id") DO UPDATE SET
+        "_deleted" = true,
+        "_seq" = EXCLUDED."_seq",
+        "updated_at" = now()
+      WHERE EXCLUDED."_seq" > "${table}"."_seq"
+      RETURNING "id"
+      `,
+      params
+    )
   }
 
   async clearIndex({
@@ -627,6 +719,28 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     await this.dropBm25Index(catalog.table_name)
     await this.manager_.execute(`TRUNCATE TABLE "${catalog.table_name}"`)
     await this.setDocumentCount(index, 0)
+
+    return this.task(index)
+  }
+
+  async sweepStale({
+    index,
+    seq,
+  }: {
+    index: string
+    seq: string
+  }): Promise<SearchTypes.SearchTask> {
+    const catalog = await this.retrieve(index)
+
+    await this.withTransaction(async (manager) => {
+      // A real delete: by now the rebuild is done, nothing else races it.
+      const deleted = await manager.execute(
+        `DELETE FROM "${catalog.table_name}" WHERE "_seq" < ?::bigint RETURNING "id"`,
+        [seq]
+      )
+
+      await this.adjustDocumentCount(index, -deleted.length, manager)
+    })
 
     return this.task(index)
   }
@@ -1178,6 +1292,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       const filterWhere = toWhereClause(query.filters, plan)
       const params: unknown[] = []
       const conditions = [
+        `NOT "_deleted"`,
         `(${fragments.matchSql!(params)} OR "${col}" IS NOT NULL)`,
       ]
       if (filterWhere?.sql) {
@@ -1217,9 +1332,15 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const { table, minScore, distinctExpr, take, skip } = parts
     const wrap = minScore !== undefined || !!distinctExpr
 
+    // Tombstoned rows never surface, regardless of caller.
+    const conditionsSql = (params: unknown[]) => [
+      `NOT "_deleted"`,
+      ...parts.conditionsSql(params),
+    ]
+
     const buildBase = (params: unknown[]) => {
       const rank = parts.rankSql(params)
-      const conditions = parts.conditionsSql(params)
+      const conditions = conditionsSql(params)
       const whereSql = conditions.length
         ? `WHERE ${conditions.join(" AND ")}`
         : ""
@@ -1281,7 +1402,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     if (parts.count) {
       if (!wrap) {
-        const conditions = parts.conditionsSql(countParams)
+        const conditions = conditionsSql(countParams)
         countSql = `SELECT COUNT(*)::int AS count FROM "${table}" ${
           conditions.length ? `WHERE ${conditions.join(" AND ")}` : ""
         }`
@@ -1339,7 +1460,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }): SqlFragment | undefined {
     const { input: query, catalog, useKeyword, useVector } = input
     const params: unknown[] = []
-    const conditions: string[] = []
+    const conditions: string[] = [`NOT "_deleted"`]
 
     const matchSql = useKeyword
       ? this.keywordFragments({ query, catalog }).matchSql

@@ -245,6 +245,10 @@ export function buildIndexPlan(
     }
   }
 
+  // Reserved, module-managed — never from `fields`, never in `listIndexedFields`.
+  schema._seq = { type: "int", filterable: true }
+  schema._deleted = { type: "bool", filterable: true }
+
   return {
     fields,
     schema,

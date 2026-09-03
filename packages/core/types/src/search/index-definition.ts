@@ -240,10 +240,8 @@ export interface ResolvedSearchIndexDefinition extends SearchIndexDefinition {
   definition_hash: string
 
   /**
-   * The root physical index name, derived from `name` and the module's
-   * `index_prefix`. Never queried directly: each version of this index gets its
-   * own physical index derived from this root, and the module resolves which
-   * one is currently active before reading or writing.
+   * The root physical index name. Never queried directly — each version gets
+   * its own physical index derived from this root.
    */
   physical_name: string
 }

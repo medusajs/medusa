@@ -124,6 +124,7 @@ describe("MedusaSearchService", () => {
       index: "product",
       definition,
       documents: [{ id: "prod_1", title: "Red shoe", status: "published" }],
+      ordered: false,
     })
     await service.search({
       index: definition,
@@ -191,6 +192,7 @@ describe("MedusaSearchService", () => {
       index: "product",
       definition,
       documents: [{ id: "prod_1", title: "Red shoe", status: "published" }],
+      ordered: false,
     })
 
     expect(write).toHaveBeenCalledWith(
@@ -251,7 +253,15 @@ describe("MedusaSearchService", () => {
 
     const [hitsQuery, countQuery, facetQuery] =
       multiQuery.mock.calls[0][0].queries
-    const textFilter = ["title", "ContainsAllTokens", "red"]
+    // Every query is scoped to non-tombstoned documents — see
+    // `buildQueryFilters` — regardless of what the caller itself filtered on.
+    const textFilter = [
+      "And",
+      [
+        ["_deleted", "NotEq", true],
+        ["title", "ContainsAllTokens", "red"],
+      ],
+    ]
     expect(hitsQuery.filters).toEqual(textFilter)
     expect(countQuery.filters).toEqual(textFilter)
     expect(facetQuery.filters).toEqual(textFilter)
@@ -368,7 +378,13 @@ describe("MedusaSearchService", () => {
       limit: 1,
       include_attributes: ["price"],
     })
-    expect(queries[2].filters).toEqual(["price", "NotEq", null])
+    expect(queries[2].filters).toEqual([
+      "And",
+      [
+        ["_deleted", "NotEq", true],
+        ["price", "NotEq", null],
+      ],
+    ])
     expect(queries[3]).toMatchObject({
       rank_by: ["price", "desc"],
       limit: 1,
@@ -457,6 +473,157 @@ describe("MedusaSearchService", () => {
     expect(results[1].metadata.count).toBeNull()
     expect(results[1].facets).toMatchObject({
       status: { type: "value" },
+    })
+  })
+
+  describe("ordered writes", () => {
+    // "Newer wins" is enforced server-side via `upsert_condition`, so these
+    // tests assert the condition is sent, not client-side pre-filtering.
+    const KEEP_IF_NEWER = [
+      "Or",
+      [
+        ["_seq", "Lt", { $ref_new: "_seq" }],
+        ["_seq", "Eq", null],
+      ],
+    ]
+
+    it("upserts with a conditional write that only applies if newer", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({})
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.upsertDocuments({
+        index: "product",
+        definition,
+        documents: [{ id: "prod_1", title: "Red shoe" }],
+        ordered: { seq: "10" },
+      })
+
+      expect(write).toHaveBeenCalledWith(
+        expect.objectContaining({
+          upsert_condition: KEEP_IF_NEWER,
+          upsert_rows: [
+            expect.objectContaining({
+              id: "prod_1",
+              _seq: 10,
+              _deleted: false,
+            }),
+          ],
+        })
+      )
+    })
+
+    it("upserts unconditionally when not ordered", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({})
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.upsertDocuments({
+        index: "product",
+        definition,
+        documents: [{ id: "prod_1", title: "Red shoe" }],
+        ordered: false,
+      })
+
+      const call = write.mock.calls[0][0]
+      expect(call.upsert_condition).toBeUndefined()
+      expect(call.upsert_rows).toEqual([
+        expect.objectContaining({ id: "prod_1" }),
+      ])
+    })
+
+    it("tombstones an ordered delete on an id that already has a row", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({})
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.deleteDocuments({
+        index: "product",
+        filters: { id: ["prod_1"] },
+        ordered: { seq: "10" },
+      })
+
+      // An id-based delete names its ids directly rather than resolving
+      // them by querying — see `extractIdFilter`.
+      expect(write).toHaveBeenCalledWith({
+        upsert_rows: [{ id: "prod_1", _seq: 10, _deleted: true }],
+        upsert_condition: KEEP_IF_NEWER,
+      })
+    })
+
+    it("still writes a tombstone for an ordered delete on an id with no row yet", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({})
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.deleteDocuments({
+        index: "product",
+        filters: { id: ["prod_missing"] },
+        ordered: { seq: "10" },
+      })
+
+      // The id comes straight from the filter, not a query — a query would
+      // find nothing for an id with no row yet.
+      expect(write).toHaveBeenCalledWith({
+        upsert_rows: [{ id: "prod_missing", _seq: 10, _deleted: true }],
+        upsert_condition: KEEP_IF_NEWER,
+      })
+    })
+
+    it("resolves a non-id ordered delete's targets by querying first", async () => {
+      const service = createService()
+      const query = jest
+        .fn()
+        .mockResolvedValue({ rows: [{ id: "prod_1" }, { id: "prod_2" }] })
+      const write = jest.fn().mockResolvedValue({})
+      ;(service as any).client_ = { index: jest.fn(() => ({ query, write })) }
+
+      await service.deleteDocuments({
+        index: "product",
+        filters: { status: "draft" },
+        ordered: { seq: "10" },
+      })
+
+      // Both matches are sent — which one(s) actually apply is up to
+      // Turbopuffer's own evaluation of `upsert_condition`, not this
+      // provider filtering client-side.
+      expect(write).toHaveBeenCalledWith({
+        upsert_rows: [
+          { id: "prod_1", _seq: 10, _deleted: true },
+          { id: "prod_2", _seq: 10, _deleted: true },
+        ],
+        upsert_condition: KEEP_IF_NEWER,
+      })
+    })
+
+    it("issues an unconditional delete_by_filter when not ordered", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({ rows_remaining: false })
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.deleteDocuments({
+        index: "product",
+        filters: { id: ["prod_1", "prod_2"] },
+        ordered: false,
+      })
+
+      expect(write).toHaveBeenCalledWith({
+        delete_by_filter: ["id", "In", ["prod_1", "prod_2"]],
+        delete_by_filter_allow_partial: true,
+      })
+    })
+
+    it("sweeps stale documents unconditionally", async () => {
+      const service = createService()
+      const write = jest.fn().mockResolvedValue({ rows_remaining: false })
+      ;(service as any).client_ = { index: jest.fn(() => ({ write })) }
+
+      await service.sweepStale({ index: "product", seq: "10" })
+
+      expect(write).toHaveBeenCalledWith({
+        delete_by_filter: ["_seq", "Lt", 10],
+        delete_by_filter_allow_partial: true,
+      })
     })
   })
 })

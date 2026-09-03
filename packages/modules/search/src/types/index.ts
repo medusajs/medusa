@@ -76,6 +76,19 @@ export type SearchIndexes = Map<
   SearchTypes.ResolvedSearchIndexDefinition
 >
 
+/** The physical index and provider currently serving reads for a logical index. */
+export type SearchActiveIndexVersion = {
+  physical_name: string
+  provider: string
+  version: number
+}
+
+// A raw connection to the module's own Postgres schema, same container key
+// `search-postgres` receives — nothing here is modeled.
+export type SearchDbManager = {
+  execute(sql: string, params?: unknown[]): Promise<any[]>
+}
+
 export type SearchIndexContext = {
   container: SearchTypes.SearchContainer
   logger: Logger
@@ -85,6 +98,7 @@ export type SearchIndexContext = {
   indexService: ModulesSdkTypes.IMedusaInternalService<any>
   versionService: ModulesSdkTypes.IMedusaInternalService<any>
   syncService: ModulesSdkTypes.IMedusaInternalService<any>
+  manager: SearchDbManager
   // The Locking Module, when registered. Absent in tests, where work goes
   // unserialized.
   locking?: {
@@ -94,19 +108,13 @@ export type SearchIndexContext = {
       args?: { timeout?: number }
     ): Promise<T>
   }
-  // Resolves which physical index currently serves reads/writes for a
-  // logical index. Every live operation goes through this rather than
-  // `definition.physical_name` directly, since the active version can change
-  // out from under this process. `set` is used to reflect this process' own
-  // flip immediately, rather than waiting out the soft TTL.
+  // Which physical index is active, and which (if any) is being built.
+  // `setActive`/`setBuilding` update this process' own view immediately.
   activeVersionCache?: {
-    get(
-      name: string
-    ): Promise<{ physical_name: string; provider: string; version: number }>
-    set(
-      name: string,
-      value: { physical_name: string; provider: string; version: number }
-    ): void
+    get(name: string): Promise<SearchActiveIndexVersion>
+    getBuilding(name: string): Promise<SearchActiveIndexVersion | undefined>
+    setActive(name: string, value: SearchActiveIndexVersion): void
+    setBuilding(name: string, value: SearchActiveIndexVersion | undefined): void
   }
 }
 
@@ -121,12 +129,12 @@ export type SearchIndexRegistry = Pick<
 export type SearchSeedRuntime = SearchIndexRegistry &
   Pick<
     SearchIndexContext,
-    "syncService" | "container" | "options" | "activeVersionCache"
+    "syncService" | "container" | "options" | "activeVersionCache" | "manager"
   >
 
 // Ingestion writes straight through, so unlike a seed it keeps no sync history.
 export type SearchIngestionRuntime = SearchIndexRegistry &
-  Pick<SearchIndexContext, "container" | "activeVersionCache">
+  Pick<SearchIndexContext, "container" | "activeVersionCache" | "manager">
 
 /** Event name to the indexes that declared it. */
 export type SearchEventRoutes = Map<string, string[]>
@@ -149,6 +157,7 @@ export type SearchIndexVersionRecord = {
   physical_name: string
   definition_hash: string
   status: string
+  build_seq: string | null
 }
 
 /** One seed run against one index version. Append-only, so these are the history. */
@@ -187,10 +196,7 @@ export type SearchIndexSeedAction = {
   index: string
   /** The version being filled. */
   target_version: SearchIndexVersionRecord
-  /**
-   * Whether `target_version` has to become the index's active version once
-   * filled, rather than being seeded in place as the already-active version.
-   */
+  /** Whether `target_version` becomes active once filled. */
   swap: boolean
   reason: SearchIndexSeedReason
 }
