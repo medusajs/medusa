@@ -22,6 +22,12 @@ import {
   syncLinks,
 } from "./medusa-test-runner-utils"
 import { waitWorkflowExecutions } from "./medusa-test-runner-utils/wait-workflow-executions"
+import {
+  BootTracer,
+  createBootTracer,
+  noopTracer,
+  reportTestEnvironmentOnce,
+} from "./medusa-test-runner-utils/boot-diagnostics"
 import { ulid } from "ulid"
 
 export interface MedusaSuiteOptions {
@@ -87,6 +93,7 @@ class MedusaTestRunner {
   private databaseTemplateReady = false
   private skipNextRestore = false
   private restoreEnvVars: () => void = () => void 0
+  private tracer: BootTracer = noopTracer
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -151,7 +158,9 @@ class MedusaTestRunner {
   private async initializeDatabase(): Promise<void> {
     try {
       logger.info(`Creating database ${this.dbName}`)
+      this.tracer.phase("create-database")
       await this.dbUtils.create(this.dbName)
+      this.tracer.phase("pg-connection")
       this.dbUtils.pgConnection_ = await initDb()
     } catch (error) {
       logger.error(`Error initializing database: ${error?.message}`)
@@ -161,6 +170,7 @@ class MedusaTestRunner {
   }
 
   private async setupApplication(): Promise<void> {
+    this.tracer.phase("framework-import")
     const { container, MedusaAppLoader } = await import("@medusajs/framework")
     const appLoader = new MedusaAppLoader({
       medusaConfigPath: this.modulesConfigPath,
@@ -171,6 +181,7 @@ class MedusaTestRunner {
     const configModule = container.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
     )
+    this.tracer.phase("resolve-plugins")
     const plugins = await getResolvedPlugins(this.cwd, configModule)
     mergePluginModules(configModule, plugins, this.cwd)
 
@@ -179,25 +190,31 @@ class MedusaTestRunner {
     })
 
     if (this.hooks?.beforeServerStart) {
+      this.tracer.phase("hook-before-server-start")
       await this.hooks.beforeServerStart(container)
     }
 
     await this.initializeDatabase()
 
+    this.tracer.phase("migrations-table")
     const migrator = new Migrator({ container })
     await migrator.ensureMigrationsTable()
 
     logger.info(
       `Migrating database with core migrations, links, and search indexes ${this.dbName}`
     )
+    this.tracer.phase("migrate-modules")
     await migrateDatabase(appLoader)
+    this.tracer.phase("sync-links")
     await syncLinks(appLoader, this.modulesConfigPath, container, logger)
+    this.tracer.phase("clear-instances")
     await clearInstances()
 
     // The app is booted here as well as by `startApp` below, and the two share a
     // container, so the Search Module built here is the one the test ends up with.
     // The definitions have to be registered before that, the same way the http
     // loader does it. `clearInstances` empties the registry, hence the placement.
+    this.tracer.phase("load-search-indexes")
     const { loadSearchIndexes } = require("@medusajs/medusa/loaders/search")
     await loadSearchIndexes({
       plugins: await getResolvedPlugins(this.cwd, configModule, true),
@@ -205,13 +222,16 @@ class MedusaTestRunner {
       logger,
     })
 
+    this.tracer.phase("app-load")
     this.loadedApplication = await appLoader.load()
 
     // Same role as `db:migrate:search` / link sync: create physical indexes
     // before the HTTP app starts (and before suites seed data that is ingested).
+    this.tracer.phase("migrate-search-indexes")
     await migrateSearchIndexes(container, logger)
 
     try {
+      this.tracer.phase("start-app")
       const {
         shutdown,
         container: appContainer,
@@ -241,6 +261,7 @@ class MedusaTestRunner {
 
       this.apiUtils.cancelToken = { source: cancelTokenSource }
 
+      this.tracer.phase("wait-workflow-executions")
       await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
     } catch (error) {
       logger.error(`Error starting the app: ${error?.message}`)
@@ -250,6 +271,11 @@ class MedusaTestRunner {
   }
 
   public async cleanup(): Promise<void> {
+    // Deliberately on the tracer's stream: if a boot is still in flight here,
+    // this is the line that shows cleanup tearing the connection out from under
+    // it, which is otherwise reported only as "Unable to acquire a connection".
+    this.tracer.note("cleanup-start")
+
     try {
       process.removeAllListeners("SIGTERM")
       process.removeAllListeners("SIGINT")
@@ -290,12 +316,19 @@ class MedusaTestRunner {
   }
 
   public async beforeAll(): Promise<void> {
+    reportTestEnvironmentOnce()
+    this.tracer = createBootTracer("boot", `db=${this.dbName}`)
+
     try {
       this.setupProcessHandlers()
+      this.tracer.phase("config-load")
       await configLoaderOverride(this.cwd, this.dbConfig)
+      this.tracer.phase("apply-env-vars")
       this.restoreEnvVars = applyEnvVarsToProcess(this.env)
       await this.setupApplication()
+      this.tracer.done()
     } catch (error) {
+      this.tracer.fail(error)
       await this.cleanup()
       throw error
     }
