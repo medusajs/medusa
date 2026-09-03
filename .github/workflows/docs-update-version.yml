@@ -49,7 +49,7 @@ jobs:
           base: "develop"
           title: "chore(docs): Update version in documentation (automated)"
           labels: "type: chore"
-          add-paths: www/packages/docs-ui/src/global-config.ts
+          add-paths: www/packages/docs-utils/src/global-config.ts
           branch: "docs/update-config-version"
           branch-suffix: "timestamp"
   create-cloud-announcement:
