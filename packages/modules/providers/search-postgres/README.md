@@ -72,21 +72,21 @@ Supply embeddings yourself:
 defineSearchIndex({
   name: "product",
   entity: "product",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    title: { type: "text", searchable: { weight: 3 } },
-    embedding: { type: "vector", dimensions: 1536 },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    embedding: search.vector(1536),
+  }),
   // ...
 })
 ```
 
 Documents must include the embedding array on upsert. Query with `search_options.vector.value`.
 
-Or let the provider embed a string on the same field (`embed: true` requires `embedder`):
+Or let the provider embed a string on the same field (`.embed()` requires `embedder`):
 
 ```ts
-embedding: { type: "vector", dimensions: 1536, embed: true }
+embedding: search.vector(1536).embed()
 
 // documents: { embedding: "title and description to encode" }
 
