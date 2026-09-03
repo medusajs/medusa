@@ -1,24 +1,18 @@
 /**
- * @oas [delete] /admin/product-options/{id}/values/{value_id}
- * operationId: DeleteProductOptionsIdValuesValue_id
- * summary: Remove Value from Product Option
- * description: Remove a Value from a product option.
+ * @oas [get] /admin/users/{id}/auth-providers
+ * operationId: GetUsersIdAuthProviders
+ * summary: List Auth Providers of a User
+ * x-sidebar-summary: List Auth Providers
+ * description: Retrieve a list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The product option's ID.
- *     required: true
- *     schema:
- *       type: string
- *   - name: value_id
- *     in: path
- *     description: The value's ID.
+ *     description: The user's ID.
  *     required: true
  *     schema:
  *       type: string
  * security:
- *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
  * x-codeSamples:
@@ -35,24 +29,24 @@
  *         },
  *       })
  * 
- *       sdk.admin.productOption.deleteValue("opt_123", "optval_123")
- *       .then(({ deleted }) => {
- *         console.log(deleted)
+ *       sdk.admin.user.listAuthProviders("user_123")
+ *       .then(({ providers }) => {
+ *         console.log(providers)
  *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |-
- *       curl -X DELETE '{backend_url}/admin/product-options/{id}/values/{value_id}' \
+ *       curl '{backend_url}/admin/users/{id}/auth-providers' \
  *       -H 'Authorization: Bearer {access_token}'
  * tags:
- *   - Product Options
+ *   - Users
  * responses:
  *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductOptionValueDeleteResponse"
+ *           $ref: "#/components/schemas/AdminUserAuthProvidersResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -65,19 +59,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-workflow: deleteProductOptionValuesWorkflow
- * x-events:
- *   - name: product-option-value.deleted
- *     payload: |-
- *       ```ts
- *       {
- *         id, // The ID of the product option value
- *       }
- *       ```
- *     description: Emitted when product option values are deleted.
- *     deprecated: false
- *     since: 2.20.0
- * x-since: 2.17.0
+ * x-since: 2.20.0
  * 
 */
 

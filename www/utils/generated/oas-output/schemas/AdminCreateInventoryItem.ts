@@ -67,6 +67,11 @@
  *     description: The inventory item's location levels.
  *     items:
  *       $ref: "#/components/schemas/AdminBatchCreateInventoryItemLocationLevels"
+ *   unit_of_measure:
+ *     type: string
+ *     title: unit_of_measure
+ *     description: The inventory item's unit of measure.
+ *     example: "kg"
  * 
 */
 
