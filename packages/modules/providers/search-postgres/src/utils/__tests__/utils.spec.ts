@@ -63,7 +63,7 @@ describe("postgres search utils", () => {
       expect(plan.fields.get("tags")?.is_array).toBe(true)
     })
 
-    it("rejects vector and correlated fields on native", () => {
+    it("rejects vector fields on native", () => {
       expect(() =>
         assertIndexSupported(
           baseDefinition({
@@ -74,21 +74,6 @@ describe("postgres search utils", () => {
           "native"
         )
       ).toThrow(/lakebase/)
-
-      expect(() =>
-        assertIndexSupported(
-          baseDefinition({
-            fields: {
-              variants: {
-                type: "object",
-                array: true,
-                correlated: true,
-                fields: { color: { type: "keyword" } },
-              },
-            },
-          })
-        )
-      ).toThrow(/correlated/)
     })
 
     it("allows vector fields on lakebase when dimensions are set", () => {

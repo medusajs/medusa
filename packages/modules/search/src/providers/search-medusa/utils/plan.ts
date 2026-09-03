@@ -120,12 +120,6 @@ export function assertIndexSupported(
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
 
-      if (field.correlated) {
-        fail(
-          `The Medusa search provider cannot correlate predicates per array element ("${path}")`
-        )
-      }
-
       if (field.type === "object") {
         if (field.fields) {
           walk(field.fields, path)
