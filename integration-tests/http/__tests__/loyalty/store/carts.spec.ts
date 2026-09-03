@@ -94,6 +94,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/regions",
           {
+            payment_providers: ["pp_system_default"],
             name: "test-region",
             currency_code: "usd",
           },
@@ -1464,14 +1465,23 @@ medusaIntegrationTestRunner({
           {
             country_code: "US",
             provider_id: "tp_system",
-            default_tax_rate: { name: "US Default Rate", rate: 10, code: "US_RATE" },
+            default_tax_rate: {
+              name: "US Default Rate",
+              rate: 10,
+              code: "US_RATE",
+            },
           },
         ])
 
         const taxRegion = (
           await api.post(
             "/admin/regions",
-            { name: "us-tax-region", currency_code: "usd", countries: ["us"] },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "us-tax-region",
+              currency_code: "usd",
+              countries: ["us"],
+            },
             adminHeaders
           )
         ).data.region

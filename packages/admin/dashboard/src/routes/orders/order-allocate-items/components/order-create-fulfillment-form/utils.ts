@@ -23,6 +23,6 @@ export function checkInventoryKit(
   return (
     (!!variant.inventory_items.length && variant.inventory_items.length > 1) ||
     (variant.inventory_items.length === 1 &&
-      variant.inventory_items[0].required_quantity! > 1)
+      variant.inventory_items[0].required_quantity! !== 1)
   )
 }

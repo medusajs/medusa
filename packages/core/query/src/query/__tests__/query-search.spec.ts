@@ -5,13 +5,23 @@ import { Query } from "../query"
 // have to be fetched through graph.
 const RETRIEVABLE = ["id", "title", "min_price"]
 
-function createSearchModule(hits: { id: string; document: any }[]) {
+function createSearchModule(
+  hits: { id: string; document: any }[],
+  index: { primary_key?: string; retrievable?: string[] } = {}
+) {
+  const result = {
+    hits,
+    metadata: { skip: 0, take: 20, count: hits.length },
+  }
+
   return {
-    listRetrievableFields: jest.fn().mockReturnValue(RETRIEVABLE),
-    search: jest.fn().mockResolvedValue({
-      hits,
-      metadata: { skip: 0, take: 20, count: hits.length },
-    }),
+    listRetrievableFields: jest
+      .fn()
+      .mockReturnValue(index.retrievable ?? RETRIEVABLE),
+    getIndex: jest
+      .fn()
+      .mockReturnValue({ primary_key: index.primary_key ?? "id" }),
+    searchMany: jest.fn().mockResolvedValue([result]),
   }
 }
 
@@ -52,13 +62,13 @@ describe("Query.search", () => {
       filters: { q: "shoe" },
     })
 
-    expect(searchModule.search).toHaveBeenCalledWith(
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
       expect.objectContaining({
         entity: "product",
         fields: ["id", "title"],
         filters: { q: "shoe" },
-      })
-    )
+      }),
+    ])
     expect(graph).not.toHaveBeenCalled()
     expect(result.data).toEqual([{ id: "prod_1", title: "Red shoe" }])
   })
@@ -73,9 +83,9 @@ describe("Query.search", () => {
 
     // Nothing was asked for, so everything the engine holds comes back and
     // there is nothing left over for graph.
-    expect(searchModule.search).toHaveBeenCalledWith(
-      expect.objectContaining({ fields: RETRIEVABLE })
-    )
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
+      expect.objectContaining({ fields: RETRIEVABLE }),
+    ])
     expect(graph).not.toHaveBeenCalled()
   })
 
@@ -91,16 +101,46 @@ describe("Query.search", () => {
     })
 
     // Only what the index holds goes to the engine...
-    expect(searchModule.search).toHaveBeenCalledWith(
-      expect.objectContaining({ fields: ["id", "title"] })
-    )
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
+      expect.objectContaining({ fields: ["id", "title"] }),
+    ])
 
-    // ...and the rest is fetched by id.
+    // ...and the rest is fetched by id. The primary key rides along even though
+    // the engine already returned it: without it the fetched rows cannot be
+    // merged back onto the documents they belong to.
     expect(graph).toHaveBeenCalledWith(
       expect.objectContaining({
         entity: "product",
-        fields: ["description", "variants.sku"],
+        fields: ["description", "variants.sku", "id"],
         filters: { id: ["prod_1"] },
+      }),
+      expect.anything()
+    )
+  })
+
+  it("hydrates on the index' own primary key", async () => {
+    // An index keyed by handle identifies its hits by handle, so that is what
+    // the hydration has to filter and select.
+    const searchModule = createSearchModule(
+      [
+        {
+          id: "red-shoe",
+          document: { handle: "red-shoe", title: "Red shoe" },
+        },
+      ],
+      { primary_key: "handle", retrievable: ["handle", "title"] }
+    )
+    const { query, graph } = createQueryInstance(searchModule)
+
+    await query.search({
+      entity: "product",
+      fields: ["handle", "title", "description"],
+    })
+
+    expect(graph).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fields: ["description", "handle"],
+        filters: { handle: ["red-shoe"] },
       }),
       expect.anything()
     )
@@ -155,13 +195,15 @@ describe("Query.search", () => {
     const searchModule = createSearchModule([
       { id: "prod_1", document: { id: "prod_1" } },
     ])
-    searchModule.search.mockResolvedValue({
-      hits: [{ id: "prod_1", document: { id: "prod_1" }, score: 1.5 }],
-      facets: {
-        brand: { type: "value", values: [{ value: "acme", count: 1 }] },
+    searchModule.searchMany.mockResolvedValue([
+      {
+        hits: [{ id: "prod_1", document: { id: "prod_1" }, score: 1.5 }],
+        facets: {
+          brand: { type: "value", values: [{ value: "acme", count: 1 }] },
+        },
+        metadata: { skip: 0, take: 20, count: 1 },
       },
-      metadata: { skip: 0, take: 20, count: 1 },
-    })
+    ])
 
     const { query } = createQueryInstance(searchModule)
 
@@ -186,12 +228,44 @@ describe("Query.search", () => {
       search_options: { facets: ["brand"], include_score: true },
     })
 
-    expect(searchModule.search).toHaveBeenCalledWith({
-      entity: "product",
-      fields: ["id"],
-      filters: { q: "shoe", status: "published" },
-      pagination: { skip: 10, take: 5, order: { min_price: "DESC" } },
-      search_options: { facets: ["brand"], include_score: true },
-    })
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
+      {
+        entity: "product",
+        fields: ["id"],
+        filters: { q: "shoe", status: "published" },
+        pagination: { skip: 10, take: 5, order: { min_price: "DESC" } },
+        search_options: { facets: ["brand"], include_score: true },
+      },
+    ])
+  })
+
+  it("runs several queries in one searchMany call and hydrates each", async () => {
+    const searchModule = createSearchModule([])
+    searchModule.searchMany.mockResolvedValue([
+      {
+        hits: [{ id: "prod_1", document: { id: "prod_1", title: "Shoe" } }],
+        metadata: { skip: 0, take: 20, count: 1 },
+      },
+      {
+        hits: [{ id: "prod_2", document: { id: "prod_2", title: "Shirt" } }],
+        metadata: { skip: 0, take: 20, count: 1 },
+      },
+    ])
+    const { query, graph } = createQueryInstance(searchModule)
+
+    const results = await query.search([
+      { entity: "product", fields: ["id", "title"], filters: { q: "shoe" } },
+      { entity: "product", fields: ["id", "title"], filters: { q: "shirt" } },
+    ])
+
+    expect(searchModule.searchMany).toHaveBeenCalledTimes(1)
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
+      expect.objectContaining({ filters: { q: "shoe" } }),
+      expect.objectContaining({ filters: { q: "shirt" } }),
+    ])
+    expect(graph).not.toHaveBeenCalled()
+    expect(results).toHaveLength(2)
+    expect(results[0].data).toEqual([{ id: "prod_1", title: "Shoe" }])
+    expect(results[1].data).toEqual([{ id: "prod_2", title: "Shirt" }])
   })
 })

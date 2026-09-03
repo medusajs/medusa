@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { XMarkMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Button, Heading, IconButton, Input, Label, toast } from "@medusajs/ui"
+import { Button, Heading, IconButton, Label, toast } from "@medusajs/ui"
 import i18next from "i18next"
 import {
   useFieldArray,
@@ -14,6 +14,7 @@ import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
+import { QuantityInput } from "../../../../../components/inputs/quantity-input"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -43,7 +44,7 @@ const ManageVariantInventoryItemsSchema = zod.object({
           ? castNumber(data.required_quantity)
           : 0
 
-        if (quantity < 1) {
+        if (quantity <= 0) {
           ctx.addIssue({
             code: zod.ZodIssueCode.custom,
             message: i18next.t(
@@ -97,8 +98,13 @@ function VariantInventoryItemRow({
       data.inventory_items.map((item) => ({
         label: `${item.title} ${item.sku ? `(${item.sku})` : ""}`,
         value: item.id!,
+        unit_of_measure: item.unit_of_measure,
       })),
   })
+
+  const unitOfMeasure = items.options.find(
+    (o) => o.value === selectedInventoryItemId
+  )?.unit_of_measure
 
   return (
     <li
@@ -161,12 +167,13 @@ function VariantInventoryItemRow({
             return (
               <Form.Item>
                 <Form.Control>
-                  <Input
-                    type="number"
+                  <QuantityInput
+                    step="any"
                     className="bg-ui-bg-field-component"
                     min={0}
                     value={value}
                     onChange={onChange}
+                    unitOfMeasure={unitOfMeasure}
                     {...field}
                     placeholder={t(
                       "products.create.inventory.quantityPlaceholder"

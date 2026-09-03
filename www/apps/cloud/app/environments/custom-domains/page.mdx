@@ -44,11 +44,9 @@ To set up a backend custom domain, you need:
 
 To set up a backend custom domain:
 
-1. Go to your project's dashboard in Cloud.
-2. Click on the environment card where you want to set up the backend custom domain.
-3. Click the **Domains** tab.
-4. Under the **Custom backend domains** section, click the **Add domain** button.
-5. In the modal that opens, enter your custom domain name (for example, `api.acme.com`) and click **Continue**.
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Domains** in the sidebar.
+2. Under the **Custom backend domains** section, click the **Add domain** button.
+3. In the modal that opens, enter your custom domain name (for example, `api.acme.com`) and click **Continue**.
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
@@ -110,20 +108,9 @@ To set up a storefront custom domain, you need:
 
 ### Set Up Storefront Custom Domain
 
-#### From Project Overview
-
-If no custom domains are configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
-
-1. Go to your project's dashboard in Cloud.
-2. In the environment card (for example, Production), click the **Setup Custom Domain** link next to the health status.
-
-#### From Environment Domains Tab
-
-1. Go to your project's dashboard in Cloud.
-2. Click on the environment card where you want to set up the custom domain.
-3. Click the **Domains** tab.
-4. Under the **Custom storefront domains** section, click the **Add domain** button.
-5. In the modal that opens, enter your custom domain name (for example, `shop.acme.com`) and click **Continue**.
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Domains** in the sidebar.
+2. Under the **Custom storefront domains** section, click the **Add domain** button.
+3. In the modal that opens, enter your custom domain name (for example, `shop.acme.com`) and click **Continue**.
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
@@ -177,13 +164,27 @@ You can trigger an immediate DNS check at any time instead of waiting for the ne
 
 To restart the verification process from the beginning at any time, click the **Restart Verification** button at the top right of the DNS configuration detail page.
 
+### Remove Custom Domain
+
+<Note type="warning">
+
+Removing a custom domain is permanent and may cause downtime if the domain is still in use.
+
+</Note>
+
+To remove a custom domain:
+
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Domains** in the sidebar.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the domain card you want to remove.
+3. Select **Remove domain** from the dropdown menu.
+
 ---
 
 ## Manage Custom Domains
 
 ### View All Domains
 
-In the **Domains** tab of your environment, each custom domain is shown as a card with its domain name and DNS verification status. Click a domain card to open its DNS configuration detail page.
+In the **Domains** settings of your environment, each custom domain is shown as a card with its domain name and DNS verification status. Click a domain card to open its DNS configuration detail page.
 
 ### Remove Custom Domain
 
@@ -195,10 +196,11 @@ Removing a custom domain will immediately stop serving traffic from that domain.
 
 To remove a custom domain:
 
-1. In the **Domains** tab of your environment, find the domain you want to remove.
-2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="Options" /> button next to the domain and select **Remove** from the dropdown.
-3. In the confirmation dialog, type the domain name exactly as shown to confirm the removal.
-4. Click **Remove Domain** to complete the action.
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Domains** in the sidebar.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the domain card you want to remove.
+3. Select **Remove domain** from the dropdown menu.
+4. In the confirmation dialog, type the domain name exactly as shown to confirm the removal.
+5. Click **Remove Domain** to complete the action.
 
 ---
 

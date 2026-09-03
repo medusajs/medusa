@@ -361,6 +361,7 @@ medusaIntegrationTestRunner({
               mid_code: null,
               origin_country: "UK",
               requires_shipping: true,
+              unit_of_measure: null,
               reserved_quantity: 1,
               sku: "second",
               stocked_quantity: 100,
@@ -380,7 +381,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it("lists reservation items with free text search on descroption", async () => {
+      it("lists reservation items with free text search on description", async () => {
         const reservationsRes = await api
           .get(`/admin/reservations?q=test`, adminHeaders)
           .catch(console.warn)
@@ -403,6 +404,7 @@ medusaIntegrationTestRunner({
               mid_code: null,
               origin_country: "UK",
               requires_shipping: true,
+              unit_of_measure: null,
               reserved_quantity: 1,
               sku: "second",
               stocked_quantity: 100,

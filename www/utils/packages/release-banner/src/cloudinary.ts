@@ -1,25 +1,10 @@
 import { v2 as cloudinary } from "cloudinary"
 
-/** Folder the release banners live in, inside the Cloudinary media library. */
-export const CLOUDINARY_FOLDER = "Releases"
-
 export type UploadResult = {
   /** The `https` delivery URL to reference from the release notes. */
   url: string
   /** Full public ID, folder included. */
   publicId: string
-}
-
-/**
- * Turns a version into a Cloudinary public ID.
- *
- * The dots are replaced because Cloudinary reads the segment after the last dot
- * in a public ID as the format, which would make `v2.19.0` deliver as a file
- * named `v2.19` in a `0` format. Dashes also keep these consistent with the
- * banners that were uploaded by hand before this was automated.
- */
-export function versionToPublicId(version: string): string {
-  return version.replace(/\./g, "-")
 }
 
 /**
@@ -55,20 +40,22 @@ function configure(): void {
 }
 
 /**
- * Uploads a banner to the `Releases` folder and returns its delivery URL.
+ * Uploads a banner to a folder in the media library and returns its delivery
+ * URL. The folder and public ID come from the banner's definition.
  *
- * Re-running for the same version overwrites in place, so regenerating a draft
- * updates the existing image rather than piling up variants — and `invalidate`
- * purges the CDN so the new one is actually served.
+ * Uploading to a public ID that already exists overwrites it in place, and
+ * `invalidate` purges the CDN so the new image is actually served. The CLI gives
+ * every upload its own suffixed ID, so in practice that path is only taken if a
+ * caller passes an ID of its own.
  */
 export async function uploadBanner({
   png,
-  version,
-  folder = CLOUDINARY_FOLDER,
+  folder,
+  publicId,
 }: {
   png: Buffer
-  version: string
-  folder?: string
+  folder: string
+  publicId: string
 }): Promise<UploadResult> {
   configure()
 
@@ -76,7 +63,7 @@ export async function uploadBanner({
     `data:image/png;base64,${png.toString("base64")}`,
     {
       folder,
-      public_id: versionToPublicId(version),
+      public_id: publicId,
       resource_type: "image",
       overwrite: true,
       invalidate: true,

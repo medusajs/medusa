@@ -12,8 +12,8 @@ jest.setTimeout(120000)
 
 type SearchService = SearchTypes.ISearchModuleService
 
-// The startup hook is what migration and seeding hang off, so the lifecycle
-// tests re-run it to simulate a boot.
+// The startup hook seeds indexes, so the lifecycle tests re-run it to simulate
+// a boot.
 const boot = (service: SearchService) =>
   (service as any).onApplicationStart_() as Promise<void>
 
@@ -35,7 +35,10 @@ const reseed = async (service: SearchService) => {
   resetDataset()
   const p = provider(service)
   await p.clearIndex({ index: "product" })
-  await p.upsertDocuments({ index: "product", documents: dataset.products })
+  await service.upsertDocuments({
+    index: "product",
+    documents: dataset.products,
+  })
 }
 
 moduleIntegrationTestRunner<SearchService>({
@@ -122,6 +125,31 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(any).sort()).toEqual(["prod_1", "prod_3"])
         })
 
+        it("prefixes the last term with match_strategy last", async () => {
+          const prefix = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "sho" },
+            search_options: { match_strategy: "last" },
+          })
+          expect(ids(prefix)).toEqual(["prod_1"])
+
+          const twoTerms = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "red sho" },
+            search_options: { match_strategy: "last" },
+          })
+          expect(ids(twoTerms)).toEqual(["prod_1"])
+
+          const exact = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "sho" },
+          })
+          expect(ids(exact)).toEqual([])
+        })
+
         it("tolerates typos through trigram word similarity", async () => {
           const result = await service.search({
             entity: "product",
@@ -133,7 +161,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
         })
 
-        it("rejects vector search on the native engine", async () => {
+        it("rejects vector search when the index has no vector field", async () => {
           await expect(
             service.search({
               entity: "product",
@@ -142,7 +170,7 @@ moduleIntegrationTestRunner<SearchService>({
                 vector: { field: "embedding", value: [0.1] },
               },
             })
-          ).rejects.toThrow(/lakebase/)
+          ).rejects.toThrow(/Unknown field "embedding"/)
         })
       })
 
@@ -204,6 +232,27 @@ moduleIntegrationTestRunner<SearchService>({
             },
           })
           expect(ids(composed)).toEqual(["prod_2"])
+        })
+
+        it("deletes by primary key without treating the id list as a Postgres array literal", async () => {
+          await provider(service).deleteDocuments({
+            index: "product",
+            filters: { id: "prod_1" },
+          })
+
+          await provider(service).deleteDocuments({
+            index: "product",
+            filters: { id: ["prod_2", "prod_3"] },
+          })
+
+          const remaining = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(remaining)).toEqual([])
+
+          const [info] = await provider(service).listIndexes()
+          expect(info.document_count).toBe(0)
         })
 
         it("deletes by filter without $exists leaking across the conjunction", async () => {

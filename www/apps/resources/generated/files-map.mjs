@@ -1292,6 +1292,10 @@ export const filesMap = [
     "pathname": "/lint/rules/no-mikroorm-direct-import"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/no-nested-when-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-nested-when-in-workflow"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/no-new-date-in-workflow/page.mdx",
     "pathname": "/lint/rules/no-new-date-in-workflow"
   },
@@ -1454,6 +1458,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/lint/rules/use-validated-body-or-query/page.mdx",
     "pathname": "/lint/rules/use-validated-body-or-query"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/when-block-must-have-name/page.mdx",
+    "pathname": "/lint/rules/when-block-must-have-name"
   },
   {
     "filePath": "/www/apps/resources/app/lint/rules/widget-must-export-config/page.mdx",
@@ -4014,6 +4022,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateGiftCardStep/page.json",
     "pathname": "/references/medusa-workflows/validateGiftCardStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateGiftCardsNotExpiredStep/page.json",
+    "pathname": "/references/medusa-workflows/validateGiftCardsNotExpiredStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateStoreCreditAccountStep/page.json",
@@ -11666,6 +11678,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardStepInput/page.json",
     "pathname": "/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardsNotExpiredStepInput/page.json",
+    "pathname": "/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardsNotExpiredStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateStoreCreditAccountStepInput/page.json",
