@@ -130,7 +130,6 @@ await query.search({
 | `distinct`       | one hit per value, count follows                        | same                     |
 | `min_score`      | yes, keeps the requested sort                           | same                     |
 | Vector / hybrid  | —                                                       | ANN + RRF                |
-| `swapIndex`      | yes                                                     | yes                      |
 
 Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, query-time locales.
 

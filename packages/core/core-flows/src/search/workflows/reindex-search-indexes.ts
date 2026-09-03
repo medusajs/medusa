@@ -16,8 +16,8 @@ export type ReindexSearchIndexesWorkflowInput = {
    */
   index?: string | string[]
   /**
-   * How to rebuild. `swap` fills a shadow index and aliases over; `in_place`
-   * writes into the live index.
+   * How to rebuild. `swap` fills a new version and makes it active on
+   * completion; `in_place` writes into the active version directly.
    */
   strategy?: "swap" | "in_place"
 }
