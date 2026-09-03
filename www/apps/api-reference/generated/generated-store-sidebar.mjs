@@ -73,6 +73,16 @@ const generatedgeneratedStoreSidebarSidebar = {
       "children": [
         {
           "type": "link",
+          "path": "/store/auth/list-providers",
+          "title": "List Providers",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
           "path": "/store/auth/authenticate-customer",
           "title": "Authenticate Customer",
           "loaded": true,

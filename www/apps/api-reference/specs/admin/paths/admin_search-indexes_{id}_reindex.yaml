@@ -1,0 +1,48 @@
+post:
+  operationId: PostSearchIndexesIdReindex
+  summary: Add Reindex to Search Index
+  description: Add a Reindex to a search index
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The search index's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_search-indexes_{id}_reindex/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_search-indexes_{id}_reindex/post.sh
+  tags:
+    - Search Indexes
+  responses:
+    '202':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSearchIndexReindexResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: reindexSearchIndexesWorkflow
+  x-events: []
