@@ -1,5 +1,11 @@
 # @medusajs/types
 
+## 2.20.1
+
+### Patch Changes
+
+- [#16703](https://github.com/medusajs/medusa/pull/16703) [`75c26e85f3bebc0c921064e9aa37987a76cc24ae`](https://github.com/medusajs/medusa/commit/75c26e85f3bebc0c921064e9aa37987a76cc24ae) Thanks [@sradevski](https://github.com/sradevski)! - Remove correlated flag on search until supported
+
 ## 2.20.0
 
 ### Minor Changes

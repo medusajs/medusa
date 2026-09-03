@@ -1,5 +1,12 @@
 # @medusajs/tax
 
+## 2.20.1
+
+### Patch Changes
+
+- Updated dependencies [[`f373c17dd60cb1e7df1d0c70db31d516d2a0cb4f`](https://github.com/medusajs/medusa/commit/f373c17dd60cb1e7df1d0c70db31d516d2a0cb4f)]:
+  - @medusajs/framework@2.20.1
+
 ## 2.20.0
 
 ### Patch Changes

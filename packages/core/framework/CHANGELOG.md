@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.20.1
+
+### Patch Changes
+
+- [#16704](https://github.com/medusajs/medusa/pull/16704) [`f373c17dd60cb1e7df1d0c70db31d516d2a0cb4f`](https://github.com/medusajs/medusa/commit/f373c17dd60cb1e7df1d0c70db31d516d2a0cb4f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): always strip fields that a field filter doesn't allow
+
+- Updated dependencies [[`75c26e85f3bebc0c921064e9aa37987a76cc24ae`](https://github.com/medusajs/medusa/commit/75c26e85f3bebc0c921064e9aa37987a76cc24ae)]:
+  - @medusajs/types@2.20.1
+  - @medusajs/utils@2.20.1
+  - @medusajs/modules-sdk@2.20.1
+  - @medusajs/orchestration@2.20.1
+  - @medusajs/workflows-sdk@2.20.1
+  - @medusajs/cli@2.20.1
+  - @medusajs/deps@2.20.1
+  - @medusajs/telemetry@2.20.1
+
 ## 2.20.0
 
 ### Minor Changes
