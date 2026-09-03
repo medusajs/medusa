@@ -132,7 +132,7 @@ await query.search({
 | Vector / hybrid  | —                                                       | ANN + RRF                |
 | `swapIndex`      | yes                                                     | yes                      |
 
-Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, correlated nested predicates, query-time locales.
+Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, query-time locales.
 
 `"last"` is typeahead: completed terms must match in full and the last term is a prefix, so `"dtc sta"` matches `"Dtc starter"`.
 

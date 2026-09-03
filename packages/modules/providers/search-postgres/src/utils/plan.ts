@@ -117,12 +117,6 @@ export function assertIndexSupported(
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
 
-      if (field.correlated) {
-        fail(
-          `The postgres search provider cannot correlate predicates per element, so "${path}" cannot set "correlated". Arrays of objects are collapsed to per-leaf arrays.`
-        )
-      }
-
       if (field.type === "vector") {
         if (engine !== "lakebase") {
           fail(

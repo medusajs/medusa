@@ -161,7 +161,7 @@ describe("search fields DSL", () => {
     })
   })
 
-  test("provider options and correlated object arrays", () => {
+  test("provider options on object arrays", () => {
     const definition = defineSearchIndex({
       name: "product",
       entity: "product",
@@ -172,7 +172,6 @@ describe("search fields DSL", () => {
             sku: search.keyword(),
           })
           .array()
-          .correlated()
           .providerOptions({ meilisearch: { foo: "bar" } }),
       }),
       async *seed() {},
@@ -181,7 +180,6 @@ describe("search fields DSL", () => {
     expect(definition.fields.variants).toEqual({
       type: "object",
       array: true,
-      correlated: true,
       provider_options: { meilisearch: { foo: "bar" } },
       fields: {
         sku: { type: "keyword" },
@@ -228,9 +226,6 @@ describe("search fields DSL", () => {
 
     // @ts-expect-error — vectors cannot hold arrays.
     void search.vector(3).array
-
-    // @ts-expect-error — correlated requires .array() first.
-    void search.object({ sku: search.keyword() }).correlated()
 
     // @ts-expect-error — range facets only exist on numeric/date fields.
     void search.keyword().facetable({ types: ["range"] })
