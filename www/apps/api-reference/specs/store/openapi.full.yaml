@@ -16214,6 +16214,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory item's unit of measure.
+          example: kg
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -20428,6 +20429,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory's unit of measure.
+          example: kg
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -25879,116 +25881,6 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
-    AdminSearchIndex:
-      type: object
-      description: A registered search index and the fields it stores.
-      x-schemaName: AdminSearchIndex
-      required:
-        - name
-        - entity
-        - provider
-        - status
-        - fields
-      properties:
-        name:
-          type: string
-          title: name
-          description: Unique index name, as used in `query.search({ entity })`.
-        entity:
-          type: string
-          title: entity
-          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
-        provider:
-          type: string
-          title: provider
-          description: Identifier of the provider backing this index.
-        status:
-          type: string
-          description: Lifecycle status of the index.
-          enum:
-            - error
-            - pending
-            - building
-            - ready
-        fields:
-          type: array
-          description: Leaf fields stored in the index.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndexField'
-    AdminSearchIndexField:
-      type: object
-      description: A leaf field stored in a search index, with the capabilities declared on it.
-      x-schemaName: AdminSearchIndexField
-      required:
-        - name
-        - type
-        - searchable
-        - filterable
-        - sortable
-        - facetable
-      properties:
-        name:
-          type: string
-          title: name
-          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
-        type:
-          type: string
-          title: type
-          description: The field's index type.
-        searchable:
-          type: boolean
-          title: searchable
-          description: Whether the field is used for free-text matching.
-        filterable:
-          type: boolean
-          title: filterable
-          description: Whether the field can be used in filters.
-        sortable:
-          type: boolean
-          title: sortable
-          description: Whether results can be sorted by this field.
-        facetable:
-          type: boolean
-          title: facetable
-          description: Whether the field can be faceted.
-    AdminSearchIndexListResponse:
-      type: object
-      description: The list of registered search indexes.
-      x-schemaName: AdminSearchIndexListResponse
-      required:
-        - search_indexes
-        - enabled
-      properties:
-        search_indexes:
-          type: array
-          description: The registered search indexes.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndex'
-        enabled:
-          type: boolean
-          title: enabled
-          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
-    AdminSearchIndexReindexResponse:
-      type: object
-      description: |-
-        The result of triggering a search index reindex. The reindex runs in the
-        background - check the index's `status` to know when it's done.
-      x-schemaName: AdminSearchIndexReindexResponse
-      required:
-        - job_id
-        - indexes
-      properties:
-        job_id:
-          type: string
-          title: job_id
-          description: Identifier of the triggered reindex job.
-        indexes:
-          type: array
-          description: Names of the indexes being reindexed.
-          items:
-            type: string
-            title: indexes
-            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.
@@ -28211,6 +28103,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory item's unit of measure.
+          example: kg
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -29649,7 +29542,7 @@ components:
           description: The date the user was deleted.
     AdminUserAuthProvidersResponse:
       type: object
-      description: SUMMARY
+      description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
       x-schemaName: AdminUserAuthProvidersResponse
       required:
         - providers
@@ -29662,7 +29555,8 @@ components:
           items:
             type: string
             title: providers
-            description: The provider's providers.
+            description: The provider's identifier.
+            example: emailpass
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -29719,7 +29613,7 @@ components:
           x-featureFlag: index_engine
     AdminUserResetPasswordTokenResponse:
       type: object
-      description: SUMMARY
+      description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
       x-schemaName: AdminUserResetPasswordTokenResponse
       required:
         - token

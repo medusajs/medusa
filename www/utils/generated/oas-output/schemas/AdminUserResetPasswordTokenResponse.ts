@@ -1,7 +1,7 @@
 /**
  * @schema AdminUserResetPasswordTokenResponse
  * type: object
- * description: SUMMARY
+ * description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
  * x-schemaName: AdminUserResetPasswordTokenResponse
  * required:
  *   - token

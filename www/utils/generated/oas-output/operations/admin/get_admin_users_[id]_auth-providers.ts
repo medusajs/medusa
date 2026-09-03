@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/users/{id}/auth-providers
  * operationId: GetUsersIdAuthProviders
- * summary: List Auth Providers
- * description: Retrieve a list of auth providers in a user. The auth providers can be filtered by fields like FILTER FIELDS. The auth providers can also be paginated.
+ * summary: List Auth Providers of a User
+ * x-sidebar-summary: List Auth Providers
+ * description: Retrieve a list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
  * x-authenticated: true
  * parameters:
  *   - name: id

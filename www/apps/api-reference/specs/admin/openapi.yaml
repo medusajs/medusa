@@ -588,9 +588,6 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminSalesChannel.yaml
   - name: Search
-  - name: Search Indexes
-    x-associatedSchema:
-      $ref: ./components/schemas/AdminSearchIndex.yaml
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingOptionType.yaml
@@ -1218,10 +1215,6 @@ paths:
     $ref: paths/admin_sales-channels_{id}_products.yaml
   /admin/search:
     $ref: paths/admin_search.yaml
-  /admin/search-indexes:
-    $ref: paths/admin_search-indexes.yaml
-  /admin/search-indexes/{id}/reindex:
-    $ref: paths/admin_search-indexes_{id}_reindex.yaml
   /admin/shipping-option-types:
     $ref: paths/admin_shipping-option-types.yaml
   /admin/shipping-option-types/{id}:

@@ -1,7 +1,7 @@
 /**
  * @schema AdminUserAuthProvidersResponse
  * type: object
- * description: SUMMARY
+ * description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
  * x-schemaName: AdminUserAuthProvidersResponse
  * required:
  *   - providers
@@ -14,7 +14,8 @@
  *     items:
  *       type: string
  *       title: providers
- *       description: The provider's providers.
+ *       description: The provider's identifier.
+ *       example: emailpass
  * 
 */
 

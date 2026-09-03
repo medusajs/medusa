@@ -440,9 +440,6 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminSalesChannel'
   - name: Search
-  - name: Search Indexes
-    x-associatedSchema:
-      $ref: '#/components/schemas/AdminSearchIndex'
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: '#/components/schemas/AdminShippingOptionType'
@@ -59437,124 +59434,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /admin/search-indexes:
-    get:
-      operationId: GetSearchIndexes
-      summary: List Search Indexes
-      description: Retrieve a list of search indexes. The search indexes can be filtered by fields such as `id`. The search indexes can also be sorted or paginated.
-      x-authenticated: true
-      parameters: []
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.search.listIndexes()
-            .then(({ search_indexes, enabled }) => {
-              console.log(search_indexes, enabled)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl '{backend_url}/admin/search-indexes' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Search Indexes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminSearchIndexListResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /admin/search-indexes/{id}/reindex:
-    post:
-      operationId: PostSearchIndexesIdReindex
-      summary: Add Reindex to Search Index
-      description: Add a Reindex to a search index
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The search index's ID.
-          required: true
-          schema:
-            type: string
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.search.reindex("product")
-            .then(({ job_id, indexes }) => {
-              console.log(job_id, indexes)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/admin/search-indexes/{id}/reindex' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Search Indexes
-      responses:
-        '202':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminSearchIndexReindexResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-workflow: reindexSearchIndexesWorkflow
-      x-events: []
   /admin/shipping-option-types:
     get:
       operationId: GetShippingOptionTypes
@@ -69541,8 +69420,9 @@ paths:
   /admin/users/{id}/auth-providers:
     get:
       operationId: GetUsersIdAuthProviders
-      summary: List Auth Providers
-      description: Retrieve a list of auth providers in a user. The auth providers can be filtered by fields like FILTER FIELDS. The auth providers can also be paginated.
+      summary: List Auth Providers of a User
+      x-sidebar-summary: List Auth Providers
+      description: Retrieve a list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
       x-authenticated: true
       parameters:
         - name: id
@@ -69602,8 +69482,9 @@ paths:
   /admin/users/{id}/reset-password:
     post:
       operationId: PostUsersIdResetPassword
-      summary: Add Reset Password to User
-      description: Add a Reset Password to a user
+      summary: Generate Reset Password Token for a User
+      x-sidebar-summary: Generate Reset Password Token
+      description: Generate a reset password token for a user. This is useful if another user wants to reset the password of a user. The reset password token can be used to reset the user's password. This route only emits the `auth.password_reset` event. You can listen to this event to send a reset password email to the user, for example.
       x-authenticated: true
       parameters:
         - name: id
@@ -75504,6 +75385,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory item's unit of measure.
+          example: kg
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -79718,6 +79600,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory's unit of measure.
+          example: kg
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -85169,116 +85052,6 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
-    AdminSearchIndex:
-      type: object
-      description: A registered search index and the fields it stores.
-      x-schemaName: AdminSearchIndex
-      required:
-        - name
-        - entity
-        - provider
-        - status
-        - fields
-      properties:
-        name:
-          type: string
-          title: name
-          description: Unique index name, as used in `query.search({ entity })`.
-        entity:
-          type: string
-          title: entity
-          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
-        provider:
-          type: string
-          title: provider
-          description: Identifier of the provider backing this index.
-        status:
-          type: string
-          description: Lifecycle status of the index.
-          enum:
-            - error
-            - pending
-            - building
-            - ready
-        fields:
-          type: array
-          description: Leaf fields stored in the index.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndexField'
-    AdminSearchIndexField:
-      type: object
-      description: A leaf field stored in a search index, with the capabilities declared on it.
-      x-schemaName: AdminSearchIndexField
-      required:
-        - name
-        - type
-        - searchable
-        - filterable
-        - sortable
-        - facetable
-      properties:
-        name:
-          type: string
-          title: name
-          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
-        type:
-          type: string
-          title: type
-          description: The field's index type.
-        searchable:
-          type: boolean
-          title: searchable
-          description: Whether the field is used for free-text matching.
-        filterable:
-          type: boolean
-          title: filterable
-          description: Whether the field can be used in filters.
-        sortable:
-          type: boolean
-          title: sortable
-          description: Whether results can be sorted by this field.
-        facetable:
-          type: boolean
-          title: facetable
-          description: Whether the field can be faceted.
-    AdminSearchIndexListResponse:
-      type: object
-      description: The list of registered search indexes.
-      x-schemaName: AdminSearchIndexListResponse
-      required:
-        - search_indexes
-        - enabled
-      properties:
-        search_indexes:
-          type: array
-          description: The registered search indexes.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndex'
-        enabled:
-          type: boolean
-          title: enabled
-          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
-    AdminSearchIndexReindexResponse:
-      type: object
-      description: |-
-        The result of triggering a search index reindex. The reindex runs in the
-        background - check the index's `status` to know when it's done.
-      x-schemaName: AdminSearchIndexReindexResponse
-      required:
-        - job_id
-        - indexes
-      properties:
-        job_id:
-          type: string
-          title: job_id
-          description: Identifier of the triggered reindex job.
-        indexes:
-          type: array
-          description: Names of the indexes being reindexed.
-          items:
-            type: string
-            title: indexes
-            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.
@@ -87501,6 +87274,7 @@ components:
           type: string
           title: unit_of_measure
           description: The inventory item's unit of measure.
+          example: kg
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -88939,7 +88713,7 @@ components:
           description: The date the user was deleted.
     AdminUserAuthProvidersResponse:
       type: object
-      description: SUMMARY
+      description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
       x-schemaName: AdminUserAuthProvidersResponse
       required:
         - providers
@@ -88952,7 +88726,8 @@ components:
           items:
             type: string
             title: providers
-            description: The provider's providers.
+            description: The provider's identifier.
+            example: emailpass
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -89009,7 +88784,7 @@ components:
           x-featureFlag: index_engine
     AdminUserResetPasswordTokenResponse:
       type: object
-      description: SUMMARY
+      description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
       x-schemaName: AdminUserResetPasswordTokenResponse
       required:
         - token
