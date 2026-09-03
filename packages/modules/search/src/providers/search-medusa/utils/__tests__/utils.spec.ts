@@ -6,7 +6,6 @@ import {
   fromSearchDocument,
   parseFacetResults,
   parseHighlights,
-  sameSchemaType,
   toSearchDocument,
   toSearchFilter,
 } from ".."
@@ -1153,43 +1152,6 @@ describe("Medusa search utilities", () => {
           plan
         )
       ).toThrow(/expected 3 dimensions/)
-    })
-  })
-
-  describe("sameSchemaType", () => {
-    const current = {
-      id: { type: "string" },
-      title: { type: "string" },
-    }
-
-    it("allows adding a non-vector attribute in place", () => {
-      expect(
-        sameSchemaType(current, {
-          id: { type: "string" },
-          title: { type: "string" },
-          brand: { type: "string" },
-        })
-      ).toBe(true)
-    })
-
-    it("rejects adding a vector attribute to an existing namespace", () => {
-      expect(
-        sameSchemaType(current, {
-          id: { type: "string" },
-          title: { type: "string" },
-          embedding: { type: "[768]f32", ann: true, embed: { dims: 768 } },
-        })
-      ).toBe(false)
-    })
-
-    it("rejects a type change or a removed attribute", () => {
-      expect(
-        sameSchemaType(current, {
-          id: { type: "string" },
-          title: { type: "int" },
-        })
-      ).toBe(false)
-      expect(sameSchemaType(current, { id: { type: "string" } })).toBe(false)
     })
   })
 })

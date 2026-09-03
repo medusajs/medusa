@@ -68,7 +68,7 @@ await deleteGiftCardWorkflow(container)
 
 ### Add Gift Card to Cart
 
-Apply a gift card to a cart as a credit line:
+Apply a gift card to a cart as a credit line. This workflow validates that the gift card has not expired before adding it:
 
 ```ts
 import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin"
@@ -100,7 +100,7 @@ await removeGiftCardFromCartWorkflow(container)
 
 ### Refresh Cart Gift Cards
 
-Refresh gift card credit lines on a cart to account for balance or cart total changes:
+Refresh gift card credit lines on a cart to account for balance or cart total changes. Expired gift cards are silently removed from the cart during a refresh rather than causing an error, so the cart can continue to be updated:
 
 ```ts
 import { refreshCartGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
@@ -115,7 +115,7 @@ await refreshCartGiftCardsWorkflow(container)
 
 ### Confirm Cart Credit Lines
 
-Confirm and debit gift card balances during checkout:
+Confirm and debit gift card balances during checkout. This workflow also validates that none of the gift cards applied to the cart have expired before debiting any balances:
 
 ```ts
 import { confirmCartCreditLinesWorkflow } from "@medusajs/loyalty-plugin"

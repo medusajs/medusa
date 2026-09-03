@@ -120,12 +120,6 @@ export function assertIndexSupported(
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
 
-      if (field.correlated) {
-        fail(
-          `The Medusa search provider cannot correlate predicates per array element ("${path}")`
-        )
-      }
-
       if (field.type === "object") {
         if (field.fields) {
           walk(field.fields, path)
@@ -375,35 +369,3 @@ export function fromSearchDocument(
   return result
 }
 
-function attributeType(schema: AttributeSchema): string | undefined {
-  return typeof schema === "string"
-    ? schema
-    : (schema as AttributeSchemaConfig).type
-}
-
-// turbopuffer vector columns look like `[768]f32` / `[][768]f32`. The column
-// count is fixed at namespace creation — adding one later is rejected.
-function isVectorAttributeType(type: string | undefined): boolean {
-  return typeof type === "string" && /\[\d+\]/.test(type)
-}
-
-export function sameSchemaType(
-  current: Record<string, AttributeSchemaConfig>,
-  desired: Record<string, AttributeSchema>
-): boolean {
-  for (const [path, schema] of Object.entries(desired)) {
-    const desiredType = attributeType(schema)
-
-    // Additive non-vector attributes can be patched in place. A new vector
-    // column cannot — the engine refuses `updateSchema` for those.
-    if (!current[path] && isVectorAttributeType(desiredType)) {
-      return false
-    }
-
-    if (current[path] && current[path].type !== desiredType) {
-      return false
-    }
-  }
-
-  return Object.keys(current).every((path) => path in desired)
-}
