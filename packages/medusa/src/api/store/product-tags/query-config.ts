@@ -1,3 +1,4 @@
+import { buildAllowedFields } from "../utils/allowed-fields"
 import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaults = [
@@ -12,12 +13,14 @@ export const defaults = [
 
 export const retrieveProductTagConfig = {
   defaults,
+  allowed: buildAllowedFields(defaults),
   disallowed: disallowedStoreFields,
   isList: false,
 }
 
 export const listProductTagConfig = {
   defaults,
+  allowed: buildAllowedFields(defaults),
   disallowed: disallowedStoreFields,
   defaultLimit: 50,
   isList: true,

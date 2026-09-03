@@ -1,4 +1,4 @@
-import { DisallowedFieldFilter } from "../field-validator"
+import { AllowedFieldFilter, DisallowedFieldFilter } from "../field-validator"
 
 const contextFor = (fields: string[], starFields: string[] = []) => ({
   entity: "product",
@@ -6,6 +6,57 @@ const contextFor = (fields: string[], starFields: string[] = []) => ({
     fields: new Set(fields),
     starFields: new Set(starFields),
   },
+})
+
+describe("AllowedFieldFilter", () => {
+  it("allows a field listed as-is", () => {
+    const filter = new AllowedFieldFilter({
+      allowed: ["id", "region_id", "region.id", "region.name"],
+    })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor(["id", "region_id", "region.id", "region.name"])
+      )
+    ).toEqual([])
+  })
+
+  it("doesn't allow a field of an allowed relation unless the field is allowed too", () => {
+    const filter = new AllowedFieldFilter({ allowed: ["region", "region.id"] })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor([
+          "region",
+          "region.id",
+          "region.name",
+          "region.countries.id",
+        ])
+      )
+    ).toEqual(["region.name", "region.countries.id"])
+  })
+
+  it("doesn't allow a field that merely shares a prefix with an allowed field", () => {
+    const filter = new AllowedFieldFilter({ allowed: ["region"] })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor(["region_id", "regions.id", "region_secret"])
+      )
+    ).toEqual(["region_id", "regions.id", "region_secret"])
+  })
+
+  it("only allows a star field listed as-is", () => {
+    const filter = new AllowedFieldFilter({
+      allowed: ["region", "payment_collection"],
+    })
+
+    expect(
+      filter.getNotAllowedFields(
+        contextFor([], ["region", "payment_collection", "region.countries"])
+      )
+    ).toEqual(["region.countries"])
+  })
 })
 
 describe("DisallowedFieldFilter", () => {
