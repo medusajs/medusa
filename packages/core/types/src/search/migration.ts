@@ -8,8 +8,8 @@
 export type SearchIndexMigrationAction =
   | {
       /**
-       * The index does not exist yet. Nothing is serving it, so it is built
-       * directly under its live name and filled in place.
+       * No version of this index has ever gone live. A new version is built,
+       * to be filled and made active at application start.
        */
       action: "create"
 
@@ -19,31 +19,27 @@ export type SearchIndexMigrationAction =
       index: string
 
       /**
-       * The physical index to create it under.
+       * The physical index the new version is built under.
        */
       physical_name: string
 
       /**
-       * A hash of the definition the index is created from.
+       * A hash of the definition the version is created from.
        */
       definition_hash: string
+
+      /**
+       * The new version's number.
+       */
+      version: number
     }
   | {
       /**
-       * The definition changed. Only the build happens here; filling the result
-       * and putting it in front of reads happens at application start.
-       *
-       * On a provider with `swapIndex`, the new schema is built alongside the
-       * live index and aliased over once seeded, so reads never see a half-built
-       * index. Without one there is nowhere to build, so the live index is
-       * replaced in place and holds nothing until the seed runs — which
-       * `physical_name === live_physical_name` is the signal for.
+       * The definition changed. A new version is built alongside the version
+       * currently serving reads. Only the build happens here — filling the new
+       * version and making it active happens at application start.
        */
       action: "migrate"
-      /** The index being built. Derived from `definition_hash` when swapping. */
-      physical_name: string
-      /** The index serving reads now. */
-      live_physical_name: string
 
       /**
        * The name of the index being migrated.
@@ -51,20 +47,33 @@ export type SearchIndexMigrationAction =
       index: string
 
       /**
-       * A hash of the definition the index is migrated to.
+       * The physical index the new version is built under.
+       */
+      physical_name: string
+
+      /**
+       * A hash of the definition the new version is built from.
        */
       definition_hash: string
 
       /**
-       * A hash of the definition the index currently serving reads was built from.
+       * The new version's number.
        */
-      live_definition_hash: string
+      version: number
 
-      /** The provider the definition now binds to. */
+      /** The physical index of the version currently serving reads. */
+      active_physical_name: string
+
+      /** A hash of the definition the active version was built from. */
+      active_definition_hash: string
+
+      /** The provider the new version is built on. */
       provider: string
+
       /**
-       * The provider that currently holds this index. Set only when it differs
-       * from `provider`, so execute can drop the previous engine's data.
+       * The provider that holds the version currently serving reads. Set only
+       * when it differs from `provider`, so a later migration knows to clean up
+       * the previous engine's data once this version becomes active.
        */
       previous_provider?: string
     }

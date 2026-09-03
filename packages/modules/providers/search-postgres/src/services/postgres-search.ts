@@ -330,33 +330,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     await manager.execute(`DROP TABLE IF EXISTS "${table}" CASCADE`)
   }
 
-  /**
-   * Renaming a table leaves its constraint and index names behind, and a later
-   * rebuild of the same shadow name would collide with them (or silently skip
-   * `CREATE INDEX IF NOT EXISTS`). Rename every table-derived artifact too.
-   */
-  protected async renameTableArtifacts(
-    from: string,
-    to: string,
-    plan: IndexPlan,
-    manager: DbManager
-  ) {
-    await manager.execute(
-      `ALTER TABLE "${to}" RENAME CONSTRAINT "${from}_pkey" TO "${to}_pkey"`
-    )
-
-    const suffixes = ["fts_idx", "trgm_idx", "indexed_idx", "bm25"]
-    for (const path of plan.vectors) {
-      suffixes.push(`${vectorColumnName(path)}_ann`)
-    }
-
-    for (const suffix of suffixes) {
-      await manager.execute(
-        `ALTER INDEX IF EXISTS "${from}_${suffix}" RENAME TO "${to}_${suffix}"`
-      )
-    }
-  }
-
   protected async adjustDocumentCount(
     name: string,
     delta: number,
@@ -477,73 +450,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
           ? row.updated_at
           : new Date(row.updated_at),
     }))
-  }
-
-  async swapIndex({
-    alias,
-    index,
-  }: {
-    alias: string
-    index: string
-  }): Promise<SearchTypes.SearchTask> {
-    const shadow = await this.getCatalog(index)
-    if (!shadow) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The postgres search provider has no index "${index}" to swap from`
-      )
-    }
-
-    const live = await this.getCatalog(alias)
-    const aliasTable = tableNameForIndex(alias)
-
-    await this.withTransaction(async (manager) => {
-      if (live) {
-        await this.dropDocumentTable(live.table_name, manager)
-        await manager.execute(
-          `DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`,
-          [alias]
-        )
-      }
-
-      if (shadow.table_name !== aliasTable) {
-        await manager.execute(
-          `ALTER TABLE "${shadow.table_name}" RENAME TO "${aliasTable}"`
-        )
-        await this.renameTableArtifacts(
-          shadow.table_name,
-          aliasTable,
-          shadow.plan,
-          manager
-        )
-      }
-
-      await manager.execute(`DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`, [
-        index,
-      ])
-
-      await manager.execute(
-        `INSERT INTO "${CATALOG_TABLE}"
-          ("name", "table_name", "schema_hash", "plan", "document_count", "created_at", "updated_at")
-         VALUES (?, ?, ?, ?::jsonb, ?, ?, now())`,
-        [
-          alias,
-          aliasTable,
-          shadow.plan.schema_hash,
-          this.serializePlan(shadow.plan),
-          shadow.document_count,
-          shadow.created_at instanceof Date
-            ? shadow.created_at
-            : new Date(shadow.created_at),
-        ]
-      )
-
-      if (shadow.document_count > 0) {
-        await this.ensureBm25Index(aliasTable, manager)
-      }
-    })
-
-    return this.task(alias)
   }
 
   protected buildSearchVectorSql(
