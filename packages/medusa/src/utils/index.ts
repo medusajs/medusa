@@ -5,3 +5,8 @@ export * from "./exception-formatter"
 export * from "./middlewares"
 export * from "./generate-resource-policies"
 export * from "./default-policy-operations"
+export {
+  disallowedStoreFields,
+  disallowedStorePivotFields,
+  disallowedStoreCustomerFields,
+} from "../api/store/utils/disallowed-fields"
