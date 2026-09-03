@@ -1,5 +1,7 @@
 # @medusajs/instantsearch-adapter
 
+## 2.20.1
+
 ## 2.20.0
 
 ### Patch Changes
