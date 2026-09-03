@@ -19,6 +19,7 @@ import {
   SearchEventRoutes,
   SearchIndexContext,
   SearchIndexes,
+  SearchIndexRecord,
   SearchIndexSeedAction,
   SearchModuleOptions,
 } from "@types"
@@ -27,13 +28,19 @@ import {
   buildDisjunctiveFacetQueries,
   listIndexedFields,
   listRetrievablePaths,
+  listVersionsByIndexId,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
+  resolveActiveDefinition,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   SearchIndexState,
   validateFieldUsage,
 } from "@utils"
+import {
+  ActiveIndexVersion,
+  ActiveIndexVersionCache,
+} from "../utils/active-version-cache"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
 import {
   createIndexMigrationPlan,
@@ -53,6 +60,7 @@ type InjectedDependencies = {
   [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   searchProviderService: SearchProviderService
   searchIndexService: ModulesSdkTypes.IMedusaInternalService<any>
+  searchIndexVersionService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
@@ -74,6 +82,12 @@ export default class SearchModuleService
   // an index at runtime, which is what lets a `definition_hash` change count as a
   // migration rather than a race.
   protected readonly indexes_: SearchIndexes
+
+  // Which physical index currently serves reads for each logical index. A
+  // cache rather than a value resolved once, because — unlike `indexes_` — it
+  // can change out from under this process when another replica finishes
+  // seeding and flips it.
+  protected readonly activeVersionCache_: ActiveIndexVersionCache
 
   // Passed down for migrations and seeding, among other things.
   protected readonly context_: SearchIndexContext
@@ -117,6 +131,10 @@ export default class SearchModuleService
 
     this.eventRoutes_ = buildEventRoutes(this.indexes_)
 
+    this.activeVersionCache_ = new ActiveIndexVersionCache(() =>
+      this.fetchActiveVersions_(container)
+    )
+
     this.context_ = {
       container,
       logger: this.logger_,
@@ -124,9 +142,63 @@ export default class SearchModuleService
       indexes: this.indexes_,
       providers: container.searchProviderService,
       indexService: container.searchIndexService,
+      versionService: container.searchIndexVersionService,
       syncService: container.searchIndexSyncService,
       locking: resolveLocking(container),
+      activeVersionCache: this.activeVersionCache_,
     }
+  }
+
+  // Reads the DB directly, for every index at once — there are never many
+  // search indexes in an app, so listing them all is cheap, and it lets one
+  // refresh (triggered by any index) serve every index. Called by
+  // `activeVersionCache_` on a cache miss or refresh — never on the request
+  // path itself.
+  protected async fetchActiveVersions_(
+    container: InjectedDependencies
+  ): Promise<Map<string, ActiveIndexVersion>> {
+    const records = (await container.searchIndexService.list(
+      {},
+      { take: null }
+    )) as SearchIndexRecord[]
+
+    const versionsByIndexId = await listVersionsByIndexId(
+      { versionService: container.searchIndexVersionService },
+      records.map((record) => record.id)
+    )
+
+    const values = new Map<string, ActiveIndexVersion>()
+
+    for (const record of records) {
+      if (record.active_version == null) {
+        continue
+      }
+
+      const version = versionsByIndexId
+        .get(record.id)
+        ?.find((candidate) => candidate.version === record.active_version)
+
+      if (version) {
+        values.set(record.name, {
+          physical_name: version.physical_name,
+          provider: version.provider,
+          version: version.version,
+        })
+      }
+    }
+
+    return values
+  }
+
+  // Merges in the physical index and provider currently serving reads. Every
+  // *live* read or write goes through this rather than `definition.physical_name`
+  // directly, since the active version can change out from under this process.
+  // Shared with the ingestion path (`resolveActiveDefinition` in `@utils`) so
+  // the two can't drift apart.
+  protected async resolveActiveDefinition_(
+    name: string
+  ): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
+    return await resolveActiveDefinition(this.context_, name)
   }
 
   // Declared so that `Module()` does not derive one by scanning `src/models`,
@@ -162,48 +234,105 @@ export default class SearchModuleService
       return []
     }
 
-    const prepared = queries.map((query) => {
-      const index = retrieveIndexDefinition(this.indexes_, query.entity)
-      const normalized = normalizeSearchQuery({ query, index })
-      const provider = this.searchProviderService_.retrieve(index.provider)
+    const prepared = await promiseAll(
+      queries.map(async (query) => {
+        const index = await this.resolveActiveDefinition_(query.entity)
+        const normalized = normalizeSearchQuery({ query, index })
+        const provider = this.searchProviderService_.retrieve(index.provider)
 
-      // Whether the *provider* can serve the query is the provider's call, made
-      // while it translates. This only checks the query against the definition,
-      // which is provider-independent.
-      validateFieldUsage({ index, query: normalized })
+        // Whether the *provider* can serve the query is the provider's call, made
+        // while it translates. This only checks the query against the definition,
+        // which is provider-independent.
+        validateFieldUsage({ index, query: normalized })
 
-      return { normalized, provider }
+        return { normalized, provider }
+      })
+    )
+
+    // Expand disjunctive facets into extra queries, then send the whole set to
+    // `provider.searchMany` so the engine can pack them into one round-trip.
+    type FlatQuery = {
+      provider: SearchTypes.ISearchProvider
+      query: SearchTypes.ProviderSearchQuery
+      originalIndex: number
+      facetField?: string
+    }
+
+    const flattened: FlatQuery[] = []
+
+    prepared.forEach(({ normalized, provider }, originalIndex) => {
+      if (!normalized.search_options?.disjunctive_facets) {
+        flattened.push({ provider, query: normalized, originalIndex })
+        return
+      }
+
+      const { base, per_facet } = buildDisjunctiveFacetQueries(normalized)
+      flattened.push({ provider, query: base, originalIndex })
+
+      for (const [field, facetQuery] of per_facet) {
+        flattened.push({
+          provider,
+          query: facetQuery,
+          originalIndex,
+          facetField: field,
+        })
+      }
     })
 
-    return await promiseAll(
-      prepared.map(async ({ normalized, provider }) => {
-        if (!normalized.search_options?.disjunctive_facets) {
-          return await provider.search(normalized)
-        }
+    const groups = new Map<
+      SearchTypes.ISearchProvider,
+      { item: FlatQuery; flatIndex: number }[]
+    >()
 
-        const { base, per_facet } = buildDisjunctiveFacetQueries(normalized)
+    flattened.forEach((item, flatIndex) => {
+      const group = groups.get(item.provider)
+      if (group) {
+        group.push({ item, flatIndex })
+        return
+      }
+      groups.set(item.provider, [{ item, flatIndex }])
+    })
 
-        if (!per_facet.size) {
-          return await provider.search(base)
-        }
+    const flatResults: SearchTypes.SearchResult[] = new Array(flattened.length)
 
-        // The base query carries the hits; the per-facet ones only recompute one
-        // facet each with that facet's own filter lifted.
-        const fields = [...per_facet.keys()]
-        const inputs = [base, ...fields.map((field) => per_facet.get(field)!)]
-
-        const [baseResult, ...facetResults] = provider.searchMany
+    await promiseAll(
+      [...groups].map(async ([provider, group]) => {
+        const inputs = group.map(({ item }) => item.query)
+        const results = provider.searchMany
           ? await provider.searchMany(inputs)
           : await promiseAll(inputs.map((input) => provider.search(input)))
 
-        return mergeDisjunctiveFacetResults({
-          base: baseResult,
-          per_facet: new Map(
-            fields.map((field, i) => [field, facetResults[i]])
-          ),
+        group.forEach(({ flatIndex }, i) => {
+          flatResults[flatIndex] = results[i]
         })
       })
     )
+
+    const results: SearchTypes.SearchResult[] = new Array(queries.length)
+    const pendingFacets = new Map<
+      number,
+      Map<string, SearchTypes.SearchResult>
+    >()
+
+    flattened.forEach((item, flatIndex) => {
+      if (!item.facetField) {
+        results[item.originalIndex] = flatResults[flatIndex]
+        return
+      }
+
+      const perFacet = pendingFacets.get(item.originalIndex) ?? new Map()
+      perFacet.set(item.facetField, flatResults[flatIndex])
+      pendingFacets.set(item.originalIndex, perFacet)
+    })
+
+    for (const [index, perFacet] of pendingFacets) {
+      results[index] = mergeDisjunctiveFacetResults({
+        base: results[index],
+        per_facet: perFacet,
+      })
+    }
+
+    return results
   }
 
   async upsertDocuments({
@@ -217,7 +346,7 @@ export default class SearchModuleService
       return { index, status: "succeeded" }
     }
 
-    const definition = retrieveIndexDefinition(this.indexes_, index)
+    const definition = await this.resolveActiveDefinition_(index)
     const provider = this.searchProviderService_.retrieve(definition.provider)
 
     const task = await provider.upsertDocuments({
@@ -243,7 +372,7 @@ export default class SearchModuleService
       )
     }
 
-    const definition = retrieveIndexDefinition(this.indexes_, index)
+    const definition = await this.resolveActiveDefinition_(index)
     const provider = this.searchProviderService_.retrieve(definition.provider)
 
     const task = await provider.deleteDocuments({
@@ -271,20 +400,30 @@ export default class SearchModuleService
       return []
     }
 
-    const records = await this.context_.indexService.list(
+    const records = (await this.context_.indexService.list(
       { name: definitions.map((definition) => definition.name) },
       { take: null }
-    )
+    )) as SearchIndexRecord[]
     const byName = new Map(records.map((record) => [record.name, record]))
+    const versionsByIndexId = await listVersionsByIndexId(
+      this.context_,
+      records.map((record) => record.id)
+    )
 
     return definitions.map((definition) => {
       const record = byName.get(definition.name)
+      const versions = record ? versionsByIndexId.get(record.id) ?? [] : []
+      const activeVersion =
+        record?.active_version != null
+          ? versions.find((version) => version.version === record.active_version)
+          : undefined
 
       return {
         name: definition.name,
         entity: definition.entity,
-        provider: definition.provider,
-        status: record?.status ?? SearchIndexState.PENDING,
+        provider: activeVersion?.provider ?? definition.provider,
+        status: (activeVersion?.status ??
+          SearchIndexState.PENDING) as SearchTypes.SearchIndexStatus,
         fields: listIndexedFields(definition.fields),
       }
     })

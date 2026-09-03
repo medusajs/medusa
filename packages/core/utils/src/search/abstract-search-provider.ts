@@ -67,11 +67,12 @@ import { SearchTypes } from "@medusajs/types"
  *
  * @privateRemarks
  *
- * `swapIndex`, `searchMany` and `waitForTask` are optional and
- * left out of this class on purpose: the Search Module treats their presence as support,
- * so only define the ones your engine can back. Implementing `swapIndex`, for example,
- * lets the module reindex without downtime instead of rebuilding in place. Refer to the
- * `ISearchProvider` interface for their expected parameters and return values.
+ * `waitForTask` is optional and left out of this class on purpose: the Search
+ * Module treats its presence as support, so only define it if your engine
+ * applies writes asynchronously. `searchMany` has a default that runs `search`
+ * concurrently; override it to pack the queries into one engine round-trip.
+ * Refer to the `ISearchProvider` interface for their expected parameters and
+ * return values.
  */
 export class AbstractSearchProviderService
   implements SearchTypes.ISearchProvider
@@ -114,7 +115,7 @@ export class AbstractSearchProviderService
    * Compile `input.filters` to your engine's filter syntax, and reject the
    * operators it can't express rather than approximating them. Also, use
    * `input.index.physical_name` as the index to query, not `input.index.name`,
-   * since the two differ under an index prefix or during a swap.
+   * since the two differ under an index prefix or between versions.
    *
    * @param {SearchTypes.ProviderSearchQuery} _input - The query, the resolved index
    * definition, and the attributes to return.
@@ -149,6 +150,41 @@ export class AbstractSearchProviderService
   }
 
   /**
+   * This method runs multiple queries in a single request to the search engine.
+   * The Search Module uses it for its `searchMany` method, including the extra
+   * queries produced by disjunctive faceting.
+   *
+   * The default runs `search` concurrently. Override it to pack the queries into
+   * one engine round-trip.
+   *
+   * @param {SearchTypes.ProviderSearchQuery[]} inputs - The queries to run.
+   * @returns {Promise<SearchTypes.SearchResult[]>} A result for each query, in
+   * the same order as the queries.
+   *
+   * @example
+   * class MySearchProviderService extends AbstractSearchProviderService {
+   *   // ...
+   *   async searchMany(
+   *     inputs: SearchTypes.ProviderSearchQuery[]
+   *   ): Promise<SearchTypes.SearchResult[]> {
+   *     const { results } = await this.client.multiSearch(
+   *       inputs.map((input) => ({
+   *         indexUid: input.index.physical_name,
+   *         query: input.q,
+   *       }))
+   *     )
+   *
+   *     return results.map((result, i) => this.buildResult(result, inputs[i]))
+   *   }
+   * }
+   */
+  async searchMany(
+    inputs: SearchTypes.ProviderSearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
+    return await Promise.all(inputs.map((input) => this.search(input)))
+  }
+
+  /**
    * This method brings an index in line with its definition, creating it if it doesn't
    * exist. The Search Module calls it for every definition when migrations run.
    *
@@ -157,9 +193,9 @@ export class AbstractSearchProviderService
    * keep serving reads, and never during a partial rebuild.
    *
    * Throw if the definition asks for something your engine can't hold, such as a
-   * `correlated` field or a facet type it doesn't support. Since migrations run
-   * before the application serves requests, the error surfaces at startup rather
-   * than as wrong results later.
+   * facet type it doesn't support. Since migrations run before the application
+   * serves requests, the error surfaces at startup rather than as wrong results
+   * later.
    *
    * @param {object} _input - The index to create or update.
    * @param {SearchTypes.ResolvedSearchIndexDefinition} _input.index - The definition,
@@ -191,7 +227,7 @@ export class AbstractSearchProviderService
 
   /**
    * This method deletes an index and everything in it. The Search Module calls it
-   * to clean up an index it replaced, such as the index left behind by a swap.
+   * to clean up an old version of an index once a newer one has taken over.
    *
    * @param {object} _input - The index to delete.
    * @param {string} _input.index - The index's physical name.
@@ -246,11 +282,11 @@ export class AbstractSearchProviderService
    * once per batch.
    *
    * If your engine applies writes later rather than inline, return a task with an `id` and
-   * implement `waitForTask`, so the module can wait before swapping a new index in.
+   * implement `waitForTask`, so the module can wait before making a new version active.
    *
    * Write to `input.index` but read schema information from `input.definition`:
-   * during a swap, `input.index` is the shadow index being seeded, whereas the
-   * definition is that of the logical index.
+   * while a new version is being seeded, `input.index` is that version's
+   * physical index, whereas the definition is that of the logical index.
    *
    * @param {object} _input - The documents to write.
    * @param {string} _input.index - The index's physical name. This is the index to

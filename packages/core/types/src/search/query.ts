@@ -135,24 +135,28 @@ export interface SearchHighlightOptions {
  */
 export interface SearchVectorOptions {
   /**
-   * The dotted path of the `vector` field to search in.
+   * The dotted path of the `vector` field to search in. Optional when the
+   * index declares exactly one vector field.
    */
-  field: string
+  field?: string
 
   /**
    * A pre-computed embedding to search with. Mutually exclusive with `query`.
+   * Allowed whether documents store customer-supplied embeddings or the engine
+   * embeds them.
    */
   value?: number[]
 
   /**
-   * Text to embed with the index's configured embedder. Mutually exclusive with
-   * `value`.
+   * Text the engine embeds at query time. Requires the vector field to set
+   * `embed: true`. Mutually exclusive with `value`.
    */
   query?: string
 
   /**
    * How much the semantic score contributes relative to the keyword score, where
-   * `0` is keyword-only and `1` is semantic-only.
+   * `0` is keyword-only and `1` is semantic-only. Defaults to `1` when there is
+   * no free-text query, and `0.5` when both run together.
    */
   semantic_ratio?: number
 }
@@ -191,7 +195,8 @@ export interface SearchOptions {
   /**
    * Compute each facet ignoring the filter on that same field, so a storefront
    * keeps showing sibling values of an active filter. Needs one query per facet
-   * on every engine reviewed, so the module fans out over `searchMany`.
+   * on every engine reviewed, so the module expands them and hands the set to
+   * `provider.searchMany`.
    */
   disjunctive_facets?: boolean
 

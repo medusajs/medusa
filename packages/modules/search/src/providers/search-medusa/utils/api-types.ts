@@ -42,6 +42,14 @@ export type AttributeSchemaConfig = {
   fuzzy?: boolean
   glob?: boolean
   regex?: boolean
+  embed?:
+    | string
+    | {
+        model?: string
+        dims?: number
+        attribute?: string
+      }
+    | null
 }
 
 export type Row = Record<string, unknown> & {
@@ -59,9 +67,19 @@ export type FuzzyFilterOptions = {
   case_sensitive?: boolean
 }
 
+export type TokenFilterOptions = {
+  last_as_prefix?: boolean
+}
+
 export type Filter =
   | [string, string, unknown]
   | [string, "Fuzzy", string, FuzzyFilterOptions]
+  | [
+      string,
+      "ContainsAllTokens" | "ContainsAnyToken",
+      string,
+      TokenFilterOptions
+    ]
   | ["And" | "Or", Filter[]]
   | ["Not", Filter]
 
@@ -128,7 +146,7 @@ export type IndexQuery = {
   limit?: number | Limit
   top_k?: number
   aggregate_by?: Record<string, unknown>
-  group_by?: Array<Record<string, unknown>>
+  group_by?: Array<string | Record<string, unknown>>
   consistency?: { level: "strong" | "eventual" }
   distance_metric?: DistanceMetric
   compute_attributes?: ComputeAttributes
