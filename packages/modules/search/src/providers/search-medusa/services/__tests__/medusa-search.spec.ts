@@ -79,15 +79,11 @@ describe("MedusaSearchService", () => {
     })
   })
 
-  it("recreates indexes when a vector attribute is added", async () => {
+  it("updates the schema in place on a migration re-run against an already-created namespace", async () => {
+    // Every version gets its own namespace, so finding one that already
+    // exists only happens when a migration re-runs after a crash — against
+    // this same, unchanging schema.
     const service = createService()
-    const withEmbedding: SearchTypes.ResolvedSearchIndexDefinition = {
-      ...definition,
-      fields: {
-        ...definition.fields,
-        embedding: { type: "vector", dimensions: 768, embed: true },
-      },
-    }
     const metadata = jest.fn().mockResolvedValue({
       schema: {
         id: { type: "string" },
@@ -95,48 +91,18 @@ describe("MedusaSearchService", () => {
         status: { type: "string" },
       },
     })
-    const deleteAll = jest.fn().mockResolvedValue(undefined)
-    const updateSchema = jest.fn()
+    const updateSchema = jest.fn().mockResolvedValue(undefined)
     const createIndex = jest.fn().mockResolvedValue(undefined)
-    const index = jest.fn(() => ({ deleteAll, metadata, updateSchema }))
-    ;(service as any).client_ = { createIndex, index }
-
-    await service.upsertIndex({ index: withEmbedding })
-
-    expect(deleteAll).toHaveBeenCalledTimes(1)
-    expect(updateSchema).not.toHaveBeenCalled()
-    expect(createIndex).toHaveBeenCalledWith(
-      expect.objectContaining({
-        name: "product",
-        schema: expect.objectContaining({
-          embedding: expect.objectContaining({ type: "[768]f32" }),
-        }),
-      })
-    )
-  })
-
-  it("recreates indexes with incompatible schemas through the create endpoint", async () => {
-    const service = createService()
-    const metadata = jest.fn().mockResolvedValue({
-      schema: {
-        id: { type: "string" },
-        title: { type: "int" },
-        status: { type: "string" },
-      },
-    })
-    const deleteAll = jest.fn().mockResolvedValue(undefined)
-    const createIndex = jest.fn().mockResolvedValue(undefined)
-    const index = jest.fn(() => ({ deleteAll, metadata }))
+    const index = jest.fn(() => ({ metadata, updateSchema }))
     ;(service as any).client_ = { createIndex, index }
 
     await service.upsertIndex({ index: definition })
 
-    expect(deleteAll).toHaveBeenCalledTimes(1)
-    expect(createIndex).toHaveBeenCalledWith(
+    expect(createIndex).not.toHaveBeenCalled()
+    expect(updateSchema).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: "product",
         schema: expect.objectContaining({
-          title: expect.objectContaining({ type: "string" }),
+          title: expect.objectContaining({ full_text_search: true }),
         }),
       })
     )
