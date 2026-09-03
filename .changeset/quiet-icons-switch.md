@@ -2,4 +2,4 @@
 "@medusajs/core-flows": patch
 ---
 
-Allow adding a country code to an order address when the order does not have one yet.
+fix(core-flows): allow adding a country code to an order address when it does not have one yet.
