@@ -604,12 +604,6 @@ function validateIndexDefinition({
   }
 
   for (const { path, field } of flattenFields(definition.fields)) {
-    if (field.correlated && !(field.type === "object" && field.array)) {
-      fail(
-        `field "${path}" sets "correlated", which only applies to an array of objects`
-      )
-    }
-
     if (field.type === "vector" && !field.dimensions) {
       fail(`vector field "${path}" must declare its "dimensions"`)
     }

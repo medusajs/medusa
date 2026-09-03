@@ -194,9 +194,9 @@ export class AbstractSearchProviderService
    * keep serving reads, and never during a partial rebuild.
    *
    * Throw if the definition asks for something your engine can't hold, such as a
-   * `correlated` field or a facet type it doesn't support. Since migrations run
-   * before the application serves requests, the error surfaces at startup rather
-   * than as wrong results later.
+   * facet type it doesn't support. Since migrations run before the application
+   * serves requests, the error surfaces at startup rather than as wrong results
+   * later.
    *
    * @param {object} _input - The index to create or update.
    * @param {SearchTypes.ResolvedSearchIndexDefinition} _input.index - The definition,

@@ -31,7 +31,6 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   facetable?: boolean | { types?: SearchFacetKind[] }
   retrievable?: boolean
   array?: boolean
-  correlated?: boolean
   dimensions?: number
   embed?: boolean
   provider_options?: Record<string, Record<string, unknown>>
