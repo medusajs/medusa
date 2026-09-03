@@ -52,7 +52,9 @@ const CreateRegionSchema = zod.object({
   automatic_taxes: zod.boolean(),
   is_tax_inclusive: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
-  payment_providers: zod.array(zod.string()).min(1),
+  payment_providers: zod
+    .array(zod.string())
+    .min(1, "Select at least one payment provider"),
 })
 
 const PREFIX = "cr"
@@ -88,27 +90,38 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
   const { mutateAsync: createRegion, isPending: isPendingRegion } =
     useCreateRegion()
 
-  const handleSubmit = form.handleSubmit(async (values) => {
-    await createRegion(
-      {
-        name: values.name,
-        countries: values.countries.map((c) => c.code),
-        currency_code: values.currency_code,
-        payment_providers: values.payment_providers,
-        automatic_taxes: values.automatic_taxes,
-        is_tax_inclusive: values.is_tax_inclusive,
-      },
-      {
-        onSuccess: ({ region }) => {
-          toast.success(t("regions.toast.create"))
-          handleSuccess(`../${region.id}`)
+  const handleSubmit = form.handleSubmit(
+    async (values) => {
+      await createRegion(
+        {
+          name: values.name,
+          countries: values.countries.map((c) => c.code),
+          currency_code: values.currency_code,
+          payment_providers: values.payment_providers,
+          automatic_taxes: values.automatic_taxes,
+          is_tax_inclusive: values.is_tax_inclusive,
         },
-        onError: (e) => {
-          toast.error(e.message)
-        },
+        {
+          onSuccess: ({ region }) => {
+            toast.success(t("regions.toast.create"))
+            handleSuccess(`../${region.id}`)
+          },
+          onError: (e) => {
+            toast.error(e.message)
+          },
+        }
+      )
+    },
+    (errors) => {
+      if (errors.payment_providers) {
+        toast.error(
+          (errors.payment_providers.message as string) ||
+            t("regions.paymentProvidersRequired") ||
+            "Select at least one payment provider"
+        )
       }
-    )
-  })
+    }
+  )
 
   const { searchParams, raw } = useCountryTableQuery({
     pageSize: PAGE_SIZE,
