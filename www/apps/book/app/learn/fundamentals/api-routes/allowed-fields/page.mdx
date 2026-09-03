@@ -1,0 +1,132 @@
+export const metadata = {
+  title: `${pageNumber} Allowed Fields in API Routes`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about allowed fields in API routes, how to set them on custom API routes, and how to override them for Medusa's API routes.
+
+## What are Allowed Fields?
+
+An API route's `fields` query parameter accepts any field or relation name by default, including custom [linked data models](../retrieve-custom-links/page.mdx) that you add after the route is created.
+
+To restrict which fields and relations a route can retrieve, pass an `allowed` array to the route's `validateAndTransformQuery` configuration. Once you set `allowed`, only the fields in that array, or fields whose path starts with one of them, can be requested. Every other field is silently removed from the query before it executes.
+
+<Note title="Tip">
+
+Set `allowed` even on your custom API routes, not only on Medusa's routes. Since the `fields` query parameter is open by default, a route without `allowed` exposes every relation you link to its underlying data model, including relations you add later without realizing they're now reachable through that route.
+
+</Note>
+
+`allowed` is different than [disallowed fields](../disallowed-fields/page.mdx):
+
+- `allowed` is an opt-in list. Without it, a route retrieves any field a client requests.
+- `disallowed` is a deny list that Medusa always enforces, even for fields in the `allowed` list. Use it for a hard security boundary, such as blocking order or payment data on unauthenticated Store API routes.
+
+---
+
+## How to Set Allowed Fields in Custom API Routes?
+
+To restrict the fields and relations retrievable by a custom API route, pass an `allowed` array to the `validateAndTransformQuery` configuration:
+
+export const setHighlights = [
+  ["18", "allowed", "The only fields and relations this route can retrieve."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={setHighlights}
+import {
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          createFindParams(),
+          {
+            defaults: ["id", "title"],
+            isList: true,
+            allowed: ["id", "title", "brand"],
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+In this example, a request to `GET /store/custom?fields=*owner` doesn't retrieve the `owner` field, since it's not in the `allowed` array, even though the underlying data model has an `owner` relation.
+
+An entry in `allowed` matches a requested field that's equal to it, or that starts with it. So, `variants` in `allowed` also allows `variants.options` and `variants.prices`.
+
+---
+
+## API Routes that Restrict Retrievable Fields
+
+Some of Medusa's API routes already set `allowed`, which means you can't pass your custom linked data models in the `fields` query parameter of these routes. Medusa restricts these routes to keep them performant and secure.
+
+The API routes that restrict the fields and relations you can retrieve are:
+
+- [Customer Store API Routes](!api!/store/customers)
+- [Customer Admin API Routes](!api!/admin/customers)
+- [Product Category Admin API Routes](!api!/admin/product-categories)
+
+---
+
+## How to Override Allowed Fields of Medusa's API Routes?
+
+For the routes mentioned above, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](../middlewares/page.mdx) to those routes.
+
+For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
+
+<Note>
+
+Learn how to create a middleware in the [Middlewares](../middlewares/page.mdx) chapter.
+
+</Note>
+
+export const overrideHighlights = [
+  ["9", "req.allowed", "Modify the allowed fields and relations to be retrieved"],
+]
+
+```ts title="src/api/middlewares.ts" highlights={overrideHighlights}
+import { defineMiddlewares } from "@medusajs/medusa"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/customers/me",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("b2b_company")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+In this example, you apply a middleware to the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer).
+
+The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you push `b2b_company` to the `allowed` array, alongside the fields and relations already configured on the route.
+
+You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer):
+
+```bash
+curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
+-H 'Authorization: Bearer {access_token}'
+```
+
+In this example, you retrieve the `b2b_company` relation of the customer using the `fields` query parameter.
+
+<Note title="Important">
+
+This approach only works using a global middleware. It doesn't work in a route middleware.
+
+</Note>
