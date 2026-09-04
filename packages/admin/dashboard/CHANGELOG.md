@@ -1,5 +1,23 @@
 # @medusajs/dashboard
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16366](https://github.com/medusajs/medusa/pull/16366) [`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a) Thanks [@sansynx](https://github.com/sansynx)! - fix(dashboard): inventory kit inputs written to wrong variant when earlier variants are filtered out
+
+- [#16288](https://github.com/medusajs/medusa/pull/16288) [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): add global add-row action to metadata editor
+
+- [#16393](https://github.com/medusajs/medusa/pull/16393) [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): strip the table query prefix in the product tag list loader
+
+- [#16506](https://github.com/medusajs/medusa/pull/16506) [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(dashboard,js-sdk): export common components, hooks
+
+- Updated dependencies [[`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a)]:
+  - @medusajs/js-sdk@2.20.2
+  - @medusajs/admin-shared@2.20.2
+  - @medusajs/icons@2.20.2
+  - @medusajs/ui@4.2.4
+
 ## 2.20.1
 
 ### Patch Changes

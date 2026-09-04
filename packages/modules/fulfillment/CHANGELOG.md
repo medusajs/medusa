@@ -1,5 +1,16 @@
 # @medusajs/fulfillment
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16301](https://github.com/medusajs/medusa/pull/16301) [`a85c552b236772253d075279ab4dacbf9cc9041d`](https://github.com/medusajs/medusa/commit/a85c552b236772253d075279ab4dacbf9cc9041d) Thanks [@shuvamk](https://github.com/shuvamk)! - fix(fulfillment): compare numeric shipping option rule values numerically
+
+  Shipping option rules using `gt`, `gte`, `lt` or `lte` treated any value accepted by `Date.parse` as a date. `Date.parse` accepts bare integer strings as years, so a rule such as `{ attribute: "total_weight", operator: "lt", value: "2000" }` compared `2040-01-01 < 2000-01-01` for a cart weighing 40, and the option was filtered out. Values that parse as numbers now always take the numeric comparison path.
+
+- Updated dependencies [[`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382)]:
+  - @medusajs/framework@2.20.2
+
 ## 2.20.1
 
 ### Patch Changes

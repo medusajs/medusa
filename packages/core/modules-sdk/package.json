@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "2.20.1",
+  "version": "2.20.2",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "export": {
@@ -34,11 +34,11 @@
     "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "2.20.1"
+    "@medusajs/types": "2.20.2"
   },
   "dependencies": {
-    "@medusajs/deps": "2.20.1",
-    "@medusajs/query": "2.20.1",
-    "@medusajs/utils": "2.20.1"
+    "@medusajs/deps": "2.20.2",
+    "@medusajs/query": "2.20.2",
+    "@medusajs/utils": "2.20.2"
   }
 }
