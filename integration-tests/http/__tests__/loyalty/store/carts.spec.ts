@@ -1182,6 +1182,61 @@ medusaIntegrationTestRunner({
           })
         )
       })
+    
+      it("should handle amount=0 without using the full balance", async () => {
+        const customerAccount = (
+          await api.post(
+            `/admin/store-credit-accounts`,
+            {
+              currency_code: giftCard.currency_code,
+              customer_id: customer.id,
+            },
+            adminHeaders
+          )
+        ).data.store_credit_account
+
+        await api.post(
+          `/admin/store-credit-accounts/${customerAccount.id}/credit`,
+          {
+            amount: 400,
+            note: "Crediting customer account",
+          },
+          adminHeaders
+        )
+
+        const {
+          data: { cart: cartWithStoreCredits },
+        } = await api.post(
+          `/store/carts/${cart.id}/store-credits?fields=+credit_line_total`,
+          { amount: 0 },
+          storeHeadersWithAuth
+        )
+
+        expect(cartWithStoreCredits).toEqual(
+          expect.objectContaining({
+            total: 800,
+            original_total: 800,
+            credit_line_total: 0,
+            gift_cards: [],
+            credit_lines: [],
+          })
+        )
+
+        const accountAfterRequest = (
+          await api.get(
+            `/store/store-credit-accounts/${customerAccount.id}`,
+            storeHeadersWithAuth
+          )
+        ).data.store_credit_account
+
+        expect(accountAfterRequest).toEqual(
+          expect.objectContaining({
+            balance: 400,
+            credits: 400,
+            debits: 0,
+          })
+        )
+      })
 
       it.todo(
         "should only use credit first order if store credits are added to two carts active at the same time"
