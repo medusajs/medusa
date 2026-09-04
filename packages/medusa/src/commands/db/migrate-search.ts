@@ -32,10 +32,7 @@ function describeAction(
     return `${index} ${chalk.dim(`(${action.physical_name})`)}`
   }
 
-  const destination =
-    action.physical_name === action.live_physical_name
-      ? `${action.physical_name}, replaced in place`
-      : `${action.live_physical_name} -> ${action.physical_name}`
+  const destination = `${action.active_physical_name} -> ${action.physical_name}`
 
   const detail = action.previous_provider
     ? `${action.previous_provider} -> ${action.provider}, ${destination}`

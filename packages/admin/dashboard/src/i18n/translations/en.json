@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Insert row above",
         "insertRowBelow": "Insert row below",
-        "deleteRow": "Delete row"
+        "deleteRow": "Delete row",
+        "addRow": "Add row"
       },
       "labels": {
         "key": "Key",
@@ -3410,7 +3411,7 @@
     "reindex": "Reindex",
     "reindexConfirmationTitle": "Reindex {{name}}?",
     "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
-    "reindexSuccess": "Reindexed {{name}}",
+    "reindexSuccess": "Reindexing {{name}} started",
     "noFields": "No fields are indexed.",
     "list": {
       "noRecordsMessage": "No search indexes are registered."

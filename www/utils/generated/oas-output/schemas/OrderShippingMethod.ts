@@ -9,6 +9,7 @@
  *   - name
  *   - amount
  *   - is_tax_inclusive
+ *   - is_custom_amount
  *   - created_at
  *   - updated_at
  *   - original_total
@@ -111,6 +112,10 @@
  *     type: number
  *     title: discount_tax_total
  *     description: The total taxes of the discount amount.
+ *   is_custom_amount:
+ *     type: boolean
+ *     title: is_custom_amount
+ *     description: Whether the shipping method price is custom amount or not.
  * 
 */
 

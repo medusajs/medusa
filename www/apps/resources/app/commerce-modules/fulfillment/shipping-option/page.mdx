@@ -41,6 +41,55 @@ If the fulfillment provider's `calculatePrice` method throws an error, or return
 
 You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](/references/fulfillment/provider) reference, and how to use them during checkout in the [Storefront Shipping guide](../../../storefront-development/checkout/shipping/page.mdx).
 
+#### Passing Custom Context to calculatePrice
+
+<Note>
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
+Several built-in workflows expose a `setCalculatedShippingPricingContext` hook that runs before the fulfillment provider's `calculatePrice` method is called. You can consume this hook to return a custom object that is merged into the `context` parameter of `calculatePrice`. Framework-provided properties always take precedence over hook-returned values on a naming conflict.
+
+For example, to pass a negotiated carrier contract number when listing shipping options for a cart:
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+import { StepResponse } from "@medusajs/workflows-sdk"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
+  async ({ input }, { container }) => {
+    const query = container.resolve("query")
+
+    const { data: [cart] } = await query.graph({
+      entity: "cart",
+      filters: { id: input.cart_id },
+      fields: ["customer_id"],
+    })
+
+    const { data: contracts } = await query.graph({
+      entity: "carrier_contract",
+      filters: { customer_id: cart.customer_id },
+      fields: ["account_number"],
+    })
+
+    return new StepResponse({
+      account_number: contracts[0]?.account_number,
+    })
+  }
+)
+```
+
+The following workflows expose the `setCalculatedShippingPricingContext` hook:
+
+- `listShippingOptionsForCartWithPricingWorkflow`: when listing a cart's shipping options with prices.
+- `calculateShippingOptionsPricesWorkflow`: when calculating shipping option prices via the [Calculate Shipping Option Price API route](!api!/store/shipping-options/calculate-shipping-option-price).
+- `fetchShippingOptionForOrderWorkflow`: when fetching a shipping option for an order (used in returns, exchanges, and claims).
+- `fetchShippingOptionForDraftOrderWorkflow`: when fetching a shipping option for a draft order.
+- `maybeRefreshShippingMethodsWorkflow`: when refreshing a shipping method's price on an order.
+- `refreshPendingDraftOrderShippingMethodsWorkflow`: when refreshing pending calculated shipping methods on a draft order edit.
+- `refreshConfirmedDraftOrderShippingMethodsWorkflow`: when refreshing applied calculated shipping methods after a draft order edit is confirmed.
+
 ---
 
 ## Service Zone Restrictions

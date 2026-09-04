@@ -382,6 +382,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/no-nested-when-in-workflow",
+                      "title": "no-nested-when-in-workflow",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/no-new-date-in-workflow",
                       "title": "no-new-date-in-workflow",
                       "description": "",
@@ -696,6 +704,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "type": "link",
                       "path": "/lint/rules/use-validated-body-or-query",
                       "title": "use-validated-body-or-query",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/lint/rules/when-block-must-have-name",
+                      "title": "when-block-must-have-name",
                       "description": "",
                       "children": []
                     },

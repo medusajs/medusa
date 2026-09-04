@@ -1878,7 +1878,8 @@ The `validateAndTransformQuery` accepts two parameters:
     2. `isList`: A boolean indicating whether a list of items is returned in the response.
     3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
     4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
-    5. `disallowed`: An array of field path segments that are always stripped from the query, regardless of what the client requests. Any requested field whose path contains one of these segments is removed before the query executes. Unlike `allowed`, this is a hard security boundary that middleware cannot override. Use it to keep sensitive relations off unauthenticated endpoints.
+    5. `disallowed`: An array of strings or regular expressions. A string entry matches any field path segment of the same name. A regular expression is tested against each segment and also against the full dotted path, which lets you block a relation at a specific position (for example, `/\.orders(?:\.|$)/` blocks `orders` everywhere except at the root). Any matched field is always removed before the query executes, making this a hard security boundary that middleware cannot override.
+    6. `storeRelationsLimit`: A number that overrides the application-wide `http.storeRelationsLimit` configuration for this specific route. It limits how many nested relations a caller can expand in a single request. Only applies to routes under the `/store` prefix. Available since [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
 
 <Note title="Tip">
 

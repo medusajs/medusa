@@ -824,6 +824,12 @@
   "GET /admin/search": {
     "js-sdk": "sdk.admin.search.list({ q: \"shirt\", limit: 5 })\n.then(({ results }) => {\n  console.log(results)\n})"
   },
+  "GET /admin/search-indexes": {
+    "js-sdk": "sdk.admin.search.listIndexes()\n.then(({ search_indexes, enabled }) => {\n  console.log(search_indexes, enabled)\n})"
+  },
+  "POST /admin/search-indexes/{id}/reindex": {
+    "js-sdk": "sdk.admin.search.reindex(\"product\")\n.then(({ job_id, indexes }) => {\n  console.log(job_id, indexes)\n})"
+  },
   "POST /admin/shipping-options": {
     "js-sdk": "sdk.admin.shippingOption.create({\n  name: \"Standard Shipping\",\n  profile_id: \"shp_123\",\n})\n.then(({ shipping_option }) => {\n  console.log(shipping_option)\n})"
   },
@@ -943,6 +949,12 @@
   },
   "GET /admin/users/{id}": {
     "js-sdk": "sdk.admin.user.retrieve(\"user_123\")\n.then(({ user }) => {\n  console.log(user)\n})"
+  },
+  "GET /admin/users/{id}/auth-providers": {
+    "js-sdk": "sdk.admin.user.listAuthProviders(\"user_123\")\n.then(({ providers }) => {\n  console.log(providers)\n})"
+  },
+  "POST /admin/users/{id}/reset-password": {
+    "js-sdk": "sdk.admin.user.generateResetPasswordToken(\"user_123\")\n.then(({ token }) => {\n  console.log(token)\n})"
   },
   "GET /admin/users/{id}/roles": {
     "js-sdk": "sdk.admin.user.listRoles(\"user_123\")\n.then(({ roles, count, limit, offset }) => {\n  console.log(roles)\n})"
