@@ -848,6 +848,39 @@ describe("Medusa search utilities", () => {
       })
     })
 
+    it("passes last_as_prefix into fragment ranking for match_strategy last", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "dtc sta",
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            match_strategy: "last",
+            highlight: { fields: ["title"] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toEqual({
+        __medusa_highlight_0__: [
+          "Highlight",
+          "title",
+          {
+            fragment_by: "none",
+            rank_fragments_by: [
+              "$fragment",
+              "BM25",
+              "dtc sta",
+              { last_as_prefix: true },
+            ],
+            fragment_limit: 1,
+            include_offsets: "utf-16",
+          },
+        ],
+      })
+    })
+
     it("crops fragments and honors custom tags when snippet is requested", () => {
       const query = buildQueryPlan(
         {

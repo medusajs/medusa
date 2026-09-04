@@ -180,6 +180,13 @@ async function runSeed(
       last_key: sync.last_key ?? undefined,
     })
 
+    await catchUp(context, {
+      definition,
+      target,
+      since: sync.started_at!,
+      jobId: sync.job_id!,
+    })
+
     await context.versionService.update({
       selector: { id: target.id },
       data: { status: SearchIndexState.READY },
@@ -213,6 +220,47 @@ async function runSeed(
       version_id: target.id,
       error,
     })
+    throw error
+  }
+}
+
+// A second seed pass, filtered to what changed since the first one started —
+// catches a live write the bulk pass's own snapshot could otherwise miss or
+// revert, including a delete (`streamSeed` applies whatever mutations `seed`
+// yields, in order). Runs once, into the same target, right before the
+// version is considered ready.
+async function catchUp(
+  context: SearchSeedRuntime,
+  {
+    definition,
+    target,
+    since,
+    jobId,
+  }: {
+    definition: SearchTypes.ResolvedSearchIndexDefinition
+    target: SearchIndexVersionRecord
+    since: Date
+    jobId: string
+  }
+): Promise<void> {
+  // Shares the bulk pass' `job_id` — same logical run, a second sync row.
+  const sync = await startSync(context, { versionId: target.id, jobId })
+
+  context.logger.info(
+    `[Search] Catching up "${definition.name}" on changes since ${since.toISOString()}`
+  )
+
+  try {
+    const { documents_synced } = await streamSeed(context, {
+      index: definition,
+      sync_id: sync.id,
+      target_index: target.physical_name,
+      catchup: { since },
+    })
+
+    await completeSync(context, { sync_id: sync.id, documents_synced })
+  } catch (error) {
+    await failSync(context, { sync_id: sync.id, version_id: target.id, error })
     throw error
   }
 }
@@ -311,6 +359,18 @@ async function reindexOne(
       filters: input.filters,
       last_key: sync.last_key ?? undefined,
     })
+
+    // Skipped for a filtered reindex: it's already a narrow, caller-scoped
+    // rebuild, and catching up on everything changed since would silently
+    // do more than asked.
+    if (!input.filters) {
+      await catchUp(context, {
+        definition,
+        target,
+        since: sync.started_at!,
+        jobId,
+      })
+    }
 
     await context.versionService.update({
       selector: { id: target.id },
@@ -413,7 +473,9 @@ async function retrieveActiveVersion(
 /* -------------------------------- streaming ------------------------------- */
 
 // Streams one index' `seed` in, advancing the sync row's `last_key` per batch so
-// an interrupted run resumes rather than restarting.
+// an interrupted run resumes rather than restarting. `seed` yields mutations
+// (not bare documents), so a delete is applied directly, in order — flushing
+// any buffered upserts first so it isn't reordered ahead of them.
 async function streamSeed(
   context: SearchSeedRuntime,
   {
@@ -422,12 +484,14 @@ async function streamSeed(
     target_index,
     filters,
     last_key,
+    catchup,
   }: {
     index: SearchTypes.ResolvedSearchIndexDefinition
     sync_id: string
     target_index: string
     filters?: Record<string, unknown>
     last_key?: string
+    catchup?: { since: Date }
   }
 ): Promise<{ documents_synced: number }> {
   const provider = context.providers.retrieve(index.provider)
@@ -465,7 +529,7 @@ async function streamSeed(
     lastLoggedCount = synced
   }
 
-  const flush = async () => {
+  const flushUpserts = async () => {
     if (!buffer.length) {
       return
     }
@@ -499,22 +563,42 @@ async function streamSeed(
     reportProgress(lastLoggedCount === 0)
   }
 
-  for await (const documents of index.seed({
+  const applyDelete = async (deleteFilters: SearchTypes.SearchFilters) => {
+    await flushUpserts()
+
+    const task = await provider.deleteDocuments({
+      index: target_index,
+      filters: deleteFilters,
+    })
+
+    assertTaskAccepted(task, index.name)
+    await settle(context, index, task)
+  }
+
+  for await (const mutations of index.seed({
     container: context.container,
     index,
     filters,
     last_key,
+    catchup,
   })) {
-    for (const document of documents) {
-      buffer.push(document)
+    for (const mutation of mutations) {
+      if (mutation.action === "delete") {
+        await applyDelete(mutation.filters)
+        continue
+      }
 
-      if (buffer.length >= batchSize) {
-        await flush()
+      for (const document of mutation.documents) {
+        buffer.push(document)
+
+        if (buffer.length >= batchSize) {
+          await flushUpserts()
+        }
       }
     }
   }
 
-  await flush()
+  await flushUpserts()
 
   return { documents_synced: synced }
 }
