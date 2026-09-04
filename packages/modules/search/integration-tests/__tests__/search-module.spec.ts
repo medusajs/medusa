@@ -653,6 +653,17 @@ moduleIntegrationTestRunner<SearchService>({
 
           expect(result.hits).toHaveLength(0)
         })
+
+        it("ignores highlighting and typo tolerance when there is no text query", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { status: "published" },
+            search_options: { highlight: true, typo_tolerance: true },
+          })
+
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
+        })
       })
 
       describe("filtering", () => {

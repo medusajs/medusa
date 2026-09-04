@@ -802,17 +802,18 @@ describe("Medusa search utilities", () => {
       ).toThrow(/no fuzzy-enabled fields/)
     })
 
-    it("rejects typo tolerance without a text query", () => {
-      expect(() =>
-        buildQueryPlan(
-          {
-            index: definition,
-            attributes_to_retrieve: ["title"],
-            search_options: { typo_tolerance: true },
-          },
-          plan
-        )
-      ).toThrow(/require a text query/)
+    it("ignores typo tolerance without a text query", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["id", "asc"])
+      expect(query.query.filters).toBeUndefined()
     })
   })
 
@@ -895,17 +896,52 @@ describe("Medusa search utilities", () => {
       ).toThrow(/not searchable/)
     })
 
-    it("rejects highlighting without a text query", () => {
-      expect(() =>
-        buildQueryPlan(
-          {
-            index: definition,
-            attributes_to_retrieve: ["title"],
-            search_options: { highlight: { fields: ["title"] } },
+    it("ignores highlighting without a text query", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            highlight: { fields: ["title"] },
+            typo_tolerance: true,
           },
-          plan
-        )
-      ).toThrow(/require a text query/)
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toBeUndefined()
+      expect(query.highlight).toBeUndefined()
+      expect(query.query.rank_by).toEqual(["id", "asc"])
+    })
+
+    it("highlights every searchable field when highlight is true", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red",
+          attributes_to_retrieve: ["title"],
+          search_options: { highlight: true },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toEqual({
+        __medusa_highlight_0__: [
+          "Highlight",
+          "title",
+          {
+            fragment_by: "none",
+            rank_fragments_by: ["$fragment", "BM25", "red"],
+            fragment_limit: 1,
+            include_offsets: "utf-16",
+          },
+        ],
+      })
+      expect(query.highlight).toEqual({
+        pre_tag: "<mark>",
+        post_tag: "</mark>",
+        fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+      })
     })
 
     it("tags matched ranges in returned fragments, applied back to front", () => {
