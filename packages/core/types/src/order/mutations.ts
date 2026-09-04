@@ -1643,6 +1643,11 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   location_id?: string | null
 
   /**
+   * The date the return was requested at.
+   */
+  requested_at?: Date
+
+  /**
    * The items of the return.
    */
   items?: {
