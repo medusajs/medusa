@@ -8,6 +8,7 @@ export const sitemapUrls = [
   "/admin-components/components/layout-composer",
   "/admin-components/components/section-row",
   "/admin-components/components/table",
+  "/admin-components/hooks",
   "/admin-components/layouts/single-column",
   "/admin-components/layouts/two-column",
   "/admin-components",

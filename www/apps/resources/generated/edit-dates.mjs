@@ -2058,7 +2058,7 @@ export const generatedEditDates = {
   "app/admin-components/components/json-view-section/page.mdx": "2026-07-28T05:43:12.252Z",
   "app/admin-components/components/section-row/page.mdx": "2026-07-28T05:43:12.255Z",
   "app/admin-components/components/table/page.mdx": "2026-07-28T05:43:12.261Z",
-  "app/admin-components/page.mdx": "2025-03-10T10:42:41.345Z",
+  "app/admin-components/page.mdx": "2026-09-04T14:14:19.756Z",
   "app/admin-components/layouts/single-column/page.mdx": "2025-08-01T15:17:42.109Z",
   "app/admin-components/layouts/two-column/page.mdx": "2025-08-01T15:18:00.109Z",
   "app/admin-components/components/forms/page.mdx": "2026-07-28T05:43:12.248Z",
@@ -7650,5 +7650,6 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
-  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z"
+  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
+  "app/admin-components/hooks/page.mdx": "2026-09-04T14:14:10.194Z"
 }

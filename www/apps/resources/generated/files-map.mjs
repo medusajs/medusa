@@ -36,6 +36,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/table"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/page.mdx",
+    "pathname": "/admin-components/hooks"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/layouts/single-column/page.mdx",
     "pathname": "/admin-components/layouts/single-column"
   },
