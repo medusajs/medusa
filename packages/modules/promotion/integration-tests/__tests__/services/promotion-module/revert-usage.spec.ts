@@ -123,6 +123,75 @@ moduleIntegrationTestRunner({
 
           expect(response).toEqual(undefined)
         })
+
+        it("should not let a concurrent registerUsage's increment be lost by a concurrent revertUsage", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          // Pad registerUsage's transaction with a bunch of other promotions on
+          // the same campaign, so it holds its row locks (including the target
+          // promotion's) for measurably longer - widening the window for a
+          // concurrent revertUsage's read+write to land badly if it isn't
+          // properly serialized against registerUsage.
+          const padding = await Promise.all(
+            Array.from({ length: 15 }, (_, i) =>
+              createDefaultPromotion(service, {
+                code: `PADDING_${i}`,
+                campaign_id: createdPromotion.campaign?.id,
+              })
+            )
+          )
+
+          // Baseline: 900 already spent against the 1000 limit.
+          await service.registerUsage(
+            [{ amount: 900, code: createdPromotion.code! }],
+            { customer_email: null, customer_id: null }
+          )
+
+          // Concurrently: revert the 900 (as a workflow compensation would,
+          // e.g. after a later checkout step fails), while a second, unrelated
+          // checkout registers +100 (bundled with the padding promotions, to
+          // slow its transaction down). Regardless of interleaving, the
+          // mathematically correct result is 900 - 900 + 100 = 100, and the
+          // +100 must be allowed (900 + 100 <= 1000). Giving registerUsage a
+          // head start puts it past lock-acquisition (and into the slower
+          // padded refresh/compute phase, still holding the row locks) by the
+          // time revertUsage's read+write fires.
+          const registerPromise = service
+            .registerUsage(
+              [
+                { amount: 100, code: createdPromotion.code! },
+                ...padding.map((p) => ({ amount: 0, code: p.code! })),
+              ],
+              { customer_email: null, customer_id: null }
+            )
+            .then(
+              () => "ok",
+              (e) => e.message
+            )
+
+          await new Promise((resolve) => setTimeout(resolve, 30))
+
+          const revertPromise = service
+            .revertUsage([{ amount: 900, code: createdPromotion.code! }], {
+              customer_email: null,
+              customer_id: null,
+            })
+            .then(
+              () => "ok",
+              (e) => e.message
+            )
+
+          const outcomes = await Promise.all([revertPromise, registerPromise])
+
+          expect(outcomes).toEqual(["ok", "ok"])
+
+          const campaign = await service.retrieveCampaign(
+            createdPromotion.campaign?.id!,
+            { relations: ["budget"] }
+          )
+
+          expect(campaign.budget!.used).toEqual(100)
+        })
       })
     })
   },
