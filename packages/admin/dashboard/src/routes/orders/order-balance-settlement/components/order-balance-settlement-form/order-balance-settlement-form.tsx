@@ -24,6 +24,7 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useCreateOrderCreditLine,
   useRefundPayment,
+  useRefundReasons,
 } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
@@ -39,6 +40,7 @@ const OrderBalanceSettlementSchema = zod.object({
         float: zod.number().or(zod.null()),
       }),
       note: zod.string().optional(),
+      refund_reason_id: zod.string().optional(),
     })
     .optional(),
   credit_line: zod
@@ -58,6 +60,7 @@ export const OrderBalanceSettlementForm = ({
   order: AdminOrder
 }) => {
   const { t } = useTranslation()
+  const { refund_reasons } = useRefundReasons()
   const [searchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
   const paymentId = searchParams.get("paymentId")
@@ -127,6 +130,7 @@ export const OrderBalanceSettlementForm = ({
         {
           amount: data.refund!.amount!.float!,
           note: data.refund!.note,
+          refund_reason_id: data.refund!.refund_reason_id,
         },
         {
           onSuccess: () => {
@@ -301,6 +305,39 @@ export const OrderBalanceSettlementForm = ({
                             }
                             autoFocus
                           />
+                        </Form.Control>
+
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+
+                <Form.Field
+                  control={form.control}
+                  name="refund.refund_reason_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.refundReason")}</Form.Label>
+
+                        <Form.Control>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <Select.Trigger>
+                              <Select.Value />
+                            </Select.Trigger>
+
+                            <Select.Content>
+                              {refund_reasons?.map((reason) => (
+                                <Select.Item key={reason.id} value={reason.id}>
+                                  {reason.label}
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select>
                         </Form.Control>
 
                         <Form.ErrorMessage />
