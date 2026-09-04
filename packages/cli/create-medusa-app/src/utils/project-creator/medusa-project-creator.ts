@@ -246,7 +246,7 @@ export class MedusaProjectCreator
               : ""
           }${
             this.nextjsDirectory?.length
-              ? `The Next.js Starter Storefront is available in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
+              ? `The storefront is available in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
               : ""
           }Check out the Medusa ${terminalLink(
             "documentation",

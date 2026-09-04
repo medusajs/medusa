@@ -111,6 +111,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/regions",
           {
+            payment_providers: ["pp_system_default"],
             name: "test-region",
             currency_code: "usd",
           },

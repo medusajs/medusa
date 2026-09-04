@@ -87,6 +87,12 @@ export function projectIndexedDocument(
     }
 
     if (planned.kind === "vector") {
+      // Engine-embedded fields are produced from this field's text via
+      // the embedder — never store a client-supplied vector for them.
+      if (planned.field.embed) {
+        continue
+      }
+
       const embedding = coerceVector(values[0], planned)
       if (embedding) {
         vectors[planned.path] = embedding
@@ -142,4 +148,30 @@ export function projectIndexedDocument(
     weighted_parts,
     vectors,
   }
+}
+
+/**
+ * Plain text the engine embedder should encode for an `embed: true` vector
+ * field. Missing/blank values return undefined so the vector column can stay
+ * null.
+ */
+export function sourceTextForEmbed(
+  document: SearchTypes.SearchDocument,
+  path: string
+): string | undefined {
+  const values = readDocumentPath(document, path.split(".")).filter(
+    (value) => value !== undefined && value !== null
+  )
+
+  if (!values.length) {
+    return undefined
+  }
+
+  const value = values[0]
+  if (typeof value !== "string") {
+    fail(`Vector field "${path}" with embed must be a string`)
+  }
+
+  const text = value.trim()
+  return text || undefined
 }

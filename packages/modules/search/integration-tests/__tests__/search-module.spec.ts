@@ -1,8 +1,9 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { SearchIndex, SearchIndexSync } from "@models"
+import { SearchIndex, SearchIndexSync, SearchIndexVersion } from "@models"
 import { SearchIndexSeedAction } from "@types"
+import { versionPhysicalName } from "../../src/utils/migrations"
 import {
   baseProducts,
   consumedEvents,
@@ -11,12 +12,12 @@ import {
   resetDataset,
 } from "../__fixtures__/product-index"
 
-jest.setTimeout(60000)
+jest.setTimeout(120000)
 
 type SearchService = SearchTypes.ISearchModuleService
 
-// The startup hook is what migration and seeding hang off, so the lifecycle
-// tests re-run it to simulate a boot.
+// The startup hook seeds indexes, so the lifecycle tests re-run it to simulate
+// a boot.
 const boot = (service: SearchService) =>
   (service as any).onApplicationStart_() as Promise<void>
 
@@ -40,33 +41,70 @@ const definition = (service: SearchService, name: string) =>
     | SearchTypes.ResolvedSearchIndexDefinition
     | undefined
 
-// `SearchIndex` and `SearchIndexSync` are internal to the module — no generated
-// CRUD, nothing on `SearchTypes` — so the bookkeeping is read through the
-// internal services the module uses itself.
+// `SearchIndex`, `SearchIndexVersion` and `SearchIndexSync` are internal to the
+// module — no generated CRUD, nothing on `SearchTypes` — so the bookkeeping is
+// read through the internal services the module uses itself.
 const indexRecords = (service: SearchService, filters: any = {}) =>
   (service as any).context_.indexService.list(filters) as Promise<any[]>
+
+const versionRecords = (service: SearchService, filters: any = {}) =>
+  (service as any).context_.versionService.list(filters) as Promise<any[]>
 
 const syncRecords = (service: SearchService, filters: any = {}) =>
   (service as any).context_.syncService.list(filters) as Promise<any[]>
 
-const updateIndexRecords = (service: SearchService, input: any) =>
-  (service as any).context_.indexService.update(input) as Promise<any>
+const updateVersionRecords = (service: SearchService, input: any) =>
+  (service as any).context_.versionService.update(input) as Promise<any>
 
 const softDeleteIndexRecords = (service: SearchService, ids: string[]) =>
   (service as any).context_.indexService.softDelete(ids) as Promise<any>
+
+// The version currently serving reads for a logical index. Every version —
+// including the first — has its own physical name, so this is what a raw
+// provider call (rather than one going through the module service, which
+// resolves this itself) has to look up.
+const activeVersion = async (service: SearchService, name: string) => {
+  const [record] = await indexRecords(service, { name })
+  const [version] = await versionRecords(service, {
+    search_index_id: record.id,
+    version: record.active_version,
+  })
+  return version
+}
+
+const activePhysicalName = async (service: SearchService, name: string) =>
+  (await activeVersion(service, name)).physical_name
+
+// The version a migration built that hasn't gone active yet, if any.
+const pendingVersion = async (service: SearchService, name: string) => {
+  const [record] = await indexRecords(service, { name })
+  const versions = await versionRecords(service, {
+    search_index_id: record.id,
+  })
+  return versions
+    .filter(
+      (version: any) =>
+        record.active_version == null || version.version > record.active_version
+    )
+    .sort((a: any, b: any) => b.version - a.version)[0]
+}
 
 const ids = (result: SearchTypes.SearchResult) =>
   result.hits.map((hit) => hit.id)
 
 moduleIntegrationTestRunner<SearchService>({
   moduleName: Modules.SEARCH,
-  moduleModels: [SearchIndex, SearchIndexSync],
+  moduleModels: [SearchIndex, SearchIndexVersion, SearchIndexSync],
   resolve: __dirname + "/../..",
+  pathToMigrations: [
+    __dirname + "/../../src/migrations",
+    __dirname + "/../../../providers/search-postgres/src/migrations",
+  ],
   moduleOptions: {
     providers: [
       {
-        resolve: "@medusajs/search-local",
-        id: "local",
+        resolve: "@medusajs/search-postgres",
+        id: "postgres",
       },
     ],
     indexes: [productIndex],
@@ -94,7 +132,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(registered).toMatchObject({
             name: "product",
             entity: "product",
-            provider: "search-local",
+            provider: "search-postgres",
             primary_key: "id",
             physical_name: "product",
           })
@@ -105,12 +143,14 @@ moduleIntegrationTestRunner<SearchService>({
           expect(definition(service, "nope")).toBeUndefined()
         })
 
-        it("persists an index record and marks it ready", async () => {
+        it("persists an index record and marks its first version ready", async () => {
           const [record] = await indexRecords(service, { name: "product" })
+          expect(record).toMatchObject({ name: "product", active_version: 1 })
 
-          expect(record).toMatchObject({
-            name: "product",
-            provider: "search-local",
+          const version = await activeVersion(service, "product")
+          expect(version).toMatchObject({
+            version: 1,
+            provider: "search-postgres",
             status: "ready",
           })
         })
@@ -137,14 +177,139 @@ moduleIntegrationTestRunner<SearchService>({
           expect(syncs[0].job_id).toEqual(expect.any(String))
           expect(syncs[0].completed_at).toBeTruthy()
         })
+
+        it("lists index info with status and indexed fields", async () => {
+          const infos = await service.listIndexes()
+
+          expect(infos).toHaveLength(1)
+          expect(infos[0]).toMatchObject({
+            name: "product",
+            entity: "product",
+            provider: "search-postgres",
+            status: "ready",
+          })
+          expect(infos[0].fields.map((field) => field.name).sort()).toEqual(
+            [
+              "brand",
+              "created_at",
+              "description",
+              "handle",
+              "id",
+              "min_price",
+              "status",
+              "tags",
+              "title",
+              "variants.color",
+              "variants.sku",
+            ].sort()
+          )
+          expect(
+            infos[0].fields.find((field) => field.name === "title")
+          ).toMatchObject({
+            type: "text",
+            searchable: true,
+            sortable: true,
+            filterable: false,
+          })
+        })
+
+        it("does not hold the application hook until seeding finishes", async () => {
+          const index = definition(service, "product")!
+          const originalSeed = index.seed
+
+          let release!: () => void
+          const hold = new Promise<void>((resolve) => {
+            release = resolve
+          })
+          let entered!: () => void
+          const enteredSeed = new Promise<void>((resolve) => {
+            entered = resolve
+          })
+          let finished!: () => void
+          const seedFinished = new Promise<void>((resolve) => {
+            finished = resolve
+          })
+
+          let started = false
+          index.seed = async function* (ctx) {
+            started = true
+            entered()
+            await hold
+            try {
+              yield* originalSeed(ctx)
+            } finally {
+              finished()
+            }
+          }
+
+          try {
+            const version = await activeVersion(service, "product")
+            await updateVersionRecords(service, {
+              selector: { id: version.id },
+              data: { status: "pending" },
+            })
+
+            const hook = (service as any).__hooks.onApplicationStart.call(
+              service
+            )
+
+            await enteredSeed
+            await hook
+
+            const rebuilding = await activeVersion(service, "product")
+            expect(rebuilding.status).toBe("building")
+          } finally {
+            release()
+            if (started) {
+              await seedFinished
+            }
+            index.seed = originalSeed
+          }
+        })
+
+        it("logs seeding failures from the application hook instead of rejecting", async () => {
+          const errorSpy = jest
+            .spyOn((service as any).logger_, "error")
+            .mockImplementation(() => {})
+
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-postgres"
+          )
+
+          try {
+            await provider.deleteIndex({
+              index: await activePhysicalName(service, "product"),
+            })
+
+            await expect(
+              (service as any).__hooks.onApplicationStart.call(service)
+            ).resolves.toBeUndefined()
+
+            const deadline = Date.now() + 5000
+            while (errorSpy.mock.calls.length === 0 && Date.now() < deadline) {
+              await new Promise((resolve) => setTimeout(resolve, 25))
+            }
+
+            expect(errorSpy).toHaveBeenCalledWith(
+              expect.stringContaining("[Search] Failed to seed search indexes:"),
+              expect.any(Error)
+            )
+          } finally {
+            errorSpy.mockRestore()
+          }
+        })
       })
 
       describe("migration and seeding lifecycle", () => {
-        const stale = async () =>
-          await updateIndexRecords(service, {
-            selector: { name: "product" },
+        // Simulates schema drift: the active version's `definition_hash` now
+        // lives on `SearchIndexVersion`, not `SearchIndex`.
+        const stale = async () => {
+          const version = await activeVersion(service, "product")
+          await updateVersionRecords(service, {
+            selector: { id: version.id },
             data: { definition_hash: "stale" },
           })
+        }
 
         it("does not create an index at startup, which is a migration's job", async () => {
           const [record] = await indexRecords(service, { name: "product" })
@@ -165,7 +330,7 @@ moduleIntegrationTestRunner<SearchService>({
             {
               action: "noop",
               index: "product",
-              physical_name: "product",
+              physical_name: "product_v1",
               definition_hash: definition(service, "product")!
                 .definition_hash,
             },
@@ -174,7 +339,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(await seedPlan(service)).toEqual([])
         })
 
-        it("targets the live index when the provider cannot swap", async () => {
+        it("plans a new version on schema drift", async () => {
           await stale()
 
           const registered = definition(service, "product")!
@@ -183,50 +348,48 @@ moduleIntegrationTestRunner<SearchService>({
           expect(action).toEqual({
             action: "migrate",
             index: "product",
-            // Nowhere to build alongside, so the live index is the target.
-            physical_name: "product",
-            live_physical_name: "product",
+            physical_name: versionPhysicalName(registered, 2),
             definition_hash: registered.definition_hash,
-            live_definition_hash: "stale",
+            version: 2,
+            active_physical_name: "product_v1",
+            active_definition_hash: "stale",
+            provider: "search-postgres",
           })
         })
 
-        it("marks the live index pending when migrating in place", async () => {
+        it("keeps the active version ready while a new one is built", async () => {
           await stale()
 
           await migrate(service, await migrationPlan(service))
 
-          // Whether that actually empties the index is the provider's call —
-          // it only rebuilds if the schema really differs — so the module
-          // stops claiming the index is ready either way, and lets the seed
-          // settle it.
-          const [migrated] = await indexRecords(service, {
-            name: "product",
-          })
-          expect(migrated.status).toBe("pending")
-          expect(migrated.definition_hash).toBe("stale")
+          // The replacement stands beside the active version, so it stays
+          // ready and unswapped until the seed makes the new one active.
+          const version = await activeVersion(service, "product")
+          expect(version.status).toBe("ready")
+          expect(version.definition_hash).toBe("stale")
         })
 
-        it("finishes a pending migration on the next boot", async () => {
+        it("finishes a schema migration on the next boot", async () => {
           await stale()
           await migrate(service, await migrationPlan(service))
 
+          const registered = definition(service, "product")!
+          const pending = await pendingVersion(service, "product")
           expect(await seedPlan(service)).toEqual([
             {
               index: "product",
-              target_physical_name: "product",
-              swap: false,
+              target_version: expect.objectContaining({ id: pending.id }),
+              swap: true,
               reason: "schema_changed",
             },
           ])
 
           await boot(service)
 
-          const registered = definition(service, "product")!
-          const [record] = await indexRecords(service, { name: "product" })
+          const version = await activeVersion(service, "product")
 
-          expect(record.definition_hash).toBe(registered.definition_hash)
-          expect(record.status).toBe("ready")
+          expect(version.definition_hash).toBe(registered.definition_hash)
+          expect(version.status).toBe("ready")
 
           const result = await service.search({
             entity: "product",
@@ -236,8 +399,8 @@ moduleIntegrationTestRunner<SearchService>({
         })
 
         it("reseeds an index that lost its data even though the record says ready", async () => {
-          // What a restart looks like to a provider that keeps data in memory:
-          // the record is untouched and correct, the index is gone.
+          // An engine wiped underneath us: the record is untouched and
+          // correct, the index holds nothing.
           await service.deleteDocuments({
             index: "product",
             filters: { id: ["prod_1", "prod_2", "prod_3"] },
@@ -249,10 +412,11 @@ moduleIntegrationTestRunner<SearchService>({
           })
           expect(emptied.metadata.count).toBe(0)
 
+          const active = await activeVersion(service, "product")
           expect(await seedPlan(service)).toEqual([
             {
               index: "product",
-              target_physical_name: "product",
+              target_version: expect.objectContaining({ id: active.id }),
               swap: false,
               reason: "index_empty",
             },
@@ -267,58 +431,113 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
-        it("rebuilds the indexes of a provider that migrates on start", async () => {
-          const provider = (service as any).searchProviderService_.retrieve(
-            "search-local"
+        it("cleans up the previous provider's version once a new one takes over", async () => {
+          const previous = {
+            identifier: "search-previous",
+            deleteIndex: jest.fn().mockResolvedValue({
+              index: "product_v1",
+              status: "succeeded",
+            }),
+            listIndexes: jest.fn().mockResolvedValue([]),
+          }
+          ;(service as any).searchProviderService_.providers_.set(
+            "search-previous",
+            previous
           )
 
-          // What the application inherits from `db:migrate`: a record saying the
-          // index was migrated, and a provider that lost it when that process
-          // exited.
-          await provider.deleteIndex({ index: "product" })
-          expect(await provider.listIndexes()).toEqual([])
+          const active = await activeVersion(service, "product")
+          await updateVersionRecords(service, {
+            selector: { id: active.id },
+            data: { provider: "search-previous" },
+          })
+
+          const plan = await migrationPlan(service)
+          expect(plan).toEqual([
+            expect.objectContaining({
+              action: "migrate",
+              previous_provider: "search-previous",
+              provider: "search-postgres",
+            }),
+          ])
+
+          await migrate(service, plan)
+
+          // Version 1, on the old provider, is still active — nothing to
+          // clean up until the new version takes over.
+          expect(previous.deleteIndex).not.toHaveBeenCalled()
+
+          const [migrated] = await indexRecords(service, { name: "product" })
+          expect(migrated.active_version).toBe(1)
 
           await boot(service)
 
-          const result = await service.search({
-            entity: "product",
-            fields: ["id"],
+          const seeded = await activeVersion(service, "product")
+          expect(seeded.provider).toBe("search-postgres")
+          expect(seeded.status).toBe("ready")
+
+          // Still not cleaned up: that's the next migration's job, not the seed's.
+          expect(previous.deleteIndex).not.toHaveBeenCalled()
+
+          await migrate(service, await migrationPlan(service))
+
+          expect(previous.deleteIndex).toHaveBeenCalledWith({
+            index: "product_v1",
           })
-          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
-        it("leaves index creation to migrations for any other provider", async () => {
-          const provider = (service as any).searchProviderService_.retrieve(
-            "search-local"
+        it("still migrates when the previous provider is no longer registered", async () => {
+          const warn = jest.spyOn((service as any).logger_, "warn")
+
+          const active = await activeVersion(service, "product")
+          await updateVersionRecords(service, {
+            selector: { id: active.id },
+            data: { provider: "search-gone" },
+          })
+
+          await migrate(service, await migrationPlan(service))
+          await boot(service)
+
+          // The stale, gone-provider version is what the warning is about —
+          // it only surfaces once a migration tries to clean it up.
+          await migrate(service, await migrationPlan(service))
+
+          expect(warn).toHaveBeenCalledWith(
+            expect.stringContaining("search-gone")
           )
-          // Stand in for an engine whose indexes outlive `db:migrate`.
-          provider.migrate_on_startup = false
 
-          try {
-            await provider.deleteIndex({ index: "product" })
+          const seeded = await activeVersion(service, "product")
+          expect(seeded.provider).toBe("search-postgres")
 
-            // Nothing creates the index on the way to seeding it, so the seed
-            // fails against the engine rather than papering over a migration
-            // that never ran.
-            await expect(boot(service)).rejects.toThrow(
-              /has no index "product"/
-            )
-            expect(await provider.listIndexes()).toEqual([])
-          } finally {
-            provider.migrate_on_startup = true
-          }
+          warn.mockRestore()
+        })
+
+        it("leaves index creation to migrations", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-postgres"
+          )
+
+          await provider.deleteIndex({
+            index: await activePhysicalName(service, "product"),
+          })
+
+          // Nothing creates the index on the way to seeding it, so the seed
+          // fails against the engine rather than papering over a migration
+          // that never ran.
+          await expect(boot(service)).rejects.toThrow(/has no index "product_v1"/)
+          expect(await provider.listIndexes()).toEqual([])
         })
 
         it("seeds an index that was created but never filled", async () => {
-          await updateIndexRecords(service, {
-            selector: { name: "product" },
+          const version = await activeVersion(service, "product")
+          await updateVersionRecords(service, {
+            selector: { id: version.id },
             data: { status: "pending" },
           })
 
           expect(await seedPlan(service)).toEqual([
             {
               index: "product",
-              target_physical_name: "product",
+              target_version: expect.objectContaining({ id: version.id }),
               swap: false,
               reason: "index_created",
             },
@@ -326,15 +545,16 @@ moduleIntegrationTestRunner<SearchService>({
         })
 
         it("retries an index whose last seed failed", async () => {
-          await updateIndexRecords(service, {
-            selector: { name: "product" },
+          const version = await activeVersion(service, "product")
+          await updateVersionRecords(service, {
+            selector: { id: version.id },
             data: { status: "error" },
           })
 
           expect(await seedPlan(service)).toEqual([
             {
               index: "product",
-              target_physical_name: "product",
+              target_version: expect.objectContaining({ id: version.id }),
               swap: false,
               reason: "last_run_failed",
             },
@@ -342,8 +562,8 @@ moduleIntegrationTestRunner<SearchService>({
 
           await boot(service)
 
-          const [record] = await indexRecords(service, { name: "product" })
-          expect(record.status).toBe("ready")
+          const after = await activeVersion(service, "product")
+          expect(after.status).toBe("ready")
         })
 
         it("is idempotent across repeated boots", async () => {
@@ -730,7 +950,9 @@ moduleIntegrationTestRunner<SearchService>({
           })
 
           // Whether to block on this is the caller's decision, not the module's.
-          expect(task).toMatchObject({ index: "product" })
+          expect(task).toMatchObject({
+            index: await activePhysicalName(service, "product"),
+          })
           expect(task.status).toEqual(
             expect.stringMatching(/^(enqueued|processing|succeeded)$/)
           )
@@ -783,8 +1005,7 @@ moduleIntegrationTestRunner<SearchService>({
 
           expect(result.hits[0].document).toEqual({
             id: "prod_1",
-            // Dates are indexed as numbers but returned as they went in.
-            created_at: baseProducts[0].created_at,
+            created_at: baseProducts[0].created_at.toISOString(),
             tags: ["shoe", "sport"],
             // Arrays of objects are collapsed for indexing, not for reads.
             variants: [{ sku: "SHOE-RED-41" }, { sku: "SHOE-RED-42" }],
@@ -926,7 +1147,7 @@ moduleIntegrationTestRunner<SearchService>({
 
         it("propagates a write failure, so the event is redelivered", async () => {
           const provider = (service as any).searchProviderService_.retrieve(
-            "search-local"
+            "search-postgres"
           )
           const upsert = jest
             .spyOn(provider, "upsertDocuments")
@@ -945,7 +1166,7 @@ moduleIntegrationTestRunner<SearchService>({
       })
 
       describe("reindexing", () => {
-        it("rebuilds from the seed when the provider cannot swap", async () => {
+        it("rebuilds from the seed into a new version and makes it active", async () => {
           dataset.products = [
             { ...baseProducts[0], title: "Scarlet trail shoe" },
             ...baseProducts.slice(1),
@@ -956,8 +1177,6 @@ moduleIntegrationTestRunner<SearchService>({
           expect(indexes).toEqual(["product"])
           expect(job_id).toEqual(expect.any(String))
 
-          // Without swapIndex the module falls back to in place, which refreshes
-          // what the seed still yields.
           const result = await service.search({
             entity: "product",
             fields: ["id"],
@@ -966,11 +1185,12 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result)).toEqual(["prod_1"])
         })
 
-        it("keeps the index searchable and the record ready after a rebuild", async () => {
+        it("keeps the index searchable and the new version ready after a rebuild", async () => {
           await service.reindex()
 
-          const [record] = await indexRecords(service, { name: "product" })
-          expect(record.status).toBe("ready")
+          const version = await activeVersion(service, "product")
+          expect(version.status).toBe("ready")
+          expect(version.version).toBe(2)
 
           const result = await service.search({
             entity: "product",
@@ -1028,20 +1248,22 @@ moduleIntegrationTestRunner<SearchService>({
         })
 
         it("closes definition drift, which is the only way a schema changes", async () => {
-          const [before] = await indexRecords(service, { name: "product" })
+          const before = await activeVersion(service, "product")
 
           // Stand in for a deploy that changed the definition. `upsertIndex`
           // deliberately does not reconcile schemas, so a rebuild is what
           // migrates the index and clears the drift.
-          await updateIndexRecords(service, {
+          await updateVersionRecords(service, {
             selector: { id: before.id },
             data: { definition_hash: "stale", status: "pending" },
           })
 
           await service.reindex()
 
-          const [after] = await indexRecords(service, { name: "product" })
-          expect(after.definition_hash).toBe(before.definition_hash)
+          const after = await activeVersion(service, "product")
+          expect(after.definition_hash).toBe(
+            definition(service, "product")!.definition_hash
+          )
           expect(after.status).toBe("ready")
 
           // The rebuild has to end up populated. An empty one would mean the
@@ -1053,7 +1275,7 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
-        it("rebuilds in place, keeping documents the seed no longer produces", async () => {
+        it("rebuilds in place, clearing documents the seed no longer produces", async () => {
           await service.upsertDocuments({
             index: "product",
             documents: [{ ...baseProducts[0], id: "prod_stale" }],
@@ -1066,8 +1288,9 @@ moduleIntegrationTestRunner<SearchService>({
 
           await service.reindex({ strategy: "in_place" })
 
-          // `in_place` upserts over the live index, so the seed's documents are
-          // refreshed...
+          // `in_place` writes into the active version rather than a new one,
+          // but a full (unfiltered) rebuild still clears it first, so the
+          // seed's documents are refreshed...
           const refreshed = await service.search({
             entity: "product",
             fields: ["id"],
@@ -1075,15 +1298,9 @@ moduleIntegrationTestRunner<SearchService>({
           })
           expect(ids(refreshed)).toEqual(["prod_1"])
 
-          // ...but anything it no longer produces is left behind. That is the
-          // documented cost of `in_place` over `swap`, which drops it.
+          // ...and anything the seed no longer produces is gone too.
           const all = await service.search({ entity: "product", fields: ["id"] })
-          expect(ids(all).sort()).toEqual([
-            "prod_1",
-            "prod_2",
-            "prod_3",
-            "prod_stale",
-          ])
+          expect(ids(all).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
         it("rejects reindexing an unknown index", async () => {
@@ -1094,26 +1311,16 @@ moduleIntegrationTestRunner<SearchService>({
       })
 
       describe("capability and definition validation", () => {
-        it("rejects $or, which the provider cannot express", async () => {
-          await expect(
-            service.search({
-              entity: "product",
-              fields: ["id"],
-              filters: {
-                $or: [{ status: "draft" }, { brand: "borg" }],
-              },
-            })
-          ).rejects.toThrow(/cannot express \$or in filters/)
-        })
+        it("forwards $or filters the engine can express", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: {
+              $or: [{ status: "draft" }, { brand: "borg" }],
+            },
+          })
 
-        it("rejects sorting on more fields than the provider allows", async () => {
-          await expect(
-            service.search({
-              entity: "product",
-              fields: ["id"],
-              pagination: { order: { min_price: "ASC", created_at: "DESC" } },
-            })
-          ).rejects.toThrow(/sorts on one field at a time; got 2/)
+          expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
         })
 
         it("rejects highlighting, which the provider has no support for", async () => {
@@ -1125,18 +1332,6 @@ moduleIntegrationTestRunner<SearchService>({
               search_options: { highlight: { fields: ["title"] } },
             })
           ).rejects.toThrow(/does not support highlighting/)
-        })
-
-        it("rejects stats facets, which Orama has no aggregation for", async () => {
-          await expect(
-            service.search({
-              entity: "product",
-              fields: ["id"],
-              search_options: {
-                facets: [{ field: "min_price", type: "stats" }],
-              },
-            })
-          ).rejects.toThrow(/"stats" facets/)
         })
 
         it("rejects filtering on a field that is not filterable", async () => {

@@ -41,8 +41,8 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Navigation Styles",
-            path: "/navigation",
+            title: "Cloud Assistant",
+            path: "/assistant",
           },
           {
             type: "link",
@@ -80,6 +80,11 @@ export const sidebar = [
                 type: "link",
                 title: "Rename Repository",
                 path: "/projects/rename-repo-branch",
+              },
+              {
+                type: "link",
+                title: "Log Drains",
+                path: "/projects/log-drains",
               },
             ],
           },
