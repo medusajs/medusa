@@ -5,7 +5,11 @@ import {
   SearchFieldDefinition,
   SearchFieldKind,
 } from "./field"
-import { SearchIndexDefinition, SearchSeedContext } from "./index-definition"
+import {
+  SearchIndexDefinition,
+  SearchMutation,
+  SearchSeedContext,
+} from "./index-definition"
 
 /**
  * Schema of search index fields — key-value pairs of search properties.
@@ -103,6 +107,14 @@ export interface SearchFieldsSchemaLike {
 export type SearchIndexFieldsInput = SearchFieldsSchemaLike
 
 /**
+ * A `seed` mutation, with `upsert`'s documents type-checked against the
+ * declared `search.define(...)` schema.
+ */
+export type SearchIndexSeedMutation<Fields extends SearchIndexFieldsInput> =
+  | { action: "upsert"; documents: InferSearchDocumentType<Fields>[] }
+  | Extract<SearchMutation, { action: "delete" }>
+
+/**
  * Definition accepted by `defineSearchIndex` before fields are normalized.
  * `seed` is type-checked against the declared `search.define(...)` schema.
  */
@@ -110,8 +122,9 @@ export type SearchIndexDefinitionInput<
   Fields extends SearchIndexFieldsInput = SearchIndexFieldsInput
 > = Omit<SearchIndexDefinition, "fields" | "seed"> & {
   fields: Fields
-  // Ran when there is no data in the index or on reindex.
+  // Ran when there is no data in the index, on reindex, and for the
+  // catch-up pass after a full seed.
   seed: (
     context: SearchSeedContext
-  ) => AsyncIterable<InferSearchDocumentType<Fields>[]>
+  ) => AsyncIterable<SearchIndexSeedMutation<Fields>[]>
 }
