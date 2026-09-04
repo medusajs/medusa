@@ -45,7 +45,7 @@ export function createShippingProfileTableAdapter({
         )
       return { data: shipping_profiles, count, isLoading, isError, error }
     },
-    getRowHref: (row) => `/settings/shipping-profiles/${row.id}`,
+    getRowHref: (row) => `/settings/locations/shipping-profiles/${row.id}`,
     renderRowActions: (row) => <ShippingOptionsRowActions profile={row} />,
     transformColumns: (columns) => {
       const ALLOWED_FILTERS = [
