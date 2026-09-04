@@ -17,15 +17,25 @@ export type InitializeModuleInjectableDependencies = {
  * You can configure shared options that apply to all queues/workers, or provide
  * per-queue overrides for fine-grained control.
  *
+ * This is the value of the `redis` property in the module's options:
+ * ```ts
+ * {
+ *   resolve: "@medusajs/medusa/workflow-engine-redis",
+ *   options: {
+ *     redis: {
+ *       // a RedisWorkflowsOptions value, as shown in the examples below
+ *     }
+ *   }
+ * }
+ * ```
+ *
  * @example
  * ```ts
  * // Simple configuration - same options for all queues
  * {
- *   redis: {
- *     redisUrl: "redis://localhost:6379",
- *     queueOptions: { defaultJobOptions: { removeOnComplete: 1000 } },
- *     workerOptions: { concurrency: 10 }
- *   }
+ *   redisUrl: "redis://localhost:6379",
+ *   queueOptions: { defaultJobOptions: { removeOnComplete: 1000 } },
+ *   workerOptions: { concurrency: 10 }
  * }
  * ```
  *
@@ -33,15 +43,13 @@ export type InitializeModuleInjectableDependencies = {
  * ```ts
  * // Advanced configuration - per-queue overrides
  * {
- *   redis: {
- *     redisUrl: "redis://localhost:6379",
- *     // Shared defaults
- *     workerOptions: { concurrency: 10 },
- *     // Override for job queue (scheduled workflows)
- *     jobWorkerOptions: { concurrency: 5 },
- *     // Override for cleaner (low priority)
- *     cleanerWorkerOptions: { concurrency: 1 }
- *   }
+ *   redisUrl: "redis://localhost:6379",
+ *   // Shared defaults
+ *   workerOptions: { concurrency: 10 },
+ *   // Override for job queue (scheduled workflows)
+ *   jobWorkerOptions: { concurrency: 5 },
+ *   // Override for cleaner (low priority)
+ *   cleanerWorkerOptions: { concurrency: 1 }
  * }
  * ```
  */
