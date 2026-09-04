@@ -375,7 +375,7 @@ describe("comparePrices", () => {
     expect(pricesToCreate[0].rules).toBeUndefined()
   })
 
-  it("should keep region and quantity rules on prices that have them", () => {
+  it("should keep the region rule and send quantity tiers as native fields", () => {
     const initial = [
       {
         variantId: "var_1",
@@ -398,10 +398,9 @@ describe("comparePrices", () => {
 
     const { pricesToUpdate } = comparePrices(initial as any, updated as any)
     expect(pricesToUpdate).toHaveLength(1)
-    expect(pricesToUpdate[0].rules).toEqual({
-      region_id: "reg_1",
-      min_quantity: "5",
-    })
+    expect(pricesToUpdate[0].rules).toEqual({ region_id: "reg_1" })
+    expect(pricesToUpdate[0].min_quantity).toBe(5)
+    expect(pricesToUpdate[0].max_quantity).toBe(null)
   })
 
   it("should detect updated prices", () => {
@@ -527,5 +526,91 @@ describe("formatQuantityPrices", () => {
     const prices = [{ amount: "500", id: "price_1" }]
     const result = formatQuantityPrices(prices)
     expect(result[0].id).toBe("price_1")
+  })
+})
+
+describe("quantity tiers", () => {
+  it("should send a new tiered price with native quantity fields and no quantity rules", () => {
+    const { pricesToCreate } = comparePrices(
+      [],
+      [
+        {
+          variantId: "var_1",
+          currencyCode: "usd",
+          amount: 1000,
+          minQuantity: 5,
+          maxQuantity: 9,
+        },
+      ] as any
+    )
+
+    expect(pricesToCreate).toHaveLength(1)
+    expect(pricesToCreate[0].min_quantity).toBe(5)
+    expect(pricesToCreate[0].max_quantity).toBe(9)
+    expect(pricesToCreate[0].rules).toBeUndefined()
+  })
+
+  it("should clear a tier that was removed rather than leaving it behind", () => {
+    const { pricesToUpdate } = comparePrices(
+      [
+        {
+          variantId: "var_1",
+          currencyCode: "usd",
+          amount: 1000,
+          id: "price_1",
+          minQuantity: 5,
+        },
+      ] as any,
+      [
+        { variantId: "var_1", currencyCode: "usd", amount: 1000, id: "price_1" },
+      ] as any
+    )
+
+    expect(pricesToUpdate).toHaveLength(1)
+    expect(pricesToUpdate[0].min_quantity).toBe(null)
+    expect(pricesToUpdate[0].max_quantity).toBe(null)
+  })
+
+  it("should read a tier back from the native fields", () => {
+    const priceList = {
+      prices: [
+        makePrice({
+          id: "price_1",
+          variant_id: "var_1",
+          currency_code: "usd",
+          amount: 1000,
+          min_quantity: 5,
+          max_quantity: 9,
+        } as never),
+      ],
+    } as unknown as HttpTypes.AdminPriceList
+
+    const result = initRecord(priceList, [makeProduct("prod_1", ["var_1"])])
+    const variant = result["prod_1"].variants["var_1"]
+
+    expect(variant.conditional_currency_prices?.["usd"]).toEqual([
+      { amount: "1000", id: "price_1", min_quantity: "5", max_quantity: "9" },
+    ])
+  })
+
+  it("should still read a tier stored as a rule by an older price list", () => {
+    const priceList = {
+      prices: [
+        makePrice({
+          id: "price_1",
+          variant_id: "var_1",
+          currency_code: "usd",
+          amount: 1000,
+          rules: { min_quantity: "5", max_quantity: "9" },
+        } as never),
+      ],
+    } as unknown as HttpTypes.AdminPriceList
+
+    const result = initRecord(priceList, [makeProduct("prod_1", ["var_1"])])
+    const variant = result["prod_1"].variants["var_1"]
+
+    expect(variant.conditional_currency_prices?.["usd"]).toEqual([
+      { amount: "1000", id: "price_1", min_quantity: "5", max_quantity: "9" },
+    ])
   })
 })
