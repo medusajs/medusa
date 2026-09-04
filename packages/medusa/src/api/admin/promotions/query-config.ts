@@ -14,6 +14,7 @@ export const defaultAdminPromotionFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "metadata",
   "*campaign",
   "*campaign.budget",
   "*application_method",
