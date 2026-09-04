@@ -97,7 +97,17 @@ const Form = RouteModalForm
  * Typically used for forms creating a resource or forms that require
  * a lot of space.
  */
-export const RouteFocusModal = Object.assign(Root, {
+type RouteFocusModalComponent = typeof Root & {
+  Header: typeof FocusModal.Header
+  Title: typeof FocusModal.Title
+  Body: typeof FocusModal.Body
+  Description: typeof FocusModal.Description
+  Footer: typeof FocusModal.Footer
+  Close: typeof FocusModal.Close
+  Form: typeof RouteModalForm
+}
+
+export const RouteFocusModal: RouteFocusModalComponent = Object.assign(Root, {
   Header,
   Title,
   Body,
