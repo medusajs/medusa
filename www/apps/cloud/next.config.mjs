@@ -190,7 +190,7 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:first((?!md-content)[^/]+)/:rest*/",
+          source: "/:first((?!md-content|api)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -212,7 +212,7 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:first((?!md-content)[^/]+)/:rest*",
+          source: "/:first((?!md-content|api)[^/]+)/:rest*",
           has: [
             {
               type: "header",

@@ -1,6 +1,21 @@
 import { HttpTypes } from "@medusajs/types"
 
 /**
+ * The path a quantity column reads its unit of measure from. The unit does not
+ * always live on the row itself — on a reservation it hangs off the related
+ * inventory item — so a column can point at it with a `unit_of_measure_path`
+ * metadata entry.
+ *
+ * Shared with the cell renderer so the field that is requested is the field
+ * that is read.
+ */
+export function getUnitOfMeasurePath(column?: {
+  metadata?: Record<string, any> | null
+}): string {
+  return column?.metadata?.unit_of_measure_path ?? "unit_of_measure"
+}
+
+/**
  * Calculate required fields based on visible columns from API definitions.
  */
 export function calculateRequiredFields(
@@ -24,6 +39,12 @@ export function calculateRequiredFields(
     // not be requested from the API.
     if (column.render_mode === "select" || column.render_mode === "actions") {
       return
+    }
+
+    // A quantity is rendered with its unit of measure, which the user has not
+    // necessarily added as a column of its own.
+    if (column.render_mode === "quantity") {
+      requiredFieldsSet.add(getUnitOfMeasurePath(column))
     }
 
     if (column.computed) {

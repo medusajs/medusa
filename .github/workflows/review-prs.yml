@@ -77,6 +77,7 @@ jobs:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
       CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      SLACK_WEBHOOK_URL_PR_REVIEW: ${{ secrets.SLACK_WEBHOOK_URL_PR_REVIEW }}
 
   # Runs on pull_request_target and issue_comment (@medusajs-bot review) events: determines PR number
   prepare:
@@ -155,3 +156,4 @@ jobs:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
       CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      SLACK_WEBHOOK_URL_PR_REVIEW: ${{ secrets.SLACK_WEBHOOK_URL_PR_REVIEW }}

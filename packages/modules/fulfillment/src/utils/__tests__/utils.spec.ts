@@ -151,6 +151,66 @@ describe("isContextValidForRules", () => {
     expect(isContextValid(context, rules)).toBe(false)
   })
 
+  it("returns true when the 'lt' operator compares numeric rule values", () => {
+    const rules = [
+      {
+        attribute: "total_weight",
+        operator: RuleOperator.LT,
+        value: "2000", // 40 < 2000
+      },
+    ]
+    const context = { total_weight: "40" }
+    expect(isContextValid(context, rules)).toBe(true)
+  })
+
+  it("returns true when the 'gte' operator compares numeric rule values", () => {
+    const rules = [
+      {
+        attribute: "item_total",
+        operator: RuleOperator.GTE,
+        value: "50", // 100 >= 50
+      },
+    ]
+    const context = { item_total: "100" }
+    expect(isContextValid(context, rules)).toBe(true)
+  })
+
+  it("returns false when the 'gte' operator compares numeric rule values", () => {
+    const rules = [
+      {
+        attribute: "item_total",
+        operator: RuleOperator.GTE,
+        value: "50", // 49 >= 50
+      },
+    ]
+    const context = { item_total: "49" }
+    expect(isContextValid(context, rules)).toBe(false)
+  })
+
+  it("returns true when the 'gt' operator compares date rule values", () => {
+    const rules = [
+      {
+        attribute: "created_at",
+        operator: RuleOperator.GT,
+        value: "2024-01-01", // 2025-06-01 > 2024-01-01
+      },
+    ]
+    const context = { created_at: "2025-06-01" }
+    expect(isContextValid(context, rules)).toBe(true)
+  })
+
+  it("returns false when the 'gt' operator compares date rule values", () => {
+    const rules = [
+      {
+        attribute: "created_at",
+        operator: RuleOperator.GT,
+        value: "2024-01-01", // 2023-06-01 > 2024-01-01
+      },
+    ]
+    const context = { created_at: "2023-06-01" }
+    expect(isContextValid(context, rules)).toBe(false)
+  })
+
   it("returns true when the 'in' operator is valid", () => {
     const rules = [
       {
