@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-fix(admin): render Refund Reason selector in balance settlement form
+fix(dashboard): render Refund Reason selector in balance settlement form
