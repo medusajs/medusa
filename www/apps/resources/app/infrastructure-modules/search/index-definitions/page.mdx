@@ -29,7 +29,7 @@ export const highlights = [
   ["7", "name", "The unique index name a query resolves against."],
   ["8", "entity", "The Query entity used to hydrate other fields."],
   ["9", "fields", "The fields the search engine holds."],
-  ["13", "seed", "Yields the documents that fill the index."],
+  ["13", "seed", "Yields the writes that fill the index."],
 ]
 
 ```ts title="src/search/product.ts" highlights={highlights}
@@ -51,7 +51,7 @@ export const productIndex = defineSearchIndex({
       fields: ["id", "title"],
     })
 
-    yield data
+    yield [{ action: "upsert", documents: data }]
   },
 })
 ```
@@ -119,7 +119,7 @@ npx medusa db:migrate
         `seed`
       </Table.Cell>
       <Table.Cell>
-        An async generator that yields batches of documents. Refer to [Fill the Index with `seed`](#fill-the-index-with-seed) for when the Search Module runs it.
+        An async generator that yields batches of writes. Refer to [Fill the Index with `seed`](#fill-the-index-with-seed) for when the Search Module runs it.
       </Table.Cell>
       <Table.Cell>
         Yes
@@ -193,13 +193,19 @@ Changing `fields` or `settings` changes the definition's hash, which the Search 
 
 ## Fill the Index with `seed`
 
-`seed` is an async generator that yields batches of documents. The Search Module runs it in the following cases:
+`seed` is an async generator that yields batches of writes. Each write is one of the following:
+
+- `{ action: "upsert", documents }`: writes the documents into the index, replacing any document already stored under the same ID.
+- `{ action: "delete", filters }`: removes every document matching the filters.
+
+The Search Module runs `seed` in the following cases:
 
 1. A migration created the index and nothing has filled it yet.
 2. The index exists but holds no documents, such as after an engine restart wiped it.
 3. A migration built a new index for a changed schema, which the module fills and then swaps in.
 4. The previous run didn't complete, so the module resumes it where it stopped.
 5. You rebuild the index on demand with the Search Module's `reindex` method.
+6. The catch-up pass that follows a full run, which picks up what changed while that run was writing. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).
 
 The first four cases run when your application starts. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) to learn how the module plans and runs each of them.
 
@@ -241,7 +247,7 @@ The first four cases run when your application starts. Refer to the [Reindexing 
           name: "seed",
           type: "`function`",
           optional: false,
-          description: "The generator function that yields the index's documents, which is the function receiving this context."
+          description: "The generator function that yields the index's writes, which is the function receiving this context."
         },
         {
           name: "primary_key",
@@ -288,6 +294,21 @@ The first four cases run when your application starts. Refer to the [Reindexing 
       type: "`string`",
       optional: true,
       description: "The cursor of an interrupted run, so you can resume where it stopped."
+    },
+    {
+      name: "catchup",
+      type: "`object`",
+      optional: true,
+      description: "Set only for the catch-up pass that follows a full run. Scope your query to what changed since `catchup.since` and yield a `delete` write for anything that's gone. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).",
+      expandable: false,
+      children: [
+        {
+          name: "since",
+          type: "`Date`",
+          optional: false,
+          description: "The time the run before this pass started. Only records changed at or after it matter to the pass."
+        }
+      ]
     }
   ]}
   sectionTitle="Fill the Index with seed"
@@ -321,7 +342,65 @@ export const productIndex = defineSearchIndex({
         break
       }
 
-      yield data
+      yield [{ action: "upsert", documents: data }]
+
+      offset += limit
+    }
+  }
+})
+```
+
+### Catch Up on Changes During a Run
+
+A full seed or rebuild reads your data while your application keeps writing to it, so a record that changes mid-run can land in the index stale, or not at all. To close that gap, the Search Module runs `seed` a second time as soon as the run finishes, passing `catchup.since`, which is the time the run started.
+
+Handle the pass in `seed` by doing the following:
+
+1. Narrow your query to records updated at or after `catchup.since`, so the pass stays small.
+2. Read soft-deleted records too by passing `withDeleted: true` to `query.graph`, since a record deleted mid-run is a document the index must lose.
+3. Yield an `upsert` write for a record that still exists, and a `delete` write for one that's soft-deleted.
+
+The module skips the pass for a [partial rebuild](../reindexing/page.mdx#seeding-on-demand), since a filtered run is already scoped to what the caller asked for.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, filters, catchup }) {
+    const limit = 500
+    let offset = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: ["id", "title", "deleted_at"],
+        filters: {
+          ...filters,
+          ...(catchup
+            ? { updated_at: { $gte: catchup.since } }
+            : {}),
+        },
+        pagination: { skip: offset, take: limit },
+        withDeleted: !!catchup,
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      const alive = data.filter((p) => !p.deleted_at)
+      const gone = data.filter((p) => p.deleted_at)
+
+      yield [
+        ...(alive.length
+          ? [{ action: "upsert", documents: alive }]
+          : []),
+        ...gone.map((product) => ({
+          action: "delete",
+          filters: { id: [product.id] },
+        })),
+      ]
 
       offset += limit
     }
@@ -399,11 +478,11 @@ To ensure your index is always up-to-date, you must add the following to your in
 
 <Note>
 
-`context` holds `container` and `index` only. Unlike [`seed`](#fill-the-index-with-seed), it carries no `filters` or `last_key`, since an event changes specific documents rather than filling the whole index.
+`context` holds `container` and `index` only. Unlike [`seed`](#fill-the-index-with-seed), it carries no `filters`, `last_key`, or `catchup`, since an event changes specific documents rather than filling the whole index.
 
 </Note>
 
-It returns an array of write instructions, each of which is one of the following:
+It returns an array of writes, which are the same writes [`seed`](#fill-the-index-with-seed) yields:
 
 - `{ action: "upsert", documents }`: writes the documents into the index.
 - `{ action: "delete", filters }`: removes every document matching the filters.
@@ -454,7 +533,7 @@ export const productIndex = defineSearchIndex({
       fields,
     })
 
-    yield data
+    yield [{ action: "upsert", documents: data }]
   },
 })
 ```

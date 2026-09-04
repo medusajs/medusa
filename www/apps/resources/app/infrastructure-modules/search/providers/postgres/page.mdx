@@ -141,7 +141,7 @@ export const productIndex = defineSearchIndex({
       fields: ["id", "title", "handle"],
     })
 
-    yield data
+    yield [{ action: "upsert", documents: data }]
   },
 })
 ```

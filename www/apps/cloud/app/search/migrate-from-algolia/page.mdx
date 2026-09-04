@@ -608,7 +608,7 @@ export const productIndex = defineSearchIndex({
         break
       }
 
-      yield data
+      yield [{ action: "upsert", documents: data }]
 
       offset += limit
     }

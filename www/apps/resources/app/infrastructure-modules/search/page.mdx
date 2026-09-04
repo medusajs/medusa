@@ -179,7 +179,7 @@ export const definitionHighlights = [
   ["11", "fields", "The fields the search engine holds."],
   ["17", "events", "The events that change the data the index holds."],
   ["22", "consume", "Turns each of those events into document writes."],
-  ["38", "seed", "Yields the documents that fill the index."],
+  ["38", "seed", "Yields the writes that fill the index."],
 ]
 
 ```ts title="src/search/product.ts" highlights={definitionHighlights}
@@ -226,7 +226,7 @@ export const productIndex = defineSearchIndex({
       fields,
     })
 
-    yield data
+    yield [{ action: "upsert", documents: data }]
   },
 })
 ```

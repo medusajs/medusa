@@ -122,6 +122,8 @@ The module seeds an index for one of the following reasons:
 
 The module records every seed run, so an interrupted run passes its `last_key` back to the definition's `seed` function and resumes where it stopped. Refer to [Fill the Index with `seed`](../index-definitions/page.mdx#fill-the-index-with-seed).
 
+Once a full seed finishes, the module runs the definition's `seed` function once more as a catch-up pass, so a record that changed while the seed was writing still lands in the index. Refer to [The Catch-Up Pass](#the-catch-up-pass).
+
 ---
 
 ## Seeding on Demand
@@ -197,7 +199,7 @@ export const reindexProductsStep = createStep(
 
 It returns the names of the indexes it rebuilt, and a `job_id`. The method waits for every index to finish before it resolves, so there's nothing to poll.
 
-The Search Module records the run in its `search_index_sync` table, writing one row per index and stamping every row with the `job_id`. Each row holds that index's status, how many documents it wrote, its `last_key`, and the error if it failed. The module exposes no method to read those rows, so query the table directly when you need them.
+The Search Module records the run in its `search_index_sync` table, stamping every row with the `job_id`. Each row holds that index's status, how many documents it wrote, its `last_key`, and the error if it failed. An index whose run ends with a [catch-up pass](#the-catch-up-pass) gets a second row under the same `job_id` for that pass. The module exposes no method to read those rows, so query the table directly when you need them.
 
 ### Reindex Strategies
 
@@ -241,6 +243,16 @@ Use `swap` when the seed's output shrank, so removed documents don't linger.
 Passing `filters` always rebuilds in place, even if you set `strategy` to `swap`. A partial rebuild would only hold the filtered slice, so aliasing it over the live index would delete every other document.
 
 </Note>
+
+---
+
+## The Catch-Up Pass
+
+A full run reads your data while your application keeps writing to it, so a record that changes mid-run can land in the index stale, or not at all. To close that gap, the module runs the definition's `seed` function a second time as soon as the run finishes, passing to it `catchup.since`, which is the time the run started. The pass writes into the same index, and a swap only makes that index active once the pass finishes.
+
+The pass runs after a full seed at application start and after a full reindex, under either strategy. The module skips it for a filtered reindex, since a partial rebuild is already scoped to what you asked for, and catching up on everything that changed would write more than that.
+
+Since the pass calls the same `seed` function, your definition decides what it costs: read the `catchup` property to narrow your query and to yield a `delete` write for a record deleted mid-run. Refer to [Catch Up on Changes During a Run](../index-definitions/page.mdx#catch-up-on-changes-during-a-run) for how to handle it.
 
 ---
 

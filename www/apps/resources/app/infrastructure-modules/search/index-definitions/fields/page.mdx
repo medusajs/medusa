@@ -337,14 +337,17 @@ export const warehouseIndex = defineSearchIndex({
       fields: ["id", "name", "latitude", "longitude"],
     })
 
-    yield data.map((warehouse) => ({
-      id: warehouse.id,
-      name: warehouse.name,
-      location: {
-        lat: warehouse.latitude,
-        lng: warehouse.longitude,
-      },
-    }))
+    yield [{
+      action: "upsert",
+      documents: data.map((warehouse) => ({
+        id: warehouse.id,
+        name: warehouse.name,
+        location: {
+          lat: warehouse.latitude,
+          lng: warehouse.longitude,
+        },
+      })),
+    }]
   },
 })
 ```

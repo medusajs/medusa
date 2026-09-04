@@ -160,7 +160,7 @@ export const brandIndex = defineSearchIndex({
       fields,
     })
 
-    yield data
+    yield [{ action: "upsert", documents: data }]
   },
 })
 ```
