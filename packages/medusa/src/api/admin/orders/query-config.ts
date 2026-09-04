@@ -1,3 +1,5 @@
+import { disallowedOrderSortFields } from "../../utils/sort-fields"
+
 export enum Entities {
   order = "order",
   fulfillment = "fulfillment",
@@ -107,6 +109,7 @@ export const retrieveTransformQueryConfig = {
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminOrderFields,
+  disallowedOrderBy: disallowedOrderSortFields,
   defaultLimit: 20,
   isList: true,
   entity: Entities.order,
