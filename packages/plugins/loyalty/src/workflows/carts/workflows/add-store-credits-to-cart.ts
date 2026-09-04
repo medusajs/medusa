@@ -9,7 +9,6 @@ import {
 import {
   createStep,
   createWorkflow,
-  parallelize,
   StepResponse,
   transform,
   WorkflowResponse,
@@ -271,20 +270,23 @@ export const addStoreCreditsToCartWorkflow = createWorkflow(
       input,
     });
 
-    const [_deletedCreditLines, createdCreditLines] = parallelize(
-      deleteCartCreditLinesWorkflow.runAsStep({
-        input: {
-          id: creditLineActions.creditLinesToDelete,
-        },
-      }),
-      createCartCreditLinesWorkflow.runAsStep({
-        input: creditLineActions.creditLinesToCreate,
-      })
-    );
+    // Delete the old store-credit line(s) and create the new one sequentially,
+    // not in parallel: racing these two writes (and the cart refresh that
+    // follows) against each other allowed a cart to keep a stale credit
+    // amount when this workflow was called again with a new amount.
+deleteCartCreditLinesWorkflow.runAsStep({
+  input: {
+    id: creditLineActions.creditLinesToDelete,
+  },
+});
 
-    refreshCartItemsWorkflow.runAsStep({
-      input: { cart_id: input.cart_id },
-    });
+const createdCreditLines = createCartCreditLinesWorkflow.runAsStep({
+  input: creditLineActions.creditLinesToCreate,
+});
+
+refreshCartItemsWorkflow.runAsStep({
+  input: { cart_id: input.cart_id },
+});
 
     return new WorkflowResponse(createdCreditLines);
   }
