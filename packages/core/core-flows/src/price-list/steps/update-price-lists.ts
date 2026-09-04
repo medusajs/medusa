@@ -102,7 +102,11 @@ async function getDataBeforeUpdate(
       selectsClone.splice(index, 1)
     }
 
-    selectsClone.push("price_list_rules.value", "price_list_rules.attribute")
+    selectsClone.push(
+      "price_list_rules.value",
+      "price_list_rules.attribute",
+      "price_list_rules.operator"
+    )
     relationsClone.push("price_list_rules")
   }
 

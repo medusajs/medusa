@@ -32,6 +32,7 @@ export const adminPriceListRemoteQueryFields = [
   "metadata",
   "price_list_rules.value",
   "price_list_rules.attribute",
+  "price_list_rules.operator",
 ]
 
 export const retrivePriceListPriceQueryConfig = {

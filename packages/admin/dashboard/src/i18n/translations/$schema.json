@@ -679,6 +679,9 @@
       "properties": {
         "in": {
           "type": "string"
+        },
+        "nin": {
+          "type": "string"
         }
       },
       "required": ["in"],

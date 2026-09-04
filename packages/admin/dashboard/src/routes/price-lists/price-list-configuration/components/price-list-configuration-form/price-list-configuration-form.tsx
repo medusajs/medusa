@@ -7,6 +7,7 @@ import {
   Divider,
   Heading,
   IconButton,
+  Select,
   Text,
   clx,
   toast,
@@ -20,6 +21,7 @@ import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { StackedDrawer } from "../../../../../components/modals/stacked-drawer"
 import { useStackedModal } from "../../../../../components/modals/stacked-modal-provider"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { useUpdatePriceList } from "../../../../../hooks/api/price-lists"
 import { PriceListCustomerGroupRuleForm } from "../../../common/components/price-list-customer-group-rule-form"
 import { PricingCustomerGroupsArrayType } from "../../../price-list-create/components/price-list-create-form/schema"
@@ -27,6 +29,7 @@ import { PricingCustomerGroupsArrayType } from "../../../price-list-create/compo
 type PriceListConfigurationFormProps = {
   priceList: HttpTypes.AdminPriceList
   customerGroups: { id: string; name: string }[]
+  customerGroupOperator: "in" | "nin"
 }
 
 const PriceListConfigurationSchema = z.object({
@@ -38,6 +41,7 @@ const PriceListConfigurationSchema = z.object({
       name: z.string(),
     })
   ),
+  customer_group_operator: z.enum(["in", "nin"]),
 })
 
 const STACKED_MODAL_ID = "cg"
@@ -45,16 +49,19 @@ const STACKED_MODAL_ID = "cg"
 export const PriceListConfigurationForm = ({
   priceList,
   customerGroups,
+  customerGroupOperator,
 }: PriceListConfigurationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { setIsOpen } = useStackedModal()
+  const direction = useDocumentDirection()
 
   const form = useForm<z.infer<typeof PriceListConfigurationSchema>>({
     defaultValues: {
       ends_at: priceList.ends_at ? new Date(priceList.ends_at) : null,
       starts_at: priceList.starts_at ? new Date(priceList.starts_at) : null,
       customer_group_id: customerGroups,
+      customer_group_operator: customerGroupOperator,
     },
     resolver: zodResolver(PriceListConfigurationSchema),
   })
@@ -95,7 +102,10 @@ export const PriceListConfigurationForm = ({
     const rules = { ...priceList.rules } // preserve other rules set on the PL
 
     if (groupIds.length) {
-      rules["customer.groups.id"] = groupIds
+      rules["customer.groups.id"] =
+        values.customer_group_operator === "nin"
+          ? { operator: "nin", value: groupIds }
+          : groupIds
     } else {
       delete rules["customer.groups.id"]
     }
@@ -213,9 +223,32 @@ export const PriceListConfigurationForm = ({
                             "priceLists.fields.customerAvailability.attribute"
                           )}
                         </div>
-                        <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
-                          {t("operators.in")}
-                        </div>
+                        <Form.Field
+                          control={form.control}
+                          name="customer_group_operator"
+                          render={({ field: { onChange, ref, ...rest } }) => (
+                            <Select
+                              dir={direction}
+                              {...rest}
+                              onValueChange={onChange}
+                            >
+                              <Select.Trigger
+                                ref={ref}
+                                className="bg-ui-bg-field"
+                              >
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                <Select.Item value="in">
+                                  {t("operators.in")}
+                                </Select.Item>
+                                <Select.Item value="nin">
+                                  {t("operators.nin")}
+                                </Select.Item>
+                              </Select.Content>
+                            </Select>
+                          )}
+                        />
                       </div>
                       <div className="flex items-center gap-1.5 px-1.5">
                         <StackedDrawer id={STACKED_MODAL_ID}>
