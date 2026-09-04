@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 
 import { countries, getCountryByIso2 } from "./data/countries"
+import { getCountryDisplayName } from "./display-names"
 
 export const isSameAddress = (
   a?: HttpTypes.AdminOrderAddress | null,
@@ -73,12 +74,16 @@ export const getFormattedAddress = ({
   }
 
   if (country) {
-    formattedAddress.push(country.display_name!)
+    formattedAddress.push(
+      getCountryDisplayName(country.iso_2, country.display_name ?? undefined)!
+    )
   } else if (country_code) {
     const country = getCountryByIso2(country_code)
 
     if (country) {
-      formattedAddress.push(country.display_name)
+      formattedAddress.push(
+        getCountryDisplayName(country.iso_2, country.display_name)!
+      )
     } else {
       formattedAddress.push(country_code.toUpperCase())
     }
@@ -93,5 +98,7 @@ export const getFormattedCountry = (countryCode: string | null | undefined) => {
   }
 
   const country = countries.find((c) => c.iso_2 === countryCode)
-  return country ? country.display_name : countryCode
+  return country
+    ? getCountryDisplayName(country.iso_2, country.display_name)!
+    : countryCode
 }
