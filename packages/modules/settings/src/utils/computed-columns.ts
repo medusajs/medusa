@@ -328,6 +328,7 @@ export const BUILTIN_COMPUTED_COLUMNS: Record<
         "status",
         "campaign.starts_at",
         "campaign.ends_at",
+        "campaign.budget.type",
         "campaign.budget.limit",
         "campaign.budget.used",
       ],

@@ -405,24 +405,70 @@ export interface CartWorkflowDTO extends CartDTO {
   region?: RegionDTO
 }
 
+/**
+ * The details required to list shipping options for a cart.
+ */
 export interface ListShippingOptionsForCartWorkflowInputDTO {
+  /**
+   * The ID of the cart to list shipping options for.
+   */
   cart_id: string
+  /**
+   * Whether to list shipping options for a return shipment.
+   */
   is_return: boolean
+  /**
+   * The ID of the sales channel to filter shipping options by.
+   */
   sales_channel_id?: string
+  /**
+   * The ID of the region to filter shipping options by.
+   */
   region_id?: string
+  /**
+   * The currency code of the cart.
+   *
+   * @example usd
+   */
   currency_code: string
+  /**
+   * The shipping address to filter shipping options by.
+   */
   shipping_address: {
+    /**
+     * The city of the shipping address.
+     */
     city?: string
+    /**
+     * The country code of the shipping address.
+     *
+     * @example us
+     */
     country_code?: string
+    /**
+     * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state of the shipping address.
+     */
     province?: string
   }
 }
 
+/**
+ * A shipping option with a resolved price.
+ */
 export interface PricedShippingOptionDTO extends ShippingOptionDTO {
+  /**
+   * The calculated price of the shipping option.
+   */
   amount: BigNumberInput
 }
 
+/**
+ * The details required to complete a cart.
+ */
 export interface CompleteCartWorkflowInputDTO {
+  /**
+   * The ID of the cart to complete.
+   */
   id: string
 }
 
@@ -548,6 +594,9 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
       }[]
 }
 
+/**
+ * A cart with its payment collection details.
+ */
 export interface CartWorkflowDTO {
   id: string
   payment_collection: PaymentCollectionDTO

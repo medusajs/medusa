@@ -655,6 +655,7 @@ type OrderChange {
   canceled_by: String
   canceled_at: DateTime
   carry_over_promotions: Boolean
+  no_notification: Boolean
   created_at: DateTime!
   updated_at: DateTime!
 }

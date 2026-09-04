@@ -47,6 +47,12 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
+<Note title="Cloud users">
+
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](!cloud!/environments/environment-variables). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
+
+</Note>
+
 For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
 
 ```bash
@@ -858,9 +864,35 @@ The `restrictedFields` configuration accepts the following properties:
   sectionTitle="http.restrictedFields Properties"
 />
 
+#### http.storeRelationsLimit
+
+<Note>
+
+This configuration is available since Medusa [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
+The `projectConfig.http.storeRelationsLimit` configuration sets the maximum number of relations a caller can expand in a single request to a Store API route. For example, requesting `variants.options.values` expands three relations.
+
+The default value is `3`. Individual routes can override this limit through their query configuration's `storeRelationsLimit` property.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      storeRelationsLimit: 4,
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+---
+
 ### redisOptions
 
-The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
+The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis's RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
 for the list of available options.
 
 #### Example
@@ -1127,6 +1159,12 @@ The `admin.vite` configuration specifies Vite configurations for the Medusa Admi
 
 Learn about configurations you can pass to Vite in [Vite's documentation](https://vite.dev/config/).
 
+<Note>
+
+Starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the function receives a Vite v7 configuration object, whereas it received a Vite v5 configuration object in earlier versions. So, if you set `build.target` to `modules`, or use the removed `splitVendorChunkPlugin`, update your configuration. Also, if you installed `vite` in your project for type support, update it to v7.
+
+</Note>
+
 #### Example
 
 For example, if you're using a third-party library that isn't ESM-compatible, add it to Vite's `optimizeDeps` configuration:
@@ -1167,6 +1205,12 @@ For modules that are part of a plugin, learn about registering them in the [Regi
 ### Example
 
 To register a custom module:
+
+<Note title="Cloud users">
+
+Environment variables used in module `options` are read during the build phase. When deploying to Cloud, make sure each variable has the **Build** flag enabled in your [environment variables settings](!cloud!/environments/environment-variables). A variable that is only enabled at runtime will be `undefined` when the module loads, causing errors such as "Option `apiKey` is required".
+
+</Note>
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
