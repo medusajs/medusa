@@ -17,6 +17,15 @@ export interface IDistributedSchedulerStorage {
 }
 
 export interface IDistributedTransactionStorage {
+  /**
+   * Whether the current process is allowed to invoke async steps in-process.
+   * When it returns false, the orchestrator defers the invocation of async
+   * steps by scheduling an immediate retry instead of executing them locally,
+   * so that an instance consuming the storage job queue (e.g. a worker
+   * instance) picks them up through the regular execution path.
+   * Defaults to true when not implemented.
+   */
+  shouldExecuteAsyncStepsLocally?(): boolean
   get(
     key: string,
     options?: TransactionOptions & { isCancelling?: boolean }
@@ -86,6 +95,10 @@ export abstract class DistributedTransactionStorage
 {
   constructor() {
     /* noop */
+  }
+
+  shouldExecuteAsyncStepsLocally(): boolean {
+    return true
   }
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {

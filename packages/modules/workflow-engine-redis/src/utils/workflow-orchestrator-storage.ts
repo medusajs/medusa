@@ -648,6 +648,15 @@ export class RedisDistributedTransactionStorage
     }
   }
 
+  /**
+   * Server instances don't consume the workflow job queue, so async steps are
+   * not invoked locally. The orchestrator defers them through scheduleRetry so
+   * a worker instance picks up the invocation instead.
+   */
+  shouldExecuteAsyncStepsLocally(): boolean {
+    return this.#isWorkerMode
+  }
+
   async scheduleRetry(
     transaction: DistributedTransactionType,
     step: TransactionStep,
