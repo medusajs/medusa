@@ -1533,11 +1533,12 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       }
 
       if (!("strategy" in findOptions_.options)) {
-        // MikroORM v7 defaults to BALANCED, so we are defaulting to it as it is a good
-        // balance between performance and behavior consistency
-        Object.assign(findOptions_.options, {
-          strategy: LoadStrategy.BALANCED,
-        })
+        if (findOptions_.options.limit != null || findOptions_.options.offset) {
+          // TODO: from 7+ it will be the default strategy
+          Object.assign(findOptions_.options, {
+            strategy: LoadStrategy.SELECT_IN,
+          })
+        }
       }
 
       pruneFindOptionsAgainstMetadata(
