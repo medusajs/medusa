@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": patch
+"@medusajs/dashboard": patch
 ---
 
-fix: translate country and currency names using Intl.DisplayNames
+fix(@medusajs/dashboard): translate country and currency names using Intl.DisplayNames
