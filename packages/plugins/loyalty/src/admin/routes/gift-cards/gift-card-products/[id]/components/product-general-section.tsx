@@ -1,37 +1,36 @@
-import { PencilSquare, Trash } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
-import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui";
-import { useNavigate } from "react-router-dom";
-import { ActionMenu } from "../../../../../components/action-menu";
-import { SectionRow } from "../../../../../components/section-row";
-import { useDeleteProduct } from "../../../../../hooks/api/products";
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
+import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
+import { useNavigate } from "react-router-dom"
+import { ActionMenu, SectionRow } from "@medusajs/dashboard/components"
+import { useDeleteProduct } from "@medusajs/dashboard/hooks"
 
 const productStatusColor = (status: string) => {
   switch (status) {
     case "draft":
-      return "grey";
+      return "grey"
     case "proposed":
-      return "orange";
+      return "orange"
     case "published":
-      return "green";
+      return "green"
     case "rejected":
-      return "red";
+      return "red"
     default:
-      return "grey";
+      return "grey"
   }
-};
+}
 
 type ProductGeneralSectionProps = {
-  product: HttpTypes.AdminProduct;
-};
+  product: HttpTypes.AdminProduct
+}
 
 export const ProductGeneralSection = ({
   product,
 }: ProductGeneralSectionProps) => {
-  const prompt = usePrompt();
-  const navigate = useNavigate();
+  const prompt = usePrompt()
+  const navigate = useNavigate()
 
-  const { mutateAsync } = useDeleteProduct(product.id);
+  const { mutateAsync } = useDeleteProduct(product.id)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -39,18 +38,18 @@ export const ProductGeneralSection = ({
       description: `Are you sure you want to delete gift card product ${product.title}?`,
       confirmText: "Delete",
       cancelText: "Cancel",
-    });
+    })
 
     if (!res) {
-      return;
+      return
     }
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        navigate("..");
+        navigate("..")
       },
-    });
-  };
+    })
+  }
 
   return (
     <Container className="divide-y p-0">
@@ -93,5 +92,5 @@ export const ProductGeneralSection = ({
       <SectionRow title={"Subtitle"} value={product.subtitle} />
       <SectionRow title={"Handle"} value={`/${product.handle}`} />
     </Container>
-  );
-};
+  )
+}

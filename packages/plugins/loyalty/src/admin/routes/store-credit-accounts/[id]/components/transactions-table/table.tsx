@@ -1,20 +1,20 @@
-import { Container } from "@medusajs/ui";
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
+import { Container } from "@medusajs/ui"
+import { Fragment } from "react"
+import { Outlet } from "react-router-dom"
 
-import { AdminTransaction } from "../../../../../../types";
-import { DataTable } from "../../../../../components/data-table";
-import { useStoreCreditAccountTransactions } from "../../../../../hooks/api/transactions";
-import { useTransactionsTableColumns } from "./columns";
-import { useTransactionsTableFilters } from "./filters";
-import { useTransactionsTableQuery } from "./query";
+import { AdminTransaction } from "../../../../../../types"
+import { useStoreCreditAccountTransactions } from "../../../../../hooks/api/transactions"
+import { useTransactionsTableColumns } from "./columns"
+import { useTransactionsTableFilters } from "./filters"
+import { useTransactionsTableQuery } from "./query"
+import { DataTable } from "@medusajs/dashboard/components"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 export function TransactionsTable({ id }: { id: string }) {
   const queryParams = useTransactionsTableQuery({
     pageSize: PAGE_SIZE,
-  });
+  })
 
   const { transactions, isLoading, count } = useStoreCreditAccountTransactions(
     id!,
@@ -23,10 +23,10 @@ export function TransactionsTable({ id }: { id: string }) {
       order: queryParams.order ?? "-created_at",
       fields: "*account",
     }
-  );
+  )
 
-  const columns = useTransactionsTableColumns();
-  const filters = useTransactionsTableFilters({});
+  const columns = useTransactionsTableColumns()
+  const filters = useTransactionsTableFilters({})
 
   return (
     <Fragment>
@@ -55,5 +55,5 @@ export function TransactionsTable({ id }: { id: string }) {
 
       <Outlet />
     </Fragment>
-  );
+  )
 }

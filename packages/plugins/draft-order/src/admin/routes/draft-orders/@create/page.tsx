@@ -14,19 +14,20 @@ import { Fragment, useCallback } from "react"
 import { Control, useForm, UseFormSetValue, useWatch } from "react-hook-form"
 import { z } from "zod"
 import { AddressCard } from "../../../components/common/address-card"
-import { ConditionalTooltip } from "../../../components/common/conditional-tooltip"
 import { CustomerCard } from "../../../components/common/customer-card"
-import { Form } from "../../../components/common/form"
-import { KeyboundForm } from "../../../components/common/keybound-form"
-import { Combobox } from "../../../components/inputs/combobox"
-import { CountrySelect } from "../../../components/inputs/country-select"
-import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { useCreateDraftOrder } from "../../../hooks/api/draft-orders"
-import { useComboboxData } from "../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../lib/queries/sdk"
-import { addressSchema } from "../../../lib/schemas/address"
-import { getFormattedAddress } from "../../../lib/utils/address-utils"
-import { useCustomer } from "../../../hooks/api/customers"
+import {
+  Combobox,
+  ConditionalTooltip,
+  CountrySelect,
+  Form,
+  KeyboundForm,
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useComboboxData, useCustomer } from "@medusajs/dashboard/hooks"
+import { AddressSchema, getFormattedAddress } from "@medusajs/dashboard/lib"
 
 const Create = () => {
   return (
@@ -415,7 +416,7 @@ const AddressField = ({ type, control, setValue }: AddressFieldProps) => {
     queryKey: [type, customerId],
     getOptions: (data) => {
       return data.addresses.map((address) => {
-        const formattedAddress = getFormattedAddress(address).join(",\n")
+        const formattedAddress = getFormattedAddress({ address }).join(",\n")
 
         return {
           label: formattedAddress,
@@ -445,7 +446,7 @@ const AddressField = ({ type, control, setValue }: AddressFieldProps) => {
       ...address,
       first_name: address.first_name || customer?.first_name,
       last_name: address.last_name || customer?.last_name,
-    } as z.infer<typeof addressSchema>)
+    } as z.infer<typeof AddressSchema>)
   }
 
   const showFields = type === "billing_address" ? !sameAsShipping : true
@@ -743,9 +744,9 @@ const schema = z
     // instead of a confusing "Invalid email address".
     email: z.union([z.literal(""), z.string().email()]).optional(),
     shipping_address_id: z.string().optional(),
-    shipping_address: addressSchema,
+    shipping_address: AddressSchema,
     billing_address_id: z.string().optional(),
-    billing_address: addressSchema.nullable(),
+    billing_address: AddressSchema.nullable(),
     same_as_shipping: z.boolean().default(true),
   })
   .superRefine((data, ctx) => {

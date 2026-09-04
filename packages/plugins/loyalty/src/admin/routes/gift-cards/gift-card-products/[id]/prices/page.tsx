@@ -1,15 +1,15 @@
-import { useParams } from "react-router-dom";
-import { RouteFocusModal } from "../../../../../components/modals";
-import { useProduct } from "../../../../../hooks/api/products";
-import { PricingEdit } from "./components/prices-edit";
+import { useParams } from "react-router-dom"
+import { PricingEdit } from "./components/prices-edit"
+import { RouteFocusModal } from "@medusajs/dashboard/components"
+import { useProduct } from "@medusajs/dashboard/hooks"
 
 export const ProductPrices = () => {
-  const { id, variant_id } = useParams();
+  const { id, variant_id } = useParams()
 
-  const { product, isLoading, isError, error } = useProduct(id!);
+  const { product, isLoading, isError, error } = useProduct(id!)
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   return (
@@ -18,7 +18,7 @@ export const ProductPrices = () => {
         <PricingEdit product={product} variantId={variant_id} />
       )}
     </RouteFocusModal>
-  );
-};
+  )
+}
 
-export default ProductPrices;
+export default ProductPrices

@@ -4,15 +4,17 @@ import { Button } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import * as zod from "@medusajs/framework/zod"
-import { KeyboundForm } from "../../../../../../components/keybound-form"
+import { VariantPricingForm } from "./variant-pricing-form"
 import {
+  KeyboundForm,
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../../components/modals"
-import { useUpdateProductVariantsBatch } from "../../../../../../hooks/api/products"
-import { useRegions } from "../../../../../../hooks/api/regions"
-import { castNumber } from "../../../../../../utils/validations"
-import { VariantPricingForm } from "./variant-pricing-form"
+} from "@medusajs/dashboard/components"
+import {
+  useRegions,
+  useUpdateProductVariantsBatch,
+} from "@medusajs/dashboard/hooks"
+import { castNumber } from "@medusajs/dashboard/lib"
 
 export const UpdateDenominationPricesSchema = zod.object({
   variants: zod.array(
