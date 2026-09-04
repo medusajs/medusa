@@ -168,6 +168,18 @@ export const order = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteDraftOrdersWorkflow"
   },
   {
+    "title": "fetchShippingOptionForDraftOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow"
+  },
+  {
+    "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow"
+  },
+  {
+    "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow"
+  },
+  {
     "title": "removeDraftOrderActionItemWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow"
   },
