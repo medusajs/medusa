@@ -1,0 +1,595 @@
+import { CardList, Note, Prerequisites, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Search`,
+  keywords: [
+    "search",
+    "medusa search",
+    "cloud search",
+    "full-text search",
+    "vector search",
+    "semantic search",
+    "search module",
+    "search provider",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about Medusa Search and how to use it in your Cloud projects.
+
+## What is Medusa Search?
+
+Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them.
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../sign-up/page.mdx) to use Medusa Search and other Cloud features.
+
+</Note>
+
+Medusa Search gives your commerce application a search engine that serves storefront-grade search at scale, from full-text queries with relevance ranking to semantic search over embeddings. It's a low-cost yet highly performant solution, so you get sub-second search over large catalogs without paying for a dedicated search cluster or maintaining one.
+
+Medusa Search provides the following features:
+
+- **Full-text search** with relevance ranking that respects the weight you set on each field.
+- **Semantic search** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
+- **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
+- **Facets** for values and ranges, so a storefront can show counts per category or price bucket.
+- **Sorting** by any number of fields.
+- **Isolated indexes per environment**, so a preview environment never writes to your production indexes.
+
+### Search Indexes per Environment
+
+Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle. Preview environments are the exception, since they can start from another environment's data.
+
+{/* Preview environments are the exception, since they can start from another environment's data. When you configure a base environment in the [shared previews settings](../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment, similar to how it creates the preview environment's database. */}
+
+---
+
+## Compare Medusa Search to Other Search Engines
+
+If you're considering or already using another search engine, the following guides compare Medusa Search with common engines across setup, integration, search capabilities, and cost:
+
+<CardList
+  itemsPerRow={3}
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "./postgres/page.mdx",
+    },
+    {
+      title: "Algolia",
+      href: "./algolia/page.mdx",
+    },
+    {
+      title: "Meilisearch",
+      href: "./meilisearch/page.mdx",
+    },
+  ]}
+/>
+
+---
+
+## Set Up Medusa Search in Cloud Projects
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0",
+    },
+  ]}
+/>
+
+Medusa Search is enabled by default for Cloud projects with zero configuration. Cloud provisions the search resources for every environment and passes the credentials to your Medusa application, so Medusa registers the provider and uses it for your indexes.
+
+To use it, upgrade your Medusa application to v2.20.0 or later, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
+
+{/* TODO add a section on searching medusa with default api route? */}
+
+### Set Up Search in Local Development
+
+Medusa Search isn't available in local development. Instead, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) by default, which indexes your data in your local PostgreSQL database.
+
+So, you can declare index definitions and test search locally without extra configuration. The PostgreSQL provider stores an index in your database, so run the migrations after you create or change an index definition:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+<Note>
+
+The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `min_score`, and it can't enforce `match_strategy: "all"`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
+
+</Note>
+
+---
+
+## Searching Custom Data Models
+
+Medusa indexes your products by default, so you can search them in Medusa Search without declaring anything.
+
+For any other data, including the custom data models of your own modules, declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under the `src/search` directory, then add an [API route](!docs!/learn/fundamentals/api-routes) that queries the index with [query.search](!docs!/learn/fundamentals/query/search).
+
+### Step 1: Create the Index
+
+For example, to index a custom `brand` data model, create the file `src/search/brand.ts` with the following content:
+
+```ts title="src/search/brand.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = ["id", "name", "country", "created_at"]
+
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+    created_at: search.date().sortable(),
+  }),
+  events: [
+    "brand.created",
+    "brand.updated",
+    "brand.deleted",
+  ],
+  async consume(event, { container }) {
+    if (event.name === "brand.deleted") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { data } = await container.query.graph({
+      entity: "brand",
+      fields,
+      filters: { id: event.data.id },
+    })
+
+    return [{ action: "upsert", documents: data }]
+  },
+  async *seed({ container }) {
+    const { data } = await container.query.graph({
+      entity: "brand",
+      fields,
+    })
+
+    yield [{ action: "upsert", documents: data }]
+  },
+})
+```
+
+The definition indexes every brand with a searchable `name` that outweighs the other fields, a `country` you can filter and facet on, and a `created_at` you can sort by. The `events` and `consume` properties then keep the index current as brands change, so Medusa upserts a created or updated brand and removes a deleted one.
+
+<Note title="Tip">
+
+For local testing, make sure to [run the migrations](#set-up-search-in-local-development) after you create or change an index definition.
+
+</Note>
+
+### Step 2: Add a Search API Route
+
+Next, add an [API route](!docs!/learn/fundamentals/api-routes) that searches the index with [query.search](!docs!/learn/fundamentals/query/search).
+
+For example, create the file `src/api/search-brands/route.ts` with the following content:
+
+```ts title="src/api/search-brands/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve("query")
+
+  const { data, search_result } = await query.search({
+    entity: "brand",
+    fields: ["id", "name", "country"],
+    filters: {
+      q: req.query.q as string,
+    },
+    pagination: { take: 20 },
+  })
+
+  res.json({
+    brands: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+The route passes the request's `q` parameter to Medusa Search, which returns the matching brands ranked by relevance.
+
+### Step 3: Deploy to Cloud
+
+Finally, push your changes to the branch of a Cloud environment. Cloud builds and deploys your project, then creates the brand index and fills it with the documents that `seed` yields.
+
+Once the deployment finishes, send a `GET` request to the route on your environment's URL:
+
+```bash
+curl "https://your-project.medusajs.app/search-brands?q=acme"
+```
+
+You'll receive a JSON response like the following:
+
+```json
+{
+  "brands": [
+    {
+      "id": "brand_01KXR3J9J610DT161E2E4ZS6P1",
+      "name": "Acme",
+      "country": "us"
+    }
+  ],
+  "metadata": {
+    "skip": 0,
+    "take": 20,
+    "count": 1,
+    "query": "acme",
+    "processing_time_ms": 9
+  }
+}
+```
+
+Refer to the [Deployments](../deployments/page.mdx) guide to follow a deployment, and to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) to learn how Medusa creates, fills, and rebuilds an index.
+
+---
+
+## Medusa Search Settings
+
+Aside from the fields and settings that every [index definition](!resources!/infrastructure-modules/search/index-definitions) declares, Medusa Search supports settings and options of its own.
+
+### Index Settings
+
+Set the `settings` property of an index definition to configure how Medusa Search treats the whole index.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable(),
+    brand: search.keyword().filterable(),
+  }),
+  settings: {
+    distinct_attribute: "brand",
+    provider_options: {
+      "search-medusa": {
+        distance_metric: "cosine_distance",
+      },
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The example declares two settings for the `product` index:
+
+- `distinct_attribute` deduplicates results on `brand`, so a search returns at most one product per brand instead of every product the brand sells.
+- `provider_options` passes options that only the `search-medusa` provider understands, in this case the distance metric it uses to compare embeddings.
+
+`provider_options` accepts the following options for `search-medusa`:
+
+<TypeList
+  types={[
+    {
+      name: "distance_metric",
+      type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+      optional: true,
+      description: `The metric that vector search uses to compare embeddings. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts.`,
+      defaultValue: "cosine_distance",
+    },
+    {
+      name: "sharding",
+      type: "`object`",
+      optional: true,
+      description: `How Medusa Search shards the index. Only set it for a large index whose write throughput needs it.`,
+      defaultValue: "Medusa Search picks the shard count and adjusts it as the index grows",
+      children: [
+        {
+          name: "num_shards",
+          type: "`number`",
+          optional: false,
+          description: `The number of shards to split the index into.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="Index Settings"
+/>
+
+### Typo Tolerance
+
+Medusa Search matches misspelled terms with a fuzzy index that it builds on every searchable field by default, so an index tolerates typos without declaring any setting. A query is the opposite: it matches terms exactly until you opt in, as explained in [Opt a Query Into Typo Tolerance](#opt-a-query-into-typo-tolerance).
+
+Set the `typo_tolerance` index setting to change the thresholds Medusa Search applies, to exempt a field, or to turn the fuzzy index off:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    sku: search.keyword().searchable(),
+  }),
+  settings: {
+    typo_tolerance: {
+      min_word_size_for_one_typo: 5,
+      min_word_size_for_two_typos: 9,
+      disabled_on_attributes: ["sku"],
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The setting accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "enabled",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search builds a fuzzy index for the index's searchable fields. Set it to \`false\` to keep the index smaller when no query needs typo tolerance.`,
+      defaultValue: "true",
+    },
+    {
+      name: "min_word_size_for_one_typo",
+      type: "`number`",
+      optional: true,
+      description: `The shortest term length that tolerates a single typo.`,
+      defaultValue: "5",
+    },
+    {
+      name: "min_word_size_for_two_typos",
+      type: "`number`",
+      optional: true,
+      description: `The shortest term length that tolerates two typos.`,
+      defaultValue: "9",
+    },
+    {
+      name: "disabled_on_attributes",
+      type: "`string[]`",
+      optional: true,
+      description: `The dotted paths of the fields that must always match exactly, such as a SKU or a serial number where a single character changes the meaning.`,
+      defaultValue: "[]",
+    },
+  ]}
+  sectionTitle="Typo Tolerance"
+/>
+
+#### Opt a Query Into Typo Tolerance
+
+The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options), which is what a search engine that tolerates typos by default, such as Algolia or Meilisearch, does for you:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshrit" },
+  search_options: {
+    typo_tolerance: true,
+  },
+})
+```
+
+Medusa Search ranks a fuzzy match below every exact match, so enabling the option adds results rather than reordering the ones you already had.
+
+<Note title="Errors to expect">
+
+- A query that passes `typo_tolerance` without a `q` filter fails, since there are no terms to match approximately.
+- A query fails when none of the fields it searches has a fuzzy index, such as when the index sets `enabled: false` or exempts every searched field.
+
+</Note>
+
+### Field Options
+
+Use a field's [`providerOptions()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#provideroptions) modifier to configure how Medusa Search indexes that field.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable().providerOptions({
+      "search-medusa": {
+        fuzzy: true,
+        glob: true,
+      },
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+Medusa Search reads the following field options:
+
+<TypeList
+  types={[
+    {
+      name: "filterable",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search indexes the field for filtering.`,
+      defaultValue: "true for a filterable, sortable, or facetable field, and for the index's primary key",
+    },
+    {
+      name: "full_text_search",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language.`,
+      defaultValue: "true for a searchable field, and unset otherwise",
+    },
+    {
+      name: "fuzzy",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether full-text search on the field tolerates small differences in spelling. Medusa Search sets it from the index's [typo tolerance setting](#typo-tolerance), so only set it to override that field's behavior.`,
+      defaultValue: "true for a searchable field when the index's typo tolerance is enabled, and false otherwise",
+    },
+    {
+      name: "glob",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can wildcard-match the field's exact value, which the \`$prefix\` and \`$like\` filters need. Medusa Search always omits it on the \`id\` field.`,
+      defaultValue: "true for a filterable, sortable, or facetable keyword field, and false for a text field",
+    },
+    {
+      name: "regex",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can match the field with a regular expression.`,
+      defaultValue: "false",
+    },
+    {
+      name: "ann",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The approximate nearest neighbor configuration of a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector). Pass \`true\` to keep the defaults, or an object to override the index's metric for this field.`,
+      defaultValue: "true for a vector field, and unset otherwise",
+      children: [
+        {
+          name: "distance_metric",
+          type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+          optional: true,
+          description: `The metric that vector search uses for this field. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts.`,
+          defaultValue: "The index's `distance_metric` setting",
+        },
+      ],
+    },
+    {
+      name: "type",
+      type: "`string`",
+      optional: true,
+      description: `The attribute type that Medusa Search stores the field as, such as \`string\`, \`[]string\` for an array of strings, \`int\`, \`datetime\`, or \`[1536]f32\` for a 1536-dimension vector. Medusa infers it from the field definition, so only set it when you need a type that the definition can't express.`,
+      defaultValue: "The type Medusa infers from the field definition",
+    },
+  ]}
+  sectionTitle="Field Options"
+/>
+
+### Query Options
+
+Pass `provider_options` in a query's [search options](!docs!/learn/fundamentals/query/search#search-options) to change how Medusa Search runs that query.
+
+For example:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshirt" },
+  search_options: {
+    provider_options: {
+      "search-medusa": {
+        consistency: "eventual",
+      },
+    },
+  },
+})
+```
+
+Medusa Search reads one query option, `consistency`, which accepts the following values:
+
+<TypeList
+  types={[
+    {
+      name: "consistency",
+      type: "`\"strong\"` \\| `\"eventual\"`",
+      optional: true,
+      description: `How current the index must be for this query. \`strong\` searches every write made before the query started, so the query reflects a write you made moments ago. \`eventual\` skips that check and can miss the latest writes, which makes the query faster.`,
+      defaultValue: "strong",
+    },
+  ]}
+  sectionTitle="Query Options"
+/>
+
+Set `eventual` for queries where a slightly stale result is fine, such as a storefront's product listing. Keep the default for a query that must reflect a recent write, such as an admin view of a product you edited.
+
+---
+
+## Semantic Search with Medusa Search
+
+[Semantic search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) ranks results by meaning rather than by matching terms, which needs an embedding of the text you search over. Medusa Search can create those embeddings for you, so you don't run an embedding model or store its output yourself.
+
+<Note>
+
+This feature is available for the Enterprise plan only. Refer to the [Plans & Pricing](../pricing/page.mdx) guide for what your plan includes.
+
+</Note>
+
+To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier with the path of the `text` or `keyword` field to embed:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed("title"),
+    // ...
+  }),
+  // ...
+})
+```
+
+Medusa Search now embeds each document's `title` into `title_embedding` as it indexes the document. Your documents must leave `title_embedding` out, since Medusa Search produces it.
+
+Then, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "comfortable running shoe" },
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      query: "comfortable shoes for long runs",
+      semantic_ratio: 0.7,
+    },
+  },
+})
+```
+
+`semantic_ratio` balances the semantic score against the full-text score, where `0` is full-text only and `1` is semantic only. So this query blends both.
+
+Without `embed` on the field, a query must pass a pre-computed embedding as `search_options.vector.value` instead, and Medusa Search rejects a query that passes `query`.
+
+<Note>
+
+Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-modules/search/index-definitions/fields#let-medusa-search-create-the-embedding) for the full details of the modifier, including how it changes the documents your index holds.
+
+</Note>
+
+---
+
+## Reindex on Medusa Search
+
+Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one in code with the Search Module's `reindex` method.
+
+Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide for the dashboard flow, and to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) for how Medusa creates, fills, and rebuilds an index.
+
+---
+
+## Medusa Search Usage
+
+Medusa Search is available on all Cloud plans, with the exception of vector search which is only available to Enterprise plans. The number of search requests your Medusa application makes is a metered resource. Every plan includes an allowance of search requests, and requests beyond it count as [Flex Usage](../usage/page.mdx#what-is-flex-usage).
+
+Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organization's usage, and to the [Plans & Pricing](../pricing/page.mdx) guide for the allowance your plan includes.

@@ -1401,7 +1401,7 @@ This workflow has the following steps:
 
 1. `getDistinctSubscriptionsStep` to retrieve the restock subscriptions by distinct variant and sales channel ID pairings.
 2. `getRestockedStep` to filter the subscriptions retrieved by the previous step and return only those whose variants have been restocked.
-1. `useQueryGraphStep` to retrieve all subscriptions that have a restocked variant and sales channel ID pairing using [Query](!docs!/learn/fundamentals/module-links/query). Notice that in the specified `fields` you pass `product_variant.*`, which retrieves the details of the subscription's variant from the Product Module. This is possible due to the module link you created between the `RestockSubscription` and `ProductVariant` models in an earlier step.
+1. `useQueryGraphStep` to retrieve all subscriptions that have a restocked variant and sales channel ID pairing using [Query](!docs!/learn/fundamentals/query). Notice that in the specified `fields` you pass `product_variant.*`, which retrieves the details of the subscription's variant from the Product Module. This is possible due to the module link you created between the `RestockSubscription` and `ProductVariant` models in an earlier step.
 3. `sendRestockNotificationStep` to send the notification to the subscribers of the restocked variants.
 4. `deleteRestockSubscriptionStep` to delete the restock subscriptions since their subscribers have been notified.
 

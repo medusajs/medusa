@@ -1,0 +1,1133 @@
+import { Note, Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Migrate from Meilisearch to Medusa Search`,
+  keywords: [
+    "search",
+    "medusa search",
+    "meilisearch",
+    "migration",
+    "migrate",
+    "search module",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll migrate a Medusa project that indexes and searches products in Meilisearch to use [Medusa Search](../page.mdx).
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../../sign-up/page.mdx) to use Medusa Search and other Cloud features.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "A Cloud project",
+      link: "/first-project",
+    },
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0",
+    },
+  ]}
+/>
+
+## Migrate with an AI Agent
+
+If you use an AI agent, such as Claude Code or Codex, copy the following prompt into it to perform the migration in your project. Review the changes it makes, then follow the rest of this guide to validate and deploy them.
+
+```md title="Migration Prompt" collapsed noLineNumbers
+<role>
+You are a senior Medusa developer migrating an existing
+Medusa project from a custom Meilisearch integration to
+Medusa Search, the managed search service of Cloud.
+</role>
+
+<task>
+Replace this project's custom Meilisearch integration with
+the Search Module and Medusa Search, keeping the storefront's
+search behavior intact.
+</task>
+
+<context>
+- Medusa Search is a provider of the Search Module, which
+  ships with Medusa v2.20.0 and later. Cloud registers and
+  configures it for every environment, so it needs no
+  credentials or configuration in the project.
+- Medusa creates a product index by default. A project only
+  declares its own index definition for custom fields,
+  custom index settings, or data models other than products.
+- An index definition lives in a file under `src/search`,
+  declares the fields the engine holds, fills the index with
+  a `seed` async generator, and keeps it current with its
+  `events` and `consume` properties.
+- Queries run through `query.search` in an API route. Medusa
+  Search has no browser-side querying and no search-only
+  key, so a storefront that queries Meilisearch directly
+  needs a new API route on the Medusa backend.
+- Medusa Search does not support synonyms, custom stop-word
+  lists, geo search, configurable ranking rules, engine-side
+  embedders, or sorting alongside a text query. An index or a
+  query that relies on them fails.
+- Medusa Search supports typo tolerance and highlighting, but
+  unlike Meilisearch both are opt-in per query through
+  `search_options`. Pass them in the search route to keep the
+  storefront's current behavior.
+</context>
+
+<steps>
+1. Inspect the project and report what it has before you
+   change anything: the Meilisearch module, the sync
+   workflows and their steps, the subscribers, the admin sync
+   route and UI route, the storefront's search client and
+   search modal, and the Medusa version in `package.json`.
+2. If the Medusa version is below v2.20.0, stop and tell the
+   user to upgrade first.
+3. List the fields the project indexes in Meilisearch, taken
+   from the `fields` array of `syncProductsWorkflow`, and ask
+   the user for the index settings of their Meilisearch
+   instance. They can read them from
+   `GET /indexes/{index}/settings`.
+4. Decide whether the project needs its own index
+   definition. If every indexed field and setting is covered
+   by the default product index, skip to step 6 and say why.
+5. Create the index definition under `src/search`. Map
+   Meilisearch's `searchableAttributes` to `searchable()`
+   fields with a weight, `filterableAttributes` to
+   `facetable()` or `filterable()`, `sortableAttributes` to
+   `sortable()`, and the attributes missing from
+   `displayedAttributes` to `retrievable(false)`. Reproduce
+   the project's indexing rules in `seed`, such as indexing
+   published products only, and handle create, update, and
+   delete events in `consume`.
+6. Create a `POST /store/products/search` API route that
+   calls `query.search`, with a Zod validation middleware for
+   its body. The storefront queried Meilisearch from the
+   browser, so this route is new rather than a rewrite.
+   Respond with `{ products, count, limit, offset }`, where
+   `products` holds the hydrated records from `data` and the
+   other three come from `search_result.metadata`. Do not
+   also return `search_result.hits`, since each hit's
+   `document` repeats a record already in `products`. Add
+   `search_result.facets` only when the storefront renders
+   facet counts, and a hit's `highlights` only when the
+   query asks for highlighting.
+7. Replace any manual sync trigger with a workflow step that
+   calls the Search Module's `reindex` method.
+8. Delete the Meilisearch module, the sync workflows and
+   steps, the product subscribers, the module's entry in
+   `medusa-config.ts`, and the `meilisearch` dependency.
+   Do this here and not earlier, since the application fails
+   to boot while the module is still registered and the
+   package is gone. Leave the Meilisearch environment
+   variables in place and tell the user to remove them after
+   the cutover.
+9. Update the storefront to call the new search route through
+   the JS SDK instead of the Meilisearch client, debouncing
+   the input, and read the route's response shape. Remove the
+   `@meilisearch/instant-meilisearch` and `react-instantsearch`
+   packages, the `searchClient` export, and the
+   `NEXT_PUBLIC_MEILISEARCH_*` variables.
+10. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
+</steps>
+
+<constraints>
+- Do not add a feature that Medusa Search does not support.
+  When the project relies on one, report it and propose the
+  closest alternative instead of implementing it silently.
+- Do not delete the user's Meilisearch instance, indexes, or
+  keys, and do not call the Meilisearch API.
+- Do not expose the search index to the browser. Every query
+  goes through an API route on the Medusa backend.
+- Do not run a deployment or push to any branch.
+- Never run a Medusa CLI command that can prompt without the
+  flag that skips its prompts. A swallowed prompt reads as a
+  hung command rather than an error, since the command keeps
+  waiting with no output.
+- Keep every package the current integration imports
+  installed until step 8, so the application boots at every
+  point before it.
+- Consult the Medusa documentation at
+  https://docs.medusajs.com or the Medusa MCP server for any
+  API details you need, including the index definition
+  properties, field types and modifiers, and the options of
+  `query.search`.
+</constraints>
+
+<error_handling>
+- If the project has no Meilisearch integration, report that
+  and stop.
+- If the integration differs from the files listed in step
+  1, map each responsibility you find to its Search Module
+  equivalent and report the mapping before you change code.
+- If you cannot tell whether a field is searched, filtered,
+  faceted, or only displayed, ask the user rather than
+  guessing its modifiers.
+- If a storefront feature has no Medusa Search equivalent,
+  list it under manual follow-ups instead of removing the
+  feature.
+</error_handling>
+
+<output_format>
+Respond with the following markdown sections:
+
+## Changes
+A table of every file you created, modified, or deleted,
+with one sentence on what changed in it.
+
+## Behavior differences
+Each Meilisearch behavior the project relied on that Medusa
+Search does not support, and what you did about it.
+
+## Manual follow-ups
+The steps the user has to take themselves, such as removing
+environment variables, validating relevance, and deploying.
+</output_format>
+
+<success_criteria>
+- The project builds and type checks with no reference to
+  `meilisearch`, `@meilisearch/instant-meilisearch`, or
+  `react-instantsearch` left in the backend or the
+  storefront.
+- Every field the project indexed in Meilisearch is either
+  held by the new index definition, covered by the default
+  product index, or listed as an intentional removal.
+- The storefront searches through the new API route, and no
+  Meilisearch key reaches the browser.
+- The search route documents its response shape and returns
+  each record once.
+- Every unsupported Meilisearch behavior appears under
+  "Behavior differences".
+</success_criteria>
+```
+
+---
+
+## Who This Guide Is For
+
+This guide assumes your project follows the [Integrate Meilisearch with Medusa](!resources!/integrations/guides/meilisearch) guide, which is the most common Meilisearch setup in Medusa projects. That setup has the following pieces:
+
+- A Meilisearch Module in `src/modules/meilisearch` that wraps Meilisearch's client.
+- A `syncProductsWorkflow` and its steps that index and delete products in Meilisearch.
+- Subscribers on product events and a custom `meilisearch.sync` event.
+- An admin UI route and API route that trigger a full sync.
+- A storefront that queries Meilisearch directly from the browser with `@meilisearch/instant-meilisearch` and a search key.
+
+If your integration differs, the mapping in the [Map Your Integration to Medusa Search](#map-your-integration-to-medusa-search) section still applies, since every Meilisearch integration owns the same responsibilities.
+
+<Note title="Not sure whether to migrate?">
+
+Refer to [Medusa Search vs Meilisearch](../meilisearch/page.mdx) for a feature-by-feature comparison, including the Meilisearch features that Medusa Search doesn't offer.
+
+</Note>
+
+---
+
+## What Changes in Your Project
+
+Medusa Search isn't a drop-in replacement for the Meilisearch client. It's a provider of the [Search Module](!resources!/infrastructure-modules/search), which owns the parts of the integration you wrote by hand. So the migration deletes more code than it adds.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Responsibility
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Your Meilisearch integration
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Running the engine
+      </Table.Cell>
+      <Table.Cell>
+        A self-hosted instance or a Meilisearch Cloud project, which you upgrade and monitor.
+      </Table.Cell>
+      <Table.Cell>
+        Cloud provisions the service and passes the credentials, so nothing to run.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Connecting to the engine
+      </Table.Cell>
+      <Table.Cell>
+
+      The Meilisearch Module's service, its options, and three environment variables.
+
+      </Table.Cell>
+      <Table.Cell>
+        Nothing to write.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Index schema and settings
+      </Table.Cell>
+      <Table.Cell>
+        Index settings stored on the Meilisearch instance, outside your repository.
+      </Table.Cell>
+      <Table.Cell>
+
+      An [index definition](!resources!/infrastructure-modules/search/index-definitions) in `src/search`, which deploys with your code.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Initial and full sync
+      </Table.Cell>
+      <Table.Cell>
+
+      `syncProductsWorkflow`, the `meilisearch.sync` subscriber, the admin API route, and the admin UI route.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index definition's `seed` generator, which Medusa runs on deployment, plus the `reindex` method for a manual rebuild.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Incremental sync
+      </Table.Cell>
+      <Table.Cell>
+
+      The `product-sync` and `product-delete` subscribers, and the delete workflow.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The `events` and `consume` properties of the index definition.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Rollback on a failed write
+      </Table.Cell>
+      <Table.Cell>
+        Compensation functions that reindex the previous documents.
+      </Table.Cell>
+      <Table.Cell>
+
+      Not needed. A failed `consume` leaves the index behind, and a [reindex](!resources!/infrastructure-modules/search/reindexing#recover-with-a-reindex) repairs it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Waiting on a write
+      </Table.Cell>
+      <Table.Cell>
+        Meilisearch queues every write as a task, so a document isn't searchable the moment the call returns.
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search doesn't defer its writes, so there's no task to poll.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Querying
+      </Table.Cell>
+      <Table.Cell>
+        The storefront's Meilisearch client, calling the engine from the browser with a search key.
+      </Table.Cell>
+      <Table.Cell>
+
+      [`query.search`](!docs!/learn/fundamentals/query/search) in an API route that the storefront calls.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Per-environment isolation
+      </Table.Cell>
+      <Table.Cell>
+        An index name or an instance per environment, provisioned and configured by you.
+      </Table.Cell>
+      <Table.Cell>
+
+      [One set of indexes per environment](../page.mdx#search-indexes-per-environment), created for you.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Behavior Differences to Settle First
+
+Some Meilisearch behaviors have no equivalent in Medusa Search, and an index or a query that relies on them fails rather than degrading. Decide what to do about each one before you write any code:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Behavior
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What to do
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Synonyms and stop words
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search supports neither, and an index that declares them fails at startup. Expand a query's terms in your API route, or index the alternative terms as a searchable field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ranking rules
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search ranks by the [weight](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) you set on each searchable field. Meilisearch's `rankingRules` order, including a custom `attribute:asc` rule, has no equivalent, so reproduce the ordering you need in the API route.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Sorting by an attribute
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search sorts by any number of `sortable` fields, but not alongside a text query, which Meilisearch allows. A sorted product listing therefore runs as a separate query from a search, without a `q` filter.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Hybrid search and embedders
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search runs [vector search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) on embeddings you compute and store in the index. It has no engine-side embedder, and it doesn't blend text and vector results by a semantic ratio.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Geo search
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search doesn't support geo fields, and an index that declares one fails at startup. Filter on a region or a country field instead of a `_geo` attribute.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Tenant tokens
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search has no equivalent, since the engine never sees a request from the browser. Apply the tenant's filter in your API route, where you already know the authenticated customer.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Map Your Integration to Medusa Search
+
+Medusa creates the product index by default, so you don't have to declare one to search products.  You only need your own definition for custom fields or index configurations that the default index doesn't cover, or for data models other than products that you indexed in Meilisearch.
+
+So, start by writing down what your Meilisearch index holds and how it's configured, since that's what your index definition has to reproduce. Take the record shape from the `fields` array of your `syncProductsWorkflow`, and the settings from your instance:
+
+```bash
+curl "$MEILISEARCH_HOST/indexes/$INDEX/settings" \
+  -H "Authorization: Bearer $MEILISEARCH_API_KEY"
+```
+
+<Note title="Tip">
+
+Save that response before you start. Meilisearch stores the settings on the instance rather than in your repository, so it's the only record of the relevance your customers search with today. You'll compare against it in [Step 8](#step-8-validate-before-the-cutover).
+
+</Note>
+
+Then map each Meilisearch setting to its equivalent:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Meilisearch
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `searchableAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      A [`search.text()`](!resources!/infrastructure-modules/search/index-definitions/fields#searchtext) field with the [`searchable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) modifier. The attribute's position in Meilisearch's ordered list becomes a `weight`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `filterableAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`facetable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#facetable) modifier for an attribute the storefront shows counts for, and [`filterable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#filterable) for one you only filter on. Meilisearch uses one setting for both, so check which attributes your storefront facets on.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `sortableAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`sortable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#sortable) modifier, with the caveat that a sort doesn't run alongside a text query.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `displayedAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`retrievable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#retrievable) modifier set to `false` on every attribute you left out of the list.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `rankingRules`
+      </Table.Cell>
+      <Table.Cell>
+
+      A `weight` per searchable field. Medusa Search has no equivalent for the rest of Meilisearch's ranking criteria.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `distinctAttribute`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`distinct_attribute`](../page.mdx#index-settings) index setting, or the `distinct` search option for a single query.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `faceting.maxValuesPerFacet`
+      </Table.Cell>
+      <Table.Cell>
+
+      The `faceting.max_values_per_facet` index setting, alongside `faceting.sort_by`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `pagination.maxTotalHits`
+      </Table.Cell>
+      <Table.Cell>
+
+      The `pagination.max_total_hits` index setting. Medusa Search caps a query at the 10,000th result regardless.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `typoTolerance`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`typo_tolerance`](../page.mdx#typo-tolerance) index setting, which carries the same `min_word_size_for_one_typo` and `min_word_size_for_two_typos` thresholds. `disableOnAttributes` becomes `disabled_on_attributes`, and `disableOnWords` has no equivalent. A query then opts in with the `typo_tolerance` search option, which Meilisearch didn't require.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `synonyms` and `stopWords`
+      </Table.Cell>
+      <Table.Cell>
+
+      No equivalent. Settle them as explained in [Behavior Differences to Settle First](#behavior-differences-to-settle-first).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Primary key
+      </Table.Cell>
+      <Table.Cell>
+
+      The index's [`primary_key`](!resources!/infrastructure-modules/search/index-definitions#index-definition-properties), which defaults to `id`. Since the integration guide indexes each product under its own ID, you can keep the default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        One index or instance per environment
+      </Table.Cell>
+      <Table.Cell>
+
+      One index definition. Cloud scopes the physical indexes per environment, so the `MEILISEARCH_PRODUCT_INDEX_NAME` variable goes away.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+A field that your storefront neither displays, filters, sorts, nor searches on doesn't belong in the index. Migrating is a good time to drop the attributes that Meilisearch's record shape accumulated.
+
+</Note>
+
+---
+
+## Step 1: Upgrade Your Medusa Application
+
+Medusa Search requires [Medusa v2.20.0 or later](https://github.com/medusajs/medusa/releases/tag/v2.20.0). Upgrade your application, then confirm it starts locally before you change any search code.
+
+Refer to the [Update Medusa](../../update-medusa/page.mdx) guide for the upgrade steps.
+
+Once you upgrade, the Search Module is registered by default with the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) locally, and with Medusa Search on Cloud. So you don't have to register anything in `medusa-config.ts`.
+
+---
+
+## Step 2: Declare Your Index
+
+Medusa creates the product index by default, so products are searchable on Medusa Search without any index definition. You only declare one in the following cases:
+
+- Your Meilisearch documents hold custom fields that the default product index doesn't.
+- You need index settings or field options that the default index doesn't apply, such as a different weight, a facetable field, or a [Medusa Search setting](../page.mdx#medusa-search-settings).
+- You indexed data models other than products in Meilisearch, such as product categories.
+
+Otherwise, skip to [Step 3](#step-3-add-the-search-api-route) and query the default index.
+
+An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Meilisearch index's settings, holding the schema, the initial fill, and the event handling in one file that deploys with your code.
+
+For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
+
+export const definitionHighlights = [
+  ["24", "title", "Outweighs the description in relevance."],
+  ["27", "thumbnail", "Held by the index, but never searched or filtered."],
+  ["28", "categories", "An array of objects, so a filter matches any category."],
+  ["34", "facetable", "Powers the storefront's category filter counts."],
+]
+
+```ts title="src/search/product.ts" highlights={definitionHighlights}
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = [
+  "id",
+  "title",
+  "description",
+  "handle",
+  "thumbnail",
+  "categories.id",
+  "categories.name",
+  "categories.handle",
+  "tags.id",
+  "tags.value",
+]
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable(),
+    handle: search.keyword().filterable(),
+    thumbnail: search.keyword(),
+    categories: search
+      .object({
+        id: search.keyword().filterable(),
+        name: search
+          .keyword()
+          .searchable()
+          .facetable(),
+        handle: search.keyword().filterable(),
+      })
+      .array(),
+    tags: search
+      .object({
+        id: search.keyword().filterable(),
+        value: search
+          .keyword()
+          .searchable()
+          .facetable(),
+      })
+      .array(),
+  }),
+  async *seed({ container, filters }) {
+    const limit = 200
+    let offset = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields,
+        filters: {
+          status: "published",
+          ...filters,
+        },
+        pagination: { skip: offset, take: limit },
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      yield [{ action: "upsert", documents: data }]
+
+      offset += limit
+    }
+  },
+})
+```
+
+The definition declares the fields the engine holds, then fills the index with the `seed` generator. Note the following about it:
+
+- `title` carries a higher weight than `description`, so a product matching a query in its title outranks one matching only in its description. This replaces the ordered `searchableAttributes` list in Meilisearch, along with the `attribute` ranking rule that reads it.
+- `thumbnail` is neither searchable nor filterable, since the storefront only displays it. Use the [`retrievable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#retrievable) modifier if you want the opposite, a field the engine matches on but never returns.
+- `seed` yields products in batches of `200` instead of loading the whole catalog into memory, and it merges the `filters` it receives so a [partial reindex](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) works.
+- `seed` filters on `status: "published"`, which is the check the `syncProductsWorkflow` performs in its `transform` function.
+
+<Note>
+
+Only add `facetable()` to a field whose counts your storefront shows. Meilisearch computes a facet distribution from `filterableAttributes` without a separate query, whereas every facet on Medusa Search shares a budget of 16 queries per search with the hits and the count.
+
+</Note>
+
+### Keep the Index Current
+
+Your integration replaces two subscribers, `product-sync` and `product-delete`, with the `events` and `consume` properties of the definition. Medusa subscribes to the events you list and routes each one to `consume`.
+
+Add the following properties to the `defineSearchIndex` call:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  async consume(event, { container }) {
+    if (event.name === "product.deleted") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields: [...fields, "status"],
+      filters: { id: event.data.id },
+    })
+
+    const [product] = data
+
+    if (product?.status !== "published") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { status, ...document } = product
+
+    return [{ action: "upsert", documents: [document] }]
+  },
+})
+```
+
+`consume` returns the writes to apply for an event. It handles the three cases your subscribers handled:
+
+1. A deleted product leaves the index.
+2. A created or updated published product enters the index.
+3. A product that's no longer published leaves the index, which is what the `deleteProductsFromMeilisearchStep` did for unpublished products.
+
+Unlike the Meilisearch client, the Search Module doesn't hand you a task to wait on. A write that `consume` returns is applied before the query that follows it sees the index, so you no longer poll for a task's status after a product change.
+
+### Test the Index Locally
+
+Locally, the PostgreSQL provider holds the index in your database, so run the migrations that create it:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Then start your application. The Search Module fills the index when the application starts in worker or shared mode. You no longer need a Meilisearch instance running on your machine to develop against search.
+
+---
+
+## Step 3: Add the Search API Route
+
+{/* TODO if we ship search api route by default, mention here */}
+
+Your storefront queries Meilisearch straight from the browser, so there's no search route on your backend to rewrite. For Medusa Search, create a search route on your backend.
+
+Create the file `src/api/store/products/search/route.ts` with the following content:
+
+```ts title="src/api/store/products/search/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import { z } from "@medusajs/framework/zod"
+
+export const SearchSchema = z.object({
+  query: z.string(),
+  limit: z.number().optional().default(20),
+  offset: z.number().optional().default(0),
+})
+
+type SearchRequest = z.infer<typeof SearchSchema>
+
+export async function POST(
+  req: MedusaRequest<SearchRequest>,
+  res: MedusaResponse
+) {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { query: q, limit, offset } = req.validatedBody
+
+  const { data, search_result } = await query.search({
+    entity: "product",
+    fields: [
+      "id",
+      "title",
+      "description",
+      "handle",
+      "thumbnail",
+    ],
+    filters: { q },
+    pagination: { skip: offset, take: limit },
+  })
+
+  res.json({
+    products: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+The route resolves [Query](!docs!/learn/fundamentals/query) from the Medusa container and searches the `product` index, which is the `name` of the definition you declared. Note the following about it:
+
+- `fields` can include fields the index doesn't hold, such as `variants.*`. Query hydrates them from the database with the `entity` you declared in the definition, which is something a browser-side Meilisearch query couldn't do.
+- The route returns the hydrated entities in `products` and the engine's own result in `metadata`, rather than Meilisearch's `hits` and `estimatedTotalHits`. Your storefront reads the new shape in [Step 7](#step-7-update-the-storefront).
+- The route accepts pagination, since Medusa Search caps results at the 10,000th one and the storefront needs to page through matches.
+
+Then, validate the request body with a [middleware](!docs!/learn/fundamentals/api-routes/middlewares). Add the following to `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  validateAndTransformBody,
+} from "@medusajs/framework/http"
+import { SearchSchema } from "./store/products/search/route"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products/search",
+      method: "POST",
+      middlewares: [
+        validateAndTransformBody(SearchSchema),
+      ],
+    },
+  ],
+})
+```
+
+### Add Filters, Facets, and Sorting
+
+Your Meilisearch storefront builds a filter expression in the browser and reads the facet distribution from the engine's response. With Medusa Search, the API route builds both instead.
+
+For example, to filter by category and return the category counts:
+
+```ts title="src/api/store/products/search/route.ts"
+const { data, search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title", "handle", "thumbnail"],
+  filters: {
+    q,
+    "categories.handle": req.validatedBody.category,
+  },
+  search_options: {
+    facets: ["categories.name"],
+    disjunctive_facets: true,
+  },
+  pagination: { skip: offset, take: limit },
+})
+```
+
+`disjunctive_facets` keeps the sibling category counts visible while a category filter is active, which is what a filter sidebar needs. Refer to [Search Queries](!docs!/learn/fundamentals/query/search) for every filter operator, facet type, and sorting option.
+
+<Note>
+
+Medusa Search can't sort by a field alongside a text query, which Meilisearch's `sort` parameter allows. If your storefront offers "sort by price" on a search results page, run the sorted listing as a separate query without a `q` filter.
+
+</Note>
+
+---
+
+## Step 4: Replace the Manual Sync
+
+The integration guide's admin page triggers a full sync through the `meilisearch.sync` event. You no longer need that sync for everyday changes:
+
+1. Medusa fills the index on deployment.
+2. Medusa keeps the index current from the `events` and `consume` properties of the index definition, applying every product change as it happens. This applies for both the product index Medusa creates by default or the custom definition you wrote in [Step 2](#step-2-declare-your-index).
+
+A manual rebuild is only for repairing a diverged index, such as after a `consume` call failed or a change reached the database without emitting an event.
+
+For a manual rebuild, you can drop the custom admin page entirely: admin users can rebuild any index from Settings -> Search in the Medusa Admin dashboard. Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide.
+
+If you'd rather trigger the rebuild from your own code, replace the `syncProductsWorkflow` with a step that calls the Search Module's [`reindex`](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) method.
+
+Create the file `src/workflows/steps/reindex-products.ts` with the following content:
+
+```ts title="src/workflows/steps/reindex-products.ts"
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+export const reindexProductsStep = createStep(
+  "reindex-products",
+  async (_, { container }) => {
+    const searchModuleService = container.resolve(
+      Modules.SEARCH
+    )
+
+    const result = await searchModuleService.reindex({
+      index: "product",
+    })
+
+    return new StepResponse(result)
+  }
+)
+```
+
+Then, keep your admin UI route and its API route, and call a workflow that runs this step instead of emitting the `meilisearch.sync` event.
+
+<Note>
+
+`reindex` waits for the rebuild to finish before it resolves, so run it in a workflow rather than in the request handler of your admin API route. Refer to [Long-Running Workflows](!docs!/learn/fundamentals/workflows/long-running-workflow) if the rebuild outlasts your request timeout.
+
+</Note>
+
+---
+
+## Step 5: Remove the Meilisearch Integration
+
+Once your searches run against the new index, delete the code that Medusa Search replaces. From a project that followed the integration guide, remove the following:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        What to remove
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Why
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/modules/meilisearch`
+
+      </Table.Cell>
+      <Table.Cell>
+        The Search Module and its provider replace the client wrapper.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The module's entry in the `modules` array of `medusa-config.ts`
+
+      </Table.Cell>
+      <Table.Cell>
+        Removing the directory without this leaves your application failing to boot.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/workflows/sync-products.ts`, `src/workflows/delete-products-from-meilisearch.ts`, and their steps
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index definition's `seed` and `consume` functions replace them.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/subscribers/meilisearch-sync.ts`, `src/subscribers/product-sync.ts`, and `src/subscribers/product-delete.ts`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa subscribes to the events in the definition's `events` array.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The `meilisearch` dependency
+
+      </Table.Cell>
+      <Table.Cell>
+        Nothing in the backend calls Meilisearch anymore.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The `MEILISEARCH_HOST`, `MEILISEARCH_API_KEY`, and `MEILISEARCH_PRODUCT_INDEX_NAME` variables
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Remove them from every environment, including the [Cloud environment variables](../../environments/environment-variables/page.mdx). Delete them last, after the cutover.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Keep the Meilisearch instance itself running until the cutover finishes, since it still serves your production storefront's searches.
+
+---
+
+## Step 6: Deploy and Fill the Index to Preview
+
+Push your changes to the branch of a Cloud environment. Use a [preview environment](../../environments/preview/page.mdx) rather than production for the first deployment, so you can compare results before customers see them.
+
+During the deployment, Cloud runs the search migrations, which create the physical index for your definition. The Search Module then fills it with the documents that `seed` yields when the application starts.
+
+Follow the deployment in the Cloud dashboard, then check your application's [logs](../../logs/page.mdx) for the migration output:
+
+```bash
+info:    Migrating search indexes...
+info:    Search indexes migrated. They are filled when the application starts
+```
+
+Once the seed finishes, send a request to your search route and confirm it returns hits:
+
+```bash
+curl -X POST \
+  "https://your-project.medusajs.app/store/products/search" \
+  -H "x-publishable-api-key: pk_..." \
+  -H "Content-Type: application/json" \
+  -d '{"query": "shirt"}'
+```
+
+If the response holds no products, query the `search_index_sync` table to check whether the seed ran, how many documents it wrote, and the error it failed with.
+
+---
+
+## Step 7: Update the Storefront
+
+{/* TODO update this section once the InstantSearch integration for Medusa Search ships */}
+
+This is the largest change in the migration, since your storefront talks to the search engine itself today. Its `SearchModal` component renders `react-instantsearch` widgets against a `searchClient` from `@meilisearch/instant-meilisearch`, which sends every keystroke to your Meilisearch host with a search key. Three things change:
+
+1. **Where the query goes.** The storefront calls your `/store/products/search` route instead of the engine, so the Meilisearch host and key leave the browser entirely.
+2. **The response shape.** The route returns `products` and `metadata` instead of Meilisearch's `hits` and `estimatedTotalHits`. Each result is a hydrated product rather than an index document, so it can hold fields the index doesn't.
+3. **The features behind the widgets.** Filters, facets, sorting, highlighting, and typo tolerance come from the query your API route builds rather than from a widget's parameters. Meilisearch applied typo tolerance and returned `_formatted` fields without being asked, so your route passes `typo_tolerance` and `highlight` to keep that behavior, and the storefront reads each hit's `highlights` instead of `_formatted`.
+
+So update the storefront as follows:
+
+1. Remove the `searchClient` export from `src/lib/config.ts`, along with the `@meilisearch/instant-meilisearch` and `react-instantsearch` dependencies and the `NEXT_PUBLIC_MEILISEARCH_*` variables.
+2. Rewrite `src/modules/search/components/modal/index.tsx` to call your `/store/products/search` route with the [JS SDK](!resources!/js-sdk), debouncing the input so a query doesn't fire on every keystroke. Keep the modal, the button, and the `Hit` component's markup, since only the data source changes.
+3. Render the results from the route's `products` array, and page through them with the `metadata` it returns.
+4. Move each filter and facet the widgets provided into the request body, and read the counts from the facets your route returns.
+
+<Note title="Tip">
+
+Debouncing matters more than it did before. Every search now counts toward your Cloud [search request allowance](../page.mdx#medusa-search-usage), whereas browser-side Meilisearch queries never reached your Medusa backend. A modal that searched on every keystroke makes several times the requests of one that searches on a pause or on submit.
+
+</Note>
+
+<Note>
+
+An InstantSearch integration for Medusa Search is in progress, which will let you keep the widget-based search UI in your storefront. This section will cover it once it ships.
+
+</Note>
+
+---
+
+## Step 8: Validate Before the Cutover
+
+Compare the two engines on the same environment before you point production at Medusa Search. Check the following:
+
+- **Top queries.** Run the queries your customers search most through both engines and compare the top results. Weights are the only relevance control you have, so tune the `weight` values in the definition until the ordering holds up against the `searchableAttributes` order and `rankingRules` you saved earlier.
+- **Misspelled queries.** Run the same queries with a typo and confirm your search route passes `typo_tolerance`, since Meilisearch applied it without being asked. Medusa Search ranks a fuzzy match below every exact match, so check that a correctly spelled query still returns the same top results.
+- **Filters and facets.** Confirm every filter your storefront offers works, and that facet counts match the facet distribution Meilisearch reported for the same query.
+- **Document count.** Compare the index's document count against the number of published products in your database. A mismatch means the `seed` filters differ from what you indexed in Meilisearch.
+- **Event sync.** Create, update, unpublish, and delete a product, then search for it. Each change should reach the index within seconds, and without the task polling Meilisearch needed.
+- **Admin search.** The admin dashboard's global search uses your indexes automatically, so check that searching products in the dashboard returns the results you expect.
+
+---
+
+## Step 9: Deploy Your Index
+
+Once the preview environment's search holds up, merge your changes into the branch of your production environment. Cloud builds and deploys your project, creates the production index, and fills it with the documents that `seed` yields.
+
+Refer to the [Deployments](../../deployments/page.mdx) guide to follow the deployment.
+
+After the cutover, remove the `MEILISEARCH_*` variables from your Cloud environments and the storefront, then decommission the Meilisearch instance or cancel the Meilisearch Cloud project.
+
+---
+
+## Next Steps
+
+- Index your other data models, including your custom ones, as explained in [Searching Custom Data Models](../page.mdx#searching-custom-data-models).
+- Configure how Medusa Search treats your index and its fields with the [Medusa Search Settings](../page.mdx#medusa-search-settings).
+- Add semantic search over embeddings you store in the index, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

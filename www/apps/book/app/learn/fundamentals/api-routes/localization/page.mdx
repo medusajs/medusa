@@ -176,7 +176,7 @@ The `req.locale` property contains the locale value from either the query parame
 
 ### Retrieve Localized Data with Query
 
-To retrieve data models with translated fields, pass the `locale` property in the second parameter object of [Query](/learn/fundamentals/module-links/query) when querying your data.
+To retrieve data models with translated fields, pass the `locale` property in the second parameter object of [Query](/learn/fundamentals/query) when querying your data.
 
 For example, to retrieve products with translated names and descriptions:
 
@@ -206,7 +206,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 In this example, the products are retrieved with their `title` and `description` fields translated to the locale specified in the request.
 
-Learn more in the [Query](../../module-links/query/page.mdx#retrieve-localized-data) chapter.
+Learn more in the [Query](../../query/page.mdx#retrieve-localized-data) chapter.
 
 ### Retrieve Localized Data for Custom Models
 

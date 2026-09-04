@@ -415,6 +415,11 @@ export const sidebar = [
             title: "Profile",
             path: "/settings/profile",
           },
+          {
+            type: "link",
+            title: "Search Indexes",
+            path: "/settings/search",
+          },
         ],
       },
     ],

@@ -267,7 +267,7 @@ You first initialize an empty array of `FeedItem` objects that you'll populate l
 
 Then, you resolve the following resources from the Medusa container:
 
-- [Query](!docs!/learn/fundamentals/module-links/query) that allows you to retrieve data across modules.
+- [Query](!docs!/learn/fundamentals/query) that allows you to retrieve data across modules.
 - [Medusa Configurations](!docs!/learn/configurations/medusa-config) that are defined in `medusa-config.ts`.
 
 You use the Medusa configurations to retrieve the storefront URL, which you'll use to build the product links in the feed. If the storefront URL is not set in the configurations, you fall back to the `STOREFRONT_URL` environment variable.
@@ -276,7 +276,7 @@ After that, you use Query to retrieve product data with pagination. For each pro
 
 <Note>
 
-To retrieve the product variant prices for a currency code, you must pass the currency code as a [query context](!docs!/learn/fundamentals/module-links/query-context). Learn more in the [Get Variant Prices](../../../commerce-modules/product/guides/price/page.mdx) chapter.
+To retrieve the product variant prices for a currency code, you must pass the currency code as a [query context](!docs!/learn/fundamentals/query/query-context). Learn more in the [Get Variant Prices](../../../commerce-modules/product/guides/price/page.mdx) chapter.
 
 </Note>
 

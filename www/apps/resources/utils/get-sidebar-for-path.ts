@@ -56,6 +56,7 @@ const sidebarMappings: {
       "/create-medusa-app",
       "/medusa-cli",
       "/js-sdk",
+      "/instantsearch",
       "/nextjs-starter",
       "/references/js-sdk",
       "/lint",
@@ -80,6 +81,7 @@ const sidebarMappings: {
       "/references/analytics",
       "/references/caching-service",
       "/references/caching-module-provider",
+      "/references/search",
     ],
   },
   {

@@ -323,7 +323,7 @@ It accepts as a second parameter a constructor function that holds the workflow'
 In the workflow, you:
 
 1. Retrieve the region's currency code using the `useQueryGraphStep` step. This is necessary to calculate the variant's price in the correct currency.
-    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data across modules.
+    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/query) to retrieve data across modules.
 2. Retrieve the product variant with its calculated price using the `useQueryGraphStep`.
 3. Calculate the custom price using the `getCustomPriceStep`, passing the variant and metadata as input.
 
@@ -1042,7 +1042,7 @@ You consume the hook by calling `addToCartWorkflow.hooks.validate`, passing it a
 
 In the step function, you:
 
-1. Resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container to retrieve data across modules.
+1. Resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container to retrieve data across modules.
 2. Retrieve the product variants being added to the cart.
 3. Loop through the items being added to the cart.
 4. If an item's product is personalized, you validate that the `metadata` object contains the `height` and `width` values, and that they are valid numbers. Otherwise, you throw an error.

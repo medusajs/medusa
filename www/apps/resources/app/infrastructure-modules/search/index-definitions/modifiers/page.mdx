@@ -1,0 +1,411 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Index Field Modifiers`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the modifiers you can chain on a field in a [search index definition](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+<Note>
+
+To learn about the types a field can hold, refer to the [Search Index Fields guide](../fields/page.mdx).
+
+</Note>
+
+## What is a Field Modifier?
+
+A modifier declares what the engine can do with a field. For example, `searchable()` includes the field in free-text matching, while `filterable()` allows filtering on it.
+
+You can chain multiple modifiers to a field. A modifier that doesn't apply to a type isn't available on it, so an invalid combination fails to compile instead of failing when your application starts. Refer to [Search Index Fields](../fields/page.mdx#define-index-fields) for the modifiers each type accepts.
+
+<Note>
+
+Adding, removing, or changing a modifier changes the definition's hash, which the Search Module treats as a schema change. Refer to the [Reindexing and Migrations guide](../../reindexing/page.mdx) to learn how it rebuilds the index.
+
+</Note>
+
+---
+
+## searchable()
+
+Includes the field in free-text matching, which is what the `q` filter passed to `query.search` searches against. Available on `keyword` and `text` fields.
+
+<Note>
+
+A field with no `searchable` modifier is never matched as free text, even when it holds a string.
+
+</Note>
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+Pass a `weight` to boost how much the field contributes to a result's relevance. A field with a higher weight ranks its matches above equally good matches in a lower-weighted field. The weight defaults to `1`, so `searchable()` and `searchable({ weight: 1 })` behave the same.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable({ weight: 1 }),
+    // ...
+  }),
+  // ...
+})
+```
+
+In this example, a product matching a query in its title outranks one matching only in its description.
+
+<Note title="How much a weight changes ranking depends on the provider">
+
+- The [PostgreSQL provider](../../providers/postgres/page.mdx) maps the weight onto PostgreSQL's four relevance labels. A weight of `3` or more is the highest label, `2` the next, anything above `1` the next, and `1` or less the lowest. So there are four tiers, and raising a weight past `3` changes nothing.
+- The [Medusa Search provider available for Cloud users](!cloud!/search) multiplies the field's relevance by the weight, so a weight of `5` does outrank a weight of `3`.
+
+Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for the other features providers treat differently.
+
+</Note>
+
+---
+
+## filterable()
+
+Allows [filters](!docs!/learn/fundamentals/query/search#apply-filters) on the field. Available on every type except `vector`.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    status: search.keyword().filterable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+Filtering on a field without this modifier throws an error, since the Search Module validates the query against the definition before it reaches the provider.
+
+---
+
+## sortable()
+
+Allows ordering results by the field through passing `pagination.order` to `query.search`. Available on every type except `vector`.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    created_at: search.date().sortable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+---
+
+## facetable()
+
+Allows [facets](!docs!/learn/fundamentals/query/search#facets) on the field. A facet summarizes the matched documents by that field, which is what a storefront's filter sidebar shows. Available on every type except `vector`.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    brand: search.keyword().facetable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+A query then requests the facet, and the result carries it in `search_result.facets`, keyed by field name:
+
+```ts
+const { search_result } = await query.search({
+  entity: "product",
+  filters: { q: "shirt" },
+  search_options: { facets: ["brand"] },
+})
+
+console.log(search_result.facets)
+```
+
+The shape of each entry depends on the kind of facet, as shown in [Facet Types](#facet-types).
+
+### Facet Types
+
+By default, the facet type depends on the field's type:
+
+- `integer`, `float`, and `date` fields default to `["range"]`.
+- `stats` is never a default. Add it explicitly, since it's the least widely supported kind and implying it would make numeric fields unusable on a provider without aggregations.
+- Every other type defaults to `["value"]`.
+
+You can also pass `types` to `facetable()` to choose which kinds of facet the field allows. Only `integer`, `float`, and `date` accept the `types` option. For example:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    age: search.float().facetable({
+      types: ["value"],
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+Each kind returns a different shape:
+
+- `value`: the distinct values of the field and how many documents hold each one. It can also return `other_count` for documents falling outside the returned values.
+
+```json title="Example Value Facet"
+{
+  "brand": {
+    "type": "value",
+    "values": [
+      { "value": "acme", "count": 12 },
+      { "value": "borg", "count": 4 }
+    ]
+  }
+}
+```
+
+- `range`: how many documents fall into each bucket the query defines. The result echoes each bucket's `key`, `from`, and `to` with its `count`. Only available on the `integer`, `float`, and `date` field types.
+
+```json title="Example Range Facet"
+{
+  "min_price": {
+    "type": "range",
+    "ranges": [
+      { "key": "cheap", "to": 50, "count": 9 },
+      { "key": "mid", "from": 50, "to": 200, "count": 21 }
+    ]
+  }
+}
+```
+
+- `stats`: one aggregate summary of the field across the matched documents, rather than a breakdown. Only available on the `integer`, `float`, and `date` field types.
+
+```json title="Example Stats Facet"
+{
+  "min_price": {
+    "type": "stats",
+    "min": 10,
+    "max": 450,
+    "avg": 92.5,
+    "sum": 3700,
+    "count": 40
+  }
+}
+```
+
+`avg` and `sum` are optional, since not every engine reports them.
+
+<Note>
+
+Requesting a facet kind the field doesn't allow throws an error. Passing a field name as a string, such as `facets: ["min_price"]`, requests a `value` facet, so it fails on a numeric field that only allows `range`.
+
+</Note>
+
+---
+
+## retrievable()
+
+Whether the field comes back on a hit. By default, every field is retrievable, so you can omit this modifier unless you want to turn it off. Available on every type.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    search_blob: search.text().searchable().retrievable(false),
+    // ...
+  }),
+  // ...
+})
+```
+
+<Note title="Tip">
+
+A field that isn't retrievable still counts toward matching. `query.search` reads this modifier to decide which requested fields the engine can serve, and which it must fetch with `query.graph`.
+
+</Note>
+
+---
+
+## array()
+
+Marks the field as holding a list of its type, rather than one value. Available on every type except `vector`.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    tags: search.keyword().array().filterable().facetable(),
+    // ...
+  }),
+  // ...
+})
+```
+
+A filter on an array field matches when any element matches. Faceting on one counts a document once per distinct element.
+
+---
+
+## correlated()
+
+Requires that filters on an object's sub-fields all match within a single element of the array. Available on an `object` field, and only after `array()`.
+
+<Note>
+
+No provider Medusa ships supports this modifier, so every one of them rejects an index that sets it and your application fails to start. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres#index-definition-support).
+
+</Note>
+
+By default, filters on the sub-fields of an object array match across elements. So filtering a product on `variants.color = "red"` and `variants.size = "XL"` also matches a product with a red small variant and a blue extra-large one.
+
+Add `correlated()` to require that one element satisfies every sub-field filter:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    variants: search
+      .object({
+        color: search.keyword().filterable(),
+        size: search.keyword().filterable(),
+      })
+      .array()
+      .correlated(),
+    // ...
+  }),
+  // ...
+})
+```
+
+<Note>
+
+Most providers flatten arrays and can't express correlated filtering. A provider that doesn't support it rejects the index when your application starts, rather than returning over-matched results later.
+
+</Note>
+
+---
+
+## embed()
+
+Asks [Medusa Search](!cloud!/search) to create the field's embedding from another field, rather than having your documents supply it. Available on a `vector` field only.
+
+Pass the path of the `text` or `keyword` field to embed:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed("title"),
+    // ...
+  }),
+  // ...
+})
+```
+
+With `embed`, your documents must leave the vector field out, and a query can search it by passing raw text as `search_options.vector.query`. Refer to [Let Medusa Search Create the Embedding](../fields/page.mdx#let-medusa-search-create-the-embedding) for the full details.
+
+<Note>
+
+`embed` is a [Medusa Search](!cloud!/search#let-medusa-search-create-the-embedding) feature, available for Cloud projects on the Enterprise plan.
+
+</Note>
+
+---
+
+## providerOptions()
+
+Pass provider-specific options for one field, keyed by provider identifier. Use it to reach a feature the field definition doesn't model. Available on every type.
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable().providerOptions({
+      "search-medusa": {
+        fuzzy: true,
+      },
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+The options are passed to the targeted provider only, so you can pass different options to different providers for the same field.
+
+An option only does something if the provider consumes it. A provider that doesn't read the `providerOptions` modifier ignores whatever you pass, so check the provider's documentation for the options it accepts. Of the providers Medusa ships, the [Medusa Search provider available for Cloud users](!cloud!/search) is the only one that reads them, and its [guide lists the full set](!cloud!/search#field-options).
+
+<Note title="Tip">
+
+These options are separate from the options you set for a provider in `medusa-config.ts`. Those configure the provider itself, whereas these travel with the index definition and apply to one field.
+
+</Note>

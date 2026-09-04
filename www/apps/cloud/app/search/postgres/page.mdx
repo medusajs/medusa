@@ -1,0 +1,1051 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Search vs PostgreSQL`,
+  keywords: [
+    "search",
+    "medusa search",
+    "postgres",
+    "postgresql",
+    "comparison",
+    "search provider",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll compare [Medusa Search](../page.mdx) to the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) so you can decide which one to use for your Medusa project.
+
+## What is Medusa Search?
+
+Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them, from full-text queries with relevance ranking to vector search over embeddings.
+
+The [Search Module](!resources!/infrastructure-modules/search) drives it through a provider that ships with Medusa. Cloud registers and configures that provider for every environment, so Medusa Search needs no setup. You declare an index definition in your codebase, and query it with [`query.search`](!docs!/learn/fundamentals/query/search).
+
+Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that Medusa ships, so this comparison is between two providers rather than between Medusa and a third-party service. Both read the same index definitions and answer the same `query.search` calls. What differs is where the index lives and which parts of a query each one can serve.
+
+---
+
+## Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Concern
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [Provider identifier](#setup-and-infrastructure)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `search-medusa`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `search-postgres`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Setup](#setup-and-infrastructure)
+
+      </Table.Cell>
+      <Table.Cell>
+        None. Cloud registers and configures it for every environment.
+      </Table.Cell>
+      <Table.Cell>
+
+      Registered by default, but you run `db:migrate` to create its tables, extensions, and text search configuration.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Where the index lives](#indexing-and-synchronization)
+
+      </Table.Cell>
+      <Table.Cell>
+        The Medusa Search service, scoped to the environment.
+      </Table.Cell>
+      <Table.Cell>
+        Your PostgreSQL database, as a table per index.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Local development](#local-development)
+
+      </Table.Cell>
+      <Table.Cell>
+        Unavailable. Cloud only.
+      </Table.Cell>
+      <Table.Cell>
+        The default provider locally, so search works with no extra service.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Full-text search](#search-capabilities)
+
+      </Table.Cell>
+      <Table.Cell>
+        Relevance scales with the weight you set on each field.
+      </Table.Cell>
+      <Table.Cell>
+        Weights collapse onto four relevance tiers.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Typo tolerance](#search-option-support)
+
+      </Table.Cell>
+      <Table.Cell>
+        Supported, through fuzzy matching that ranks below exact matches.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, through trigram word similarity.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Filters](#filter-support)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Every operator, including `$or`, `$not`, and several operators on one field.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Every operator, including `$or`, `$not`, and several operators on one field.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Facets](#facet-support)
+
+      </Table.Cell>
+      <Table.Cell>
+        Value and range. The hits, the count, and every facet share a budget of 16 queries per search.
+      </Table.Cell>
+      <Table.Cell>
+        Value, range, and stats.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Sorting](#pagination-and-sorting-support)
+
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, but not alongside a text or vector query.
+      </Table.Cell>
+      <Table.Cell>
+        Any number of fields, alongside a text query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Vector and hybrid search](#search-option-support)
+
+      </Table.Cell>
+      <Table.Cell>
+        Vector search only, on embeddings you compute yourself.
+      </Table.Cell>
+      <Table.Cell>
+
+      Supported, including a hybrid of text and vector search, but only on an engine that you set up yourself. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#vector-search-on-the-lakebase-engine).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Deep pagination](#pagination-and-sorting-support)
+
+      </Table.Cell>
+      <Table.Cell>
+        Up to the 10,000th result, which is well past what a storefront paginates through.
+      </Table.Cell>
+      <Table.Cell>
+        No limit, though a deep offset gets slower as the query scans and discards more rows.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Zero-downtime schema changes](#indexing-and-synchronization)
+
+      </Table.Cell>
+      <Table.Cell>
+        Not supported yet. The module rebuilds in place.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, through a shadow index the provider renames over the live one.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [What you pay for](#cost-and-packaging)
+
+      </Table.Cell>
+      <Table.Cell>
+        No separate subscription. Your plan includes a monthly allowance of search requests, and anything above it is Flex Usage.
+      </Table.Cell>
+      <Table.Cell>
+        Your database's own resources, since search competes with your transactional workload.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Setup and Infrastructure
+
+Medusa Search is part of Cloud, so there's nothing to provision. Cloud creates the search resources for every environment and passes the credentials to your Medusa application, which registers the provider for you.
+
+The PostgreSQL provider needs no external service, since it indexes into the database your Medusa application already uses. What it does need is setup inside that database:
+
+1. Run `db:migrate` to create the provider's tables, its extensions, and its text search configuration. The command also creates the index for every definition you declared.
+2. Run `db:migrate` again after you create or change an index definition, since the physical table follows the definition.
+3. Choose an engine, if you need vector or hybrid search. The provider's default engine covers full-text search only. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#search-engines-in-the-postgresql-search-module-provider) for the engines it supports.
+4. Configure a language other than English, if your catalog needs one, through the provider's `language` option.
+5. Size your database for the extra work, since every search query and every index write runs against it.
+
+Step 5 is the one that's simple to miss. The index lives beside your orders and your products, so a heavy search workload competes with checkout for the same CPU, memory, and disk. Medusa Search moves that load off your database entirely.
+
+Both providers create their indexes through `db:migrate` rather than at application start, so neither one migrates while your application boots.
+
+### Local Development
+
+Medusa registers the PostgreSQL provider locally by default, so you declare an index definition and search it locally with no extra service to run.
+
+Medusa Search runs on Cloud only, so a Cloud project uses two providers across its lifecycle: PostgreSQL locally and Medusa Search once deployed.
+
+---
+
+## Integration with Medusa
+
+Both providers ship with Medusa and implement the same [Search Module Provider](!resources!/infrastructure-modules/search/providers) interface, so there's no integration code to write for either one. You declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under `src/search`, and the module creates the index, fills it, applies events to it, and compiles your queries.
+
+```ts title="src/search/brand.ts"
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+  }),
+  events: ["brand.created", "brand.updated"],
+  async consume(event, { container }) {
+    // return the documents to upsert or delete
+  },
+  async *seed({ container }) {
+    // yield the writes that fill the index
+  },
+})
+```
+
+Refer to [Searching Custom Data Models](../page.mdx#searching-custom-data-models) for the full example.
+
+### Index Definition Support
+
+What each provider does with an index definition that declares the following:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Declaration
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      A [`search.vector()`](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) field
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Holds the embedding as a fixed-width float vector. Fails at startup if the field is an array or declares no positive `dimensions`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails at startup on the provider's default engine. On an engine that supports vector search, holds the embedding and builds an approximate nearest neighbor index for it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A [`search.geo()`](!resources!/infrastructure-modules/search/index-definitions/fields#searchgeo) field
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `settings.synonyms` or `settings.stop_words`
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup.
+      </Table.Cell>
+      <Table.Cell>
+        Ignored.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `settings.distinct_attribute`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Applied to every query that doesn't pass its own `distinct`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Ignored. Pass `distinct` per query instead.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `settings.provider_options` and [`providerOptions()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#provideroptions)
+
+      </Table.Cell>
+      <Table.Cell>
+        Reads its own entry on the index, on a field, and on a query.
+      </Table.Cell>
+      <Table.Cell>
+        Ignored. The provider reads no entry of its own.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A field that sets [`correlated()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#correlated)
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
+      </Table.Cell>
+      <Table.Cell>
+        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A document whose primary key is longer than 64 bytes
+      </Table.Cell>
+      <Table.Cell>
+        Throws when the document is written, which fails the seed or the write.
+      </Table.Cell>
+      <Table.Cell>
+        Written as-is.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Indexing and Synchronization
+
+The Search Module drives both providers through the same flow, so an initial fill, an event-driven update, and a rebuild all work the same way. What differs is what each provider does underneath.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Behavior
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Where the index lives
+      </Table.Cell>
+      <Table.Cell>
+        The Medusa Search service, scoped to the environment handle you configure.
+      </Table.Cell>
+      <Table.Cell>
+        A table per index in your PostgreSQL database, tracked in a catalog table.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Zero-downtime schema changes](!resources!/infrastructure-modules/search/reindexing#how-index-changes-are-handled)
+
+      </Table.Cell>
+      <Table.Cell>
+        Not supported yet, so the module rebuilds in place and the index holds nothing until the seed finishes.
+      </Table.Cell>
+      <Table.Cell>
+        Supported. The module fills a shadow index, then the provider renames it over the live one.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Bringing an existing index up to a changed schema
+      </Table.Cell>
+      <Table.Cell>
+        Updates the schema in place when no field changed type, and recreates the index otherwise.
+      </Table.Cell>
+      <Table.Cell>
+        Drops and recreates the table when the schema fingerprint changed.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        How a batch of documents is written
+      </Table.Cell>
+      <Table.Cell>
+        Split into requests of at most 480 MiB. A single document above that limit throws.
+      </Table.Cell>
+      <Table.Cell>
+        200 documents per statement.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Deleting documents by a filter
+      </Table.Cell>
+      <Table.Cell>
+        Repeats a delete-by-filter request until the service reports no rows left. Throws when you pass no filters.
+      </Table.Cell>
+      <Table.Cell>
+        Deletes by ID when the filter is a primary-key match, and otherwise runs one delete statement using the same filter compilation as a search.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        The task a write returns
+      </Table.Cell>
+      <Table.Cell>
+
+      Always `succeeded`, since the provider doesn't defer its writes. Nothing to wait on.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Always `succeeded`, since the provider doesn't defer its writes. Nothing to wait on.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Search Capabilities
+
+A provider that can't serve part of a request rejects it instead of answering differently. The tables below say when that rejection happens:
+
+- **Fails at startup**: the provider throws while the Search Module creates or migrates the index, so your application doesn't boot or `db:migrate` fails.
+- **Fails per query**: the provider throws for the requests that use the feature. Other requests are unaffected.
+- **Ignored**: the provider accepts the request and doesn't act on the feature, so results look as if you never passed it.
+
+Refer to [`searchable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) for how each provider reads a field's weight.
+
+### Search Option Support
+
+What each provider does with the [search options](!docs!/learn/fundamentals/query/search#search-options) of a `query.search` call.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `vector`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Runs a similarity search when you pass `value`. Fails per query if you pass `query` text, if the search also passes `q`, or if the search also orders by a field.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails per query on the provider's default engine. On an engine that supports vector search, runs a similarity search and blends it with the text query by `semantic_ratio`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `typo_tolerance`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Widens the match with fuzzy matching on every searchable field that carries a fuzzy index, ranking those hits below the exact ones. Fails per query without a `q` filter, or when no searched field has a fuzzy index.
+
+      </Table.Cell>
+      <Table.Cell>
+        Widens the match with trigram word similarity.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `min_score`
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+      <Table.Cell>
+        Discards hits below the threshold before paginating, so the count stays truthful.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `match_strategy`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Serves `any` and `last`. Fails per query for `all`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Serves `all` and `any`. Fails per query for `last`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `count: "none"`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skips the count query and returns `null` as the count.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skips the count query and returns `null` as the count.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `distinct`
+
+      </Table.Cell>
+      <Table.Cell>
+        Keeps one hit per value.
+      </Table.Cell>
+      <Table.Cell>
+        Keeps one hit per value, picked by the query's order. Fails per query on an unknown, array, or vector field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`highlight`](!docs!/learn/fundamentals/query/search#highlighting)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Returns a fragment per highlighted field. Fails per query without a `q` filter, on an empty `fields` array, or on a field that isn't searchable.
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. The provider doesn't implement highlighting.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `locales`
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Configure the language on the index's fields instead.
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails per query. Set `language` in the provider options instead.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Pagination and Sorting Support
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Request
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [Ordering](!docs!/learn/fundamentals/query/search#apply-pagination) by more than one field
+
+      </Table.Cell>
+      <Table.Cell>
+        Sends every key to the service in the order you list them.
+      </Table.Cell>
+      <Table.Cell>
+        Applies every key in the order you list them.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ordering by a field alongside a text query
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query. Relevance and attribute order are separate rankings.
+      </Table.Cell>
+      <Table.Cell>
+
+      Orders by the field. A hybrid text and vector search fails per query, since its results are rank-fused and only `_score` can order them.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ordering by an array field
+      </Table.Cell>
+      <Table.Cell>
+        Sends the field to the service as a rank key without checking it first.
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        A page beyond the 10,000th result
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails per query when `skip` plus `take` is above 10,000.
+
+      </Table.Cell>
+      <Table.Cell>
+        Served.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Paginating with `pagination.cursor`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails per query. Paginate with `skip` and `take`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Fails per query. Paginate with `skip` and `take`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Filter Support
+
+What each provider does with a [filter](!docs!/learn/fundamentals/query/search#apply-filters) tree. Refer to [Filter Operators](!docs!/learn/fundamentals/query/search#filter-operators) for what each operator means.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Filter
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `$or` or `$not`
+
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into the query.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into the query.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Two operators on one field, such as `$gt` with `$ne`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Both applied, combined with `AND`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Both applied, combined with `AND`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `$exists`
+
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a comparison against no value.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a presence check.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `$prefix` or `$like`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Compiled into a glob match, with `%` and `_` translated for `$like`.
+
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a pattern match. Fails per query on an array field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `$ne` or `$nin` on a numeric, boolean, or array field
+
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a negated match.
+      </Table.Cell>
+      <Table.Cell>
+        Compiled into a negated match.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Several values for one numeric or boolean field, with `$in` or a plain array
+
+      </Table.Cell>
+      <Table.Cell>
+        Matches any of the values.
+      </Table.Cell>
+      <Table.Cell>
+        Matches any of the values.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Facet Support
+
+What each provider does with the [facets](!docs!/learn/fundamentals/query/search#facets) a query requests.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Request
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      A `stats` facet
+
+      </Table.Cell>
+      <Table.Cell>
+        Fails per query.
+      </Table.Cell>
+      <Table.Cell>
+        Returns the minimum, maximum, average, sum, and count. Fails per query on a field that isn't numeric.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A `range` facet
+
+      </Table.Cell>
+      <Table.Cell>
+        Counts each bucket with its own query, so a facet with five buckets costs five queries.
+      </Table.Cell>
+      <Table.Cell>
+        Counts each bucket in one query. Fails per query on a field that isn't numeric.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Many facets in one query
+      </Table.Cell>
+      <Table.Cell>
+        Batches the hits, the count, and every facet query into one request, and fails per query above 16 of them.
+      </Table.Cell>
+      <Table.Cell>
+        Runs one extra query per facet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A facet value `sort` or `limit`
+
+      </Table.Cell>
+      <Table.Cell>
+        Applied by the provider after it reads every group back.
+      </Table.Cell>
+      <Table.Cell>
+        Applied by the query that computes the facet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Disjunctive facets](!docs!/learn/fundamentals/query/search#disjunctive-facets)
+
+      </Table.Cell>
+      <Table.Cell>
+        Runs the fan-out as one request, since the provider accepts more than one query per request.
+      </Table.Cell>
+      <Table.Cell>
+        Runs the fan-out as one request, since the provider accepts more than one query per request.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Querying and Storefront Integration
+
+{/* TODO add info about instantsearch plugin */}
+
+Both providers answer the same [`query.search`](!docs!/learn/fundamentals/query/search) call from an API route, so your storefront code doesn't change when you switch between them:
+
+```ts title="src/api/search-brands/route.ts"
+const { data, search_result } = await query.search({
+  entity: "brand",
+  fields: ["id", "name", "country"],
+  filters: { q: req.query.q as string },
+  pagination: { take: 20 },
+})
+```
+
+Neither provider supports querying from the browser, so search always runs behind your API routes. That gives you one place to enforce authorization and shape results, with no public index and no browser-side key to scope.
+
+The difference is which options each one rejects, which is why a storefront that works locally against PostgreSQL can fail on Cloud against Medusa Search. Build against the narrower of the two, or gate the options you pass on the provider in use.
+
+---
+
+## Admin Dashboard Search
+
+The Medusa admin dashboard's global search calls the `/admin/search` API route, which uses the Search Module for every entity that has an index and falls back to database queries for the rest. Both providers sit inside the module, so admin search works with either one.
+
+The PostgreSQL provider has one advantage here: it works locally, so you see the indexed admin search behavior in development rather than after a deployment.
+
+---
+
+## Environments and Previews
+
+Cloud gives each environment its own set of Medusa Search indexes, scoped by the environment's handle, so a preview environment never writes to production indexes. When you configure a base environment in the [shared previews settings](../../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment along with its database.
+
+PostgreSQL indexes need no separate arrangement, since they're tables in the database. An environment's indexes travel with its database, so a database copy brings a filled index with it and a fresh database starts with an empty one.
+
+---
+
+## Cost and Packaging
+
+Neither provider bills separately, so compare where the load lands instead:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Provider
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What you pay for
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What drives the cost up
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Medusa Search
+      </Table.Cell>
+      <Table.Cell>
+
+      No separate subscription, since Medusa Search is available on all Cloud plans. Each plan includes a monthly allowance of search requests. Refer to [Plans & Pricing](../../pricing/page.mdx) for the allowance your plan includes.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Search requests beyond your plan's allowance, which count as [Flex Usage](../../usage/page.mdx#what-is-flex-usage).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        PostgreSQL
+      </Table.Cell>
+      <Table.Cell>
+
+      Nothing on top of the [database](../../database/page.mdx) you already run, since the indexes are tables in it.
+
+      </Table.Cell>
+      <Table.Cell>
+        Index size and search traffic, since both raise the database tier you need. Search also competes with checkout for the same resources.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Other Cloud Usage This Affects
+
+The PostgreSQL provider changes which Cloud metrics your search workload lands on. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so PostgreSQL search requests never appear there. They show up elsewhere instead:
+
+- **Database Storage** grows with every index, since each one is a table in your database. A large catalog with several indexes adds gigabytes to the metric you're billed on, on top of your commerce data.
+- **Compute** covers the indexing work, since the seed and the event handlers that fill an index run in your Medusa application.
+
+Medusa Search keeps both off your database and meters the queries under Search instead. Refer to [Usage](../../usage/page.mdx) to monitor either one.
+
+---
+
+## Which One to Choose
+
+**Choose Medusa Search if:**
+
+- Your project runs on Cloud and you want search off your database, so a traffic spike in search doesn't slow down checkout.
+- Your catalog is large enough that indexes competing with your transactional workload is a real concern.
+- Filters, facets, sorting, and weighted full-text search cover your requirements.
+
+**Choose the PostgreSQL provider if:**
+
+- You self-host your Medusa application, since Medusa Search runs on Cloud only.
+- You want vector or hybrid search that the provider serves for you.
+- Your search volume is modest enough that your database absorbs it without a bigger tier.
+
+You don't have to pick one for everything. The Search Module accepts more than one provider, so you can point a high-traffic storefront index at Medusa Search and keep a low-traffic admin index on PostgreSQL.
+
+---
+
+## Comparisons to Other Search Engines
+
+- [Medusa vs Algolia](../algolia/page.mdx)
+- [Medusa vs Meilisearch](../meilisearch/page.mdx)

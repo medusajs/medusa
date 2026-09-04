@@ -1,0 +1,1643 @@
+{
+	"id": 0,
+	"name": "search-provider",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "AbstractSearchProviderService",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An abstract class for search providers. Extend this class to create a search\nprovider.\n\nA search provider translates the Search Module's provider-agnostic input into\nthe calls of a search engine, such as Meilisearch or Typesense: it creates and\nmigrates the physical indexes, writes and deletes documents, and runs queries.\nThe Search Module owns everything around it, including index definitions,\nbatching, task tracking, and reindexing.\n\n### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the provider's options using the second parameter.\n\nIf you're creating a client with a search engine, do it in the constructor.\nEstablishing a connection with the search engine should happen in "
+					},
+					{
+						"kind": "code",
+						"text": "`onApplicationStart`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { Logger } from \"@medusajs/framework/types\"\nimport { AbstractSearchProviderService } from \"@medusajs/framework/utils\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  host: string\n  apiKey: string\n}\n\nclass MySearchProviderService extends AbstractSearchProviderService {\n  static identifier = \"my-search\"\n\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MySearchProviderService\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n### Handling unsupported features\n\nThere's no list of features to declare. If a query asks for something your engine can't\nexpress, throw; if an index definition asks for something it can't hold, throw from\n"
+					},
+					{
+						"kind": "code",
+						"text": "`upsertIndex`"
+					},
+					{
+						"kind": "text",
+						"text": " so the error surfaces at startup. Returning a slightly different result is\nthe one outcome to avoid, since callers can't tell it apart from a correct one."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 2,
+					"name": "identifier",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isStatic": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Each search provider has a unique identifier used to register it and to bind\nan index definition to it. An index definition selects a provider by setting\nits "
+							},
+							{
+								"kind": "code",
+								"text": "`provider`"
+							},
+							{
+								"kind": "text",
+								"text": " property to this identifier. You can also use this identifier\nin "
+							},
+							{
+								"kind": "code",
+								"text": "`medusa-config.ts`"
+							},
+							{
+								"kind": "text",
+								"text": " to configure the default provider for the Search Module."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  static identifier = \"my-search\"\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 91,
+							"character": 9,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L91"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4,
+							"name": "AbstractSearchProviderService",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "AbstractSearchProviderService",
+								"package": "@medusajs/utils"
+							}
+						}
+					]
+				},
+				{
+					"id": 5,
+					"name": "migrate_on_startup",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the Search Module should migrate your indexes when the application\nstarts, instead of relying on "
+							},
+							{
+								"kind": "code",
+								"text": "`db:migrate`"
+							},
+							{
+								"kind": "text",
+								"text": ".\n\nSet this to "
+							},
+							{
+								"kind": "code",
+								"text": "`true`"
+							},
+							{
+								"kind": "text",
+								"text": " if your indexes don't outlive the process that created\nthem, such as the case for an in-memory engine: "
+							},
+							{
+								"kind": "code",
+								"text": "`db:migrate`"
+							},
+							{
+								"kind": "text",
+								"text": " runs in its own\nprocess, so anything it created is gone once it exits. The module then\nmigrates your indexes right before it seeds them, in the process that serves\nsearches.\n\nLeave it out if your engine holds indexes outside the Medusa process."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  static identifier = \"my-search\"\n  readonly migrate_on_startup = true\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 112,
+							"character": 11,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L112"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.migrate_on_startup"
+					}
+				},
+				{
+					"id": 10,
+					"name": "search",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 166,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L166"
+						}
+					],
+					"signatures": [
+						{
+							"id": 11,
+							"name": "search",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method runs a search against an index. The Search Module will use this method in\nits "
+									},
+									{
+										"kind": "code",
+										"text": "`search`"
+									},
+									{
+										"kind": "text",
+										"text": " and "
+									},
+									{
+										"kind": "code",
+										"text": "`searchMany`"
+									},
+									{
+										"kind": "text",
+										"text": " methods.\n\nThe free-text query arrives as "
+									},
+									{
+										"kind": "code",
+										"text": "`q`"
+									},
+									{
+										"kind": "text",
+										"text": ", already lifted out of "
+									},
+									{
+										"kind": "code",
+										"text": "`filters`"
+									},
+									{
+										"kind": "text",
+										"text": ", and\n"
+									},
+									{
+										"kind": "code",
+										"text": "`attributes_to_retrieve`"
+									},
+									{
+										"kind": "text",
+										"text": " is already narrowed to the fields the index can return.\n\nCompile "
+									},
+									{
+										"kind": "code",
+										"text": "`input.filters`"
+									},
+									{
+										"kind": "text",
+										"text": " to your engine's filter syntax, and reject the\noperators it can't express rather than approximating them. Also, use\n"
+									},
+									{
+										"kind": "code",
+										"text": "`input.index.physical_name`"
+									},
+									{
+										"kind": "text",
+										"text": " as the index to query, not "
+									},
+									{
+										"kind": "code",
+										"text": "`input.index.name`"
+									},
+									{
+										"kind": "text",
+										"text": ",\nsince the two differ under an index prefix or during a swap."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The hits, any facets, and the metadata."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async search(\n    input: SearchTypes.ProviderSearchQuery\n  ): Promise<SearchTypes.SearchResult> {\n    const response = await this.client.search(input.index.physical_name, {\n      query: input.q,\n      limit: input.pagination?.take,\n    })\n\n    return {\n      hits: response.hits.map((hit) => ({ id: hit.id, document: hit })),\n      metadata: {\n        skip: input.pagination?.skip ?? 0,\n        take: input.pagination?.take ?? 20,\n        count: response.total,\n      },\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 166,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L166"
+								}
+							],
+							"parameters": [
+								{
+									"id": 12,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The query, the resolved index\ndefinition, and the attributes to return."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/provider.ts",
+											"qualifiedName": "ProviderSearchQuery"
+										},
+										"name": "ProviderSearchQuery",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/result.ts",
+											"qualifiedName": "SearchResult"
+										},
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										],
+										"name": "SearchResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.search"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.search"
+					}
+				},
+				{
+					"id": 13,
+					"name": "upsertIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 207,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+						}
+					],
+					"signatures": [
+						{
+							"id": 14,
+							"name": "upsertIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method brings an index in line with its definition, creating it if it doesn't\nexist. The Search Module calls it for every definition when migrations run.\n\nYou may recreate the index if your engine can't alter a schema in place. That's safe:\nthe module only points this at an index it's about to seed, never at one that has to\nkeep serving reads, and never during a partial rebuild.\n\nThrow if the definition asks for something your engine can't hold, such as a\n"
+									},
+									{
+										"kind": "code",
+										"text": "`correlated`"
+									},
+									{
+										"kind": "text",
+										"text": " field or a facet type it doesn't support. Since migrations run\nbefore the application serves requests, the error surfaces at startup rather\nthan as wrong results later."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async upsertIndex({\n    index,\n  }: {\n    index: SearchTypes.ResolvedSearchIndexDefinition\n  }): Promise<SearchTypes.SearchTask> {\n    await this.client.createIndex(index.physical_name, {\n      primaryKey: index.primary_key,\n    })\n\n    return { index: index.physical_name, status: \"succeeded\" }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 207,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+								}
+							],
+							"parameters": [
+								{
+									"id": 15,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index to create or update."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 16,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 17,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The definition,\nincluding the "
+															},
+															{
+																"kind": "code",
+																"text": "`physical_name`"
+															},
+															{
+																"kind": "text",
+																"text": " to create it under, the "
+															},
+															{
+																"kind": "code",
+																"text": "`primary_key`"
+															},
+															{
+																"kind": "text",
+																"text": " its\ndocuments are keyed by, the "
+															},
+															{
+																"kind": "code",
+																"text": "`fields`"
+															},
+															{
+																"kind": "text",
+																"text": " it holds, and its "
+															},
+															{
+																"kind": "code",
+																"text": "`settings`"
+															},
+															{
+																"kind": "text",
+																"text": "."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 208,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L208"
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/types/src/search/index-definition.ts",
+															"qualifiedName": "ResolvedSearchIndexDefinition"
+														},
+														"name": "ResolvedSearchIndexDefinition",
+														"package": "@medusajs/types"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														17
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "abstract-search-provider.ts",
+													"line": 207,
+													"character": 28,
+													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.upsertIndex"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.upsertIndex"
+					}
+				},
+				{
+					"id": 18,
+					"name": "deleteIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 234,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+						}
+					],
+					"signatures": [
+						{
+							"id": 19,
+							"name": "deleteIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes an index and everything in it. The Search Module calls it\nto clean up an index it replaced, such as the index left behind by a swap."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async deleteIndex({\n    index,\n  }: {\n    index: string\n  }): Promise<SearchTypes.SearchTask> {\n    await this.client.deleteIndex(index)\n    return { index, status: \"succeeded\" }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 234,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+								}
+							],
+							"parameters": [
+								{
+									"id": 20,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index to delete."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 21,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 22,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The index's physical name."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 235,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L235"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														22
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "abstract-search-provider.ts",
+													"line": 234,
+													"character": 28,
+													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.deleteIndex"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.deleteIndex"
+					}
+				},
+				{
+					"id": 23,
+					"name": "listIndexes",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 260,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L260"
+						}
+					],
+					"signatures": [
+						{
+							"id": 24,
+							"name": "listIndexes",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method lists the indexes you hold. The Search Module reads the document counts to\nspot an index that lost its data and needs reseeding."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The indexes and their document counts."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async listIndexes(): Promise<SearchTypes.SearchIndexInfo[]> {\n    const indexes = await this.client.listIndexes()\n\n    return indexes.map((index) => ({\n      name: index.uid,\n      provider: MySearchProviderService.identifier,\n      document_count: index.numberOfDocuments,\n    }))\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 260,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L260"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+												"qualifiedName": "SearchIndexInfo"
+											},
+											"name": "SearchIndexInfo",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.listIndexes"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.listIndexes"
+					}
+				},
+				{
+					"id": 25,
+					"name": "upsertDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 304,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+						}
+					],
+					"signatures": [
+						{
+							"id": 26,
+							"name": "upsertDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method adds documents to an index, replacing any that already exist under the same\nID. The Search Module uses it both for direct writes and for seeding, where it's called\nonce per batch.\n\nIf your engine applies writes later rather than inline, return a task with an "
+									},
+									{
+										"kind": "code",
+										"text": "`id`"
+									},
+									{
+										"kind": "text",
+										"text": " and\nimplement "
+									},
+									{
+										"kind": "code",
+										"text": "`waitForTask`"
+									},
+									{
+										"kind": "text",
+										"text": ", so the module can wait before swapping a new index in.\n\nWrite to "
+									},
+									{
+										"kind": "code",
+										"text": "`input.index`"
+									},
+									{
+										"kind": "text",
+										"text": " but read schema information from "
+									},
+									{
+										"kind": "code",
+										"text": "`input.definition`"
+									},
+									{
+										"kind": "text",
+										"text": ":\nduring a swap, "
+									},
+									{
+										"kind": "code",
+										"text": "`input.index`"
+									},
+									{
+										"kind": "text",
+										"text": " is the shadow index being seeded, whereas the\ndefinition is that of the logical index."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async upsertDocuments({\n    index,\n    definition,\n    documents,\n  }: {\n    index: string\n    definition: SearchTypes.ResolvedSearchIndexDefinition\n    documents: SearchTypes.SearchDocument[]\n  }): Promise<SearchTypes.SearchTask> {\n    const task = await this.client.addDocuments(index, documents, {\n      schema: definition.fields,\n    })\n    return { id: `${task.uid}`, index, status: \"enqueued\" }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 304,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+								}
+							],
+							"parameters": [
+								{
+									"id": 27,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The documents to write."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 28,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 29,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The index's physical name. This is the index to\nwrite to."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 305,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L305"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 30,
+													"name": "definition",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The\ndefinition of the logical index the documents belong to. Use it for schema\ninformation, such as the index's "
+															},
+															{
+																"kind": "code",
+																"text": "`fields`"
+															},
+															{
+																"kind": "text",
+																"text": " or "
+															},
+															{
+																"kind": "code",
+																"text": "`primary_key`"
+															},
+															{
+																"kind": "text",
+																"text": "."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 306,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L306"
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/types/src/search/index-definition.ts",
+															"qualifiedName": "ResolvedSearchIndexDefinition"
+														},
+														"name": "ResolvedSearchIndexDefinition",
+														"package": "@medusajs/types"
+													}
+												},
+												{
+													"id": 31,
+													"name": "documents",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The documents, each with an "
+															},
+															{
+																"kind": "code",
+																"text": "`id`"
+															},
+															{
+																"kind": "text",
+																"text": "."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 307,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L307"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+																"qualifiedName": "SearchDocument"
+															},
+															"name": "SearchDocument",
+															"package": "@medusajs/types"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														29,
+														30,
+														31
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "abstract-search-provider.ts",
+													"line": 304,
+													"character": 32,
+													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.upsertDocuments"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.upsertDocuments"
+					}
+				},
+				{
+					"id": 32,
+					"name": "deleteDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 336,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L336"
+						}
+					],
+					"signatures": [
+						{
+							"id": 33,
+							"name": "deleteDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method removes every document matching the given filters.\n\nDeleting by ID isn't a special case — it arrives as a filter on the primary key, such\nas "
+									},
+									{
+										"kind": "code",
+										"text": "`{ id: [\"prod_1\", \"prod_2\"] }`"
+									},
+									{
+										"kind": "text",
+										"text": ". Recognize that shape and use your engine's\ndelete-by-ID path, which is usually much faster. If your engine can't delete by\narbitrary filters, either search first and delete the matching IDs, or throw."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async deleteDocuments({\n    index,\n    filters,\n  }: SearchTypes.SearchDeleteDocumentsInput): Promise<SearchTypes.SearchTask> {\n    await this.client.deleteDocumentsByFilter(index, filters)\n    return { index, status: \"succeeded\" }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 336,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L336"
+								}
+							],
+							"parameters": [
+								{
+									"id": 34,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index and the filters\nselecting the documents to remove."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/provider.ts",
+											"qualifiedName": "SearchDeleteDocumentsInput"
+										},
+										"name": "SearchDeleteDocumentsInput",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.deleteDocuments"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.deleteDocuments"
+					}
+				},
+				{
+					"id": 35,
+					"name": "clearIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 363,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+						}
+					],
+					"signatures": [
+						{
+							"id": 36,
+							"name": "clearIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method removes every document from an index without deleting the index itself.\nThe Search Module uses it to empty an index before reseeding it in place."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async clearIndex({\n    index,\n  }: {\n    index: string\n  }): Promise<SearchTypes.SearchTask> {\n    await this.client.deleteAllDocuments(index)\n    return { index, status: \"succeeded\" }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 363,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+								}
+							],
+							"parameters": [
+								{
+									"id": 37,
+									"name": "_input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index to empty."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 38,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 39,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The index's physical name."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "abstract-search-provider.ts",
+															"line": 363,
+															"character": 29,
+															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														39
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "abstract-search-provider.ts",
+													"line": 363,
+													"character": 27,
+													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.clearIndex"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.clearIndex"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2,
+						5
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						10,
+						13,
+						18,
+						23,
+						25,
+						32,
+						35
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "abstract-search-provider.ts",
+					"line": 76,
+					"character": 13,
+					"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L76"
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../../packages/core/types/src/search/provider.ts",
+						"qualifiedName": "ISearchProvider"
+					},
+					"name": "ISearchProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService"
+		},
+		"2": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.identifier"
+		},
+		"5": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.migrate_on_startup"
+		},
+		"10": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.search"
+		},
+		"11": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.search"
+		},
+		"12": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"13": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.upsertIndex"
+		},
+		"14": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.upsertIndex"
+		},
+		"15": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"16": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"17": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.index"
+		},
+		"18": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.deleteIndex"
+		},
+		"19": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.deleteIndex"
+		},
+		"20": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"21": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"22": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.index"
+		},
+		"23": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.listIndexes"
+		},
+		"24": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.listIndexes"
+		},
+		"25": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.upsertDocuments"
+		},
+		"26": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.upsertDocuments"
+		},
+		"27": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"28": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"29": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.index"
+		},
+		"30": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.definition"
+		},
+		"31": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.documents"
+		},
+		"32": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.deleteDocuments"
+		},
+		"33": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.deleteDocuments"
+		},
+		"34": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"35": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.clearIndex"
+		},
+		"36": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.clearIndex"
+		},
+		"37": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "_input"
+		},
+		"38": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"39": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "__type.index"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/search/abstract-search-provider.ts"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}

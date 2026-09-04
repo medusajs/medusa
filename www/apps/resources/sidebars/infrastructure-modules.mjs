@@ -356,6 +356,95 @@ export const infrastructureModulesSidebar = [
   },
   {
     type: "category",
+    title: "Search Module",
+    initialOpen: true,
+    children: [
+      {
+        type: "link",
+        path: "/infrastructure-modules/search",
+        title: "Overview",
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/search/index-definitions",
+        title: "Index Definitions",
+        children: [
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/index-definitions/fields",
+            title: "Index Fields",
+          },
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/index-definitions/modifiers",
+            title: "Index Field Modifiers",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/search/reindexing",
+        title: "Reindexing and Migrations",
+      },
+      {
+        type: "ref",
+        path: "/instantsearch",
+        title: "InstantSearch Adapter",
+      },
+      {
+        type: "link",
+        title: "Providers",
+        path: "/infrastructure-modules/search/providers",
+        children: [
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/providers/postgres",
+            title: "PostgreSQL",
+          },
+          {
+            type: "ref",
+            path: "https://docs.medusajs.com/cloud/search",
+            title: "Medusa Search",
+            children: [
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/postgres",
+                title: "Compare to PostgreSQL",
+              },
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/algolia",
+                title: "Compare to Algolia",
+              },
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/meilisearch",
+                title: "Compare to Meilisearch",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "sub-category",
+        title: "Guides",
+        children: [
+          {
+            type: "link",
+            path: "/references/search/provider",
+            title: "Create Search Module Provider",
+          },
+          {
+            type: "link",
+            path: "/references/search/service",
+            title: "Use Search Module",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "category",
     title: "Workflow Engine Module",
     initialOpen: true,
     children: [

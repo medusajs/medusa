@@ -584,7 +584,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Retrieve the Medusa order using the `useQueryGraphStep` helper step. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the order ID to retrieve.
+1. Retrieve the Medusa order using the `useQueryGraphStep` helper step. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the order ID to retrieve.
 2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare the tracking data, as direct data and variable manipulation isn't allowed in workflows. Learn more in the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) documentation.
 3. Send the tracking event to Segment using the `trackEventStep` you created in the previous step.
 

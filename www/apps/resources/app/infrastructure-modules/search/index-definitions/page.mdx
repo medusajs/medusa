@@ -1,0 +1,560 @@
+import { Table, TypeList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Index Definitions`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to declare a search index and control what the search engine holds.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+    }
+  ]}
+/>
+
+## What is a Search Index Definition?
+
+A search index definition declares one index: the entity it indexes, the fields the search engine holds, and how to fill it. The [Search Module](../page.mdx) owns everything around it, including creating the physical index, batching writes, and rebuilding the index when the definition changes. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) for how it does that.
+
+Define an index with `defineSearchIndex` in a file under the `src/search` directory of your Medusa application or plugin. Medusa loads every file in that directory before the application boots, and each file registers its indexes on import.
+
+For example, create the file `src/search/product.ts` with the following content:
+
+export const highlights = [
+  ["7", "name", "The unique index name a query resolves against."],
+  ["8", "entity", "The Query entity used to hydrate other fields."],
+  ["9", "fields", "The fields the search engine holds."],
+  ["13", "seed", "Yields the writes that fill the index."],
+]
+
+```ts title="src/search/product.ts" highlights={highlights}
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable(),
+  }),
+  async *seed({ container }) {
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields: ["id", "title"],
+    })
+
+    yield [{ action: "upsert", documents: data }]
+  },
+})
+```
+
+If you're using the [PostgreSQL Search Module Provider](../providers/postgres/page.mdx) or a provider that makes changes to the database, you must also run the migrations that create the necessary tables:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+---
+
+## Index Definition Properties
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Property
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+      <Table.Cell>
+        A unique name for the index. This is the value for `entity` passed to `query.search`.
+      </Table.Cell>
+      <Table.Cell>
+        Yes
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `entity`
+      </Table.Cell>
+      <Table.Cell>
+        The [Query](!docs!/learn/fundamentals/query) entry point used to hydrate the fields that the search index doesn't hold.
+      </Table.Cell>
+      <Table.Cell>
+        Yes
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `fields`
+      </Table.Cell>
+      <Table.Cell>
+        The fields the search engine holds. Accepts a schema from `search.define`, or plain field definition objects. Refer to [Search Index Fields](./fields/page.mdx) for every field type and modifier.
+      </Table.Cell>
+      <Table.Cell>
+        Yes
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `seed`
+      </Table.Cell>
+      <Table.Cell>
+        An async generator that yields batches of writes. Refer to [Fill the Index with `seed`](#fill-the-index-with-seed) for when the Search Module runs it.
+      </Table.Cell>
+      <Table.Cell>
+        Yes
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `primary_key`
+      </Table.Cell>
+      <Table.Cell>
+        The field holding each document's unique identifier. Defaults to `id`.
+      </Table.Cell>
+      <Table.Cell>
+        No
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `provider`
+      </Table.Cell>
+      <Table.Cell>
+        The identifier of the [Search Module Provider](../providers/page.mdx) that holds this index, such as `search-postgres`. Defaults to the module's [default provider](../providers/page.mdx#default-search-module-provider).
+      </Table.Cell>
+      <Table.Cell>
+        No
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `settings`
+      </Table.Cell>
+      <Table.Cell>
+        Engine settings for this index, such as the field to deduplicate results on. Only the [Medusa Search](!cloud!/search) provider supports them. Refer to [Index Settings](!cloud!/search#index-settings) for the settings it accepts.
+      </Table.Cell>
+      <Table.Cell>
+        No
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `events`
+      </Table.Cell>
+      <Table.Cell>
+        The workflow events that change the data this index holds. Medusa subscribes to them and routes each one to `consume`. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date) for details.
+      </Table.Cell>
+      <Table.Cell>
+        No
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `consume`
+      </Table.Cell>
+      <Table.Cell>
+        A function that turns an event into document writes. Required when you set `events`. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date) for details.
+      </Table.Cell>
+      <Table.Cell>
+        No
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+Changing `fields` or `settings` changes the definition's hash, which the Search Module treats as a schema change. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) to learn how it rebuilds the index.
+
+</Note>
+
+---
+
+## Fill the Index with `seed`
+
+`seed` is an async generator that yields batches of writes. Each write is one of the following:
+
+- `{ action: "upsert", documents }`: writes the documents into the index, replacing any document already stored under the same ID.
+- `{ action: "delete", filters }`: removes every document matching the filters.
+
+The Search Module runs `seed` in the following cases:
+
+1. A migration created the index and nothing has filled it yet.
+2. The index exists but holds no documents, such as after an engine restart wiped it.
+3. A migration built a new index for a changed schema, which the module fills and then swaps in.
+4. The previous run didn't complete, so the module resumes it where it stopped.
+5. You rebuild the index on demand with the Search Module's `reindex` method.
+6. The catch-up pass that follows a full run, which picks up what changed while that run was writing. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).
+
+The first four cases run when your application starts. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) to learn how the module plans and runs each of them.
+
+`seed` receives an object parameter with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "container",
+      type: "`object`",
+      optional: false,
+      description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query)."
+    },
+    {
+      name: "index",
+      type: "`object`",
+      optional: false,
+      description: "The definition of the index being filled, as you passed it to `defineSearchIndex`. Refer to [Index Definition Properties](#index-definition-properties) for more details on each property.",
+      children: [
+        {
+          name: "name",
+          type: "`string`",
+          optional: false,
+          description: "The index's unique name, which is the `entity` that `query.search` resolves against."
+        },
+        {
+          name: "entity",
+          type: "`string`",
+          optional: false,
+          description: "The [Query](!docs!/learn/fundamentals/query) entry point that hydrates the fields the index doesn't hold."
+        },
+        {
+          name: "fields",
+          type: "`Record<string, object>`",
+          optional: false,
+          description: "The fields the index holds, keyed by their path in the document. Read them to build the documents you yield, rather than hard-coding the field list twice. Refer to [Search Index Fields](./fields/page.mdx) for a field definition's shape."
+        },
+        {
+          name: "seed",
+          type: "`function`",
+          optional: false,
+          description: "The generator function that yields the index's writes, which is the function receiving this context."
+        },
+        {
+          name: "primary_key",
+          type: "`string`",
+          optional: true,
+          description: "The field holding each document's unique identifier. The Search Module reads it from every document you yield to track the run's `last_key`.",
+          defaultValue: "id"
+        },
+        {
+          name: "provider",
+          type: "`string`",
+          optional: true,
+          description: "The identifier of the [Search Module Provider](../providers/page.mdx) holding this index, such as `search-postgres`.",
+          defaultValue: "The module's default provider"
+        },
+        {
+          name: "settings",
+          type: "`object`",
+          optional: true,
+          description: "The engine settings applied to this index. Refer to [Index Settings](!cloud!/search#index-settings) for the settings [Medusa Search](!cloud!/search) accepts."
+        },
+        {
+          name: "events",
+          type: "`string[]`",
+          optional: true,
+          description: "The workflow events that change the data this index holds."
+        },
+        {
+          name: "consume",
+          type: "`function`",
+          optional: true,
+          description: "The function that turns one of those events into document writes. Refer to [Keep an Index Up-to-Date](#keep-an-index-up-to-date)."
+        }
+      ]
+    },
+    {
+      name: "filters",
+      type: "`Record<string, unknown>`",
+      optional: true,
+      description: "The filters passed to a partial reindex. Apply them to index a subset of the entity."
+    },
+    {
+      name: "last_key",
+      type: "`string`",
+      optional: true,
+      description: "The cursor of an interrupted run, so you can resume where it stopped."
+    },
+    {
+      name: "catchup",
+      type: "`object`",
+      optional: true,
+      description: "Set only for the catch-up pass that follows a full run. Scope your query to what changed since `catchup.since` and yield a `delete` write for anything that's gone. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).",
+      expandable: false,
+      children: [
+        {
+          name: "since",
+          type: "`Date`",
+          optional: false,
+          description: "The time the run before this pass started. Only records changed at or after it matter to the pass."
+        }
+      ]
+    }
+  ]}
+  sectionTitle="Fill the Index with seed"
+/>
+
+Yield in batches using the `yield` keyword so the module writes to the engine as it goes, rather than holding the entire index in memory.
+
+For example, the following `seed` reads every product in batches of `500` and yields them to the index:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, filters }) {
+    const limit = 500
+    let offset = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: ["id", "title", "handle", "status"],
+        filters,
+        pagination: { skip: offset, take: limit },
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      yield [{ action: "upsert", documents: data }]
+
+      offset += limit
+    }
+  }
+})
+```
+
+### Catch Up on Changes During a Run
+
+A full seed or rebuild reads your data while your application keeps writing to it, so a record that changes mid-run can land in the index stale, or not at all. To close that gap, the Search Module runs `seed` a second time as soon as the run finishes, passing `catchup.since`, which is the time the run started.
+
+Handle the pass in `seed` by doing the following:
+
+1. Narrow your query to records updated at or after `catchup.since`, so the pass stays small.
+2. Read soft-deleted records too by passing `withDeleted: true` to `query.graph`, since a record deleted mid-run is a document the index must lose.
+3. Yield an `upsert` write for a record that still exists, and a `delete` write for one that's soft-deleted.
+
+The module skips the pass for a [partial rebuild](../reindexing/page.mdx#seeding-on-demand), since a filtered run is already scoped to what the caller asked for.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, filters, catchup }) {
+    const limit = 500
+    let offset = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: ["id", "title", "deleted_at"],
+        filters: {
+          ...filters,
+          ...(catchup
+            ? { updated_at: { $gte: catchup.since } }
+            : {}),
+        },
+        pagination: { skip: offset, take: limit },
+        withDeleted: !!catchup,
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      const alive = data.filter((p) => !p.deleted_at)
+      const gone = data.filter((p) => p.deleted_at)
+
+      yield [
+        ...(alive.length
+          ? [{ action: "upsert", documents: alive }]
+          : []),
+        ...gone.map((product) => ({
+          action: "delete",
+          filters: { id: [product.id] },
+        })),
+      ]
+
+      offset += limit
+    }
+  }
+})
+```
+
+---
+
+## Keep an Index Up-to-Date
+
+If you omit `events` and `consume`, the Search Module only fills an index in the [cases listed for `seed`](#fill-the-index-with-seed). So the index holds whatever the last run produced until something triggers another one.
+
+<Note>
+
+A restart doesn't refill an index that already has documents. The module only seeds an index that holds no documents, or one whose previous seed didn't finish.
+
+</Note>
+
+To ensure your index is always up-to-date, you must add the following to your index definition:
+
+- `events`: an array of workflow event names that change the data the index holds. Medusa subscribes to them and calls `consume` for each one.
+    - See the [Events Reference](/references/events) for the full list of events Medusa emits and their payloads. You can also use custom events that you emit.
+- `consume`: a function that turns an event into document writes.
+
+`consume` receives two parameters:
+
+<TypeList
+  types={[
+    {
+      name: "event",
+      type: "`object`",
+      optional: false,
+      description: "The event that triggered the call.",
+      expandable: false,
+      children: [
+        {
+          name: "name",
+          type: "`string`",
+          optional: false,
+          description: "The name of the event, which is one of the names you listed in `events`."
+        },
+        {
+          name: "data",
+          type: "`object`",
+          optional: false,
+          description: "The event's payload. Refer to the [Events Reference](/references/events) for the payload of each event Medusa emits."
+        }
+      ]
+    },
+    {
+      name: "context",
+      type: "`object`",
+      optional: false,
+      description: "The context the Search Module runs the function in.",
+      expandable: false,
+      children: [
+        {
+          name: "container",
+          type: "`object`",
+          optional: false,
+          description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query)."
+        },
+        {
+          name: "index",
+          type: "`object`",
+          optional: false,
+          description: "The index definition the event is applied to."
+        }
+      ]
+    }
+  ]}
+  sectionTitle="Keep an Index Up-to-Date"
+/>
+
+<Note>
+
+`context` holds `container` and `index` only. Unlike [`seed`](#fill-the-index-with-seed), it carries no `filters`, `last_key`, or `catchup`, since an event changes specific documents rather than filling the whole index.
+
+</Note>
+
+It returns an array of writes, which are the same writes [`seed`](#fill-the-index-with-seed) yields:
+
+- `{ action: "upsert", documents }`: writes the documents into the index.
+- `{ action: "delete", filters }`: removes every document matching the filters.
+
+For example:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = ["id", "title", "handle", "status"]
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable(),
+    handle: search.keyword().filterable(),
+    status: search.keyword().filterable().facetable(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  async consume(event, { container }) {
+    if (event.name === "product.deleted") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields,
+      filters: { id: event.data.id },
+    })
+
+    return [{ action: "upsert", documents: data }]
+  },
+  async *seed({ container }) {
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields,
+    })
+
+    yield [{ action: "upsert", documents: data }]
+  },
+})
+```
+
+In this example, when a product is created or updated, the `consume` function reads the product's current data and upserts it into the index. When a product is deleted, it removes the document from the index.
+
+---
+
+## Point an Index at a Specific Provider
+
+If you're using multiple [Search Module Providers](../providers/page.mdx), set the `provider` property to the ID of a registered provider. 
+
+For example, you can keep a high-traffic index on a dedicated engine while quieter indexes stay on PostgreSQL.
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  provider: "search-postgres",
+  // ...
+})
+```
+
+When you omit it, the index uses the module's `default_provider`.

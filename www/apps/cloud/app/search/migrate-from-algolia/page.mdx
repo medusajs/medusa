@@ -1,0 +1,998 @@
+import { Note, Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Migrate from Algolia to Medusa Search`,
+  keywords: [
+    "search",
+    "medusa search",
+    "algolia",
+    "migration",
+    "migrate",
+    "search module",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll migrate a Medusa project that indexes and searches products in Algolia to use [Medusa Search](../page.mdx).
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../../sign-up/page.mdx) to use Medusa Search and other Cloud features.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "A Cloud project",
+      link: "/first-project",
+    },
+    {
+      text: "Medusa v2.20.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0",
+    },
+  ]}
+/>
+
+## Migrate with an AI Agent
+
+If you use an AI agent, such as Claude Code or Codex, copy the following prompt into it to perform the migration in your project. Review the changes it makes, then follow the rest of this guide to validate and deploy them.
+
+```md title="Migration Prompt" collapsed noLineNumbers
+<role>
+You are a senior Medusa developer migrating an existing
+Medusa project from a custom Algolia integration to Medusa
+Search, the managed search service of Cloud.
+</role>
+
+<task>
+Replace this project's custom Algolia search integration
+with the Search Module and Medusa Search, keeping the
+storefront's search behavior intact.
+</task>
+
+<context>
+- Medusa Search is a provider of the Search Module, which
+  ships with Medusa v2.20.0 and later. Cloud registers and
+  configures it for every environment, so it needs no
+  credentials or configuration in the project.
+- Medusa creates a product index by default. A project only
+  declares its own index definition for custom fields,
+  custom index settings, or data models other than products.
+- An index definition lives in a file under `src/search`,
+  declares the fields the engine holds, fills the index with
+  a `seed` async generator, and keeps it current with its
+  `events` and `consume` properties.
+- Queries run through `query.search` in an API route. There
+  is no browser-side querying and no search-only key.
+- Medusa Search does not support synonyms, merchandising
+  rules, geo search, or search analytics. An index or a query
+  that relies on them fails.
+- Medusa Search supports typo tolerance and highlighting, but
+  both are opt-in per query through `search_options` and both
+  require a text query.
+</context>
+
+<steps>
+1. Inspect the project and report what it has before you
+   change anything: the Algolia module, the sync workflows
+   and their steps, the subscribers, the admin sync route
+   and UI route, the search API route, the storefront search
+   client, and the Medusa version in `package.json`.
+2. If the Medusa version is below v2.20.0, stop and tell the
+   user to upgrade first.
+3. List the fields the project indexes in Algolia, taken
+   from the sync workflow's `fields` array, and ask the user
+   for the index settings from their Algolia dashboard.
+4. Decide whether the project needs its own index
+   definition. If every indexed field and setting is covered
+   by the default product index, skip to step 6 and say why.
+5. Create the index definition under `src/search`. Map
+   Algolia's searchable attributes to `searchable()` fields
+   with a weight, faceting attributes to `facetable()` or
+   `filterable()`, sorting replicas to `sortable()`, and
+   unretrievable attributes to `retrievable(false)`.
+   Reproduce the project's indexing rules in `seed`, such as
+   indexing published products only, and handle create,
+   update, and delete events in `consume`.
+6. Rewrite the existing search API route to use
+   `query.search` instead of the Algolia client. Keep the
+   route's path and its validation middleware, and add
+   pagination. Move every filter, facet, and sort that the
+   storefront's search widgets applied into the query.
+   Respond with `{ products, count, limit, offset }`, where
+   `products` holds the hydrated records from `data` and the
+   other three come from `search_result.metadata`. Do not
+   also return `search_result.hits`, since each hit's
+   `document` repeats a record already in `products`. Add
+   `search_result.facets` only when the storefront renders
+   facet counts, and a hit's `highlights` only when the
+   query asks for highlighting.
+7. Replace any manual sync trigger with a workflow step that
+   calls the Search Module's `reindex` method.
+8. Delete the Algolia module, the sync workflows and steps,
+   the product subscribers, the module's entry in
+   `medusa-config.ts`, and the `algoliasearch` dependency.
+   Do this here and not earlier, since the application fails
+   to boot while the module is still registered and the
+   package is gone. Leave the Algolia environment variables
+   in place and tell the user to remove them after the
+   cutover.
+9. Update the storefront to call the search route directly
+   and read the route's new response shape, which returns
+   the hydrated records and the search metadata rather than
+   Algolia's `hits`. Remove the Algolia packages, the search
+   client, and the Algolia environment variables from it.
+10. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
+</steps>
+
+<constraints>
+- Do not add a feature that Medusa Search does not support.
+  When the project relies on one, report it and propose the
+  closest alternative instead of implementing it silently.
+- Do not delete the user's Algolia account, indexes, or
+  credentials, and do not call the Algolia API.
+- Do not change the search route's path or its request body
+  parameters, since a live storefront depends on them.
+- Do not run a deployment or push to any branch.
+- Never run a Medusa CLI command that can prompt without the
+  flag that skips its prompts. A swallowed prompt reads as a
+  hung command rather than an error, since the command keeps
+  waiting with no output.
+- Keep every package the current integration imports
+  installed until step 8, so the application boots at every
+  point before it.
+- Consult the Medusa documentation at
+  https://docs.medusajs.com or the Medusa MCP server for any
+  API details you need, including the index definition
+  properties, field types and modifiers, and the options of
+  `query.search`.
+</constraints>
+
+<error_handling>
+- If the project has no Algolia integration, report that and
+  stop.
+- If the integration differs from the files listed in step
+  1, map each responsibility you find to its Search Module
+  equivalent and report the mapping before you change code.
+- If you cannot tell whether a field is searched, filtered,
+  faceted, or only displayed, ask the user rather than
+  guessing its modifiers.
+- If a storefront feature has no Medusa Search equivalent,
+  list it under manual follow-ups instead of removing the
+  feature.
+</error_handling>
+
+<output_format>
+Respond with the following markdown sections:
+
+## Changes
+A table of every file you created, modified, or deleted,
+with one sentence on what changed in it.
+
+## Behavior differences
+Each Algolia behavior the project relied on that Medusa
+Search does not support, and what you did about it.
+
+## Manual follow-ups
+The steps the user has to take themselves, such as removing
+environment variables, validating relevance, and deploying.
+</output_format>
+
+<success_criteria>
+- The project builds and type checks with no reference to
+  `algoliasearch` left in the backend or the storefront.
+- Every field the project indexed in Algolia is either held
+  by the new index definition, covered by the default
+  product index, or listed as an intentional removal.
+- The search route responds to the same request body as
+  before and returns results from `query.search`.
+- The search route documents its response shape and returns
+  each record once.
+- Every unsupported Algolia behavior appears under
+  "Behavior differences".
+</success_criteria>
+```
+
+---
+
+## Who This Guide Is For
+
+This guide assumes your project follows the [Integrate Algolia with Medusa](!resources!/integrations/guides/algolia) guide, which is the most common Algolia setup in Medusa projects. That setup has the following pieces:
+
+- An Algolia Module in `src/modules/algolia` that wraps Algolia's client.
+- A `syncProductsWorkflow` and its steps that index and delete products in Algolia.
+- Subscribers on product events and a custom `algolia.sync` event.
+- An admin UI route and API route that trigger a full sync.
+- A `/store/products/search` API route that the storefront calls.
+- A storefront search client that sends every query to that route.
+
+If your integration differs, the mapping in the [Map Your Integration to Medusa Search](#map-your-integration-to-medusa-search) section still applies, since every Algolia integration owns the same responsibilities.
+
+<Note title="Not sure whether to migrate?">
+
+Refer to [Medusa Search vs Algolia](../algolia/page.mdx) for a feature-by-feature comparison, including the Algolia features that Medusa Search doesn't offer.
+
+</Note>
+
+---
+
+## What Changes in Your Project
+
+Medusa Search isn't a drop-in replacement for the Algolia client. It's a provider of the [Search Module](!resources!/infrastructure-modules/search), which owns the parts of the integration you wrote by hand. So the migration deletes more code than it adds.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Responsibility
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Your Algolia integration
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Connecting to the engine
+      </Table.Cell>
+      <Table.Cell>
+
+      The Algolia Module's service, its options, and three environment variables.
+
+      </Table.Cell>
+      <Table.Cell>
+        Cloud provisions the service and passes the credentials, so nothing to write.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Index schema
+      </Table.Cell>
+      <Table.Cell>
+        Algolia's dashboard settings, outside your repository.
+      </Table.Cell>
+      <Table.Cell>
+
+      An [index definition](!resources!/infrastructure-modules/search/index-definitions) in `src/search`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Initial and full sync
+      </Table.Cell>
+      <Table.Cell>
+
+      `syncProductsWorkflow`, the `algolia.sync` subscriber, the admin API route, and the admin UI route.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index definition's `seed` generator, which Medusa runs on deployment, plus the `reindex` method for a manual rebuild.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Incremental sync
+      </Table.Cell>
+      <Table.Cell>
+
+      The `product-sync` and `product-delete` subscribers, and the delete workflow.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The `events` and `consume` properties of the index definition.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Rollback on a failed write
+      </Table.Cell>
+      <Table.Cell>
+        Compensation functions that reindex the previous documents.
+      </Table.Cell>
+      <Table.Cell>
+
+      Not needed. A failed `consume` leaves the index behind, and a [reindex](!resources!/infrastructure-modules/search/reindexing#recover-with-a-reindex) repairs it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Querying
+      </Table.Cell>
+      <Table.Cell>
+
+      The module service's `search` method, called from your `/store/products/search` route.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [`query.search`](!docs!/learn/fundamentals/query/search), called from the same route.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Per-environment isolation
+      </Table.Cell>
+      <Table.Cell>
+        An index name per environment, provisioned and configured by you.
+      </Table.Cell>
+      <Table.Cell>
+
+      [One set of indexes per environment](../page.mdx#search-indexes-per-environment), created for you.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Behavior Differences to Settle First
+
+Some Algolia behaviors have no equivalent in Medusa Search, and an index or a query that relies on them fails rather than degrading. Decide what to do about each one before you write any code:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Behavior
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What to do
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Synonyms
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search doesn't support synonyms, and an index that declares them fails at startup. Expand a query's terms in your API route, or index the alternative terms as a searchable field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ranking rules and merchandising
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search ranks by the [weight](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) you set on each searchable field. Reproduce pinned or boosted results with your own logic in the API route.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Sorting by an attribute
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa Search sorts by any number of `sortable` fields, but not alongside a text query. A sorted product listing therefore runs as a separate query from a search, without a `q` filter.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Search analytics and A/B testing
+      </Table.Cell>
+      <Table.Cell>
+        Medusa Search doesn't provide them. Track queries in your own analytics from the API route.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Map Your Integration to Medusa Search
+
+Medusa creates the product index by default, so you don't have to declare one to search products. You only need your own definition for custom fields or index configurations that the default index doesn't cover, or for data models other than products that you indexed in Algolia.
+
+So, start by writing down what your Algolia index holds and how it's configured, since that's what your index definition has to reproduce. Take the record shape from the `fields` array of your `syncProductsWorkflow`, and the settings from your Algolia dashboard under **Search** -> **Index** -> **Configuration**.
+
+Then map each Algolia setting to its equivalent:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Algolia
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `searchableAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      A [`search.text()`](!resources!/infrastructure-modules/search/index-definitions/fields#searchtext) field with the [`searchable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) modifier. The attribute's position in Algolia's ordered list becomes a `weight`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `attributesForFaceting`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`facetable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#facetable) modifier for an attribute the storefront shows counts for, and [`filterable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#filterable) for one you only filter on. An attribute declared as `filterOnly` in Algolia maps to `filterable()` alone.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `customRanking` and `ranking`
+      </Table.Cell>
+      <Table.Cell>
+
+      A `weight` per searchable field. Medusa Search has no equivalent for the rest of Algolia's ranking criteria.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Replica indexes for sorting
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`sortable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#sortable) modifier on the same index. One index serves every sort order, so the replicas go away.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `unretrievableAttributes`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`retrievable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#retrievable) modifier set to `false`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `distinct` and `attributeForDistinct`
+      </Table.Cell>
+      <Table.Cell>
+
+      The [`distinct_attribute`](../page.mdx#index-settings) index setting.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `objectID`
+      </Table.Cell>
+      <Table.Cell>
+
+      The index's [`primary_key`](!resources!/infrastructure-modules/search/index-definitions#index-definition-properties), which defaults to `id`. Since the integration guide sets `objectID` to the product's ID, you can drop the field.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        One index per environment
+      </Table.Cell>
+      <Table.Cell>
+
+      One index definition. Cloud scopes the physical indexes per environment, so the `ALGOLIA_PRODUCT_INDEX_NAME` variable goes away.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+A field that your storefront neither displays, filters, sorts, nor searches on doesn't belong in the index. Migrating is a good time to drop the attributes that Algolia's record shape accumulated.
+
+</Note>
+
+---
+
+## Step 1: Upgrade Your Medusa Application
+
+Medusa Search requires [Medusa v2.20.0 or later](https://github.com/medusajs/medusa/releases/tag/v2.20.0). Upgrade your application, then confirm it starts locally before you change any search code.
+
+Refer to the [Update Medusa](../../update-medusa/page.mdx) guide for the upgrade steps.
+
+Once you upgrade, the Search Module is registered by default with the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) locally, and with Medusa Search on Cloud. So you don't have to register anything in `medusa-config.ts`.
+
+---
+
+## Step 2: Declare Your Index
+
+Medusa creates the product index by default, so products are searchable on Medusa Search without any index definition. You only declare one in the following cases:
+
+- Your Algolia records hold custom fields that the default product index doesn't.
+- You need index settings or field options that the default index doesn't apply, such as a different weight, a facetable field, or a [Medusa Search setting](../page.mdx#medusa-search-settings).
+- You indexed data models other than products in Algolia, such as product categories.
+
+Otherwise, skip to [Step 3](#step-3-replace-the-search-api-route) and query the default index.
+
+An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code.
+
+For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
+
+export const definitionHighlights = [
+  ["24", "title", "Outweighs the description in relevance."],
+  ["27", "thumbnail", "Held by the index, but never searched or filtered."],
+  ["28", "categories", "An array of objects, so a filter matches any category."],
+  ["34", "facetable", "Powers the storefront's category filter counts."],
+]
+
+```ts title="src/search/product.ts" highlights={definitionHighlights}
+import {
+  defineSearchIndex,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = [
+  "id",
+  "title",
+  "description",
+  "handle",
+  "thumbnail",
+  "categories.id",
+  "categories.name",
+  "categories.handle",
+  "tags.id",
+  "tags.value",
+]
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable(),
+    handle: search.keyword().filterable(),
+    thumbnail: search.keyword(),
+    categories: search
+      .object({
+        id: search.keyword().filterable(),
+        name: search
+          .keyword()
+          .searchable()
+          .facetable(),
+        handle: search.keyword().filterable(),
+      })
+      .array(),
+    tags: search
+      .object({
+        id: search.keyword().filterable(),
+        value: search
+          .keyword()
+          .searchable()
+          .facetable(),
+      })
+      .array(),
+  }),
+  async *seed({ container, filters }) {
+    const limit = 200
+    let offset = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields,
+        filters: {
+          status: "published",
+          ...filters,
+        },
+        pagination: { skip: offset, take: limit },
+      })
+
+      if (!data.length) {
+        break
+      }
+
+      yield [{ action: "upsert", documents: data }]
+
+      offset += limit
+    }
+  },
+})
+```
+
+The definition declares the fields the engine holds, then fills the index with the `seed` generator. Note the following about it:
+
+- `title` carries a higher weight than `description`, so a product matching a query in its title outranks one matching only in its description. This replaces the ordered `searchableAttributes` list in Algolia.
+- `thumbnail` is neither searchable nor filterable, since the storefront only displays it. Use the [`retrievable()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#retrievable) modifier if you want the opposite, a field the engine matches on but never returns.
+- `seed` yields products in batches of `200` instead of loading the whole catalog into memory, and it merges the `filters` it receives so a [partial reindex](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) works.
+- `seed` filters on `status: "published"`, which is the check the `syncProductsWorkflow` performs in its `transform` function.
+
+<Note>
+
+Only add `facetable()` to a field whose counts your storefront shows. Every facet shares a budget of 16 queries per search with the hits and the count, so faceting on fields you don't display costs you queries.
+
+</Note>
+
+### Keep the Index Current
+
+Your integration replaces two subscribers, `product-sync` and `product-delete`, with the `events` and `consume` properties of the definition. Medusa subscribes to the events you list and routes each one to `consume`.
+
+Add the following properties to the `defineSearchIndex` call:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  async consume(event, { container }) {
+    if (event.name === "product.deleted") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { data } = await container.query.graph({
+      entity: "product",
+      fields: [...fields, "status"],
+      filters: { id: event.data.id },
+    })
+
+    const [product] = data
+
+    if (product?.status !== "published") {
+      return [{
+        action: "delete",
+        filters: { id: [event.data.id] },
+      }]
+    }
+
+    const { status, ...document } = product
+
+    return [{ action: "upsert", documents: [document] }]
+  },
+})
+```
+
+`consume` returns the writes to apply for an event. It handles the three cases your subscribers handled:
+
+1. A deleted product leaves the index.
+2. A created or updated published product enters the index.
+3. A product that's no longer published leaves the index, which is what the `deleteProductsFromAlgoliaStep` did for unpublished products.
+
+### Test the Index Locally
+
+Locally, the PostgreSQL provider holds the index in your database, so run the migrations that create it:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Then start your application. The Search Module fills the index when the application starts in worker or shared mode.
+
+---
+
+## Step 3: Replace the Search API Route
+
+{/* TODO if we ship search api route by default, mention here */}
+
+Your storefront calls `POST /store/products/search`, which searches Algolia through the module's service. Keep the route and the [validation middleware](!docs!/learn/fundamentals/api-routes/middlewares), and replace the search logic with [`query.search`](!docs!/learn/fundamentals/query/search).
+
+Replace the content of `src/api/store/products/search/route.ts` with the following:
+
+```ts title="src/api/store/products/search/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import { z } from "@medusajs/framework/zod"
+
+export const SearchSchema = z.object({
+  query: z.string(),
+  limit: z.number().optional().default(20),
+  offset: z.number().optional().default(0),
+})
+
+type SearchRequest = z.infer<typeof SearchSchema>
+
+export async function POST(
+  req: MedusaRequest<SearchRequest>,
+  res: MedusaResponse
+) {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { query: q, limit, offset } = req.validatedBody
+
+  const { data, search_result } = await query.search({
+    entity: "product",
+    fields: [
+      "id",
+      "title",
+      "description",
+      "handle",
+      "thumbnail",
+    ],
+    filters: { q },
+    pagination: { skip: offset, take: limit },
+  })
+
+  res.json({
+    products: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+The route now resolves [Query](!docs!/learn/fundamentals/query) from the Medusa container and searches the `product` index, which is the `name` of the definition you declared. Note the following about the change:
+
+- The response shape changes. Algolia returns a `results` array of `hits`, whereas `query.search` returns the hydrated entities in `data` and the engine's own result in `search_result`. Your storefront reads the new shape in [Step 7](#step-7-update-the-storefront).
+- `fields` can include fields the index doesn't hold, such as `variants.*`. Query hydrates them from the database with the `entity` you declared in the definition.
+- The route accepts pagination, since Medusa Search caps results at the 10,000th one and the storefront needs to page through matches.
+
+### Add Filters, Facets, and Sorting
+
+Your Algolia storefront applies filters and reads facet counts through InstantSearch widgets, which build Algolia's filter syntax in the browser. With Medusa Search, the API route builds them instead.
+
+For example, to filter by category and return the category counts:
+
+```ts title="src/api/store/products/search/route.ts"
+const { data, search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title", "handle", "thumbnail"],
+  filters: {
+    q,
+    "categories.handle": req.validatedBody.category,
+  },
+  search_options: {
+    facets: ["categories.name"],
+    disjunctive_facets: true,
+  },
+  pagination: { skip: offset, take: limit },
+})
+```
+
+`disjunctive_facets` keeps the sibling category counts visible while a category filter is active, which is what a filter sidebar needs. Refer to [Search Queries](!docs!/learn/fundamentals/query/search) for every filter operator, facet type, and sorting option.
+
+<Note>
+
+Medusa Search can't sort by a field alongside a text query. If your storefront offers "sort by price" on a search results page, run the sorted listing as a separate query without a `q` filter.
+
+</Note>
+
+---
+
+## Step 4: Replace the Manual Sync
+
+The integration guide's admin page triggers a full sync through the `algolia.sync` event. You no longer need that sync for everyday changes: 
+
+1. Medusa fills the index on deployment.
+2. Medusa keeps the index current from the `events` and `consume` properties of the index definition, applying every product change as it happens. This applies for both the product index Medusa creates by default or the custom definition you wrote in [Step 2](#step-2-declare-your-index).
+
+A manual rebuild is only for repairing a diverged index, such as after a `consume` call failed or a change reached the database without emitting an event.
+
+For a manual rebuild, you can drop the custom admin page entirely: admin users can rebuild any index from Settings -> Search in the Medusa Admin dashboard. Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide.
+
+If you'd rather trigger the rebuild from your own code, replace the `syncProductsWorkflow` with a step that calls the Search Module's [`reindex`](!resources!/infrastructure-modules/search/reindexing#seeding-on-demand) method.
+
+Create the file `src/workflows/steps/reindex-products.ts` with the following content:
+
+```ts title="src/workflows/steps/reindex-products.ts"
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+export const reindexProductsStep = createStep(
+  "reindex-products",
+  async (_, { container }) => {
+    const searchModuleService = container.resolve(
+      Modules.SEARCH
+    )
+
+    const result = await searchModuleService.reindex({
+      index: "product",
+    })
+
+    return new StepResponse(result)
+  }
+)
+```
+
+Then, keep your admin UI route and its API route, and call a workflow that runs this step instead of emitting the `algolia.sync` event. `reindex` fills a shadow index and aliases it over the live one, so search keeps working while the rebuild runs.
+
+<Note>
+
+`reindex` waits for the rebuild to finish before it resolves, so run it in a workflow rather than in the request handler of your admin API route. Refer to [Long-Running Workflows](!docs!/learn/fundamentals/workflows/long-running-workflow) if the rebuild outlasts your request timeout.
+
+</Note>
+
+---
+
+## Step 5: Remove the Algolia Integration
+
+Once your searches run against the new index, delete the code that Medusa Search replaces. From a project that followed the integration guide, remove the following:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        What to remove
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Why
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/modules/algolia`
+
+      </Table.Cell>
+      <Table.Cell>
+        The Search Module and its provider replace the client wrapper.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The module's entry in the `modules` array of `medusa-config.ts`
+
+      </Table.Cell>
+      <Table.Cell>
+        Removing the directory without this leaves your application failing to boot.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/workflows/sync-products.ts`, `src/workflows/delete-products-from-algolia.ts`, and their steps
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index definition's `seed` and `consume` functions replace them.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `src/subscribers/algolia-sync.ts`, `src/subscribers/product-sync.ts`, and `src/subscribers/product-delete.ts`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa subscribes to the events in the definition's `events` array.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The `algoliasearch` dependency
+
+      </Table.Cell>
+      <Table.Cell>
+        Nothing in the backend calls Algolia anymore.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      The `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`, and `ALGOLIA_PRODUCT_INDEX_NAME` variables
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Remove them from every environment, including the [Cloud environment variables](../../environments/environment-variables/page.mdx). Delete them last, after the cutover.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Step 6: Deploy and Fill the Index to Preview
+
+Push your changes to the branch of a Cloud environment. Use a [preview environment](../../environments/preview/page.mdx) rather than production for the first deployment, so you can compare results before customers see them.
+
+During the deployment, Cloud runs the search migrations, which create the physical index for your definition. The Search Module then fills it with the documents that `seed` yields when the application starts.
+
+Follow the deployment in the Cloud dashboard, then check your application's [logs](../../logs/page.mdx) for the migration output:
+
+```bash
+info:    Migrating search indexes...
+info:    Search indexes migrated. They are filled when the application starts
+```
+
+Once the seed finishes, send a request to your search route and confirm it returns hits:
+
+```bash
+curl -X POST \
+  "https://your-project.medusajs.app/store/products/search" \
+  -H "x-publishable-api-key: pk_..." \
+  -H "Content-Type: application/json" \
+  -d '{"query": "shirt"}'
+```
+
+If the response holds no products, query the `search_index_sync` table to check whether the seed ran, how many documents it wrote, and the error it failed with.
+
+---
+
+## Step 7: Update the Storefront
+
+{/* TODO update this section once the InstantSearch integration for Medusa Search ships */}
+
+Your storefront's search UI is built on Algolia's `react-instantsearch` widgets, with a `searchClient` in `src/lib/config.ts` that forwards every query to your Medusa backend. Two things change:
+
+1. **The response shape.** The route now returns `products` and `metadata` instead of Algolia's `results` array of `hits`. Every component that reads a hit's `objectID` reads `id` instead.
+2. **The features behind the widgets.** Filters, facets, sorting, highlighting, and typo tolerance come from the query your API route builds rather than from a widget's parameters. Algolia applied typo tolerance and returned highlighted fields by default, so pass `typo_tolerance` and `highlight` in the route's `search_options` to keep that behavior.
+
+So update the storefront as follows:
+
+1. Remove the `searchClient` from `src/lib/config.ts`, along with the `algoliasearch` and `react-instantsearch` dependencies and the `NEXT_PUBLIC_ALGOLIA_*` variables.
+2. Call your `/store/products/search` route directly with the [JS SDK](!resources!/js-sdk), debouncing the input so a query doesn't fire on every keystroke.
+3. Render the results from the route's `products` array, and page through them with the `metadata` it returns.
+4. Move each filter and facet the widgets provided into the request body, and read the counts from the facets your route returns.
+
+<Note>
+
+An InstantSearch integration for Medusa Search is in progress, which will let you keep the widget-based search UI in your storefront. This section will cover it once it ships.
+
+</Note>
+
+---
+
+## Step 8: Validate Before the Cutover
+
+Compare the two engines on the same environment before you point production at Medusa Search. Check the following:
+
+- **Top queries.** Run the queries your customers search most through both engines and compare the top results. Weights are the only relevance control you have, so tune the `weight` values in the definition until the ordering holds up.
+- **Filters and facets.** Confirm every filter your storefront offers works, and that facet counts match what Algolia reported for the same query.
+- **Document count.** Compare the index's document count against the number of published products in your database. A mismatch means the `seed` filters differ from what you indexed in Algolia.
+- **Event sync.** Create, update, unpublish, and delete a product, then search for it. Each change should reach the index within seconds.
+- **Admin search.** The admin dashboard's global search uses your indexes automatically, so check that searching products in the dashboard returns the results you expect.
+
+---
+
+## Step 9: Deploy Your Index
+
+Once the preview environment's search holds up, merge your changes into the branch of your production environment. Cloud builds and deploys your project, creates the production index, and fills it with the documents that `seed` yields.
+
+Refer to the [Deployments](../../deployments/page.mdx) guide to follow the deployment.
+
+---
+
+## Next Steps
+
+- Index your other data models, including your custom ones, as explained in [Searching Custom Data Models](../page.mdx#searching-custom-data-models).
+- Configure how Medusa Search treats your index and its fields with the [Medusa Search Settings](../page.mdx#medusa-search-settings).
+- Add semantic search over embeddings you store in the index, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

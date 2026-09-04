@@ -356,7 +356,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/query/index-module).
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -645,7 +645,7 @@ In the workflow's constructor function, you:
 
 - Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check whether the promotion ID is provided and retrieve the promotion to validate that it exists.
     - By specifying the `throwIfKeyNotFound` option, the `useQueryGraphStep` throws an error if the promotion isn't found, which stops the workflow's execution.
-    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood to retrieve data across modules.
+    - This step uses [Query](!docs!/learn/fundamentals/query) under the hood to retrieve data across modules.
 - Create the tier using the `createTierStep`.
 - Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to conditionally create tier rules if they're provided using the `createTierRulesStep`.
 - Retrieve the created tier with its rules using `useQueryGraphStep`.
@@ -838,7 +838,7 @@ You set the following configurations:
 
 <Note>
 
-Refer to the [Request Query Configuration](!docs!/learn/fundamentals/module-links/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
+Refer to the [Request Query Configuration](!docs!/learn/fundamentals/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
 
 </Note>
 
@@ -1880,7 +1880,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/query/index-module).
 
 You return the customers in the response.
 
@@ -1919,7 +1919,7 @@ You set the following configurations:
 
 ### c. Install Index Module
 
-The [Index Module](!docs!/learn/fundamentals/module-links/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
+The [Index Module](!docs!/learn/fundamentals/query/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
 
 The Index Module is currently experimental, so you need to install and configure it manually.
 
@@ -1958,7 +1958,7 @@ You can now use the Index Module to filter customers by their tier. You'll test 
 
 <Note>
 
-Refer to the [Index Module](!docs!/learn/fundamentals/module-links/index-module) documentation to learn more.
+Refer to the [Index Module](!docs!/learn/fundamentals/query/index-module) documentation to learn more.
 
 </Note>
 

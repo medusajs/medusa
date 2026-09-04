@@ -9,7 +9,7 @@ In this chapter, you'll learn how modules are isolated, and what that means for 
 <Note title="Summary">
 
 - Modules can't access resources, such as services or data models, from other modules.
-- Use [Module Links](../../../fundamentals/module-links/page.mdx) to extend an existing module's data models, and [Query](../../module-links/query/page.mdx) to retrieve data across modules.
+- Use [Module Links](../../../fundamentals/module-links/page.mdx) to extend an existing module's data models, and [Query](../../query/page.mdx) to retrieve data across modules.
 - Use [workflows](../../workflows/page.mdx) to build features that depend on functionalities from different modules.
 
 </Note>
@@ -44,7 +44,7 @@ Some of the module isolation's benefits include:
 
 To extend the data model of another module, such as the `Product` data model of the Product Module, use [Module Links](../../../fundamentals/module-links/page.mdx). Module Links allow you to build associations between data models of different modules without breaking the module isolation.
 
-Then, you can retrieve data across modules using [Query](../../module-links/query/page.mdx).
+Then, you can retrieve data across modules using [Query](../../query/page.mdx).
 
 ---
 
@@ -161,7 +161,7 @@ In this example, the `BlogModuleService` class resolves the `Logger` service fro
 
 ### Using Framework Tools in Workflows
 
-Some Framework APIs and tools are not registered in the module's container. For example, [Query](../../module-links/query/page.mdx) is only registered in the Medusa container.
+Some Framework APIs and tools are not registered in the module's container. For example, [Query](../../query/page.mdx) is only registered in the Medusa container.
 
 You should, instead, build workflows that use these APIs and tools along with your module's service.
 
