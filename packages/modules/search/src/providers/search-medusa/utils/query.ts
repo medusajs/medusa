@@ -181,7 +181,7 @@ export function buildQueryFilters(
       )
     : undefined
   const match =
-    includeTextMatch && input.search_options?.typo_tolerance
+    includeTextMatch && applyTypoTolerance(input)
       ? mergeFilters([text, fuzzyMatchFilter(input, plan)], "Or")
       : text
 
@@ -193,12 +193,35 @@ const DEFAULT_HIGHLIGHT_POST_TAG = "</mark>"
 const DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT = 1
 const SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT = 3
 
-function buildHighlightPlan(
+function hasTextQuery(input: SearchTypes.ProviderSearchQuery): boolean {
+  return !!input.q?.trim()
+}
+
+function applyTypoTolerance(input: SearchTypes.ProviderSearchQuery): boolean {
+  return !!input.search_options?.typo_tolerance && hasTextQuery(input)
+}
+
+function resolveHighlightOptions(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
-): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
-  const highlight = input.search_options!.highlight!
+): SearchTypes.SearchHighlightOptions | undefined {
+  const highlight = input.search_options?.highlight
+  if (!highlight || !hasTextQuery(input)) {
+    return undefined
+  }
 
+  if (highlight === true) {
+    return { fields: searchableFields(input, plan) }
+  }
+
+  return highlight
+}
+
+function buildHighlightPlan(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan,
+  highlight: SearchTypes.SearchHighlightOptions
+): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
   if (!highlight.fields.length) {
     fail("Medusa search highlighting requires at least one field")
   }
@@ -393,9 +416,6 @@ export function buildQueryPlan(
   if (skip + take > 10000) {
     fail("Medusa search can return at most 10,000 results per query")
   }
-  if ((options.typo_tolerance || options.highlight) && !input.q) {
-    fail("Medusa search typo tolerance and highlighting require a text query")
-  }
   if (options.locales?.length) {
     fail(
       "Configure Medusa search full-text language on index fields, not per query"
@@ -416,7 +436,7 @@ export function buildQueryPlan(
     const semanticRatio = vectorSemanticRatio(input)
     if (input.q && semanticRatio < 1) {
       let text = textRank(input, plan)
-      if (options.typo_tolerance) {
+      if (applyTypoTolerance(input)) {
         text = boostWithTypoTolerance(input, plan, text)
       }
       rankBy =
@@ -438,7 +458,7 @@ export function buildQueryPlan(
       rankBy = ordered
     } else {
       rankBy = textRank(input, plan)
-      if (options.typo_tolerance) {
+      if (applyTypoTolerance(input)) {
         rankBy = boostWithTypoTolerance(input, plan, rankBy)
       }
     }
@@ -455,8 +475,9 @@ export function buildQueryPlan(
     }
   }
 
-  const highlightPlan = options.highlight
-    ? buildHighlightPlan(input, plan)
+  const highlight = resolveHighlightOptions(input, plan)
+  const highlightPlan = highlight
+    ? buildHighlightPlan(input, plan, highlight)
     : undefined
 
   return {
