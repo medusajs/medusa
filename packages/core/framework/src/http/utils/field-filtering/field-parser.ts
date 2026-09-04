@@ -24,10 +24,11 @@ export class FieldParser {
 
     if (isDefined(fields)) {
       const customFields = fields.split(",").filter(Boolean)
-      const shouldReplaceDefaultFields = this.shouldReplaceDefaults(customFields)
+      const shouldReplaceDefaultFields =
+        this.shouldReplaceDefaults(customFields)
 
       if (shouldReplaceDefaultFields) {
-        allFields = new Set(customFields.map((f) => f.replace(/^[+ -]/, "")))
+        allFields = new Set(customFields.map((f) => this.stripModifier(f)))
       } else {
         this.applyFieldModifiers(customFields, allFields)
       }
@@ -38,6 +39,10 @@ export class FieldParser {
     this.extractStarFields(allFields, starFields)
 
     return { fields: allFields, starFields }
+  }
+
+  private static stripModifier(field: string): string {
+    return field.replace(/^[+ \t-]+/, "").trim()
   }
 
   /**
@@ -68,9 +73,9 @@ export class FieldParser {
   ): void {
     customFields.forEach((field) => {
       if (field.startsWith("+") || field.startsWith(" ")) {
-        allFields.add(field.trim().replace(/^\+/, ""))
+        allFields.add(this.stripModifier(field))
       } else if (field.startsWith("-")) {
-        const fieldName = field.replace(/^-/, "")
+        const fieldName = this.stripModifier(field)
         for (const reqField of allFields) {
           const reqFieldName = reqField.replace(/^\*/, "")
           if (

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.19.0
+  version: 2.20.1
   title: Medusa Admin API
   license:
     name: MIT
@@ -39577,7 +39577,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateProductOptionValuesWorkflow
-      x-events: []
+      x-events:
+        - name: product-option-value.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the product option value
+            }
+            ```
+          description: Emitted when product option values are updated.
+          deprecated: false
+          since: 2.20.0
       x-since: 2.17.0
     delete:
       operationId: DeleteProductOptionsIdValuesValue_id
@@ -39646,7 +39656,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteProductOptionValuesWorkflow
-      x-events: []
+      x-events:
+        - name: product-option-value.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the product option value
+            }
+            ```
+          description: Emitted when product option values are deleted.
+          deprecated: false
+          since: 2.20.0
       x-since: 2.17.0
   /admin/product-tags:
     get:
@@ -69397,6 +69417,146 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
+  /admin/users/{id}/auth-providers:
+    get:
+      operationId: GetUsersIdAuthProviders
+      summary: List Auth Providers of a User
+      x-sidebar-summary: List Auth Providers
+      description: Retrieve a list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.listAuthProviders("user_123")
+            .then(({ providers }) => {
+              console.log(providers)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/users/{id}/auth-providers' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserAuthProvidersResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.20.0
+  /admin/users/{id}/reset-password:
+    post:
+      operationId: PostUsersIdResetPassword
+      summary: Generate Reset Password Token for a User
+      x-sidebar-summary: Generate Reset Password Token
+      description: Generate a reset password token for a user. This is useful if another user wants to reset the password of a user. The reset password token can be used to reset the user's password. This route only emits the `auth.password_reset` event. You can listen to this event to send a reset password email to the user, for example.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.generateResetPasswordToken("user_123")
+            .then(({ token }) => {
+              console.log(token)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/users/{id}/reset-password' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserResetPasswordTokenResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: generateResetPasswordTokenWorkflow
+      x-events:
+        - name: auth.password_reset
+          payload: |-
+            ```ts
+            {
+              entity_id, // The identifier of the user or customer. For example, an email address.
+              actor_type, // The type of actor. For example, "customer", "user", or custom.
+              token, // The generated token.
+              metadata, // Optional custom metadata passed from the request.
+            }
+            ```
+          description: |-
+            Emitted when a reset password token is generated. You can listen to this event
+            to send a reset password email to the user or customer, for example.
+          deprecated: false
+      x-since: 2.20.0
   /admin/views/entities:
     get:
       operationId: GetViewsEntities
@@ -75221,6 +75381,11 @@ components:
           description: The inventory item's location levels.
           items:
             $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -79431,6 +79596,11 @@ components:
           type: number
           title: reserved_quantity
           description: The inventory item's reserved quantity.
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory's unit of measure.
+          example: kg
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -87100,6 +87270,11 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -88536,6 +88711,23 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+    AdminUserAuthProvidersResponse:
+      type: object
+      description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
+      x-schemaName: AdminUserAuthProvidersResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: |-
+            The IDs of the auth providers the user can authenticate with, such as
+            `emailpass`.
+          items:
+            type: string
+            title: providers
+            description: The provider's identifier.
+            example: emailpass
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -88590,6 +88782,23 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+    AdminUserResetPasswordTokenResponse:
+      type: object
+      description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
+      x-schemaName: AdminUserResetPasswordTokenResponse
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          title: token
+          description: |-
+            The generated reset password token. Append it to the admin's
+            `/reset-password` page as a `token` query parameter to build a link the
+            user can open to set a new password.
+
+            The token is short-lived, can only be used once, and generating it
+            invalidates any reset password token previously issued for the user.
     AdminUserResponse:
       type: object
       description: The user's details.
@@ -94334,6 +94543,7 @@ components:
         - name
         - amount
         - is_tax_inclusive
+        - is_custom_amount
         - created_at
         - updated_at
         - original_total
@@ -94436,6 +94646,10 @@ components:
           type: number
           title: discount_tax_total
           description: The total taxes of the discount amount.
+        is_custom_amount:
+          type: boolean
+          title: is_custom_amount
+          description: Whether the shipping method price is custom amount or not.
     OrderShippingMethodAdjustment:
       type: object
       description: The shipping method adjustment's details.

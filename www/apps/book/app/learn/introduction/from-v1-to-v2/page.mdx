@@ -1369,7 +1369,7 @@ Learn more in the [Middlewares](../../fundamentals/api-routes/middlewares/page.m
 
 In Medusa v1, you disabled the body parser in API routes by setting `bodyParser: false` in the route's middleware configuration.
 
-In Medusa v2, you disable the body parser by setting `bodyParser.preserveRawBody` to `true` in the route's middleware configuration. For example:
+In Medusa v2, `bodyParser: false` still disables the body parser the same way. If you only need access to the raw request body instead of disabling parsing entirely, set `bodyParser.preserveRawBody` to `true` in the route's middleware configuration instead. For example:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"

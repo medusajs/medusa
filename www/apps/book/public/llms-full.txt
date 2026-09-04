@@ -1853,6 +1853,8 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
+
 For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
 
 ```bash
@@ -2468,9 +2470,31 @@ The `restrictedFields` configuration accepts the following properties:
 
 - store: (\`string\[]\`) An array of fields that can't be selected in store API routes.
 
+#### http.storeRelationsLimit
+
+This configuration is available since Medusa [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+The `projectConfig.http.storeRelationsLimit` configuration sets the maximum number of relations a caller can expand in a single request to a Store API route. For example, requesting `variants.options.values` expands three relations.
+
+The default value is `3`. Individual routes can override this limit through their query configuration's `storeRelationsLimit` property.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      storeRelationsLimit: 4,
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+***
+
 ### redisOptions
 
-The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
+The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis's RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
 for the list of available options.
 
 #### Example
@@ -2722,6 +2746,8 @@ For modules that are part of a plugin, learn about registering them in the [Regi
 ### Example
 
 To register a custom module:
+
+Environment variables used in module `options` are read during the build phase. When deploying to Cloud, make sure each variable has the **Build** flag enabled in your [environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). A variable that is only enabled at runtime will be `undefined` when the module loads, causing errors such as "Option `apiKey` is required".
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -11993,6 +12019,60 @@ export async function POST(
 }
 ```
 
+The default body parser only parses JSON, URL-encoded, and text content types, so `preserveRawBody` only populates `req.rawBody` when the request's `Content-Type` header is set to one of those types. If your route receives a request with another content type, such as a webhook whose provider doesn't document its `Content-Type` header, use the [Express middleware](https://expressjs.com/en/guide/using-middleware.html) approach mentioned earlier in this chapter to read the raw request stream yourself.
+
+***
+
+## Disable the Default Body Parser
+
+You can disable the default body parser for a route by setting its `bodyParser` property to `false`. This is useful if you want to parse the request body yourself, for example, using custom [Express middleware](https://expressjs.com/en/guide/using-middleware.html).
+
+When `bodyParser` is set to `false`, the Medusa application skips its JSON, URL-encoded, and text parsers for that route, and `req.rawBody` isn't set. Use this option instead of `preserveRawBody` when you need full control over how the request body is read, rather than only preserving the raw body alongside the parsed one.
+
+For example:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+function readRawBody(req, res, next) {
+  const chunks: Buffer[] = []
+
+  req.on("data", (chunk) => chunks.push(chunk))
+  req.on("end", () => {
+    req.rawBody = Buffer.concat(chunks)
+    next()
+  })
+}
+
+export default defineMiddlewares({
+  routes: [
+    {
+      method: ["POST"],
+      bodyParser: false,
+      matcher: "/custom",
+      middlewares: [readRawBody],
+    },
+  ],
+})
+```
+
+In the example above, the custom `readRawBody` middleware reads the raw request stream regardless of its content type, then stores it in `req.rawBody` for the route handler to use.
+
+You can then access the raw body data in your API route handler:
+
+```ts title="src/api/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  console.log(req.rawBody)
+
+  // TODO use raw body
+}
+```
+
 ***
 
 ## Configure Request Body Size Limit
@@ -12223,6 +12303,7 @@ The `authenticate` middleware function accepts three parameters:
 3. An optional object of configurations accepting the following properties:
    - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too.
    - `allowUnregistered` (default: `false`): A boolean indicating whether users can access this route with a registration token, instead of an authentication token. This is useful if you have a custom actor type, such as `manager`, and you're creating an API route that allows these users to register themselves. Learn more in the [Custom Actor-Type Guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type/index.html.md).
+   - `requireMfa` (default: `true` for authenticated routes, since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0)): A boolean or an object `{ maxAgeSeconds: number }` indicating whether a completed MFA challenge is required to access this route. When set to `true`, any request from an identity with MFA enabled must have completed an MFA challenge. When set to `{ maxAgeSeconds: number }`, the challenge must also have been completed within the specified number of seconds. Set to `false` to allow access regardless of MFA status (for example, on the MFA challenge verification route itself). Learn more in the [Multi-Factor Authentication guide](https://docs.medusajs.com/resources/commerce-modules/auth/mfa/index.html.md).
 
 ### Example: Custom Actor Type
 
@@ -15752,6 +15833,8 @@ To emit a service event:
 
 1. Resolve `event_bus` from the module's container in your service's constructor:
 
+The Event Module's service (`event_bus`) is available in every module's container by default. You don't need to add it to `dependencies` in `medusa-config.ts`.
+
 ### Extending Service Factory
 
 ```ts title="src/modules/blog/service.ts"
@@ -15807,59 +15890,6 @@ The method accepts an object having the following properties:
 
 - `name`: The event's name.
 - `data`: The data payload as an object. You can pass any properties in the object, and subscribers listening to the event will receive this data in the event's payload.
-
-3. By default, the Event Module's service isn't injected into your module's container. To add it to the container, pass it in the module's registration object in `medusa-config.ts` in the `dependencies` property:
-
-### Module Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "./src/modules/blog",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-    },
-  ],
-})
-```
-
-### Module Provider Registration
-
-```ts title="medusa-config.ts"
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "@medusajs/medusa/payment",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-      options: {
-        providers: [
-          {
-            resolve: "./src/modules/my-provider",
-            id: "my-provider",
-            options: {
-              // ...
-            },
-          },
-        ],
-      },
-    },
-  ],
-})
-```
-
-The `dependencies` property accepts an array of module registration keys. The specified modules' main services are injected into the module's container.
-
-If a module has providers, the dependencies are also injected into the providers' containers.
 
 ### Test it Out
 
@@ -20761,7 +20791,8 @@ The `validateAndTransformQuery` accepts two parameters:
    2. `isList`: A boolean indicating whether a list of items is returned in the response.
    3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
    4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
-   5. `disallowed`: An array of field path segments that are always stripped from the query, regardless of what the client requests. Any requested field whose path contains one of these segments is removed before the query executes. Unlike `allowed`, this is a hard security boundary that middleware cannot override. Use it to keep sensitive relations off unauthenticated endpoints.
+   5. `disallowed`: An array of strings or regular expressions. A string entry matches any field path segment of the same name. A regular expression is tested against each segment and also against the full dotted path, which lets you block a relation at a specific position (for example, `/\.orders(?:\.|$)/` blocks `orders` everywhere except at the root). Any matched field is always removed before the query executes, making this a hard security boundary that middleware cannot override.
+   6. `storeRelationsLimit`: A number that overrides the application-wide `http.storeRelationsLimit` configuration for this specific route. It limits how many nested relations a caller can expand in a single request. Only applies to routes under the `/store` prefix. Available since [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
 
 List specific properties in `defaults` rather than `*` or `{relation}.*`. Every client request that doesn't pass a `fields` query parameter uses these defaults, so an expensive default applies to all of them. Refer to the [Select Specific Fields](#select-specific-fields) section for details.
 
@@ -22411,13 +22442,14 @@ In the `createBrandsInCmsStep`, you resolve the CMS Module's service from the mo
 ### Injecting Dependencies to Module
 
 Some cases still require you to access external resources, mainly [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) or Framework tools, in your module.
-For example, you may need the [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/index.html.md) to emit events from your module's service.
 
-In those cases, you can inject the dependencies to your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
+The following services are available in every module's container by default, without any `dependencies` declaration: `logger`, `event_bus`, `manager`, `configModule`, and `pgConnection`. Refer to the [Module Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) for the full list.
+
+For other Infrastructure Modules not in the default set, you can inject them into your module's service in `medusa-config.ts` using the `dependencies` property of the module's configuration.
 
 Use this approach only when absolutely necessary, where workflows aren't sufficient for your use case. By injecting dependencies, you risk breaking your module if the dependency isn't provided, or if the dependency's API changes.
 
-For example:
+For example, to inject the Analytics Module:
 
 ```ts title="medusa-config.ts"
 import { Modules } from "@medusajs/framework/utils"
@@ -22428,35 +22460,36 @@ module.exports = defineConfig({
     {
       resolve: "./src/modules/blog",
       dependencies: [
-        Modules.EVENT_BUS,
+        Modules.ANALYTICS,
       ],
     },
   ],
 })
 ```
 
-In this example, you inject the Event Module's service to your module's container.
+In this example, you inject the Analytics Module's service into your module's container.
 
 Only the main service will be injected into the module's container.
 
-You can then use the Event Module's service in your module's service:
+You can then use the Analytics Module's service in your module's service:
 
 ```ts title="Example Service"
-class BlogModuleService {
-  protected eventBusService_: AbstractEventBusModuleService
+import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils"
 
-  constructor({ event_bus }) {
-    this.eventBusService_ = event_bus
+class BlogModuleService {
+  protected analyticsService_: AbstractAnalyticsProviderService
+
+  constructor({ analytics }) {
+    this.analyticsService_ = analytics
   }
 
   performAction() {
     // TODO perform action
 
-    this.eventBusService_.emit({
-      name: "custom.event",
-      data: {
-        id: "123",
-        // other data payload
+    this.analyticsService_.identify({
+      actor_id: "123",
+      properties: {
+        name: "John Doe",
       },
     })
   }
@@ -30495,7 +30528,7 @@ Learn more in the [Middlewares](https://docs.medusajs.com/learn/fundamentals/api
 
 In Medusa v1, you disabled the body parser in API routes by setting `bodyParser: false` in the route's middleware configuration.
 
-In Medusa v2, you disable the body parser by setting `bodyParser.preserveRawBody` to `true` in the route's middleware configuration. For example:
+In Medusa v2, `bodyParser: false` still disables the body parser the same way. If you only need access to the raw request body instead of disabling parsing entirely, set `bodyParser.preserveRawBody` to `true` in the route's middleware configuration instead. For example:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
@@ -31757,7 +31790,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.19. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+Medusa's current version is v2.20.1. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.20.1).
 
 ## Medusa Versioning
 
@@ -34711,6 +34744,55 @@ curl -X GET http://localhost:9000/auth/mfa/factors \
 ```
 
 The response includes each factor's `id`, `provider`, `status`, and metadata. Use this route to render the user's MFA settings page in your application.
+
+***
+
+## Require MFA on Custom API Routes
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+By default, authenticated routes enforce MFA for any identity that has MFA enabled. You can customize this behavior when registering an `authenticate` middleware on your custom routes by passing the `requireMfa` option:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      // Require MFA and that the challenge was completed within the last 5 minutes
+      matcher: "/admin/sensitive-action",
+      middlewares: [
+        authenticate("user", ["session", "bearer", "api-key"], {
+          requireMfa: { maxAgeSeconds: 300 },
+        }),
+      ],
+    },
+    {
+      // Explicitly disable the MFA requirement (e.g. for public or pre-MFA routes)
+      matcher: "/custom/public-route",
+      middlewares: [
+        authenticate("*", ["session", "bearer"], {
+          allowUnauthenticated: true,
+          requireMfa: false,
+        }),
+      ],
+    },
+  ],
+})
+```
+
+The `requireMfa` option accepts:
+
+- `true` (default for authenticated routes): any request from an identity with MFA enabled must have a completed MFA challenge.
+- `{ maxAgeSeconds: number }`: same as `true`, but also enforces that the challenge was completed within the given number of seconds. Use this to gate elevated actions (for example, changing a password or making a large payment) that require a recent MFA verification.
+- `false`: skip MFA enforcement regardless of whether the identity has MFA enabled.
+
+When `requireMfa` is not set, it defaults to `true` for routes that require authentication (`allowUnauthenticated: false`) and to `false` for routes that allow unauthenticated access.
+
+Disabling MFA enforcement on a route is useful for routes that are part of the authentication flow (for example, login or MFA challenge verification) that require the user to be authenticated but not yet verified with MFA.
 
 ***
 
@@ -38510,6 +38592,51 @@ If the fulfillment provider's `calculatePrice` method throws an error, or return
 
 You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) reference, and how to use them during checkout in the [Storefront Shipping guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/checkout/shipping/index.html.md).
 
+#### Passing Custom Context to calculatePrice
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+Several built-in workflows expose a `setCalculatedShippingPricingContext` hook that runs before the fulfillment provider's `calculatePrice` method is called. You can consume this hook to return a custom object that is merged into the `context` parameter of `calculatePrice`. Framework-provided properties always take precedence over hook-returned values on a naming conflict.
+
+For example, to pass a negotiated carrier contract number when listing shipping options for a cart:
+
+```ts
+import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+import { StepResponse } from "@medusajs/workflows-sdk"
+
+listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
+  async ({ input }, { container }) => {
+    const query = container.resolve("query")
+
+    const { data: [cart] } = await query.graph({
+      entity: "cart",
+      filters: { id: input.cart_id },
+      fields: ["customer_id"],
+    })
+
+    const { data: contracts } = await query.graph({
+      entity: "carrier_contract",
+      filters: { customer_id: cart.customer_id },
+      fields: ["account_number"],
+    })
+
+    return new StepResponse({
+      account_number: contracts[0]?.account_number,
+    })
+  }
+)
+```
+
+The following workflows expose the `setCalculatedShippingPricingContext` hook:
+
+- `listShippingOptionsForCartWithPricingWorkflow`: when listing a cart's shipping options with prices.
+- `calculateShippingOptionsPricesWorkflow`: when calculating shipping option prices via the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store/shipping-options/calculate-shipping-option-price).
+- `fetchShippingOptionForOrderWorkflow`: when fetching a shipping option for an order (used in returns, exchanges, and claims).
+- `fetchShippingOptionForDraftOrderWorkflow`: when fetching a shipping option for a draft order.
+- `maybeRefreshShippingMethodsWorkflow`: when refreshing a shipping method's price on an order.
+- `refreshPendingDraftOrderShippingMethodsWorkflow`: when refreshing pending calculated shipping methods on a draft order edit.
+- `refreshConfirmedDraftOrderShippingMethodsWorkflow`: when refreshing applied calculated shipping methods after a draft order edit is confirmed.
+
 ***
 
 ## Service Zone Restrictions
@@ -38578,6 +38705,14 @@ An inventory item, represented by the [InventoryItem data model](https://docs.me
 The `InventoryItem` data model holds details about the stock item. It connects to other data models like `InventoryLevel` that store stock and quantity details.
 
 ![A diagram showcasing the relation between data models in the Inventory Module](https://res.cloudinary.com/dza7lstvk/image/upload/v1709658103/Medusa%20Resources/inventory-architecture_kxr2ql.png)
+
+### Unit of Measure
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+An inventory item has an optional `unit_of_measure` field that stores the unit in which the item's stock is measured (for example, `lb` or `kg`). When set, the Medusa Admin displays inventory quantities with the unit appended (for example, `98.25 lb`).
+
+Because stock can be held in a unit that is sold in fractions of itself (for example, a pound of cheese sold as quarter-pounds), inventory quantities support fractional values. The `required_quantity` of an inventory kit item can also be a decimal number.
 
 ### Inventory Shipping Requirement
 
@@ -39452,6 +39587,7 @@ Each gift card record includes the following properties:
 - `code`: A unique identifier used to redeem the gift card. For example, `GIFT-123-ABC`.
 - `value`: The gift card's amount in major currency units. For example, `50.00` for a $50 gift card.
 - `status`: Whether the gift card was redeemed.
+- `expires_at`: An optional expiration date and time for the gift card. When `null`, the gift card never expires.
 - `reference`: The name of the table that triggered the gift card was used with. For example, `order` if the gift card was used in an order.
 - `reference_id`: The ID of the record in the reference table that triggered the gift card was used with. For example, `order_123` if the gift card was used in order with ID `order_123`.
 - `line_item_id`: The ID of the line item in the order that the customer purchased the gift card in.
@@ -39463,6 +39599,16 @@ Each gift card record includes the following properties:
 Gift cards can be sold as products in your store. You can create [products](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/index.html.md) with the `is_giftcard` property set to `true`.
 
 When a customer purchases a gift card product, a new gift card is automatically created with the specified value and associated with the order.
+
+***
+
+## Gift Card Expiry
+
+A gift card with a `null` value for `expires_at` never expires. When `expires_at` is set, the Loyalty Plugin enforces expiry at the following points:
+
+- **Adding to cart**: If a customer tries to apply an expired gift card code, the `addGiftCardToCartWorkflow` throws an error and the gift card is not added.
+- **Checkout**: When the customer places the order, the `confirmCartCreditLinesWorkflow` checks all gift cards applied to the cart. If any have expired since being applied, it throws an error before debiting balances.
+- **Cart refresh**: The `refreshCartGiftCardsWorkflow` silently drops expired gift cards from the cart so the cart can still be refreshed. Their credit lines and links are removed first.
 
 ***
 
@@ -40341,6 +40487,26 @@ So, the same [order concepts](https://docs.medusajs.com/Users/shahednasser/medus
 Similar to regular orders, draft orders can be [edited](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/edit/index.html.md), allowing admin users to add, update, or remove items, as well as add shipping methods.
 
 When the order edit is confirmed on the draft order, the changes are applied directly to the draft order and its [version](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-versioning/index.html.md) is incremented.
+
+### Calculated Shipping Options
+
+This behavior is available since Medusa [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+Draft orders support calculated shipping options, in addition to flat-rate options. When you add a calculated shipping method to a draft order edit using `addDraftOrderShippingMethodsWorkflow`, Medusa calls the fulfillment provider to price the method against the order's projected items.
+
+Medusa automatically keeps calculated shipping prices up to date during the edit:
+
+- When items are added or removed, Medusa reprices any pending calculated shipping methods against the updated projected items.
+- When the edit is confirmed, Medusa reprices any already-applied calculated shipping methods against the final materialized order items.
+
+Shipping methods with a custom amount (`is_custom_amount: true`) and flat-rate methods are never repriced automatically.
+
+The `fetchShippingOptionForDraftOrderWorkflow` exposes two hooks you can use to inject additional context before the fulfillment provider calculates the price:
+
+- `setPricingContext`: inject additional pricing context (for example, a `location_id`) used when resolving flat-rate prices from the Pricing Module. The context is merged with the order's `currency_code`.
+- `setCalculatedShippingPricingContext`: inject custom context that is forwarded to the fulfillment provider's `calculatePrice` method when pricing a calculated shipping option. The returned object is merged into the `context` parameter of `calculatePrice`; framework-provided properties take precedence on any naming conflict.
+
+The `refreshConfirmedDraftOrderShippingMethodsWorkflow` and `refreshPendingDraftOrderShippingMethodsWorkflow` workflows also expose a `setCalculatedShippingPricingContext` hook for the same purpose when repricing already-applied or pending calculated shipping methods.
 
 ### Draft Order Locale
 
@@ -43128,7 +43294,7 @@ The payment flow consists of the following steps:
   - This payment collection will hold all details related to the payment operations.
 - [Show Payment Providers](https://docs.medusajs.com/api/store/payment-providers/list-payment-providers): Show the customer the available payment providers to choose from.
   - You can integrate any [payment provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/index.html.md), and you can enable them per region.
-- [Create and Initialize Payment Session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider.
+- [Create and Initialize Payment Session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider. Medusa validates that the chosen provider is enabled in the cart's region and throws an error if it is not.
 - [Complete Cart](https://docs.medusajs.com/api/store/carts/complete-cart): Once the customer places the order, complete the cart, which involves:
   - Authorizing the payment session with the third-party payment provider.
   - If the third-party payment provider requires performing additional actions, show them to the customer, then retry cart completion.
@@ -43279,6 +43445,8 @@ The payment collection has one or more payment sessions, each being a payment am
 So, once the customer selects a payment provider, create a payment session for the selected payment provider.
 
 This will also initialize the payment session in the third-party payment provider.
+
+When creating a payment session through `createPaymentSessionsWorkflow`, Medusa validates that the chosen payment provider is enabled in the cart's region. If the provider is not enabled in the region, the workflow throws an error. This validation only applies to payment collections linked to an active (not yet completed) cart; payment collections on orders are not affected.
 
 For example:
 
@@ -53817,6 +53985,8 @@ The Redis Cache Module uses Redis to cache data in your store. In production, it
 
 The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Redis Caching Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis/index.html.md) instead.
 
+However, if you use OAuth-based authentication providers such as Google or GitHub login, keep the Redis Cache Module registered. The Auth Module uses the Cache Module to store OAuth state between the redirect and callback. Removing it without a Redis provider causes Medusa to use an in-memory fallback, which breaks OAuth flows in multi-instance or restarted deployments.
+
 ***
 
 ## Register the Redis Cache Module
@@ -55307,6 +55477,10 @@ This separation of concerns allows for greater flexibility and extensibility. Yo
 ### 1. Remove the Cache Module
 
 The first step is to remove the Cache Module from your `medusa-config.ts` file.
+
+If you use OAuth-based authentication providers such as Google or GitHub login, the Auth Module uses the Cache Module to store the OAuth state parameter between the redirect and the callback. Removing the Cache Module without a Redis provider causes Medusa to fall back to an in-memory cache, which breaks OAuth flows across multiple application instances or after a restart.
+
+Keep the Cache Module registered with a Redis provider until the Auth Module is updated to use the Caching Module instead.
 
 For example, if you set up the Redis Cache Module, remove the following code from `medusa-config.ts`:
 
@@ -69702,7 +69876,7 @@ When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll rec
 
 #### getSignature Method
 
-Next, you'll add the `getSignature` method to the service. This method generates signatures for use in request headers when sending webhook events to AI agents.
+Next, you'll add the `getSignature` method to the service. This method generates a base64 signature for a payload in the same format that AI agents use for inbound requests, which is useful to test the checkout APIs locally.
 
 Add the following method to the `AgenticCommerceService` class:
 
@@ -69716,7 +69890,7 @@ export default class AgenticCommerceService {
 }
 ```
 
-This method receives webhook event data and generates signatures using HMAC-SHA256 with the module's `signatureKey` option.
+This method receives a payload and generates a signature using HMAC-SHA256 with the module's `signatureKey` option.
 
 #### sendWebhookEvent Method
 
@@ -69726,23 +69900,52 @@ First, add the following type at the top of the `src/modules/agentic-commerce/se
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export type AgenticCommerceWebhookEvent = {
-  type: "order.created" | "order.updated"
+  type: "order_create" | "order_update"
   data: {
     type: "order"
+    id: string
     checkout_session_id: string
     permalink_url: string
-    status: "created" | "manual_review" | "confirmed" | "canceled" | "shipping" | "fulfilled"
-    refunds: {
-      type: "store_credit" | "original_payment"
-      amount: number
+    status: "created" | "manual_review" |
+      "confirmed" | "processing" | "shipped" |
+      "completed" | "canceled"
+    adjustments: {
+      id: string
+      type: "refund"
+      occurred_at: string
+      status: "completed"
+      amount?: number
     }[]
   }
 }
 ```
 
-This type defines the structure of webhook events that you can send to AI agents based on [Agentic Commerce specifications](https://developers.openai.com/commerce/specs/webhooks).
+This type defines the structure of webhook events that you can send to AI agents based on the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 
 Then, add the following method to the `AgenticCommerceService` class:
+
+```ts title="src/modules/agentic-commerce/service.ts"
+export default class AgenticCommerceService {
+  // ...
+  getWebhookSignature(
+    rawBody: string,
+    timestamp = Math.floor(Date.now() / 1000)
+  ) {
+    const digest = crypto
+      .createHmac("sha256", this.options.signatureKey)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    return `t=${timestamp},v1=${digest}`
+  }
+}
+```
+
+Outbound webhook events use a different signature format than inbound requests. This method builds the `Merchant-Signature` header value that the ACP `2026-04-17` release expects, which is a hexadecimal HMAC-SHA256 digest of the timestamp and the raw request body, joined by a period.
+
+Sign the exact raw body string that you send in the request, not a re-serialized copy of the payload. Any difference in key order or whitespace produces a different digest that the receiver can't verify.
+
+Finally, add the following method to the `AgenticCommerceService` class:
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export default class AgenticCommerceService {
@@ -69751,15 +69954,17 @@ export default class AgenticCommerceService {
     type,
     data,
   }: AgenticCommerceWebhookEvent) {
-    // Create signature
-    const signature = this.getSignature(data)
+    const rawBody = JSON.stringify({ type, data })
+    const signature = this.getWebhookSignature(rawBody)
     // TODO send order webhook event
-    console.log(`Sent order webhook event ${type} with signature ${signature} and data ${JSON.stringify(data)}`)
+    console.log(
+      `Prepared order webhook event ${type} with Merchant-Signature ${signature}`
+    )
   }
 }
 ```
 
-This method receives webhook event types and data, generates signatures using the `getSignature` method, and logs events to the console.
+This method receives webhook event types and data, serializes the payload once, signs that exact string using the `getWebhookSignature` method, and logs events to the console.
 
 When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll get access to endpoints for sending webhook events and can implement the logic in this method.
 
@@ -72571,6 +72776,12 @@ export default async function orderWebhookHandler({
   const configModule = container.resolve("configModule")
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
+  if (!storefrontUrl) {
+    throw new Error(
+      "A storefront URL is required to send ACP order webhooks"
+    )
+  }
+
   // retrieve order
   const { data: [order] } = await query.graph({
     entity: "order",
@@ -72592,34 +72803,49 @@ export default async function orderWebhookHandler({
     return
   }
 
-  // prepare webhook event
-  const webhookEvent: AgenticCommerceWebhookEvent = {
-    type: name === "order.placed" ? "order.created" : "order.updated",
-    data: {
-      type: "order",
-      checkout_session_id: order.cart.id,
-      permalink_url: `${storefrontUrl}/orders/${order.id}`,
-      status: "confirmed",
-      refunds: order.transactions?.filter(
-        (transaction) => transaction?.reference === "refund"
-      ).map((transaction) => ({
-        type: "original_payment",
-        amount: transaction!.amount * -1,
-      })) || [],
-    },
+  // set status based on order and fulfillments
+  const fulfillments = (order.fulfillments || []).filter(
+    (fulfillment) => !!fulfillment
+  )
+  let status: AgenticCommerceWebhookEvent["data"]["status"] =
+    "confirmed"
+
+  if (order.status === "canceled") {
+    status = "canceled"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.delivered_at)
+  ) {
+    status = "completed"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.shipped_at)
+  ) {
+    status = "shipped"
   }
 
-  // set status based on order, fulfillments and transactions
-  if (order.status === "canceled") {
-    webhookEvent.data.status = "canceled"
-  } else {
-    const allFulfillmentsShipped = order.fulfillments?.every((fulfillment) => !!fulfillment?.shipped_at)
-    const allFulfillmentsDelivered = order.fulfillments?.every((fulfillment) => !!fulfillment?.delivered_at)
-    if (allFulfillmentsShipped) {
-      webhookEvent.data.status = "shipping"
-    } else if (allFulfillmentsDelivered) {
-      webhookEvent.data.status = "fulfilled"
-    }
+  // prepare webhook event
+  const webhookEvent: AgenticCommerceWebhookEvent = {
+    type: name === "order.placed" ?
+      "order_create" : "order_update",
+    data: {
+      type: "order",
+      id: order.id,
+      checkout_session_id: order.cart.id,
+      permalink_url: `${storefrontUrl}/orders/${order.id}`,
+      status,
+      adjustments: order.transactions?.filter(
+        (transaction) => transaction?.reference === "refund"
+      ).map((transaction) => ({
+        id: transaction!.id,
+        type: "refund",
+        occurred_at: new Date(
+          transaction!.created_at
+        ).toISOString(),
+        status: "completed",
+        amount: Math.abs(transaction!.amount) * 100,
+      })) || [],
+    },
   }
 
   // send webhook event
@@ -72642,8 +72868,12 @@ In the subscriber function, you:
 
 - Retrieve orders using Query. You filter by order IDs received in event data.
 - If orders don't exist or if order carts don't have the `is_checkout_session` metadata field, you return early since orders are not associated with checkout sessions.
-- Prepare webhook event payloads based on order data, following [Agentic Commerce webhook specifications](https://developers.openai.com/commerce/specs/checkout#webhooks).
+- Map the order's status and fulfillments to an ACP order status. You check the `completed` case before the `shipped` case, since delivered fulfillments are also shipped. You also require at least one fulfillment, because `Array.prototype.every` returns `true` for an empty array and would otherwise report an unfulfilled order as shipped.
+- Map refund transactions to the `adjustments` array. Medusa stores refunds as negative amounts, so you use the absolute value.
+- Prepare webhook event payloads based on order data, following the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 - Send webhook events to AI agents using the `sendWebhookEvent` method of the Agentic Commerce Module's service.
+
+Extract the payload-building logic into an exported function, such as `buildOrderWebhookEvent`, if you want to unit test the status and adjustment mapping without emitting events. You can find an example in the [tutorial's repository](https://github.com/medusajs/examples/tree/main/agentic-commerce).
 
 ### Use Order Webhook Events in ChatGPT
 
@@ -140035,6 +140265,8 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/users/](https://docs.medusajs.com/api/admin#users_getusersid)
 - [POST /admin/users/](https://docs.medusajs.com/api/admin#users_postusersid)
 - [DELETE /admin/users/](https://docs.medusajs.com/api/admin#users_deleteusersid)
+- [GET /admin/users//auth-providers](https://docs.medusajs.com/api/admin#users_getusersidauthproviders)
+- [POST /admin/users//reset-password](https://docs.medusajs.com/api/admin#users_postusersidresetpassword)
 - [GET /admin/views/entities](https://docs.medusajs.com/api/admin#views_getviewsentities)
 - [GET /admin/views//columns](https://docs.medusajs.com/api/admin#views_getviewsentitycolumns)
 - [GET /admin/views//configurations](https://docs.medusajs.com/api/admin#views_getviewsentityconfigurations)
@@ -162544,7 +162776,7 @@ This recipe provides the general steps to implement a marketplace in your Medusa
 
 A marketplace is an online commerce store that allows different vendors to sell their products within the same commerce system. Customers can purchase products from any of these vendors, and vendors can manage their orders separately.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) built for customizations facilitates building a marketplace. You can create a Marketplace Module that implements custom data models, such as vendors or sellers, and link those data models to existing ones such as products and orders. You also expose custom features using API routes, and implement complex flows using workflows.
 
 [How Foraged built a custom marketplace with Medusa](https://medusajs.com/blog/foraged/).
 
@@ -166716,7 +166948,7 @@ Subscription-based purchase allows customers to purchase products for a specifie
 
 For example, a customer can purchase a book subscription box for a period of three months. Each month, the payment is captured for that order and, if the payment is successful, the fulfillment is processed.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) built for customizations facilitates building subscription-based purchases. You can create a Subscription Module that implements data models for subscriptions, and link those data models to existing ones such as products and orders.
 
 You can also expose custom features using API routes, and implement complex flows using workflows.
 
@@ -166818,7 +167050,7 @@ This tutorial is divided into two parts: this part that covers the backend and a
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. The Medusa application's commerce features are built around [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md) that are available out-of-the-box.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates customizing Medusa's core features for your specific use case, such as ticket booking.
 
 This tutorial provides an approach to implement a ticket booking system using Medusa. Depending on your specific requirements, you might need to adjust the implementation details or explore a different approach.
 
@@ -173345,7 +173577,7 @@ Follow the step-by-step [Ticket Booking System Example](https://docs.medusajs.co
 
 A ticket booking system allows customers to book tickets for events, such as shows or sports games. By using a ticket booking system, you can manage shows, venues, and seat availability, among other features.
 
-Medusa's [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md).
+The Medusa [Framework](https://docs.medusajs.com/docs/learn/fundamentals/framework/index.html.md) facilitates building a ticket booking system on top of the existing commerce functionalities, such as products, pricing, inventory, carts, and orders. All of these are provided by Medusa's [Commerce Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/index.html.md).
 
 To support ticket-booking features, you can customize the Medusa application by creating a Ticket Booking Module, linking its data models to Medusa's existing models, and building flows around the module.
 
