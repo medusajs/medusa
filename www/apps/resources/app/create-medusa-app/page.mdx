@@ -15,7 +15,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a Next.js Starter Storefront. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
+The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a storefront. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
 
 <Prerequisites items={[
   {
@@ -182,7 +182,7 @@ The command will use the package manager you run it with to create a new Medusa 
       </Table.Cell>
       <Table.Cell>
 
-        Installs the Next.js Starter storefront in the `apps/storefront` directory within your project monorepo. If this option is not specified, the storefront directory is removed from the project.
+        Installs the storefront in the `apps/storefront` directory within your project monorepo. If this option is not specified, the storefront directory is removed from the project.
 
       </Table.Cell>
       <Table.Cell>
@@ -233,7 +233,7 @@ The command will use the package manager you run it with to create a new Medusa 
       </Table.Cell>
       <Table.Cell>
 
-        Specify the Medusa version to install in the project. The specified version will be used for every `@medusajs/*` package in the Medusa and Next.js Starter projects.
+        Specify the Medusa version to install in the project. The specified version will be used for every `@medusajs/*` package in the Medusa and storefront projects.
 
       </Table.Cell>
       <Table.Cell>
@@ -339,7 +339,7 @@ my-medusa-store/
 │   │   ├── src/
 │   │   ├── package.json
 │   │   └── medusa-config.ts
-│   └── storefront/       # Next.js Starter Storefront (if --with-nextjs-starter is used)
+│   └── storefront/       # Storefront (if --with-nextjs-starter is used)
 │       ├── src/
 │       ├── package.json
 │       └── next.config.js
@@ -347,7 +347,7 @@ my-medusa-store/
 └── pnpm-workspace.yaml   # Workspace configuration
 ```
 
-Your Medusa backend will be located in the `apps/backend` directory, and the optional Next.js Starter Storefront in `apps/storefront`.
+Your Medusa backend will be located in the `apps/backend` directory, and the optional storefront in `apps/storefront`.
 
 ---
 
@@ -365,7 +365,7 @@ Learn more about how to create a plugin in [this documentation](!docs!/learn/fun
 
 ## Install a Specific Medusa Version
 
-To install a specific version of Medusa, use the `--version` option. This will install the specified version for every `@medusajs/*` package in the Medusa and Next.js Starter projects. For example:
+To install a specific version of Medusa, use the `--version` option. This will install the specified version for every `@medusajs/*` package in the Medusa and storefront projects. For example:
 
 ```bash npx2yarnExec
 npx create-medusa-app@latest my-medusa-store --version 2.3.0

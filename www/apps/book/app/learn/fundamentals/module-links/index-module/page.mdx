@@ -105,32 +105,6 @@ Incremental sync requires a Redis-based event bus. If you're using the in-memory
 
 For example, if you create a new product, the Index Module will ingest it into its data store.
 
-### Enable Index Module Feature Flag
-
-Since the Index Module is still experimental, the `/store/products` and `/admin/products` API routes will use the Index Module to retrieve products only if the Index Module's feature flag is enabled. By enabling the feature flag, you can filter products by their linked data models in these API routes.
-
-To enable the Index Module's feature flag, add the following line to your `.env` file:
-
-```env
-MEDUSA_FF_INDEX_ENGINE=true
-```
-
-If you send a request to the `/store/products` or `/admin/products` API routes, you'll receive the following response:
-
-```json
-{
-  "products": [
-    // ...
-  ],
-  "count": 2,
-  "estimate_count": 2,
-  "offset": 0,
-  "limit": 50
-}
-```
-
-Notice the `estimate_count` property, which is the estimated total number of products in the database. You'll learn more about it in the [Pagination](#apply-pagination-with-the-index-module) section.
-
 ---
 
 ## How to Use the Index Module

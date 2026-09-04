@@ -32,6 +32,12 @@ When creating a cart, you can set the `locale` property to specify the desired l
 
 Refer to the [Translation Module](../../translation/page.mdx) to learn more about how translations and locales work.
 
+### Cart Currency
+
+A cart's currency is determined by its region. When you create a cart using the [createCartWorkflow](/references/medusa-workflows/createCartWorkflow), if you provide a `currency_code`, it must match the `currency_code` of the cart's region. Otherwise, an error is thrown.
+
+If you don't provide a `currency_code`, the cart will use the region's currency automatically.
+
 ---
 
 ## Line Items

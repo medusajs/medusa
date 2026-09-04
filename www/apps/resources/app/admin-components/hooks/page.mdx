@@ -1,0 +1,421 @@
+---
+sidebar_label: "Hooks"
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
+
+</Note>
+
+The `@medusajs/dashboard/hooks` package exports React hooks that you can use in your [admin extensions](!docs!/learn/fundamentals/admin/widgets). These hooks provide data-fetching utilities for core Medusa resources and general-purpose helpers for building admin UI.
+
+---
+
+## API Hooks
+
+Use these hooks to fetch or mutate data from the Medusa backend. They are built on top of [TanStack Query](https://tanstack.com/query/latest) and follow the same patterns used throughout the Medusa Admin dashboard.
+
+### Customer Hooks
+
+```tsx
+import {
+  customersQueryKeys,
+  useCustomer,
+  useCustomerAddress,
+  useCustomers,
+  useListCustomerAddresses,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useCustomers`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of customers.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useCustomer`</Table.Cell>
+      <Table.Cell>Fetches a single customer by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useListCustomerAddresses`</Table.Cell>
+      <Table.Cell>Fetches the list of addresses for a customer.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useCustomerAddress`</Table.Cell>
+      <Table.Cell>Fetches a single address for a customer.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`customersQueryKeys`</Table.Cell>
+      <Table.Cell>TanStack Query key factory for customer queries. Useful for cache invalidation.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+### Order Hooks
+
+```tsx
+import {
+  ordersQueryKeys,
+  useOrder,
+  useOrderChanges,
+  useOrderPreview,
+  useUpdateOrder,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useOrder`</Table.Cell>
+      <Table.Cell>Fetches a single order by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useOrderChanges`</Table.Cell>
+      <Table.Cell>Fetches the list of changes for an order.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useOrderPreview`</Table.Cell>
+      <Table.Cell>Fetches a preview of an order, including pending edits.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useUpdateOrder`</Table.Cell>
+      <Table.Cell>Mutation hook for updating an order.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useRequestOrderEdit`</Table.Cell>
+      <Table.Cell>Mutation hook for requesting an order edit. Import from `@medusajs/dashboard/hooks`.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`ordersQueryKeys`</Table.Cell>
+      <Table.Cell>TanStack Query key factory for order queries.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+### Product Hooks
+
+```tsx
+import {
+  productsQueryKeys,
+  useCreateProduct,
+  useDeleteProduct,
+  useDeleteVariantLazy,
+  useProduct,
+  useProductVariants,
+  useProducts,
+  useUpdateProduct,
+  useUpdateProductVariantsBatch,
+  variantsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useProducts`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of products.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useProduct`</Table.Cell>
+      <Table.Cell>Fetches a single product by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useProductVariants`</Table.Cell>
+      <Table.Cell>Fetches the variants for a product.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useCreateProduct`</Table.Cell>
+      <Table.Cell>Mutation hook for creating a product.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useUpdateProduct`</Table.Cell>
+      <Table.Cell>Mutation hook for updating a product.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useDeleteProduct`</Table.Cell>
+      <Table.Cell>Mutation hook for deleting a product.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useUpdateProductVariantsBatch`</Table.Cell>
+      <Table.Cell>Mutation hook for batch-updating a product's variants.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useDeleteVariantLazy`</Table.Cell>
+      <Table.Cell>Lazy mutation hook for deleting a product variant.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`productsQueryKeys`</Table.Cell>
+      <Table.Cell>TanStack Query key factory for product queries.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`variantsQueryKeys`</Table.Cell>
+      <Table.Cell>TanStack Query key factory for variant queries.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+### Product Variant Hooks
+
+```tsx
+import {
+  productVariantQueryKeys,
+  useInfiniteVariants,
+  useVariants,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useVariants`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of product variants.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useInfiniteVariants`</Table.Cell>
+      <Table.Cell>Fetches product variants with infinite scrolling support.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`productVariantQueryKeys`</Table.Cell>
+      <Table.Cell>TanStack Query key factory for product variant queries.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+### Other Resource Hooks
+
+```tsx
+import { promotionsQueryKeys, usePromotions } from "@medusajs/dashboard/hooks"
+import { regionsQueryKeys, useRegion, useRegions } from "@medusajs/dashboard/hooks"
+import {
+  salesChannelsQueryKeys,
+  useSalesChannel,
+  useSalesChannelAddProducts,
+  useSalesChannelRemoveProducts,
+  useSalesChannels,
+} from "@medusajs/dashboard/hooks"
+import {
+  shippingOptionsQueryKeys,
+  useShippingOption,
+  useShippingOptions,
+} from "@medusajs/dashboard/hooks"
+import {
+  pricePreferencesQueryKeys,
+  usePricePreferences,
+} from "@medusajs/dashboard/hooks"
+import { storeQueryKeys, useStore } from "@medusajs/dashboard/hooks"
+import { useUser } from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`usePromotions`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of promotions.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useRegion`</Table.Cell>
+      <Table.Cell>Fetches a single region by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useRegions`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of regions.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannel`</Table.Cell>
+      <Table.Cell>Fetches a single sales channel by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannels`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of sales channels.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelAddProducts`</Table.Cell>
+      <Table.Cell>Mutation hook for adding products to a sales channel.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelRemoveProducts`</Table.Cell>
+      <Table.Cell>Mutation hook for removing products from a sales channel.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useShippingOption`</Table.Cell>
+      <Table.Cell>Fetches a single shipping option by ID.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useShippingOptions`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of shipping options.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`usePricePreferences`</Table.Cell>
+      <Table.Cell>Fetches a paginated list of price preferences.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useStore`</Table.Cell>
+      <Table.Cell>Fetches the store's details.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useUser`</Table.Cell>
+      <Table.Cell>Fetches the currently authenticated admin user.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Utility Hooks
+
+### useComboboxData
+
+Fetches and formats data for use in a combobox (select with search) component.
+
+```tsx
+import { useComboboxData } from "@medusajs/dashboard/hooks"
+```
+
+### useDate
+
+Returns formatting utilities for dates, consistent with the date format used in the Medusa Admin.
+
+```tsx
+import { useDate } from "@medusajs/dashboard/hooks"
+```
+
+### useDebouncedSearch
+
+Returns a debounced search string and a setter. Useful when building search inputs that call an API.
+
+```tsx
+import { useDebouncedSearch } from "@medusajs/dashboard/hooks"
+
+const MyComponent = () => {
+  const { searchValue, rawValue, setSearch } =
+    useDebouncedSearch()
+
+  // Pass searchValue to your API call and rawValue to the input.
+}
+```
+
+### useQueryParams
+
+Reads and writes URL query parameters as React state. Useful for keeping filter and pagination state in the URL.
+
+```tsx
+import { useQueryParams } from "@medusajs/dashboard/hooks"
+```
+
+---
+
+## Data Table Hooks
+
+These hooks help build data table columns and filters consistent with the Medusa Admin style.
+
+```tsx
+import {
+  useDataTableDateColumns,
+  useDataTableDateFilters,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useDataTableDateColumns`</Table.Cell>
+      <Table.Cell>Returns pre-configured column definitions for common date fields (`created_at`, `updated_at`).</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useDataTableDateFilters`</Table.Cell>
+      <Table.Cell>Returns pre-configured filter definitions for common date fields.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Sales Channel Table Hooks
+
+```tsx
+import {
+  useSalesChannelTableColumns,
+  useSalesChannelTableEmptyState,
+  useSalesChannelTableFilters,
+  useSalesChannelTableQuery,
+} from "@medusajs/dashboard/hooks"
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Hook</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelTableColumns`</Table.Cell>
+      <Table.Cell>Returns column definitions for a sales channel data table.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelTableFilters`</Table.Cell>
+      <Table.Cell>Returns filter definitions for a sales channel data table.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelTableQuery`</Table.Cell>
+      <Table.Cell>Returns query parameters for a sales channel data table, derived from URL state.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`useSalesChannelTableEmptyState`</Table.Cell>
+      <Table.Cell>Returns the empty state configuration for a sales channel data table.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

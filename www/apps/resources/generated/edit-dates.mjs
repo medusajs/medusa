@@ -7,7 +7,7 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/page.mdx": "2026-06-09T08:33:36.509Z",
   "app/commerce-modules/cart/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/_events/page.mdx": "2024-07-03T19:27:13+03:00",
-  "app/commerce-modules/cart/concepts/page.mdx": "2026-06-05T14:56:18.897Z",
+  "app/commerce-modules/cart/concepts/page.mdx": "2026-09-04T06:48:32.013Z",
   "app/commerce-modules/cart/promotions/page.mdx": "2024-10-08T07:54:31.120Z",
   "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-16T10:51:03.732Z",
   "app/commerce-modules/cart/page.mdx": "2025-04-17T08:48:27.822Z",
@@ -99,7 +99,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/user-creation-flows/page.mdx": "2025-02-26T11:35:54.685Z",
   "app/commerce-modules/user/page.mdx": "2026-06-09T08:34:10.480Z",
   "app/commerce-modules/page.mdx": "2026-04-20T10:41:32.836Z",
-  "app/create-medusa-app/page.mdx": "2026-08-12T11:55:09.576Z",
+  "app/create-medusa-app/page.mdx": "2026-09-03T13:00:11.443Z",
   "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
   "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
   "app/deployment/page.mdx": "2026-01-08T09:19:58.734Z",
@@ -134,7 +134,7 @@ export const generatedEditDates = {
   "app/service-factory-reference/tips/filtering/page.mdx": "2025-08-15T12:06:28.709Z",
   "app/service-factory-reference/page.mdx": "2025-09-01T15:57:34.193Z",
   "app/storefront-development/cart/context/page.mdx": "2025-03-27T14:47:14.258Z",
-  "app/storefront-development/cart/create/page.mdx": "2026-07-31T12:42:34.225Z",
+  "app/storefront-development/cart/create/page.mdx": "2026-09-04T06:48:40.521Z",
   "app/storefront-development/cart/manage-items/page.mdx": "2025-03-26T15:54:31.446Z",
   "app/storefront-development/cart/retrieve/page.mdx": "2025-03-27T14:46:51.473Z",
   "app/storefront-development/cart/update/page.mdx": "2025-12-16T07:16:57.881Z",
@@ -2058,7 +2058,7 @@ export const generatedEditDates = {
   "app/admin-components/components/json-view-section/page.mdx": "2026-07-28T05:43:12.252Z",
   "app/admin-components/components/section-row/page.mdx": "2026-07-28T05:43:12.255Z",
   "app/admin-components/components/table/page.mdx": "2026-07-28T05:43:12.261Z",
-  "app/admin-components/page.mdx": "2025-03-10T10:42:41.345Z",
+  "app/admin-components/page.mdx": "2026-09-04T14:14:19.756Z",
   "app/admin-components/layouts/single-column/page.mdx": "2025-08-01T15:17:42.109Z",
   "app/admin-components/layouts/two-column/page.mdx": "2025-08-01T15:18:00.109Z",
   "app/admin-components/components/forms/page.mdx": "2026-07-28T05:43:12.248Z",
@@ -7650,5 +7650,6 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
-  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z"
+  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
+  "app/admin-components/hooks/page.mdx": "2026-09-04T14:14:10.194Z"
 }

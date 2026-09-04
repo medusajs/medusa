@@ -103,6 +103,12 @@ The response of the Create Cart API route has a `cart` field, which is a [cart o
 
 Refer to the [Create Cart API reference](!api!/store/carts/create-cart) for details on other available request parameters.
 
+### Cart Currency
+
+A cart's currency is set from the region you associate it with. If you pass a `currency_code` when creating a cart, it must match the region's currency — otherwise, an error is thrown. To avoid errors, omit `currency_code` and let Medusa set it from the region automatically.
+
+---
+
 ### Cart's Sales Channel Scope
 
 As mentioned before, you must always pass the publishable API key in the header of the request (which is done automatically by the JS SDK, as explained in the [Publishable API Keys](../../publishable-api-keys/page.mdx) guide). So, Medusa will associate the cart with the sales channel(s) of the publishable API key.

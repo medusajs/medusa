@@ -64,7 +64,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/module-links/custom-columns/page.mdx": "2025-12-09T13:27:05.446Z",
   "app/learn/fundamentals/module-links/directions/page.mdx": "2025-03-17T12:52:06.161Z",
   "app/learn/fundamentals/module-links/page.mdx": "2026-07-01T14:48:07.598Z",
-  "app/learn/fundamentals/module-links/query/page.mdx": "2026-09-02T13:44:42.828Z",
+  "app/learn/fundamentals/module-links/query/page.mdx": "2026-09-03T13:50:08.415Z",
   "app/learn/fundamentals/modules/db-operations/page.mdx": "2025-10-28T16:02:06.265Z",
   "app/learn/fundamentals/modules/multiple-services/page.mdx": "2025-03-18T15:11:44.632Z",
   "app/learn/fundamentals/modules/page.mdx": "2025-12-23T07:00:14.586Z",
@@ -116,11 +116,11 @@ export const generatedEditDates = {
   "app/learn/fundamentals/module-links/read-only/page.mdx": "2025-10-15T15:42:22.610Z",
   "app/learn/fundamentals/data-models/properties/page.mdx": "2026-08-13T06:12:38.304Z",
   "app/learn/fundamentals/framework/page.mdx": "2025-06-26T14:26:22.120Z",
-  "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2026-07-23T06:51:22.226Z",
+  "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2026-09-03T14:04:01.809Z",
   "app/learn/fundamentals/workflows/errors/page.mdx": "2025-04-25T14:26:25.000Z",
   "app/learn/fundamentals/api-routes/override/page.mdx": "2025-12-22T12:56:06.558Z",
   "app/learn/fundamentals/module-links/index/page.mdx": "2025-05-23T07:57:58.958Z",
-  "app/learn/fundamentals/module-links/index-module/page.mdx": "2026-08-13T11:31:52.681Z",
+  "app/learn/fundamentals/module-links/index-module/page.mdx": "2026-09-04T08:36:02.412Z",
   "app/learn/introduction/build-with-llms-ai/page.mdx": "2026-05-05T10:49:20.724Z",
   "app/learn/installation/docker/page.mdx": "2026-04-21T08:13:24.486Z",
   "app/learn/fundamentals/generated-types/page.mdx": "2026-01-06T06:38:15.719Z",
@@ -157,5 +157,7 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z"
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
+  "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-03T13:58:10.310Z",
+  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-03T13:53:55.043Z"
 }
