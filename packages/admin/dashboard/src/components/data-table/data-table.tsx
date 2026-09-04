@@ -62,7 +62,7 @@ type DataTableActionMenuProps = {
   groups: DataTableActionMenuGroupProps[]
 }
 
-interface DataTableProps<TData> {
+export interface DataTableProps<TData> {
   data?: TData[]
   columns: DataTableColumnDef<TData, any>[]
   filters?: DataTableFilter[]
