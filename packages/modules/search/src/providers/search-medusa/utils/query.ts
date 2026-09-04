@@ -9,6 +9,7 @@ import type {
   IndexQuery,
   RankBy,
   Row,
+  TokenFilterOptions,
 } from "./api-types"
 import { mergeFilters, textMatchFilter, toSearchFilter } from "./filters"
 import type { MedusaSearchQueryOptions } from "./options"
@@ -62,19 +63,31 @@ function searchableFields(
   return fields
 }
 
+/**
+ * The last word of the query is a prefix, not a whole token, when
+ * `match_strategy` is "last" (typeahead) — every BM25 clause built over
+ * `input.q` needs this so a prefix-only match (query "egg" against document
+ * "Eggs") is scored/highlighted consistently with how `textMatchFilter`
+ * decided the document matches in the first place.
+ */
+function matchStrategySuffix(
+  input: SearchTypes.ProviderSearchQuery
+): TokenFilterOptions | undefined {
+  return input.search_options?.match_strategy === "last"
+    ? { last_as_prefix: true }
+    : undefined
+}
+
 function textRank(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
 ): RankBy {
   const fields = searchableFields(input, plan)
+  const suffix = matchStrategySuffix(input)
 
   const clauses = fields.map((path): unknown => {
     const field = plan.fields.get(path)!
 
-    const suffix =
-      input.search_options?.match_strategy === "last"
-        ? { last_as_prefix: true }
-        : undefined
     const clause = suffix
       ? [path, "BM25", input.q!, suffix]
       : [path, "BM25", input.q!]
@@ -228,6 +241,10 @@ function buildHighlightPlan(
 
   const snippet = !!highlight.snippet
   const computeAttributes: ComputeAttributes = {}
+  const suffix = matchStrategySuffix(input)
+  const rankFragmentsBy = suffix
+    ? ["$fragment", "BM25", input.q!, suffix]
+    : ["$fragment", "BM25", input.q!]
 
   const fields = highlight.fields.map((path, index) => {
     const field = plan.fields.get(path)
@@ -243,7 +260,7 @@ function buildHighlightPlan(
       path,
       {
         fragment_by: snippet ? "sentence" : "none",
-        rank_fragments_by: ["$fragment", "BM25", input.q!],
+        rank_fragments_by: rankFragmentsBy,
         fragment_limit: snippet
           ? SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT
           : DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT,
