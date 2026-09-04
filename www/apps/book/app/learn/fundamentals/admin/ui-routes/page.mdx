@@ -344,7 +344,7 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/en/main/hooks/use-params).
+You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/api/hooks/useParams).
 
 If you run the Medusa application and go to `http://localhost:9000/app/custom/123`, you'll see `123` printed in the page.
 
@@ -420,7 +420,7 @@ For example, create a UI route at `src/admin/routes/brands/[id]/page.tsx` with t
 export const dynamicBreadcrumbsHighlights = [
   ["25", "loader", "Define a loader function to fetch the brand data."],
   ["35", "breadcrumb", "Set the breadcrumb using the fetched brand data."],
-  ["36", "data", "The data returned by the loader function is passed as props to the breadcrumb function."],
+  ["36", "loaderData", "The data returned by the loader function is passed as props to the breadcrumb function."],
 ]
 
 ```tsx title="src/admin/routes/brands/[id]/page.tsx" highlights={dynamicBreadcrumbsHighlights}
@@ -459,14 +459,20 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   breadcrumb: (
-    { data }: UIMatch<BrandResponse>
-  ) => data.brand.name || "Brand",
+    { loaderData }: UIMatch<BrandResponse>
+  ) => loaderData?.brand.name || "Brand",
 }
 ```
 
 In the `loader` function, you retrieve the brands from a custom API route and return them.
 
-Then, in the `handle.breadcrumb` function, you receive `data` prop containing the brand information returned by the `loader` function. You can use this data to return a dynamic breadcrumb label.
+Then, in the `handle.breadcrumb` function, you receive the `loaderData` prop containing the brand information returned by the `loader` function. You can use this data to return a dynamic breadcrumb label.
+
+<Note>
+
+The `loaderData` prop replaces the `data` prop starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), which upgraded the Medusa Admin to React Router v7. In earlier versions, use the `data` prop instead.
+
+</Note>
 
 When you open the UI route at `http://localhost:9000/app/brands/123`, the breadcrumb will show the brand's name, such as `Acme`.
 
@@ -495,7 +501,7 @@ To set the page title of a UI route different than the `label` property, export 
 export const seoHighlights = [
   ["26", "loader", "Define a loader function to fetch the brand data."],
   ["36", "seo", "Set the document title using the fetched brand data."],
-  ["37", "match", "The match object holds the data returned by the loader in its `data` property."],
+  ["37", "match", "The match object holds the data returned by the loader in its `loaderData` property."],
 ]
 
 ```tsx title="src/admin/routes/brands/[id]/page.tsx" highlights={seoHighlights}
@@ -535,14 +541,20 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   seo: (match: UIMatch<BrandResponse>) => ({
-    title: match.data?.brand.name || "Brand",
+    title: match.loaderData?.brand.name || "Brand",
   }),
 }
 ```
 
 In the `loader` function, you retrieve the brand from a custom API route and return it.
 
-Then, in the `handle.seo` function, you receive the `match` object whose `data` property holds the data returned by the `loader` function. You use this data to return the dynamic title.
+Then, in the `handle.seo` function, you receive the `match` object whose `loaderData` property holds the data returned by the `loader` function. You use this data to return the dynamic title.
+
+<Note>
+
+The `loaderData` property replaces the `data` property starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), which upgraded the Medusa Admin to React Router v7. In earlier versions, use the `data` property instead.
+
+</Note>
 
 When you open the UI route at `http://localhost:9000/app/brands/123`, the browser tab's title will show the brand's name, such as `Acme - Medusa`.
 

@@ -61,7 +61,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/tips/table-views",
             "title": "Configure Table Views",
@@ -271,6 +270,13 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Manage Reservations",
             "path": "/inventory/reservations",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Export Inventory Items",
+            "path": "/inventory/export",
             "children": []
           }
         ]
@@ -517,7 +523,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Location & Shipping",
             "path": "/settings/locations-and-shipping",

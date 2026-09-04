@@ -84,7 +84,7 @@ This guide will teach you how to:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -876,7 +876,13 @@ You'll use this variant to add it to the cart later. You can find its ID by clic
 
 #### Retrieve Publishable API Key
 
-All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, products that aren't available in a cart's sales channel can't be added to it.
+All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, the products you retrieve are only those available in the key's sales channels.
+
+<Note>
+
+Medusa doesn't reject a variant added to a cart when its product isn't available in the cart's sales channel. Refer to the [Enforce Sales Channel Availability in Carts](../../../commerce-modules/cart/sales-channel-availability/page.mdx) guide to learn how to add that validation.
+
+</Note>
 
 To retrieve the publishable API key, on the Medusa Admin:
 

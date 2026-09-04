@@ -1,5 +1,19 @@
 # @medusajs/admin-shared
 
+## 2.20.1
+
+## 2.20.0
+
+### Patch Changes
+
+- [#16425](https://github.com/medusajs/medusa/pull/16425) [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55) Thanks [@sradevski](https://github.com/sradevski)! - Add support for configuring the global search in admin
+
+## 2.19.0
+
+### Patch Changes
+
+- [`8f03b13a6137047ce36f61a9bb033879395f9345`](undefined) - fix(admin-shared): add missing gift_card.list.side injection zone
+
 ## 2.18.0
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 {
-	"id": 12445,
+	"id": 12470,
 	"name": "pricing-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 12555,
+			"id": 12580,
 			"name": "PriceListRule",
 			"variant": "declaration",
 			"kind": 32,
@@ -30,7 +30,7 @@
 					"fileName": "price-list-rule.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L4"
 				}
 			],
 			"type": {
@@ -50,14 +50,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 12556,
+									"id": 12581,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 12557,
+											"id": 12582,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -75,7 +75,7 @@
 													"fileName": "price-list-rule.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L6"
 												}
 											],
 											"type": {
@@ -101,7 +101,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12558,
+											"id": 12583,
 											"name": "attribute",
 											"variant": "declaration",
 											"kind": 1024,
@@ -119,7 +119,7 @@
 													"fileName": "price-list-rule.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L7"
 												}
 											],
 											"type": {
@@ -134,7 +134,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12559,
+											"id": 12584,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -154,7 +154,7 @@
 													"fileName": "price-list-rule.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L8"
 												}
 											],
 											"type": {
@@ -163,13 +163,45 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
 										},
 										{
-											"id": 12560,
+											"id": 12585,
 											"name": "price_list",
 											"variant": "declaration",
 											"kind": 1024,
@@ -190,7 +222,7 @@
 													"fileName": "price-list-rule.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L9"
 												}
 											],
 											"type": {
@@ -202,7 +234,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12512,
+														"target": 12537,
 														"name": "PriceList"
 													}
 												],
@@ -216,10 +248,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												12557,
-												12558,
-												12559,
-												12560
+												12582,
+												12583,
+												12584,
+												12585
 											]
 										}
 									],
@@ -228,7 +260,7 @@
 											"fileName": "price-list-rule.ts",
 											"line": 5,
 											"character": 27,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list-rule.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list-rule.ts#L5"
 										}
 									]
 								}
@@ -248,7 +280,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 12512,
+			"id": 12537,
 			"name": "PriceList",
 			"variant": "declaration",
 			"kind": 32,
@@ -260,7 +292,7 @@
 					"fileName": "price-list.ts",
 					"line": 9,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L9"
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L9"
 				}
 			],
 			"type": {
@@ -280,14 +312,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 12513,
+									"id": 12538,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 12514,
+											"id": 12539,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -305,7 +337,7 @@
 													"fileName": "price-list.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L11"
 												}
 											],
 											"type": {
@@ -331,7 +363,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12515,
+											"id": 12540,
 											"name": "title",
 											"variant": "declaration",
 											"kind": 1024,
@@ -349,7 +381,7 @@
 													"fileName": "price-list.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L12"
 												}
 											],
 											"type": {
@@ -364,7 +396,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12516,
+											"id": 12541,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -382,7 +414,7 @@
 													"fileName": "price-list.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L13"
 												}
 											],
 											"type": {
@@ -397,7 +429,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12517,
+											"id": 12542,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -415,7 +447,7 @@
 													"fileName": "price-list.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L14"
 												}
 											],
 											"type": {
@@ -445,7 +477,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12518,
+											"id": 12543,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -463,7 +495,7 @@
 													"fileName": "price-list.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L15"
 												}
 											],
 											"type": {
@@ -493,7 +525,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12519,
+											"id": 12544,
 											"name": "starts_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -513,7 +545,7 @@
 													"fileName": "price-list.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L16"
 												}
 											],
 											"type": {
@@ -528,7 +560,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12520,
+											"id": 12545,
 											"name": "ends_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -548,7 +580,7 @@
 													"fileName": "price-list.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L17"
 												}
 											],
 											"type": {
@@ -563,7 +595,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12521,
+											"id": 12546,
 											"name": "rules_count",
 											"variant": "declaration",
 											"kind": 1024,
@@ -583,7 +615,7 @@
 													"fileName": "price-list.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L18"
 												}
 											],
 											"type": {
@@ -598,7 +630,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12522,
+											"id": 12547,
 											"name": "prices",
 											"variant": "declaration",
 											"kind": 1024,
@@ -619,7 +651,7 @@
 													"fileName": "price-list.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L19"
 												}
 											],
 											"type": {
@@ -631,7 +663,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12446,
+														"target": 12471,
 														"name": "Price"
 													}
 												],
@@ -641,7 +673,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12544,
+											"id": 12569,
 											"name": "price_list_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -662,7 +694,7 @@
 													"fileName": "price-list.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L22"
 												}
 											],
 											"type": {
@@ -674,7 +706,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12555,
+														"target": 12580,
 														"name": "PriceListRule"
 													}
 												],
@@ -684,7 +716,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12554,
+											"id": 12579,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -704,7 +736,7 @@
 													"fileName": "price-list.ts",
 													"line": 25,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L25"
 												}
 											],
 											"type": {
@@ -713,6 +745,38 @@
 													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -723,17 +787,17 @@
 										{
 											"title": "Properties",
 											"children": [
-												12514,
-												12515,
-												12516,
-												12517,
-												12518,
-												12519,
-												12520,
-												12521,
-												12522,
+												12539,
+												12540,
+												12541,
+												12542,
+												12543,
 												12544,
-												12554
+												12545,
+												12546,
+												12547,
+												12569,
+												12579
 											]
 										}
 									],
@@ -742,7 +806,7 @@
 											"fileName": "price-list.ts",
 											"line": 10,
 											"character": 23,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-list.ts#L10"
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-list.ts#L10"
 										}
 									]
 								}
@@ -762,7 +826,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 12633,
+			"id": 12658,
 			"name": "PricePreference",
 			"variant": "declaration",
 			"kind": 32,
@@ -774,7 +838,538 @@
 					"fileName": "price-preference.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L3"
+				}
+			],
+			"type": {
+				"type": "reference",
+				"target": {
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
+				},
+				"typeArguments": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"qualifiedName": "DMLEntitySchemaBuilder"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 12659,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 12660,
+											"name": "id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ID of the price preference."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-preference.ts",
+													"line": 5,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L5"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"qualifiedName": "PrimaryKeyModifier"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"qualifiedName": "IdProperty"
+														},
+														"name": "IdProperty",
+														"package": "@medusajs/utils"
+													}
+												],
+												"name": "PrimaryKeyModifier",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12661,
+											"name": "attribute",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The attribute of the price preference. For example, `region_id`."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-preference.ts",
+													"line": 6,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L6"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12662,
+											"name": "value",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The value of the price preference. For example, `reg_123`."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-preference.ts",
+													"line": 7,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L7"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12663,
+											"name": "is_tax_inclusive",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Whether prices matching this preference include taxes."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-preference.ts",
+													"line": 8,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L8"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"qualifiedName": "BooleanProperty"
+												},
+												"name": "BooleanProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												12660,
+												12661,
+												12662,
+												12663
+											]
+										}
+									],
+									"sources": [
+										{
+											"fileName": "price-preference.ts",
+											"line": 4,
+											"character": 29,
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-preference.ts#L4"
+										}
+									]
+								}
+							}
+						],
+						"name": "DMLEntitySchemaBuilder",
+						"package": "@medusajs/utils"
+					},
+					{
+						"type": "literal",
+						"value": "PricePreference"
+					}
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			},
+			"defaultValue": "..."
+		},
+		{
+			"id": 12604,
+			"name": "PriceRule",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"sources": [
+				{
+					"fileName": "price-rule.ts",
+					"line": 4,
+					"character": 6,
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L4"
+				}
+			],
+			"type": {
+				"type": "reference",
+				"target": {
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
+				},
+				"typeArguments": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"qualifiedName": "DMLEntitySchemaBuilder"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 12605,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 12606,
+											"name": "id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ID of the price rule."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 6,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L6"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"qualifiedName": "PrimaryKeyModifier"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"qualifiedName": "IdProperty"
+														},
+														"name": "IdProperty",
+														"package": "@medusajs/utils"
+													}
+												],
+												"name": "PrimaryKeyModifier",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12607,
+											"name": "attribute",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The attribute of the price rule. For example, `region_id`."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 7,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L7"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12608,
+											"name": "value",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The value of the price rule. For example, `reg_123`."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 8,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L8"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12609,
+											"name": "operator",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The operator of the price rule. For example, `eq`."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 9,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L9"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/enum.ts",
+													"qualifiedName": "EnumProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "query",
+														"queryType": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../../../packages/core/utils/src/pricing/enums.ts",
+																"qualifiedName": "PricingRuleOperator"
+															},
+															"name": "PricingRuleOperator",
+															"package": "@medusajs/utils",
+															"preferValues": true
+														}
+													}
+												],
+												"name": "EnumProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12610,
+											"name": "priority",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The priority of the price rule."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 10,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L10"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
+													"qualifiedName": "NumberProperty"
+												},
+												"name": "NumberProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 12611,
+											"name": "price",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The associated `Price`."
+													}
+												],
+												"modifierTags": [
+													"@expandable"
+												]
+											},
+											"sources": [
+												{
+													"fileName": "price-rule.ts",
+													"line": 11,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L11"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+													"qualifiedName": "BelongsTo"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 12471,
+														"name": "Price"
+													}
+												],
+												"name": "BelongsTo",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												12606,
+												12607,
+												12608,
+												12609,
+												12610,
+												12611
+											]
+										}
+									],
+									"sources": [
+										{
+											"fileName": "price-rule.ts",
+											"line": 5,
+											"character": 23,
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-rule.ts#L5"
+										}
+									]
+								}
+							}
+						],
+						"name": "DMLEntitySchemaBuilder",
+						"package": "@medusajs/utils"
+					},
+					{
+						"type": "literal",
+						"value": "PriceRule"
+					}
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			},
+			"defaultValue": "..."
+		},
+		{
+			"id": 12633,
+			"name": "PriceSet",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"sources": [
+				{
+					"fileName": "price-set.ts",
+					"line": 4,
+					"character": 6,
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-set.ts#L4"
 				}
 			],
 			"type": {
@@ -810,16 +1405,16 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "The ID of the price preference."
+														"text": "The ID of the price set."
 													}
 												]
 											},
 											"sources": [
 												{
-													"fileName": "price-preference.ts",
-													"line": 5,
+													"fileName": "price-set.ts",
+													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-set.ts#L6"
 												}
 											],
 											"type": {
@@ -846,537 +1441,6 @@
 										},
 										{
 											"id": 12636,
-											"name": "attribute",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The attribute of the price preference. For example, `region_id`."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-preference.ts",
-													"line": 6,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L6"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-													"qualifiedName": "TextProperty"
-												},
-												"name": "TextProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12637,
-											"name": "value",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {
-												"isOptional": true
-											},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The value of the price preference. For example, `reg_123`."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-preference.ts",
-													"line": 7,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L7"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-													"qualifiedName": "TextProperty"
-												},
-												"name": "TextProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12638,
-											"name": "is_tax_inclusive",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "Whether prices matching this preference include taxes."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-preference.ts",
-													"line": 8,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L8"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
-													"qualifiedName": "BooleanProperty"
-												},
-												"name": "BooleanProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										}
-									],
-									"groups": [
-										{
-											"title": "Properties",
-											"children": [
-												12635,
-												12636,
-												12637,
-												12638
-											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "price-preference.ts",
-											"line": 4,
-											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-preference.ts#L4"
-										}
-									]
-								}
-							}
-						],
-						"name": "DMLEntitySchemaBuilder",
-						"package": "@medusajs/utils"
-					},
-					{
-						"type": "literal",
-						"value": "PricePreference"
-					}
-				],
-				"name": "DmlEntity",
-				"package": "@medusajs/utils"
-			},
-			"defaultValue": "..."
-		},
-		{
-			"id": 12579,
-			"name": "PriceRule",
-			"variant": "declaration",
-			"kind": 32,
-			"flags": {
-				"isConst": true
-			},
-			"sources": [
-				{
-					"fileName": "price-rule.ts",
-					"line": 4,
-					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L4"
-				}
-			],
-			"type": {
-				"type": "reference",
-				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
-					"qualifiedName": "DmlEntity"
-				},
-				"typeArguments": [
-					{
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
-							"qualifiedName": "DMLEntitySchemaBuilder"
-						},
-						"typeArguments": [
-							{
-								"type": "reflection",
-								"declaration": {
-									"id": 12580,
-									"name": "__type",
-									"variant": "declaration",
-									"kind": 65536,
-									"flags": {},
-									"children": [
-										{
-											"id": 12581,
-											"name": "id",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The ID of the price rule."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 6,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L6"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
-													"qualifiedName": "PrimaryKeyModifier"
-												},
-												"typeArguments": [
-													{
-														"type": "reference",
-														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
-															"qualifiedName": "IdProperty"
-														},
-														"name": "IdProperty",
-														"package": "@medusajs/utils"
-													}
-												],
-												"name": "PrimaryKeyModifier",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12582,
-											"name": "attribute",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The attribute of the price rule. For example, `region_id`."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 7,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L7"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-													"qualifiedName": "TextProperty"
-												},
-												"name": "TextProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12583,
-											"name": "value",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The value of the price rule. For example, `reg_123`."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 8,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L8"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
-													"qualifiedName": "TextProperty"
-												},
-												"name": "TextProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12584,
-											"name": "operator",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The operator of the price rule. For example, `eq`."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 9,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L9"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/enum.ts",
-													"qualifiedName": "EnumProperty"
-												},
-												"typeArguments": [
-													{
-														"type": "query",
-														"queryType": {
-															"type": "reference",
-															"target": {
-																"sourceFileName": "../../../../packages/core/utils/src/pricing/enums.ts",
-																"qualifiedName": "PricingRuleOperator"
-															},
-															"name": "PricingRuleOperator",
-															"package": "@medusajs/utils",
-															"preferValues": true
-														}
-													}
-												],
-												"name": "EnumProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12585,
-											"name": "priority",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The priority of the price rule."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 10,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L10"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
-													"qualifiedName": "NumberProperty"
-												},
-												"name": "NumberProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12586,
-											"name": "price",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The associated `Price`."
-													}
-												],
-												"modifierTags": [
-													"@expandable"
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-rule.ts",
-													"line": 11,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L11"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
-													"qualifiedName": "BelongsTo"
-												},
-												"typeArguments": [
-													{
-														"type": "reference",
-														"target": 12446,
-														"name": "Price"
-													}
-												],
-												"name": "BelongsTo",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										}
-									],
-									"groups": [
-										{
-											"title": "Properties",
-											"children": [
-												12581,
-												12582,
-												12583,
-												12584,
-												12585,
-												12586
-											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "price-rule.ts",
-											"line": 5,
-											"character": 23,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-rule.ts#L5"
-										}
-									]
-								}
-							}
-						],
-						"name": "DMLEntitySchemaBuilder",
-						"package": "@medusajs/utils"
-					},
-					{
-						"type": "literal",
-						"value": "PriceRule"
-					}
-				],
-				"name": "DmlEntity",
-				"package": "@medusajs/utils"
-			},
-			"defaultValue": "..."
-		},
-		{
-			"id": 12608,
-			"name": "PriceSet",
-			"variant": "declaration",
-			"kind": 32,
-			"flags": {
-				"isConst": true
-			},
-			"sources": [
-				{
-					"fileName": "price-set.ts",
-					"line": 4,
-					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-set.ts#L4"
-				}
-			],
-			"type": {
-				"type": "reference",
-				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
-					"qualifiedName": "DmlEntity"
-				},
-				"typeArguments": [
-					{
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
-							"qualifiedName": "DMLEntitySchemaBuilder"
-						},
-						"typeArguments": [
-							{
-								"type": "reflection",
-								"declaration": {
-									"id": 12609,
-									"name": "__type",
-									"variant": "declaration",
-									"kind": 65536,
-									"flags": {},
-									"children": [
-										{
-											"id": 12610,
-											"name": "id",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"comment": {
-												"summary": [
-													{
-														"kind": "text",
-														"text": "The ID of the price set."
-													}
-												]
-											},
-											"sources": [
-												{
-													"fileName": "price-set.ts",
-													"line": 6,
-													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-set.ts#L6"
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
-													"qualifiedName": "PrimaryKeyModifier"
-												},
-												"typeArguments": [
-													{
-														"type": "reference",
-														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
-															"qualifiedName": "IdProperty"
-														},
-														"name": "IdProperty",
-														"package": "@medusajs/utils"
-													}
-												],
-												"name": "PrimaryKeyModifier",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
-										},
-										{
-											"id": 12611,
 											"name": "prices",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1397,7 +1461,7 @@
 													"fileName": "price-set.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-set.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-set.ts#L7"
 												}
 											],
 											"type": {
@@ -1409,7 +1473,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12446,
+														"target": 12471,
 														"name": "Price"
 													}
 												],
@@ -1423,8 +1487,8 @@
 										{
 											"title": "Properties",
 											"children": [
-												12610,
-												12611
+												12635,
+												12636
 											]
 										}
 									],
@@ -1433,7 +1497,7 @@
 											"fileName": "price-set.ts",
 											"line": 5,
 											"character": 22,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price-set.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price-set.ts#L5"
 										}
 									]
 								}
@@ -1453,7 +1517,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 12446,
+			"id": 12471,
 			"name": "Price",
 			"variant": "declaration",
 			"kind": 32,
@@ -1465,7 +1529,7 @@
 					"fileName": "price.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L6"
 				}
 			],
 			"type": {
@@ -1485,14 +1549,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 12447,
+									"id": 12472,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 12448,
+											"id": 12473,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1510,7 +1574,7 @@
 													"fileName": "price.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L8"
 												}
 											],
 											"type": {
@@ -1536,7 +1600,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12449,
+											"id": 12474,
 											"name": "title",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1556,7 +1620,7 @@
 													"fileName": "price.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L9"
 												}
 											],
 											"type": {
@@ -1571,7 +1635,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12450,
+											"id": 12475,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1589,7 +1653,7 @@
 													"fileName": "price.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L10"
 												}
 											],
 											"type": {
@@ -1604,7 +1668,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12451,
+											"id": 12476,
 											"name": "amount",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1622,7 +1686,7 @@
 													"fileName": "price.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L11"
 												}
 											],
 											"type": {
@@ -1637,7 +1701,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12452,
+											"id": 12477,
 											"name": "min_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1657,7 +1721,7 @@
 													"fileName": "price.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L12"
 												}
 											],
 											"type": {
@@ -1672,7 +1736,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12453,
+											"id": 12478,
 											"name": "max_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1692,7 +1756,7 @@
 													"fileName": "price.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L13"
 												}
 											],
 											"type": {
@@ -1707,7 +1771,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12454,
+											"id": 12479,
 											"name": "rules_count",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1727,7 +1791,7 @@
 													"fileName": "price.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L14"
 												}
 											],
 											"type": {
@@ -1742,7 +1806,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12455,
+											"id": 12480,
 											"name": "price_set",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1763,7 +1827,7 @@
 													"fileName": "price.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L15"
 												}
 											],
 											"type": {
@@ -1775,7 +1839,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12608,
+														"target": 12633,
 														"name": "PriceSet"
 													}
 												],
@@ -1785,7 +1849,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12463,
+											"id": 12488,
 											"name": "price_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1806,7 +1870,7 @@
 													"fileName": "price.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L18"
 												}
 											],
 											"type": {
@@ -1818,7 +1882,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12579,
+														"target": 12604,
 														"name": "PriceRule"
 													}
 												],
@@ -1828,7 +1892,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12475,
+											"id": 12500,
 											"name": "price_list",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1851,7 +1915,7 @@
 													"fileName": "price.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L21"
 												}
 											],
 											"type": {
@@ -1863,7 +1927,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 12512,
+														"target": 12537,
 														"name": "PriceList"
 													}
 												],
@@ -1877,16 +1941,16 @@
 										{
 											"title": "Properties",
 											"children": [
-												12448,
-												12449,
-												12450,
-												12451,
-												12452,
-												12453,
-												12454,
-												12455,
-												12463,
-												12475
+												12473,
+												12474,
+												12475,
+												12476,
+												12477,
+												12478,
+												12479,
+												12480,
+												12488,
+												12500
 											]
 										}
 									],
@@ -1895,7 +1959,7 @@
 											"fileName": "price.ts",
 											"line": 7,
 											"character": 19,
-											"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/modules/pricing/src/models/price.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/modules/pricing/src/models/price.ts#L7"
 										}
 									]
 								}
@@ -1919,691 +1983,591 @@
 		{
 			"title": "Variables",
 			"children": [
-				12555,
-				12512,
+				12580,
+				12537,
+				12658,
+				12604,
 				12633,
-				12579,
-				12608,
-				12446
+				12471
 			]
 		}
 	],
 	"packageName": "@medusajs/pricing",
 	"symbolIdMap": {
-		"12445": {
+		"12470": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"12446": {
+		"12471": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "Price"
 		},
-		"12447": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object"
-		},
-		"12448": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12449": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12450": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"12451": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.amount"
-		},
-		"12452": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.min_quantity"
-		},
-		"12453": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"12454": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12455": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_set"
-		},
-		"12456": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12457": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12458": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "__object"
-		},
-		"12459": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12460": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "__object.prices"
-		},
-		"12461": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "__function"
-		},
-		"12462": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "__function"
-		},
-		"12463": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_rules"
-		},
-		"12464": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12465": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12466": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object"
-		},
-		"12467": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12468": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.attribute"
-		},
-		"12469": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.value"
-		},
-		"12470": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.operator"
-		},
-		"12471": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.priority"
-		},
 		"12472": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.price"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object"
 		},
 		"12473": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.id"
 		},
 		"12474": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.title"
 		},
 		"12475": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_list"
+			"qualifiedName": "__object.currency_code"
 		},
 		"12476": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.amount"
 		},
 		"12477": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.min_quantity"
 		},
 		"12478": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.max_quantity"
 		},
 		"12479": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12480": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12481": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.description"
-		},
-		"12482": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.status"
-		},
-		"12483": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.type"
-		},
-		"12484": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.starts_at"
-		},
-		"12485": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.ends_at"
-		},
-		"12486": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__object.rules_count"
 		},
-		"12487": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.prices"
+		"12480": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_set"
 		},
-		"12488": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+		"12481": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__function"
 		},
+		"12482": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12483": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__object"
+		},
+		"12484": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12485": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__object.prices"
+		},
+		"12486": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__function"
+		},
+		"12487": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__function"
+		},
+		"12488": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_rules"
+		},
 		"12489": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__function"
 		},
 		"12490": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.price_list_rules"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
 		},
 		"12491": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object"
 		},
 		"12492": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.id"
 		},
 		"12493": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.metadata"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.attribute"
 		},
 		"12494": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.value"
 		},
 		"12495": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12496": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object"
-		},
-		"12497": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12498": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12499": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.description"
-		},
-		"12500": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.status"
-		},
-		"12501": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.type"
-		},
-		"12502": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.starts_at"
-		},
-		"12503": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.ends_at"
-		},
-		"12504": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12505": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.prices"
-		},
-		"12506": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12507": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12508": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.price_list_rules"
-		},
-		"12509": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12510": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12511": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"12512": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "PriceList"
-		},
-		"12513": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object"
-		},
-		"12514": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12515": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12516": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.description"
-		},
-		"12517": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.status"
-		},
-		"12518": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.type"
-		},
-		"12519": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.starts_at"
-		},
-		"12520": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.ends_at"
-		},
-		"12521": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12522": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.prices"
-		},
-		"12523": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12524": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12525": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object"
-		},
-		"12526": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12527": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12528": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"12529": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.amount"
-		},
-		"12530": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.min_quantity"
-		},
-		"12531": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"12532": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12533": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_set"
-		},
-		"12534": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12535": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12536": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_rules"
-		},
-		"12537": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12538": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12539": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_list"
-		},
-		"12540": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12541": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12542": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12543": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12544": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.price_list_rules"
-		},
-		"12545": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12546": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12547": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object"
-		},
-		"12548": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12549": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.attribute"
-		},
-		"12550": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.value"
-		},
-		"12551": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.price_list"
-		},
-		"12552": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"12553": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"12554": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"12555": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "PriceListRule"
-		},
-		"12556": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object"
-		},
-		"12557": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12558": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.attribute"
-		},
-		"12559": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.value"
-		},
-		"12560": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__object.price_list"
-		},
-		"12561": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"12562": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"12563": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object"
-		},
-		"12564": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12565": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12566": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.description"
-		},
-		"12567": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.status"
-		},
-		"12568": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.type"
-		},
-		"12569": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.starts_at"
-		},
-		"12570": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.ends_at"
-		},
-		"12571": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12572": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.prices"
-		},
-		"12573": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12574": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12575": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.price_list_rules"
-		},
-		"12576": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12577": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__function"
-		},
-		"12578": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"12579": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "PriceRule"
-		},
-		"12580": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object"
-		},
-		"12581": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12582": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.attribute"
-		},
-		"12583": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
-			"qualifiedName": "__object.value"
-		},
-		"12584": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__object.operator"
 		},
-		"12585": {
+		"12496": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__object.priority"
 		},
-		"12586": {
+		"12497": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__object.price"
 		},
-		"12587": {
+		"12498": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__function"
 		},
-		"12588": {
+		"12499": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__function"
 		},
-		"12589": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object"
-		},
-		"12590": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.id"
-		},
-		"12591": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.title"
-		},
-		"12592": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"12593": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.amount"
-		},
-		"12594": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.min_quantity"
-		},
-		"12595": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"12596": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.rules_count"
-		},
-		"12597": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_set"
-		},
-		"12598": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12599": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12600": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__object.price_rules"
-		},
-		"12601": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12602": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12603": {
+		"12500": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__object.price_list"
 		},
-		"12604": {
+		"12501": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__function"
 		},
-		"12605": {
+		"12502": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "__function"
 		},
-		"12606": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12607": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
-			"qualifiedName": "__function"
-		},
-		"12608": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
-			"qualifiedName": "PriceSet"
-		},
-		"12609": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+		"12503": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "__object"
 		},
-		"12610": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+		"12504": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "__object.id"
 		},
-		"12611": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+		"12505": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12506": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.description"
+		},
+		"12507": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.status"
+		},
+		"12508": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.type"
+		},
+		"12509": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.starts_at"
+		},
+		"12510": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.ends_at"
+		},
+		"12511": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12512": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "__object.prices"
 		},
+		"12513": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12514": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12515": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.price_list_rules"
+		},
+		"12516": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12517": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12518": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"12519": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12520": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12521": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object"
+		},
+		"12522": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12523": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12524": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.description"
+		},
+		"12525": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.status"
+		},
+		"12526": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.type"
+		},
+		"12527": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.starts_at"
+		},
+		"12528": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.ends_at"
+		},
+		"12529": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12530": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.prices"
+		},
+		"12531": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12532": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12533": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.price_list_rules"
+		},
+		"12534": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12535": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12536": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"12537": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "PriceList"
+		},
+		"12538": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object"
+		},
+		"12539": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12540": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12541": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.description"
+		},
+		"12542": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.status"
+		},
+		"12543": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.type"
+		},
+		"12544": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.starts_at"
+		},
+		"12545": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.ends_at"
+		},
+		"12546": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12547": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.prices"
+		},
+		"12548": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12549": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12550": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object"
+		},
+		"12551": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12552": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12553": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"12554": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.amount"
+		},
+		"12555": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.min_quantity"
+		},
+		"12556": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.max_quantity"
+		},
+		"12557": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12558": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_set"
+		},
+		"12559": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12560": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12561": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_rules"
+		},
+		"12562": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12563": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12564": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_list"
+		},
+		"12565": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12566": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12567": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12568": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12569": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.price_list_rules"
+		},
+		"12570": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12571": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12572": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object"
+		},
+		"12573": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12574": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"12575": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.value"
+		},
+		"12576": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.price_list"
+		},
+		"12577": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__function"
+		},
+		"12578": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__function"
+		},
+		"12579": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"12580": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "PriceListRule"
+		},
+		"12581": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object"
+		},
+		"12582": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12583": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"12584": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.value"
+		},
+		"12585": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__object.price_list"
+		},
+		"12586": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__function"
+		},
+		"12587": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
+			"qualifiedName": "__function"
+		},
+		"12588": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object"
+		},
+		"12589": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12590": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12591": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.description"
+		},
+		"12592": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.status"
+		},
+		"12593": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.type"
+		},
+		"12594": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.starts_at"
+		},
+		"12595": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.ends_at"
+		},
+		"12596": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12597": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.prices"
+		},
+		"12598": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12599": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12600": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.price_list_rules"
+		},
+		"12601": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12602": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__function"
+		},
+		"12603": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"12604": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "PriceRule"
+		},
+		"12605": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object"
+		},
+		"12606": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12607": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"12608": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.value"
+		},
+		"12609": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.operator"
+		},
+		"12610": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.priority"
+		},
+		"12611": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
+			"qualifiedName": "__object.price"
+		},
 		"12612": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"12613": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"12614": {
@@ -2683,26 +2647,126 @@
 			"qualifiedName": "__function"
 		},
 		"12633": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
-			"qualifiedName": "PricePreference"
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "PriceSet"
 		},
 		"12634": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "__object"
 		},
 		"12635": {
-			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "__object.id"
 		},
 		"12636": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__object.prices"
+		},
+		"12637": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__function"
+		},
+		"12638": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
+			"qualifiedName": "__function"
+		},
+		"12639": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object"
+		},
+		"12640": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12641": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.title"
+		},
+		"12642": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"12643": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.amount"
+		},
+		"12644": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.min_quantity"
+		},
+		"12645": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.max_quantity"
+		},
+		"12646": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.rules_count"
+		},
+		"12647": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_set"
+		},
+		"12648": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12649": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12650": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_rules"
+		},
+		"12651": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12652": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12653": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__object.price_list"
+		},
+		"12654": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12655": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12656": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12657": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
+			"qualifiedName": "__function"
+		},
+		"12658": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
+			"qualifiedName": "PricePreference"
+		},
+		"12659": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
+			"qualifiedName": "__object"
+		},
+		"12660": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
+			"qualifiedName": "__object.id"
+		},
+		"12661": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
 			"qualifiedName": "__object.attribute"
 		},
-		"12637": {
+		"12662": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
 			"qualifiedName": "__object.value"
 		},
-		"12638": {
+		"12663": {
 			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-preference.ts",
 			"qualifiedName": "__object.is_tax_inclusive"
 		}
@@ -2712,7 +2776,7 @@
 			"1": "../../../../packages/modules/pricing/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 12445
+			"1": 12470
 		}
 	}
 }

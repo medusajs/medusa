@@ -18,7 +18,7 @@ export const CustomerGroupDetailBreadcrumb = (
       fields: CUSTOMER_GROUP_DETAIL_FIELDS,
     },
     {
-      initialData: props.data,
+      initialData: props.loaderData,
       enabled: Boolean(id),
     }
   )
@@ -31,5 +31,5 @@ export const CustomerGroupDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminCustomerGroupResponse>) => ({
-  title: match.data?.customer_group?.name,
+  title: match.loaderData?.customer_group?.name,
 })

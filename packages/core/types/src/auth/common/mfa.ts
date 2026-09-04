@@ -248,6 +248,11 @@ export type VerifyAuthMfaChallengeDTO = {
    * The verification code for the chosen method.
    */
   code: string
+  /**
+   * The ID of the auth identity the challenge must belong to. When provided,
+   * verifying a challenge that belongs to another auth identity fails.
+   */
+  auth_identity_id?: string
 }
 
 /**

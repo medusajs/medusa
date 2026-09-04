@@ -47,6 +47,7 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { normalizeBigNumbers } from "@medusajs/test-utils"
 
 jest.setTimeout(200000)
 
@@ -67,11 +68,14 @@ medusaIntegrationTestRunner({
       let stockLocationModule: IStockLocationService
       let inventoryModule: IInventoryService
       let fulfillmentModule: IFulfillmentModuleService
-      let remoteLink, remoteQuery, query
+      let remoteLink
+      let remoteQuery
+      let query
       let storeHeaders
       let salesChannel
       let defaultRegion
-      let customer, storeHeadersWithCustomer
+      let customer
+      let storeHeadersWithCustomer
       let setPricingContextHook: any
       let setShippingOptionsContextHook: any
 
@@ -270,7 +274,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               email: "tony@stark.com",
@@ -420,7 +424,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               items: expect.arrayContaining([
@@ -974,7 +978,7 @@ medusaIntegrationTestRunner({
               relations: ["items"],
             })
 
-            expect(cart).toEqual(
+            expect(normalizeBigNumbers(cart)).toEqual(
               expect.objectContaining({
                 currency_code: "usd",
                 email: "tony@stark.com",
@@ -1148,7 +1152,7 @@ medusaIntegrationTestRunner({
               relations: ["items"],
             })
 
-            expect(cart).toEqual(
+            expect(normalizeBigNumbers(cart)).toEqual(
               expect.objectContaining({
                 currency_code: "usd",
                 email: "tony@stark.com",
@@ -1318,7 +1322,6 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                currency_code: "usd",
                 email: "tony@stark-industries.com",
               },
               throwOnError: false,
@@ -1357,7 +1360,6 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                currency_code: "usd",
                 customer_id: customer.id,
               },
               throwOnError: false,
@@ -1518,7 +1520,7 @@ medusaIntegrationTestRunner({
             input: wfInput,
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -1569,7 +1571,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "eur",
@@ -1980,7 +1982,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -2191,12 +2193,12 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
               items: [
-                {
+                expect.objectContaining({
                   cart_id: expect.any(String),
                   compare_at_unit_price: null,
                   created_at: expect.any(Date),
@@ -2234,7 +2236,7 @@ medusaIntegrationTestRunner({
                   variant_option_values: null,
                   variant_sku: null,
                   variant_title: null,
-                },
+                }),
               ],
             })
           )
@@ -2374,7 +2376,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -2507,7 +2509,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          let cart = await cartModuleService.createCarts({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
@@ -2547,7 +2549,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          let cart = await cartModuleService.createCarts({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
@@ -2701,7 +2703,7 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -2856,7 +2858,7 @@ medusaIntegrationTestRunner({
               relations: ["items"],
             })
 
-            expect(cart).toEqual(
+            expect(normalizeBigNumbers(cart)).toEqual(
               expect.objectContaining({
                 id: cart.id,
                 currency_code: "usd",
@@ -3021,7 +3023,7 @@ medusaIntegrationTestRunner({
 
             expect(calculatePricessHaveBeenCalled).toBe(true)
 
-            expect(cart).toEqual(
+            expect(normalizeBigNumbers(cart)).toEqual(
               expect.objectContaining({
                 id: cart.id,
                 currency_code: "usd",
@@ -3219,12 +3221,12 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
               items: [
-                {
+                expect.objectContaining({
                   cart_id: expect.any(String),
                   compare_at_unit_price: null,
                   created_at: expect.any(Date),
@@ -3262,7 +3264,7 @@ medusaIntegrationTestRunner({
                   variant_option_values: null,
                   variant_sku: null,
                   variant_title: null,
-                },
+                }),
               ],
             })
           )
@@ -3281,12 +3283,12 @@ medusaIntegrationTestRunner({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
               items: [
-                {
+                expect.objectContaining({
                   cart_id: expect.any(String),
                   compare_at_unit_price: null,
                   created_at: expect.any(Date),
@@ -3324,7 +3326,7 @@ medusaIntegrationTestRunner({
                   variant_option_values: null,
                   variant_sku: null,
                   variant_title: null,
-                },
+                }),
               ],
             })
           )
@@ -4371,7 +4373,7 @@ medusaIntegrationTestRunner({
           cart = (await api.get(`/store/carts/${cart.id}`, storeHeaders)).data
             .cart
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -4439,7 +4441,7 @@ medusaIntegrationTestRunner({
           cart = (await api.get(`/store/carts/${cart.id}`, storeHeaders)).data
             .cart
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
@@ -4568,7 +4570,7 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: cart.id,
               shipping_methods: [

@@ -54,18 +54,22 @@ export class OrderEdit {
    * API route.
    *
    * @param id - The ID of the order that is being edited.
+   * @param body - The order edit request's details.
    * @param query - Configure the fields to retrieve in the order preview.
    * @param headers - Headers to pass in the request.
    * @returns The order preview's details.
    *
    * @example
-   * sdk.admin.orderEdit.request("order_123")
+   * sdk.admin.orderEdit.request("order_123", {
+   *   no_notification: false
+   * })
    * .then(({ order_preview }) => {
    *   console.log(order_preview)
    * })
    */
   async request(
     id: string,
+    body?: HttpTypes.AdminRequestOrderEdit,
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
@@ -74,6 +78,7 @@ export class OrderEdit {
       {
         method: "POST",
         headers,
+        body,
         query,
       }
     )

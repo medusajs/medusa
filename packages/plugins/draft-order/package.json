@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/draft-order",
-  "version": "2.18.0",
+  "version": "2.20.1",
   "description": "A draft order plugin for Medusa.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -45,8 +45,8 @@
   "dependencies": {
     "@ariakit/react": "^0.4.15",
     "@babel/runtime": "^7.26.10",
-    "@hookform/resolvers": "3.4.2",
-    "@medusajs/js-sdk": "2.18.0",
+    "@hookform/resolvers": "5.5.7",
+    "@medusajs/js-sdk": "2.20.1",
     "@tanstack/react-query": "5.64.2",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
     "date-fns": "^3.6.0",
@@ -54,30 +54,31 @@
     "lodash.isequal": "^4.5.0",
     "match-sorter": "^6.3.4",
     "radix-ui": "1.1.2",
-    "react-hook-form": "7.49.1"
+    "react-hook-form": "7.83.0",
+    "zod": "4.2.0"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.18.0",
-    "@medusajs/cli": "2.18.0",
-    "@medusajs/dashboard": "2.18.0",
-    "@medusajs/framework": "2.18.0",
-    "@medusajs/icons": "2.18.0",
-    "@medusajs/test-utils": "2.18.0",
-    "@medusajs/types": "2.18.0",
-    "@medusajs/ui": "4.2.0",
-    "@medusajs/ui-preset": "2.18.0"
+    "@medusajs/admin-sdk": "2.20.1",
+    "@medusajs/cli": "2.20.1",
+    "@medusajs/dashboard": "2.20.1",
+    "@medusajs/framework": "2.20.1",
+    "@medusajs/icons": "2.20.1",
+    "@medusajs/test-utils": "2.20.1",
+    "@medusajs/types": "2.20.1",
+    "@medusajs/ui": "4.2.3",
+    "@medusajs/ui-preset": "2.20.1"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.18.0",
-    "@medusajs/cli": "2.18.0",
-    "@medusajs/dashboard": "2.18.0",
-    "@medusajs/framework": "2.18.0",
-    "@medusajs/icons": "2.18.0",
-    "@medusajs/test-utils": "2.18.0",
-    "@medusajs/ui": "4.2.0",
+    "@medusajs/admin-sdk": "2.20.1",
+    "@medusajs/cli": "2.20.1",
+    "@medusajs/dashboard": "2.20.1",
+    "@medusajs/framework": "2.20.1",
+    "@medusajs/icons": "2.20.1",
+    "@medusajs/test-utils": "2.20.1",
+    "@medusajs/ui": "4.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "6.30.4"
+    "react-router-dom": "^6.30.4 || ^7.0.0"
   },
   "peerDependenciesMeta": {
     "@medusajs/admin-sdk": {

@@ -60,6 +60,8 @@ export const POST = async (
         actorType: req.auth_context.actor_type,
         authProvider: req.auth_context.auth_provider,
         container: req.scope,
+        mfaEnabled: req.auth_context.mfa_enabled,
+        mfaChallengeCompletedAt: req.auth_context.mfa_challenge_completed_at,
       },
       {
         secret: http.jwtSecret!,

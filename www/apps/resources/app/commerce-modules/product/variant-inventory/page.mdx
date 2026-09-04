@@ -83,6 +83,23 @@ You can also allow customers to subscribe to restock notifications of a product 
 
 </Note>
 
+### Per-Item Back Order Override
+
+<Note>
+
+This feature is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+Workflows that add items to orders or carts support an `allow_backorder` field on each item. When set to `true`, the item bypasses the out-of-stock check for its variant even if the variant's own `allow_backorder` field is disabled.
+
+This is useful when an admin adds a currently out-of-stock item to a draft order or an order edit on behalf of a customer.
+
+The following workflows support the per-item `allow_backorder` field:
+
+- Cart workflows: [addToCartWorkflow](/references/medusa-workflows/addToCartWorkflow), [createCartWorkflow](/references/medusa-workflows/createCartWorkflow)
+- Order item workflows: [addOrderLineItemsWorkflow](/references/medusa-workflows/addOrderLineItemsWorkflow), [orderEditAddNewItemWorkflow](/references/medusa-workflows/orderEditAddNewItemWorkflow), [orderExchangeAddNewItemWorkflow](/references/medusa-workflows/orderExchangeAddNewItemWorkflow), [orderClaimAddNewItemWorkflow](/references/medusa-workflows/orderClaimAddNewItemWorkflow)
+
 ---
 
 ## Additional Resources
