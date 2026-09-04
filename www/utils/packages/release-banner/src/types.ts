@@ -2,10 +2,10 @@
 export type StyleObject = Record<string, string | number>
 
 /**
- * A node in the banner's element tree.
+ * A node in a banner's element tree.
  *
  * Satori only needs objects of this shape — `{ type, props, key }` — so the
- * template builds them directly instead of pulling in JSX tooling and React.
+ * templates build them directly instead of pulling in JSX tooling and React.
  */
 export type BannerNode = {
   type: string
@@ -20,54 +20,23 @@ export type BannerNode = {
 /** A gradient stop: an offset from 0 to 1, and the colour at that offset. */
 export type GradientStop = [number, string]
 
-export type PillSpec = {
-  /** Total height, rim included. */
-  height: number
-  /** Distance from the pill's edge to the logomark. */
-  paddingLeft: number
-  /** Distance from the end of the version text to the pill's edge. */
-  paddingRight: number
-  /** Vertical offset from the centre of the canvas. */
-  offsetY: number
-  borderWidth: number
-  borderGradient: GradientStop[]
-  fillGradient: GradientStop[]
+/**
+ * A partial spec, nested sections included.
+ *
+ * Arrays — gradients, in practice — are replaced wholesale rather than merged
+ * index by index, which is never what overriding a gradient is meant to do.
+ */
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends readonly unknown[]
+    ? T[K]
+    : T[K] extends object
+      ? DeepPartial<T[K]>
+      : T[K]
 }
 
-export type ContentSpec = {
-  /** Visible height of the logomark. */
-  logoHeight: number
-  /** Space between the logomark and the version text. */
-  gap: number
-  fontSize: number
-  fontWeight: number
-  letterSpacing: number
-  /** Nudge to optically centre the version text against the logomark. */
-  textOffsetY: number
-  logoGradient: GradientStop[]
-  textGradient: GradientStop[]
-}
-
-export type BannerSpec = {
+/** The canvas every banner is drawn on, whatever its type. */
+export type BaseSpec = {
   width: number
   height: number
   background: string
-  pill: PillSpec
-  content: ContentSpec
-}
-
-/**
- * A partial spec, overriding the defaults one section at a time.
- */
-export type BannerSpecOverrides = Partial<
-  Omit<BannerSpec, "pill" | "content">
-> & {
-  pill?: Partial<PillSpec>
-  content?: Partial<ContentSpec>
-}
-
-export type RenderOptions = {
-  /** Version label rendered inside the pill, e.g. `v2.19.0`. */
-  version: string
-  spec?: BannerSpecOverrides
 }

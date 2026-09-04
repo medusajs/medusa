@@ -41,8 +41,8 @@ describe("isSearchModuleEnabled", () => {
 describe("loadSearchIndexes", () => {
   beforeEach(() => jest.clearAllMocks())
 
-  // Discovery imports project files, so it must not run for a project that never
-  // opted into the module — there would be nothing to hand the definitions to.
+  // Discovery imports project files, so it must not run when search is off —
+  // there would be nothing to hand the definitions to.
   it("does not scan or import anything when the module is not configured", async () => {
     await loadSearchIndexes({
       plugins,

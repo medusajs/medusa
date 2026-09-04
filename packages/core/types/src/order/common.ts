@@ -429,6 +429,10 @@ export interface OrderShippingMethodDTO {
    * Whether the shipping method price is tax inclusive or not.
    */
   is_tax_inclusive: boolean
+  /**
+   * Whether the shipping method price is custom amount or not.
+   */
+  is_custom_amount: boolean
 
   /**
    * The ID of the shipping option the method was created from.

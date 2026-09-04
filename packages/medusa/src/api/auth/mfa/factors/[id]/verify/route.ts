@@ -14,6 +14,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
+
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
   // Capture the previous status to emit the lifecycle event only on transition.
