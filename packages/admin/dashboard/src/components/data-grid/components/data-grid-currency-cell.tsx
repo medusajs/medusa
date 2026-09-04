@@ -11,7 +11,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-interface DataGridCurrencyCellProps<TData, TValue = any>
+export interface DataGridCurrencyCellProps<TData, TValue = any>
   extends DataGridCellProps<TData, TValue> {
   code: string
 }

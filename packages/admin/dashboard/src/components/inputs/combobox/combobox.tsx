@@ -40,12 +40,12 @@ type ComboboxOption = {
   disabled?: boolean
 }
 
-type Value = string[] | string
+export type Value = string[] | string
 
 const TABLUAR_NUM_WIDTH = 8
 const TAG_BASE_WIDTH = 28
 
-interface ComboboxProps<T extends Value = Value>
+export interface ComboboxProps<T extends Value = Value>
   extends Omit<ComponentPropsWithoutRef<"input">, "onChange" | "value"> {
   value?: T
   onChange?: (value?: T) => void
