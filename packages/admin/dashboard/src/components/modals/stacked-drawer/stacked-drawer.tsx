@@ -1,7 +1,10 @@
 import { Drawer, clx } from "@medusajs/ui"
 import {
   ComponentPropsWithoutRef,
+  ForwardRefExoticComponent,
   PropsWithChildren,
+  PropsWithoutRef,
+  RefAttributes,
   forwardRef,
   useEffect,
 } from "react"
@@ -56,24 +59,40 @@ Title.displayName = "StackedDrawer.Title"
 const Description = Drawer.Description
 Description.displayName = "StackedDrawer.Description"
 
-const Content = forwardRef<
-  HTMLDivElement,
-  ComponentPropsWithoutRef<typeof Drawer.Content>
->(({ className, ...props }, ref) => {
-  return (
-    <Drawer.Content
-      ref={ref}
-      className={clx(className)}
-      overlayProps={{
-        className: "bg-transparent",
-      }}
-      {...props}
-    />
-  )
-})
+export type StackedDrawerContentProps = ComponentPropsWithoutRef<
+  typeof Drawer.Content
+>
+
+const Content: ForwardRefExoticComponent<
+  PropsWithoutRef<StackedDrawerContentProps> & RefAttributes<HTMLDivElement>
+> = forwardRef<HTMLDivElement, StackedDrawerContentProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <Drawer.Content
+        ref={ref}
+        className={clx(className)}
+        overlayProps={{
+          className: "bg-transparent",
+        }}
+        {...props}
+      />
+    )
+  }
+)
 Content.displayName = "StackedDrawer.Content"
 
-export const StackedDrawer = Object.assign(Root, {
+type StackedDrawerComponent = typeof Root & {
+  Close: typeof Drawer.Close
+  Header: typeof Drawer.Header
+  Body: typeof Drawer.Body
+  Content: typeof Content
+  Trigger: typeof Drawer.Trigger
+  Footer: typeof Drawer.Footer
+  Description: typeof Drawer.Description
+  Title: typeof Drawer.Title
+}
+
+export const StackedDrawer: StackedDrawerComponent = Object.assign(Root, {
   Close,
   Header,
   Body,

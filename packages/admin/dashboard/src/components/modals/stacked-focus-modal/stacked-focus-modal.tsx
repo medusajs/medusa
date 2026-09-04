@@ -1,7 +1,10 @@
 import { FocusModal, clx } from "@medusajs/ui"
 import {
   ComponentPropsWithoutRef,
+  ForwardRefExoticComponent,
   PropsWithChildren,
+  PropsWithoutRef,
+  RefAttributes,
   forwardRef,
   useEffect,
 } from "react"
@@ -69,30 +72,49 @@ Title.displayName = "StackedFocusModal.Title"
 const Description = FocusModal.Description
 Description.displayName = "StackedFocusModal.Description"
 
-const Content = forwardRef<
-  HTMLDivElement,
-  ComponentPropsWithoutRef<typeof FocusModal.Content>
->(({ className, ...props }, ref) => {
-  return (
-    <FocusModal.Content
-      ref={ref}
-      className={clx("!top-6", className)}
-      overlayProps={{
-        className: "bg-transparent",
-      }}
-      {...props}
-    />
-  )
-})
+export type StackedFocusModalContentProps = ComponentPropsWithoutRef<
+  typeof FocusModal.Content
+>
+
+const Content: ForwardRefExoticComponent<
+  PropsWithoutRef<StackedFocusModalContentProps> & RefAttributes<HTMLDivElement>
+> = forwardRef<HTMLDivElement, StackedFocusModalContentProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <FocusModal.Content
+        ref={ref}
+        className={clx("!top-6", className)}
+        overlayProps={{
+          className: "bg-transparent",
+        }}
+        {...props}
+      />
+    )
+  }
+)
 Content.displayName = "StackedFocusModal.Content"
 
-export const StackedFocusModal = Object.assign(Root, {
-  Close,
-  Header,
-  Body,
-  Content,
-  Trigger,
-  Footer,
-  Description,
-  Title,
-})
+type StackedFocusModalComponent = typeof Root & {
+  Close: typeof FocusModal.Close
+  Header: typeof FocusModal.Header
+  Body: typeof FocusModal.Body
+  Content: typeof Content
+  Trigger: typeof FocusModal.Trigger
+  Footer: typeof FocusModal.Footer
+  Description: typeof FocusModal.Description
+  Title: typeof FocusModal.Title
+}
+
+export const StackedFocusModal: StackedFocusModalComponent = Object.assign(
+  Root,
+  {
+    Close,
+    Header,
+    Body,
+    Content,
+    Trigger,
+    Footer,
+    Description,
+    Title,
+  }
+)
