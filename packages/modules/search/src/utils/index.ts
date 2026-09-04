@@ -1,6 +1,10 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
-import { SearchIndexes } from "@types"
+import {
+  SearchIndexContext,
+  SearchIndexes,
+  SearchIndexVersionRecord,
+} from "@types"
 import { createHash } from "crypto"
 
 export enum SearchIndexState {
@@ -89,6 +93,20 @@ function defaultFacetKinds(
 }
 
 /**
+ * Whether a field is returned on hits. Vectors default to off — embeddings
+ * are not useful on hits. Set `retrievable: true` to return them.
+ */
+function isRetrievableField(field: SearchTypes.SearchFieldDefinition): boolean {
+  if (field.type === "object") {
+    return false
+  }
+  if (field.type === "vector") {
+    return field.retrievable === true
+  }
+  return field.retrievable !== false
+}
+
+/**
  * The dotted paths an index can hand back on hits. Object containers are
  * excluded — only their declared leaves are stored, so returning the container
  * would silently hand back a partial object.
@@ -97,15 +115,7 @@ export function listRetrievablePaths(
   fields: Record<string, SearchTypes.SearchFieldDefinition>
 ): string[] {
   return flattenFields(fields)
-    .filter(
-      ({ field }) =>
-        field.type !== "object" &&
-        field.retrievable !== false &&
-        // Engine-embedded vectors are not stored under their own path —
-        // the source field carries the embedding — so they cannot be
-        // projected back onto hits.
-        !field.embed
-    )
+    .filter(({ field }) => isRetrievableField(field))
     .map(({ path }) => path)
 }
 
@@ -287,8 +297,10 @@ function withoutFieldFilter(
 /**
  * The base query plus one per faceted field with that field's own filter dropped.
  * Every engine reviewed needs a query per facet, so the fan-out lives here rather
- * than in each provider. `disjunctive_facets` is stripped from what is handed on —
- * a provider should never see an option it is not expected to act on.
+ * than in each provider. The expanded set is then handed to `provider.searchMany`
+ * so the engine can pack them into one round-trip. `disjunctive_facets` is
+ * stripped from what is handed on — a provider should never see an option it is
+ * not expected to act on.
  */
 export function buildDisjunctiveFacetQueries(
   query: SearchTypes.ProviderSearchQuery
@@ -317,9 +329,9 @@ export function buildDisjunctiveFacetQueries(
     perFacet.set(facet.field, {
       ...base,
       filters: relaxed,
-      // Only the facet is wanted; skip the hits.
+      // Only the facet is wanted; skip the hits and the count.
       pagination: { ...query.pagination, skip: 0, take: 0 },
-      search_options: { ...searchOptions, facets: [facet] },
+      search_options: { ...searchOptions, facets: [facet], count: "none" },
     })
   }
 
@@ -596,18 +608,18 @@ function validateIndexDefinition({
   }
 
   for (const { path, field } of flattenFields(definition.fields)) {
-    if (field.correlated && !(field.type === "object" && field.array)) {
-      fail(
-        `field "${path}" sets "correlated", which only applies to an array of objects`
-      )
-    }
-
     if (field.type === "vector" && !field.dimensions) {
       fail(`vector field "${path}" must declare its "dimensions"`)
     }
 
     if (field.type === "vector" && field.array) {
       fail(`vector field "${path}" cannot be an array`)
+    }
+
+    if (typeof (field.embed as unknown) === "string") {
+      fail(
+        `vector field "${path}" "embed" must be true; pass the text on this field rather than naming a source`
+      )
     }
 
     if (field.embed) {
@@ -638,22 +650,57 @@ function validateIndexDefinition({
       )
     }
   }
+}
 
-  const fieldMap = buildFieldMap(definition)
-  for (const { path, field } of fieldMap.values()) {
-    if (!field.embed) {
-      continue
-    }
+/** Every version of every listed index, grouped by the index's id, newest first. */
+export async function listVersionsByIndexId(
+  context: Pick<SearchIndexContext, "versionService">,
+  indexIds: string[]
+): Promise<Map<string, SearchIndexVersionRecord[]>> {
+  const byId = new Map<string, SearchIndexVersionRecord[]>()
 
-    const source = fieldMap.get(field.embed)
-    if (!source) {
-      fail(`vector field "${path}" embeds unknown source "${field.embed}"`)
-    }
-    if (!["text", "keyword"].includes(source.field.type)) {
-      fail(
-        `vector field "${path}" can only embed a text or keyword field, not "${source.field.type}"`
-      )
-    }
+  if (!indexIds.length) {
+    return byId
+  }
+
+  const versions = (await context.versionService.list(
+    { search_index_id: indexIds },
+    { order: { version: "DESC" }, take: null }
+  )) as SearchIndexVersionRecord[]
+
+  for (const version of versions) {
+    const list = byId.get(version.search_index_id) ?? []
+    list.push(version)
+    byId.set(version.search_index_id, list)
+  }
+
+  return byId
+}
+
+/**
+ * The definition merged with whichever physical index and provider currently
+ * serve reads/writes. Every *live* operation (a direct write, an event
+ * ingested, a query) must resolve through this rather than
+ * `definition.physical_name` directly — that field is only the root a
+ * version's name is derived from, and which version is active can change out
+ * from under this process.
+ */
+export async function resolveActiveDefinition(
+  context: Pick<SearchIndexContext, "indexes" | "activeVersionCache">,
+  name: string
+): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
+  const definition = retrieveIndexDefinition(context.indexes, name)
+
+  if (!context.activeVersionCache) {
+    return definition
+  }
+
+  const active = await context.activeVersionCache.get(name)
+
+  return {
+    ...definition,
+    physical_name: active.physical_name,
+    provider: active.provider,
   }
 }
 

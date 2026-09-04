@@ -1,11 +1,16 @@
 import { z } from "@medusajs/deps/zod"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
-import { MedusaError, removeUndefinedProperties } from "@medusajs/utils"
+import {
+  isDefined,
+  MedusaError,
+  removeUndefinedProperties,
+} from "@medusajs/utils"
 import { NextFunction } from "express"
 
 import { zodValidator } from "../../zod/zod-helpers"
 import { MedusaRequest, MedusaResponse } from "../types"
 import { prepareListQuery, prepareRetrieveQuery } from "./get-query-config"
+import { validateRelationsLimit } from "./relations-limit"
 
 /**
  * Normalize an input query, especially from array like query params to an array type
@@ -100,6 +105,16 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
             },
             req
           )
+
+      // `req.storeRelationsLimit` is only set for routes under the `/store` prefix, so
+      // admin and custom routes are never affected by the limit, even if a query config
+      // sets `storeRelationsLimit`.
+      if (isDefined(req.storeRelationsLimit)) {
+        validateRelationsLimit(
+          cnf.remoteQueryConfig.fields,
+          queryConfig.storeRelationsLimit ?? req.storeRelationsLimit
+        )
+      }
 
       const { with_deleted, ...validatedQueryFilters } = validated
       req.validatedQuery = validatedQueryFilters

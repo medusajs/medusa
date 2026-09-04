@@ -31,10 +31,13 @@ export type FacetQuery = {
   request: RangeFacetRequest | ValueFacetRequest | StatsFacetRequest
   range?: RangeFacetRequest["ranges"][number]
   /**
-   * Medusa Search has no Min/Max aggregates yet, so a stats facet is three
-   * sub-queries: attribute order for min and max, then Count/Sum.
+   * Medusa Search has no Min/Max aggregates yet, and Cloud accepts only one
+   * aggregate function per request. A numeric stats facet is therefore four
+   * sub-queries: attribute order for min and max, then Count, then Sum.
+   * Dates skip Sum (scalar numeric only) and keep Count so the result still
+   * has a document total.
    */
-  stats?: "min" | "max" | "agg"
+  stats?: "min" | "max" | "count" | "sum"
   is_date?: boolean
   query: IndexQuery
 }
@@ -126,17 +129,25 @@ export function buildFacetQueries(
       result.push({
         field: request.field,
         request,
-        stats: "agg",
+        stats: "count",
         is_date: field.is_date,
         query: {
-          // Sum is scalar numeric only. Dates get Count so the result still
-          // has a document total; min/max come from the rank_by queries.
-          aggregate_by: field.is_date
-            ? { count: ["Count"] }
-            : { count: ["Count"], sum: ["Sum", request.field] },
+          aggregate_by: { count: ["Count"] },
           filters: base,
         },
       })
+      if (!field.is_date) {
+        result.push({
+          field: request.field,
+          request,
+          stats: "sum",
+          is_date: field.is_date,
+          query: {
+            aggregate_by: { sum: ["Sum", request.field] },
+            filters: base,
+          },
+        })
+      }
       continue
     }
 
@@ -239,8 +250,9 @@ export function parseFacetResults(
           response?.rows?.[0]?.[query.field],
           query.is_date
         )
-      } else {
+      } else if (query.stats === "count") {
         current.count = Number(response?.aggregations?.count ?? 0)
+      } else if (query.stats === "sum") {
         const sum = response?.aggregations?.sum
         if (sum !== undefined && sum !== null) {
           current.sum = Number(sum)

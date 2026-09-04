@@ -2180,7 +2180,11 @@ medusaIntegrationTestRunner({
         region = (
           await api.post(
             "/admin/regions",
-            { name: "Test region", currency_code: "usd" },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "Test region",
+              currency_code: "usd",
+            },
             adminHeaders
           )
         ).data.region
@@ -3781,7 +3785,11 @@ medusaIntegrationTestRunner({
           const region = (
             await api.post(
               "/admin/regions",
-              { name: "Test region", currency_code: "usd" },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Test region",
+                currency_code: "usd",
+              },
               adminHeaders
             )
           ).data.region

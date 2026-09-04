@@ -450,7 +450,7 @@ describe("Medusa search utilities", () => {
     ])
   })
 
-  it("builds stats facets as min/max rank queries plus a Count/Sum aggregation", () => {
+  it("builds stats facets as min/max rank queries plus separate Count and Sum aggregations", () => {
     const queries = buildFacetQueries(
       {
         index: definition,
@@ -463,8 +463,13 @@ describe("Medusa search utilities", () => {
       plan
     )
 
-    expect(queries).toHaveLength(3)
-    expect(queries.map((query) => query.stats)).toEqual(["min", "max", "agg"])
+    expect(queries).toHaveLength(4)
+    expect(queries.map((query) => query.stats)).toEqual([
+      "min",
+      "max",
+      "count",
+      "sum",
+    ])
 
     const present: unknown = [
       "And",
@@ -487,7 +492,11 @@ describe("Medusa search utilities", () => {
       filters: present,
     })
     expect(queries[2].query).toEqual({
-      aggregate_by: { count: ["Count"], sum: ["Sum", "price"] },
+      aggregate_by: { count: ["Count"] },
+      filters: ["title", "ContainsAllTokens", "chair"],
+    })
+    expect(queries[3].query).toEqual({
+      aggregate_by: { sum: ["Sum", "price"] },
       filters: ["title", "ContainsAllTokens", "chair"],
     })
   })
@@ -510,12 +519,14 @@ describe("Medusa search utilities", () => {
       plan
     )
 
+    expect(dated.map((query) => query.stats)).toEqual(["min", "max", "count"])
     expect(dated[2].query.aggregate_by).toEqual({ count: ["Count"] })
     expect(
       parseFacetResults(numeric, [
         { rows: [{ id: "prod_1", price: 10 }] },
         { rows: [{ id: "prod_2", price: 80 }] },
-        { aggregations: { count: 3, sum: 90 } },
+        { aggregations: { count: 3 } },
+        { aggregations: { sum: 90 } },
       ])
     ).toEqual({
       price: { type: "stats", min: 10, max: 80, count: 3, sum: 90 },
@@ -1007,7 +1018,7 @@ describe("Medusa search utilities", () => {
       expect(query.query.filters).toBeUndefined()
     })
 
-    it("puts embed on the source field and omits the vector column", () => {
+    it("puts embed on the vector column", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1015,17 +1026,19 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
 
-      expect(embedded.schema.embedding).toBeUndefined()
-      expect(embedded.schema.title).toEqual(
+      expect(embedded.schema.embedding).toEqual(
         expect.objectContaining({
+          type: "[3]f32",
+          ann: true,
           embed: { dims: 3 },
         })
       )
+      expect(embedded.schema.title).not.toHaveProperty("embed")
 
       const query = buildQueryPlan(
         {
@@ -1039,7 +1052,7 @@ describe("Medusa search utilities", () => {
       )
 
       expect(query.query.rank_by).toEqual([
-        "title",
+        "embedding",
         "ANN",
         ["Embed", "red shoes"],
       ])
@@ -1053,7 +1066,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1069,10 +1082,14 @@ describe("Medusa search utilities", () => {
         embedded
       )
 
-      expect(query.query.rank_by).toEqual(["title", "ANN", [0.1, 0.2, 0.3]])
+      expect(query.query.rank_by).toEqual([
+        "embedding",
+        "ANN",
+        [0.1, 0.2, 0.3],
+      ])
     })
 
-    it("does not write client embeddings for engine-embedded fields", () => {
+    it("writes source text on engine-embedded vector fields", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1080,7 +1097,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1090,11 +1107,38 @@ describe("Medusa search utilities", () => {
           {
             id: "prod_1",
             title: "Red shoe",
+            embedding: "comfortable red running shoe",
+          },
+          embedded
+        )
+      ).toMatchObject({
+        embedding: "comfortable red running shoe",
+      })
+    })
+
+    it("rejects a vector array on an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
             embedding: [0.1, 0.2, 0.3],
           },
           embedded
         )
-      ).not.toHaveProperty("embedding")
+      ).toThrow(/must be a string/)
     })
 
     it("rejects client embeddings whose dimensions do not match", () => {

@@ -99,7 +99,12 @@ medusaIntegrationTestRunner({
         region = (
           await api.post(
             "/admin/regions",
-            { name: "US", currency_code: "usd", countries: ["us"] },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
             adminHeaders
           )
         ).data.region
@@ -107,7 +112,12 @@ medusaIntegrationTestRunner({
         noAutomaticRegion = (
           await api.post(
             "/admin/regions",
-            { name: "EUR", currency_code: "eur", automatic_taxes: false },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "EUR",
+              currency_code: "eur",
+              automatic_taxes: false,
+            },
             adminHeaders
           )
         ).data.region
@@ -3603,7 +3613,12 @@ medusaIntegrationTestRunner({
           const gbRegion = (
             await api.post(
               "/admin/regions",
-              { name: "GB Tax Data", currency_code: "gbp", countries: ["gb"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "GB Tax Data",
+                currency_code: "gbp",
+                countries: ["gb"],
+              },
               adminHeaders
             )
           ).data.region
@@ -4565,7 +4580,12 @@ medusaIntegrationTestRunner({
           otherRegion = (
             await api.post(
               "/admin/regions",
-              { name: "dk", currency_code: "dkk", countries: ["dk"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "dk",
+                currency_code: "dkk",
+                countries: ["dk"],
+              },
               adminHeaders
             )
           ).data.region
@@ -4869,6 +4889,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "Europe",
                 currency_code: "eur",
                 countries: ["de", "ca"],
@@ -4929,6 +4950,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "Europe",
                 currency_code: "eur",
                 countries: ["de", "ca"],
@@ -5288,7 +5310,12 @@ medusaIntegrationTestRunner({
           const regionWithMultipleCountries = (
             await api.post(
               "/admin/regions",
-              { name: "dks", currency_code: "dkk", countries: ["ae", "no"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "dks",
+                currency_code: "dkk",
+                countries: ["ae", "no"],
+              },
               adminHeaders
             )
           ).data.region
@@ -5463,7 +5490,12 @@ medusaIntegrationTestRunner({
           const regionWithoutTax = (
             await api.post(
               "/admin/regions",
-              { name: "Italy", currency_code: "eur", countries: ["it"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Italy",
+                currency_code: "eur",
+                countries: ["it"],
+              },
               adminHeaders
             )
           ).data.region
@@ -5598,7 +5630,12 @@ medusaIntegrationTestRunner({
           const regionWithoutTax = (
             await api.post(
               "/admin/regions",
-              { name: "Italy", currency_code: "eur", countries: ["it"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Italy",
+                currency_code: "eur",
+                countries: ["it"],
+              },
               adminHeaders
             )
           ).data.region

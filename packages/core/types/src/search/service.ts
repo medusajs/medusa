@@ -11,13 +11,10 @@ import { SearchResult } from "./result"
 /**
  * The strategy used to rebuild a search index:
  *
- * - `swap` seeds a shadow index and aliases over on completion, keeping the live
- * index serving throughout.
- * - `in_place` upserts into the live index, which is cheaper but leaves stale
- * documents behind for anything the seed no longer produces.
- *
- * `swap` requires a provider that implements `swapIndex`. The module falls back
- * to `in_place` for providers that don't.
+ * - `swap` seeds a new version of the index and makes it active on completion,
+ * keeping the current version serving reads throughout.
+ * - `in_place` upserts into the active version directly, which is cheaper but
+ * leaves stale documents behind for anything the seed no longer produces.
  */
 export type SearchReindexStrategy = "swap" | "in_place"
 
@@ -114,9 +111,10 @@ export interface ISearchModuleService extends IModuleService {
    * queries against different indexes, or the same index with different filters,
    * without paying for a round trip per query.
    *
-   * If the index's provider implements `searchMany`, the queries are batched into
-   * a single request to the search engine. Otherwise, the module runs them in
-   * parallel.
+   * Disjunctive facets are expanded here, then every query targeting the same
+   * provider is handed to that provider's `searchMany` so the engine can pack
+   * them into one request. Prefer `query.search` from application code, which
+   * hydrates the hits through graph.
    *
    * @param {SearchQuery[]} queries - The queries to run against search indexes.
    * @returns {Promise<SearchResult[]>} The list of search results, in the same
@@ -264,8 +262,9 @@ export interface ISearchModuleService extends IModuleService {
 
   /**
    * This method retrieves an index's definition with the module's defaults
-   * applied: the provider it resolved to, the physical index behind it, and the
-   * `primary_key` its documents are keyed by, which is what a hit's `id` holds.
+   * applied: the provider it resolved to, the root physical index name its
+   * versions are derived from, and the `primary_key` its documents are keyed
+   * by, which is what a hit's `id` holds.
    *
    * @param {string} index - The name of the index.
    * @returns {ResolvedSearchIndexDefinition} The resolved index definition.

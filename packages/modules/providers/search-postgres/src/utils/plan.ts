@@ -52,8 +52,8 @@ export type PostgresSearchProviderOptions = {
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for engine-embedded vector fields (`embed` on the field) at
-   * write time, and for `search_options.vector.query` at query time. Required
+   * Embeds text for engine-embedded vector fields (`embed: true` on the field)
+   * at write time, and for `search_options.vector.query` at query time. Required
    * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
@@ -116,12 +116,6 @@ export function assertIndexSupported(
   ) => {
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
-
-      if (field.correlated) {
-        fail(
-          `The postgres search provider cannot correlate predicates per element, so "${path}" cannot set "correlated". Arrays of objects are collapsed to per-leaf arrays.`
-        )
-      }
 
       if (field.type === "vector") {
         if (engine !== "lakebase") {
