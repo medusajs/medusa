@@ -14,6 +14,7 @@ import {
 import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
 import {
+  createProductVariantsDefaultInventoryStep,
   dismissProductVariantsInventoryStep,
   updateProductVariantsStep,
 } from "../steps"
@@ -154,30 +155,44 @@ export const updateProductVariantsWorkflow = createWorkflow(
 
     const updatedVariants = updateProductVariantsStep(updateWithoutPrices)
 
-    const variantsToDismissInventory = transform(
+    const { variantsToDismissInventory, variantsToCreateInventory } = transform(
       { input, updatedVariants },
       (data) => {
-        const variantIds: string[] = []
+        const variantsToDismissInventory: string[] = []
+        const variantsToCreateInventory: string[] = []
 
         if ("product_variants" in data.input) {
           for (const variant of data.input.product_variants) {
-            if (variant.id && variant.manage_inventory === false) {
-              variantIds.push(variant.id)
+            if (!variant.id) {
+              continue
+            }
+
+            if (variant.manage_inventory === false) {
+              variantsToDismissInventory.push(variant.id)
+            } else if (variant.manage_inventory === true) {
+              variantsToCreateInventory.push(variant.id)
             }
           }
-        } else if (
-          data.input.update &&
-          data.input.update?.manage_inventory === false
-        ) {
-          variantIds.push(...data.updatedVariants.map((v) => v.id))
+        } else if (data.input.update) {
+          const updatedVariantIds = data.updatedVariants.map((v) => v.id)
+
+          if (data.input.update.manage_inventory === false) {
+            variantsToDismissInventory.push(...updatedVariantIds)
+          } else if (data.input.update.manage_inventory === true) {
+            variantsToCreateInventory.push(...updatedVariantIds)
+          }
         }
 
-        return variantIds
+        return { variantsToDismissInventory, variantsToCreateInventory }
       }
     )
 
     dismissProductVariantsInventoryStep({
       variantIds: variantsToDismissInventory,
+    })
+
+    createProductVariantsDefaultInventoryStep({
+      variantIds: variantsToCreateInventory,
     })
 
     // We don't want to do any pricing updates if the prices didn't change

@@ -27,6 +27,7 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
+import { createProductVariantsDefaultInventoryStep } from "../steps/create-product-variants-default-inventory"
 import { dismissProductVariantsInventoryStep } from "../steps/dismiss-product-variants-inventory"
 
 /**
@@ -445,33 +446,49 @@ export const updateProductsWorkflow = createWorkflow(
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
 
-    const variantsToDismissInventory = transform(
+    const { variantsToDismissInventory, variantsToCreateInventory } = transform(
       { input, updatedProducts },
       (data) => {
-        const variantIds: string[] = []
+        const variantsToDismissInventory: string[] = []
+        const variantsToCreateInventory: string[] = []
+
+        const collect = (variant: {
+          id?: string
+          manage_inventory?: boolean
+        }) => {
+          if (!variant.id) {
+            return
+          }
+
+          if (variant.manage_inventory === false) {
+            variantsToDismissInventory.push(variant.id)
+          } else if (variant.manage_inventory === true) {
+            variantsToCreateInventory.push(variant.id)
+          }
+        }
 
         if ("products" in data.input) {
           for (const product of data.input.products) {
             for (const variant of product.variants ?? []) {
-              if (variant.id && variant.manage_inventory === false) {
-                variantIds.push(variant.id)
-              }
+              collect(variant)
             }
           }
         } else if (data.input.update?.variants?.length) {
           for (const variant of data.input.update.variants) {
-            if (variant.id && variant.manage_inventory === false) {
-              variantIds.push(variant.id)
-            }
+            collect(variant)
           }
         }
 
-        return variantIds
+        return { variantsToDismissInventory, variantsToCreateInventory }
       }
     )
 
     dismissProductVariantsInventoryStep({
       variantIds: variantsToDismissInventory,
+    })
+
+    createProductVariantsDefaultInventoryStep({
+      variantIds: variantsToCreateInventory,
     })
 
     const salesChannelLinks = transform(
