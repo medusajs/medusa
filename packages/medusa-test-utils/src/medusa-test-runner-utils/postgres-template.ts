@@ -1,11 +1,14 @@
 import { Client } from "@medusajs/framework/pg"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-const DB_PORT = process.env.DB_PORT ?? "5432"
-const DB_WAITINGROOM_DATABASE =
-  process.env.DB_WAITINGROOM_DATABASE ?? "postgres"
+function getWaitingroomConfig() {
+  return {
+    host: process.env.DB_HOST ?? "localhost",
+    user: process.env.DB_USERNAME ?? "postgres",
+    password: process.env.DB_PASSWORD ?? "",
+    port: parseInt(process.env.DB_PORT ?? "5432"),
+    database: process.env.DB_WAITINGROOM_DATABASE ?? "postgres",
+  }
+}
 
 type DatabaseTemplateOptions = {
   databaseName: string
@@ -32,12 +35,10 @@ function resetWaitingroomClient() {
 async function getWaitingroomClient(): Promise<Client> {
   if (!waitingroomClientPromise) {
     waitingroomClientPromise = (async () => {
+      const config = getWaitingroomConfig()
       const client = new Client({
-        host: DB_HOST,
-        user: DB_USERNAME,
-        password: DB_PASSWORD || undefined,
-        port: parseInt(DB_PORT),
-        database: DB_WAITINGROOM_DATABASE,
+        ...config,
+        password: config.password || undefined,
       })
 
       try {

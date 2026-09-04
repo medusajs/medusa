@@ -1,4 +1,43 @@
-import { getDatabaseURL } from "../database"
+import { getDatabaseCredentials, getDatabaseURL } from "../database"
+
+describe("getDatabaseCredentials", () => {
+  const originalEnv = process.env
+
+  beforeEach(() => {
+    process.env = {
+      ...originalEnv,
+      DB_HOST: "first-host",
+      DB_PORT: "5432",
+      DB_USERNAME: "first-user",
+      DB_PASSWORD: "first-password",
+    }
+  })
+
+  afterEach(() => {
+    process.env = originalEnv
+  })
+
+  it("reads credentials when called", () => {
+    expect(getDatabaseCredentials()).toEqual({
+      host: "first-host",
+      port: 5432,
+      user: "first-user",
+      password: "first-password",
+    })
+
+    process.env.DB_HOST = "second-host"
+    process.env.DB_USERNAME = "second-user"
+    process.env.DB_PASSWORD = "second-password"
+    process.env.DB_PORT = "6543"
+
+    expect(getDatabaseCredentials()).toEqual({
+      host: "second-host",
+      port: 6543,
+      user: "second-user",
+      password: "second-password",
+    })
+  })
+})
 
 describe("getDatabaseURL", () => {
   const originalEnv = process.env
