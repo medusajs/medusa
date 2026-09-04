@@ -408,9 +408,17 @@
                 },
                 "deleteRow": {
                   "type": "string"
+                },
+                "addRow": {
+                  "type": "string"
                 }
               },
-              "required": ["insertRowAbove", "insertRowBelow", "deleteRow"],
+              "required": [
+                "insertRowAbove",
+                "insertRowBelow",
+                "deleteRow",
+                "addRow"
+              ],
               "additionalProperties": false
             },
             "labels": {
@@ -12895,6 +12903,9 @@
         "workflowIdLabel": {
           "type": "string"
         },
+        "stateLabel": {
+          "type": "string"
+        },
         "progressLabel": {
           "type": "string"
         },
@@ -13059,6 +13070,7 @@
         "subtitle",
         "transactionIdLabel",
         "workflowIdLabel",
+        "stateLabel",
         "progressLabel",
         "list",
         "history",

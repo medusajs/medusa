@@ -20,8 +20,30 @@ const boot = (service: SearchService) =>
 const migrate = async (service: SearchService) =>
   service.executeIndexMigrationPlan(await service.createIndexMigrationPlan())
 
-const updateIndexRecords = (service: SearchService, input: any) =>
-  (service as any).context_.indexService.update(input) as Promise<any>
+// Every version — including the first — gets its own physical table, so a
+// raw provider call (rather than one going through the module service, which
+// resolves this itself) has to look up whichever version is currently active.
+const activeVersion = async (service: SearchService, name: string) => {
+  const [record] = await (service as any).context_.indexService.list({ name })
+  const [version] = await (service as any).context_.versionService.list({
+    search_index_id: record.id,
+    version: record.active_version,
+  })
+  return version
+}
+
+const activePhysicalName = async (service: SearchService, name: string) =>
+  (await activeVersion(service, name)).physical_name
+
+// Simulates schema drift: the active version's `definition_hash` now lives on
+// `SearchIndexVersion`, not `SearchIndex`.
+const staleActiveVersion = async (service: SearchService, name: string) => {
+  const version = await activeVersion(service, name)
+  await (service as any).context_.versionService.update({
+    selector: { id: version.id },
+    data: { definition_hash: "stale" },
+  })
+}
 
 // The provider itself, for the write paths the module only reaches through
 // events (delete-by-filter) and for catalog assertions.
@@ -34,7 +56,7 @@ const ids = (result: SearchTypes.SearchResult) =>
 const reseed = async (service: SearchService) => {
   resetDataset()
   const p = provider(service)
-  await p.clearIndex({ index: "product" })
+  await p.clearIndex({ index: await activePhysicalName(service, "product") })
   await service.upsertDocuments({
     index: "product",
     documents: dataset.products,
@@ -161,7 +183,18 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
         })
 
-        it("rejects vector search on the native engine", async () => {
+        it("ignores highlighting and typo tolerance when there is no text query", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { status: "published" },
+            search_options: { highlight: true, typo_tolerance: true },
+          })
+
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
+        })
+
+        it("rejects vector search when the index has no vector field", async () => {
           await expect(
             service.search({
               entity: "product",
@@ -170,7 +203,7 @@ moduleIntegrationTestRunner<SearchService>({
                 vector: { field: "embedding", value: [0.1] },
               },
             })
-          ).rejects.toThrow(/lakebase/)
+          ).rejects.toThrow(/Unknown field "embedding"/)
         })
       })
 
@@ -235,13 +268,15 @@ moduleIntegrationTestRunner<SearchService>({
         })
 
         it("deletes by primary key without treating the id list as a Postgres array literal", async () => {
+          const physicalName = await activePhysicalName(service, "product")
+
           await provider(service).deleteDocuments({
-            index: "product",
+            index: physicalName,
             filters: { id: "prod_1" },
           })
 
           await provider(service).deleteDocuments({
-            index: "product",
+            index: physicalName,
             filters: { id: ["prod_2", "prod_3"] },
           })
 
@@ -257,7 +292,7 @@ moduleIntegrationTestRunner<SearchService>({
 
         it("deletes by filter without $exists leaking across the conjunction", async () => {
           await provider(service).deleteDocuments({
-            index: "product",
+            index: await activePhysicalName(service, "product"),
             filters: { status: "draft", deleted_at: { $exists: false } },
           })
 
@@ -392,16 +427,12 @@ moduleIntegrationTestRunner<SearchService>({
       })
 
       describe("reindexing", () => {
-        const stale = () =>
-          updateIndexRecords(service, {
-            selector: { name: "product" },
-            data: { definition_hash: "stale" },
-          })
+        const stale = () => staleActiveVersion(service, "product")
 
-        it("survives repeated swap cycles onto the same shadow name", async () => {
-          // Two full stale → migrate → boot cycles reuse the identical
-          // hash-derived shadow table name; leftover constraint/index names
-          // from the first swap used to collide with the second.
+        it("survives repeated migrate + seed cycles, each building a fresh version", async () => {
+          // Two full stale → migrate → boot cycles each build a brand-new,
+          // never-before-used physical table (`product_v2`, `product_v3`, ...)
+          // and make it active in turn.
           for (let cycle = 0; cycle < 2; cycle++) {
             await stale()
             await migrate(service)
@@ -414,7 +445,8 @@ moduleIntegrationTestRunner<SearchService>({
             expect(result.metadata.count).toBe(3)
           }
 
-          // The live table kept its physical indexes through the swaps.
+          // The latest version's table got its full-text and trigram indexes
+          // built correctly, same as the first.
           const result = await service.search({
             entity: "product",
             fields: ["id"],

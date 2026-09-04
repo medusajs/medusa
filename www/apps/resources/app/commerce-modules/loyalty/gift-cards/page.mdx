@@ -28,6 +28,7 @@ Each gift card record includes the following properties:
 - `code`: A unique identifier used to redeem the gift card. For example, `GIFT-123-ABC`.
 - `value`: The gift card's amount in major currency units. For example, `50.00` for a $50 gift card.
 - `status`: Whether the gift card was redeemed.
+- `expires_at`: An optional expiration date and time for the gift card. When `null`, the gift card never expires.
 - `reference`: The name of the table that triggered the gift card was used with. For example, `order` if the gift card was used in an order.
 - `reference_id`: The ID of the record in the reference table that triggered the gift card was used with. For example, `order_123` if the gift card was used in order with ID `order_123`.
 - `line_item_id`: The ID of the line item in the order that the customer purchased the gift card in.
@@ -39,6 +40,16 @@ Each gift card record includes the following properties:
 Gift cards can be sold as products in your store. You can create [products](../../product/page.mdx) with the `is_giftcard` property set to `true`.
 
 When a customer purchases a gift card product, a new gift card is automatically created with the specified value and associated with the order.
+
+---
+
+## Gift Card Expiry
+
+A gift card with a `null` value for `expires_at` never expires. When `expires_at` is set, the Loyalty Plugin enforces expiry at the following points:
+
+- **Adding to cart**: If a customer tries to apply an expired gift card code, the `addGiftCardToCartWorkflow` throws an error and the gift card is not added.
+- **Checkout**: When the customer places the order, the `confirmCartCreditLinesWorkflow` checks all gift cards applied to the cart. If any have expired since being applied, it throws an error before debiting balances.
+- **Cart refresh**: The `refreshCartGiftCardsWorkflow` silently drops expired gift cards from the cart so the cart can still be refreshed. Their credit lines and links are removed first.
 
 ---
 

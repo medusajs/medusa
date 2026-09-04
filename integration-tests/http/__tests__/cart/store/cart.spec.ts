@@ -99,7 +99,12 @@ medusaIntegrationTestRunner({
         region = (
           await api.post(
             "/admin/regions",
-            { name: "US", currency_code: "usd", countries: ["us"] },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            },
             adminHeaders
           )
         ).data.region
@@ -107,7 +112,12 @@ medusaIntegrationTestRunner({
         noAutomaticRegion = (
           await api.post(
             "/admin/regions",
-            { name: "EUR", currency_code: "eur", automatic_taxes: false },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "EUR",
+              currency_code: "eur",
+              automatic_taxes: false,
+            },
             adminHeaders
           )
         ).data.region
@@ -214,6 +224,56 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should reject a currency_code that does not match the region's currency", async () => {
+          const multiCurrencyProduct = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Multi-currency product",
+                status: ProductStatus.PUBLISHED,
+                shipping_profile_id: shippingProfile.id,
+                options: [{ title: "Size", values: ["S"] }],
+                variants: [
+                  {
+                    title: "S",
+                    sku: "MULTI-CURRENCY-S",
+                    options: { Size: "S" },
+                    manage_inventory: false,
+                    prices: [
+                      { amount: 1500, currency_code: "usd" },
+                      { amount: 1000, currency_code: "eur" },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const response = await api
+            .post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id, // US region -> usd
+                items: [
+                  {
+                    variant_id: multiCurrencyProduct.variants[0].id,
+                    quantity: 1,
+                  },
+                ],
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.response.status).toEqual(400)
+          expect(response.response.data.message).toContain(
+            "does not match the region's currency code"
           )
         })
 
@@ -3603,7 +3663,12 @@ medusaIntegrationTestRunner({
           const gbRegion = (
             await api.post(
               "/admin/regions",
-              { name: "GB Tax Data", currency_code: "gbp", countries: ["gb"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "GB Tax Data",
+                currency_code: "gbp",
+                countries: ["gb"],
+              },
               adminHeaders
             )
           ).data.region
@@ -4565,7 +4630,12 @@ medusaIntegrationTestRunner({
           otherRegion = (
             await api.post(
               "/admin/regions",
-              { name: "dk", currency_code: "dkk", countries: ["dk"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "dk",
+                currency_code: "dkk",
+                countries: ["dk"],
+              },
               adminHeaders
             )
           ).data.region
@@ -4869,6 +4939,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "Europe",
                 currency_code: "eur",
                 countries: ["de", "ca"],
@@ -4929,6 +5000,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "Europe",
                 currency_code: "eur",
                 countries: ["de", "ca"],
@@ -5288,7 +5360,12 @@ medusaIntegrationTestRunner({
           const regionWithMultipleCountries = (
             await api.post(
               "/admin/regions",
-              { name: "dks", currency_code: "dkk", countries: ["ae", "no"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "dks",
+                currency_code: "dkk",
+                countries: ["ae", "no"],
+              },
               adminHeaders
             )
           ).data.region
@@ -5463,7 +5540,12 @@ medusaIntegrationTestRunner({
           const regionWithoutTax = (
             await api.post(
               "/admin/regions",
-              { name: "Italy", currency_code: "eur", countries: ["it"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Italy",
+                currency_code: "eur",
+                countries: ["it"],
+              },
               adminHeaders
             )
           ).data.region
@@ -5598,7 +5680,12 @@ medusaIntegrationTestRunner({
           const regionWithoutTax = (
             await api.post(
               "/admin/regions",
-              { name: "Italy", currency_code: "eur", countries: ["it"] },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Italy",
+                currency_code: "eur",
+                countries: ["it"],
+              },
               adminHeaders
             )
           ).data.region
@@ -7940,13 +8027,16 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw when prices are not setup for shipping option", async () => {
+          // Use the eur region so the cart currency matches its region, while
+          // the shipping option (priced only in usd) still has no price in the
+          // cart's currency.
           cart = (
             await api.post(
               `/store/carts?fields=+total`,
               {
                 currency_code: "eur",
                 sales_channel_id: salesChannel.id,
-                region_id: region.id,
+                region_id: noAutomaticRegion.id,
                 items: [{ variant_id: product.variants[0].id, quantity: 5 }],
               },
               storeHeadersWithCustomer
