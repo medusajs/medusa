@@ -1,5 +1,18 @@
 # @medusajs/utils
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16342](https://github.com/medusajs/medusa/pull/16342) [`b650b6c9a486f50ac437614ba36c7f42a203a458`](https://github.com/medusajs/medusa/commit/b650b6c9a486f50ac437614ba36c7f42a203a458) Thanks [@Arunendra21](https://github.com/Arunendra21)! - fix(utils): honor decimalPlaces of 0 in MathBN.convert
+
+  `MathBN.convert(value, decimalPlaces)` guarded the rounding step with `if (decimalPlaces)`, so passing `0` (round to an integer, e.g. for zero-decimal currencies) was treated the same as omitting the argument and no rounding was applied. It now checks `decimalPlaces != null` so `0` rounds as expected while an omitted argument still skips rounding.
+
+- [#16456](https://github.com/medusajs/medusa/pull/16456) [`bda24b9725ac697ec5e8f706b503013e20babf12`](https://github.com/medusajs/medusa/commit/bda24b9725ac697ec5e8f706b503013e20babf12) Thanks [@tushardev-365](https://github.com/tushardev-365)! - fix(utils): title-case script subtags in two-segment locales
+
+- Updated dependencies []:
+  - @medusajs/deps@2.20.2
+
 ## 2.20.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @medusajs/js-sdk
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16506](https://github.com/medusajs/medusa/pull/16506) [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(dashboard,js-sdk): export common components, hooks
+
 ## 2.20.1
 
 ## 2.20.0

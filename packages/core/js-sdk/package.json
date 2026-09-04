@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "2.20.1",
+  "version": "2.20.2",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -32,7 +32,7 @@
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/types": "2.20.1"
+    "@medusajs/types": "2.20.2"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",

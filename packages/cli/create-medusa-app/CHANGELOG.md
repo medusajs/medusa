@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16712](https://github.com/medusajs/medusa/pull/16712) [`5ccbfec87f4a809fcd0568a2c0c7954c9335608a`](https://github.com/medusajs/medusa/commit/5ccbfec87f4a809fcd0568a2c0c7954c9335608a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(create-medusa-app): change Next.js starter wording
+
+- Updated dependencies []:
+  - @medusajs/deps@2.20.2
+  - @medusajs/telemetry@2.20.2
+
 ## 2.20.1
 
 ### Patch Changes

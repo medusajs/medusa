@@ -1,5 +1,19 @@
 # @medusajs/draft-order
 
+## 2.20.2
+
+### Patch Changes
+
+- Updated dependencies [[`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a), [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be), [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a)]:
+  - @medusajs/dashboard@2.20.2
+  - @medusajs/framework@2.20.2
+  - @medusajs/js-sdk@2.20.2
+  - @medusajs/test-utils@2.20.2
+  - @medusajs/cli@2.20.2
+  - @medusajs/admin-sdk@2.20.2
+  - @medusajs/icons@2.20.2
+  - @medusajs/ui@4.2.4
+
 ## 2.20.1
 
 ### Patch Changes

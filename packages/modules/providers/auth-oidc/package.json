@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-oidc",
-  "version": "2.20.1",
+  "version": "2.20.2",
   "description": "Generic OpenID Connect (OIDC) authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -32,10 +32,10 @@
     "openid-client": "^5.7.1"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.20.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.20.2"
   },
   "keywords": [
     "medusa-provider",

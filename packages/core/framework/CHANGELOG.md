@@ -1,5 +1,23 @@
 # @medusajs/framework
 
+## 2.20.2
+
+### Patch Changes
+
+- [#16351](https://github.com/medusajs/medusa/pull/16351) [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): mark migration scripts as completed only after successful run
+
+- [#16370](https://github.com/medusajs/medusa/pull/16370) [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382) Thanks [@DS123-ally](https://github.com/DS123-ally)! - fix(framework): make unlessPath deterministic for stateful regular expressions
+
+- Updated dependencies [[`b650b6c9a486f50ac437614ba36c7f42a203a458`](https://github.com/medusajs/medusa/commit/b650b6c9a486f50ac437614ba36c7f42a203a458), [`bda24b9725ac697ec5e8f706b503013e20babf12`](https://github.com/medusajs/medusa/commit/bda24b9725ac697ec5e8f706b503013e20babf12)]:
+  - @medusajs/utils@2.20.2
+  - @medusajs/cli@2.20.2
+  - @medusajs/modules-sdk@2.20.2
+  - @medusajs/orchestration@2.20.2
+  - @medusajs/workflows-sdk@2.20.2
+  - @medusajs/types@2.20.2
+  - @medusajs/deps@2.20.2
+  - @medusajs/telemetry@2.20.2
+
 ## 2.20.1
 
 ### Patch Changes
