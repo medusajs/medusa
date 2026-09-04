@@ -79,6 +79,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("medusa-context-on-context-param")]: "warn",
         [ruleId("service-constructor-must-call-super")]: "error",
+        [ruleId("service-keys-match-data-model-names")]: "error",
         [ruleId("service-methods-must-be-async")]: "error",
         [ruleId("use-inject-manager-on-public-methods")]: "warn",
       },
