@@ -174,6 +174,18 @@ export interface MedusaRequest<
    * by the api
    */
   allowed?: string[]
+  /**
+   * An array of fields and relations that must never be resolved, this can be set by the
+   * consumer as part of a global middleware and it replaces the disallowed fields
+   * configured by the route's query configuration
+   *
+   * Since disallowed fields are a security boundary that keeps sensitive relations off an
+   * endpoint, set this to the route's configured fields minus the ones you need, rather
+   * than to a short list of your own. An empty array removes the boundary entirely.
+   *
+   * @since v2.20.2
+   */
+  disallowed?: (string | RegExp)[]
   errors: string[]
   scope: MedusaContainer
   session?: any
