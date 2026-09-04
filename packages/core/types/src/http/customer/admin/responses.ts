@@ -27,6 +27,13 @@ export type AdminCustomerAddressListResponse = PaginatedResponse<{
   addresses: AdminCustomerAddress[]
 }>
 
+export interface AdminExportCustomerResponse {
+  /**
+   * The ID of the export customer workflow's transaction.
+   */
+  transaction_id: string
+}
+
 export type AdminCustomerDeleteResponse = DeleteResponse<"customer">
 
 export type AdminCustomerGroupDeleteResponse = DeleteResponse<"customer_group">
