@@ -14,6 +14,9 @@ import {
 export const unlessPath =
   (onPath: RegExp, middleware: MiddlewareFunction) =>
   (req: MedusaRequest, res: MedusaResponse, next: MedusaNextFunction) => {
+    // Reset lastIndex to prevent stateful RegExp (with /g or /y flags) from
+    // alternating between match and no-match on successive requests.
+    onPath.lastIndex = 0
     if (onPath.test(req.path)) {
       return next()
     } else {
