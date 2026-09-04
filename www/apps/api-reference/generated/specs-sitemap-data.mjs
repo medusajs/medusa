@@ -19,6 +19,7 @@ export const specsSitemapData = {
         "auth_postsession",
         "auth_deletesession",
         "auth_postadminauthtokenrefresh",
+        "auth_getuserproviders",
         "auth_postactor_typeauth_provider",
         "auth_postactor_typeauth_providercallback",
         "auth_postactor_typeauth_provider_register",
@@ -210,6 +211,7 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "inventory-items_getinventoryitems",
         "inventory-items_postinventoryitems",
+        "inventory-items_postinventoryitemsexport",
         "inventory-items_postinventoryitemslocationlevelsbatch",
         "inventory-items_getinventoryitemsid",
         "inventory-items_postinventoryitemsid",
@@ -547,6 +549,19 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "search",
+      "operationSectionIds": [
+        "search_getsearch"
+      ]
+    },
+    {
+      "tagSectionId": "search-indexes",
+      "operationSectionIds": [
+        "search-indexes_getsearchindexes",
+        "search-indexes_postsearchindexesidreindex"
+      ]
+    },
+    {
       "tagSectionId": "shipping-option-types",
       "operationSectionIds": [
         "shipping-option-types_getshippingoptiontypes",
@@ -663,7 +678,9 @@ export const specsSitemapData = {
         "users_getusersme",
         "users_getusersid",
         "users_postusersid",
-        "users_deleteusersid"
+        "users_deleteusersid",
+        "users_getusersidauthproviders",
+        "users_postusersidresetpassword"
       ]
     },
     {
@@ -699,6 +716,7 @@ export const specsSitemapData = {
       "tagSectionId": "auth",
       "operationSectionIds": [
         "auth_postactor_typeauth_providerverificationconfirm",
+        "auth_getcustomerproviders",
         "auth_postactor_typeauth_provider",
         "auth_postactor_typeauth_providercallback",
         "auth_postactor_typeauth_provider_register",

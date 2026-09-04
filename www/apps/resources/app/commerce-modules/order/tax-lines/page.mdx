@@ -39,3 +39,33 @@ The following diagram is a simplified showcase of how a subtotal is calculated f
 ![A diagram showcasing how a subtotal is calculated from the tax perspective](https://res.cloudinary.com/dza7lstvk/image/upload/v1712307395/Medusa%20Resources/order-tax-inclusive_oebdnm.jpg)
 
 For example, if a line item's amount is `5000`, the tax rate is `10`, and `is_tax_inclusive` is enabled, the tax amount is 10% of `5000`, which is `500`. The item's unit price becomes `4500`.
+
+---
+
+## When Are Tax Lines Recalculated?
+
+Unlike cart tax lines, which Medusa recalculates automatically as the customer builds their cart, order tax lines are only recomputed in specific situations.
+
+### Regular Orders
+
+For regular orders, Medusa does not automatically recompute tax lines when you update an order. For example, updating the order's shipping or billing address using the `updateOrderWorkflow` does not trigger a tax recomputation. The existing tax lines are preserved as-is.
+
+To recompute a regular order's tax lines, use the [updateOrderTaxLinesWorkflow](/references/medusa-workflows/updateOrderTaxLinesWorkflow).
+
+### Draft Orders
+
+For draft orders, Medusa recomputes tax lines in two situations:
+
+- When you update the draft order's shipping or billing address using the [updateDraftOrderWorkflow](/references/medusa-workflows/updateDraftOrderWorkflow), Medusa recomputes the tax lines to reflect the correct tax jurisdiction.
+- When you convert a draft order to a regular order using the [convertDraftOrderWorkflow](/references/medusa-workflows/convertDraftOrderWorkflow), Medusa recomputes the tax lines before placing the order. This prevents stale tax lines from carrying over to the new order.
+
+In both cases, whether Medusa recomputes the tax lines depends on the region's `automatic_taxes` setting:
+
+- If `automatic_taxes` is enabled, Medusa recomputes the tax lines from the tax provider.
+- If `automatic_taxes` is disabled, the tax lines are not recomputed.
+
+<Note>
+
+The automatic tax recomputation for draft orders is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>

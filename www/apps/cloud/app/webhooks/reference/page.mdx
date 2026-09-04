@@ -40,7 +40,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
 ```json
 {
   "id": "whev_01K2M7Q8ZCTVX3H4",
-  "type": "deployment.updated",
+  "type": "deployment.created",
   "data": {
     // The payload of the event.
   },
@@ -58,7 +58,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
     {
       name: "type",
       type: "`string`",
-      description: `The name of the event, such as \`deployment.updated\`.`,
+      description: `The name of the event, such as \`deployment.created\`.`,
     },
     {
       name: "data",
@@ -68,7 +68,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
     {
       name: "created_at",
       type: "`string`",
-      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed. For that, use the resource's \`updated_at\` property in \`data\`. This value stays the same across retries, so it can be older than the request you receive.`,
+      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed.`,
     },
   ]}
   sectionTitle="Delivery Details"
@@ -400,6 +400,18 @@ Medusa sends the following events:
     <Table.Row>
       <Table.Cell>
 
+      [`build.canceled`](#buildcanceled)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The build was canceled.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
       [`build.created`](#buildcreated)
 
       </Table.Cell>
@@ -412,12 +424,36 @@ Medusa sends the following events:
     <Table.Row>
       <Table.Cell>
 
-      [`build.updated`](#buildupdated)
+      [`build.failed`](#buildfailed)
 
       </Table.Cell>
       <Table.Cell>
 
-        A build changed, such as when its status changed.
+        A build failed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.succeeded`](#buildsucceeded)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A build completed successfully.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.canceled`](#deploymentcanceled)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The deployment was canceled.
 
       </Table.Cell>
     </Table.Row>
@@ -436,12 +472,24 @@ Medusa sends the following events:
     <Table.Row>
       <Table.Cell>
 
-      [`deployment.updated`](#deploymentupdated)
+      [`deployment.failed`](#deploymentfailed)
 
       </Table.Cell>
       <Table.Cell>
 
-        A deployment finished, regardless of whether it succeeded or failed.
+        A deployment failed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.succeeded`](#deploymentsucceeded)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A deployment completed successfully.
 
       </Table.Cell>
     </Table.Row>
@@ -454,165 +502,319 @@ Medusa sends the following events:
 
 Medusa sends these events related to an environment's builds, which happen after you push a commit to the environment's branch.
 
-### build.created
+### build.canceled
 
-Medusa sends this event when it creates a build for an environment, such as after you push a commit to the environment's branch.
+Cloud delivers this event when a build is canceled.
 
 #### Payload
-
-<Note>
-
-The following payload is nested under the `data` property of the [event envelope](#webhook-delivery-details).
-
-</Note>
 
 <TypeList
   types={[
     {
-      name: "build",
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.canceled".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
       type: "`object`",
-      description: `The details of the build.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the build.`,
+          name: "build",
+          type: "`object`",
+          description: `The build that was canceled.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"canceled\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "status",
-          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
-          description: `The status of the build.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "commit_hash",
-          type: "`string`",
-          description: `The hash of the commit that the build uses.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
         },
         {
-          name: "commit_message",
-          type: "`string`",
-          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
-        },
-        {
-          name: "commit_author",
-          type: "`string`",
-          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the build was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the build was last updated, in ISO 8601 format.`,
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
+  ]}
+  sectionTitle="build.canceled"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:03:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "canceled"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ4567ABCDEF",
+  "type": "build.canceled"
+}
+```
+
+### build.created
+
+Cloud delivers this event when a new build is created for an environment.
+
+#### Payload
+
+<TypeList
+  types={[
     {
-      name: "organization",
-      type: "`object`",
-      description: `The details of the organization that the build belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the organization.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the organization.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the organization was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the organization was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
     },
     {
-      name: "project",
-      type: "`object`",
-      description: `The details of the project that the build belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the project.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the project.`,
-        },
-        {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the project, which is its unique identifier in URLs.`,
-        },
-        {
-          name: "repository",
-          type: "`string`",
-          description: `The repository that the project deploys from.`,
-        },
-        {
-          name: "region",
-          type: "`string`",
-          description: `The region that the project runs in.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the project was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the project was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.created".`,
     },
     {
-      name: "environment",
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
       type: "`object`",
-      description: `The details of the environment that the build belongs to.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the environment.`,
+          name: "build",
+          type: "`object`",
+          description: `The build that was created.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "name",
-          type: "`string`",
-          description: `The name of the environment.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the environment, which is its unique identifier in URLs.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
         },
         {
-          name: "branch",
-          type: "`string`",
-          description: `The branch that the environment deploys from.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the environment was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
@@ -624,247 +826,391 @@ The following payload is nested under the `data` property of the [event envelope
 
 ```json
 {
-  "id": "whev_01K2M7Q8ZCTVX3H4",
-  "type": "build.created",
+  "created_at": "2024-11-12T10:00:00.000Z",
   "data": {
     "build": {
-      "id": "build_01K2M7Q1ABCD",
-      "status": "created",
-      "commit_hash": "9f2c1ab",
-      "commit_message": "Add loyalty plugin",
-      "commit_author": "exampleuser",
-      "created_at": "2026-08-07T09:12:03.000Z",
-      "updated_at": "2026-08-07T09:12:03.000Z"
-    },
-    "organization": {
-      "id": "org_01K2M6YZ1234",
-      "name": "Acme",
-      "created_at": "2026-01-14T10:02:11.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
-    },
-    "project": {
-      "id": "proj_01K2M6YZ5678",
-      "name": "Acme Store",
-      "handle": "acme-store",
-      "repository": "acme/store",
-      "region": "us-east-1",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "created"
     },
     "environment": {
-      "id": "projenv_01K2M6YZ9012",
-      "name": "Production",
-      "handle": "production",
       "branch": "main",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
     }
   },
-  "created_at": "2026-08-07T09:12:04.000Z"
+  "id": "whev_01HXYZ1234ABCDEF",
+  "type": "build.created"
 }
 ```
 
-### build.updated
+### build.failed
 
-Medusa sends this event when a build changes, such as when it starts running or reaches a final status.
+Cloud delivers this event when a build fails.
 
 #### Payload
 
 <TypeList
   types={[
     {
-      name: "build",
-      type: "`object`",
-      description: `The details of the build.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the build.`,
-        },
-        {
-          name: "status",
-          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
-          description: `The status of the build.`,
-        },
-        {
-          name: "commit_hash",
-          type: "`string`",
-          description: `The hash of the commit that the build uses.`,
-        },
-        {
-          name: "commit_message",
-          type: "`string`",
-          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
-        },
-        {
-          name: "commit_author",
-          type: "`string`",
-          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the build was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the build was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
     },
     {
-      name: "organization",
-      type: "`object`",
-      description: `The details of the organization that the build belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the organization.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the organization.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the organization was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the organization was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.failed".`,
     },
     {
-      name: "project",
-      type: "`object`",
-      description: `The details of the project that the build belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the project.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the project.`,
-        },
-        {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the project, which is its unique identifier in URLs.`,
-        },
-        {
-          name: "repository",
-          type: "`string`",
-          description: `The repository that the project deploys from.`,
-        },
-        {
-          name: "region",
-          type: "`string`",
-          description: `The region that the project runs in.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the project was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the project was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
     },
     {
-      name: "environment",
+      name: "data",
       type: "`object`",
-      description: `The details of the environment that the build belongs to.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the environment.`,
+          name: "build",
+          type: "`object`",
+          description: `The build that failed.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"failed\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "name",
-          type: "`string`",
-          description: `The name of the environment.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the environment, which is its unique identifier in URLs.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
         },
         {
-          name: "branch",
-          type: "`string`",
-          description: `The branch that the environment deploys from.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the environment was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
   ]}
-  sectionTitle="build.updated"
+  sectionTitle="build.failed"
 />
 
 #### Example Payload
 
 ```json
 {
-  "id": "whev_01K2M7RA4DEFG567",
-  "type": "build.updated",
+  "created_at": "2024-11-12T10:05:00.000Z",
   "data": {
     "build": {
-      "id": "build_01K2M7Q1ABCD",
-      "status": "succeeded",
-      "commit_hash": "9f2c1ab",
-      "commit_message": "Add loyalty plugin",
-      "commit_author": "exampleuser",
-      "created_at": "2026-08-07T09:12:03.000Z",
-      "updated_at": "2026-08-07T09:14:18.000Z"
-    },
-    "organization": {
-      "id": "org_01K2M6YZ1234",
-      "name": "Acme",
-      "created_at": "2026-01-14T10:02:11.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
-    },
-    "project": {
-      "id": "proj_01K2M6YZ5678",
-      "name": "Acme Store",
-      "handle": "acme-store",
-      "repository": "acme/store",
-      "region": "us-east-1",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "failed"
     },
     "environment": {
-      "id": "projenv_01K2M6YZ9012",
-      "name": "Production",
-      "handle": "production",
       "branch": "main",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
     }
   },
-  "created_at": "2026-08-07T09:14:19.000Z"
+  "id": "whev_01HXYZ3456ABCDEF",
+  "type": "build.failed"
+}
+```
+
+### build.succeeded
+
+Cloud delivers this event when a build completes successfully.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "build.succeeded".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build that succeeded.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "status",
+              type: "`\"succeeded\"`",
+              description: `Status of the build at the time of the event.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the build belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment the build targets.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.succeeded"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:05:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF",
+      "status": "succeeded"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ2345ABCDEF",
+  "type": "build.succeeded"
 }
 ```
 
@@ -874,186 +1220,346 @@ Medusa sends this event when a build changes, such as when it starts running or 
 
 Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
 
-### deployment.created
+### deployment.canceled
 
-Medusa sends this event when it creates a deployment for an environment, which happens after a build succeeds.
+Cloud delivers this event when a deployment is canceled.
 
 #### Payload
 
 <TypeList
   types={[
     {
-      name: "deployment",
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.canceled".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
       type: "`object`",
-      description: `The details of the deployment.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the deployment.`,
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that was canceled.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"canceled\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
         },
         {
-          name: "status",
-          type: "`created` | `deploying` | `deployed` | `failed` | `canceled` | `idle`",
-          description: `The status of the deployment.`,
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the deployment was created, in ISO 8601 format.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the deployment was last updated, in ISO 8601 format.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
+  ]}
+  sectionTitle="deployment.canceled"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:08:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "canceled"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ8901ABCDEF",
+  "type": "deployment.canceled"
+}
+```
+
+### deployment.created
+
+Cloud delivers this event when a new deployment is created for an environment.
+
+#### Payload
+
+<TypeList
+  types={[
     {
-      name: "build",
-      type: "`object`",
-      description: `The details of the build that the deployment uses.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the build.`,
-        },
-        {
-          name: "status",
-          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
-          description: `The status of the build.`,
-        },
-        {
-          name: "commit_hash",
-          type: "`string`",
-          description: `The hash of the commit that the build uses.`,
-        },
-        {
-          name: "commit_message",
-          type: "`string`",
-          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
-        },
-        {
-          name: "commit_author",
-          type: "`string`",
-          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the build was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the build was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
     },
     {
-      name: "organization",
-      type: "`object`",
-      description: `The details of the organization that the deployment belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the organization.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the organization.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the organization was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the organization was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.created".`,
     },
     {
-      name: "project",
-      type: "`object`",
-      description: `The details of the project that the deployment belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the project.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the project.`,
-        },
-        {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the project, which is its unique identifier in URLs.`,
-        },
-        {
-          name: "repository",
-          type: "`string`",
-          description: `The repository that the project deploys from.`,
-        },
-        {
-          name: "region",
-          type: "`string`",
-          description: `The region that the project runs in.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the project was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the project was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
     },
     {
-      name: "environment",
+      name: "data",
       type: "`object`",
-      description: `The details of the environment that the deployment belongs to.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the environment.`,
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that was created.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
         },
         {
-          name: "name",
-          type: "`string`",
-          description: `The name of the environment.`,
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the environment, which is its unique identifier in URLs.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "branch",
-          type: "`string`",
-          description: `The branch that the environment deploys from.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
         },
         {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the environment was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+          name: "environment",
+          type: "`object`",
+          description: `The environment being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
@@ -1065,285 +1571,423 @@ Medusa sends this event when it creates a deployment for an environment, which h
 
 ```json
 {
-  "id": "whev_01K2M7RB8HIJK890",
-  "type": "deployment.created",
+  "created_at": "2024-11-12T10:06:00.000Z",
   "data": {
-    "deployment": {
-      "id": "depl_01K2M7RB1LMN",
-      "status": "created",
-      "created_at": "2026-08-07T09:14:20.000Z",
-      "updated_at": "2026-08-07T09:14:20.000Z"
-    },
     "build": {
-      "id": "build_01K2M7Q1ABCD",
-      "status": "succeeded",
-      "commit_hash": "9f2c1ab",
-      "commit_message": "Add loyalty plugin",
-      "commit_author": "exampleuser",
-      "created_at": "2026-08-07T09:12:03.000Z",
-      "updated_at": "2026-08-07T09:14:18.000Z"
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
     },
-    "organization": {
-      "id": "org_01K2M6YZ1234",
-      "name": "Acme",
-      "created_at": "2026-01-14T10:02:11.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
-    },
-    "project": {
-      "id": "proj_01K2M6YZ5678",
-      "name": "Acme Store",
-      "handle": "acme-store",
-      "repository": "acme/store",
-      "region": "us-east-1",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "created"
     },
     "environment": {
-      "id": "projenv_01K2M6YZ9012",
-      "name": "Production",
-      "handle": "production",
       "branch": "main",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
     }
   },
-  "created_at": "2026-08-07T09:14:21.000Z"
+  "id": "whev_01HXYZ5678ABCDEF",
+  "type": "deployment.created"
 }
 ```
 
-### deployment.updated
+### deployment.failed
 
-Medusa sends this event when a deployment finishes. Check the deployment's `status` to find out whether it succeeded.
+Cloud delivers this event when a deployment fails.
 
 #### Payload
 
 <TypeList
   types={[
     {
-      name: "deployment",
-      type: "`object`",
-      description: `The details of the deployment.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the deployment.`,
-        },
-        {
-          name: "status",
-          type: "`created` | `deploying` | `deployed` | `failed` | `canceled` | `idle`",
-          description: `The status of the deployment.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the deployment was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the deployment was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
     },
     {
-      name: "build",
-      type: "`object`",
-      description: `The details of the build that the deployment uses.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the build.`,
-        },
-        {
-          name: "status",
-          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
-          description: `The status of the build.`,
-        },
-        {
-          name: "commit_hash",
-          type: "`string`",
-          description: `The hash of the commit that the build uses.`,
-        },
-        {
-          name: "commit_message",
-          type: "`string`",
-          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
-        },
-        {
-          name: "commit_author",
-          type: "`string`",
-          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the build was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the build was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.failed".`,
     },
     {
-      name: "organization",
-      type: "`object`",
-      description: `The details of the organization that the deployment belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the organization.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the organization.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the organization was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the organization was last updated, in ISO 8601 format.`,
-        },
-      ],
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
     },
     {
-      name: "project",
+      name: "data",
       type: "`object`",
-      description: `The details of the project that the deployment belongs to.`,
+      description: `The payload of the event.`,
       children: [
         {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the project.`,
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that failed.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"failed\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
         },
         {
-          name: "name",
-          type: "`string`",
-          description: `The name of the project.`,
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
         },
         {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the project, which is its unique identifier in URLs.`,
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
         },
         {
-          name: "repository",
-          type: "`string`",
-          description: `The repository that the project deploys from.`,
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
         },
         {
-          name: "region",
-          type: "`string`",
-          description: `The region that the project runs in.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the project was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the project was last updated, in ISO 8601 format.`,
-        },
-      ],
-    },
-    {
-      name: "environment",
-      type: "`object`",
-      description: `The details of the environment that the deployment belongs to.`,
-      children: [
-        {
-          name: "id",
-          type: "`string`",
-          description: `The ID of the environment.`,
-        },
-        {
-          name: "name",
-          type: "`string`",
-          description: `The name of the environment.`,
-        },
-        {
-          name: "handle",
-          type: "`string`",
-          description: `The handle of the environment, which is its unique identifier in URLs.`,
-        },
-        {
-          name: "branch",
-          type: "`string`",
-          description: `The branch that the environment deploys from.`,
-        },
-        {
-          name: "created_at",
-          type: "`string`",
-          description: `The date and time the environment was created, in ISO 8601 format.`,
-        },
-        {
-          name: "updated_at",
-          type: "`string`",
-          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
         },
       ],
     },
   ]}
-  sectionTitle="deployment.updated"
+  sectionTitle="deployment.failed"
 />
 
 #### Example Payload
 
 ```json
 {
-  "id": "whev_01K2M7RC2OPQR123",
-  "type": "deployment.updated",
+  "created_at": "2024-11-12T10:10:00.000Z",
   "data": {
-    "deployment": {
-      "id": "depl_01K2M7RB1LMN",
-      "status": "deployed",
-      "created_at": "2026-08-07T09:14:20.000Z",
-      "updated_at": "2026-08-07T09:15:47.000Z"
-    },
     "build": {
-      "id": "build_01K2M7Q1ABCD",
-      "status": "succeeded",
-      "commit_hash": "9f2c1ab",
-      "commit_message": "Add loyalty plugin",
-      "commit_author": "exampleuser",
-      "created_at": "2026-08-07T09:12:03.000Z",
-      "updated_at": "2026-08-07T09:14:18.000Z"
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
     },
-    "organization": {
-      "id": "org_01K2M6YZ1234",
-      "name": "Acme",
-      "created_at": "2026-01-14T10:02:11.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
-    },
-    "project": {
-      "id": "proj_01K2M6YZ5678",
-      "name": "Acme Store",
-      "handle": "acme-store",
-      "repository": "acme/store",
-      "region": "us-east-1",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "failed"
     },
     "environment": {
-      "id": "projenv_01K2M6YZ9012",
-      "name": "Production",
-      "handle": "production",
       "branch": "main",
-      "created_at": "2026-01-14T10:04:32.000Z",
-      "updated_at": "2026-07-30T08:41:56.000Z"
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
     }
   },
-  "created_at": "2026-08-07T09:15:48.000Z"
+  "id": "whev_01HXYZ7890ABCDEF",
+  "type": "deployment.failed"
+}
+```
+
+### deployment.succeeded
+
+Cloud delivers this event when a deployment completes successfully.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for this webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type, always "deployment.succeeded".`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that succeeded.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"succeeded\"`",
+              description: `Status of the deployment at the time of the event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with this deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `Git commit hash of the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `Git repository URL linked to the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `Deployment region of the project.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment that was deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `Git branch associated with this environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.succeeded"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-12T10:10:00.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Doe",
+      "commit_hash": "a1b2c3d4e5f6",
+      "commit_message": "Add new product feature",
+      "id": "build_01HXYZ5678ABCDEF"
+    },
+    "deployment": {
+      "id": "depl_01HXYZ6789ABCDEF",
+      "status": "succeeded"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "projenv_01HXYZ7890ABCDEF",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01HXYZ9012ABCDEF",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01HXYZ3456ABCDEF",
+      "name": "My Storefront",
+      "region": "eu-west-1",
+      "repository": "https://github.com/acme/storefront"
+    }
+  },
+  "id": "whev_01HXYZ6789ABCDEF",
+  "type": "deployment.succeeded"
 }
 ```

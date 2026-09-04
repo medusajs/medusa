@@ -207,6 +207,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/deleteAuthIdentityStep",
+                  "title": "deleteAuthIdentityStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/requestVerificationStep",
                   "title": "requestVerificationStep",
                   "description": "",
@@ -548,6 +556,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep",
+                  "title": "getLineItemPricingQuantitiesStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/getPromotionCodesToApply",
                   "title": "getPromotionCodesToApply",
                   "description": "",
@@ -830,6 +846,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/validateGiftCardStep",
                   "title": "validateGiftCardStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/validateGiftCardsNotExpiredStep",
+                  "title": "validateGiftCardsNotExpiredStep",
                   "description": "",
                   "children": []
                 },
@@ -1377,6 +1401,30 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "path": "/references/medusa-workflows/deleteDraftOrdersWorkflow",
                   "title": "deleteDraftOrdersWorkflow",
                   "description": "Delete draft orders.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow",
+                  "title": "fetchShippingOptionForDraftOrderWorkflow",
+                  "description": "Fetch a shipping option for a draft order edit.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                  "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                  "description": "Refresh applied calculated shipping method prices on a draft order.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow",
+                  "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+                  "description": "Refresh pending calculated shipping method prices on a draft order edit.",
                   "children": []
                 },
                 {
@@ -2066,6 +2114,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/exportInventoryItemsWorkflow",
+                  "title": "exportInventoryItemsWorkflow",
+                  "description": "Export inventory items with filtering capabilities.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/updateInventoryItemsWorkflow",
                   "title": "updateInventoryItemsWorkflow",
                   "description": "Update one or more inventory items.",
@@ -2131,6 +2187,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteInventoryLevelsStep",
                   "title": "deleteInventoryLevelsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/exportInventoryItemsStep",
+                  "title": "exportInventoryItemsStep",
                   "description": "",
                   "children": []
                 },
@@ -4330,6 +4394,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "title": "validateDeletedPaymentSessionsStep",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep",
+                  "title": "validatePaymentProviderInRegionStep",
+                  "description": "",
+                  "children": []
                 }
               ]
             }
@@ -5821,6 +5893,51 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateSalesChannelsStep",
                   "title": "updateSalesChannelsStep",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Search",
+          "children": [
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Workflows",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/reindexSearchIndexesWorkflow",
+                  "title": "reindexSearchIndexesWorkflow",
+                  "description": "Reindex one or more search indexes.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Steps",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/reindexSearchIndexesStep",
+                  "title": "reindexSearchIndexesStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateSearchIndexesExistStep",
+                  "title": "validateSearchIndexesExistStep",
                   "description": "",
                   "children": []
                 }
@@ -7394,6 +7511,13 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "link",
               "title": "moduleIntegrationTestRunner",
               "path": "/test-tools-reference/moduleIntegrationTestRunner",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "title": "normalizeBigNumbers",
+              "path": "/test-tools-reference/normalizeBigNumbers",
               "children": []
             }
           ]

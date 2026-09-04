@@ -1,11 +1,11 @@
-import { defineSearchIndex } from "@medusajs/utils"
+import { defineSearchIndex, search } from "@medusajs/utils"
 
 export const customerIndex = defineSearchIndex({
   name: "customer",
   entity: "customer",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    email: { type: "keyword", searchable: true },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    email: search.keyword().searchable(),
+  }),
   async *seed() {},
 })

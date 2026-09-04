@@ -30,6 +30,7 @@ import { validateCartStep } from "../steps/validate-cart"
 import { validateLineItemPricesStep } from "../steps/validate-line-item-prices"
 import {
   cartFieldsForPricingContext,
+  productVariantsCacheTags,
   productVariantsFields,
 } from "../utils/fields"
 import { requiredVariantFieldsForInventoryConfirmation } from "../utils/prepare-confirm-inventory-input"
@@ -239,7 +240,8 @@ export const addToCartWorkflow = createWorkflow(
         },
         options: {
           cache: {
-            enable: true,
+            tags: productVariantsCacheTags,
+            computeAutomaticTags: true,
           },
         },
       }).config({ name: "fetch-variants" })

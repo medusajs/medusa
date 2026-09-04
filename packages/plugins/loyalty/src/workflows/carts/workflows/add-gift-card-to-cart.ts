@@ -21,6 +21,7 @@ import {
   ModuleAccountStats,
   ModuleStoreCreditAccount,
 } from "../../../types/store-credit";
+import { isGiftCardExpired } from "../../../utils/gift-card";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
 
 /**
@@ -127,8 +128,8 @@ export interface ValidateCartGiftCardStepInput {
 
 /**
  * This step validates that gift cards can be added to a cart. It throws an error
- * if a gift card is already applied to the cart or if the gift card currency does
- * not match the cart's currency.
+ * if a gift card is already applied to the cart, if the gift card has expired, or
+ * if the gift card currency does not match the cart's currency.
  *
  * @example
  * const data = validateCartGiftCardStep({
@@ -159,6 +160,13 @@ export const validateCartGiftCardStep = createStep(
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Gift card (${giftCard.code}) already applied to cart`
+        );
+      }
+
+      if (isGiftCardExpired(giftCard)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Gift card (${giftCard.code}) has expired`
         );
       }
 
@@ -223,7 +231,7 @@ export const addGiftCardToCartWorkflow = createWorkflow(
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
       filters: { code: input.code },
-      fields: ["id", "code", "status", "currency_code"],
+      fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
     const giftCard = transform({ giftCardQuery }, ({ giftCardQuery }) => {

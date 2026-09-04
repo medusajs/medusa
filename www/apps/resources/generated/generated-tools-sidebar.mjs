@@ -382,6 +382,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/no-nested-when-in-workflow",
+                      "title": "no-nested-when-in-workflow",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/no-new-date-in-workflow",
                       "title": "no-new-date-in-workflow",
                       "description": "",
@@ -480,6 +488,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "type": "link",
                       "path": "/lint/rules/prefer-modules-enum",
                       "title": "prefer-modules-enum",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/lint/rules/prefer-workflow-event-over-module-event",
+                      "title": "prefer-workflow-event-over-module-event",
                       "description": "",
                       "children": []
                     },
@@ -694,6 +710,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/when-block-must-have-name",
+                      "title": "when-block-must-have-name",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/widget-must-export-config",
                       "title": "widget-must-export-config",
                       "description": "",
@@ -789,6 +813,22 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/auth/callback",
                   "title": "callback",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/auth/createUser",
+                  "title": "createUser",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/auth/listProviders",
+                  "title": "listProviders",
                   "description": "",
                   "children": []
                 },
@@ -1261,6 +1301,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/salesChannel",
                   "title": "salesChannel",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/search",
+                  "title": "search",
                   "description": "",
                   "children": []
                 },

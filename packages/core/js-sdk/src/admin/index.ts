@@ -34,6 +34,7 @@ import Reservation from "./reservation.js"
 import { Return } from "./return.js"
 import { ReturnReason } from "./return-reason.js"
 import { SalesChannel } from "./sales-channel.js"
+import { Search } from "./search.js"
 import { ShippingOption } from "./shipping-option.js"
 import { ShippingProfile } from "./shipping-profile.js"
 import { StockLocation } from "./stock-location.js"
@@ -252,6 +253,10 @@ export class Admin {
    */
   public plugin: Plugin
   /**
+   * @tags search
+   */
+  public search: Search
+  /**
    * @tags views
    * @featureFlag view_configurations
    */
@@ -324,6 +329,7 @@ export class Admin {
     this.promotion = new Promotion(client)
     this.campaign = new Campaign(client)
     this.plugin = new Plugin(client)
+    this.search = new Search(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
     this.propertyLabel = new PropertyLabel(client)
