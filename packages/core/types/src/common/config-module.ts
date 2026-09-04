@@ -7,6 +7,10 @@ import {
 import type { RedisOptions } from "ioredis"
 
 import { ConnectionOptions } from "node:tls"
+// This package emits CommonJS under `moduleResolution: Node16`, while Vite ships
+// ESM-only type declarations, so TypeScript cannot resolve them from here and
+// `InlineConfig` degrades to `any`. Fixing that needs a `resolution-mode` import
+// attribute, which the repo's Prettier (2.8.8) cannot parse.
 // @ts-ignore
 import type { InlineConfig } from "vite"
 import type { Logger } from "../logger"
@@ -207,16 +211,40 @@ export type SessionOptions = {
 /**
  * @interface
  *
- * Options to pass to `express-session`.
+ * Cookie options used when setting cookies in the HTTP layer.
  */
 export type CookieOptions = Record<string, any> & {
+  /**
+   * Whether the cookie should only be sent over HTTPS connections.
+   */
   secure?: boolean
+  /**
+   * The `SameSite` attribute of the cookie, controlling cross-site request behavior.
+   */
   sameSite?: "lax" | "strict" | "none"
+  /**
+   * The maximum age of the cookie in milliseconds.
+   */
   maxAge?: number
+  /**
+   * Whether the cookie is accessible only via HTTP(S) and not JavaScript.
+   */
   httpOnly?: boolean
+  /**
+   * The priority of the cookie as defined in RFC 8030.
+   */
   priority?: "low" | "medium" | "high"
+  /**
+   * The domain for which the cookie is valid.
+   */
   domain?: string
+  /**
+   * The URL path for which the cookie is valid.
+   */
   path?: string
+  /**
+   * Whether the cookie should be signed.
+   */
   signed?: boolean
 }
 
@@ -277,6 +305,10 @@ export type MedusaCloudOptions = {
    * The endpoint of the Medusa Cloud email service.
    */
   emailsEndpoint?: string
+  /**
+   * The endpoint of the Medusa Cloud search service.
+   */
+  searchEndpoint?: string
   /**
    * The authorization endpoint of the Medusa Cloud OAuth service.
    */
@@ -526,6 +558,9 @@ export type ProjectConfigOptions = {
    */
   sessionOptions?: SessionOptions
 
+  /**
+   * Additional cookie options to apply when setting cookies in the HTTP layer.
+   */
   cookieOptions?: CookieOptions
 
   /**
@@ -990,8 +1025,34 @@ export type ProjectConfigOptions = {
      */
     restrictedFields?: {
       store?: string[]
-      /*admin?: string[]*/
+      /* admin?: string[]*/
     }
+
+    /**
+     * The maximum number of relations that can be expanded in a single request to a Store API route.
+     * For example, requesting `variants.options.values` expands three relations.
+     *
+     * Routes can override this limit through their query configuration's `storeRelationsLimit` property.
+     *
+     * The default value is `3`.
+     *
+     * @since v2.20.0
+     *
+     * @example
+     *
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       storeRelationsLimit: 4,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    storeRelationsLimit?: number
   }
 
   /**
@@ -1271,12 +1332,38 @@ type PluginAdminDetails = {
   resolve: string
 }
 
+/**
+ * @interface
+ *
+ * Resolved details of a plugin loaded by the Medusa application.
+ */
 export type PluginDetails = {
+  /**
+   * The path to the plugin's package or directory.
+   */
   resolve: string
+  /**
+   * The plugin's name as inferred from its package.
+   */
   name: string
+  /**
+   * A unique identifier for the plugin instance.
+   */
   id: string
+  /**
+   * The options passed to the plugin.
+   */
   options: Record<string, unknown>
+  /**
+   * The plugin's version as specified in its `package.json`.
+   */
   version: string
+  /**
+   * Admin dashboard details for the plugin, if any.
+   */
   admin?: PluginAdminDetails
+  /**
+   * Module configurations provided by the plugin.
+   */
   modules?: InputConfigModules
 }

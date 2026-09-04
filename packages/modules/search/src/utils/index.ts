@@ -1,6 +1,10 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
-import { SearchIndexes } from "@types"
+import {
+  SearchIndexContext,
+  SearchIndexes,
+  SearchIndexVersionRecord,
+} from "@types"
 import { createHash } from "crypto"
 
 export enum SearchIndexState {
@@ -89,6 +93,20 @@ function defaultFacetKinds(
 }
 
 /**
+ * Whether a field is returned on hits. Vectors default to off — embeddings
+ * are not useful on hits. Set `retrievable: true` to return them.
+ */
+function isRetrievableField(field: SearchTypes.SearchFieldDefinition): boolean {
+  if (field.type === "object") {
+    return false
+  }
+  if (field.type === "vector") {
+    return field.retrievable === true
+  }
+  return field.retrievable !== false
+}
+
+/**
  * The dotted paths an index can hand back on hits. Object containers are
  * excluded — only their declared leaves are stored, so returning the container
  * would silently hand back a partial object.
@@ -97,10 +115,28 @@ export function listRetrievablePaths(
   fields: Record<string, SearchTypes.SearchFieldDefinition>
 ): string[] {
   return flattenFields(fields)
-    .filter(
-      ({ field }) => field.type !== "object" && field.retrievable !== false
-    )
+    .filter(({ field }) => isRetrievableField(field))
     .map(({ path }) => path)
+}
+
+/**
+ * Leaf fields the index stores, with the capabilities declared on each. Object
+ * containers are omitted — only their leaves are indexed.
+ */
+export function listIndexedFields(
+  fields: Record<string, SearchTypes.SearchFieldDefinition>
+): SearchTypes.SearchIndexFieldInfo[] {
+  return flattenFields(fields)
+    .filter(({ field }) => field.type !== "object")
+    .map(({ path, field }) => ({
+      name: path,
+      type: field.type,
+      searchable: isSearchable(field),
+      filterable: !!field.filterable,
+      sortable: !!field.sortable,
+      facetable:
+        field.facetable === true || typeof field.facetable === "object",
+    }))
 }
 
 // Key order must not change the hash, so object keys are emitted sorted.
@@ -181,6 +217,18 @@ export function normalizeSearchQuery({
     typeof facet === "string" ? { field: facet, type: "value" as const } : facet
   )
 
+  if (searchOptions.vector && !searchOptions.vector.field) {
+    const vectorFields = flattenFields(index.fields).filter(
+      ({ field }) => field.type === "vector"
+    )
+    if (vectorFields.length === 1) {
+      searchOptions.vector = {
+        ...searchOptions.vector,
+        field: vectorFields[0].path,
+      }
+    }
+  }
+
   return {
     index,
     // Taken as given when set: `query.search` has already dropped anything the
@@ -249,8 +297,10 @@ function withoutFieldFilter(
 /**
  * The base query plus one per faceted field with that field's own filter dropped.
  * Every engine reviewed needs a query per facet, so the fan-out lives here rather
- * than in each provider. `disjunctive_facets` is stripped from what is handed on —
- * a provider should never see an option it is not expected to act on.
+ * than in each provider. The expanded set is then handed to `provider.searchMany`
+ * so the engine can pack them into one round-trip. `disjunctive_facets` is
+ * stripped from what is handed on — a provider should never see an option it is
+ * not expected to act on.
  */
 export function buildDisjunctiveFacetQueries(
   query: SearchTypes.ProviderSearchQuery
@@ -279,9 +329,9 @@ export function buildDisjunctiveFacetQueries(
     perFacet.set(facet.field, {
       ...base,
       filters: relaxed,
-      // Only the facet is wanted; skip the hits.
+      // Only the facet is wanted; skip the hits and the count.
       pagination: { ...query.pagination, skip: 0, take: 0 },
-      search_options: { ...searchOptions, facets: [facet] },
+      search_options: { ...searchOptions, facets: [facet], count: "none" },
     })
   }
 
@@ -345,7 +395,7 @@ export function validateFieldUsage({
 }): void {
   const fieldMap = buildFieldMap(index)
 
-  const fail = (message: string) => {
+  function fail(message: string): never {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
 
@@ -356,7 +406,7 @@ export function validateFieldUsage({
         `Unknown field "${path}" used in ${usage} on search index "${index.name}"`
       )
     }
-    return known!.field
+    return known.field
   }
 
   if (query.filters) {
@@ -403,6 +453,62 @@ export function validateFieldUsage({
 
   if (query.search_options?.distinct) {
     lookup(query.search_options.distinct, "search_options.distinct")
+  }
+
+  const vector = query.search_options?.vector
+  if (vector) {
+    if (!vector.field) {
+      const vectorFields = [...fieldMap.values()].filter(
+        ({ field }) => field.type === "vector"
+      )
+      fail(
+        vectorFields.length
+          ? `search_options.vector.field is required when the index has more than one vector field`
+          : `search_options.vector requires a vector field on search index "${index.name}"`
+      )
+    }
+
+    const field = lookup(vector.field, "search_options.vector.field")
+    if (field.type !== "vector") {
+      fail(
+        `Field "${vector.field}" is not a vector field on search index "${index.name}"`
+      )
+    }
+
+    if (vector.value && vector.query) {
+      fail(
+        `search_options.vector.value and search_options.vector.query are mutually exclusive`
+      )
+    }
+
+    if (!vector.value && !vector.query) {
+      fail(
+        `search_options.vector requires either "value" (embedding) or "query" (text to embed)`
+      )
+    }
+
+    if (vector.query && !field.embed) {
+      fail(
+        `search_options.vector.query requires vector field "${vector.field}" to declare "embed"`
+      )
+    }
+
+    if (
+      vector.value &&
+      field.dimensions &&
+      vector.value.length !== field.dimensions
+    ) {
+      fail(
+        `Vector value for "${vector.field}" expected ${field.dimensions} dimensions, got ${vector.value.length}`
+      )
+    }
+
+    if (
+      vector.semantic_ratio !== undefined &&
+      (vector.semantic_ratio < 0 || vector.semantic_ratio > 1)
+    ) {
+      fail("search_options.vector.semantic_ratio must be between 0 and 1")
+    }
   }
 }
 
@@ -483,7 +589,7 @@ function validateIndexDefinition({
 }: {
   definition: SearchTypes.ResolvedSearchIndexDefinition
 }): void {
-  const fail = (message: string) => {
+  function fail(message: string): never {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Invalid search index definition "${definition.name}": ${message}`
@@ -502,14 +608,26 @@ function validateIndexDefinition({
   }
 
   for (const { path, field } of flattenFields(definition.fields)) {
-    if (field.correlated && !(field.type === "object" && field.array)) {
+    if (field.type === "vector" && !field.dimensions) {
+      fail(`vector field "${path}" must declare its "dimensions"`)
+    }
+
+    if (field.type === "vector" && field.array) {
+      fail(`vector field "${path}" cannot be an array`)
+    }
+
+    if (typeof (field.embed as unknown) === "string") {
       fail(
-        `field "${path}" sets "correlated", which only applies to an array of objects`
+        `vector field "${path}" "embed" must be true; pass the text on this field rather than naming a source`
       )
     }
 
-    if (field.type === "vector" && !field.dimensions) {
-      fail(`vector field "${path}" must declare its "dimensions"`)
+    if (field.embed) {
+      if (field.type !== "vector") {
+        fail(
+          `field "${path}" sets "embed", which only applies to vector fields`
+        )
+      }
     }
 
     if (field.type === "object" && !field.fields) {
@@ -531,6 +649,58 @@ function validateIndexDefinition({
         `field "${path}" is of type "${field.type}", which cannot be searched as free text`
       )
     }
+  }
+}
+
+/** Every version of every listed index, grouped by the index's id, newest first. */
+export async function listVersionsByIndexId(
+  context: Pick<SearchIndexContext, "versionService">,
+  indexIds: string[]
+): Promise<Map<string, SearchIndexVersionRecord[]>> {
+  const byId = new Map<string, SearchIndexVersionRecord[]>()
+
+  if (!indexIds.length) {
+    return byId
+  }
+
+  const versions = (await context.versionService.list(
+    { search_index_id: indexIds },
+    { order: { version: "DESC" }, take: null }
+  )) as SearchIndexVersionRecord[]
+
+  for (const version of versions) {
+    const list = byId.get(version.search_index_id) ?? []
+    list.push(version)
+    byId.set(version.search_index_id, list)
+  }
+
+  return byId
+}
+
+/**
+ * The definition merged with whichever physical index and provider currently
+ * serve reads/writes. Every *live* operation (a direct write, an event
+ * ingested, a query) must resolve through this rather than
+ * `definition.physical_name` directly — that field is only the root a
+ * version's name is derived from, and which version is active can change out
+ * from under this process.
+ */
+export async function resolveActiveDefinition(
+  context: Pick<SearchIndexContext, "indexes" | "activeVersionCache">,
+  name: string
+): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
+  const definition = retrieveIndexDefinition(context.indexes, name)
+
+  if (!context.activeVersionCache) {
+    return definition
+  }
+
+  const active = await context.activeVersionCache.get(name)
+
+  return {
+    ...definition,
+    physical_name: active.physical_name,
+    provider: active.provider,
   }
 }
 

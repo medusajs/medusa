@@ -8,7 +8,10 @@ import {
   MedusaError,
   QueryContext,
 } from "@medusajs/framework/utils"
-import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../../utils/middlewares"
+import {
+  prepareInventoryQuantityFields,
+  wrapVariantsWithInventoryQuantityForSalesChannel,
+} from "../../../utils/middlewares"
 import { StoreRequestWithContext } from "../../types"
 import { wrapVariantsWithTaxPrices } from "../helpers"
 import { StoreProductVariantParamsType } from "../validators"
@@ -26,14 +29,10 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const withInventoryQuantity =
-    req.queryConfig.fields.includes("inventory_quantity")
-
-  if (withInventoryQuantity) {
-    req.queryConfig.fields = req.queryConfig.fields.filter(
-      (field) => field !== "inventory_quantity"
-    )
-  }
+  const { fields, withInventoryQuantity } = prepareInventoryQuantityFields(
+    req.queryConfig.fields
+  )
+  req.queryConfig.fields = fields
 
   const context: QueryContextType = {}
 

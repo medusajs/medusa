@@ -28,6 +28,10 @@ export const notification = [
     "path": "https://docs.medusajs.com/resources/integrations/guides/slack"
   },
   {
+    "title": "exportInventoryItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportInventoryItemsWorkflow"
+  },
+  {
     "title": "notifyOnFailureStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/notifyOnFailureStep"
   },

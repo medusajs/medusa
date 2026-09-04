@@ -89,6 +89,56 @@ Use custom tags when you want to group cached data for custom invalidation or re
 
 Note that if your custom tags do not follow the [Caching Tags Convention](#caching-tags-convention), the Caching Module cannot automatically invalidate your cached data. You must manually [invalidate](/references/caching-service#clear) the cached data when it changes.
 
+### Combine Custom Tags With Automatic Tags
+
+<Note>
+
+This feature is available since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+When you set custom `tags`, they replace the automatically computed ones. If you want the automatic tags to still apply alongside your custom tags, set `computeAutomaticTags` to `true`.
+
+This is useful when your query retrieves data that the automatic tag computation cannot see, such as:
+
+- Link table rows (their own IDs are never selected, so no entity tag fires for them).
+- Relations selected without their `id` field.
+- Entities that affect the cached data without appearing in it, for example `ReservationItem` which changes `reserved_quantity` without being part of the query response.
+
+For example:
+
+```ts
+const key = await cachingModuleService.computeKey(data)
+await cachingModuleService.set({
+  key,
+  tags: ["LinkProductVariantInventoryItem:list:*", "ReservationItem:list:*"],
+  computeAutomaticTags: true,
+  data,
+})
+```
+
+In the example above, the Caching Module applies the two explicit tags you provided plus all tags it computes automatically from `data`. This way you only specify what automatic computation cannot see, without restating every entity the response already exposes.
+
+When using [Query](!docs!/learn/fundamentals/module-links/query), pass `computeAutomaticTags` in the `cache` option:
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title", "variants.*"],
+}, {
+  cache: {
+    tags: ["LinkProductVariantInventoryItem:list:*"],
+    computeAutomaticTags: true,
+  },
+})
+```
+
+<Note>
+
+`computeAutomaticTags` has no effect when `tags` is omitted, since automatic tags are computed by default in that case.
+
+</Note>
+
 ---
 
 ## Automatic Cache Invalidation
@@ -139,12 +189,40 @@ The following table shows when the Caching Module invalidates cached data based 
         `Entity:list:*` (`Product:list:*`)
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Restore (soft-delete reversal)
+      </Table.Cell>
+      <Table.Cell>
+        `Entity:{id}`, `Entity:list:*` (`Product:prod_123`, `Product:list:*`)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Attach (link created)
+      </Table.Cell>
+      <Table.Cell>
+        `Entity:list:*` (`LinkProductVariantInventoryItem:list:*`)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Detach (link removed)
+      </Table.Cell>
+      <Table.Cell>
+        `Entity:list:*` (`LinkProductVariantInventoryItem:list:*`)
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
 <Note>
 
-The `Entity:list:*` tag is always invalidated on update because an update can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every update.
+The `Entity:list:*` tag is invalidated on every mutating operation because the mutation can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every mutation.
+
+Attach and detach operations (creating or removing a module link) only invalidate the `Entity:list:*` tag because a link row doesn't carry a usable entity `id` at attach time.
+
+Restore is included because the entity re-enters every list it was soft-deleted out of.
 
 </Note>
 

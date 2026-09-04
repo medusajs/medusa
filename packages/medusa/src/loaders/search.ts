@@ -4,8 +4,9 @@ import { Modules } from "@medusajs/framework/utils"
 import { join } from "path"
 
 /**
- * Whether the Search Module is registered. It is not part of the default modules,
- * so this is false unless a project opted in.
+ * Whether the Search Module is registered. It is part of the default modules
+ * (Postgres provider), and Cloud may swap that for Lakebase or Medusa Cloud
+ * search based on environment variables.
  */
 export function isSearchModuleEnabled(configModule: ConfigModule): boolean {
   // `false` is accepted alongside `{ disable: true }`, the same way the module
