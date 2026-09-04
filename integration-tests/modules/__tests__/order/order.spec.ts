@@ -11,7 +11,16 @@ import {
   IOrderModuleService,
   OrderDTO,
 } from "@medusajs/types"
-import { Modules, ProductStatus } from "@medusajs/utils"
+import {
+  ApplicationMethodAllocation,
+  ApplicationMethodTargetType,
+  ApplicationMethodType,
+  CampaignBudgetType,
+  Modules,
+  ProductStatus,
+  PromotionStatus,
+  PromotionType,
+} from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -201,6 +210,116 @@ medusaIntegrationTestRunner({
             item_total: 6000,
           })
         )
+      })
+
+      it("should apply a use_by_attribute promotion at order creation when the customer email is known", async () => {
+        const salesChannel = (
+          await api.post(
+            "/admin/sales-channels",
+            { name: "Attr budget channel" },
+            adminHeaders
+          )
+        ).data.sales_channel
+
+        const newProduct = await api.post(
+          `/admin/products`,
+          {
+            title: "Attr budget shirt",
+            handle: "attr-budget-shirt",
+            status: ProductStatus.PUBLISHED,
+            sales_channels: [{ id: salesChannel.id }],
+            options: [{ title: "Size", values: ["S"] }],
+            variants: [
+              {
+                title: "S",
+                sku: "ATTR-BUDGET-S",
+                options: { Size: "S" },
+                manage_inventory: false,
+                prices: [{ amount: 1000, currency_code: "usd" }],
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        const variantId = newProduct.data.product.variants[0].id
+        const customer = (
+          await api.post(
+            "/admin/customers",
+            { email: "attr-budget@email.com" },
+            adminHeaders
+          )
+        ).data.customer
+        const region = (
+          await api.post(
+            "/admin/regions",
+            { name: "US attr", currency_code: "usd", countries: ["ca"] },
+            adminHeaders
+          )
+        ).data.region
+
+        const promotionModule = appContainer.resolve(Modules.PROMOTION)
+        await promotionModule.createPromotions({
+          code: "ATTR10",
+          type: PromotionType.STANDARD,
+          status: PromotionStatus.ACTIVE,
+          application_method: {
+            type: ApplicationMethodType.PERCENTAGE,
+            target_type: ApplicationMethodTargetType.ITEMS,
+            allocation: ApplicationMethodAllocation.ACROSS,
+            value: 10,
+            currency_code: "usd",
+          },
+          campaign: {
+            name: "Attr budget campaign",
+            campaign_identifier: "attr-budget-campaign",
+            budget: {
+              type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+              attribute: "customer_email",
+              limit: 5,
+            },
+          },
+        } as any)
+
+        const { result: created } = await createOrderWorkflow(appContainer).run(
+          {
+            input: {
+              email: customer.email,
+              customer_id: customer.id,
+              promo_codes: ["ATTR10"],
+              items: [
+                {
+                  title: "Attr budget shirt",
+                  variant_id: variantId,
+                  quantity: 1,
+                } as CreateOrderLineItemDTO,
+              ],
+              sales_channel_id: salesChannel.id,
+              region_id: region.id,
+              shipping_address: {
+                first_name: "Test",
+                last_name: "Test",
+                address_1: "Test",
+                city: "Test",
+                country_code: "CA",
+                postal_code: "12345",
+              },
+              currency_code: "usd",
+            },
+          }
+        )
+
+        const order = (
+          await api.get(
+            `/admin/orders/${created.id}?fields=*items,*items.adjustments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(order.items[0].adjustments).toEqual(
+          expect.arrayContaining([expect.objectContaining({ code: "ATTR10" })])
+        )
+        expect(order.discount_total).toBeGreaterThan(0)
       })
     })
 
