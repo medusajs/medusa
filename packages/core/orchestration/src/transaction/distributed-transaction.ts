@@ -221,7 +221,7 @@ export class TransactionCheckpoint {
           if (storedStateIndex > currentStateIndex) {
             currentTransactionData.flow.state = storedData.flow.state
           } else if (
-            currentStateIndex < storedStateIndex &&
+            currentStateIndex > storedStateIndex &&
             currentTransactionData.flow.state !==
               TransactionState.WAITING_TO_COMPENSATE
           ) {
