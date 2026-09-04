@@ -63,9 +63,30 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             { id: "price-set-EUR" },
             { id: "price-set-PLN" },
             { id: "price-set-ETH" },
+            { id: "price-set-TEST" },
           ] as unknown as CreatePriceSetDTO[]
 
           const pricesData = [
+            {
+              id: "price-TEST-base",
+              title: "price TEST base",
+              price_set_id: "price-set-TEST",
+              currency_code: "usd",
+              amount: 2000,
+              min_quantity: null,
+              max_quantity: null,
+              rules_count: 0,
+            },
+            {
+              id: "price-TEST-tier",
+              title: "price TEST tier",
+              price_set_id: "price-set-TEST",
+              currency_code: "usd",
+              amount: 1500,
+              min_quantity: 5,
+              max_quantity: null,
+              rules_count: 0,
+            },
             {
               id: "price-PLN",
               title: "price PLN",
@@ -456,6 +477,53 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 price_list_type: null,
                 min_quantity: 1,
                 max_quantity: 10,
+              },
+            },
+          ])
+        })
+
+        it("should return the cheaper tiered price over the base price when quantity satisfies min_quantity", async () => {
+          const context = {
+            currency_code: "usd",
+            quantity: 8,
+          }
+
+          const calculatedPrice = await service.calculatePrices(
+            { id: ["price-set-TEST"] },
+            { context }
+          )
+
+          expect(calculatedPrice).toEqual([
+            {
+              id: "price-set-TEST",
+              is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
+              calculated_amount: 1500,
+              raw_calculated_amount: {
+                value: "1500",
+                precision: 20,
+              },
+              is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
+              original_amount: 1500,
+              raw_original_amount: {
+                value: "1500",
+                precision: 20,
+              },
+              currency_code: "usd",
+              calculated_price: {
+                id: "price-TEST-tier",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 5,
+                max_quantity: null,
+              },
+              original_price: {
+                id: "price-TEST-tier",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 5,
+                max_quantity: null,
               },
             },
           ])
