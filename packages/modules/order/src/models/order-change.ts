@@ -38,9 +38,7 @@ const _OrderChange = model
     order: model.belongsTo<() => typeof Order>(() => Order, {
       mappedBy: "changes",
     }),
-    actions: model.hasMany<() => typeof OrderChangeAction>(
-      () => OrderChangeAction
-    ),
+    actions: model.hasMany<any>(() => OrderChangeAction),
   })
   .cascades({
     delete: ["actions"],

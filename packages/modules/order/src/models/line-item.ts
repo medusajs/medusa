@@ -29,18 +29,12 @@ const _OrderLineItem = model
     unit_price: model.bigNumber().nullable(),
     is_custom_price: model.boolean().default(false),
     metadata: model.json().nullable(),
-    tax_lines: model.hasMany<() => typeof OrderLineItemTaxLine>(
-      () => OrderLineItemTaxLine,
-      {
-        mappedBy: "item",
-      }
-    ),
-    adjustments: model.hasMany<() => typeof OrderLineItemAdjustment>(
-      () => OrderLineItemAdjustment,
-      {
-        mappedBy: "item",
-      }
-    ),
+    tax_lines: model.hasMany<any>(() => OrderLineItemTaxLine, {
+      mappedBy: "item",
+    }),
+    adjustments: model.hasMany<any>(() => OrderLineItemAdjustment, {
+      mappedBy: "item",
+    }),
   })
   .cascades({
     delete: ["tax_lines", "adjustments"],

@@ -17,12 +17,9 @@ const _OrderClaimItem = model
     item: model.belongsTo<() => typeof OrderLineItem>(() => OrderLineItem, {
       mappedBy: "claim_items",
     }),
-    images: model.hasMany<() => typeof OrderClaimItemImage>(
-      () => OrderClaimItemImage,
-      {
-        mappedBy: "claim_item",
-      }
-    ),
+    images: model.hasMany<any>(() => OrderClaimItemImage, {
+      mappedBy: "claim_item",
+    }),
   })
   .cascades({
     delete: ["images"],
