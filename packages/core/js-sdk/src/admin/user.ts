@@ -169,7 +169,7 @@ export class User {
    *   console.log(providers)
    * })
    *
-   * @since 2.19.1
+   * @since 2.20.0
    */
   async listAuthProviders(id: string, headers?: ClientHeaders) {
     return this.client.fetch<HttpTypes.AdminUserAuthProvidersResponse>(
@@ -199,7 +199,7 @@ export class User {
    *   console.log(token)
    * })
    *
-   * @since 2.19.1
+   * @since 2.20.0
    */
   async generateResetPasswordToken(id: string, headers?: ClientHeaders) {
     return this.client.fetch<HttpTypes.AdminUserResetPasswordTokenResponse>(

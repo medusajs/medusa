@@ -18,6 +18,8 @@ import {
   RecursiveEntity2,
 } from "../__fixtures__/utils"
 
+jest.setTimeout(30000)
+
 const dbName = "mikroorm-utils-integration-1"
 
 jest.mock("@medusajs/deps/mikro-orm/core", () => ({

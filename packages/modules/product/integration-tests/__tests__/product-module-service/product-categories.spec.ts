@@ -105,6 +105,47 @@ moduleIntegrationTestRunner<IProductModuleService>({
           ])
         })
 
+        it("should return all scalar fields when no select is provided", async () => {
+          const category = await service.createProductCategories({
+            name: "category 3",
+            handle: "category-3",
+            metadata: { source: "test" },
+          })
+
+          const results = await service.listProductCategories({
+            handle: [category.handle],
+          })
+
+          expect(results).toEqual([
+            expect.objectContaining({
+              id: category.id,
+              name: "category 3",
+              handle: "category-3",
+              metadata: { source: "test" },
+              rank: expect.any(Number),
+              is_active: false,
+              is_internal: false,
+            }),
+          ])
+        })
+
+        it("should return all scalar fields when no select is provided and a tree is included", async () => {
+          const results = await service.listProductCategories({
+            id: productCategoryOne.id,
+            include_descendants_tree: true,
+          } as any)
+
+          expect(results).toEqual([
+            expect.objectContaining({
+              id: productCategoryOne.id,
+              name: "category 1",
+              handle: expect.any(String),
+              rank: expect.any(Number),
+              category_children: [],
+            }),
+          ])
+        })
+
         it("should return only requested fields and relations for categories", async () => {
           const results = await service.listProductCategories(
             {

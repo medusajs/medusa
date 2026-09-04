@@ -12,7 +12,7 @@ keywords:
 ---
 
 import { CodeTabs, CodeTab, Note, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
-import { ChevronUpDown, TriangleRightMini } from "@medusajs/icons"
+import { TriangleRightMini } from "@medusajs/icons"
 
 export const metadata = {
   title: `Medusa Emails`,
@@ -202,15 +202,11 @@ You can also navigate to the sender domains form from the [command palette](../c
 
 </Note>
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-
-![Organization switcher dropdown opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1750238273/Cloud/CleanShot_2025-06-18_at_12.17.33_2x_zcg69z.png)
-
-4. Click Emails -> Sender Domains from the sidebar.
-5. Click the "Add sender domain" button.
-6. In the form that opens, enter the domain you want to add (for example, `yourdomain.com`) and click **Continue**.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select a project.
+3. Click **Emails** -> **Sender Domains** from the sidebar.
+4. Click the **Add sender domain** button.
+5. In the form that opens, enter the domain you want to add (for example, `yourdomain.com`) and click **Continue**.
 
 After submitting, you'll be taken to the domain's detail page where the required DNS records are shown. Add these records to your domain's DNS settings:
 
@@ -318,14 +314,13 @@ To view email sending activity:
 
 <Note title="Tip">
 
-You can also navigate to the sender domains form from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Sender Domains**.
+You can also navigate to the Email Activity page from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Sender Domains**.
 
 </Note>
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Click Emails -> Activity from the sidebar.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select a project.
+3. Click **Emails** -> **Activity** from the sidebar.
 
 At the top of the Email Activity page, you'll see email sending statistics for your organization across all projects, including:
 

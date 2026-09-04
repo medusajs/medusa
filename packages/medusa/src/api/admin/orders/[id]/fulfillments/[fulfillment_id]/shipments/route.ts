@@ -28,7 +28,7 @@ export const POST = async (
     order_id: req.params.id,
     fulfillment_id: req.params.fulfillment_id,
     labels: req.validatedBody.labels ?? [],
-    created_by: req.auth_context.actor_id,
+    created_by: req.secret_key_context?.created_by ?? req.auth_context.actor_id,
   }
 
   await createOrderShipmentWorkflow(req.scope).run({
