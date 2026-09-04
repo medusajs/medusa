@@ -146,6 +146,34 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
 
         eventBus.unsubscribe("test", subscriber)
       })
+
+      it("should apply a TTL to the staging key on the first emit", async () => {
+        const eventGroupId = "ttl-test-456"
+        const redisConnection = (eventBus as any).eventBusRedisConnection_
+
+        await eventBus.emit(
+          composeMessage("test", {
+            data: {
+              test: "test",
+            },
+            context: {
+              eventGroupId,
+            },
+            action: CommonEvents.CREATED,
+            source: "test",
+            object: "test",
+          })
+        )
+
+        const ttl = await redisConnection.ttl(`staging:${eventGroupId}`)
+
+        // TTL must be set (a positive number of seconds remaining) immediately
+        // after the very first emit() for this group — previously EXPIRE was
+        // issued before the key existed and silently no-opped, leaving TTL at -1.
+        expect(ttl).toBeGreaterThan(0)
+
+        await eventBus.clearGroupedEvents(eventGroupId)
+      })
     })
   },
 })
