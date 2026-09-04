@@ -220,9 +220,17 @@ function preparePromotionApplicationState(
       availableTargetQuantity
     )
 
+    // appliedPromotionQuantity only accounts for quantity applied in
+    // *earlier* iterations of the outer application loop - it doesn't move
+    // as targetItemsByPromotion fills up within this iteration. Once a
+    // target here is fragmented across more than one item (e.g. apply_to_quantity
+    // needs 3 units but the first eligible item only has 2), the allowance
+    // has to also subtract what this iteration has already committed to
+    // (availableTargetQuantity), or the max_quantity cap can be exceeded by
+    // however much a single iteration ends up applying.
     const remainingMaxQuantityAllowance = MathBN.sub(
       applicationConfig.maximumApplyQuantity,
-      appliedPromotionQuantity
+      MathBN.add(appliedPromotionQuantity, availableTargetQuantity)
     )
 
     const fulfillableQuantity = MathBN.min(
