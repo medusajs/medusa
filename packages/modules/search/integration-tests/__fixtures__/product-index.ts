@@ -11,6 +11,10 @@ export type TestProduct = {
   brand: string
   min_price: number
   created_at: Date
+  updated_at: Date
+  // Stands in for a hard-removed source row. Only used by the
+  // catch-up-reseed tests.
+  removed?: boolean
   tags: string[]
   variants: { sku: string; color: string }[]
 }
@@ -31,6 +35,7 @@ export const baseProducts: TestProduct[] = [
     brand: "acme",
     min_price: 100,
     created_at: new Date("2026-01-01T00:00:00.000Z"),
+    updated_at: new Date("2026-01-01T00:00:00.000Z"),
     tags: ["shoe", "sport"],
     variants: [
       { sku: "SHOE-RED-41", color: "red" },
@@ -46,6 +51,7 @@ export const baseProducts: TestProduct[] = [
     brand: "borg",
     min_price: 50,
     created_at: new Date("2026-02-01T00:00:00.000Z"),
+    updated_at: new Date("2026-02-01T00:00:00.000Z"),
     tags: ["shirt", "sport"],
     variants: [{ sku: "SHIRT-BLUE-M", color: "blue" }],
   },
@@ -58,6 +64,7 @@ export const baseProducts: TestProduct[] = [
     brand: "acme",
     min_price: 200,
     created_at: new Date("2026-03-01T00:00:00.000Z"),
+    updated_at: new Date("2026-03-01T00:00:00.000Z"),
     tags: ["hat"],
     variants: [
       { sku: "HAT-GREEN-S", color: "green" },
@@ -69,10 +76,41 @@ export const baseProducts: TestProduct[] = [
 export function resetDataset(products: TestProduct[] = baseProducts): void {
   dataset.products = products.map((product) => ({ ...product }))
   consumedEvents.length = 0
+  onBulkSeedStart = undefined
+}
+
+// Simulates a live update landing on the source of truth mid-build.
+export function touchProduct(id: string, changes: Partial<TestProduct> = {}): void {
+  const index = dataset.products.findIndex((product) => product.id === id)
+  if (index === -1) {
+    return
+  }
+  dataset.products[index] = {
+    ...dataset.products[index],
+    ...changes,
+    updated_at: new Date(),
+  }
+}
+
+// Simulates a live delete landing on the source of truth mid-build.
+export function removeProduct(id: string): void {
+  touchProduct(id, { removed: true })
 }
 
 // What `consume` was handed, so the tests can assert how the module routed.
 export const consumedEvents: { event: string; index: string }[] = []
+
+// Test seam: called once a bulk (unscoped) seed has taken its snapshot of
+// `dataset.products` but before it's done writing, so a test can simulate a
+// live write landing mid-build — one the bulk pass' own snapshot missed, and
+// only the catch-up pass (a fresh, later read) can still pick up.
+let onBulkSeedStart: (() => void | Promise<void>) | undefined
+
+export function setOnBulkSeedStart(
+  hook: (() => void | Promise<void>) | undefined
+): void {
+  onBulkSeedStart = hook
+}
 
 // Declared exactly like user code: `defineSearchIndex` compiles the DSL schema
 // and returns the normalized definition the test runner passes as options.
@@ -91,6 +129,7 @@ export const productIndex: SearchTypes.SearchIndexDefinition =
       brand: search.keyword().filterable().facetable().sortable(),
       min_price: search.float().filterable().sortable().facetable(),
       created_at: search.date().filterable().sortable(),
+      updated_at: search.date().filterable().sortable(),
       tags: search.keyword().array().filterable().facetable(),
       variants: search
         .object({
@@ -120,19 +159,51 @@ export const productIndex: SearchTypes.SearchIndexDefinition =
 
       return [{ action: "upsert", documents: [product] }]
     },
-    // eslint-disable-next-line require-yield
-    async *seed({ filters }) {
+    async *seed({ filters, catchup }) {
       const ids = (filters?.ids as string[]) ?? undefined
+      const scoped = !!ids || !!catchup
 
-      const products = ids
-        ? dataset.products.filter((product) => ids.includes(product.id))
-        : dataset.products
+      let candidates = dataset.products
+      if (ids) {
+        candidates = candidates.filter((product) => ids.includes(product.id))
+      }
+      if (catchup) {
+        candidates = candidates.filter(
+          (product) => product.updated_at >= catchup.since
+        )
+      }
+      if (!scoped) {
+        // An unscoped (full) seed never re-adds what the source removed —
+        // the target either started empty (swap) or was cleared first
+        // (in-place).
+        candidates = candidates.filter((product) => !product.removed)
+
+        if (onBulkSeedStart) {
+          const hook = onBulkSeedStart
+          onBulkSeedStart = undefined
+          await hook()
+        }
+      }
 
       // Two batches, so the streaming path and the sync cursor both get exercised.
-      const half = Math.ceil(products.length / 2) || 1
+      const half = Math.ceil(candidates.length / 2) || 1
 
-      for (let i = 0; i < products.length; i += half) {
-        yield products.slice(i, i + half)
+      for (let i = 0; i < candidates.length; i += half) {
+        const batch = candidates.slice(i, i + half)
+        const mutations: SearchTypes.SearchMutation[] = []
+
+        const upserts = batch.filter((product) => !product.removed)
+        if (upserts.length) {
+          mutations.push({ action: "upsert", documents: upserts })
+        }
+
+        for (const product of batch) {
+          if (product.removed) {
+            mutations.push({ action: "delete", filters: { id: [product.id] } })
+          }
+        }
+
+        yield mutations
       }
     },
   })

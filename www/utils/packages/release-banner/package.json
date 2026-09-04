@@ -13,7 +13,9 @@
     "lint": "eslint --ext .ts src",
     "render": "node dist/cli.js render",
     "preview": "node dist/cli.js preview",
-    "upload": "node dist/cli.js upload"
+    "upload": "node dist/cli.js upload",
+    "preview:cloud": "node dist/cli.js preview --type cloud-changelog",
+    "upload:cloud": "node dist/cli.js upload --type cloud-changelog"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

@@ -50,7 +50,7 @@
         },
         {
           "binding": "SPECS_R2_BUCKET",
-          "bucket_name": "docs-assets",
+          "bucket_name": "docs-api-reference",
         },
       ],
       "vars": {
@@ -65,7 +65,7 @@
     },
     {
       "binding": "SPECS_R2_BUCKET",
-      "bucket_name": "docs-assets",
+      "bucket_name": "docs-api-reference",
     },
   ],
   "vars": {

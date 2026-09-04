@@ -149,6 +149,16 @@ const generatedgeneratedAdminSidebarSidebar = {
       "children": [
         {
           "type": "link",
+          "path": "/admin/auth/list-providers",
+          "title": "List Providers",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/auth/authenticate-user",
           "title": "Authenticate User",
           "loaded": true,
@@ -1619,8 +1629,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/inventory-items/create-inventory-item-2",
-          "title": "Create Inventory Item",
+          "path": "/admin/inventory-items/create-inventory-level",
+          "title": "Create Inventory Level",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -1629,8 +1639,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/inventory-items/create-inventory-level",
-          "title": "Create Inventory Level",
+          "path": "/admin/inventory-items/export-inventory-items",
+          "title": "Export Inventory Items",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -4075,6 +4085,44 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Search Indexes",
+      "path": "/admin/search-indexes",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/schema",
+          "title": "SearchIndex Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/list-search-indexes",
+          "title": "List Search Indexes",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/add-reindex-to-search-index",
+          "title": "Add Reindex to Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
       "title": "Shipping Option Types",
       "path": "/admin/shipping-option-types",
       "loaded": true,
@@ -4849,12 +4897,32 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/admin/users/list-auth-providers",
+          "title": "List Auth Providers",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/users/list-users",
           "title": "List Users",
           "loaded": true,
           "badge": {
             "variant": "green",
             "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/users/add-reset-password-to-user",
+          "title": "Add Reset Password to User",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
           }
         },
         {

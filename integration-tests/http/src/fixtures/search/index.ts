@@ -64,7 +64,7 @@ const productIndex = defineSearchIndex({
         return
       }
 
-      yield data
+      yield [{ action: "upsert", documents: data }]
 
       if (data.length < BATCH_SIZE) {
         return
@@ -104,7 +104,7 @@ const customerIndex = defineSearchIndex({
         return
       }
 
-      yield data
+      yield [{ action: "upsert", documents: data }]
 
       if (data.length < BATCH_SIZE) {
         return
