@@ -68,7 +68,9 @@ function checkLocalLinkExists({
   // check if the file exists (references are the JSON doc-model, page.json)
   if (
     existsSync(linkedFilePath) ||
-    existsSync(linkedFilePath.replace(/\/page\.mdx$/, "/page.json"))
+    existsSync(
+      linkedFilePath.replace(/[\\/]page\.mdx$/, `${path.sep}page.json`)
+    )
   ) {
     return
   }
@@ -373,10 +375,7 @@ export function brokenLinkCheckerPlugin(
       }
     }
 
-    const currentPageFilePath = file.history[0].replace(
-      `/${path.basename(file.history[0])}`,
-      ""
-    )
+    const currentPageFilePath = path.dirname(file.history[0])
 
     visit(
       tree as UnistTree,

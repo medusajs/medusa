@@ -2,8 +2,16 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { HttpTypes, SearchTypes } from "@medusajs/framework/types"
-import { Modules, promiseAll } from "@medusajs/framework/utils"
+import {
+  HttpTypes,
+  RemoteQueryFunction,
+  SearchTypes,
+} from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { searchWithGraphFallback } from "./fallback-search"
 import { AdminGetSearchParamsType } from "./validators"
 
@@ -22,12 +30,17 @@ export const GET = async (
   const searchModule = req.scope.resolve(Modules.SEARCH, {
     allowUnregistered: true,
   })
+  const query = req.scope.resolve<RemoteQueryFunction>(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { q, entity } = req.validatedQuery
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  const indexes = new Set(searchModule?.listIndexes() ?? [])
+  const indexes = new Set(
+    ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
+  )
 
   // Caller narrows the set; otherwise search every index. If the module is on
   // but nothing is indexed yet, leave `entities` empty so we fall through to
@@ -51,7 +64,7 @@ export const GET = async (
 
   const [indexResults, graphResults] = await promiseAll([
     indexedEntities.length
-      ? searchIndexedEntities(searchModule, {
+      ? searchIndexedEntities(query, {
           entities: indexedEntities,
           q,
           skip,
@@ -80,7 +93,7 @@ export const GET = async (
 }
 
 async function searchIndexedEntities(
-  searchModule: SearchTypes.ISearchModuleService,
+  query: RemoteQueryFunction,
   {
     entities,
     q,
@@ -95,21 +108,20 @@ async function searchIndexedEntities(
 ): Promise<HttpTypes.AdminSearchResultGroup[]> {
   const queries: SearchTypes.SearchQuery[] = entities.map((name) => ({
     entity: name,
-    // We don't want to expand the fields in order to not do a separate DB request.
-    fields: searchModule.listRetrievableFields(name),
     filters: q ? { q } : undefined,
     pagination: { skip, take },
+    search_options: q ? { match_strategy: "last" } : undefined,
   }))
 
-  const results = await searchModule.searchMany(queries)
+  const results = await query.search(queries)
 
   return results.map((result, i) => ({
     entity: entities[i],
-    data: result.hits.map((hit) => hit.document),
+    data: result.data,
     // Never requested with `count: "none"`, so `null` is out of the ordinary
     // — but the response promises a number.
-    count: result.metadata.count ?? 0,
-    offset: result.metadata.skip,
-    limit: result.metadata.take,
+    count: result.search_result.metadata.count ?? 0,
+    offset: result.search_result.metadata.skip,
+    limit: result.search_result.metadata.take,
   }))
 }

@@ -451,4 +451,44 @@ describe("validateAndTransformQuery", () => {
       })
     )
   })
+
+  it("should not persist request-specific allowed fields", async () => {
+    const queryConfig: any = {
+      defaults: ["id"],
+      allowed: ["id"],
+      isList: true,
+    }
+    const middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+    const mockResponse = {} as MedusaResponse
+
+    const firstRequest = {
+      allowed: ["created_at"],
+      restrictedFields: new RestrictedFields(),
+      query: {
+        order: "created_at",
+      },
+    } as unknown as MedusaRequest
+    const firstNext: MedusaNextFunction = jest.fn()
+
+    await middleware(firstRequest, mockResponse, firstNext)
+
+    expect(firstNext).toHaveBeenCalledWith()
+    expect(queryConfig.allowed).toEqual(["id"])
+
+    const secondRequest = {
+      restrictedFields: new RestrictedFields(),
+      query: {
+        order: "created_at",
+      },
+    } as unknown as MedusaRequest
+    const secondNext: MedusaNextFunction = jest.fn()
+
+    await middleware(secondRequest, mockResponse, secondNext)
+
+    expect(secondNext).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Order field created_at is not valid",
+      })
+    )
+  })
 })

@@ -128,6 +128,10 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemActionsStep"
   },
   {
+    "title": "getLineItemPricingQuantitiesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep"
+  },
+  {
     "title": "removeLineItemAdjustmentsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeLineItemAdjustmentsStep"
   },

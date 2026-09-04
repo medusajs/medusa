@@ -94,6 +94,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/regions",
           {
+            payment_providers: ["pp_system_default"],
             name: "test-region",
             currency_code: "usd",
           },
@@ -1214,6 +1215,45 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should remove the store credits from the cart when the amount is 0", async () => {
+        const customerAccount = (
+          await api.post(
+            `/admin/store-credit-accounts`,
+            { currency_code: giftCard.currency_code, customer_id: customer.id },
+            adminHeaders
+          )
+        ).data.store_credit_account
+
+        await api.post(
+          `/admin/store-credit-accounts/${customerAccount.id}/credit`,
+          { amount: 150, note: "Crediting customers account" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/store/carts/${cart.id}/store-credits`,
+          { amount: 100 },
+          storeHeadersWithAuth
+        )
+
+        const {
+          data: { cart: cartWithoutStoreCredits },
+        } = await api.post(
+          `/store/carts/${cart.id}/store-credits?fields=+credit_line_total`,
+          { amount: 0 },
+          storeHeadersWithAuth
+        )
+
+        expect(cartWithoutStoreCredits).toEqual(
+          expect.objectContaining({
+            total: 800,
+            original_total: 800,
+            credit_line_total: 0,
+            credit_lines: [],
+          })
+        )
+      })
+
       it("should handle adding more credit than the total is properly", async () => {
         const customerAccount = (
           await api.post(
@@ -1464,14 +1504,23 @@ medusaIntegrationTestRunner({
           {
             country_code: "US",
             provider_id: "tp_system",
-            default_tax_rate: { name: "US Default Rate", rate: 10, code: "US_RATE" },
+            default_tax_rate: {
+              name: "US Default Rate",
+              rate: 10,
+              code: "US_RATE",
+            },
           },
         ])
 
         const taxRegion = (
           await api.post(
             "/admin/regions",
-            { name: "us-tax-region", currency_code: "usd", countries: ["us"] },
+            {
+              payment_providers: ["pp_system_default"],
+              name: "us-tax-region",
+              currency_code: "usd",
+              countries: ["us"],
+            },
             adminHeaders
           )
         ).data.region
