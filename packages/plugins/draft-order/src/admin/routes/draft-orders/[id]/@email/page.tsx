@@ -4,11 +4,14 @@ import { Button, Heading, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
-import { useOrder } from "../../../../hooks/api/orders"
+import {
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useOrder } from "@medusajs/dashboard/hooks"
 
 const Email = () => {
   const { id } = useParams()

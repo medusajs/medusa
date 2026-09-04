@@ -4,14 +4,17 @@ import { HttpTypes } from "@medusajs/types"
 import { Alert, Button, Input, toast } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "@medusajs/framework/zod"
-import { Form } from "../../../../../../components/form"
-import { KeyboundForm } from "../../../../../../components/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
+import {
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
 import {
   useLinkProductOptions,
   useUpdateProduct,
-} from "../../../../../../hooks/api/products"
-import { optionalFloat } from "../../../../../../utils/validations"
+} from "@medusajs/dashboard/hooks"
+import { optionalFloat } from "@medusajs/dashboard/lib"
 
 const DENOMINATION_OPTION_TITLE = "denomination"
 

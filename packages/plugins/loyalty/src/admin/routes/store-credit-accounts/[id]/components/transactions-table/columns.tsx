@@ -1,11 +1,11 @@
-import { createDataTableColumnHelper, Text } from "@medusajs/ui";
-import { useMemo } from "react";
-import { AdminTransaction } from "../../../../../../types";
-import DisplayId from "../../../../../components/display-id";
-import { formatAmount } from "../../../../../utils/format-amount";
-import { formatDate } from "../../../../../utils/format-date";
+import { createDataTableColumnHelper, Text } from "@medusajs/ui"
+import { useMemo } from "react"
+import { AdminTransaction } from "../../../../../../types"
+import { DisplayId } from "@medusajs/dashboard/components"
+import { formatDate } from "../../../../../utils/format-date"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
-const columnHelper = createDataTableColumnHelper<AdminTransaction>();
+const columnHelper = createDataTableColumnHelper<AdminTransaction>()
 
 export const useTransactionsTableColumns = () => {
   return useMemo(() => {
@@ -13,7 +13,7 @@ export const useTransactionsTableColumns = () => {
       columnHelper.accessor("id", {
         header: "ID",
         cell: ({ row }) => {
-          return <DisplayId id={row.original.id} />;
+          return <DisplayId id={row.original.id} />
         },
       }),
 
@@ -34,24 +34,24 @@ export const useTransactionsTableColumns = () => {
             <Text title={row.original.note} className="max-w-[300px] truncate">
               {row.original.note || "-"}
             </Text>
-          );
+          )
         },
       }),
 
       columnHelper.accessor("amount", {
         header: "Amount",
         cell: ({ row }) => {
-          const isDebit = row.original.type === "debit";
+          const isDebit = row.original.type === "debit"
 
           return (
             row.original.account.currency_code &&
-            formatAmount(
+            formatCurrency(
               (row.original.amount as number) * (isDebit ? -1 : 1),
               row.original.account.currency_code
             )
-          );
+          )
         },
       }),
-    ];
-  }, []);
-};
+    ]
+  }, [])
+}

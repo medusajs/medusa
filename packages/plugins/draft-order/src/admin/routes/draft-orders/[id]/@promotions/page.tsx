@@ -13,24 +13,27 @@ import {
 } from "@medusajs/ui"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { Combobox } from "../../../../components/inputs/combobox"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import {
   useDraftOrderAddPromotions,
   useDraftOrderConfirmEdit,
   useDraftOrderRemovePromotions,
 } from "../../../../hooks/api/draft-orders"
-import {
-  useOrderEditRequest,
-  useOrderPreview,
-} from "../../../../hooks/api/orders"
-import { usePromotions } from "../../../../hooks/api/promotions"
-import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { useCancelOrderEdit } from "../../../../hooks/order-edits/use-cancel-order-edit"
 import { useInitiateOrderEdit } from "../../../../hooks/order-edits/use-initiate-order-edit"
-import { getLocaleAmount } from "../../../../lib/data/currencies"
 import { sdk } from "../../../../lib/queries/sdk"
+import {
+  Combobox,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import {
+  useComboboxData,
+  useOrderPreview,
+  usePromotions,
+  useRequestOrderEdit,
+} from "@medusajs/dashboard/hooks"
+import { getLocaleAmount } from "@medusajs/dashboard/lib"
 
 const Promotions = () => {
   const { id } = useParams()
@@ -131,21 +134,24 @@ const PromotionForm = ({ preview }: PromotionFormProps) => {
   }
 
   const { mutateAsync: confirmOrderEdit } = useDraftOrderConfirmEdit(preview.id)
-  const { mutateAsync: requestOrderEdit } = useOrderEditRequest(preview.id)
+  const { mutateAsync: requestOrderEdit } = useRequestOrderEdit(preview.id)
 
   const onSubmit = async () => {
     setIsSubmitting(true)
 
     let requestSucceeded = false
 
-    await requestOrderEdit(undefined, {
-      onError: (e) => {
-        toast.error(e.message)
-      },
-      onSuccess: () => {
-        requestSucceeded = true
-      },
-    })
+    await requestOrderEdit(
+      {},
+      {
+        onError: (e) => {
+          toast.error(e.message)
+        },
+        onSuccess: () => {
+          requestSucceeded = true
+        },
+      }
+    )
 
     if (!requestSucceeded) {
       setIsSubmitting(false)

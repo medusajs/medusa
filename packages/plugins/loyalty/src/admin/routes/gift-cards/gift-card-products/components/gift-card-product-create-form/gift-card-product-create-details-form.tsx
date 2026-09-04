@@ -1,14 +1,14 @@
-import { Divider, Heading } from "@medusajs/ui";
-import { UseFormReturn } from "react-hook-form";
-import { GiftCardProductCreateFormDenominations } from "./gift-card-product-create-form-denominations";
-import { GiftCardProductCreateFormGeneral } from "./gift-card-product-create-form-general";
-import { GiftCardProductCreateFormMedia } from "./gift-card-product-create-form-media";
-import { GiftCardProductCreateOrganizeForm } from "./gift-card-product-create-form-organize";
-import { ProductCreateSchemaType } from "./types";
+import { Divider, Heading } from "@medusajs/ui"
+import { UseFormReturn } from "react-hook-form"
+import { GiftCardProductCreateFormDenominations } from "./gift-card-product-create-form-denominations"
+import { GiftCardProductCreateFormGeneral } from "./gift-card-product-create-form-general"
+import { GiftCardProductCreateFormMedia } from "./gift-card-product-create-form-media"
+import { GiftCardProductCreateOrganizeForm } from "./gift-card-product-create-form-organize"
+import { ProductCreateSchemaType } from "./types"
 
 type GiftCardProductCreateDetailsFormProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+}
 
 export const GiftCardProductCreateDetailsForm = ({
   form,
@@ -31,13 +31,13 @@ export const GiftCardProductCreateDetailsForm = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Header = () => {
   return (
     <div className="flex flex-col">
       <Heading>Create Gift Card Product</Heading>
     </div>
-  );
-};
+  )
+}

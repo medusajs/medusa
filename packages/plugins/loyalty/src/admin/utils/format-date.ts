@@ -1,12 +1,12 @@
-import { format, formatDistance, sub } from "date-fns";
+import { format, formatDistance, sub } from "date-fns"
 
 export function getRelativeDate(date: string | Date): string {
-  const now = new Date();
+  const now = new Date()
 
   return formatDistance(sub(new Date(date), { minutes: 0 }), now, {
     addSuffix: true,
     includeSeconds: false,
-  });
+  })
 }
 
 export function formatDate(
@@ -14,12 +14,12 @@ export function formatDate(
   withTime = true
 ): string {
   if (!date) {
-    return "-";
+    return "-"
   }
 
   if (withTime) {
-    return format(new Date(date), "dd MMM, yyyy, HH:mm:ss");
+    return format(new Date(date), "dd MMM, yyyy, HH:mm:ss")
   }
 
-  return format(new Date(date), "dd MMM, yyyy");
+  return format(new Date(date), "dd MMM, yyyy")
 }

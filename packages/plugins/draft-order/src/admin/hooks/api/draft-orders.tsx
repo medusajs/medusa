@@ -9,8 +9,10 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 import { sdk } from "../../lib/queries/sdk"
-import { ordersQueryKeys } from "./orders"
-import { shippingOptionsQueryKeys } from "./shipping-options"
+import {
+  ordersQueryKeys,
+  shippingOptionsQueryKeys,
+} from "@medusajs/dashboard/hooks"
 const DRAFT_ORDERS_QUERY_KEY = "draft-orders"
 
 export const draftOrdersQueryKeys = {
