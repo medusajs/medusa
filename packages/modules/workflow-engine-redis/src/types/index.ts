@@ -21,9 +21,11 @@ export type InitializeModuleInjectableDependencies = {
  * ```ts
  * // Simple configuration - same options for all queues
  * {
- *   redisUrl: "redis://localhost:6379",
- *   queueOptions: { defaultJobOptions: { removeOnComplete: 1000 } },
- *   workerOptions: { concurrency: 10 }
+ *   redis: {
+ *     redisUrl: "redis://localhost:6379",
+ *     queueOptions: { defaultJobOptions: { removeOnComplete: 1000 } },
+ *     workerOptions: { concurrency: 10 }
+ *   }
  * }
  * ```
  *
@@ -31,13 +33,15 @@ export type InitializeModuleInjectableDependencies = {
  * ```ts
  * // Advanced configuration - per-queue overrides
  * {
- *   redisUrl: "redis://localhost:6379",
- *   // Shared defaults
- *   workerOptions: { concurrency: 10 },
- *   // Override for job queue (scheduled workflows)
- *   jobWorkerOptions: { concurrency: 5 },
- *   // Override for cleaner (low priority)
- *   cleanerWorkerOptions: { concurrency: 1 }
+ *   redis: {
+ *     redisUrl: "redis://localhost:6379",
+ *     // Shared defaults
+ *     workerOptions: { concurrency: 10 },
+ *     // Override for job queue (scheduled workflows)
+ *     jobWorkerOptions: { concurrency: 5 },
+ *     // Override for cleaner (low priority)
+ *     cleanerWorkerOptions: { concurrency: 1 }
+ *   }
  * }
  * ```
  */
@@ -180,7 +184,7 @@ export type RedisWorkflowsOptions = {
 
 declare module "@medusajs/types" {
   interface ModuleOptions {
-    "@medusajs/workflow-engine-redis": RedisWorkflowsOptions
-    "@medusajs/medusa/workflow-engine-redis": RedisWorkflowsOptions
+    "@medusajs/workflow-engine-redis": { redis: RedisWorkflowsOptions }
+    "@medusajs/medusa/workflow-engine-redis": { redis: RedisWorkflowsOptions }
   }
 }
