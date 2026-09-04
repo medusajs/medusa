@@ -1,2 +1,10 @@
 const defineJestConfig = require("../../../define_jest_config")
-module.exports = defineJestConfig({})
+module.exports = defineJestConfig({
+  testPathIgnorePatterns: [
+    "dist/",
+    "node_modules/",
+    "__fixtures__/",
+    "__mocks__/",
+    "integration-tests/",
+  ],
+})
