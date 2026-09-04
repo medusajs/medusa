@@ -128,25 +128,41 @@ export const processPaymentWorkflow = createWorkflow(
         })
     })
 
-    when({ input, paymentData }, ({ input, paymentData }) => {
-      // payment is captured with the provider but we dont't have any payment data which means we didn't call authorize yet - autocapture flow
-      return (
-        !!input.data?.session_id &&
-        input.action === PaymentActions.SUCCESSFUL &&
-        !paymentData.data.length
-      )
-    }).then(() => {
-      const payment = authorizePaymentSessionStep({
+    const autocapturePayment = when(
+      "authorize-payment-session-autocapture-condition",
+      { input, paymentData },
+      ({ input, paymentData }) => {
+        // payment is captured with the provider but we dont't have any payment data which means we didn't call authorize yet - autocapture flow
+        return (
+          !!input.data?.session_id &&
+          input.action === PaymentActions.SUCCESSFUL &&
+          !paymentData.data.length
+        )
+      }
+    ).then(() => {
+      return authorizePaymentSessionStep({
         id: input.data!.session_id,
         context: {},
       }).config({
         name: "authorize-payment-session-autocapture",
       })
+    })
 
+    // If the authorization is deferred (e.g. bank transfer, payment link not
+    // yet confirmed), authorizePaymentSessionStep returns null and there is
+    // no payment to capture yet. The `authorized` webhook action will create
+    // the payment later and trigger capture through a different branch.
+    when(
+      "capture-payment-autocapture-condition",
+      { autocapturePayment },
+      ({ autocapturePayment }) => {
+        return !!autocapturePayment
+      }
+    ).then(() => {
       capturePaymentWorkflow
         .runAsStep({
           input: {
-            payment_id: payment.id,
+            payment_id: autocapturePayment!.id,
             amount: input.data?.amount,
           },
         })
