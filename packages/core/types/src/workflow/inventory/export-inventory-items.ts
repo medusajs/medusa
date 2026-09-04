@@ -6,7 +6,7 @@ import { FilterableInventoryItemProps } from "../../inventory"
 export interface ExportInventoryItemsDTO {
   /**
    * The fields to select. These fields will be passed to
-   * [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query), so you can
+   * [Query](https://docs.medusajs.com/learn/fundamentals/query), so you can
    * pass inventory item properties or any relation names, including custom links.
    */
   select: string[]
