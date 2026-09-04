@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.20.1
   title: Medusa Storefront API
   license:
     name: MIT
@@ -234,6 +234,52 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth/customer/providers:
+    get:
+      operationId: GetCustomerProviders
+      x-sidebar-summary: List Providers
+      summary: List Auth Providers for Customers
+      description: Retrieve a list of auth providers for the customer actor type. This is useful to show the authentication option for the available providers.
+      x-authenticated: false
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { providers } = await sdk.auth.listProviders("customer")
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/auth/customer/providers'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthProvidersListResponse'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -5855,7 +5901,7 @@ paths:
     get:
       operationId: GetOrdersId
       summary: Get an Order
-      description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned.
+      description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned. This API route doesn't require customer authentication, so that guest customers can view their order confirmation page after placing an order. To restrict access to this API route, refer to the [Restrict Order Retrieval guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval).
       x-authenticated: false
       parameters:
         - name: id
@@ -12390,7 +12436,7 @@ paths:
     post:
       operationId: PostReturns
       summary: Create Return
-      description: Create a return for an order's items. The admin receives the return and process it from their side.
+      description: Create a return for an order's items. The admin receives the return and process it from their side. This API route doesn't require customer authentication, so that guest customers can request a return for their orders. To restrict access to this API route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation).
       x-authenticated: false
       parameters:
         - name: x-publishable-api-key
@@ -16164,6 +16210,11 @@ components:
           description: The inventory item's location levels.
           items:
             $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -19314,6 +19365,17 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+    AdminExportInventoryItemResponse:
+      type: object
+      description: The response for initiating an export inventory items workflow.
+      x-schemaName: AdminExportInventoryItemResponse
+      required:
+        - transaction_id
+      properties:
+        transaction_id:
+          type: string
+          title: transaction_id
+          description: The ID of the workflow execution's transaction. Use it to check the status of the export by sending a GET request to `/admin/workflows-executions/export-inventory-items/:transaction-id`
     AdminExportOrderResponse:
       type: object
       description: The details of the order export.
@@ -19980,17 +20042,20 @@ components:
       type: object
       description: The details of the user to be created.
       properties:
-        token:
+        email:
           type: string
-          title: token
-          description: The invite's token.
-        fields:
+          title: email
+          description: The invite's email.
+          format: email
+        first_name:
           type: string
-          title: fields
-          description: The invite's fields.
+          title: first_name
+          description: The invited user's first name.
+        last_name:
+          type: string
+          title: last_name
+          description: The invited user's last name.
       x-schemaName: AdminGetInviteAcceptParams
-      required:
-        - token
     AdminGiftCard:
       type: object
       description: The gift card's details.
@@ -20360,6 +20425,11 @@ components:
           type: number
           title: reserved_quantity
           description: The inventory item's reserved quantity.
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory's unit of measure.
+          example: kg
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -21360,6 +21430,10 @@ components:
           type: string
           title: internal_note
           description: The order change's internal note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -25294,6 +25368,15 @@ components:
             type: string
             title: promo_codes
             description: A promotion code to remove from the draft order.
+    AdminRequestOrderEdit:
+      type: object
+      description: The details of the request to edit an order.
+      x-schemaName: AdminRequestOrderEdit
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order edit's updates.
     AdminRequestOrderTransfer:
       type: object
       description: The details of the request to transfer the order.
@@ -28016,6 +28099,11 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -29452,6 +29540,23 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+    AdminUserAuthProvidersResponse:
+      type: object
+      description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
+      x-schemaName: AdminUserAuthProvidersResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: |-
+            The IDs of the auth providers the user can authenticate with, such as
+            `emailpass`.
+          items:
+            type: string
+            title: providers
+            description: The provider's identifier.
+            example: emailpass
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -29506,6 +29611,23 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+    AdminUserResetPasswordTokenResponse:
+      type: object
+      description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
+      x-schemaName: AdminUserResetPasswordTokenResponse
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          title: token
+          description: |-
+            The generated reset password token. Append it to the admin's
+            `/reset-password` page as a `token` query parameter to build a link the
+            user can open to set a new password.
+
+            The token is short-lived, can only be used once, and generating it
+            invalidates any reset password token previously issued for the user.
     AdminUserResponse:
       type: object
       description: The user's details.
@@ -29811,6 +29933,60 @@ components:
           type: string
           title: location
           description: The location to redirect the user to for further authentication with the third-party provider.
+    AuthProvider:
+      type: object
+      description: |-
+        The public information of a registered auth provider instance. This is safe
+        to expose to unauthenticated clients and never contains provider options or
+        secrets.
+      x-schemaName: AuthProvider
+      required:
+        - id
+        - identifier
+        - display_name
+        - flow
+      properties:
+        id:
+          type: string
+          title: id
+          description: |-
+            The registered instance ID of the provider, used in authentication routes
+            (for example, `okta` in `POST /auth/user/okta`).
+        identifier:
+          type: string
+          title: identifier
+          description: The provider's static identifier (for example, `oidc` or `emailpass`).
+        display_name:
+          type: string
+          title: display_name
+          description: The name to display for the provider in a frontend application.
+        flow:
+          type: string
+          description: |-
+            The authentication flow the provider uses:
+
+            - `credentials`: the client submits credentials (for example, email and
+            password) directly to the authentication route.
+            - `redirect`: the client is redirected to the provider (for example, an
+            OIDC identity provider) and returns through a callback.
+
+            A frontend can use this to decide whether to render a credentials form or a
+            "Continue with ..." redirect button.
+          enum:
+            - credentials
+            - redirect
+    AuthProvidersListResponse:
+      type: object
+      description: The response of listing the auth providers available.
+      x-schemaName: AuthProvidersListResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: The list of auth providers.
+          items:
+            $ref: '#/components/schemas/AuthProvider'
     AuthResponse:
       type: object
       description: The authentication's details.
@@ -34317,6 +34493,10 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send notifications to the customer regarding the order change's updates.
     OrderChangeAction:
       type: object
       description: The order change action's details.
@@ -35192,6 +35372,7 @@ components:
         - name
         - amount
         - is_tax_inclusive
+        - is_custom_amount
         - created_at
         - updated_at
         - original_total
@@ -35294,6 +35475,10 @@ components:
           type: number
           title: discount_tax_total
           description: The total taxes of the discount amount.
+        is_custom_amount:
+          type: boolean
+          title: is_custom_amount
+          description: Whether the shipping method price is custom amount or not.
     OrderShippingMethodAdjustment:
       type: object
       description: The shipping method adjustment's details.

@@ -1,0 +1,103 @@
+import { Note, InlineIcon } from "docs-ui"
+import { EyeMini, SquareTwoStackMini, ArrowPathMini, Trash } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Webhook Endpoints in Cloud`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage the HTTP endpoints that receive webhook event deliveries for your organization.
+
+## What are Webhook Endpoints?
+
+A webhook endpoint is an HTTPS URL that receives event payloads from Medusa when certain actions occur in your organization.
+
+Only one endpoint can be configured at a time per organization. The endpoint will receive all webhook events for the organization, regardless of which project or environment the event originated from.
+
+---
+
+## Create a Webhook Endpoint
+
+To add a webhook endpoint to your organization:
+
+1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+2. Click on a project from the dashboard.
+3. Click **Webhooks** > **Endpoints** in the sidebar.
+4. Click **Create endpoint**.
+5. In the form that opens, fill in the following fields:
+   - **Endpoint URL** (required): The HTTPS address where events will be delivered.
+   - **Enabled**: whether the endpoint is active immediately. This is enabled by default.
+6. Click **Create endpoint** to save the endpoint.
+
+<Note>
+
+You can add only one endpoint to your organization. The **Create endpoint** button is disabled if an endpoint already exists.
+
+</Note>
+
+---
+
+## Manage an Existing Endpoint
+
+Once an endpoint is created, it appears as a card on the Endpoints page.
+
+### Edit the Endpoint URL
+
+To update the URL of an existing endpoint:
+
+1. In the endpoint card, click the **URL** field and update the address.
+2. Click **Save** to apply the change.
+
+### Reveal or Copy the Signing Secret
+
+Medusa generates a signing secret for each endpoint. You can use the secret to verify that incoming requests are from Medusa.
+
+<Note>
+
+Learn how to verify webhook signatures in the [Webhooks Reference](../reference/page.mdx#verify-webhook-signatures) guide.
+
+</Note>
+
+To manage the signing secret:
+
+1. In the endpoint card, find the **Signing Secret** section. The value is hidden by default.
+2. Click the <InlineIcon Icon={EyeMini} alt="reveal" />  icon to show the secret, or click the <InlineIcon Icon={SquareTwoStackMini} alt="copy" /> icon to copy it to the clipboard.
+
+### Rotate the Signing Secret
+
+Rotating the signing secret generates a new secret and invalidates the previous one. This is useful if you suspect that the secret has been compromised or if you want to rotate it periodically for security reasons.
+
+<Note type="warning">
+
+Rotating the signing secret invalidates the previous secret immediately. Update your webhook handler to use the new secret immediately after rotating it to avoid failed deliveries.
+
+</Note>
+
+To rotate the signing secret:
+
+1. In the endpoint card, click the <InlineIcon Icon={ArrowPathMini} alt="rotate" /> icon in the **Signing Secret** section.
+2. Confirm the action in the prompt that appears.
+
+Medusa generates a new secret and the previous one is no longer valid.
+
+### Enable or Disable the Endpoint
+
+To enable or disable the endpoint without deleting it, toggle the switch in the top-right corner of the endpoint card.
+
+If an endpoint is disabled, Medusa will not send any events to it until it is re-enabled.
+
+### Delete the Endpoint
+
+<Note type="warning">
+
+Deleting an endpoint is irreversible. Any in-flight event deliveries to that endpoint will fail.
+
+</Note>
+
+To delete a webhook endpoint:
+
+1. In the endpoint card, click the <InlineIcon Icon={Trash} alt="delete" /> icon.
+2. Confirm the deletion in the prompt that appears.
+
+The endpoint is removed and Medusa will stop sending events to it.

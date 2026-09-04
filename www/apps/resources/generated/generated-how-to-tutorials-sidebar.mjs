@@ -184,6 +184,20 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Restrict Order Retrieval",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Return Creation",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Retrieve Cart Totals",
               "path": "https://docs.medusajs.com/resources/commerce-modules/cart/cart-totals",
               "children": []

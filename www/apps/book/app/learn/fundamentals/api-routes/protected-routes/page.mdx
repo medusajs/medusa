@@ -138,6 +138,7 @@ The `authenticate` middleware function accepts three parameters:
 3. An optional object of configurations accepting the following properties:
     - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too.
     - `allowUnregistered` (default: `false`): A boolean indicating whether users can access this route with a registration token, instead of an authentication token. This is useful if you have a custom actor type, such as `manager`, and you're creating an API route that allows these users to register themselves. Learn more in the [Custom Actor-Type Guide](!resources!/commerce-modules/auth/create-actor-type).
+    - `requireMfa` (default: `true` for authenticated routes, since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0)): A boolean or an object `{ maxAgeSeconds: number }` indicating whether a completed MFA challenge is required to access this route. When set to `true`, any request from an identity with MFA enabled must have completed an MFA challenge. When set to `{ maxAgeSeconds: number }`, the challenge must also have been completed within the specified number of seconds. Set to `false` to allow access regardless of MFA status (for example, on the MFA challenge verification route itself). Learn more in the [Multi-Factor Authentication guide](!resources!/commerce-modules/auth/mfa).
 
 ### Example: Custom Actor Type
 

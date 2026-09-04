@@ -2,6 +2,7 @@ export const sitemapUrls = [
   "/customers/groups",
   "/customers/manage",
   "/customers",
+  "/inventory/export",
   "/inventory/inventory",
   "/inventory",
   "/inventory/reservations",

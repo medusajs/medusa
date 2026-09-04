@@ -172,6 +172,7 @@ export const productVariantsFields = [
   "product.thumbnail",
   "product.type.value",
   "product.type.id",
+  "product.collection.id",
   "product.collection.title",
   "product.handle",
   "product.discountable",
@@ -179,7 +180,9 @@ export const productVariantsFields = [
   "product.shipping_profile.id",
   "inventory_items.inventory_item_id",
   "inventory_items.required_quantity",
+  "inventory_items.inventory.id",
   "inventory_items.inventory.requires_shipping",
+  "inventory_items.inventory.location_levels.id",
   "inventory_items.inventory.location_levels.stocked_quantity",
   "inventory_items.inventory.location_levels.reserved_quantity",
   "inventory_items.inventory.location_levels.location_id",
@@ -189,6 +192,29 @@ export const productVariantsFields = [
   "inventory_items.inventory.location_levels.stock_locations.name",
   "inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
   "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
+]
+
+/**
+ * Cache tags for what the caching module cannot compute from a response shaped by
+ * `productVariantsFields` (optionally combined with
+ * `requiredVariantFieldsForInventoryConfirmation`).
+ *
+ * Must be passed with `computeAutomaticTags: true`, since this list deliberately omits every
+ * entity the response exposes an `id` for - `ProductVariant`, `Product`,
+ * `ProductType`, `ShippingProfile`, `StockLocation` and `SalesChannel` are all
+ * computed from the response itself.
+ *
+ * What remains is what computation cannot see: link rows (whose own ids are never
+ * selected, and whose attach/detach touches none of the entities they join),
+ * relations selected without their id, and `ReservationItem`, which changes
+ * `reserved_quantity` without ever appearing in the response.
+ */
+export const productVariantsCacheTags = [
+  // Reservations adjust inventory levels without emitting inventory level events.
+  "ReservationItem:list:*",
+  "LinkProductVariantInventoryItem:list:*",
+  "LinkProductShippingProfile:list:*",
+  "LinkSalesChannelStockLocation:list:*",
 ]
 
 /**

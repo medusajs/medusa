@@ -104,6 +104,12 @@ Learn more in the [authVerificationsPerActor configuration reference](!docs!/lea
 
 When the storefront requests to send an email verification notification, Medusa emits the `auth.verification_requested` event. You can listen to this event in a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) to send the email verification notification.
 
+<Note>
+
+The `auth.verification_requested` event payload changed in Medusa v2.17.0. The `actor_type` and `provider_identity_id` fields were removed, `provider` was renamed to `code_provider`, and `entity_type` was added. If you have a subscriber written before v2.17.0, update it to use the payload described in this guide.
+
+</Note>
+
 ### Prerequisite Configurations
 
 #### Notification Module Provider for Email Channel

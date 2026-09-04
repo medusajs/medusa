@@ -1,5 +1,34 @@
 # @medusajs/admin-vite-plugin
 
+## 2.20.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.20.1
+
+## 2.20.0
+
+### Patch Changes
+
+- [#16425](https://github.com/medusajs/medusa/pull/16425) [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55) Thanks [@sradevski](https://github.com/sradevski)! - Add support for configuring the global search in admin
+
+- Updated dependencies [[`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55)]:
+  - @medusajs/admin-shared@2.20.0
+
+## 2.19.0
+
+### Minor Changes
+
+- [#16314](https://github.com/medusajs/medusa/pull/16314) [`5105fec20908cf7bcd7f5f859674acdd8a38b982`](https://github.com/medusajs/medusa/commit/5105fec20908cf7bcd7f5f859674acdd8a38b982) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin): widen the vite peer range to v5, v6 and v7
+
+  The peer range is now `^5.4.21 || ^6.0.0 || ^7.0.0`, so plugin authors on any of those majors are supported. Also drops the unused `chokidar` dependency — it was declared but never imported, since the plugin uses the watcher Vite provides.
+
+### Patch Changes
+
+- Updated dependencies [[`8f03b13a6137047ce36f61a9bb033879395f9345`](undefined)]:
+  - @medusajs/admin-shared@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

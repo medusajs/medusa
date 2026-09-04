@@ -271,6 +271,13 @@ export const generatedSidebars = [
             "title": "Manage Reservations",
             "path": "/inventory/reservations",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Export Inventory Items",
+            "path": "/inventory/export",
+            "children": []
           }
         ]
       },
