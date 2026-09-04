@@ -20,6 +20,7 @@ import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { getTranslatedCurrencyName } from "../../../../../lib/utils/intl"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
 
@@ -221,7 +222,7 @@ const CurrencyActions = ({
         count: 1,
       }),
       verificationInstruction: t("general.typeToConfirm"),
-      verificationText: currency.name,
+      verificationText: getTranslatedCurrencyName(currency.code, currency.name),
       confirmText: t("actions.remove"),
       cancelText: t("actions.cancel"),
     })

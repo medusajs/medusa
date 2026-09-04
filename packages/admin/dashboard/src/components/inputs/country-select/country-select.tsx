@@ -6,6 +6,7 @@ import {
 } from "react"
 import { useTranslation } from "react-i18next"
 import { countries } from "../../../lib/data/countries"
+import { getTranslatedCountryName } from "../../../lib/utils/intl"
 import { Combobox } from "../combobox"
 
 export const CountrySelect = forwardRef<
@@ -37,7 +38,7 @@ export const CountrySelect = forwardRef<
         value={value || ""}
         onChange={(newValue) => onChange?.(newValue || "")}
         options={countries.map((country) => ({
-          label: country.display_name,
+          label: getTranslatedCountryName(country.iso_2, country.display_name),
           value: country.iso_2.toLowerCase(),
         }))}
         placeholder={placeholder || t("fields.selectCountry")}

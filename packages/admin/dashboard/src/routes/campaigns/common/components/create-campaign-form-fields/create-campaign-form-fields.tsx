@@ -19,6 +19,7 @@ import {
   currencies,
   getCurrencySymbol,
 } from "../../../../../lib/data/currencies"
+import { getTranslatedCurrencyName } from "../../../../../lib/utils/intl"
 import { Combobox } from "../../../../../components/inputs/combobox"
 
 export const CreateCampaignFormFields = ({
@@ -285,7 +286,10 @@ export const CreateCampaignFormFields = ({
                               value={currency.code.toLowerCase()}
                               key={currency.code}
                             >
-                              {currency.name}
+                              {getTranslatedCurrencyName(
+                                currency.code,
+                                currency.name
+                              )}
                             </Select.Item>
                           ))}
                       </Select.Content>

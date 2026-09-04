@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
 import { countries as COUNTRIES } from "../../../../../lib/data/countries"
+import { getTranslatedCountryName } from "../../../../../lib/utils/intl"
 import { ListSummary } from "../../../../common/list-summary"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
@@ -15,9 +16,12 @@ export const CountriesCell = ({ countries }: CountriesCellProps) => {
   }
 
   const list = countries
-    .map(
-      (country) =>
-        COUNTRIES.find((c) => c.iso_2 === country.iso_2)?.display_name
+    .map((country) =>
+      getTranslatedCountryName(
+        country.iso_2,
+        COUNTRIES.find((c) => c.iso_2 === country.iso_2)?.display_name ||
+          country.display_name
+      )
     )
     .filter(Boolean) as string[]
 
