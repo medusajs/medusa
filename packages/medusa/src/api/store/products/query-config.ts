@@ -1,3 +1,4 @@
+import { buildAllowedFields } from "../utils/allowed-fields"
 import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaultStoreProductFields = [
@@ -31,8 +32,27 @@ export const defaultStoreProductFields = [
   "*variants.options",
 ]
 
+export const allowedStoreProductExtraFields = [
+  "metadata",
+  "categories",
+  "variants.calculated_price",
+  "variants.inventory_quantity",
+  "variants.manage_inventory",
+  "variants.allow_backorder",
+  "variants.images",
+  "variants.thumbnail",
+  "variants.options.option",
+  "variants.inventory_items",
+  "variants.inventory_items.inventory",
+  "variants.prices",
+]
+
 export const retrieveProductQueryConfig = {
   defaults: defaultStoreProductFields,
+  allowed: buildAllowedFields(
+    defaultStoreProductFields,
+    allowedStoreProductExtraFields
+  ),
   disallowed: disallowedStoreFields,
   storeRelationsLimit: 4,
   isList: false,

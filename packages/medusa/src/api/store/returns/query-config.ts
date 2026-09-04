@@ -1,4 +1,5 @@
-import { disallowedStorePivotFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
+import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaultReturnFields = [
   "id",
@@ -11,6 +12,7 @@ export const defaultReturnFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultReturnFields,
-  disallowed: disallowedStorePivotFields,
+  allowed: buildAllowedFields(defaultReturnFields),
+  disallowed: disallowedStoreFields,
   isList: false,
 }

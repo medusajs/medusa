@@ -1,4 +1,5 @@
-import { disallowedStoreCustomerFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
+import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 const defaultStoreCustomersFields = [
   "id",
@@ -17,11 +18,8 @@ const defaultStoreCustomersFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCustomersFields,
-  allowed: [
-    ...defaultStoreCustomersFields.map((f) => f.replace("*", "")),
-    "orders",
-  ],
-  disallowed: disallowedStoreCustomerFields,
+  allowed: buildAllowedFields(defaultStoreCustomersFields, ["orders"]),
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 
@@ -48,6 +46,8 @@ export const defaultStoreCustomerAddressFields = [
 
 export const retrieveAddressTransformQueryConfig = {
   defaults: defaultStoreCustomerAddressFields,
+  allowed: buildAllowedFields(defaultStoreCustomerAddressFields),
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 

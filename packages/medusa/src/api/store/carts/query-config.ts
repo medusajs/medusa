@@ -1,4 +1,5 @@
-import { disallowedStorePivotFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
+import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 // TODO: Global todo, review all default fields to prevent over fetching by default
 export const defaultStoreCartFields = [
@@ -139,12 +140,26 @@ export const defaultStoreCartFields = [
   "*credit_lines",
 ]
 
+export const allowedStoreCartExtraFields = [
+  "items",
+  "region",
+  "promotions",
+  "customer",
+  "shipping_methods",
+  "shipping_address",
+  "billing_address",
+  "items.total",
+  "shipping_methods.name",
+  "payment_collection.payment_sessions.data",
+]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
+  allowed: buildAllowedFields(
+    defaultStoreCartFields,
+    allowedStoreCartExtraFields
+  ),
+  disallowed: disallowedStoreFields,
   storeRelationsLimit: 3,
-  // The cart legitimately exposes the caller's own customer/address/payment
-  // data during checkout, but must not be usable to pivot into other
-  // resources' order or cart data (e.g. region.orders, customer.orders).
-  disallowed: disallowedStorePivotFields,
   isList: false,
 }

@@ -1,4 +1,5 @@
-import { disallowedStorePivotFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
+import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 // TODO: This is copied over from admin. Scope what fields and relations are allowed for store
 
@@ -65,15 +66,48 @@ export const defaultStoreRetrieveOrderFields = [
   "*payment_collections",
 ]
 
+export const allowedStoreOrderExtraFields = [
+  "items.metadata",
+  "items.product",
+  "payment_collections.payments",
+  "payment_collections.payment_sessions",
+  "fulfillments",
+]
+
+export const allowedStoreOrderListExtraFields = [
+  ...allowedStoreOrderExtraFields,
+  "email",
+  "region_id",
+  "subtotal",
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "item_subtotal",
+  "items",
+  "items.variant",
+  "shipping_address",
+  "billing_address",
+  "shipping_methods",
+  "payment_collections",
+]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreRetrieveOrderFields,
-  disallowed: disallowedStorePivotFields,
+  allowed: buildAllowedFields(
+    defaultStoreRetrieveOrderFields,
+    allowedStoreOrderExtraFields
+  ),
+  disallowed: disallowedStoreFields,
   storeRelationsLimit: 3,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultStoreOrderFields,
-  disallowed: disallowedStorePivotFields,
+  allowed: buildAllowedFields(
+    defaultStoreOrderFields,
+    allowedStoreOrderListExtraFields
+  ),
+  disallowed: disallowedStoreFields,
   isList: true,
 }

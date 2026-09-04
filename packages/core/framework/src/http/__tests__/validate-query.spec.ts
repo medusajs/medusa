@@ -354,6 +354,7 @@ describe("validateAndTransformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
         "product",
+        "product.id",
         "product.variants",
       ],
       isList: true,

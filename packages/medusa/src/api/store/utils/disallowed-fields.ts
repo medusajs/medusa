@@ -25,64 +25,21 @@ const internalOperationsFields = [
 ]
 
 /**
- * Field path segments that must never be resolvable on public (unauthenticated)
- * Store API endpoints. Passed as the `disallowed` option of a route's
- * query-config, any requested field whose path contains one of these segments
- * is stripped before the query reaches the remote query engine.
+ * Field path segments that must never be resolvable on Store API endpoints.
+ * Passed as the `disallowed` option of every store route's query-config, any
+ * requested field whose path contains one of these segments is stripped before
+ * the query reaches the remote query engine.
  *
- * These segments are the module-link relations (and their sub-relations) that
- * traverse from public entities (region, product, ...) into order, customer,
- * cart, and payment data. Blocking the top-level segment is sufficient to cut
- * the entire subtree, e.g. blocking `orders` also blocks
- * `orders.customer.email`.
- *
- * without this, an anonymous caller holding only the
- * public publishable key could expand e.g.
- * `GET /store/regions?fields=orders.customer.email` and read every customer's
- * PII, purchase history, and payment metadata.
+ * This list is deliberately minimal: what a route exposes is defined by its
+ * `allowed` config, which mirrors the route's defaults exactly. What remains
+ * here is what no store route may resolve under any name — internal operations
+ * data, and the module-link entities that would otherwise resolve a blocked
+ * relation under a different segment (e.g. `order_link.order`).
  */
 export const disallowedStoreFields = [
-  "orders",
-  "carts",
-  "order_items",
-  "cart_items",
-  "customer",
-  "payment_collection",
-  "payment_collections",
-  "account_holder",
-  "account_holders",
-  "groups",
-  "customers",
-  // Link entities resolve the same data as the segments above, but under a different
-  // name (e.g. `order_link.order`), which would otherwise bypass this list entirely.
-  /_link$/,
-  "fulfillments",
-  "delivery_address",
-  ...internalOperationsFields,
-]
-
-/**
- * Narrower disallow list for public endpoints that legitimately expose the
- * caller's own `customer`/address/payment data on the primary entity (e.g. the
- * cart retrieved by id during checkout), but must still not be usable to pivot
- * into other resources' order or cart data (e.g. `region.orders`,
- * `customer.orders`).
- */
-export const disallowedStorePivotFields = [
-  "orders",
-  "carts",
-  "customers",
-  /_link$/,
-  ...internalOperationsFields,
-]
-
-export const disallowedStoreCustomerFields = [
-  /\.orders(?:\.|$)/,
-  "carts",
-  "groups",
-  "customers",
-  "order_items",
-  "cart_items",
+  // Link entities resolve data under a different name than the relation itself
+  // (e.g. `order_link.order`), which would otherwise bypass a route's `allowed`
+  // config through a path it never declares.
   /_link$/,
   ...internalOperationsFields,
 ]

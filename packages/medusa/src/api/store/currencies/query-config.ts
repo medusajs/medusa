@@ -1,3 +1,6 @@
+import { buildAllowedFields } from "../utils/allowed-fields"
+import { disallowedStoreFields } from "../utils/disallowed-fields"
+
 export const defaultStoreCurrencyFields = [
   "code",
   "name",
@@ -9,6 +12,8 @@ export const defaultStoreCurrencyFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCurrencyFields,
+  allowed: buildAllowedFields(defaultStoreCurrencyFields),
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 
