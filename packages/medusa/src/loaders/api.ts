@@ -54,7 +54,7 @@ export default async ({ app, container, plugins }: Options) => {
 
   const {
     projectConfig: {
-      http: { restrictedFields },
+      http: { restrictedFields, storeRelationsLimit },
     },
   } = container.resolve<ConfigModule>("configModule")
 
@@ -66,6 +66,7 @@ export default async ({ app, container, plugins }: Options) => {
       app: app,
       sourceDir: sourcePaths,
       baseRestrictedFields: restrictedFields?.store,
+      storeRelationsLimit,
       container,
     }).load()
   } catch (err) {

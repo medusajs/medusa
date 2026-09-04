@@ -117,6 +117,12 @@ So, once the customer selects a payment provider, create a payment session for t
 
 This will also initialize the payment session in the third-party payment provider.
 
+<Note>
+
+When creating a payment session through `createPaymentSessionsWorkflow`, Medusa validates that the chosen payment provider is enabled in the cart's region. If the provider is not enabled in the region, the workflow throws an error. This validation only applies to payment collections linked to an active (not yet completed) cart; payment collections on orders are not affected.
+
+</Note>
+
 For example:
 
 <CodeTabs group="workflow-service">

@@ -40,6 +40,17 @@ describe("MedusaModule search index registry", () => {
     expect(MedusaModule.getSearchIndexes().length).toBe(1)
   })
 
+  it("accepts the same definition object arriving through a file and the options", () => {
+    const productDefinition = definition("product")
+
+    // `defineSearchIndex` registers the definition it also returns, so the
+    // very same object can come back through the Search Module's options.
+    MedusaModule.setSearchIndex(productDefinition, "/search/product.ts")
+    MedusaModule.setSearchIndex(productDefinition)
+
+    expect(MedusaModule.getSearchIndexes().length).toBe(1)
+  })
+
   it("rejects two files claiming the same index name", () => {
     MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
 

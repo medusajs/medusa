@@ -1,5 +1,4 @@
-import { Note } from "docs-ui"
-import { getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Note, getOsShortcut, Kbd } from "docs-ui"
 
 export const metadata = {
   title: `Environments`,
@@ -34,35 +33,13 @@ To view a project's environments:
 
 <Note title="Tip">
 
-You can also navigate to a project's overview page from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Project Overview**, then choose a project.
+You can also navigate to an environment's overview page from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Project Overview**, then choose a project.
 
 </Note>
 
-
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project card in the organization's dashboard.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-    2. Click on the project name in the sidebar.
-    3. Click on **Overview** in the sidebar under the project.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization) whose settings you want to view.
+2. Click **Projects** in the sidebar and select the project you want to view.
 
 In the project's dashboard, you'll find a card for every long-lived environment in your project. Production environments are displayed first, followed by other environments. For example, you may have Production and Staging cards.
 
 You'll also find a table listing all the preview environments created for the project below the long-lived environment cards.
-
-![Project dashboard showing the environment cards](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787582/Cloud/CleanShot_2026-01-07_at_14.06.03_2x_bane7m.png)

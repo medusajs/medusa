@@ -8,6 +8,7 @@ import { Form } from "../../../../../../../components/common/form"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../../../lib/client"
+import { castNumber } from "../../../../../../../lib/cast-number"
 
 type InventoryItemRowProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -112,6 +113,7 @@ function InventoryItemRow({
                     type="number"
                     className="bg-ui-bg-field-component"
                     min={0}
+                    step="any"
                     value={value}
                     onChange={(e) => {
                       const value = e.target.value
@@ -119,7 +121,7 @@ function InventoryItemRow({
                       if (value === "") {
                         onChange(null)
                       } else {
-                        onChange(Number(value))
+                        onChange(castNumber(value))
                       }
                     }}
                     {...field}

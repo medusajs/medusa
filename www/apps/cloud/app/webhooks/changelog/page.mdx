@@ -11,20 +11,38 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 {/* Entries are added automatically when webhook changes are deployed.
     Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
 
-## August 6, 2026
+## August 10, 2026
+
+Medusa released webhooks for Cloud organizations with the following events:
+
+### build.canceled
+
+- Added the `build.canceled` event. Cloud delivers this event when a build is canceled.
 
 ### build.created
 
-- Added the `build.created` event, delivered when Medusa creates a build for an environment.
+- Added the `build.created` event. Cloud delivers this event when a build is created for an environment.
 
-### build.updated
+### build.failed
 
-- Added the `build.updated` event, delivered when a build changes, such as when it reaches a final status.
+- Added the `build.failed` event. Cloud delivers this event when a build fails.
+
+### build.succeeded
+
+- Added the `build.succeeded` event. Cloud delivers this event when a build completes successfully.
+
+### deployment.canceled
+
+- Added the `deployment.canceled` event. Cloud delivers this event when a deployment is canceled.
 
 ### deployment.created
 
-- Added the `deployment.created` event, delivered when Medusa creates a deployment for an environment.
+- Added the `deployment.created` event. Cloud delivers this event when a deployment is created for an environment.
 
-### deployment.updated
+### deployment.failed
 
-- Added the `deployment.updated` event, delivered when a deployment finishes.
+- Added the `deployment.failed` event. Cloud delivers this event when a deployment fails.
+
+### deployment.succeeded
+
+- Added the `deployment.succeeded` event. Cloud delivers this event when a deployment completes successfully.

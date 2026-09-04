@@ -29,7 +29,10 @@ import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants
 import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { refreshDraftOrderAdjustmentsWorkflow } from "../../draft-order/workflows/refresh-draft-order-adjustments"
 import { createOrdersStep } from "../steps"
-import { productVariantsFields } from "../utils/fields"
+import {
+  productVariantsCacheTags,
+  productVariantsFields,
+} from "../utils/fields"
 import { updateOrderTaxLinesWorkflow } from "./update-tax-lines"
 
 function prepareLineItems(data) {
@@ -286,7 +289,8 @@ export const createOrderWorkflow = createWorkflow(
       },
       options: {
         cache: {
-          enable: true,
+          tags: productVariantsCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "query-variants-without-calculated-price" })
