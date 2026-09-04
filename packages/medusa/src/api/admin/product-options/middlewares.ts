@@ -32,6 +32,12 @@ export const adminProductOptionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/product-options",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_option,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductOptionsParams,
         QueryConfig.listProductOptionsTransformQueryConfig
@@ -42,6 +48,12 @@ export const adminProductOptionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/product-options/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_option,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductOptionParams,
         QueryConfig.retrieveProductOptionsTransformQueryConfig
