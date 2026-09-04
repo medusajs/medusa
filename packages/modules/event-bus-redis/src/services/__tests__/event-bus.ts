@@ -19,7 +19,21 @@ const redisMock = {
   disconnect: () => jest.fn(),
   expire: () => jest.fn(),
   unlink: () => jest.fn(),
+  pipeline: () => jest.fn(),
 } as unknown as Redis
+
+// `groupEvents` pushes the staged events and sets the group's TTL through a single
+// pipeline. Route the pipeline's commands through the same `rpush`/`expire` spies used
+// elsewhere in this file so existing assertions on those spies keep verifying the
+// commands and arguments sent, regardless of whether they go out individually or
+// batched in a pipeline.
+const makePipelineMock = (redis: any) =>
+  jest.fn(() => ({
+    rpush: (...args: unknown[]) => redis.rpush(...args),
+    expire: (...args: unknown[]) => redis.expire(...args),
+    del: (...args: unknown[]) => redis.del(...args),
+    exec: jest.fn().mockResolvedValue([]),
+  }))
 
 const moduleDeps = {
   logger: loggerMock,
@@ -85,6 +99,8 @@ describe("RedisEventBusService", () => {
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
         redis.rpush = jest.fn()
+        redis.expire = jest.fn()
+        redis.pipeline = makePipelineMock(redis)
       })
 
       it("should add job to queue with default options", async () => {
@@ -251,6 +267,26 @@ describe("RedisEventBusService", () => {
         expect(stagedEvent.data.metadata.published_at).toBeUndefined()
       })
 
+      it("should set the staging list's TTL in the same pipeline as the first push to it", async () => {
+        const event = {
+          name: "eventName",
+          data: { hi: "1234" },
+          metadata: { eventGroupId: "test-group-ttl" },
+        }
+
+        await eventBus.emit(event, { groupedEventsTTL: 600 })
+
+        // A single pipeline is used, so the EXPIRE is queued alongside the RPUSH that
+        // creates the key instead of being sent separately beforehand - an EXPIRE
+        // against a not-yet-existing key would otherwise silently do nothing.
+        expect(redis.pipeline).toHaveBeenCalledTimes(1)
+        expect(redis.rpush).toHaveBeenCalledWith(
+          "staging:test-group-ttl",
+          expect.any(String)
+        )
+        expect(redis.expire).toHaveBeenCalledWith("staging:test-group-ttl", 600)
+      })
+
       it("should successfully group, release and clear events", async () => {
         const options = { delay: 1000 }
         const events = [
@@ -379,6 +415,23 @@ describe("RedisEventBusService", () => {
         expect(redis.unlink).toHaveBeenCalledTimes(1)
         expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-2")
       })
+
+      it("should not RPUSH with no members when clearing by event names leaves nothing to keep", async () => {
+        redis.del = jest.fn()
+        redis.lrange = jest
+          .fn()
+          .mockResolvedValue([JSON.stringify({ name: "eventName", data: {} })])
+
+        await eventBus.clearGroupedEvents("test-group-clear", {
+          eventNames: ["eventName"],
+        })
+
+        expect(redis.del).toHaveBeenCalledWith("staging:test-group-clear")
+        // Every staged event matched `eventNames`, so nothing is left to keep - an
+        // RPUSH with no members is a Redis error ("wrong number of arguments"), so it
+        // must be skipped rather than issued empty.
+        expect(redis.rpush).not.toHaveBeenCalled()
+      })
     })
 
     describe("Priority levels", () => {
@@ -391,6 +444,8 @@ describe("RedisEventBusService", () => {
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
         redis.rpush = jest.fn()
+        redis.expire = jest.fn()
+        redis.pipeline = makePipelineMock(redis)
       })
 
       it("should add job to queue with default priority (100) for normal events", async () => {
@@ -937,6 +992,8 @@ describe("RedisEventBusService", () => {
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
         redis.rpush = jest.fn()
+        redis.expire = jest.fn()
+        redis.pipeline = makePipelineMock(redis)
       })
 
       it("should not add events to queue when there are no subscribers", async () => {
