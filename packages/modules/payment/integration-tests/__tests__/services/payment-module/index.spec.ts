@@ -1338,6 +1338,206 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               "You cannot refund more than what is captured on the payment."
             )
           })
+
+          it("should reuse the same idempotency key when retrying a refund after a provider-side failure", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundPaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "refundPayment")
+              .mockRejectedValueOnce(new Error("simulated provider timeout"))
+              .mockResolvedValueOnce({ data: { refunded: true } })
+
+            // First attempt: the provider call fails (e.g. a network timeout).
+            // The provider may or may not have actually processed the refund.
+            await expect(
+              service.refundPayment({ amount: 100, payment_id: "pay-id-2" })
+            ).rejects.toThrow("simulated provider timeout")
+
+            // Retry, as a client would after seeing the first request fail.
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundPaymentMock).toHaveBeenCalledTimes(2)
+            const firstIdempotencyKey =
+              refundPaymentMock.mock.calls[0][1].context.idempotency_key
+            const secondIdempotencyKey =
+              refundPaymentMock.mock.calls[1][1].context.idempotency_key
+
+            // The retry must reuse the same idempotency key as the failed
+            // attempt, so a provider that already processed the first request
+            // recognizes the retry as the same operation instead of refunding
+            // the money a second time.
+            expect(firstIdempotencyKey).toBeDefined()
+            expect(secondIdempotencyKey).toEqual(firstIdempotencyKey)
+
+            // The retry must also leave the payment in the correct final
+            // state: exactly one refund of the requested amount, not two, and
+            // not an orphaned failed attempt alongside it.
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should preserve caller-provided metadata across a retried refund and not leak internal state", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            jest
+              .spyOn((service as any).paymentProviderService_, "refundPayment")
+              .mockRejectedValueOnce(new Error("simulated provider timeout"))
+              .mockResolvedValueOnce({ data: { refunded: true } })
+
+            await expect(
+              service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+                metadata: { reason: "customer-request" },
+              })
+            ).rejects.toThrow("simulated provider timeout")
+
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+              metadata: { reason: "customer-request" },
+            })
+
+            // Unlike captures, refunds carry caller-provided metadata, so the
+            // retry bookkeeping must neither drop the caller's metadata nor
+            // leak internal status markers into it.
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                    metadata: { reason: "customer-request" },
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should not count a failed refund attempt toward the refunded total or the payment collection", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            jest
+              .spyOn((service as any).paymentProviderService_, "refundPayment")
+              .mockRejectedValueOnce(new Error("simulated provider timeout"))
+
+            // A refund attempt fails at the provider and is abandoned (no
+            // retry of the same logical refund follows).
+            await expect(
+              service.refundPayment({ amount: 60, payment_id: "pay-id-2" })
+            ).rejects.toThrow("simulated provider timeout")
+
+            // The failed attempt moved no money, so refunding the full
+            // captured amount must still be possible...
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: expect.arrayContaining([
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ]),
+              })
+            )
+
+            // ...and the payment collection's refunded total must reflect only
+            // the money that actually moved, not the abandoned failed attempt.
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+            expect(collection.refunded_amount).toEqual(100)
+          })
+
+          it("should rotate the idempotency key when a reused key fails again, so a deterministic provider failure can converge", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            // Providers with idempotency-keyed APIs (e.g. Stripe) bind the
+            // response of the FIRST request -- including 4xx errors -- to the
+            // key and replay it on every reuse. A retry that reuses the key of
+            // a deterministically-failed attempt therefore replays the failure
+            // regardless of whether the underlying state was fixed. Model that
+            // contract: fail the first key, replay the failure on its reuse,
+            // succeed on any fresh key.
+            const failedKeys = new Set<string>()
+            const refundPaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "refundPayment")
+              .mockImplementation(async (_provider, input: any) => {
+                const key = input.context.idempotency_key
+                if (failedKeys.has(key)) {
+                  throw new Error("provider replayed stored failure")
+                }
+                if (failedKeys.size === 0) {
+                  failedKeys.add(key)
+                  throw new Error("deterministic provider rejection")
+                }
+                return { data: { refunded: true } }
+              })
+
+            // Attempt 1: deterministic rejection (e.g. a vendor-side 4xx).
+            await expect(
+              service.refundPayment({ amount: 100, payment_id: "pay-id-2" })
+            ).rejects.toThrow("deterministic provider rejection")
+
+            // Attempt 2: the retry reuses the same key (ambiguity-safe), and
+            // the provider replays the stored failure.
+            await expect(
+              service.refundPayment({ amount: 100, payment_id: "pay-id-2" })
+            ).rejects.toThrow("provider replayed stored failure")
+
+            // Attempt 3: the failed reuse rotated the key, so this retry mints
+            // a fresh one and can converge.
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundPaymentMock).toHaveBeenCalledTimes(3)
+            const keys = refundPaymentMock.mock.calls.map(
+              (call) => call[1].context.idempotency_key
+            )
+            expect(keys[1]).toEqual(keys[0])
+            expect(keys[2]).not.toEqual(keys[0])
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              })
+            )
+          })
         })
 
         describe("cancel", () => {
