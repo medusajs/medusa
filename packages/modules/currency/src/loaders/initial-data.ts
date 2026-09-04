@@ -28,7 +28,28 @@ export default async ({
       ...c,
       code: c.code.toLowerCase(),
     }))
-    const resp = await currencyService_.upsert(normalizedCurrencies)
+
+    // Only insert currencies that are not present yet. Using `upsert` here would
+    // overwrite every column on every boot, silently discarding user edits to
+    // fields such as `name`.
+    const existingCurrencies = await currencyService_.list(
+      { code: normalizedCurrencies.map((c) => c.code) },
+      { select: ["code"] }
+    )
+    const existingCodes = new Set(existingCurrencies.map((c) => c.code))
+
+    const missingCurrencies = normalizedCurrencies.filter(
+      (c) => !existingCodes.has(c.code)
+    )
+
+    if (!missingCurrencies.length) {
+      logger.debug(
+        `Currencies already seeded, skipping loader (${existingCodes.size} present)`
+      )
+      return
+    }
+
+    const resp = await currencyService_.create(missingCurrencies)
     logger.debug(`Loaded ${resp.length} currencies`)
   } catch (error) {
     logger.warn(
