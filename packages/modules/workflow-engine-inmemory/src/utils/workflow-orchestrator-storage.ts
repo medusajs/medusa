@@ -353,11 +353,16 @@ export class InMemoryDistributedTransactionStorage
     ttl?: number,
     options?: TransactionOptions
   ): Promise<TransactionCheckpoint> {
-    if (this.isLocked.has(key)) {
-      throw new Error("Transaction storage is locked")
-    }
+    let lockAcquired = false
 
-    this.isLocked.set(key, true)
+    if (data.flow._v) {
+      if (this.isLocked.has(key)) {
+        throw new Error("Transaction storage is locked")
+      }
+
+      this.isLocked.set(key, true)
+      lockAcquired = true
+    }
 
     try {
       /**
@@ -430,7 +435,9 @@ export class InMemoryDistributedTransactionStorage
 
       return data
     } finally {
-      this.isLocked.delete(key)
+      if (lockAcquired) {
+        this.isLocked.delete(key)
+      }
     }
   }
 
