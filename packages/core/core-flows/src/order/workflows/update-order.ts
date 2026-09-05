@@ -26,8 +26,10 @@ import {
   updateOrderItemsTranslationsStep,
   updateOrderShippingMethodsTranslationsStep,
   updateOrdersStep,
-} from "../steps"
-import { throwIfOrderIsCancelled } from "../utils/order-validation"
+import {
+  throwIfCountryCodeChanged,
+  throwIfOrderIsCancelled,
+} from "../utils/order-validation"
 import { findOrCreateCustomerStep } from "../../cart"
 import { updateOrderTaxLinesTranslationsStep } from "../steps/update-order-tax-lines-translations"
 
@@ -73,27 +75,15 @@ export const updateOrderValidationStep = createStep(
   async function ({ order, input }: UpdateOrderValidationStepInput) {
     throwIfOrderIsCancelled({ order })
 
-    if (
-      input.shipping_address?.country_code &&
-      order.shipping_address?.country_code !==
-        input.shipping_address?.country_code
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Country code cannot be changed"
-      )
-    }
+    throwIfCountryCodeChanged({
+      existingAddress: order.shipping_address,
+      inputAddress: input.shipping_address,
+    })
 
-    if (
-      input.billing_address?.country_code &&
-      order.billing_address?.country_code !==
-        input.billing_address?.country_code
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Country code cannot be changed"
-      )
-    }
+    throwIfCountryCodeChanged({
+      existingAddress: order.billing_address,
+      inputAddress: input.billing_address,
+    })
 
     if (input.email) {
       validateEmail(input.email)
