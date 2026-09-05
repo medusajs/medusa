@@ -182,3 +182,22 @@ export function throwIfItemsDoesNotExistsInReturn({
     )
   }
 }
+
+export function throwIfCountryCodeChanged({
+  existingAddress,
+  inputAddress,
+}: {
+  existingAddress?: { country_code?: string | null } | null
+  inputAddress?: { country_code?: string | null } | null
+}) {
+  if (
+    inputAddress?.country_code &&
+    existingAddress?.country_code &&
+    existingAddress.country_code !== inputAddress.country_code
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Country code cannot be changed"
+    )
+  }
+}

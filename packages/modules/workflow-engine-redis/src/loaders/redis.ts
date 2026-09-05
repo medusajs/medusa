@@ -10,6 +10,7 @@ export default async (
   { container, logger, options, dataLoaderOnly }: LoaderOptions,
   moduleDeclaration: InternalModuleDeclaration
 ): Promise<void> => {
+  const redisModuleOptions = ((options?.redis ?? options) || {}) as RedisWorkflowsOptions
   const {
     url,
     redisUrl,
@@ -28,7 +29,7 @@ export default async (
     cleanerQueueOptions,
     cleanerWorkerOptions,
     pubsub,
-  } = options?.redis as RedisWorkflowsOptions
+  } = redisModuleOptions
 
   // Handle backward compatibility for deprecated options
   const resolvedUrl = redisUrl ?? url
