@@ -1,16 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { KeyboundForm } from "../../../../components/common/keybound-form"
 import { RouteDrawer } from "../../../../components/modals"
 
 const CustomItems = () => {
+  const { t } = useTranslation()
+
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
         <RouteDrawer.Title asChild>
-          <Heading>Edit Custom Items</Heading>
+          <Heading>{t("draftOrders.customItems.editHeader")}</Heading>
         </RouteDrawer.Title>
       </RouteDrawer.Header>
       <CustomItemsForm />
@@ -19,6 +22,7 @@ const CustomItems = () => {
 }
 
 const CustomItemsForm = () => {
+  const { t } = useTranslation()
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   })
@@ -31,11 +35,11 @@ const CustomItemsForm = () => {
           <div className="flex justify-end gap-2">
             <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                Cancel
+                {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
             <Button size="small" type="submit">
-              Save
+              {t("actions.save")}
             </Button>
           </div>
         </RouteDrawer.Footer>

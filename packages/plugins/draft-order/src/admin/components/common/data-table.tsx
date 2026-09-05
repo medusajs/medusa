@@ -16,6 +16,7 @@ import {
   useDataTable,
 } from "@medusajs/ui"
 import React, { ReactNode, useCallback, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
 import { useQueryParams } from "../../hooks/common/use-query-params"
@@ -103,6 +104,10 @@ export const DataTable = <TData,>({
   isLoading = false,
   layout = "auto",
 }: DataTableProps<TData>) => {
+  const { t } = useTranslation()
+  const { pagination: paginationTranslations, toolbar: toolbarTranslations } =
+    useDataTableTranslations()
+
   const enableFiltering = filters && filters.length > 0
   const enableCommands = commands && commands.length > 0
   const enableSorting = columns.some((column) => column.enableSorting)
@@ -269,7 +274,10 @@ export const DataTable = <TData,>({
         "h-full [&_tr]:last-of-type:!border-b": layout === "fill",
       })}
     >
-      <Primitive.Toolbar className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
+      <Primitive.Toolbar
+        className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center"
+        translations={toolbarTranslations}
+      >
         <div className="flex w-full items-center justify-between gap-2">
           {shouldRenderHeading && (
             <div>
@@ -282,8 +290,10 @@ export const DataTable = <TData,>({
             </div>
           )}
           <div className="flex items-center justify-end gap-x-2 md:hidden">
-            {enableFiltering && <Primitive.FilterMenu tooltip="Filter" />}
-            <Primitive.SortingMenu tooltip="Sort" />
+            {enableFiltering && (
+              <Primitive.FilterMenu tooltip={toolbarTranslations.filter} />
+            )}
+            <Primitive.SortingMenu tooltip={toolbarTranslations.sort} />
             {actionMenu && <ActionMenu variant="primary" {...actionMenu} />}
             {action && <DataTableAction {...action} />}
           </div>
@@ -293,23 +303,29 @@ export const DataTable = <TData,>({
             <div className="w-full md:w-auto">
               <Primitive.Search
                 data-modal-id="modal-search-input"
-                placeholder="Search"
+                placeholder={t("filters.searchLabel")}
                 autoFocus={autoFocusSearch}
               />
             </div>
           )}
           <div className="hidden items-center gap-x-2 md:flex">
-            {enableFiltering && <Primitive.FilterMenu tooltip="Filter" />}
-            <Primitive.SortingMenu tooltip="Sort" />
+            {enableFiltering && (
+              <Primitive.FilterMenu tooltip={toolbarTranslations.filter} />
+            )}
+            <Primitive.SortingMenu tooltip={toolbarTranslations.sort} />
             {actionMenu && <ActionMenu variant="primary" {...actionMenu} />}
             {action && <DataTableAction {...action} />}
           </div>
         </div>
       </Primitive.Toolbar>
       <Primitive.Table emptyState={emptyState} />
-      {enablePagination && <Primitive.Pagination />}
+      {enablePagination && (
+        <Primitive.Pagination translations={paginationTranslations} />
+      )}
       {enableCommands && (
-        <Primitive.CommandBar selectedLabel={(count) => `${count} selected`} />
+        <Primitive.CommandBar
+          selectedLabel={(count) => t("general.countSelected", { count })}
+        />
       )}
     </Primitive>
   )
@@ -361,6 +377,29 @@ function parseFilterState(
 
 function getQueryParamKey(key: string, prefix?: string) {
   return prefix ? `${prefix}_${key}` : key
+}
+
+const useDataTableTranslations = () => {
+  const { t } = useTranslation()
+
+  const paginationTranslations = {
+    of: t("general.of"),
+    results: t("general.results"),
+    pages: t("general.pages"),
+    prev: t("general.prev"),
+    next: t("general.next"),
+  }
+
+  const toolbarTranslations = {
+    clearAll: t("actions.clearAll"),
+    sort: t("filters.sortLabel"),
+    filter: t("filters.filterLabel"),
+  }
+
+  return {
+    pagination: paginationTranslations,
+    toolbar: toolbarTranslations,
+  }
 }
 
 const DataTableAction = ({

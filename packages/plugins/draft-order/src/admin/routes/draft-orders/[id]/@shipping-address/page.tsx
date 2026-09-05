@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Heading, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
 import { Form } from "../../../../components/common/form"
@@ -13,6 +14,7 @@ import { useOrder } from "../../../../hooks/api/orders"
 import { addressSchema } from "../../../../lib/schemas/address"
 
 const ShippingAddress = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
 
   const { order, isPending, isError, error } = useOrder(id!, {
@@ -29,11 +31,11 @@ const ShippingAddress = () => {
     <RouteDrawer>
       <RouteDrawer.Header>
         <RouteDrawer.Title asChild>
-          <Heading>Edit Shipping Address</Heading>
+          <Heading>{t("addresses.shippingAddress.editHeader")}</Heading>
         </RouteDrawer.Title>
         <RouteDrawer.Description asChild>
           <span className="sr-only">
-            Edit the shipping address for the draft order
+            {t("draftOrders.shippingAddress.editHint")}
           </span>
         </RouteDrawer.Description>
       </RouteDrawer.Header>
@@ -47,6 +49,7 @@ interface ShippingAddressFormProps {
 }
 
 const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
+  const { t } = useTranslation()
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: {
       first_name: order.shipping_address?.first_name ?? "",
@@ -106,7 +109,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="country_code"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label>Country</Form.Label>
+                  <Form.Label>{t("fields.country")}</Form.Label>
                   <Form.Control>
                     <CountrySelect {...field} />
                   </Form.Control>
@@ -120,7 +123,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
                 name="first_name"
                 render={({ field }) => (
                   <Form.Item>
-                    <Form.Label>First name</Form.Label>
+                    <Form.Label>{t("fields.firstName")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -133,7 +136,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
                 name="last_name"
                 render={({ field }) => (
                   <Form.Item>
-                    <Form.Label>Last name</Form.Label>
+                    <Form.Label>{t("fields.lastName")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -147,7 +150,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="company"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label optional>Company</Form.Label>
+                  <Form.Label optional>{t("fields.company")}</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -160,7 +163,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="address_1"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label>Address</Form.Label>
+                  <Form.Label>{t("fields.address")}</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -173,7 +176,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="address_2"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label optional>Apartment, suite, etc.</Form.Label>
+                  <Form.Label optional>{t("fields.address2")}</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -187,7 +190,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
                 name="postal_code"
                 render={({ field }) => (
                   <Form.Item>
-                    <Form.Label>Postal code</Form.Label>
+                    <Form.Label>{t("fields.postalCode")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -200,7 +203,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
                 name="city"
                 render={({ field }) => (
                   <Form.Item>
-                    <Form.Label>City</Form.Label>
+                    <Form.Label>{t("fields.city")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -214,7 +217,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="province"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label optional>Province / State</Form.Label>
+                  <Form.Label optional>{t("fields.province")}</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -227,7 +230,7 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
               name="phone"
               render={({ field }) => (
                 <Form.Item>
-                  <Form.Label optional>Phone</Form.Label>
+                  <Form.Label optional>{t("fields.phone")}</Form.Label>
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
@@ -241,11 +244,11 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
           <div className="flex justify-end gap-2">
             <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                Cancel
+                {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isPending}>
-              Save
+              {t("actions.save")}
             </Button>
           </div>
         </RouteDrawer.Footer>
