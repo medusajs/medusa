@@ -182,7 +182,8 @@ export interface SearchOptions {
   match_strategy?: SearchMatchStrategy
 
   /**
-   * Whether to match terms that are misspelled by a character or two.
+   * Whether to match terms that are misspelled by a character or two. Applied
+   * only when the query includes a free-text `q`; otherwise it is ignored.
    */
   typo_tolerance?: boolean
 
@@ -201,9 +202,13 @@ export interface SearchOptions {
   disjunctive_facets?: boolean
 
   /**
-   * How the matched terms are highlighted in the returned hits.
+   * How the matched terms are highlighted in the returned hits. Applied only
+   * when the query includes a free-text `q`; otherwise it is ignored.
+   *
+   * `true` highlights every field the query searches on. Pass an object to pick
+   * fields, tags, or snippet cropping.
    */
-  highlight?: SearchHighlightOptions
+  highlight?: boolean | SearchHighlightOptions
 
   /**
    * Return at most one hit per distinct value of this field.

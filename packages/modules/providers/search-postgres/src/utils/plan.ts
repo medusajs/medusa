@@ -157,7 +157,7 @@ export function assertQuerySupported(
 ): void {
   const options = query.search_options ?? {}
 
-  if (options.highlight) {
+  if (options.highlight && query.q?.trim()) {
     fail("The postgres search provider does not support highlighting")
   }
 
