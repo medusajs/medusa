@@ -42,7 +42,7 @@ export function createRefundReasonTableAdapter({
         )
       return { data: refund_reasons, count, isLoading, isError, error }
     },
-    getRowHref: (row) => `/settings/refund-reasons/${row.id}`,
+    getRowHref: (row) => `/settings/refund-reasons/${row.id}/edit`,
     renderRowActions: (row) => (
       <RefundReasonListTableActions refundReason={row} />
     ),
