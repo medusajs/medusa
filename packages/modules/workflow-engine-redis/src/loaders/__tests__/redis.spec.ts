@@ -300,10 +300,75 @@ describe("Redis Loader", () => {
       expect(registerCall.redisQueueName.resolve()).toEqual("custom-workflows")
       expect(registerCall.redisJobQueueName.resolve()).toEqual("custom-jobs")
     })
+
+    it("should accept top-level queue names", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+            queueName: "top-level-workflows",
+            jobQueueName: "top-level-jobs",
+          },
+        } as any,
+        {} as any
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+
+      expect(registerCall.redisQueueName.resolve()).toEqual(
+        "top-level-workflows"
+      )
+      expect(registerCall.redisJobQueueName.resolve()).toEqual("top-level-jobs")
+    })
+  })
+
+  describe("Top-level options configuration", () => {
+    it("should accept top-level redisUrl and shared queue/worker options", async () => {
+      const sharedQueueOptions = {
+        defaultJobOptions: { removeOnComplete: 1000 },
+      }
+      const sharedWorkerOptions = { concurrency: 10 }
+
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+            queueOptions: sharedQueueOptions,
+            workerOptions: sharedWorkerOptions,
+          },
+        } as any,
+        {} as any
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+
+      expect(registerCall.redisMainQueueOptions.resolve()).toEqual(
+        sharedQueueOptions
+      )
+      expect(registerCall.redisJobQueueOptions.resolve()).toEqual(
+        sharedQueueOptions
+      )
+      expect(registerCall.redisCleanerQueueOptions.resolve()).toEqual(
+        sharedQueueOptions
+      )
+      expect(registerCall.redisMainWorkerOptions.resolve()).toEqual(
+        sharedWorkerOptions
+      )
+      expect(registerCall.redisJobWorkerOptions.resolve()).toEqual(
+        sharedWorkerOptions
+      )
+      expect(registerCall.redisCleanerWorkerOptions.resolve()).toEqual(
+        sharedWorkerOptions
+      )
+    })
   })
 
   describe("Error handling", () => {
-    it("should throw error when redisUrl is not provided", async () => {
+    it("should throw error when redisUrl is not provided in nested options", async () => {
       await expect(
         redisLoader(
           {
@@ -316,7 +381,22 @@ describe("Redis Loader", () => {
           {} as any
         )
       ).rejects.toThrow(
-        "No `redis.redisUrl` (or deprecated `redis.url`) provided"
+        "No `redisUrl` (or deprecated `redis.redisUrl` / `url`) provided"
+      )
+    })
+
+    it("should throw error when redisUrl is not provided in top-level options", async () => {
+      await expect(
+        redisLoader(
+          {
+            container: containerMock as any,
+            logger: loggerMock,
+            options: {},
+          } as any,
+          {} as any
+        )
+      ).rejects.toThrow(
+        "No `redisUrl` (or deprecated `redis.redisUrl` / `url`) provided"
       )
     })
   })

@@ -10,6 +10,7 @@ export default async (
   { container, logger, options, dataLoaderOnly }: LoaderOptions,
   moduleDeclaration: InternalModuleDeclaration
 ): Promise<void> => {
+  const redisConfig = (options?.redis ?? options ?? {}) as RedisWorkflowsOptions
   const {
     url,
     redisUrl,
@@ -28,7 +29,7 @@ export default async (
     cleanerQueueOptions,
     cleanerWorkerOptions,
     pubsub,
-  } = options?.redis as RedisWorkflowsOptions
+  } = redisConfig
 
   // Handle backward compatibility for deprecated options
   const resolvedUrl = redisUrl ?? url
@@ -49,7 +50,7 @@ export default async (
   // TODO: get default from ENV VAR
   if (!resolvedUrl) {
     throw Error(
-      "No `redis.redisUrl` (or deprecated `redis.url`) provided in `workflowOrchestrator` module options. It is required for the Workflow Orchestrator Redis."
+      "No `redisUrl` (or deprecated `redis.redisUrl` / `url`) provided in `workflowOrchestrator` module options. It is required for the Workflow Orchestrator Redis."
     )
   }
 

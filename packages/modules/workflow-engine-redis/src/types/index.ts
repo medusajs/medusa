@@ -169,6 +169,11 @@ export type RedisWorkflowsOptions = {
   cleanerWorkerOptions?: Omit<WorkerOptions, "connection">
 
   /**
+   * Nested redis options for backward compatibility
+   */
+  redis?: RedisWorkflowsOptions
+
+  /**
    * Optional separate connection string and options for pub/sub.
    * If not provided, uses the main Redis connection.
    */
