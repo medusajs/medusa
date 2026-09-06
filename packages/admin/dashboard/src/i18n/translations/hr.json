@@ -95,7 +95,8 @@
       "actions": {
         "insertRowAbove": "Umetni red iznad",
         "insertRowBelow": "Umetni red ispod",
-        "deleteRow": "Obriši red"
+        "deleteRow": "Obriši red",
+        "addRow": "Dodaj red"
       },
       "labels": {
         "key": "Ključ",
@@ -3437,7 +3438,7 @@
     "country": "Zemlja",
     "state": "Država",
     "province": "Pokrajina",
-    "company": "Firma",
+    "company": "Tvrtka",
     "phone": "Telefon",
     "metadata": "Metadata",
     "selectCountry": "Odaberite zemlju",
@@ -3775,7 +3776,7 @@
     "reindex": "Ponovno indeksiraj",
     "reindexConfirmationTitle": "Ponovno indeksirati {{name}}?",
     "reindexConfirmation": "Ovo ponovno izgrađuje indeks \"{{name}}\" iz njegovih izvornih podataka. Rezultati pretraživanja za ovaj indeks mogu biti nepotpuni dok ponovna izgradnja ne završi.",
-    "reindexSuccess": "{{name}} je ponovno indeksiran",
+    "reindexSuccess": "Pokrenuto je ponovno indeksiranje {{name}}",
     "noFields": "Nijedno polje nije indeksirano.",
     "list": {
       "noRecordsMessage": "Nema registriranih indeksa pretraživanja."
