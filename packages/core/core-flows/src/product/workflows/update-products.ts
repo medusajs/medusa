@@ -483,13 +483,14 @@ export const updateProductsWorkflow = createWorkflow(
       }
     )
 
-    dismissProductVariantsInventoryStep({
-      variantIds: variantsToDismissInventory,
-    })
-
-    createProductVariantsDefaultInventoryStep({
-      variantIds: variantsToCreateInventory,
-    })
+    parallelize(
+      dismissProductVariantsInventoryStep({
+        variantIds: variantsToDismissInventory,
+      }),
+      createProductVariantsDefaultInventoryStep({
+        variantIds: variantsToCreateInventory,
+      })
+    )
 
     const salesChannelLinks = transform(
       { input, updatedProducts },

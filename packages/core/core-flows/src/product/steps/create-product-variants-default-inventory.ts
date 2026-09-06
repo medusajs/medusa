@@ -1,6 +1,11 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { Link, Query } from "@medusajs/framework/modules-sdk"
+import {
+  arrayDifference,
+  ContainerRegistrationKeys,
+  deduplicate,
+  Modules,
+} from "@medusajs/framework/utils"
+import type { RemoteQueryFunction } from "@medusajs/framework/types"
 import {
   IInventoryService,
   IProductModuleService,
@@ -21,7 +26,7 @@ export type CreateProductVariantsDefaultInventoryStepInput = {
  */
 async function getVariantIdsWithoutInventory(
   variantIds: string[],
-  query: Query
+  query: Omit<RemoteQueryFunction, symbol>
 ): Promise<string[]> {
   const { data: variantInventoryItems } = await query.graph({
     entity: "product_variant_inventory_item",
@@ -31,11 +36,10 @@ async function getVariantIdsWithoutInventory(
     },
   })
 
-  const linkedVariantIds = new Set(
+  return arrayDifference(
+    variantIds,
     variantInventoryItems.map((item) => item.variant_id)
   )
-
-  return variantIds.filter((variantId) => !linkedVariantIds.has(variantId))
 }
 
 export const createProductVariantsDefaultInventoryStep = createStep(
@@ -44,16 +48,14 @@ export const createProductVariantsDefaultInventoryStep = createStep(
     data: CreateProductVariantsDefaultInventoryStepInput,
     { container }
   ) => {
-    const variantIds = Array.from(new Set(data.variantIds ?? [])).filter(
-      Boolean
-    )
+    const variantIds = deduplicate(data.variantIds ?? []).filter(Boolean)
 
     if (!variantIds.length) {
       return new StepResponse(void 0)
     }
 
-    const query = container.resolve(ContainerRegistrationKeys.QUERY) as Query
-    const link = container.resolve(ContainerRegistrationKeys.LINK) as Link
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
+    const link = container.resolve(ContainerRegistrationKeys.LINK)
 
     const variantIdsWithoutInventory = await getVariantIdsWithoutInventory(
       variantIds,

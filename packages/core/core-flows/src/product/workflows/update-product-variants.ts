@@ -9,6 +9,7 @@ import {
   WorkflowResponse,
   createHook,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
@@ -187,13 +188,14 @@ export const updateProductVariantsWorkflow = createWorkflow(
       }
     )
 
-    dismissProductVariantsInventoryStep({
-      variantIds: variantsToDismissInventory,
-    })
-
-    createProductVariantsDefaultInventoryStep({
-      variantIds: variantsToCreateInventory,
-    })
+    parallelize(
+      dismissProductVariantsInventoryStep({
+        variantIds: variantsToDismissInventory,
+      }),
+      createProductVariantsDefaultInventoryStep({
+        variantIds: variantsToCreateInventory,
+      })
+    )
 
     // We don't want to do any pricing updates if the prices didn't change
     const variantIds = transform({ input, updatedVariants }, (data) => {
