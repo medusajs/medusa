@@ -1,9 +1,4 @@
-import {
-  InferSearchObjectValue,
-  SearchArrayMarker,
-  SearchPropertyMetadata,
-  SearchSchema,
-} from "@medusajs/types"
+import { InferSearchObjectValue, SearchPropertyMetadata, SearchSchema } from "@medusajs/types"
 import { ScalarSearchProperty } from "./base"
 
 export class ObjectProperty<
@@ -13,22 +8,11 @@ export class ObjectProperty<
     name: "object",
   }
 
-  #correlated?: boolean
   #fields: Schema
 
   constructor(fields: Schema) {
     super()
     this.#fields = fields
-  }
-
-  // Correlated filtering only means anything on an array of objects, so the
-  // receiver must have gone through `.array()` first.
-  correlated(
-    this: ObjectProperty<Schema> & SearchArrayMarker,
-    value: boolean = true
-  ) {
-    this.#correlated = value
-    return this
   }
 
   parse(fieldName: string): SearchPropertyMetadata<InferSearchObjectValue<Schema>> {
@@ -37,10 +21,6 @@ export class ObjectProperty<
 
     for (const [name, property] of Object.entries(this.#fields)) {
       fields[name] = property.parse(name)
-    }
-
-    if (this.#correlated !== undefined) {
-      metadata.correlated = this.#correlated
     }
 
     metadata.fields = fields

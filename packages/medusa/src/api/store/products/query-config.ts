@@ -34,6 +34,7 @@ export const defaultStoreProductFields = [
 export const retrieveProductQueryConfig = {
   defaults: defaultStoreProductFields,
   disallowed: disallowedStoreFields,
+  storeRelationsLimit: 4,
   isList: false,
 }
 

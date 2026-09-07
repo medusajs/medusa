@@ -13,7 +13,6 @@ import {
   MedusaSearchProviderOptions,
   parseFacetResults,
   parseHighlights,
-  sameSchemaType,
   toSearchDocument,
   toSearchFilter,
   validateMedusaSearchOptions,
@@ -79,29 +78,20 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
     // Migration is the only place that reconciles schema / existence. Runtime
     // writes and clears assume the index is already there.
-    let metadata
+    //
+    // Every version gets its own namespace (see `versionPhysicalName` in the
+    // Search Module), so this only ever finds a namespace that doesn't exist
+    // yet, or — on a migration re-run after a crash — one that was already
+    // created with this same, unchanging schema. Medusa can't apply a
+    // schema change in place anyway, which is exactly why a new namespace is
+    // used instead of trying to.
     try {
-      metadata = await remote.metadata()
+      await remote.metadata()
     } catch (error) {
       if (!(error instanceof CloudServiceError && error.isNotFound)) {
         throw error
       }
 
-      await this.client_.createIndex({
-        name: index.physical_name,
-        schema: plan.schema,
-        distance_metric: plan.options.distance_metric,
-        sharding: plan.options.sharding,
-      })
-      return this.task(index.physical_name)
-    }
-
-    if (!sameSchemaType(metadata.schema, plan.schema)) {
-      // The Search Module only calls this for an index that is about to be
-      // seeded. Type changes, removals, and new vector columns cannot be
-      // applied in place — the engine rejects adding a vector attribute to
-      // an existing namespace.
-      await remote.deleteAll()
       await this.client_.createIndex({
         name: index.physical_name,
         schema: plan.schema,

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.19.0
+  version: 2.20.1
   title: Medusa Admin API
   license:
     name: MIT
@@ -1289,6 +1289,10 @@ paths:
     $ref: paths/admin_users_me.yaml
   /admin/users/{id}:
     $ref: paths/admin_users_{id}.yaml
+  /admin/users/{id}/auth-providers:
+    $ref: paths/admin_users_{id}_auth-providers.yaml
+  /admin/users/{id}/reset-password:
+    $ref: paths/admin_users_{id}_reset-password.yaml
   /admin/views/entities:
     $ref: paths/admin_views_entities.yaml
   /admin/views/{entity}/columns:
