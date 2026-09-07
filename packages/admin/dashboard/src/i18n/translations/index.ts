@@ -22,6 +22,7 @@ import mn from "./mn.json"
 import ar from "./ar.json"
 import zhCN from "./zhCN.json"
 import fa from "./fa.json"
+import fi from "./fi.json"
 import cs from "./cs.json"
 import ru from "./ru.json"
 import lt from "./lt.json"
@@ -107,6 +108,9 @@ export default {
   },
   fa: {
     translation: fa,
+  },
+  fi: {
+    translation: fi,
   },
   cs: {
     translation: cs,

@@ -1,0 +1,3802 @@
+{
+  "$schema": "./$schema.json",
+  "general": {
+    "fullList": "Kaikki",
+    "ascending": "Nouseva",
+    "descending": "Laskeva",
+    "add": "Lisää",
+    "start": "Alku",
+    "end": "Loppu",
+    "open": "Avaa",
+    "close": "Sulje",
+    "apply": "Käytä",
+    "range": "Väli",
+    "search": "Haku",
+    "original": "Alkuperäinen",
+    "of": "/",
+    "results": "tulosta",
+    "pages": "sivua",
+    "next": "Seuraava",
+    "prev": "Edellinen",
+    "is": "on",
+    "timeline": "Aikajana",
+    "success": "Onnistui",
+    "warning": "Varoitus",
+    "tip": "Vihje",
+    "error": "Virhe",
+    "select": "Valitse",
+    "selectAll": "Valitse kaikki",
+    "unselectAll": "Poista kaikki valinnat",
+    "selected": "Valittu",
+    "enabled": "Käytössä",
+    "disabled": "Pois käytöstä",
+    "expired": "Vanhentunut",
+    "active": "Aktiivinen",
+    "revoked": "Peruutettu",
+    "new": "Uusi",
+    "modified": "Muokattu",
+    "added": "Lisätty",
+    "removed": "Poistettu",
+    "remaining": "Jäljellä",
+    "admin": "Ylläpito",
+    "store": "Kauppa",
+    "rank": "Sijoitus",
+    "details": "Tiedot",
+    "items_one": "{{count}} tuote",
+    "items_other": "{{count}} tuotetta",
+    "values_one": "{{count}} arvo",
+    "values_other": "{{count}} arvoa",
+    "countSelected": "{{count}} valittu",
+    "countOfTotalSelected": "{{count}}/{{total}} valittu",
+    "plusCount": "+ {{count}}",
+    "plusCountMore": "+ {{count}} lisää",
+    "areYouSure": "Oletko varma?",
+    "areYouSureDescription": "Olet poistamassa kohteen {{entity}} {{title}}. Tätä toimintoa ei voi peruuttaa.",
+    "noRecordsFound": "Tietueita ei löytynyt",
+    "typeToConfirm": "Vahvista kirjoittamalla {val}:",
+    "noResultsTitle": "Ei tuloksia",
+    "noResultsMessage": "Kokeile muuttaa suodattimia tai hakusanaa",
+    "noSearchResults": "Ei hakutuloksia",
+    "noSearchResultsFor": "Ei hakutuloksia haulle <0>'{{query}}'</0>",
+    "noRecordsTitle": "Ei tietueita",
+    "noRecordsMessage": "Näytettäviä tietueita ei ole",
+    "noRecordsMessageFiltered": "Suodattimia vastaavia tietueita ei ole",
+    "unsavedChangesTitle": "Haluatko varmasti poistua tästä lomakkeesta?",
+    "unsavedChangesDescription": "Sinulla on tallentamattomia muutoksia, jotka häviävät, jos poistut lomakkeesta.",
+    "includesTaxTooltip": "Tämän sarakkeen hinnat sisältävät veron.",
+    "excludesTaxTooltip": "Tämän sarakkeen hinnat eivät sisällä veroa.",
+    "noMoreData": "Ei enempää dataa",
+    "quantityPrice": "Määrän hinta",
+    "exclusive": "Tuotekohtainen",
+    "global": "Yleinen"
+  },
+  "json": {
+    "header": "JSON",
+    "numberOfKeys_one": "{{count}} avain",
+    "numberOfKeys_other": "{{count}} avainta",
+    "drawer": {
+      "header_one": "JSON <0>· {{count}} avain</0>",
+      "header_other": "JSON <0>· {{count}} avainta</0>",
+      "description": "Näytä tämän objektin JSON-data."
+    }
+  },
+  "metadata": {
+    "header": "Metatiedot",
+    "numberOfKeys_one": "{{count}} avain",
+    "numberOfKeys_other": "{{count}} avainta",
+    "edit": {
+      "header": "Muokkaa metatietoja",
+      "description": "Muokkaa tämän objektin metatietoja.",
+      "successToast": "Metatiedot päivitettiin onnistuneesti.",
+      "actions": {
+        "insertRowAbove": "Lisää rivi yläpuolelle",
+        "insertRowBelow": "Lisää rivi alapuolelle",
+        "deleteRow": "Poista rivi",
+        "addRow": "Lisää rivi"
+      },
+      "labels": {
+        "key": "Avain",
+        "value": "Arvo"
+      },
+      "complexRow": {
+        "label": "Osa riveistä on pois käytöstä",
+        "description": "Tämä objekti sisältää ei-primitiivistä metadataa, kuten taulukoita tai objekteja, joita ei voi muokata täällä. Muokkaa pois käytöstä olevia rivejä suoraan API:n kautta.",
+        "tooltip": "Tämä rivi on pois käytöstä, koska se sisältää ei-primitiivistä dataa."
+      }
+    }
+  },
+  "validation": {
+    "mustBeInt": "Arvon on oltava kokonaisluku.",
+    "mustBePositive": "Arvon on oltava positiivinen luku."
+  },
+  "actions": {
+    "save": "Tallenna",
+    "saveChanges": "Tallenna muutokset",
+    "saveAsDraft": "Tallenna luonnoksena",
+    "saveAndClose": "Tallenna ja sulje",
+    "copy": "Kopioi",
+    "copied": "Kopioitu",
+    "duplicate": "Monista",
+    "publish": "Julkaise",
+    "create": "Luo",
+    "delete": "Poista",
+    "remove": "Poista",
+    "revoke": "Peruuta",
+    "cancel": "Peruuta",
+    "forceConfirm": "Pakota vahvistus",
+    "continueEdit": "Jatka muokkausta",
+    "enable": "Ota käyttöön",
+    "disable": "Poista käytöstä",
+    "undo": "Kumoa",
+    "complete": "Valmis",
+    "viewDetails": "Näytä tiedot",
+    "back": "Takaisin",
+    "close": "Sulje",
+    "showMore": "Näytä lisää",
+    "continue": "Jatka",
+    "continueWithEmail": "Jatka sähköpostilla",
+    "idCopiedToClipboard": "ID kopioitu leikepöydälle",
+    "editVariantImages": "Muokkaa variantin kuvia",
+    "editImages": "Muokkaa kuvia",
+    "addReason": "Lisää syy",
+    "addNote": "Lisää muistiinpano",
+    "reset": "Palauta",
+    "confirm": "Vahvista",
+    "edit": "Muokkaa",
+    "addItems": "Lisää tuotteita",
+    "download": "Lataa",
+    "clear": "Tyhjennä",
+    "clearAll": "Tyhjennä kaikki",
+    "apply": "Käytä",
+    "add": "Lisää",
+    "select": "Valitse",
+    "browse": "Selaa",
+    "logout": "Kirjaudu ulos",
+    "hide": "Piilota",
+    "show": "Näytä",
+    "export": "Vie",
+    "import": "Tuo",
+    "cannotUndo": "Tätä toimintoa ei voi perua",
+    "manage": "Hallinnoi",
+    "goToProductOption": "Siirry tuotteen valintaan"
+  },
+  "operators": {
+    "in": "Sisältyy"
+  },
+  "app": {
+    "search": {
+      "label": "Haku",
+      "title": "Haku",
+      "description": "Etsi koko kaupastasi, mukaan lukien tilaukset, tuotteet, asiakkaat ja muut.",
+      "allAreas": "Kaikki alueet",
+      "navigation": "Navigointi",
+      "openResult": "Avaa tulos",
+      "showMore": "Näytä lisää",
+      "placeholder": "Siirry tai etsi jotain...",
+      "noResultsTitle": "Tuloksia ei löytynyt",
+      "noResultsMessage": "Hakuasi vastaavaa sisältöä ei löytynyt.",
+      "emptySearchTitle": "Kirjoita hakeaksesi",
+      "emptySearchMessage": "Syötä hakusana tai lauseke.",
+      "loadMore": "Lataa {{count}} lisää",
+      "groups": {
+        "all": "Kaikki alueet",
+        "customer": "Asiakkaat",
+        "customerGroup": "Asiakasryhmät",
+        "product": "Tuotteet",
+        "productVariant": "Tuotevariantit",
+        "inventory": "Varasto",
+        "reservation": "Varaukset",
+        "category": "Kategoriat",
+        "collection": "Kokoelmat",
+        "order": "Tilaukset",
+        "promotion": "Kampanjat",
+        "campaign": "Kampanjajaksot",
+        "priceList": "Hinnastot",
+        "user": "Käyttäjät",
+        "region": "Alueet",
+        "taxRegion": "Veroalueet",
+        "returnReason": "Palautussyyt",
+        "salesChannel": "Myyntikanavat",
+        "productType": "Tuotetyypit",
+        "productTag": "Tuotetunnisteet",
+        "location": "Sijainnit",
+        "shippingProfile": "Toimitusprofiilit",
+        "publishableApiKey": "Julkiset API-avaimet",
+        "secretApiKey": "Salaiset API-avaimet",
+        "command": "Komennot",
+        "navigation": "Navigointi"
+      }
+    },
+    "keyboardShortcuts": {
+      "pageShortcut": "Siirry",
+      "settingShortcut": "Asetukset",
+      "commandShortcut": "Komennot",
+      "then": "sitten",
+      "navigation": {
+        "goToOrders": "Tilaukset",
+        "goToProducts": "Tuotteet",
+        "goToCollections": "Kokoelmat",
+        "goToCategories": "Kategoriat",
+        "goToCustomers": "Asiakkaat",
+        "goToCustomerGroups": "Asiakasryhmät",
+        "goToInventory": "Varasto",
+        "goToReservations": "Varaukset",
+        "goToPriceLists": "Hinnastot",
+        "goToPromotions": "Kampanjat",
+        "goToCampaigns": "Kampanjajaksot"
+      },
+      "settings": {
+        "goToSettings": "Asetukset",
+        "goToStore": "Kauppa",
+        "goToUsers": "Käyttäjät",
+        "goToRegions": "Alueet",
+        "goToTaxRegions": "Veroalueet",
+        "goToSalesChannels": "Myyntikanavat",
+        "goToProductTypes": "Tuotetyypit",
+        "goToLocations": "Sijainnit",
+        "goToPublishableApiKeys": "Julkiset API-avaimet",
+        "goToSecretApiKeys": "Salaiset API-avaimet",
+        "goToWorkflows": "Työnkulut",
+        "goToProfile": "Profiili",
+        "goToReturnReasons": "Palautussyyt"
+      }
+    },
+    "menus": {
+      "user": {
+        "documentation": "Dokumentaatio",
+        "changelog": "Muutosloki",
+        "shortcuts": "Pikanäppäimet",
+        "profileSettings": "Profiiliasetukset",
+        "theme": {
+          "label": "Teema",
+          "dark": "Tumma",
+          "light": "Vaalea",
+          "system": "Järjestelmä"
+        }
+      },
+      "store": {
+        "label": "Kauppa",
+        "storeSettings": "Kaupan asetukset"
+      },
+      "actions": {
+        "logout": "Kirjaudu ulos"
+      }
+    },
+    "nav": {
+      "accessibility": {
+        "title": "Navigointi",
+        "description": "Hallintapaneelin navigointivalikko."
+      },
+      "common": {
+        "extensions": "Laajennukset"
+      },
+      "main": {
+        "store": "Kauppa",
+        "storeSettings": "Kaupan asetukset"
+      },
+      "settings": {
+        "header": "Asetukset",
+        "general": "Yleiset",
+        "developer": "Kehittäjä",
+        "myAccount": "Oma tili"
+      }
+    }
+  },
+  "layout": {
+    "customizeTopbar": "Muokkaa yläpalkkia",
+    "customizeSidebar": "Muokkaa sivupalkkia",
+    "customizeSettingsSidebar": "Muokkaa asetusten sivupalkkia",
+    "customizePage": "Muokkaa sivua",
+    "customizeLayout": "Muokkaa asettelua",
+    "viewingPersonalLayout": "Katselet henkilökohtaista asettelua",
+    "viewingSystemLayout": "Katselet järjestelmän asettelua",
+    "personalView": "Henkilökohtainen",
+    "defaultView": "Oletus",
+    "empty": "Tyhjä",
+    "dropToSectionEnd": "Pudota tähän siirtääksesi loppuun",
+    "dragToReorder": "Vedä järjestääksesi uudelleen",
+    "saveForEveryone": "Tallenna kaikille",
+    "saveForEveryoneTitle": "Tallenna asettelu kaikille",
+    "saveForEveryoneDescription": "Tämä päivittää sivun oletusasettelun kaikille käyttäjille, jotka eivät ole itse muokanneet sitä. Oletko varma?",
+    "saveSuccess": "Asettelu tallennettu"
+  },
+  "dataGrid": {
+    "columns": {
+      "view": "Näytä",
+      "resetToDefault": "Palauta oletukseksi",
+      "disabled": "Näkyvien sarakkeiden muuttaminen on pois käytöstä."
+    },
+    "shortcuts": {
+      "label": "Pikanäppäimet",
+      "commands": {
+        "undo": "Kumoa",
+        "redo": "Tee uudelleen",
+        "copy": "Kopioi",
+        "paste": "Liitä",
+        "edit": "Muokkaa",
+        "delete": "Poista",
+        "clear": "Tyhjennä",
+        "moveUp": "Siirrä ylös",
+        "moveDown": "Siirrä alas",
+        "moveLeft": "Siirrä vasemmalle",
+        "moveRight": "Siirrä oikealle",
+        "moveTop": "Siirrä ylimmäksi",
+        "moveBottom": "Siirrä alimmaksi",
+        "selectDown": "Valitse alaspäin",
+        "selectUp": "Valitse ylöspäin",
+        "selectColumnDown": "Valitse sarake alaspäin",
+        "selectColumnUp": "Valitse sarake ylöspäin",
+        "focusToolbar": "Kohdista työkalupalkkiin",
+        "focusCancel": "Kohdista peruutukseen"
+      }
+    },
+    "errors": {
+      "fixError": "Korjaa virhe",
+      "count_one": "{{count}} virhe",
+      "count_other": "{{count}} virhettä"
+    }
+  },
+  "filters": {
+    "sortLabel": "Järjestä",
+    "columnsLabel": "Sarakkeet",
+    "collapse": {
+      "all": "Pienennä kaikki"
+    },
+    "filterLabel": "Suodata",
+    "searchLabel": "Haku",
+    "date": {
+      "today": "Tänään",
+      "lastSevenDays": "Viimeiset 7 päivää",
+      "lastThirtyDays": "Viimeiset 30 päivää",
+      "lastNinetyDays": "Viimeiset 90 päivää",
+      "lastTwelveMonths": "Viimeiset 12 kuukautta",
+      "custom": "Mukautettu",
+      "from": "Alkaen",
+      "to": "Päättyen",
+      "starting": "Alkaa",
+      "ending": "Päättyy"
+    },
+    "compare": {
+      "lessThan": "Vähemmän kuin",
+      "greaterThan": "Enemmän kuin",
+      "exact": "Tarkalleen",
+      "range": "Väli",
+      "lessThanLabel": "vähemmän kuin {{value}}",
+      "greaterThanLabel": "enemmän kuin {{value}}",
+      "andLabel": "ja"
+    },
+    "sorting": {
+      "alphabeticallyAsc": "A–Ö",
+      "alphabeticallyDesc": "Ö–A",
+      "dateAsc": "Uusimmat ensin",
+      "dateDesc": "Vanhimmat ensin"
+    },
+    "radio": {
+      "yes": "Kyllä",
+      "no": "Ei",
+      "true": "Tosi",
+      "false": "Epätosi"
+    },
+    "addFilter": "Lisää suodatin"
+  },
+  "errorBoundary": {
+    "badRequestTitle": "400 - Virheellinen pyyntö",
+    "badRequestMessage": "Palvelin ei ymmärtänyt pyyntöä virheellisen syntaksin vuoksi.",
+    "notFoundTitle": "404 - Tässä osoitteessa ei ole sivua",
+    "notFoundMessage": "Tarkista osoite ja yritä uudelleen, tai käytä hakupalkkia löytääksesi etsimäsi.",
+    "internalServerErrorTitle": "500 - Palvelinvirhe",
+    "internalServerErrorMessage": "Palvelimella tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.",
+    "defaultTitle": "Tapahtui virhe",
+    "defaultMessage": "Tätä sivua renderöitäessä tapahtui odottamaton virhe.",
+    "noMatchMessage": "Etsimääsi sivua ei ole olemassa.",
+    "backToDashboard": "Takaisin hallintapaneeliin"
+  },
+  "addresses": {
+    "title": "Osoitteet",
+    "shippingAddress": {
+      "header": "Toimitusosoite",
+      "editHeader": "Muokkaa toimitusosoitetta",
+      "editLabel": "Toimitusosoite",
+      "label": "Toimitusosoite"
+    },
+    "billingAddress": {
+      "header": "Laskutusosoite",
+      "editHeader": "Muokkaa laskutusosoitetta",
+      "editLabel": "Laskutusosoite",
+      "label": "Laskutusosoite",
+      "sameAsShipping": "Sama kuin toimitusosoite"
+    },
+    "contactHeading": "Yhteystiedot",
+    "locationHeading": "Sijainti"
+  },
+  "email": {
+    "editHeader": "Muokkaa sähköpostia",
+    "editLabel": "Sähköposti",
+    "label": "Sähköposti"
+  },
+  "transferOwnership": {
+    "header": "Siirrä omistajuus",
+    "label": "Siirrä omistajuus",
+    "details": {
+      "order": "Tilauksen tiedot",
+      "draft": "Luonnoksen tiedot"
+    },
+    "currentOwner": {
+      "label": "Nykyinen omistaja",
+      "hint": "Tilauksen nykyinen omistaja."
+    },
+    "newOwner": {
+      "label": "Uusi omistaja",
+      "hint": "Uusi omistaja, jolle tilaus siirretään."
+    },
+    "validation": {
+      "mustBeDifferent": "Uuden omistajan on oltava eri kuin nykyinen omistaja.",
+      "required": "Uusi omistaja vaaditaan."
+    }
+  },
+  "sales_channels": {
+    "availableIn": "Saatavilla <0>{{x}}</0>/<1>{{y}}</1> myyntikanavassa"
+  },
+  "products": {
+    "domain": "Tuotteet",
+    "list": {
+      "noRecordsMessage": "Luo ensimmäinen tuotteesi aloittaaksesi myynnin."
+    },
+    "edit": {
+      "header": "Muokkaa tuotetta",
+      "description": "Muokkaa tuotteen tietoja.",
+      "successToast": "Tuote {{title}} päivitettiin onnistuneesti."
+    },
+    "create": {
+      "title": "Luo tuote",
+      "description": "Luo uusi tuote.",
+      "header": "Yleiset",
+      "tabs": {
+        "details": "Tiedot",
+        "organize": "Järjestä",
+        "variants": "Variantit",
+        "inventory": "Varastopaketit"
+      },
+      "errors": {
+        "variants": "Valitse vähintään yksi variantti.",
+        "options": "Luo vähintään yksi valinta.",
+        "uniqueSku": "SKU:n on oltava yksilöllinen."
+      },
+      "inventory": {
+        "heading": "Varastopaketit",
+        "label": "Lisää varastonimikkeitä variantin varastopakettiin.",
+        "itemPlaceholder": "Valitse varastonimike",
+        "quantityPlaceholder": "Kuinka monta näitä tarvitaan pakettiin?"
+      },
+      "variants": {
+        "header": "Variantit",
+        "subHeadingTitle": "Kyllä, tämä on tuote, jolla on variantteja",
+        "subHeadingDescription": "Kun valintaa ei ole valittu, luomme sinulle oletusvariantin",
+        "optionTitle": {
+          "placeholder": "Koko"
+        },
+        "optionValues": {
+          "placeholder": "Pieni, Keskikokoinen, Suuri"
+        },
+        "productVariants": {
+          "label": "Tuotevariantit",
+          "hint": "Tämä sijoitus vaikuttaa varianttien järjestykseen verkkokaupassasi.",
+          "alert": "Lisää valintoja luodaksesi variantteja.",
+          "tip": "Valitsemattomia variantteja ei luoda. Voit aina luoda ja muokata variantteja jälkikäteen, mutta tämä lista vastaa tuotevalintojesi yhdistelmiä."
+        },
+        "productOptions": {
+          "label": "Tuotevalinnat",
+          "hint": "Valintoja käytetään määrittämään tuotteen väri, koko jne."
+        },
+        "selectValuesHint": "Valitse kunkin valinnan käytettävät arvot"
+      },
+      "successToast": "Tuote {{title}} luotiin onnistuneesti."
+    },
+    "export": {
+      "header": "Vie tuotelista",
+      "description": "Vie tuotelista CSV-tiedostoon.",
+      "success": {
+        "title": "Käsittelemme vientiäsi",
+        "description": "Datan vieminen voi kestää muutaman minuutin. Ilmoitamme, kun olemme valmiit."
+      },
+      "filters": {
+        "title": "Suodattimet",
+        "description": "Muokkaa tätä näkymää soveltamalla suodattimia taulukon yleiskatsauksessa"
+      },
+      "columns": {
+        "title": "Sarakkeet",
+        "description": "Mukauta vietävä data vastaamaan tarpeitasi"
+      }
+    },
+    "import": {
+      "header": "Tuo tuotelista",
+      "uploadLabel": "Tuo tuotteita",
+      "uploadHint": "Vedä ja pudota CSV-tiedosto tai napsauta ladataksesi",
+      "description": "Tuo tuotteita antamalla CSV-tiedosto ennalta määritetyssä muodossa",
+      "template": {
+        "title": "Etkö ole varma, miten listasi tulisi järjestää?",
+        "description": "Lataa alla oleva malli varmistaaksesi, että noudatat oikeaa muotoa."
+      },
+      "upload": {
+        "title": "Lataa CSV-tiedosto",
+        "description": "Tuonnin avulla voit lisätä tai päivittää tuotteita. Päivittääksesi olemassa olevia tuotteita, sinun on käytettävä olemassa olevaa URL-tunnistetta ja ID:tä, ja päivittääksesi olemassa olevia variantteja, sinun on käytettävä olemassa olevaa ID:tä. Sinulta pyydetään vahvistus ennen tuotteiden tuontia.",
+        "preprocessing": "Esikäsitellään...",
+        "productsToCreate": "Tuotteita luodaan",
+        "productsToUpdate": "Tuotteita päivitetään"
+      },
+      "success": {
+        "title": "Käsittelemme tuontiasi",
+        "description": "Datan tuominen voi kestää hetken. Ilmoitamme, kun olemme valmiit."
+      }
+    },
+    "deleteWarning": "Olet poistamassa tuotteen {{title}}. Tätä toimintoa ei voi peruuttaa.",
+    "variants": {
+      "header": "Variantit",
+      "empty": {
+        "heading": "Ei variantteja",
+        "description": "Näytettäviä variantteja ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään variantti ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "attributes": "Ominaisuudet",
+    "editAttributes": "Muokkaa ominaisuuksia",
+    "editOptions": "Muokkaa valintoja",
+    "editPrices": "Muokkaa hintoja",
+    "media": {
+      "label": "Media",
+      "editHint": "Lisää mediaa tuotteeseen esitelläksesi sitä verkkokaupassasi.",
+      "manageImageVariants": "Hallinnoi liitettyjä variantteja",
+      "makeThumbnail": "Tee pikkukuvaksi",
+      "uploadImagesLabel": "Lataa kuvia",
+      "uploadImagesHint": "Vedä ja pudota kuvia tähän tai napsauta ladataksesi.",
+      "invalidFileType": "'{{name}}' ei ole tuettu tiedostotyyppi. Tuetut tiedostotyypit: {{types}}.",
+      "fileTooLarge": "Yksi tai useampi tiedosto ylittää enimmäiskoon {{size}}: {{name}}",
+      "failedToUpload": "Lisätyn median lataaminen epäonnistui. Yritä uudelleen.",
+      "deleteWarning_one": "Olet poistamassa {{count}} kuvan. Tätä toimintoa ei voi peruuttaa.",
+      "deleteWarning_other": "Olet poistamassa {{count}} kuvaa. Tätä toimintoa ei voi peruuttaa.",
+      "deleteWarningWithThumbnail_one": "Olet poistamassa {{count}} kuvan, mukaan lukien pikkukuva. Tätä toimintoa ei voi peruuttaa.",
+      "deleteWarningWithThumbnail_other": "Olet poistamassa {{count}} kuvaa, mukaan lukien pikkukuva. Tätä toimintoa ei voi peruuttaa.",
+      "thumbnailTooltip": "Pikkukuva",
+      "galleryLabel": "Galleria",
+      "downloadImageLabel": "Lataa nykyinen kuva",
+      "deleteImageLabel": "Poista nykyinen kuva",
+      "emptyState": {
+        "header": "Ei vielä mediaa",
+        "description": "Lisää mediaa esitelläksesi sitä verkkokaupassasi.",
+        "action": "Lisää mediaa"
+      },
+      "successToast": "Media päivitettiin onnistuneesti.",
+      "variantImages": "Variantin kuvat",
+      "showAvailableImages": "Näytä saatavilla olevat kuvat",
+      "availableImages": "Valitse kuvat",
+      "selectToAdd": "Lisää tuotekuvia varianttiin. Lisätäksesi uusia kuvia, lisää ne ensin tuotteeseen.",
+      "removeSelected": "Poista valitut"
+    },
+    "variantMedia": {
+      "label": "Variantin media",
+      "manageVariants": "Hallinnoi variantteja",
+      "addToMultipleVariants": "Lisää useisiin variantteihin",
+      "manageVariantsDescription": "Hallinnoi kuvaan liitettyjä variantteja",
+      "successToast": "Kuvan variantit päivitettiin onnistuneesti.",
+      "emptyState": {
+        "header": "Ei vielä mediaa",
+        "description": "Lisää mediaa varianttiin esitelläksesi sitä verkkokaupassasi.",
+        "action": "Lisää mediaa"
+      }
+    },
+    "discountableHint": "Kun valintaa ei ole valittu, alennuksia ei sovelleta tähän tuotteeseen.",
+    "noSalesChannels": "Ei saatavilla missään myyntikanavassa",
+    "variantCount_one": "{{count}} variantti",
+    "variantCount_other": "{{count}} varianttia",
+    "deleteVariantWarning": "Olet poistamassa variantin {{title}}. Tätä toimintoa ei voi peruuttaa.",
+    "productStatus": {
+      "draft": "Luonnos",
+      "published": "Julkaistu",
+      "proposed": "Ehdotettu",
+      "rejected": "Hylätty"
+    },
+    "columns": {
+      "product_display": "Tuote",
+      "variants_count": "Variantit",
+      "sales_channels_display": "Myyntikanavat",
+      "collection": "Kokoelma",
+      "status": "Tila",
+      "thumbnail": "Pikkukuva",
+      "title": "Nimi",
+      "handle": "URL-tunniste",
+      "created_at": "Luotu",
+      "updated_at": "Päivitetty"
+    },
+    "fields": {
+      "title": {
+        "label": "Nimi",
+        "hint": "Anna tuotteellesi lyhyt ja selkeä nimi.<0/>50–60 merkkiä on suositeltu pituus hakukoneille.",
+        "placeholder": "Talvitakki"
+      },
+      "subtitle": {
+        "label": "Alaotsikko",
+        "placeholder": "Lämmin ja mukava"
+      },
+      "handle": {
+        "label": "URL-tunniste",
+        "tooltip": "URL-tunnistetta käytetään viittaamaan tuotteeseen verkkokaupassasi. Jos sitä ei määritetä, se luodaan tuotteen nimestä.",
+        "placeholder": "talvitakki"
+      },
+      "description": {
+        "label": "Kuvaus",
+        "hint": "Anna tuotteellesi lyhyt ja selkeä kuvaus.<0/>120–160 merkkiä on suositeltu pituus hakukoneille.",
+        "placeholder": "Lämmin ja mukava takki"
+      },
+      "discountable": {
+        "label": "Alennettavissa",
+        "hint": "Kun valintaa ei ole valittu, alennuksia ei sovelleta tähän tuotteeseen"
+      },
+      "shipping_profile": {
+        "label": "Toimitusprofiili",
+        "hint": "Yhdistä tuote toimitusprofiiliin"
+      },
+      "type": {
+        "label": "Tyyppi"
+      },
+      "collection": {
+        "label": "Kokoelma"
+      },
+      "categories": {
+        "label": "Kategoriat"
+      },
+      "tags": {
+        "label": "Tunnisteet"
+      },
+      "sales_channels": {
+        "label": "Myyntikanavat",
+        "hint": "Tämä tuote on saatavilla vain oletusmyyntikanavassa, jos tätä ei muuteta."
+      },
+      "countryOrigin": {
+        "label": "Alkuperämaa"
+      },
+      "material": {
+        "label": "Materiaali"
+      },
+      "width": {
+        "label": "Leveys"
+      },
+      "length": {
+        "label": "Pituus"
+      },
+      "height": {
+        "label": "Korkeus"
+      },
+      "weight": {
+        "label": "Paino"
+      },
+      "options": {
+        "label": "Tuotevalinnat",
+        "hint": "Valintoja käytetään määrittämään tuotteen väri, koko jne.",
+        "add": "Lisää valinta",
+        "optionTitle": "Valinnan nimi",
+        "optionTitlePlaceholder": "Väri",
+        "variations": "Vaihtoehdot (pilkuilla eroteltuna)",
+        "variantionsPlaceholder": "Punainen, Sininen, Vihreä"
+      },
+      "variants": {
+        "label": "Tuotevariantit",
+        "hint": "Valitsemattomia variantteja ei luoda. Tämä sijoitus vaikuttaa siihen, missä järjestyksessä variantit näkyvät verkkokaupassasi."
+      },
+      "mid_code": {
+        "label": "Mid-koodi"
+      },
+      "hs_code": {
+        "label": "HS-koodi"
+      }
+    },
+    "variant": {
+      "edit": {
+        "header": "Muokkaa varianttia",
+        "success": "Tuotevariantti muokattu onnistuneesti"
+      },
+      "create": {
+        "header": "Variantin tiedot"
+      },
+      "deleteWarning": "Haluatko varmasti poistaa tämän variantin?",
+      "pricesPagination": "1–{{current}}/{{total}} hintaa",
+      "tableItemAvailable": "{{availableCount}} saatavilla",
+      "tableItem_one": "{{availableCount}} saatavilla {{locationCount}} sijainnissa",
+      "tableItem_other": "{{availableCount}} saatavilla {{locationCount}} sijainnissa",
+      "inventory": {
+        "notManaged": "Ei hallinnoitu",
+        "manageItems": "Hallinnoi varastonimikkeitä",
+        "notManagedDesc": "Tämän variantin varastoa ei hallinnoida. Ota käyttöön ”Hallinnoi varastoa” seurataksesi variantin varastoa.",
+        "manageKit": "Hallinnoi varastopakettia",
+        "navigateToItem": "Siirry varastonimikkeeseen",
+        "actions": {
+          "inventoryItems": "Siirry varastonimikkeeseen",
+          "inventoryKit": "Näytä varastonimikkeet"
+        },
+        "inventoryKit": "Varastopaketti",
+        "inventoryKitHint": "Koostuuko tämä variantti useista varastonimikkeistä?",
+        "validation": {
+          "itemId": "Valitse varastonimike.",
+          "quantity": "Määrä vaaditaan. Syötä positiivinen luku."
+        },
+        "header": "Varasto",
+        "editItemDetails": "Muokkaa nimikkeen tietoja",
+        "manageInventoryLabel": "Hallinnoi varastoa",
+        "manageInventoryHint": "Kun käytössä, muutamme varastomäärää puolestasi tilausten ja palautusten yhteydessä.",
+        "allowBackordersLabel": "Salli jälkitoimitukset",
+        "allowBackordersHint": "Kun käytössä, asiakkaat voivat ostaa variantin, vaikka saatavilla ei olisi määrää.",
+        "toast": {
+          "levelsBatch": "Varastotasot päivitetty.",
+          "update": "Varastonimike päivitetty onnistuneesti.",
+          "updateLevel": "Varastotaso päivitetty onnistuneesti.",
+          "itemsManageSuccess": "Varastonimikkeet päivitetty onnistuneesti."
+        }
+      }
+    },
+    "options": {
+      "header": "Valinnat",
+      "edit": {
+        "header": "Muokkaa valintaa",
+        "successToast": "Valinta {{title}} päivitettiin onnistuneesti."
+      },
+      "create": {
+        "header": "Luo valinta",
+        "successToast": "Valinta {{title}} luotiin onnistuneesti."
+      },
+      "manage": {
+        "header": "Hallinnoi tuotevalintoja",
+        "description": "Yhdistä tai poista tuotevalintoja tästä tuotteesta.",
+        "label": "Tuotevalinnat",
+        "hint": "Valitse, mitkä valinnat tulisi liittää tähän tuotteeseen.",
+        "placeholder": "Valitse valinnat",
+        "error": {
+          "noValues": "Valitse vähintään yksi arvo lisätyille valinnoille."
+        }
+      },
+      "deleteWarning": "Olet poistamassa tuotevalinnan: {{title}}. Tätä toimintoa ei voi peruuttaa."
+    },
+    "organization": {
+      "header": "Järjestä",
+      "edit": {
+        "header": "Muokkaa järjestelyä",
+        "toasts": {
+          "success": "Kohteen {{title}} järjestely päivitettiin onnistuneesti."
+        }
+      }
+    },
+    "stock": {
+      "heading": "Hallinnoi tuotteen varastotasoja ja sijainteja",
+      "description": "Päivitä kaikkien tuotteen varianttien varastotasot.",
+      "loading": "Odota hetki, tämä voi kestää hetken...",
+      "tooltips": {
+        "alreadyManaged": "Tämä varastonimike on jo muokattavissa kohteessa {{title}}.",
+        "alreadyManagedWithSku": "Tämä varastonimike on jo muokattavissa kohteessa {{title}} ({{sku}})."
+      }
+    },
+    "shippingProfile": {
+      "header": "Toimitusasetukset",
+      "edit": {
+        "header": "Toimitusasetukset",
+        "toasts": {
+          "success": "Kohteen {{title}} toimitusprofiili päivitettiin onnistuneesti."
+        }
+      },
+      "create": {
+        "errors": {
+          "required": "Toimitusprofiili vaaditaan"
+        }
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Tuote poistettu",
+          "description": "{{title}} poistettiin onnistuneesti."
+        },
+        "error": {
+          "header": "Tuotteen poistaminen epäonnistui"
+        }
+      }
+    }
+  },
+  "collections": {
+    "domain": "Kokoelmat",
+    "subtitle": "Järjestä tuotteet kokoelmiin.",
+    "list": {
+      "empty": {
+        "heading": "Ei kokoelmia",
+        "description": "Näytettäviä kokoelmia ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään kokoelma ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "createCollection": "Luo kokoelma",
+    "createCollectionHint": "Luo uusi kokoelma järjestääksesi tuotteitasi.",
+    "createSuccess": "Kokoelma luotiin onnistuneesti.",
+    "editCollection": "Muokkaa kokoelmaa",
+    "handleTooltip": "URL-tunnistetta käytetään viittaamaan kokoelmaan verkkokaupassasi. Jos sitä ei määritetä, se luodaan kokoelman nimestä.",
+    "deleteWarning": "Olet poistamassa kokoelman {{title}}. Tätä toimintoa ei voi peruuttaa.",
+    "removeSingleProductWarning": "Olet poistamassa tuotteen {{title}} kokoelmasta. Tätä toimintoa ei voi peruuttaa.",
+    "removeProductsWarning_one": "Olet poistamassa {{count}} tuotteen kokoelmasta. Tätä toimintoa ei voi peruuttaa.",
+    "removeProductsWarning_other": "Olet poistamassa {{count}} tuotetta kokoelmasta. Tätä toimintoa ei voi peruuttaa.",
+    "products": {
+      "list": {
+        "noRecordsMessage": "Kokoelmassa ei ole tuotteita."
+      },
+      "add": {
+        "successToast_one": "Tuote lisättiin kokoelmaan onnistuneesti.",
+        "successToast_other": "Tuotteet lisättiin kokoelmaan onnistuneesti."
+      },
+      "remove": {
+        "successToast_one": "Tuote poistettiin kokoelmasta onnistuneesti.",
+        "successToast_other": "Tuotteet poistettiin kokoelmasta onnistuneesti."
+      }
+    }
+  },
+  "categories": {
+    "domain": "Kategoriat",
+    "subtitle": "Järjestä tuotteet kategorioihin ja hallinnoi kategorioiden sijoitusta ja hierarkiaa.",
+    "create": {
+      "header": "Luo kategoria",
+      "hint": "Luo uusi kategoria järjestääksesi tuotteitasi.",
+      "tabs": {
+        "details": "Tiedot",
+        "organize": "Järjestä sijoitus"
+      },
+      "successToast": "Kategoria {{name}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa kategoriaa",
+      "description": "Muokkaa kategoriaa päivittääksesi sen tietoja.",
+      "successToast": "Kategoria päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa kategorian {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Kategoria {{name}} poistettiin onnistuneesti."
+    },
+    "products": {
+      "add": {
+        "disabledTooltip": "Tuote on jo tässä kategoriassa.",
+        "successToast_one": "Lisättiin {{count}} tuote kategoriaan.",
+        "successToast_other": "Lisättiin {{count}} tuotetta kategoriaan."
+      },
+      "remove": {
+        "confirmation_one": "Olet poistamassa {{count}} tuotteen kategoriasta. Tätä toimintoa ei voi peruuttaa.",
+        "confirmation_other": "Olet poistamassa {{count}} tuotetta kategoriasta. Tätä toimintoa ei voi peruuttaa.",
+        "successToast_one": "Poistettiin {{count}} tuote kategoriasta.",
+        "successToast_other": "Poistettiin {{count}} tuotetta kategoriasta."
+      },
+      "list": {
+        "noRecordsMessage": "Kategoriassa ei ole tuotteita."
+      }
+    },
+    "organize": {
+      "header": "Järjestä",
+      "action": "Muokkaa sijoitusta"
+    },
+    "fields": {
+      "visibility": {
+        "label": "Näkyvyys",
+        "internal": "Sisäinen",
+        "public": "Julkinen"
+      },
+      "status": {
+        "label": "Tila",
+        "active": "Aktiivinen",
+        "inactive": "Ei aktiivinen"
+      },
+      "path": {
+        "label": "Polku",
+        "tooltip": "Näytä kategorian koko polku."
+      },
+      "children": {
+        "label": "Alikategoriat"
+      },
+      "new": {
+        "label": "Uusi"
+      }
+    }
+  },
+  "productOptions": {
+    "domain": "Valinnat",
+    "subtitle": "Hallinnoi tuotevalintoja ja niiden arvoja.",
+    "values": {
+      "header": "Arvot",
+      "list": {
+        "noRecords": "Tälle valinnalle ei ole arvoja."
+      },
+      "delete": {
+        "confirmation": "Olet poistamassa valinnan arvon \"{{value}}\". Tätä toimintoa ei voi peruuttaa.",
+        "successToast": "Valinnan arvo poistettiin onnistuneesti."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "Tällä valinnalla ei ole tuotteita."
+      }
+    },
+    "create": {
+      "header": "Luo tuotevalinta",
+      "hint": "Luo uusi tuotevalinta ja hallinnoi sen arvoja.",
+      "successToast": "Tuotevalinta \"{{title}}\" luotiin onnistuneesti.",
+      "tabs": {
+        "details": "Tiedot",
+        "organize": "Järjestä sijoitukset"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Tuotekohtainen valinta"
+    },
+    "edit": {
+      "header": "Muokkaa tuotevalintaa",
+      "description": "Muokkaa tuotevalintaa päivittääksesi sen tietoja ja arvoja.",
+      "successToast": "Tuotevalinta \"{{title}}\" päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa tuotevalinnan \"{{title}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Tuotevalinta poistettiin onnistuneesti."
+    },
+    "fields": {
+      "title": {
+        "label": "Nimi",
+        "placeholder": "Koko"
+      },
+      "values": {
+        "label": "Arvot",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
+  "inventory": {
+    "domain": "Varasto",
+    "subtitle": "Hallinnoi varastonimikkeitäsi",
+    "export": {
+      "header": "Vie varastolista",
+      "description": "Vie varastolista CSV-tiedostoon.",
+      "success": {
+        "title": "Käsittelemme vientiäsi",
+        "description": "Datan vieminen voi kestää muutaman minuutin. Ilmoitamme, kun olemme valmiit."
+      },
+      "filters": {
+        "title": "Suodattimet",
+        "description": "Muokkaa tätä näkymää soveltamalla suodattimia taulukon yleiskatsauksessa"
+      }
+    },
+    "reserved": "Varattu",
+    "available": "Saatavilla",
+    "locationLevels": "Sijainnit",
+    "associatedVariants": "Liitetyt variantit",
+    "manageLocations": "Hallinnoi sijainteja",
+    "manageLocationQuantity": "Hallinnoi sijainnin määrää",
+    "deleteWarning": "Olet poistamassa varastonimikkeen. Tätä toimintoa ei voi peruuttaa.",
+    "editItemDetails": "Muokkaa nimikkeen tietoja",
+    "quantityAcrossLocations": "{{quantity}} yhteensä {{locations}} sijainnissa",
+    "unitOfMeasurePlaceholder": "kg",
+    "unitOfMeasureHint": "Yksikkö, jossa varastoa pidetään ja lasketaan. Näytetään määrien yhteydessä koko hallintapaneelissa.",
+    "levelDeleted": "Varastotaso poistettiin onnistuneesti.",
+    "create": {
+      "title": "Luo varastonimike",
+      "details": "Tiedot",
+      "availability": "Saatavuus",
+      "locations": "Sijainnit",
+      "attributes": "Ominaisuudet",
+      "requiresShipping": "Vaatii toimituksen",
+      "requiresShippingHint": "Vaatiiko varastonimike toimituksen?",
+      "successToast": "Varastonimike luotiin onnistuneesti."
+    },
+    "reservation": {
+      "header": "Varaus: {{itemName}}",
+      "editItemDetails": "Muokkaa varausta",
+      "lineItemId": "Rivin tunniste",
+      "orderID": "Tilauksen ID",
+      "description": "Kuvaus",
+      "location": "Sijainti",
+      "inStockAtLocation": "Varastossa tässä sijainnissa",
+      "availableAtLocation": "Saatavilla tässä sijainnissa",
+      "reservedAtLocation": "Varattu tässä sijainnissa",
+      "reservedAmount": "Varattava määrä",
+      "create": "Luo varaus",
+      "itemToReserve": "Varattava nimike",
+      "quantityPlaceholder": "Kuinka paljon haluat varata?",
+      "descriptionPlaceholder": "Minkälainen varaus tämä on?",
+      "successToast": "Varaus luotiin onnistuneesti.",
+      "updateSuccessToast": "Varaus päivitettiin onnistuneesti.",
+      "deleteSuccessToast": "Varaus poistettiin onnistuneesti.",
+      "errors": {
+        "noAvaliableQuantity": "Varastosijainnilla ei ole saatavilla olevaa määrää.",
+        "quantityOutOfRange": "Vähimmäismäärä on 1 ja enimmäismäärä on {{max}}"
+      }
+    },
+    "adjustInventory": {
+      "errors": {
+        "stockedQuantity": "Varastomäärää ei voi päivittää pienemmäksi kuin varattu määrä {{quantity}}."
+      }
+    },
+    "toast": {
+      "updateLocations": "Sijainnit päivitetty onnistuneesti.",
+      "updateLevel": "Varastotaso päivitetty onnistuneesti.",
+      "updateItem": "Varastonimike päivitetty onnistuneesti."
+    },
+    "stock": {
+      "title": "Päivitä varastotasot",
+      "description": "Päivitä valittujen varastonimikkeiden varastotasot.",
+      "action": "Muokkaa varastotasoja",
+      "placeholder": "Ei käytössä",
+      "disablePrompt_one": "Olet poistamassa käytöstä {{count}} sijaintitason. Tätä toimintoa ei voi peruuttaa.",
+      "disablePrompt_other": "Olet poistamassa käytöstä {{count}} sijaintitasoa. Tätä toimintoa ei voi peruuttaa.",
+      "disabledToggleTooltip": "Ei voi poistaa käytöstä: tyhjennä saapuva ja/tai varattu määrä ennen poistamista käytöstä.",
+      "successToast": "Varastotasot päivitettiin onnistuneesti."
+    }
+  },
+  "giftCards": {
+    "domain": "Lahjakortit",
+    "editGiftCard": "Muokkaa lahjakorttia",
+    "createGiftCard": "Luo lahjakortti",
+    "createGiftCardHint": "Luo manuaalisesti lahjakortti, jota voidaan käyttää maksutapana kaupassasi.",
+    "selectRegionFirst": "Valitse ensin alue",
+    "deleteGiftCardWarning": "Olet poistamassa lahjakortin {{code}}. Tätä toimintoa ei voi peruuttaa.",
+    "balanceHigherThanValue": "Saldo ei voi olla suurempi kuin alkuperäinen summa.",
+    "balanceLowerThanZero": "Saldo ei voi olla negatiivinen.",
+    "expiryDateHint": "Eri maissa on erilaisia lakeja lahjakorttien vanhenemispäivistä. Tarkista paikalliset säädökset ennen vanhenemispäivän asettamista.",
+    "regionHint": "Lahjakortin alueen muuttaminen muuttaa myös sen valuuttaa, mikä voi vaikuttaa sen rahalliseen arvoon.",
+    "enabledHint": "Määritä, onko lahjakortti käytössä vai pois käytöstä.",
+    "balance": "Saldo",
+    "currentBalance": "Nykyinen saldo",
+    "initialBalance": "Alkuperäinen saldo",
+    "personalMessage": "Henkilökohtainen viesti",
+    "recipient": "Vastaanottaja"
+  },
+  "customers": {
+    "domain": "Asiakkaat",
+    "list": {
+      "empty": {
+        "heading": "Ei asiakkaita",
+        "description": "Näytettäviä asiakkaita ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään asiakas ei vastaa nykyisiä suodatinehtoja."
+      },
+      "noRecordsMessage": "Asiakkaasi näkyvät täällä."
+    },
+    "create": {
+      "header": "Luo asiakas",
+      "hint": "Luo uusi asiakas ja hallinnoi hänen tietojaan.",
+      "successToast": "Asiakas {{email}} luotiin onnistuneesti."
+    },
+    "groups": {
+      "label": "Asiakasryhmät",
+      "remove": "Haluatko varmasti poistaa asiakkaan asiakasryhmästä \"{{name}}\"?",
+      "removeMany": "Haluatko varmasti poistaa asiakkaan seuraavista asiakasryhmistä: {{groups}}?",
+      "alreadyAddedTooltip": "Asiakas on jo tässä asiakasryhmässä.",
+      "list": {
+        "noRecordsMessage": "Tämä asiakas ei kuulu mihinkään ryhmään."
+      },
+      "add": {
+        "success": "Asiakas lisätty ryhmiin: {{groups}}.",
+        "list": {
+          "noRecordsMessage": "Luo ensin asiakasryhmä."
+        }
+      },
+      "removed": {
+        "success": "Asiakas poistettu ryhmistä: {{groups}}.",
+        "list": {
+          "noRecordsMessage": "Luo ensin asiakasryhmä."
+        }
+      }
+    },
+    "edit": {
+      "header": "Muokkaa asiakasta",
+      "emailDisabledTooltip": "Rekisteröityneiden asiakkaiden sähköpostiosoitetta ei voi muuttaa.",
+      "successToast": "Asiakas {{email}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "title": "Poista asiakas",
+      "description": "Olet poistamassa asiakkaan {{email}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Asiakas {{email}} poistettiin onnistuneesti."
+    },
+    "fields": {
+      "guest": "Vieras",
+      "registered": "Rekisteröitynyt",
+      "groups": "Ryhmät"
+    },
+    "registered": "Rekisteröitynyt",
+    "guest": "Vieras",
+    "hasAccount": "Tili olemassa",
+    "addresses": {
+      "title": "Osoitteet",
+      "fields": {
+        "addressName": "Osoitteen nimi",
+        "address1": "Osoite 1",
+        "address2": "Osoite 2",
+        "city": "Kaupunki",
+        "province": "Maakunta",
+        "postalCode": "Postinumero",
+        "country": "Maa",
+        "phone": "Puhelin",
+        "company": "Yritys",
+        "countryCode": "Maakoodi",
+        "provinceCode": "Maakunnan koodi"
+      },
+      "create": {
+        "header": "Luo osoite",
+        "hint": "Luo uusi osoite asiakkaalle.",
+        "successToast": "Osoite luotiin onnistuneesti."
+      }
+    }
+  },
+  "customerGroups": {
+    "domain": "Asiakasryhmät",
+    "subtitle": "Järjestä asiakkaat ryhmiin. Ryhmillä voi olla erilaisia kampanjoita ja hintoja.",
+    "list": {
+      "empty": {
+        "heading": "Ei asiakasryhmiä",
+        "description": "Näytettäviä asiakasryhmiä ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään asiakasryhmä ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "create": {
+      "header": "Luo asiakasryhmä",
+      "hint": "Luo uusi asiakasryhmä segmentoidaksesi asiakkaitasi.",
+      "successToast": "Asiakasryhmä {{name}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa asiakasryhmää",
+      "successToast": "Asiakasryhmä {{name}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "title": "Poista asiakasryhmä",
+      "description": "Olet poistamassa asiakasryhmän {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Asiakasryhmä {{name}} poistettiin onnistuneesti."
+    },
+    "customers": {
+      "alreadyAddedTooltip": "Asiakas on jo lisätty ryhmään.",
+      "add": {
+        "successToast_one": "Asiakas lisättiin ryhmään onnistuneesti.",
+        "successToast_other": "Asiakkaat lisättiin ryhmään onnistuneesti.",
+        "list": {
+          "noRecordsMessage": "Luo ensin asiakas."
+        }
+      },
+      "remove": {
+        "title_one": "Poista asiakas",
+        "title_other": "Poista asiakkaat",
+        "description_one": "Olet poistamassa {{count}} asiakkaan asiakasryhmästä. Tätä toimintoa ei voi peruuttaa.",
+        "description_other": "Olet poistamassa {{count}} asiakasta asiakasryhmästä. Tätä toimintoa ei voi peruuttaa."
+      },
+      "list": {
+        "noRecordsMessage": "Tässä ryhmässä ei ole asiakkaita."
+      }
+    }
+  },
+  "orders": {
+    "giftCardsStoreCreditLines": "Lahjakortit ja hyvityssaldot",
+    "creditLines": {
+      "title": "Hyvitysrivit",
+      "total": "Kaikkien hyvitysrivien summa",
+      "creditOrDebit": "Hyvitys / veloitus",
+      "createCreditLine": "Luo hyvitysrivi",
+      "createCreditLineSuccess": "Hyvitysrivi luotiin onnistuneesti",
+      "createCreditLineError": "Virhe hyvitysriviä luotaessa",
+      "createCreditLineDescription": "Luo hyvitysrivi summalle {{amount}}",
+      "operation": "Toiminto",
+      "credit": "Hyvitys",
+      "creditDescription": "Lisää positiivisen summan tilaukseen",
+      "debit": "Veloitus",
+      "debitDescription": "Vähentää negatiivisen summan tilauksesta"
+    },
+    "balanceSettlement": {
+      "title": "Saldon tasaus",
+      "settlementType": "Tasaustyyppi",
+      "settlementTypes": {
+        "paymentMethod": "Maksutapa",
+        "paymentMethodDescription": "Palauta summa maksutapaan",
+        "creditLine": "Hyvityssaldo",
+        "creditLineDescription": "Palauta summa hyvityssaldona"
+      }
+    },
+    "domain": "Tilaukset",
+    "claim": "Reklamaatio",
+    "exchange": "Vaihto",
+    "return": "Palautus",
+    "cancelWarning": "Olet peruuttamassa tilauksen {{id}}. Tätä toimintoa ei voi peruuttaa.",
+    "orderCanceled": "Tilaus peruutettiin onnistuneesti",
+    "onDateFromSalesChannel": "{{date}}, {{salesChannel}}",
+    "list": {
+      "noRecordsMessage": "Tilauksesi näkyvät täällä."
+    },
+    "export": {
+      "header": "Vie tilauslista",
+      "description": "Vie tilauslista CSV-tiedostoon.",
+      "success": {
+        "title": "Vienti aloitettu",
+        "description": "Saat ilmoituksen, kun vienti on valmis."
+      },
+      "filters": {
+        "title": "Suodattimet",
+        "description": "Seuraavia suodattimia sovelletaan vientiin."
+      }
+    },
+    "status": {
+      "not_paid": "Ei maksettu",
+      "pending": "Odottaa",
+      "completed": "Valmis",
+      "draft": "Luonnos",
+      "archived": "Arkistoitu",
+      "canceled": "Peruutettu",
+      "requires_action": "Vaatii toimenpiteen"
+    },
+    "summary": {
+      "requestReturn": "Pyydä palautusta",
+      "allocateItems": "Kohdista tuotteet",
+      "editOrder": "Muokkaa tilausta",
+      "editOrderContinue": "Jatka tilauksen muokkausta",
+      "inventoryKit": "Koostuu {{count}}x varastonimikkeestä",
+      "itemTotal": "Tuotteet yhteensä",
+      "shippingTotal": "Toimitus yhteensä",
+      "discountTotal": "Alennus yhteensä",
+      "taxTotalIncl": "Vero yhteensä (sis.)",
+      "itemSubtotal": "Tuotteet välisumma",
+      "shippingSubtotal": "Toimitus välisumma",
+      "discountSubtotal": "Alennus välisumma",
+      "taxTotal": "Vero yhteensä",
+      "totalAfterDiscount": "Yhteensä alennuksen jälkeen"
+    },
+    "transfer": {
+      "title": "Siirrä omistajuus",
+      "requestSuccess": "Tilauksen siirtopyyntö lähetetty: {{email}}.",
+      "guestSuccess": "Tilaus siirretty vierasasiakkaalle: {{email}}.",
+      "ownerType": "Tilin tyyppi",
+      "registered": "Rekisteröitynyt",
+      "registeredDescription": "Siirrä rekisteröityneelle asiakkaalle, jonka on hyväksyttävä pyyntö.",
+      "guest": "Vieras",
+      "guestDescription": "Siirrä vierasasiakkaalle sähköpostiosoitteen perusteella. Tulee voimaan välittömästi.",
+      "currentOwner": "Nykyinen omistaja",
+      "newOwner": "Uusi omistaja",
+      "newGuestOwner": "Uuden omistajan sähköposti",
+      "currentOwnerDescription": "Tähän tilaukseen tällä hetkellä liittyvä asiakas.",
+      "newOwnerDescription": "Asiakas, jolle tämä tilaus siirretään.",
+      "newGuestOwnerDescription": "Vierasasiakkaan sähköposti, jolle tilaus siirretään. Vierasasiakas luodaan, jos sellaista ei vielä ole."
+    },
+    "payment": {
+      "title": "Maksut",
+      "isReadyToBeCaptured": "Maksu <0/> on valmis veloitettavaksi.",
+      "totalPaidByCustomer": "Asiakkaan maksama summa yhteensä",
+      "totalStoreCreditRefunds": "Hyvityssaldopalautukset yhteensä",
+      "capture": "Veloita maksu",
+      "capture_short": "Veloita",
+      "refund": "Hyvitä",
+      "markAsPaid": "Merkitse maksetuksi",
+      "statusLabel": "Maksun tila",
+      "statusTitle": "Maksun tila",
+      "status": {
+        "notPaid": "Ei maksettu",
+        "authorized": "Varmennettu",
+        "partiallyAuthorized": "Osittain varmennettu",
+        "awaiting": "Odottaa",
+        "captured": "Veloitettu",
+        "partiallyRefunded": "Osittain hyvitetty",
+        "partiallyCaptured": "Osittain veloitettu",
+        "refunded": "Hyvitetty",
+        "canceled": "Peruutettu",
+        "requiresAction": "Vaatii toimenpiteen"
+      },
+      "capturePayment": "Maksu {{amount}} veloitetaan.",
+      "capturePaymentSuccess": "Maksu {{amount}} veloitettiin onnistuneesti",
+      "markAsPaidPayment": "Maksu {{amount}} merkitään maksetuksi.",
+      "markAsPaidPaymentSuccess": "Maksu {{amount}} merkittiin onnistuneesti maksetuksi",
+      "pendingAuthorization": "Maksu odottaa maksupalveluntarjoajan varmennusta.",
+      "checkStatus": "Tarkista tila",
+      "checkStatusSuccess": "Maksu varmennettiin onnistuneesti.",
+      "stillPending": "Maksu odottaa yhä varmennusta.",
+      "createRefund": "Luo hyvitys",
+      "refundPaymentSuccess": "Hyvitys summasta {{amount}} onnistui",
+      "createRefundWrongQuantity": "Määrän tulee olla luku väliltä 1–{{number}}",
+      "refundAmount": "Hyvitä {{ amount }}",
+      "paymentLink": "Kopioi maksulinkki summalle {{ amount }}",
+      "selectPaymentToRefund": "Valitse hyvitettävä maksu"
+    },
+    "edits": {
+      "title": "Muokkaa tilausta",
+      "confirm": "Vahvista muokkaus",
+      "confirmText": "Olet vahvistamassa tilauksen muokkauksen. Tätä toimintoa ei voi peruuttaa.",
+      "cancel": "Peru muokkaus",
+      "currentItems": "Nykyiset tuotteet",
+      "currentItemsDescription": "Muuta tuotteen määrää tai poista se.",
+      "addItemsDescription": "Voit lisätä tilaukseen uusia tuotteita.",
+      "addItems": "Lisää tuotteita",
+      "amountPaid": "Maksettu summa",
+      "newTotal": "Uusi loppusumma",
+      "differenceDue": "Erotus maksettavaksi",
+      "create": "Muokkaa tilausta",
+      "currentTotal": "Nykyinen loppusumma",
+      "noteHint": "Lisää sisäinen muistiinpano muokkaukselle",
+      "sendNotification": "Lähetä ilmoitus",
+      "sendNotificationHint": "Ilmoita asiakkaalle tästä tilauksen muokkauksesta.",
+      "cancelSuccessToast": "Tilauksen muokkaus peruutettiin",
+      "createSuccessToast": "Tilauksen muokkauspyyntö luotiin",
+      "activeChangeError": "Tilauksella on jo aktiivinen muutos (palautus, reklamaatio, vaihto jne.). Viimeistele tai peruuta muutos ennen tilauksen muokkaamista.",
+      "panel": {
+        "title": "Tilauksen muokkaus pyydetty",
+        "titlePending": "Tilauksen muokkaus odottaa"
+      },
+      "toast": {
+        "canceledSuccessfully": "Tilauksen muokkaus peruutettu",
+        "confirmedSuccessfully": "Tilauksen muokkaus vahvistettu"
+      },
+      "validation": {
+        "quantityLowerThanFulfillment": "Määrää ei voi asettaa pienemmäksi tai yhtä suureksi kuin toimitettu määrä"
+      }
+    },
+    "edit": {
+      "email": {
+        "title": "Muokkaa sähköpostia",
+        "requestSuccess": "Tilauksen sähköposti päivitetty: {{email}}."
+      },
+      "shippingAddress": {
+        "title": "Muokkaa toimitusosoitetta",
+        "requestSuccess": "Tilauksen toimitusosoite päivitetty."
+      },
+      "billingAddress": {
+        "title": "Muokkaa laskutusosoitetta",
+        "requestSuccess": "Tilauksen laskutusosoite päivitetty."
+      }
+    },
+    "returns": {
+      "create": "Luo palautus",
+      "confirm": "Vahvista palautus",
+      "confirmText": "Olet vahvistamassa palautuksen. Tätä toimintoa ei voi peruuttaa.",
+      "inbound": "Saapuva",
+      "outbound": "Lähtevä",
+      "sendNotification": "Lähetä ilmoitus",
+      "sendNotificationHint": "Ilmoita asiakkaalle palautuksesta.",
+      "returnTotal": "Palautus yhteensä",
+      "inboundTotal": "Saapuva yhteensä",
+      "estDifference": "Arvioitu erotus",
+      "outstandingAmount": "Avoin summa",
+      "reason": "Syy",
+      "reasonHint": "Valitse, miksi asiakas haluaa palauttaa tuotteet.",
+      "note": "Muistiinpano",
+      "noInventoryLevel": "Ei varastotasoa",
+      "noInventoryLevelDesc": "Valitulla sijainnilla ei ole varastotasoa valituille tuotteille. Palautus voidaan pyytää, mutta sitä ei voi vastaanottaa ennen kuin valitulle sijainnille on luotu varastotaso.",
+      "noteHint": "Voit kirjoittaa vapaasti, jos haluat tarkentaa jotain.",
+      "location": "Sijainti",
+      "locationHint": "Valitse sijainti, johon haluat palauttaa tuotteet.",
+      "inboundShipping": "Palautuksen toimitus",
+      "inboundShippingHint": "Valitse, mitä menetelmää haluat käyttää.",
+      "returnableQuantityLabel": "Palautettavissa oleva määrä",
+      "refundableAmountLabel": "Hyvitettävissä oleva summa",
+      "returnRequestedInfo": "{{requestedItemsCount}}x tuotteen palautus pyydetty",
+      "returnReceivedInfo": "{{requestedItemsCount}}x tuotteen palautus vastaanotettu",
+      "itemReceived": "Tuotteet vastaanotettu",
+      "returnRequested": "Palautus pyydetty",
+      "damagedItemReceived": "Vaurioituneet tuotteet vastaanotettu",
+      "damagedItemsReturned": "{{quantity}}x vaurioitunutta tuotetta palautettu",
+      "activeChangeError": "Tällä tilauksella on käynnissä oleva muutos. Viimeistele tai hylkää muutos ensin.",
+      "cancel": {
+        "title": "Peru palautus",
+        "description": "Haluatko varmasti peruuttaa palautuspyynnön?"
+      },
+      "placeholders": {
+        "noReturnShippingOptions": {
+          "title": "Palautuksen toimitusvaihtoehtoja ei löytynyt",
+          "hint": "Tälle sijainnille ei ole luotu palautuksen toimitusvaihtoehtoja. Voit luoda sellaisen kohdassa <LinkComponent>Sijainnit ja toimitus</LinkComponent>."
+        },
+        "outboundShippingOptions": {
+          "title": "Lähtevän toimituksen vaihtoehtoja ei löytynyt",
+          "hint": "Tälle sijainnille ei ole luotu lähtevän toimituksen vaihtoehtoja. Voit luoda sellaisen kohdassa <LinkComponent>Sijainnit ja toimitus</LinkComponent>."
+        }
+      },
+      "receive": {
+        "action": "Vastaanota tuotteet",
+        "receiveItems": "{{ returnType }} {{ id }}",
+        "restockAll": "Palauta kaikki varastoon",
+        "itemsLabel": "Tuotteet vastaanotettu",
+        "title": "Vastaanota tuotteet palautukselle #{{returnId}}",
+        "sendNotificationHint": "Ilmoita asiakkaalle vastaanotetusta palautuksesta.",
+        "inventoryWarning": "Huomaa, että säädämme varastotasot automaattisesti yllä antamiesi tietojen perusteella.",
+        "writeOffInputLabel": "Kuinka moni tuotteista on vaurioitunut?",
+        "toast": {
+          "success": "Palautus vastaanotettiin onnistuneesti.",
+          "errorLargeValue": "Määrä on suurempi kuin pyydetty tuotemäärä.",
+          "errorNegativeValue": "Määrä ei voi olla negatiivinen.",
+          "errorLargeDamagedValue": "Vaurioituneiden tuotteiden määrä + ehjänä vastaanotettu määrä ylittää palautuksen kokonaismäärän. Vähennä ehjien tuotteiden määrää."
+        }
+      },
+      "toast": {
+        "canceledSuccessfully": "Palautus peruutettiin onnistuneesti",
+        "confirmedSuccessfully": "Palautus vahvistettiin onnistuneesti"
+      },
+      "panel": {
+        "title": "Palautus käynnistetty",
+        "description": "Avoin palautuspyyntö odottaa valmistumista"
+      }
+    },
+    "claims": {
+      "create": "Luo reklamaatio",
+      "confirm": "Vahvista reklamaatio",
+      "confirmText": "Olet vahvistamassa reklamaation. Tätä toimintoa ei voi peruuttaa.",
+      "manage": "Hallinnoi reklamaatiota",
+      "outbound": "Lähtevä",
+      "outboundItemAdded": "{{itemsCount}}x lisätty reklamaation kautta",
+      "outboundTotal": "Lähtevä yhteensä",
+      "outboundShipping": "Lähtevä toimitus",
+      "outboundShippingHint": "Valitse, mitä menetelmää haluat käyttää.",
+      "refundAmount": "Arvioitu erotus",
+      "carryOverPromotion": "Siirrä kampanjat mukaan",
+      "carryOverPromotionHint": "Sovella tilauksen kampanjoita reklamaation tuotteisiin",
+      "carryOverPromotionTooltip": "Vain kiinteän tyypin kampanjat, joiden allokaatio on EACH, sekä prosentuaalisen tyypin kampanjat, joiden allokaatio on EACH tai ACROSS, voidaan siirtää lähteville reklamaatiotuotteille.",
+      "activeChangeError": "Tällä tilauksella on aktiivinen muutos. Viimeistele tai hylkää edellinen muutos ensin.",
+      "actions": {
+        "cancelClaim": {
+          "successToast": "Reklamaatio peruutettiin onnistuneesti."
+        }
+      },
+      "cancel": {
+        "title": "Peru reklamaatio",
+        "description": "Haluatko varmasti peruuttaa reklamaation?"
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "Tämä lista sisältää vain palautuksen toimitusvaihtoehtoja."
+      },
+      "toast": {
+        "canceledSuccessfully": "Reklamaatio peruutettiin onnistuneesti",
+        "confirmedSuccessfully": "Reklamaatio vahvistettiin onnistuneesti"
+      },
+      "panel": {
+        "title": "Reklamaatio käynnistetty",
+        "description": "Avoin reklamaatiopyyntö odottaa valmistumista"
+      }
+    },
+    "exchanges": {
+      "create": "Luo vaihto",
+      "manage": "Hallinnoi vaihtoa",
+      "confirm": "Vahvista vaihto",
+      "confirmText": "Olet vahvistamassa vaihdon. Tätä toimintoa ei voi peruuttaa.",
+      "outbound": "Lähtevä",
+      "outboundItemAdded": "{{itemsCount}}x lisätty vaihdon kautta",
+      "outboundTotal": "Lähtevä yhteensä",
+      "outboundShipping": "Lähtevä toimitus",
+      "outboundShippingHint": "Valitse, mitä menetelmää haluat käyttää.",
+      "refundAmount": "Arvioitu erotus",
+      "carryOverPromotion": "Siirrä kampanjat mukaan",
+      "carryOverPromotionHint": "Sovella tilauksen kampanjoita vaihdon tuotteisiin",
+      "carryOverPromotionTooltip": "Vain kiinteän tyypin kampanjat, joiden allokaatio on EACH, sekä prosentuaalisen tyypin kampanjat, joiden allokaatio on EACH tai ACROSS, voidaan siirtää lähteville vaihtotuotteille.",
+      "activeChangeError": "Tällä tilauksella on aktiivinen muutos. Viimeistele tai hylkää edellinen muutos ensin.",
+      "actions": {
+        "cancelExchange": {
+          "successToast": "Vaihto peruutettiin onnistuneesti."
+        }
+      },
+      "cancel": {
+        "title": "Peru vaihto",
+        "description": "Haluatko varmasti peruuttaa vaihdon?"
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "Tämä lista sisältää vain palautuksen toimitusvaihtoehtoja."
+      },
+      "toast": {
+        "canceledSuccessfully": "Vaihto peruutettiin onnistuneesti",
+        "confirmedSuccessfully": "Vaihto vahvistettiin onnistuneesti"
+      },
+      "panel": {
+        "title": "Vaihto käynnistetty",
+        "description": "Avoin vaihtopyyntö odottaa valmistumista"
+      }
+    },
+    "reservations": {
+      "allocatedLabel": "Kohdistettu",
+      "notAllocatedLabel": "Ei kohdistettu"
+    },
+    "allocateItems": {
+      "action": "Kohdista tuotteet",
+      "title": "Kohdista tilauksen tuotteet",
+      "locationDescription": "Valitse sijainti, josta haluat kohdistaa.",
+      "itemsToAllocate": "Kohdistettavat tuotteet",
+      "itemsToAllocateDesc": "Valitse kohdistettavien tuotteiden määrä",
+      "search": "Etsi tuotteita",
+      "consistsOf": "Koostuu {{num}}x varastonimikkeestä",
+      "requires": "Vaatii {{num}} per variantti",
+      "toast": {
+        "created": "Tuotteet kohdistettiin onnistuneesti",
+        "error": "Seuraavien tuotteiden kohdistaminen epäonnistui: {{items}}"
+      },
+      "error": {
+        "quantityNotAllocated": "Kohdistamattomia tuotteita on jäljellä."
+      }
+    },
+    "shipment": {
+      "title": "Merkitse toimitus lähetetyksi",
+      "trackingNumber": "Seurantanumero",
+      "trackingUrl": "Seuranta-URL",
+      "labelUrl": "Osoitelapun URL",
+      "addTracking": "Lisää seurantanumero",
+      "sendNotification": "Lähetä ilmoitus",
+      "sendNotificationHint": "Ilmoita asiakkaalle tästä lähetyksestä.",
+      "toastCreated": "Lähetys luotiin onnistuneesti."
+    },
+    "fulfillment": {
+      "cancelWarning": "Olet peruuttamassa toimituksen. Tätä toimintoa ei voi peruuttaa.",
+      "markAsDeliveredWarning": "Olet merkitsemässä toimitusta toimitetuksi. Tätä toimintoa ei voi peruuttaa.",
+      "differentOptionSelected": "Valittu toimitusvaihtoehto poikkeaa asiakkaan valitsemasta.",
+      "disabledItemTooltip": "Valitsemasi toimitusvaihtoehto ei salli tämän tuotteen toimittamista",
+      "unfulfilledItems": "Toimittamattomat tuotteet",
+      "statusLabel": "Toimituksen tila",
+      "statusTitle": "Toimituksen tila",
+      "fulfillItems": "Toimita tuotteet",
+      "awaitingFulfillmentBadge": "Odottaa toimitusta",
+      "requiresShipping": "Vaatii toimituksen",
+      "number": "Toimitus #{{number}}",
+      "itemsToFulfill": "Toimitettavat tuotteet",
+      "create": "Luo toimitus",
+      "available": "Saatavilla",
+      "inStock": "Varastossa",
+      "markAsShipped": "Merkitse lähetetyksi",
+      "markAsPickedUp": "Merkitse noudetuksi",
+      "markAsDelivered": "Merkitse toimitetuksi",
+      "itemsToFulfillDesc": "Valitse toimitettavat tuotteet ja määrät",
+      "locationDescription": "Valitse sijainti, josta haluat toimittaa tuotteet.",
+      "locationUnavailable": "Sijainti poistettu/ei saatavilla",
+      "sendNotificationHint": "Ilmoita asiakkaalle luodusta toimituksesta.",
+      "methodDescription": "Valitse eri toimitustapa kuin asiakkaan valitsema",
+      "error": {
+        "wrongQuantity": "Toimitukseen on saatavilla vain yksi tuote",
+        "wrongQuantity_one": "Toimitukseen on saatavilla vain yksi tuote",
+        "wrongQuantity_other": "Määrän tulee olla luku väliltä 1–{{number}}",
+        "noItems": "Ei toimitettavia tuotteita.",
+        "noShippingOption": "Toimitusvaihtoehto vaaditaan",
+        "noLocation": "Sijainti vaaditaan"
+      },
+      "status": {
+        "notFulfilled": "Ei toimitettu",
+        "partiallyFulfilled": "Osittain toimitettu",
+        "fulfilled": "Toimitettu",
+        "partiallyShipped": "Osittain lähetetty",
+        "shipped": "Lähetetty",
+        "delivered": "Toimitettu",
+        "partiallyDelivered": "Osittain toimitettu",
+        "partiallyReturned": "Osittain palautettu",
+        "returned": "Palautettu",
+        "canceled": "Peruutettu",
+        "requiresAction": "Vaatii toimenpiteen",
+        "awaitingPickup": "Odottaa noutoa",
+        "awaitingShipping": "Odottaa lähetystä",
+        "awaitingDelivery": "Odottaa toimitusta"
+      },
+      "toast": {
+        "created": "Toimitus luotiin onnistuneesti",
+        "canceled": "Toimitus peruutettiin onnistuneesti",
+        "fulfillmentShipped": "Jo lähetettyä toimitusta ei voi peruuttaa",
+        "fulfillmentDelivered": "Toimitus merkittiin onnistuneesti toimitetuksi",
+        "fulfillmentPickedUp": "Toimitus merkittiin onnistuneesti noudetuksi"
+      },
+      "trackingLabel": "Seuranta",
+      "shippingFromLabel": "Toimitetaan sijainnista",
+      "itemsLabel": "Tuotteet"
+    },
+    "refund": {
+      "title": "Luo hyvitys",
+      "sendNotificationHint": "Ilmoita asiakkaalle luodusta hyvityksestä.",
+      "systemPayment": "Järjestelmämaksu",
+      "systemPaymentDesc": "Yksi tai useampi maksuistasi on järjestelmämaksu. Huomaa, että Medusa ei käsittele tällaisten maksujen veloituksia ja hyvityksiä.",
+      "error": {
+        "amountToLarge": "Ei voi hyvittää enempää kuin tilauksen alkuperäinen summa.",
+        "amountNegative": "Hyvityssumman on oltava positiivinen luku.",
+        "reasonRequired": "Valitse hyvityksen syy."
+      }
+    },
+    "customer": {
+      "contactLabel": "Yhteystiedot",
+      "editEmail": "Muokkaa sähköpostia",
+      "transferOwnership": "Siirrä omistajuus",
+      "editBillingAddress": "Muokkaa laskutusosoitetta",
+      "editShippingAddress": "Muokkaa toimitusosoitetta"
+    },
+    "activity": {
+      "header": "Toiminta",
+      "showMoreActivities_one": "Näytä {{count}} tapahtuma lisää",
+      "showMoreActivities_other": "Näytä {{count}} tapahtumaa lisää",
+      "comment": {
+        "label": "Kommentti",
+        "placeholder": "Jätä kommentti",
+        "addButtonText": "Lisää kommentti",
+        "deleteButtonText": "Poista kommentti"
+      },
+      "from": "Alkaen",
+      "to": "Päättyen",
+      "events": {
+        "common": {
+          "toReturn": "Palautetaan",
+          "toSend": "Lähetetään"
+        },
+        "placed": {
+          "title": "Tilaus tehty",
+          "fromSalesChannel": "kanavasta {{salesChannel}}"
+        },
+        "canceled": {
+          "title": "Tilaus peruutettu"
+        },
+        "payment": {
+          "awaiting": "Odottaa maksua",
+          "captured": "Maksu veloitettu",
+          "canceled": "Maksu peruutettu",
+          "refunded": "Maksu hyvitetty"
+        },
+        "fulfillment": {
+          "created": "Tuotteet toimitettu",
+          "canceled": "Toimitus peruutettu",
+          "shipped": "Tuotteet lähetetty",
+          "delivered": "Tuotteet toimitettu",
+          "items_one": "{{count}} tuote",
+          "items_other": "{{count}} tuotetta"
+        },
+        "return": {
+          "created": "Palautus #{{returnId}} pyydetty",
+          "canceled": "Palautus #{{returnId}} peruutettu",
+          "received": "Palautus #{{returnId}} vastaanotettu",
+          "items_one": "{{count}} tuote palautettu",
+          "items_other": "{{count}} tuotetta palautettu"
+        },
+        "note": {
+          "comment": "Kommentti",
+          "byLine": "tekijä {{author}}"
+        },
+        "claim": {
+          "created": "Reklamaatio #{{claimId}} pyydetty",
+          "canceled": "Reklamaatio #{{claimId}} peruutettu",
+          "itemsInbound": "{{count}} tuote palautettavana",
+          "itemsOutbound": "{{count}} tuote lähetettävänä"
+        },
+        "exchange": {
+          "created": "Vaihto #{{exchangeId}} pyydetty",
+          "canceled": "Vaihto #{{exchangeId}} peruutettu",
+          "itemsInbound": "{{count}} tuote palautettavana",
+          "itemsOutbound": "{{count}} tuote lähetettävänä"
+        },
+        "edit": {
+          "requested": "Tilauksen muokkaus #{{editId}} pyydetty",
+          "confirmed": "Tilauksen muokkaus #{{editId}} vahvistettu"
+        },
+        "transfer": {
+          "requested": "Tilauksen siirto #{{transferId}} pyydetty",
+          "confirmed": "Tilauksen siirto #{{transferId}} vahvistettu",
+          "declined": "Tilauksen siirto #{{transferId}} hylätty"
+        },
+        "update_order": {
+          "shipping_address": "Toimitusosoite päivitetty",
+          "billing_address": "Laskutusosoite päivitetty",
+          "email": "Sähköposti päivitetty"
+        }
+      }
+    },
+    "fields": {
+      "displayId": "Näyttö-ID",
+      "refundableAmount": "Hyvitettävissä oleva summa",
+      "returnableQuantity": "Palautettavissa oleva määrä"
+    }
+  },
+  "draftOrders": {
+    "domain": "Tilausluonnokset",
+    "deleteWarning": "Olet poistamassa tilausluonnoksen {{id}}. Tätä toimintoa ei voi peruuttaa.",
+    "paymentLinkLabel": "Maksulinkki",
+    "cartIdLabel": "Ostoskorin ID",
+    "markAsPaid": {
+      "label": "Merkitse maksetuksi",
+      "warningTitle": "Merkitse maksetuksi",
+      "warningDescription": "Olet merkitsemässä tilausluonnosta maksetuksi. Tätä toimintoa ei voi peruuttaa, eikä maksun kerääminen ole myöhemmin mahdollista."
+    },
+    "status": {
+      "open": "Avoin",
+      "completed": "Valmis"
+    },
+    "create": {
+      "createDraftOrder": "Luo tilausluonnos",
+      "createDraftOrderHint": "Luo uusi tilausluonnos hallitaksesi tilauksen tietoja ennen sen tekemistä.",
+      "chooseRegionHint": "Valitse alue",
+      "existingItemsLabel": "Olemassa olevat tuotteet",
+      "existingItemsHint": "Lisää olemassa olevia tuotteita tilausluonnokseen.",
+      "customItemsLabel": "Mukautetut tuotteet",
+      "customItemsHint": "Lisää mukautettuja tuotteita tilausluonnokseen.",
+      "addExistingItemsAction": "Lisää olemassa olevia tuotteita",
+      "addCustomItemAction": "Lisää mukautettu tuote",
+      "noCustomItemsAddedLabel": "Mukautettuja tuotteita ei ole vielä lisätty",
+      "noExistingItemsAddedLabel": "Olemassa olevia tuotteita ei ole vielä lisätty",
+      "chooseRegionTooltip": "Valitse ensin alue",
+      "useExistingCustomerLabel": "Käytä olemassa olevaa asiakasta",
+      "addShippingMethodsAction": "Lisää toimitustavat",
+      "unitPriceOverrideLabel": "Yksikköhinnan ylikirjoitus",
+      "shippingOptionLabel": "Toimitusvaihtoehto",
+      "shippingOptionHint": "Valitse tilausluonnoksen toimitusvaihtoehto.",
+      "shippingPriceOverrideLabel": "Toimitushinnan ylikirjoitus",
+      "shippingPriceOverrideHint": "Ylikirjoita tilausluonnoksen toimitushinta.",
+      "sendNotificationLabel": "Lähetä ilmoitus",
+      "sendNotificationHint": "Lähetä ilmoitus asiakkaalle, kun tilausluonnos luodaan."
+    },
+    "list": {
+      "noRecordsMessage": "Tilausluonnoksia ei löytynyt",
+      "description": "Luo uusi tilausluonnos aloittaaksesi.",
+      "filtered": {
+        "heading": "Tuloksia ei löytynyt",
+        "description": "Yksikään tilausluonnos ei vastaa suodatinehtojasi."
+      }
+    },
+    "validation": {
+      "requiredEmailOrCustomer": "Sähköposti tai asiakas vaaditaan.",
+      "requiredItems": "Vähintään yksi tuote vaaditaan.",
+      "invalidEmail": "Sähköpostin on oltava kelvollinen sähköpostiosoite."
+    }
+  },
+  "stockLocations": {
+    "domain": "Sijainnit ja toimitus",
+    "list": {
+      "description": "Hallinnoi kauppasi varastosijainteja ja toimitusvaihtoehtoja.",
+      "noRecordsMessage": "Ei tietueita",
+      "noRecordsMessageEmpty": "Sijainteja ei löytynyt",
+      "noRecordsMessageFiltered": "Suodattimia vastaavia sijainteja ei löytynyt"
+    },
+    "create": {
+      "header": "Luo varastosijainti",
+      "hint": "Varastosijainti on fyysinen paikka, josta tuotteita varastoidaan ja toimitetaan.",
+      "successToast": "Sijainti {{name}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa varastosijaintia",
+      "viewInventory": "Näytä varasto",
+      "successToast": "Sijainti {{name}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa varastosijainnin \"{{name}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Sijainti \"{{name}}\" poistettiin onnistuneesti."
+    },
+    "fulfillmentProviders": {
+      "header": "Toimituspalveluntarjoajat",
+      "shippingOptionsTooltip": "Tämä pudotusvalikko sisältää vain tälle sijainnille käytössä olevat palveluntarjoajat. Lisää ne sijaintiin, jos pudotusvalikko on pois käytöstä.",
+      "label": "Yhdistetyt toimituspalveluntarjoajat",
+      "connectedTo": "Yhdistetty {{count}}/{{total}} toimituspalveluntarjoajaan",
+      "noProviders": "Tätä varastosijaintia ei ole yhdistetty mihinkään toimituspalveluntarjoajaan.",
+      "action": "Yhdistä palveluntarjoajia",
+      "successToast": "Varastosijainnin toimituspalveluntarjoajat päivitettiin onnistuneesti."
+    },
+    "fulfillmentSets": {
+      "pickup": {
+        "header": "Nouto"
+      },
+      "shipping": {
+        "header": "Toimitus"
+      },
+      "disable": {
+        "confirmation": "Haluatko varmasti poistaa käytöstä kohteen \"{{name}}\"? Tämä poistaa kaikki siihen liittyvät palvelualueet ja toimitusvaihtoehdot eikä sitä voi peruuttaa.",
+        "pickup": "Nouto poistettiin onnistuneesti käytöstä.",
+        "shipping": "Toimitus poistettiin onnistuneesti käytöstä."
+      },
+      "enable": {
+        "pickup": "Nouto otettiin onnistuneesti käyttöön.",
+        "shipping": "Toimitus otettiin onnistuneesti käyttöön."
+      }
+    },
+    "sidebar": {
+      "header": "Toimitusasetukset",
+      "shippingProfiles": {
+        "label": "Toimitusprofiilit",
+        "description": "Ryhmittele tuotteet toimitusvaatimusten mukaan"
+      },
+      "shippingOptionTypes": {
+        "label": "Toimitusvaihtoehtojen tyypit",
+        "description": "Ryhmittele toimitusvaihtoehdot tyypeittäin"
+      }
+    },
+    "salesChannels": {
+      "header": "Myyntikanavat",
+      "hint": "Hallinnoi tähän sijaintiin yhdistettyjä myyntikanavia.",
+      "label": "Yhdistetyt myyntikanavat",
+      "connectedTo": "Yhdistetty {{count}}/{{total}} myyntikanavaan",
+      "noChannels": "Sijaintia ei ole yhdistetty mihinkään myyntikanavaan.",
+      "action": "Yhdistä myyntikanavia",
+      "successToast": "Myyntikanavat päivitettiin onnistuneesti."
+    },
+    "pickupOptions": {
+      "edit": {
+        "header": "Muokkaa noutovaihtoehtoa"
+      }
+    },
+    "shippingOptions": {
+      "create": {
+        "shipping": {
+          "header": "Luo toimitusvaihtoehto alueelle {{zone}}",
+          "hint": "Luo uusi toimitusvaihtoehto määrittääksesi, miten tuotteet toimitetaan tästä sijainnista.",
+          "label": "Toimitusvaihtoehdot",
+          "successToast": "Toimitusvaihtoehto {{name}} luotiin onnistuneesti."
+        },
+        "pickup": {
+          "header": "Luo noutovaihtoehto alueelle {{zone}}",
+          "hint": "Luo uusi noutovaihtoehto määrittääksesi, miten tuotteet noudetaan tästä sijainnista.",
+          "label": "Noutovaihtoehdot",
+          "successToast": "Noutovaihtoehto {{name}} luotiin onnistuneesti."
+        },
+        "returns": {
+          "header": "Luo palautusvaihtoehto alueelle {{zone}}",
+          "hint": "Luo uusi palautusvaihtoehto määrittääksesi, miten tuotteet palautetaan tähän sijaintiin.",
+          "label": "Palautusvaihtoehdot",
+          "successToast": "Palautusvaihtoehto {{name}} luotiin onnistuneesti."
+        },
+        "tabs": {
+          "details": "Tiedot",
+          "prices": "Hinnat"
+        },
+        "action": "Luo vaihtoehto"
+      },
+      "delete": {
+        "confirmation": "Olet poistamassa toimitusvaihtoehdon \"{{name}}\". Tätä toimintoa ei voi peruuttaa.",
+        "successToast": "Toimitusvaihtoehto {{name}} poistettiin onnistuneesti."
+      },
+      "edit": {
+        "header": "Muokkaa toimitusvaihtoehtoa",
+        "action": "Muokkaa vaihtoehtoa",
+        "successToast": "Toimitusvaihtoehto {{name}} päivitettiin onnistuneesti."
+      },
+      "pricing": {
+        "action": "Muokkaa hintoja"
+      },
+      "conditionalPrices": {
+        "header": "Ehdolliset hinnat: {{name}}",
+        "description": "Hallinnoi tämän toimitusvaihtoehdon ehdollisia hintoja ostoskorin tuotesumman perusteella.",
+        "attributes": {
+          "cartItemTotal": "Ostoskorin tuotesumma"
+        },
+        "summaries": {
+          "range": "Jos <0>{{attribute}}</0> on välillä <1>{{gte}}</1>–<2>{{lte}}</2>",
+          "greaterThan": "Jos <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Jos <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+        },
+        "actions": {
+          "addPrice": "Lisää hinta",
+          "manageConditionalPrices": "Hallinnoi ehdollisia hintoja"
+        },
+        "rules": {
+          "amount": "Toimitusvaihtoehdon hinta",
+          "gte": "Ostoskorin tuotesumman minimi",
+          "lte": "Ostoskorin tuotesumman maksimi"
+        },
+        "customRules": {
+          "label": "Mukautetut säännöt",
+          "tooltip": "Tällä ehdollisella hinnalla on sääntöjä, joita ei voi hallinnoida hallintapaneelissa.",
+          "eq": "Ostoskorin tuotesumman on oltava täsmälleen",
+          "gt": "Ostoskorin tuotesumman on oltava suurempi kuin",
+          "lt": "Ostoskorin tuotesumman on oltava pienempi kuin"
+        },
+        "errors": {
+          "amountRequired": "Toimitusvaihtoehdon hinta vaaditaan",
+          "minOrMaxRequired": "Vähintään joko ostoskorin tuotesumman minimi tai maksimi on annettava",
+          "minGreaterThanMax": "Ostoskorin tuotesumman minimin on oltava pienempi tai yhtä suuri kuin maksimin",
+          "duplicateAmount": "Toimitusvaihtoehdon hinnan on oltava yksilöllinen jokaiselle ehdolle",
+          "overlappingConditions": "Ehtojen on oltava yksilöllisiä kaikkien hintasääntöjen kesken"
+        }
+      },
+      "fields": {
+        "count": {
+          "shipping_one": "{{count}} toimitusvaihtoehto",
+          "shipping_other": "{{count}} toimitusvaihtoehtoa",
+          "pickup_one": "{{count}} noutovaihtoehto",
+          "pickup_other": "{{count}} noutovaihtoehtoa",
+          "returns_one": "{{count}} palautusvaihtoehto",
+          "returns_other": "{{count}} palautusvaihtoehtoa"
+        },
+        "priceType": {
+          "label": "Hintatyyppi",
+          "options": {
+            "fixed": {
+              "label": "Kiinteä",
+              "hint": "Toimitusvaihtoehdon hinta on kiinteä eikä muutu tilauksen sisällön perusteella."
+            },
+            "calculated": {
+              "label": "Laskettu",
+              "hint": "Toimituspalveluntarjoaja laskee toimitusvaihtoehdon hinnan kassalla."
+            }
+          }
+        },
+        "enableInStore": {
+          "label": "Ota käyttöön kaupassa",
+          "hint": "Voivatko asiakkaat käyttää tätä vaihtoehtoa kassalla."
+        },
+        "provider": "Toimituspalveluntarjoaja",
+        "profile": "Toimitusprofiili",
+        "type": "Toimitusvaihtoehdon tyyppi",
+        "fulfillmentOption": "Toimitusvaihtoehto"
+      }
+    },
+    "serviceZones": {
+      "create": {
+        "headerPickup": "Luo palvelualue noudolle sijainnista {{location}}",
+        "headerShipping": "Luo palvelualue toimitukselle sijainnista {{location}}",
+        "action": "Luo palvelualue",
+        "successToast": "Palvelualue {{name}} luotiin onnistuneesti."
+      },
+      "edit": {
+        "header": "Muokkaa palvelualuetta",
+        "successToast": "Palvelualue {{name}} päivitettiin onnistuneesti."
+      },
+      "delete": {
+        "confirmation": "Olet poistamassa palvelualueen \"{{name}}\". Tätä toimintoa ei voi peruuttaa.",
+        "successToast": "Palvelualue {{name}} poistettiin onnistuneesti."
+      },
+      "manageAreas": {
+        "header": "Hallinnoi alueita: {{name}}",
+        "action": "Hallinnoi alueita",
+        "label": "Alueet",
+        "hint": "Valitse maantieteelliset alueet, jotka palvelualue kattaa.",
+        "successToast": "Alueen {{name}} alueet päivitettiin onnistuneesti."
+      },
+      "fields": {
+        "noRecords": "Ei palvelualueita, joihin voisi lisätä toimitusvaihtoehtoja.",
+        "tip": "Palvelualue on kokoelma maantieteellisiä vyöhykkeitä tai alueita. Sitä käytetään rajaamaan käytettävissä olevat toimitusvaihtoehdot tiettyihin sijainteihin."
+      }
+    }
+  },
+  "shippingProfile": {
+    "domain": "Toimitusprofiilit",
+    "subtitle": "Ryhmittele samanlaisia toimitusvaatimuksia omaavat tuotteet profiileihin.",
+    "create": {
+      "header": "Luo toimitusprofiili",
+      "hint": "Luo uusi toimitusprofiili ryhmitelläksesi samanlaisia toimitusvaatimuksia omaavia tuotteita.",
+      "successToast": "Toimitusprofiili {{name}} luotiin onnistuneesti."
+    },
+    "delete": {
+      "title": "Poista toimitusprofiili",
+      "description": "Olet poistamassa toimitusprofiilin {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Toimitusprofiili {{name}} poistettiin onnistuneesti."
+    },
+    "tooltip": {
+      "type": "Anna toimitusprofiilin tyyppi, esimerkiksi: Raskas, Ylikokoinen, Vain rahti jne."
+    }
+  },
+  "taxRegions": {
+    "domain": "Veroalueet",
+    "list": {
+      "hint": "Hallinnoi, mitä veloitat asiakkailtasi, kun he ostavat eri maista ja alueilta."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa veroalueen. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Veroalue poistettiin onnistuneesti."
+    },
+    "create": {
+      "header": "Luo veroalue",
+      "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle maalle.",
+      "errors": {
+        "missingProvider": "Palveluntarjoaja vaaditaan veroaluetta luotaessa.",
+        "missingCountry": "Maa vaaditaan veroaluetta luotaessa."
+      },
+      "successToast": "Veroalue luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa veroaluetta",
+      "hint": "Muokkaa veroalueen tietoja.",
+      "successToast": "Veroalue päivitettiin onnistuneesti."
+    },
+    "province": {
+      "header": "Maakunnat",
+      "create": {
+        "header": "Luo maakunnan veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle maakunnalle."
+      }
+    },
+    "provider": {
+      "header": "Veropalveluntarjoaja"
+    },
+    "state": {
+      "header": "Osavaltiot",
+      "create": {
+        "header": "Luo osavaltion veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle osavaltiolle."
+      }
+    },
+    "stateOrTerritory": {
+      "header": "Osavaltiot tai territoriot",
+      "create": {
+        "header": "Luo osavaltion/territorion veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle osavaltiolle/territoriolle."
+      }
+    },
+    "county": {
+      "header": "Piirikunnat",
+      "create": {
+        "header": "Luo piirikunnan veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle piirikunnalle."
+      }
+    },
+    "region": {
+      "header": "Alueet",
+      "create": {
+        "header": "Luo alueen veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle alueelle."
+      }
+    },
+    "department": {
+      "header": "Departementit",
+      "create": {
+        "header": "Luo departementin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle departementille."
+      }
+    },
+    "territory": {
+      "header": "Territoriot",
+      "create": {
+        "header": "Luo territorion veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle territoriolle."
+      }
+    },
+    "prefecture": {
+      "header": "Prefektuurit",
+      "create": {
+        "header": "Luo prefektuurin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle prefektuurille."
+      }
+    },
+    "district": {
+      "header": "Piirit",
+      "create": {
+        "header": "Luo piirin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle piirille."
+      }
+    },
+    "governorate": {
+      "header": "Kuvernementit",
+      "create": {
+        "header": "Luo kuvernementin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle kuvernementille."
+      }
+    },
+    "canton": {
+      "header": "Kantonit",
+      "create": {
+        "header": "Luo kantonin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle kantonille."
+      }
+    },
+    "emirate": {
+      "header": "Emiraatit",
+      "create": {
+        "header": "Luo emiraatin veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle emiraatille."
+      }
+    },
+    "sublevel": {
+      "header": "Alitasot",
+      "create": {
+        "header": "Luo alitason veroalue",
+        "hint": "Luo uusi veroalue määrittääksesi verokannat tietylle alitasolle."
+      }
+    },
+    "taxOverrides": {
+      "header": "Ylikirjoitukset",
+      "create": {
+        "header": "Luo ylikirjoitus",
+        "hint": "Luo verokanta, joka ylikirjoittaa oletusverokannat valituille ehdoille."
+      },
+      "edit": {
+        "header": "Muokkaa ylikirjoitusta",
+        "hint": "Muokkaa verokantaa, joka ylikirjoittaa oletusverokannat valituille ehdoille."
+      }
+    },
+    "taxRates": {
+      "create": {
+        "header": "Luo verokanta",
+        "hint": "Luo uusi verokanta määrittääksesi alueen verokannan.",
+        "successToast": "Verokanta luotiin onnistuneesti."
+      },
+      "edit": {
+        "header": "Muokkaa verokantaa",
+        "hint": "Muokkaa verokantaa määrittääksesi alueen verokannan.",
+        "successToast": "Verokanta päivitettiin onnistuneesti."
+      },
+      "delete": {
+        "confirmation": "Olet poistamassa verokannan \"{{name}}\". Tätä toimintoa ei voi peruuttaa.",
+        "successToast": "Verokanta poistettiin onnistuneesti."
+      }
+    },
+    "fields": {
+      "isCombinable": {
+        "label": "Yhdistettävissä",
+        "hint": "Voidaanko tämä verokanta yhdistää veroalueen oletuskantaan.",
+        "true": "Yhdistettävissä",
+        "false": "Ei yhdistettävissä"
+      },
+      "defaultTaxRate": {
+        "label": "Oletusverokanta",
+        "tooltip": "Tämän alueen oletusverokanta. Esimerkki on maan tai alueen vakio-ALV-kanta.",
+        "action": "Luo oletusverokanta"
+      },
+      "taxRate": "Verokanta",
+      "taxCode": "Verokoodi",
+      "taxProvider": "Veropalveluntarjoaja",
+      "targets": {
+        "label": "Kohteet",
+        "hint": "Valitse kohteet, joihin tätä verokantaa sovelletaan.",
+        "options": {
+          "product": "Tuotteet",
+          "productCollection": "Tuotekokoelmat",
+          "productTag": "Tuotetunnisteet",
+          "productType": "Tuotetyypit",
+          "customerGroup": "Asiakasryhmät",
+          "shippingOption": "Toimitusvaihtoehdot"
+        },
+        "operators": {
+          "in": "kuuluu",
+          "on": "kohteessa",
+          "and": "ja"
+        },
+        "placeholders": {
+          "product": "Etsi tuotteita",
+          "productCollection": "Etsi tuotekokoelmia",
+          "productTag": "Etsi tuotetunnisteita",
+          "productType": "Etsi tuotetyyppejä",
+          "customerGroup": "Etsi asiakasryhmiä",
+          "shippingOption": "Etsi toimitusvaihtoehtoja"
+        },
+        "tags": {
+          "product": "Tuote",
+          "productCollection": "Tuotekokoelma",
+          "productTag": "Tuotetunniste",
+          "productType": "Tuotetyyppi",
+          "customerGroup": "Asiakasryhmä",
+          "shippingOption": "Toimitusvaihtoehto"
+        },
+        "modal": {
+          "header": "Lisää kohteita"
+        },
+        "values_one": "{{count}} arvo",
+        "values_other": "{{count}} arvoa",
+        "numberOfTargets_one": "{{count}} kohde",
+        "numberOfTargets_other": "{{count}} kohdetta",
+        "additionalValues_one": "ja {{count}} arvo lisää",
+        "additionalValues_other": "ja {{count}} arvoa lisää",
+        "action": "Lisää kohde"
+      },
+      "sublevels": {
+        "labels": {
+          "province": "Maakunta",
+          "state": "Osavaltio",
+          "region": "Alue",
+          "stateOrTerritory": "Osavaltio/territorio",
+          "department": "Departementti",
+          "county": "Piirikunta",
+          "territory": "Territorio",
+          "prefecture": "Prefektuuri",
+          "district": "Piiri",
+          "governorate": "Kuvernementti",
+          "emirate": "Emiraatti",
+          "canton": "Kantoni",
+          "sublevel": "Alitason koodi"
+        },
+        "placeholders": {
+          "province": "Valitse maakunta",
+          "state": "Valitse osavaltio",
+          "region": "Valitse alue",
+          "stateOrTerritory": "Valitse osavaltio/territorio",
+          "department": "Valitse departementti",
+          "county": "Valitse piirikunta",
+          "territory": "Valitse territorio",
+          "prefecture": "Valitse prefektuuri",
+          "district": "Valitse piiri",
+          "governorate": "Valitse kuvernementti",
+          "emirate": "Valitse emiraatti",
+          "canton": "Valitse kantoni"
+        },
+        "tooltips": {
+          "sublevel": "Anna alitason veroalueen ISO 3166-2 -koodi.",
+          "notPartOfCountry": "{{province}} ei näytä kuuluvan maahan {{country}}. Tarkista, että tämä on oikein."
+        },
+        "alert": {
+          "header": "Alitason alueet on poistettu käytöstä tällä veroalueella",
+          "description": "Alitason alueet on oletuksena poistettu käytöstä tällä alueella. Voit ottaa ne käyttöön luodaksesi alitason alueita, kuten maakuntia, osavaltioita tai territorioita.",
+          "action": "Ota alitason alueet käyttöön"
+        }
+      },
+      "noDefaultRate": {
+        "label": "Ei oletuskantaa",
+        "tooltip": "Tällä veroalueella ei ole oletusverokantaa. Jos käytössä on vakiokanta, kuten maan ALV, lisää se tälle alueelle."
+      }
+    }
+  },
+  "promotions": {
+    "domain": "Kampanjat",
+    "list": {
+      "empty": {
+        "heading": "Ei kampanjoita",
+        "description": "Näytettäviä kampanjoita ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään kampanja ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "sections": {
+      "details": "Kampanjan tiedot"
+    },
+    "tabs": {
+      "template": "Tyyppi",
+      "details": "Tiedot",
+      "campaign": "Kampanjajakso"
+    },
+    "fields": {
+      "type": "Tyyppi",
+      "value_type": "Arvotyyppi",
+      "value": "Arvo",
+      "campaign": "Kampanjajakso",
+      "method": "Menetelmä",
+      "allocation": "Kohdistus",
+      "allocationTooltip": "Each-asetus rajoittaa määrän per tuote, kun taas Once-asetus rajoittaa määrän koko ostoskorin osalta",
+      "addCondition": "Lisää ehto",
+      "clearAll": "Tyhjennä kaikki",
+      "taxInclusive": "Sisältää veron",
+      "usageLimit": "Käyttöraja",
+      "usage": "Käyttö",
+      "amount": {
+        "tooltip": "Valitse valuuttakoodi ottaaksesi summan asettamisen käyttöön"
+      },
+      "conditions": {
+        "rules": {
+          "title": "Kuka voi käyttää tätä koodia?",
+          "description": "Mikä asiakas saa käyttää kampanjakoodia? Kampanjakoodia voivat käyttää kaikki asiakkaat, jos tätä ei muuteta."
+        },
+        "target-rules": {
+          "order": {
+            "title": "Mihin tuotteisiin kampanjaa sovelletaan?",
+            "description": "Kampanjaa sovelletaan tuotteisiin, jotka täyttävät seuraavat ehdot."
+          },
+          "shipping_methods": {
+            "title": "Mihin toimitustapoihin kampanjaa sovelletaan?",
+            "description": "Kampanjaa sovelletaan toimitustapoihin, jotka täyttävät seuraavat ehdot."
+          },
+          "items": {
+            "title": "Mihin tuotteisiin kampanjaa sovelletaan?",
+            "description": "Kampanjaa sovelletaan tuotteisiin, jotka täyttävät seuraavat ehdot."
+          }
+        },
+        "buy-rules": {
+          "title": "Mitä ostoskorissa täytyy olla kampanjan avautumiseksi?",
+          "description": "Jos nämä ehdot täyttyvät, otamme kampanjan käyttöön kohdetuotteille."
+        }
+      }
+    },
+    "tooltips": {
+      "campaignType": "Valuuttakoodi on valittava kampanjassa kulutusbudjetin asettamiseksi."
+    },
+    "errors": {
+      "requiredField": "Pakollinen kenttä",
+      "promotionTabError": "Korjaa virheet kampanjavälilehdellä ennen jatkamista"
+    },
+    "toasts": {
+      "promotionCreateSuccess": "Kampanja ({{code}}) luotiin onnistuneesti."
+    },
+    "create": {},
+    "edit": {
+      "title": "Muokkaa kampanjan tietoja",
+      "rules": {
+        "title": "Muokkaa käyttöehtoja"
+      },
+      "target-rules": {
+        "title": "Muokkaa tuoteehtoja"
+      },
+      "buy-rules": {
+        "title": "Muokkaa osto-ehtoja"
+      }
+    },
+    "campaign": {
+      "header": "Kampanjajakso",
+      "edit": {
+        "header": "Muokkaa kampanjajaksoa",
+        "successToast": "Kampanjan kampanjajakso päivitettiin onnistuneesti."
+      },
+      "actions": {
+        "goToCampaign": "Siirry kampanjajaksoon"
+      }
+    },
+    "campaign_currency": {
+      "tooltip": "Tämä on kampanjan valuutta. Muuta se Tiedot-välilehdeltä."
+    },
+    "form": {
+      "required": "Pakollinen",
+      "and": "JA",
+      "selectAttribute": "Valitse ominaisuus",
+      "campaign": {
+        "existing": {
+          "title": "Olemassa oleva kampanjajakso",
+          "description": "Lisää kampanja olemassa olevaan kampanjajaksoon.",
+          "placeholder": {
+            "title": "Ei olemassa olevia kampanjajaksoja",
+            "desc": "Voit luoda sellaisen seurataksesi useita kampanjoita ja asettaaksesi budjettirajoja."
+          }
+        },
+        "new": {
+          "title": "Uusi kampanjajakso",
+          "description": "Luo uusi kampanjajakso tälle kampanjalle."
+        },
+        "none": {
+          "title": "Ilman kampanjajaksoa",
+          "description": "Jatka liittämättä kampanjaa mihinkään kampanjajaksoon"
+        }
+      },
+      "taxInclusive": {
+        "title": "Sisältääkö kampanja veron?",
+        "description": "Ota tämä käyttöön soveltaaksesi kampanjaa verojen jälkeen"
+      },
+      "status": {
+        "label": "Tila",
+        "draft": {
+          "title": "Luonnos",
+          "description": "Asiakkaat eivät voi vielä käyttää koodia"
+        },
+        "active": {
+          "title": "Aktiivinen",
+          "description": "Asiakkaat voivat käyttää koodia"
+        },
+        "inactive": {
+          "title": "Ei aktiivinen",
+          "description": "Asiakkaat eivät voi enää käyttää koodia"
+        }
+      },
+      "method": {
+        "label": "Menetelmä",
+        "code": {
+          "title": "Kampanjakoodi",
+          "description": "Asiakkaiden on syötettävä tämä koodi kassalla"
+        },
+        "automatic": {
+          "title": "Automaattinen",
+          "description": "Asiakkaat näkevät tämän kampanjan kassalla"
+        }
+      },
+      "max_quantity": {
+        "title": "Enimmäismäärä",
+        "description": "Tämän kampanjan koskema enimmäismäärä tuotteita."
+      },
+      "type": {
+        "standard": {
+          "title": "Vakio",
+          "description": "Tavallinen kampanja"
+        },
+        "buyget": {
+          "title": "Osta-saa",
+          "description": "Osta X, saa Y -kampanja"
+        }
+      },
+      "allocation": {
+        "each": {
+          "title": "Jokainen",
+          "description": "Soveltaa arvoa jokaiseen tuotteeseen"
+        },
+        "across": {
+          "title": "Kaikki yhteensä",
+          "description": "Soveltaa arvoa tuotteisiin yhteensä"
+        },
+        "once": {
+          "title": "Kerran",
+          "description": "Soveltaa arvoa rajattuun määrään tuotteita"
+        }
+      },
+      "code": {
+        "title": "Koodi",
+        "description": "Koodi, jonka asiakkaasi syöttävät kassalla."
+      },
+      "value": {
+        "title": "Kampanjan arvo",
+        "invalid": "Virheellinen kampanja-arvo"
+      },
+      "value_type": {
+        "fixed": {
+          "title": "Kiinteä summa",
+          "description": "Alennettava summa. esim. 100"
+        },
+        "percentage": {
+          "title": "Prosentti",
+          "description": "Summasta alennettava prosenttiosuus. esim. 8 %"
+        }
+      },
+      "limit": {
+        "title": "Käyttöraja",
+        "description": "Kuinka monta kertaa tätä kampanjaa voidaan käyttää yhteensä kaikissa tilauksissa. Jätä tyhjäksi rajoittamattomaan käyttöön."
+      }
+    },
+    "templates": {
+      "amount_off_products": {
+        "title": "Summa-alennus tuotteista",
+        "description": "Alenna tiettyjä tuotteita tai tuotekokoelmaa"
+      },
+      "amount_off_order": {
+        "title": "Summa-alennus tilauksesta",
+        "description": "Alentaa tilauksen kokonaissummaa"
+      },
+      "percentage_off_product": {
+        "title": "Prosenttialennus tuotteesta",
+        "description": "Alentaa prosentin verran valituista tuotteista"
+      },
+      "percentage_off_order": {
+        "title": "Prosenttialennus tilauksesta",
+        "description": "Alentaa prosentin verran tilauksen kokonaissummasta"
+      },
+      "buy_get": {
+        "title": "Osta X, saa Y",
+        "description": "Osta X tuotetta, saa Y tuotetta"
+      },
+      "shipping_discount": {
+        "title": "Ilmainen toimitus",
+        "description": "Soveltaa 100 % alennuksen toimituskuluihin"
+      }
+    },
+    "deleteWarning": "Olet poistamassa kampanjan {{code}}. Tätä toimintoa ei voi peruuttaa.",
+    "createPromotionTitle": "Luo kampanja",
+    "type": "Kampanjan tyyppi",
+    "conditions": {
+      "add": "Lisää ehto",
+      "list": {
+        "noRecordsMessage": "Lisää ehto rajataksesi, mihin tuotteisiin kampanja soveltuu."
+      }
+    }
+  },
+  "campaigns": {
+    "domain": "Kampanjajaksot",
+    "list": {
+      "empty": {
+        "heading": "Ei kampanjajaksoja",
+        "description": "Näytettäviä kampanjajaksoja ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään kampanjajakso ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "details": "Kampanjajakson tiedot",
+    "status": {
+      "active": "Aktiivinen",
+      "expired": "Vanhentunut",
+      "scheduled": "Ajastettu"
+    },
+    "delete": {
+      "title": "Oletko varma?",
+      "description": "Olet poistamassa kampanjajakson '{{name}}'. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Kampanjajakso '{{name}}' poistettiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa kampanjajaksoa",
+      "description": "Muokkaa kampanjajakson tietoja.",
+      "successToast": "Kampanjajakso '{{name}}' päivitettiin onnistuneesti."
+    },
+    "configuration": {
+      "header": "Asetukset",
+      "edit": {
+        "header": "Muokkaa kampanjajakson asetuksia",
+        "description": "Muokkaa kampanjajakson asetuksia.",
+        "successToast": "Kampanjajakson asetukset päivitettiin onnistuneesti."
+      }
+    },
+    "create": {
+      "title": "Luo kampanjajakso",
+      "description": "Luo kampanjajakso.",
+      "hint": "Luo kampanjajakso.",
+      "header": "Luo kampanjajakso",
+      "successToast": "Kampanjajakso '{{name}}' luotiin onnistuneesti."
+    },
+    "fields": {
+      "name": "Nimi",
+      "identifier": "Tunniste",
+      "start_date": "Alkupäivä",
+      "end_date": "Loppupäivä",
+      "total_spend": "Käytetty budjetti",
+      "total_used": "Käytetty budjetti",
+      "totalUsedByAttribute": "Käytetty yhteensä",
+      "budget_limit": "Budjettiraja",
+      "campaign_id": {
+        "hint": "Pois käytöstä olevilla kampanjajaksoilla on budjetti eri valuutassa kuin kampanjalla."
+      }
+    },
+    "budget": {
+      "attribute": {
+        "customer_id": "asiakas",
+        "customer_email": "sähköposti"
+      },
+      "create": {
+        "hint": "Luo budjetti kampanjajaksolle.",
+        "header": "Kampanjajakson budjetti"
+      },
+      "details": "Kampanjajakson budjetti",
+      "fields": {
+        "type": "Tyyppi",
+        "currency": "Valuutta",
+        "limit": "Raja",
+        "used": "Käytetty",
+        "budgetAttribute": "Rajoita käyttöä per",
+        "budgetAttributeTooltip": "Määritä, kuinka monta kertaa kampanjaa voi käyttää kukin asiakas tai sähköposti.",
+        "totalUsedByAttribute": "Budjettiraja per: {{attribute}}",
+        "totalUsedByAttributeCustomerId": "Budjettiraja per asiakas",
+        "totalUsedByAttributeEmail": "Budjettiraja per sähköposti"
+      },
+      "type": {
+        "spend": {
+          "title": "Kulutus",
+          "description": "Aseta raja kaikkien kampanjan käyttökertojen yhteenlasketulle alennussummalle."
+        },
+        "usage": {
+          "title": "Käyttö",
+          "description": "Aseta raja sille, kuinka monta kertaa kampanjaa voi käyttää."
+        },
+        "useByAttribute": {
+          "title": "Käyttö ominaisuuden mukaan (asiakas-ID, sähköposti jne.)",
+          "titleCustomerId": "Käyttö per asiakas",
+          "titleEmail": "Käyttö per sähköposti",
+          "description": "Aseta raja sille, kuinka monta kertaa kampanjaa voi käyttää tietty ominaisuuden arvo."
+        }
+      },
+      "edit": {
+        "header": "Muokkaa kampanjajakson budjettia"
+      }
+    },
+    "promotions": {
+      "remove": {
+        "title": "Poista kampanja kampanjajaksosta",
+        "description": "Olet poistamassa {{count}} kampanjaa kampanjajaksosta. Tätä toimintoa ei voi peruuttaa."
+      },
+      "alreadyAdded": "Tämä kampanja on jo lisätty kampanjajaksoon.",
+      "alreadyAddedDiffCampaign": "Tämä kampanja on jo lisätty toiseen kampanjajaksoon ({{name}}).",
+      "currencyMismatch": "Kampanjan ja kampanjajakson valuutat eivät täsmää",
+      "toast": {
+        "success": "{{count}} kampanjaa lisättiin onnistuneesti kampanjajaksoon"
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Luo ensin kampanja."
+        }
+      },
+      "list": {
+        "noRecordsMessage": "Kampanjajaksossa ei ole kampanjoita."
+      }
+    },
+    "deleteCampaignWarning": "Olet poistamassa kampanjajakson {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
+  },
+  "priceLists": {
+    "domain": "Hinnastot",
+    "subtitle": "Luo alennuksia tai ylikirjoita hintoja tietyille ehdoille.",
+    "list": {
+      "empty": {
+        "heading": "Ei hinnastoja",
+        "description": "Näytettäviä hinnastoja ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään hinnasto ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa hinnaston \"{{title}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Hinnasto \"{{title}}\" poistettiin onnistuneesti."
+    },
+    "create": {
+      "header": "Luo hinnasto",
+      "subheader": "Luo uusi hinnasto hallitaksesi tuotteidesi hintoja.",
+      "tabs": {
+        "details": "Tiedot",
+        "products": "Tuotteet",
+        "prices": "Hinnat"
+      },
+      "successToast": "Hinnasto {{title}} luotiin onnistuneesti.",
+      "products": {
+        "list": {
+          "noRecordsMessage": "Luo ensin tuote."
+        }
+      }
+    },
+    "edit": {
+      "header": "Muokkaa hinnastoa",
+      "successToast": "Hinnasto {{title}} päivitettiin onnistuneesti."
+    },
+    "configuration": {
+      "header": "Asetukset",
+      "edit": {
+        "header": "Muokkaa hinnaston asetuksia",
+        "description": "Muokkaa hinnaston asetuksia.",
+        "successToast": "Hinnaston asetukset päivitettiin onnistuneesti."
+      }
+    },
+    "products": {
+      "header": "Tuotteet",
+      "actions": {
+        "addProducts": "Lisää tuotteita",
+        "editPrices": "Muokkaa hintoja"
+      },
+      "delete": {
+        "confirmation_one": "Olet poistamassa {{count}} tuotteen hinnat hinnastosta. Tätä toimintoa ei voi peruuttaa.",
+        "confirmation_other": "Olet poistamassa {{count}} tuotteen hinnat hinnastosta. Tätä toimintoa ei voi peruuttaa.",
+        "successToast_one": "Poistettiin {{count}} tuotteen hinnat onnistuneesti.",
+        "successToast_other": "Poistettiin {{count}} tuotteen hinnat onnistuneesti."
+      },
+      "add": {
+        "successToast": "Hinnat lisättiin hinnastoon onnistuneesti."
+      },
+      "edit": {
+        "successToast": "Hinnat päivitettiin onnistuneesti."
+      }
+    },
+    "quantityPricing": {
+      "header": "Ehdolliset hinnat: {{name}}",
+      "description": "Hallinnoi tämän tuotevariantin ehdollisia hintoja ostoskorin määrien perusteella.",
+      "actions": {
+        "addPrice": "Lisää hinta"
+      },
+      "rules": {
+        "amount": "Tuotevariantin hinta",
+        "minQuantity": "Ostoskorin vähimmäismäärä",
+        "maxQuantity": "Ostoskorin enimmäismäärä",
+        "qty": "MÄÄRÄ",
+        "allQuantities": "Kaikki määrät",
+        "min": "Min",
+        "max": "Maks"
+      },
+      "attributes": {
+        "quantity": "Ostoskorin määrä"
+      },
+      "summaries": {
+        "range": "Jos <0>{{attribute}}</0> on välillä <1>{{min}}</1>–<2>{{max}}</2>",
+        "greaterThan": "Jos <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "Jos <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Vähimmäismäärä ei voi olla suurempi kuin enimmäismäärä",
+        "mustBePositive": "Määrän on oltava vähintään 1"
+      }
+    },
+    "fields": {
+      "priceOverrides": {
+        "label": "Hinnan ylikirjoitukset",
+        "header": "Hinnan ylikirjoitukset"
+      },
+      "status": {
+        "label": "Tila",
+        "options": {
+          "active": "Aktiivinen",
+          "draft": "Luonnos",
+          "expired": "Vanhentunut",
+          "scheduled": "Ajastettu"
+        }
+      },
+      "type": {
+        "label": "Tyyppi",
+        "hint": "Valitse luotavan hinnaston tyyppi.",
+        "options": {
+          "sale": {
+            "label": "Alennusmyynti",
+            "description": "Alennusmyyntihinnat ovat tuotteiden tilapäisiä hinnanmuutoksia."
+          },
+          "override": {
+            "label": "Ylikirjoitus",
+            "description": "Ylikirjoituksia käytetään yleensä asiakaskohtaisten hintojen luomiseen."
+          }
+        }
+      },
+      "startsAt": {
+        "label": "Onko hinnastolla alkupäivä?",
+        "hint": "Ajasta hinnasto aktivoitumaan tulevaisuudessa."
+      },
+      "endsAt": {
+        "label": "Onko hinnastolla vanhenemispäivä?",
+        "hint": "Ajasta hinnasto deaktivoitumaan tulevaisuudessa."
+      },
+      "customerAvailability": {
+        "header": "Valitse asiakasryhmät",
+        "label": "Asiakkaiden saatavuus",
+        "hint": "Valitse asiakasryhmät, joihin hinnastoa sovelletaan.",
+        "placeholder": "Etsi asiakasryhmiä",
+        "attribute": "Asiakasryhmät"
+      }
+    }
+  },
+  "profile": {
+    "domain": "Profiili",
+    "manageYourProfileDetails": "Hallinnoi profiilisi tietoja.",
+    "fields": {
+      "languageLabel": "Kieli",
+      "usageInsightsLabel": "Käyttötiedot"
+    },
+    "mfa": {
+      "title": "Kaksivaiheinen tunnistautuminen",
+      "description": "Vaadi todennussovellus kirjautuessa.",
+      "status": "Tila",
+      "method": "Menetelmä",
+      "enabled": "Käytössä",
+      "disabled": "Pois käytöstä",
+      "pending": "Odottaa asennusta",
+      "authenticatorApp": "Todennussovellus",
+      "noMethod": "Ei käytössä olevaa tunnistautumismenetelmää",
+      "setupTitle": "Ota todennussovellus käyttöön",
+      "setupAuthenticatorApp": "Ota todennussovellus käyttöön",
+      "setupDescription": "Skannaa QR-koodi todennussovelluksellasi ja syötä sitten 6-numeroinen koodi viimeistelläksesi asennuksen.",
+      "setupError": "Todennussovellusta ei voitu ottaa käyttöön.",
+      "verifyError": "Vahvistuskoodia ei voitu vahvistaa.",
+      "qrError": "QR-koodia ei voitu luoda.",
+      "recoveryCodesTitle": "Palautuskoodit",
+      "recoveryCodesDescription": "Kopioi ja säilytä nämä palautuskoodit siltä varalta, että menetät pääsyn todennussovellukseesi.",
+      "recoveryCodesError": "Palautuskoodeja ei voitu luoda.",
+      "disableTitle": "Poista kaksivaiheinen tunnistautuminen käytöstä",
+      "disableDescription": "Olet poistamassa kaksivaiheisen tunnistautumisen käytöstä tililtäsi.",
+      "disableChallengeDescription": "Syötä 6-numeroinen koodi todennussovelluksestasi poistaaksesi kaksivaiheisen tunnistautumisen käytöstä.",
+      "disableError": "Kaksivaiheista tunnistautumista ei voitu poistaa käytöstä.",
+      "disableSuccess": "Kaksivaiheinen tunnistautuminen poistettu käytöstä"
+    },
+    "edit": {
+      "header": "Muokkaa profiilia",
+      "languageHint": "Kieli, jota haluat käyttää hallintapaneelissa. Tämä ei muuta kauppasi kieltä.",
+      "languagePlaceholder": "Valitse kieli",
+      "usageInsightsHint": "Jaa käyttötietoja ja auta meitä parantamaan Medusaa. Voit lukea lisää siitä, mitä keräämme ja miten käytämme sitä <0>dokumentaatiossamme</0>."
+    },
+    "toast": {
+      "edit": "Profiilin muutokset tallennettu"
+    }
+  },
+  "users": {
+    "domain": "Käyttäjät",
+    "editUser": "Muokkaa käyttäjää",
+    "inviteUser": "Kutsu käyttäjä",
+    "inviteUserHint": "Kutsu uusi käyttäjä kauppaasi.",
+    "inviteRolesTooltip": "Jos roolia ei ole valittu, käyttäjä kutsutaan pääkäyttäjän roolilla.",
+    "sendInvite": "Lähetä kutsu",
+    "pendingInvites": "Odottavat kutsut",
+    "deleteInviteWarning": "Olet poistamassa kutsun käyttäjälle {{email}}. Tätä toimintoa ei voi peruuttaa.",
+    "resendInvite": "Lähetä kutsu uudelleen",
+    "copyInviteLink": "Kopioi kutsulinkki",
+    "copyResetPasswordLink": "Kopioi salasanan palautuslinkki",
+    "copyResetPasswordLinkSuccess": "Salasanan palautuslinkki kopioitiin leikepöydälle",
+    "copyResetPasswordLinkHint": "Linkki vanhenee pian ja mitätöi kaikki tälle käyttäjälle aiemmin lähetetyt palautuslinkit.",
+    "expiredOnDate": "Vanhentui {{date}}",
+    "validFromUntil": "Voimassa <0>{{from}}</0>–<1>{{until}}</1>",
+    "acceptedOnDate": "Hyväksytty {{date}}",
+    "inviteStatus": {
+      "accepted": "Hyväksytty",
+      "pending": "Odottaa",
+      "expired": "Vanhentunut"
+    },
+    "roles": {
+      "admin": "Ylläpitäjä",
+      "developer": "Kehittäjä",
+      "member": "Jäsen"
+    },
+    "list": {
+      "empty": {
+        "heading": "Käyttäjiä ei löytynyt",
+        "description": "Kun käyttäjä on kutsuttu, hän näkyy täällä."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään käyttäjä ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "deleteUserWarning": "Olet poistamassa käyttäjän {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "deleteUserSuccess": "Käyttäjä {{name}} poistettiin onnistuneesti",
+    "invite": "Kutsu"
+  },
+  "roles": {
+    "domain": "Roolit",
+    "subtitle": "Hallinnoi käyttöoikeusrooleja ja lupia.",
+    "create": {
+      "header": "Luo rooli",
+      "hint": "Luo rooli hallitaksesi käyttöoikeuksia hallintapaneelissasi.",
+      "successToast": "Rooli {{name}} luotu",
+      "tabs": {
+        "details": "Tiedot",
+        "permissions": "Luvat"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "Ei lupia",
+          "description": "Valittavia lupia ei ole."
+        },
+        "filtered": {
+          "heading": "Ei tuloksia",
+          "description": "Yksikään lupa ei vastaa nykyisiä suodatinehtoja."
+        }
+      }
+    },
+    "edit": {
+      "header": "Muokkaa roolia",
+      "successToast": "Rooli {{name}} päivitetty"
+    },
+    "delete": {
+      "title": "Poista rooli",
+      "description": "Olet poistamassa roolin {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Rooli {{name}} poistettu"
+    },
+    "fields": {
+      "permissions": "Luvat"
+    },
+    "actions": {
+      "managePermissions": "Hallinnoi lupia"
+    },
+    "users": {
+      "alreadyAddedTooltip": "Käyttäjällä on jo tämä rooli.",
+      "unassignableRoleTooltip": "Sinulla ei ole oikeutta määrittää tätä roolia — luvatasi eivät kata kaikkia sen käytäntöjä.",
+      "add": {
+        "successToast_one": "Käyttäjä lisättiin rooliin onnistuneesti.",
+        "successToast_other": "Käyttäjät lisättiin rooliin onnistuneesti.",
+        "list": {
+          "noRecordsMessage": "Luo ensin käyttäjä."
+        }
+      },
+      "remove": {
+        "title_one": "Poista käyttäjä",
+        "title_other": "Poista käyttäjät",
+        "description_one": "Olet poistamassa {{count}} käyttäjän roolista. Tätä toimintoa ei voi peruuttaa.",
+        "description_other": "Olet poistamassa {{count}} käyttäjää roolista. Tätä toimintoa ei voi peruuttaa."
+      },
+      "list": {
+        "noRecordsMessage": "Tällä roolilla ei ole käyttäjiä."
+      }
+    },
+    "permissions": {
+      "header": "Hallinnoi lupia",
+      "hint": "Valitse luvat, jotka tämän roolin tulisi sisältää.",
+      "empty": {
+        "heading": "Ei lupia",
+        "description": "Valittavia lupia ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään lupa ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Rooleja ei löytynyt",
+        "description": "Luo rooleja hallitaksesi käyttöoikeuksia hallintapaneelissasi."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään rooli ei vastaa nykyisiä suodatinehtoja."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Käytännöt",
+    "subtitle": "Määritä luvat, joita roolit voivat myöntää.",
+    "create": {
+      "header": "Luo käytäntö",
+      "hint": "Määritä uusi lupa, joka voidaan liittää rooleihin.",
+      "successToast": "Käytäntö {{key}} luotu"
+    },
+    "edit": {
+      "header": "Muokkaa käytäntöä",
+      "successToast": "Käytäntö {{key}} päivitetty"
+    },
+    "delete": {
+      "title": "Poista käytäntö",
+      "description": "Olet poistamassa käytännön {{key}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Käytäntö {{key}} poistettu"
+    },
+    "fields": {
+      "roles": "Roolit",
+      "users": "Käyttäjät"
+    },
+    "list": {
+      "empty": {
+        "heading": "Käytäntöjä ei löytynyt",
+        "description": "Luo käytäntöjä hallitaksesi rooleille myönnettäviä lupia."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään käytäntö ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "Yksikään rooli ei sisällä vielä tätä käytäntöä."
+      },
+      "empty": {
+        "heading": "Ei rooleja",
+        "description": "Yksikään rooli ei sisällä vielä tätä käytäntöä."
+      }
+    }
+  },
+  "translations": {
+    "domain": "Käännökset",
+    "settings": {
+      "header": "Hallinnoi käännettäviä entiteettejä",
+      "successToast": "Asetukset päivitettiin onnistuneesti"
+    },
+    "actions": {
+      "manage": "Hallinnoi käännöksiä",
+      "manageEntities": "Hallinnoi entiteettejä",
+      "manageLocales": "Hallinnoi kielialueita"
+    },
+    "subtitle": "Hallinnoi Medusan datasi käännöksiä",
+    "list": {
+      "metrics": "{{translated}}/{{total}} käännöstä"
+    },
+    "edit": {
+      "successToast": "Käännökset päivitettiin onnistuneesti",
+      "unsavedChanges": {
+        "title": "Tallentamattomat käännökset",
+        "description": "Älä menetä työtäsi. Sinulla on muutoksia, joita ei ole vielä tallennettu"
+      }
+    },
+    "bulk": {
+      "header": "Käännösten massaeditori",
+      "mainColumn": "Kielialue"
+    },
+    "activeLocales": {
+      "heading": "Kielet",
+      "subtitle": "Aktivoidut käännökset",
+      "noLocalesTip": "Määritä vähintään yksi kieli aloittaaksesi datasi kääntämisen",
+      "noLocalesTipConfigureAction": "Määritä"
+    },
+    "completion": {
+      "heading": "Käännetyt kentät",
+      "translated": "Käännetty",
+      "toTranslate": "Puuttuu",
+      "footer": "Kielet"
+    }
+  },
+  "store": {
+    "domain": "Kauppa",
+    "manageYourStoresDetails": "Hallinnoi kauppasi tietoja",
+    "editStore": "Muokkaa kauppaa",
+    "defaultCurrency": "Oletusvaluutta",
+    "defaultLocale": "Oletuskielialue",
+    "defaultRegion": "Oletusalue",
+    "defaultSalesChannel": "Oletusmyyntikanava",
+    "defaultLocation": "Oletussijainti",
+    "swapLinkTemplate": "Vaihtolinkin malli",
+    "paymentLinkTemplate": "Maksulinkin malli",
+    "inviteLinkTemplate": "Kutsulinkin malli",
+    "locales": "Kielialueet",
+    "currencies": "Valuutat",
+    "addCurrencies": "Lisää valuuttoja",
+    "enableTaxInclusivePricing": "Ota käyttöön verolliset hinnat",
+    "disableTaxInclusivePricing": "Poista verolliset hinnat käytöstä",
+    "removeCurrencyWarning_one": "Olet poistamassa {{count}} valuutan kaupastasi. Varmista, että olet poistanut kaikki tätä valuuttaa käyttävät hinnat ennen jatkamista.",
+    "removeCurrencyWarning_other": "Olet poistamassa {{count}} valuuttaa kaupastasi. Varmista, että olet poistanut kaikki näitä valuuttoja käyttävät hinnat ennen jatkamista.",
+    "removeLocaleWarning_one": "Olet poistamassa {{count}} kielialueen kaupastasi. Kaikki tätä kielialuetta käyttävät käännökset poistetaan.",
+    "removeLocaleWarning_other": "Olet poistamassa {{count}} kielialuetta kaupastasi. Kaikki näitä kielialueita käyttävät käännökset poistetaan.",
+    "currencyAlreadyAdded": "Valuutta on jo lisätty kauppaasi.",
+    "localeAlreadyAdded": "Kielialue on jo lisätty kauppaasi.",
+    "edit": {
+      "header": "Muokkaa kauppaa"
+    },
+    "toast": {
+      "update": "Kauppa päivitettiin onnistuneesti",
+      "currenciesUpdated": "Valuutat päivitettiin onnistuneesti",
+      "localesUpdated": "Kielialueet päivitettiin onnistuneesti",
+      "currenciesRemoved": "Valuutat poistettiin kaupasta onnistuneesti",
+      "localesRemoved": "Kielialueet poistettiin kaupasta onnistuneesti",
+      "updatedTaxInclusivitySuccessfully": "Verolliset hinnat päivitettiin onnistuneesti"
+    }
+  },
+  "regions": {
+    "domain": "Alueet",
+    "subtitle": "Alue on alue, jolla myyt tuotteita. Se voi kattaa useita maita, ja sillä voi olla eri verokannat, palveluntarjoajat ja valuutta.",
+    "createRegion": "Luo alue",
+    "createRegionHint": "Hallinnoi verokantoja ja palveluntarjoajia maajoukolle.",
+    "addCountries": "Lisää maita",
+    "editRegion": "Muokkaa aluetta",
+    "countriesHint": "Lisää tähän alueeseen kuuluvat maat.",
+    "deleteRegionWarning": "Olet poistamassa alueen {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "removeCountriesWarning_one": "Olet poistamassa {{count}} maan alueesta. Tätä toimintoa ei voi peruuttaa.",
+    "removeCountriesWarning_other": "Olet poistamassa {{count}} maata alueesta. Tätä toimintoa ei voi peruuttaa.",
+    "removeCountryWarning": "Olet poistamassa maan {{name}} alueesta. Tätä toimintoa ei voi peruuttaa.",
+    "automaticTaxesHint": "Kun käytössä, verot lasketaan vasta kassalla toimitusosoitteen perusteella.",
+    "taxInclusiveHint": "Kun käytössä, alueen hinnat sisältävät veron.",
+    "providersHint": "Lisää tällä alueella saatavilla olevat maksupalveluntarjoajat.",
+    "shippingOptions": "Toimitusvaihtoehdot",
+    "deleteShippingOptionWarning": "Olet poistamassa toimitusvaihtoehdon {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "return": "Palautus",
+    "outbound": "Lähtevä",
+    "priceType": "Hintatyyppi",
+    "flatRate": "Kiinteä hinta",
+    "calculated": "Laskettu",
+    "list": {
+      "noRecordsMessage": "Luo alue myyntialueillesi.",
+      "empty": {
+        "heading": "Ei alueita",
+        "description": "Näytettäviä alueita ei ole."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään alue ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "toast": {
+      "delete": "Alue poistettiin onnistuneesti",
+      "edit": "Alueen muokkaus tallennettu",
+      "create": "Alue luotiin onnistuneesti",
+      "countries": "Alueen maat päivitettiin onnistuneesti"
+    },
+    "shippingOption": {
+      "createShippingOption": "Luo toimitusvaihtoehto",
+      "createShippingOptionHint": "Luo uusi toimitusvaihtoehto alueelle.",
+      "editShippingOption": "Muokkaa toimitusvaihtoehtoa",
+      "fulfillmentMethod": "Toimitustapa",
+      "type": {
+        "outbound": "Lähtevä",
+        "outboundHint": "Käytä tätä, kun luot toimitusvaihtoehtoa tuotteiden lähettämiseen asiakkaalle.",
+        "return": "Palautus",
+        "returnHint": "Käytä tätä, kun luot toimitusvaihtoehtoa, jolla asiakas palauttaa tuotteita sinulle."
+      },
+      "priceType": {
+        "label": "Hintatyyppi",
+        "flatRate": "Kiinteä hinta",
+        "calculated": "Laskettu"
+      },
+      "availability": {
+        "adminOnly": "Vain ylläpito",
+        "adminOnlyHint": "Kun käytössä, toimitusvaihtoehto on saatavilla vain hallintapaneelissa, ei verkkokaupassa."
+      },
+      "taxInclusiveHint": "Kun käytössä, toimitusvaihtoehdon hinta sisältää veron.",
+      "requirements": {
+        "label": "Vaatimukset",
+        "hint": "Määritä toimitusvaihtoehdon vaatimukset."
+      }
+    }
+  },
+  "taxes": {
+    "domain": "Veroalueet",
+    "domainDescription": "Hallinnoi veroaluettasi",
+    "countries": {
+      "taxCountriesHint": "Veroasetukset koskevat listattuja maita."
+    },
+    "settings": {
+      "editTaxSettings": "Muokkaa veroasetuksia",
+      "taxProviderLabel": "Veropalveluntarjoaja",
+      "systemTaxProviderLabel": "Järjestelmän veropalveluntarjoaja",
+      "calculateTaxesAutomaticallyLabel": "Laske verot automaattisesti",
+      "calculateTaxesAutomaticallyHint": "Kun käytössä, verokannat lasketaan automaattisesti ja sovelletaan ostoskoreihin. Kun pois käytöstä, verot on laskettava manuaalisesti kassalla. Manuaalisia veroja suositellaan käytettäväksi kolmannen osapuolen veropalveluntarjoajien kanssa.",
+      "applyTaxesOnGiftCardsLabel": "Sovella veroa lahjakortteihin",
+      "applyTaxesOnGiftCardsHint": "Kun käytössä, veroa sovelletaan lahjakortteihin kassalla. Joissakin maissa verosäädökset edellyttävät veron soveltamista lahjakortteihin ostohetkellä.",
+      "defaultTaxRateLabel": "Oletusverokanta",
+      "defaultTaxCodeLabel": "Oletusverokoodi"
+    },
+    "defaultRate": {
+      "sectionTitle": "Oletusverokanta"
+    },
+    "taxRate": {
+      "sectionTitle": "Verokannat",
+      "createTaxRate": "Luo verokanta",
+      "createTaxRateHint": "Luo uusi verokanta alueelle.",
+      "deleteRateDescription": "Olet poistamassa verokannan {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "editRateAction": "Muokkaa kantaa",
+      "editOverridesAction": "Muokkaa ylikirjoituksia",
+      "editOverridesTitle": "Muokkaa verokannan ylikirjoituksia",
+      "editOverridesHint": "Määritä verokannan ylikirjoitukset.",
+      "deleteTaxRateWarning": "Olet poistamassa verokannan {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "productOverridesLabel": "Tuoteylikirjoitukset",
+      "productOverridesHint": "Määritä verokannan tuoteylikirjoitukset.",
+      "addProductOverridesAction": "Lisää tuoteylikirjoituksia",
+      "productTypeOverridesLabel": "Tuotetyyppien ylikirjoitukset",
+      "productTypeOverridesHint": "Määritä verokannan tuotetyyppien ylikirjoitukset.",
+      "addProductTypeOverridesAction": "Lisää tuotetyyppien ylikirjoituksia",
+      "shippingOptionOverridesLabel": "Toimitusvaihtoehtojen ylikirjoitukset",
+      "shippingOptionOverridesHint": "Määritä verokannan toimitusvaihtoehtojen ylikirjoitukset.",
+      "addShippingOptionOverridesAction": "Lisää toimitusvaihtoehtojen ylikirjoituksia",
+      "productOverridesHeader": "Tuotteet",
+      "productTypeOverridesHeader": "Tuotetyypit",
+      "shippingOptionOverridesHeader": "Toimitusvaihtoehdot"
+    }
+  },
+  "locations": {
+    "domain": "Sijainnit",
+    "editLocation": "Muokkaa sijaintia",
+    "addSalesChannels": "Lisää myyntikanavia",
+    "noLocationsFound": "Sijainteja ei löytynyt",
+    "selectLocations": "Valitse sijainnit, joissa tuotetta on varastossa.",
+    "deleteLocationWarning": "Olet poistamassa sijainnin {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "removeSalesChannelsWarning_one": "Olet poistamassa {{count}} myyntikanavan sijainnista.",
+    "removeSalesChannelsWarning_other": "Olet poistamassa {{count}} myyntikanavaa sijainnista.",
+    "toast": {
+      "create": "Sijainti luotiin onnistuneesti",
+      "update": "Sijainti päivitettiin onnistuneesti",
+      "removeChannel": "Myyntikanava poistettiin onnistuneesti"
+    }
+  },
+  "reservations": {
+    "domain": "Varaukset",
+    "subtitle": "Hallinnoi varastonimikkeiden varattua määrää.",
+    "deleteWarning": "Olet poistamassa varauksen. Tätä toimintoa ei voi peruuttaa."
+  },
+  "salesChannels": {
+    "domain": "Myyntikanavat",
+    "subtitle": "Hallinnoi verkko- ja offline-kanavia, joissa myyt tuotteita.",
+    "list": {
+      "empty": {
+        "heading": "Myyntikanavia ei löytynyt",
+        "description": "Kun myyntikanava on luotu, se näkyy täällä."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään myyntikanava ei vastaa nykyisiä suodatinehtoja."
+      }
+    },
+    "createSalesChannel": "Luo myyntikanava",
+    "createSalesChannelHint": "Luo uusi myyntikanava tuotteidesi myymiseen.",
+    "enabledHint": "Määritä, onko myyntikanava käytössä.",
+    "removeProductsWarning_one": "Olet poistamassa {{count}} tuotteen kanavasta {{sales_channel}}.",
+    "removeProductsWarning_other": "Olet poistamassa {{count}} tuotetta kanavasta {{sales_channel}}.",
+    "addProducts": "Lisää tuotteita",
+    "editSalesChannel": "Muokkaa myyntikanavaa",
+    "productAlreadyAdded": "Tuote on jo lisätty myyntikanavaan.",
+    "deleteSalesChannelWarning": "Olet poistamassa myyntikanavan {{name}}. Tätä toimintoa ei voi peruuttaa.",
+    "toast": {
+      "create": "Myyntikanava luotiin onnistuneesti",
+      "update": "Myyntikanava päivitettiin onnistuneesti",
+      "delete": "Myyntikanava poistettiin onnistuneesti"
+    },
+    "tooltip": {
+      "cannotDeleteDefault": "Oletusmyyntikanavaa ei voi poistaa"
+    },
+    "products": {
+      "list": {
+        "noRecordsMessage": "Myyntikanavassa ei ole tuotteita."
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Luo ensin tuote."
+        }
+      }
+    }
+  },
+  "apiKeyManagement": {
+    "domain": {
+      "publishable": "Julkiset API-avaimet",
+      "secret": "Salaiset API-avaimet"
+    },
+    "subtitle": {
+      "publishable": "Hallinnoi verkkokaupassa käytettäviä API-avaimia rajataksesi pyyntöjen laajuuden tiettyihin myyntikanaviin.",
+      "secret": "Hallinnoi API-avaimia, joita käytetään ylläpitäjien tunnistautumiseen hallintasovelluksissa."
+    },
+    "status": {
+      "active": "Aktiivinen",
+      "revoked": "Peruutettu"
+    },
+    "type": {
+      "publishable": "Julkinen",
+      "secret": "Salainen"
+    },
+    "create": {
+      "createPublishableHeader": "Luo julkinen API-avain",
+      "createPublishableHint": "Luo uusi julkinen API-avain rajataksesi pyyntöjen laajuuden tiettyihin myyntikanaviin.",
+      "createSecretHeader": "Luo salainen API-avain",
+      "createSecretHint": "Luo uusi salainen API-avain käyttääksesi Medusa-API:a tunnistautuneena ylläpitäjänä.",
+      "secretKeyCreatedHeader": "Salainen avain luotu",
+      "secretKeyCreatedHint": "Uusi salainen avaimesi on luotu. Kopioi ja säilytä se turvallisesti nyt. Tämä on ainoa kerta, kun se näytetään.",
+      "copySecretTokenSuccess": "Salainen avain kopioitiin leikepöydälle.",
+      "copySecretTokenFailure": "Salaisen avaimen kopiointi leikepöydälle epäonnistui.",
+      "successToast": "API-avain luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa API-avainta",
+      "description": "Muokkaa API-avaimen nimeä.",
+      "successToast": "API-avain {{title}} päivitettiin onnistuneesti."
+    },
+    "salesChannels": {
+      "title": "Lisää myyntikanavia",
+      "description": "Lisää myyntikanavat, joihin API-avain rajataan.",
+      "successToast_one": "{{count}} myyntikanava lisättiin API-avaimeen onnistuneesti.",
+      "successToast_other": "{{count}} myyntikanavaa lisättiin API-avaimeen onnistuneesti.",
+      "alreadyAddedTooltip": "Myyntikanava on jo lisätty API-avaimeen.",
+      "list": {
+        "noRecordsMessage": "Julkisen API-avaimen laajuudessa ei ole myyntikanavia."
+      }
+    },
+    "delete": {
+      "warning": "Olet poistamassa API-avaimen {{title}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "API-avain {{title}} poistettiin onnistuneesti."
+    },
+    "revoke": {
+      "warning": "Olet peruuttamassa API-avaimen {{title}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "API-avain {{title}} peruutettiin onnistuneesti."
+    },
+    "addSalesChannels": {
+      "list": {
+        "noRecordsMessage": "Luo ensin myyntikanava."
+      }
+    },
+    "removeSalesChannel": {
+      "warning": "Olet poistamassa myyntikanavan {{name}} API-avaimesta. Tätä toimintoa ei voi peruuttaa.",
+      "warningBatch_one": "Olet poistamassa {{count}} myyntikanavan API-avaimesta. Tätä toimintoa ei voi peruuttaa.",
+      "warningBatch_other": "Olet poistamassa {{count}} myyntikanavaa API-avaimesta. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Myyntikanava poistettiin API-avaimesta onnistuneesti.",
+      "successToastBatch_one": "{{count}} myyntikanava poistettiin API-avaimesta onnistuneesti.",
+      "successToastBatch_other": "{{count}} myyntikanavaa poistettiin API-avaimesta onnistuneesti."
+    },
+    "actions": {
+      "revoke": "Peruuta API-avain",
+      "copy": "Kopioi API-avain",
+      "copySuccessToast": "API-avain kopioitiin leikepöydälle."
+    },
+    "table": {
+      "lastUsedAtHeader": "Viimeksi käytetty",
+      "createdAtHeader": "Peruutettu"
+    },
+    "fields": {
+      "lastUsedAtLabel": "Viimeksi käytetty",
+      "revokedByLabel": "Peruuttaja",
+      "revokedAtLabel": "Peruutettu",
+      "createdByLabel": "Luonut"
+    }
+  },
+  "returnReasons": {
+    "domain": "Palautussyyt",
+    "subtitle": "Hallinnoi palautettujen tuotteiden syitä.",
+    "calloutHint": "Hallinnoi syitä palautusten luokittelemiseksi.",
+    "editReason": "Muokkaa palautussyytä",
+    "create": {
+      "header": "Lisää palautussyy",
+      "subtitle": "Määritä yleisimmät palautusten syyt.",
+      "hint": "Luo uusi palautussyy palautusten luokittelemiseksi.",
+      "successToast": "Palautussyy {{label}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa palautussyytä",
+      "subtitle": "Muokkaa palautussyyn arvoa.",
+      "successToast": "Palautussyy {{label}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa palautussyyn \"{{label}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Palautussyy \"{{label}}\" poistettiin onnistuneesti."
+    },
+    "fields": {
+      "value": {
+        "label": "Arvo",
+        "placeholder": "vaara_koko",
+        "tooltip": "Arvon tulee olla yksilöllinen tunniste palautussyylle."
+      },
+      "label": {
+        "label": "Nimike",
+        "placeholder": "Väärä koko"
+      },
+      "description": {
+        "label": "Kuvaus",
+        "placeholder": "Asiakas sai väärän koon"
+      }
+    }
+  },
+  "refundReasons": {
+    "domain": "Hyvityssyyt",
+    "subtitle": "Hallinnoi hyvitysten myöntämisen syitä.",
+    "calloutHint": "Hallinnoi syitä hyvitysten luokittelemiseksi.",
+    "editReason": "Muokkaa hyvityssyytä",
+    "create": {
+      "header": "Lisää hyvityssyy",
+      "subtitle": "Määritä yleisimmät hyvitysten syyt.",
+      "hint": "Luo uusi hyvityssyy hyvitysten luokittelemiseksi.",
+      "successToast": "Hyvityssyy {{label}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa hyvityssyytä",
+      "subtitle": "Muokkaa hyvityssyyn arvoa.",
+      "successToast": "Hyvityssyy {{label}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa hyvityssyyn \"{{label}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Hyvityssyy poistettiin onnistuneesti."
+    },
+    "fields": {
+      "label": {
+        "label": "Nimike",
+        "placeholder": "Hyvän tahdon ele"
+      },
+      "code": {
+        "label": "Koodi",
+        "placeholder": "hyvan_tahdon_ele"
+      },
+      "description": {
+        "label": "Kuvaus",
+        "placeholder": "Asiakkaalla oli huono ostokokemus"
+      }
+    }
+  },
+  "login": {
+    "forgotPassword": "Unohditko salasanan? - <0>Palauta</0>",
+    "title": "Tervetuloa Medusaan",
+    "hint": "Kirjaudu sisään päästäksesi tilialueelle",
+    "mfa": {
+      "title": "Kaksivaiheinen tunnistautuminen",
+      "description": "Syötä 6-numeroinen koodi todennussovelluksestasi.",
+      "recoveryDescription": "Syötä yksi palautuskoodeistasi.",
+      "recoveryCodePlaceholder": "Palautuskoodi",
+      "verify": "Vahvista",
+      "verifyError": "Vahvistuskoodia ei voitu vahvistaa.",
+      "completeError": "Tunnistautumista ei voitu viimeistellä.",
+      "backToLogin": "Takaisin kirjautumiseen",
+      "useRecoveryCodePrompt": "Menetitkö pääsyn todennussovellukseesi?",
+      "useRecoveryCode": "Käytä palautuskoodia",
+      "useAuthenticatorPrompt": "Onko sinulla pääsy todennussovellukseesi?",
+      "useAuthenticator": "Käytä todennuskoodia"
+    }
+  },
+  "invite": {
+    "title": "Tervetuloa Medusaan",
+    "hint": "Luo tilisi alla",
+    "backToLogin": "Takaisin kirjautumiseen",
+    "createAccount": "Luo tili",
+    "alreadyHaveAccount": "Onko sinulla jo tili? - <0>Kirjaudu sisään</0>",
+    "emailTooltip": "Sähköpostiasi ei voi muuttaa. Jos haluat käyttää toista sähköpostia, uusi kutsu on lähetettävä.",
+    "invalidInvite": "Kutsu on virheellinen tai vanhentunut.",
+    "successTitle": "Tilisi on rekisteröity",
+    "successHint": "Aloita Medusa Adminin käyttö heti.",
+    "successAction": "Käynnistä Medusa Admin",
+    "invalidTokenTitle": "Kutsutunnuksesi on virheellinen",
+    "invalidTokenHint": "Yritä pyytää uusi kutsulinkki.",
+    "passwordMismatch": "Salasanat eivät täsmää",
+    "toast": {
+      "accepted": "Kutsu hyväksyttiin onnistuneesti"
+    }
+  },
+  "resetPassword": {
+    "title": "Palauta salasana",
+    "hint": "Syötä sähköpostiosoitteesi alle, niin lähetämme sinulle ohjeet salasanan palauttamiseksi.",
+    "email": "Sähköposti",
+    "sendResetInstructions": "Lähetä palautusohjeet",
+    "backToLogin": "<0>Takaisin kirjautumiseen</0>",
+    "newPasswordHint": "Valitse uusi salasana alla.",
+    "invalidTokenTitle": "Palautustunnuksesi on virheellinen",
+    "invalidTokenHint": "Yritä pyytää uusi palautuslinkki.",
+    "expiredTokenTitle": "Palautustunnuksesi on vanhentunut",
+    "goToResetPassword": "Siirry salasanan palautukseen",
+    "resetPassword": "Palauta salasana",
+    "newPassword": "Uusi salasana",
+    "repeatNewPassword": "Toista uusi salasana",
+    "tokenExpiresIn": "Tunnus vanhenee <0>{{time}}</0> minuutin kuluttua",
+    "successfulRequestTitle": "Lähetimme sinulle sähköpostin onnistuneesti",
+    "successfulRequest": "Olemme lähettäneet sinulle sähköpostin, jonka avulla voit palauttaa salasanasi. Tarkista roskapostikansiosi, jos et ole saanut sitä muutamassa minuutissa.",
+    "successfulResetTitle": "Salasanan palautus onnistui",
+    "successfulReset": "Kirjaudu sisään kirjautumissivulla.",
+    "passwordMismatch": "Salasanat eivät täsmää",
+    "invalidLinkTitle": "Palautuslinkkisi on virheellinen",
+    "invalidLinkHint": "Yritä palauttaa salasanasi uudelleen."
+  },
+  "workflowExecutions": {
+    "domain": "Työnkulut",
+    "subtitle": "Näytä ja seuraa Medusa-sovelluksesi työnkulkujen suorituksia.",
+    "transactionIdLabel": "Transaktion ID",
+    "workflowIdLabel": "Työnkulun ID",
+    "stateLabel": "Tila",
+    "progressLabel": "Edistyminen",
+    "stepsCompletedLabel_one": "{{completed}}/{{count}} vaihe",
+    "stepsCompletedLabel_other": "{{completed}}/{{count}} vaihetta",
+    "list": {
+      "noRecordsMessage": "Yhtään työnkulkua ei ole vielä suoritettu."
+    },
+    "history": {
+      "sectionTitle": "Historia",
+      "runningState": "Käynnissä...",
+      "awaitingState": "Odottaa",
+      "failedState": "Epäonnistui",
+      "skippedState": "Ohitettu",
+      "skippedFailureState": "Ohitettu (virhe)",
+      "definitionLabel": "Määrittely",
+      "outputLabel": "Tulos",
+      "compensateInputLabel": "Hyvityksen syöte",
+      "revertedLabel": "Peruttu",
+      "errorLabel": "Virhe"
+    },
+    "state": {
+      "done": "Valmis",
+      "failed": "Epäonnistui",
+      "reverted": "Peruttu",
+      "invoking": "Kutsutaan",
+      "compensating": "Hyvitetään",
+      "notStarted": "Ei aloitettu"
+    },
+    "transaction": {
+      "state": {
+        "waitingToCompensate": "Odottaa hyvitystä"
+      }
+    },
+    "step": {
+      "state": {
+        "skipped": "Ohitettu",
+        "skippedFailure": "Ohitettu (virhe)",
+        "dormant": "Lepotilassa",
+        "timeout": "Aikakatkaisu"
+      }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Haku",
+    "subtitle": "Näytä rekisteröidyt hakuindeksit ja rakenna ne uudelleen lähdedatasta.",
+    "fieldsLabel": "Indeksoidut kentät",
+    "providerLabel": "Palveluntarjoaja",
+    "reindex": "Uudelleenindeksoi",
+    "reindexConfirmationTitle": "Uudelleenindeksoi {{name}}?",
+    "reindexConfirmation": "Tämä rakentaa indeksin \"{{name}}\" uudelleen sen lähdedatasta. Tämän indeksin hakutulokset voivat olla puutteellisia, kunnes uudelleenrakennus valmistuu.",
+    "reindexSuccess": "Indeksin {{name}} uudelleenindeksointi aloitettu",
+    "noFields": "Yhtään kenttää ei ole indeksoitu.",
+    "list": {
+      "noRecordsMessage": "Yhtään hakuindeksiä ei ole rekisteröity."
+    },
+    "status": {
+      "pending": "Odottaa",
+      "building": "Rakennetaan",
+      "ready": "Valmis",
+      "error": "Virhe"
+    }
+  },
+  "shippingOptionTypes": {
+    "domain": "Toimitusvaihtoehtojen tyypit",
+    "subtitle": "Järjestä toimitusvaihtoehtosi tyyppeihin.",
+    "create": {
+      "header": "Luo toimitusvaihtoehdon tyyppi",
+      "hint": "Luo uusi toimitusvaihtoehdon tyyppi luokitellaksesi toimitusvaihtoehtojasi.",
+      "successToast": "Toimitusvaihtoehdon tyyppi {{label}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa toimitusvaihtoehdon tyyppiä",
+      "successToast": "Toimitusvaihtoehdon tyyppi {{label}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa toimitusvaihtoehdon tyypin \"{{label}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Toimitusvaihtoehdon tyyppi \"{{label}}\" poistettiin onnistuneesti."
+    },
+    "fields": {
+      "label": "Nimike",
+      "code": "Koodi",
+      "description": "Kuvaus"
+    }
+  },
+  "productTypes": {
+    "domain": "Tuotetyypit",
+    "subtitle": "Järjestä tuotteesi tyyppeihin.",
+    "create": {
+      "header": "Luo tuotetyyppi",
+      "hint": "Luo uusi tuotetyyppi luokitellaksesi tuotteitasi.",
+      "successToast": "Tuotetyyppi {{value}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa tuotetyyppiä",
+      "successToast": "Tuotetyyppi {{value}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa tuotetyypin \"{{value}}\". Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Tuotetyyppi \"{{value}}\" poistettiin onnistuneesti."
+    },
+    "fields": {
+      "value": "Arvo"
+    }
+  },
+  "productTags": {
+    "domain": "Tuotetunnisteet",
+    "create": {
+      "header": "Luo tuotetunniste",
+      "subtitle": "Luo uusi tuotetunniste luokitellaksesi tuotteitasi.",
+      "successToast": "Tuotetunniste {{value}} luotiin onnistuneesti."
+    },
+    "edit": {
+      "header": "Muokkaa tuotetunnistetta",
+      "subtitle": "Muokkaa tuotetunnisteen arvoa.",
+      "successToast": "Tuotetunniste {{value}} päivitettiin onnistuneesti."
+    },
+    "delete": {
+      "confirmation": "Olet poistamassa tuotetunnisteen {{value}}. Tätä toimintoa ei voi peruuttaa.",
+      "successToast": "Tuotetunniste {{value}} poistettiin onnistuneesti."
+    },
+    "fields": {
+      "value": "Arvo"
+    }
+  },
+  "propertyLabels": {
+    "domain": "Ominaisuusnimikkeet",
+    "title": "Ominaisuusnimikkeet",
+    "subtitle": "Hallinnoi entiteettiesi mukautettavien taulukoiden mukautettuja ominaisuusnimikkeitä.",
+    "fields": {
+      "module": "Moduuli",
+      "model": "Malli",
+      "propertyCount": "Ominaisuuksien määrä",
+      "hasOverrides": "Ylikirjoituksia"
+    }
+  },
+  "notifications": {
+    "domain": "Ilmoitukset",
+    "emptyState": {
+      "title": "Ei ilmoituksia",
+      "description": "Sinulla ei ole tällä hetkellä ilmoituksia, mutta kun saat niitä, ne näkyvät täällä."
+    },
+    "accessibility": {
+      "description": "Medusan toimintaan liittyvät ilmoitukset listataan täällä."
+    }
+  },
+  "errors": {
+    "serverError": "Palvelinvirhe - Yritä myöhemmin uudelleen.",
+    "invalidCredentials": "Väärä sähköposti tai salasana"
+  },
+  "statuses": {
+    "scheduled": "Ajastettu",
+    "expired": "Vanhentunut",
+    "active": "Aktiivinen",
+    "inactive": "Ei aktiivinen",
+    "draft": "Luonnos",
+    "enabled": "Käytössä",
+    "disabled": "Pois käytöstä"
+  },
+  "labels": {
+    "productVariant": "Tuotevariantti",
+    "prices": "Hinnat",
+    "available": "Saatavilla",
+    "inStock": "Varastossa",
+    "added": "Lisätty",
+    "removed": "Poistettu",
+    "from": "Alkaen",
+    "to": "Päättyen",
+    "beaware": "Huomioitavaa",
+    "loading": "Ladataan",
+    "selectValue": "Valitse arvo",
+    "selectValues": "Valitse arvot"
+  },
+  "fields": {
+    "actions": "Toiminnot",
+    "amount": "Summa",
+    "reference": "Viite",
+    "reference_id": "Viitetunnus",
+    "refundAmount": "Hyvityssumma",
+    "name": "Nimi",
+    "default": "Oletus",
+    "lastName": "Sukunimi",
+    "firstName": "Etunimi",
+    "title": "Nimi",
+    "customTitle": "Mukautettu nimi",
+    "manageInventory": "Hallinnoi varastoa",
+    "inventoryKit": "Sisältää varastopaketin",
+    "inventoryItems": "Varastonimikkeet",
+    "inventoryItem": "Varastonimike",
+    "requiredQuantity": "Vaadittu määrä",
+    "description": "Kuvaus",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "repeatPassword": "Toista salasana",
+    "confirmPassword": "Vahvista salasana",
+    "newPassword": "Uusi salasana",
+    "repeatNewPassword": "Toista uusi salasana",
+    "categories": "Kategoriat",
+    "shippingMethod": "Toimitustapa",
+    "configurations": "Asetukset",
+    "enabledInStore": "Käytössä kaupassa",
+    "isReturn": "On palautus",
+    "conditions": "Ehdot",
+    "category": "Kategoria",
+    "collection": "Kokoelma",
+    "discountable": "Alennettavissa",
+    "promotionCode": "Kampanjakoodi",
+    "handle": "URL-tunniste",
+    "subtitle": "Alaotsikko",
+    "by": "Tekijä",
+    "item": "Tuote",
+    "qty": "kpl",
+    "limit": "Raja",
+    "tags": "Tunnisteet",
+    "type": "Tyyppi",
+    "reason": "Syy",
+    "none": "ei mikään",
+    "all": "kaikki",
+    "search": "Haku",
+    "percentage": "Prosentti",
+    "sales_channels": "Myyntikanavat",
+    "customer_groups": "Asiakasryhmät",
+    "product_tags": "Tuotetunnisteet",
+    "product_types": "Tuotetyypit",
+    "product_collections": "Tuotekokoelmat",
+    "status": "Tila",
+    "code": "Koodi",
+    "value": "Arvo",
+    "disabled": "Pois käytöstä",
+    "dynamic": "Dynaaminen",
+    "normal": "Normaali",
+    "years": "Vuotta",
+    "months": "Kuukautta",
+    "days": "Päivää",
+    "hours": "Tuntia",
+    "minutes": "Minuuttia",
+    "totalRedemptions": "Käyttökerrat yhteensä",
+    "countries": "Maat",
+    "serviceZone": "Palvelualue",
+    "paymentProviders": "Maksupalveluntarjoajat",
+    "refundReason": "Hyvityssyy",
+    "fulfillmentProviders": "Toimituspalveluntarjoajat",
+    "fulfillmentProvider": "Toimituspalveluntarjoaja",
+    "providers": "Palveluntarjoajat",
+    "availability": "Saatavuus",
+    "inventory": "Varasto",
+    "optional": "Valinnainen",
+    "note": "Muistiinpano",
+    "automaticTaxes": "Automaattiset verot",
+    "taxInclusivePricing": "Verolliset hinnat",
+    "currency": "Valuutta",
+    "address": "Osoite",
+    "address2": "Huoneisto, asunto jne.",
+    "city": "Kaupunki",
+    "postalCode": "Postinumero",
+    "country": "Maa",
+    "state": "Osavaltio",
+    "province": "Maakunta",
+    "company": "Yritys",
+    "phone": "Puhelin",
+    "metadata": "Metatiedot",
+    "selectCountry": "Valitse maa",
+    "products": "Tuotteet",
+    "variants": "Variantit",
+    "orders": "Tilaukset",
+    "account": "Tili",
+    "total": "Tilaus yhteensä",
+    "paidTotal": "Maksettu yhteensä",
+    "creditTotal": "Hyvitysrivit yhteensä",
+    "totalExclTax": "Yhteensä ilman veroa",
+    "subtotal": "Välisumma",
+    "shipping": "Toimitus",
+    "outboundShipping": "Lähtevä toimitus",
+    "returnShipping": "Palautuksen toimitus",
+    "tax": "Vero",
+    "created": "Luotu",
+    "key": "Avain",
+    "customer": "Asiakas",
+    "date": "Päivämäärä",
+    "order": "Tilaus",
+    "fulfillment": "Toimitus",
+    "provider": "Palveluntarjoaja",
+    "payment": "Maksu",
+    "items": "Tuotteet",
+    "salesChannel": "Myyntikanava",
+    "region": "Alue",
+    "discount": "Alennus",
+    "role": "Rooli",
+    "resource": "Resurssi",
+    "sent": "Lähetetty",
+    "salesChannels": "Myyntikanavat",
+    "product": "Tuote",
+    "createdAt": "Luotu",
+    "updatedAt": "Päivitetty",
+    "operation": "Toiminto",
+    "revokedAt": "Peruutettu",
+    "true": "Tosi",
+    "false": "Epätosi",
+    "giftCard": "Lahjakortti",
+    "tag": "Tunniste",
+    "dateIssued": "Myöntämispäivä",
+    "issuedDate": "Myöntämispäivä",
+    "expiryDate": "Vanhenemispäivä",
+    "price": "Hinta",
+    "priceTemplate": "Hinta {{regionOrCurrency}}",
+    "height": "Korkeus",
+    "width": "Leveys",
+    "length": "Pituus",
+    "weight": "Paino",
+    "midCode": "MID-koodi",
+    "hsCode": "HS-koodi",
+    "ean": "EAN",
+    "upc": "UPC",
+    "inventoryQuantity": "Varastomäärä",
+    "barcode": "Viivakoodi",
+    "countryOfOrigin": "Alkuperämaa",
+    "material": "Materiaali",
+    "unitOfMeasure": "Mittayksikkö",
+    "thumbnail": "Pikkukuva",
+    "sku": "SKU",
+    "managedInventory": "Hallinnoitu varasto",
+    "allowBackorder": "Salli jälkitoimitus",
+    "inStock": "Varastossa",
+    "location": "Sijainti",
+    "quantity": "Määrä",
+    "variant": "Variantti",
+    "id": "ID",
+    "parent": "Ylätaso",
+    "minSubtotal": "Väl. min.",
+    "maxSubtotal": "Väl. maks.",
+    "shippingProfile": "Toimitusprofiili",
+    "summary": "Yhteenveto",
+    "details": "Tiedot",
+    "label": "Nimike",
+    "rate": "Kanta",
+    "requiresShipping": "Vaatii toimituksen",
+    "unitPrice": "Yksikköhinta",
+    "startDate": "Alkupäivä",
+    "endDate": "Loppupäivä",
+    "draft": "Luonnos",
+    "values": "Arvot"
+  },
+  "dateTime": {
+    "years_one": "Vuosi",
+    "years_other": "Vuotta",
+    "months_one": "Kuukausi",
+    "months_other": "Kuukautta",
+    "weeks_one": "Viikko",
+    "weeks_other": "Viikkoa",
+    "days_one": "Päivä",
+    "days_other": "Päivää",
+    "hours_one": "Tunti",
+    "hours_other": "Tuntia",
+    "minutes_one": "Minuutti",
+    "minutes_other": "Minuuttia",
+    "seconds_one": "Sekunti",
+    "seconds_other": "Sekuntia"
+  },
+  "views": {
+    "save": "Tallenna",
+    "saveAsNew": "Tallenna uutena näkymänä",
+    "updateDefaultForEveryone": "Päivitä oletus kaikille",
+    "updateViewName": "Päivitä näkymä",
+    "prompts": {
+      "updateDefault": {
+        "title": "Päivitä oletusnäkymä",
+        "description": "Tämä päivittää oletusnäkymän kaikille käyttäjille. Oletko varma?",
+        "confirmText": "Päivitä kaikille",
+        "cancelText": "Peruuta"
+      },
+      "updateView": {
+        "title": "Päivitä näkymä",
+        "description": "Haluatko varmasti päivittää näkymän \"{{name}}\"?",
+        "confirmText": "Päivitä",
+        "cancelText": "Peruuta"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "noProviders": "Rekisteröi tunnistautumispalveluntarjoaja Medusa-asetuksissasi voidaksesi kirjautua sisään",
+      "authenticationFailed": "Tunnistautuminen epäonnistui",
+      "cloud": "Kirjaudu Medusa Cloudilla",
+      "continueWithProvider": "Jatka palveluntarjoajalla {{provider}}",
+      "or": "tai",
+      "provisioningFailed": "Emme voineet viimeistellä kirjautumistasi. Ota yhteyttä ylläpitäjään."
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Käyttö estetty",
+      "description": "Sinulla ei ole oikeutta käyttää tätä sivua.",
+      "requiredPermission": "Vaadittu lupa: {{permission}}",
+      "action": "Sinulla ei ole oikeutta suorittaa tätä toimintoa."
+    },
+    "requiredPermissions": {
+      "title": "Vaaditut luvat",
+      "none": "Tässä näkymässä ei ole ilmoitettu lupia.",
+      "anyOf": "Jokin seuraavista",
+      "allOf": "Kaikki seuraavista",
+      "source": "Lähde: {{source}}"
+    },
+    "resources": {
+      "customer": "Asiakas",
+      "customer_group": "Asiakasryhmä",
+      "order": "Tilaus",
+      "product": "Tuote",
+      "product_category": "Tuotekategoria",
+      "product_collection": "Tuotekokoelma",
+      "product_tag": "Tuotetunniste",
+      "product_type": "Tuotetyyppi",
+      "inventory": "Varasto",
+      "reservation": "Varaus",
+      "promotion": "Kampanja",
+      "campaign": "Kampanjajakso",
+      "price_list": "Hinnasto",
+      "region": "Alue",
+      "store": "Kauppa",
+      "user": "Käyttäjä",
+      "role": "Rooli",
+      "permission": "Lupa",
+      "sales_channel": "Myyntikanava",
+      "stock_location": "Varastosijainti",
+      "shipping_profile": "Toimitusprofiili",
+      "shipping_option": "Toimitusvaihtoehto",
+      "tax_region": "Veroalue",
+      "api_key": "API-avain",
+      "return_reason": "Palautussyy",
+      "refund_reason": "Hyvityssyy",
+      "workflow": "Työnkulku",
+      "translation": "Käännös"
+    },
+    "actions": {
+      "read": "Näytä",
+      "create": "Luo",
+      "update": "Muokkaa",
+      "delete": "Poista"
+    }
+  }
+}

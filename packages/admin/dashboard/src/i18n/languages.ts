@@ -9,6 +9,7 @@ import {
   enUS,
   es,
   faIR,
+  fi,
   fr,
   he,
   hr,
@@ -77,6 +78,12 @@ export const languages: Language[] = [
     display_name: "Deutsch",
     ltr: true,
     date_locale: de,
+  },
+  {
+    code: "fi",
+    display_name: "Suomi",
+    ltr: true,
+    date_locale: fi,
   },
   {
     code: "fr",
