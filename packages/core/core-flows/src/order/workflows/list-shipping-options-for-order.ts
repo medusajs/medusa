@@ -51,6 +51,11 @@ export const listShippingOptionsForOrderWorkflow = createWorkflow(
 
         "items.*",
         "items.variant.manage_inventory",
+      "items.variant.metadata",
+      "items.variant.weight",
+      "items.variant.length",
+      "items.variant.height",
+      "items.variant.width",
         "items.variant.inventory_items.inventory_item_id",
         "items.variant.inventory_items.inventory.requires_shipping",
         "items.variant.inventory_items.inventory.location_levels.*",
