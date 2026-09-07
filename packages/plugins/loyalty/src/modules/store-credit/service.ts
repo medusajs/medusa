@@ -213,11 +213,9 @@ class StoreCreditService
           `SUM(CASE WHEN at.type = 'credit' THEN at.amount::numeric ELSE -at.amount::numeric END)`
         ),
       })
-      .leftJoin(
-        "store_credit_account_transaction as at",
-        "at.account_id",
-        "account.id"
-      )
+      .leftJoin("store_credit_account_transaction as at", function () {
+        this.on("at.account_id", "=", "account.id").andOnNull("at.deleted_at");
+      })
       .where("account.id", account.id)
       .groupBy("account.id");
 
