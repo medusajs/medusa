@@ -83,6 +83,43 @@ describe("normalizeLocale", function () {
     })
   })
 
+  it("should normalize two segment locales (language-script)", function () {
+    const expectations = [
+      {
+        input: "zh-Hans",
+        output: "zh-Hans",
+      },
+      {
+        input: "zh-hans",
+        output: "zh-Hans",
+      },
+      {
+        input: "ZH-HANS",
+        output: "zh-Hans",
+      },
+      {
+        input: "zh-Hant",
+        output: "zh-Hant",
+      },
+      {
+        input: "sr-Latn",
+        output: "sr-Latn",
+      },
+      {
+        input: "SR-LATN",
+        output: "sr-Latn",
+      },
+      {
+        input: "uz-Cyrl",
+        output: "uz-Cyrl",
+      },
+    ]
+
+    expectations.forEach((expectation) => {
+      expect(normalizeLocale(expectation.input)).toEqual(expectation.output)
+    })
+  })
+
   it("should normalize three segment locales (language-script-region)", function () {
     const expectations = [
       {
