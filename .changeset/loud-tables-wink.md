@@ -10,4 +10,4 @@
 "@medusajs/rbac": patch
 ---
 
-feat(dashboard,medusa): end to end RBAC implementation
+feat(dashboard,medusa,core-flows,framework,js-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
