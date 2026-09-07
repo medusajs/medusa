@@ -251,6 +251,8 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
         "items.id",
         "items.quantity",
         "items.variant.manage_inventory",
+      "items.variant.sku",
+      "items.variant.metadata",
         "items.variant.inventory_items.inventory.id",
         "items.variant.inventory_items.required_quantity",
       ],
