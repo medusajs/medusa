@@ -40,6 +40,8 @@ The Search Module has two parts that you control:
 
 The Search Module handles everything between the two. It creates and migrates the physical indexes, fills them when they are empty, applies events to keep them current, and compiles a search query into whatever the provider's engine understands.
 
+It also keeps a version per physical index it builds, so a definition change builds a new version alongside the one serving reads and only makes it active once it's filled. Every provider rebuilds an index that way, so a schema change costs no downtime whichever one you use.
+
 Learn how the module builds an index, fills it, and rebuilds it when a definition changes in the [Reindexing and Migrations guide](./reindexing/page.mdx).
 
 ---
@@ -72,6 +74,12 @@ module.exports = defineConfig({
   ].filter(Boolean),
 })
 ```
+
+<Note title="Warning" type="warning">
+
+Your registration replaces the module's default one, so it applies in every environment. On Cloud, Medusa still registers the [Medusa Search](!cloud!/search) provider alongside the providers you list, since it reads the credentials Cloud passes in. So set `default_provider` to the one that should serve an index that names none, otherwise the module throws at startup.
+
+</Note>
 
 <Note>
 
@@ -180,6 +188,7 @@ export const definitionHighlights = [
   ["17", "events", "The events that change the data the index holds."],
   ["22", "consume", "Turns each of those events into document writes."],
   ["38", "seed", "Yields the writes that fill the index."],
+  ["48", "withDeleted", "Reads soft-deleted products on a catch-up pass."],
 ]
 
 ```ts title="src/search/product.ts" highlights={definitionHighlights}
@@ -220,18 +229,38 @@ export const productIndex = defineSearchIndex({
 
     return [{ action: "upsert", documents: data }]
   },
-  async *seed({ container }) {
+  async *seed({ container, filters, catchup }) {
     const { data } = await container.query.graph({
       entity: "product",
-      fields,
+      fields: [...fields, "deleted_at"],
+      filters: {
+        ...filters,
+        ...(catchup
+          ? { updated_at: { $gte: catchup.since } }
+          : {}),
+      },
+      withDeleted: !!catchup,
     })
 
-    yield [{ action: "upsert", documents: data }]
+    const alive = data.filter((p) => !p.deleted_at)
+    const gone = data.filter((p) => p.deleted_at)
+
+    yield [
+      ...(alive.length
+        ? [{ action: "upsert", documents: alive }]
+        : []),
+      ...gone.map((product) => ({
+        action: "delete",
+        filters: { id: [product.id] },
+      })),
+    ]
   },
 })
 ```
 
 Medusa subscribes to the workflow events in `events` and routes each one to `consume`, so the index reflects changes as they happen. `seed` fills the index in full when Medusa creates or rebuilds it. Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
+
+The `seed` function also runs a second time as a catch-up pass right after a full run, to pick up what changed while that run was writing. That's why it reads `catchup` to narrow the query, passes `withDeleted` to see soft-deleted products, and yields a `delete` write for each one it finds. Refer to [Catch Up on Changes During a Run](./index-definitions/page.mdx#catch-up-on-changes-during-a-run) for the details, and to [Fill the Index with `seed`](./index-definitions/page.mdx#fill-the-index-with-seed) for batching a large catalog.
 
 ### 2. Run Migrations
 

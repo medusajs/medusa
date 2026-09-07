@@ -88,6 +88,12 @@ module.exports = defineConfig({
 })
 ```
 
+<Note>
+
+Register each provider once. Two registrations of the same provider share one identifier, so an index definition couldn't tell them apart, and the module throws at startup.
+
+</Note>
+
 ### Select a Provider by its Identifier
 
 Every provider declares its own identifier, such as `search-postgres` for the PostgreSQL provider and `search-medusa` for the Medusa Search provider. A custom provider declares one too, as a static `identifier` property on the service it exports:
@@ -181,6 +187,8 @@ If you register one provider, you can leave `default_provider` unset. The Search
 
 ## Provider Capabilities Differ
 
-The Search Module models a search engine's features behind one interface, but not every engine backs all of them. A provider that can't serve part of a query rejects it, rather than returning results that quietly differ. Some features, such as index swapping, are optional: the module takes a slower path instead of failing when a provider doesn't back them.
+The Search Module models a search engine's features behind one interface, but not every engine backs all of them. A provider that can't serve part of a query rejects it, rather than returning results that quietly differ. So a feature is either something the provider serves or something it refuses, and you find out at startup or on the query that uses it.
 
-So the provider you pick decides which index definitions you can declare, which query features you can pass, and how a schema change reaches the index. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider Medusa ships does with every feature they treat differently.
+The provider you pick therefore decides which index definitions you can declare and which query features you can pass. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider Medusa ships does with every feature they treat differently.
+
+Rebuilding an index is the exception. The module versions every index itself, so a schema change reaches the index the same way on every provider. Refer to [Reindexing and Migrations](../reindexing/page.mdx#how-index-changes-are-handled).

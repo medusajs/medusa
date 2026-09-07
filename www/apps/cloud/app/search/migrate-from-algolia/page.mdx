@@ -823,7 +823,7 @@ export const reindexProductsStep = createStep(
 )
 ```
 
-Then, keep your admin UI route and its API route, and call a workflow that runs this step instead of emitting the `algolia.sync` event. `reindex` fills a shadow index and aliases it over the live one, so search keeps working while the rebuild runs.
+Then, keep your admin UI route and its API route, and call a workflow that runs this step instead of emitting the `algolia.sync` event. `reindex` fills a new version of the index and then makes it the active one, so search keeps working while the rebuild runs.
 
 <Note>
 
@@ -995,4 +995,4 @@ Refer to the [Deployments](../../deployments/page.mdx) guide to follow the deplo
 
 - Index your other data models, including your custom ones, as explained in [Searching Custom Data Models](../page.mdx#searching-custom-data-models).
 - Configure how Medusa Search treats your index and its fields with the [Medusa Search Settings](../page.mdx#medusa-search-settings).
-- Add semantic search over embeddings you store in the index, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).
+- Add semantic search, either over embeddings you store in the index or over ones Medusa Search creates for you, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

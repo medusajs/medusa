@@ -16,6 +16,12 @@ Cloud provides pre-configured search infrastructure for your Medusa application.
 
 Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
 
+<Note>
+
+This provider doesn't support [vector fields](../../index-definitions/fields/page.mdx#searchvector) or vector search. It rejects an index that declares one, so your application fails to start.
+
+</Note>
+
 <Prerequisites
   items={[
     {
@@ -52,7 +58,6 @@ module.exports = defineConfig({
             options: {
               // requires a medusa_search_german text search configuration
               language: "german",
-              engine: "native",
             },
           },
           // ...

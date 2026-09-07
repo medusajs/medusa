@@ -420,7 +420,7 @@ Some Meilisearch behaviors have no equivalent in Medusa Search, and an index or 
       </Table.Cell>
       <Table.Cell>
 
-      Medusa Search runs [vector search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) on embeddings you compute and store in the index. It has no engine-side embedder, and it doesn't blend text and vector results by a semantic ratio.
+      Medusa Search runs [vector search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) on embeddings you compute and store in the index, and it blends text and vector results by a semantic ratio the same way. On the Enterprise plan it can also create the embeddings for you, so you don't configure an embedder yourself.
 
       </Table.Cell>
     </Table.Row>
@@ -1130,4 +1130,4 @@ After the cutover, remove the `MEILISEARCH_*` variables from your Cloud environm
 
 - Index your other data models, including your custom ones, as explained in [Searching Custom Data Models](../page.mdx#searching-custom-data-models).
 - Configure how Medusa Search treats your index and its fields with the [Medusa Search Settings](../page.mdx#medusa-search-settings).
-- Add semantic search over embeddings you store in the index, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).
+- Add semantic search, either over embeddings you store in the index or over ones Medusa Search creates for you, as explained in [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search).

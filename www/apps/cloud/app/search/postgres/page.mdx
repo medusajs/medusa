@@ -151,7 +151,7 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Value and range. The hits, the count, and every facet share a budget of 16 queries per search.
+        Value, range, and stats. The hits, the count, and every facet share a budget of 16 queries per search.
       </Table.Cell>
       <Table.Cell>
         Value, range, and stats.
@@ -164,7 +164,7 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Any number of fields, but not alongside a text or vector query.
+        Any number of fields, but not alongside a vector query.
       </Table.Cell>
       <Table.Cell>
         Any number of fields, alongside a text query.
@@ -177,11 +177,13 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
 
       </Table.Cell>
       <Table.Cell>
-        Vector search only, on embeddings you compute yourself.
+
+      Supported, including a hybrid of text and vector search. Medusa Search can also create the embeddings, on the Enterprise plan.
+
       </Table.Cell>
       <Table.Cell>
 
-      Supported, including a hybrid of text and vector search, but only on an engine that you set up yourself. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#vector-search-on-the-lakebase-engine).
+      Not supported. The provider rejects a vector field and a vector query.
 
       </Table.Cell>
     </Table.Row>
@@ -196,19 +198,6 @@ Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that 
       </Table.Cell>
       <Table.Cell>
         No limit, though a deep offset gets slower as the query scans and discards more rows.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      [Zero-downtime schema changes](#indexing-and-synchronization)
-
-      </Table.Cell>
-      <Table.Cell>
-        Not supported yet. The module rebuilds in place.
-      </Table.Cell>
-      <Table.Cell>
-        Supported, through a shadow index the provider renames over the live one.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -237,11 +226,10 @@ The PostgreSQL provider needs no external service, since it indexes into the dat
 
 1. Run `db:migrate` to create the provider's tables, its extensions, and its text search configuration. The command also creates the index for every definition you declared.
 2. Run `db:migrate` again after you create or change an index definition, since the physical table follows the definition.
-3. Choose an engine, if you need vector or hybrid search. The provider's default engine covers full-text search only. Refer to the [PostgreSQL provider guide](!resources!/infrastructure-modules/search/providers/postgres#search-engines-in-the-postgresql-search-module-provider) for the engines it supports.
-4. Configure a language other than English, if your catalog needs one, through the provider's `language` option.
-5. Size your database for the extra work, since every search query and every index write runs against it.
+3. Configure a language other than English, if your catalog needs one, through the provider's `language` option.
+4. Size your database for the extra work, since every search query and every index write runs against it.
 
-Step 5 is the one that's simple to miss. The index lives beside your orders and your products, so a heavy search workload competes with checkout for the same CPU, memory, and disk. Medusa Search moves that load off your database entirely.
+Step 4 is the one that's simple to miss. The index lives beside your orders and your products, so a heavy search workload competes with checkout for the same CPU, memory, and disk. Medusa Search moves that load off your database entirely.
 
 Both providers create their indexes through `db:migrate` rather than at application start, so neither one migrates while your application boots.
 
@@ -310,7 +298,7 @@ What each provider does with an index definition that declares the following:
       </Table.Cell>
       <Table.Cell>
 
-      Fails at startup on the provider's default engine. On an engine that supports vector search, holds the embedding and builds an approximate nearest neighbor index for it.
+      Fails at startup. The provider has nowhere to store an embedding.
 
       </Table.Cell>
     </Table.Row>
@@ -372,19 +360,6 @@ What each provider does with an index definition that declares the following:
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-
-      A field that sets [`correlated()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#correlated)
-
-      </Table.Cell>
-      <Table.Cell>
-        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
-      </Table.Cell>
-      <Table.Cell>
-        Fails at startup, since the provider collapses an array of objects into per-leaf arrays.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
         A document whose primary key is longer than 64 bytes
       </Table.Cell>
       <Table.Cell>
@@ -431,26 +406,13 @@ The Search Module drives both providers through the same flow, so an initial fil
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-
-      [Zero-downtime schema changes](!resources!/infrastructure-modules/search/reindexing#how-index-changes-are-handled)
-
+        What a new index version is built as
       </Table.Cell>
       <Table.Cell>
-        Not supported yet, so the module rebuilds in place and the index holds nothing until the seed finishes.
+        A separate namespace in the Medusa Search service, which the module writes to until it makes that version active.
       </Table.Cell>
       <Table.Cell>
-        Supported. The module fills a shadow index, then the provider renames it over the live one.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Bringing an existing index up to a changed schema
-      </Table.Cell>
-      <Table.Cell>
-        Updates the schema in place when no field changed type, and recreates the index otherwise.
-      </Table.Cell>
-      <Table.Cell>
-        Drops and recreates the table when the schema fingerprint changed.
+        A separate table in your database, which the module writes to until it makes that version active.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -532,12 +494,12 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
       </Table.Cell>
       <Table.Cell>
 
-      Runs a similarity search when you pass `value`. Fails per query if you pass `query` text, if the search also passes `q`, or if the search also orders by a field.
+      Runs a similarity search on the embedding you pass as `value`, or on the text you pass as `query` when the field declares `embed`. Blends it with a `q` filter by `semantic_ratio`. Fails per query if the search also orders by a field.
 
       </Table.Cell>
       <Table.Cell>
 
-      Fails per query on the provider's default engine. On an engine that supports vector search, runs a similarity search and blends it with the text query by `semantic_ratio`.
+      Fails per query.
 
       </Table.Cell>
     </Table.Row>
@@ -577,7 +539,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
       </Table.Cell>
       <Table.Cell>
 
-      Serves `any` and `last`. Fails per query for `all`.
+      Serves `all`, `any`, and `last`.
 
       </Table.Cell>
       <Table.Cell>
@@ -684,7 +646,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
         Ordering by a field alongside a text query
       </Table.Cell>
       <Table.Cell>
-        Fails per query. Relevance and attribute order are separate rankings.
+        Orders by the field, which replaces relevance ranking rather than refining it. Alongside a vector query it fails per query instead.
       </Table.Cell>
       <Table.Cell>
 
@@ -868,7 +830,7 @@ What each provider does with the [facets](!docs!/learn/fundamentals/query/search
 
       </Table.Cell>
       <Table.Cell>
-        Fails per query.
+        Returns the minimum, maximum, sum, and count, but no average. Costs one query per aggregate, so four for a numeric field and three for a date. Fails per query on a field that isn't numeric, or on an array field.
       </Table.Cell>
       <Table.Cell>
         Returns the minimum, maximum, average, sum, and count. Fails per query on a field that isn't numeric.
@@ -1033,12 +995,12 @@ Medusa Search keeps both off your database and meters the queries under Search i
 
 - Your project runs on Cloud and you want search off your database, so a traffic spike in search doesn't slow down checkout.
 - Your catalog is large enough that indexes competing with your transactional workload is a real concern.
-- Filters, facets, sorting, and weighted full-text search cover your requirements.
+- You want vector or semantic search, which only Medusa Search serves, on the Enterprise plan.
 
 **Choose the PostgreSQL provider if:**
 
 - You self-host your Medusa application, since Medusa Search runs on Cloud only.
-- You want vector or hybrid search that the provider serves for you.
+- Full-text search, filters, facets, and sorting cover your requirements, since the provider serves no vector or semantic search.
 - Your search volume is modest enough that your database absorbs it without a bigger tier.
 
 You don't have to pick one for everything. The Search Module accepts more than one provider, so you can point a high-traffic storefront index at Medusa Search and keep a low-traffic admin index on PostgreSQL.

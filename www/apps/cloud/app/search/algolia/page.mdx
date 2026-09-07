@@ -131,7 +131,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        Any number of fields, but not alongside a text or vector query.
+        Any number of fields, but not alongside a vector query.
       </Table.Cell>
       <Table.Cell>
         Needs a replica index per sort order.
@@ -348,17 +348,6 @@ With a provider in place, the Search Module drives both engines through the same
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        Index availability during a rebuild
-      </Table.Cell>
-      <Table.Cell>
-        Medusa Search rebuilds in place, so the index holds nothing until the seed finishes.
-      </Table.Cell>
-      <Table.Cell>
-        Your provider decides. Algolia supports filling a temporary index and replacing the live one with it.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
         Write acknowledgment
       </Table.Cell>
       <Table.Cell>
@@ -467,7 +456,7 @@ With a provider in place, the Search Module drives both engines through the same
         Sorting by an attribute
       </Table.Cell>
       <Table.Cell>
-        Any number of fields, but not alongside a text or vector query.
+        Any number of fields, but not alongside a vector query.
       </Table.Cell>
       <Table.Cell>
         Needs a replica index per sort order. A standard replica holds its own copy of the records.
@@ -489,7 +478,7 @@ With a provider in place, the Search Module drives both engines through the same
         Vector and semantic search
       </Table.Cell>
       <Table.Cell>
-        Vector search on embeddings you compute and store in the index.
+        Hybrid search that blends text and vector results by a semantic ratio, on embeddings you compute or that Medusa Search creates for you on the Enterprise plan.
       </Table.Cell>
       <Table.Cell>
         Available through Algolia's AI search features, on higher plans.

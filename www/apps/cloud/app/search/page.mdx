@@ -35,7 +35,8 @@ Medusa Search provides the following features:
 - **Full-text search** with relevance ranking that respects the weight you set on each field.
 - **Semantic search** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
 - **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
-- **Facets** for values and ranges, so a storefront can show counts per category or price bucket.
+- **Facets** for values, ranges, and aggregate statistics, so a storefront can show counts per category or price bucket.
+- **Highlighting** of the matched terms in a hit's fields, so a storefront can mark what a result matched on.
 - **Sorting** by any number of fields.
 - **Isolated indexes per environment**, so a preview environment never writes to your production indexes.
 
@@ -100,7 +101,7 @@ npx medusa db:migrate
 
 <Note>
 
-The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `min_score`, and it can't enforce `match_strategy: "all"`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
+The two providers don't support the same features, so a query that works locally can fail on Cloud. For example, Medusa Search rejects a query that passes `min_score`, and the PostgreSQL provider rejects one that passes `highlight`. Refer to [Medusa Search vs PostgreSQL](./postgres/page.mdx) before you rely on a feature in your storefront.
 
 </Note>
 
@@ -328,7 +329,7 @@ export const productIndex = defineSearchIndex({
   }),
   settings: {
     typo_tolerance: {
-      min_word_size_for_one_typo: 5,
+      min_word_size_for_one_typo: 6,
       min_word_size_for_two_typos: 9,
       disabled_on_attributes: ["sku"],
     },
@@ -355,7 +356,7 @@ The setting accepts the following properties:
       type: "`number`",
       optional: true,
       description: `The shortest term length that tolerates a single typo.`,
-      defaultValue: "5",
+      defaultValue: "6",
     },
     {
       name: "min_word_size_for_two_typos",
@@ -536,20 +537,31 @@ This feature is available for the Enterprise plan only. Refer to the [Plans & Pr
 
 </Note>
 
-To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier with the path of the `text` or `keyword` field to embed:
+To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier on it:
 
 ```ts title="src/search/product.ts"
 export const productIndex = defineSearchIndex({
   fields: search.define({
     title: search.text().searchable(),
-    title_embedding: search.vector(1536).embed("title"),
+    title_embedding: search.vector(1536).embed(),
     // ...
   }),
   // ...
 })
 ```
 
-Medusa Search now embeds each document's `title` into `title_embedding` as it indexes the document. Your documents must leave `title_embedding` out, since Medusa Search produces it.
+Your documents then pass the text to embed as a string on `title_embedding`, and Medusa Search replaces it with the embedding it computes. So a `seed` that indexes each product's title yields the following:
+
+```ts
+yield [{
+  action: "upsert",
+  documents: products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    title_embedding: product.title,
+  })),
+}]
+```
 
 Then, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
 

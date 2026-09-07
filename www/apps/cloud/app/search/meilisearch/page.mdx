@@ -131,7 +131,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        Vector search on embeddings you compute and store yourself.
+        Hybrid search that blends text and vector results by a semantic ratio, with embeddings Medusa Search can create for you on the Enterprise plan.
       </Table.Cell>
       <Table.Cell>
         Hybrid text and vector search, and a configured embedder can compute the embeddings.
@@ -144,7 +144,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        Any number of fields, but not alongside a text or vector query.
+        Any number of fields, but not alongside a vector query.
       </Table.Cell>
       <Table.Cell>
 
@@ -361,17 +361,6 @@ With a provider in place, the Search Module drives both engines through the same
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        Index availability during a rebuild
-      </Table.Cell>
-      <Table.Cell>
-        Medusa Search rebuilds in place, so the index holds nothing until the seed finishes.
-      </Table.Cell>
-      <Table.Cell>
-        Your provider decides. Meilisearch supports filling a second index and swapping the two.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
         Write acknowledgment
       </Table.Cell>
       <Table.Cell>
@@ -484,7 +473,7 @@ With a provider in place, the Search Module drives both engines through the same
         Sorting by an attribute
       </Table.Cell>
       <Table.Cell>
-        Any number of fields, but not alongside a text or vector query.
+        Any number of fields, but not alongside a vector query.
       </Table.Cell>
       <Table.Cell>
 
@@ -497,7 +486,7 @@ With a provider in place, the Search Module drives both engines through the same
         Vector and semantic search
       </Table.Cell>
       <Table.Cell>
-        Vector search on embeddings you compute and store in the index, with no text and vector blending.
+        Hybrid search that blends text and vector results by a semantic ratio, on embeddings you compute or that Medusa Search creates for you on the Enterprise plan.
       </Table.Cell>
       <Table.Cell>
         Hybrid search that blends text and vector results by a semantic ratio, with an embedder that can compute the embeddings.

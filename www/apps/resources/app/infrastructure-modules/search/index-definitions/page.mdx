@@ -108,7 +108,7 @@ npx medusa db:migrate
         `fields`
       </Table.Cell>
       <Table.Cell>
-        The fields the search engine holds. Accepts a schema from `search.define`, or plain field definition objects. Refer to [Search Index Fields](./fields/page.mdx) for every field type and modifier.
+        The fields the search engine holds. Must be a schema built with `search.define`. Refer to [Search Index Fields](./fields/page.mdx) for every field type and modifier.
       </Table.Cell>
       <Table.Cell>
         Yes
@@ -130,7 +130,7 @@ npx medusa db:migrate
         `primary_key`
       </Table.Cell>
       <Table.Cell>
-        The field holding each document's unique identifier. Defaults to `id`.
+        The field holding each document's unique identifier. Defaults to `id`. Declare it in `fields` too, otherwise the module rejects the definition at startup.
       </Table.Cell>
       <Table.Cell>
         No
@@ -202,7 +202,7 @@ The Search Module runs `seed` in the following cases:
 
 1. A migration created the index and nothing has filled it yet.
 2. The index exists but holds no documents, such as after an engine restart wiped it.
-3. A migration built a new index for a changed schema, which the module fills and then swaps in.
+3. A migration built a new version of the index for a changed schema, which the module fills and then makes active.
 4. The previous run didn't complete, so the module resumes it where it stopped.
 5. You rebuild the index on demand with the Search Module's `reindex` method.
 6. The catch-up pass that follows a full run, which picks up what changed while that run was writing. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).

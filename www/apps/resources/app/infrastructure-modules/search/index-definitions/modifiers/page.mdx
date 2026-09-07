@@ -254,7 +254,9 @@ Requesting a facet kind the field doesn't allow throws an error. Passing a field
 
 ## retrievable()
 
-Whether the field comes back on a hit. By default, every field is retrievable, so you can omit this modifier unless you want to turn it off. Available on every type.
+Whether the field comes back on a hit. Most fields are retrievable by default, so you can omit this modifier unless you want to turn it off. Available on every type.
+
+A `vector` field is the exception: it defaults to not retrievable, since a list of hundreds of numbers is rarely useful to the caller. Chain `retrievable()` on one to get the embedding back on every hit.
 
 ```ts title="src/search/product.ts"
 import {
@@ -274,6 +276,12 @@ export const productIndex = defineSearchIndex({
 <Note title="Tip">
 
 A field that isn't retrievable still counts toward matching. `query.search` reads this modifier to decide which requested fields the engine can serve, and which it must fetch with `query.graph`.
+
+</Note>
+
+<Note>
+
+An `object` field's container is never retrievable, since the index only stores the sub-fields you declared. Request those sub-fields by their dotted path, such as `brand.name`, rather than requesting `brand`.
 
 </Note>
 
@@ -302,54 +310,11 @@ A filter on an array field matches when any element matches. Faceting on one cou
 
 ---
 
-## correlated()
-
-Requires that filters on an object's sub-fields all match within a single element of the array. Available on an `object` field, and only after `array()`.
-
-<Note>
-
-No provider Medusa ships supports this modifier, so every one of them rejects an index that sets it and your application fails to start. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres#index-definition-support).
-
-</Note>
-
-By default, filters on the sub-fields of an object array match across elements. So filtering a product on `variants.color = "red"` and `variants.size = "XL"` also matches a product with a red small variant and a blue extra-large one.
-
-Add `correlated()` to require that one element satisfies every sub-field filter:
-
-```ts title="src/search/product.ts"
-import {
-  defineSearchIndex,
-  search,
-} from "@medusajs/framework/utils"
-
-export const productIndex = defineSearchIndex({
-  fields: search.define({
-    variants: search
-      .object({
-        color: search.keyword().filterable(),
-        size: search.keyword().filterable(),
-      })
-      .array()
-      .correlated(),
-    // ...
-  }),
-  // ...
-})
-```
-
-<Note>
-
-Most providers flatten arrays and can't express correlated filtering. A provider that doesn't support it rejects the index when your application starts, rather than returning over-matched results later.
-
-</Note>
-
----
-
 ## embed()
 
-Asks [Medusa Search](!cloud!/search) to create the field's embedding from another field, rather than having your documents supply it. Available on a `vector` field only.
+Asks [Medusa Search](!cloud!/search) to create the field's embedding from text your documents pass on that same field, rather than having your documents supply the embedding. Available on a `vector` field only.
 
-Pass the path of the `text` or `keyword` field to embed:
+`embed()` takes no arguments:
 
 ```ts title="src/search/product.ts"
 import {
@@ -360,18 +325,18 @@ import {
 export const productIndex = defineSearchIndex({
   fields: search.define({
     title: search.text().searchable(),
-    title_embedding: search.vector(1536).embed("title"),
+    title_embedding: search.vector(1536).embed(),
     // ...
   }),
   // ...
 })
 ```
 
-With `embed`, your documents must leave the vector field out, and a query can search it by passing raw text as `search_options.vector.query`. Refer to [Let Medusa Search Create the Embedding](../fields/page.mdx#let-medusa-search-create-the-embedding) for the full details.
+With `embed`, your documents pass a string on the vector field, and a query can search it by passing raw text as `search_options.vector.query`. Refer to [Let Medusa Search Create the Embedding](../fields/page.mdx#let-medusa-search-create-the-embedding) for the full details.
 
 <Note>
 
-`embed` is a [Medusa Search](!cloud!/search#let-medusa-search-create-the-embedding) feature, available for Cloud projects on the Enterprise plan.
+`embed` is a [Medusa Search](!cloud!/search#semantic-search-with-medusa-search) feature, available for Cloud projects on the Enterprise plan.
 
 </Note>
 
