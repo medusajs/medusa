@@ -114,11 +114,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
     },
     (errors) => {
       if (errors.payment_providers) {
-        toast.error(
-          (errors.payment_providers.message as string) ||
-            t("regions.paymentProvidersRequired") ||
-            "Select at least one payment provider"
-        )
+        toast.error(errors.payment_providers.message as string)
       }
     }
   )
