@@ -3,7 +3,6 @@ import { updateOrderValidationStep } from "../update-order"
 
 describe("updateOrderValidationStep", () => {
   it("should not throw when adding shipping address to order with no existing shipping address", async () => {
-    const step = (updateOrderValidationStep as any).step
     const order: any = {
       id: "order_1",
       shipping_address: undefined,
