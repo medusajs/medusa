@@ -10,8 +10,8 @@ import { BaseSchemaProperty } from "../../../schema"
 /**
  * The core of every search index field property. Only the modifiers that make
  * sense for any field kind live here; the narrower ones (searchable, facet
- * types, array, correlated) sit on the subclasses whose kinds support them, so
- * an invalid combination is a compile error instead of a boot failure.
+ * types, array) sit on the subclasses whose kinds support them, so an invalid
+ * combination is a compile error instead of a boot failure.
  */
 export abstract class BaseSearchProperty<T>
   extends BaseSchemaProperty<T>

@@ -1,3 +1,5 @@
+import { disallowedStorePivotFields } from "../utils/disallowed-fields"
+
 export const defaultPaymentCollectionFields = [
   "id",
   "currency_code",
@@ -7,5 +9,6 @@ export const defaultPaymentCollectionFields = [
 
 export const retrievePaymentCollectionTransformQueryConfig = {
   defaults: defaultPaymentCollectionFields,
+  disallowed: disallowedStorePivotFields,
   isList: false,
 }

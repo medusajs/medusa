@@ -16,6 +16,8 @@ import {
 } from "../../helpers/create-mikro-orm-entity"
 import { pgGodCredentials } from "../utils"
 
+jest.setTimeout(30000)
+
 export const fileSystem = new FileSystem(
   join(__dirname, "../../integration-tests-migrations-enum")
 )

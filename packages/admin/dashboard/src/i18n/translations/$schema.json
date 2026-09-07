@@ -408,9 +408,17 @@
                 },
                 "deleteRow": {
                   "type": "string"
+                },
+                "addRow": {
+                  "type": "string"
                 }
               },
-              "required": ["insertRowAbove", "insertRowBelow", "deleteRow"],
+              "required": [
+                "insertRowAbove",
+                "insertRowBelow",
+                "deleteRow",
+                "addRow"
+              ],
               "additionalProperties": false
             },
             "labels": {

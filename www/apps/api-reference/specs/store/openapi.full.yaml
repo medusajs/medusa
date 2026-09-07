@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.19.0
+  version: 2.20.1
   title: Medusa Storefront API
   license:
     name: MIT
@@ -16210,6 +16210,11 @@ components:
           description: The inventory item's location levels.
           items:
             $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -20420,6 +20425,11 @@ components:
           type: number
           title: reserved_quantity
           description: The inventory item's reserved quantity.
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory's unit of measure.
+          example: kg
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -28089,6 +28099,11 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        unit_of_measure:
+          type: string
+          title: unit_of_measure
+          description: The inventory item's unit of measure.
+          example: kg
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -29525,6 +29540,23 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+    AdminUserAuthProvidersResponse:
+      type: object
+      description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
+      x-schemaName: AdminUserAuthProvidersResponse
+      required:
+        - providers
+      properties:
+        providers:
+          type: array
+          description: |-
+            The IDs of the auth providers the user can authenticate with, such as
+            `emailpass`.
+          items:
+            type: string
+            title: providers
+            description: The provider's identifier.
+            example: emailpass
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -29579,6 +29611,23 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+    AdminUserResetPasswordTokenResponse:
+      type: object
+      description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
+      x-schemaName: AdminUserResetPasswordTokenResponse
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          title: token
+          description: |-
+            The generated reset password token. Append it to the admin's
+            `/reset-password` page as a `token` query parameter to build a link the
+            user can open to set a new password.
+
+            The token is short-lived, can only be used once, and generating it
+            invalidates any reset password token previously issued for the user.
     AdminUserResponse:
       type: object
       description: The user's details.
@@ -35323,6 +35372,7 @@ components:
         - name
         - amount
         - is_tax_inclusive
+        - is_custom_amount
         - created_at
         - updated_at
         - original_total
@@ -35425,6 +35475,10 @@ components:
           type: number
           title: discount_tax_total
           description: The total taxes of the discount amount.
+        is_custom_amount:
+          type: boolean
+          title: is_custom_amount
+          description: Whether the shipping method price is custom amount or not.
     OrderShippingMethodAdjustment:
       type: object
       description: The shipping method adjustment's details.

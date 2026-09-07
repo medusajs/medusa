@@ -73,7 +73,11 @@ export interface SearchFieldDefinition {
    * blob used purely for matching. `query.search` reads this to decide which
    * requested fields the engine can serve and which need `query.graph`.
    *
-   * @default true
+   * Vector fields default to not retrievable — embeddings are not useful on
+   * hits. Set `retrievable: true`, or `.retrievable()` in the DSL, to return
+   * them.
+   *
+   * @default true (`false` for `type: "vector"`)
    */
   retrievable?: boolean
 
@@ -81,16 +85,6 @@ export interface SearchFieldDefinition {
    * The fields of a nested object, only used when `type` is `object`.
    */
   fields?: Record<string, SearchFieldDefinition>
-
-  /**
-   * Only meaningful on an array of objects. When `true`, filters on the object's
-   * sub-fields must all match within a *single* element — `variants.color = "red"
-   * AND variants.size = "XL"` matches a product with a red XL variant, not one
-   * with a red S and a blue XL. Off by default because most engines flatten
-   * arrays and cannot express it; a provider that cannot rejects it from
-   * `upsertIndex`, so this fails at boot rather than over-matching later.
-   */
-  correlated?: boolean
 
   /**
    * The dimensionality of the embedding stored in a `type: "vector"` field.
@@ -101,12 +95,11 @@ export interface SearchFieldDefinition {
   dimensions?: number
 
   /**
-   * When set on a vector field, the dotted path of the text or keyword field
-   * the engine embeds at write and query time. Documents must not include this
-   * field's values — pass the raw text on that source field instead. Omit
-   * `embed` to supply embeddings yourself.
+   * When `true` on a vector field, documents pass a string and the engine
+   * embeds it at write time, and for `search_options.vector.query` at query
+   * time. Omit `embed` to supply embeddings yourself as a `number[]`.
    */
-  embed?: string
+  embed?: boolean
 
   /**
    * Field options specific to a search engine, keyed by provider identifier, such
