@@ -1,3 +1,4 @@
+import { processPaymentWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { Modules, PaymentActions, ProductStatus } from "@medusajs/utils"
 import { setTimeout } from "timers/promises"
@@ -61,7 +62,10 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/regions",
           {
-            payment_providers: ["pp_system_default", "pp_pending-auth_pending-auth"],
+            payment_providers: [
+              "pp_system_default",
+              "pp_pending-auth_pending-auth",
+            ],
             name: "Test Region",
             currency_code: "usd",
             countries: ["US"],
@@ -584,6 +588,90 @@ medusaIntegrationTestRunner({
           orderAfter.payment_collections[0].payments[0].captures
         ).toHaveLength(1)
         expect(orderAfter.payment_collections[0].status).toBe("completed")
+      })
+
+      it("should not throw and should leave the order awaiting when a SUCCESSFUL webhook arrives while the provider still returns pending_authorization (autocapture, no payment yet)", async () => {
+        // 1. Complete cart with pending_authorization provider
+        const paymentCollection = (
+          await api.post(
+            "/store/payment-collections",
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: pendingAuthProviderId },
+          storeHeaders
+        )
+
+        const completedCart = (
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+        ).data
+
+        expect(completedCart.type).toBe("order")
+        const orderId = completedCart.order.id
+
+        const orderBefore = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections,*payment_collections.payment_sessions,*payment_collections.payments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderBefore.payment_status).toBe("awaiting")
+        const sessionId =
+          orderBefore.payment_collections[0].payment_sessions[0].id
+        const amount = orderBefore.payment_collections[0].amount
+
+        // 2. Run processPaymentWorkflow directly (bypassing the async event
+        //    bus, whose subscriber swallows workflow errors) with a
+        //    SUCCESSFUL action and no payment yet, and no payment_received
+        //    flag set on the session — the provider's authorizePayment call
+        //    triggered by the autocapture branch returns
+        //    pending_authorization again, so there is no payment to capture.
+        const { errors } = await processPaymentWorkflow(appContainer).run({
+          input: {
+            action: PaymentActions.SUCCESSFUL,
+            data: { session_id: sessionId, amount },
+          },
+          throwOnError: false,
+        })
+
+        expect(errors ?? []).toEqual([])
+
+        const orderAfter = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections.payments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderAfter.payment_status).toBe("awaiting")
+        expect(orderAfter.payment_collections[0].payments).toHaveLength(0)
+
+        // 3. The session should still be authorizable/capturable once the
+        //    payment actually arrives, proving the workflow didn't get stuck.
+        const paymentModule = appContainer.resolve(Modules.PAYMENT)
+        await paymentModule.updatePaymentSession({
+          id: sessionId,
+          currency_code: "usd",
+          amount: orderBefore.payment_collections[0].amount,
+          data: { payment_received: true },
+        })
+
+        const retryWebhookRes = await api.post(
+          `/hooks/payment/${webhookProviderPath}`,
+          {
+            action: PaymentActions.SUCCESSFUL,
+            session_id: sessionId,
+            amount: orderBefore.payment_collections[0].amount,
+          }
+        )
+        expect(retryWebhookRes.status).toBe(200)
+
+        await waitForPaymentStatus(orderId, "captured")
       })
 
       it("should NOT complete the cart on an intermediate (PENDING) webhook action when no order exists yet", async () => {
