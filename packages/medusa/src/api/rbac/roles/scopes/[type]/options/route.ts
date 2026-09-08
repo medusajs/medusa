@@ -5,10 +5,14 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  defineFileConfig,
+  FeatureFlag,
   MedusaError,
   Modules,
   pickValueFromObject,
 } from "@medusajs/framework/utils"
+
+import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<
@@ -82,3 +86,7 @@ export const GET = async (
     options,
   })
 }
+
+defineFileConfig({
+  isDisabled: () => !FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key),
+})
