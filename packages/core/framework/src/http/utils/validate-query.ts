@@ -81,6 +81,11 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       }
 
       delete req.allowed
+
+      const disallowed = req.disallowed ?? queryConfig.disallowed ?? []
+
+      delete req.disallowed
+
       const query = normalizeQuery(req) as Record<string, any>
 
       const validated = await zodValidator(zodSchema, query)
@@ -91,6 +96,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
             {
               ...queryConfig,
               allowed,
+              disallowed,
               restricted,
               isList: true,
             },
@@ -101,6 +107,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
             {
               ...queryConfig,
               allowed,
+              disallowed,
               restricted,
             },
             req
