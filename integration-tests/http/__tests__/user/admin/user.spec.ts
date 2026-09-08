@@ -775,7 +775,12 @@ medusaIntegrationTestRunner({
         it("should assign roles to a user when actor has all required policies", async () => {
           const response = await api.post(
             `/admin/users/${testUser.id}/roles`,
-            { roles: [viewerRole.id, editorRole.id] },
+            {
+              assignments: [
+                { role_id: viewerRole.id },
+                { role_id: editorRole.id },
+              ],
+            },
             adminHeaders
           )
 
@@ -859,7 +864,7 @@ medusaIntegrationTestRunner({
           const error = await api
             .post(
               `/admin/users/${testUser.id}/roles`,
-              { roles: [adminRole.id] },
+              { assignments: [{ role_id: adminRole.id }] },
               limitedHeaders
             )
             .catch((e) => e)
@@ -871,7 +876,7 @@ medusaIntegrationTestRunner({
           const error = await api
             .post(
               `/admin/users/non_existent_id/roles`,
-              { roles: [viewerRole.id] },
+              { assignments: [{ role_id: viewerRole.id }] },
               adminHeaders
             )
             .catch((e) => e)
@@ -952,7 +957,12 @@ medusaIntegrationTestRunner({
             `/admin/users/${testUser.id}/roles`,
             {
               ...adminHeaders,
-              data: { roles: [viewerRole.id, editorRole.id] },
+              data: {
+                assignments: [
+                  { role_id: viewerRole.id },
+                  { role_id: editorRole.id },
+                ],
+              },
             }
           )
 
