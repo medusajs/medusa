@@ -141,6 +141,7 @@ export const defaultStoreCartFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
+  storeRelationsLimit: 3,
   // The cart legitimately exposes the caller's own customer/address/payment
   // data during checkout, but must not be usable to pivot into other
   // resources' order or cart data (e.g. region.orders, customer.orders).

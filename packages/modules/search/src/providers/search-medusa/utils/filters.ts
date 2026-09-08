@@ -176,3 +176,36 @@ export function toSearchFilter(
 
   return compile(filters)
 }
+
+export function mergeFilters(
+  filters: (Filter | undefined)[],
+  combinator: "And" | "Or" = "And"
+): Filter | undefined {
+  const present = filters.filter((item): item is Filter => !!item)
+  if (!present.length) {
+    return undefined
+  }
+  return present.length === 1 ? present[0] : [combinator, present]
+}
+
+export function textMatchFilter(
+  q: string | undefined,
+  fields: string[],
+  matchStrategy?: SearchTypes.SearchMatchStrategy
+): Filter | undefined {
+  const query = q?.trim()
+  if (!query || !fields.length) {
+    return undefined
+  }
+
+  const operator =
+    matchStrategy === "any" ? "ContainsAnyToken" : "ContainsAllTokens"
+  const suffix =
+    matchStrategy === "last" ? { last_as_prefix: true } : undefined
+
+  const clauses = fields.map((path): Filter =>
+    suffix ? [path, operator, query, suffix] : [path, operator, query]
+  )
+
+  return mergeFilters(clauses, "Or")
+}

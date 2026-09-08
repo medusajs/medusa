@@ -229,7 +229,7 @@ When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll rec
 
 #### getSignature Method
 
-Next, you'll add the `getSignature` method to the service. This method generates signatures for use in request headers when sending webhook events to AI agents.
+Next, you'll add the `getSignature` method to the service. This method generates a base64 signature for a payload in the same format that AI agents use for inbound requests, which is useful to test the checkout APIs locally.
 
 Add the following method to the `AgenticCommerceService` class:
 
@@ -243,7 +243,7 @@ export default class AgenticCommerceService {
 }
 ```
 
-This method receives webhook event data and generates signatures using HMAC-SHA256 with the module's `signatureKey` option.
+This method receives a payload and generates a signature using HMAC-SHA256 with the module's `signatureKey` option.
 
 #### sendWebhookEvent Method
 
@@ -253,23 +253,56 @@ First, add the following type at the top of the `src/modules/agentic-commerce/se
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export type AgenticCommerceWebhookEvent = {
-  type: "order.created" | "order.updated"
+  type: "order_create" | "order_update"
   data: {
     type: "order"
+    id: string
     checkout_session_id: string
     permalink_url: string
-    status: "created" | "manual_review" | "confirmed" | "canceled" | "shipping" | "fulfilled"
-    refunds: {
-      type: "store_credit" | "original_payment"
-      amount: number
+    status: "created" | "manual_review" |
+      "confirmed" | "processing" | "shipped" |
+      "completed" | "canceled"
+    adjustments: {
+      id: string
+      type: "refund"
+      occurred_at: string
+      status: "completed"
+      amount?: number
     }[]
   }
 }
 ```
 
-This type defines the structure of webhook events that you can send to AI agents based on [Agentic Commerce specifications](https://developers.openai.com/commerce/specs/webhooks).
+This type defines the structure of webhook events that you can send to AI agents based on the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 
 Then, add the following method to the `AgenticCommerceService` class:
+
+```ts title="src/modules/agentic-commerce/service.ts"
+export default class AgenticCommerceService {
+  // ...
+  getWebhookSignature(
+    rawBody: string,
+    timestamp = Math.floor(Date.now() / 1000)
+  ) {
+    const digest = crypto
+      .createHmac("sha256", this.options.signatureKey)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    return `t=${timestamp},v1=${digest}`
+  }
+}
+```
+
+Outbound webhook events use a different signature format than inbound requests. This method builds the `Merchant-Signature` header value that the ACP `2026-04-17` release expects, which is a hexadecimal HMAC-SHA256 digest of the timestamp and the raw request body, joined by a period.
+
+<Note title="Tip">
+
+Sign the exact raw body string that you send in the request, not a re-serialized copy of the payload. Any difference in key order or whitespace produces a different digest that the receiver can't verify.
+
+</Note>
+
+Finally, add the following method to the `AgenticCommerceService` class:
 
 ```ts title="src/modules/agentic-commerce/service.ts"
 export default class AgenticCommerceService {
@@ -278,15 +311,17 @@ export default class AgenticCommerceService {
     type,
     data,
   }: AgenticCommerceWebhookEvent) {
-    // Create signature
-    const signature = this.getSignature(data)
+    const rawBody = JSON.stringify({ type, data })
+    const signature = this.getWebhookSignature(rawBody)
     // TODO send order webhook event
-    console.log(`Sent order webhook event ${type} with signature ${signature} and data ${JSON.stringify(data)}`)
+    console.log(
+      `Prepared order webhook event ${type} with Merchant-Signature ${signature}`
+    )
   }
 }
 ```
 
-This method receives webhook event types and data, generates signatures using the `getSignature` method, and logs events to the console.
+This method receives webhook event types and data, serializes the payload once, signs that exact string using the `getWebhookSignature` method, and logs events to the console.
 
 When you apply for [Instant Checkout](https://chatgpt.com/merchants), you'll get access to endpoints for sending webhook events and can implement the logic in this method.
 
@@ -3485,6 +3520,12 @@ export default async function orderWebhookHandler({
   const configModule = container.resolve("configModule")
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
+  if (!storefrontUrl) {
+    throw new Error(
+      "A storefront URL is required to send ACP order webhooks"
+    )
+  }
+
   // retrieve order
   const { data: [order] } = await query.graph({
     entity: "order",
@@ -3506,34 +3547,49 @@ export default async function orderWebhookHandler({
     return
   }
 
-  // prepare webhook event
-  const webhookEvent: AgenticCommerceWebhookEvent = {
-    type: name === "order.placed" ? "order.created" : "order.updated",
-    data: {
-      type: "order",
-      checkout_session_id: order.cart.id,
-      permalink_url: `${storefrontUrl}/orders/${order.id}`,
-      status: "confirmed",
-      refunds: order.transactions?.filter(
-        (transaction) => transaction?.reference === "refund"
-      ).map((transaction) => ({
-        type: "original_payment",
-        amount: transaction!.amount * -1,
-      })) || [],
-    },
+  // set status based on order and fulfillments
+  const fulfillments = (order.fulfillments || []).filter(
+    (fulfillment) => !!fulfillment
+  )
+  let status: AgenticCommerceWebhookEvent["data"]["status"] =
+    "confirmed"
+
+  if (order.status === "canceled") {
+    status = "canceled"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.delivered_at)
+  ) {
+    status = "completed"
+  } else if (
+    fulfillments.length > 0 &&
+    fulfillments.every((f) => !!f.shipped_at)
+  ) {
+    status = "shipped"
   }
 
-  // set status based on order, fulfillments and transactions
-  if (order.status === "canceled") {
-    webhookEvent.data.status = "canceled"
-  } else {
-    const allFulfillmentsShipped = order.fulfillments?.every((fulfillment) => !!fulfillment?.shipped_at)
-    const allFulfillmentsDelivered = order.fulfillments?.every((fulfillment) => !!fulfillment?.delivered_at)
-    if (allFulfillmentsShipped) {
-      webhookEvent.data.status = "shipping"
-    } else if (allFulfillmentsDelivered) {
-      webhookEvent.data.status = "fulfilled"
-    }
+  // prepare webhook event
+  const webhookEvent: AgenticCommerceWebhookEvent = {
+    type: name === "order.placed" ?
+      "order_create" : "order_update",
+    data: {
+      type: "order",
+      id: order.id,
+      checkout_session_id: order.cart.id,
+      permalink_url: `${storefrontUrl}/orders/${order.id}`,
+      status,
+      adjustments: order.transactions?.filter(
+        (transaction) => transaction?.reference === "refund"
+      ).map((transaction) => ({
+        id: transaction!.id,
+        type: "refund",
+        occurred_at: new Date(
+          transaction!.created_at
+        ).toISOString(),
+        status: "completed",
+        amount: Math.abs(transaction!.amount) * 100,
+      })) || [],
+    },
   }
 
   // send webhook event
@@ -3556,8 +3612,16 @@ In the subscriber function, you:
 
 - Retrieve orders using Query. You filter by order IDs received in event data.
 - If orders don't exist or if order carts don't have the `is_checkout_session` metadata field, you return early since orders are not associated with checkout sessions.
-- Prepare webhook event payloads based on order data, following [Agentic Commerce webhook specifications](https://developers.openai.com/commerce/specs/checkout#webhooks).
+- Map the order's status and fulfillments to an ACP order status. You check the `completed` case before the `shipped` case, since delivered fulfillments are also shipped. You also require at least one fulfillment, because `Array.prototype.every` returns `true` for an empty array and would otherwise report an unfulfilled order as shipped.
+- Map refund transactions to the `adjustments` array. Medusa stores refunds as negative amounts, so you use the absolute value.
+- Prepare webhook event payloads based on order data, following the [ACP `2026-04-17` webhook schema](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.agentic_checkout_webhook.yaml).
 - Send webhook events to AI agents using the `sendWebhookEvent` method of the Agentic Commerce Module's service.
+
+<Note title="Tip">
+
+Extract the payload-building logic into an exported function, such as `buildOrderWebhookEvent`, if you want to unit test the status and adjustment mapping without emitting events. You can find an example in the [tutorial's repository](https://github.com/medusajs/examples/tree/main/agentic-commerce).
+
+</Note>
 
 ### Use Order Webhook Events in ChatGPT
 

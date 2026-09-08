@@ -334,6 +334,59 @@ The response includes each factor's `id`, `provider`, `status`, and metadata. Us
 
 ---
 
+## Require MFA on Custom API Routes
+
+<Note>
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
+By default, authenticated routes enforce MFA for any identity that has MFA enabled. You can customize this behavior when registering an `authenticate` middleware on your custom routes by passing the `requireMfa` option:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      // Require MFA and that the challenge was completed within the last 5 minutes
+      matcher: "/admin/sensitive-action",
+      middlewares: [
+        authenticate("user", ["session", "bearer", "api-key"], {
+          requireMfa: { maxAgeSeconds: 300 },
+        }),
+      ],
+    },
+    {
+      // Explicitly disable the MFA requirement (e.g. for public or pre-MFA routes)
+      matcher: "/custom/public-route",
+      middlewares: [
+        authenticate("*", ["session", "bearer"], {
+          allowUnauthenticated: true,
+          requireMfa: false,
+        }),
+      ],
+    },
+  ],
+})
+```
+
+The `requireMfa` option accepts:
+
+- `true` (default for authenticated routes): any request from an identity with MFA enabled must have a completed MFA challenge.
+- `{ maxAgeSeconds: number }`: same as `true`, but also enforces that the challenge was completed within the given number of seconds. Use this to gate elevated actions (for example, changing a password or making a large payment) that require a recent MFA verification.
+- `false`: skip MFA enforcement regardless of whether the identity has MFA enabled.
+
+When `requireMfa` is not set, it defaults to `true` for routes that require authentication (`allowUnauthenticated: false`) and to `false` for routes that allow unauthenticated access.
+
+Disabling MFA enforcement on a route is useful for routes that are part of the authentication flow (for example, login or MFA challenge verification) that require the user to be authenticated but not yet verified with MFA.
+
+---
+
 ## Events
 
 The Auth Module emits the following events around MFA:

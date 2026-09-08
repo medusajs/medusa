@@ -7,6 +7,7 @@ import {
 } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
 import {
+  prepareInventoryQuantityFields,
   wrapVariantsWithInventoryQuantityForSalesChannel,
   wrapVariantsWithTotalInventoryQuantity,
 } from "../variant-inventory-quantity"
@@ -44,9 +45,109 @@ describe("variant-inventory-quantity", () => {
     jest.clearAllMocks()
   })
 
+  describe("prepareInventoryQuantityFields", () => {
+    it("should leave the fields untouched when inventory_quantity is not requested", () => {
+      const fields = ["id", "title", "variants.*"]
+
+      expect(
+        prepareInventoryQuantityFields(fields, { relation: "variants" })
+      ).toEqual({
+        fields,
+        withInventoryQuantity: false,
+      })
+    })
+
+    it("should select the variant fields required to compute inventory_quantity", () => {
+      expect(
+        prepareInventoryQuantityFields(
+          ["id", "title", "variants.inventory_quantity"],
+          { relation: "variants" }
+        )
+      ).toEqual({
+        fields: ["id", "title", "variants.id", "variants.manage_inventory"],
+        withInventoryQuantity: true,
+      })
+    })
+
+    it("should not duplicate already requested fields", () => {
+      expect(
+        prepareInventoryQuantityFields(
+          [
+            "id",
+            "variants.id",
+            "variants.manage_inventory",
+            "variants.inventory_quantity",
+            "variants.*",
+          ],
+          { relation: "variants" }
+        )
+      ).toEqual({
+        fields: [
+          "id",
+          "variants.id",
+          "variants.manage_inventory",
+          "variants.*",
+        ],
+        withInventoryQuantity: true,
+      })
+    })
+
+    it("should support variants being queried directly", () => {
+      expect(
+        prepareInventoryQuantityFields(["id", "inventory_quantity"])
+      ).toEqual({
+        fields: ["id", "manage_inventory"],
+        withInventoryQuantity: true,
+      })
+    })
+
+    it("should not treat a relation's inventory_quantity as the requested field when no relation is passed", () => {
+      const fields = ["id", "variants.inventory_quantity"]
+
+      expect(prepareInventoryQuantityFields(fields)).toEqual({
+        fields,
+        withInventoryQuantity: false,
+      })
+    })
+  })
+
   describe("wrapVariantsWithTotalInventoryQuantity", () => {
     it("should not call getTotalVariantAvailability when variants array is empty", async () => {
       await wrapVariantsWithTotalInventoryQuantity(req as MedusaRequest, [])
+
+      expect(getTotalVariantAvailability).not.toHaveBeenCalled()
+    })
+
+    it("should ignore nullish entries in the variants array", async () => {
+      const mockAvailability = {
+        "variant-1": { availability: 10 },
+      }
+      const _variants = [
+        undefined,
+        { id: "variant-1", manage_inventory: true },
+        null,
+      ] as any
+
+      ;(getTotalVariantAvailability as jest.Mock).mockResolvedValueOnce(
+        mockAvailability
+      )
+
+      await wrapVariantsWithTotalInventoryQuantity(
+        req as MedusaRequest,
+        _variants
+      )
+
+      expect(getTotalVariantAvailability).toHaveBeenCalledWith(mockQuery, {
+        variant_ids: ["variant-1"],
+      })
+      expect(_variants[1].inventory_quantity).toBe(10)
+    })
+
+    it("should not call getTotalVariantAvailability when all variants are nullish", async () => {
+      await wrapVariantsWithTotalInventoryQuantity(
+        req as MedusaRequest,
+        [undefined] as any
+      )
 
       expect(getTotalVariantAvailability).not.toHaveBeenCalled()
     })
@@ -231,6 +332,41 @@ describe("variant-inventory-quantity", () => {
       await wrapVariantsWithInventoryQuantityForSalesChannel(
         req as MedusaStoreRequest<unknown>,
         []
+      )
+
+      expect(getVariantAvailability).not.toHaveBeenCalled()
+    })
+
+    it("should ignore nullish entries in the variants array", async () => {
+      const mockAvailability = {
+        "variant-1": { availability: 4 },
+      }
+      const _variants = [
+        undefined,
+        { id: "variant-1", manage_inventory: true },
+        null,
+      ] as any
+
+      ;(getVariantAvailability as jest.Mock).mockResolvedValueOnce(
+        mockAvailability
+      )
+
+      await wrapVariantsWithInventoryQuantityForSalesChannel(
+        req as MedusaStoreRequest<unknown>,
+        _variants
+      )
+
+      expect(getVariantAvailability).toHaveBeenCalledWith(mockQuery, {
+        variant_ids: ["variant-1"],
+        sales_channel_id: "sc-1",
+      })
+      expect(_variants[1].inventory_quantity).toBe(4)
+    })
+
+    it("should not call getVariantAvailability when all variants are nullish", async () => {
+      await wrapVariantsWithInventoryQuantityForSalesChannel(
+        req as MedusaStoreRequest<unknown>,
+        [undefined] as any
       )
 
       expect(getVariantAvailability).not.toHaveBeenCalled()

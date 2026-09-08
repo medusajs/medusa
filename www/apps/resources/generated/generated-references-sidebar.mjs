@@ -1406,6 +1406,30 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow",
+                  "title": "fetchShippingOptionForDraftOrderWorkflow",
+                  "description": "Fetch a shipping option for a draft order edit.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                  "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                  "description": "Refresh applied calculated shipping method prices on a draft order.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow",
+                  "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+                  "description": "Refresh pending calculated shipping method prices on a draft order edit.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/removeDraftOrderActionItemWorkflow",
                   "title": "removeDraftOrderActionItemWorkflow",
                   "description": "Remove an item from a draft order edit.",
@@ -4370,6 +4394,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "title": "validateDeletedPaymentSessionsStep",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep",
+                  "title": "validatePaymentProviderInRegionStep",
+                  "description": "",
+                  "children": []
                 }
               ]
             }
@@ -5861,6 +5893,51 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateSalesChannelsStep",
                   "title": "updateSalesChannelsStep",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Search",
+          "children": [
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Workflows",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/reindexSearchIndexesWorkflow",
+                  "title": "reindexSearchIndexesWorkflow",
+                  "description": "Reindex one or more search indexes.",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Steps",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/reindexSearchIndexesStep",
+                  "title": "reindexSearchIndexesStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateSearchIndexesExistStep",
+                  "title": "validateSearchIndexesExistStep",
                   "description": "",
                   "children": []
                 }

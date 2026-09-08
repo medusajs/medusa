@@ -23,6 +23,7 @@ import { rule as middlewareMustCallNext } from "./middleware-must-call-next"
 import { rule as middlewaresFileLocationAndName } from "./middlewares-file-location-and-name"
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noMikroormDirectImport } from "./no-mikroorm-direct-import"
+import { rule as noNestedWhenInWorkflow } from "./no-nested-when-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
@@ -63,6 +64,7 @@ import { rule as subscriberDefaultExportRequired } from "./subscriber-default-ex
 import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
 import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
 import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
+import { rule as whenBlockMustHaveName } from "./when-block-must-have-name"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 import { rule as widgetMustExportConfig } from "./widget-must-export-config"
@@ -96,6 +98,7 @@ export const rules = {
   "middlewares-file-location-and-name": middlewaresFileLocationAndName,
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-mikroorm-direct-import": noMikroormDirectImport,
+  "no-nested-when-in-workflow": noNestedWhenInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
@@ -136,6 +139,7 @@ export const rules = {
   "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
   "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
   "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
+  "when-block-must-have-name": whenBlockMustHaveName,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
   "widget-must-export-config": widgetMustExportConfig,

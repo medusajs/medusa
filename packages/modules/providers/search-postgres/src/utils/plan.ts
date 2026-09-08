@@ -47,13 +47,14 @@ export type PostgresSearchProviderOptions = {
   /**
    * Search engine backend.
    * - `native` — portable Postgres FTS (GIN + `ts_rank`) + `pg_trgm`. Default.
-   * - `lakebase` — Neon Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
+   * - `lakebase` — Lakebase Search (`lakebase_text` BM25 + `lakebase_vector` ANN).
    * @default "native"
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for `search_options.vector.query`. Required on the lakebase
-   * engine when callers pass a query string instead of a pre-computed `value`.
+   * Embeds text for engine-embedded vector fields (`embed: true` on the field)
+   * at write time, and for `search_options.vector.query` at query time. Required
+   * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
   /**
@@ -73,9 +74,7 @@ export function isSearchable(
   return field.searchable === true || typeof field.searchable === "object"
 }
 
-export function isFacetable(
-  field: SearchTypes.SearchFieldDefinition
-): boolean {
+export function isFacetable(field: SearchTypes.SearchFieldDefinition): boolean {
   return field.facetable === true || typeof field.facetable === "object"
 }
 
@@ -118,12 +117,6 @@ export function assertIndexSupported(
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
 
-      if (field.correlated) {
-        fail(
-          `The postgres search provider cannot correlate predicates per element, so "${path}" cannot set "correlated". Arrays of objects are collapsed to per-leaf arrays.`
-        )
-      }
-
       if (field.type === "vector") {
         if (engine !== "lakebase") {
           fail(
@@ -164,7 +157,7 @@ export function assertQuerySupported(
 ): void {
   const options = query.search_options ?? {}
 
-  if (options.highlight) {
+  if (options.highlight && query.q?.trim()) {
     fail("The postgres search provider does not support highlighting")
   }
 
@@ -271,6 +264,7 @@ export function buildIndexPlan(
       is_array: planned.is_array,
       is_date: planned.is_date,
       dimensions: planned.dimensions,
+      embed: planned.field.embed,
       searchable: isSearchable(planned.field),
       filterable: !!planned.field.filterable,
       sortable: !!planned.field.sortable,
@@ -342,6 +336,34 @@ export function bm25IndexName(table: string): string {
 }
 
 /**
+ * Resolves which vector field a query targets. `vector.field` is optional when
+ * the index declares exactly one vector field.
+ */
+export function resolveVectorField(
+  vector: NonNullable<SearchTypes.SearchOptions["vector"]>,
+  plan: IndexPlan
+): string {
+  if (vector.field) {
+    if (!plan.vectors.includes(vector.field)) {
+      fail(
+        `Vector search field "${vector.field}" is not a vector field on this index`
+      )
+    }
+    return vector.field
+  }
+
+  if (plan.vectors.length === 1) {
+    return plan.vectors[0]
+  }
+
+  fail(
+    plan.vectors.length
+      ? `search_options.vector.field is required when the index has more than one vector field`
+      : `search_options.vector requires a vector field on this index`
+  )
+}
+
+/**
  * Physical column name for a vector field path.
  * `embedding` → `v_embedding`, `meta.vec` → `v_meta_vec`.
  */
@@ -353,9 +375,7 @@ export function vectorColumnName(path: string): string {
   return `v_${safe}`
 }
 
-export function vectorOpClass(
-  distance: PostgresVectorDistance
-): string {
+export function vectorOpClass(distance: PostgresVectorDistance): string {
   switch (distance) {
     case "l2":
       return "vector_l2_ops"

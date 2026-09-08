@@ -163,7 +163,7 @@ export const computeCreditLineActionsStep = createStep(
       .filter((creditLine) => creditLine.reference === "store-credit")
       .map((creditLine) => creditLine.id);
 
-    let amount = input.amount
+    let amount = isDefined(input.amount)
       ? MathBN.convert(input.amount)
       : MathBN.convert(storeCreditAccount.balance);
 

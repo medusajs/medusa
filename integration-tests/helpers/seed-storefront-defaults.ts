@@ -6,6 +6,8 @@ import {
 } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
+import { linkRegionPaymentProviders } from "./link-region-payment-providers"
+
 export const seedStorefrontDefaults = async (
   container: MedusaContainer,
   defaultCurrency: string = "usd"
@@ -20,6 +22,8 @@ export const seedStorefrontDefaults = async (
     name: "Default Region",
     currency_code: defaultCurrency,
   })
+
+  await linkRegionPaymentProviders(container, region.id)
 
   let [store] = await storeModule.listStores({})
 

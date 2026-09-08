@@ -1,5 +1,6 @@
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { NextFunction } from "express"
+import { sign } from "jsonwebtoken"
 import { authenticate, AuthType } from "../authenticate-middleware"
 import { MedusaRequest, MedusaResponse } from "../../types"
 
@@ -54,9 +55,212 @@ const createResponse = () => {
   }
 }
 
+const createBearer = (payload: Record<string, unknown>) =>
+  `Bearer ${sign(
+    {
+      actor_id: "user_1",
+      actor_type: "user",
+      auth_identity_id: "authid_1",
+      app_metadata: {},
+      user_metadata: {},
+      ...payload,
+    },
+    "test-secret"
+  )}`
+
 describe("authenticate middleware", () => {
   afterEach(() => {
     jest.clearAllMocks()
+  })
+
+  describe("requireMfa", () => {
+    it("rejects a token that has not completed the MFA challenge", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], { requireMfa: true })(
+        req,
+        res,
+        next
+      )
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+      expect((res.json as jest.Mock).mock.calls[0][0].message).toContain(
+        "MFA verification is required"
+      )
+    })
+
+    it("allows a token that has completed the MFA challenge", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: new Date().toISOString(),
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], { requireMfa: true })(
+        req,
+        res,
+        next
+      )
+
+      expect(next).toHaveBeenCalled()
+    })
+
+    it("ignores the requirement when the identity does not have MFA enabled", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: false,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], { requireMfa: true })(
+        req,
+        res,
+        next
+      )
+
+      expect(next).toHaveBeenCalled()
+    })
+
+    it("is required by default", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"])(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+    })
+
+    it("can be opted out of", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], { requireMfa: false })(
+        req,
+        res,
+        next
+      )
+
+      expect(next).toHaveBeenCalled()
+    })
+
+    it("is not required by default on a route that allows unauthenticated requests", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], { allowUnauthenticated: true })(
+        req,
+        res,
+        next
+      )
+
+      expect(next).toHaveBeenCalled()
+      expect(res.status).not.toHaveBeenCalled()
+    })
+
+    it("can still be required explicitly on a route that allows unauthenticated requests", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: null,
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], {
+        allowUnauthenticated: true,
+        requireMfa: true,
+      })(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+    })
+
+    it("ignores a token that never carried the MFA claims", async () => {
+      const req = createRequest({ authorization: createBearer({}) })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"])(req, res, next)
+
+      expect(next).toHaveBeenCalled()
+      expect(res.status).not.toHaveBeenCalled()
+    })
+
+    it("rejects a completion that is older than the allowed age", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: new Date(
+            Date.now() - 10 * 60 * 1000
+          ).toISOString(),
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], {
+        requireMfa: { maxAgeSeconds: 300 },
+      })(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+      expect((res.json as jest.Mock).mock.calls[0][0].message).toContain(
+        "MFA was verified too long ago"
+      )
+    })
+
+    it("allows a recent completion within the allowed age", async () => {
+      const req = createRequest({
+        authorization: createBearer({
+          mfa_enabled: true,
+          mfa_challenge_completed_at: new Date(
+            Date.now() - 60 * 1000
+          ).toISOString(),
+        }),
+      })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"], {
+        requireMfa: { maxAgeSeconds: 300 },
+      })(req, res, next)
+
+      expect(next).toHaveBeenCalled()
+    })
   })
 
   const authTypes: AuthType[] = ["session", "bearer", "api-key"]
