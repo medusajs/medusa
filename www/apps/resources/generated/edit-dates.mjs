@@ -7648,7 +7648,7 @@ export const generatedEditDates = {
   "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z",
   "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-08-11T19:51:05.086Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
-  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-09-08T03:46:56.257Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
   "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
   "app/admin-components/hooks/page.mdx": "2026-09-04T14:14:10.194Z"
