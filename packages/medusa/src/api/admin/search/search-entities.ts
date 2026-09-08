@@ -8,8 +8,8 @@ import { ApiKeyType } from "@medusajs/framework/utils"
  */
 export type AdminSearchEntityConfig = {
   name: string
-  /** `query.graph` / remote-query entry point. */
-  graphEntity: string
+  /** `query.graph` / remote-query entry point. Defaults to `name` when omitted. */
+  graphEntity?: string
   fields: string[]
   /** Always applied (e.g. exclude draft orders, api-key type). */
   filters?: Record<string, unknown>
@@ -24,7 +24,6 @@ export type AdminSearchEntityConfig = {
 export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
   {
     name: "order",
-    graphEntity: "order",
     fields: ["id", "display_id", "email"],
     filters: { is_draft_order: false },
     // Display shows `#${display_id}`; users often type the leading `#`.
@@ -32,97 +31,78 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
   },
   {
     name: "product",
-    graphEntity: "product",
     fields: ["id", "title", "thumbnail"],
   },
   {
     name: "product_variant",
-    graphEntity: "product_variant",
     fields: ["id", "title", "sku", "product_id"],
   },
   {
     name: "product_category",
-    graphEntity: "product_category",
     fields: ["id", "name"],
   },
   {
     name: "product_collection",
-    graphEntity: "product_collection",
     fields: ["id", "title"],
   },
   {
     name: "customer",
-    graphEntity: "customer",
     fields: ["id", "email", "first_name", "last_name"],
   },
   {
     name: "customer_group",
-    graphEntity: "customer_group",
     fields: ["id", "name"],
   },
   {
     name: "inventory_item",
-    graphEntity: "inventory_item",
     fields: ["id", "title", "sku"],
   },
   {
     name: "promotion",
-    graphEntity: "promotion",
     fields: ["id", "code", "status"],
   },
   {
     name: "campaign",
-    graphEntity: "campaign",
     fields: ["id", "name"],
   },
   {
     name: "price_list",
-    graphEntity: "price_list",
     fields: ["id", "title"],
   },
   {
     name: "user",
-    graphEntity: "user",
     fields: ["id", "email", "first_name", "last_name"],
   },
   {
     name: "region",
-    graphEntity: "region",
     fields: ["id", "name"],
   },
   {
     name: "tax_region",
-    graphEntity: "tax_region",
     fields: ["id", "country_code", "province_code"],
   },
   {
     name: "return_reason",
-    graphEntity: "return_reason",
     fields: ["id", "label", "value"],
   },
   {
     name: "sales_channel",
-    graphEntity: "sales_channel",
     fields: ["id", "name"],
   },
   {
     name: "product_type",
-    graphEntity: "product_type",
     fields: ["id", "value"],
   },
   {
     name: "product_tag",
-    graphEntity: "product_tag",
     fields: ["id", "value"],
   },
   {
     name: "stock_location",
-    graphEntity: "stock_location",
     fields: ["id", "name"],
   },
   {
     name: "shipping_profile",
-    graphEntity: "shipping_profile",
     fields: ["id", "name"],
   },
   {
