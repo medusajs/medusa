@@ -13107,6 +13107,18 @@
         "reindexSuccess": {
           "type": "string"
         },
+        "reindexSinceLabel": {
+          "type": "string"
+        },
+        "reindexSinceHint": {
+          "type": "string"
+        },
+        "reindexEntityIdsLabel": {
+          "type": "string"
+        },
+        "reindexEntityIdsHint": {
+          "type": "string"
+        },
         "noFields": {
           "type": "string"
         },
@@ -13149,6 +13161,10 @@
         "reindexConfirmationTitle",
         "reindexConfirmation",
         "reindexSuccess",
+        "reindexSinceLabel",
+        "reindexSinceHint",
+        "reindexEntityIdsLabel",
+        "reindexEntityIdsHint",
         "noFields",
         "list",
         "status"
