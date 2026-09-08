@@ -806,7 +806,7 @@ export function getRouteMap({
                       handle: {
                         permissions: [
                           "campaign:update",
-                          "prmotion:read",
+                          "promotion:read",
                           "promotion:update",
                         ],
                       },
