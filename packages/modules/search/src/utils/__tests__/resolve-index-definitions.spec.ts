@@ -41,10 +41,28 @@ describe("resolveIndexDefinitions validation", () => {
     ).toThrow(/cannot be an array/)
   })
 
-  test("rejects correlated on anything but an array of objects", () => {
+  test("accepts a vector field that embeds its own text", () => {
+    const resolved = resolve({
+      embedding: {
+        type: "vector",
+        dimensions: 1536,
+        embed: true,
+      },
+    })
+
+    expect(resolved.get("product")?.fields.embedding.embed).toEqual(true)
+  })
+
+  test("rejects embedding a source field path", () => {
     expect(() =>
-      resolve({ tags: { type: "keyword", array: true, correlated: true } })
-    ).toThrow(/only applies to an array of objects/)
+      resolve({
+        embedding: {
+          type: "vector",
+          dimensions: 3,
+          embed: "title" as unknown as true,
+        },
+      })
+    ).toThrow(/must be true/)
   })
 
   test("rejects free-text search on non-string fields", () => {

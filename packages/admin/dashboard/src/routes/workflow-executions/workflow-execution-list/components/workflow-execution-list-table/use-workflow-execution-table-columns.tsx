@@ -33,7 +33,7 @@ export const useWorkflowExecutionTableColumns = (): ColumnDef<
         cell: ({ getValue }) => <Badge size="2xsmall">{getValue()}</Badge>,
       }),
       columnHelper.accessor("state", {
-        header: t("fields.state"),
+        header: t("workflowExecutions.stateLabel"),
         cell: ({ getValue }) => {
           const state = getValue()
 

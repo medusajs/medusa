@@ -35,7 +35,11 @@ type MedusaSession = {
 export const authenticate = (
   actorType: string | string[],
   authType: AuthType | AuthType[],
-  options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
+  options: {
+    allowUnauthenticated?: boolean
+    allowUnregistered?: boolean
+    requireMfa?: boolean | { maxAgeSeconds: number }
+  } = {}
 ): RequestHandler => {
   const authenticateMiddleware = async (
     req: MedusaRequest,
@@ -91,6 +95,17 @@ export const authenticate = (
       )
     }
 
+    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+
+    if (requireMfa && authContext?.mfa_enabled) {
+      const mfaError = getMfaRequirementError(authContext, requireMfa)
+
+      if (mfaError) {
+        res.status(401).json({ message: mfaError })
+        return
+      }
+    }
+
     // If the entity is authenticated, and it is a registered actor we can continue
     if (authContext?.actor_id) {
       req_.auth_context = authContext
@@ -132,6 +147,35 @@ export const authenticate = (
   }
 
   return authenticateMiddleware as unknown as RequestHandler
+}
+
+const getMfaRequirementError = (
+  authContext: AuthContext,
+  requireMfa: boolean | { maxAgeSeconds: number }
+): string | undefined => {
+  const completedAt = authContext.mfa_challenge_completed_at
+
+  if (!completedAt) {
+    return "MFA verification is required to complete this request"
+  }
+
+  const maxAgeSeconds =
+    typeof requireMfa === "object" ? requireMfa.maxAgeSeconds : undefined
+
+  if (!maxAgeSeconds) {
+    return
+  }
+
+  const completedAtMs = new Date(completedAt).getTime()
+
+  if (
+    Number.isNaN(completedAtMs) ||
+    Date.now() - completedAtMs > maxAgeSeconds * 1000
+  ) {
+    return "MFA was verified too long ago to complete this request"
+  }
+
+  return
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {

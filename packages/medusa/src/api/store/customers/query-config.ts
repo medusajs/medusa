@@ -1,3 +1,5 @@
+import { disallowedStoreCustomerFields } from "../utils/disallowed-fields"
+
 const defaultStoreCustomersFields = [
   "id",
   "email",
@@ -19,6 +21,7 @@ export const retrieveTransformQueryConfig = {
     ...defaultStoreCustomersFields.map((f) => f.replace("*", "")),
     "orders",
   ],
+  disallowed: disallowedStoreCustomerFields,
   isList: false,
 }
 

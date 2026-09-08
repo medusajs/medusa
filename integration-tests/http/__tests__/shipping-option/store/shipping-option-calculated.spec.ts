@@ -1,3 +1,8 @@
+import {
+  calculateShippingOptionsPricesWorkflow,
+  listShippingOptionsForCartWithPricingWorkflow,
+} from "@medusajs/core-flows"
+import { StepResponse } from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   createAdminUser,
@@ -28,8 +33,37 @@ medusaIntegrationTestRunner({
       let shippingOptionFlat
       let storeHeaders
 
+      // Toggled per test so the hooks can be registered once and stay inert for
+      // the tests that don't opt into an additional pricing context.
+      let calculatedShippingPricingContext: Record<string, unknown> | undefined
+      let calculatedShippingPricingContextHookInput: any
+
       beforeAll(async () => {
         appContainer = getContainer()
+
+        const hook = (input: any) => {
+          calculatedShippingPricingContextHookInput = input
+
+          if (!calculatedShippingPricingContext) {
+            return
+          }
+
+          return new StepResponse(calculatedShippingPricingContext)
+        }
+
+        calculateShippingOptionsPricesWorkflow.hooks.setCalculatedShippingPricingContext(
+          hook,
+          () => {}
+        )
+        listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
+          hook,
+          () => {}
+        )
+      })
+
+      afterEach(() => {
+        calculatedShippingPricingContext = undefined
+        calculatedShippingPricingContextHookInput = undefined
       })
 
       beforeAll(async () => {
@@ -792,6 +826,88 @@ medusaIntegrationTestRunner({
           // Same arithmetic as the GET case, via the single-option endpoint.
           expect(respA.data.shipping_option.amount).toBe(3)
           expect(respB.data.shipping_option.amount).toBe(1.5)
+        })
+      })
+      describe("setCalculatedShippingPricingContext hook", () => {
+        const createCart = async () =>
+          (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+        it("forwards the hook result to the provider on the calculate route", async () => {
+          calculatedShippingPricingContext = { price_multiplier: 3 }
+
+          const cartForHook = await createCart()
+
+          const shippingOption = (
+            await api.post(
+              `/store/shipping-options/${shippingOptionCalculated.id}/calculate`,
+              { cart_id: cartForHook.id, data: { pin_id: "test" } },
+              storeHeaders
+            )
+          ).data.shipping_option
+
+          // 2 items * 1.5, tripled by the additional context
+          expect(shippingOption.amount).toEqual(9)
+          expect(calculatedShippingPricingContextHookInput).toEqual(
+            expect.objectContaining({
+              input: expect.objectContaining({ cart_id: cartForHook.id }),
+            })
+          )
+        })
+
+        it("forwards the hook result to the provider when adding the method to a cart", async () => {
+          calculatedShippingPricingContext = { price_multiplier: 4 }
+
+          const cartForHook = await createCart()
+
+          const cartWithMethod = (
+            await api.post(
+              `/store/carts/${cartForHook.id}/shipping-methods?fields=*shipping_methods`,
+              {
+                option_id: shippingOptionCalculated.id,
+                data: { pin_id: "test" },
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // 2 items * 1.5, quadrupled by the additional context
+          expect(cartWithMethod.shipping_methods).toEqual([
+            expect.objectContaining({
+              shipping_option_id: shippingOptionCalculated.id,
+              amount: 12,
+            }),
+          ])
+          expect(calculatedShippingPricingContextHookInput).toEqual(
+            expect.objectContaining({
+              input: expect.objectContaining({ cart_id: cartForHook.id }),
+            })
+          )
+        })
+
+        it("leaves the price untouched when the hook returns nothing", async () => {
+          const cartForHook = await createCart()
+
+          const shippingOption = (
+            await api.post(
+              `/store/shipping-options/${shippingOptionCalculated.id}/calculate`,
+              { cart_id: cartForHook.id, data: { pin_id: "test" } },
+              storeHeaders
+            )
+          ).data.shipping_option
+
+          expect(shippingOption.amount).toEqual(3)
         })
       })
     })

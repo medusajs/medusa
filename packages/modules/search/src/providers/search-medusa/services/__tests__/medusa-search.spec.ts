@@ -36,21 +36,14 @@ describe("MedusaSearchService", () => {
       /explicit "api_key"/
     )
     expect(
-      () =>
-        new MedusaSearchService(
-          {},
-          { api_key: "medusa_test" } as any
-        )
+      () => new MedusaSearchService({}, { api_key: "medusa_test" } as any)
     ).toThrow(/explicit "endpoint"/)
     expect(
       () =>
-        new MedusaSearchService(
-          {},
-          {
-            api_key: "medusa_test",
-            endpoint: "https://search.medusa.example",
-          } as any
-        )
+        new MedusaSearchService({}, {
+          api_key: "medusa_test",
+          endpoint: "https://search.medusa.example",
+        } as any)
     ).toThrow(/environment_handle/)
   })
 
@@ -86,28 +79,30 @@ describe("MedusaSearchService", () => {
     })
   })
 
-  it("recreates indexes with incompatible schemas through the create endpoint", async () => {
+  it("updates the schema in place on a migration re-run against an already-created namespace", async () => {
+    // Every version gets its own namespace, so finding one that already
+    // exists only happens when a migration re-runs after a crash — against
+    // this same, unchanging schema.
     const service = createService()
     const metadata = jest.fn().mockResolvedValue({
       schema: {
         id: { type: "string" },
-        title: { type: "int" },
+        title: { type: "string" },
         status: { type: "string" },
       },
     })
-    const deleteAll = jest.fn().mockResolvedValue(undefined)
+    const updateSchema = jest.fn().mockResolvedValue(undefined)
     const createIndex = jest.fn().mockResolvedValue(undefined)
-    const index = jest.fn(() => ({ deleteAll, metadata }))
+    const index = jest.fn(() => ({ metadata, updateSchema }))
     ;(service as any).client_ = { createIndex, index }
 
     await service.upsertIndex({ index: definition })
 
-    expect(deleteAll).toHaveBeenCalledTimes(1)
-    expect(createIndex).toHaveBeenCalledWith(
+    expect(createIndex).not.toHaveBeenCalled()
+    expect(updateSchema).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: "product",
         schema: expect.objectContaining({
-          title: expect.objectContaining({ type: "string" }),
+          title: expect.objectContaining({ full_text_search: true }),
         }),
       })
     )
@@ -217,7 +212,7 @@ describe("MedusaSearchService", () => {
         { rows: [{ id: "prod_1", title: "Red shoe", $dist: 1.5 }] },
         { aggregations: { count: 1 } },
         {
-          aggregation_groups: [{ value: "published", count: 1 }],
+          aggregation_groups: [{ status: "published", count: 1 }],
         },
       ],
       billing: {},
@@ -252,6 +247,216 @@ describe("MedusaSearchService", () => {
         },
       },
       metadata: { count: 1, processing_time_ms: 4 },
+    })
+
+    const [hitsQuery, countQuery, facetQuery] =
+      multiQuery.mock.calls[0][0].queries
+    const textFilter = ["title", "ContainsAllTokens", "red"]
+    expect(hitsQuery.filters).toEqual(textFilter)
+    expect(countQuery.filters).toEqual(textFilter)
+    expect(facetQuery.filters).toEqual(textFilter)
+    expect(facetQuery.group_by).toEqual(["status"])
+    expect(facetQuery.top_k).toBe(10000)
+    expect(facetQuery).not.toHaveProperty("limit")
+  })
+
+  it("boosts typo-tolerant matches into rank_by and surfaces highlighted fragments", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        {
+          rows: [
+            {
+              id: "prod_1",
+              title: "Red running shoe",
+              __medusa_highlight_0__: [
+                {
+                  text: "Red running shoe",
+                  match_ranges: [[4, 11]],
+                },
+              ],
+            },
+          ],
+        },
+        { aggregations: { count: 1 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 2 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      q: "runing",
+      attributes_to_retrieve: ["title"],
+      search_options: {
+        typo_tolerance: true,
+        highlight: { fields: ["title"] },
+      },
+    })
+
+    expect(result.hits).toEqual([
+      {
+        id: "prod_1",
+        score: undefined,
+        document: { title: "Red running shoe" },
+        highlights: { title: ["Red <mark>running</mark> shoe"] },
+      },
+    ])
+
+    const sentQuery = multiQuery.mock.calls[0][0].queries[0]
+    expect(sentQuery.rank_by[0]).toBe("Sum")
+    expect(sentQuery.rank_by[1][1][2][3].max_edit_distance).toEqual([
+      { min_query_chars: 6, distance: 1 },
+      { min_query_chars: 9, distance: 2 },
+    ])
+    expect(sentQuery.compute_attributes).toHaveProperty(
+      "__medusa_highlight_0__"
+    )
+  })
+
+  it("maps stats facets from min/max rank queries and separate Count and Sum aggregations", async () => {
+    const service = createService()
+    const priced: SearchTypes.ResolvedSearchIndexDefinition = {
+      ...definition,
+      fields: {
+        ...definition.fields,
+        price: {
+          type: "float",
+          filterable: true,
+          facetable: { types: ["stats"] },
+        },
+      },
+    }
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe", price: 20 }] },
+        { aggregations: { count: 2 } },
+        { rows: [{ id: "prod_1", price: 10 }] },
+        { rows: [{ id: "prod_2", price: 40 }] },
+        { aggregations: { count: 2 } },
+        { aggregations: { sum: 50 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 5 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    await expect(
+      service.search({
+        index: priced,
+        attributes_to_retrieve: ["title", "price"],
+        search_options: {
+          facets: [{ field: "price", type: "stats" }],
+        },
+      })
+    ).resolves.toMatchObject({
+      facets: {
+        price: { type: "stats", min: 10, max: 40, count: 2, sum: 50 },
+      },
+      metadata: { count: 2, processing_time_ms: 5 },
+    })
+
+    const queries = multiQuery.mock.calls[0][0].queries
+    expect(queries).toHaveLength(6)
+    expect(queries[2]).toMatchObject({
+      rank_by: ["price", "asc"],
+      limit: 1,
+      include_attributes: ["price"],
+    })
+    expect(queries[2].filters).toEqual(["price", "NotEq", null])
+    expect(queries[3]).toMatchObject({
+      rank_by: ["price", "desc"],
+      limit: 1,
+    })
+    expect(queries[4].aggregate_by).toEqual({ count: ["Count"] })
+    expect(queries[5].aggregate_by).toEqual({ sum: ["Sum", "price"] })
+  })
+
+  it("packs searchMany into one multiQuery per index", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe" }] },
+        { aggregations: { count: 1 } },
+        { rows: [{ id: "prod_2", title: "Blue shirt" }] },
+        { aggregations: { count: 1 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 3 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const results = await service.searchMany([
+      {
+        index: definition,
+        q: "red",
+        attributes_to_retrieve: ["title"],
+      },
+      {
+        index: definition,
+        q: "blue",
+        attributes_to_retrieve: ["title"],
+      },
+    ])
+
+    expect(multiQuery).toHaveBeenCalledTimes(1)
+    expect(multiQuery.mock.calls[0][0].queries).toHaveLength(4)
+    expect(results).toHaveLength(2)
+    expect(results[0].hits[0]).toMatchObject({ id: "prod_1" })
+    expect(results[1].hits[0]).toMatchObject({ id: "prod_2" })
+    expect(results[0].metadata.count).toBe(1)
+    expect(results[1].metadata.count).toBe(1)
+  })
+
+  it("skips hits and count for facet-only searchMany extras", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_1", title: "Red shoe" }] },
+        { aggregations: { count: 1 } },
+        {
+          aggregation_groups: [{ status: "published", count: 2 }],
+        },
+      ],
+      billing: {},
+      performance: { server_total_ms: 2 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const results = await service.searchMany([
+      {
+        index: definition,
+        q: "red",
+        attributes_to_retrieve: ["title"],
+      },
+      {
+        index: definition,
+        attributes_to_retrieve: ["title"],
+        pagination: { skip: 0, take: 0 },
+        search_options: {
+          count: "none",
+          facets: [{ field: "status" }],
+        },
+      },
+    ])
+
+    expect(multiQuery).toHaveBeenCalledTimes(1)
+    // hits + count for the first query, facet only for the second
+    expect(multiQuery.mock.calls[0][0].queries).toHaveLength(3)
+    expect(results[0].hits).toHaveLength(1)
+    expect(results[1].hits).toEqual([])
+    expect(results[1].metadata.count).toBeNull()
+    expect(results[1].facets).toMatchObject({
+      status: { type: "value" },
     })
   })
 })

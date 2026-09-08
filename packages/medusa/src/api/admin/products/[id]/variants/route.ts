@@ -4,7 +4,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { wrapVariantsWithTotalInventoryQuantity } from "../../../../utils/middlewares"
+import {
+  prepareInventoryQuantityFields,
+  wrapVariantsWithTotalInventoryQuantity,
+} from "../../../../utils/middlewares"
 import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 import {
   remapKeysForProduct,
@@ -19,15 +22,10 @@ export const GET = async (
 ) => {
   const productId = req.params.id
 
-  const withInventoryQuantity = req.queryConfig.fields.some((field) =>
-    field.includes("inventory_quantity")
+  const { fields, withInventoryQuantity } = prepareInventoryQuantityFields(
+    req.queryConfig.fields
   )
-
-  if (withInventoryQuantity) {
-    req.queryConfig.fields = req.queryConfig.fields.filter(
-      (field) => !field.includes("inventory_quantity")
-    )
-  }
+  req.queryConfig.fields = fields
 
   const { data: variants, metadata } = await refetchEntities({
     entity: "variant",

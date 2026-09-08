@@ -5,7 +5,10 @@ import {
   MedusaError,
   QueryContext,
 } from "@medusajs/framework/utils"
-import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../../utils/middlewares"
+import {
+  prepareInventoryQuantityFields,
+  wrapVariantsWithInventoryQuantityForSalesChannel,
+} from "../../../utils/middlewares"
 import {
   filterOutInternalProductCategories,
   RequestWithContext,
@@ -16,15 +19,11 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductParams>,
   res: MedusaResponse<HttpTypes.StoreProductResponse>
 ) => {
-  const withInventoryQuantity = req.queryConfig.fields.some((field) =>
-    field.includes("variants.inventory_quantity")
+  const { fields, withInventoryQuantity } = prepareInventoryQuantityFields(
+    req.queryConfig.fields,
+    { relation: "variants" }
   )
-
-  if (withInventoryQuantity) {
-    req.queryConfig.fields = req.queryConfig.fields.filter(
-      (field) => !field.includes("variants.inventory_quantity")
-    )
-  }
+  req.queryConfig.fields = fields
 
   const filters: object = {
     id: req.params.id,

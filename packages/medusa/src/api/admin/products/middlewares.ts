@@ -2,16 +2,15 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
-import { FeatureFlag, PolicyOperation } from "@medusajs/framework/utils"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import multer from "multer"
-import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
+import { remapProductCrossModuleFilters } from "../../utils/middlewares"
 import { createBatchBody } from "../../utils/validators"
 import { AdminGetProductVariantsParams } from "../product-variants/validators"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
-import { maybeApplyPriceListsFilter } from "./utils"
 import {
   AdminBatchCreateVariantInventoryItem,
   AdminBatchDeleteVariantInventoryItem,
@@ -83,18 +82,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig
       ),
-      (req, res, next) => {
-        if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
-          return next()
-        }
-
-        return maybeApplyLinkFilter({
-          entryPoint: "product_sales_channel",
-          resourceId: "product_id",
-          filterableField: "sales_channel_id",
-        })(req, res, next)
+      (req, _, next) => {
+        remapProductCrossModuleFilters(req.filterableFields)
+        return next()
       },
-      maybeApplyPriceListsFilter(),
     ],
     policies: [
       {

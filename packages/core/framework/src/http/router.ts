@@ -76,16 +76,21 @@ export class ApiLoader {
     app,
     sourceDir,
     baseRestrictedFields = [],
+    storeRelationsLimit,
     container,
   }: {
     app: Express
     sourceDir: string | string[]
     baseRestrictedFields?: string[]
+    storeRelationsLimit?: number
     container: MedusaContainer
   }) {
     this.#app = app
     this.#sourceDirs = Array.isArray(sourceDir) ? sourceDir : [sourceDir]
-    this.#assignRestrictedFields(baseRestrictedFields ?? [])
+    this.#assignRestrictedFields(
+      baseRestrictedFields ?? [],
+      storeRelationsLimit
+    )
     this.#logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   }
 
@@ -231,7 +236,10 @@ export class ApiLoader {
   /**
    * Registers the middleware for restricted fields
    */
-  #assignRestrictedFields(baseRestrictedFields: string[]) {
+  #assignRestrictedFields(
+    baseRestrictedFields: string[],
+    storeRelationsLimit?: number
+  ) {
     this.#app.use("/store", ((
       req: MedusaRequest,
       _: MedusaResponse,
@@ -239,6 +247,7 @@ export class ApiLoader {
     ) => {
       req.restrictedFields = new RestrictedFields()
       req.restrictedFields.add(baseRestrictedFields)
+      req.storeRelationsLimit = storeRelationsLimit
       next()
     }) as unknown as RequestHandler)
 
@@ -420,7 +429,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering publishable key middleware for namespace ${namespace}`
     )
-    let middleware = ApiLoader.traceMiddleware
+    const middleware = ApiLoader.traceMiddleware
       ? ApiLoader.traceMiddleware(ensurePublishableApiKeyMiddleware, {
           route: namespace,
         })
@@ -433,7 +442,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering locale middleware for namespace ${namespace}`
     )
-    let middleware = ApiLoader.traceMiddleware
+    const middleware = ApiLoader.traceMiddleware
       ? ApiLoader.traceMiddleware(applyLocale, {
           route: namespace,
         })
