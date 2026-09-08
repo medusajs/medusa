@@ -48,17 +48,13 @@ export const resolveRoles = async ({
           reference_id: g.id,
         })),
       },
-      ...(scope
-        ? [
-            {
-              $or: [
-                // Unscoped role assignments allow exercising privileges across all scopes.
-                { scope: null, scope_id: null },
-                { scope: scope.type, scope_id: scope.id },
-              ],
-            },
-          ]
-        : []),
+      {
+        $or: [
+          // Unscoped role assignments allow exercising privileges across all scopes.
+          { scope: null, scope_id: null },
+          ...(scope ? [{ scope: scope.type, scope_id: scope.id }] : []),
+        ],
+      },
     ],
   })
 
