@@ -10918,9 +10918,19 @@
               },
               "required": ["heading", "description"],
               "additionalProperties": false
+            },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["manage"],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered"],
+          "required": ["header", "hint", "empty", "filtered", "manage"],
           "additionalProperties": false
         },
         "list": {

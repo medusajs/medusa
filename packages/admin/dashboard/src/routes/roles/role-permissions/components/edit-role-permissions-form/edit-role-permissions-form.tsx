@@ -146,6 +146,8 @@ export const EditRolePermissionsForm = ({
         await removePolicies(toRemove)
       }
 
+      toast.success(t("roles.permissions.manage.successToast"))
+
       handleSuccess()
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Unknown error"

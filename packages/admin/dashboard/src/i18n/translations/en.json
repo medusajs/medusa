@@ -2847,6 +2847,9 @@
       "filtered": {
         "heading": "No results",
         "description": "No permissions match the current filter criteria."
+      },
+      "manage": {
+        "successToast": "Permissions were successfully updated."
       }
     },
     "list": {

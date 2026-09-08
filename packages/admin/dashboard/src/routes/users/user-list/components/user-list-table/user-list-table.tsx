@@ -15,7 +15,8 @@ import { UserListTableActions } from "./user-list-table-actions"
 const PAGE_SIZE = 20
 
 export const UserListTable = () => {
-  const { canCreate: canInvite } = useInvitePermissions()
+  const { canCreate: canCreateInvite, canRead: canReadInvite } =
+    useInvitePermissions()
   const { q, order, offset } = useQueryParams(["q", "order", "offset"])
   const { users, count, isPending, isError, error } = useUsers(
     {
@@ -33,6 +34,8 @@ export const UserListTable = () => {
   const filters = useFilters()
 
   const { t } = useTranslation()
+
+  const canInvite = canCreateInvite && canReadInvite
 
   if (isError) {
     throw error
