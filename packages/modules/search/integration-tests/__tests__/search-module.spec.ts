@@ -9,7 +9,10 @@ import {
   consumedEvents,
   dataset,
   productIndex,
+  removeProduct,
   resetDataset,
+  setOnBulkSeedStart,
+  touchProduct,
 } from "../__fixtures__/product-index"
 
 jest.setTimeout(120000)
@@ -165,17 +168,16 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
-        it("records the startup seed in the sync history", async () => {
+        it("records the startup seed and its catch-up pass in the sync history", async () => {
           const syncs = await syncRecords(service, {})
 
-          expect(syncs).toHaveLength(1)
-          expect(syncs[0]).toMatchObject({
-            status: "done",
-            documents_synced: 3,
-            filters: null,
-          })
-          expect(syncs[0].job_id).toEqual(expect.any(String))
-          expect(syncs[0].completed_at).toBeTruthy()
+          // The bulk pass, plus the catch-up pass that runs right after it,
+          // sharing its `job_id`.
+          expect(syncs).toHaveLength(2)
+          expect(syncs.every((sync) => sync.status === "done")).toBe(true)
+          expect(new Set(syncs.map((sync) => sync.job_id)).size).toBe(1)
+          expect(syncs.find((sync) => sync.documents_synced === 3)).toBeTruthy()
+          expect(syncs.every((sync) => sync.completed_at)).toBe(true)
         })
 
         it("lists index info with status and indexed fields", async () => {
@@ -199,6 +201,7 @@ moduleIntegrationTestRunner<SearchService>({
               "status",
               "tags",
               "title",
+              "updated_at",
               "variants.color",
               "variants.sku",
             ].sort()
@@ -652,6 +655,17 @@ moduleIntegrationTestRunner<SearchService>({
           })
 
           expect(result.hits).toHaveLength(0)
+        })
+
+        it("ignores highlighting and typo tolerance when there is no text query", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { status: "published" },
+            search_options: { highlight: true, typo_tolerance: true },
+          })
+
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
         })
       })
 
@@ -1206,8 +1220,9 @@ moduleIntegrationTestRunner<SearchService>({
 
           const syncs = await syncRecords(service, {})
 
-          // One from startup plus the two above.
-          expect(syncs).toHaveLength(3)
+          // One run from startup plus the two reindexes above, each made up
+          // of a bulk pass and a catch-up pass sharing its `job_id`.
+          expect(syncs).toHaveLength(6)
           expect(syncs.every((sync) => sync.status === "done")).toBe(true)
           expect(new Set(syncs.map((sync) => sync.job_id)).size).toBe(3)
         })
@@ -1307,6 +1322,37 @@ moduleIntegrationTestRunner<SearchService>({
           await expect(service.reindex({ index: "nope" })).rejects.toThrow(
             /No search index registered for "nope"/
           )
+        })
+
+        it("catches an update that landed after the bulk pass took its snapshot", async () => {
+          resetDataset()
+          setOnBulkSeedStart(() => {
+            touchProduct("prod_1", { title: "Scarlet trail shoe" })
+          })
+
+          await service.reindex()
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { q: "scarlet" },
+          })
+          expect(ids(result)).toEqual(["prod_1"])
+        })
+
+        it("catches a delete that landed after the bulk pass took its snapshot", async () => {
+          resetDataset()
+          setOnBulkSeedStart(() => {
+            removeProduct("prod_1")
+          })
+
+          await service.reindex()
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
         })
       })
 

@@ -198,23 +198,31 @@ describe("search fields DSL", () => {
       async *seed() {
         yield [
           {
-            id: "prod_1",
-            title: "Shirt",
-            min_price: 10,
-            tags: ["a", "b"],
-            variants: [{ sku: "SHIRT-S" }],
-            // Extra fields are allowed: seeds commonly spread whole entities.
-            not_indexed: "ok",
+            action: "upsert",
+            documents: [
+              {
+                id: "prod_1",
+                title: "Shirt",
+                min_price: 10,
+                tags: ["a", "b"],
+                variants: [{ sku: "SHIRT-S" }],
+                // Extra fields are allowed: seeds commonly spread whole entities.
+                not_indexed: "ok",
+              },
+            ],
           },
         ]
       },
     })
 
-    const batches: SearchTypes.SearchDocument[][] = []
+    const batches: SearchTypes.SearchMutation[][] = []
     for await (const batch of definition.seed({} as any)) {
       batches.push(batch)
     }
-    expect(batches[0][0].id).toEqual("prod_1")
+    expect(batches[0][0]).toMatchObject({
+      action: "upsert",
+      documents: [{ id: "prod_1" }],
+    })
   })
 
   test("the type surface rejects what boot validation would", () => {

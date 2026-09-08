@@ -5,7 +5,10 @@ import {
   baseProducts,
   dataset,
   productIndex,
+  removeProduct,
   resetDataset,
+  setOnBulkSeedStart,
+  touchProduct,
 } from "../__fixtures__/product-index"
 
 jest.setTimeout(120000)
@@ -178,6 +181,17 @@ moduleIntegrationTestRunner<SearchService>({
             fields: ["id"],
             filters: { q: "runing" },
             search_options: { typo_tolerance: true },
+          })
+
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
+        })
+
+        it("ignores highlighting and typo tolerance when there is no text query", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { status: "published" },
+            search_options: { highlight: true, typo_tolerance: true },
           })
 
           expect(ids(result).sort()).toEqual(["prod_1", "prod_2"])
@@ -416,6 +430,8 @@ moduleIntegrationTestRunner<SearchService>({
       })
 
       describe("reindexing", () => {
+        beforeEach(async () => reseed(service))
+
         const stale = () => staleActiveVersion(service, "product")
 
         it("survives repeated migrate + seed cycles, each building a fresh version", async () => {
@@ -442,6 +458,35 @@ moduleIntegrationTestRunner<SearchService>({
             filters: { q: "shoe" },
           })
           expect(ids(result)).toEqual(["prod_1"])
+        })
+
+        it("catches an update that landed after the bulk pass took its snapshot", async () => {
+          setOnBulkSeedStart(() => {
+            touchProduct("prod_1", { title: "Scarlet trail shoe" })
+          })
+
+          await service.reindex()
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { q: "scarlet" },
+          })
+          expect(ids(result)).toEqual(["prod_1"])
+        })
+
+        it("catches a delete that landed after the bulk pass took its snapshot", async () => {
+          setOnBulkSeedStart(() => {
+            removeProduct("prod_1")
+          })
+
+          await service.reindex()
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
         })
       })
     }),

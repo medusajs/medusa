@@ -354,10 +354,19 @@ describe("postgres search utils", () => {
       expect(() =>
         assertQuerySupported({
           index: baseDefinition(),
+          q: "red",
           attributes_to_retrieve: ["id"],
           search_options: { highlight: { fields: ["title"] } },
         })
       ).toThrow(/highlight/)
+
+      expect(() =>
+        assertQuerySupported({
+          index: baseDefinition(),
+          attributes_to_retrieve: ["id"],
+          search_options: { highlight: true, typo_tolerance: true },
+        })
+      ).not.toThrow()
 
       expect(() =>
         assertQuerySupported(

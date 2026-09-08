@@ -88,7 +88,7 @@ export interface SearchIndexSettings {
 
 /**
  * A change to apply to a search index, as returned by an index definition's
- * `consume` function.
+ * `consume` or `seed` function.
  */
 export type SearchMutation =
   | {
@@ -151,6 +151,19 @@ export interface SearchSeedContext extends SearchIngestionContext {
    * The `last_key` of an interrupted run, when resuming one.
    */
   last_key?: string
+
+  /**
+   * Set for the catch-up pass that runs after a full seed, to pick up
+   * anything that changed while that seed was running.
+   */
+  catchup?: {
+    /**
+     * Only rows updated at or after this date matter to the catch-up pass.
+     * Query with `withDeleted: true` and yield a `delete` mutation for a row
+     * whose `deleted_at` is set, an `upsert` otherwise.
+     */
+    since: Date
+  }
 }
 
 /**
@@ -208,10 +221,11 @@ export interface SearchIndexDefinition {
   ) => Promise<SearchMutation[]>
 
   /**
-   * Yields the index's documents in batches. Ran when there is no data in the
-   * index or on reindex.
+   * Yields mutations in batches — the same shape `consume` returns, so a
+   * seed can express a delete, not just an upsert. Ran when there is no data
+   * in the index, on reindex, and for the catch-up pass after a full seed.
    */
-  seed: (context: SearchSeedContext) => AsyncIterable<SearchDocument[]>
+  seed: (context: SearchSeedContext) => AsyncIterable<SearchMutation[]>
 }
 
 /**
