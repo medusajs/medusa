@@ -188,3 +188,30 @@ The Server Restarts section helps you track the frequency and patterns of unexpe
 In the [Servers monitoring dashboard](#view-server-metrics), the Server Restarts chart shows the number of restarts across your server instances over time.
 
 You can also correlate restart patterns with CPU and memory usage to identify potential causes of instability in your environment.
+
+---
+
+## Monitor Network I/O
+
+The Network I/O chart shows how much data your server instances are sending and receiving over time. It is useful for understanding your application's network activity and spotting unexpected spikes.
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Network I/O chart shows:
+
+- **Bytes sent**: The volume of outbound data sent from your server instances.
+- **Bytes received**: The volume of inbound data received by your server instances.
+
+The chart renders both series as overlapping area charts. You can toggle each series on or off by clicking its label in the chart legend.
+
+---
+
+## Monitor Per-Instance CPU
+
+The per-instance CPU chart shows the distribution of CPU utilization across individual server instances. It complements the [Total CPU](#monitor-total-cpu) chart by giving you a finer-grained view of how CPU load is spread across your instances.
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Per-Instance CPU chart shows:
+
+- **Min CPU**: The lowest CPU utilization recorded across instances at a given point in time.
+- **Average CPU**: The mean CPU utilization across all instances at a given point in time.
+- **Max CPU**: The highest CPU utilization recorded across instances at a given point in time.
+
+Use this chart to identify whether one instance is handling a disproportionately high CPU load compared to the others.

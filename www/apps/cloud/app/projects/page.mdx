@@ -211,7 +211,7 @@ On the project's dashboard, you can view the following details:
 2. **Long-Lived Environments**: The long-lived environments for the project are shown as cards. By default, you'll find the Production environment. You can learn more about environments in the [Environments](../environments/page.mdx) guide.
     - The Production environment is the live environment where your Medusa application is deployed and clients connect to.
     - Other [Long-lived environments](../environments/long-lived/page.mdx) like Staging will be shown here if you create them. These are useful for testing changes before deploying them to Production.
-    - Each environment card shows the environment's name, URLs, and status.
+    - Each environment card shows the environment's name, URLs, status, and custom domains (if configured). If an environment fails to provision, the card shows an error icon and a descriptive message instead of a loading animation.
 3. **Preview Environments**: The Preview environments for the project are shown in a table below the long-lived environments.
     - Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
     - Learn more in the [Preview Environments](../environments/preview/page.mdx) guide.
