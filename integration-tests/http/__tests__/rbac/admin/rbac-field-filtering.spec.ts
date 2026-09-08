@@ -1,4 +1,4 @@
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, PolicyOperation } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,

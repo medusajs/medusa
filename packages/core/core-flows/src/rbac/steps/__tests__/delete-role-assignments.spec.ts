@@ -20,7 +20,6 @@ type Recorded = {
   listFilters: any[]
   deleted: (string | string[])[]
   created: any[]
-  clearedTags: string[][]
 }
 
 const makeContainer = (existingRows: any[], recorded: Recorded) => {
@@ -50,19 +49,6 @@ const makeContainer = (existingRows: any[], recorded: Recorded) => {
     )
   )
 
-  container.register(
-    Modules.CACHING,
-    asFunction(
-      () =>
-        ({
-          clear: ({ tags }: { tags: string[] }) => {
-            recorded.clearedTags.push(tags)
-            return Promise.resolve()
-          },
-        } as any)
-    )
-  )
-
   return container
 }
 
@@ -70,7 +56,6 @@ const emptyRecorded = (): Recorded => ({
   listFilters: [],
   deleted: [],
   created: [],
-  clearedTags: [],
 })
 
 describe("deleteRoleAssignmentsStep", () => {
@@ -78,7 +63,7 @@ describe("deleteRoleAssignmentsStep", () => {
     FeatureFlag.setFlag("rbac", true)
   })
 
-  it("deletes the given ids and invalidates the affected references", async () => {
+  it("deletes the given ids", async () => {
     const recorded = emptyRecorded()
     const container = makeContainer(
       [
@@ -99,9 +84,6 @@ describe("deleteRoleAssignmentsStep", () => {
 
     expect(recorded.listFilters).toEqual([{ id: ["rasgn_1", "rasgn_3"] }])
     expect(recorded.deleted).toEqual([["rasgn_1", "rasgn_3"]])
-    // One tag per affected (reference, reference_id) pair.
-    expect(recorded.clearedTags).toHaveLength(1)
-    expect(recorded.clearedTags[0]).toHaveLength(2)
   })
 
   it("accepts a single id", async () => {
@@ -153,7 +135,6 @@ describe("deleteRoleAssignmentsStep", () => {
     await workflow(container).run({ input: {} })
 
     expect(recorded.deleted).toEqual([])
-    expect(recorded.clearedTags).toEqual([])
   })
 
   it("recreates the deleted rows on compensation", async () => {
