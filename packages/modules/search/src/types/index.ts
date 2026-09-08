@@ -83,6 +83,7 @@ export type SearchIndexContext = {
   indexes: SearchIndexes
   providers: { retrieve(identifier: string): SearchTypes.ISearchProvider }
   indexService: ModulesSdkTypes.IMedusaInternalService<any>
+  versionService: ModulesSdkTypes.IMedusaInternalService<any>
   syncService: ModulesSdkTypes.IMedusaInternalService<any>
   // The Locking Module, when registered. Absent in tests, where work goes
   // unserialized.
@@ -93,32 +94,67 @@ export type SearchIndexContext = {
       args?: { timeout?: number }
     ): Promise<T>
   }
+  // Resolves which physical index currently serves reads/writes for a
+  // logical index. Every live operation goes through this rather than
+  // `definition.physical_name` directly, since the active version can change
+  // out from under this process. `set` is used to reflect this process' own
+  // flip immediately, rather than waiting out the soft TTL.
+  activeVersionCache?: {
+    get(
+      name: string
+    ): Promise<{ physical_name: string; provider: string; version: number }>
+    set(
+      name: string,
+      value: { physical_name: string; provider: string; version: number }
+    ): void
+  }
 }
 
 // Enough to resolve a definition and read its record — all the planners need.
 export type SearchIndexRegistry = Pick<
   SearchIndexContext,
-  "indexes" | "indexService" | "providers" | "logger"
+  "indexes" | "indexService" | "versionService" | "providers" | "logger"
 >
 
 // What running a seed adds: the sync history it writes, the batch size, and the
 // container `seed` reads through.
 export type SearchSeedRuntime = SearchIndexRegistry &
-  Pick<SearchIndexContext, "syncService" | "container" | "options">
+  Pick<
+    SearchIndexContext,
+    "syncService" | "container" | "options" | "activeVersionCache"
+  >
 
 // Ingestion writes straight through, so unlike a seed it keeps no sync history.
 export type SearchIngestionRuntime = SearchIndexRegistry &
-  Pick<SearchIndexContext, "container">
+  Pick<SearchIndexContext, "container" | "activeVersionCache">
 
 /** Event name to the indexes that declared it. */
 export type SearchEventRoutes = Map<string, string[]>
 
 /* ---------------------------- persisted records ---------------------------- */
 
-/** One seed run against one index. Append-only, so these are the history. */
-export type SearchIndexSyncRecord = {
+/** The logical index and which of its versions currently serves reads. */
+export type SearchIndexRecord = {
+  id: string
+  name: string
+  active_version: number | null
+}
+
+/** One physical index ever built for a logical index. */
+export type SearchIndexVersionRecord = {
   id: string
   search_index_id: string
+  version: number
+  provider: string
+  physical_name: string
+  definition_hash: string
+  status: string
+}
+
+/** One seed run against one index version. Append-only, so these are the history. */
+export type SearchIndexSyncRecord = {
+  id: string
+  search_index_version_id: string
   job_id: string | null
   status: string
   filters: Record<string, unknown> | null
@@ -149,9 +185,12 @@ export type SearchIndexSeedReason =
 
 export type SearchIndexSeedAction = {
   index: string
-  /** The index the seed writes into. */
-  target_physical_name: string
-  /** Whether the target has to be aliased over the live index once filled. */
+  /** The version being filled. */
+  target_version: SearchIndexVersionRecord
+  /**
+   * Whether `target_version` has to become the index's active version once
+   * filled, rather than being seeded in place as the already-active version.
+   */
   swap: boolean
   reason: SearchIndexSeedReason
 }

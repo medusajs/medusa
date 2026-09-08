@@ -626,6 +626,30 @@
     "deprecated": false
   },
   {
+    "name": "product-option-value.updated",
+    "parentName": "ProductOptionValueWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the product option value\n}\n```",
+    "description": "Emitted when product option values are updated.",
+    "workflows": [
+      "updateProductOptionValuesWorkflow"
+    ],
+    "since": "2.20.0",
+    "deprecated": false
+  },
+  {
+    "name": "product-option-value.deleted",
+    "parentName": "ProductOptionValueWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the product option value\n}\n```",
+    "description": "Emitted when product option values are deleted.",
+    "workflows": [
+      "deleteProductOptionValuesWorkflow"
+    ],
+    "since": "2.20.0",
+    "deprecated": false
+  },
+  {
     "name": "invite.accepted",
     "parentName": "InviteWorkflowEvents",
     "propertyName": "ACCEPTED",

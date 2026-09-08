@@ -10,7 +10,7 @@ import {
 } from "@medusajs/framework/utils"
 
 /**
- * @since 2.19.1
+ * @since 2.20.0
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest,

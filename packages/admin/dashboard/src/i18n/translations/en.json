@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Insert row above",
         "insertRowBelow": "Insert row below",
-        "deleteRow": "Delete row"
+        "deleteRow": "Delete row",
+        "addRow": "Add row"
       },
       "labels": {
         "key": "Key",

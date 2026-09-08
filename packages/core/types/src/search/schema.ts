@@ -5,7 +5,11 @@ import {
   SearchFieldDefinition,
   SearchFieldKind,
 } from "./field"
-import { SearchIndexDefinition, SearchSeedContext } from "./index-definition"
+import {
+  SearchIndexDefinition,
+  SearchMutation,
+  SearchSeedContext,
+} from "./index-definition"
 
 /**
  * Schema of search index fields — key-value pairs of search properties.
@@ -31,7 +35,6 @@ export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   facetable?: boolean | { types?: SearchFacetKind[] }
   retrievable?: boolean
   array?: boolean
-  correlated?: boolean
   dimensions?: number
   embed?: boolean
   provider_options?: Record<string, Record<string, unknown>>
@@ -81,8 +84,8 @@ export type InferSearchObjectValue<Schema extends SearchSchema> = {
 } & Record<string, unknown>
 
 /**
- * The document type an index accepts, inferred from its fields input. Plain
- * JSON fields carry no type information, so they fall back to SearchDocument.
+ * The document type an index accepts, inferred from its `search.define(...)`
+ * fields schema.
  */
 export type InferSearchDocumentType<Fields extends SearchIndexFieldsInput> =
   Fields extends { schema: infer Schema extends SearchSchema }
@@ -98,24 +101,30 @@ export interface SearchFieldsSchemaLike {
 }
 
 /**
- * Input accepted by `defineSearchIndex` for the `fields` property —
- * plain JSON or a DSL fields schema.
+ * Input accepted by `defineSearchIndex` for the `fields` property — a
+ * schema from `search.define({ ... })`.
  */
-export type SearchIndexFieldsInput =
-  | Record<string, SearchFieldDefinition>
-  | SearchFieldsSchemaLike
+export type SearchIndexFieldsInput = SearchFieldsSchemaLike
+
+/**
+ * A `seed` mutation, with `upsert`'s documents type-checked against the
+ * declared `search.define(...)` schema.
+ */
+export type SearchIndexSeedMutation<Fields extends SearchIndexFieldsInput> =
+  | { action: "upsert"; documents: InferSearchDocumentType<Fields>[] }
+  | Extract<SearchMutation, { action: "delete" }>
 
 /**
  * Definition accepted by `defineSearchIndex` before fields are normalized.
- * When `fields` comes from the DSL, `seed` is type-checked against the
- * declared schema.
+ * `seed` is type-checked against the declared `search.define(...)` schema.
  */
 export type SearchIndexDefinitionInput<
   Fields extends SearchIndexFieldsInput = SearchIndexFieldsInput
 > = Omit<SearchIndexDefinition, "fields" | "seed"> & {
   fields: Fields
-  // Ran when there is no data in the index or on reindex.
+  // Ran when there is no data in the index, on reindex, and for the
+  // catch-up pass after a full seed.
   seed: (
     context: SearchSeedContext
-  ) => AsyncIterable<InferSearchDocumentType<Fields>[]>
+  ) => AsyncIterable<SearchIndexSeedMutation<Fields>[]>
 }

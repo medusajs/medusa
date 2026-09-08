@@ -4,7 +4,11 @@ import {
   SearchIndexes,
   SearchIngestionRuntime,
 } from "@types"
-import { assertTaskAccepted, retrieveIndexDefinition } from "./index"
+import {
+  assertTaskAccepted,
+  resolveActiveDefinition,
+  retrieveIndexDefinition,
+} from "./index"
 
 // Built once so routing a delivered event is a lookup, not a scan.
 export function buildEventRoutes(indexes: SearchIndexes): SearchEventRoutes {
@@ -44,7 +48,10 @@ export async function ingestEvent(
 
   for (const name of names) {
     const definition = retrieveIndexDefinition(context.indexes, name)
-    const provider = context.providers.retrieve(definition.provider)
+    // The active version, merged in — resolving `definition` alone would
+    // target the never-queried root physical name.
+    const active = await resolveActiveDefinition(context, name)
+    const provider = context.providers.retrieve(active.provider)
 
     // Resolving a definition rejects `events` without `consume`, so there is one.
     const mutations = await definition.consume!(event, {
@@ -60,12 +67,12 @@ export async function ingestEvent(
       const task =
         mutation.action === "upsert"
           ? await provider.upsertDocuments({
-              index: definition.physical_name,
-              definition,
+              index: active.physical_name,
+              definition: active,
               documents: mutation.documents,
             })
           : await provider.deleteDocuments({
-              index: definition.physical_name,
+              index: active.physical_name,
               filters: mutation.filters,
             })
 

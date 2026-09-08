@@ -38,13 +38,13 @@
           "enumItems": [],
           "mappedType": "text"
         },
-        "provider": {
-          "name": "provider",
-          "type": "text",
+        "active_version": {
+          "name": "active_version",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -52,44 +52,7 @@
           "default": null,
           "comment": null,
           "enumItems": [],
-          "mappedType": "text"
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'pending'",
-          "comment": null,
-          "enumItems": [
-            "pending",
-            "building",
-            "ready",
-            "error"
-          ],
-          "mappedType": "enum"
-        },
-        "definition_hash": {
-          "name": "definition_hash",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "text"
+          "mappedType": "integer"
         },
         "created_at": {
           "name": "created_at",
@@ -174,6 +137,232 @@
       ],
       "checks": [],
       "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "physical_name": {
+          "name": "physical_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "definition_hash": {
+          "name": "definition_hash",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'pending'",
+          "comment": null,
+          "enumItems": [
+            "pending",
+            "building",
+            "ready",
+            "error"
+          ],
+          "mappedType": "enum"
+        },
+        "search_index_id": {
+          "name": "search_index_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "search_index_version",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_search_index_version_search_index_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_search_index_version_search_index_id\" ON \"search_index_version\" (\"search_index_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_search_index_version_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_search_index_version_deleted_at\" ON \"search_index_version\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_search_index_version_search_index_id_version",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_search_index_version_search_index_id_version\" ON \"search_index_version\" (\"search_index_id\", \"version\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "search_index_version_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "search_index_version_search_index_id_foreign": {
+          "constraintName": "search_index_version_search_index_id_foreign",
+          "columnNames": [
+            "search_index_id"
+          ],
+          "localTableName": "public.search_index_version",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.search_index",
+          "updateRule": "cascade"
+        }
+      },
       "nativeEnums": {}
     },
     {
@@ -328,8 +517,8 @@
           "enumItems": [],
           "mappedType": "text"
         },
-        "search_index_id": {
-          "name": "search_index_id",
+        "search_index_version_id": {
+          "name": "search_index_version_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -397,13 +586,13 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_search_index_sync_search_index_id",
+          "keyName": "IDX_search_index_sync_search_index_version_id",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_search_index_sync_search_index_id\" ON \"search_index_sync\" (\"search_index_id\") WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_search_index_sync_search_index_version_id\" ON \"search_index_sync\" (\"search_index_version_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_search_index_sync_deleted_at",
@@ -436,16 +625,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "search_index_sync_search_index_id_foreign": {
-          "constraintName": "search_index_sync_search_index_id_foreign",
+        "search_index_sync_search_index_version_id_foreign": {
+          "constraintName": "search_index_sync_search_index_version_id_foreign",
           "columnNames": [
-            "search_index_id"
+            "search_index_version_id"
           ],
           "localTableName": "public.search_index_sync",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.search_index",
+          "referencedTableName": "public.search_index_version",
           "updateRule": "cascade"
         }
       },
