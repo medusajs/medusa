@@ -17,7 +17,7 @@ The Loyalty Module provides workflows and steps to manage gift cards and their u
 Create new gift cards for customers or orders:
 
 ```ts
-import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await createGiftCardsWorkflow(container)
   .run({
@@ -37,7 +37,7 @@ const { result } = await createGiftCardsWorkflow(container)
 Update existing gift cards:
 
 ```ts
-import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await updateGiftCardsWorkflow(container)
   .run({
@@ -54,7 +54,7 @@ const { result } = await updateGiftCardsWorkflow(container)
 Delete a gift card:
 
 ```ts
-import { deleteGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+import { deleteGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await deleteGiftCardWorkflow(container)
   .run({
@@ -71,7 +71,7 @@ await deleteGiftCardWorkflow(container)
 Apply a gift card to a cart as a credit line. This workflow validates that the gift card has not expired before adding it:
 
 ```ts
-import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await addGiftCardToCartWorkflow(container)
   .run({
@@ -87,7 +87,7 @@ await addGiftCardToCartWorkflow(container)
 Remove a gift card from a cart:
 
 ```ts
-import { removeGiftCardFromCartWorkflow } from "@medusajs/loyalty-plugin"
+import { removeGiftCardFromCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await removeGiftCardFromCartWorkflow(container)
   .run({
@@ -103,7 +103,7 @@ await removeGiftCardFromCartWorkflow(container)
 Refresh gift card credit lines on a cart to account for balance or cart total changes. Expired gift cards are silently removed from the cart during a refresh rather than causing an error, so the cart can continue to be updated:
 
 ```ts
-import { refreshCartGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+import { refreshCartGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await refreshCartGiftCardsWorkflow(container)
   .run({
@@ -118,7 +118,7 @@ await refreshCartGiftCardsWorkflow(container)
 Confirm and debit gift card balances during checkout. This workflow also validates that none of the gift cards applied to the cart have expired before debiting any balances:
 
 ```ts
-import { confirmCartCreditLinesWorkflow } from "@medusajs/loyalty-plugin"
+import { confirmCartCreditLinesWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await confirmCartCreditLinesWorkflow(container)
   .run({
@@ -135,7 +135,7 @@ await confirmCartCreditLinesWorkflow(container)
 Link gift cards to an order after purchase:
 
 ```ts
-import { linkGiftCardsToOrderWorkflow } from "@medusajs/loyalty-plugin"
+import { linkGiftCardsToOrderWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await linkGiftCardsToOrderWorkflow(container)
   .run({
@@ -151,7 +151,7 @@ await linkGiftCardsToOrderWorkflow(container)
 Claim a gift card for a customer:
 
 ```ts
-import { claimGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+import { claimGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await claimGiftCardWorkflow(container)
   .run({
@@ -167,7 +167,7 @@ const { result } = await claimGiftCardWorkflow(container)
 Redeem a gift card by debiting its balance:
 
 ```ts
-import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await redeemGiftCardWorkflow(container)
   .run({
