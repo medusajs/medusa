@@ -1,0 +1,1 @@
+{"slug":"/references/region/types/region.MetadataType","title":"MetadataType","frontmatter":{"displayed_sidebar":"regionReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"MetadataType","type":"`Record<string, unknown>` \\| `null`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

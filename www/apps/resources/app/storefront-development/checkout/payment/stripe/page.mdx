@@ -215,11 +215,11 @@ const StripeForm = ({
 In the code snippet above, you:
 
 1. Create a `StripePayment` component that wraps the actual form with Stripe's `Elements` component.
-    - In the `StripePayment` component, you obtain the client secret from the payment session's `data` field. This is set in the Medusa application after you initialize the payment session using the [Initialize Payment Sessions API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+    - In the `StripePayment` component, you obtain the client secret from the payment session's `data` field. This is set in the Medusa application after you initialize the payment session using the [Initialize Payment Sessions API route](!api!/store/payment-collections/initialize-payment-session).
 2. Create a `StripeForm` component that holds the actual form. In this component, you implement a `handlePayment` function that does the following:
     - Use Stripe's `confirmCardPayment` method to accept the card details from the customer.
     - Once the customer enters their card details and submit their order, the resolution function of the `confirmCardPayment` method is executed.
-    - In the resolution function, you send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) to complete the cart and place the order.
+    - In the resolution function, you send a request to the [Complete Cart API route](!api!/store/carts/complete-cart) to complete the cart and place the order.
     - In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
     - If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
     - When the order is placed, you refresh the cart. You can redirect the customer to an order success page at this point. The redirection logic depends on the storefront framework you're using.

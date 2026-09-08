@@ -17,7 +17,7 @@ export class Return {
 
   /**
    * This method retrieves a list of returns. It sends a request to the
-   * [List Returns](https://docs.medusajs.com/api/admin#returns_getreturns)
+   * [List Returns](https://docs.medusajs.com/api/admin/returns/list-returns)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -60,7 +60,7 @@ export class Return {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(query?: HttpTypes.AdminReturnFilters, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminReturnsResponse>(
@@ -74,7 +74,7 @@ export class Return {
 
   /**
    * This method retrieves a return by ID. It sends a request to the
-   * [Get Return](https://docs.medusajs.com/api/admin#returns_getreturnsid)
+   * [Get Return](https://docs.medusajs.com/api/admin/returns/get-a-return)
    * API route.
    * 
    * @param id - The ID of the return to retrieve.
@@ -103,7 +103,7 @@ export class Return {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminReturnResponse>(
@@ -117,7 +117,7 @@ export class Return {
 
   /**
    * This method initiates a return request by creating a return. It sends a request to the
-   * [Create Return](https://docs.medusajs.com/api/admin#returns_postreturns)
+   * [Create Return](https://docs.medusajs.com/api/admin/returns/create-return)
    * API route.
    * 
    * @param body - The details of the return to create.
@@ -151,7 +151,7 @@ export class Return {
 
   /**
    * This method cancels a return. It sends a request to the
-   * [Cancel Return](https://docs.medusajs.com/api/admin#returns_postreturnsidcancel)
+   * [Cancel Return](https://docs.medusajs.com/api/admin/returns/cancel-a-return)
    * API route.
    * 
    * @param id - The ID of the return to cancel.
@@ -182,7 +182,7 @@ export class Return {
 
   /**
    * This method cancels a return request. It sends a request to the
-   * [Cancel Return Request](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequest)
+   * [Cancel Return Request](https://docs.medusajs.com/api/admin/returns/cancel-return-request)
    * API route.
    * 
    * @param id - The ID of the return to cancel.
@@ -213,7 +213,7 @@ export class Return {
 
   /**
    * This method adds an item to a return request. It sends a request to the
-   * [Add Return Item](https://docs.medusajs.com/api/admin#returns_postreturnsidrequestitems)
+   * [Add Return Item](https://docs.medusajs.com/api/admin/returns/add-items)
    * API route.
    * 
    * @param id - The ID of the return to add the item to.
@@ -255,7 +255,7 @@ export class Return {
    * `item.actions.find((action) => action.action === "RETURN_ITEM")?.id` is the ID of an item's `RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Update Requested Return Item](https://docs.medusajs.com/api/admin#returns_postreturnsidrequestitemsaction_id)
+   * [Update Requested Return Item](https://docs.medusajs.com/api/admin/returns/update-requested-item)
    * API route.
    * 
    * @param id - The ID of the return to update the item in.
@@ -299,7 +299,7 @@ export class Return {
    * `item.actions.find((action) => action.action === "RETURN_ITEM")?.id` is the ID of an item's `RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Remove Item from Return](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequestitemsaction_id)
+   * [Remove Item from Return](https://docs.medusajs.com/api/admin/returns/remove-item)
    * API route.
    * 
    * @param id - The ID of the return to remove the item from.
@@ -332,7 +332,7 @@ export class Return {
 
   /**
    * This method adds a shipping method to a return request. It sends a request to the
-   * [Add Shipping Method to Return](https://docs.medusajs.com/api/admin#returns_postreturnsidshippingmethod)
+   * [Add Shipping Method to Return](https://docs.medusajs.com/api/admin/returns/add-shipping-method)
    * API route.
    * 
    * @param id - The ID of the return to add the shipping method to.
@@ -376,7 +376,7 @@ export class Return {
    * the ID of a shipping method's `SHIPPING_ADD` action.
    * 
    * This method sends a request to the
-   * [Update Shipping Method in Return](https://docs.medusajs.com/api/admin#returns_postreturnsidshippingmethodaction_id)
+   * [Update Shipping Method in Return](https://docs.medusajs.com/api/admin/returns/update-shipping-method)
    * API route.
    * 
    * @param id - The ID of the return to update the shipping method in.
@@ -422,7 +422,7 @@ export class Return {
    * the ID of a shipping method's `SHIPPING_ADD` action.
    * 
    * This method sends a request to the
-   * [Remove Shipping Method from Return](https://docs.medusajs.com/api/admin#returns_deletereturnsidshippingmethodaction_id)
+   * [Remove Shipping Method from Return](https://docs.medusajs.com/api/admin/returns/remove-shipping-method)
    * API route.
    * 
    * @param id - The ID of the return to remove the shipping method from.
@@ -455,7 +455,7 @@ export class Return {
 
   /**
    * This method updates a return request. It sends a request to the
-   * [Update Return](https://docs.medusajs.com/api/admin#returns_postreturnsid)
+   * [Update Return](https://docs.medusajs.com/api/admin/returns/update-a-return)
    * API route.
    * 
    * @param id - The ID of the return to update.
@@ -492,11 +492,11 @@ export class Return {
   /**
    * This method confirms a return request. The return's changes are applied on the inventory quantity of the return
    * items and the order only after the return has been confirmed as received using the
-   * [Confirm Return Receival](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveconfirm)
+   * [Confirm Return Receival](https://docs.medusajs.com/api/admin/returns/confirm-return-receival)
    * API route.
    * 
    * This method sends a request to the
-   * [Confirm Return Request](https://docs.medusajs.com/api/admin#returns_postreturnsidrequest)
+   * [Confirm Return Request](https://docs.medusajs.com/api/admin/returns/confirm-return-request)
    * API route.
    * 
    * @param id - The ID of the return to confirm.
@@ -532,7 +532,7 @@ export class Return {
 
   /**
    * This method starts the return receival process. It sends a request to the
-   * [Start Return Receival](https://docs.medusajs.com/api/admin#returns_postreturnsidreceive)
+   * [Start Return Receival](https://docs.medusajs.com/api/admin/returns/start-return-receival)
    * API route.
    * 
    * @param id - The ID of the return to start the receival process.
@@ -570,7 +570,7 @@ export class Return {
    * This method adds received items to a return. These items will have the action `RECEIVE_RETURN_ITEM`.
    * 
    * The method sends a request to the
-   * [Add Received Items](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitems)
+   * [Add Received Items](https://docs.medusajs.com/api/admin/returns/add-received-items)
    * API route.
    * 
    * @param id - The ID of the return to add the received items to.
@@ -616,7 +616,7 @@ export class Return {
    * the ID of a received item's `RECEIVE_RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Update Received Item](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitemsaction_id)
+   * [Update Received Item](https://docs.medusajs.com/api/admin/returns/update-received-item)
    * API route.
    * 
    * @param id - The ID of the return to update the received item in.
@@ -662,7 +662,7 @@ export class Return {
    * the ID of a received item's `RECEIVE_RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Remove Received Item](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceiveitemsaction_id)
+   * [Remove Received Item](https://docs.medusajs.com/api/admin/returns/remove-received-item)
    * API route.
    * 
    * @param id - The ID of the return to remove the received item from.
@@ -700,7 +700,7 @@ export class Return {
    * stock location where the return is initiated from.
    * 
    * The method sends a request to the
-   * [Add Damaged Items](https://docs.medusajs.com/api/admin#returns_postreturnsiddismissitems)
+   * [Add Damaged Items](https://docs.medusajs.com/api/admin/returns/add-damaged-items)
    * API route.
    * 
    * @param id - The ID of the return to add the damaged items to.
@@ -746,7 +746,7 @@ export class Return {
    * the ID of a damaged item's `RECEIVE_DAMAGED_RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Update Damaged Item](https://docs.medusajs.com/api/admin#returns_postreturnsiddismissitemsaction_id)
+   * [Update Damaged Item](https://docs.medusajs.com/api/admin/returns/update-damaged-item)
    * API route.
    * 
    * @param id - The ID of the return to update the damaged item in.
@@ -792,7 +792,7 @@ export class Return {
    * the ID of a damaged item's `RECEIVE_DAMAGED_RETURN_ITEM` action.
    * 
    * This method sends a request to the
-   * [Remove Damaged Item](https://docs.medusajs.com/api/admin#returns_deletereturnsiddismissitemsaction_id)
+   * [Remove Damaged Item](https://docs.medusajs.com/api/admin/returns/remove-damaged-item)
    * API route.
    * 
    * @param id - The ID of the return to remove the damaged item from.
@@ -825,7 +825,7 @@ export class Return {
 
   /**
    * This method confirms the return receival. It sends a request to the
-   * [Confirm Return Receival](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveconfirm)
+   * [Confirm Return Receival](https://docs.medusajs.com/api/admin/returns/confirm-return-receival)
    * API route.
    * 
    * @param id - The ID of the return to confirm the receival of.
@@ -861,7 +861,7 @@ export class Return {
 
   /**
    * This method cancels a return receival. It sends a request to the
-   * [Cancel Return Receival](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceive)
+   * [Cancel Return Receival](https://docs.medusajs.com/api/admin/returns/cancel-return-receival)
    * API route.
    * 
    * @param id - The ID of the return to cancel the receival of.

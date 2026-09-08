@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/File/Steps_File/variables/core_flows.File.Steps_File.deleteFilesStepId","title":"deleteFilesStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteFilesStepId","type":"`\"delete-files\"`","description":"","optional":false,"defaultValue":"\"delete-files\"","expandable":false,"children":[]}]}]}

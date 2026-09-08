@@ -14,6 +14,12 @@ export function getModuleService(
 
   delete joinerConfig_.databaseConfig
 
+  // Keep the physical table name exposed: the query layer needs it to build
+  // cross-module SQL joins against the link table.
+  if (databaseConfig?.tableName) {
+    joinerConfig_.databaseConfig = { tableName: databaseConfig.tableName }
+  }
+
   // If extraDataFields is not defined, pick the fields to populate and validate from the
   // database config if any fields are provided.
   if (!isDefined(joinerConfig_.extraDataFields)) {

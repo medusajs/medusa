@@ -1,8 +1,11 @@
+import { ProductOptionValueWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteProductOptionValuesStep } from "../steps"
 
 /**
@@ -40,6 +43,17 @@ export const deleteProductOptionValuesWorkflow = createWorkflow(
   deleteProductOptionValuesWorkflowId,
   (input: WorkflowData<DeleteProductOptionValuesWorkflowInput>) => {
     const deletedProductOptionValues = deleteProductOptionValuesStep(input.ids)
+
+    const optionValueIdEvents = transform({ input }, ({ input }) => {
+      return input.ids?.map((id) => {
+        return { id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductOptionValueWorkflowEvents.DELETED,
+      data: optionValueIdEvents,
+    })
 
     return new WorkflowResponse(deletedProductOptionValues)
   }

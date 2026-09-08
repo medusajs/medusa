@@ -310,8 +310,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -371,8 +373,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "small",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -432,8 +436,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -525,8 +531,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -587,8 +595,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "small",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -712,8 +722,10 @@ medusaIntegrationTestRunner({
               "Variant Thumbnail": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -805,8 +817,10 @@ medusaIntegrationTestRunner({
               "Variant Thumbnail": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -896,6 +910,69 @@ medusaIntegrationTestRunner({
         )
         expect(exportedProductTitles).not.toContain("Base product")
         expect(exportedProductTitles).not.toContain("Proposed product")
+      })
+
+      it("should perfectly align array columns (images/variants) when batches differ", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+          eventBus
+        )
+
+        const productWithOneImage = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with one image",
+              images: [{ url: "test-image.png" }],
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const productWithThreeImages = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with three images",
+              images: [{ url: "test-image.png" }, { url: "test-image-2.png" }, { url: "test-image-3.png" }],
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const batchJobRes = await api.post(
+          `/admin/products/export?id[]=${productWithOneImage.id}&id[]=${productWithThreeImages.id}`,
+          {},
+          adminHeaders
+        )
+
+        expect(batchJobRes.data.transaction_id).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        const exportedFileContents = await getCSVContents(
+          notifications[0].data.file.url
+        )
+
+        const row1 = exportedFileContents.find(
+          (r) => r["Product Title"] === "Product with one image"
+        )
+        const row2 = exportedFileContents.find(
+          (r) => r["Product Title"] === "Product with three images"
+        )
+
+        expect(row1["Product Image 1"]).toEqual("test-image.png")
+        expect(row1["Product Image 2"]).toEqual("")
+        expect(row1["Product Image 3"]).toEqual("")
+
+        expect(row2["Product Image 1"]).toEqual("test-image.png")
+        expect(row2["Product Image 2"]).toEqual("test-image-2.png")
+        expect(row2["Product Image 3"]).toEqual("test-image-3.png")
       })
     })
   },

@@ -27,12 +27,13 @@ import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-chan
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
 
 export const updateDraftOrderItemWorkflowId = "update-draft-order-item"
 
 /**
  * This workflow updates an item in a draft order edit. It's used by the
- * [Update Item in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedititemsitemitem_id).
+ * [Update Item in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/update-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * updating an item in a draft order edit.
@@ -116,6 +117,12 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    // Calculated shipping prices can depend on item quantities, so refresh any
+    // pending calculated shipping methods after the item quantity changes.
+    refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
+      input: { order_id: input.order_id },
     })
 
     const context = getDraftOrderPromotionContextStep({

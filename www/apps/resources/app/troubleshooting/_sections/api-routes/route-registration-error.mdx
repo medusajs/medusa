@@ -1,0 +1,43 @@
+If your Medusa application starts successfully but API routes fail to register, you may encounter the following runtime error:
+
+```
+Cannot read properties of undefined (reading 'def')
+```
+
+## Why This Error Occurred
+
+This error occurs when a file in `src/api` exports a route handler that is `undefined` or has an incorrect structure. The most common causes are:
+
+- Missing named exports for HTTP methods (for example, no `export const GET = ...` in the file).
+- A route handler variable is referenced but not defined or imported correctly.
+- The exported value is not a function.
+
+Medusa expects each API route file to export named functions for the HTTP methods it handles. For example:
+
+```ts title="src/api/store/custom/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({ message: "Hello" })
+}
+```
+
+---
+
+## How to Fix It
+
+Check all files in your `src/api` directory and ensure that:
+
+1. Each route file exports at least one named HTTP method handler (`GET`, `POST`, `PUT`, `PATCH`, or `DELETE`).
+2. Each exported handler is a function, not `undefined`.
+3. Any imported helper functions referenced in your exports are defined and exported correctly from their source file.
+
+You can check your runtime logs to identify which route file caused the error.
+
+Learn more in the [API Routes](!docs!/learn/fundamentals/api-routes) documentation.

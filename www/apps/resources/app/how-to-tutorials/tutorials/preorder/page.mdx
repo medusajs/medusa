@@ -68,7 +68,7 @@ By following this tutorial, you will learn how to:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -1268,7 +1268,7 @@ export const usePreorderVariant = (variant: HttpTypes.AdminProductVariant) => {
 
 The `usePreorderVariant` hook returns an object with the following properties:
 
-- `preorderVariant`: The pre-order variant. It's retrieved from Medusa's [Retrieve Variant](!api!/admin#products_getproductsidvariantsvariant_id) API route, which allows expanding linked records using the `fields` query parameter.
+- `preorderVariant`: The pre-order variant. It's retrieved from Medusa's [Retrieve Variant](!api!/admin/products/get-variant) API route, which allows expanding linked records using the `fields` query parameter.
 - `isLoading`: Whether the pre-order variant is being retrieved.
 - `error`: Errors that occur while retrieving the pre-order variant.
 - `upsertPreorder`: A mutation to create or update a pre-order variant.
@@ -1383,7 +1383,7 @@ const PreorderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product_variant.details.side.after",
+  zone: "product_variant.details.side",
 })
 
 export default PreorderWidget
@@ -2633,7 +2633,7 @@ const getStatusBadgeColor = (status: string) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default PreordersWidget

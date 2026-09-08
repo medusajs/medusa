@@ -10,6 +10,13 @@ export type AdminPostOrderEditsReqSchemaType = z.infer<
   typeof AdminPostOrderEditsReqSchema
 >
 
+export const AdminPostOrderEditsRequestReqSchema = z.object({
+  no_notification: z.boolean().optional(),
+})
+export type AdminPostOrderEditsRequestReqSchemaType = z.infer<
+  typeof AdminPostOrderEditsRequestReqSchema
+>
+
 export const AdminPostOrderEditsShippingReqSchema = z.object({
   shipping_option_id: z.string(),
   custom_amount: z.number().optional(),

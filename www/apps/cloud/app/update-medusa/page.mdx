@@ -30,7 +30,7 @@ It's **strongly discouraged** to push a new update directly to your production b
 
 By using a separate environment, you mitigate any unexpected issues that may arise during the update process. This way, you ensure that your customizations and configurations work correctly with the new version of Medusa.
 
-The **recommended** approach is to [create a long-lived environment](../environments/long-lived/page.mdx#create-a-long-lived-environment), such as Staging. You can push the new update and test it thoroughly in a production-like environment before deploying it to production.
+The **recommended** approach is to [create a long-lived environment](../environments/long-lived/page.mdx#create-a-long-lived-environment-on-cloud), such as Staging. You can push the new update and test it thoroughly in a production-like environment before deploying it to production.
 
 <Note title="Tip">
 
@@ -40,7 +40,7 @@ Each environment has its own database, so you can safely update other environmen
 
 ![Diagram showcasing process of deploying to staging then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-staging_d4oyys.jpg)
 
-Alternatively, you can open a pull request to the production branch, which will [create a preview environment](../environments/preview/page.mdx#preview-environments). The preview environment allows you to test the update before merging it into the production branch.
+Alternatively, you can open a pull request to the production branch, which will [create a preview environment](../environments/preview/page.mdx#create-preview-environment). The preview environment allows you to test the update before merging it into the production branch.
 
 ![Diagram showcasing process of deploying to preview then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-preview_plpz9z.jpg)
 
@@ -63,7 +63,7 @@ To update your Medusa application deployed on Cloud:
     - If you're using a long-lived environment, Medusa will automatically deploy the changes to the branch's environment.
     - If you're using a new branch to create a pull request, open the pull request to the production branch. This will create a preview environment that you can use to test the update before merging it into the production branch.
 
-Then, you can access the environment's [live deployment](../deployments/access/page.mdx) to test the update. You can also use the [build](../logs/page.mdx#view-build-logs) and [runtime](../logs/page.mdx#view-runtime-logs) logs of the environment to debug any issues that occur during the update process or testing.
+Then, you can access the environment's [live deployment](../deployments/access/page.mdx) to test the update. You can also use the [build](../logs/page.mdx#view-build-logs-on-cloud) and [runtime](../logs/page.mdx#view-runtime-logs-on-cloud) logs of the environment to debug any issues that occur during the update process or testing.
 
 ### Push Update to Production
 

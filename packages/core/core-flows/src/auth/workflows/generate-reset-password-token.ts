@@ -15,8 +15,8 @@ const RESET_PASSWORD_TOKEN_TTL_SECONDS = 15 * 60
 
 /**
  * This workflow generates a reset password token for a user. It's used by the
- * [Generate Reset Password Token for Admin](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword)
- * and [Generate Reset Password Token for Customer](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerresetpassword)
+ * [Generate Reset Password Token for Admin](https://docs.medusajs.com/api/admin/auth/generate-reset-password-token)
+ * and [Generate Reset Password Token for Customer](https://docs.medusajs.com/api/store/auth/generate-reset-password-token)
  * API Routes.
  *
  * The workflow emits the `auth.password_reset` event, which you can listen to in

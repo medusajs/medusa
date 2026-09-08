@@ -5,16 +5,36 @@ import {
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * The input for updating a view configuration.
+ */
 export type UpdateViewConfigurationStepInput = {
+  /**
+   * The ID of the view configuration to update.
+   */
   id: string
+  /**
+   * The attributes to update in the view configuration.
+   */
   data: UpdateViewConfigurationDTO
 }
 
 export const updateViewConfigurationStepId = "update-view-configuration"
 
 /**
+ * This step updates a view configuration. Before updating, it retrieves the
+ * configuration's current state so that it can be restored if the workflow fails.
+ *
  * @since 2.10.3
  * @featureFlag view_configurations
+ *
+ * @example
+ * const viewConfig = updateViewConfigurationStep({
+ *   id: "viewconfig_123",
+ *   data: {
+ *     name: "Updated View",
+ *   },
+ * })
  */
 export const updateViewConfigurationStep = createStep(
   updateViewConfigurationStepId,

@@ -816,6 +816,35 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("successfully adds inventory item to a variant with a fractional required quantity", async () => {
+        const inventoryItem = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "fractional-sku" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        const res = await api.post(
+          `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items?fields=inventory_items.inventory.*,inventory_items.*`,
+          {
+            inventory_item_id: inventoryItem.id,
+            required_quantity: 0.25,
+          },
+          adminHeaders
+        )
+
+        expect(res.status).toEqual(200)
+        expect(res.data.variant.inventory_items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              required_quantity: 0.25,
+              inventory_item_id: inventoryItem.id,
+            }),
+          ])
+        )
+      })
     })
 
     describe("POST /admin/products/:id/variants/:variant_id/inventory-items/:inventory_id", () => {

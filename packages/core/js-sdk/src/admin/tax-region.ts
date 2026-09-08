@@ -23,7 +23,7 @@ export class TaxRegion {
 
   /**
    * This method creates a tax region. It sends a request to the
-   * [Create Tax Region](https://docs.medusajs.com/api/admin#tax-regions_posttaxregions)
+   * [Create Tax Region](https://docs.medusajs.com/api/admin/tax-regions/create-tax-region)
    * API route.
    *
    * @param body - The details of the tax region to create.
@@ -64,7 +64,7 @@ export class TaxRegion {
 
   /**
    * This method updates a tax region. It sends a request to the
-   * [Update Tax Region](https://docs.medusajs.com/api/admin#tax-regions_posttaxregionsid)
+   * [Update Tax Region](https://docs.medusajs.com/api/admin/tax-regions/update-a-tax-region)
    * API route.
    * 
    * @since 2.8.0
@@ -102,7 +102,7 @@ export class TaxRegion {
 
   /**
    * This method deletes a tax region. It sends a request to the
-   * [Delete Tax Region](https://docs.medusajs.com/api/admin#tax-regions_deletetaxregionsid)
+   * [Delete Tax Region](https://docs.medusajs.com/api/admin/tax-regions/delete-a-tax-region)
    * API route.
    *
    * @param id - The ID of the tax region to delete.
@@ -127,7 +127,7 @@ export class TaxRegion {
 
   /**
    * This method retrieves a tax region. It sends a request to the
-   * [Get Tax Region](https://docs.medusajs.com/api/admin#tax-regions_gettaxregionsid)
+   * [Get Tax Region](https://docs.medusajs.com/api/admin/tax-regions/get-a-tax-region)
    * API route.
    *
    * @param id - The ID of the tax region to retrieve.
@@ -156,7 +156,7 @@ export class TaxRegion {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -175,7 +175,7 @@ export class TaxRegion {
 
   /**
    * This method retrieves a list of tax regions. It sends a request to the
-   * [List Tax Regions](https://docs.medusajs.com/api/admin#tax-regions_gettaxregions)
+   * [List Tax Regions](https://docs.medusajs.com/api/admin/tax-regions/list-tax-regions)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -218,7 +218,7 @@ export class TaxRegion {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminTaxRegionListParams,

@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/File/Workflows_File/variables/core_flows.File.Workflows_File.deleteFilesWorkflowId","title":"deleteFilesWorkflowId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteFilesWorkflowId","type":"`\"delete-files\"`","description":"","optional":false,"defaultValue":"\"delete-files\"","expandable":false,"children":[]}]}]}

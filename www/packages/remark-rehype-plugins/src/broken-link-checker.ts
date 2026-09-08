@@ -65,8 +65,13 @@ function checkLocalLinkExists({
   fileToCheck = fileToCheck.replace(/^\//, "")
   // get absolute path of the URL
   const linkedFilePath = path.resolve(basePath, fileToCheck).replace(/#.*$/, "")
-  // check if the file exists
-  if (existsSync(linkedFilePath)) {
+  // check if the file exists (references are the JSON doc-model, page.json)
+  if (
+    existsSync(linkedFilePath) ||
+    existsSync(
+      linkedFilePath.replace(/[\\/]page\.mdx$/, `${path.sep}page.json`)
+    )
+  ) {
     return
   }
 
@@ -131,7 +136,9 @@ function mdxPageExists(pagePath: string): boolean {
 
   return (
     existsSync(path.join(pagePath, "page.mdx")) ||
-    existsSync(path.join(pagePath, "page.tsx"))
+    existsSync(path.join(pagePath, "page.tsx")) ||
+    // references use the JSON doc-model
+    existsSync(path.join(pagePath, "page.json"))
   )
 }
 
@@ -368,10 +375,7 @@ export function brokenLinkCheckerPlugin(
       }
     }
 
-    const currentPageFilePath = file.history[0].replace(
-      `/${path.basename(file.history[0])}`,
-      ""
-    )
+    const currentPageFilePath = path.dirname(file.history[0])
 
     visit(
       tree as UnistTree,

@@ -1,0 +1,1 @@
+{"slug":"/references/region/types/region.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"regionReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

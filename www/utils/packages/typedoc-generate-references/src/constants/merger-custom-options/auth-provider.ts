@@ -139,7 +139,7 @@ Change the request body to pass the data required for your Authentication Module
 
 If registration is successful, the response will have a \`token\` property.
 
-You can then use the token to create a customer by sending a request to the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers).
+You can then use the token to create a customer by sending a request to the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer).
       `,
     ],
   },

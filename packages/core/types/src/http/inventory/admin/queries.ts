@@ -59,6 +59,9 @@ export interface AdminInventoryItemsParams
   location_levels?: { location_id?: string | string[] }
 }
 
+export interface AdminInventoryItemExportParams
+  extends AdminInventoryItemsParams {}
+
 export interface AdminGetInventoryItemParams extends SelectParams {}
 
 export interface AdminGetInventoryLocationLevelParams extends SelectParams {}

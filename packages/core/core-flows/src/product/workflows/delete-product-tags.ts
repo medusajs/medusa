@@ -22,7 +22,7 @@ export type DeleteProductTagsWorkflowInput = {
 export const deleteProductTagsWorkflowId = "delete-product-tags"
 /**
  * This workflow deletes one or more product tags. It's used by the 
- * [Delete Product Tags Admin API Route](https://docs.medusajs.com/api/admin#product-tags_deleteproducttagsid).
+ * [Delete Product Tags Admin API Route](https://docs.medusajs.com/api/admin/product-tags/delete-a-product-tag).
  * 
  * This workflow has a hook that allows you to perform custom actions after the product tags are deleted. For example, 
  * you can delete custom records linked to the product tags.

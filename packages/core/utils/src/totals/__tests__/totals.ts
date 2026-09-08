@@ -916,6 +916,32 @@ describe("Total calculation", function () {
     })
   })
 
+  it("should calculate order with items + a net negative credit line", function () {
+    const cart = {
+      currency_code: "usd",
+      credit_lines: [
+        {
+          amount: -106,
+          reference: "order",
+          reference_id: "order_123",
+        },
+      ],
+      items: [
+        {
+          unit_price: 50,
+          quantity: 2,
+          tax_lines: [],
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+    expect(serialized.credit_line_total).toBe(-106)
+    expect(serialized.credit_line_subtotal).toBe(-106)
+    expect(serialized.total).toBe(206)
+  })
+
   it("should calculate carts with items + taxes + adjustments", function () {
     const cart = {
       items: [
@@ -1303,5 +1329,43 @@ describe("Total calculation", function () {
 
     expect(serializedTaxInclusive.items[0].refundable_total).toBe(188)
     expect(serializedTaxInclusive.items[0].refundable_total_per_unit).toBe(94)
+  })
+
+  it("should not double-count tax on the discount when computing refundable_total for non-tax-inclusive items with a pending return", function () {
+    const cart = {
+      items: [
+        {
+          unit_price: 100,
+          quantity: 2,
+          is_tax_inclusive: false,
+          detail: {
+            fulfilled_quantity: 2,
+            shipped_quantity: 2,
+            return_requested_quantity: 1,
+            return_received_quantity: 0,
+            return_dismissed_quantity: 0,
+            written_off_quantity: 0,
+          },
+          tax_lines: [
+            {
+              rate: 10,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 20,
+            },
+          ],
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+    // 1 unit is still refundable (2 - 1 requested). The discount is pre-tax for
+    // non-tax-inclusive items: net = 100 - (20 / 2) = 90, plus 10% tax = 9 => 99.
+    // The tax on the discount must not be deducted a second time.
+    expect(serialized.items[0].refundable_total).toBe(99)
+    expect(serialized.items[0].refundable_total_per_unit).toBe(99)
   })
 })

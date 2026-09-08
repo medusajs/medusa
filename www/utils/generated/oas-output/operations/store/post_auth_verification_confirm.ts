@@ -35,7 +35,7 @@
  *         "code": "{value}"
  *       }'
  * tags:
- *   - Verification
+ *   - Auth
  * responses:
  *   "200":
  *     description: OK

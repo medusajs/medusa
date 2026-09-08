@@ -75,3 +75,29 @@ import { Select } from "@medusajs/ui"
 ### Controlled Select
 
 <ComponentExample name="select-controlled" hideFeedback />
+
+### Empty Values
+
+A `Select.Item` can't have an empty string as its `value` prop. If you do, you'll get the error `A <Select.Item /> must have a value prop that is not an empty string`. This is because the Select reserves the empty string to clear the selection and show the placeholder.
+
+To add an option like `None`, use a non-empty placeholder value, then convert it in your change handler:
+
+```tsx
+<Select
+  onValueChange={(value) =>
+    handleChange(value === "none" ? null : value)
+  }
+>
+  <Select.Trigger>
+    <Select.Value placeholder="Placeholder" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="none">None</Select.Item>
+    {items.map((item) => (
+      <Select.Item key={item.value} value={item.value}>
+        {item.label}
+      </Select.Item>
+    ))}
+  </Select.Content>
+</Select>
+```

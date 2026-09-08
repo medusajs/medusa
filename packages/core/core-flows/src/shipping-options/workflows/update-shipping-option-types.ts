@@ -31,7 +31,7 @@ export const updateShippingOptionTypesWorkflowId =
   "update-shipping-option-types"
 /**
  * This workflow updates one or more shipping option types. It's used by the
- * [Update Shipping Option Type Admin API Route](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypesid).
+ * [Update Shipping Option Type Admin API Route](https://docs.medusajs.com/api/admin/shipping-option-types/update-a-shipping-option-type).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated shipping option types. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the shipping option types.

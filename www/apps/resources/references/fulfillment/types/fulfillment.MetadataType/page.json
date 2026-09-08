@@ -1,0 +1,1 @@
+{"slug":"/references/fulfillment/types/fulfillment.MetadataType","title":"MetadataType","frontmatter":{"displayed_sidebar":"fulfillmentReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"MetadataType","type":"`Record<string, unknown>` \\| `null`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

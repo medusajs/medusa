@@ -7,6 +7,7 @@ import { transformOrderByForCrossModuleJoins } from "./order-sql"
 
 export type AugmentFindOptionsWithCrossModuleJoinsArgs = {
   entityName: string
+  entityTable: string
   primaryKey?: string
   defaultSchema?: string
 }
@@ -21,6 +22,7 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
   findOptions: DAL.FindOptions<T>,
   {
     entityName,
+    entityTable,
     primaryKey = "id",
     defaultSchema = DEFAULT_SCHEMA,
   }: AugmentFindOptionsWithCrossModuleJoinsArgs
@@ -52,10 +54,16 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
     delete options.__internal
   }
 
+  const rootCorrelateSpec = {
+    table: entityTable,
+    alias: rootAlias,
+    key: primaryKey,
+  }
+
   const existsFilters = getRootJoins(resolvedJoins)
     .filter((joinSpec) => joinRequiresFilter(joinSpec, childrenByParent))
     .map((joinSpec) =>
-      buildExistsFilter(joinSpec, rootAlias, primaryKey, existsContext)
+      buildExistsFilter(joinSpec, rootCorrelateSpec, existsContext)
     )
 
   let where = {
@@ -77,8 +85,7 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
     options.orderBy = transformOrderByForCrossModuleJoins(
       options.orderBy as FindConfigOrder | FindConfigOrder[],
       resolvedJoins,
-      primaryKey,
-      rootAlias,
+      rootCorrelateSpec,
       defaultSchema,
       withDeleted
     ) as typeof options.orderBy

@@ -135,25 +135,6 @@ describe("AreaProvider", () => {
     })
   })
 
-  describe("useEffect behavior", () => {
-    test("calls setActivePath(null) when pathname changes", () => {
-      const { rerender } = render(
-        <AreaProvider area="store">
-          <TestComponent />
-        </AreaProvider>
-      )
-
-      mockUsePathname.mockReturnValue("/admin/test")
-      rerender(
-        <AreaProvider area="store">
-          <TestComponent />
-        </AreaProvider>
-      )
-
-      expect(mockSetActivePath).toHaveBeenCalledWith(null)
-    })
-  })
-
   describe("useArea hook", () => {
     test("throws error when used outside provider", () => {
       const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {})

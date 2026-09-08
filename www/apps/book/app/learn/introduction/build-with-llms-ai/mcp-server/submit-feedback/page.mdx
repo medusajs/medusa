@@ -1,0 +1,52 @@
+import { Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Submit Feedback with the MCP Server`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to send feedback to the Medusa team directly from your AI tool or IDE.
+
+## What is the Submit Feedback Tool?
+
+The Medusa MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
+
+The Medusa team receives the feedback immediately at the moment your agent submits it. Because your agent has the full context of what you were building and what went wrong, including the code that failed, the report it writes is usually more specific than one you'd write from memory later.
+
+---
+
+## Why This Matters
+
+Feedback submitted through the MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
+
+This matters because:
+
+- **Documentation gaps are invisible to our team until someone reports them.** If the documentation can't answer your question, our team can't see that from the outside.
+- **Friction that developers work around never gets fixed.** If you silently route around an awkward API or a confusing error message, the next developer hits the same wall. Reporting it is what turns a personal workaround into a fix for everyone.
+- **Real reproductions get bugs fixed faster.** Your agent can include the smallest reproduction from the code it was just working on, which is the difference between a ticket our team can act on and one our team has to investigate from scratch.
+
+Submitting feedback is always preferable to silently working around a problem.
+
+---
+
+## How to Use the Submit Feedback Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+    }
+  ]}
+/>
+
+After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to submit feedback.
+
+For example:
+
+```bash title="Example prompt"
+Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
+```
+
+Your AI agent may also offer to submit feedback on its own when it encounters a documentation gap or a clearly broken API surface while helping you.

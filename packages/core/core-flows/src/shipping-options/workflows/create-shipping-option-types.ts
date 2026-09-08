@@ -27,7 +27,7 @@ export const createShippingOptionTypesWorkflowId =
   "create-shipping-option-types"
 /**
  * This workflow creates one or more shipping option types. It's used by the
- * [Create Shipping Option Type Admin API Route](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypes).
+ * [Create Shipping Option Type Admin API Route](https://docs.medusajs.com/api/admin/shipping-option-types/create-shipping-option-type).
  *
  * This workflow has a hook that allows you to perform custom actions on the created shipping option types. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the shipping option types.

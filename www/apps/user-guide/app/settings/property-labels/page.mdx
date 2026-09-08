@@ -1,0 +1,80 @@
+---
+sidebar_position: 7
+sidebar_label: "Manage Property Labels"
+tags:
+    - user guide
+    - settings
+products:
+    - settings
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+import { InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Property Labels in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage property labels in the Medusa Admin.
+
+## What is a Property Label?
+
+Property labels let you customize the names of columns shown in the Medusa Admin's [configurable table views](../../tips/table-views/page.mdx). When the dashboard builds a data table, it uses your property labels as the column names, so you can use the terminology that fits your store.
+
+For example, you can label an order's `display_id` property as "Order Number" to change the name of that column in the orders table.
+
+Property labels are global, so they apply to all admin users, and each property can have only one label.
+
+---
+
+## View Property Labels
+
+To view property labels, go to Settings → Property Labels. Here, you can see a table of the data models in your store, such as orders and products.
+
+The table has the following columns:
+
+- Module: the name of the module that the data model belongs to.
+- Model: the data model's name.
+- Property Count: the number of properties the data model has.
+- Has Overrides: whether you've set custom labels for any of the data model's properties.
+
+You can sort the list by module or model to find the data model you're looking for.
+
+---
+
+## Set Property Labels
+
+To set custom labels for a data model's properties:
+
+1. Go to Settings → Property Labels.
+2. Find the data model whose properties you want to label.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the end of the data model's row, then choose Edit.
+4. In the window that opens, you see a table of the data model's properties. Each row has the following fields:
+    - Field: the property's name. This field is read-only.
+    - Custom Label: the name to show for the property as a column in data tables.
+    - Description: an optional description of the property.
+5. For each property you want to rename, enter a value in the Custom Label field. Optionally, enter a Description.
+6. Once you're done, click the Save button.
+
+<Note>
+
+A description requires a custom label. If you enter a description without a custom label, you can't save the changes.
+
+</Note>
+
+After saving, the custom labels appear as the column names for that data model's data tables across the dashboard.
+
+---
+
+## Remove a Property Label
+
+To remove a custom label:
+
+1. Go to Settings → Property Labels.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the end of the data model's row, then choose Edit.
+3. Double click the Custom Label field of the property you want to remove, then erase its value. Optionally, erase the Description field as well.
+4. Once you're done, click the Save button.
+
+The property's column reverts to its default name in data tables.

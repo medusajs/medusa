@@ -10,6 +10,7 @@ const main = async function ({
   db,
   skipLinks,
   skipScripts,
+  skipSearch,
   executeAllLinks,
   executeSafeLinks,
 }) {
@@ -32,6 +33,7 @@ const main = async function ({
       directory,
       skipLinks,
       skipScripts,
+      skipSearch,
       executeAllLinks,
       executeSafeLinks,
       logger,

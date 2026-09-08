@@ -79,6 +79,11 @@ export const orderSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/order/transfer-to-guest",
+            title: "Transfer Order to Guest",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/order/links-to-other-modules",
             title: "Links to Other Modules",
           },

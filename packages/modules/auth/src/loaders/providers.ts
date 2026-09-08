@@ -109,7 +109,10 @@ const verificationRegistrationFn = async (klass, container, pluginOptions) => {
     ),
   })
 
-  container.registerAdd(AuthVerificationIdentifiersRegistrationName, asValue(id))
+  container.registerAdd(
+    AuthVerificationIdentifiersRegistrationName,
+    asValue(id)
+  )
 }
 
 const getMfaProviderOptions = (
@@ -124,8 +127,9 @@ const getVerificationProviderOptions = (
   options: AuthModuleOptions | undefined,
   id: string
 ): Record<string, unknown> | undefined => {
-  return options?.verification?.providers?.find((provider) => provider.id === id)
-    ?.options
+  return options?.verification?.providers?.find(
+    (provider) => provider.id === id
+  )?.options
 }
 
 type MfaProviderConfig = NonNullable<
@@ -163,10 +167,11 @@ const validateMfaProviderConfigs = (
 const validateVerificationProviderConfigs = (
   providers: VerificationProviderConfig[] = []
 ): void => {
-  const configurableProviderIds = new Set([TokenVerificationProvider.identifier])
+  const configurableProviderIds = new Set([
+    TokenVerificationProvider.identifier,
+  ])
   const invalidProvider = providers.find(
-    (provider) =>
-      !provider.resolve && !configurableProviderIds.has(provider.id)
+    (provider) => !provider.resolve && !configurableProviderIds.has(provider.id)
   )
 
   if (invalidProvider) {
@@ -189,6 +194,8 @@ export default async ({
 >): Promise<void> => {
   validateMfaProviderConfigs(options?.mfa?.providers)
   validateVerificationProviderConfigs(options?.verification?.providers)
+
+  container.registerAdd(AuthIdentifiersRegistrationName, asValue(undefined))
 
   const totpOptions = getMfaProviderOptions(
     options,

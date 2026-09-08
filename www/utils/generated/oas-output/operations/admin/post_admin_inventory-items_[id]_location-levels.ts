@@ -65,7 +65,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createInventoryLevelsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: inventory-level.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *       }
+ *       ```
+ *     description: Emitted when inventory levels are created.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

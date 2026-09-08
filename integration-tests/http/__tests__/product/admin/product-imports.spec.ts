@@ -217,10 +217,31 @@ medusaIntegrationTestRunner({
             shippingProfile.id
           )
 
-          const csvContents = prepareCSVForImport(
-            fileContent,
-            testcase.delimiter
-          )
+          let csvContents = prepareCSVForImport(fileContent, testcase.delimiter)
+
+          // Mirror a real export round-trip: the exporter now emits option ids,
+          // so the re-import LINKS base-product's existing (exclusive) options
+          // instead of recreating them. Without the ids the import would create
+          // fresh options, orphaning the originals (which are then garbage
+          // collected) and dropping the variants' option values. The created
+          // row (proposed-product) keeps empty ids so new options are created.
+          const sizeOptionId = baseProduct.options.find(
+            (option: any) => option.title === "size"
+          )!.id
+          const colorOptionId = baseProduct.options.find(
+            (option: any) => option.title === "color"
+          )!.id
+          const rowsWithOptionIds = csv2json(csvContents)
+          rowsWithOptionIds.forEach((row: any) => {
+            // Set the id columns on EVERY row (empty for non-base rows). If a
+            // row is left without the key, json2csv serializes it as the string
+            // "undefined", which the importer would treat as a real option id.
+            const isBaseProduct = row["Product Id"] === baseProduct.id
+            row["Variant Option 1 Id"] = isBaseProduct ? sizeOptionId : ""
+            row["Variant Option 2 Id"] = isBaseProduct ? colorOptionId : ""
+          })
+          csvContents = json2csv(rowsWithOptionIds)
+
           const { id } = await fileModule.createFiles({
             filename: "test.csv",
             content: csvContents,

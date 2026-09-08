@@ -55,7 +55,7 @@ export const OrderEditCreateForm = ({
     defaultValues: () => {
       return Promise.resolve({
         note: "",
-        send_notification: false, // TODO: not supported in the API ATM
+        send_notification: false,
       })
     },
     resolver: zodResolver(OrderEditCreateSchema),
@@ -81,7 +81,7 @@ export const OrderEditCreateForm = ({
         await updateOrderChange({ internal_note: data.note })
       }
 
-      await requestOrderEdit()
+      await requestOrderEdit({ no_notification: !data.send_notification })
 
       toast.success(t("orders.edits.createSuccessToast"))
       handleSuccess()
@@ -198,10 +198,10 @@ export const OrderEditCreateForm = ({
                         </Form.Control>
                         <div className="block">
                           <Form.Label>
-                            {t("orders.returns.sendNotification")}
+                            {t("orders.edits.sendNotification")}
                           </Form.Label>
                           <Form.Hint className="!mt-1">
-                            {t("orders.returns.sendNotificationHint")}
+                            {t("orders.edits.sendNotificationHint")}
                           </Form.Hint>
                         </div>
                       </div>

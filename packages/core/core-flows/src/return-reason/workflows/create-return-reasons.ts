@@ -27,7 +27,7 @@ export type CreateReturnReasonsWorkflowOutput = OrderReturnReasonDTO[]
 export const createReturnReasonsWorkflowId = "create-return-reasons"
 /**
  * This workflow creates one or more return reasons. It's used by the
- * [Create Return Reason Admin API Route](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons).
+ * [Create Return Reason Admin API Route](https://docs.medusajs.com/api/admin/return-reasons/create-return-reason).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create return reasons within your custom flows.

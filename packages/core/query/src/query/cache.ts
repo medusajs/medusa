@@ -18,6 +18,7 @@ function isCacheEnabled(args: any[]) {
     extractCacheOptions("key")(args) ||
     extractCacheOptions("ttl")(args) ||
     extractCacheOptions("tags")(args) ||
+    extractCacheOptions("computeAutomaticTags")(args) ||
     extractCacheOptions("autoInvalidate")(args) ||
     extractCacheOptions("providers")(args)
   )
@@ -43,6 +44,7 @@ export const queryCacheDecoratorOptions = {
   },
   ttl: extractCacheOptions("ttl"),
   tags: extractCacheOptions("tags"),
+  computeAutomaticTags: extractCacheOptions("computeAutomaticTags"),
   autoInvalidate: extractCacheOptions("autoInvalidate"),
   providers: extractCacheOptions("providers"),
   container: function (this: Query): MedusaContainer {

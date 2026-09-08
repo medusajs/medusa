@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Region/Steps_Region/variables/core_flows.Region.Steps_Region.createRegionsStepId","title":"createRegionsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"createRegionsStepId","type":"`\"create-regions\"`","description":"","optional":false,"defaultValue":"\"create-regions\"","expandable":false,"children":[]}]}]}

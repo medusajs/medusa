@@ -28,7 +28,7 @@ There are two ways to retrieve a product category:
 
 ## Retrieve a Product Category by ID
 
-To retrieve a product category by its ID, send a request to the [Get a Product Category API route](!api!/store#product-categories_getproductcategoriesid):
+To retrieve a product category by its ID, send a request to the [Get a Product Category API route](!api!/store/product-categories/get-a-product-category):
 
 <Note title="Tip">
 
@@ -100,7 +100,7 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you send a request to the [Get a Product Category API route](!api!/store#product-categories_getproductcategoriesid) with the category's ID.
+In this example, you send a request to the [Get a Product Category API route](!api!/store/product-categories/get-a-product-category) with the category's ID.
 
 The response has a `product_category` field, which is a [product category object](!api!/store/#product-categories_productcategory_schema).
 
@@ -108,7 +108,7 @@ The response has a `product_category` field, which is a [product category object
 
 ## Retrieve a Product Category by Handle
 
-To retrieve a product by its handle, send a request to the [List Product Categories API route](!api!/store#product-categories_getproductcategories) passing it the `handle` query parameter:
+To retrieve a product by its handle, send a request to the [List Product Categories API route](!api!/store/product-categories/list-product-categories) passing it the `handle` query parameter:
 
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">

@@ -240,6 +240,10 @@ export const storefront = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
   },
   {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption"
+  },
+  {
     "title": "region",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/region"
   }

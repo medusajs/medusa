@@ -28,8 +28,6 @@ on:
       - "docs/**"
       - "www/**"
       - ".github/**"
-  schedule:
-    - cron: "0 */3 * * *"
   issue_comment:
     types:
       - created
@@ -79,13 +77,13 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch || 'develop' }}
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Ensure npm 11.5.1+ for OIDC
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.5.1
 
       - name: Install Dependencies
         run: yarn
@@ -207,11 +205,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "yarn"
 
       - name: Ensure npm 11.5.1+ for OIDC
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.5.1
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps

@@ -7,14 +7,21 @@ on:
     types: [created]
   workflow_dispatch:
     inputs:
+      issue_number:
+        description: 'Triage only this issue (e.g. 16247). Leave empty to triage every open issue.'
+        required: false
+        default: ''
+        type: string
       skip_triaged:
-        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good first issue, help-wanted, feedback)'
+        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good first issue, help-wanted, feedback). Ignored when issue_number is set.'
         required: false
         default: true
         type: boolean
 
 jobs:
-  # Runs only on workflow_dispatch: collects all open non-bot issues for the matrix below
+  # Runs only on workflow_dispatch: resolves which issues to triage. With
+  # `issue_number` set it emits that single issue; otherwise it collects all
+  # open non-bot issues for the matrix below.
   get-open-issues:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -27,8 +34,23 @@ jobs:
         id: get-issues
         env:
           GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          SKIP_TRIAGED: ${{ inputs.skip_triaged }}
         run: |
-          SKIP_TRIAGED="${{ inputs.skip_triaged }}"
+          set -euo pipefail
+
+          # Explicitly targeting one issue skips the label filter: the point of
+          # naming an issue is to re-run triage on it regardless of its labels.
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            if ! [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]]; then
+              echo "::error::issue_number must be a positive integer, got '$ISSUE_NUMBER'" >&2
+              exit 1
+            fi
+            echo "Triaging issue #$ISSUE_NUMBER only."
+            echo "matrix=[{\"number\":$ISSUE_NUMBER}]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           matrix=$(gh issue list --repo ${{ github.repository }} --state open --limit 500 --json number,author,labels \
             --jq "[.[] | select(
               .author.is_bot == false and
@@ -44,7 +66,7 @@ jobs:
               else true end)
             ) | {number: .number}]")
 
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   # Runs on workflow_dispatch: triages every open issue in parallel
   triage-all:

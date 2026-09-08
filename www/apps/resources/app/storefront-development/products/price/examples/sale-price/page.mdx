@@ -42,6 +42,8 @@ The sale price may be available for all customers, or only for some customers. I
 
 </Note>
 
+Only price lists of type `sale` produce a comparison price that you can display as a strikethrough. If the price comes from a price list of type `override`, the `calculated_price.original_amount` field equals the `calculated_amount`, so there's no separate original price to cross out. Use the `override` type when you want to replace a customer segment's price without showing a discount.
+
 ---
 
 ## Display Original and Discount Amounts

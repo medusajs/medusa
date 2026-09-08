@@ -25,9 +25,25 @@ export default async (
     moduleDeclaration?.options ??
     {}) as RedisCacheModuleOptions
 
-  const { redisUrl, ...redisOptions_ } = moduleOptions
+  const {
+    redisUrl,
+    redisOptions: newRedisOptions,
+    // Module options, not ioredis options. Pulled out so they are not
+    // forwarded to the client along with the deprecated top-level options.
+    ttl: _ttl,
+    prefix: _prefix,
+    compressionThreshold: _compressionThreshold,
+    ...deprecatedRedisOptions
+  } = moduleOptions
   if (!redisUrl) {
     throw new Error("[caching-redis] redisUrl is required")
+  }
+
+  // Handle backward compatibility for deprecated options
+  if (!newRedisOptions && Object.keys(deprecatedRedisOptions).length) {
+    logger_.warn(
+      "[caching-redis] Passing ioredis options at the top level of the module options is deprecated. Please use `redisOptions` instead for consistency with other modules."
+    )
   }
 
   let redisClient: Redis
@@ -39,7 +55,7 @@ export default async (
     maxRetriesPerRequest: 3,
     enableOfflineQueue: true,
     connectionName: "medusa-cache-redis",
-    ...redisOptions_,
+    ...(newRedisOptions ?? deprecatedRedisOptions),
   }
 
   redisClient = new Redis(redisUrl!, redisOptions)

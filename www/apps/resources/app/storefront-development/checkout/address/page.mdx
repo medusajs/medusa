@@ -33,7 +33,7 @@ This guide shows you how to implement both approaches. You can choose either or 
 
 The first approach to setting the cart's shipping and billing addresses is to show a form to the customer to enter their address details.
 
-Then, to update the cart's address, use the [Update Cart API route](!api!/store#carts_postcartsid).
+Then, to update the cart's address, use the [Update Cart API route](!api!/store/carts/update-a-cart).
 
 For example:
 
@@ -225,11 +225,11 @@ In the example above:
 
 The second approach to setting the cart's shipping and billing addresses is to allow the logged-in customer to select an address they added previously to their account.
 
-To retrieve the logged-in customer's addresses, use the [List Customer Addresses API route](!api!/store#customers_getcustomersmeaddresses). Then, once the customer selects an address, use the [Update Cart API route](!api!/store#carts_postcartsid) to update the cart's addresses.
+To retrieve the logged-in customer's addresses, use the [List Customer Addresses API route](!api!/store/customers/list-customers-addresses). Then, once the customer selects an address, use the [Update Cart API route](!api!/store/carts/update-a-cart) to update the cart's addresses.
 
 <Note title="Good to Know">
 
-A customer's address and a cart's address are represented by different data models in the Medusa application, as they're managed by the [Customer Module](../../../commerce-modules/customer/page.mdx) and the [Cart Module](../../../commerce-modules/cart/page.mdx), respectively. So, addresses that the customer used previously during checkout aren't automatically saved to their account. You need to save the customer's address using the [Create Customer Address API route](!api!/store#customers_postcustomersmeaddresses).
+A customer's address and a cart's address are represented by different data models in the Medusa application, as they're managed by the [Customer Module](../../../commerce-modules/customer/page.mdx) and the [Cart Module](../../../commerce-modules/cart/page.mdx), respectively. So, addresses that the customer used previously during checkout aren't automatically saved to their account. You need to save the customer's address using the [Create Customer Address API route](!api!/store/customers/create-address).
 
 </Note>
 
@@ -390,4 +390,4 @@ The JS SDK automatically sends an authenticated request as the logged-in custome
 
 In the React example, you use the [Customer React Context](../../customers/context/page.mdx) to retrieve the logged-in customer, who has a list of addresses. You show a select input to select an address.
 
-When the customer selects an address, you send a request to [Update Cart API route](!api!/store#carts_postcartsid) passing the selected address as a shipping and billing address.
+When the customer selects an address, you send a request to [Update Cart API route](!api!/store/carts/update-a-cart) passing the selected address as a shipping and billing address.

@@ -26,11 +26,11 @@ Refer to the [Manage Invites](!user-guide!/settings/users/invites) user guide to
 
 Admin users can add new users to their store by sending them an invite. The flow for inviting users is as follows:
 
-1. An admin user invites a user either through the [Medusa Admin](!user-guide!/settings/users/invites) or using the [Create Invite API route](!api!/admin#invites_postinvites).
+1. An admin user invites a user either through the [Medusa Admin](!user-guide!/settings/users/invites) or using the [Create Invite API route](!api!/admin/invites/create-invite).
 2. The invite is created and the `invite.created` event is emitted.
     - At this point, you can handle the event to send an email or notification to the user.
 3. The invited user receives the invite and can accept it, which creates a new user.
-    - The invited user can accept the invite either through the Medusa Admin or using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept).
+    - The invited user can accept the invite either through the Medusa Admin or using the [Accept Invite API route](!api!/admin/invites/accept-invite).
 
 The admin user can also resend the invite if the invited user doesn't receive the invite or doesn't accept it before expiry, which emits the `invite.resent` event.
 

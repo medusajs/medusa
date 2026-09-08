@@ -451,6 +451,10 @@ get:
     - cookie_auth: []
     - jwt_token: []
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_views_{entity}_configurations/get.js
     - lang: Shell
       label: cURL
       source:
@@ -542,6 +546,10 @@ post:
         schema:
           $ref: ../components/schemas/AdminCreateViewConfiguration.yaml
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_views_{entity}_configurations/post.js
     - lang: Shell
       label: cURL
       source:

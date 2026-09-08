@@ -80,9 +80,10 @@ export const ProductOptionSection = ({
                   <Badge
                     key={val.value}
                     size="2xsmall"
-                    className="flex min-w-[20px] items-center justify-center"
+                    title={val.value}
+                    className="flex min-w-[20px] items-center justify-center max-w-full min-w-0 overflow-hidden"
                   >
-                    {val.value}
+                    <span className="truncate min-w-0">{val.value}</span>
                   </Badge>
                 )
               })}

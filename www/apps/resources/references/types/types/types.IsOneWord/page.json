@@ -1,0 +1,1 @@
+{"slug":"/references/types/types/types.IsOneWord","title":"IsOneWord","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"IsOneWord","type":"Type extends Lowercase&#60;Type & string&#62; ? `true` : Type extends Uppercase&#60;Type & string&#62; ? `true` : `false`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

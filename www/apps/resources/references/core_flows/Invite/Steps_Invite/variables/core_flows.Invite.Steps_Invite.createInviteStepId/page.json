@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.createInviteStepId","title":"createInviteStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"createInviteStepId","type":"`\"create-invite-step\"`","description":"","optional":false,"defaultValue":"\"create-invite-step\"","expandable":false,"children":[]}]}]}

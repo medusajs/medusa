@@ -14,6 +14,7 @@ import {
   Modules,
   OrderChangeStatus,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
   ReturnStatus,
 } from "@medusajs/framework/utils"
 import {
@@ -271,7 +272,7 @@ export type ConfirmClaimRequestWorkflowInput = {
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
 /**
  * This workflow confirms a requested claim. It's used by the
- * [Confirm Claim Request API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidrequest).
+ * [Confirm Claim Request API Route](https://docs.medusajs.com/api/admin/claims/confirm-claim).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm a claim
  * for an order in your custom flows.
@@ -449,7 +450,22 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         prepareConfirmInventoryInput
       )
 
-      reserveInventoryStep(formatedInventoryItems)
+      const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+      const reservationCreatedEvents = transform(
+        { createdReservations, order },
+        ({ createdReservations, order }) => {
+          return (createdReservations ?? []).map((reservation) => ({
+            id: reservation.id,
+            order_id: order.id,
+          }))
+        }
+      )
+
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
     })
 
     when(

@@ -247,7 +247,7 @@ const AreaStackedModal = <TForm extends UseFormReturn<any>>({
           pagination
           layout="fill"
           orderBy={[
-            { key: "display_name", label: t("fields.name") },
+            { key: "name", label: t("fields.name") },
             { key: "iso_2", label: t("fields.code") },
           ]}
           queryObject={raw}

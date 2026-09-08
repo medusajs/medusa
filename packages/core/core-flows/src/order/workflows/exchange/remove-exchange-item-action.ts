@@ -111,7 +111,7 @@ export const removeExchangeItemActionValidationStep = createStep(
 export const removeItemExchangeActionWorkflowId = "remove-item-exchange-action"
 /**
  * This workflow removes an outbound or new item from an exchange. It's used by
- * the [Remove Outbound Item API Route](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutbounditemsaction_id).
+ * the [Remove Outbound Item API Route](https://docs.medusajs.com/api/admin/exchanges/remove-outbound-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to remove an outbound or new item
  * from an exchange in your custom flow.

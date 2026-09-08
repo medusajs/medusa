@@ -24,7 +24,8 @@ medusaIntegrationTestRunner({
 
     describe("GET /admin/views/:entity/columns", () => {
       describe("orders entity", () => {
-        let order, seeder
+        let order
+        let seeder
 
         beforeEach(async () => {
           // Create an order with all relationships
@@ -119,7 +120,7 @@ medusaIntegrationTestRunner({
             default_visible: true,
             sortable: false,
             computed: {
-              type: "customer_name",
+              type: "name",
               required_fields: [
                 "customer.first_name",
                 "customer.last_name",
@@ -133,13 +134,13 @@ medusaIntegrationTestRunner({
 
           // Check that we have the country computed column
           const countryField = response.data.columns.find(
-            (c) => c.id === "country"
+            (c) => c.id === "order_shipping_country_display"
           )
           expect(countryField).toBeDefined()
           expect(countryField).toMatchObject({
-            id: "country",
+            id: "order_shipping_country_display",
             name: "Country",
-            field: "country",
+            field: "order_shipping_country_display",
             data_type: "string",
             semantic_type: "computed",
             context: "display",
@@ -238,6 +239,32 @@ medusaIntegrationTestRunner({
             name: "Handle",
             field: "handle",
             default_visible: false,
+          })
+        })
+      })
+
+      describe("promotions entity", () => {
+        it("should include the campaign budget type in the status column", async () => {
+          const response = await api.get(
+            `/admin/views/promotions/columns`,
+            adminHeaders
+          )
+
+          const statusColumn = response.data.columns.find(
+            (c) => c.id === "status_display"
+          )
+
+          expect(statusColumn).toMatchObject({
+            computed: {
+              required_fields: [
+                "status",
+                "campaign.starts_at",
+                "campaign.ends_at",
+                "campaign.budget.type",
+                "campaign.budget.limit",
+                "campaign.budget.used",
+              ],
+            },
           })
         })
       })

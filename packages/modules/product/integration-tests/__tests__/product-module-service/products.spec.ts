@@ -9,6 +9,7 @@ import {
   ProductCategory,
   ProductCollection,
   ProductImage,
+  ProductProductOption,
   ProductType,
 } from "@models"
 import { setTimeout } from "timers/promises"

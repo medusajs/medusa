@@ -47,12 +47,11 @@ export const POST = async (
     },
   })
 
-  const created = translations.filter((t) =>
-    result.created.some((r) => r.id === t.id)
-  )
-  const updated = translations.filter((t) =>
-    result.updated.some((r) => r.id === t.id)
-  )
+  const createdIds = new Set(result.created.map((r) => r.id))
+  const updatedIds = new Set(result.updated.map((r) => r.id))
+
+  const created = translations.filter((t) => createdIds.has(t.id))
+  const updated = translations.filter((t) => updatedIds.has(t.id))
 
   return res.status(200).json({
     created,

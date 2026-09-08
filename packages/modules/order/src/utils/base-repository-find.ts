@@ -1,10 +1,11 @@
+import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import {
+  augmentFindOptionsWithCrossModuleJoins,
   MikroOrmBaseRepository,
   pruneFindOptionsAgainstMetadata,
   toMikroORMEntity,
 } from "@medusajs/framework/utils"
-import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
 import {
   Order,
   OrderClaim,
@@ -13,6 +14,46 @@ import {
 } from "@models"
 
 import { mapRepositoryToOrderModel } from "."
+
+/**
+ * The order module replaces MikroORM repository `find`/`findAndCount` with
+ * version-aware implementations, so it must apply cross-module join filters
+ * itself — the base repository's `prepareFindOptions` is never called.
+ */
+function applyCrossModuleJoins(
+  repository: {
+    entity: { name?: string; meta?: { className?: string } }
+    tableName: string
+  },
+  findOptions: DAL.FindOptions<any>,
+  manager: {
+    schema?: string
+    config?: { get?: (key: string) => unknown }
+  }
+): DAL.FindOptions<any> {
+  const entityName =
+    repository.entity.name ?? repository.entity.meta?.className ?? "Order"
+  const primaryKey =
+    MikroOrmBaseRepository.retrievePrimaryKeys(repository.entity as any)[0] ??
+    "id"
+  const defaultSchema =
+    manager.schema ?? (manager.config?.get?.("schema") as string) ?? undefined
+
+  const augmented = augmentFindOptionsWithCrossModuleJoins(findOptions, {
+    entityName,
+    entityTable: repository.tableName,
+    primaryKey,
+    defaultSchema,
+  })
+
+  // Match MikroOrmBaseRepository.prepareFindOptions: strip residual internal
+  // metadata before handing options to MikroORM.
+  if (augmented.options?.__internal) {
+    delete augmented.options.__internal
+  }
+
+  return augmented
+}
 
 function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   const populate = config.options?.populate ?? []
@@ -55,6 +96,58 @@ function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   }
 }
 
+function ensureOrderShippingMethodFieldsSelection(
+  config: any,
+  isRelatedEntity: boolean
+) {
+  const populate = config.options?.populate ?? []
+  const fields = config.options?.fields ?? []
+
+  const hasShippingMethodPopulate = populate.some(
+    (p: string) =>
+      p === "shipping_methods.shipping_method" ||
+      p.startsWith("shipping_methods.shipping_method.") ||
+      p === "order.shipping_methods.shipping_method" ||
+      p.startsWith("order.shipping_methods.shipping_method.")
+  )
+
+  if (!hasShippingMethodPopulate) {
+    return
+  }
+
+  const hasOrderShippingMethodFields = fields.some((field: string) => {
+    if (
+      field === "shipping_methods.*" ||
+      field === "order.shipping_methods.*"
+    ) {
+      return true
+    }
+
+    if (
+      field.startsWith("shipping_methods.") &&
+      !field.startsWith("shipping_methods.shipping_method.")
+    ) {
+      return true
+    }
+
+    if (
+      field.startsWith("order.shipping_methods.") &&
+      !field.startsWith("order.shipping_methods.shipping_method.")
+    ) {
+      return true
+    }
+
+    return false
+  })
+
+  if (!hasOrderShippingMethodFields) {
+    fields.push(
+      isRelatedEntity ? "order.shipping_methods.*" : "shipping_methods.*"
+    )
+    config.options.fields = fields
+  }
+}
+
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
   klass.prototype.find = async function find(
     this: any,
@@ -64,9 +157,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const manager = this.getActiveManager(context)
     const knex = manager.getKnex()
 
-    const findOptions_ = { ...options } as any
+    let findOptions_ = { ...options } as any
     findOptions_.options ??= {}
     findOptions_.where ??= {}
+
+    findOptions_ = applyCrossModuleJoins(this, findOptions_, manager)
 
     if (!("strategy" in findOptions_.options)) {
       if (findOptions_.options.limit != null || findOptions_.options.offset) {
@@ -202,6 +297,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (strategy === LoadStrategy.SELECT_IN) {
       ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: config,
       })
@@ -234,9 +330,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const manager = this.getActiveManager(context)
     const knex = manager.getKnex()
 
-    const findOptions_ = { ...findOptions } as any
+    let findOptions_ = { ...findOptions } as any
     findOptions_.options ??= {}
     findOptions_.where ??= {}
+
+    findOptions_ = applyCrossModuleJoins(this, findOptions_, manager)
 
     if (!("strategy" in findOptions_.options)) {
       Object.assign(findOptions_.options, {
@@ -303,6 +401,37 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
+    let shouldLoadShippingAdjustments = false
+    if (
+      config.options.populate.includes(
+        "shipping_methods.shipping_method.adjustments"
+      )
+    ) {
+      shouldLoadShippingAdjustments = true
+      config.options.populate.splice(
+        config.options.populate.indexOf(
+          "shipping_methods.shipping_method.adjustments"
+        ),
+        1
+      )
+
+      config.options.populate.push("shipping_methods")
+      config.options.populate.push("shipping_methods.shipping_method")
+
+      // make sure version is loaded if adjustments are requested
+      if (
+        config.options.fields?.some((f) =>
+          f.includes("shipping_methods.shipping_method.")
+        )
+      ) {
+        config.options.fields.push(
+          isRelatedEntity
+            ? "order.shipping_methods.version"
+            : "shipping_methods.version"
+        )
+      }
+    }
+
     configurePopulateWhere(
       config,
       isRelatedEntity,
@@ -317,6 +446,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (strategy === LoadStrategy.SELECT_IN) {
       ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: config,
       })
@@ -333,12 +463,17 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       manager.count(this.entity, config.where, countOptions),
     ])
 
-    if (loadAdjustments) {
+    if (loadAdjustments || shouldLoadShippingAdjustments) {
       const orders = !isRelatedEntity
         ? [...result]
         : [...result].map((r) => r.order).filter(Boolean)
 
-      await loadItemAdjustments(manager, orders)
+      if (loadAdjustments) {
+        await loadItemAdjustments(manager, orders)
+      }
+      if (shouldLoadShippingAdjustments) {
+        await loadShippingAdjustments(manager, orders)
+      }
     }
 
     return [result, count]

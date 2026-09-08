@@ -1,15 +1,9 @@
 import React from "react"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import { cleanup, render, waitFor } from "@testing-library/react"
-import { OpenAPI, Sidebar } from "types"
+import { cleanup, render } from "@testing-library/react"
+import { OpenAPI } from "types"
 
 // mock data
-const mockShownSidebar: Sidebar.Sidebar = {
-  sidebar_id: "test-sidebar",
-  title: "Test Sidebar",
-  items: [],
-}
-
 const mockBaseSpecs: OpenAPI.ExpandedDocument = {
   openapi: "3.0.0",
   info: {
@@ -21,36 +15,7 @@ const mockBaseSpecs: OpenAPI.ExpandedDocument = {
       name: "TestTag",
     },
   ],
-  expandedTags: {
-    "testtag": {
-      "get": {
-        summary: "Test Operation",
-        description: "Test Operation Description",
-        parameters: [],
-      },
-    },
-  },
-  paths: {
-    "/test-path": {
-      get: {
-        operationId: "test-operation",
-        summary: "Test Operation",
-        description: "Test Operation Description",
-        "x-authenticated": false,
-        "x-codeSamples": [],
-        parameters: [],
-        responses: {
-          "200": {
-            description: "OK",
-            content: {}
-          }
-        },
-        requestBody: {
-          content: {}
-        }
-      },
-    },
-  },
+  paths: {},
   components: {
     securitySchemes: {
       "test-security": {
@@ -59,43 +24,7 @@ const mockBaseSpecs: OpenAPI.ExpandedDocument = {
       },
     },
   },
-}
-
-// Mock functions
-const mockPush = vi.fn()
-const mockReplace = vi.fn()
-const mockUseRouter = vi.fn(() => ({
-  push: mockPush,
-  replace: mockReplace,
-}))
-const mockSetActivePath = vi.fn()
-const mockResetItems = vi.fn()
-const mockUpdateItems = vi.fn()
-const mockUseSidebar = vi.fn(() => ({
-  activePath: "testtag",
-  setActivePath: mockSetActivePath,
-  resetItems: mockResetItems,
-  updateItems: mockUpdateItems,
-  shownSidebar: mockShownSidebar as Sidebar.Sidebar | Sidebar.SidebarItemSidebar | undefined,
-}))
-const mockGetSectionId = vi.fn((parts: string[]) => parts.join("-").toLowerCase())
-const mockGetTagChildSidebarItems = vi.fn(() => [] as Sidebar.SidebarItem[])
-
-vi.mock("next/navigation", () => ({
-  useRouter: () => mockUseRouter(),
-}))
-
-vi.mock("docs-ui", () => ({
-  useSidebar: () => mockUseSidebar(),
-}))
-
-vi.mock("docs-utils", () => ({
-  getSectionId: (parts: string[]) => mockGetSectionId(parts),
-}))
-
-vi.mock("@/utils/get-tag-child-sidebar-items", () => ({
-  default: () => mockGetTagChildSidebarItems(),
-}))
+} as OpenAPI.ExpandedDocument
 
 import BaseSpecsProvider, { useBaseSpecs } from "../base-specs"
 
@@ -116,9 +45,6 @@ describe("BaseSpecsProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks()
     cleanup()
-    window.location.hash = ""
-    mockGetSectionId.mockImplementation((parts: string[]) => parts.join("-").toLowerCase())
-    mockGetTagChildSidebarItems.mockReturnValue([])
   })
 
   describe("rendering", () => {
@@ -161,18 +87,10 @@ describe("BaseSpecsProvider", () => {
           <TestComponent />
         </BaseSpecsProvider>
       )
-      const securitySchema = getByTestId("security-schema")
-      expect(securitySchema).toHaveTextContent("found")
+      expect(getByTestId("security-schema")).toHaveTextContent("found")
     })
 
     test("returns null when security schema does not exist", () => {
-      const { getByTestId } = render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <TestComponent />
-        </BaseSpecsProvider>
-      )
-      const securitySchema = getByTestId("security-schema")
-      // Change to a non-existent security name
       const TestComponent2 = () => {
         const { getSecuritySchema } = useBaseSpecs()
         return (
@@ -181,12 +99,12 @@ describe("BaseSpecsProvider", () => {
           </div>
         )
       }
-      const { getByTestId: getByTestId2 } = render(
+      const { getByTestId } = render(
         <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
           <TestComponent2 />
         </BaseSpecsProvider>
       )
-      expect(getByTestId2("security-schema-2")).toHaveTextContent("null")
+      expect(getByTestId("security-schema-2")).toHaveTextContent("null")
     })
 
     test("returns null when security schema is a ref", () => {
@@ -218,146 +136,4 @@ describe("BaseSpecsProvider", () => {
       expect(getByTestId("security-schema-3")).toHaveTextContent("null")
     })
   })
-
-  describe("itemsToUpdate", () => {
-    test("generates itemsToUpdate from baseSpecs tags", async () => {
-      const mockSidebar: Sidebar.Sidebar = {
-        sidebar_id: "test-sidebar",
-        title: "Test Sidebar",
-        items: [],
-      }
-      mockUseSidebar.mockReturnValue({
-        activePath: "testtag",
-        setActivePath: mockSetActivePath,
-        resetItems: mockResetItems,
-        updateItems: mockUpdateItems,
-        shownSidebar: mockSidebar,
-      })
-      mockGetTagChildSidebarItems.mockReturnValue([
-        {
-          type: "link",
-          path: "/test-path",
-          title: "Test Link",
-        },
-      ])
-
-      render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      await waitFor(() => {
-        expect(mockUpdateItems).toHaveBeenCalled()
-      })
-
-      const updateCall = mockUpdateItems.mock.calls[0][0]
-      expect(updateCall.sidebar_id).toBe("test-sidebar")
-      expect(updateCall.items).toBeDefined()
-      expect(Array.isArray(updateCall.items)).toBe(true)
-      expect(updateCall.items.length).toBeGreaterThan(0)
-    })
-
-    test("does not update items when baseSpecs is undefined", () => {
-      render(
-        <BaseSpecsProvider baseSpecs={undefined}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      expect(mockUpdateItems).not.toHaveBeenCalled()
-    })
-
-    test("does not update items when shownSidebar is null", () => {
-      mockUseSidebar.mockReturnValue({
-        activePath: "testtag",
-        setActivePath: mockSetActivePath,
-        resetItems: mockResetItems,
-        updateItems: mockUpdateItems,
-        shownSidebar: undefined,
-      })
-      render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      expect(mockUpdateItems).not.toHaveBeenCalled()
-    })
-
-    test("includes onOpen handler that updates hash and activePath", async () => {
-      mockUseSidebar.mockReturnValue({
-        activePath: "something-else",
-        setActivePath: mockSetActivePath,
-        resetItems: mockResetItems,
-        updateItems: mockUpdateItems,
-        shownSidebar: mockShownSidebar,
-      })
-      window.location.hash = ""
-
-      render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      await waitFor(() => {
-        expect(mockUpdateItems).toHaveBeenCalled()
-      })
-
-      const updateCall = mockUpdateItems.mock.calls[0][0]
-      const item = updateCall.items[0]
-      expect(item.newItem.onOpen).toBeDefined()
-
-      // Call onOpen
-      item.newItem.onOpen()
-      expect(mockPush).toHaveBeenCalledWith("#testtag", { scroll: false })
-      expect(mockSetActivePath).toHaveBeenCalledWith("testtag")
-    })
-
-    test("onOpen does not update hash when it already matches", async () => {
-      mockUseSidebar.mockReturnValue({
-        activePath: "testtag",
-        setActivePath: mockSetActivePath,
-        resetItems: mockResetItems,
-        updateItems: mockUpdateItems,
-        shownSidebar: mockShownSidebar,
-      })
-      window.location.hash = "#testtag"
-
-      render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      await waitFor(() => {
-        expect(mockUpdateItems).toHaveBeenCalled()
-      })
-
-      const updateCall = mockUpdateItems.mock.calls[0][0]
-      const item = updateCall.items[0]
-      mockPush.mockClear()
-      mockSetActivePath.mockClear()
-
-      // Call onOpen
-      item.newItem.onOpen()
-      expect(mockPush).not.toHaveBeenCalled()
-      expect(mockSetActivePath).not.toHaveBeenCalled()
-    })
-  })
-
-  describe("cleanup", () => {
-    test("calls resetItems on unmount", () => {
-      const { unmount } = render(
-        <BaseSpecsProvider baseSpecs={mockBaseSpecs}>
-          <div>Test</div>
-        </BaseSpecsProvider>
-      )
-
-      unmount()
-      expect(mockResetItems).toHaveBeenCalled()
-    })
-  })
 })
-

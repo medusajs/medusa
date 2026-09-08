@@ -20,7 +20,11 @@ export const MDXComponents: MDXComponentsType = {
   code: CodeMdx,
   kbd: Kbd,
   Kbd,
-  Note,
+  // Referenced through a wrapper (read at render time, not module-init time) to
+  // break a circular-import TDZ: Note -> Note/Layout -> MarkdownContent ->
+  // MDXComponents -> Note. Without this, importing `Note` before this module is
+  // initialized throws "Cannot access 'Note' before initialization".
+  Note: (props: React.ComponentProps<typeof Note>) => <Note {...props} />,
   details: Details,
   Details: ({ className, ...props }: DetailsProps) => {
     return <Details {...props} className={clsx(className, "my-docs_1")} />
@@ -112,10 +116,9 @@ export const MDXComponents: MDXComponentsType = {
       HTMLImageElement
     >
   ) => {
-    // omit key to resolve errors
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { key, ...rest } = props
-    return <ZoomImg {...rest} />
+    // NOTE: don't destructure `key` here — React 19 strips it from props and
+    // warns when it's accessed ("key is not a prop").
+    return <ZoomImg {...props} />
   },
   a: (props) => <Link {...props} variant="content" />,
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {

@@ -1,0 +1,1 @@
+{"slug":"/references/workflows/types/workflows.StepFunctionReturnConfig","title":"StepFunctionReturnConfig","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"StepFunctionReturnConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

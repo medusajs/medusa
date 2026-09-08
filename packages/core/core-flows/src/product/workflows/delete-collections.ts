@@ -26,7 +26,7 @@ export type DeleteCollectionsWorkflowInput = {
 export const deleteCollectionsWorkflowId = "delete-collections"
 /**
  * This workflow deletes one or more product collections. It's used by the
- * [Delete Product Collection Admin API Route](https://docs.medusajs.com/api/admin#collections_deletecollectionsid).
+ * [Delete Product Collection Admin API Route](https://docs.medusajs.com/api/admin/collections/delete-a-collection).
  *
  * This workflow has a hook that allows you to perform custom actions after the product collections are deleted. For example,
  * you can delete custom records linked to the product colleciton.

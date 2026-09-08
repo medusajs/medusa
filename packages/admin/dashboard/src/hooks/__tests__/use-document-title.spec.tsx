@@ -11,7 +11,7 @@ const buildMatch = (
     id: "match",
     pathname: "/",
     params: {},
-    data: undefined,
+    loaderData: undefined,
     handle: undefined,
     ...overrides,
   } as UIMatch<unknown, RouteHandle>)
@@ -28,11 +28,12 @@ describe("getTitleFromMatch", () => {
   describe("seo resolver", () => {
     it("returns the resolved title", () => {
       const match = buildMatch({
-        data: { order: { display_id: 12345 } },
+        loaderData: { order: { display_id: 12345 } },
         handle: {
           seo: (m) => ({
             title: `#${
-              (m.data as { order: { display_id: number } }).order.display_id
+              (m.loaderData as { order: { display_id: number } }).order
+                .display_id
             }`,
           }),
         },
@@ -109,7 +110,7 @@ describe("getTitleFromMatch", () => {
 
     it("returns null for React-element breadcrumbs", () => {
       const match = buildMatch({
-        data: { product: { title: "Medusa Sweatpants" } },
+        loaderData: { product: { title: "Medusa Sweatpants" } },
         handle: { breadcrumb: () => createElement("span", null, "Hidden") },
       })
 
@@ -134,6 +135,51 @@ describe("getTitleFromMatch", () => {
       })
 
       expect(getTitleFromMatch(match)).toBeNull()
+    })
+  })
+
+  describe("label fallback", () => {
+    it("returns the label when no seo or string breadcrumb is present", () => {
+      expect(
+        getTitleFromMatch(buildMatch({ handle: { label: "Analytics" } }))
+      ).toBe("Analytics")
+    })
+
+    it("yields to seo but takes precedence over a string breadcrumb", () => {
+      expect(
+        getTitleFromMatch(
+          buildMatch({
+            handle: { seo: () => ({ title: "#1" }), label: "Analytics" },
+          })
+        )
+      ).toBe("#1")
+
+      expect(
+        getTitleFromMatch(
+          buildMatch({
+            handle: { breadcrumb: () => "Reports", label: "Analytics" },
+          })
+        )
+      ).toBe("Analytics")
+    })
+
+    it("falls back to the breadcrumb when the label is empty", () => {
+      expect(
+        getTitleFromMatch(
+          buildMatch({
+            handle: { breadcrumb: () => "Reports", label: "   " },
+          })
+        )
+      ).toBe("Reports")
+    })
+
+    it("ignores empty or whitespace-only labels", () => {
+      expect(
+        getTitleFromMatch(buildMatch({ handle: { label: "" } }))
+      ).toBeNull()
+      expect(
+        getTitleFromMatch(buildMatch({ handle: { label: "   " } }))
+      ).toBeNull()
     })
   })
 })

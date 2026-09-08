@@ -100,7 +100,7 @@ export const updateOrderEditShippingMethodWorkflowId =
   "update-order-edit-shipping-method"
 /**
  * This workflow updates an order edit's shipping method. It's used by the
- * [Update Shipping Method Admin API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsidshippingmethodaction_id).
+ * [Update Shipping Method Admin API Route](https://docs.medusajs.com/api/admin/order-edits/update-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update an order edit's shipping method
  * in your custom flow.

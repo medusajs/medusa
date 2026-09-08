@@ -52,7 +52,22 @@ const TagOperationParamatersOneOf = ({
       return item.title
     }
 
-    return item.type || ""
+    if (item.type) {
+      return item.type
+    }
+
+    // composite schemas (allOf/anyOf/oneOf) have no direct title or type, so
+    // derive the label from the first member that resolves to one — otherwise
+    // the tab would render blank.
+    const members = item.allOf || item.anyOf || item.oneOf
+    for (const member of members || []) {
+      const name = getName(member as OpenAPI.SchemaObject)
+      if (name) {
+        return name
+      }
+    }
+
+    return ""
   }
 
   const getContent = () => {
@@ -86,7 +101,7 @@ const TagOperationParamatersOneOf = ({
         </div>
 
         <TagOperationParameters
-          schemaObject={schema.oneOf![activeTab]}
+          schemaObject={schema.oneOf![activeTab] ?? schema.oneOf![0]}
           topLevel={true}
         />
       </>

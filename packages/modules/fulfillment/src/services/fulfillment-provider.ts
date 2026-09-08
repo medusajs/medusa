@@ -137,10 +137,19 @@ Please make sure that the provider is registered in the container and it is conf
     data: Record<string, unknown>,
     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
     order: Partial<FulfillmentOrderDTO> | undefined,
-    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+    fulfillment: Partial<
+      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
+    >,
+    additionalData?: Record<string, unknown>
   ): Promise<CreateFulfillmentResult> {
     const provider = this.retrieveProviderRegistration(providerId)
-    return await provider.createFulfillment(data, items, order, fulfillment)
+    return await provider.createFulfillment(
+      data,
+      items,
+      order,
+      fulfillment,
+      additionalData
+    )
   }
 
   async cancelFulfillment(

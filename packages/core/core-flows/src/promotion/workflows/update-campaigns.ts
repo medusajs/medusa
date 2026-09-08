@@ -22,7 +22,7 @@ export type UpdateCampaignsWorkflowInput = {
 
 export const updateCampaignsWorkflowId = "update-campaigns"
 /**
- * This workflow updates one or more campaigns. It's used by the [Update Campaign Admin API Route](https://docs.medusajs.com/api/admin#campaigns_postcampaignsid).
+ * This workflow updates one or more campaigns. It's used by the [Update Campaign Admin API Route](https://docs.medusajs.com/api/admin/campaigns/update-a-campaign).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated campaigns. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the campaigns.

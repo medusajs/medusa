@@ -50,6 +50,12 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the invite was updated.
+ *   rbac_roles:
+ *     type: array
+ *     description: The roles of the invited user.
+ *     x-featureFlag: rbac
+ *     items:
+ *       $ref: "#/components/schemas/AdminRbacRole"
  * 
 */
 

@@ -49,7 +49,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -599,7 +599,7 @@ const OrderGiftItemsWidget = ({ data }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderGiftItemsWidget 
@@ -610,7 +610,7 @@ A widget file must export:
 - A React component that renders the widget content.
 - A configuration object created with `defineWidgetConfig` that defines the widget's [injection zone](/admin-widget-injection-zones).
 
-You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side.after` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
+You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
 
 In the component, you filter the order items to get only the gift items by checking if the `metadata.is_gift` property is set to `"true"`. Then, you render the gift items with their messages in a new "Gift Items & Messages" section.
 

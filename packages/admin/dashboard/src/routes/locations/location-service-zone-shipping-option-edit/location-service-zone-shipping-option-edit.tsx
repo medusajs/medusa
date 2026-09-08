@@ -1,11 +1,12 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { json, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/modals"
 import { useShippingOptions } from "../../../hooks/api/shipping-options"
 import { EditShippingOptionForm } from "./components/edit-region-form"
 import { FulfillmentSetType } from "../common/constants"
+import { jsonResponse } from "../../../lib/json-response"
 
 export const LocationServiceZoneShippingOptionEdit = () => {
   const { t } = useTranslation()
@@ -21,7 +22,7 @@ export const LocationServiceZoneShippingOptionEdit = () => {
   const shippingOption = shipping_options?.find((so) => so.id === so_id)
 
   if (!isPending && !isFetching && !shippingOption) {
-    throw json(
+    throw jsonResponse(
       { message: `Shipping option with ID ${so_id} was not found` },
       404
     )

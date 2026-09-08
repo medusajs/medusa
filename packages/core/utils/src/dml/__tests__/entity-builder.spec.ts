@@ -1507,6 +1507,53 @@ describe("Entity builder", () => {
       })
     })
 
+    test("define JSON property with an array data-type", () => {
+      type Warning = { code: string; message: string }
+
+      const job = model.define("job", {
+        id: model.number(),
+        warnings: model.json<Warning[]>().nullable(),
+      })
+
+      const Job = toMikroORMEntity(job)
+      expectTypeOf(new Job()).toMatchTypeOf<{
+        id: number
+        warnings: Warning[] | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        Job
+      ) as unknown as EntityMetadata<InstanceType<typeof Job>>
+
+      expect(metaData.properties.warnings).toEqual({
+        getter: false,
+        name: "warnings",
+        fieldName: "warnings",
+        nullable: true,
+        kind: "scalar",
+        setter: false,
+        columnType: "jsonb",
+        type: "any",
+      })
+    })
+
+    /**
+     * The schema of `model.define` is contextually typed as
+     * `Record<string, PropertyType<any> | RelationshipType<any>>`, so the
+     * data-type of a JSON property must not be inferred from that context,
+     * otherwise a plain `model.json()` silently resolves to `any`.
+     */
+    test("define JSON property without a data-type does not widen to any", () => {
+      const post = model.define("post", {
+        id: model.id().primaryKey(),
+        title: model.text().translatable(),
+        extra: model.json(),
+      })
+
+      const Post = toMikroORMEntity(post)
+      expectTypeOf(new Post().extra).toEqualTypeOf<Record<string, unknown>>()
+    })
+
     test("define a float property", () => {
       const tax = model.define("tax", {
         id: model.number(),

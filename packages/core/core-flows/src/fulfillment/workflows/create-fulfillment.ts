@@ -15,7 +15,7 @@ import { useRemoteQueryStep } from "../../common"
 export const createFulfillmentWorkflowId = "create-fulfillment-workflow"
 /**
  * This workflow creates a fulfillment, which can be used for an order, return, exchanges, and similar concepts.
- * The workflow is used by the [Create Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#fulfillments_postfulfillments).
+ * The workflow is used by the [Create Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/fulfillments/create-fulfillment).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create a fulfillment within your custom flows.
@@ -96,14 +96,10 @@ export const createFulfillmentWorkflow = createWorkflow(
       }
     })
 
-    // When we have support for hooks with a return this would be a great
-    // place to put a hook for people to collect additional data they would
-    // like to pass down to the provider.
-    //
-    // const providerDataHook = createHook("getProviderData", stepInput)
-    //
-    // The collected provider data would be passed to createFulfillment in a
-    // additional_provider_data: Record<string, unknown> field.
+    // Callers can pass an `additional_data` field on the input, which is
+    // forwarded as-is to the provider's `createFulfillment` method (without
+    // being persisted on the fulfillment). This lets custom data reach the
+    // provider before it talks to the third-party service.
 
     const result = createFulfillmentStep(stepInput)
 

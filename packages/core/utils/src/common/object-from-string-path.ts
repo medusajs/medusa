@@ -1,3 +1,5 @@
+const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"])
+
 /**
  * Convert a collection of dot string into a nested object
  * @example
@@ -52,9 +54,15 @@ export function objectFromStringPath(
     if (!relation) {
       continue
     }
-    if (relation.indexOf(".") > -1) {
-      const nestedRelations = relation.split(".")
 
+    const nestedRelations = relation.split(".")
+
+    // Guard against prototype pollution through unsafe path segments
+    if (nestedRelations.some((segment) => UNSAFE_PATH_KEYS.has(segment))) {
+      continue
+    }
+
+    if (nestedRelations.length > 1) {
       let parent = output
 
       while (nestedRelations.length > 1) {

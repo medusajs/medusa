@@ -1,0 +1,33 @@
+export const metadata = {
+  title: `Property Labels`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about property labels in the Settings Module.
+
+## What is a Property Label?
+
+A property label sets a custom label and description for a property of an entity. For example, you can set the label of an order's `display_id` property to `Order Number`.
+
+The [PropertyLabel](/references/settings/models/PropertyLabel) data model represents a property label. It's associated with a property through its `entity` and `property` properties, and it stores the custom label and description in its `label` and `description` properties.
+
+Property labels are global, so they apply to all admin users. A property can have only one label.
+
+---
+
+## Translatable Labels
+
+A property label's `label` and `description` are translatable fields, so they integrate with the [Translation Module](../../translation/page.mdx). You can store a different `label` and `description` for each of your store's [locales](../../translation/concepts/page.mdx#locales).
+
+You can manage a property label's translations from the [Medusa Admin](!user-guide!/settings/translations) or programmatically with the Translation Module.
+
+Then, when you retrieve a property label for a specific locale, Medusa returns the translated `label` and `description` for that locale. If the property label has no translation for that locale, Medusa falls back to the `label` and `description` values stored on the property label itself.
+
+---
+
+## Property Labels in Data Tables
+
+When the dashboard generates the columns of a data table, it uses an entity's property labels as the column names. This lets you customize how columns are named across the dashboard.
+
+Learn more about data-table columns in the [Configure View Configurations](../configure-view-configurations/page.mdx) guide.

@@ -37,7 +37,7 @@ Refer to the [Translation Module documentation](../../commerce-modules/translati
 
 ## Retrieve Supported Locales
 
-You can retrieve the list of locales supported by your store using the [List Locales Store API route](!api!/store#locales_getlocales). You can display this list to customers, allowing them to select their preferred language.
+You can retrieve the list of locales supported by your store using the [List Locales Store API route](!api!/store/locales/list-locales). You can display this list to customers, allowing them to select their preferred language.
 
 For example:
 
@@ -105,7 +105,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-The response has a `locales` field, which is an array of [locales](!api!/store#locales_locale_schema).
+The response has a `locales` field, which is an array of [locales](!api!/store/locales/schema).
 
 Each locale has a `code` property that follows the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1). For example, `en-US` represents American English, while `fr-FR` represents French (France).
 
@@ -166,7 +166,7 @@ curl "http://localhost:9000/store/products" \
   </CodeTab>
 </CodeTabs>
 
-Learn more in the [Store API reference](!api!/store#localization).
+Learn more in the [Store API reference](!api!/store/localization).
 
 ### Set Locale in Server Environments
 

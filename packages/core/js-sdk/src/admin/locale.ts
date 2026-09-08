@@ -16,7 +16,7 @@ export class Locale {
 
   /**
    * This method retrieves a paginated list of locales. It sends a request to the
-   * [List Locales](https://docs.medusajs.com/api/admin#locales_getlocales)
+   * [List Locales](https://docs.medusajs.com/api/admin/locales/list-locales)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -59,7 +59,7 @@ export class Locale {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(query?: HttpTypes.AdminLocaleListParams, headers?: ClientHeaders) {
     return this.client.fetch<HttpTypes.AdminLocaleListResponse>(
@@ -73,7 +73,7 @@ export class Locale {
 
   /**
    * This method retrieves a locale by its code. It sends a request to the
-   * [Get Locale](https://docs.medusajs.com/api/admin#locales_getlocalescode) API route.
+   * [Get Locale](https://docs.medusajs.com/api/admin/locales/get-locale) API route.
    *
    * @param code - The locale's code in BCP 47 format.
    * @param query - Configure the fields to retrieve in the locale.
@@ -101,7 +101,7 @@ export class Locale {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     code: string,

@@ -53,7 +53,7 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -1443,7 +1443,7 @@ curl -X POST 'http://localhost:9000/restaurants/res_01J5X704WQTFSZMRC7Z6S3YAC7/p
 }'
 ```
 
-Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. This is necessary when you later create an order, as the cart must have the same sales channel as the product.
+Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. You'll use the same sales channel for the cart you create later, so that the product shows up in the storefront requests scoped to that sales channel.
 
 The request returns the created product in the response.
 

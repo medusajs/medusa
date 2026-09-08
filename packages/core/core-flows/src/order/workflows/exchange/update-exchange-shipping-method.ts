@@ -113,8 +113,8 @@ export const updateExchangeShippingMethodWorkflowId =
   "update-exchange-shipping-method"
 /**
  * This workflow updates an exchange's inbound or outbound shipping method. It's used by the
- * [Update Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethodaction_id)
- * or the [Outbound Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethodaction_id).
+ * [Update Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/update-inbound-shipping)
+ * or the [Outbound Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/update-outbound-shipping).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update an exchange's
  * inbound or outbound shipping method in your custom flow.

@@ -64,3 +64,22 @@
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+/*
+ * Consistent 96px top spacing before page content (intro and tag pages).
+ * The shared docs-ui layout stacks several top paddings (#content padding +
+ * the WideLayout <main> margin); collapse them to a single 96px here.
+ */
+#content {
+  padding-top: 96px;
+}
+
+#content main {
+  margin-top: 0;
+}
+
+/* Hide the divider after the last intro section (the tag pages drop their last
+ * operation's divider via the noDivider prop). */
+[data-active-on-scroll] > [data-testid="section-container"]:last-child > hr {
+  display: none;
+}

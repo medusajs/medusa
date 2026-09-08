@@ -24,10 +24,10 @@ The payment step requires implementing the following flow:
 
 ![Storefront payment checkout flow diagram illustrating the complete payment process: retrieving available payment providers, customer selection of payment method, payment collection creation, session initialization, and showing the necessary UI to complete the payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1718029777/Medusa%20Resources/storefront-payment_dxry7l.jpg)
 
-1. Retrieve the payment providers using the [List Payment Providers API route](!api!/store#payment-providers_getpaymentproviders).
+1. Retrieve the payment providers using the [List Payment Providers API route](!api!/store/payment-providers/list-payment-providers).
 2. Customer chooses the payment provider to use.
-3. If the cart doesn't have an associated payment collection, create a payment collection for it using the [Create Payment Collection API route](!api!/store#payment-collections_postpaymentcollections).
-4. Initialize the payment sessions of the cart's payment collection using the [Initialize Payment Sessions API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+3. If the cart doesn't have an associated payment collection, create a payment collection for it using the [Create Payment Collection API route](!api!/store/payment-collections/create-payment-collection).
+4. Initialize the payment sessions of the cart's payment collection using the [Initialize Payment Sessions API route](!api!/store/payment-collections/initialize-payment-session).
     - If you're using the JS SDK, it combines the third and fourth steps in a single `initiatePaymentSession` function.
 5. Optionally perform additional actions for payment based on the chosen payment provider. For example, if the customer chooses Stripe, you show them the UI to enter their card details.
     - You can refer to the [Stripe guide](./stripe/page.mdx) for an example of how to implement this.
@@ -269,9 +269,9 @@ const handlePayment = () => {
 
 In the example above, you:
 
-- Retrieve the payment providers from the Medusa application using the [List Payment Providers API route](!api!/store#payment-providers_getpaymentproviders). You use those to show the customer the available options.
+- Retrieve the payment providers from the Medusa application using the [List Payment Providers API route](!api!/store/payment-providers/list-payment-providers). You use those to show the customer the available options.
 - When the customer chooses a payment provider, you use the `initiatePaymentSession` function to create a payment collection and initialize the payment session for the chosen provider.
-    - If you're not using the JS SDK, you need to create a payment collection using the [Create Payment Collection API route](!api!/store#payment-collections_postpaymentcollections) if the cart doesn't have one. Then, you need to initialize the payment session using the [Initialize Payment Session API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+    - If you're not using the JS SDK, you need to create a payment collection using the [Create Payment Collection API route](!api!/store/payment-collections/create-payment-collection) if the cart doesn't have one. Then, you need to initialize the payment session using the [Initialize Payment Session API route](!api!/store/payment-collections/initialize-payment-session).
 - Once the cart has a payment session, you optionally render the UI to perform additional actions. For example, if the customer chose Stripe, you can show them the card form to enter their credit card.
 
 In the `Fetch API` example, the `handlePayment` function implements this flow by calling the different functions in the correct order.

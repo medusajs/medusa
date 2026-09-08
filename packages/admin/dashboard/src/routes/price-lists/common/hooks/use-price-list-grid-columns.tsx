@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import { Tooltip } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -43,7 +44,9 @@ export const usePriceListGridColumns = ({
               <DataGrid.ReadonlyCell context={context}>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <Thumbnail src={entity.thumbnail} size="small" />
-                  <span className="truncate">{entity.title}</span>
+                  <Tooltip content={entity.title}>
+                    <span className="truncate">{entity.title}</span>
+                  </Tooltip>
                 </div>
               </DataGrid.ReadonlyCell>
             )
@@ -52,7 +55,9 @@ export const usePriceListGridColumns = ({
           return (
             <DataGrid.ReadonlyCell context={context} color="normal">
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-                <span className="truncate">{entity.title}</span>
+                <Tooltip content={entity.title}>
+                  <span className="truncate">{entity.title}</span>
+                </Tooltip>
               </div>
             </DataGrid.ReadonlyCell>
           )

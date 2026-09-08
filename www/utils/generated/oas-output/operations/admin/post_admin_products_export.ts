@@ -2,13 +2,10 @@
  * @oas [post] /admin/products/export
  * operationId: PostProductsExport
  * summary: Export Products
- * description: >
+ * description: |
  *   Start a product export process to retrieve a CSV of exported products.
  * 
- * 
- *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to
- *   `/admin/workflows-executions/export-products/:transaction-id`.
- * 
+ *   You'll receive in the response the transaction ID of the workflow generating the CSV file. To check the status of the execution, send a GET request to `/admin/workflows-executions/export-products/:transaction-id`.
  *   Once the execution finishes successfully, a notification is created for the export. You can retrieve the notifications using the `/admin/notification` API route to retrieve the file's download URL.
  * x-authenticated: true
  * parameters:
@@ -1131,6 +1128,34 @@
  *             type: string
  *             title: tag_id
  *             description: The tag ID.
+ *   - name: option_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_id
+ *           description: Filter by an option ID to return products that have the option.
+ *         - type: array
+ *           description: Filter by option IDs to return products that have the options.
+ *           items:
+ *             type: string
+ *             title: option_id
+ *             description: The option ID's details.
+ *   - name: option_value_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_value_id
+ *           description: Filter by an option value ID to return products that have the option value.
+ *         - type: array
+ *           description: Filter by option value IDs to return products that have the option values.
+ *           items:
+ *             type: string
+ *             title: option_value_id
+ *             description: The option value ID's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

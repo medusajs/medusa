@@ -24,6 +24,8 @@ export async function plugin(options: PluginOptions) {
     "react",
     "react/jsx-runtime",
     "react-router-dom",
+    "react-router",
+    "react-router/dom",
     "react-i18next",
     "@medusajs/js-sdk",
     "@medusajs/admin-sdk",
@@ -45,6 +47,15 @@ export async function plugin(options: PluginOptions) {
 
   const pluginConfig: UserConfig = {
     build: {
+      /**
+       * Must match the target in `utils/config.ts` — plugin admin extensions are
+       * loaded by the dashboard bundle, so they need the same browser floor.
+       *
+       * This also has to be set explicitly: esbuild 0.27+ refuses to lower
+       * destructuring for `safari14`, which Vite's old `modules` default
+       * included, so leaving it unset breaks `medusa plugin:build` outright.
+       */
+      target: "baseline-widely-available",
       lib: {
         entry: entryPoint,
         formats: ["es", "cjs"],

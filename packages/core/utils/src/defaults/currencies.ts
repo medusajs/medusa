@@ -486,6 +486,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "IRR",
     name_plural: "Iranian rials",
   },
+  IRT: {
+    symbol: "IRT",
+    name: "Iranian Toman",
+    symbol_native: "تومان",
+    decimal_digits: 0,
+    rounding: 0,
+    code: "IRT",
+    name_plural: "Iranian tomans",
+  },
   ISK: {
     symbol: "Ikr",
     name: "Icelandic Króna",

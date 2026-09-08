@@ -1,6 +1,9 @@
 import { OrderLineItemDTO } from "../../order"
 import { BigNumberInput } from "../../totals"
-import { CreateFulfillmentLabelWorkflowDTO } from "../fulfillment/create-fulfillment"
+import {
+  CreateFulfillmentAddressWorkflowDTO,
+  CreateFulfillmentLabelWorkflowDTO,
+} from "../fulfillment/create-fulfillment"
 
 /**
  * The details of an item in the fulfillment.
@@ -66,6 +69,13 @@ export interface CreateOrderFulfillmentWorkflowInput {
    * Shipping option to be used for the fulfillment.
    */
   shipping_option_id?: string
+
+  /**
+   * The recipient address to use for the fulfillment. It's merged over the
+   * order's shipping address, allowing you to override recipient details
+   * (such as the first and last name) sent to the fulfillment provider.
+   */
+  delivery_address?: CreateFulfillmentAddressWorkflowDTO
 
   /**
    * Whether the fulfillment should be shipped.

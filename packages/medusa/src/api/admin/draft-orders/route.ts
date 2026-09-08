@@ -87,7 +87,7 @@ export const POST = async (
   /**
    * If the email is not provided, we fetch the customer and use the email from there.
    */
-  if (!workflowInput.email) {
+  if (!workflowInput.email && input.customer_id) {
     const queryObject = remoteQueryObjectFromString({
       entryPoint: "customer",
       variables: {

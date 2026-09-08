@@ -3,6 +3,9 @@ import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client.js"
 import { ClientHeaders } from "../types.js"
 
+/**
+ * This class is used to send requests to Admin Layout API Routes.
+ */
 export class Layouts {
   constructor(private client: Client) {}
 
@@ -38,8 +41,18 @@ export class Layouts {
   }
 
   /**
-   * List the layout configurations that apply to the current user — their own
-   * personal configurations plus any system defaults.
+   * This method retrieves a list of layout configurations for the current user,
+   * including their personal configurations and system defaults.
+   *
+   * @param {HttpTypes.AdminGetLayoutConfigurationsParams} query - Filters and pagination parameters.
+   * @param {ClientHeaders} headers - Headers to pass in the request.
+   * @returns {Promise<HttpTypes.AdminLayoutConfigurationListResponse>} The list of layout configurations.
+   *
+   * @example
+   * const { layout_configurations } = await sdk.admin.layouts.listConfigurations()
+   *
+   * @tags layouts
+   * @since 2.17.2
    */
   async listConfigurations(
     query?: HttpTypes.AdminGetLayoutConfigurationsParams,

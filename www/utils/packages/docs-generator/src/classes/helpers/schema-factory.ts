@@ -121,7 +121,7 @@ class SchemaFactory {
       title: "metadata",
       description: "Holds custom key-value pairs.",
       externalDocs: {
-        url: "https://docs.medusajs.com/api/store#manage-metadata",
+        url: "https://docs.medusajs.com/api/store/manage-metadata",
         description: "Learn how to manage metadata",
       },
     },

@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Order/Steps_Order/variables/core_flows.Order.Steps_Order.deleteExchangesStepId","title":"deleteExchangesStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteExchangesStepId","type":"`\"delete-exchanges\"`","description":"","optional":false,"defaultValue":"\"delete-exchanges\"","expandable":false,"children":[]}]}]}

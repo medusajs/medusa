@@ -11,6 +11,8 @@ import {
   WorkflowResponse,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { InventoryLevelWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { createInventoryLevelsStep } from "../steps"
 import { deleteInventoryLevelsWorkflow } from "./delete-inventory-levels"
 
@@ -47,9 +49,21 @@ export const bulkCreateDeleteLevelsWorkflow = createWorkflow(
       return createInventoryLevelsStep(input.creates)
     })
 
-    const createdOutput = transform({
-      created,
-    }, (data) => data.created || [])
+    const createdOutput = transform(
+      {
+        created,
+      },
+      (data) => data.created || []
+    )
+
+    const levelIdEvents = transform({ createdOutput }, ({ createdOutput }) =>
+      createdOutput.map((level) => ({ id: level.id }))
+    )
+
+    emitEventStep({
+      eventName: InventoryLevelWorkflowEvents.CREATED,
+      data: levelIdEvents,
+    })
 
     return new WorkflowResponse(createdOutput)
   }

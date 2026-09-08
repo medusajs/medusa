@@ -99,7 +99,7 @@ export const receiveItemReturnRequestValidationStep = createStep(
 export const receiveItemReturnRequestWorkflowId = "receive-item-return-request"
 /**
  * This workflow marks return items as received. It's used by the 
- * [Add Received Items to Return Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitems).
+ * [Add Received Items to Return Admin API Route](https://docs.medusajs.com/api/admin/returns/add-received-items).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to mark return items as received
  * in your custom flows.

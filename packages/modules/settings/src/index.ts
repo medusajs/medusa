@@ -1,3 +1,4 @@
+import "./types"
 import { SettingsModuleService } from "@/services"
 import { Module } from "@medusajs/framework/utils"
 import { Modules } from "@medusajs/utils"

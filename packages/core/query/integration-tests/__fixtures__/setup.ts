@@ -1,4 +1,5 @@
 import {
+  ISearchModuleService,
   LoadedModule,
   MedusaContainer,
   RemoteQueryFunction,
@@ -24,7 +25,7 @@ function createRelationMap(modulesLoaded: LoadedModule[]): RelationMap {
   return extractRelationsFromGQL(schema.getTypeMap() as any)
 }
 
-export function setup() {
+export function setup(options?: { searchModule?: ISearchModuleService }) {
   const modules = createTestModules()
   const modulesLoaded = createFakeLoadedModules(modules)
   const relationMap = createRelationMap(modulesLoaded)
@@ -37,6 +38,7 @@ export function setup() {
     modulesLoaded,
     relationMap,
     indexModule: null as any,
+    searchModule: options?.searchModule,
     container,
   }) as RemoteQueryFunction
 

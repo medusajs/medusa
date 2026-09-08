@@ -108,7 +108,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteInventoryLevelsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: inventory-level.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *       }
+ *       ```
+ *     description: Emitted when inventory levels are deleted.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

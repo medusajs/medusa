@@ -29,8 +29,13 @@ export interface StoreCreateCart {
    */
   items?: StoreAddCartLineItem[]
   /**
-   * The ID of the associated sales channel. Only products in the same sales channel
-   * can be added to the cart.
+   * The ID of the associated sales channel.
+   *
+   * A product's availability in a sales channel only filters the products you
+   * retrieve. Medusa doesn't reject a variant added to the cart when its
+   * product isn't available in the cart's sales channel. Learn how to enforce
+   * that validation in
+   * [this guide](https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability).
    */
   sales_channel_id?: string | null
   /**
@@ -71,8 +76,13 @@ export interface StoreUpdateCart {
    */
   email?: string | null
   /**
-   * The ID of the associated sales channel. Only products in the same sales channel
-   * can be added to the cart.
+   * The ID of the associated sales channel.
+   *
+   * A product's availability in a sales channel only filters the products you
+   * retrieve. Medusa doesn't reject a variant added to the cart when its
+   * product isn't available in the cart's sales channel. Learn how to enforce
+   * that validation in
+   * [this guide](https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability).
    */
   sales_channel_id?: string | null
   /**

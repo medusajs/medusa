@@ -95,6 +95,7 @@ describe("load internal", () => {
                     "updated_at",
                     "deleted_at",
                   ],
+                  tableName: "dml_entity",
                 },
                 args: {
                   methodSuffix: "DmlEntities",
@@ -187,6 +188,7 @@ describe("load internal", () => {
                     "updated_at",
                     "deleted_at",
                   ],
+                  tableName: "entity_model",
                 },
                 args: {
                   methodSuffix: "EntityModels",
@@ -203,6 +205,7 @@ describe("load internal", () => {
                     "updated_at",
                     "deleted_at",
                   ],
+                  tableName: "dml_entity",
                 },
                 args: {
                   methodSuffix: "DmlEntities",

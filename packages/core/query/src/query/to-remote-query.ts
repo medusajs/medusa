@@ -218,6 +218,11 @@ export function parseAndAssignFilters(
             filterKeyJoinerConfig,
           })
 
+          // The filter may target a relation that was not requested in
+          // fields, in which case its node does not exist yet.
+          remoteQueryObject[entryPoint] ??= {}
+          remoteQueryObject[entryPoint][filterKey] ??= {}
+
           parseAndAssignFilters(
             {
               entryPoint: nestedFilterKey,

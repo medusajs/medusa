@@ -338,7 +338,7 @@ function prepareToDeleteShippingProfileLinks({
 
 export const updateProductsWorkflowId = "update-products"
 /**
- * This workflow updates one or more products. It's used by the [Update Product Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsid).
+ * This workflow updates one or more products. It's used by the [Update Product Admin API Route](https://docs.medusajs.com/api/admin/products/update-a-product).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated products. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the products.

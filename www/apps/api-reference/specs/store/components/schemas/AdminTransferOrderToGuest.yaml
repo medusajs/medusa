@@ -1,0 +1,19 @@
+type: object
+description: The details of the order transfer to a guest.
+x-schemaName: AdminTransferOrderToGuest
+required:
+  - email
+properties:
+  email:
+    type: string
+    title: email
+    description: The email to which the order will be transferred.
+    format: email
+  internal_note:
+    type: string
+    title: internal_note
+    description: The internal note for the order transfer.
+  description:
+    type: string
+    title: description
+    description: Details of the order transfer to a guest.

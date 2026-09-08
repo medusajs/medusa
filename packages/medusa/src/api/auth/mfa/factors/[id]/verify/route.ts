@@ -6,11 +6,15 @@ import { IAuthModuleService } from "@medusajs/framework/types"
 import { AuthEvents, Modules } from "@medusajs/framework/utils"
 import { AuthMfaVerifyFactorRequestType } from "../../../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaVerifyFactorRequestType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
+
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
   // Capture the previous status to emit the lifecycle event only on transition.

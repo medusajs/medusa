@@ -88,21 +88,7 @@ const CreateDraftOrder = z
   })
   .strict()
 
-export const AdminCreateDraftOrder = WithAdditionalData(
-  CreateDraftOrder,
-  (schema) => {
-    return schema.refine(
-      (data) => {
-        if (!data.email && !data.customer_id) {
-          return false
-        }
-
-        return true
-      },
-      { message: "Either email or customer_id must be provided" }
-    )
-  }
-)
+export const AdminCreateDraftOrder = WithAdditionalData(CreateDraftOrder)
 
 export type AdminUpdateDraftOrderType = z.infer<typeof AdminUpdateDraftOrder>
 export const AdminUpdateDraftOrder = z.object({

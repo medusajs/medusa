@@ -11,7 +11,7 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export interface UpdateProviderJwtPayload {
   entity_id: string
@@ -32,6 +32,8 @@ export const validateToken = () => {
 
     const req_ = req as AuthenticatedMedusaRequest
 
+    const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
+
     const { http } = req_.scope.resolve<ConfigModule>(
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
@@ -42,7 +44,8 @@ export const validateToken = () => {
       ["bearer"],
       [actor_type],
       http.jwtPublicKey,
-      http.jwtVerifyOptions ?? http.jwtOptions
+      http.jwtVerifyOptions ?? http.jwtOptions,
+      logger
     ) as UpdateProviderJwtPayload | null
 
     const errorObject = new MedusaError(

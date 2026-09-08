@@ -32,6 +32,13 @@
         "raw": "React.ReactNode"
       },
       "description": "Custom content to render in the filter bar"
+    },
+    "alwaysShowFilterBar": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to always render the filter bar, even when there are no active\nfilters or custom content. Useful to reserve its space and avoid layout\nshifts when filters are added or removed."
     }
   }
 }

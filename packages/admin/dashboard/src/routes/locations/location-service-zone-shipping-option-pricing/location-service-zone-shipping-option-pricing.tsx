@@ -1,14 +1,15 @@
-import { json, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { useShippingOption } from "../../../hooks/api/shipping-options"
 import { EditShippingOptionsPricingForm } from "./components/create-shipping-options-form"
+import { jsonResponse } from "../../../lib/json-response"
 
 export function LocationServiceZoneShippingOptionPricing() {
   const { so_id, location_id } = useParams()
 
   if (!so_id) {
-    throw json({
+    throw jsonResponse({
       message: "Shipping Option ID paramater is missing",
       status: 404,
     })

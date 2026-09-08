@@ -1,3 +1,5 @@
+export interface AdminExportInventoryItemRequest {}
+
 export interface AdminCreateInventoryItem {
   /**
    * The inventory item's SKU.
@@ -35,6 +37,10 @@ export interface AdminCreateInventoryItem {
    * The inventory item's material.
    */
   material?: string | null
+  /**
+   * The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+   */
+  unit_of_measure?: string | null
   /**
    * The inventory item's title.
    */

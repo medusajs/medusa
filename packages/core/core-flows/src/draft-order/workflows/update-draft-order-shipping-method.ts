@@ -56,7 +56,7 @@ export interface UpdateDraftOrderShippingMethodWorkflowInput {
 
 /**
  * This workflow updates an existing shipping method in a draft order edit. It's used by the
- * [Update Shipping Method in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethodsmethodmethod_id).
+ * [Update Shipping Method in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/update-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * updating an existing shipping method in a draft order edit.

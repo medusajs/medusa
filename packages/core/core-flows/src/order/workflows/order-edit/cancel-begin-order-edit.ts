@@ -81,7 +81,7 @@ export type CancelBeginOrderEditWorkflowInput = {
 export const cancelBeginOrderEditWorkflowId = "cancel-begin-order-edit"
 /**
  * This workflow cancels a requested edit for an order. It's used by the
- * [Cancel Order Edit Admin API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsid).
+ * [Cancel Order Edit Admin API Route](https://docs.medusajs.com/api/admin/order-edits/cancel-order-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel an order edit
  * in your custom flow.

@@ -12,8 +12,8 @@ import {
   // toast,
   // usePrompt,
 } from "@medusajs/ui"
-import { keepPreviousData /*, useMutation */ } from "@tanstack/react-query"
-import { useMemo /*, useCallback */ } from "react"
+import { keepPreviousData } from "@tanstack/react-query"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 // import { useNavigate } from "react-router-dom"
 
@@ -24,6 +24,7 @@ import {
   useRbacPolicies,
 } from "../../../../../hooks/api/rbac-policies"
 // import { rbacRolesQueryKeys } from "../../../../../hooks/api/rbac-roles"
+import { parseFilterParam } from "../../../../../hooks/table/query"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 // import { sdk } from "../../../../../lib/client"
@@ -51,9 +52,9 @@ export const PolicyListTable = () => {
       order,
       offset: offset ? parseInt(offset) : undefined,
       limit: PAGE_SIZE,
-      created_at: created_at ? JSON.parse(created_at) : undefined,
-      resource: resource ? JSON.parse(resource) : undefined,
-      operation: operation ? JSON.parse(operation) : undefined,
+      created_at: parseFilterParam(created_at),
+      resource: parseFilterParam(resource),
+      operation: parseFilterParam(operation),
       fields:
         "id,key,resource,operation,name,description,created_at,updated_at",
     },

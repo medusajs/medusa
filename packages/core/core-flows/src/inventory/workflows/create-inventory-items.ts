@@ -7,6 +7,8 @@ import {
 import { createInventoryItemsStep } from "../steps"
 
 import type { InventoryTypes } from "@medusajs/framework/types"
+import { InventoryItemWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { createInventoryLevelsWorkflow } from "./create-inventory-levels"
 
 /**
@@ -81,7 +83,7 @@ const buildInventoryLevelsInput = (data: {
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
 /**
  * This workflow creates one or more inventory items. It's used by the
- * [Create Inventory Item Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems).
+ * [Create Inventory Item Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/create-inventory-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create inventory items in your custom flows.
@@ -122,6 +124,15 @@ export const createInventoryItemsWorkflow = createWorkflow(
     )
 
     createInventoryLevelsWorkflow.runAsStep(inventoryLevelsInput)
+
+    const itemIdEvents = transform({ items }, ({ items }) => {
+      return items.map((item) => ({ id: item.id }))
+    })
+
+    emitEventStep({
+      eventName: InventoryItemWorkflowEvents.CREATED,
+      data: itemIdEvents,
+    })
 
     return new WorkflowResponse(items)
   }

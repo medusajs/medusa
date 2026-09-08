@@ -76,26 +76,7 @@ describe("rendering", () => {
     expect(title).toHaveTextContent("Test Sidebar")
   })
 
-  test("renders link with hash prefix when isPathHref is false", () => {
-    const item: Sidebar.SidebarItemSidebar = {
-      type: "sidebar",
-      sidebar_id: "test-sidebar",
-      title: "Test Sidebar",
-      children: [],
-    }
-    const firstChild: Sidebar.SidebarItemLink = {
-      type: "link",
-      path: "test",
-      title: "Test Link",
-      isPathHref: false,
-    }
-    mockGetSidebarFirstLinkChild.mockReturnValue(firstChild)
-    const { container } = render(<SidebarItemSidebar item={item} />)
-    const link = container.querySelector("[data-testid='sidebar-link']")
-    expect(link).toHaveAttribute("href", "#test")
-  })
-
-  test("renders link without hash prefix when isPathHref is true", () => {
+  test("renders link with the first child's path as href", () => {
     const item: Sidebar.SidebarItemSidebar = {
       type: "sidebar",
       sidebar_id: "test-sidebar",
@@ -106,7 +87,6 @@ describe("rendering", () => {
       type: "link",
       path: "/test",
       title: "Test Link",
-      isPathHref: true,
     }
     mockGetSidebarFirstLinkChild.mockReturnValue(firstChild)
     const { container } = render(<SidebarItemSidebar item={item} />)

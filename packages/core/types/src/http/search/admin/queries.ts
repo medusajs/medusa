@@ -1,0 +1,24 @@
+/**
+ * The parameters to pass when searching across admin entities.
+ */
+export interface AdminSearchParams {
+  /** Applied to every entity searched. */
+  q?: string
+
+  /**
+   * The entities / indexes to search, comma-separated.
+   * When the Search Module is enabled, defaults to every registered index.
+   * Otherwise defaults to the admin fallback entity set.
+   *
+   * Per entity, an index is used when one exists; otherwise the request falls
+   * back to `query.graph` for that entity only.
+   */
+  entity?: string | string[]
+
+  /** Per entity, not across the response — each group paginates on its own. */
+  limit?: number
+  /**
+   * The number of items to skip before the results. Used for pagination.
+   */
+  offset?: number
+}

@@ -124,7 +124,10 @@ export interface IFulfillmentProvider {
     data: Record<string, unknown>,
     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
     order: Partial<FulfillmentOrderDTO> | undefined,
-    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+    fulfillment: Partial<
+      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
+    >,
+    additionalData?: Record<string, unknown>
   ): Promise<CreateFulfillmentResult>
   /**
    *

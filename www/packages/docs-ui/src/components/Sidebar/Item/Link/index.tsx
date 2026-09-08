@@ -8,6 +8,7 @@ import { Badge } from "@/components/Badge"
 import { checkSidebarItemVisibility } from "@/utils/check-sidebar-item-visibility"
 import { useSidebar } from "@/providers/Sidebar"
 import { SidebarItem } from "@/components/Sidebar/Item"
+import { SidebarItemTitle } from "@/components/Sidebar/Item/Title"
 import clsx from "clsx"
 import Link from "next/link"
 import { useMobile } from "@/providers/Mobile"
@@ -114,7 +115,7 @@ export const SidebarItemLink = ({
     <li ref={ref}>
       <span className="block px-docs_0.75">
         <Link
-          href={item.isPathHref ? item.path : `#${item.path}`}
+          href={item.path}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
             "block w-full rounded-docs_sm",
@@ -137,15 +138,11 @@ export const SidebarItemLink = ({
           rel={item.type === "external" ? "noopener noreferrer" : undefined}
           {...item.linkProps}
         >
-          <span
-            className={clsx(
-              isTitleOneWord && "truncate",
-              nested && "inline-block pl-docs_1.5"
-            )}
-            data-testid="sidebar-item-title"
-          >
-            {item.title}
-          </span>
+          <SidebarItemTitle
+            title={item.title}
+            isTitleOneWord={isTitleOneWord}
+            className={clsx(nested && "inline-block pl-docs_1.5")}
+          />
           {item.additionalElms}
           {item.badge && (
             <Badge variant={item.badge.variant}>{item.badge.text}</Badge>
@@ -155,7 +152,7 @@ export const SidebarItemLink = ({
       {hasChildren && (
         <ul
           className={clsx(
-            "ease-ease overflow-hidden",
+            "ease-ease",
             "flex flex-col gap-docs_0.125",
             "pt-docs_0.125 pb-docs_0.5"
           )}

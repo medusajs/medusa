@@ -1,0 +1,119 @@
+export const metadata = {
+  title: `User Preferences`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about user preferences in the Settings Module.
+
+## What is a User Preference?
+
+A user preference stores an arbitrary setting for a user as a key-value pair. For example, you can store a user's preferred theme or language.
+
+The [UserPreference](/references/settings/models/UserPreference) data model represents a user preference. It denotes the user it belongs to through the `user_id` property, and it stores the setting's key and value in its `key` and `value` properties. A user can have only one preference per key.
+
+---
+
+## Manage User Preferences
+
+The Settings Module's service provides methods to create, retrieve, update, and delete user preferences. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Set a User Preference
+
+Use the `setUserPreference` method to create or update a user preference by its key:
+
+```ts
+const preference = await settingsModuleService.setUserPreference(
+  "user_123",
+  "theme",
+  { mode: "dark" }
+)
+```
+
+### Get a User Preference
+
+Use the `getUserPreference` method to retrieve a user's preference by key:
+
+```ts
+const preference = await settingsModuleService.getUserPreference(
+  "user_123",
+  "theme"
+)
+```
+
+This returns `null` if no preference exists for the specified user and key.
+
+### Create User Preferences
+
+Use the `createUserPreferences` method to create one or more preferences at once:
+
+```ts
+const preferences =
+  await settingsModuleService.createUserPreferences([
+    {
+      user_id: "user_123",
+      key: "theme",
+      value: "dark",
+    },
+  ])
+```
+
+### Retrieve a User Preference by ID
+
+Use the `retrieveUserPreference` method to retrieve a preference by its ID:
+
+```ts
+const preference =
+  await settingsModuleService.retrieveUserPreference("uspref_123")
+```
+
+### List User Preferences
+
+Use the `listUserPreferences` method to list preferences with optional filters:
+
+```ts
+const preferences =
+  await settingsModuleService.listUserPreferences({
+    user_id: "user_123",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountUserPreferences`:
+
+```ts
+const [preferences, count] =
+  await settingsModuleService.listAndCountUserPreferences(
+    { user_id: "user_123" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update User Preferences
+
+Use the `updateUserPreferences` method to update existing preferences by their IDs:
+
+```ts
+const preferences =
+  await settingsModuleService.updateUserPreferences([
+    {
+      id: "uspref_123",
+      value: "light",
+    },
+  ])
+```
+
+### Delete User Preferences
+
+Use the `deleteUserPreferences` method to delete preferences by their IDs:
+
+```ts
+await settingsModuleService.deleteUserPreferences("uspref_123")
+```
+
+---
+
+## Internal Usage
+
+The Settings Module uses user preferences internally to track a user's active view for an entity and active layout scope for a zone.
+
+Learn more about these concepts in the [View Configurations](../view-configurations/page.mdx) and [Layout Configurations](../layout-configurations/page.mdx) documents.

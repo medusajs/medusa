@@ -1,0 +1,150 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Cloud Status Page`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to check the status of Cloud's services and subscribe to incident updates.
+
+## What is the Status Page?
+
+The [Cloud status page](https://status.medusajs.com) shows the current health of the services that Cloud runs, along with a history of past incidents and scheduled maintenance.
+
+Use it whenever you suspect that a problem in your project comes from Cloud rather than from your application. For example, if a deployment doesn't start or the Cloud dashboard doesn't load, the status page tells you whether Cloud is already aware of an ongoing incident.
+
+The status page tracks the following services:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Service
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Covers
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        API
+      </Table.Cell>
+      <Table.Cell>
+
+      The Cloud API that the [dashboard](https://cloud.medusajs.com) and the [Cloud CLI](../cli/page.mdx) use.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Build & Deploy
+      </Table.Cell>
+      <Table.Cell>
+
+      Building and deploying your [deployments](../deployments/page.mdx).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Dashboard
+      </Table.Cell>
+      <Table.Cell>
+        The Cloud dashboard that you use to manage your projects and deployments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Compute
+      </Table.Cell>
+      <Table.Cell>
+
+      The server and worker instances that run your [environments](../environments/page.mdx).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Database
+      </Table.Cell>
+      <Table.Cell>
+
+      The [PostgreSQL databases](../database/page.mdx) that Cloud provisions.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Cache
+      </Table.Cell>
+      <Table.Cell>
+
+      The [Redis instances](../redis/page.mdx) that Cloud provisions for caching.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Logs
+      </Table.Cell>
+      <Table.Cell>
+
+      Collecting and showing your [build and runtime logs](../logs/page.mdx).
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Each service shows one of the following statuses, along with its uptime over the past 90 days:
+
+- **Operational**: the service works as expected.
+- **Degraded Performance**: the service works, but slower or less reliably than usual.
+- **Partial Outage**: the service is unavailable for some projects or regions.
+- **Major Outage**: the service is unavailable.
+- **Maintenance**: the service is under scheduled maintenance.
+
+---
+
+## Check the Status from the Documentation
+
+You can also see the status of Cloud at the bottom right of the documentation pages. The status indicator shows the overall status of all services:
+
+- Green: all services are operational.
+- Blue: a scheduled maintenance is in progress.
+- Orange: an incident affects one or more services.
+- Red: a critical incident is in progress.
+
+Hover over it to see the current status as text, and click it to open the status page in a new tab.
+
+<Note title="Tip">
+
+The Cloud status in the docs only appears on wide screens, where the documentation shows the right sidebar.
+
+</Note>
+
+---
+
+## Subscribe to Status Updates
+
+Instead of checking the status page manually, subscribe to updates to get notified when Cloud posts a new incident or maintenance update. You can subscribe to updates for all services, or for a specific service.
+
+1. Open the [status page](https://status.medusajs.com).
+2. Click the **Subscribe To Updates** button.
+3. Choose one of the following channels:
+    - **Email**: receive an email for every incident update.
+    - **Slack**: receive incident and maintenance updates in a Slack channel.
+    - **Microsoft Teams**: receive incident and maintenance updates in a Microsoft Teams channel.
+    - **Feed**: subscribe to the Atom or RSS feed.
+4. Follow the steps of the channel you chose to finish the subscription.
+
+---
+
+## Review Past Incidents
+
+The status page lists resolved incidents below the current statuses, with the most recent first. Each incident shows its timeline, the services it affected, and the root cause that Cloud identified.
+
+This history is useful when you investigate an issue that happened in the past. For example, if a deployment failed yesterday, checking the incident history tells you whether an ongoing Cloud incident caused the failure.

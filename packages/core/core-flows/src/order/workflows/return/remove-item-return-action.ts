@@ -114,7 +114,7 @@ export const removeReturnItemActionValidationStep = createStep(
 export const removeItemReturnActionWorkflowId = "remove-item-return-action"
 /**
  * This workflow removes a return item. It's used by the
- * [Remove Item from Return Admin API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequestitemsaction_id).
+ * [Remove Item from Return Admin API Route](https://docs.medusajs.com/api/admin/returns/remove-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to remove an item from a return request in your custom flows.

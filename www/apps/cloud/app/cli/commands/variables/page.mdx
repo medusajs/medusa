@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to inspect the [environment variables](../../../environments/environment-variables/page.mdx) of a Cloud environment using the CLI.
+In this guide, you'll learn how to inspect and manage the [environment variables](../../../environments/environment-variables/page.mdx) of a Cloud environment using the CLI.
 
 ## variables list
 
@@ -123,6 +123,28 @@ List all environment variables for a Cloud environment.
     <Table.Row>
       <Table.Cell>
 
+      `-t <type>`, `--type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The type of variables to list. Accepts `backend` or `storefront`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
       `--reveal`
 
       </Table.Cell>
@@ -145,12 +167,12 @@ List all environment variables for a Cloud environment.
     <Table.Row>
       <Table.Cell>
 
-      `--limit <number>`
+      `--include-system`
 
       </Table.Cell>
       <Table.Cell>
 
-      Maximum number of variables to return. Minimum: `1`, maximum: `500`.
+      Include system variables that Medusa auto-injects into the environment.
 
       </Table.Cell>
       <Table.Cell>
@@ -160,19 +182,19 @@ List all environment variables for a Cloud environment.
       </Table.Cell>
       <Table.Cell>
 
-      `200`
+      `false`
 
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
 
-      `--offset <number>`
+      `--scope <scope>`
 
       </Table.Cell>
       <Table.Cell>
 
-      Pagination offset.
+      Filter variables by scope. Accepts `build` or `runtime`, and you can pass it multiple times to include more than one scope. By default, both build and runtime variables are included.
 
       </Table.Cell>
       <Table.Cell>
@@ -182,7 +204,29 @@ List all environment variables for a Cloud environment.
       </Table.Cell>
       <Table.Cell>
 
-      `0`
+      Both scopes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--dotenv`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Output the variables in `.env` file format (`KEY=VALUE` lines) instead of a table.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
 
       </Table.Cell>
     </Table.Row>
@@ -251,15 +295,14 @@ This returns the variable's details, similar to the following:
   <CodeTab label="Plaintext" value="plaintext">
 
   ```bash
-  ID:               var_123
-  Key:              ADMIN_CORS
-  Value:            https://admin.mystore.com
-  Secret:           no
-  Scope:            runtime
-  Environment:      env_123
-  Last updated by:  enduser_123
-  Created at:       Dec 16, 2025, 10:33 AM GMT+2
-  Updated at:       Feb 17, 2026, 4:15 PM GMT+2
+  Key:          ADMIN_CORS
+  Value:        https://admin.mystore.com
+  Secret:       no
+  Scope:        runtime
+  System:       no
+  ID:           var_123
+  Environment:  env_123
+  Updated at:   Feb 17, 2026, 4:15 PM GMT+2
   ```
 
   </CodeTab>
@@ -268,16 +311,14 @@ This returns the variable's details, similar to the following:
   ```json
   {
     "id": "var_123",
-    "organization_id": "org_123",
-    "entity_id": "env_123",
+    "environment_id": "env_123",
     "key": "ADMIN_CORS",
     "value": "https://admin.mystore.com",
     "is_secret": false,
     "is_build": false,
     "is_runtime": true,
-    "last_updated_by": "enduser_123",
-    "created_at": "2025-12-16T08:33:00.000Z",
-    "updated_at": "2026-02-17T14:15:00.000Z"
+    "updated_at": "2026-02-17T14:15:00.000Z",
+    "source": "user"
   }
   ```
 
@@ -410,12 +451,625 @@ This returns the variable's details, similar to the following:
     <Table.Row>
       <Table.Cell>
 
+      `-t <type>`, `--type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The type of variable to get. Accepts `backend` or `storefront`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
       `--reveal`
 
       </Table.Cell>
       <Table.Cell>
 
       Print the secret value in plain text instead of masking it.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## variables set
+
+<Note>
+
+This command is available since Medusa mcloud CLI v0.1.10.
+
+</Note>
+
+Create or update one or more environment variables. Pass a single variable and value as arguments, or set multiple variables at once using `--var` or `--env-file`.
+
+The CLI updates a variable when you reference it by ID (`var_...`) or by an existing key, and creates a new variable when the key doesn't exist yet. Creating or looking up a variable by key requires `--project` and `--environment` (or the equivalent values in the [active context](../use/page.mdx)).
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud variables set API_KEY pk_123 \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud variables set API_KEY pk_123
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To set multiple variables at once, use `--var` for each variable or point to a `.env` file with `--env-file`:
+
+```bash
+mcloud variables set \
+  -v API_KEY=pk_123 \
+  -v CLIENT_ID=my_app
+```
+
+```bash
+mcloud variables set --env-file .env
+```
+
+### Redeploy or Rebuild to Apply Changes
+
+Setting a variable saves it to the environment but doesn't rebuild or redeploy your application. The running deployment keeps using the previous values until you deploy again:
+
+- For a **runtime** variable (`--runtime`), run [`mcloud environments redeploy`](../environments/page.mdx#environments-redeploy) to re-run the active build with the new value.
+- For a **build** variable (`--build`), run [`mcloud environments trigger-build`](../environments/page.mdx#environments-trigger-build) to start a new build. A redeploy reuses the existing image and won't pick up build variable changes.
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `variable`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Variable ID (`var_...`) or key to set. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](../use/page.mdx)). Omit when using `--var` or `--env-file`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `value`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The value to set for the variable. Required when a `variable` argument is passed.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the variable belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the variable belongs to. Required when setting a variable by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) that the variable belongs to. Required when setting a variable by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-t <type>`, `--type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The type of variable to set. Accepts `backend` or `storefront`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-v <var>`, `--var <var>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A variable to set in the format `ID=VALUE` or `KEY=VALUE`. Pass it multiple times to set more than one variable. Keys require `--project` and `--environment`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--env-file <path>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Path to a `.env` file whose variables are set on the environment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--secret`, `--no-secret`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether the variable is a secret. Pass `--no-secret` to explicitly mark it as not secret.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false` for new variables
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--build`, `--no-build`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether the variable is available at build time.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false` for new variables
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--runtime`, `--no-runtime`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether the variable is available at runtime. Pass `--no-runtime` to disable it.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `true` for new variables
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## variables delete
+
+<Note>
+
+This command is available since Medusa mcloud CLI v0.1.10.
+
+</Note>
+
+Delete an environment variable by its ID (`var_...`) or key. Looking up by key requires `--project` and `--environment` (or the equivalent values in the [active context](../use/page.mdx)).
+
+<Note type="warning">
+
+Deleting a variable is irreversible. You can't delete system variables that Medusa auto-injects into the environment.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud variables delete API_KEY \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --yes
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud variables delete API_KEY --yes
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Without `--yes`, the CLI prompts you to confirm the deletion. In a non-interactive environment (such as a CI pipeline), you must pass `--yes`, otherwise the command errors out.
+
+### Redeploy or Rebuild to Apply Changes
+
+Like setting a variable, deleting one doesn't rebuild or redeploy your application. Redeploy the environment with [`mcloud environments redeploy`](../environments/page.mdx#environments-redeploy), or start a new build with [`mcloud environments trigger-build`](../environments/page.mdx#environments-trigger-build) if the variable was a build variable, for the change to take effect.
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `variable`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Variable ID (`var_...`) or key to delete. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](../use/page.mdx)).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the variable belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the variable belongs to. Required when deleting by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) that the variable belongs to. Required when deleting by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-t <type>`, `--type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The type of variable to delete. Accepts `backend` or `storefront`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-y`, `--yes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip the confirmation prompt and delete the variable. Required in non-interactive environments.
 
       </Table.Cell>
       <Table.Cell>
@@ -474,10 +1128,14 @@ mcloud variables get DATABASE_URL --reveal
 
 ## Export Variables to a `.env` File
 
-Use `--json` and `jq` to extract variables and write them to a local `.env` file. This is useful for replicating a Cloud environment's variables to a local development environment:
+Use the `--dotenv` flag with `--reveal` to output the variables in `.env` file format, then write them to a local `.env` file. This is useful for replicating a Cloud environment's variables to a local development environment:
 
 ```bash
-mcloud variables list --reveal --json \
-  | jq -r '.[] | "\(.key)=\(.value)"' \
-  > .env
+mcloud variables list --reveal --dotenv > .env
 ```
+
+<Note type="warning">
+
+`--reveal` prints secret values in plain text. Avoid running this on shared terminals or storing the resulting `.env` file in version control.
+
+</Note>

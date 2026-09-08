@@ -1,0 +1,1 @@
+{"slug":"/references/types/types/types.DeepPartial","title":"DeepPartial","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"DeepPartial","type":"&#123; [P in keyof T]?: T[P] extends object ? DeepPartial&#60;T[P]&#62; : T[P] &#125;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

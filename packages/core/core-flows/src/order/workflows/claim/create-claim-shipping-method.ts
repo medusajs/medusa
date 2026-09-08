@@ -112,8 +112,8 @@ export const createClaimShippingMethodWorkflowId =
   "create-claim-shipping-method"
 /**
  * This workflow creates an inbound (return) or outbound (delivering new items) shipping method for a claim.
- * It's used by the [Add Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidinboundshippingmethod),
- * and the [Add Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidoutboundshippingmethod).
+ * It's used by the [Add Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/claims/add-inbound-shipping),
+ * and the [Add Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/claims/add-outbound-shipping).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to create a shipping method
  * for a claim in your custom flows.

@@ -12,10 +12,6 @@ properties:
     description: The option's title.
   product:
     type: object
-  product_id:
-    type: string
-    title: product_id
-    description: The ID of the product this option belongs to.
   values:
     type: array
     description: The option's values.
@@ -42,6 +38,16 @@ properties:
     format: date-time
     title: deleted_at
     description: The date the product option was deleted.
+  products:
+    type: array
+    description: The products that use the option.
+    items:
+      $ref: ./BaseProduct.yaml
+  is_exclusive:
+    type: boolean
+    title: is_exclusive
+    description: Whether the option is exclusive to a product.
 required:
   - title
   - id
+  - is_exclusive

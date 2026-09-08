@@ -68,6 +68,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
       origin_country: "",
       mid_code: "",
       material: "",
+      unit_of_measure: "",
       description: "",
       requires_shipping: true,
       thumbnail: "",
@@ -473,6 +474,31 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                             <Form.Control>
                               <Input {...field} />
                             </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="unit_of_measure"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("fields.unitOfMeasure")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input
+                                {...field}
+                                placeholder={t(
+                                  "inventory.unitOfMeasurePlaceholder"
+                                )}
+                              />
+                            </Form.Control>
+                            <Form.Hint>
+                              {t("inventory.unitOfMeasureHint")}
+                            </Form.Hint>
                           </Form.Item>
                         )
                       }}

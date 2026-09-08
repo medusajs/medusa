@@ -37,9 +37,14 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
   const raw = readFileSync(dispatchFile, "utf8")
   const payload: CloudDispatchPayload = JSON.parse(raw)
 
-  if (!payload.descriptions || payload.descriptions.trim().length === 0) {
+  const hasDescriptions = !!payload.descriptions?.trim()
+  const hasChangelog = !!payload.releaseNotes?.trim() && !!payload.version
+
+  if (!hasDescriptions && !hasChangelog) {
     console.error(
-      chalk.yellow("No feature descriptions found in dispatch payload.")
+      chalk.yellow(
+        "No feature descriptions or changelog found in dispatch payload."
+      )
     )
     if (output) {
       writeFileSync(
@@ -58,10 +63,31 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
     process.exit(2)
   }
 
+  if (payload.releaseNotes?.trim() && !payload.version) {
+    console.error(
+      chalk.yellow(
+        "Release notes present but no version provided — skipping changelog step."
+      )
+    )
+  }
+
   console.log(chalk.green(`Building cloud docs prompt`))
 
+  // The automation runs right after a deployment, so the current date is the
+  // release date shown alongside the version in the changelog.
+  const now = new Date()
+  const releaseDate = now.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  })
+  // The dashboard changelog stores each date as a `YYYY-MM-DD.mjs` entry file,
+  // so the same date is also needed in ISO form.
+  const isoReleaseDate = now.toISOString().split("T")[0]
+
   const builder = new CloudContextBuilder()
-  const result = builder.build(payload)
+  const result = builder.build(payload, releaseDate, isoReleaseDate)
 
   if (dryRun) {
     console.log(chalk.cyan("Dry run — prompt preview:"))

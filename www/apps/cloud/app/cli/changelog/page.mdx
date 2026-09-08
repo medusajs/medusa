@@ -1,0 +1,59 @@
+export const metadata = {
+  title: `Cloud CLI Changelog`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find the notable changes to the Cloud CLI (`mcloud`) for each release, with the newest version listed first.
+
+## 0.1.12 (July 28, 2026)
+
+### Deployments
+
+- `mcloud deployments get` now displays deployment details in a key-value format instead of a horizontal table, with updated field labels (for example, "Started at", "Updated at")
+
+### Variables
+
+- `mcloud variables set` now defaults `--runtime` to `true` for new variables (previously defaulted to `false`)
+- `mcloud variables set` now correctly targets the storefront environment when `--type storefront` is used
+
+### Local
+
+- `mcloud local build` no longer fails in repositories without a remote origin configured; it falls back to using the folder name as the repository name
+
+---
+
+## 0.1.11 (July 17, 2026)
+
+### Environments
+
+- `mcloud environments get`, `mcloud environments delete`, `mcloud environments redeploy`, and `mcloud environments trigger-build` now accept the target environment via a new `--environment` (`-e`) flag in addition to the existing positional argument
+- The environment positional argument is now optional and falls back to the environment set in the context configuration
+
+### Projects
+
+- `mcloud projects get` and `mcloud projects delete` now accept the target project via a new `--project` (`-p`) flag in addition to the existing positional argument
+- The project positional argument is now optional and falls back to the project set in the context configuration
+
+### Organizations
+
+- `mcloud organizations get` now accepts the target organization via an `--organization` (`-o`) flag; the positional argument is now optional and falls back to the organization set in the context configuration
+
+### Local
+
+- Fixed a typo in the `mcloud local build` help examples (`--typet` → `--type`)
+
+---
+
+## 0.1.10 (July 15, 2026)
+
+### Variables
+
+- Added `mcloud variables set` to create or update environment variables by key or ID. Accepts a key/ID and value as arguments, or one or more `-v, --var KEY=VALUE` (or `ID=VALUE`) pairs, or an `--env-file` to set multiple variables at once. Supports `-t, --type` (`backend` or `storefront`, default `backend`) and marking variables as `--secret`, `--build`, and/or `--runtime` (each with a `--no-` counterpart). Supports `--json`.
+- Added `mcloud variables delete` to delete an environment variable by key or ID. Prompts for confirmation before deleting; pass `-y, --yes` to skip the prompt (required in non-interactive/CI use). System variables cannot be deleted. Supports `-t, --type` and `--json`.
+- `mcloud variables list` now supports `-t, --type` (`backend` or `storefront`), `--scope` (`build` and/or `runtime`) to filter which variables are shown, `--include-system` to show system variables auto-injected by Medusa, and `--dotenv` to output variables in `.env` format. The output now includes a `SYSTEM` column. The `--limit` and `--offset` pagination flags have been removed.
+- `mcloud variables get` now supports `-t, --type` (`backend` or `storefront`) and indicates whether a variable is a system variable in its output.
+
+### Local build
+
+- `mcloud local build` can now build the storefront in addition to the backend: `-t, --type` accepts `storefront`, with a new `--storefront-path` flag to point at the storefront project. The flag for overriding build-time environment variables was renamed from `--env` to `-v, --var` (`KEY=VALUE`).

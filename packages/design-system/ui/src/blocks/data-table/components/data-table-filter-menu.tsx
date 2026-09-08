@@ -22,7 +22,10 @@ interface DataTableFilterMenuProps {
  * This component adds a filter menu to the data table, allowing users
  * to filter the table's data.
  */
-const DataTableFilterMenu = ({ tooltip, onAddFilter }: DataTableFilterMenuProps) => {
+const DataTableFilterMenu = ({
+  tooltip,
+  onAddFilter,
+}: DataTableFilterMenuProps) => {
   const { instance } = useDataTableContext()
 
   const enabledFilters = Object.keys(instance.getFiltering())
@@ -55,7 +58,11 @@ const DataTableFilterMenu = ({ tooltip, onAddFilter }: DataTableFilterMenuProps)
           </IconButton>
         </DropdownMenu.Trigger>
       </Wrapper>
-      <DropdownMenu.Content side="bottom" align="start">
+      <DropdownMenu.Content
+        side="bottom"
+        align="start"
+        className="overflow-y-auto"
+      >
         {filterOptions.map((filter) => {
           const getDefaultValue = () => {
             switch (filter.type) {
@@ -76,7 +83,7 @@ const DataTableFilterMenu = ({ tooltip, onAddFilter }: DataTableFilterMenuProps)
                 return null
             }
           }
-          
+
           return (
             <DropdownMenu.Item
               key={filter.id}
@@ -86,7 +93,10 @@ const DataTableFilterMenu = ({ tooltip, onAddFilter }: DataTableFilterMenuProps)
                 if (onAddFilter) {
                   onAddFilter(filter.id, getDefaultValue())
                 } else {
-                  instance.addFilter({ id: filter.id, value: getDefaultValue() })
+                  instance.addFilter({
+                    id: filter.id,
+                    value: getDefaultValue(),
+                  })
                 }
               }}
             >

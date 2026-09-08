@@ -239,7 +239,7 @@ If you're not using the JS SDK, the next sections cover the general flow for aut
 
 The first authentication approach is to pass an authenticated JWT token in the authorization header of all requests. You can do that by:
 
-1. Retrieving a JWT token from the `/auth/customer/emailpass` [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider):
+1. Retrieving a JWT token from the `/auth/customer/emailpass` [Authenticate Customer API route](!api!/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST '{backend_url}/auth/customer/emailpass' \
@@ -262,7 +262,7 @@ You can store the obtained JWT token based on your use case. For example, you ca
 
 The second authentication approach is to authenticate the customer with a cookie session. You do that by:
 
-1. Retrieving a JWT token from the `/auth/customer/emailpass` [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider):
+1. Retrieving a JWT token from the `/auth/customer/emailpass` [Authenticate Customer API route](!api!/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST '{backend_url}/auth/customer/emailpass' \
@@ -273,7 +273,7 @@ curl -X POST '{backend_url}/auth/customer/emailpass' \
 }'
 ```
 
-2. Sending a request to the `/auth/session` [Authentication Session API route](!api!/store#auth_postsession) passing in the authorization header the token as a Bearer token. This sets the authenticated session ID in the cookies:
+2. Sending a request to the `/auth/session` [Authentication Session API route](!api!/store/auth/set-authentication-session) passing in the authorization header the token as a Bearer token. This sets the authenticated session ID in the cookies:
 
 ```bash
 curl -X POST '{backend_url}/auth/session' \

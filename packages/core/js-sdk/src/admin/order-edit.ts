@@ -16,7 +16,7 @@ export class OrderEdit {
 
   /**
    * This method creates an order edit request. It sends a HTTP request to the
-   * [Create Order Edit](https://docs.medusajs.com/api/admin#order-edits_postorderedits)
+   * [Create Order Edit](https://docs.medusajs.com/api/admin/order-edits/create-order-edit)
    * API route.
    *
    * @param body - The order edit's details.
@@ -50,22 +50,26 @@ export class OrderEdit {
 
   /**
    * This method changes an order edit to requested. It sends a request to the
-   * [Request Order Edit](https://docs.medusajs.com/api/admin#order-edits_postordereditsidrequest)
+   * [Request Order Edit](https://docs.medusajs.com/api/admin/order-edits/request-order-edit)
    * API route.
    *
    * @param id - The ID of the order that is being edited.
+   * @param body - The order edit request's details.
    * @param query - Configure the fields to retrieve in the order preview.
    * @param headers - Headers to pass in the request.
    * @returns The order preview's details.
    *
    * @example
-   * sdk.admin.orderEdit.request("order_123")
+   * sdk.admin.orderEdit.request("order_123", {
+   *   no_notification: false
+   * })
    * .then(({ order_preview }) => {
    *   console.log(order_preview)
    * })
    */
   async request(
     id: string,
+    body?: HttpTypes.AdminRequestOrderEdit,
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
@@ -74,6 +78,7 @@ export class OrderEdit {
       {
         method: "POST",
         headers,
+        body,
         query,
       }
     )
@@ -81,7 +86,7 @@ export class OrderEdit {
 
   /**
    * This method confirms an order edit and applies it on the order. It sends a request
-   * to the [Confirm Order Edit](https://docs.medusajs.com/api/admin#order-edits_postordereditsidconfirm)
+   * to the [Confirm Order Edit](https://docs.medusajs.com/api/admin/order-edits/confirm-order-edit)
    * API route.
    *
    * @param id - The ID of the order that is being edited.
@@ -112,7 +117,7 @@ export class OrderEdit {
 
   /**
    * This method cancels a requested order edit. It sends a request to the
-   * [Cancel Order Edit](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsid)
+   * [Cancel Order Edit](https://docs.medusajs.com/api/admin/order-edits/cancel-order-edit)
    * API route.
    *
    * @param id - The ID of the order that is being edited.
@@ -144,7 +149,7 @@ export class OrderEdit {
   /**
    * This method adds items to an order edit. These items will have the action `ITEM_ADD`.
    *
-   * The method sends a request to the [Add Items](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditems)
+   * The method sends a request to the [Add Items](https://docs.medusajs.com/api/admin/order-edits/add-items)
    * API route.
    *
    * @param id - The ID of the order that is being edited.
@@ -185,7 +190,7 @@ export class OrderEdit {
 
   /**
    * This method updates the quantity and other details of an item in an order. It sends a request to the
-   * [Update Item Quantity](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsitemitem_id)
+   * [Update Item Quantity](https://docs.medusajs.com/api/admin/order-edits/update-item-quantity)
    * API route.
    *
    * You can also use this method to remove an item from an order by setting the `quantity` to `0`.
@@ -234,7 +239,7 @@ export class OrderEdit {
    * You can check the action's name using its `action` property, and use the value of the `id` property.
    *
    * It sends a request
-   * to the [Update Item](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsaction_id)
+   * to the [Update Item](https://docs.medusajs.com/api/admin/order-edits/update-item)
    * API route.
    *
    * @param id - The ID of the order that is being edited.

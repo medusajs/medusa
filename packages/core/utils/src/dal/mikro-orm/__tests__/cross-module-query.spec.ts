@@ -64,7 +64,9 @@ describe("cross-module-query", () => {
       applyFiltersToKnex(qb, "product", { id: { $in: ids } })
 
       const [sql, bindings] = qb.calls[0].slice(1)
-      expect(sql).toBe(`"product"."id" = any(array[${ids.map(() => "?").join(", ")}])`)
+      expect(sql).toBe(
+        `"product"."id" = any(array[${ids.map(() => "?").join(", ")}])`
+      )
       expect(bindings).toEqual(ids)
     })
 
@@ -246,7 +248,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.options?.__internal?.crossModuleJoins).toBeUndefined()
@@ -257,7 +259,9 @@ describe("cross-module-query", () => {
         (result.where?.$and as Record<string, unknown>[])[1]
       )[0]
 
-      expect(existsSql).toMatch(/exists \(select 1 from "public"\."order_product_link"/)
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."order_product_link"/
+      )
       expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
       expect(existsSql).toMatch(/"product"\."handle" = \?/)
       expect(existsSql).toMatch(/"deleted_at" is null/)
@@ -276,7 +280,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(2)
@@ -300,7 +304,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(2)
@@ -326,7 +330,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -335,14 +339,14 @@ describe("cross-module-query", () => {
         (result.where?.$and as Record<string, unknown>[])[0]
       )[0]
 
-      expect(existsSql).toMatch(/exists \(select 1 from "public"\."order_product_link"/)
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."order_product_link"/
+      )
       expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
       expect(existsSql).toMatch(
         /exists \(select 1 from "public"\."product_sales_channel"/
       )
-      expect(existsSql).toMatch(
-        /"cm_link_1"\."product_id" = "product"\."id"/
-      )
+      expect(existsSql).toMatch(/"cm_link_1"\."product_id" = "product"\."id"/)
       expect(existsSql).toMatch(/"sales_channel"\."name" = \?/)
     })
 
@@ -359,7 +363,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -370,9 +374,7 @@ describe("cross-module-query", () => {
 
       expect(existsSql).toMatch(/"product"\."handle" = \?/)
       expect(existsSql).toMatch(/"sales_channel"\."name" = \?/)
-      expect(existsSql).toMatch(
-        /"cm_link_1"\."product_id" = "product"\."id"/
-      )
+      expect(existsSql).toMatch(/"cm_link_1"\."product_id" = "product"\."id"/)
     })
 
     it("should support deeply nested parent chains recursively", () => {
@@ -400,7 +402,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -409,9 +411,7 @@ describe("cross-module-query", () => {
         (result.where?.$and as Record<string, unknown>[])[0]
       )[0]
 
-      expect(existsSql).toMatch(
-        /"cm_link_1"\."product_id" = "product"\."id"/
-      )
+      expect(existsSql).toMatch(/"cm_link_1"\."product_id" = "product"\."id"/)
       expect(existsSql).toMatch(
         /"cm_link_2"\."sales_channel_id" = "sales_channel"\."id"/
       )
@@ -432,7 +432,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -462,7 +462,7 @@ describe("cross-module-query", () => {
               },
             },
           },
-          { primaryKey: "id", entityName: "OrderEntity" }
+          { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
         )
       ).toThrow(/unknown parent target table/)
     })
@@ -477,7 +477,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       expect(result.where?.$and).toBeUndefined()
@@ -496,7 +496,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       const existsSql = Object.keys(
@@ -520,7 +520,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       const existsSql = Object.keys(
@@ -544,7 +544,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       const existsSql = Object.keys(
@@ -576,7 +576,11 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "ProductEntity" }
+        {
+          primaryKey: "id",
+          entityName: "ProductEntity",
+          entityTable: "product",
+        }
       )
 
       const existsSql = Object.keys(
@@ -587,9 +591,7 @@ describe("cross-module-query", () => {
     })
 
     it("should not mutate the caller's find options", () => {
-      const crossModuleJoins = [
-        buildProductJoinMetadata({ handle: "premium" }),
-      ]
+      const crossModuleJoins = [buildProductJoinMetadata({ handle: "premium" })]
       const input = {
         where: { display_id: "1001" } as any,
         options: { __internal: { crossModuleJoins } },
@@ -598,6 +600,7 @@ describe("cross-module-query", () => {
       augmentFindOptionsWithCrossModuleJoins(input, {
         primaryKey: "id",
         entityName: "OrderEntity",
+        entityTable: "order",
       })
 
       expect(input.options.__internal?.crossModuleJoins).toBe(crossModuleJoins)
@@ -617,7 +620,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       const orderBy = result.options?.orderBy as Record<string, unknown>
@@ -655,9 +658,181 @@ describe("cross-module-query", () => {
               },
             },
           },
-          { primaryKey: "id", entityName: "OrderEntity" }
+          { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
         )
       ).toThrow(/Duplicate cross-module join target table/)
+    })
+
+    it("should filter on the link table when the target filter is only the primary key", () => {
+      const result = augmentFindOptionsWithCrossModuleJoins(
+        {
+          where: {},
+          options: {
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ id: "prod_premium" }),
+              ],
+            },
+            orderBy: {
+              "product.id": "ASC",
+            },
+          },
+        },
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
+      )
+
+      const existsSql = Object.keys(
+        (result.where?.$and as Record<string, unknown>[])[0]
+      )[0]
+
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."order_product_link" as "cm_link_0" where/
+      )
+      expect(existsSql).not.toMatch(/inner join/)
+      expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
+      expect(existsSql).toMatch(/"cm_link_0"\."product_id" = \?/)
+      expect(existsSql).toMatch(/"cm_link_0"\."deleted_at" is null/)
+      expect(existsSql).not.toMatch(/"product"\./)
+
+      const orderBy = result.options?.orderBy as Record<string, unknown>
+      expect(orderBy["product.id"]).toBeUndefined()
+      expect(Object.keys(orderBy)).toHaveLength(1)
+      expect(Object.values(orderBy)[0]).toBe("ASC")
+
+      const orderSql = Object.keys(orderBy)[0]
+
+      expect(orderSql).toMatch(
+        /\(select "cm_order_link_0"\."product_id" from "public"\."order_product_link"/
+      )
+      expect(orderSql).toMatch(/"cm_order_link_0"\."order_id" = "o0"\."id"/)
+      expect(orderSql).not.toMatch(/inner join/)
+      expect(orderSql).not.toMatch(/"product"\./)
+      expect(orderSql).toMatch(
+        /order by "cm_order_link_0"\."product_id" limit 1\)/
+      )
+    })
+
+    it("should skip the link-to-target join for target links", () => {
+      const result = augmentFindOptionsWithCrossModuleJoins(
+        {
+          where: {},
+          options: {
+            __internal: {
+              crossModuleJoins: [
+                {
+                  link: {
+                    table: "order_line_item",
+                    sourceKey: "id",
+                    targetKey: "id",
+                  },
+                  target: {
+                    table: "order_line_item",
+                    filters: { product_id: "prod_premium" },
+                  },
+                },
+              ],
+            },
+            orderBy: {
+              "order_line_item.product_id": "ASC",
+            },
+          },
+        },
+        {
+          primaryKey: "id",
+          entityName: "OrderLineItemEntity",
+          entityTable: "order_line_item",
+        }
+      )
+
+      const existsSql = Object.keys(
+        (result.where?.$and as Record<string, unknown>[])[0]
+      )[0]
+
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."order_line_item" as "order_line_item" where/
+      )
+      expect(existsSql).not.toMatch(/inner join/)
+      expect(existsSql).toMatch(/"order_line_item"\."id" = "o0"\."id"/)
+      expect(existsSql).toMatch(/"order_line_item"\."product_id" = \?/)
+      expect(existsSql).toMatch(/"order_line_item"\."deleted_at" is null/)
+      expect(existsSql).not.toMatch(/cm_link_0/)
+
+      const orderBy = result.options?.orderBy as Record<string, unknown>
+      expect(orderBy["order_line_item.product_id"]).toBeUndefined()
+      expect(Object.keys(orderBy)).toHaveLength(1)
+      expect(Object.values(orderBy)[0]).toBe("ASC")
+
+      const orderSql = Object.keys(orderBy)[0]
+
+      expect(orderSql).toMatch(
+        /\(select "order_line_item"\."product_id" from "public"\."order_line_item"/
+      )
+      expect(orderSql).toMatch(/"order_line_item"\."id" = "o0"\."id"/)
+      expect(orderSql).not.toMatch(/inner join/)
+      expect(orderSql).not.toMatch(/cm_order_link_0/)
+      expect(orderSql).toMatch(/order by "order_line_item"\."id" limit 1\)/)
+    })
+
+    it("should skip the link-to-target join for source links", () => {
+      const result = augmentFindOptionsWithCrossModuleJoins(
+        {
+          where: {},
+          options: {
+            __internal: {
+              crossModuleJoins: [
+                {
+                  link: {
+                    table: "order_line_item",
+                    sourceKey: "id",
+                    targetKey: "product_id",
+                  },
+                  target: {
+                    table: "product",
+                    filters: { handle: "premium" },
+                  },
+                },
+              ],
+            },
+            orderBy: {
+              "product.handle": "ASC",
+            },
+          },
+        },
+        {
+          primaryKey: "id",
+          entityName: "OrderLineItemEntity",
+          entityTable: "order_line_item",
+        }
+      )
+
+      const existsSql = Object.keys(
+        (result.where?.$and as Record<string, unknown>[])[0]
+      )[0]
+
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."product" as "product" where/
+      )
+      expect(existsSql).not.toMatch(/inner join/)
+      expect(existsSql).toMatch(/"product"\."id" = "o0"\."product_id"/)
+      expect(existsSql).toMatch(/"product"\."handle" = \?/)
+      expect(existsSql).toMatch(/"product"\."deleted_at" is null/)
+      expect(existsSql).not.toMatch(/cm_link_0/)
+      expect(existsSql).not.toMatch(/order_line_item/)
+
+      const orderBy = result.options?.orderBy as Record<string, unknown>
+      expect(orderBy["product.handle"]).toBeUndefined()
+      expect(Object.keys(orderBy)).toHaveLength(1)
+      expect(Object.values(orderBy)[0]).toBe("ASC")
+
+      const orderSql = Object.keys(orderBy)[0]
+
+      expect(orderSql).toMatch(
+        /\(select "product"\."handle" from "public"\."product"/
+      )
+      expect(orderSql).toMatch(/"product"\."id" = "o0"\."product_id"/)
+      expect(orderSql).not.toMatch(/inner join/)
+      expect(orderSql).not.toMatch(/cm_order_link_0/)
+      expect(orderSql).toMatch(/order by "product"\."id" limit 1\)/)
     })
 
     it("should leave non-cross-module order keys untouched", () => {
@@ -674,7 +849,7 @@ describe("cross-module-query", () => {
             },
           },
         },
-        { primaryKey: "id", entityName: "OrderEntity" }
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
       )
 
       const orderBy = result.options?.orderBy as Record<string, unknown>

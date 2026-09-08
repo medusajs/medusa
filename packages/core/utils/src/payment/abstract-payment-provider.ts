@@ -301,8 +301,8 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * @example
    * // other imports...
    * import {
-   *   PaymentProviderError,
-   *   PaymentProviderSessionResponse,
+   *   CancelPaymentInput,
+   *   CancelPaymentOutput,
    * } from "@medusajs/framework/types"
    *
    *

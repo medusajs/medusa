@@ -266,6 +266,46 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should reject a refund with an amount of 0", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        const error = await api
+          .post(
+            `/admin/payments/${payment.id}/refund`,
+            { amount: 0 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
+      it("should reject a refund with a negative amount", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        const error = await api
+          .post(
+            `/admin/payments/${payment.id}/refund`,
+            { amount: -50 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
       it("should issue multiple refunds", async () => {
         const payment = order.payment_collections[0].payments[0]
 

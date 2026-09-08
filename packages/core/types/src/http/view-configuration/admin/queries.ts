@@ -3,7 +3,26 @@ import { FindParams, SelectParams } from "../../common"
 
 export interface AdminGetViewConfigurationParams extends SelectParams {}
 
-export interface AdminGetViewConfigurationsParams 
+export interface AdminGetPropertyLabelParams extends SelectParams {}
+
+export interface AdminGetPropertyLabelsParams
+  extends FindParams,
+    BaseFilterable<AdminGetPropertyLabelsParams> {
+  /**
+   * Entity to filter by.
+   */
+  entity?: string
+  /**
+   * Property path to filter by.
+   */
+  property?: string
+  /**
+   * Search query to filter by.
+   */
+  q?: string
+}
+
+export interface AdminGetViewConfigurationsParams
   extends FindParams,
     BaseFilterable<AdminGetViewConfigurationsParams> {
   /**

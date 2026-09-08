@@ -18,9 +18,15 @@ In this guide, you'll learn how to show the different order details on the order
 
 After the customer completes the checkout process and places an order, you can show an order confirmation page to display the order details.
 
+<Note>
+
+The [Get an Order API route](!api!/store/orders/get-an-order) doesn't require customer authentication, so that guest customers can view their order confirmation page. To add access rules to the route, refer to the [Restrict Order Retrieval guide](../../../commerce-modules/order/secure-order-retrieval/page.mdx).
+
+</Note>
+
 ## Retrieve Order Details
 
-To show the order details, you need to retrieve the order by sending a request to the [Get an Order API route](!api!/store#orders_getordersid).
+To show the order details, you need to retrieve the order by sending a request to the [Get an Order API route](!api!/store/orders/get-an-order).
 
 You need the order's ID to retrieve the order. You can pass it from the [complete cart step](../complete-cart/page.mdx) or store it in the `localStorage`.
 
@@ -86,13 +92,13 @@ sdk.store.order.retrieve(orderId)
   </CodeTab>
 </CodeTabs>
 
-In the above example, you retrieve the order's details from the [Get an Order API route](!api!/store#orders_getordersid). Then, in the React example, you show the order details like the order ID, order date, and customer email.
+In the above example, you retrieve the order's details from the [Get an Order API route](!api!/store/orders/get-an-order). Then, in the React example, you show the order details like the order ID, order date, and customer email.
 
 The rest of this guide will expand on the React example to show more order details.
 
 <Note title="Tip">
 
-Refer to the [Order schema in the API reference](!api!/store#orders_order_schema) for all the available order fields.
+Refer to the [Order schema in the API reference](!api!/store/orders/schema) for all the available order fields.
 
 </Note>
 
@@ -163,7 +169,7 @@ If no locale was set for the cart, then the order's items will be in the origina
 
 ## Show Order Totals
 
-An order has various fields for the order totals, which you can check out in the [Order schema in the Store API reference](https://docs.medusajs.com/api/store#orders_order_schema). The most commonly used fields are:
+An order has various fields for the order totals, which you can check out in the [Order schema in the Store API reference](https://docs.medusajs.com/api/store/orders/schema). The most commonly used fields are:
 
 <Table>
   <Table.Header>

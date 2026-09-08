@@ -1,0 +1,1 @@
+{"slug":"/references/helper_steps/variables/helper_steps.emitEventStepId","title":"emitEventStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"emitEventStepId","type":"`\"emit-event-step\"`","description":"","optional":false,"defaultValue":"\"emit-event-step\"","expandable":false,"children":[]}]}]}

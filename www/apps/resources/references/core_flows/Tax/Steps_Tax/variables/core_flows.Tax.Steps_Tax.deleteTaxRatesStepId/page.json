@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Tax/Steps_Tax/variables/core_flows.Tax.Steps_Tax.deleteTaxRatesStepId","title":"deleteTaxRatesStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteTaxRatesStepId","type":"`\"delete-tax-rates\"`","description":"","optional":false,"defaultValue":"\"delete-tax-rates\"","expandable":false,"children":[]}]}]}

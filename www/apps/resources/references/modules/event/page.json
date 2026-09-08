@@ -1,0 +1,1 @@
+{"slug":"/references/modules/event","title":"event","frontmatter":{},"toc":[{"title":"Interfaces","id":"interfaces","level":2}],"blocks":[{"kind":"heading","level":2,"text":"Interfaces","id":"interfaces"},{"kind":"linkList","items":[{"title":"IEventBusModuleService","href":"/references/event-service"}]}]}

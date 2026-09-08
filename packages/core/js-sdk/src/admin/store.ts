@@ -16,7 +16,7 @@ export class Store {
 
   /**
    * This method retrieves a store by its ID. It sends a request to the
-   * [Get Store](https://docs.medusajs.com/api/admin#stores_getstoresid)
+   * [Get Store](https://docs.medusajs.com/api/admin/stores/get-a-store)
    * API route.
    * 
    * @param id - The ID of the store to retrieve.
@@ -45,7 +45,7 @@ export class Store {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -64,7 +64,7 @@ export class Store {
 
   /**
    * This method retrieves a list of stores. It sends a request to the
-   * [List Stores](https://docs.medusajs.com/api/admin#stores_getstores)
+   * [List Stores](https://docs.medusajs.com/api/admin/stores/list-stores)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -107,7 +107,7 @@ export class Store {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(query?: HttpTypes.AdminStoreListParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminStoreListResponse>(
@@ -122,7 +122,7 @@ export class Store {
 
   /**
    * This method updates a store. It sends a request to the
-   * [Update Store](https://docs.medusajs.com/api/admin#stores_poststoresid)
+   * [Update Store](https://docs.medusajs.com/api/admin/stores/update-a-store)
    * API route.
    * 
    * @param id - The ID of the store to update.

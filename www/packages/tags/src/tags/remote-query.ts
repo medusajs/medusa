@@ -56,10 +56,6 @@ export const remoteQuery = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/useRemoteQueryStep"
   },
   {
-    "title": "removeCustomerAccountWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeCustomerAccountWorkflow"
-  },
-  {
     "title": "setShippingOptionsPricesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setShippingOptionsPricesStep"
   },
@@ -338,9 +334,5 @@ export const remoteQuery = [
   {
     "title": "updateRegionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRegionsWorkflow"
-  },
-  {
-    "title": "removeUserAccountWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow"
   }
 ]

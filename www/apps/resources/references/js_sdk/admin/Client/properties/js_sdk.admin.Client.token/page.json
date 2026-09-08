@@ -1,0 +1,1 @@
+{"slug":"/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.token","title":"token","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"token","type":"`string`","description":"","optional":false,"defaultValue":"\"\"","expandable":false,"children":[]}]}]}

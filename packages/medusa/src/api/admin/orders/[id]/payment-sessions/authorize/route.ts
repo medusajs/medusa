@@ -8,6 +8,9 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 
+/**
+ * @since 2.17.0
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminAuthorizeOrderPaymentSession>,
   res: MedusaResponse<HttpTypes.AdminAuthorizeOrderPaymentSessionResponse>

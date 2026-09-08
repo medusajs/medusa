@@ -27,7 +27,7 @@ export type UpdateCollectionsWorkflowInput = {
 export const updateCollectionsWorkflowId = "update-collections"
 /**
  * This workflow updates one or more collections. It's used by the
- * [Create Collection Admin API Route](https://docs.medusajs.com/api/admin#collections_postcollectionsid).
+ * [Create Collection Admin API Route](https://docs.medusajs.com/api/admin/collections/update-a-collection).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated collections. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the product collections.

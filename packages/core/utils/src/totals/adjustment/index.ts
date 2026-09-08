@@ -38,8 +38,11 @@ export function calculateAdjustmentTotal({
     adjustmentsTaxTotal = MathBN.add(adjustmentsTaxTotal, adjustmentTaxTotal)
     adjustmentsTotal = MathBN.add(adjustmentsTotal, adjustmentTotal)
 
-    adj["subtotal"] = new BigNumber(adjustmentsSubtotal)
-    adj["total"] = new BigNumber(adjustmentsTotal)
+    // Assign this adjustment's OWN subtotal/total — not the running cumulative
+    // sum across all adjustments. Using the plural accumulators here inflated
+    // every adjustment after the first to the cumulative total.
+    adj["subtotal"] = new BigNumber(adjustmentSubtotal)
+    adj["total"] = new BigNumber(adjustmentTotal)
   }
 
   const quantity = item?.quantity || MathBN.convert(1)

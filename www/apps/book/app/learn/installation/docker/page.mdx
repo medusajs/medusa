@@ -407,7 +407,7 @@ ENTRYPOINT ["./start.sh"]
   </CodeTab>
 </CodeTabs>
 
-In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20 or later.
+In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20.19.0 or later.
 
 The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
 

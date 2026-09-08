@@ -19,7 +19,7 @@ export const GET = async (
   const settingsService =
     req.scope.resolve<SettingsTypes.ISettingsModuleService>(Modules.SETTINGS)
 
-  const entities = settingsService.listDiscoverableEntities()
+  const entities = await settingsService.listDiscoverableEntities()
 
   entities.sort((a, b) => a.name.localeCompare(b.name))
 

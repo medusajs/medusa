@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next"
 
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
+import { castNumber } from "../../../../../lib/cast-number"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 
@@ -144,6 +145,7 @@ function InventoryKitTab({ form }: InventoryKitTabProps) {
                               type="number"
                               className="bg-ui-bg-field-component"
                               min={0}
+                              step="any"
                               value={value}
                               onChange={(e) => {
                                 const value = e.target.value
@@ -151,7 +153,7 @@ function InventoryKitTab({ form }: InventoryKitTabProps) {
                                 if (value === "") {
                                   onChange(null)
                                 } else {
-                                  onChange(Number(value))
+                                  onChange(castNumber(value))
                                 }
                               }}
                               {...field}

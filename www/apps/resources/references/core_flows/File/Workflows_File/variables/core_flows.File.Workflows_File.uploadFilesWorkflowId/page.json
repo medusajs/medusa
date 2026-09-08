@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/File/Workflows_File/variables/core_flows.File.Workflows_File.uploadFilesWorkflowId","title":"uploadFilesWorkflowId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"uploadFilesWorkflowId","type":"`\"upload-files\"`","description":"","optional":false,"defaultValue":"\"upload-files\"","expandable":false,"children":[]}]}]}

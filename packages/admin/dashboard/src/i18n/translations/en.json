@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Insert row above",
         "insertRowBelow": "Insert row below",
-        "deleteRow": "Delete row"
+        "deleteRow": "Delete row",
+        "addRow": "Add row"
       },
       "labels": {
         "key": "Key",
@@ -337,6 +338,7 @@
   },
   "filters": {
     "sortLabel": "Sort",
+    "columnsLabel": "Columns",
     "collapse": {
       "all": "Collapse all"
     },
@@ -802,6 +804,16 @@
   "collections": {
     "domain": "Collections",
     "subtitle": "Organize products into collections.",
+    "list": {
+      "empty": {
+        "heading": "No collections",
+        "description": "There are no collections to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No collections match the current filter criteria."
+      }
+    },
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organize your products.",
     "createSuccess": "Collection created successfully.",
@@ -942,6 +954,18 @@
   "inventory": {
     "domain": "Inventory",
     "subtitle": "Manage your inventory items",
+    "export": {
+      "header": "Export Inventory List",
+      "description": "Export the inventory list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
+    },
     "reserved": "Reserved",
     "available": "Available",
     "locationLevels": "Locations",
@@ -951,6 +975,8 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "quantityAcrossLocations": "{{quantity}} across {{locations}} locations",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "The unit stock is held and counted in. Shown next to quantities across the Admin.",
     "levelDeleted": "Inventory level deleted successfully.",
     "create": {
       "title": "Create Inventory Item",
@@ -1027,6 +1053,14 @@
   "customers": {
     "domain": "Customers",
     "list": {
+      "empty": {
+        "heading": "No customers",
+        "description": "There are no customers to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No customers match the current filter criteria."
+      },
       "noRecordsMessage": "Your customers will show up here."
     },
     "create": {
@@ -1218,10 +1252,18 @@
     "transfer": {
       "title": "Transfer ownership",
       "requestSuccess": "Order transfer request sent to: {{email}}.",
+      "guestSuccess": "Order transferred to guest customer: {{email}}.",
+      "ownerType": "Account type",
+      "registered": "Registered",
+      "registeredDescription": "Transfer to a registered customer, who must accept the request.",
+      "guest": "Guest",
+      "guestDescription": "Transfer to a guest customer by email. Applied immediately.",
       "currentOwner": "Current owner",
       "newOwner": "New owner",
+      "newGuestOwner": "New owner email",
       "currentOwnerDescription": "The customer currently related to this order.",
-      "newOwnerDescription": "The customer to transfer this order to."
+      "newOwnerDescription": "The customer to transfer this order to.",
+      "newGuestOwnerDescription": "The email of the guest customer to transfer this order to. A guest customer is created if none exists."
     },
     "payment": {
       "title": "Payments",
@@ -1276,6 +1318,8 @@
       "create": "Edit Order",
       "currentTotal": "Current total",
       "noteHint": "Add an internal note for the edit",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify the customer about this order edit.",
       "cancelSuccessToast": "Order edit canceled",
       "createSuccessToast": "Order edit request created",
       "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
@@ -1499,6 +1543,7 @@
       "markAsDelivered": "Mark as delivered",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "locationUnavailable": "Location deleted/unavailable",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
       "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
@@ -2161,6 +2206,16 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "list": {
+      "empty": {
+        "heading": "No promotions",
+        "description": "There are no promotions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No promotions match the current filter criteria."
+      }
+    },
     "sections": {
       "details": "Promotion Details"
     },
@@ -2387,6 +2442,16 @@
   },
   "campaigns": {
     "domain": "Campaigns",
+    "list": {
+      "empty": {
+        "heading": "No campaigns",
+        "description": "There are no campaigns to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No campaigns match the current filter criteria."
+      }
+    },
     "details": "Campaign details",
     "status": {
       "active": "Active",
@@ -2498,6 +2563,16 @@
   "priceLists": {
     "domain": "Price Lists",
     "subtitle": "Create sales or override prices for specific conditions.",
+    "list": {
+      "empty": {
+        "heading": "No price lists",
+        "description": "There are no price lists to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No price lists match the current filter criteria."
+      }
+    },
     "delete": {
       "confirmation": "You are about to delete the price list \"{{title}}\". This action cannot be undone.",
       "successToast": "Price list \"{{title}}\" was successfully deleted."
@@ -2674,6 +2749,9 @@
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
+    "copyResetPasswordLink": "Copy reset password link",
+    "copyResetPasswordLinkSuccess": "Reset password link copied to clipboard",
+    "copyResetPasswordLinkHint": "The link expires shortly and invalidates any reset password link previously sent to this user.",
     "expiredOnDate": "Expired on {{date}}",
     "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Accepted on {{date}}",
@@ -2919,7 +2997,15 @@
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
     "list": {
-      "noRecordsMessage": "Create a region for the areas that you sell in."
+      "noRecordsMessage": "Create a region for the areas that you sell in.",
+      "empty": {
+        "heading": "No regions",
+        "description": "There are no regions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No regions match the current filter criteria."
+      }
     },
     "toast": {
       "delete": "Region deleted successfully",
@@ -3275,6 +3361,7 @@
     "subtitle": "View and keep track of workflow executions in your Medusa application.",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
+    "stateLabel": "State",
     "progressLabel": "Progress",
     "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
     "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
@@ -3314,6 +3401,26 @@
         "dormant": "Dormant",
         "timeout": "Timeout"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Search",
+    "subtitle": "View registered search indexes and rebuild them from source data.",
+    "fieldsLabel": "Indexed fields",
+    "providerLabel": "Provider",
+    "reindex": "Reindex",
+    "reindexConfirmationTitle": "Reindex {{name}}?",
+    "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
+    "reindexSuccess": "Reindexing {{name}} started",
+    "noFields": "No fields are indexed.",
+    "list": {
+      "noRecordsMessage": "No search indexes are registered."
+    },
+    "status": {
+      "pending": "Pending",
+      "building": "Building",
+      "ready": "Ready",
+      "error": "Error"
     }
   },
   "shippingOptionTypes": {
@@ -3378,6 +3485,17 @@
       "value": "Value"
     }
   },
+  "propertyLabels": {
+    "domain": "Property Labels",
+    "title": "Property Labels",
+    "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "fields": {
+      "module": "Module",
+      "model": "Model",
+      "propertyCount": "Property Count",
+      "hasOverrides": "Has Overrides"
+    }
+  },
   "notifications": {
     "domain": "Notifications",
     "emptyState": {
@@ -3416,6 +3534,7 @@
     "selectValues": "Select Values"
   },
   "fields": {
+    "actions": "Actions",
     "amount": "Amount",
     "reference": "Reference",
     "reference_id": "Reference ID",
@@ -3558,6 +3677,7 @@
     "barcode": "Barcode",
     "countryOfOrigin": "Country of origin",
     "material": "Material",
+    "unitOfMeasure": "Unit of measure",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
@@ -3620,8 +3740,12 @@
   },
   "auth": {
     "login": {
+      "noProviders": "Register an auth provider in your Medusa config to be able to login",
       "authenticationFailed": "Authentication failed",
-      "cloud": "Log in with Medusa Cloud"
+      "cloud": "Log in with Medusa Cloud",
+      "continueWithProvider": "Continue with {{provider}}",
+      "or": "or",
+      "provisioningFailed": "We couldn't complete your sign in. Please contact an administrator."
     }
   },
   "permissions": {

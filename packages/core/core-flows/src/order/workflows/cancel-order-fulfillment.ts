@@ -10,10 +10,12 @@ import {
   ReservationItemDTO,
 } from "@medusajs/framework/types"
 import {
+  InventoryLevelWorkflowEvents,
   MathBN,
   MedusaError,
   Modules,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -287,7 +289,7 @@ export type CancelOrderFulfillmentWorkflowInput =
 
 export const cancelOrderFulfillmentWorkflowId = "cancel-order-fulfillment"
 /**
- * This workflow cancels an order's fulfillment. It's used by the [Cancel Order's Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idcancel).
+ * This workflow cancels an order's fulfillment. It's used by the [Cancel Order's Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/orders/cancel-fulfillment).
  *
  * This workflow has a hook that allows you to perform custom actions on the canceled fulfillment. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the fulfillment.
@@ -375,7 +377,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
-    adjustInventoryLevelsStep(inventoryAdjustment)
+    const adjustedLevels = adjustInventoryLevelsStep(inventoryAdjustment)
 
     const eventData = transform({ order, fulfillment, input }, (data) => {
       return {
@@ -385,7 +387,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       }
     })
 
-    parallelize(
+    const [, createdReservations] = parallelize(
       cancelOrderFulfillmentStep(cancelOrderFulfillmentData),
       createReservationsStep(toCreate),
       updateReservationsStep(toUpdate),
@@ -393,6 +395,45 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
         eventName: OrderWorkflowEvents.FULFILLMENT_CANCELED,
         data: eventData,
       })
+    )
+
+    const {
+      levelUpdatedEvents,
+      reservationCreatedEvents,
+      reservationUpdatedEvents,
+    } = transform(
+      { adjustedLevels, createdReservations, toUpdate, order },
+      ({ adjustedLevels, createdReservations, toUpdate, order }) => {
+        return {
+          levelUpdatedEvents: adjustedLevels.map((level) => ({
+            id: level.id,
+            order_id: order.id,
+          })),
+          reservationCreatedEvents: createdReservations.map((reservation) => ({
+            id: reservation.id,
+            order_id: order.id,
+          })),
+          reservationUpdatedEvents: toUpdate.map((reservation) => ({
+            id: reservation.id,
+            order_id: order.id,
+          })),
+        }
+      }
+    )
+
+    parallelize(
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: levelUpdatedEvents,
+      }).config({ name: "emit-inventory-level-updated" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.UPDATED,
+        data: reservationUpdatedEvents,
+      }).config({ name: "emit-reservation-item-updated" })
     )
 
     // last step because there is no compensation for this step

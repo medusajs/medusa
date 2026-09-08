@@ -9,7 +9,7 @@ import { updatePricePreferencesStep } from "../steps"
 export const updatePricePreferencesWorkflowId = "update-price-preferences"
 /**
  * This workflow updates one or more price preferences. It's used by the
- * [Update Price Preference Admin API Route](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferencesid).
+ * [Update Price Preference Admin API Route](https://docs.medusajs.com/api/admin/price-preferences/update-a-price-preference).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update price preferences in your custom flows.

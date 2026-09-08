@@ -17,7 +17,7 @@ export const linkProductsToSalesChannelWorkflowId =
   "link-products-to-sales-channel"
 /**
  * This workflow manages the products available in a sales channel. It's used by the
- * [Manage Products Admin API Route](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproducts).
+ * [Manage Products Admin API Route](https://docs.medusajs.com/api/admin/sales-channels/manage-products).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * manage the products available in a sales channel within your custom flows.

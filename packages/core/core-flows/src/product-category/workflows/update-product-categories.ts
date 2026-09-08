@@ -21,7 +21,7 @@ export type UpdateProductCategoriesWorkflowOutput = ProductCategoryDTO[]
 export const updateProductCategoriesWorkflowId = "update-product-categories"
 /**
  * This workflow updates product categories matching specified filters. It's used by the
- * [Update Product Category Admin API Route](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriesid).
+ * [Update Product Category Admin API Route](https://docs.medusajs.com/api/admin/product-categories/update-a-product-category).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update product categories within your custom flows.

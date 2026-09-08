@@ -1,0 +1,38 @@
+get:
+  operationId: GetCustomerProviders
+  x-sidebar-summary: List Providers
+  summary: List Auth Providers for Customers
+  description: >-
+    Retrieve a list of auth providers for the customer actor type. This is
+    useful to show the authentication option for the available providers.
+  x-authenticated: false
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/auth_customer_providers/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_customer_providers/get.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuthProvidersListResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

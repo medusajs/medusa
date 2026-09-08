@@ -159,6 +159,49 @@ medusaIntegrationTestRunner({
           'Value "invalid" is assigned a rank but is not defined in the list of values.'
         )
       })
+
+      it("should fail to create a second global option with an existing title", async () => {
+        // option1 is a global (non-exclusive) option titled "option1". Global
+        // option titles are unique (partial unique index on product_option),
+        // so a second global with the same title is rejected.
+        const error = await api
+          .post(
+            `/admin/product-options`,
+            {
+              title: "option1",
+              values: ["X"],
+              is_exclusive: false,
+            },
+            adminHeaders
+          )
+          .catch((err) => err)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toContain("already exists")
+      })
+
+      it("should allow an exclusive option to reuse a global option's title", async () => {
+        // The uniqueness constraint only applies to global options. Exclusive
+        // options are scoped to a single product and may repeat titles.
+        const option = (
+          await api.post(
+            `/admin/product-options`,
+            {
+              title: "option1",
+              values: ["X"],
+              is_exclusive: true,
+            },
+            adminHeaders
+          )
+        ).data.product_option
+
+        expect(option).toEqual(
+          expect.objectContaining({
+            title: "option1",
+            is_exclusive: true,
+          })
+        )
+      })
     })
 
     describe("GET /admin/product-options/[id]", () => {

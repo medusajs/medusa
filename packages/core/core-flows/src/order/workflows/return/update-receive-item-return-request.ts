@@ -127,7 +127,7 @@ export const updateReceiveItemReturnRequestWorkflowId =
   "update-receive-item-return-request"
 /**
  * This workflow updates an item in a return receival request. It's used by the
- * [Update a Received Item in a Return Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitemsaction_id).
+ * [Update a Received Item in a Return Admin API Route](https://docs.medusajs.com/api/admin/returns/update-received-item).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update an item in a return receival request
  * in your custom flows.

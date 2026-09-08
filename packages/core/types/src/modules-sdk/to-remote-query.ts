@@ -28,7 +28,7 @@ type ExtractFiltersOperators<
     : NonNullable<T[Key]> extends string | number | boolean | Date
     ? T[Key] | T[Key][] | OperatorMap<T[Key] | T[Key][]>
     : T[Key] extends Array<infer R>
-    ? TypeOnly<R> extends { __typename: any }
+    ? TypeOnly<R> extends { __typename: string }
       ? RemoteQueryFilters<
           Key & string,
           T,
@@ -38,10 +38,13 @@ type ExtractFiltersOperators<
       : R extends object
       ? CleanupObject<R>
       : never
-    : T[Key] extends { __typename: any }
+    : // TypeOnly strips the Maybe<> wrapper and makes the generator's
+    // optional __typename required so entity relations are detected;
+    // `__typename: string` avoids matching JSON scalars via index signature.
+    TypeOnly<T[Key]> extends { __typename: string }
     ? RemoteQueryFilters<
         Key & string,
-        T[Key],
+        T,
         [Key & string, ...Exclusion],
         Depth[Lim]
       >

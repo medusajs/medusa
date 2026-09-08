@@ -11,6 +11,9 @@ const mockSchema: OpenAPI.SchemaObject = {
   },
 }
 const mockTagName = "mockTagName"
+// schemaPath = `/${area}/${getApiRefTagSlug(tagName)}/schema`
+const mockSchemaPath = "/store/mocktagname/schema"
+const SCHEMA_DOM_ID = "schema"
 
 // mock functions
 const mockIsElmWindow = vi.fn(() => false)
@@ -28,6 +31,7 @@ const mockUseSidebar = vi.fn(() => ({
   setActivePath: mockSetActivePath,
 }))
 const mockUseArea = vi.fn(() => ({
+  area: "store",
   displayedArea: "Store",
 }))
 const mockUseSchemaExample = vi.fn((_options: unknown) => ({
@@ -37,7 +41,7 @@ const mockUseSchemaExample = vi.fn((_options: unknown) => ({
     },
   ],
 }))
-const mockGetSectionId = vi.fn((options: unknown) => "mock-schema-slug")
+const mockGetApiRefTagSlug = vi.fn((_name: string) => "mocktagname")
 const mockCheckElementInViewport = vi.fn(
   (_element: HTMLElement, _threshold: number) => true
 )
@@ -91,6 +95,7 @@ vi.mock("docs-ui", () => ({
   useIsBrowser: () => mockUseIsBrowser(),
   useScrollController: () => mockUseScrollController(),
   useSidebar: () => mockUseSidebar(),
+  getLinkWithBasePath: (path: string) => path,
   CodeBlock: ({
     source,
     lang,
@@ -177,7 +182,7 @@ vi.mock("@/utils/check-element-in-viewport", () => ({
     mockCheckElementInViewport(element, threshold),
 }))
 vi.mock("docs-utils", () => ({
-  getSectionId: (options: unknown) => mockGetSectionId(options),
+  getApiRefTagSlug: (name: string) => mockGetApiRefTagSlug(name),
 }))
 vi.mock("pluralize", () => ({
   singular: (str: string) => mockSingular(str),
@@ -188,7 +193,6 @@ import TagSectionSchema from ".."
 beforeEach(() => {
   vi.clearAllMocks()
   cleanup()
-  window.location.hash = ""
   // Reset mocks to default values
   mockIsElmWindow.mockReturnValue(false)
   mockUseIsBrowser.mockReturnValue({ isBrowser: true })
@@ -201,6 +205,7 @@ beforeEach(() => {
     setActivePath: mockSetActivePath,
   })
   mockUseArea.mockReturnValue({
+    area: "store",
     displayedArea: "Store",
   })
   mockUseSchemaExample.mockReturnValue({
@@ -210,19 +215,19 @@ beforeEach(() => {
       },
     ],
   })
-  mockGetSectionId.mockReturnValue("mock-schema-slug")
+  mockGetApiRefTagSlug.mockReturnValue("mocktagname")
   mockCheckElementInViewport.mockReturnValue(true)
   mockSingular.mockImplementation((str: string) => str.replace(/s$/, ""))
 })
 
 describe("rendering", () => {
-  test("renders InView wrapper with correct props", () => {
+  test("renders InView wrapper with the schema dom id", () => {
     const { getByTestId } = render(
       <TagSectionSchema schema={mockSchema} tagName={mockTagName} />
     )
     const inViewElement = getByTestId("in-view")
     expect(inViewElement).toBeInTheDocument()
-    expect(inViewElement).toHaveAttribute("id", "mock-schema-slug")
+    expect(inViewElement).toHaveAttribute("id", SCHEMA_DOM_ID)
   })
 
   test("renders SectionContainer", () => {
@@ -255,6 +260,7 @@ describe("rendering", () => {
 
   test("renders Note with displayedArea", () => {
     mockUseArea.mockReturnValue({
+      area: "admin",
       displayedArea: "Admin",
     })
     const { getByTestId } = render(
@@ -352,123 +358,21 @@ describe("name formatting", () => {
   })
 })
 
-describe("schema slug generation", () => {
-  test("generates schema slug using getSectionId with tagName, formattedName, and 'schema'", () => {
-    mockSingular.mockReturnValue("mockTagNam")
+describe("schema path generation", () => {
+  test("generates schema path using the area and tag slug", () => {
     render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-    expect(mockGetSectionId).toHaveBeenCalledWith([
-      mockTagName,
-      "mockTagNam",
-      "schema",
-    ])
-  })
-})
-
-describe("useEffect scrolling behavior", () => {
-  test("scrolls to element when hash matches schemaSlug and element is not in viewport", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = `#${mockPath}`
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-    mockCheckElementInViewport.mockReturnValue(false)
-
-    // Create a mock element with the id
-    const mockElement = document.createElement("div")
-    mockElement.id = mockPath
-    document.body.appendChild(mockElement)
-
-    render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-
-    expect(mockScrollToElement).toHaveBeenCalledWith(mockElement)
-
-    document.body.removeChild(mockElement)
-  })
-
-  test("does not scroll when element is already in viewport", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = `#${mockPath}`
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-    mockCheckElementInViewport.mockReturnValue(true)
-
-    const mockElement = document.createElement("div")
-    mockElement.id = mockPath
-    document.body.appendChild(mockElement)
-
-    render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-
-    expect(mockScrollToElement).not.toHaveBeenCalled()
-
-    document.body.removeChild(mockElement)
-  })
-
-  test("does not scroll when hash does not match schemaSlug", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = "#different-hash"
-    mockUseSidebar.mockReturnValue({
-      activePath: "different-hash",
-      setActivePath: mockSetActivePath,
-    })
-
-    render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-
-    expect(mockScrollToElement).not.toHaveBeenCalled()
-  })
-
-  test("scrolls when activePath matches but hash does not", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = "#different-hash"
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-    mockCheckElementInViewport.mockReturnValue(false)
-
-    // Create a mock element with the id
-    const mockElement = document.createElement("div")
-    mockElement.id = mockPath
-    document.body.appendChild(mockElement)
-
-    render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-
-    expect(mockScrollToElement).toHaveBeenCalledWith(mockElement)
-
-    document.body.removeChild(mockElement)
-  })
-
-  test("does not scroll when not in browser", () => {
-    mockUseIsBrowser.mockReturnValue({ isBrowser: false })
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = `#${mockPath}`
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-
-    render(<TagSectionSchema schema={mockSchema} tagName={mockTagName} />)
-
-    expect(mockScrollToElement).not.toHaveBeenCalled()
+    expect(mockGetApiRefTagSlug).toHaveBeenCalledWith(mockTagName)
   })
 })
 
 describe("handleViewChange behavior", () => {
-  test("updates URL and active path when in view and activePath is different", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
+  test("updates URL and active path when in view and activePath is different", async () => {
     mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
+      activePath: "/store/different/schema",
       setActivePath: mockSetActivePath,
     })
     mockCheckElementInViewport.mockReturnValue(true)
+    const replaceStateSpy = vi.spyOn(window.history, "replaceState")
 
     const { getByTestId } = render(
       <TagSectionSchema schema={mockSchema} tagName={mockTagName} />
@@ -477,15 +381,17 @@ describe("handleViewChange behavior", () => {
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     fireEvent.click(inViewToggleButton)
 
-    expect(mockSetActivePath).toHaveBeenCalledWith(mockPath)
-    expect(window.location.hash).toBe(`#${mockPath}`)
+    // the scroll-spy update is debounced
+    await waitFor(() => {
+      expect(mockSetActivePath).toHaveBeenCalledWith(mockSchemaPath)
+      expect(replaceStateSpy).toHaveBeenCalledWith(null, "", mockSchemaPath)
+    })
+    replaceStateSpy.mockRestore()
   })
 
-  test("does not update when activePath already matches schemaSlug", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
+  test("does not update when activePath already matches schemaPath", () => {
     mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
+      activePath: mockSchemaPath,
       setActivePath: mockSetActivePath,
     })
     mockCheckElementInViewport.mockReturnValue(true)
@@ -498,15 +404,12 @@ describe("handleViewChange behavior", () => {
     mockSetActivePath.mockClear()
     fireEvent.click(inViewToggleButton)
 
-    // Should not be called because activePath === schemaSlug, so the condition fails
     expect(mockSetActivePath).not.toHaveBeenCalled()
   })
 
-  test("updates when element is in viewport even if not in view", () => {
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
+  test("updates when element is in viewport even if not in view", async () => {
     mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
+      activePath: "/store/different/schema",
       setActivePath: mockSetActivePath,
     })
     mockCheckElementInViewport.mockReturnValue(true)
@@ -516,29 +419,12 @@ describe("handleViewChange behavior", () => {
     )
 
     const inViewToggleButton = getByTestId("in-view-toggle-button")
-    // Click to set inView to false, but checkElementInViewport returns true
     fireEvent.click(inViewToggleButton)
 
-    expect(mockSetActivePath).toHaveBeenCalledWith(mockPath)
-  })
-
-  test("does not update when not in browser", () => {
-    mockUseIsBrowser.mockReturnValue({ isBrowser: false })
-    const mockPath = "mock-schema-slug"
-    mockGetSectionId.mockReturnValue(mockPath)
-    mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
-      setActivePath: mockSetActivePath,
-    })
-
-    const { getByTestId } = render(
-      <TagSectionSchema schema={mockSchema} tagName={mockTagName} />
+    // the scroll-spy update is debounced
+    await waitFor(() =>
+      expect(mockSetActivePath).toHaveBeenCalledWith(mockSchemaPath)
     )
-
-    const inViewToggleButton = getByTestId("in-view-toggle-button")
-    fireEvent.click(inViewToggleButton)
-
-    expect(mockSetActivePath).not.toHaveBeenCalled()
   })
 })
 

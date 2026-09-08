@@ -141,7 +141,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
             <AnimatePresence key={`${v}-${index}`}>
               <Badge
                 size="2xsmall"
-                className={clx("gap-x-0.5 pl-1.5 pr-1.5", {
+                className={clx("gap-x-0.5 pl-1.5 pr-1.5 max-w-full min-w-0 overflow-hidden", {
                   "transition-fg pr-1": showRemove,
                   "shadow-borders-focus": index === duplicateIndex,
                 })}
@@ -150,14 +150,14 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
                 <motion.div
                   animate={index === duplicateIndex ? shake : undefined}
                 >
-                  {v}
+                  <span className="truncate min-w-0">{v}</span>
                   {showRemove && (
                     <button
                       tabIndex={-1}
                       type="button"
                       onClick={() => handleRemoveChip(v)}
                       className={clx(
-                        "text-ui-fg-subtle transition-fg outline-none"
+                        "text-ui-fg-subtle transition-fg outline-none shrink-0"
                       )}
                     >
                       <XMarkMini />

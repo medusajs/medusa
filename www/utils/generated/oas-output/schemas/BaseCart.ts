@@ -176,6 +176,11 @@
  *     type: number
  *     title: original_shipping_tax_total
  *     description: The sum of all shipping methods' original tax totals before discounts.
+ *   completed_at:
+ *     type: string
+ *     title: completed_at
+ *     description: The date the cart was completed.
+ *     format: date-time
  * 
 */
 

@@ -1,11 +1,19 @@
-import { OrderChangeStatus, } from "@medusajs/framework/utils"
-import { createWorkflow, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO, } from "@medusajs/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import {
+  createWorkflow,
+  when,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { OrderChangeDTO, OrderDTO } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
-import { createOrUpdateOrderPaymentCollectionWorkflow, previewOrderChangeStep, } from "../../order"
+import {
+  createOrUpdateOrderPaymentCollectionWorkflow,
+  previewOrderChangeStep,
+} from "../../order"
 import { confirmOrderChanges } from "../../order/steps/confirm-order-changes"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { refreshConfirmedDraftOrderShippingMethodsWorkflow } from "./refresh-confirmed-draft-order-shipping-methods"
 
 export const confirmDraftOrderEditWorkflowId = "confirm-draft-order-edit"
 
@@ -22,7 +30,7 @@ export interface ConfirmDraftOrderEditWorkflowInput {
 
 /**
  * This workflow confirms a draft order edit. It's used by the
- * [Confirm Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditconfirm).
+ * [Confirm Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/confirm-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * confirming a draft order edit.
@@ -97,12 +105,27 @@ export const confirmDraftOrderEditWorkflow = createWorkflow(
       orderChange,
     })
 
-    const orderPreview = previewOrderChangeStep(order.id)
-
     confirmOrderChanges({
       changes: [orderChange],
       orderId: order.id,
       confirmed_by: input.confirmed_by,
+    })
+
+    when({ orderChange }, ({ orderChange }) => {
+      const itemActionTypes: string[] = [
+        ChangeActionType.ITEM_ADD,
+        ChangeActionType.ITEM_REMOVE,
+        ChangeActionType.ITEM_UPDATE,
+      ]
+      return orderChange.actions.some((action) =>
+        itemActionTypes.includes(action.action)
+      )
+    }).then(() => {
+      // Now that item changes are committed, refresh any applied calculated
+      // shipping methods against the final materialized order.
+      refreshConfirmedDraftOrderShippingMethodsWorkflow.runAsStep({
+        input: { order_id: order.id },
+      })
     })
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
@@ -110,6 +133,8 @@ export const confirmDraftOrderEditWorkflow = createWorkflow(
         order_id: order.id,
       },
     })
+
+    const orderPreview = previewOrderChangeStep(order.id)
 
     releaseLockStep({
       key: input.order_id,

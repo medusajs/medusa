@@ -5,6 +5,9 @@ import {
 } from "@medusajs/framework/http"
 import { VerificationRequestType } from "../../validators"
 
+/**
+ * @since 2.16.0
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<VerificationRequestType>,
   res: MedusaResponse

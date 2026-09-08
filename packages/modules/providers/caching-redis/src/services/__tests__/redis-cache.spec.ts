@@ -18,16 +18,6 @@ class FakePipeline {
     return this
   }
 
-  hincrby(key: string, field: string, amount: number) {
-    this.commands.push(() => this.redis.hincrbySync(key, field, amount))
-    return this
-  }
-
-  hdel(key: string, field: string) {
-    this.commands.push(() => this.redis.hdelSync(key, field))
-    return this
-  }
-
   srem(key: string, member: string) {
     this.commands.push(() => this.redis.sremSync(key, member))
     return this
@@ -55,16 +45,16 @@ class FakeRedisClient {
 
   public readonly pipeline = jest.fn(() => new FakePipeline(this))
 
-  public readonly getBuffer = jest.fn(async (key: string) => {
-    return this.getBufferSync(key)
+  public readonly smembers = jest.fn(async (key: string) => {
+    return this.smembersSync(key)
+  })
+
+  public readonly unlink = jest.fn(async (...keys: string[]) => {
+    return this.unlinkSync(...keys)
   })
 
   setHash(key: string, fields: Record<string, RedisHashValue>) {
     this.hashes.set(key, new Map(Object.entries(fields)))
-  }
-
-  setString(key: string, value: RedisHashValue) {
-    this.strings.set(key, value)
   }
 
   setMembers(key: string, members: string[]) {
@@ -77,32 +67,6 @@ class FakeRedisClient {
 
   hgetSync(key: string, field: string): RedisHashValue | null {
     return this.hashes.get(key)?.get(field) ?? null
-  }
-
-  hincrbySync(key: string, field: string, amount: number): number {
-    const hash = this.hashes.get(key) ?? new Map<string, RedisHashValue>()
-    const current = parseInt((hash.get(field) as string | undefined) ?? "0", 10)
-    const nextValue = current + amount
-
-    hash.set(field, nextValue.toString())
-    this.hashes.set(key, hash)
-
-    return nextValue
-  }
-
-  hdelSync(key: string, field: string): number {
-    const hash = this.hashes.get(key)
-    if (!hash?.has(field)) {
-      return 0
-    }
-
-    hash.delete(field)
-
-    if (!hash.size) {
-      this.hashes.delete(key)
-    }
-
-    return 1
   }
 
   sremSync(key: string, member: string): number {
@@ -134,16 +98,6 @@ class FakeRedisClient {
 
     return deleted
   }
-
-  getBufferSync(key: string): Buffer | null {
-    const value = this.strings.get(key)
-
-    if (value === undefined) {
-      return null
-    }
-
-    return Buffer.isBuffer(value) ? value : Buffer.from(value)
-  }
 }
 
 const loggerMock = {
@@ -162,16 +116,6 @@ const createProvider = (redisClient: FakeRedisClient) => {
   })
 }
 
-const createTagIdBuffer = (...tagIds: number[]) => {
-  const buffer = Buffer.alloc(tagIds.length * 4)
-
-  tagIds.forEach((tagId, index) => {
-    buffer.writeUInt32LE(tagId, index * 4)
-  })
-
-  return buffer
-}
-
 describe("RedisCachingProvider clear", () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -182,21 +126,15 @@ describe("RedisCachingProvider clear", () => {
     const provider = createProvider(redisClient)
 
     redisClient.setHash("mc:entry-1", {})
-    redisClient.setHash("mc:tag:dictionary", { "hash:tag-a": "1" })
-    redisClient.setHash("mc:tag:reverse_dict", { "1": "hash:tag-a" })
-    redisClient.setHash("mc:tag:refs", { "1": "1" })
-    redisClient.setString("mc:tags:entry-1", createTagIdBuffer(1))
+    redisClient.setMembers("mc:tags:entry-1", ["hash:tag-a"])
     redisClient.setMembers("mc:tag:hash:tag-a", ["mc:entry-1"])
 
     await provider.clear({ tags: ["tag-a"] })
 
     expect(redisClient.keys).not.toHaveBeenCalled()
     expect(redisClient.hashes.has("mc:entry-1")).toBe(false)
-    expect(redisClient.strings.has("mc:tags:entry-1")).toBe(false)
+    expect(redisClient.sets.has("mc:tags:entry-1")).toBe(false)
     expect(redisClient.sets.has("mc:tag:hash:tag-a")).toBe(false)
-    expect(redisClient.hashes.has("mc:tag:dictionary")).toBe(false)
-    expect(redisClient.hashes.has("mc:tag:reverse_dict")).toBe(false)
-    expect(redisClient.hashes.has("mc:tag:refs")).toBe(false)
   })
 
   it("only deletes auto-invalidated entries without using KEYS", async () => {
@@ -207,11 +145,8 @@ describe("RedisCachingProvider clear", () => {
     redisClient.setHash("mc:entry-2", {
       options: JSON.stringify({ autoInvalidate: false }),
     })
-    redisClient.setHash("mc:tag:dictionary", { "hash:tag-a": "1" })
-    redisClient.setHash("mc:tag:reverse_dict", { "1": "hash:tag-a" })
-    redisClient.setHash("mc:tag:refs", { "1": "2" })
-    redisClient.setString("mc:tags:entry-1", createTagIdBuffer(1))
-    redisClient.setString("mc:tags:entry-2", createTagIdBuffer(1))
+    redisClient.setMembers("mc:tags:entry-1", ["hash:tag-a"])
+    redisClient.setMembers("mc:tags:entry-2", ["hash:tag-a"])
     redisClient.setMembers("mc:tag:hash:tag-a", ["mc:entry-1", "mc:entry-2"])
 
     await provider.clear({
@@ -221,18 +156,69 @@ describe("RedisCachingProvider clear", () => {
 
     expect(redisClient.keys).not.toHaveBeenCalled()
     expect(redisClient.hashes.has("mc:entry-1")).toBe(false)
-    expect(redisClient.strings.has("mc:tags:entry-1")).toBe(false)
+    expect(redisClient.sets.has("mc:tags:entry-1")).toBe(false)
     expect(redisClient.hashes.has("mc:entry-2")).toBe(true)
-    expect(redisClient.strings.has("mc:tags:entry-2")).toBe(true)
+    expect(redisClient.sets.get("mc:tags:entry-2")).toEqual(
+      new Set(["hash:tag-a"])
+    )
     expect(redisClient.sets.get("mc:tag:hash:tag-a")).toEqual(
       new Set(["mc:entry-2"])
     )
-    expect(redisClient.hashes.get("mc:tag:refs")?.get("1")).toBe("1")
-    expect(redisClient.hashes.get("mc:tag:dictionary")?.get("hash:tag-a")).toBe(
-      "1"
+  })
+
+  it("clears by key using the reverse tag index", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    redisClient.setHash("mc:entry-1", {})
+    redisClient.setMembers("mc:tags:entry-1", ["hash:tag-a", "hash:tag-b"])
+    redisClient.setMembers("mc:tag:hash:tag-a", ["mc:entry-1", "mc:entry-2"])
+    redisClient.setMembers("mc:tag:hash:tag-b", ["mc:entry-1"])
+
+    await provider.clear({ key: "entry-1" })
+
+    expect(redisClient.hashes.has("mc:entry-1")).toBe(false)
+    expect(redisClient.sets.has("mc:tags:entry-1")).toBe(false)
+    expect(redisClient.sets.get("mc:tag:hash:tag-a")).toEqual(
+      new Set(["mc:entry-2"])
     )
-    expect(redisClient.hashes.get("mc:tag:reverse_dict")?.get("1")).toBe(
-      "hash:tag-a"
+    expect(redisClient.sets.has("mc:tag:hash:tag-b")).toBe(false)
+  })
+
+  it("removes tag indexes before deleting entries", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    redisClient.setHash("mc:entry-1", {})
+    redisClient.setMembers("mc:tags:entry-1", ["hash:tag-a"])
+    redisClient.setMembers("mc:tag:hash:tag-a", ["mc:entry-1"])
+
+    const events: string[] = []
+    const originalSrem = redisClient.sremSync.bind(redisClient)
+    const originalUnlink = redisClient.unlinkSync.bind(redisClient)
+
+    redisClient.sremSync = ((key: string, member: string) => {
+      events.push(`srem:${member}`)
+      return originalSrem(key, member)
+    }) as typeof redisClient.sremSync
+
+    redisClient.unlinkSync = ((...keys: string[]) => {
+      events.push(`unlink:${keys.join(",")}`)
+      return originalUnlink(...keys)
+    }) as typeof redisClient.unlinkSync
+
+    await provider.clear({ key: "entry-1" })
+
+    const sremIdx = events.findIndex((event) => event === "srem:mc:entry-1")
+    const reverseUnlinkIdx = events.findIndex((event) =>
+      event.includes("mc:tags:entry-1")
     )
+    const entryUnlinkIdx = events.findIndex(
+      (event) => event === "unlink:mc:entry-1"
+    )
+
+    expect(sremIdx).toBeGreaterThanOrEqual(0)
+    expect(reverseUnlinkIdx).toBeGreaterThan(sremIdx)
+    expect(entryUnlinkIdx).toBeGreaterThan(reverseUnlinkIdx)
   })
 })

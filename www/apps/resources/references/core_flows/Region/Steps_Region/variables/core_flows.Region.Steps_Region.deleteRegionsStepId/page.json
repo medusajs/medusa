@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Region/Steps_Region/variables/core_flows.Region.Steps_Region.deleteRegionsStepId","title":"deleteRegionsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteRegionsStepId","type":"`\"delete-regions\"`","description":"","optional":false,"defaultValue":"\"delete-regions\"","expandable":false,"children":[]}]}]}

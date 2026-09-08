@@ -15,7 +15,7 @@ export type CreateRefundReasonsWorkflowInput = {
 export const createRefundReasonsWorkflowId = "create-refund-reasons-workflow"
 /**
  * This workflow creates one or more refund reasons. It's used by the
- * [Create Refund Reason Admin API Route](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasons).
+ * [Create Refund Reason Admin API Route](https://docs.medusajs.com/api/admin/refund-reasons/create-refund-reason).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create refund reasons in your custom flows.

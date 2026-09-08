@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "yarn"
 
       - name: Install monorepo dependencies
@@ -92,10 +92,11 @@ jobs:
             import { readFileSync, appendFileSync } from "fs"
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
             const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
+            const suffix = "\n\n---\n\nIMPORTANT — final step: after applying all documentation changes, write these two files using the Write tool:\n\n1. /tmp/pr-title.txt — a single-line pull request title. It MUST start with \"docs: \", followed by a concise summary of what was changed, and MUST end with \" [automated]\". Keep it under 100 characters. Example: \"docs: document new environment variables page [automated]\"\n2. /tmp/pr-summary.md — a short summary (2-4 sentences, or a few bullet points) of what was updated. Plain markdown, no top-level heading.\n\nIf you made no documentation changes, do not create either file.\n"
             const delimiter = "CLAUDE_PROMPT_EOF"
             appendFileSync(
               process.env.GITHUB_OUTPUT,
-              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}${suffix}\n${delimiter}\n`
             )
           EOF
 
@@ -108,6 +109,50 @@ jobs:
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
           model: claude-sonnet-4-6
           max_turns: 40
+
+      - name: Read changelog entry metadata
+        id: changelog
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+          const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+          const entry = a.changelogEntry ?? {}
+          appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `date=${entry.date ?? ""}\ndisplay_date=${entry.displayDate ?? ""}\nfile=${entry.file ?? ""}\n`
+          )
+          EOF
+
+      # Runs after Claude, since the banner is attached to the entry file Claude
+      # writes. A missing banner is not worth failing the run over — the entry is
+      # the deliverable and the image is decoration — so this only warns.
+      - name: Render and upload the changelog banner
+        id: banner
+        if: steps.check.outputs.needs_docs == 'true' && steps.changelog.outputs.file != ''
+        continue-on-error: true
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          ENTRY_FILE: ${{ steps.changelog.outputs.file }}
+          ENTRY_DATE: ${{ steps.changelog.outputs.display_date }}
+        run: |
+          if [ ! -f "$ENTRY_FILE" ]; then
+            echo "Claude wrote no changelog entry for $ENTRY_DATE — skipping the banner."
+            exit 0
+          fi
+
+          if [ -z "$CLOUDINARY_URL" ]; then
+            echo "::warning::CLOUDINARY_URL is not set — skipping the changelog banner"
+            exit 1
+          fi
+
+          # Called directly rather than through `yarn upload` so that the only
+          # thing captured here is the URL the CLI prints.
+          BANNER_URL=$(node www/utils/packages/release-banner/dist/cli.js upload \
+            --type cloud-changelog --date "$ENTRY_DATE")
+
+          node www/apps/cloud/scripts/set-changelog-image.mjs \
+            --file "$ENTRY_FILE" --url "$BANNER_URL"
 
       - name: Run prep script for cloud project
         if: steps.check.outputs.needs_docs == 'true'
@@ -125,7 +170,12 @@ jobs:
         id: changes
         if: steps.check.outputs.needs_docs == 'true'
         run: |
-          CHANGES=$(git diff --name-only -- www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs \
+          # Untracked files are listed too, since new documentation pages and
+          # new changelog entry files under `generated/changelog` don't show up
+          # in `git diff`.
+          PATHS="www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs"
+          CHANGES=$( { git diff --name-only -- $PATHS; \
+            git ls-files --others --exclude-standard -- $PATHS; } \
             | grep -E '\.(mdx|json|mjs)$' || true)
           if [ -n "$CHANGES" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
@@ -134,20 +184,34 @@ jobs:
             echo "No documentation changes found."
           fi
 
-      - name: Build PR body
+      - name: Build PR metadata
         id: pr-body
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         run: |
           node --input-type=module << 'EOF'
-            import { readFileSync, appendFileSync } from "fs"
+            import { existsSync, readFileSync, appendFileSync } from "fs"
 
             const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
             const flagged = Array.isArray(a.featureFlaggedFeatures) ? a.featureFlaggedFeatures : []
+
+            // Title generated by Claude, with a fallback if it is missing or malformed
+            let title = existsSync("/tmp/pr-title.txt")
+              ? readFileSync("/tmp/pr-title.txt", "utf8").split("\n")[0].trim()
+              : ""
+            if (!title.startsWith("docs: ") || !title.endsWith("[automated]")) {
+              title = "docs: update cloud documentation [automated]"
+            }
+
+            const summary = existsSync("/tmp/pr-summary.md")
+              ? readFileSync("/tmp/pr-summary.md", "utf8").trim()
+              : ""
 
             const lines = [
               "## Automated Cloud Documentation Updates",
               "",
               "This PR contains automated documentation changes triggered by Cloud production deployments.",
+              "",
+              summary || "_No summary was generated._",
               "",
               "> Review carefully before merging. Claude may have missed context or made incorrect assumptions.",
             ]
@@ -170,6 +234,7 @@ jobs:
 
             const body = lines.join("\n")
             const delimiter = "PR_BODY_EOF"
+            appendFileSync(process.env.GITHUB_OUTPUT, `TITLE=${title}\n`)
             appendFileSync(process.env.GITHUB_OUTPUT, `BODY<<${delimiter}\n${body}\n${delimiter}\n`)
           EOF
 
@@ -182,8 +247,8 @@ jobs:
           base: develop
           branch: docs/cloud-docs
           branch-suffix: timestamp
-          title: "chore(docs): cloud doc changes (automated)"
-          labels: "type: chore"
+          title: ${{ steps.pr-body.outputs.TITLE }}
+          labels: "type: docs"
           add-paths: |
             www/apps/cloud/app
             www/apps/cloud/generated

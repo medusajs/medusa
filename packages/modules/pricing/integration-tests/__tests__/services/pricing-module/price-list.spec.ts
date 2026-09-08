@@ -975,6 +975,65 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
         })
+
+        it("should update a price with an empty rules object", async () => {
+          const [priceSet] = await service.createPriceSets([{}])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  amount: 123,
+                  currency_code: "eur",
+                  price_set_id: priceSet.id,
+                },
+              ],
+            },
+          ])
+
+          await service.updatePriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-id",
+                  price_set_id: priceSet.id,
+                  amount: 456,
+                  rules: {},
+                },
+              ],
+            },
+          ])
+
+          const [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            {
+              relations: ["prices", "prices.price_rules"],
+              select: [
+                "id",
+                "prices.amount",
+                "prices.currency_code",
+                "prices.rules_count",
+              ],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 456,
+                  currency_code: "eur",
+                  rules_count: 0,
+                  price_rules: [],
+                }),
+              ]),
+            })
+          )
+        })
       })
 
       describe("removePrices", () => {

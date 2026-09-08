@@ -1,0 +1,1 @@
+{"slug":"/references/modules/locking","title":"locking","frontmatter":{},"toc":[{"title":"Interfaces","id":"interfaces","level":2}],"blocks":[{"kind":"heading","level":2,"text":"Interfaces","id":"interfaces"},{"kind":"linkList","items":[{"title":"ILockingModule","href":"/references/locking-service"},{"title":"ILockingProvider","href":"/references/locking-module-provider"}]}]}

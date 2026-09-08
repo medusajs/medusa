@@ -1,9 +1,0 @@
-import { TypeList } from "docs-ui"
-
-# KebabCase
-
- **KebabCase**: S extends `${infer T}${infer U}${infer V}` ? `U` extends Uppercase&#60;U&#62; ? `${Lowercase<T>}-${KebabCase<`$&#123;Lowercase&#60;U&#62;&#125;$&#123;V&#125;`>}` : `${T}${KebabCase<`$&#123;U&#125;$&#123;V&#125;`>}` : S
-
-## Type Parameters
-
-<TypeList types={[{"name":"S","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="KebabCase"/>

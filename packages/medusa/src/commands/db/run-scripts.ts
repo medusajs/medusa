@@ -10,8 +10,13 @@ import {
 import { dirname, join } from "path"
 
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { Logger, MedusaContainer, PluginDetails } from "@medusajs/types"
+import {
+  Logger,
+  MedusaContainer,
+  PluginDetails,
+} from "@medusajs/framework/types"
 import { initializeContainer } from "../../loaders"
+import { loadSearchIndexes } from "../../loaders/search"
 import { ensureDbExists } from "../utils"
 
 const TERMINAL_SIZE = process.stdout.columns
@@ -44,7 +49,7 @@ export async function runMigrationScripts({
 
     plugins = await getResolvedPlugins(directory, configModule, true)
 
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, directory)
 
     const resources = await loadResources(plugins, logger, container)
     onApplicationPrepareShutdown = resources.onApplicationPrepareShutdown
@@ -105,6 +110,14 @@ async function loadResources(
     join(plugin.resolve, "links")
   )
   await new LinkLoader(linksSourcePaths, logger).load()
+
+  // Cleared along with the module instances above, and the boot below seeds
+  // through `onApplicationStart`,.
+  await loadSearchIndexes({
+    plugins,
+    configModule: container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
+    logger,
+  })
 
   // Pass the existing container so that registrations (e.g. ContainerRegistrationKeys.QUERY)
   // are made on the same container that migration scripts will resolve from.

@@ -1,13 +1,12 @@
 import { SettingsTypes } from "@medusajs/framework/types"
 import {
+  GraphQLEnumType,
   GraphQLObjectType,
   isEnumType,
   isScalarType,
+  Kind,
 } from "@medusajs/framework/utils"
-import {
-  ComputedColumnDefinition,
-  getComputedColumnRegistry,
-} from "./computed-columns"
+import { getComputedColumnRegistry } from "./computed-columns"
 import {
   DiscoveredEntity,
   EntityDiscoveryService,
@@ -22,8 +21,11 @@ import {
   getDefaultVisibleFields,
   getEntityOverride,
   getFieldFilterRules,
+  getFieldMetadata,
   getFieldOrdering,
+  getFieldRenderModes,
   getNonFilterableFields,
+  getNonSortableFields,
 } from "./entity-overrides"
 import {
   buildFilterConfig,
@@ -31,7 +33,11 @@ import {
   shouldExcludeField,
 } from "./filter-rules"
 import { getRelationshipFilterConfig } from "./relationship-filters"
-import { inferDataType, inferRenderMode } from "./render-mode-mapper"
+import {
+  inferDataType,
+  inferRenderMode,
+  RenderMode,
+} from "./render-mode-mapper"
 
 // Re-export the AdminColumn type from types for convenience
 export type ViewConfigurationColumn = SettingsTypes.ViewConfigurationColumnDTO
@@ -45,6 +51,27 @@ export interface PropertyLabel {
   property: string
   label: string
   description?: string | null
+}
+
+/**
+ * Resolve the real (stored) values of a GraphQL enum.
+ *
+ * DML-generated enums uppercase the member name and keep the real stored value
+ * in an `@enumValue(value: "...")` directive (e.g. `STANDARD @enumValue(value:
+ * "standard")`). Honor that directive so filters use the value the DB actually
+ * stores; fall back to the member value for enums declared without it.
+ */
+function getEnumValues(enumType: GraphQLEnumType): string[] {
+  return enumType.getValues().map((value) => {
+    const directive = value.astNode?.directives?.find(
+      (d) => d.name.value === "enumValue"
+    )
+    const arg = directive?.arguments?.find((a) => a.name.value === "value")
+    if (arg?.value.kind === Kind.STRING) {
+      return arg.value.value
+    }
+    return String(value.value)
+  })
 }
 
 /**
@@ -102,9 +129,12 @@ export function generateEntityColumns(
   const override = customOverride || getEntityOverride(entity.name)
   const filterRules = getFieldFilterRules(entity.name, override)
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
-  const fieldOrdering = getFieldOrdering(entity.name, override)
+  const defaultFieldOrdering = getFieldOrdering(entity.name, override)
+  const fieldRenderModes = getFieldRenderModes(entity.name, override)
+  const fieldMetadata = getFieldMetadata(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
   const nonFilterableFields = getNonFilterableFields(entity.name, override)
+  const nonSortableFields = getNonSortableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
   const columns: ViewConfigurationColumn[] = []
@@ -119,8 +149,11 @@ export function generateEntityColumns(
     processedFields,
     filterRules,
     defaultVisibleFields,
-    fieldOrdering,
+    defaultFieldOrdering,
+    fieldRenderModes,
+    fieldMetadata,
     nonFilterableFields,
+    nonSortableFields,
     propertyLabels
   )
 
@@ -136,8 +169,11 @@ export function generateEntityColumns(
         processedFields,
         filterRules,
         defaultVisibleFields,
-        fieldOrdering,
+        defaultFieldOrdering,
+        fieldRenderModes,
+        fieldMetadata,
         nonFilterableFields,
+        nonSortableFields,
         propertyLabels
       )
     }
@@ -145,7 +181,7 @@ export function generateEntityColumns(
 
   // Add computed columns
   const computedColumnRegistry = getComputedColumnRegistry()
-  const computedColumns = computedColumnRegistry.getForEntity(entity.name)
+  const computedColumns = computedColumnRegistry.get(entity.name)
 
   for (const computed of computedColumns) {
     const columnId = computed.id
@@ -161,24 +197,30 @@ export function generateEntityColumns(
       name: label?.label || computed.name,
       description: label?.description || computed.description,
       field: columnId,
-      sortable: false,
+      sortable: computed.sortable ?? false,
       hideable: true,
       default_visible:
         computed.defaultVisible || defaultVisibleFields.includes(columnId),
-      data_type: "string",
-      semantic_type: "computed",
-      context: "display",
-      computed: {
-        type: computed.renderMode,
-        required_fields: computed.requiredFields,
-        optional_fields: computed.optionalFields || [],
-      },
+      data_type: (computed.dataType ??
+        "string") as ViewConfigurationColumn["data_type"],
+      semantic_type: computed.renderMode ? "computed" : "relationship",
+      context: computed.context ?? "display",
+      // Only display columns carry a compute (render + required fields);
+      // filter-only injected columns omit it.
+      computed: computed.renderMode
+        ? {
+            type: computed.renderMode,
+            required_fields: computed.requiredFields ?? [],
+            optional_fields: computed.optionalFields || [],
+          }
+        : undefined,
+      metadata: computed.metadata,
       render_mode: computed.renderMode,
-      default_order: fieldOrdering[columnId] || 850,
+      default_order: defaultFieldOrdering[columnId] || 850,
       category:
         (computed.category as ViewConfigurationColumn["category"]) ||
         "computed",
-      filter: { enabled: false },
+      filter: computed.filter ?? { enabled: false },
       source: { module: entity.module, entity: entity.name },
       custom_label: hasCustomLabel,
       label_id: label?.id,
@@ -202,8 +244,11 @@ function processEntityType(
   processedFields: Set<string>,
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
-  fieldOrdering: Record<string, number>,
+  defaultFieldOrdering: Record<string, number>,
+  fieldRenderModes: Record<string, RenderMode>,
+  fieldMetadata: Record<string, Record<string, any>>,
   nonFilterableFields: string[],
+  nonSortableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = ""
 ): void {
@@ -213,6 +258,22 @@ function processEntityType(
   }
 
   const fields = type.getFields()
+
+  // Foreign keys made redundant by a single relationship of the same name
+  // (e.g. collection_id -> collection.id). The relationship's `.id` column
+  // covers both filtering and display, so drop the raw FK to avoid duplicates.
+  const redundantForeignKeys = new Set<string>()
+  if (!parentPath) {
+    for (const [fieldName, fieldDef] of Object.entries(fields)) {
+      const fieldType = (fieldDef as any).type
+      if (
+        isSingleRelationship(fieldType) &&
+        getUnderlyingType(fieldType) instanceof GraphQLObjectType
+      ) {
+        redundantForeignKeys.add(`${fieldName}_id`)
+      }
+    }
+  }
 
   for (const [fieldName, fieldDef] of Object.entries(fields)) {
     const fullPath = parentPath ? `${parentPath}.${fieldName}` : fieldName
@@ -227,18 +288,23 @@ function processEntityType(
       continue
     }
 
+    // Skip FKs covered by their relationship's `.id` column
+    if (redundantForeignKeys.has(fullPath)) {
+      continue
+    }
+
     const fieldType = (fieldDef as any).type
     const underlyingType = getUnderlyingType(fieldType)
     const isArray = isArrayField(fieldType)
 
     // Handle scalar and enum types
     if (isScalarType(underlyingType) || isEnumType(underlyingType)) {
-      const graphqlTypeName = underlyingType.name
-      const dataType = inferDataType(graphqlTypeName, fieldName)
-      const { renderMode, semanticType } = inferRenderMode(
+      const dataType = inferDataType(underlyingType, fieldName)
+      const { renderMode: inferredRenderMode, semanticType } = inferRenderMode(
         fieldName,
-        graphqlTypeName
+        underlyingType
       )
+      const renderMode = fieldRenderModes[fullPath] ?? inferredRenderMode
 
       const label = propertyLabels?.get(fullPath)
       const hasCustomLabel = !!label
@@ -253,7 +319,7 @@ function processEntityType(
             false,
             semanticType,
             isEnumType(underlyingType)
-              ? underlyingType.getValues().map((v: any) => v.value)
+              ? getEnumValues(underlyingType)
               : undefined
           )
 
@@ -262,14 +328,18 @@ function processEntityType(
         name: label?.label || formatFieldName(fieldName),
         description: label?.description || undefined,
         field: fullPath,
-        sortable: !parentPath, // Only top-level fields are sortable
+        sortable:
+          !parentPath &&
+          dataType !== "object" &&
+          !nonSortableFields.includes(fullPath), // Only top-level fields are sortable
         hideable: true,
         default_visible: defaultVisibleFields.includes(fullPath),
         data_type: dataType,
         semantic_type: semanticType,
         context: "both",
         render_mode: renderMode,
-        default_order: fieldOrdering[fullPath] || 900,
+        metadata: fieldMetadata[fullPath],
+        default_order: defaultFieldOrdering[fullPath] || 900,
         category: parentPath
           ? "relationship"
           : semanticTypeToCategory(semanticType),
@@ -305,12 +375,14 @@ function processEntityType(
             isScalarType(nestedUnderlyingType) &&
             !processedFields.has(nestedPath)
           ) {
-            const graphqlTypeName = nestedUnderlyingType.name
-            const dataType = inferDataType(graphqlTypeName, relatedFieldName)
-            const { renderMode, semanticType } = inferRenderMode(
-              relatedFieldName,
-              graphqlTypeName
+            const dataType = inferDataType(
+              nestedUnderlyingType,
+              relatedFieldName
             )
+            const { renderMode: inferredRenderMode, semanticType } =
+              inferRenderMode(relatedFieldName, nestedUnderlyingType)
+            const renderMode =
+              fieldRenderModes[nestedPath] ?? inferredRenderMode
 
             const label = propertyLabels?.get(nestedPath)
             const hasCustomLabel = !!label
@@ -323,7 +395,10 @@ function processEntityType(
                   relatedFieldName,
                   dataType,
                   false,
-                  semanticType
+                  semanticType,
+                  isEnumType(nestedUnderlyingType)
+                    ? getEnumValues(nestedUnderlyingType)
+                    : undefined
                 )
 
             // Note: nested .id paths in nonFilterableFields produce
@@ -357,7 +432,8 @@ function processEntityType(
               semantic_type: semanticType,
               context: "both",
               render_mode: renderMode,
-              default_order: fieldOrdering[nestedPath] || 950,
+              metadata: fieldMetadata[nestedPath],
+              default_order: defaultFieldOrdering[nestedPath] || 950,
               category: "relationship",
               filter,
               source: { module: entity.module, entity: entity.name },
@@ -413,41 +489,5 @@ function processEntityType(
         }
       }
     }
-  }
-}
-
-/**
- * Convert a computed column definition to an AdminColumn.
- */
-export function computedColumnToAdminColumn(
-  column: ComputedColumnDefinition,
-  entity: DiscoveredEntity,
-  defaultOrder: number = 850,
-  label?: PropertyLabel
-): ViewConfigurationColumn {
-  return {
-    id: column.id,
-    name: label?.label || column.name,
-    description: label?.description || column.description,
-    field: column.id,
-    sortable: false,
-    hideable: true,
-    default_visible: column.defaultVisible ?? false,
-    data_type: "string",
-    semantic_type: "computed",
-    context: "display",
-    computed: {
-      type: column.renderMode,
-      required_fields: column.requiredFields,
-      optional_fields: column.optionalFields || [],
-    },
-    render_mode: column.renderMode,
-    default_order: defaultOrder,
-    category:
-      (column.category as ViewConfigurationColumn["category"]) || "computed",
-    filter: { enabled: false },
-    source: { module: entity.module, entity: entity.name },
-    custom_label: !!label,
-    label_id: label?.id,
   }
 }

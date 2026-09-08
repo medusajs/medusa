@@ -8,8 +8,10 @@ const PREFIX = "invlvl"
 
 export const ItemLocationListTable = ({
   inventory_item_id,
+  unit_of_measure,
 }: {
   inventory_item_id: string
+  unit_of_measure?: string | null
 }) => {
   const searchParams = useLocationLevelTableQuery({
     pageSize: PAGE_SIZE,
@@ -27,7 +29,7 @@ export const ItemLocationListTable = ({
     fields: "+stock_locations.id,+stock_locations.name",
   })
 
-  const columns = useLocationListTableColumns()
+  const columns = useLocationListTableColumns(unit_of_measure)
 
   if (isError) {
     throw error

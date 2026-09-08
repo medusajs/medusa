@@ -11,7 +11,7 @@ export const PriceListDetailBreadcrumb = (
   const { id } = props.params || {}
 
   const { price_list } = usePriceList(id!, undefined, {
-    initialData: props.data,
+    initialData: props.loaderData,
     enabled: Boolean(id),
   })
 
@@ -23,5 +23,5 @@ export const PriceListDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminPriceListResponse>) => ({
-  title: match.data?.price_list?.title,
+  title: match.loaderData?.price_list?.title,
 })

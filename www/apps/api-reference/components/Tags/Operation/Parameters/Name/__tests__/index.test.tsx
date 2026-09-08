@@ -29,6 +29,9 @@ vi.mock("docs-ui", () => ({
     </div>
   ),
 }))
+vi.mock("@/providers/area", () => ({
+  useArea: () => ({ area: "admin" }),
+}))
 
 import TagOperationParametersName from ".."
 
@@ -72,7 +75,7 @@ describe("rendering", () => {
     expect(expandableNoticeElement).toBeInTheDocument()
     expect(expandableNoticeElement).toHaveTextContent("Expandable Notice")
     expect(expandableNoticeElement).toHaveAttribute("data-type", "request")
-    expect(expandableNoticeElement).toHaveAttribute("data-link", "#expanding-relations")
+    expect(expandableNoticeElement).toHaveAttribute("data-link", "/admin/select-fields-and-relations")
   })
   
   test("renders feature flag notice when schema has a feature flag", () => {

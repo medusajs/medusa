@@ -49,6 +49,18 @@ export const troubleshootingSidebar = [
   },
   {
     type: "category",
+    title: "Build and Deployment",
+    initialOpen: true,
+    children: [
+      {
+        type: "link",
+        path: "/troubleshooting/esm-syntax-error",
+        title: "Unexpected token 'export' Error",
+      },
+    ],
+  },
+  {
+    type: "category",
     title: "Framework",
     initialOpen: true,
     children: [
@@ -65,6 +77,11 @@ export const troubleshootingSidebar = [
             type: "link",
             title: "Middleware Registration",
             path: "/troubleshooting/api-routes/middleware-registration",
+          },
+          {
+            type: "link",
+            title: "Route Registration Error",
+            path: "/troubleshooting/api-routes/route-registration-error",
           },
         ],
       },
@@ -221,6 +238,11 @@ export const troubleshootingSidebar = [
             type: "link",
             path: "/troubleshooting/nextjs-starter-rewrites",
             title: "Google Cloud Run Error",
+          },
+          {
+            type: "link",
+            path: "/troubleshooting/nextjs-build-404",
+            title: "Dynamic Routes 404 During Build",
           },
         ],
       },

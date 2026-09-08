@@ -28,7 +28,7 @@ There are two ways to retrieve a product collection:
 
 ## Retrieve a Product Collection by ID
 
-To retrieve a product collection by its ID, send a request to the [Get a Collection API route](!api!/store#collections_getcollectionsid):
+To retrieve a product collection by its ID, send a request to the [Get a Collection API route](!api!/store/collections/get-a-collection):
 
 <Note title="Tip">
 
@@ -99,15 +99,15 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the product collection by sending a request to the [Get a Collection API route](!api!/store#collections_getcollectionsid).
+In this example, you retrieve the product collection by sending a request to the [Get a Collection API route](!api!/store/collections/get-a-collection).
 
-The response has a `collection` field, which is a [product collection object](!api!/store#collections_collection_schema).
+The response has a `collection` field, which is a [product collection object](!api!/store/collections/schema).
 
 ---
 
 ## Retrieve a Product Collection by Handle
 
-To retrieve a product by its handle, send a request to the [List Product Collections API route](!api!/store#collections_getcollections) passing it the `handle` query parameter:
+To retrieve a product by its handle, send a request to the [List Product Collections API route](!api!/store/collections/list-collections) passing it the `handle` query parameter:
 
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">
@@ -187,9 +187,9 @@ export const handleFetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the product collection by sending a request to the [List Product Collections API route](!api!/store#collections_getcollections) passing it the `handle` query parameter.
+In this example, you retrieve the product collection by sending a request to the [List Product Collections API route](!api!/store/collections/list-collections) passing it the `handle` query parameter.
 
 Since handles are unique, you can be sure that the product collection you retrieve is the one you're looking for. If no product collection matches the handle, you can show a 404 error or a custom message to the customer.
 
-The product collection in the response is a [product collection object](!api!/store#collections_collection_schema).
+The product collection in the response is a [product collection object](!api!/store/collections/schema).
 

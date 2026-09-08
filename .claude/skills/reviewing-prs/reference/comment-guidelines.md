@@ -103,7 +103,7 @@ Keep concerns concise and factual — describe the problem, not a lecture. If un
 
 ## Potential Bugs Section
 
-When bugs are found in Step 10, include a **"Potential Bugs"** section in the review comment. **All bugs — confirmed or suspected — are required changes.** Always apply `requires-more` when this section is present.
+When bugs are found in Step 12, include a **"Potential Bugs"** section in the review comment. **All bugs — confirmed or suspected — are required changes.** Always apply `requires-more` when this section is present.
 
 **Format:**
 
@@ -129,7 +129,7 @@ When bugs are found in Step 10, include a **"Potential Bugs"** section in the re
 
 ## Security Issues Section
 
-When security issues are found in Step 8, include a **"Security Issues"** section in the review comment.
+When security issues are found in Step 10, include a **"Security Issues"** section in the review comment.
 
 - Confirmed security vulnerabilities → add to **Required changes** and always apply `requires-more`
 - Suspected / uncertain risks → include under **"Security Issues"** with a question framing
@@ -158,7 +158,7 @@ When security issues are found in Step 8, include a **"Security Issues"** sectio
 
 ## Performance Issues Section
 
-When performance issues are found in Step 9, include a **"Performance Issues"** section in the review comment.
+When performance issues are found in Step 11, include a **"Performance Issues"** section in the review comment.
 
 - Blocking performance issues (N+1 queries, unbounded queries on large tables, missing pagination) → add to **Required changes** and apply `requires-more`
 - Non-blocking performance observations → include under **"Performance Issues"** as notes only

@@ -16,11 +16,11 @@ import { validateTokenStep } from "../steps/validate-token"
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 /**
  * This workflow accepts an invite and creates a user. It's used by the
- * [Accept Invite Admin API Route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept).
+ * [Accept Invite Admin API Route](https://docs.medusajs.com/api/admin/invites/accept-invite).
  *
  * The workflow throws an error if the specified token is not valid. Also, the workflow
  * requires an auth identity to be created previously. You can create an auth identity
- * using the [Retrieve Registration JWT Token API Route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider_register).
+ * using the [Retrieve Registration JWT Token API Route](https://docs.medusajs.com/api/admin/auth/retrieve-registration-jwt-token).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * accept invites within your custom flows.

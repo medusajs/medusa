@@ -60,6 +60,14 @@ This separation of concerns allows for greater flexibility and extensibility. Yo
 
 The first step is to remove the Cache Module from your `medusa-config.ts` file.
 
+<Note title="Warning" type="warning">
+
+If you use OAuth-based authentication providers such as Google or GitHub login, the Auth Module uses the Cache Module to store the OAuth state parameter between the redirect and the callback. Removing the Cache Module without a Redis provider causes Medusa to fall back to an in-memory cache, which breaks OAuth flows across multiple application instances or after a restart.
+
+Keep the Cache Module registered with a Redis provider until the Auth Module is updated to use the Caching Module instead.
+
+</Note>
+
 For example, if you set up the Redis Cache Module, remove the following code from `medusa-config.ts`:
 
 ```ts title="medusa-config.ts" highlights={[["5"], ["6"], ["7"], ["8"], ["9"], ["10"]]}

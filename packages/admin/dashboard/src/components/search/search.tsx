@@ -10,7 +10,6 @@ import {
 import { Command } from "cmdk"
 import { Dialog as RadixDialog } from "radix-ui"
 import {
-  Children,
   ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
@@ -34,12 +33,13 @@ import {
 } from "@medusajs/icons"
 import { matchSorter } from "match-sorter"
 
+import { resolveSearchEntityGroupLabel } from "../../lib/search/search-entities"
 import { useSearch } from "../../providers/search-provider"
 import { Skeleton } from "../common/skeleton"
 import { Thumbnail } from "../common/thumbnail"
 import {
   DEFAULT_SEARCH_LIMIT,
-  SEARCH_AREAS,
+  getSearchAreas,
   SEARCH_LIMIT_INCREMENT,
 } from "./constants"
 import { SearchArea } from "./types"
@@ -286,29 +286,14 @@ const CommandPalette = forwardRef<
 ))
 CommandPalette.displayName = Command.displayName
 
-interface CommandDialogProps extends RadixDialog.DialogProps {
-  isLoading?: boolean
-}
-
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+const CommandDialog = ({ children, ...props }: RadixDialog.DialogProps) => {
   const { t } = useTranslation()
-
-  const preserveHeight = useMemo(() => {
-    return props.isLoading && Children.count(children) === 0
-  }, [props.isLoading, children])
 
   return (
     <RadixDialog.Root {...props}>
       <RadixDialog.Portal>
         <RadixDialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <RadixDialog.Content
-          className={clx(
-            "bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] flex max-h-[calc(100%-16px)] w-[calc(100%-16px)] min-w-0 max-w-2xl translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden rounded-xl p-0",
-            {
-              "h-[300px]": preserveHeight, // Prevents the dialog from collapsing when loading async results and before the no results message is displayed
-            }
-          )}
-        >
+        <RadixDialog.Content className="bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] flex max-h-[calc(100%-16px)] w-[calc(100%-16px)] min-w-0 max-w-2xl translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden rounded-xl p-0">
           <RadixDialog.Title className="sr-only">
             {t("app.search.title")}
           </RadixDialog.Title>
@@ -383,7 +368,7 @@ const CommandInput = forwardRef<
                 size="2xsmall"
                 className="hover:bg-ui-bg-base-pressed transition-fg cursor-pointer"
               >
-                {t(`app.search.groups.${area}`)}
+                {resolveSearchEntityGroupLabel(area, t)}
                 <TriangleDownMini className="text-ui-fg-muted" />
               </Badge>
             </DropdownMenu.Trigger>
@@ -399,13 +384,13 @@ const CommandInput = forwardRef<
                 value={area}
                 onValueChange={(v) => setArea(v as SearchArea)}
               >
-                {SEARCH_AREAS.map((area) => (
-                  <Fragment key={area}>
-                    {area === "command" && <DropdownMenu.Separator />}
-                    <DropdownMenu.RadioItem value={area}>
-                      {t(`app.search.groups.${area}`)}
+                {getSearchAreas().map((searchArea) => (
+                  <Fragment key={searchArea}>
+                    {searchArea === "command" && <DropdownMenu.Separator />}
+                    <DropdownMenu.RadioItem value={searchArea}>
+                      {resolveSearchEntityGroupLabel(searchArea, t)}
                     </DropdownMenu.RadioItem>
-                    {area === "all" && <DropdownMenu.Separator />}
+                    {searchArea === "all" && <DropdownMenu.Separator />}
                   </Fragment>
                 ))}
               </DropdownMenu.RadioGroup>
@@ -467,7 +452,7 @@ const CommandList = forwardRef<
   <Command.List
     ref={ref}
     className={clx(
-      "max-h-[300px] flex-1 overflow-y-auto overflow-x-hidden px-2 pb-4",
+      "h-[300px] overflow-y-auto overflow-x-hidden px-2 pb-4",
       className
     )}
     {...props}

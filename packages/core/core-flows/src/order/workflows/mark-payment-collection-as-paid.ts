@@ -86,7 +86,7 @@ const systemPaymentProviderId = "pp_system_default"
 export const markPaymentCollectionAsPaidId = "mark-payment-collection-as-paid"
 /**
  * This workflow marks a payment collection for an order as paid. It's used by the
- * [Mark Payment Collection as Paid Admin API Route](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid).
+ * [Mark Payment Collection as Paid Admin API Route](https://docs.medusajs.com/api/admin/payment-collections/mark-as-paid).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * marking a payment collection for an order as paid.

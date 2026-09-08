@@ -9,6 +9,7 @@ import {
   MedusaError,
   Modules,
   arrayDifference,
+  isDefined,
   promiseAll,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
@@ -104,7 +105,7 @@ export const setRegionsPaymentProvidersStepId =
   "add-region-payment-providers-step"
 /**
  * This step sets the payment providers available in regions.
- * 
+ *
  * @example
  * const data = setRegionsPaymentProvidersStep({
  *   input: [
@@ -119,7 +120,7 @@ export const setRegionsPaymentProvidersStep = createStep(
   setRegionsPaymentProvidersStepId,
   async (data: SetRegionsPaymentProvidersStepInput, { container }) => {
     const dataInputToProcess = data.input.filter((inputData) => {
-      return inputData.payment_providers?.length
+      return isDefined(inputData.payment_providers)
     }) as FilteredSetRegionsPaymentProvidersStepInput[]
 
     if (!dataInputToProcess.length) {

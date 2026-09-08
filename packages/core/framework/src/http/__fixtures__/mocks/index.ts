@@ -4,6 +4,7 @@ export const customersGlobalMiddlewareMock = jest.fn()
 export const customersCreateMiddlewareMock = jest.fn()
 export const customersCreateMiddlewareValidatorMock = jest.fn()
 export const storeGlobalMiddlewareMock = jest.fn()
+export const adminRegexMiddlewareMock = jest.fn()
 
 export const config = {
   projectConfig: {

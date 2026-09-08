@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `Unexpected token 'export' Error`,
+}
+
+# {metadata.title}
+
+You may run into the following error when you run migrations or start the Medusa application from the `.medusa/server` directory, such as during deployment:
+
+```bash
+SyntaxError: Unexpected token 'export'
+```
+
+The error points to a compiled JavaScript file in the `.medusa/server` directory, such as `.medusa/server/medusa-config.js` or a file under `.medusa/server/src`.
+
+## Why this Error Occurred
+
+The Medusa application loads your files, including the configuration file, migrations, API routes, and subscribers, as CommonJS modules at runtime.
+
+The [build](!docs!/learn/build) command compiles your TypeScript files using the `module` option in your `tsconfig.json` file. If you set that option to an ES module format, such as `ESNext` or `ES2022`, the compiled files keep the `export` and `import` keywords instead of using CommonJS syntax.
+
+Node.js then treats every `.js` file as CommonJS, since the `package.json` file of a Medusa application doesn't have a `"type": "module"` field. So, Node.js fails to parse the `export` keyword and throws the above error.
+
+---
+
+## How to Diagnose it
+
+1. Open the `tsconfig.json` file at the root of your Medusa application and check the `module` and `moduleResolution` options. An ES module format, such as `ESNext`, `ES2020`, or `ES2022`, causes this error.
+2. Open the `package.json` file at the root of your Medusa application and check whether it has a `"type": "module"` field. If it does, remove it using the steps in the next section.
+3. Open the file mentioned in the error message under `.medusa/server` and check whether it starts with `import` or contains `export` statements. If it does, the compiled output uses an ES module format.
+
+---
+
+## How to Fix it
+
+To fix this error, change the `module` and `moduleResolution` options in your `tsconfig.json` file to `Node16`, which is the configuration that Medusa applications use:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16"
+  }
+}
+```
+
+Then, if your `package.json` file has a `"type": "module"` field, remove it:
+
+```json title="package.json"
+{
+  "type": "module"
+}
+```
+
+<Note type="warning">
+
+Don't add a `"type": "module"` field to your `package.json` file to resolve this error. It changes how Node.js interprets every file in your project, and Medusa applications don't support ES modules. Learn more about this field in the [Node.js documentation](https://nodejs.org/api/packages.html#type).
+
+</Note>
+
+Finally, create the production build again:
+
+```bash npx2yarn
+npx medusa build
+```
+
+The compiled files now use CommonJS syntax, and you can run migrations and start the application as explained in the [build](!docs!/learn/build) documentation.
+
+---
+
+## Additional Resources
+
+- [Build Medusa Application](!docs!/learn/build): Learn how to create a production build and start it.
+- [General Deployment](!docs!/learn/deployment/general): Learn the general steps to deploy a Medusa application.

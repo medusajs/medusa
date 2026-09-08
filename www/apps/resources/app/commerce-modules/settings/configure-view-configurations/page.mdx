@@ -1,0 +1,711 @@
+---
+sidebar_label: "Configure View Configurations"
+tags:
+    - settings
+    - how to
+    - server
+    - admin
+products:
+    - settings
+---
+
+import { Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Configure View Configurations`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to configure the data tables that use view configurations in the dashboard. You'll learn how to set the default columns and their order, add computed columns, change how a column's value renders, and show a configurable data table in your admin customizations.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.18.0 or later",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.18.0"
+    },
+    {
+      text: "View configurations feature flag enabled",
+      link: "../view-configurations/page.mdx#enable-the-feature-flag"
+    }
+  ]}
+/>
+
+## How Column Configurations are Generated
+
+The Settings Module discovers the entities in your application from the registered modules' [query graph](!docs!/learn/fundamentals/module-links/query), including your custom modules' data models. For each entity, it generates the column configurations that are used in its configurable data table in the Medusa Admin dashboard.
+
+You can then override these generated column configurations, as explained in the following sections. You can change the default visible columns, their order, how their values render, and add computed columns.
+
+<Note title="Glossary">
+
+In this guide, the terms "entity" and "data model" are used interchangeably. They both refer to a [data model](!docs!/learn/fundamentals/data-models) defined in a module, such as a core data model like `Product` or a custom one like `Brand`.
+
+</Note>
+
+---
+
+## How to Override Entity Column Configurations
+
+In the Settings Module's configurations, you can override the generated columns of a core or custom data model. These overrides are applied to the configurable data table in the Medusa Admin dashboard when the view configuration feature is enabled, and only to the system default view configuration.
+
+<Note title="Tip">
+
+Admin users can still customize the columns of a data table in the dashboard, and their customizations are saved either as system default or user-specific view configurations. The overrides you define here are applied only if the user hasn't customized the columns of the data table.
+
+</Note>
+
+In this section, you'll learn how to configure the default columns of a custom data model `Brand` defined in a custom module. You can use the same approach to configure the default columns of any core or custom data model. The sections after this one explain all the different configuration overrides you can set for an entity's columns.
+
+<Prerequisites
+  items={[
+    {
+      text: "A custom module with a data model defined",
+      link: "!docs!/learn/customization/custom-features/module"
+    }
+  ]}
+/>
+
+### Step 1: Configure the Settings Module
+
+To override the generated columns of an entity, pass the `entityOverrides` option to the Settings Module in `medusa-config.ts`. Its value is an object whose keys are data model names as passed to the `MedusaService` extended by the module's service, and whose values are the entity's override configuration.
+
+<Note title="Tip">
+
+For core data models, the entity key is the pascal case name of the entity, such as `Product`, `Order`, or `SalesChannel`.
+
+</Note>
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: [
+              "name",
+              "description",
+            ],
+            defaultFieldOrdering: { name: 100 },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This configuration overrides the default columns of the `Brand` data model, assuming you defined it in a custom module. The `name` and `description` columns are shown by default, and the `name` column appears first.
+
+<Note title="Tip">
+
+The Settings Module is registered by default, so you only add it to the `modules` array to pass when you want to pass options to it.
+
+</Note>
+
+### Step 2: Show a Configurable Data Table in Your Admin Customizations
+
+<Prerequisites
+  items={[
+    {
+      text: "An API route that lists the entity's records",
+      link: "!docs!/learn/customization/customize-admin/route#1-get-brands-api-route"
+    }
+  ]}
+/>
+
+Next, you can show a configurable, view-aware data table for an entity in your admin customizations, such as a [custom UI route](!docs!/learn/fundamentals/admin/ui-routes).
+
+To do that, use the `ConfigurableDataTable` component with an adapter created by the `createTableAdapter` utility, both available through the admin dashboard.
+
+For example, create the file `src/admin/routes/brands/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/brands/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { ConfigurableDataTable } from "@medusajs/dashboard/components"
+import { createTableAdapter } from "@medusajs/dashboard/lib"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../../lib/sdk"
+
+const adapter = createTableAdapter({
+  entity: "brand",
+  useData: (fields, params) => {
+    const { data, isLoading, isError, error } =
+      useQuery({
+        queryKey: ["brands", fields, params],
+        queryFn: () =>
+          sdk.client.fetch("/admin/brands", {
+            query: { fields, ...params },
+          }),
+      })
+
+    return {
+      data: data?.brands,
+      count: data?.count,
+      isLoading,
+      isError,
+      error,
+    }
+  },
+  getRowHref: (row) => `/brands/${row.id}`,
+})
+
+const BrandsPage = () => {
+  return (
+    <ConfigurableDataTable
+      adapter={adapter}
+      heading="Brands"
+    />
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Brands",
+})
+
+export default BrandsPage
+```
+
+This API route retrieves the list of brands from the `/admin/brands` API route and shows them in a configurable data table. The table uses the default columns defined in the Settings Module's configuration, and admin users can customize the columns and save their view configurations.
+
+If you go to `/admin/brands` in your Medusa Admin dashboard, you'll see the configurable data table for the `Brand` data model. Based on the configurations you defined in `medusa-config.ts`, it shows the `name` and `description` columns, and the `name` column appears first. You can customize the configurations, such as the visible columns and their order, and save your view configuration.
+
+<Note title="Tip">
+
+If you don't need saved views or dynamic columns, use the [DataTable component](../../../admin-components/components/data-table/page.mdx) from `@medusajs/ui` instead. It's a stable, fully-supported table primitive.
+
+</Note>
+
+---
+
+## Set Default Visible Fields and Ordering
+
+To set which columns are shown by default and their order, use the following properties in the entity's override configuration:
+
+- `defaultVisibleFields`: An array of field names that are shown by default, in the order they're listed.
+- `defaultFieldOrdering`: An object whose keys are field names, and whose values are numbers. Columns are ordered by these numbers in ascending order, so a column with a lower number appears first.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description"],
+            defaultFieldOrdering: {
+              name: 100,
+              description: 200,
+            },
+          },
+          Product: {
+            defaultVisibleFields: ["title", "collection.title"],
+            defaultFieldOrdering: {
+              title: 100,
+              "collection.title": 200,
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+You override the default columns of the `Brand` and `Product` data models. The `Brand` override shows the `name` and `description` columns, and the `Product` override shows the `title` column and the title of its collection.
+
+The `Product` override adds a relation's field to the visible columns: `collection.title` shows the title of a product's collection as a column. Use a dotted path to reference a scalar field of a related entity, and use the same dotted path as the key in `defaultFieldOrdering`.
+
+For a core entity like `Product`, your configuration is merged with the built-in configuration. For a custom data model like `Brand`, your configuration is the entire configuration.
+
+<Note title="Tip">
+
+Space the ordering numbers by `100` to leave room to insert columns later.
+
+</Note>
+
+---
+
+## Default Column Render Modes
+
+The Settings Module infers how to render each column's value, which is used to decide the column's render mode. The Medusa Admin dashboard defines cell renderers for these render modes, which are used to render the column's value in the configurable data table.
+
+The Settings Module and Medusa Admin dashboard support the following built-in render modes:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Render Mode
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Description
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `text`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as plain text.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `number`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Formats the value as a localized number.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `currency`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Formats the value as a price using the same row's `currency_code` property.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `date`, `datetime`, or `timestamp`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Formats the value as a date.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `boolean`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as a Yes or No badge.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `email`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as a `mailto:` link.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `phone`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as a `tel:` link.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `url`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as an external link.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `image`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as an image.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as formatted JSON.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `handle`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the value as a URL path prefixed with `/`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `count`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the number of items in the array specified in the entity configuration's `metadata.list_field`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `badges`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows the items in the array specified in the entity configuration's `metadata.list_field` as badges. The label of the badges is determined by `metadata.display_field`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `status`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows a status pill resolved from the entity configuration's `metadata.resolver` or `metadata.status_variants`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `name`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows a full name from the `first_name` and `last_name` fields at the entity configuration's `metadata.name_source`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `address`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows a formatted address from the object at the entity configuration's `metadata.address_field`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `country_code`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows a country flag from the code at the entity configuration's `metadata.country_code_field`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### How Render Modes are Inferred
+
+By default, the Settings Module infers how to render a column's value in the following order of precedence:
+
+1. **Name checking:** It applies the following name checks and assigns the corresponding render mode if the field name matches:
+    - `*_at` / `created_at` / `updated_at` / `deleted_at` → `datetime`
+    - `*_date` → `date`
+    - `*total` / `*amount` / `*price` / `subtotal` / `tax_total` / `shipping_total` / `discount_total` → `currency`
+    - `*status` / `state` / `payment_status` / `fulfillment_status` → `status`
+    - `email` / `*_email` → `email`
+    - `phone` / `*_phone` → `phone`
+    - `*country_code` → `country_code`
+    - `url` / `*_url` → `url`
+    - `thumbnail` / `avatar` / `*_image` → `image`
+    - `id` / `*_id` → `id`
+    - `display_id` → `display_id`
+    - `count` / `*_count` / `*quantity` → `number`
+    - `is_*` / `has_*` / `can_*` → `boolean`
+    - `metadata` → `json`
+2. **Type checking:** If the field name doesn't match any of the above, it checks the field's type and assigns the corresponding render mode:
+    - `boolean` → `boolean`
+    - `text` → `text`
+    - `number` → `number`
+    - `dateTime` → `datetime`
+    - `json` → `json`
+    - `id` → `id`
+3. **Fallback:** If the field name and type don't match any of the above, it defaults to `text`.
+
+### Override Field Render Modes
+
+To override the inferred render mode of a field, use the `fieldRenderModes` property. Its value is an object whose keys are field names, and whose values are render modes:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description", "asset"],
+            fieldRenderModes: {
+              asset: "image",
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this example, the `asset` field of the `Brand` data model is rendered as an image, even if its name and type don't match any of the built-in render modes.
+
+For render modes that require additional configuration through the `metadata` property, such as `country_code`, you can set the required configuration in the entity's override configuration:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description", "country"],
+            fieldRenderModes: {
+              country: "country_code",
+            },
+            fieldMetadata: {
+              country: { country_code_field: "country" },
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this example, the `country` field of the `Brand` data model is rendered as a country flag, and the `country_code_field` metadata is set to the same field name.
+
+---
+
+## Define a Custom Render Mode
+
+In your admin dashboard customization, you can define a custom render mode to render a column's value in a specific way. You can then use that render mode in the entity's override configuration to render a column's value with your custom logic.
+
+Cell renderers are defined in the `src/admin/lib/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
+
+For example, create the file `src/admin/lib/cell-renderers.tsx` with the following content:
+
+```tsx title="src/admin/lib/cell-renderers.tsx"
+import { defineCellRenderer } from "@medusajs/dashboard/lib"
+
+defineCellRenderer("capitalized", {
+  render: (value) => {
+    if (!value) {
+      return "-"
+    }
+
+    const text = String(value)
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  },
+})
+```
+
+In this example, the `capitalized` render mode capitalizes the first letter of the column's value.
+
+The `defineCellRenderer` utility accepts the following parameters:
+
+1. A string that is the render mode's name, which you can use in the entity's override configuration.
+2. A configuration object with the following properties:
+   - `render`: A function that returns the content of the cell. It receives the following parameters:
+      1. The column's value. For regular columns, this is the value of the field. For computed columns, this is the full row.
+      2. The full row of data, which includes all the fields of the entity.
+      3. The column's configuration as an `AdminColumn` object, including properties like `id`, `name`, `field` (the field path), `data_type`, `render_mode`, and `metadata`. For computed columns, it also has a `computed` object with `type`, `required_fields`, and `optional_fields`.
+      4. A translation function to translate strings in the cell's content.
+   - `align`: (optional) The alignment of the cell's content. Its value can be `left`, `center`, or `right`. The default value is `left`.
+   - `truncateTooltip`: (optional) Whether to show a tooltip with the full content when the cell's content is truncated. The default value is `true`.
+
+You can then apply the `capitalized` render mode to a regular field in the `Brand` entity's override configuration using the `fieldRenderModes` property:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            fieldRenderModes: {
+              name: "capitalized",
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This applies the `capitalized` render mode to the `name` column, so a brand's name renders with its first letter capitalized. Because the renderer only uses the column's own value, no other fields need to be fetched.
+
+### Use Metadata in a Custom Render Mode
+
+A custom render mode can accept configuration through the column's `metadata`, which makes the render mode reusable across fields. Set the metadata for a regular field with the `fieldMetadata` property, and read it in the renderer from the third parameter's `metadata` property.
+
+For example, add a `truncated` render mode that shortens a value to a maximum length:
+
+```tsx title="src/admin/lib/cell-renderers.tsx"
+import { defineCellRenderer } from "@medusajs/dashboard/lib"
+
+defineCellRenderer("truncated", {
+  render: (value, _row, column) => {
+    if (!value) {
+      return "-"
+    }
+
+    const maxLength = column.metadata?.max_length ?? 50
+    const text = String(value)
+
+    return text.length > maxLength
+      ? `${text.slice(0, maxLength)}...`
+      : text
+  },
+})
+```
+
+Then apply the `truncated` render mode to a regular field and pass its configuration with the `fieldMetadata` property:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            fieldRenderModes: {
+              description: "truncated",
+            },
+            fieldMetadata: {
+              description: { max_length: 50 },
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This applies the `truncated` render mode to the `description` column and truncates its value to `50` characters. The renderer reads `max_length` from the column's `metadata`, which is populated from the `fieldMetadata` property. You can reuse the same render mode on other fields with a different `max_length`.
+
+---
+
+## Add Computed Columns
+
+A computed column is a column whose value is computed from other fields or with custom logic, rather than a direct property of the entity. For example, you can add a `products_count` column for the `Brand` data model that shows the number of products associated with a brand.
+
+To add computed columns to an entity's data table, use the `computedColumns` property on the entity's override configuration. Its value is an array of objects, each having the following properties:
+
+- `id`: The column's unique identifier.
+- `name`: The column's display name.
+- `context`: (optional) When to use the column. Its value can be `display` to show the column, `filter` to only allow filtering by it, or `both`. The default value is `display`.
+- `renderMode`: How the column's value renders. This is required for columns with `context: display` (the default). Its value can either be a [built-in render mode](#default-column-render-modes) or a [custom render mode](#define-a-custom-render-mode).
+- `requiredFields`: An array of fields needed to compute the column's value.
+- `metadata`: An object of additional configuration for the column, which are used by the render mode's cell renderer. For example, the `count` render mode uses the `metadata.list_field` property to count the items in a relation.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            computedColumns: [
+              {
+                id: "products_count",
+                name: "Product Count",
+                renderMode: "count",
+                requiredFields: ["products.id"],
+                metadata: { list_field: "products" },
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This adds a `products_count` column to the Brand's configurable data table that shows the number of products associated with a brand, assuming there's a link between them.
+
+The `count` render mode counts the items in the relation set by `metadata.list_field` (`products` here), whereas `requiredFields` only ensures that relation is fetched onto the row.

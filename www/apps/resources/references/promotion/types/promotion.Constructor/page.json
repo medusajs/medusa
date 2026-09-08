@@ -1,0 +1,1 @@
+{"slug":"/references/promotion/types/promotion.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"promotionReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

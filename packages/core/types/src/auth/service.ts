@@ -4,6 +4,7 @@ import { Context } from "../shared-context"
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthProviderInfoDTO,
   AuthMfaChallengeDTO,
   AuthMfaDTO,
   AuthMfaSelector,
@@ -71,6 +72,19 @@ export interface IAuthModuleService extends IModuleService {
     provider: string,
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
+
+  /**
+   * This method lists the public information of all registered auth provider
+   * instances.
+   *
+   * @returns {Promise<AuthProviderInfoDTO[]>} The registered auth providers' public information.
+   *
+   * @example
+   * const providers = await authModuleService.listAuthProviders({ id: "emailpass" })
+   */
+  listAuthProviders(filters?: {
+    id: string | string[]
+  }): Promise<AuthProviderInfoDTO[]>
 
   /**
    * This method is used to register a user using a provider. The `register` method of the

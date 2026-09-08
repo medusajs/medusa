@@ -2,16 +2,12 @@
  * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
- * description: >
+ * description: |
  *   Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
  * 
+ *   You can retrieve the content of the products translated to a specific locale either by passing the `locale` query parameter or by setting the `x-medusa-locale` header to the desired locale code in BCP 47 format. If you don't pass a locale, and your store has a default locale, the default locale will be used.
  * 
- *   You can retrieve the content of the products translated to a specific locale either by passing the `locale` query parameter or by setting the `x-medusa-locale` header to the desired locale code in
- *   BCP 47 format. If you don't pass a locale, and your store has a default locale, the default locale will be used.
- * 
- * 
- *   With localization, the products' content like title and description will be in the specified locale if a translation is available,  and fallback to the original content otherwise. Learn more in the
- *   [Localization](#localization) section.
+ *   With localization, the products' content like title and description will be in the specified locale if a translation is available,  and fallback to the original content otherwise. Learn more in the [Localization](#localization) section.
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/resources/storefront-development/products/price
@@ -1232,6 +1228,34 @@
  *             type: string
  *             title: external_id
  *             description: The external ID.
+ *   - name: option_value_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_value_id
+ *           description: Filter by a product option value ID to retrieve products that have variants with that option value.
+ *         - type: array
+ *           description: Filter by product option value IDs to retrieve products that have variants with those option values.
+ *           items:
+ *             type: string
+ *             title: option_value_id
+ *             description: The product option value ID.
+ *   - name: option_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_id
+ *           description: Filter by a product option ID to retrieve products that have variants with that option.
+ *         - type: array
+ *           description: Filter by product option IDs to retrieve products that have variants with those options.
+ *           items:
+ *             type: string
+ *             title: option_id
+ *             description: The product option ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

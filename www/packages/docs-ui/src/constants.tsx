@@ -3,6 +3,8 @@ import { NavigationItem, Product } from "types"
 export const GITHUB_ISSUES_LINK =
   "https://github.com/medusajs/medusa/issues/new/choose"
 
+export const CLOUD_STATUS_PAGE_URL = "https://status.medusajs.com"
+
 export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
@@ -160,6 +162,11 @@ export const navDropdownItems: NavigationItem[] = [
             type: "link",
             title: "Sales Channel",
             link: "/resources/commerce-modules/sales-channel",
+          },
+          {
+            type: "link",
+            title: "Settings",
+            link: "/resources/commerce-modules/settings",
           },
           {
             type: "link",

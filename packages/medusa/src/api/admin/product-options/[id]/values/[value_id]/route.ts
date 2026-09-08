@@ -38,6 +38,9 @@ const retrieveProductOptionValue = async (
   return product_option_value
 }
 
+/**
+ * @since 2.16.0
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<{}, HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.AdminProductOptionValueResponse>
@@ -50,6 +53,9 @@ export const GET = async (
   res.status(200).json({ product_option_value })
 }
 
+/**
+ * @since 2.17.0
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProductOptionValue>,
   res: MedusaResponse<HttpTypes.AdminProductOptionValueResponse>
@@ -78,6 +84,9 @@ export const POST = async (
   res.status(200).json({ product_option_value: updatedProductOptionValue })
 }
 
+/**
+ * @since 2.17.0
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminProductOptionValueDeleteResponse>

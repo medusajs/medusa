@@ -93,6 +93,11 @@ export interface RelationshipFilterConfig {
    * API endpoint to fetch options (e.g., "/admin/sales-channels").
    */
   endpoint: string
+
+  /**
+   * Key to use for filtering the relationship. If not provided, the column field is used.
+   */
+  filter_key?: string
 }
 
 /**

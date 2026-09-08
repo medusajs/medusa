@@ -55,8 +55,8 @@ export const UpdateCart = z
   .object({
     region_id: z.string().optional(),
     email: z.string().email().nullish(),
-    billing_address: z.union([StoreCartUpsertAddress, z.string()]).optional(),
-    shipping_address: z.union([StoreCartUpsertAddress, z.string()]).optional(),
+    billing_address: StoreCartUpsertAddress.optional(),
+    shipping_address: StoreCartUpsertAddress.optional(),
     sales_channel_id: z.string().nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
     promo_codes: z.array(z.string()).optional(),

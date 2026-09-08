@@ -8,6 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form/index"
 import { Thumbnail } from "../../../../../components/common/thumbnail/index"
 import { useProductVariant } from "../../../../../hooks/api/products"
+import { divideDecimal } from "../../../../../lib/number-helper"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { CreateFulfillmentSchema } from "./constants"
 import { InformationCircleSolid } from "@medusajs/icons"
@@ -74,7 +75,7 @@ export function OrderCreateFulfillmentItem({
 
     const reservedQuantityForItem = !reservation
       ? 0
-      : reservation?.quantity / (iitemRequiredQuantity || 1)
+      : divideDecimal(reservation.quantity, iitemRequiredQuantity ?? 1)
 
     const locationInventoryLevels = inventory.map((i) => {
       const level = i.location_levels?.find(
@@ -90,9 +91,14 @@ export function OrderCreateFulfillmentItem({
         }
       }
 
-      const availableQuantity =
-        (level.available_quantity ?? 0) / requiredQuantity
-      const stockedQuantity = level.stocked_quantity / requiredQuantity
+      const availableQuantity = divideDecimal(
+        level.available_quantity ?? 0,
+        requiredQuantity
+      )
+      const stockedQuantity = divideDecimal(
+        level.stocked_quantity,
+        requiredQuantity
+      )
 
       return {
         availableQuantity,

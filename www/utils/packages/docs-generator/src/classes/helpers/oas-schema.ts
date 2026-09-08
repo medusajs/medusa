@@ -2,7 +2,8 @@ import { OpenAPIV3 } from "openapi-types"
 import { OpenApiSchema } from "../../types/index.js"
 import Formatter from "./formatter.js"
 import { join } from "path"
-import { DOCBLOCK_LINE_ASTRIX } from "../../constants.js"
+import { TAG_SCHEMA_NAME_OVERRIDES } from "../../constants.js"
+import docblockToYaml from "../../utils/docblock-to-yaml.js"
 import ts from "typescript"
 import { getOasOutputBasePath } from "../../utils/get-output-base-paths.js"
 import { parse } from "yaml"
@@ -330,11 +331,7 @@ class OasSchemaHelper {
     content: string,
     failOnParseError = false
   ): ParsedSchema | undefined {
-    const schemaFileContent = content
-      .replace(`/**\n`, "")
-      .replaceAll(DOCBLOCK_LINE_ASTRIX, "")
-      .replaceAll("*/", "")
-      .trim()
+    const schemaFileContent = docblockToYaml(content)
 
     if (!schemaFileContent.startsWith("@schema")) {
       return
@@ -389,6 +386,27 @@ class OasSchemaHelper {
   }
 
   /**
+   * Checks whether a schema was already written to a file with content that
+   * isn't empty.
+   *
+   * @param normalizedName - The schema's normalized name.
+   * @returns Whether the schema's file has content that isn't empty.
+   */
+  private hasSchemaFileContent(normalizedName: string): boolean {
+    try {
+      const existingSchema = this.getSchemaByName(normalizedName, false, true)
+
+      return (
+        existingSchema !== undefined &&
+        !this.isSchemaEmpty(existingSchema.schema)
+      )
+    } catch (e) {
+      // the schema's file can't be parsed, so consider it not existent.
+      return false
+    }
+  }
+
+  /**
    * Writes schemas in the {@link schemas} property to the file path retrieved using the {@link getSchemaFileName} method.
    */
   writeNewSchemas() {
@@ -398,6 +416,16 @@ class OasSchemaHelper {
       }
       const normalizedName = this.normalizeSchemaName(schema["x-schemaName"])
       const schemaFileName = this.getSchemaFileName(normalizedName)
+
+      if (
+        this.isSchemaEmpty(schema) &&
+        this.hasSchemaFileContent(normalizedName)
+      ) {
+        // the schema was only reached in a context where its properties were
+        // cut off, such as beyond the maximum level, so writing it would
+        // remove the properties of the previously written schema.
+        return
+      }
 
       ts.sys.writeFile(
         schemaFileName,
@@ -435,6 +463,12 @@ class OasSchemaHelper {
    * @returns The possible names of the associated schema.
    */
   tagNameToSchemaName(tagName: string, area: OasArea): string {
+    const overrideName = TAG_SCHEMA_NAME_OVERRIDES[`${area}:${tagName}`]
+
+    if (overrideName) {
+      return overrideName
+    }
+
     const mainSchemaName = wordsToPascal(pluralize.singular(tagName))
     return `${capitalize(area)}${mainSchemaName}`
   }

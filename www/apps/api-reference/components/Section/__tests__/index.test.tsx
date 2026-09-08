@@ -4,26 +4,21 @@ import { cleanup, render } from "@testing-library/react"
 
 // mock functions
 const mockSetActivePath = vi.fn()
-const mockPush = vi.fn()
-const mockReplace = vi.fn()
 const mockUseActiveOnScroll = vi.fn((options: unknown) => ({
   activeItemId: "",
 }))
 const mockUseSidebar = vi.fn(() => ({
   setActivePath: mockSetActivePath,
 }))
-const mockUseRouter = vi.fn(() => ({
-  push: mockPush,
-  replace: mockReplace,
-}))
 
 // mock components
 vi.mock("docs-ui", () => ({
   useActiveOnScroll: (options: unknown) => mockUseActiveOnScroll(options),
   useSidebar: () => mockUseSidebar(),
+  getLinkWithBasePath: (path: string) => path,
 }))
-vi.mock("next/navigation", () => ({
-  useRouter: () => mockUseRouter(),
+vi.mock("@/providers/area", () => ({
+  useArea: () => ({ area: "store" }),
 }))
 
 import Section from ".."
@@ -48,22 +43,34 @@ describe("rendering", () => {
 })
 
 describe("effect hooks", () => {
-  test("sets active path when active item id is not empty", () => {
+  test("sets active path to the section page path when active item id is not empty", () => {
     mockUseActiveOnScroll.mockReturnValue({
       activeItemId: "test",
     })
+    const replaceStateSpy = vi.spyOn(window.history, "replaceState")
     render(<Section>Test</Section>)
-    expect(mockSetActivePath).toHaveBeenCalledWith("test")
-    expect(mockPush).toHaveBeenCalledWith("#test", { scroll: false })
+    expect(mockSetActivePath).toHaveBeenCalledWith("/store/test")
+    expect(replaceStateSpy).toHaveBeenCalledWith(null, "", "/store/test")
+    replaceStateSpy.mockRestore()
+  })
+
+  test("maps the introduction heading to the area index path", () => {
+    mockUseActiveOnScroll.mockReturnValue({
+      activeItemId: "introduction",
+    })
+    render(<Section>Test</Section>)
+    expect(mockSetActivePath).toHaveBeenCalledWith("/store")
   })
 
   test("does not set active path when active item id is empty", () => {
     mockUseActiveOnScroll.mockReturnValue({
       activeItemId: "",
     })
+    const replaceStateSpy = vi.spyOn(window.history, "replaceState")
     render(<Section>Test</Section>)
     expect(mockSetActivePath).not.toHaveBeenCalled()
-    expect(mockPush).not.toHaveBeenCalled()
+    expect(replaceStateSpy).not.toHaveBeenCalled()
+    replaceStateSpy.mockRestore()
   })
 
   test("disables scroll restoration when history is available", () => {

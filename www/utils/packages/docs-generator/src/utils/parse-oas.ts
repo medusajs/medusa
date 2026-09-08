@@ -1,6 +1,7 @@
+import chalk from "chalk"
 import { parse } from "yaml"
 import { OpenApiOperation } from "../types/index.js"
-import { DOCBLOCK_LINE_ASTRIX } from "../constants.js"
+import docblockToYaml from "./docblock-to-yaml.js"
 
 export type ExistingOas = {
   oas: OpenApiOperation
@@ -8,11 +9,7 @@ export type ExistingOas = {
 }
 
 export default function parseOas(content: string): ExistingOas | undefined {
-  content = content
-    .replace(`/**\n`, "")
-    .replaceAll(DOCBLOCK_LINE_ASTRIX, "")
-    .replaceAll("*/", "")
-    .trim()
+  content = docblockToYaml(content)
 
   if (!content.startsWith("@oas")) {
     // the file is of an invalid format.
@@ -29,8 +26,14 @@ export default function parseOas(content: string): ExistingOas | undefined {
   try {
     oas = parse(content) as OpenApiOperation
   } catch (e) {
-    // couldn't parse the OAS, so consider it
-    // not existent
+    // couldn't parse the OAS, so consider it not existent. This means the OAS is
+    // generated again from scratch, losing any changes that were made manually to
+    // it, so warn about it.
+    console.warn(
+      chalk.yellow(
+        `[OAS] Couldn't parse the existing OAS of ${oasPrefix}, so it's generated again: ${e}`
+      )
+    )
   }
 
   return oas

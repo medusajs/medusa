@@ -432,12 +432,14 @@ export const SidebarProvider = ({
         return false
       }
 
-      if (isSidebarItemLink(item)) {
-        if (item.path === activePath) {
-          return true
-        } else if (!checkLinkChildren) {
-          return false
-        }
+      // a link — or a category with its own path (e.g. an API-ref tag) —
+      // matches directly when its path equals the active path
+      if ("path" in item && item.path === activePath) {
+        return true
+      }
+
+      if (isSidebarItemLink(item) && !checkLinkChildren) {
+        return false
       }
 
       return (
@@ -682,9 +684,7 @@ export const SidebarProvider = ({
 
     if (firstChild) {
       setActivePath(firstChild.path)
-      router.replace(
-        firstChild.isPathHref ? firstChild.path : `#${firstChild.path}`
-      )
+      router.replace(firstChild.path)
     }
   }
 

@@ -19,7 +19,7 @@ export const linkSalesChannelsToStockLocationWorkflowId =
   "link-sales-channels-to-stock-location"
 /**
  * This workflow manages the sales channels of a stock location. It's used by the
- * [Manage Sales Channels Admin API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidsaleschannels).
+ * [Manage Sales Channels Admin API Route](https://docs.medusajs.com/api/admin/stock-locations/manage-sales-channels).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to manage the sales channels of a stock location in your custom flows.

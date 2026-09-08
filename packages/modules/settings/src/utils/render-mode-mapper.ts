@@ -2,6 +2,7 @@
  * Render mode mapping utilities for column generation.
  * Maps field names and GraphQL types to appropriate render modes.
  */
+import { GraphQLNamedType, isEnumType } from "@medusajs/framework/utils"
 
 /**
  * Common render mode type that can be extended by plugins.
@@ -14,10 +15,10 @@ export type RenderMode =
   | "datetime"
   | "boolean"
   | "status"
-  | "badge"
-  | "badge_list"
+  | "badges"
   | "count"
   | "id"
+  | "display_id"
   | "email"
   | "phone"
   | "url"
@@ -25,11 +26,37 @@ export type RenderMode =
   | "json"
   | "country_code"
   | "address"
-  | "customer_name"
+  | "name"
   | "product_info"
-  | "address_summary"
-  | "sales_channels_list"
-  | string
+  | (string & {})
+
+/**
+ * Known filter operators. Mirrors the operators the generator emits per data
+ * type in {@link ./filter-rules.ts}.
+ */
+export type FilterOperator =
+  | "eq"
+  | "ne"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "contains"
+  | "startsWith"
+  | "endsWith"
+  | "in"
+  | "nin"
+  | (string & {})
+
+/**
+ * Known computed column categories used for grouping in the UI.
+ */
+export type ColumnCategory =
+  | "relationship"
+  | "metadata"
+  | "computed"
+  | "metric"
+  | (string & {})
 
 /**
  * Maps GraphQL scalar types to render modes.
@@ -142,18 +169,26 @@ const FIELD_PATTERN_OVERRIDES: FieldPatternOverride[] = [
 
   // Identifiers
   { pattern: /^id$/, renderMode: "id", semanticType: "identifier" },
-  { pattern: /_id$/, renderMode: "id", semanticType: "identifier" },
-  { pattern: /^display_id$/, renderMode: "id", semanticType: "identifier" },
   {
-    pattern: /^custom_display_id$/,
-    renderMode: "id",
+    pattern: /^display_id$/,
+    renderMode: "display_id",
     semanticType: "identifier",
   },
+  {
+    pattern: /^custom_display_id$/,
+    renderMode: "display_id",
+    semanticType: "identifier",
+  },
+  { pattern: /_id$/, renderMode: "id", semanticType: "identifier" },
   { pattern: /^handle$/, renderMode: "text", semanticType: "identifier" },
   { pattern: /^code$/, renderMode: "text", semanticType: "identifier" },
 
   // Counts
-  { pattern: /count$/, renderMode: "number", semanticType: "count" },
+  {
+    pattern: /^(count|.*_count)$/,
+    renderMode: "number",
+    semanticType: "count",
+  },
   { pattern: /quantity$/, renderMode: "number", semanticType: "count" },
 
   // Booleans
@@ -170,7 +205,7 @@ const FIELD_PATTERN_OVERRIDES: FieldPatternOverride[] = [
  */
 export function inferRenderMode(
   fieldName: string,
-  graphqlTypeName?: string
+  graphqlType: GraphQLNamedType
 ): { renderMode: RenderMode; semanticType: string } {
   // Check field name patterns first (more specific)
   for (const override of FIELD_PATTERN_OVERRIDES) {
@@ -181,6 +216,15 @@ export function inferRenderMode(
       }
     }
   }
+
+  if (isEnumType(graphqlType)) {
+    return {
+      renderMode: "status",
+      semanticType: "enum",
+    }
+  }
+
+  const graphqlTypeName = graphqlType.name
 
   // Fall back to type mapping
   if (graphqlTypeName && TYPE_TO_RENDER_MODE[graphqlTypeName]) {
@@ -208,7 +252,7 @@ export type ColumnDataType =
   | "currency"
   | "enum"
   | "object"
-
+  | (string & {})
 /**
  * Map a data type to its default render mode.
  */
@@ -237,9 +281,11 @@ export function dataTypeToRenderMode(dataType: ColumnDataType): RenderMode {
  * Infer the data type from a GraphQL scalar type name.
  */
 export function inferDataType(
-  graphqlTypeName: string,
+  graphqlType: GraphQLNamedType,
   fieldName: string
 ): ColumnDataType {
+  const graphqlTypeName = graphqlType.name
+
   // Check field patterns first
   if (
     /_at$/.test(fieldName) ||
@@ -250,7 +296,7 @@ export function inferDataType(
   if (/total$|amount$|price$/.test(fieldName)) {
     return "currency"
   }
-  if (/status$|^state$/.test(fieldName)) {
+  if (isEnumType(graphqlType)) {
     return "enum"
   }
   if (/^is_|^has_|^can_/.test(fieldName)) {

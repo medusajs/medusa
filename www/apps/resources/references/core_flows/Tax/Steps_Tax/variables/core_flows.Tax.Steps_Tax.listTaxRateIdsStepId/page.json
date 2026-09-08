@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Tax/Steps_Tax/variables/core_flows.Tax.Steps_Tax.listTaxRateIdsStepId","title":"listTaxRateIdsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"listTaxRateIdsStepId","type":"`\"list-tax-rate-ids\"`","description":"","optional":false,"defaultValue":"\"list-tax-rate-ids\"","expandable":false,"children":[]}]}]}

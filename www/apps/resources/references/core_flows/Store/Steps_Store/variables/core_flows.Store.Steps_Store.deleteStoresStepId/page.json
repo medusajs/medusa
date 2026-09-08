@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Store/Steps_Store/variables/core_flows.Store.Steps_Store.deleteStoresStepId","title":"deleteStoresStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteStoresStepId","type":"`\"delete-stores\"`","description":"","optional":false,"defaultValue":"\"delete-stores\"","expandable":false,"children":[]}]}]}

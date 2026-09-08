@@ -16,6 +16,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import {
   createPaymentAccountHolderStep,
   createPaymentSessionStep,
+  validatePaymentProviderInRegionStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
@@ -52,7 +53,7 @@ export interface CreatePaymentSessionsWorkflowInput {
 export const createPaymentSessionsWorkflowId = "create-payment-sessions"
 /**
  * This workflow creates payment sessions. It's used by the
- * [Initialize Payment Session Store API Route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+ * [Initialize Payment Session Store API Route](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create payment sessions in your custom flows.
@@ -81,6 +82,11 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       variables: { id: input.payment_collection_id },
       list: false,
     }).config({ name: "get-payment-collection" })
+
+    validatePaymentProviderInRegionStep({
+      payment_collection_id: input.payment_collection_id,
+      provider_id: input.provider_id,
+    })
 
     const { paymentCustomer, accountHolder, existingAccountHolder } = when(
       "customer-id-exists",

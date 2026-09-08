@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import { Tooltip } from "@medusajs/ui"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -72,7 +73,9 @@ const useVariantPriceGridColumns = ({
           return (
             <DataGrid.ReadonlyCell context={context}>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-                <span className="truncate">{entity.title}</span>
+                <Tooltip content={entity.title}>
+                  <span className="truncate">{entity.title}</span>
+                </Tooltip>
               </div>
             </DataGrid.ReadonlyCell>
           )

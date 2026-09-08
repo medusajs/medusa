@@ -72,7 +72,7 @@ The module can be configured with the following options:
 | `redisUrl`     | `string`  | URL of the Redis instance to connect to.                                                                                 | `events-worker` |
 | `queueName`    | `string?` | Name of the BullMQ queue.                                                                                                | `events-queue`  |
 | `queueOptions` | `object?` | Options for the BullMQ queue. See BullMQ's [documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html).     | `{}`            |
-| `redisOptions` | `object?` | Options for the Redis instance. See `io-redis`'s [documentation](https://luin.github.io/ioredis/index.html#RedisOptions) | `{}`            |
+| `redisOptions` | `object?` | Options for the Redis instance. See `io-redis`'s [documentation](https://redis.github.io/ioredis/types/RedisOptions.html) | `{}`            |
 
 **Info**: See how the options are applied in the [RedisEventBusService](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/services/event-bus-redis.ts#L52) and [loader](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/loaders/index.ts).
 

@@ -1,0 +1,1 @@
+{"slug":"/references/dml/entity/types/dml.entity.DMLEntitySchemaBuilder","title":"DMLEntitySchemaBuilder","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"DMLEntitySchemaBuilder","type":"DMLSchemaWithBigNumber&#60;Schema&#62; & `DMLSchemaDefaults` & Schema","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

@@ -81,7 +81,7 @@ const DataTableSortingMenu = (props: DataTableSortingMenuProps) => {
           </IconButton>
         </DropdownMenu.Trigger>
       </Wrapper>
-      <DropdownMenu.Content side="bottom">
+      <DropdownMenu.Content side="bottom" className="overflow-y-auto">
         <DropdownMenu.RadioGroup value={sorting?.id} onValueChange={setKey}>
           {sortableColumns.map((column) => {
             return (

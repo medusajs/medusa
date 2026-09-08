@@ -49,12 +49,10 @@ const BrandDetailsPage = () => {
 }
 ```
 
-The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+The `widgetsZonePrefix` prop determines the widget injection zones for the page. In this example, the UI route exposes the following zones:
 
-- `brand.details.before`: Widgets rendered before the main content of the brand details page.
-- `brand.details.after`: Widgets rendered after the main content of the brand details page.
-- `brand.details.side.before`: Widgets rendered before the side content of the brand details page.
-- `brand.details.side.after`: Widgets rendered after the side content of the brand details page.
+- `brand.details`: Widgets rendered in the main section of the brand details page.
+- `brand.details.side`: Widgets rendered in the side section of the brand details page.
 
 ### Single Column Layout
 
@@ -68,7 +66,6 @@ const BrandListPage = () => {
     <LayoutComposer
       widgetsZonePrefix="brand.list"
       preferredLayoutId="core:single-column"
-      data={brand}
       sections={{
         main: (
           <BrandListSection />
@@ -79,10 +76,9 @@ const BrandListPage = () => {
 }
 ```
 
-The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+The `widgetsZonePrefix` prop determines the widget injection zones for the page. In this example, the UI route exposes the following zone:
 
-- `brand.list.before`: Widgets rendered before the main content of the brand list page.
-- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+- `brand.list`: Widgets rendered in the main section of the brand list page.
 
 ---
 
@@ -116,7 +112,7 @@ The `widgetsZonePrefix` prop is used to determine the widget injection zones for
       </Table.Cell>
       <Table.Cell>
 
-        The prefix used to determine widget injection zones for the page. The component automatically appends `.before`, `.after`, `.side.before`, and `.side.after` to this prefix.
+        The prefix used to determine widget injection zones for the page. For a two-column layout, the component exposes `{prefix}` (main section) and `{prefix}.side` (side section). For a single-column layout, it exposes `{prefix}` only.
 
       </Table.Cell>
     </Table.Row>
@@ -133,7 +129,7 @@ The `widgetsZonePrefix` prop is used to determine the widget injection zones for
       </Table.Cell>
       <Table.Cell>
 
-        The ID of the preferred layout to use. By default, accepted values are `"core:single-column"` and `"core:two-column"`.
+        The ID of the preferred layout to use. By default, accepted values are `"core:single-column"`, `"core:single-row"`, `"core:two-column"`, and `"core:settings-sidebar"`.
 
       </Table.Cell>
     </Table.Row>
@@ -153,7 +149,9 @@ The `widgetsZonePrefix` prop is used to determine the widget injection zones for
         Object mapping section names to their content. The key is the name of the section, and the value is a `ReactNode`. Available sections depend on the chosen layout:
 
         - `core:single-column`: `main`
+        - `core:single-row`: `main`
         - `core:two-column`: `main`, `side`
+        - `core:settings-sidebar`: `general`, `developer`, `myAccount`, `extensions`
 
       </Table.Cell>
     </Table.Row>
@@ -179,32 +177,38 @@ The `widgetsZonePrefix` prop is used to determine the widget injection zones for
 
 ## Custom Layouts
 
-You can create custom layouts by registering them with the dashboard extension system. Custom layouts must implement the `LayoutDefinition` interface:
+You can create custom layouts by adding a layout file under `src/admin/layouts/` in your plugin. A layout file must have a default export (the React component) and a named `config` export created with `defineLayoutConfig`.
 
-```tsx
-import type { LayoutDefinition } from "@medusajs/dashboard/components"
+For example, create the file `src/admin/layouts/three-column.tsx` with the following content:
 
-const customLayout: LayoutDefinition = {
+```tsx title="src/admin/layouts/three-column.tsx"
+import { defineLayoutConfig } from "@medusajs/admin-sdk"
+import type { LayoutComponentProps } from "@medusajs/dashboard/components"
+
+const ThreeColumnLayout = ({ sections }: LayoutComponentProps) => (
+  <div className="grid grid-cols-3 gap-4">
+    <div>{sections.main}</div>
+    <div>{sections.side}</div>
+    <div>{sections.extra}</div>
+  </div>
+)
+
+export const config = defineLayoutConfig({
   id: "my-plugin:three-column",
   sections: [
-    { id: "main" },
-    { id: "side" },
-    { id: "extra" },
+    { id: "main", ordering: "list" },
+    { id: "side", ordering: "list" },
+    { id: "extra", ordering: "list" },
   ],
-  Component: ({ sections, data }) => (
-    <div className="grid grid-cols-3 gap-4">
-      <div>{sections.main}</div>
-      <div>{sections.side}</div>
-      <div>{sections.extra}</div>
-    </div>
-  ),
-}
+})
+
+export default ThreeColumnLayout
 ```
 
-Then augment the `LayoutSectionRegistry` interface to add type safety:
+To get type-safe section names when using your custom layout, augment the `LayoutSectionRegistry` interface in `@medusajs/admin-shared`:
 
-```ts
-declare module "@medusajs/dashboard/components" {
+```ts title="index.d.ts"
+declare module "@medusajs/admin-shared" {
   interface LayoutSectionRegistry {
     "my-plugin:three-column": "main" | "side" | "extra"
   }

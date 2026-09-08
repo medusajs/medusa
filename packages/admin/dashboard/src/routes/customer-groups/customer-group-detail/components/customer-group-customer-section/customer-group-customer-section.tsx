@@ -129,7 +129,7 @@ export const CustomerGroupCustomerSection = ({
   )
 }
 
-const CustomerActions = ({
+export const CustomerActions = ({
   customer,
   customerGroupId,
 }: {

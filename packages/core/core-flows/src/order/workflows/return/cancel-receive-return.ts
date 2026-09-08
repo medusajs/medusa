@@ -87,7 +87,7 @@ export type CancelReturnReceiveWorkflowInput = {
 export const cancelReturnReceiveWorkflowId = "cancel-receive-return"
 /**
  * This workflow cancels a return receival. It's used by the
- * [Cancel Return Receival Admin API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceive).
+ * [Cancel Return Receival Admin API Route](https://docs.medusajs.com/api/admin/returns/cancel-return-receival).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to cancel a return receival in your custom flow.

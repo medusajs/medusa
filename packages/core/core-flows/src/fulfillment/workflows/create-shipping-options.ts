@@ -26,7 +26,7 @@ export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
 /**
  * This workflow creates one or more shipping options. It's used by the
- * [Create Shipping Option Admin API Route](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions).
+ * [Create Shipping Option Admin API Route](https://docs.medusajs.com/api/admin/shipping-options/create-shipping-option).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create shipping options within your custom flows.

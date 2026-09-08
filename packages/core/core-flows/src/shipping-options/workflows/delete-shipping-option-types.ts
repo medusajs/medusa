@@ -45,7 +45,7 @@ export const deleteShippingOptionTypesWorkflowId =
   "delete-shipping-option-types"
 /**
  * This workflow deletes one or more shipping-option types. It's used by the
- * [Delete Shipping Option Types Admin API Route](https://docs.medusajs.com/api/admin#shipping-option-types_deleteshippingoptiontypesid).
+ * [Delete Shipping Option Types Admin API Route](https://docs.medusajs.com/api/admin/shipping-option-types/delete-shipping-option-type).
  *
  * This workflow has a hook that allows you to perform custom actions after the shipping-option types are deleted. For example,
  * you can delete custom records linked to the shipping-option types.

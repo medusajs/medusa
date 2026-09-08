@@ -120,7 +120,7 @@ export const maybeListTaxRateRuleIdsStep = createStep(
 export const updateTaxRatesWorkflowId = "update-tax-rates"
 /**
  * This workflow updates tax rates matching specified filters. It's used by the
- * [Update Tax Rates Admin API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxratesid).
+ * [Update Tax Rates Admin API Route](https://docs.medusajs.com/api/admin/tax-rates/update-a-tax-rate).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update tax rates in your custom flows.

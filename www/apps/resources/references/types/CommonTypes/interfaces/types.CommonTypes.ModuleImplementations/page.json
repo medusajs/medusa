@@ -1,0 +1,1 @@
+{"slug":"/references/types/CommonTypes/interfaces/types.CommonTypes.ModuleImplementations","title":"ModuleImplementations","frontmatter":{},"toc":[],"blocks":[{"kind":"markdown","html":"The following interface acts as a bucket that other modules or the\nutils package can fill using declaration merging"}]}

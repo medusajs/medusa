@@ -71,6 +71,46 @@ jobs:
           echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
           echo "Previous release tag: $PREVIOUS_TAG"
 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "yarn"
+          # Only the docs-util workspace is installed in this job, so key the
+          # cache on its lockfile rather than the repository root's.
+          cache-dependency-path: www/utils/yarn.lock
+
+      - name: Install release-banner dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build release-banner
+        run: yarn workspace release-banner build
+        working-directory: www/utils
+
+      # Runs before the Claude step so a misconfigured upload surfaces early. A
+      # missing banner is not worth failing the release over, though, so this only
+      # warns — the notes are the deliverable and the banner is decoration.
+      - name: Render and upload banner to Cloudinary
+        id: banner
+        continue-on-error: true
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+        working-directory: www/utils/packages/release-banner
+        run: |
+          if [ -z "$CLOUDINARY_URL" ]; then
+            echo "::warning::CLOUDINARY_URL is not set — skipping the banner"
+            exit 1
+          fi
+
+          # Called directly rather than through `yarn upload` so that the only
+          # thing captured here is the URL the CLI prints.
+          BANNER_URL=$(node dist/cli.js upload \
+            --version "${{ steps.version.outputs.version }}")
+
+          echo "url=$BANNER_URL" >> "$GITHUB_OUTPUT"
+          echo "Uploaded banner: $BANNER_URL"
+
       - name: Gather commit and PR metadata
         id: commits
         env:
@@ -193,6 +233,22 @@ jobs:
 
           IMPORTANT: Only create /tmp/release-notes.md using the Write tool. Do not use git commands. Do not create any other files.
 
+          Step 3 — The release notes MUST start with a title and subtitle block, before any other content, in exactly this format (an HTML comment that opens with "<!--" and closes with "CMS_BREAK -->"):
+
+          <!--
+
+          # ${TAG}: Short Highlight One, Short Highlight Two, Short Highlight Three
+
+          One or two sentences summarizing the most important change in this release and what it enables.
+
+          CMS_BREAK -->
+
+          Rules for the title and subtitle block:
+          - The title line is a level-one heading (a single "#") starting with the release tag "${TAG}", followed by ": ", then two to four of the release's most important highlights in title case, separated by commas.
+          - The subtitle is plain prose (no markdown headings, lists, or links) of at most two sentences describing the release's main highlight.
+          - Keep the blank lines and the "CMS_BREAK -->" closing line exactly as shown.
+          - Everything after "CMS_BREAK -->" is the normal release notes body as defined by the /writing-releases skill.
+
           Context:
           - Repository: ${REPO}
           - Previous release: ${PREVIOUS_TAG}
@@ -236,6 +292,42 @@ jobs:
           model: claude-sonnet-4-6
           max_turns: 25
 
+      - name: Insert banner into the release notes
+        if: steps.banner.outputs.url != ''
+        env:
+          BANNER_URL: ${{ steps.banner.outputs.url }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          node --input-type=module << 'EOF'
+          import { readFileSync, writeFileSync } from "fs"
+
+          const path = "/tmp/release-notes.md"
+          const url = process.env.BANNER_URL
+          const tag = process.env.TAG
+
+          const lines = readFileSync(path, "utf8").split("\n")
+
+          // The banner belongs inside the CMS block, above the title heading —
+          // it is consumed by the CMS and never rendered on the release page.
+          const breakAt = lines.findIndex((line) =>
+            line.includes("CMS_BREAK -->")
+          )
+          const headingAt = lines.findIndex((line) => line.startsWith("# "))
+
+          if (headingAt === -1 || breakAt === -1 || headingAt > breakAt) {
+            console.log(
+              "::warning::Could not find the CMS block's title heading — " +
+                "leaving the notes unchanged"
+            )
+            process.exit(0)
+          }
+
+          lines.splice(headingAt, 0, `![${tag}](${url})`, "")
+          writeFileSync(path, lines.join("\n"))
+
+          console.log(`Inserted banner above line ${headingAt + 1}`)
+          EOF
+
       - name: Create draft GitHub release
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -248,9 +340,18 @@ jobs:
             exit 1
           fi
 
+          # Use the title from the title/subtitle block Claude generated at the top of the
+          # release notes (the first level-one heading), falling back to the tag.
+          RELEASE_TITLE=$(grep -m1 '^# ' /tmp/release-notes.md | sed 's/^# *//' || true)
+          if [ -z "$RELEASE_TITLE" ]; then
+            echo "WARNING: no title heading found in release notes — falling back to $TAG"
+            RELEASE_TITLE="$TAG"
+          fi
+          echo "Release title: $RELEASE_TITLE"
+
           ARGS=(
             "$TAG"
-            --title "$TAG"
+            --title "$RELEASE_TITLE"
             --notes-file /tmp/release-notes.md
             --draft
             --target "${{ github.sha }}"

@@ -16,7 +16,7 @@ export class Promotion {
 
   /**
    * This method retrieves a promotion by its ID. It sends a request to the
-   * [Retrieve Promotion](https://docs.medusajs.com/api/admin#promotions_getpromotionsid)
+   * [Retrieve Promotion](https://docs.medusajs.com/api/admin/promotions/get-a-promotion)
    * API route.
    *
    * @param id - The promotion's ID.
@@ -45,7 +45,7 @@ export class Promotion {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -63,7 +63,7 @@ export class Promotion {
 
   /**
    * This method retrieves a list of promotions. It sends a request to the
-   * [List Promotions](https://docs.medusajs.com/api/admin#promotions_getpromotions)
+   * [List Promotions](https://docs.medusajs.com/api/admin/promotions/list-promotions)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -106,7 +106,7 @@ export class Promotion {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminGetPromotionsParams,
@@ -123,7 +123,7 @@ export class Promotion {
 
   /**
    * This method creates a new promotion. It sends a request to the
-   * [Create Promotion](https://docs.medusajs.com/api/admin#promotions_postpromotions)
+   * [Create Promotion](https://docs.medusajs.com/api/admin/promotions/create-promotion)
    * API route.
    *
    * @param payload - The promotion to create.
@@ -158,7 +158,7 @@ export class Promotion {
 
   /**
    * This method updates a promotion. It sends a request to the
-   * [Update Promotion](https://docs.medusajs.com/api/admin#promotions_postpromotionsid)
+   * [Update Promotion](https://docs.medusajs.com/api/admin/promotions/update-a-promotion)
    * API route.
    *
    * @param id - The promotion's ID.
@@ -191,7 +191,7 @@ export class Promotion {
 
   /**
    * This method deletes a promotion. It sends a request to the
-   * [Delete Promotion](https://docs.medusajs.com/api/admin#promotions_deletepromotionsid)
+   * [Delete Promotion](https://docs.medusajs.com/api/admin/promotions/delete-a-promotion)
    * API route.
    *
    * @param id - The promotion's ID.
@@ -220,11 +220,11 @@ export class Promotion {
    * you specify as a parameter.
    *
    * - If you set the `ruleType` to `rules`, the method sends a request to the
-   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch).
+   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-rules).
    * - If you set the `ruleType` to `buy-rules`, the method sends a request to the
-   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidbuyrulesbatch).
+   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-buy-rules).
    * - If you set the `ruleType` to `target-rules`, the method sends a request to the
-   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch).
+   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-target-rules).
    *
    * @param id - The promotion's ID.
    * @param ruleType - The type of rules to create.
@@ -268,11 +268,11 @@ export class Promotion {
    * you specify as a parameter.
    *
    * - If you set the `ruleType` to `rules`, the method sends a request to the
-   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch).
+   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-rules).
    * - If you set the `ruleType` to `buy-rules`, the method sends a request to the
-   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidbuyrulesbatch).
+   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-buy-rules).
    * - If you set the `ruleType` to `target-rules`, the method sends a request to the
-   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch).
+   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-target-rules).
    *
    * @param id - The promotion's ID.
    * @param ruleType - The type of rules to update.
@@ -315,11 +315,11 @@ export class Promotion {
    * you specify as a parameter.
    *
    * - If you set the `ruleType` to `rules`, the method sends a request to the
-   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch).
+   * [Manage Promotion's Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-rules).
    * - If you set the `ruleType` to `buy-rules`, the method sends a request to the
-   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidbuyrulesbatch).
+   * [Manage Promotion's Buy Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-buy-rules).
    * - If you set the `ruleType` to `target-rules`, the method sends a request to the
-   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch).
+   * [Manage Promotion's Target Rules API Route](https://docs.medusajs.com/api/admin/promotions/manage-target-rules).
    *
    * @param id - The promotion's ID.
    * @param ruleType - The type of rules to remove.
@@ -357,7 +357,7 @@ export class Promotion {
    * you specify as a parameter.
    *
    * This method sends a request to the
-   * [List Rules of a Promotion API Route](https://docs.medusajs.com/api/admin#promotions_getpromotionsidrule_type)
+   * [List Rules of a Promotion API Route](https://docs.medusajs.com/api/admin/promotions/list-rules)
    *
    * @param id - The promotion's ID.
    * @param ruleType - The type of rules to retrieve. Can be `rules`, `buy-rules`, or `target-rules`.
@@ -395,7 +395,7 @@ export class Promotion {
    * - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
    *
    * This method sends a request to the
-   * [List Rule Attribute Options API Route](https://docs.medusajs.com/api/admin#promotions_getpromotionsruleattributeoptionsrule_type)
+   * [List Rule Attribute Options API Route](https://docs.medusajs.com/api/admin/promotions/list-potential-rule-attributes)
    *
    * @param ruleType - The type of rules to retrieve the attributes for. Can be `rules`, `buy-rules`, or `target-rules`.
    * @param promotionType - The type of promotion to retrieve the attributes for. It can be `standard` or `buyget`.
@@ -434,7 +434,7 @@ export class Promotion {
    * a list of currencies are retrieved in label-value pairs.
    *
    * This method sends a request to the
-   * [List Rule Values API Route](https://docs.medusajs.com/api/admin#promotions_getpromotionsrulevalueoptionsrule_typerule_attribute_id)
+   * [List Rule Values API Route](https://docs.medusajs.com/api/admin/promotions/list-rule-values)
    *
    * @param ruleType - The type of rules to retrieve the values for. Can be `rules`, `buy-rules`, or `target-rules`.
    * @param ruleValue - The ID of the rule attribute to retrieve the values for.

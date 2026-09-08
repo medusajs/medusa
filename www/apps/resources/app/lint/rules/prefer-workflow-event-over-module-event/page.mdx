@@ -1,0 +1,93 @@
+---
+sidebar_label: "prefer-workflow-event-over-module-event"
+---
+
+export const metadata = {
+  title: `prefer-workflow-event-over-module-event - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule prefers workflow event enums (`*WorkflowEvents`) over internal module-level event enums in a subscriber's `config.event`.
+
+<Note>
+
+This rule is available since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets subscriber files in your project. It reports usages of internal module events (such as `ProductEvents.PRODUCT_CATEGORY_DELETED`) in the `event` property of the exported `config` object, and suggests the equivalent workflow event enum instead.
+
+The following code is reported by the rule:
+
+```ts title="src/subscribers/product-category-deleted.ts"
+import { ProductEvents } from "@medusajs/framework/utils"
+
+export const config = {
+  event: ProductEvents.PRODUCT_CATEGORY_DELETED,
+}
+```
+
+Instead, use the workflow event enum:
+
+```ts title="src/subscribers/product-category-deleted.ts"
+import { ProductCategoryWorkflowEvents } from "@medusajs/framework/utils"
+
+export const config = {
+  event: ProductCategoryWorkflowEvents.DELETED,
+}
+```
+
+The rule also flags internal event string literals:
+
+```ts title="src/subscribers/product-category-deleted.ts"
+// non-compliant
+export const config = {
+  event: "product.product-category.deleted",
+}
+```
+
+For events with no workflow-event equivalent, the rule warns that the event is an internal implementation detail and may change in future releases.
+
+## Why it's Important
+
+Internal module events (enums ending in `Events`, with values in the form `{module}.{data-model}.{action}`) are implementation details of Medusa's service layer. They can change between releases without a deprecation notice.
+
+Workflow events (`*WorkflowEvents` enums) are the stable, public API for subscribing to commerce actions. They're also only triggered if the action is successful. Using them ensures your subscribers react to the correct commerce events.
+
+## Fixable
+
+This rule is auto-fixable when a workflow-event equivalent exists. Run the linter with the `--fix` option to apply the fix automatically. The fix rewrites the event reference and adds the required import.
+
+When a workflow-event equivalent does not exist, the rule warns but provides no automatic fix. Review whether subscribing to an internal event is intentional.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prefer-workflow-event-over-module-event": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prefer-workflow-event-over-module-event
+export const config = { event: ProductEvents.PRODUCT_CATEGORY_DELETED }
+```

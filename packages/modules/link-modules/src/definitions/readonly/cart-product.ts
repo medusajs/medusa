@@ -10,6 +10,7 @@ export const CartProduct: ModuleJoinerConfig = {
       entity: "LineItem",
       relationship: {
         serviceName: Modules.PRODUCT,
+        entity: "Product",
         primaryKey: "id",
         foreignKey: "items.product_id",
         alias: "product",

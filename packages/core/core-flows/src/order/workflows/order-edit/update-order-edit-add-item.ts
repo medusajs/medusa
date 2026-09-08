@@ -102,7 +102,7 @@ export const updateOrderEditAddItemValidationStep = createStep(
 export const updateOrderEditAddItemWorkflowId = "update-order-edit-add-item"
 /**
  * This workflow updates a new item in an order edit. It's used by the
- * [Update Item Admin API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsaction_id).
+ * [Update Item Admin API Route](https://docs.medusajs.com/api/admin/order-edits/update-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update a new item in an order edit
  * in your custom flows.

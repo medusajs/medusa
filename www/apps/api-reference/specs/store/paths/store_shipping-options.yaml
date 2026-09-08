@@ -7,6 +7,13 @@ get:
 
 
     The shipping options also be sorted or paginated.
+
+
+    For a shipping option whose `price_type` is `calculated`, the returned
+    `amount` isn't reliable, as its price is computed on the fly by the
+    fulfillment provider. To retrieve its price, use the [Calculate Shipping
+    Option Price API
+    route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
   externalDocs:
     url: >-
       https://docs.medusajs.com/resources/storefront-development/checkout/shipping

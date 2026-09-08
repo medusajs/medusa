@@ -42,7 +42,9 @@ module.exports = defineConfig({
             is_default: true,
             options: {
               redisUrl: process.env.CACHE_REDIS_URL,
-              // more options...
+              redisOptions: {
+                // ioredis options...
+              },
             },
           },
           // other caching providers...
@@ -122,6 +124,17 @@ CACHE_REDIS_URL=redis://localhost:6379
       </Table.Cell>
       <Table.Cell>
         `1024` (1 KB)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `redisOptions`
+      </Table.Cell>
+      <Table.Cell>
+        An object of [ioredis options](https://github.com/redis/ioredis/blob/main/lib/redis/RedisOptions.ts) to pass to the Redis client. Available since Medusa v2.18.0.
+      </Table.Cell>
+      <Table.Cell>
+        -
       </Table.Cell>
     </Table.Row>
   </Table.Body>

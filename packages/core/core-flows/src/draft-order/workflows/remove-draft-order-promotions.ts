@@ -45,7 +45,7 @@ export interface RemoveDraftOrderPromotionsWorkflowInput {
 
 /**
  * This workflow removes promotions from a draft order edit. It's used by the
- * [Remove Promotions from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditpromotions).
+ * [Remove Promotions from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/remove-promotions).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * removing promotions from a draft order edit.

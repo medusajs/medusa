@@ -16,6 +16,10 @@ export interface AdminNotificationListParams
    * Filter by channel(s).
    */
   channel?: string | string[]
+  /**
+   * Filter by notification to property. This can be a user id or email for example.
+   */
+  to?: string | string[]
 }
 
 export interface AdminNotificationParams extends SelectParams {}

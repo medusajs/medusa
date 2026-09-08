@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { createDataTableColumnHelper } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -6,25 +6,13 @@ import {
   getCellRenderer,
   getColumnValue,
 } from "../../../lib/table/cell-renderers"
-
-export interface ColumnAdapter<TData> {
-  getColumnAlignment?: (
-    column: HttpTypes.AdminColumn
-  ) => "left" | "center" | "right"
-  getCustomAccessor?: (field: string, column: HttpTypes.AdminColumn) => any
-  transformCellValue?: (
-    value: any,
-    row: TData,
-    column: HttpTypes.AdminColumn
-  ) => React.ReactNode
-}
+import { TableAdapter } from "../../../lib/table/table-adapters"
 
 export function useConfigurableTableColumns<TData = any>(
-  entity: string,
   apiColumns: HttpTypes.AdminColumn[] | undefined,
-  adapter?: ColumnAdapter<TData>
+  adapter?: TableAdapter<TData>
 ) {
-  const columnHelper = createDataTableColumnHelper<TData>()
+  const columnHelper = useMemo(() => createDataTableColumnHelper<TData>(), [])
   const { t } = useTranslation()
 
   return useMemo(() => {
@@ -32,26 +20,63 @@ export function useConfigurableTableColumns<TData = any>(
       return []
     }
 
-    return apiColumns.map((apiColumn) => {
+    const generatedColumns = apiColumns.map((apiColumn) => {
+      // Virtual selection column: the ui select column (checkbox), kept as a
+      // normal column (id "select") so it participates in ordering — its low
+      // default_order keeps it first.
+      if (apiColumn.render_mode === "select") {
+        return columnHelper.select()
+      }
+
+      // Virtual actions column: rendered from the adapter's row actions rather
+      // than the cell-renderer registry, but kept as a normal column so it
+      // participates in visibility/ordering.
+      if (apiColumn.render_mode === "actions") {
+        return columnHelper.accessor(() => null, {
+          id: apiColumn.field,
+          header: () => null,
+          cell: ({ row }: { row: any }) => {
+            const content = adapter?.renderRowActions?.(row.original)
+            if (!content) {
+              return null
+            }
+            return (
+              <div
+                className="flex items-center justify-end"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {content}
+              </div>
+            )
+          },
+          meta: {
+            name: apiColumn.name,
+            column: apiColumn,
+          },
+          computed: {
+            required_fields: [],
+            optional_fields: [],
+          },
+          enableHiding: apiColumn.hideable,
+          enableSorting: false,
+          align: "right",
+        } as any)
+      }
+
       let renderType = apiColumn.computed?.type
 
       if (!renderType) {
-        if (apiColumn.semantic_type === "timestamp") {
-          renderType = "timestamp"
-        } else if (apiColumn.field === "display_id") {
-          renderType = "display_id"
-        } else if (apiColumn.field === "total") {
-          renderType = "total"
-        } else if (apiColumn.semantic_type === "currency") {
-          renderType = "currency"
-        }
+        renderType = apiColumn.render_mode
       }
 
       const renderer = getCellRenderer(renderType, apiColumn.data_type)
-
-      const headerAlign = adapter?.getColumnAlignment
-        ? adapter.getColumnAlignment(apiColumn)
-        : getDefaultColumnAlignment(apiColumn)
+      const align = adapter?.getColumnAlignment?.(apiColumn) ?? renderer.align
+      // Per-column override wins; otherwise fall back to the renderer's default
+      // (renderers that self-handle overflow set this to false), then to `true`.
+      const truncateTooltip =
+        (apiColumn.metadata as any)?.truncate_tooltip ??
+        renderer.truncateTooltip ??
+        true
 
       const accessor = (row: TData) => getColumnValue(row, apiColumn)
 
@@ -61,18 +86,7 @@ export function useConfigurableTableColumns<TData = any>(
         cell: ({ getValue, row }: { getValue: any; row: any }) => {
           const value = getValue()
 
-          if (adapter?.transformCellValue) {
-            const transformed = adapter.transformCellValue(
-              value,
-              row.original,
-              apiColumn
-            )
-            if (transformed !== null) {
-              return transformed
-            }
-          }
-
-          return renderer(value, row.original, apiColumn, t)
+          return renderer.render(value, row.original, apiColumn, t)
         },
         meta: {
           name: apiColumn.name,
@@ -80,44 +94,12 @@ export function useConfigurableTableColumns<TData = any>(
         },
         enableHiding: apiColumn.hideable,
         enableSorting: apiColumn.sortable,
-        headerAlign, // Pass the header alignment to the DataTable
+        sortLabel: apiColumn.name,
+        align,
+        truncateTooltip,
       } as any)
     })
-  }, [entity, apiColumns, adapter, t])
-}
 
-function getDefaultColumnAlignment(
-  column: HttpTypes.AdminColumn
-): "left" | "center" | "right" {
-  if (column.semantic_type === "currency" || column.data_type === "currency") {
-    return "right"
-  }
-
-  if (column.data_type === "number" && column.context !== "identifier") {
-    return "right"
-  }
-
-  if (
-    column.field.includes("total") ||
-    column.field.includes("amount") ||
-    column.field.includes("price") ||
-    column.field.includes("quantity") ||
-    column.field.includes("count")
-  ) {
-    return "right"
-  }
-
-  if (column.semantic_type === "status") {
-    return "center"
-  }
-
-  if (
-    column.computed?.type === "country_code" ||
-    column.field === "country" ||
-    column.field.includes("country_code")
-  ) {
-    return "center"
-  }
-
-  return "left"
+    return generatedColumns
+  }, [apiColumns, adapter, t, columnHelper])
 }

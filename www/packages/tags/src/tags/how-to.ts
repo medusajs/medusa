@@ -8,6 +8,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
   },
   {
+    "title": "Link Auth Provider to Existing Actor",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
@@ -16,8 +20,20 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/cart-totals"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Retrieve Order Totals",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
+  },
+  {
+    "title": "Restrict Order Retrieval",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
+  },
+  {
+    "title": "Restrict Return Creation",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation"
   },
   {
     "title": "Filter Products",
@@ -34,6 +50,10 @@ export const howTo = [
   {
     "title": "Get Variant Inventory",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Define Custom Policies",

@@ -23,6 +23,7 @@ import {
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
 import { Skeleton } from "@/components/skeleton"
 import { Text } from "@/components/text"
+import { Tooltip } from "@/components/tooltip"
 import { clx } from "@/utils/clx"
 import {
   DataTableEmptyState,
@@ -58,6 +59,19 @@ const DataTableTable = (props: DataTableTableProps) => {
 
   const hasSelect = columns.find((c) => c.id === "select")
   const hasActions = columns.find((c) => c.id === "action")
+
+  // Width strategy for data columns (excluding the pinned select/action
+  // columns): a column with an explicit `size` keeps it; the rest split the
+  // remaining width equally as a percentage, so the table always fills
+  // regardless of column count (auto-layout with equal px widths under-fills
+  // when there are few columns). Counts only the rendered/visible columns.
+  const visibleDataColumns = (instance.getHeaderGroups()[0]?.headers ?? [])
+    .map((h) => h.column)
+    .filter((c) => c.id !== "select" && c.id !== "action")
+  const autoFillCount = visibleDataColumns.filter(
+    (c) => c.columnDef.size == null
+  ).length
+  const colWidth = autoFillCount > 0 ? 100 / autoFillCount : undefined
 
   // Create list of all column IDs for SortableContext
   // Use current order if available, otherwise use default order
@@ -182,7 +196,7 @@ const DataTableTable = (props: DataTableTableProps) => {
               onScroll={handleHorizontalScroll}
               className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
             >
-              <Table className="relative isolate w-full">
+              <Table className="relative isolate w-full table-fixed">
                 <Table.Header
                   className="shadow-ui-border-base sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0]"
                   style={{ transform: "translate3d(0,0,0)" }}
@@ -191,10 +205,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                     <Table.Row
                       key={headerGroup.id}
                       className={clx("border-b-0", {
-                        "[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
-                          hasActions,
-                        "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
-                          hasSelect,
+                        "[&_th:last-of-type]:whitespace-nowrap": hasActions,
+                        "[&_th:first-of-type]:whitespace-nowrap": hasSelect,
                       })}
                     >
                       <SortableContext
@@ -204,6 +216,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                         {headerGroup.headers.map((header, idx) => {
                           const canSort = header.column.getCanSort()
                           const sortDirection = header.column.getIsSorted()
+                          const firstSortDirection =
+                            header.column.getFirstSortDir()
                           const sortHandler =
                             header.column.getToggleSortingHandler()
 
@@ -218,10 +232,14 @@ const DataTableTable = (props: DataTableTableProps) => {
                             ? idx === 1
                             : idx === 0
 
-                          // Get header alignment from column metadata
+                          // Get header alignment from column metadata.
+                          // `align` drives both header and cell; `headerAlign`
+                          // is the legacy header-only fallback.
+                          const alignMeta = (
+                            header.column.columnDef.meta as any
+                          )?.___alignMetaData
                           const headerAlign =
-                            (header.column.columnDef.meta as any)
-                              ?.___alignMetaData?.headerAlign || "left"
+                            alignMeta?.align ?? alignMeta?.headerAlign ?? "left"
                           const isRightAligned = headerAlign === "right"
                           const isCenterAligned = headerAlign === "center"
 
@@ -254,7 +272,12 @@ const DataTableTable = (props: DataTableTableProps) => {
                               style={
                                 !isSpecialHeader
                                   ? {
-                                      width: header.column.columnDef.size,
+                                      width:
+                                        header.column.columnDef.size != null
+                                          ? header.column.columnDef.size
+                                          : colWidth !== undefined
+                                          ? `${colWidth}%`
+                                          : undefined,
                                       maxWidth: header.column.columnDef.maxSize,
                                       minWidth: header.column.columnDef.minSize,
                                     }
@@ -284,6 +307,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 {canSort && isRightAligned && (
                                   <DataTableSortingIcon
                                     direction={sortDirection}
+                                    firstDirection={firstSortDirection}
                                   />
                                 )}
                                 {flexRender(
@@ -293,6 +317,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 {canSort && !isRightAligned && (
                                   <DataTableSortingIcon
                                     direction={sortDirection}
+                                    firstDirection={firstSortDirection}
                                   />
                                 )}
                               </Wrapper>
@@ -334,7 +359,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                     isSelectCell,
                                   "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
                                     isActionCell,
-                                  "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky h-full":
+                                  "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
                                     isFirstColumn || isSelectCell,
                                   "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                     isFirstColumn,
@@ -350,17 +375,19 @@ const DataTableTable = (props: DataTableTableProps) => {
                               style={
                                 !isSpecialCell
                                   ? {
-                                      width: cell.column.columnDef.size,
+                                      width:
+                                        cell.column.columnDef.size != null
+                                          ? cell.column.columnDef.size
+                                          : colWidth !== undefined
+                                          ? `${colWidth}%`
+                                          : undefined,
                                       maxWidth: cell.column.columnDef.maxSize,
                                       minWidth: cell.column.columnDef.minSize,
                                     }
                                   : undefined
                               }
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              {renderAlignedCell(cell)}
                             </Table.Cell>
                           )
                         })}
@@ -395,6 +422,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                     {headerGroup.headers.map((header, idx) => {
                       const canSort = header.column.getCanSort()
                       const sortDirection = header.column.getIsSorted()
+                      const firstSortDirection = header.column.getFirstSortDir()
                       const sortHandler =
                         header.column.getToggleSortingHandler()
 
@@ -405,10 +433,13 @@ const DataTableTable = (props: DataTableTableProps) => {
                       const Wrapper = canSort ? "button" : "div"
                       const isFirstColumn = hasSelect ? idx === 1 : idx === 0
 
-                      // Get header alignment from column metadata
+                      // Get header alignment from column metadata.
+                      // `align` drives both header and cell; `headerAlign`
+                      // is the legacy header-only fallback.
+                      const alignMeta = (header.column.columnDef.meta as any)
+                        ?.___alignMetaData
                       const headerAlign =
-                        (header.column.columnDef.meta as any)?.___alignMetaData
-                          ?.headerAlign || "left"
+                        alignMeta?.align ?? alignMeta?.headerAlign ?? "left"
                       const isRightAligned = headerAlign === "right"
                       const isCenterAligned = headerAlign === "center"
 
@@ -459,14 +490,20 @@ const DataTableTable = (props: DataTableTableProps) => {
                             )}
                           >
                             {canSort && isRightAligned && (
-                              <DataTableSortingIcon direction={sortDirection} />
+                              <DataTableSortingIcon
+                                direction={sortDirection}
+                                firstDirection={firstSortDirection}
+                              />
                             )}
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext()
                             )}
                             {canSort && !isRightAligned && (
-                              <DataTableSortingIcon direction={sortDirection} />
+                              <DataTableSortingIcon
+                                direction={sortDirection}
+                                firstDirection={firstSortDirection}
+                              />
                             )}
                           </Wrapper>
                         </Table.HeaderCell>
@@ -497,25 +534,22 @@ const DataTableTable = (props: DataTableTableProps) => {
                         return (
                           <Table.Cell
                             key={cell.id}
-                            className={clx(
-                              "items-stretch truncate whitespace-nowrap",
-                              {
-                                "w-[calc(20px+24px+24px)] min-w-[calc(20px+24px+24px)] max-w-[calc(20px+24px+24px)]":
-                                  isSelectCell,
-                                "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
-                                  isActionCell,
-                                "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky h-full":
-                                  isFirstColumn || isSelectCell,
-                                "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
-                                  isFirstColumn,
-                                "after:bg-ui-border-base":
-                                  showStickyBorder && isFirstColumn,
-                                "left-0":
-                                  isSelectCell || (isFirstColumn && !hasSelect),
-                                "left-[calc(20px+24px+24px)]":
-                                  isFirstColumn && hasSelect,
-                              }
-                            )}
+                            className={clx("items-stretch whitespace-nowrap", {
+                              "w-[calc(20px+24px+24px)] min-w-[calc(20px+24px+24px)] max-w-[calc(20px+24px+24px)]":
+                                isSelectCell,
+                              "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
+                                isActionCell,
+                              "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
+                                isFirstColumn || isSelectCell,
+                              "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                                isFirstColumn,
+                              "after:bg-ui-border-base":
+                                showStickyBorder && isFirstColumn,
+                              "left-0":
+                                isSelectCell || (isFirstColumn && !hasSelect),
+                              "left-[calc(20px+24px+24px)]":
+                                isFirstColumn && hasSelect,
+                            })}
                             style={
                               !isSpecialCell
                                 ? {
@@ -526,10 +560,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 : undefined
                             }
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {renderAlignedCell(cell)}
                           </Table.Cell>
                         )
                       })}
@@ -607,6 +638,68 @@ const DataTableTableSkeleton = ({
         </div>
       </div>
     </div>
+  )
+}
+
+// Renders a body cell's content, applying horizontal alignment from the
+// column's `align` meta. Left-aligned (or unset) cells render bare; only
+// center/right wrap in an alignment flex row. The content is clipped and (by
+// default) tooltipped by TruncatedCell.
+function renderAlignedCell(cell: any) {
+  const meta = cell.column.columnDef.meta as any
+  const align = meta?.___alignMetaData?.align
+  // Opt-out is explicit `false`; anything else (incl. unset) truncates+tooltips.
+  const wantTooltip = meta?.___truncateTooltip !== false
+
+  const rendered = flexRender(cell.column.columnDef.cell, cell.getContext())
+  const content = wantTooltip ? (
+    <TruncatedCell>{rendered}</TruncatedCell>
+  ) : (
+    rendered
+  )
+
+  if (!["right", "center"].includes(align)) {
+    return content
+  }
+
+  return (
+    <div
+      className={clx("flex min-w-0 items-center", {
+        "justify-end": align === "right",
+        "justify-center": align === "center",
+      })}
+    >
+      {content}
+    </div>
+  )
+}
+
+function TruncatedCell({ children }: { children: React.ReactNode }) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const [state, setState] = React.useState({ overflow: false, text: "" })
+
+  const check = () => {
+    const el = ref.current
+    if (el) {
+      setState({
+        overflow: el.scrollWidth > el.clientWidth,
+        text: el.textContent ?? "",
+      })
+    }
+  }
+
+  return (
+    // Cap the tooltip's width and break long unbroken strings so the text
+    // wraps inside the bubble instead of overflowing it.
+    <Tooltip
+      content={state.text}
+      hidden={!state.overflow}
+      className="max-w-[360px] break-words"
+    >
+      <div ref={ref} className="truncate" onMouseEnter={check}>
+        {children}
+      </div>
+    </Tooltip>
   )
 }
 

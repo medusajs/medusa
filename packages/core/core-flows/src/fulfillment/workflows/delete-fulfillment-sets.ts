@@ -17,7 +17,7 @@ export const deleteFulfillmentSetsWorkflowId =
   "delete-fulfillment-sets-workflow"
 /**
  * This workflow deletes one or more fulfillment sets. It's used by the
- * [Delete Fulfillment Sets Admin API Route](https://docs.medusajs.com/api/admin#fulfillment-sets_deletefulfillmentsetsid).
+ * [Delete Fulfillment Sets Admin API Route](https://docs.medusajs.com/api/admin/fulfillment-sets/delete-fulfillment-set).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * delete fulfillment sets within your custom flows.

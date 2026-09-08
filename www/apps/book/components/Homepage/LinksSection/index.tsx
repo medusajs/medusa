@@ -83,8 +83,8 @@ const HomepageLinksSection = () => {
       tag: "Agentic Development",
       links: [
         {
-          link: "https://bloom.chat",
-          text: "Build with Bloom",
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli",
+          text: "Agentic Deployments",
         },
         {
           link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai",

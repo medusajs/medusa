@@ -1,5 +1,5 @@
 import { Note, InlineIcon } from "docs-ui"
-import { ShieldCheck, CommandLine, EllipsisHorizontal } from "@medusajs/icons"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Access Keys`,
@@ -13,7 +13,7 @@ In this guide, you'll learn how to create and manage access keys to authenticate
 
 Access keys are API credentials that allow you to authenticate with Cloud services programmatically. They provide secure access to your Cloud resources without requiring interactive login.
 
-Access keys are useful when using the [Medusa Cloud CLI](../cli/page.mdx) in non-interactive environments such as CI/CD pipelines, server scripts, or when you want to avoid opening a browser for authentication.
+Access keys are useful when using the [Cloud CLI](../cli/page.mdx) in non-interactive environments such as CI/CD pipelines, server scripts, or when you want to avoid opening a browser for authentication.
 
 Cloud supports two types of access keys:
 
@@ -28,8 +28,9 @@ Organization access keys allow API access to organization-level resources such a
 
 To manage organization access keys:
 
-1. [Open your organization's settings](../organizations/page.mdx#view-organization-settings).
-2. Click on the **Org Access Keys** tab in the sidebar.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Access keys** > **Organization** in the sidebar.
 
 From this page, you can view all organization access keys, including their names, redacted key previews, and creation dates.
 
@@ -75,8 +76,9 @@ Personal access keys provide API access to your individual account resources and
 
 To access your personal access keys:
 
-1. [Open your organization's settings](../organizations/page.mdx#view-organization-settings).
-2. Click on the **Personal Access Keys** tab in the sidebar.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Access keys** > **Personal** in the sidebar.
 
 From this page, you can view all your personal access keys, including their names, redacted key previews, and creation dates.
 

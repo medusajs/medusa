@@ -23,7 +23,7 @@ export const Breadcrumbs = () => {
   } = useSiteConfig()
 
   const getLinkPath = (item: Sidebar.SidebarItemLink): string => {
-    return item.isPathHref ? item.path : `#${item.path}`
+    return item.path
   }
 
   const breadcrumbItems = useMemo(() => {

@@ -61,3 +61,11 @@ After running the codemod, review the changes made to your codebase. You can:
 - Run your tests to ensure everything works as expected.
 
 If everything is working correctly, you can push the changes to your repository. If you've installed `zod` and you're not using it for Medusa Admin customizations, you can remove it from your `package.json` dependencies.
+
+---
+
+## Zod Dependency Management
+
+Medusa v2.13.0+ exports Zod from `@medusajs/framework/zod`, and Medusa v2.14.0+ uses Zod v4.2.0 internally. So, when you install Zod in your project, make sure to install the same version as Medusa to avoid dependency conflicts.
+
+If you encounter Zod version conflicts during installation or deployment, make sure to install Zod v4.2.0 in your project to match the version used by Medusa. This lets the package manager resolve a single consistent version of Zod that satisfies all packages in the dependency tree.

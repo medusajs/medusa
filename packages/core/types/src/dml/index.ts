@@ -1,4 +1,5 @@
 import { CamelCase, Prettify } from "../common"
+import { SchemaPropertyMetadata } from "../schema"
 
 /**
  * Representation of DML schema. It must be a key-value pair
@@ -10,6 +11,10 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
+/**
+ * The configuration for a DML entity. Can be a string (used as the table name)
+ * or an object with optional name and required table name.
+ */
 export type IDmlEntityConfig =
   | string
   | {
@@ -17,6 +22,9 @@ export type IDmlEntityConfig =
       tableName: string
     }
 
+/**
+ * Infers the camel-cased entity name from a DML entity configuration.
+ */
 export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
   TConfig extends string
     ? CamelCase<TConfig>
@@ -71,13 +79,11 @@ export type IsNullableRelation<T> = T extends () => IDmlEntity<any, any> | null
   : false
 
 /**
- * The meta-data returned by the property parse method
+ * The meta-data returned by the property parse method.
+ * Extends the shared SchemaPropertyMetadata with DML-specific fields.
+ * `T` types `defaultValue` to match the property's `$dataType`.
  */
-export type PropertyMetadata = {
-  fieldName: string
-  defaultValue?: any
-  nullable: boolean
-  computed: boolean
+export type PropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>
@@ -97,7 +103,7 @@ export type PropertyMetadata = {
  */
 export type PropertyType<T> = {
   $dataType: T
-  parse(fieldName: string): PropertyMetadata
+  parse(fieldName: string): PropertyMetadata<T>
 }
 
 /**
@@ -268,6 +274,10 @@ export type Infer<T> = T extends IDmlEntity<infer Schema, any>
   ? EntityConstructor<InferSchemaFields<Schema>>
   : never
 
+/**
+ * Infers the schema fields for a DML entity as used by module services,
+ * where relationships resolve to string IDs instead of full entity types.
+ */
 export type InferEntityForModuleService<T> = T extends IDmlEntity<
   infer Schema,
   any
@@ -327,6 +337,9 @@ export type CheckConstraint<Schema extends DMLSchema> =
       property?: string
     }
 
+/**
+ * An index definition on a DML entity.
+ */
 export type EntityIndex<
   Schema extends DMLSchema = DMLSchema,
   Where = string
@@ -347,8 +360,12 @@ export type EntityIndex<
   on: InferIndexableProperties<Schema>[]
   /**
    * Conditions to restrict which records are indexed.
+   *
+   * Medusa scopes indexes to `deleted_at IS NULL` by default. Set this to `null`
+   * to opt out of that scope and create a non-partial index, which is required
+   * for indexes that back a foreign key with a cascading rule.
    */
-  where?: Where
+  where?: Where | null
 
   /**
    * The type of the index. (e.g: GIN)
@@ -356,10 +373,24 @@ export type EntityIndex<
   type?: string
 }
 
+/**
+ * A primitive value accepted in a DML query condition.
+ */
 export type SimpleQueryValue = string | number | boolean | null
+
+/**
+ * A "not equal" query operator wrapping a simple value.
+ */
 export type NeQueryValue = { $ne: SimpleQueryValue }
+
+/**
+ * A value accepted in a DML query condition, either a primitive or a "not equal" operator.
+ */
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
+/**
+ * A condition object used to filter DML entity records by their schema fields.
+ */
 export type QueryCondition<T extends DMLSchema = DMLSchema> = {
   [K in keyof IDmlEntity<T, any>["schema"]]?: T[K] extends object
     ? QueryValue

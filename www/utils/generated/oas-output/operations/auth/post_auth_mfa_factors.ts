@@ -78,6 +78,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-since: 2.15.3
  * 
 */
 

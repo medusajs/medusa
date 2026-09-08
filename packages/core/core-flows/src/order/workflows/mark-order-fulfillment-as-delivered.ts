@@ -204,7 +204,7 @@ export const markOrderFulfillmentAsDeliveredWorkflowId =
   "mark-order-fulfillment-as-delivered-workflow"
 /**
  * This workflow marks a fulfillment in an order as delivered. It's used by the
- * [Mark Fulfillment as Delivered Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idmarkasdelivered).
+ * [Mark Fulfillment as Delivered Admin API Route](https://docs.medusajs.com/api/admin/orders/mark-delivered).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * marking a fulfillment as delivered.

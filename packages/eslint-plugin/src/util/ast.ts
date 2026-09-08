@@ -442,3 +442,39 @@ export const findConstructor = (
   }
   return null
 }
+
+/**
+ * Returns the string value of `node` when it's a plain string `Literal`, or
+ * `null` otherwise (numeric/boolean literals, identifiers, template literals,
+ * spreads, holes in a sparse array, etc.). Unlike `resolveStaticStringValue`,
+ * this does no scope resolution — it only reads an inline string literal.
+ */
+export const getStringLiteralValue = (
+  node: TSESTree.Node | null | undefined
+): string | null => {
+  if (
+    node &&
+    node.type === AST_NODE_TYPES.Literal &&
+    typeof node.value === "string"
+  ) {
+    return node.value
+  }
+  return null
+}
+
+/**
+ * Returns the object literal passed as the argument at `index` (default `0`) of
+ * `call`, or `null` when that argument is missing or isn't an inline
+ * `ObjectExpression`. Does not resolve identifiers through scope — callers that
+ * need that should pass the result of `resolveObjectExpression`.
+ */
+export const getCallArgumentObject = (
+  call: TSESTree.CallExpression,
+  index = 0
+): TSESTree.ObjectExpression | null => {
+  const arg = call.arguments[index]
+  if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) {
+    return null
+  }
+  return arg
+}

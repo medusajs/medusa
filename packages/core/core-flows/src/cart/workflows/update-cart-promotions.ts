@@ -60,7 +60,7 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 /**
  * This workflow updates a cart's promotions, applying or removing promotion codes from the cart. It also computes the adjustments
  * that need to be applied to the cart's line items and shipping methods based on the promotions applied. This workflow is used by
- * [Add Promotions Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidpromotions).
+ * [Add Promotions Store API Route](https://docs.medusajs.com/api/store/carts/add-promotions).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to update a cart's promotions within your custom flows.
  *

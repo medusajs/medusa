@@ -51,6 +51,19 @@ export default defineLink(
 )
 ```
 
+When linking to a data model by its id (for example, linking to draft orders via `OrderModule.linkable.order.id`), the `.id` suffix on the linkable property is also valid:
+
+```ts title="src/links/vendor-draft-order.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import MarketplaceModule from "../modules/marketplace"
+import OrderModule from "@medusajs/medusa/order"
+
+export default defineLink(
+  MarketplaceModule.linkable.vendor,
+  { linkable: OrderModule.linkable.order.id, isList: true }
+)
+```
+
 ## Why it's Important
 
 A module's `linkable` property exposes the data models that can participate in a link. Referencing it ensures Medusa can resolve the linked records correctly at runtime.

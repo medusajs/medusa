@@ -1,11 +1,21 @@
-import path from "path"
 import type { OpenAPI } from "types"
 import readSpecDocument from "./read-spec-document"
 import dereference from "./dereference"
 import { unstable_cache } from "next/cache"
 import { oasFileToPath } from "docs-utils"
 import { specsTagIndex } from "@/generated/specs-tag-index.mjs"
+import { apiRefPaths } from "@/utils/api-ref-paths"
 import { getPathForEnv } from "./get-path-for-env"
+
+const HTTP_METHODS = [
+  "get",
+  "post",
+  "put",
+  "patch",
+  "delete",
+  "head",
+  "options",
+]
 
 async function getPathsOfTag_(
   tagName: string,
@@ -22,6 +32,11 @@ async function getPathsOfTag_(
     "paths"
   )
 
+  // Precomputed URL path (without basePath) for each operation, keyed by
+  // operationId, so the frontend links/scroll-targets match the generated
+  // sidebar, sitemap, and redirects.
+  const operationPaths = apiRefPaths[area]?.tags?.[tagName]?.operations ?? {}
+
   const documents: OpenAPI.ParsedPathItemObject[] = await Promise.all(
     files.map(async (file) => {
       const filePath = getPathForEnv(basePath, file)
@@ -29,6 +44,17 @@ async function getPathsOfTag_(
       const fileContent = (await readSpecDocument(
         filePath
       )) as OpenAPI.OpenAPIV3.PathItemObject<OpenAPI.Operation>
+
+      for (const method of HTTP_METHODS) {
+        const operation = fileContent[
+          method as OpenAPI.OpenAPIV3.HttpMethods
+        ] as OpenAPI.Operation | undefined
+        const operationId = operation?.operationId
+        if (operation && operationId && operationPaths[operationId]) {
+          operation["x-path"] = operationPaths[operationId].path
+          operation["x-slug"] = operationPaths[operationId].slug
+        }
+      }
 
       return {
         ...fileContent,

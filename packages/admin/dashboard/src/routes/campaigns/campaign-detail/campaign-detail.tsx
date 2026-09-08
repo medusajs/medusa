@@ -5,11 +5,16 @@ import { useCampaign } from "../../../hooks/api/campaigns"
 import { CampaignBudget } from "./components/campaign-budget"
 import { CampaignGeneralSection } from "./components/campaign-general-section"
 import { CampaignPromotionSection } from "./components/campaign-promotion-section"
+import { ConfigurableCampaignPromotionSection } from "./components/campaign-promotion-section/configurable-campaign-promotion-section"
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { CampaignConfigurationSection } from "./components/campaign-configuration-section"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
 
@@ -19,6 +24,7 @@ export const CampaignDetail = () => {
   >
 
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { campaign, isLoading, isError, error } = useCampaign(
     id!,
     { fields: CAMPAIGN_DETAIL_FIELDS },
@@ -52,7 +58,11 @@ export const CampaignDetail = () => {
               <CampaignGeneralSection campaign={campaign} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CampaignPromotionSection">
-              <CampaignPromotionSection campaign={campaign} />
+              {isViewConfigEnabled ? (
+                <ConfigurableCampaignPromotionSection campaign={campaign} />
+              ) : (
+                <CampaignPromotionSection campaign={campaign} />
+              )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(campaign)}
           </>

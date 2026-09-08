@@ -8,6 +8,10 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/extend"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Implement Custom Line Item Pricing in Medusa",
     "path": "https://docs.medusajs.com/resources/examples/guides/custom-item-price"
   },
@@ -122,6 +126,10 @@ export const cart = [
   {
     "title": "getLineItemActionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemActionsStep"
+  },
+  {
+    "title": "getLineItemPricingQuantitiesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getLineItemPricingQuantitiesStep"
   },
   {
     "title": "removeLineItemAdjustmentsStep",

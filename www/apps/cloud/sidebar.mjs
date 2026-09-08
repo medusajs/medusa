@@ -41,9 +41,14 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Navigation Styles",
-            path: "/navigation",
-          }
+            title: "Cloud Assistant",
+            path: "/assistant",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/changelog",
+          },
         ],
       },
       {
@@ -68,8 +73,18 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Clone Project Locally",
+                path: "/projects/clone-locally",
+              },
+              {
+                type: "link",
                 title: "Rename Repository",
                 path: "/projects/rename-repo-branch",
+              },
+              {
+                type: "link",
+                title: "Log Drains",
+                path: "/projects/log-drains",
               },
             ],
           },
@@ -141,7 +156,7 @@ export const sidebar = [
             type: "link",
             title: "Account",
             path: "/user",
-          }
+          },
         ],
       },
       {
@@ -159,6 +174,12 @@ export const sidebar = [
             type: "link",
             title: "For Agents",
             path: "/cli/agents",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/cli/changelog",
+            hideFromChildItems: true,
           },
           {
             type: "link",
@@ -209,6 +230,11 @@ export const sidebar = [
             type: "link",
             title: "logs",
             path: "/cli/commands/logs",
+          },
+          {
+            type: "link",
+            title: "local",
+            path: "/cli/commands/local",
           },
           {
             type: "link",
@@ -330,6 +356,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Status Page",
+            path: "/status",
+          },
+          {
+            type: "link",
             title: "Notifications",
             path: "/notifications",
           },
@@ -359,6 +390,33 @@ export const sidebar = [
                 path: "/monitoring/http",
               },
             ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
+          },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/webhooks/changelog",
           },
         ],
       },

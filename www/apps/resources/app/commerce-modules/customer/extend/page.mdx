@@ -126,7 +126,7 @@ A table for the link is now created in the database. You can now retrieve and ma
 
 When a customer is created, you also want to create a `Custom` record and set the `custom_name` property, then create a link between the `Customer` and `Custom` records.
 
-To do that, you'll consume the [customersCreated](/references/medusa-workflows/createCustomersWorkflow#customerscreated) hook of the [createCustomersWorkflow](/references/medusa-workflows/createCustomersWorkflow). This workflow is executed in the [Create Customer Admin API route](!api!/admin#customers_postcustomers)
+To do that, you'll consume the [customersCreated](/references/medusa-workflows/createCustomersWorkflow#customerscreated) hook of the [createCustomersWorkflow](/references/medusa-workflows/createCustomersWorkflow). This workflow is executed in the [Create Customer Admin API route](!api!/admin/customers/create-customer)
 
 <Note title="Tip">
 
@@ -370,7 +370,7 @@ Learn more about how to use Query in [this guide](!docs!/learn/fundamentals/modu
 
 Similar to the `customersCreated` hook, you'll consume the [customersUpdated](/references/medusa-workflows/updateCustomersWorkflow#customersUpdated) hook of the [updateCustomersWorkflow](/references/medusa-workflows/updateCustomersWorkflow) to update `custom_name` when the customer is updated.
 
-The `updateCustomersWorkflow` is executed by the [Update Customer API route](!api!/admin#customers_postcustomersid), which accepts the `additional_data` parameter to pass custom data to the hook.
+The `updateCustomersWorkflow` is executed by the [Update Customer API route](!api!/admin/customers/update-a-customer), which accepts the `additional_data` parameter to pass custom data to the hook.
 
 ### Add custom_name to Additional Data Validation
 

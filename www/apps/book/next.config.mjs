@@ -26,9 +26,6 @@ const withMDX = mdx({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
             resources: {
               projectPath: path.resolve("..", "resources"),
               hasGeneratedSlugs: true,
@@ -54,9 +51,6 @@ const withMDX = mdx({
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
-            bloom: {
-              url: process.env.NEXT_PUBLIC_BLOOM_URL,
-            },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
             },
@@ -134,16 +128,19 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path*/index.html.md",
-          destination: "/md-content/:path*",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/index.html.md",
+          destination: "/md-content/:first/:rest*",
         },
         {
-          source: "/:path*/index.md",
-          destination: "/md-content/:path*",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/index.md",
+          destination: "/md-content/:first/:rest*",
         },
         {
-          source: "/:path*.md",
-          destination: "/md-content/:path*",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*.md",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source:

@@ -99,8 +99,8 @@ export const removeExchangeShippingMethodWorkflowId =
   "remove-exchange-shipping-method"
 /**
  * This workflow removes an inbound or outbound shipping method of an exchange. It's used by the
- * [Remove Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidinboundshippingmethodaction_id) or
- * the [Remove Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutboundshippingmethodaction_id).
+ * [Remove Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/remove-inbound-shipping-method) or
+ * the [Remove Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/remove-outbound-shipping-method).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to remove an inbound or outbound shipping method
  * from an exchange in your custom flow.

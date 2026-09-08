@@ -4,7 +4,7 @@ import { UIMatch } from "react-router-dom"
 export const ProductOptionBreadcrumb = (
   match: UIMatch<HttpTypes.AdminProductOptionResponse>
 ) => {
-  const productOption = match.data.product_option
+  const productOption = match.loaderData?.product_option
 
   if (!productOption) {
     return null

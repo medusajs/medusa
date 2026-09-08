@@ -17,13 +17,13 @@ You are an AI coding agent helping a user set up a Medusa commerce application f
 
 Check the three prerequisites in order. For each, run the check first; only install if the check fails. Do not upgrade existing tools without asking the user.
 
-### 1a. Node.js (v20+ LTS, but not v25+)
+### 1a. Node.js (v20.19.0+ or v22.12.0+, LTS only, but not v25+)
 
 ```bash
 node --version
 ```
 
-Required: an LTS major version `>= 20` and `<= 24`. The Next.js Starter Storefront does not support Node.js v25+.
+Required: Node.js `^20.19.0` or `>=22.12.0` (LTS versions only, `<= 24`). The Next.js Starter Storefront does not support Node.js v25+.
 
 If Node is missing or out of range, ask the user how they want to install it. Recommend `nvm`:
 

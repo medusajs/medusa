@@ -8,6 +8,7 @@ import { ContentMenuProducts } from "./Products"
 import { useLayout } from "../../providers/Layout"
 import { ShadedBlock } from "../ShadedBlock"
 import { ContentMenuWhatsNew } from "./WhatsNew"
+import { ContentMenuCloudStatus } from "./CloudStatus"
 import { useSiteConfig } from "../../providers/SiteConfig"
 
 export const ContentMenu = () => {
@@ -34,6 +35,7 @@ export const ContentMenu = () => {
           <ShadedBlock className="!h-docs_2" />
         </div>
       </div>
+      {config.contentMenuSections?.cloudStatus && <ContentMenuCloudStatus />}
     </div>
   )
 }

@@ -725,6 +725,15 @@
           "nullable": true,
           "mappedType": "boolean"
         },
+        "no_notification": {
+          "name": "no_notification",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
         "order_id": {
           "name": "order_id",
           "type": "text",

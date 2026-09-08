@@ -15,5 +15,9 @@ export default function formatOas(
 ) {
   return `* ${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(oas, {
     lineWidth: 200,
+    // keep multiline strings as literal blocks. Otherwise, they're written as folded
+    // blocks that wrap their content, which changes how an OAS with a multi-paragraph
+    // description is written every time it's formatted again.
+    blockQuote: "literal",
   }).replaceAll("\n", DOCBLOCK_NEW_LINE)}${DOCBLOCK_END_LINE}`
 }

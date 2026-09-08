@@ -38,7 +38,7 @@ const draftOrderFields = [
 
 /**
  * This workflow cancels a draft order edit. It's used by the
- * [Cancel Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedit).
+ * [Cancel Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/cancel-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * cancelling a draft order edit.

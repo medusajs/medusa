@@ -7,7 +7,7 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The price's ID.
+ *     description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
  *   region_id:
  *     type: string
  *     title: region_id
@@ -18,7 +18,7 @@
  *     description: The price's amount.
  *   rules:
  *     type: array
- *     description: The price's rules.
+ *     description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
  *     items:
  *       $ref: "#/components/schemas/PriceRule"
  * 

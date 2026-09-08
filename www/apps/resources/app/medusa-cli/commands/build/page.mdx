@@ -68,12 +68,12 @@ Refer to the [Build Medusa Application](!docs!/learn/build) guide for next steps
       </Table.Cell>
       <Table.Cell>
 
-      Run the Medusa linter before building. Pass `--no-lint` to skip linting. Linting is skipped automatically when no `eslint.config.js` is found in the project root.
+      Run the Medusa linter before building. Pass `--no-lint` to skip linting. Enabled by default only when `@medusajs/eslint-plugin` is installed in the project. Linting is also skipped automatically when no `eslint.config.js` is found in the project root.
 
       </Table.Cell>
       <Table.Cell>
 
-      `true`
+      `true` when `@medusajs/eslint-plugin` is installed, `false` otherwise
 
       </Table.Cell>
     </Table.Row>

@@ -20,6 +20,7 @@ import { isProduction } from "./is-production"
 import { isString } from "./is-string"
 import { normalizeImportPathWithSource } from "./normalize-import-path-with-source"
 import { resolveExports } from "./resolve-exports"
+import { resolveFromProject } from "./resolve-from-project"
 import { tryConvertToNumber } from "./try-convert-to-number"
 
 const MEDUSA_CLOUD_EXECUTION_CONTEXT = "medusa-cloud"
@@ -52,7 +53,7 @@ const DEFAULT_ADMIN_CORS =
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
-  /*"customer",
+  /* "customer",
   "customers",
   "payment_collection",
   "payment_collections"*/
@@ -80,7 +81,13 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
 
   const projectConfig = normalizeProjectConfig(config.projectConfig, options)
   const adminConfig = normalizeAdminConfig(config.admin)
-  const modules = resolveModules(config.modules, options, config.projectConfig)
+  const projectDir = process.cwd()
+  const modules = resolveModules(
+    config.modules,
+    options,
+    config.projectConfig,
+    projectDir
+  )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
   const plugins = resolvePlugins(config.plugins, options)
 
@@ -99,7 +106,8 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
  * take precedence in case of duplicate modules
  */
 export function transformModules(
-  modules: InputConfigModules
+  modules: InputConfigModules,
+  projectDir: string = process.cwd()
 ): Exclude<ConfigModule["modules"], undefined> {
   const remappedModules = modules.reduce((acc, moduleConfig) => {
     if (moduleConfig.scope === "external" && !moduleConfig.key) {
@@ -117,12 +125,28 @@ export function transformModules(
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
-      let resolution = isString(moduleConfig.resolve!)
-        ? normalizeImportPathWithSource(moduleConfig.resolve as string)
+      if (!moduleConfig.resolve) {
+        throw new Error(
+          `Module must have a 'resolve' property in medusa-config.ts and it can't be empty. Please provide a module name or path for the module.`
+        )
+      }
+
+      const resolution = isString(moduleConfig.resolve!)
+        ? normalizeImportPathWithSource(
+            moduleConfig.resolve as string,
+            projectDir
+          )
         : moduleConfig.resolve
 
+      /**
+       * Plugin modules are referenced by a bare specifier
+       * ("<plugin>/.medusa/server/src/modules/<name>"), so they must be
+       * resolved from the project directory. Otherwise the lookup starts in
+       * whichever "node_modules" directory `@medusajs/utils` was hoisted into,
+       * which in a workspace monorepo does not contain the plugin.
+       */
       const moduleExport = isString(resolution)
-        ? require(resolution)
+        ? require(resolveFromProject(resolution, projectDir))
         : resolution
 
       const defaultExport = resolveExports(moduleExport).default
@@ -237,7 +261,8 @@ function resolvePlugins(
 function resolveModules(
   configModules: InputConfig["modules"],
   { isCloud }: { isCloud: boolean },
-  projectConfig: InputConfig["projectConfig"]
+  projectConfig: InputConfig["projectConfig"],
+  projectDir: string = process.cwd()
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
@@ -319,6 +344,26 @@ function resolveModules(
             },
           },
         ],
+      },
+    },
+    // Self-hosted: native Postgres FTS. Cloud without a search endpoint: Lakebase.
+    // Cloud with MEDUSA_CLOUD_SEARCH_ENDPOINT: search-medusa is the default
+    // (registered from options.cloud, same pattern as notification cloud email
+    // and Medusa Payments). Postgres stays registered so a provider switch can
+    // drop the previous engine's indexes during `db:migrate`.
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.SEARCH],
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "postgres",
+            options: { engine: isCloud ? "lakebase" : "native" },
+          },
+        ],
+        ...(process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT
+          ? { default_provider: "search-medusa" }
+          : {}),
       },
     },
   ]
@@ -470,7 +515,7 @@ function resolveModules(
 
   applyDefaultAuthMfaOptions(modules, authModuleOptions)
 
-  return transformModules(modules)
+  return transformModules(modules, projectDir)
 }
 
 function normalizeProjectConfig(
@@ -487,6 +532,7 @@ function normalizeProjectConfig(
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
     paymentsEndpoint: process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT,
+    searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
@@ -633,6 +679,16 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             environment_handle: config.environmentHandle,
             sandbox_handle: config.sandboxHandle,
+          },
+          ...(module.options ?? {}),
+        }
+        break
+      case Modules.SEARCH:
+        module.options = {
+          cloud: {
+            api_key: config.apiKey,
+            endpoint: config.searchEndpoint,
+            environment_handle: config.environmentHandle,
           },
           ...(module.options ?? {}),
         }

@@ -9,6 +9,7 @@ import {
 } from "remark-rehype-plugins"
 import path from "path"
 import { catchBadRedirects } from "build-scripts"
+import { crossProjectLinksOptions } from "./utils/cross-project-links-options.mjs"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,10 +18,7 @@ const nextConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {
-    "*": [
-      "../**/.open-next/**",
-      "../!(api-reference)/.next/**",
-    ],
+    "*": ["../**/.open-next/**", "../!(api-reference)/.next/**"],
   },
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
@@ -40,6 +38,59 @@ const nextConfig = {
       },
     ])
   },
+  async rewrites() {
+    const markdownAccept = [
+      {
+        type: "header",
+        key: "Accept",
+        value: ".*(text/markdown|text/plain).*",
+      },
+    ]
+
+    return {
+      beforeFiles: [
+        // Explicit `.md` (and `/index.md`, `/index.html.md`) suffixes for the
+        // area index.
+        {
+          source: "/:area(store|admin).md",
+          destination: "/md-content/:area",
+        },
+        {
+          source: "/:area(store|admin)/index.md",
+          destination: "/md-content/:area",
+        },
+        {
+          source: "/:area(store|admin)/index.html.md",
+          destination: "/md-content/:area",
+        },
+        // Explicit `.md` suffixes for nested paths (sections, tags, operations,
+        // schemas).
+        {
+          source: "/:area(store|admin)/:rest*/index.html.md",
+          destination: "/md-content/:area/:rest*",
+        },
+        {
+          source: "/:area(store|admin)/:rest*/index.md",
+          destination: "/md-content/:area/:rest*",
+        },
+        {
+          source: "/:area(store|admin)/:rest*.md",
+          destination: "/md-content/:area/:rest*",
+        },
+        // Content negotiation: serve Markdown for text/markdown | text/plain.
+        {
+          source: "/:area(store|admin)/:rest*",
+          has: markdownAccept,
+          destination: "/md-content/:area/:rest*",
+        },
+        {
+          source: "/:area(store|admin)",
+          has: markdownAccept,
+          destination: "/md-content/:area",
+        },
+      ],
+    }
+  },
 }
 
 const withMDX = createMDX({
@@ -49,9 +100,6 @@ const withMDX = createMDX({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -71,37 +119,7 @@ const withMDX = createMDX({
           },
         },
       ],
-      [
-        crossProjectLinksPlugin,
-        {
-          baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-          projectUrls: {
-            docs: {
-              url: process.env.NEXT_PUBLIC_DOCS_URL,
-              path: "",
-            },
-            bloom: {
-              url: process.env.NEXT_PUBLIC_BLOOM_URL,
-            },
-            resources: {
-              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
-            },
-            "user-guide": {
-              url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
-            },
-            ui: {
-              url: process.env.NEXT_PUBLIC_UI_URL,
-            },
-            cloud: {
-              url: process.env.NEXT_PUBLIC_CLOUD_URL,
-            },
-          },
-          useBaseUrl:
-            process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            !!process.env.CLOUDFLARE_ENV,
-        },
-      ],
+      [crossProjectLinksPlugin, crossProjectLinksOptions],
       [
         rehypeMdxCodeProps,
         {

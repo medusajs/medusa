@@ -69,7 +69,7 @@ export const beginReceiveReturnValidationStep = createStep(
 export const beginReceiveReturnWorkflowId = "begin-receive-return"
 /**
  * This workflow requests return receival. It's used by the
- * [Start Return Receival Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidreceive).
+ * [Start Return Receival Admin API Route](https://docs.medusajs.com/api/admin/returns/start-return-receival).
  * 
  * You can confirm the return receival using the {@link confirmReturnRequestWorkflow}.
  * 

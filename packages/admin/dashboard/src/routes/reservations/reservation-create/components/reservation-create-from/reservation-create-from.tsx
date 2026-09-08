@@ -1,6 +1,6 @@
 import * as zod from "zod"
 
-import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
+import { Button, Heading, Text, Textarea, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -8,20 +8,23 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import React from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
+import { QuantityInput } from "../../../../../components/inputs/quantity-input"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useInventoryItems } from "../../../../../hooks/api/inventory"
+import { useComboboxData } from "../../../../../hooks/use-combobox-data"
+import { sdk } from "../../../../../lib/client"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { inventoryItemsQueryKeys } from "../../../../../hooks/api/inventory"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
   location_id: zod.string().min(1),
-  quantity: zod.number().min(1),
+  quantity: zod.number().positive(),
   description: zod.string().optional(),
 })
 
@@ -47,10 +50,6 @@ const AttributeGridRow = ({
 export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [inventorySearch, setInventorySearch] = React.useState<string | null>(
-    null
-  )
-
   const form = useForm<zod.infer<typeof CreateReservationSchema>>({
     defaultValues: {
       inventory_item_id: props.inventoryItemId || "",
@@ -61,14 +60,27 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
     resolver: zodResolver(CreateReservationSchema),
   })
 
-  const { inventory_items } = useInventoryItems({
-    q: inventorySearch ?? undefined,
+  const inventoryItemId = form.watch("inventory_item_id")
+
+  const inventoryItems = useComboboxData({
+    queryKey: inventoryItemsQueryKeys.list(),
+    queryFn: (params) => sdk.admin.inventoryItem.list(params),
+    getOptions: (data) =>
+      data.inventory_items.map((inventoryItem) => ({
+        label: inventoryItem.title ?? inventoryItem.sku!,
+        value: inventoryItem.id,
+        inventoryItem,
+      })),
+    defaultValueKey: "id",
+    defaultValue: props.inventoryItemId,
+    selectedValue: inventoryItemId,
   })
 
-  const inventoryItemId = form.watch("inventory_item_id")
-  const selectedInventoryItem = inventory_items?.find(
-    (it) => it.id === inventoryItemId
-  ) as HttpTypes.AdminInventoryItemResponse["inventory_item"] | undefined
+  const selectedInventoryItem = inventoryItems.options.find(
+    (option) => option.value === inventoryItemId
+  )?.inventoryItem as
+    | HttpTypes.AdminInventoryItemResponse["inventory_item"]
+    | undefined
 
   const locationId = form.watch("location_id")
   const selectedLocationLevel = selectedInventoryItem?.location_levels?.find(
@@ -92,7 +104,6 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const { mutateAsync, isPending } = useCreateReservationItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const min = 1
     const max = selectedLocationLevel?.available_quantity
       ? selectedLocationLevel.available_quantity
       : 0
@@ -106,7 +117,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
       return
     }
 
-    if (data.quantity < min || data.quantity > max) {
+    if (data.quantity > max) {
       form.setError("quantity", {
         type: "manual",
         message: t("inventory.reservation.errors.quantityOutOfRange", {
@@ -155,21 +166,18 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
                       </Form.Label>
                       <Form.Control>
                         <Combobox
-                          onSearchValueChange={(value: string) =>
-                            setInventorySearch(value)
-                          }
                           value={value}
                           onChange={(v) => {
                             onChange(v)
                           }}
                           {...field}
                           disabled={!!props.inventoryItemId}
-                          options={(inventory_items ?? []).map(
-                            (inventoryItem) => ({
-                              label: inventoryItem.title ?? inventoryItem.sku!,
-                              value: inventoryItem.id,
-                            })
-                          )}
+                          options={inventoryItems.options}
+                          searchValue={inventoryItems.searchValue}
+                          onSearchValueChange={
+                            inventoryItems.onSearchValueChange
+                          }
+                          fetchNextPage={inventoryItems.fetchNextPage}
                         />
                       </Form.Control>
                     </Form.Item>
@@ -220,13 +228,20 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
               />
               <AttributeGridRow
                 title={t("fields.inStock")}
-                value={selectedLocationLevel?.stocked_quantity ?? "-"}
+                value={formatQuantity(
+                  selectedLocationLevel?.stocked_quantity,
+                  selectedInventoryItem?.unit_of_measure
+                )}
               />
               <AttributeGridRow
                 title={t("inventory.available")}
                 value={
                   selectedLocationLevel?.available_quantity
-                    ? selectedLocationLevel.available_quantity - (quantity || 0)
+                    ? formatQuantity(
+                        selectedLocationLevel.available_quantity -
+                          (quantity || 0),
+                        selectedInventoryItem?.unit_of_measure
+                      )
                     : "-"
                 }
               />
@@ -240,12 +255,13 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
                     <Form.Item>
                       <Form.Label>{t("fields.quantity")}</Form.Label>
                       <Form.Control>
-                        <Input
-                          type="number"
+                        <QuantityInput
+                          step="any"
+                          unitOfMeasure={selectedInventoryItem?.unit_of_measure}
                           placeholder={t(
                             "inventory.reservation.quantityPlaceholder"
                           )}
-                          value={value || ""}
+                          value={value}
                           onChange={(e) => {
                             const value = e.target.value
 

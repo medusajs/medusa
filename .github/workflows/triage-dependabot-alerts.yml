@@ -1,0 +1,252 @@
+name: Triage Dependabot Alerts
+
+# Dismisses open Dependabot alerts on the root yarn.lock whose vulnerable package
+# is NOT in the production dependency tree of any published @medusajs/* package
+# (i.e. build tooling, integration-tests, devDependencies). Runs weekly and on demand.
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # Every Day at 03:00 UTC
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      dismiss:
+        description: "Actually dismiss irrelevant alerts (false = dry run)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  triage:
+    name: Triage published-package alerts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      # node_modules must be present so the script can resolve each dependency's
+      # package.json when computing the production closure. Skip build scripts:
+      # we only need the installed manifests, not compiled output.
+      - name: Install dependencies
+        run: yarn install --immutable --mode=skip-build
+
+      - name: Triage alerts
+        # Schedule always dismisses; manual runs dismiss unless "dismiss" input is false.
+        run: node scripts/triage-published-alerts.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.dismiss == false) && '' || '--dismiss' }}
+        env:
+          # Built-in GITHUB_TOKEN cannot write Dependabot alerts (PATCH 403s).
+          # Provide a PAT / App token with "Dependabot alerts: write" as this secret.
+          GH_TOKEN: ${{ secrets.DEPENDABOT_TRIAGE_TOKEN }}
+
+  # After triage has dismissed the irrelevant alerts, whatever remains open is a
+  # real vulnerability reaching a published package. This job asks Claude to
+  # diagnose each remaining alert with the diagnosing-dependabot-alerts skill and
+  # apply the least-invasive fix, then opens a PR with the changes. It short-
+  # circuits when no open alerts remain.
+  fix:
+    name: Fix remaining alerts
+    needs: triage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # Bot App token, used for checkout/push/PR and for reading Dependabot
+      # alerts. NOTE: the Medusa App installation must grant "Dependabot alerts:
+      # read" for the alert queries below to succeed. As an App (not the built-in
+      # GITHUB_TOKEN), pushes from it also trigger downstream workflows (CI).
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      # Working manifests + lockfile must be present so Claude can trace the
+      # dependency chain and refresh the lockfile. Skip build scripts.
+      - name: Install dependencies
+        run: yarn install --immutable --mode=skip-build
+
+      # Query the alerts that survived triage and pre-fetch their details into a
+      # file for Claude to read. The built-in GITHUB_TOKEN cannot read Dependabot
+      # alerts, so use the Bot App token (needs alerts:read). Doing the fetch here
+      # means Claude never needs the GitHub API (or the App token) itself.
+      - name: Check for remaining open alerts
+        id: alerts
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p /tmp/dependabot-fix
+          # --paginate merges the array pages into one JSON array.
+          gh api --paginate \
+            "repos/$REPO/dependabot/alerts?state=open&per_page=100" \
+            | jq '[.[] | {
+                number, state,
+                package: .dependency.package.name,
+                scope: .dependency.scope,
+                relationship: .dependency.relationship,
+                manifest: .dependency.manifest_path,
+                ghsa: .security_advisory.ghsa_id,
+                severity: .security_advisory.severity,
+                summary: .security_advisory.summary,
+                vulnerable_range: .security_vulnerability.vulnerable_version_range,
+                first_patched: .security_vulnerability.first_patched_version.identifier,
+                all_ranges: [.security_advisory.vulnerabilities[]
+                  | {range: .vulnerable_version_range, patched: .first_patched_version.identifier}]
+              }]' > /tmp/dependabot-fix/alerts.json
+
+          COUNT=$(jq 'length' /tmp/dependabot-fix/alerts.json)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "has_alerts=false" >> "$GITHUB_OUTPUT"
+            echo "No open Dependabot alerts remain after triage. Nothing to fix."
+          else
+            echo "has_alerts=true" >> "$GITHUB_OUTPUT"
+            echo "Remaining open alerts: $(jq -r '[.[].number] | join(", ")' /tmp/dependabot-fix/alerts.json)"
+          fi
+
+      - name: Create fix branch
+        if: steps.alerts.outputs.has_alerts == 'true'
+        id: branch
+        run: |
+          BRANCH="chore/dependabot-security-fixes-$(date -u +%Y%m%d%H%M%S)"
+          git checkout -B "$BRANCH" origin/develop
+          echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Run Claude Code to fix alerts
+        if: steps.alerts.outputs.has_alerts == 'true'
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          # Deliberately NO GitHub API access: the alert details are pre-fetched
+          # into a file, so Claude needs no token and can only edit files + refresh
+          # the lockfile. npm view / yarn are registry ops that need no auth.
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(npm view:*),Bash(yarn install:*),Bash(yarn up:*),Bash(node:*),Bash(grep:*),Bash(git diff:*),Bash(git status:*),Bash(git log:*),Bash(cat:*),Bash(ls:*),Bash(find:*),Bash(mkdir:*),Bash(head:*),Bash(tail:*),Bash(sed:*),Bash(wc:*),Bash(sort:*),Bash(column:*),Bash(paste:*)"
+          max_turns: 60
+          model: claude-sonnet-4-6
+          prompt: |
+            Load and follow the diagnosing-dependabot-alerts skill before doing anything else, by reading this file with the Read tool: .claude/skills/diagnosing-dependabot-alerts/SKILL.md
+            Also read the reference file it points to: .claude/skills/diagnosing-dependabot-alerts/reference/remediation-strategies.md
+
+            You are running in CI. The Dependabot alerts still open after triage have already been fetched for you into `/tmp/dependabot-fix/alerts.json` — read that file with the Read tool. Each entry has the alert number, package, scope, manifest, GHSA id, severity, vulnerable_range, first_patched, and all_ranges. You do NOT have GitHub API access; work only from that file. Skip step 1 (the `gh api` fetch) of the skill and use this pre-fetched data instead.
+
+            For EACH alert in that file:
+            1. Follow the skill: trace the vulnerable package to the affected workspace package(s), assess impact, and choose the least-invasive fix on the remediation ladder (prefer an in-range transitive refresh or a direct-dep bump inside the affected package; treat a root resolutions override as a last resort).
+            2. Apply the fix by editing the relevant `package.json` file(s) with the Edit tool and refreshing the lockfile with `yarn install --mode update-lockfile` (or `yarn up -R <pkg> --mode update-lockfile`).
+
+            CRITICAL rules:
+            - Only make changes with the Edit/Write tools and `yarn` for lockfile refresh. NEVER run git commit, git push, git worktree, or open a PR yourself — the workflow handles that.
+            - Do NOT apply a fix that requires a breaking change (a major-version bump of a declared dependency, a peer-dependency conflict, or changed API usage). If the only available fix for an alert is breaking, or no patched version exists, SKIP that alert and leave its dependency unchanged.
+            - After finishing, VERIFY that no version matching each alert's vulnerable range remains in `yarn.lock`.
+
+            After you finish, write your output for the workflow:
+            - If you applied one or more fixes, create the directory `/tmp/dependabot-fix` (mkdir -p) and write:
+              - `/tmp/dependabot-fix/pr-title.txt` — a single-line PR title in conventional-commit form, e.g. `chore(deps): bump <pkg> to fix security alerts`. No trailing newline beyond one.
+              - `/tmp/dependabot-fix/pr-body.md` — a markdown PR description covering, per fixed alert: the advisory/GHSA id and package, the affected workspace package, the exact remediation applied and why it is the least-invasive option, and any alerts you SKIPPED with the reason. Do NOT commit; just write these files.
+            - If you applied NO fixes at all (every alert was unfixable without a breaking change), make no file edits and do NOT create the /tmp/dependabot-fix files.
+
+      - name: Detect changes
+        if: steps.alerts.outputs.has_alerts == 'true'
+        id: changes
+        run: |
+          # Dependency fixes only modify already-tracked files (package.json, yarn.lock).
+          git add -u
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "Claude applied no fixes (all remaining alerts were unfixable without a breaking change)."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            git diff --staged --stat
+          fi
+
+      - name: Read PR metadata from Claude output
+        if: steps.changes.outputs.has_changes == 'true'
+        id: pr-meta
+        run: |
+          TITLE_FILE=/tmp/dependabot-fix/pr-title.txt
+          BODY_FILE=/tmp/dependabot-fix/pr-body.md
+
+          if [ -s "$TITLE_FILE" ]; then
+            TITLE=$(head -n 1 "$TITLE_FILE")
+          else
+            TITLE="chore(deps): apply Dependabot security fixes"
+          fi
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
+          # Assemble the body: Claude's description (or a fallback) plus a caveat.
+          OUT=/tmp/pr-body-final.md
+          if [ -s "$BODY_FILE" ]; then
+            cp "$BODY_FILE" "$OUT"
+          else
+            echo "Automated Dependabot security fixes applied by Claude following the diagnosing-dependabot-alerts skill." > "$OUT"
+          fi
+          {
+            echo ""
+            echo "---"
+            echo "> Generated by Claude via the \`diagnosing-dependabot-alerts\` skill. Review carefully before merging — Claude may have missed context."
+          } >> "$OUT"
+          echo "body_file=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git commit -m "${{ steps.pr-meta.outputs.title }}"
+          # Unique timestamped branch each run, so a plain push suffices.
+          git push origin "${{ steps.branch.outputs.name }}"
+
+      - name: Create or update Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ steps.branch.outputs.name }}
+          TITLE: ${{ steps.pr-meta.outputs.title }}
+          BODY_FILE: ${{ steps.pr-meta.outputs.body_file }}
+        run: |
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:${BRANCH}&state=open" \
+            --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --method PATCH \
+              --field title="$TITLE" \
+              --field body="$(cat "$BODY_FILE")"
+            echo "Updated PR #$PR_NUMBER"
+          else
+            PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+              --method POST \
+              --field title="$TITLE" \
+              --field body="$(cat "$BODY_FILE")" \
+              --field base="develop" \
+              --field head="$BRANCH" \
+              --jq '.number')
+            gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+              --method POST \
+              --field 'labels[]=dependencies' >/dev/null || true
+            echo "Created PR #$PR_NUMBER"
+          fi

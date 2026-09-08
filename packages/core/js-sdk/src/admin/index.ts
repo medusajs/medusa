@@ -27,12 +27,14 @@ import { ProductTag } from "./product-tag.js"
 import { ProductType } from "./product-type.js"
 import { ProductVariant } from "./product-variant.js"
 import { Promotion } from "./promotion.js"
+import { PropertyLabel } from "./property-label.js"
 import { RefundReason } from "./refund-reasons.js"
 import { Region } from "./region.js"
 import Reservation from "./reservation.js"
 import { Return } from "./return.js"
 import { ReturnReason } from "./return-reason.js"
 import { SalesChannel } from "./sales-channel.js"
+import { Search } from "./search.js"
 import { ShippingOption } from "./shipping-option.js"
 import { ShippingProfile } from "./shipping-profile.js"
 import { StockLocation } from "./stock-location.js"
@@ -251,10 +253,19 @@ export class Admin {
    */
   public plugin: Plugin
   /**
+   * @tags search
+   */
+  public search: Search
+  /**
    * @tags views
    * @featureFlag view_configurations
    */
   public views: Views
+  /**
+   * @tags property-labels
+   * @featureFlag view_configurations
+   */
+  public propertyLabel: PropertyLabel
   /**
    * @tags layouts
    */
@@ -318,8 +329,10 @@ export class Admin {
     this.promotion = new Promotion(client)
     this.campaign = new Campaign(client)
     this.plugin = new Plugin(client)
+    this.search = new Search(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.propertyLabel = new PropertyLabel(client)
     this.layouts = new Layouts(client)
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)

@@ -71,17 +71,21 @@ export interface StoreCartShippingOption {
     is_enabled: boolean
   }
   /**
-   * The shipping option's amount.
+   * The shipping option's amount for the cart. For a `calculated` shipping option,
+   * this amount is resolved by the fulfillment provider against the cart.
    */
   amount: number
 
   /**
-   * All the prices for this shipping option
+   * The shipping option's stored prices. This is empty for a `calculated` shipping
+   * option, since its price is computed by the fulfillment provider rather than stored.
    */
   prices: StorePrice[]
 
   /**
-   * Calculated price for the shipping option
+   * The shipping option's price resolved for the cart. For a `flat` shipping option,
+   * this is the stored price matching the cart's context; for a `calculated` shipping
+   * option, this is the price computed by the fulfillment provider for the cart.
    */
   calculated_price: StoreCalculatedPrice
 

@@ -10,6 +10,7 @@ const InventoryItem = model
     hs_code: model.text().searchable().nullable(),
     mid_code: model.text().searchable().nullable(),
     material: model.text().nullable(),
+    unit_of_measure: model.text().nullable(),
     weight: model.number().nullable(),
     length: model.number().nullable(),
     height: model.number().nullable(),
@@ -25,8 +26,8 @@ const InventoryItem = model
     reservation_items: model.hasMany(() => ReservationItem, {
       mappedBy: "inventory_item",
     }),
-    reserved_quantity: model.number().computed(),
-    stocked_quantity: model.number().computed(),
+    reserved_quantity: model.bigNumber().computed(),
+    stocked_quantity: model.bigNumber().computed(),
   })
   .cascades({
     delete: ["location_levels", "reservation_items"],

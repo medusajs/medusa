@@ -4,13 +4,19 @@ import { useProductCategory } from "../../../hooks/api/categories"
 import { CategoryGeneralSection } from "./components/category-general-section"
 import { CategoryOrganizeSection } from "./components/category-organize-section"
 import { CategoryProductSection } from "./components/category-product-section"
+import { ConfigurableCategoryProductSection } from "./components/category-product-section/configurable-category-product-section"
 import { categoryLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 export const CategoryDetail = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof categoryLoader>
@@ -51,7 +57,13 @@ export const CategoryDetail = () => {
               <CategoryGeneralSection category={product_category} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CategoryProductSection">
-              <CategoryProductSection category={product_category} />
+              {isViewConfigEnabled ? (
+                <ConfigurableCategoryProductSection
+                  category={product_category}
+                />
+              ) : (
+                <CategoryProductSection category={product_category} />
+              )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_category)}
           </>

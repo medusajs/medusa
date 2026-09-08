@@ -89,7 +89,7 @@ export const removeOrderEditShippingMethodWorkflowId =
   "remove-order-edit-shipping-method"
 /**
  * This workflow removes a shipping method of an order edit. It's used by the
- * [Remove Shipping Method Admin API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsidshippingmethodaction_id).
+ * [Remove Shipping Method Admin API Route](https://docs.medusajs.com/api/admin/order-edits/remove-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to remove a
  * shipping method from an order edit in your custom flows.

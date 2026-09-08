@@ -127,7 +127,7 @@ const orderFields = [
 export const updateClaimAddItemWorkflowId = "update-claim-add-item"
 /**
  * This workflow updates a claim's new or outbound item. It's used by the
- * [Update Outbound Item API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidoutbounditemsaction_id).
+ * [Update Outbound Item API Route](https://docs.medusajs.com/api/admin/claims/update-outbound-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update a claim's new or outbound item
  * in your custom flows.

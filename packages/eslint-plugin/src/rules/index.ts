@@ -23,14 +23,17 @@ import { rule as middlewareMustCallNext } from "./middleware-must-call-next"
 import { rule as middlewaresFileLocationAndName } from "./middlewares-file-location-and-name"
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noMikroormDirectImport } from "./no-mikroorm-direct-import"
+import { rule as noNestedWhenInWorkflow } from "./no-nested-when-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
 import { rule as noServiceMutationsInApiRoute } from "./no-service-mutations-in-api-route"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
+import { rule as noThrowInWorkflowConstructor } from "./no-throw-in-workflow-constructor"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
 import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
@@ -45,12 +48,12 @@ import { rule as serviceConstructorMustCallSuper } from "./service-constructor-m
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 import { rule as useMedusaErrorNotGenericError } from "./use-medusa-error-not-generic-error"
-import { rule as useQueryContextUtility } from "./use-query-context-utility"
 import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeys } from "./prefer-container-registration-keys"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as preferModulesEnum } from "./prefer-modules-enum"
+import { rule as preferWorkflowEventOverModuleEvent } from "./prefer-workflow-event-over-module-event"
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as primaryKeyRequired } from "./primary-key-required"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
@@ -61,6 +64,7 @@ import { rule as subscriberDefaultExportRequired } from "./subscriber-default-ex
 import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
 import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
 import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
+import { rule as whenBlockMustHaveName } from "./when-block-must-have-name"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 import { rule as widgetMustExportConfig } from "./widget-must-export-config"
@@ -94,14 +98,17 @@ export const rules = {
   "middlewares-file-location-and-name": middlewaresFileLocationAndName,
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-mikroorm-direct-import": noMikroormDirectImport,
+  "no-nested-when-in-workflow": noNestedWhenInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
   "no-service-mutations-in-api-route": noServiceMutationsInApiRoute,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
+  "no-throw-in-workflow-constructor": noThrowInWorkflowConstructor,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
   "route-dynamic-folder-syntax": routeDynamicFolderSyntax,
   "route-file-naming": routeFileNaming,
@@ -116,12 +123,12 @@ export const rules = {
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
   "use-medusa-error-not-generic-error": useMedusaErrorNotGenericError,
-  "use-query-context-utility": useQueryContextUtility,
   "use-validated-body-or-query": useValidatedBodyOrQuery,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys": preferContainerRegistrationKeys,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "prefer-modules-enum": preferModulesEnum,
+  "prefer-workflow-event-over-module-event": preferWorkflowEventOverModuleEvent,
   "prices-in-major-units": pricesInMajorUnits,
   "primary-key-required": primaryKeyRequired,
   "step-id-kebab-case": stepIdKebabCase,
@@ -132,6 +139,7 @@ export const rules = {
   "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
   "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
   "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
+  "when-block-must-have-name": whenBlockMustHaveName,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
   "widget-must-export-config": widgetMustExportConfig,

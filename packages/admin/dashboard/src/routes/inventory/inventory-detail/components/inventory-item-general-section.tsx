@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { SectionRow } from "../../../../components/common/section"
+import { formatQuantity } from "../../../../lib/format-quantity"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
@@ -17,7 +18,7 @@ export const InventoryItemGeneralSection = ({
   const getQuantityFormat = (quantity: number) => {
     if (quantity !== undefined && !isNaN(quantity)) {
       return t("inventory.quantityAcrossLocations", {
-        quantity,
+        quantity: formatQuantity(quantity, inventoryItem.unit_of_measure),
         locations: inventoryItem.location_levels?.length,
       })
     }

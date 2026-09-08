@@ -134,7 +134,18 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateReservationsWorkflow
-  x-events: []
+  x-events:
+    - name: reservation-item.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the reservation
+          order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+        }
+        ```
+      description: Emitted when reservations are updated.
+      deprecated: false
+      since: 2.18.0
 delete:
   operationId: DeleteReservationsId
   summary: Delete a Reservation
@@ -201,4 +212,15 @@ delete:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: deleteReservationsWorkflow
-  x-events: []
+  x-events:
+    - name: reservation-item.deleted
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the reservation
+          order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+        }
+        ```
+      description: Emitted when reservations are deleted.
+      deprecated: false
+      since: 2.18.0

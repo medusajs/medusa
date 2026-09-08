@@ -9,7 +9,11 @@ import { formatDistance } from "date-fns"
 import { TFunction } from "i18next"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { notificationQueryKeys, useNotifications } from "../../../hooks/api"
+import {
+  notificationQueryKeys,
+  useMe,
+  useNotifications,
+} from "../../../hooks/api"
 import { sdk } from "../../../lib/client"
 import { FilePreview } from "../../common/file-preview"
 import { InfiniteList } from "../../common/infinite-list"
@@ -35,6 +39,7 @@ export const Notifications = () => {
   const [lastReadAt, setLastReadAt] = useState(
     localStorage.getItem(LAST_READ_NOTIFICATION_KEY)
   )
+  const { user: me } = useMe()
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -92,6 +97,7 @@ export const Notifications = () => {
             queryFn={(params) =>
               sdk.admin.notification.list({
                 ...params,
+                to: [me?.id, me?.email, ""].filter((v) => v !== undefined),
                 channel: "feed",
               })
             }

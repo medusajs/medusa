@@ -77,7 +77,7 @@
  *       ```
  *     description: Emitted when product options are updated.
  *     deprecated: false
- * x-since: 2.13.0
+ * x-since: 2.16.0
  * 
 */
 

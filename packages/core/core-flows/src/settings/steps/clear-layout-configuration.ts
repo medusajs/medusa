@@ -1,13 +1,33 @@
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * The input to clear the layout configuration.
+ */
 export type ClearLayoutConfigurationStepInput = {
+  /**
+   * The zone that the layout configuration applies to.
+   */
   zone: string
+  /**
+   * The ID of the user whose layout configuration is cleared.
+   */
   user_id: string
 }
 
 export const clearLayoutConfigurationStepId = "clear-layout-configuration"
-
+/**
+ * This step clears a user's personal layout configuration for a zone,
+ * reverting them to the system default.
+ *
+ * @since 2.17.2
+ *
+ * @example
+ * const data = clearLayoutConfigurationStep({
+ *   zone: "products",
+ *   user_id: "user_123",
+ * })
+ */
 export const clearLayoutConfigurationStep = createStep(
   clearLayoutConfigurationStepId,
   async (input: ClearLayoutConfigurationStepInput, { container }) => {

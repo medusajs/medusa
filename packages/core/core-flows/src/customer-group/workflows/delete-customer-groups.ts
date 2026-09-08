@@ -14,7 +14,7 @@ export type DeleteCustomerGroupsWorkflowInput = {
 export const deleteCustomerGroupsWorkflowId = "delete-customer-groups"
 /**
  * This workflow deletes one or more customer groups. It's used by the
- * [Delete Customer Group Admin API Route](https://docs.medusajs.com/api/admin#customer-groups_deletecustomergroupsid).
+ * [Delete Customer Group Admin API Route](https://docs.medusajs.com/api/admin/customer-groups/delete-a-customer-group).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete customer groups within your custom flows.

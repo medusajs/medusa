@@ -4,7 +4,6 @@
  * summary: Create Product Option
  * description: Create a product option.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -79,7 +78,7 @@
  *       ```
  *     description: Emitted when product options are created.
  *     deprecated: false
- * x-since: 2.13.0
+ * x-since: 2.16.0
  * 
 */
 

@@ -95,7 +95,7 @@ const orderFields = [
 export const orderClaimItemWorkflowId = "claim-item"
 /**
  * This workflow adds order items to a claim as claim items. It's used by the
- * [Add Claim Items Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidclaimitems).
+ * [Add Claim Items Admin API Route](https://docs.medusajs.com/api/admin/claims/add-claim-items).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add items to a claim
  * for an order in your custom flows.

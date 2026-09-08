@@ -16,7 +16,7 @@ class Reservation {
 
   /**
    * This method retrieves a reservation by ID. It sends a request to the
-   * [Get Reservation](https://docs.medusajs.com/api/admin#reservations_getreservationsid)
+   * [Get Reservation](https://docs.medusajs.com/api/admin/reservations/get-a-reservation)
    * API route.
    * 
    * @param id - The reservation's ID.
@@ -45,7 +45,7 @@ class Reservation {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -64,7 +64,7 @@ class Reservation {
 
   /**
    * This method retrieves a list of reservations. It sends a request to the
-   * [List Reservations](https://docs.medusajs.com/api/admin#reservations_getreservations)
+   * [List Reservations](https://docs.medusajs.com/api/admin/reservations/list-reservations)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -107,7 +107,7 @@ class Reservation {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminGetReservationsParams,
@@ -125,7 +125,7 @@ class Reservation {
 
   /**
    * This method creates a reservation. It sends a request to the
-   * [Create Reservation](https://docs.medusajs.com/api/admin#reservations_postreservations)
+   * [Create Reservation](https://docs.medusajs.com/api/admin/reservations/create-reservation)
    * API route.
    * 
    * @param body - The details of the reservation to create.
@@ -161,7 +161,7 @@ class Reservation {
 
   /**
    * This method updates a reservation. It sends a request to the
-   * [Update Reservation](https://docs.medusajs.com/api/admin#reservations_postreservationsid)
+   * [Update Reservation](https://docs.medusajs.com/api/admin/reservations/update-a-reservation)
    * API route.
    * 
    * @param id - The reservation's ID.
@@ -197,7 +197,7 @@ class Reservation {
 
   /**
    * This method deletes a reservation by ID. It sends a request to the
-   * [Delete Reservation](https://docs.medusajs.com/api/admin#reservations_deletereservationsid)
+   * [Delete Reservation](https://docs.medusajs.com/api/admin/reservations/delete-a-reservation)
    * API route.
    * 
    * @param id - The reservation's ID.

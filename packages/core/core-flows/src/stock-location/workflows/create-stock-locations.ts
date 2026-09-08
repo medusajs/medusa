@@ -21,7 +21,7 @@ export interface CreateStockLocationsWorkflowInput {
 export const createStockLocationsWorkflowId = "create-stock-locations-workflow"
 /**
  * This workflow creates one or more stock locations. It's used by the
- * [Create Stock Location Admin API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations).
+ * [Create Stock Location Admin API Route](https://docs.medusajs.com/api/admin/stock-locations/create-stock-location).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create stock locations in your custom flows.

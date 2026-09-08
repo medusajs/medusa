@@ -110,7 +110,7 @@ export const updateReturnShippingMethodWorkflowId =
   "update-return-shipping-method"
 /**
  * This workflow updates the shipping method of a return. It's used by the
- * [Update Shipping Method Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidshippingmethodaction_id).
+ * [Update Shipping Method Admin API Route](https://docs.medusajs.com/api/admin/returns/update-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to update the shipping method of a return in your custom flows.

@@ -8,7 +8,7 @@
       "tsType": {
         "name": "string"
       },
-      "description": "",
+      "description": "The label for the button that clears all active filters.\n@default \"Clear all\"",
       "defaultValue": {
         "value": "\"Clear all\"",
         "computed": false
@@ -24,20 +24,6 @@
         "value": "false",
         "computed": false
       }
-    },
-    "sortingTooltip": {
-      "required": false,
-      "tsType": {
-        "name": "string"
-      },
-      "description": ""
-    },
-    "columnsTooltip": {
-      "required": false,
-      "tsType": {
-        "name": "string"
-      },
-      "description": ""
     },
     "children": {
       "required": false,

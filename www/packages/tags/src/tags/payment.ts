@@ -164,6 +164,10 @@ export const payment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/refundPaymentsStep"
   },
   {
+    "title": "authorizePaymentSessionForOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow"
+  },
+  {
     "title": "capturePaymentWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/capturePaymentWorkflow"
   },

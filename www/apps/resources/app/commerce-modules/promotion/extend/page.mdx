@@ -126,7 +126,7 @@ A table for the link is now created in the database. You can now retrieve and ma
 
 When a promotion is created, you also want to create a `Custom` record and set the `custom_name` property, then create a link between the `Promotion` and `Custom` records.
 
-To do that, you'll consume the [promotionsCreated](/references/medusa-workflows/createPromotionsWorkflow#promotionsCreated) hook of the [createPromotionsWorkflow](/references/medusa-workflows/createPromotionsWorkflow). This workflow is executed in the [Create Promotion Admin API route](!api!/admin#promotions_postpromotions)
+To do that, you'll consume the [promotionsCreated](/references/medusa-workflows/createPromotionsWorkflow#promotionsCreated) hook of the [createPromotionsWorkflow](/references/medusa-workflows/createPromotionsWorkflow). This workflow is executed in the [Create Promotion Admin API route](!api!/admin/promotions/create-promotion)
 
 <Note title="Tip">
 
@@ -358,11 +358,11 @@ When you extend an existing data model through links, you also want to retrieve 
 
 ### Retrieve in API Routes
 
-To retrieve the `custom_name` property when you're retrieving the promotion through API routes, such as the [Get Promotion API Route](!api!/admin#promotions_getpromotionsid), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
+To retrieve the `custom_name` property when you're retrieving the promotion through API routes, such as the [Get Promotion API Route](!api!/admin/promotions/get-a-promotion), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
 
 <Note title="Tip">
 
-The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default promotion fields. Learn more about selecting fields and relations in the [API reference](!api!/admin#select-fields-and-relations).
+The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default promotion fields. Learn more about selecting fields and relations in the [API reference](!api!/admin/select-fields-and-relations).
 
 </Note>
 
@@ -416,7 +416,7 @@ Learn more about how to use Query in [this guide](!docs!/learn/fundamentals/modu
 
 Similar to the `promotionsCreated` hook, you'll consume the [promotionsUpdated](/references/medusa-workflows/updatePromotionsWorkflow#promotionsUpdated) hook of the [updatePromotionsWorkflow](/references/medusa-workflows/updatePromotionsWorkflow) to update `custom_name` when the promotion is updated.
 
-The `updatePromotionsWorkflow` is executed by the [Update Promotion API route](!api!/admin#promotions_postpromotionsid), which accepts the `additional_data` parameter to pass custom data to the hook.
+The `updatePromotionsWorkflow` is executed by the [Update Promotion API route](!api!/admin/promotions/update-a-promotion), which accepts the `additional_data` parameter to pass custom data to the hook.
 
 ### Add custom_name to Additional Data Validation
 

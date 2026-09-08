@@ -512,10 +512,11 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/customers/:id", () => {
-      it("should delete a customer and update auth identity", async () => {
+      it("should delete a customer and its auth identity when the customer is the only associated actor", async () => {
+        const email = "test@email.com"
         const registeredCustomerToken = (
           await api.post("/auth/customer/emailpass/register", {
-            email: "test@email.com",
+            email,
             password: "password",
           })
         ).data.token
@@ -524,7 +525,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/store/customers",
             {
-              email: "test@email.com",
+              email,
             },
             {
               headers: {
@@ -534,6 +535,9 @@ medusaIntegrationTestRunner({
             }
           )
         ).data.customer
+
+        const { auth_identity_id } = jwt.decode(registeredCustomerToken)
+        const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
         const response = await api.delete(
           `/admin/customers/${customer.id}`,
@@ -549,22 +553,84 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const { auth_identity_id } = jwt.decode(registeredCustomerToken)
+        // The customer was the only actor associated with the auth identity, so
+        // the whole auth identity should be deleted.
+        await expect(
+          authModule.retrieveAuthIdentity(auth_identity_id)
+        ).rejects.toThrow()
 
+        // And its provider identity should be cascade-deleted along with it.
+        const providerIdentities = await authModule.listProviderIdentities({
+          entity_id: email,
+        })
+        expect(providerIdentities).toHaveLength(0)
+      })
+
+      it("should keep the auth identity when another non-null actor type is still associated", async () => {
+        const email = "test-multi@email.com"
+        const registeredCustomerToken = (
+          await api.post("/auth/customer/emailpass/register", {
+            email,
+            password: "password",
+          })
+        ).data.token
+
+        const customer = (
+          await api.post(
+            "/store/customers",
+            {
+              email,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${registeredCustomerToken}`,
+                ...storeHeaders.headers,
+              },
+            }
+          )
+        ).data.customer
+
+        const { auth_identity_id } = jwt.decode(registeredCustomerToken)
         const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
+        // Associate another (non-null) actor type with the same auth identity.
+        await authModule.updateAuthIdentities({
+          id: auth_identity_id,
+          app_metadata: {
+            customer_id: customer.id,
+            user_id: "user_123",
+          },
+        })
+
+        const response = await api.delete(
+          `/admin/customers/${customer.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+
+        // The auth identity must be kept since another actor is still associated.
         const authIdentity = await authModule.retrieveAuthIdentity(
           auth_identity_id
         )
 
         expect(authIdentity).toEqual(
           expect.objectContaining({
-            id: authIdentity.id,
-            app_metadata: expect.not.objectContaining({
-              customer_id: expect.any(String),
+            id: auth_identity_id,
+            app_metadata: expect.objectContaining({
+              // The other actor type keeps its value...
+              user_id: "user_123",
+              // ...while the deleted actor's entry is set to null.
+              customer_id: null,
             }),
           })
         )
+
+        // The provider identity should still exist since the auth identity was kept.
+        const providerIdentities = await authModule.listProviderIdentities({
+          entity_id: email,
+        })
+        expect(providerIdentities).toHaveLength(1)
       })
     })
   },

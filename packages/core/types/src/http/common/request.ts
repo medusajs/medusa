@@ -2,7 +2,7 @@ export interface SelectParams {
   /**
    * The fields and relations to retrieve separated by commas.
    * 
-   * Learn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   fields?: string
 }

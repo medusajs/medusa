@@ -23,7 +23,7 @@ export type CreateProductTagsWorkflowInput = {
 export const createProductTagsWorkflowId = "create-product-tags"
 /**
  * This workflow creates one or more product tags. It's used by the
- * [Create Product Tag Admin API Route](https://docs.medusajs.com/api/admin#product-tags_postproducttags).
+ * [Create Product Tag Admin API Route](https://docs.medusajs.com/api/admin/product-tags/create-product-tag).
  *
  * This workflow has a hook that allows you to perform custom actions on the created product tags. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the product tags.

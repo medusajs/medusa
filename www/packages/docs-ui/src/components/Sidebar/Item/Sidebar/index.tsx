@@ -5,6 +5,7 @@
 import React, { useMemo } from "react"
 import { Sidebar } from "types"
 import { Badge } from "@/components/Badge"
+import { SidebarItemTitle } from "@/components/Sidebar/Item/Title"
 import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
 import Link from "next/link"
@@ -32,9 +33,7 @@ export const SidebarItemSidebar = ({
     <li>
       <span className="block px-docs_0.75">
         <Link
-          href={
-            firstChild?.isPathHref ? firstChild.path : `#${firstChild?.path}`
-          }
+          href={firstChild?.path ?? "#"}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
             "block w-full rounded-docs_sm",
@@ -48,15 +47,11 @@ export const SidebarItemSidebar = ({
           )}
           {...firstChild?.linkProps}
         >
-          <span
-            className={clsx(
-              isTitleOneWord && "truncate",
-              nested && "inline-block pl-docs_1.5"
-            )}
-            data-testid="sidebar-item-title"
-          >
-            {item.title}
-          </span>
+          <SidebarItemTitle
+            title={item.title}
+            isTitleOneWord={isTitleOneWord}
+            className={clsx(nested && "inline-block pl-docs_1.5")}
+          />
           {item.additionalElms}
           {item.badge && (
             <Badge variant={item.badge.variant}>{item.badge.text}</Badge>

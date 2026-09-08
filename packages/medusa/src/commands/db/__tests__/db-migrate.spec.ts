@@ -32,6 +32,7 @@ jest.mock("@medusajs/framework/utils", () => ({
   getResolvedPlugins: jest.fn().mockResolvedValue([]),
   mergePluginModules: jest.fn(),
   isDefined: jest.fn().mockReturnValue(false),
+  Modules: { SEARCH: "search" },
 }))
 
 jest.mock("../../utils", () => ({
@@ -66,6 +67,7 @@ const defaultArgs = {
   directory: "/app",
   skipLinks: true,
   skipScripts: true,
+  skipSearch: true,
   executeAllLinks: false,
   executeSafeLinks: false,
   concurrency: undefined,

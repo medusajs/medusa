@@ -96,6 +96,7 @@ module.exports = {
           "./tsconfig.json",
           "./packages/docs-generator/tsconfig.json",
           "./packages/react-docs-generator/tsconfig.json",
+          "./packages/release-banner/tsconfig.json",
           "./packages/scripts/tsconfig.json",
           "./packages/typedoc-generate-references/tsconfig.json",
           "./packages/typedoc-plugin-custom/tsconfig.json",

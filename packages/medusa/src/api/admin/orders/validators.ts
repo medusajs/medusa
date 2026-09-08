@@ -105,6 +105,7 @@ export const OrderCreateFulfillment = z.object({
   location_id: z.string().nullish(),
   shipping_option_id: z.string().optional(),
   no_notification: z.boolean().optional(),
+  delivery_address: AddressPayload.optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateFulfillment = WithAdditionalData(
@@ -159,6 +160,15 @@ export const AdminTransferOrder = z.object({
   description: z.string().optional(),
   internal_note: z.string().optional(),
   update_order_email: z.boolean().optional(),
+})
+
+export type AdminTransferOrderToGuestType = z.infer<
+  typeof AdminTransferOrderToGuest
+>
+export const AdminTransferOrderToGuest = z.object({
+  email: z.string().email(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
 })
 
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>

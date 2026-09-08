@@ -28,7 +28,7 @@ const H2 = ({ children, ...props }: H2Props) => {
   }, [scrollableElement, headingRef, id])
 
   return (
-    <UiH2 {...props} id={id} passRef={headingRef}>
+    <UiH2 {...props} id={id} passRef={headingRef} hideAnchorLink>
       {children}
     </UiH2>
   )

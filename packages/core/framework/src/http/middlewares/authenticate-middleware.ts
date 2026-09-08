@@ -1,4 +1,4 @@
-import { ApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
+import { ApiKeyDTO, IApiKeyModuleService, Logger } from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import type {
@@ -35,7 +35,11 @@ type MedusaSession = {
 export const authenticate = (
   actorType: string | string[],
   authType: AuthType | AuthType[],
-  options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
+  options: {
+    allowUnauthenticated?: boolean
+    allowUnregistered?: boolean
+    requireMfa?: boolean | { maxAgeSeconds: number }
+  } = {}
 ): RequestHandler => {
   const authenticateMiddleware = async (
     req: MedusaRequest,
@@ -45,6 +49,7 @@ export const authenticate = (
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const actorTypes = Array.isArray(actorType) ? actorType : [actorType]
     const req_ = req as AuthenticatedMedusaRequest
+    const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
@@ -85,8 +90,20 @@ export const authenticate = (
         authTypes,
         actorTypes,
         http.jwtPublicKey,
-        http.jwtVerifyOptions ?? http.jwtOptions
+        http.jwtVerifyOptions ?? http.jwtOptions,
+        logger
       )
+    }
+
+    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+
+    if (requireMfa && authContext?.mfa_enabled) {
+      const mfaError = getMfaRequirementError(authContext, requireMfa)
+
+      if (mfaError) {
+        res.status(401).json({ message: mfaError })
+        return
+      }
     }
 
     // If the entity is authenticated, and it is a registered actor we can continue
@@ -111,10 +128,54 @@ export const authenticate = (
       return next()
     }
 
+    // A common mistake is sending a secret API key as a Bearer token. Secret API
+    // keys are only accepted using HTTP Basic auth, so we return a helpful hint
+    // instead of a generic "Unauthorized" message when we detect this case.
+    if (
+      authTypes.includes(API_KEY_AUTH) &&
+      isExclusivelyUser &&
+      isBearerSecretApiKey(req.headers.authorization)
+    ) {
+      res.status(401).json({
+        message:
+          "A secret API key was passed as a Bearer token. Secret API keys must be sent using HTTP Basic authentication instead (Authorization: Basic <secret-api-key>).",
+      })
+      return
+    }
+
     res.status(401).json({ message: "Unauthorized" })
   }
 
   return authenticateMiddleware as unknown as RequestHandler
+}
+
+const getMfaRequirementError = (
+  authContext: AuthContext,
+  requireMfa: boolean | { maxAgeSeconds: number }
+): string | undefined => {
+  const completedAt = authContext.mfa_challenge_completed_at
+
+  if (!completedAt) {
+    return "MFA verification is required to complete this request"
+  }
+
+  const maxAgeSeconds =
+    typeof requireMfa === "object" ? requireMfa.maxAgeSeconds : undefined
+
+  if (!maxAgeSeconds) {
+    return
+  }
+
+  const completedAtMs = new Date(completedAt).getTime()
+
+  if (
+    Number.isNaN(completedAtMs) ||
+    Date.now() - completedAtMs > maxAgeSeconds * 1000
+  ) {
+    return "MFA was verified too long ago to complete this request"
+  }
+
+  return
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
@@ -160,6 +221,15 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
   }
 }
 
+const isBearerSecretApiKey = (authHeader: string | undefined): boolean => {
+  if (!authHeader) {
+    return false
+  }
+
+  const [tokenType, token] = authHeader.split(" ")
+  return tokenType?.toLowerCase() === BEARER_AUTH && !!token?.startsWith("sk_")
+}
+
 const getAuthContextFromSession = (
   session: Partial<MedusaSession> = {},
   authTypes: AuthType[],
@@ -185,7 +255,8 @@ export const getAuthContextFromJwtToken = (
   authTypes: AuthType[],
   actorTypes: string[],
   jwtPublicKey?: Secret,
-  jwtOptions?: VerifyOptions | SignOptions
+  jwtOptions?: VerifyOptions | SignOptions,
+  logger?: Logger
 ): AuthContext | null => {
   if (!authTypes.includes(BEARER_AUTH)) {
     return null
@@ -213,6 +284,20 @@ export const getAuthContextFromJwtToken = (
           delete options.algorithm
         }
 
+        // Defense-in-depth against prototype pollution: `jsonwebtoken` reads
+        // these flags off the options prototype chain, so ensure they are set
+        // as own properties (defaulting to the safe value) unless explicitly
+        // configured. Otherwise a polluted `Object.prototype.ignoreExpiration`
+        // could silently disable expiry verification for the whole process.
+        if (
+          !Object.prototype.hasOwnProperty.call(options, "ignoreExpiration")
+        ) {
+          options.ignoreExpiration = false
+        }
+        if (!Object.prototype.hasOwnProperty.call(options, "ignoreNotBefore")) {
+          options.ignoreNotBefore = false
+        }
+
         const verified = verify(
           token,
           jwtPublicKey ?? jwtSecret!,
@@ -222,6 +307,9 @@ export const getAuthContextFromJwtToken = (
           return verified as AuthContext
         }
       } catch (err) {
+        if (logger) {
+          logger.debug(`Failed to verify JWT token: ${err}`)
+        }
         return null
       }
     }

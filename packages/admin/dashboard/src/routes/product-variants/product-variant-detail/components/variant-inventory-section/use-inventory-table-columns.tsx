@@ -2,6 +2,7 @@ import { AdminInventoryItem, AdminProductVariant } from "@medusajs/types"
 
 import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -52,7 +53,7 @@ export const useInventoryTableColumns = () => {
       }),
       columnHelper.accessor("required_quantity", {
         header: t("fields.requiredQuantity"),
-        cell: ({ getValue }) => {
+        cell: ({ getValue, row }) => {
           const quantity = getValue()
 
           if (Number.isNaN(quantity)) {
@@ -61,7 +62,9 @@ export const useInventoryTableColumns = () => {
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{quantity}</span>
+              <span className="truncate">
+                {formatQuantity(quantity, row.original.unit_of_measure)}
+              </span>
             </div>
           )
         },
@@ -86,7 +89,10 @@ export const useInventoryTableColumns = () => {
             <div className="flex size-full items-center overflow-hidden">
               <span className="truncate">
                 {t("products.variant.tableItem", {
-                  availableCount: quantity,
+                  availableCount: formatQuantity(
+                    quantity,
+                    inventory.unit_of_measure
+                  ),
                   locationCount: locations,
                   count: locations,
                 })}

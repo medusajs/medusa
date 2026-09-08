@@ -31,7 +31,13 @@ Medusa automatically configures your Medusa application hosted on Cloud to use R
 - [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
 - [Redis Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/redis)
 
-So, you don't need to configure any of these modules and providers or set up Redis manually. Also, if you have them configured in `medusa-config.ts`, remove them to avoid conflicts.
+So, you don't need to configure any of these modules and providers or set up Redis manually.
+
+<Note type="warning">
+
+If you have any of these modules configured in your `medusa-config.ts`, remove them before deploying to Cloud. Keeping them causes configuration conflicts that result in deployment failures or in-memory fallback warnings at runtime. Also remove any `redisUrl` set in `projectConfig`, since Cloud manages Redis provisioning automatically.
+
+</Note>
 
 <Note>
 

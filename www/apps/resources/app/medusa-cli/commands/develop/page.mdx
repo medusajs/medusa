@@ -72,12 +72,12 @@ npx medusa develop
       </Table.Cell>
       <Table.Cell>
 
-      Run the Medusa linter before starting the dev server. Pass `--no-lint` to skip linting. When lint errors are found, the dev server does not start. Linting is skipped automatically when no `eslint.config.js` is found in the project root.
+      Run the Medusa linter before starting the dev server. Pass `--no-lint` to skip linting. Enabled by default only when `@medusajs/eslint-plugin` is installed in the project. When lint errors are found, the dev server does not start. Linting is also skipped automatically when no `eslint.config.js` is found in the project root.
 
       </Table.Cell>
       <Table.Cell>
 
-      `true`
+      `true` when `@medusajs/eslint-plugin` is installed, `false` otherwise
 
       </Table.Cell>
     </Table.Row>

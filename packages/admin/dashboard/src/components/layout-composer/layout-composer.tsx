@@ -37,6 +37,7 @@ import type {
   SectionNameFor,
   Layouts,
   WidgetPreference,
+  LayoutComponentProps,
 } from "./types"
 import { useLayoutDnd } from "../../hooks/use-layout-dnd"
 import {
@@ -93,6 +94,10 @@ export type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
    * @default false
    */
   disableWidgets?: boolean
+  /**
+   * Optional props to pass to the layout component.
+   */
+  layoutProps?: Omit<LayoutComponentProps, "sections" | "data">
 }
 
 /**
@@ -128,6 +133,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   customizeId = CUSTOMIZE_IDS.PAGE,
   controlSize = "default",
   disableWidgets = false,
+  layoutProps = {},
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
   const {
@@ -500,7 +506,9 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
       </Button>
     </div>
   )
-  const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
+  const layoutNode = (
+    <LayoutComponent sections={renderedSections} data={data} {...layoutProps} />
+  )
 
   return (
     <LayoutEditProvider value={editContextValue}>

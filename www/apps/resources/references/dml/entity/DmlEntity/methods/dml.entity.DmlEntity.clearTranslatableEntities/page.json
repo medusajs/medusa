@@ -1,0 +1,1 @@
+{"slug":"/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.clearTranslatableEntities","title":"clearTranslatableEntities","frontmatter":{},"toc":[],"blocks":[{"kind":"markdown","html":"Clears all registered translatable entities.\nThis is primarily used for testing purposes."}]}

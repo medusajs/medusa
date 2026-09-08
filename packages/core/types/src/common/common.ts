@@ -459,7 +459,30 @@ export type QueryConfig<TEntity> = {
    * the authorization search.
    */
   allowed?: string[]
+  /**
+   * Fields and relations that must never be resolved, regardless of what the
+   * caller requests. Any requested field whose path contains one of these
+   * segments (e.g. `orders` matches `orders.customer.email`) is stripped before
+   * the query is executed. Unlike `allowed`, this is a hard security boundary
+   * that is always enforced, independent of any feature flag. Use it to keep
+   * sensitive relations (order, customer, payment, ...) off unauthenticated
+   * endpoints.
+   *
+   * An entry is either a string, matched against a whole segment, or a regular
+   * expression, tested against each segment (e.g. `/_link$/`) and against the full
+   * dotted path, which lets a relation's position be expressed (e.g.
+   * `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root).
+   */
+  disallowed?: (string | RegExp)[]
   defaultLimit?: number
+  /**
+   * The maximum number of relations that can be expanded on a Store API route using this
+   * configuration. It overrides the `http.storeRelationsLimit` configuration of the Medusa
+   * application. It has no effect on routes that aren't under the `/store` prefix.
+   *
+   * @since v2.20.0
+   */
+  storeRelationsLimit?: number
   /**
    * If the route that will use that configuration is supposed to return a list of entities. This
    * will change the configuration that will be created on req.listConfig and req.queryConfig (among

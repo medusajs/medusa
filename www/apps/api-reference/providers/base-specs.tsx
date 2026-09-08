@@ -2,11 +2,7 @@
 
 import React from "react"
 import { OpenAPI } from "types"
-import { ReactNode, createContext, useContext, useEffect, useMemo } from "react"
-import getTagChildSidebarItems from "../utils/get-tag-child-sidebar-items"
-import { useRouter } from "next/navigation"
-import { UpdateActionType, useSidebar } from "docs-ui"
-import { getSectionId } from "docs-utils"
+import { ReactNode, createContext, useContext } from "react"
 
 type BaseSpecsContextType = {
   baseSpecs: OpenAPI.ExpandedDocument | undefined
@@ -23,10 +19,6 @@ type BaseSpecsProviderProps = {
 }
 
 const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
-  const router = useRouter()
-  const { activePath, setActivePath, resetItems, shownSidebar, updateItems } =
-    useSidebar()
-
   const getSecuritySchema = (
     securityName: string
   ): OpenAPI.SecuritySchemeObject | null => {
@@ -45,66 +37,6 @@ const BaseSpecsProvider = ({ children, baseSpecs }: BaseSpecsProviderProps) => {
 
     return null
   }
-
-  const itemsToUpdate = useMemo(() => {
-    if (!baseSpecs) {
-      return []
-    }
-
-    const itemsToUpdate: UpdateActionType["items"] = []
-
-    baseSpecs.tags?.forEach((tag) => {
-      const tagPathName = getSectionId([tag.name.toLowerCase()])
-      const childItems =
-        baseSpecs.expandedTags &&
-        Object.hasOwn(baseSpecs.expandedTags, tagPathName)
-          ? getTagChildSidebarItems(baseSpecs.expandedTags[tagPathName])
-          : []
-      itemsToUpdate.push({
-        existingItem: {
-          type: "category",
-          title: tag.name,
-        },
-        newItem: {
-          children: childItems,
-          loaded: childItems.length > 0,
-          onOpen: () => {
-            const currentHash = location.hash.replace("#", "")
-            if (currentHash !== tagPathName) {
-              router.push(`#${tagPathName}`, {
-                scroll: false,
-              })
-            }
-            if (activePath !== tagPathName) {
-              setActivePath(tagPathName)
-            }
-          },
-        },
-        options: {
-          setChildrenBehavior: "merge",
-        },
-      })
-    })
-
-    return itemsToUpdate
-  }, [baseSpecs])
-
-  useEffect(() => {
-    if (!itemsToUpdate.length || !shownSidebar) {
-      return
-    }
-
-    updateItems({
-      sidebar_id: shownSidebar.sidebar_id,
-      items: itemsToUpdate,
-    })
-  }, [itemsToUpdate, shownSidebar?.sidebar_id])
-
-  useEffect(() => {
-    return () => {
-      resetItems()
-    }
-  }, [])
 
   return (
     <BaseSpecsContext.Provider

@@ -27,6 +27,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { linkRegionPaymentProviders } from "../../../../helpers/link-region-payment-providers"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
@@ -240,10 +241,16 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          const region = await regionModule.createRegions({
+            name: "US Tax",
+            currency_code: "usd",
+          })
+
           const created = await api.post(
             `/store/carts`,
             {
               currency_code: "usd",
+              region_id: region.id,
               email: "tony@stark-industries.com",
               shipping_address: {
                 address_1: "test address 1",
@@ -301,7 +308,6 @@ medusaIntegrationTestRunner({
             `/store/carts`,
             {
               email: "tony@stark.com",
-              currency_code: "usd",
             },
             storeHeaders
           )
@@ -310,7 +316,8 @@ medusaIntegrationTestRunner({
           expect(response.data.cart).toEqual(
             expect.objectContaining({
               id: response.data.cart.id,
-              currency_code: "usd",
+              // currency follows whichever region is resolved
+              currency_code: expect.any(String),
               email: "tony@stark.com",
               region: expect.objectContaining({
                 id: expect.any(String),
@@ -375,7 +382,6 @@ medusaIntegrationTestRunner({
             `/store/carts`,
             {
               email: "tony@stark.com",
-              currency_code: "usd",
             },
             storeHeaders
           )
@@ -384,7 +390,8 @@ medusaIntegrationTestRunner({
           expect(response.data.cart).toEqual(
             expect.objectContaining({
               id: response.data.cart.id,
-              currency_code: "usd",
+              // currency follows whichever region is resolved
+              currency_code: expect.any(String),
               email: "tony@stark.com",
               sales_channel_id: sc.id,
             })
@@ -1244,6 +1251,8 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
+          await linkRegionPaymentProviders(appContainer, region.id)
+
           salesChannel = (
             await api.post(
               "/admin/sales-channels",
@@ -1491,6 +1500,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 shipping_address: {
                   address_1: "test address 1",
@@ -1635,6 +1645,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 sales_channel_id: salesChannel.id,
                 items: [{ quantity: 1, variant_id: product.variants[0].id }],
@@ -1660,6 +1671,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 sales_channel_id: salesChannel.id,
                 items: [{ quantity: 1, variant_id: product.variants[0].id }],
@@ -1693,6 +1705,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 shipping_address: {
                   address_1: "test address 1",
@@ -1767,6 +1780,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 shipping_address: {
                   address_1: "test address 1",
@@ -1872,6 +1886,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: guestsSecondaryEmail,
                 shipping_address: {
                   address_1: "test address 1",
@@ -1941,6 +1956,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: guestsMainEmail,
                 shipping_address: {
                   address_1: "test address 1",
@@ -2015,6 +2031,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: mainEmail,
                 shipping_address: {
                   address_1: "test address 1",
@@ -2104,6 +2121,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 shipping_address: {
                   address_1: "test address 1",
@@ -2181,6 +2199,7 @@ medusaIntegrationTestRunner({
               `/store/carts`,
               {
                 currency_code: "usd",
+                region_id: region.id,
                 email: "tony@stark-industries.com",
                 shipping_address: {
                   address_1: "test address 1",

@@ -31,7 +31,7 @@ To allow your production storefront to access your Medusa application on Cloud, 
 - `STORE_CORS`: The URLs of storefronts that can access your Medusa backend's `/store` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.storeCors](!docs!/learn/configurations/medusa-config#httpstorecors) configuration.
 - `AUTH_CORS`: The URLs of the clients (storefront and admin) that can access the Medusa backend's `/auth` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.authCors](!docs!/learn/configurations/medusa-config#httpauthcors) configuration.
 
-For example, if your storefront is hosted at `https://my-storefront.com`, you can [set the following environment variables in your production environment](../environments/environment-variables/page.mdx#add-environment-variables):
+For example, if your storefront is hosted at `https://my-storefront.com`, you can [set the following environment variables in your production environment](../environments/environment-variables/page.mdx#add-environment-variables-on-cloud):
 
 ```shell
 STORE_CORS=https://my-storefront.com

@@ -85,6 +85,21 @@ export const prepareCartToCreateStep = createStep(
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
     }
 
+    // The cart's currency is dictated by its region. If the client provides a
+    // currency_code, it must match the region's currency, otherwise the cart
+    // (and the resulting order) could be priced in a currency that's decoupled
+    // from the region it ships to.
+    if (
+      data.input.currency_code &&
+      data.input.currency_code.toLowerCase() !==
+        data.region.currency_code.toLowerCase()
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Currency code ${data.input.currency_code} does not match the region's currency code ${data.region.currency_code}`
+      )
+    }
+
     const data_ = {
       ...data.input,
       currency_code: data.input.currency_code ?? data.region.currency_code,
@@ -112,7 +127,7 @@ export const prepareCartToCreateStep = createStep(
 export const createCartWorkflowId = "create-cart"
 /**
  * This workflow creates and returns a cart. You can set the cart's items, region, customer, and other details. This workflow is executed by the
- * [Create Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcarts).
+ * [Create Cart Store API Route](https://docs.medusajs.com/api/store/carts/create-cart).
  *
  * This workflow has a hook that allows you to perform custom actions on the created cart. You can see an example in [this guide](https://docs.medusajs.com/resources/commerce-modules/cart/extend#step-4-consume-cartcreated-workflow-hook).
  *

@@ -22,13 +22,14 @@ import { validateDraftOrderRemoveActionItemStep } from "../steps/validate-draft-
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
 
 export const removeDraftOrderActionItemWorkflowId =
   "remove-draft-order-action-item"
 
 /**
  * This workflow removes an item that was added or updated in a draft order edit. It's used by the
- * [Remove Item from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedititemsaction_id).
+ * [Remove Item from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/remove-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * removing an item from a draft order edit.
@@ -97,6 +98,12 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "refetched-order-query" })
+
+    // Calculated shipping prices can depend on the order's items, so refresh
+    // them after the item is removed.
+    refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
+      input: { order_id: input.order_id },
+    })
 
     const appliedPromoCodes: string[] = transform(
       refetchedOrder,

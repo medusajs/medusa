@@ -377,6 +377,33 @@ You can also clear the token manually as explained in the [Manually Clearing JWT
 
 ---
 
+## List Available Auth Providers
+
+The JS SDK provides a `sdk.auth.listProviders` method to retrieve the auth providers configured for a given actor type. This is useful for building a dynamic login UI that renders the correct options (for example, an email/password form or "Continue with …" redirect buttons) based on the available providers.
+
+For example:
+
+```ts
+const { providers } = await sdk.auth.listProviders("user")
+
+for (const provider of providers) {
+  if (provider.flow === "redirect") {
+    // render a "Continue with {provider.display_name}" button
+  } else {
+    // render an email/password form
+  }
+}
+```
+
+Each provider object contains:
+
+- `id`: The registered instance ID used in authentication routes (for example, `okta`).
+- `identifier`: The provider's static type (for example, `oidc` or `emailpass`).
+- `display_name`: The name to show in the UI.
+- `flow`: Either `"credentials"` (the user submits credentials directly) or `"redirect"` (the user is redirected to the provider).
+
+---
+
 ## Logout in JS SDK
 
 <Note>

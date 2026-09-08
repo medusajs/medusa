@@ -22,7 +22,7 @@ export type UpdateRefundReasonsWorkflowOutput = RefundReasonDTO[]
 export const updateRefundReasonsWorkflowId = "update-refund-reasons"
 /**
  * This workflow updates one or more refund reasons. It's used by the
- * [Update Refund Reason Admin API Route](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasonsid).
+ * [Update Refund Reason Admin API Route](https://docs.medusajs.com/api/admin/refund-reasons/update-a-refund-reason).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update refund reasons in your custom flows.

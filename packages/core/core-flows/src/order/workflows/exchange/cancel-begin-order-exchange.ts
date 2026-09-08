@@ -94,7 +94,7 @@ export type CancelBeginOrderExchangeWorkflowInput = {
 export const cancelBeginOrderExchangeWorkflowId = "cancel-begin-order-exchange"
 /**
  * This workflow cancels a requested order exchange. It's used by the
- * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidrequest).
+ * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin/exchanges/cancel-exchange-request).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel an exchange
  * for an order in your custom flow.

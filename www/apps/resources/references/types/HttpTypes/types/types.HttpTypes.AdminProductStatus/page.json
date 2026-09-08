@@ -1,0 +1,1 @@
+{"slug":"/references/types/HttpTypes/types/types.HttpTypes.AdminProductStatus","title":"AdminProductStatus","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"AdminProductStatus","type":"[ProductStatus](/references/types/types/types.ProductStatus)","description":"The product's status.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

@@ -15,12 +15,20 @@ export const removeProductOptionsFromProductStepId =
   "remove-product-options-from-product"
 /**
  * This step removes product options from products.
+ *
+ * @example
+ * const data = removeProductOptionsFromProductStep([
+ *   {
+ *     product_id: "prod_123",
+ *     product_option_id: "opt_123",
+ *   },
+ * ])
  */
 export const removeProductOptionsFromProductStep = createStep(
   removeProductOptionsFromProductStepId,
   async (pairs: RemoveProductOptionsFromProductStepInput, { container }) => {
     if (!pairs.length) {
-      return new StepResponse(void 0, [])
+      return new StepResponse(void 0, { links: [], deletedOptionIds: [] })
     }
 
     const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
@@ -42,7 +50,7 @@ export const removeProductOptionsFromProductStep = createStep(
       }
     }
 
-    const compensation = pairs
+    const links = pairs
       .map((pair) => {
         const key = `${pair.product_id}_${pair.product_option_id}`
         const valueIds = valueIdsByPairKey.get(key)
@@ -58,20 +66,28 @@ export const removeProductOptionsFromProductStep = createStep(
       })
       .filter((pair) => !!pair)
 
-    await service.removeProductOptionFromProduct(pairs)
+    // Removal soft-deletes any exclusive option it orphans; the returned ids
+    // let us restore exactly those on compensation.
+    const deletedOptionIds = await service.removeProductOptionFromProduct(pairs)
 
-    return new StepResponse(void 0, compensation)
+    return new StepResponse(void 0, { links, deletedOptionIds })
   },
-  async (
-    pairs: RemoveProductOptionsFromProductStepInput | void,
-    { container }
-  ) => {
-    if (!pairs?.length) {
+  async (compensationData, { container }) => {
+    const links = compensationData?.links ?? []
+    const deletedOptionIds = compensationData?.deletedOptionIds ?? []
+
+    if (!links.length && !deletedOptionIds.length) {
       return
     }
 
     const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    await service.addProductOptionToProduct(pairs)
+    if (deletedOptionIds.length) {
+      await service.restoreProductOptions(deletedOptionIds)
+    }
+
+    if (links.length) {
+      await service.addProductOptionToProduct(links)
+    }
   }
 )

@@ -51,7 +51,7 @@ export type RequestDraftOrderEditWorkflowInput = {
 
 /**
  * This workflow requests a draft order edit. It's used by the
- * [Request Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditrequest).
+ * [Request Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/request-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * requesting a draft order edit.

@@ -89,11 +89,6 @@ properties:
           type: string
           title: id
           description: The tag's ID.
-  options:
-    type: array
-    description: The product's options.
-    items:
-      $ref: ./AdminUpdateProductOption.yaml
   variants:
     type: array
     description: >-
@@ -166,5 +161,12 @@ properties:
     type: string
     title: shipping_profile_id
     description: The ID of the product's shipping profile.
+  option_ids:
+    type: array
+    description: The ID of the product's options.
+    items:
+      type: string
+      title: option_ids
+      description: The product option's ID.
 required:
   - id

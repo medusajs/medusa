@@ -27,7 +27,7 @@ export type ArchiveOrdersWorkflowOutput = OrderDTO[]
 export const archiveOrderWorkflowId = "archive-order-workflow"
 /**
  * This workflow archives one or more orders. It's used by the
- * [Archive Order Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidarchive).
+ * [Archive Order Admin API Route](https://docs.medusajs.com/api/admin/orders/archive-an-order).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around archiving orders.
  *

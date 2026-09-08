@@ -112,24 +112,11 @@ describe("rendering", () => {
     expect(title).toHaveTextContent("Test Link")
   })
 
-  test("renders link with hash prefix when isPathHref is false", () => {
-    const item: Sidebar.SidebarItemLink = {
-      type: "link",
-      path: "test",
-      title: "Test Link",
-      isPathHref: false,
-    }
-    const { container } = render(<SidebarItemLink item={item} />)
-    const link = container.querySelector("[data-testid='sidebar-link']")
-    expect(link).toHaveAttribute("href", "#test")
-  })
-
-  test("renders link without hash prefix when isPathHref is true", () => {
+  test("renders link with the item path as href", () => {
     const item: Sidebar.SidebarItemLink = {
       type: "link",
       path: "/test",
       title: "Test Link",
-      isPathHref: true,
     }
     const { container } = render(<SidebarItemLink item={item} />)
     const link = container.querySelector("[data-testid='sidebar-link']")

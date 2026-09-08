@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.updateCartWorkflowId","title":"updateCartWorkflowId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"updateCartWorkflowId","type":"`\"update-cart\"`","description":"","optional":false,"defaultValue":"\"update-cart\"","expandable":false,"children":[]}]}]}

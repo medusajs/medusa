@@ -45,10 +45,10 @@ You can access the database settings from the [command palette](../command-palet
 
 </Note>
 
-1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the **Database & Storage** tab.
-4. In the sidebar, click **Database** and scroll down to the **Database Backups** section.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
 
 The **Database Backups** section shows a table of available backups with the following columns:
 
@@ -114,10 +114,10 @@ You can access the database settings from the [command palette](../command-palet
 
 </Note>
 
-1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the **Database & Storage** tab.
-4. In the sidebar, click **Database**.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
 5. In the **Database read-only connection string** section, copy the read-only connection string in the code block.
   
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
@@ -148,10 +148,10 @@ You can access the database settings from the [command palette](../command-palet
 
 </Note>
 
-1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the **Database & Storage** tab.
-4. In the sidebar, click **Database**.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
 5. In the **Database write-access connection string** section, toggle the switch to enable write access.
 6. Once enabled, copy the write connection string from the code block that appears.
 
@@ -181,14 +181,12 @@ You can access the database settings from the [command palette](../command-palet
 
 </Note>
 
-1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
-2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the **Database & Storage** tab.
-4. In the sidebar, click **Database** and find the **Database dump** section.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
 
-![Database dump section highlighted in the environment settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750169625/Cloud/CleanShot_2025-06-17_at_17.13.21_2x_l7vw3w.png)
-
-In this section, you can either:
+In the "Database dump" section, you can either:
 
 - **Import**: Upload a database dump file to import data into the environment's database. You can generate a database dump using `pg_dump`. For example:
 

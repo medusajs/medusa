@@ -1,9 +1,13 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 
 import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { SalesChannelListTable } from "./components/sales-channel-list-table"
+import { ConfigurableSalesChannelListTable } from "./components/configurable-sales-channel-list-table"
 
 export const SalesChannelList = () => {
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
+
   return (
     <LayoutComposer
       widgetsZonePrefix="sales_channel.list"
@@ -11,7 +15,11 @@ export const SalesChannelList = () => {
       sections={{
         main: (
           <LayoutComposer.Entry id="SalesChannelListTable">
-            <SalesChannelListTable />
+            {isViewConfigEnabled ? (
+              <ConfigurableSalesChannelListTable />
+            ) : (
+              <SalesChannelListTable />
+            )}
           </LayoutComposer.Entry>
         ),
       }}

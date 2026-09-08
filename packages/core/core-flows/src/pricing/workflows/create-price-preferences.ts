@@ -15,7 +15,7 @@ export type CreatePricePreferencesWorkflowInput =
 export const createPricePreferencesWorkflowId = "create-price-preferences"
 /**
  * This workflow creates one or more price preferences. It's used by the
- * [Create Price Preferences Admin API Route](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferences).
+ * [Create Price Preferences Admin API Route](https://docs.medusajs.com/api/admin/price-preferences/create-price-preference).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create price preferences in your custom flows.

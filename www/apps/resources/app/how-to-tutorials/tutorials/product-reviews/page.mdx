@@ -81,7 +81,7 @@ By following this tutorial, you'll learn how to:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -715,7 +715,7 @@ To retrieve the publishable API key from the Medusa Admin, refer to [this user g
 
 As mentioned before, the API route you added requires the customer to be authenticated. So, you'll first create a customer, then retrieve their authentication token to use in the request.
 
-Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](!api!/store#auth_postactor_typeauth_provider_register):
+Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](!api!/store/auth/retrieve-registration-jwt-token):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
@@ -728,7 +728,7 @@ curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
 
 Make sure to replace the email and password with the credentials you want.
 
-Then, register the customer using the [Create Customer API route](!api!/store#customers_postcustomers):
+Then, register the customer using the [Create Customer API route](!api!/store/customers/register-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/customers' \
@@ -747,7 +747,7 @@ Make sure to replace:
 
 Also, if you changed the email in the first request, make sure to change it here as well.
 
-The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider):
+The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](!api!/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass' \

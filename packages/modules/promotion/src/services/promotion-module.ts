@@ -33,6 +33,7 @@ import {
   toMikroORMEntity,
   transformPropertiesToBigNumber,
 } from "@medusajs/framework/utils"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   ApplicationMethod,
   Campaign,
@@ -205,13 +206,18 @@ export default class PromotionModuleService
     attributeValue: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
+    // Re-read the per-attribute usage row under the budget row lock held by the
+    // caller (`registerUsage`). The lock lives on `promotion_campaign_budget`,
+    // not on this usage row, so `refresh: true` is required to read the
+    // committed value rather than a stale identity-map copy; otherwise a
+    // concurrent registration's guard could pass on a stale count.
     const [campaignBudgetUsagePerAttributeValue] =
       await this.campaignBudgetUsageService_.list(
         {
           budget_id: budgetId,
           attribute_value: attributeValue,
         },
-        { relations: ["budget"] },
+        { relations: ["budget"], options: { refresh: true } },
         sharedContext
       )
 
@@ -309,9 +315,69 @@ export default class PromotionModuleService
     const promotionCodeUsageMap = new Map<string, boolean>()
     const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
-    const existingPromotions = await this.listActivePromotions_(
+    let existingPromotions = await this.listActivePromotions_(
       { code: promotionCodes },
       { relations: ["campaign", "campaign.budget", "campaign.budget.usages"] },
+      sharedContext
+    )
+
+    // Serialize concurrent usage registration against the same promotions and
+    // budgets. Two concurrent registrations that read the same used value would
+    // both pass the limit guard below and both write, over-spending a spend
+    // budget or exceeding a usage limit. Lock the promotion and budget rows for
+    // the remainder of this transaction, then re-read the usage totals under the
+    // lock so the guards see committed values. Rows are locked in a stable id
+    // order to avoid deadlocks between concurrent multi-promotion registrations,
+    // and the re-read uses `refresh: true` (rather than detaching the identity
+    // map) so a surrounding transaction's pending state is preserved.
+    // Only promotions with a numeric usage limit have their `promotion` row
+    // updated below (see the `typeof promotion.limit === "number"` guard), so
+    // lock only those rows; budgets are locked separately just below.
+    const lockPromotionIds = existingPromotions
+      .filter((promotion) => typeof promotion.limit === "number")
+      .map((promotion) => promotion.id)
+    const lockBudgetIds = Array.from(
+      new Set(
+        existingPromotions
+          .map((promotion) => promotion.campaign?.budget?.id)
+          .filter(Boolean) as string[]
+      )
+    )
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "registerUsage must run inside a transaction to serialize concurrent usage registration."
+      )
+    }
+    // Bound the wait for these row locks so a contended registration fails fast
+    // instead of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    if (lockPromotionIds.length) {
+      await knex("promotion")
+        .whereIn("id", lockPromotionIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+    if (lockBudgetIds.length) {
+      await knex("promotion_campaign_budget")
+        .whereIn("id", lockBudgetIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+
+    existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
+      {
+        relations: ["campaign", "campaign.budget", "campaign.budget.usages"],
+        options: { refresh: true },
+      },
       sharedContext
     )
 

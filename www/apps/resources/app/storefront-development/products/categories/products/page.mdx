@@ -19,7 +19,7 @@ In this guide, you'll learn how to retrieve a category's products in the storefr
 
 In your storefront, you may want to allow customers to browse products by category. To do so, you can retrieve the products that belong to a category and display them in your storefront.
 
-To retrieve a category's products in the storefront, send a request to the [List Products API route](!api!/store#products_getproducts) passing it the `category_id` query parameter:
+To retrieve a category's products in the storefront, send a request to the [List Products API route](!api!/store/products/list-products) passing it the `category_id` query parameter:
 
 <Note title="Tip">
 
@@ -134,9 +134,9 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the products that belong to a category by passing the category's ID as a query parameter to the [List Products API route](!api!/store#products_getproducts). You can also pass other query parameters to filter or paginate the products, such as `limit` and `offset`.
+In this example, you retrieve the products that belong to a category by passing the category's ID as a query parameter to the [List Products API route](!api!/store/products/list-products). You can also pass other query parameters to filter or paginate the products, such as `limit` and `offset`.
 
-The response has a `products` field, which is an array of [products](!api!/store#products_product_schema).
+The response has a `products` field, which is an array of [products](!api!/store/products/schema).
 
 To learn more about displaying the products and their variants, refer to the following guides:
 

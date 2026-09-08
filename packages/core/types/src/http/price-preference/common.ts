@@ -42,7 +42,9 @@ export interface BaseCalculatedPriceSet {
   is_original_price_tax_inclusive?: boolean
 
   /**
-   * The amount of the original price, or `null` if there isn't a calculated price.
+   * The amount of the original price, or `null` if there isn't an original price.
+   * This happens when the price set has no default (non-price-list) price and only
+   * prices from price lists of type `sale` match the context.
    */
   original_amount: number | null
 

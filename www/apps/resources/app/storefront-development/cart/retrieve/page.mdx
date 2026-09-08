@@ -16,7 +16,7 @@ export const metadata = {
 
 In this guide, you'll learn how to retrieve a cart's details in your storefront.
 
-Assuming you stored the cart's ID in the `localStorage` as explained in the [Create Cart guide](../create/page.mdx), you can retrieve a cart by sending a request to the [Get a Cart API route](!api!/store#carts_getcartsid).
+Assuming you stored the cart's ID in the `localStorage` as explained in the [Create Cart guide](../create/page.mdx), you can retrieve a cart by sending a request to the [Get a Cart API route](!api!/store/carts/get-a-cart).
 
 For example:
 
@@ -108,9 +108,9 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve a cart by sending a request to the [Get a Cart API route](!api!/store#carts_getcartsid).
+In this example, you retrieve a cart by sending a request to the [Get a Cart API route](!api!/store/carts/get-a-cart).
 
-The response of the [Get a Cart API route](!api!/store#carts_getcartsid) has a `cart` field, which is a [cart object](!api!/store#carts_cart_schema).
+The response of the [Get a Cart API route](!api!/store/carts/get-a-cart) has a `cart` field, which is a [cart object](!api!/store/carts/schema).
 
 ### Format Prices
 

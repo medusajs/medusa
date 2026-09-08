@@ -28,7 +28,7 @@ export const GET = async (
   }
 
   if (!settingsService.hasEntity(entity)) {
-    const availableEntities = settingsService.listDiscoverableEntities()
+    const availableEntities = await settingsService.listDiscoverableEntities()
     const entityNames = availableEntities.map((e) => e.pluralName).slice(0, 10)
 
     throw new MedusaError(

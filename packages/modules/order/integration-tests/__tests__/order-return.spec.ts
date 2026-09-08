@@ -1,6 +1,9 @@
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  moduleIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 
 jest.setTimeout(1000000)
 
@@ -358,7 +361,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           ],
         })
 
-        expect(receiveSecond).toEqual(
+        expect(normalizeBigNumbers(receiveSecond)).toEqual(
           expect.objectContaining({
             status: "received",
             received_at: expect.any(Date),
@@ -371,7 +374,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        expect(receive).toEqual(
+        expect(normalizeBigNumbers(receive)).toEqual(
           expect.objectContaining({
             id: orderReturn.id,
             status: "partially_received",
@@ -395,7 +398,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        expect(receiveComplete).toEqual(
+        expect(normalizeBigNumbers(receiveComplete)).toEqual(
           expect.objectContaining({
             id: orderReturn.id,
             status: "received",

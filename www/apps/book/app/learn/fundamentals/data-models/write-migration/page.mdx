@@ -63,6 +63,12 @@ The migration class in the file extends the `Migration` class imported from `@me
 
 In the example above, the `up` method creates the table `author`, and the `down` method drops the table if the migration is reverted.
 
+<Note title="Important">
+
+When you write a migration manually for a data model defined with [model.define](../page.mdx), make sure the created table includes the `created_at`, `updated_at`, and `deleted_at` columns. Medusa adds these [default properties](../properties/page.mdx#data-models-default-properties) to every data model, and the module's service relies on them in its queries. For example, the service filters out soft-deleted records using the `deleted_at` column, so queries fail at runtime if the column doesn't exist.
+
+</Note>
+
 <Note title="Tip">
 
 Refer to [MikroORM's documentation](https://mikro-orm.io/docs/migrations#migration-class) for more details on writing migrations.

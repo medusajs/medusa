@@ -133,7 +133,82 @@ const { data: [cart] } = await query.graph({
   </CodeTab>
 </CodeTabs>
 
-The returned `cart` object will look like this:
+The shape of the returned `cart` object depends on where you access it. Server-side, each total is a [BigNumber](!docs!/learn/fundamentals/data-models/big-numbers) instance. In an API route's response, each total is a plain number.
+
+<Note>
+
+Learn how to use a big-number total in the [Perform Arithmetic or Display Cart Totals](#perform-arithmetic-or-display-cart-totals) section.
+
+</Note>
+
+<CodeTabs group="value-shape">
+  <CodeTab label="Server-side" value="server">
+
+```
+// each total is a BigNumber instance
+{
+  id: "cart_123",
+  currency_code: "usd",
+  total: BigNumber { numeric_: 10 },
+  subtotal: BigNumber { numeric_: 10 },
+  tax_total: BigNumber { numeric_: 0 },
+  discount_total: BigNumber { numeric_: 0 },
+  discount_subtotal: BigNumber { numeric_: 0 },
+  discount_tax_total: BigNumber { numeric_: 0 },
+  original_total: BigNumber { numeric_: 10 },
+  original_tax_total: BigNumber { numeric_: 0 },
+  item_total: BigNumber { numeric_: 10 },
+  item_subtotal: BigNumber { numeric_: 10 },
+  item_tax_total: BigNumber { numeric_: 0 },
+  original_item_total: BigNumber { numeric_: 10 },
+  original_item_subtotal: BigNumber { numeric_: 10 },
+  original_item_tax_total: BigNumber { numeric_: 0 },
+  shipping_total: BigNumber { numeric_: 10 },
+  shipping_subtotal: BigNumber { numeric_: 10 },
+  shipping_tax_total: BigNumber { numeric_: 0 },
+  original_shipping_tax_total: BigNumber { numeric_: 0 },
+  original_shipping_subtotal: BigNumber { numeric_: 10 },
+  original_shipping_total: BigNumber { numeric_: 10 },
+  gift_card_total: BigNumber { numeric_: 0 },
+  gift_card_tax_total: BigNumber { numeric_: 0 },
+  credit_line_subtotal: BigNumber { numeric_: 0 },
+  credit_line_tax_total: BigNumber { numeric_: 0 },
+  credit_line_total: BigNumber { numeric_: 0 },
+  items: [
+    {
+      id: "cali_123",
+      // ...
+      unit_price: BigNumber { numeric_: 10 },
+      subtotal: BigNumber { numeric_: 10 },
+      total: BigNumber { numeric_: 0 },
+      original_total: BigNumber { numeric_: 10 },
+      discount_total: BigNumber { numeric_: 0 },
+      discount_subtotal: BigNumber { numeric_: 0 },
+      discount_tax_total: BigNumber { numeric_: 0 },
+      tax_total: BigNumber { numeric_: 0 },
+      original_tax_total: BigNumber { numeric_: 0 },
+    }
+  ],
+  shipping_methods: [
+    {
+      id: "casm_01K10AYZDKZGQXE8WXW3QP9T22",
+      // ...
+      amount: BigNumber { numeric_: 10 },
+      subtotal: BigNumber { numeric_: 10 },
+      total: BigNumber { numeric_: 10 },
+      original_total: BigNumber { numeric_: 10 },
+      discount_total: BigNumber { numeric_: 0 },
+      discount_subtotal: BigNumber { numeric_: 0 },
+      discount_tax_total: BigNumber { numeric_: 0 },
+      tax_total: BigNumber { numeric_: 0 },
+      original_tax_total: BigNumber { numeric_: 0 },
+    }
+  ],
+}
+```
+
+  </CodeTab>
+  <CodeTab label="API Response" value="api">
 
 ```json
 {
@@ -197,6 +272,15 @@ The returned `cart` object will look like this:
 }
 ```
 
+  </CodeTab>
+</CodeTabs>
+
+<Note title="Using the Cart Module's service">
+
+You get the same `BigNumber` totals if you resolve the Cart Module's service and call a method like `retrieveCart` or `listCarts`, passing a total field in the `select` option. Query uses these service methods internally, so the returned shape is the same.
+
+</Note>
+
 ### Cart Totals
 
 The cart will include the following total fields:
@@ -254,6 +338,48 @@ The `shipping_methods` array in the `cart` object contains total fields for each
 - `discount_tax_total`: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
 - `tax_total`: The shipping method's tax total after discounts.
 - `original_tax_total`: The shipping method's original tax total before discounts.
+
+---
+
+## Perform Arithmetic or Display Cart Totals
+
+When you retrieve cart totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](!docs!/learn/fundamentals/data-models/big-numbers), not plain numbers.
+
+To perform arithmetic on these totals without losing precision, use the `MathBN` utility from `@medusajs/framework/utils`. Don't use JavaScript's arithmetic operators, as they can introduce rounding errors:
+
+```ts
+import { MathBN } from "@medusajs/framework/utils"
+
+// cart retrieved with Query
+
+const totalWithoutTax = MathBN.sub(
+  cart.total,
+  cart.tax_total
+)
+
+// use the result as a plain number
+const totalNumber = totalWithoutTax.toNumber()
+```
+
+To display a cart total, convert it to a plain number and format it. Since Medusa stores prices in major currency units, you can format the value directly:
+
+```ts
+import { BigNumber } from "@medusajs/framework/utils"
+
+const total =
+  cart.total instanceof BigNumber
+    ? cart.total.numeric
+    : cart.total
+
+const formatted = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: cart.currency_code,
+}).format(total)
+
+// formatted is "$10.00"
+```
+
+Learn more in the [Big Numbers](!docs!/learn/fundamentals/data-models/big-numbers) documentation.
 
 ---
 

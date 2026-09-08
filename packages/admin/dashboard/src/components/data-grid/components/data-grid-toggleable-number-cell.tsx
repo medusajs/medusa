@@ -8,6 +8,13 @@ import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
+/**
+ * Inventory quantities can be fractional, e.g. when stock is held in a unit of
+ * measure that is sold in fractions of itself. Four decimals covers the common
+ * cases (quarters, eighths, sixteenths) without inviting float noise.
+ */
+const QUANTITY_DECIMALS_LIMIT = 4
+
 export const DataGridTogglableNumberCell = <TData, TValue = any>({
   context,
   disabledToggleTooltip,
@@ -196,7 +203,7 @@ const Inner = ({
           handleOnChange()
         }}
         onFocus={onFocus}
-        decimalsLimit={0}
+        decimalsLimit={QUANTITY_DECIMALS_LIMIT}
         autoComplete="off"
         tabIndex={-1}
         placeholder={!localValue.checked ? placeholder : undefined}

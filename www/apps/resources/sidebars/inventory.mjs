@@ -31,6 +31,11 @@ export const inventorySidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/inventory/reservations-lifecycle",
+            title: "Reservations Lifecycle",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/inventory/inventory-kit",
             title: "Inventory Kit",
           },
@@ -130,6 +135,11 @@ export const inventorySidebar = [
                 sort_sidebar: "alphabetize",
               },
             ],
+          },
+          {
+            type: "link",
+            path: "/references/inventory/events",
+            title: "Events Reference",
           },
           {
             type: "link",

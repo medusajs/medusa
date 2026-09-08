@@ -11,6 +11,9 @@ import {
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaVerifyChallengeRequestType>,
   res: MedusaResponse
@@ -23,6 +26,8 @@ export const POST = async (
     id,
     method,
     code,
+    // The challenge must belong to the identity that passed the first factor.
+    auth_identity_id: req.auth_context.auth_identity_id,
   })
 
   if (!challenge.auth_identity_id) {
@@ -61,6 +66,8 @@ export const POST = async (
       authProvider:
         req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
       container: req.scope,
+      mfaEnabled: true,
+      mfaChallengeCompletedAt: challenge.completed_at,
     },
     {
       secret: http.jwtSecret!,

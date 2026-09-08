@@ -16,7 +16,7 @@ export class SalesChannel {
 
   /**
    * This method creates a new sales channel. It sends a request to the
-   * [Create Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannels)
+   * [Create Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/create-sales-channel)
    * API route.
    * 
    * @param body - The details of the sales channel to create.
@@ -50,7 +50,7 @@ export class SalesChannel {
 
   /**
    * This method updates a sales channel. It sends a request to the
-   * [Update Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsid)
+   * [Update Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/update-a-sales-channel)
    * API route.
    * 
    * @param id - The ID of the sales channel to update.
@@ -89,7 +89,7 @@ export class SalesChannel {
 
   /**
    * This method deletes a sales channel. It sends a request to the
-   * [Delete Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelsid)
+   * [Delete Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/delete-a-sales-channel)
    * API route.
    * 
    * @param id - The ID of the sales channel to delete.
@@ -114,7 +114,7 @@ export class SalesChannel {
 
   /**
    * This method retrieves a sales channel. It sends a request to the
-   * [Retrieve Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_getsaleschannelsid)
+   * [Retrieve Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/get-a-sales-channel)
    * API route.
    * 
    * @param id - The ID of the sales channel to retrieve.
@@ -143,7 +143,7 @@ export class SalesChannel {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -162,7 +162,7 @@ export class SalesChannel {
 
   /**
    * This method retrieves a list of sales channels. It sends a request to the
-   * [List Sales Channels](https://docs.medusajs.com/api/admin#sales-channels_getsaleschannels)
+   * [List Sales Channels](https://docs.medusajs.com/api/admin/sales-channels/list-sales-channels)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -205,7 +205,7 @@ export class SalesChannel {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminSalesChannelListParams,
@@ -223,7 +223,7 @@ export class SalesChannel {
 
   /**
    * This method manages the products in a sales channel to add or remove them. It sends a request to the
-   * [Manage Products in Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproducts)
+   * [Manage Products in Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/manage-products)
    * API route.
    * 
    * @param id - The ID of the sales channel to manage the products for.
@@ -259,7 +259,7 @@ export class SalesChannel {
 
   /**
    * This method manages the products in a sales channel to add or remove them. It sends a request to the
-   * [Manage Products in Sales Channel](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproducts)
+   * [Manage Products in Sales Channel](https://docs.medusajs.com/api/admin/sales-channels/manage-products)
    * API route.
    * 
    * @param id - The ID of the sales channel to manage the products for.

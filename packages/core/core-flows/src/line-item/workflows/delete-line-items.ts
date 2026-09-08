@@ -27,7 +27,7 @@ export type DeleteLineItemsWorkflowInput = {
 export const deleteLineItemsWorkflowId = "delete-line-items"
 /**
  * This workflow deletes line items from a cart. It's used by the
- * [Delete Line Item Store API Route](https://docs.medusajs.com/api/store#carts_deletecartsidlineitemsline_id).
+ * [Delete Line Item Store API Route](https://docs.medusajs.com/api/store/carts/remove-line-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete line items from a cart within your custom flows.

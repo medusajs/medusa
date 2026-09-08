@@ -34,7 +34,7 @@ export const revokeApiKeysWorkflowId = "revoke-api-keys"
  * This workflow revokes one or more API keys. If the API key is a secret, 
  * it can't be used for authentication anymore. If it's publishable, it can't be used by client applications.
  * 
- * This workflow is used by the [Revoke API Key API Route](https://docs.medusajs.com/api/admin#api-keys_postapikeysidrevoke).
+ * This workflow is used by the [Revoke API Key API Route](https://docs.medusajs.com/api/admin/api-keys/revoke-api-key).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * revoke API keys within your custom flows.

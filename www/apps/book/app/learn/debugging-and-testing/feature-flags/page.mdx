@@ -152,7 +152,7 @@ While both approaches can be used to disable API routes, a middleware is useful 
 
 ### Feature Flags API Route
 
-For client customizations, you can use the [List Feature Flags API Route](!api!/admin#feature-flags_getfeatureflags) to check the status of feature flags.
+For client customizations, you can use the [List Feature Flags API Route](!api!/admin/feature-flags/list-feature-flags) to check the status of feature flags.
 
 For example, you can show an [admin widget](../../fundamentals/admin/widgets/page.mdx) only if a feature flag is enabled:
 
@@ -187,7 +187,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget

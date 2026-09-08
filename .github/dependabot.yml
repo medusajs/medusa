@@ -1,0 +1,43 @@
+# .github/dependabot.yml
+# Security-updates ONLY. `open-pull-requests-limit: 0` disables routine version
+# bumps; alert-driven security PRs still flow (they ignore this limit) and are
+# grouped into a single PR per ecosystem. Requires "Dependabot security updates"
+# enabled in Settings. This file does NOT change which alerts are raised —
+# alert noise is handled by auto-triage rules + the triage script.
+version: 2
+updates:
+  # Root workspace lockfile — the tree behind all published @medusajs/* packages
+  # (also contains integration-tests + build tooling; single shared yarn.lock).
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    labels: ["dependencies"]
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  # Docs site: SEPARATE, private, never published.
+  - package-ecosystem: "npm"
+    directory: "/www"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    labels: ["docs", "dependencies"]
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    labels: ["dependencies"]
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]

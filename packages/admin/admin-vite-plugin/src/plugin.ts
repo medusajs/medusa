@@ -2,13 +2,19 @@ import { SourceMap } from "magic-string"
 import { rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 import type * as Vite from "vite"
+import { generateCellRendererHash } from "./cell-renderers"
 import { generateCustomFieldHashes } from "./custom-fields"
 import { generateI18nHash } from "./i18n"
 import { generateLayoutHash } from "./layouts"
 import { generateRouteHashes } from "./routes"
+import {
+  generateSearchEntityHash,
+  SEARCH_ENTITY_FILES,
+} from "./search-entities"
 import { MedusaVitePlugin } from "./types"
 import { AdminSubdirectory, isFileInAdminSubdirectory } from "./utils"
 import {
+  generateVirtualCellRendererModule,
   generateVirtualDisplayModule,
   generateVirtualFormModule,
   generateVirtualI18nModule,
@@ -16,6 +22,7 @@ import {
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
+  generateVirtualSearchEntityModule,
   generateVirtualWidgetModule,
 } from "./virtual-modules"
 import {
@@ -89,7 +96,9 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const formModule = await generateVirtualFormModule(sources, true)
     const displayModule = await generateVirtualDisplayModule(sources, true)
     const i18nModule = await generateVirtualI18nModule(sources, true)
+    const cellRendererModule = await generateVirtualCellRendererModule(sources, true)
     const layoutModule = await generateVirtualLayoutModule(sources, true)
+    const searchEntityModule = await generateVirtualSearchEntityModule(sources, true)
 
     // Create the index.js content that re-exports everything
     return `
@@ -100,7 +109,9 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     ${formModule.code}
     ${displayModule.code}
     ${i18nModule.code}
+    ${cellRendererModule.code}
     ${layoutModule.code}
+    ${searchEntityModule.code}
 
     const plugin = {
       widgetModule,
@@ -109,7 +120,9 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       formModule,
       displayModule,
       i18nModule,
-      layoutModule
+      cellRendererModule,
+      layoutModule,
+      searchEntityModule
     }
 
     export default plugin
@@ -244,10 +257,22 @@ const loadConfigs: Record<string, ModuleConfig> = {
     moduleGenerator: async (sources) => generateVirtualI18nModule(sources),
     hashKey: vmod.virtual.i18n,
   },
+  [vmod.resolved.cellRenderer]: {
+    hashGenerator: async (sources) => generateCellRendererHash(sources),
+    moduleGenerator: async (sources) =>
+      generateVirtualCellRendererModule(sources),
+    hashKey: vmod.virtual.cellRenderer,
+  },
   [vmod.resolved.layout]: {
     hashGenerator: async (sources) => generateLayoutHash(sources),
     moduleGenerator: async (sources) => generateVirtualLayoutModule(sources),
     hashKey: vmod.virtual.layout,
+  },
+  [vmod.resolved.searchEntity]: {
+    hashGenerator: async (sources) => generateSearchEntityHash(sources),
+    moduleGenerator: async (sources) =>
+      generateVirtualSearchEntityModule(sources),
+    hashKey: vmod.virtual.searchEntity,
   },
 }
 
@@ -326,6 +351,19 @@ const watcherConfigs: WatcherConfig[] = [
     ],
   },
   {
+    subdirectory: "cell-renderers.tsx",
+    hashGenerator: async (sources) => ({
+      cellRendererHash: await generateCellRendererHash(sources),
+    }),
+    modules: [
+      {
+        virtualModule: vmod.virtual.cellRenderer,
+        resolvedModule: vmod.resolved.cellRenderer,
+        hashKey: "cellRendererHash",
+      },
+    ],
+  },
+  {
     subdirectory: "layouts",
     hashGenerator: async (sources) => ({
       layoutConfigHash: await generateLayoutHash(sources),
@@ -338,4 +376,19 @@ const watcherConfigs: WatcherConfig[] = [
       },
     ],
   },
+  ...SEARCH_ENTITY_FILES.map(
+    (subdirectory): WatcherConfig => ({
+      subdirectory,
+      hashGenerator: async (sources) => ({
+        searchEntityHash: await generateSearchEntityHash(sources),
+      }),
+      modules: [
+        {
+          virtualModule: vmod.virtual.searchEntity,
+          resolvedModule: vmod.resolved.searchEntity,
+          hashKey: "searchEntityHash",
+        },
+      ],
+    })
+  ),
 ]

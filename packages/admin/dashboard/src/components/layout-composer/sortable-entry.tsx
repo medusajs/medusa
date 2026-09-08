@@ -126,7 +126,7 @@ export function SortableEntry({
         className={clx(
           "bg-ui-bg-base shadow-elevation-card-rest absolute flex items-center rounded-md",
           xsmall && "right-0 top-0 flex-col gap-y-0.5 p-0 opacity-50",
-          small && "right-1.5 top-1.5 gap-x-0.5 p-0.5",
+          small && "right-1.5 top-[min(50%,2.5px)] gap-x-0.5 p-0.5",
           showLabel && "right-2 top-2 gap-x-1 p-1"
         )}
       >

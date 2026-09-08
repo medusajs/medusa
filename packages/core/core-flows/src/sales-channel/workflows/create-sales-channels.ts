@@ -30,7 +30,7 @@ export type CreateSalesChannelsWorkflowOutput = SalesChannelDTO[]
 export const createSalesChannelsWorkflowId = "create-sales-channels"
 /**
  * This workflow creates one or more sales channels. It's used by the
- * [Create Sales Channel Admin API Route](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannels).
+ * [Create Sales Channel Admin API Route](https://docs.medusajs.com/api/admin/sales-channels/create-sales-channel).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create sales channels within your custom flows.

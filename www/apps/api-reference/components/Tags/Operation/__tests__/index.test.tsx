@@ -69,6 +69,7 @@ const mockUseRouter = vi.fn(() => ({
   push: mockPush,
   replace: mockReplace,
 }))
+const mockUsePathname = vi.fn(() => "")
 const mockGetSectionId = vi.fn((options: unknown) => "mock-section-id")
 const mockCheckElementInViewport = vi.fn(() => true)
 
@@ -95,6 +96,7 @@ vi.mock("docs-ui", () => ({
   useIsBrowser: () => mockUseIsBrowser(),
   useScrollController: () => mockUseScrollController(),
   useSidebar: () => mockUseSidebar(),
+  getLinkWithBasePath: (path: string) => path,
 }))
 vi.mock("@/components/Tags/Operation/CodeSection", () => ({
   default: ({ operation, method }: { operation: OpenAPI.Operation, method?: string }) => (
@@ -139,6 +141,7 @@ vi.mock("docs-utils", () => ({
 }))
 vi.mock("next/navigation", () => ({
   useRouter: () => mockUseRouter(),
+  usePathname: () => mockUsePathname(),
 }))
 
 import TagOperation from ".."
@@ -148,6 +151,7 @@ beforeEach(() => {
   cleanup()
   // Reset location hash
   window.location.hash = ""
+  mockUsePathname.mockReturnValue("")
 })
 
 describe("rendering", () => {
@@ -188,7 +192,7 @@ describe("rendering", () => {
     expect(sectionContainerElement).toHaveClass("test-class")
   })
 
-  test("renders loading component when show is false", () => {
+  test("always renders the operation body (no lazy show gating)", () => {
     const { getByTestId } = render(
       <TagOperation
         operation={mockOperation}
@@ -196,20 +200,7 @@ describe("rendering", () => {
         endpointPath={mockEndpointPath}
       />
     )
-    const loadingElement = getByTestId("divided-loading")
-    expect(loadingElement).toBeInTheDocument()
-  })
-
-  test("renders loading component initially", () => {
-    const { getByTestId } = render(
-      <TagOperation
-        operation={mockOperation}
-        tag={mockTag}
-        endpointPath={mockEndpointPath}
-      />
-    )
-    const loadingElement = getByTestId("divided-loading")
-    expect(loadingElement).toBeInTheDocument()
+    expect(getByTestId("operation-container")).toBeInTheDocument()
   })
 })
 
@@ -260,31 +251,10 @@ describe("hash matching and scrolling", () => {
     expect(mockRemoveLoading).toHaveBeenCalled()
   })
 
-  test("scrolls into view when hash matches path", async () => {
+  test("scrolls into view when the pathname matches the operation path", async () => {
     const mockPath = "mock-section-id"
     mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = `#${mockPath}`
-    
-    const { container } = render(
-      <TagOperation
-        operation={mockOperation}
-        tag={mockTag}
-        endpointPath={mockEndpointPath}
-      />
-    )
-
-    expect(mockRemoveLoading).toHaveBeenCalled()
-
-    await waitFor(() => {
-      const operationContainer = container.querySelector("[data-testid='operation-container']")
-      expect(operationContainer).toBeInTheDocument()
-    })
-  })
-
-  test("sets show to true when hash prefix matches path prefix", async () => {
-    const mockPath = "mock-section-id_subsection"
-    mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = "#mock-section-id"
+    mockUsePathname.mockReturnValue(mockPath)
 
     const { container } = render(
       <TagOperation
@@ -304,7 +274,7 @@ describe("hash matching and scrolling", () => {
 })
 
 describe("InView behavior", () => {
-  test("sets active path when in view and activePath is different", () => {
+  test("sets active path when in view and activePath is different", async () => {
     const mockPath = "mock-section-id"
     window.location.hash = "#different-hash"
     mockGetSectionId.mockReturnValue(mockPath)
@@ -323,33 +293,20 @@ describe("InView behavior", () => {
 
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     fireEvent.click(inViewToggleButton)
-    expect(mockSetActivePath).toHaveBeenCalledWith(mockPath)
+    // the scroll-spy update is debounced
+    await waitFor(() =>
+      expect(mockSetActivePath).toHaveBeenCalledWith(mockPath)
+    )
   })
 
-  test("updates router hash when in view and hash is different", () => {
+  test("updates the highlight and URL when scrolled into view", async () => {
     const mockPath = "mock-section-id"
     mockGetSectionId.mockReturnValue(mockPath)
-    window.location.hash = "#different-hash"
-
-    const { getByTestId } = render(
-      <TagOperation
-        operation={mockOperation}
-        tag={mockTag}
-        endpointPath={mockEndpointPath}
-      />
-    )
-
-    expect(getByTestId("in-view")).toBeInTheDocument()
-    const inViewToggleButton = getByTestId("in-view-toggle-button")
-    fireEvent.click(inViewToggleButton)
-    expect(mockPush).toHaveBeenCalledWith(`#${mockPath}`, { scroll: false })
-  })
-
-  test("removes loading when in view and loading is true", () => {
-    mockUseLoading.mockReturnValue({
-      loading: true,
-      removeLoading: mockRemoveLoading,
+    mockUseSidebar.mockReturnValue({
+      activePath: "different-path",
+      setActivePath: mockSetActivePath,
     })
+    const replaceStateSpy = vi.spyOn(window.history, "replaceState")
 
     const { getByTestId } = render(
       <TagOperation
@@ -359,13 +316,17 @@ describe("InView behavior", () => {
       />
     )
 
-    expect(getByTestId("in-view")).toBeInTheDocument()
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     fireEvent.click(inViewToggleButton)
-    expect(mockRemoveLoading).toHaveBeenCalled()
+    // the scroll-spy update is debounced
+    await waitFor(() => {
+      expect(mockSetActivePath).toHaveBeenCalledWith(mockPath)
+      expect(replaceStateSpy).toHaveBeenCalledWith(null, "", mockPath)
+    })
+    replaceStateSpy.mockRestore()
   })
 
-  test("sets show to false when out of view and element is not in viewport", () => {
+  test("keeps the operation body rendered when scrolled out of view", () => {
     mockCheckElementInViewport.mockReturnValue(false)
 
     const { getByTestId } = render(
@@ -376,14 +337,12 @@ describe("InView behavior", () => {
       />
     )
 
-    expect(getByTestId("in-view")).toBeInTheDocument()
     const inViewToggleButton = getByTestId("in-view-toggle-button")
-    // toggle it to true
+    // toggle into view, then out of view
     fireEvent.click(inViewToggleButton)
-    // toggle it to false
     fireEvent.click(inViewToggleButton)
-    // should show the divided loading now
-    expect(getByTestId("divided-loading")).toBeInTheDocument()
+    // body stays mounted (no lazy hide)
+    expect(getByTestId("operation-container")).toBeInTheDocument()
   })
 })
 

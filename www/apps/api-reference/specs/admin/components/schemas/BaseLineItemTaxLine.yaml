@@ -13,9 +13,7 @@ required:
   - updated_at
 properties:
   item:
-    type: object
-    title: item
-    description: The details of the item that the tax line belongs to.
+    $ref: ./BaseCartLineItem.yaml
   item_id:
     type: string
     title: item_id

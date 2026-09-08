@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateShippingStepId","title":"validateShippingStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"validateShippingStepId","type":"`\"validate-shipping\"`","description":"","optional":false,"defaultValue":"\"validate-shipping\"","expandable":false,"children":[]}]}]}

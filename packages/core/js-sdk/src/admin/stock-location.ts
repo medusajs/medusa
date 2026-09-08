@@ -16,7 +16,7 @@ export class StockLocation {
 
   /**
    * This method creates a new stock location. It sends a request to the
-   * [Create Stock Location](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations)
+   * [Create Stock Location](https://docs.medusajs.com/api/admin/stock-locations/create-stock-location)
    * API route.
    * 
    * @param body - The details of the stock location to create.
@@ -51,7 +51,7 @@ export class StockLocation {
 
   /**
    * This method updates a stock location. It sends a request to the
-   * [Update Stock Location](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsid)
+   * [Update Stock Location](https://docs.medusajs.com/api/admin/stock-locations/update-a-stock-location)
    * API route.
    * 
    * @param id - The ID of the stock location to update.
@@ -87,7 +87,7 @@ export class StockLocation {
 
   /**
    * This method deletes a stock location. It sends a request to the
-   * [Delete Stock Location](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsid)
+   * [Delete Stock Location](https://docs.medusajs.com/api/admin/stock-locations/delete-a-stock-location)
    * API route.
    * 
    * @param id - The ID of the stock location to delete.
@@ -112,7 +112,7 @@ export class StockLocation {
 
   /**
    * This method retrieves a stock location. It sends a request to the
-   * [Get Stock Location](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsid)
+   * [Get Stock Location](https://docs.medusajs.com/api/admin/stock-locations/get-a-stock-location)
    * API route.
    * 
    * @param id - The ID of the stock location to retrieve.
@@ -141,7 +141,7 @@ export class StockLocation {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminStockLocationResponse>(
@@ -156,7 +156,7 @@ export class StockLocation {
 
   /**
    * This method retrieves a list of stock locations. It sends a request to the
-   * [List Stock Locations](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations)
+   * [List Stock Locations](https://docs.medusajs.com/api/admin/stock-locations/list-stock-locations)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -199,7 +199,7 @@ export class StockLocation {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminStockLocationListParams,
@@ -217,7 +217,7 @@ export class StockLocation {
 
   /**
    * This method manages the sales channels of a stock location by adding or removing them. It sends a request to the
-   * [Manage Stock Location Sales Channels](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidsaleschannels)
+   * [Manage Stock Location Sales Channels](https://docs.medusajs.com/api/admin/stock-locations/manage-sales-channels)
    * API route.
    * 
    * @param id - The ID of the stock location to update the sales channels for.
@@ -251,7 +251,7 @@ export class StockLocation {
 
   /**
    * This method adds a new fulfillment set to a stock location. It sends a request to the
-   * [Add Fulfillment Set to Stock Location](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidfulfillmentsets)
+   * [Add Fulfillment Set to Stock Location](https://docs.medusajs.com/api/admin/stock-locations/add-fulfillment-set)
    * API route.
    * 
    * @param id - The ID of the stock location to add the fulfillment set to.
@@ -285,7 +285,7 @@ export class StockLocation {
 
   /**
    * This method manages the fulfillment providers of a stock location by adding or removing them. It sends a request to the
-   * [Manage Fulfillment Providers of Stock Location](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidfulfillmentproviders)
+   * [Manage Fulfillment Providers of Stock Location](https://docs.medusajs.com/api/admin/stock-locations/manage-fulfillment-providers)
    * API route.
    * 
    * @param id - The ID of the stock location to manage the fulfillment providers for.

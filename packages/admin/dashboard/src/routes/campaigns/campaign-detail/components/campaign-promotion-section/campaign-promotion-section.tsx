@@ -121,7 +121,7 @@ export const CampaignPromotionSection = ({
   )
 }
 
-const PromotionActions = ({
+export const PromotionActions = ({
   promotion,
   campaignId,
 }: {

@@ -15,7 +15,7 @@ import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-pro
 export const createRegionsWorkflowId = "create-regions"
 /**
  * This workflow creates one or more regions. It's used by the
- * [Create Region Admin API Route](https://docs.medusajs.com/api/admin#regions_postregions).
+ * [Create Region Admin API Route](https://docs.medusajs.com/api/admin/regions/create-region).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create regions in your custom flows.

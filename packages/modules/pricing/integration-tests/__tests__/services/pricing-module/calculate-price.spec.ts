@@ -2394,6 +2394,278 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               }),
             ])
           })
+
+          it("should only return the matching price list price when many price lists with rules exist", async () => {
+            // B2B pattern: one price list per customer group, one price per
+            // variant. Non-matching lists are cheaper on purpose: if any of
+            // them leaked into the results, the cheapest-first ordering would
+            // surface it and the assertion would fail.
+            await service.createPriceLists(
+              Array.from({ length: 49 }, (_, i) => ({
+                title: `Non matching price list ${i}`,
+                description: "test description",
+                type: PriceListType.SALE,
+                status: PriceListStatus.ACTIVE,
+                rules: { ["customer.groups.id"]: [`other-group-${i}`] },
+                prices: [
+                  {
+                    amount: 50,
+                    currency_code: "eur",
+                    price_set_id: "price-set-EUR",
+                  },
+                ],
+              }))
+            )
+
+            const [{ id: matchingPriceListId }] = await createPriceLists(
+              service,
+              { title: "Matching price list" },
+              { ["customer.groups.id"]: ["target-group"] },
+              [
+                {
+                  amount: 125,
+                  currency_code: "eur",
+                  price_set_id: "price-set-EUR",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-EUR"] },
+              {
+                context: {
+                  currency_code: "eur",
+                  // @ts-ignore
+                  customer: { groups: { id: ["target-group"] } },
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              {
+                id: "price-set-EUR",
+                is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 125,
+                raw_calculated_amount: {
+                  value: "125",
+                  precision: 20,
+                },
+                is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
+                original_amount: null,
+                raw_original_amount: null,
+                currency_code: "eur",
+                calculated_price: {
+                  id: expect.any(String),
+                  price_list_id: matchingPriceListId,
+                  price_list_type: "sale",
+                  min_quantity: null,
+                  max_quantity: null,
+                },
+                original_price: {
+                  id: null,
+                  price_list_id: null,
+                  price_list_type: null,
+                  min_quantity: null,
+                  max_quantity: null,
+                },
+              },
+            ])
+          })
+
+          it("should not return price list prices when only some of the price list rules match", async () => {
+            await createPriceLists(
+              service,
+              {},
+              {
+                customer_group_id: ["vip-customer-group-id"],
+                region_id: ["DE"],
+              },
+              [
+                {
+                  amount: 232,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  customer_group_id: "vip-customer-group-id",
+                  region_id: "FR",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_price_list: false,
+                calculated_amount: 1000,
+                is_original_price_price_list: false,
+                original_amount: 1000,
+                calculated_price: expect.objectContaining({
+                  id: "price-PLN",
+                  price_list_id: null,
+                }),
+              }),
+            ])
+          })
+
+          it("should not return price list prices for expired or inactive price lists even when their rules match", async () => {
+            const yesterday = ((today) =>
+              new Date(today.setDate(today.getDate() - 1)))(new Date())
+            const tenDaysAgo = ((today) =>
+              new Date(today.setDate(today.getDate() - 10)))(new Date())
+
+            await createPriceLists(
+              service,
+              {
+                title: "Expired price list",
+                starts_at: tenDaysAgo.toISOString(),
+                ends_at: yesterday.toISOString(),
+              },
+              { customer_group_id: ["vip-customer-group-id"] },
+              [
+                {
+                  amount: 111,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            await createPriceLists(
+              service,
+              {
+                title: "Draft price list",
+                status: PriceListStatus.DRAFT,
+              },
+              { customer_group_id: ["vip-customer-group-id"] },
+              [
+                {
+                  amount: 222,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  customer_group_id: "vip-customer-group-id",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_price_list: false,
+                calculated_amount: 1000,
+                is_original_price_price_list: false,
+                original_amount: 1000,
+                calculated_price: expect.objectContaining({
+                  id: "price-PLN",
+                  price_list_id: null,
+                }),
+              }),
+            ])
+          })
+
+          it("should return price list prices for price lists without rules regardless of the context", async () => {
+            await createPriceLists(service, {}, {}, [
+              {
+                amount: 232,
+                currency_code: "pln",
+                price_set_id: "price-set-PLN",
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  region_id: "does-not-exist",
+                  customer_group_id: "unknown-customer-group",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_price_list: true,
+                calculated_amount: 232,
+                is_original_price_price_list: false,
+                original_amount: 1000,
+                calculated_price: expect.objectContaining({
+                  price_list_id: expect.any(String),
+                  price_list_type: "sale",
+                }),
+                original_price: expect.objectContaining({
+                  id: "price-PLN",
+                  price_list_id: null,
+                }),
+              }),
+            ])
+          })
+
+          it("should return price list prices when multiple context attributes match different rules of the same price list", async () => {
+            await createPriceLists(
+              service,
+              {},
+              {
+                customer_group_id: ["vip-customer-group-id"],
+                region_id: ["DE"],
+              },
+              [
+                {
+                  amount: 232,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  customer_group_id: "vip-customer-group-id",
+                  region_id: "DE",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_price_list: true,
+                calculated_amount: 232,
+                is_original_price_price_list: false,
+                original_amount: 1000,
+                calculated_price: expect.objectContaining({
+                  price_list_id: expect.any(String),
+                  price_list_type: "sale",
+                }),
+                original_price: expect.objectContaining({
+                  id: "price-PLN",
+                  price_list_id: null,
+                }),
+              }),
+            ])
+          })
         })
 
         describe("Tax inclusivity", () => {

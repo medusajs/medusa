@@ -72,7 +72,7 @@ Both prices are returned in an object with the following properties:
     {
       name: "original_amount",
       type: "`number`",
-      description: "The amount of the original price, or `null` if there isn't an original price. This amount is useful for comparing with the `calculated_amount`, such as to check for a discounted value."
+      description: "The amount of the original price, or `null` if there isn't an original price. This amount is useful for comparing with the `calculated_amount`, such as to check for a discounted value. It's `null` when the price set has no default price and only prices from price lists of type `sale` match the context."
     },
     {
       name: "currency_code",
@@ -169,6 +169,17 @@ When the calculated price isn't from a price list of type `override`, the origin
     - Find all the prices whose rules match at least one rule in the context.
     - Sort the matched prices by the number of matched rules in descending order.
     - Select the first price in the sorted list (the one that matches the most rules).
+
+Prices from price lists of type `sale` are never selected as the original price, since the original price represents the customer's reference (non-sale) price.
+
+### When the Original Price is Null
+
+The `original_amount` and `original_price` are `null` when the calculation finds no original price. This happens when both of the following are true:
+
+- The price set has no default price (a price that doesn't belong to a price list) matching the context.
+- Only prices from price lists of type `sale` match the context. If a price from a price list of type `override` matches, it's used as the original price instead.
+
+In this case, the `calculated_amount` still holds the matching sale price, but there's no reference price to compare it against.
 
 ---
 
@@ -561,17 +572,17 @@ const priceSet = await pricingModuleService.createPriceSets({
       is_original_price_tax_inclusive: false,
 
       calculated_price: {
-        price_id: "<FOURTH_PRICE_ID>",
-        price_list_id: null,
-        price_list_type: null,
+        price_id: "<PL_PRICE_ID_1>",
+        price_list_id: "<PRICE_LIST_ID>",
+        price_list_type: "sale",
         min_quantity: null,
         max_quantity: null,
       },
 
       original_price: {
-        price_id: "<PL_PRICE_ID_1>",
-        price_list_id: "<PRICE_LIST_ID>",
-        price_list_type: "sale",
+        price_id: "<SECOND_PRICE_ID>",
+        price_list_id: null,
+        price_list_type: null,
         min_quantity: null,
         max_quantity: null,
       },

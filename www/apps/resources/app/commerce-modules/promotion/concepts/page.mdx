@@ -116,7 +116,9 @@ For example, you can create a promotion that only customers of the `VIP` custome
 
 ![A diagram showcasing the relation between Promotion and PromotionRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1709833196/Medusa%20Resources/promotion-promotion-rule_msbx0w.jpg)
 
-A `PromotionRule`'s `attribute` property indicates the property's name to which this rule is applied. For example, `customer_group_id`.
+A `PromotionRule`'s `attribute` property indicates the property's name to which this rule is applied. For example, `customer.groups.id`.
+
+The `attribute` must be an exact key that Medusa recognizes. Refer to [Rule Attributes](#rule-attributes) for the list of supported keys.
 
 The expected value for the attribute is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
 
@@ -130,12 +132,147 @@ The `PromotionRule`'s `operator` property adds more flexibility to the rule’s 
 
 For example, to restrict the promotion to only `VIP` and `B2B` customer groups:
 
-- Add a `PromotionRule` record with its `attribute` property set to `customer_group_id` and `operator` property to `in`.
+- Add a `PromotionRule` record with its `attribute` property set to `customer.groups.id` and `operator` property to `in`.
 - Add two `PromotionRuleValue` records associated with the rule: one with the value `VIP` and the other `B2B`.
 
 ![A diagram showcasing the relation between PromotionRule and PromotionRuleValue when a rule has multiple values](https://res.cloudinary.com/dza7lstvk/image/upload/v1709897383/Medusa%20Resources/promotion-promotion-rule-multiple_hctpmt.jpg)
 
 In this case, a customer’s group must be in the `VIP` and `B2B` set of values to use the promotion.
+
+### Rule Attributes
+
+A rule's `attribute` must be an exact key that Medusa recognizes for the resource the rule targets. The supported keys depend on where you set the rule:
+
+- The promotion's `rules` property: Medusa tests the rule against the cart.
+- The application method's `target_rules` and `buy_rules` properties: Medusa tests the rule against each cart line item or shipping method, based on the application method's `target_type`.
+
+<Note title="Warning" type="warning">
+
+Item-scoped attributes must be prefixed with `items.`, and shipping-method-scoped attributes with `shipping_methods.`. For example, to target a product, use `items.product.id`, not `product_id`.
+
+If you set an unrecognized attribute on an automatic promotion, Medusa filters the promotion out and never applies it, so the discount stays `0` without an error.
+
+</Note>
+
+The following table lists the supported attributes for each rule scope:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Rule Scope
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Set On
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Attributes
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      Cart
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The promotion's `rules` property.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `customer.groups.id`, `region.id`, `shipping_address.country_code`, `sales_channel_id`, `currency_code`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Cart items
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The application method's `target_rules` and `buy_rules` properties, when `target_type` is `items`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `items.product.id`, `items.product.categories.id`, `items.product.collection_id`, `items.product.type_id`, `items.product.tags.id`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Shipping methods
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The application method's `target_rules` and `buy_rules` properties, when `target_type` is `shipping_methods`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `shipping_methods.shipping_option.shipping_option_type_id`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+To retrieve the supported attributes programmatically, use the [listRuleAttributes](/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes) JS SDK method or the [List Rule Attribute Options](!api!/admin/promotions/list-potential-rule-attributes) Admin API route.
+
+### Restrict a Promotion by Order Value
+
+Along with the attributes in the table above, the cart context includes the cart's computed totals, such as `item_subtotal`, `subtotal`, `item_total`, and `total`. You can create a rule on one of these attributes using a numeric operator (`gte`, `lte`, `gt`, or `lt`) to restrict a promotion by order value, such as a minimum spend.
+
+<Note>
+
+These numeric conditions aren't available in the Medusa Admin dashboard. Create them using workflows or the Admin API.
+
+</Note>
+
+For example, to only apply a promotion when the cart's items subtotal is at least `$100`:
+
+```ts
+const { result } = await createPromotionsWorkflow(container)
+  .run({
+    input: {
+      promotionsData: [{
+        code: "SPEND100",
+        type: "standard",
+        status: "active",
+        application_method: {
+          type: "percentage",
+          target_type: "items",
+          allocation: "across",
+          value: 10,
+          currency_code: "usd",
+        },
+        rules: [
+          {
+            attribute: "item_subtotal",
+            operator: "gte",
+            values: ["100"],
+          },
+        ],
+      }],
+    },
+  })
+```
+
+Medusa evaluates the rule against the cart's total when the promotion is applied. Within a single computation, the total doesn't reflect discounts from other promotions applied in the same computation.
 
 ---
 
@@ -164,7 +301,7 @@ const { result } = await createPromotionsWorkflow(container)
         },
         rules: [
           {
-            attribute: "customer.group.id",
+            attribute: "customer.groups.id",
             operator: "eq",
             values: [
               "cusgrp_123",

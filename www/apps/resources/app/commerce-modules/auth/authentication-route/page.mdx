@@ -30,8 +30,8 @@ The steps are:
 
 1. Register the user with the [Register Route](#register-route).
 2. Use the authentication token to create the user with their respective API route.
-    - For example, for customers you would use the [Create Customer API route](!api!/store#customers_postcustomers).
-    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept)
+    - For example, for customers you would use the [Create Customer API route](!api!/store/customers/register-customer).
+    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin/invites/accept-invite)
 3. Authenticate the user with the [Auth Route](#login-route).
 
 After registration, you only use the [Auth Route](#login-route) for subsequent authentication.
@@ -65,8 +65,8 @@ It requires the following steps:
     - If the decoded data has an `actor_id` property, then the user is already registered. So, use this token for subsequent authenticated requests.
     - If not, follow the rest of the steps.
 7. The frontend uses the authentication token to create the user with their respective API route.
-    - For example, for customers you would use the [Create Customer API route](!api!/store#customers_postcustomers).
-    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept)
+    - For example, for customers you would use the [Create Customer API route](!api!/store/customers/register-customer).
+    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin/invites/accept-invite)
 8. The frontend sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token with the user information populated.
 
 
@@ -94,7 +94,7 @@ This API route is useful for providers like `emailpass` that uses custom logic t
 For example, if you're registering a customer, you:
 
 1. Send a request to `/auth/customer/emailpass/register` to retrieve the registration JWT token.
-2. Send a request to the [Create Customer API route](!api!/store#customers_postcustomers) to create the customer, passing the [JWT token in the header](!api!/store#authentication).
+2. Send a request to the [Create Customer API route](!api!/store/customers/register-customer) to create the customer, passing the [JWT token in the header](!api!/store/authentication).
 
 ### Path Parameters
 
@@ -154,7 +154,7 @@ You can show that error message to the customer.
 
 ## Login Route
 
-The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](!api!/store#authentication) to send authenticated requests.
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](!api!/store/authentication) to send authenticated requests.
 
 ```bash
 curl -X POST http://localhost:9000/auth/{actor_type}/{providers}
@@ -208,6 +208,12 @@ If the authentication requires more action with a third-party service, you'll re
 
 Redirect to that URL in the frontend to continue the authentication process with the third-party service.
 
+#### Customizing the Response Body
+
+A custom auth provider can't change the shape of this route's response body. The provider's [authenticate method](/references/auth/provider#authenticate) returns an [AuthenticationResponse](/references/auth/interfaces/auth.AuthenticationResponse) object, but this route only uses its `success`, `authIdentity`, `location`, and `error` fields to build the response. Any other fields you return from the provider are ignored.
+
+If you need to return a custom response body, create a [custom API route](!docs!/learn/fundamentals/api-routes) that calls the [Auth Module's authenticate method](/references/auth/authenticate), then shape the response as you need.
+
 <Note title="Example">
 
 [How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).
@@ -254,7 +260,7 @@ If the authentication is successful, you'll receive a `token` field in the respo
 In your frontend, decode the token using tools like [react-jwt](https://www.npmjs.com/package/react-jwt):
 
 - If the decoded data has an `actor_id` property, the user is already registered. So, use this token for subsequent authenticated requests.
-- If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](!api!/store#customers_postcustomers).
+- If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](!api!/store/customers/register-customer).
 
 The decoded data may look like this:
 
@@ -312,6 +318,12 @@ To reset a user's password:
 </Note>
 
 ### Generate Reset Password Token Route
+
+<Note>
+
+This route is available since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). On earlier versions, the route does not exist.
+
+</Note>
 
 The Medusa application defines an API route at `/auth/{actor_type}/{auth_provider}/reset-password` that emits the `auth.password_reset` event, passing the token in the payload.
 

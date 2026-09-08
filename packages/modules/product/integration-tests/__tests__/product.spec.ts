@@ -549,26 +549,30 @@ moduleIntegrationTestRunner<Service>({
               })
             )
 
-            expect(product.categories.toArray()).toEqual([
-              {
-                id: "category-0",
-                name: "category 0",
-                handle: "category-0",
-                mpath: "category-0",
-              },
-              {
-                id: "category-1",
-                name: "category 1",
-                handle: "category-1",
-                mpath: "category-0.category-1",
-              },
-              {
-                id: "category-1-a",
-                name: "category 1 a",
-                handle: "category-1-a",
-                mpath: "category-0.category-1.category-1-a",
-              },
-            ])
+            const categories = product.categories.toArray()
+            expect(categories).toHaveLength(3)
+            expect(categories).toEqual(
+              expect.arrayContaining([
+                {
+                  id: "category-0",
+                  name: "category 0",
+                  handle: "category-0",
+                  mpath: "category-0",
+                },
+                {
+                  id: "category-1",
+                  name: "category 1",
+                  handle: "category-1",
+                  mpath: "category-0.category-1",
+                },
+                {
+                  id: "category-1-a",
+                  name: "category 1 a",
+                  handle: "category-1-a",
+                  mpath: "category-0.category-1.category-1-a",
+                },
+              ])
+            )
           })
 
           it("should returns empty array when querying for a category that doesnt exist", async () => {

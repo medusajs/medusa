@@ -187,8 +187,8 @@ export interface BaseProductVariant {
   manage_inventory: boolean | null
   /**
    * The variant's inventory quantity if `manage_inventory` is enabled.
-   * This field is only retrieved in the [Get Product](https://docs.medusajs.com/api/store#products_getproductsid)
-   * and [List Products](https://docs.medusajs.com/api/store#products_getproducts) API routes if you
+   * This field is only retrieved in the [Get Product](https://docs.medusajs.com/api/store/products/get-a-product)
+   * and [List Products](https://docs.medusajs.com/api/store/products/list-products) API routes if you
    * pass `+variants.inventory_quantity` in the `fields` query parameter.
    *
    * Learn more in the [Retrieve Product Variant's Inventory](https://docs.medusajs.com/resources/storefront-development/products/inventory) storefront guide.

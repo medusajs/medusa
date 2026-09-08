@@ -234,6 +234,13 @@ medusaIntegrationTestRunner({
           skip: 0,
           take: 10,
         })
+
+        // Pagination ordering only refers to the root queried entity(product)
+        // Ordering is dropped for hydrated entities (variants, prices, etc)
+        for (const product of resultset.data) {
+          product.variants?.sort((a, b) => a.sku.localeCompare(b.sku))
+        }
+
         expect(resultset.data).toEqual([
           {
             id: expect.any(String),

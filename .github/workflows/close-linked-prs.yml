@@ -1,0 +1,156 @@
+name: Close Linked PRs on Merge
+
+# When a PR that closes an issue is merged, this workflow finds other open PRs
+# that are linked to the same issue (via a closing keyword such as "Fixes #123")
+# and closes them with a comment pointing at the PR that fixed the issue.
+#
+# Uses `pull_request_target` so the GITHUB_TOKEN has write access to
+# pull requests/issues even when the merged PR came from a fork. The workflow
+# never checks out or executes PR code, so this is safe.
+
+on:
+  pull_request_target:
+    types: [closed]
+
+concurrency:
+  group: close-linked-prs-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  close-linked-prs:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close PRs linked to the same issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const mergedPr = context.payload.pull_request.number
+
+            // 1. Find every issue the merged PR closes (via closing keywords).
+            const mergedPrData = await github.graphql(
+              `query ($owner: String!, $repo: String!, $pr: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $pr) {
+                    closingIssuesReferences(first: 50) {
+                      nodes { number }
+                    }
+                  }
+                }
+              }`,
+              { owner, repo, pr: mergedPr }
+            )
+
+            const issueNumbers =
+              mergedPrData.repository.pullRequest.closingIssuesReferences.nodes.map(
+                (n) => n.number
+              )
+
+            if (issueNumbers.length === 0) {
+              core.info(`PR #${mergedPr} does not close any issue. Nothing to do.`)
+              return
+            }
+
+            core.info(
+              `PR #${mergedPr} closes issue(s): ${issueNumbers
+                .map((n) => `#${n}`)
+                .join(", ")}`
+            )
+
+            // 2. For each linked issue, collect other open PRs that also link to it
+            //    with a closing keyword. Dedupe across issues and map each PR to the
+            //    issue it shares with the merged PR (for a clearer comment).
+            const prToIssue = new Map()
+
+            for (const issue of issueNumbers) {
+              const issueData = await github.graphql(
+                `query ($owner: String!, $repo: String!, $issue: Int!) {
+                  repository(owner: $owner, name: $repo) {
+                    issue(number: $issue) {
+                      timelineItems(
+                        first: 100
+                        itemTypes: [CROSS_REFERENCED_EVENT, CONNECTED_EVENT]
+                      ) {
+                        nodes {
+                          __typename
+                          ... on CrossReferencedEvent {
+                            source {
+                              ... on PullRequest {
+                                number
+                                state
+                                closingIssuesReferences(first: 50) { nodes { number } }
+                              }
+                            }
+                          }
+                          ... on ConnectedEvent {
+                            subject {
+                              ... on PullRequest {
+                                number
+                                state
+                                closingIssuesReferences(first: 50) { nodes { number } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }`,
+                { owner, repo, issue }
+              )
+
+              const nodes = issueData.repository.issue.timelineItems.nodes
+              for (const node of nodes) {
+                const pr = node.source ?? node.subject
+                if (!pr || !pr.number) continue
+                if (pr.number === mergedPr) continue
+                if (pr.state !== "OPEN") continue
+
+                // Only close PRs that actually target the same issue with a
+                // closing keyword, not ones that merely mention it.
+                const closesSameIssue = pr.closingIssuesReferences.nodes.some(
+                  (n) => n.number === issue
+                )
+                if (!closesSameIssue) continue
+
+                if (!prToIssue.has(pr.number)) {
+                  prToIssue.set(pr.number, issue)
+                }
+              }
+            }
+
+            if (prToIssue.size === 0) {
+              core.info("No other open PRs are linked to the same issue(s).")
+              return
+            }
+
+            // 3. Comment on and close each linked PR.
+            for (const [prNumber, issue] of prToIssue) {
+              const body =
+                `Closing this PR because #${issue} was fixed by #${mergedPr}, ` +
+                `which has now been merged. Thank you for your contribution! ` +
+                `If you believe this PR is still needed, feel free to reopen it.`
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body,
+              })
+
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: prNumber,
+                state: "closed",
+              })
+
+              core.info(`Closed PR #${prNumber} (linked to issue #${issue}).`)
+            }

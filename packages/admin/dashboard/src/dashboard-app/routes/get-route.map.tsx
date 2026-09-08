@@ -7,6 +7,7 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
+import { HydrateFallback } from "../../components/utilities/hydrate-fallback"
 
 export function getRouteMap({
   settingsRoutes,
@@ -19,6 +20,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           element: <MainLayout />,
@@ -990,6 +992,11 @@ export function getRouteMap({
                         import("../../routes/inventory/inventory-create"),
                     },
                     {
+                      path: "export",
+                      lazy: () =>
+                        import("../../routes/inventory/inventory-export"),
+                    },
+                    {
                       path: "stock",
                       lazy: () =>
                         import("../../routes/inventory/inventory-stock"),
@@ -1060,6 +1067,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           path: "/settings",
@@ -1137,6 +1145,29 @@ export function getRouteMap({
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/regions/region-metadata"),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              path: "property-labels",
+              errorElement: <ErrorBoundary />,
+              element: <Outlet />,
+              handle: {
+                breadcrumb: () => t("propertyLabels.domain", "Property Labels"),
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/property-labels"),
+                  children: [
+                    {
+                      path: ":entity/edit",
+                      lazy: () =>
+                        import(
+                          "../../routes/property-labels/property-labels-edit"
+                        ),
                     },
                   ],
                 },
@@ -1769,6 +1800,15 @@ export function getRouteMap({
                   },
                 },
               ],
+            },
+            {
+              path: "search",
+              errorElement: <ErrorBoundary />,
+              handle: {
+                breadcrumb: () => t("searchIndexes.domain"),
+              },
+              lazy: () =>
+                import("../../routes/search-indexes/search-index-list"),
             },
             {
               path: "product-types",

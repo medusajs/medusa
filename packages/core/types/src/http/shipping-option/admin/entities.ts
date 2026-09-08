@@ -162,7 +162,10 @@ export interface AdminShippingOption {
    */
   name: string
   /**
-   * The type of shipping option's price.
+   * The type of the shipping option's price:
+   *
+   * - `flat`: the price is a fixed amount stored in the `prices` property.
+   * - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider, so the `prices` property is empty.
    */
   price_type: ShippingOptionPriceType
   /**

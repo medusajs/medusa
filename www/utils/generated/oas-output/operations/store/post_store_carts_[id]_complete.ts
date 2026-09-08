@@ -142,9 +142,8 @@
  *                     type:
  *                       type: string
  *                       title: type
- *                       description: >
- *                         The error's type. Can be a [MedusaError type](https://docs.medusajs.com/learn/fundamentals/api-routes/errors#medusaerror-types) or `payment_authorization_error` or
- *                         `payment_requires_more_error` for payment-related errors.
+ *                       description: |
+ *                         The error's type. Can be a [MedusaError type](https://docs.medusajs.com/learn/fundamentals/api-routes/errors#medusaerror-types) or `payment_authorization_error` or `payment_requires_more_error` for payment-related errors.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -170,6 +169,17 @@
  *       Emitted when an order is placed, or when a draft order is converted to an
  *       order.
  *     deprecated: false
+ *   - name: reservation-item.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are created.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

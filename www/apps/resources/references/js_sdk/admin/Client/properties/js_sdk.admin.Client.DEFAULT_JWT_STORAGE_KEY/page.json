@@ -1,0 +1,1 @@
+{"slug":"/references/js_sdk/admin/Client/properties/js_sdk.admin.Client.DEFAULT_JWT_STORAGE_KEY","title":"DEFAULT_JWT_STORAGE_KEY","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"DEFAULT_JWT_STORAGE_KEY","type":"`string`","description":"","optional":false,"defaultValue":"\"medusa_auth_token\"","expandable":false,"children":[]}]}]}

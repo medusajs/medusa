@@ -1,5 +1,9 @@
 export const inventory = [
   {
+    "title": "Export Inventory Items",
+    "path": "https://docs.medusajs.com/user-guide/inventory/export"
+  },
+  {
     "title": "Manage Inventory Items",
     "path": "https://docs.medusajs.com/user-guide/inventory/inventory"
   },
@@ -16,8 +20,16 @@ export const inventory = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/inventory-kit"
   },
   {
+    "title": "Reservations Lifecycle",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle"
+  },
+  {
     "title": "Get Variant Inventory",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
+  },
+  {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
   },
   {
     "title": "Product Variant Inventory",

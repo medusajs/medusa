@@ -12,7 +12,7 @@ import { createInviteStep, validateRolesExistStep } from "../steps"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the
- * [Create Invite Admin API Route](https://docs.medusajs.com/api/admin#invites_postinvites).
+ * [Create Invite Admin API Route](https://docs.medusajs.com/api/admin/invites/create-invite).
  *
  * You can provide roles to be assigned to each user when the invite is accepted.
  *

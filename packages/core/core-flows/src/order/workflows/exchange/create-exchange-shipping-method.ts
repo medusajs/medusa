@@ -113,8 +113,8 @@ export const createExchangeShippingMethodWorkflowId =
   "create-exchange-shipping-method"
 /**
  * This workflow creates an inbound (return) or outbound (delivery of new items) shipping method for an exchange.
- * It's used by the [Add Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethod)
- * and the [Add Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethod).
+ * It's used by the [Add Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/add-inbound-shipping)
+ * and the [Add Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/exchanges/add-outbound-shipping).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to create a shipping method
  * for an exchange in your custom flow.

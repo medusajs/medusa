@@ -1,0 +1,333 @@
+import { Table, Note, CodeTabs, CodeTab, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `local Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to reproduce a Cloud build on your machine using the CLI. This is useful for debugging build failures without pushing changes and waiting for a Cloud [deployment](../deployments/page.mdx).
+
+<Note>
+
+This command is available starting Medusa mcloud CLI v0.1.10. Make sure to update your CLI to the latest version if you don't see this command.
+
+</Note>
+
+## local build
+
+<Prerequisites
+  items={[
+    {
+      text: "This command builds a Docker image locally, so you must have Docker installed and running.",
+      link: "https://docs.docker.com/get-docker/",
+    }
+  ]}
+/>
+
+Run a Cloud build on your machine, mirroring how Cloud builds your project. Run the command from within your project.
+
+By default, the command builds the backend. Pass `--type storefront` to build the storefront instead.
+
+The CLI infers the project's root path and environment variables from the linked Cloud project and environment, so it reproduces the Cloud build as closely as possible.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud local build \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud local build
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The command streams the build progress to your terminal. It prepares a build directory, generates a Dockerfile that mirrors the Cloud build, then builds the Docker image. The output looks similar to the following:
+
+```bash
+Running local backend build in /tmp/mcloud-local-build/myuser-my-repo/backend
+Generating Dockerfile
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.34kB done
+#1 DONE 0.0s
+
+# ... Docker build output for each layer ...
+
+#24 exporting to image
+#24 exporting layers done
+#24 writing image sha256:0a1b2c3d4e5f done
+#24 naming to docker.io/library/my-repo:cloud-local-build-a1b2c3d done
+#24 DONE 1.2s
+```
+
+If the build succeeds, the resulting image is tagged `<repository-name>:cloud-local-build-<commit-hash>`. If it fails, the command exits with the failing command's error so you can debug it the same way you would a Cloud build.
+
+<Note>
+
+Before the build starts, the CLI may print warnings if your installed CLI version is outdated, or if the current repository or branch doesn't match the linked Cloud project and environment. These are warnings only and don't stop the build.
+
+If your repository does not have a remote origin configured, the CLI falls back to using the local folder name as the repository name.
+
+</Note>
+
+### Override Environment Variables
+
+To build with a local `.env` file instead of the Cloud environment's variables, or to override specific variables, use `--env-file` or `--var`:
+
+```bash
+mcloud local build \
+  --env-file .env \
+  -v NODE_ENV=production
+```
+
+### Build the Storefront
+
+To build the storefront instead of the backend, pass `--type storefront` (or `-t storefront`). The CLI infers the storefront's path from the linked Cloud project, or you can set it with `--storefront-path`:
+
+```bash
+mcloud local build \
+  --type storefront \
+  --storefront-path apps/storefront
+```
+
+The command builds the storefront in a Docker container and writes the build output to a local directory. When it finishes, it prints the output path:
+
+```bash
+Running local storefront build in /tmp/mcloud-local-build/myuser-my-repo/storefront
+
+# ... Docker build output ...
+
+Storefront build complete. Output: /tmp/mcloud-local-build/myuser-my-repo/storefront/output
+```
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the project belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) to build.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) whose variables are used for the build.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-t <type>`, `--type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build type to run. Accepts `backend` or `storefront`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--root-path <path>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The root path of the Medusa project relative to the repository root. Used for backend builds. Inferred from the Cloud project if not specified, or `.` if a Cloud project isn't found.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Inferred
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--storefront-path <path>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The path to the storefront project relative to the repository root. Used for storefront builds. Inferred from the Cloud project if not specified.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Inferred
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--env-file <path>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Path to a `.env` file to use for the build. If not specified, environment variables are inferred from the Cloud environment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Inferred
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-v <var>`, `--var <var>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An environment variable to override for the build, in `KEY=VALUE` format. Pass it multiple times to override more than one variable.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--docker-cache`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Enable the Docker build cache. Disabled by default so that environment variable changes always invalidate the cache.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

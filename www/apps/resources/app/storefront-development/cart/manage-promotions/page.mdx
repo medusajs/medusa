@@ -20,7 +20,7 @@ In this guide, you'll learn how to manage cart promotions or discounts, includin
 
 ## Add Promotion to Cart
 
-To add a promotion to a cart, use the [Add Promotion API route](!api!/store#carts_postcartsidpromotions).
+To add a promotion to a cart, use the [Add Promotion API route](!api!/store/carts/add-promotions).
 
 For example:
 
@@ -69,7 +69,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-The [Add Promotion API route](!api!/store#carts_postcartsidpromotions) accepts the cart ID as a path parameter, and a `promo_codes` request body parameter, which is an array of promotion codes to apply to the cart.
+The [Add Promotion API route](!api!/store/carts/add-promotions) accepts the cart ID as a path parameter, and a `promo_codes` request body parameter, which is an array of promotion codes to apply to the cart.
 
 The response includes the updated cart with the applied promotions. You can use this cart object to show the updated promotions to the customer.
 
@@ -79,7 +79,7 @@ The response includes the updated cart with the applied promotions. You can use 
 
 The cart object you retrieve in the storefront has a `promotions` field, which is an array of the promotions applied to the cart.
 
-You can refer to the [API reference](!api!/store#carts_cart_schema) for the expected fields in a promotion object.
+You can refer to the [API reference](!api!/store/carts/schema) for the expected fields in a promotion object.
 
 A promotion mainly has a `code` field. You can use that code to display the applied promotions to the customer, and later to [remove a promotion](#remove-promotion-from-cart) from the cart.
 
@@ -113,7 +113,7 @@ To show the total discount amount from the applied promotions, refer to the [Car
 
 ## Remove Promotion from Cart
 
-To remove a promotion from a cart, use the [Remove Promotion API route](!api!/store#carts_deletecartsidpromotions).
+To remove a promotion from a cart, use the [Remove Promotion API route](!api!/store/carts/remove-promotions-from-cart).
 
 For example:
 
@@ -156,6 +156,6 @@ For example:
   </CodeTab>
 </CodeTabs>
 
-The [Remove Promotion API route](!api!/store#carts_deletecartsidpromotions) accepts the cart ID as a path parameter, and a `promo_codes` request body parameter, which is an array of promotion codes to remove from the cart.
+The [Remove Promotion API route](!api!/store/carts/remove-promotions-from-cart) accepts the cart ID as a path parameter, and a `promo_codes` request body parameter, which is an array of promotion codes to remove from the cart.
 
 The response includes the updated cart with the removed promotions. You can use this cart object to show the updated promotions to the customer.

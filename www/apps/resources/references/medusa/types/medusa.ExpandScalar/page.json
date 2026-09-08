@@ -1,0 +1,1 @@
+{"slug":"/references/medusa/types/medusa.ExpandScalar","title":"ExpandScalar","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"ExpandScalar","type":"`null` \\| T extends `string` ? `string` \\| `RegExp` : T extends `Date` ? `Date` \\| `string` : T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

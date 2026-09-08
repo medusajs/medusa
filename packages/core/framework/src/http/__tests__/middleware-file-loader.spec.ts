@@ -73,6 +73,12 @@ describe("Middleware file loader", () => {
         },
         {
           "handler": [Function],
+          "matcher": /\\^\\\\/admin\\(\\\\/\\.\\*\\)\\?\\$/,
+          "methods": undefined,
+          "policies": undefined,
+        },
+        {
+          "handler": [Function],
           "matcher": "/webhooks/*",
           "methods": [
             "POST",

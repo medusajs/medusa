@@ -168,6 +168,7 @@ export interface ICachingModuleService extends IModuleService {
     data,
     ttl,
     tags,
+    computeAutomaticTags,
     options,
     providers,
   }: {
@@ -185,10 +186,35 @@ export interface ICachingModuleService extends IModuleService {
      */
     ttl?: number
     /**
-     * The tags of the items to store. Tags are useful to group related items 
+     * The tags of the items to store. Tags are useful to group related items
      * together for retrieval or invalidation.
+     *
+     * If not provided, the tags are computed from `data`. If provided, they're used on
+     * their own unless `computeAutomaticTags` is also set.
      */
     tags?: string[]
+    /**
+     * Whether the tags computed from `data` should be applied along with the ones given
+     * in `tags`, rather than `tags` being used on its own. Useful for tagging what the
+     * computation can't see, such as link tables, relations selected without their
+     * `id`, or entities that affect the data without appearing in it, without
+     * restating everything it can.
+     *
+     * Has no effect when `tags` is omitted.
+     *
+     * @defaultValue false
+     *
+     * @example
+     * ```ts
+     * await cachingModuleService.set({
+     *   key,
+     *   data,
+     *   tags: ["LinkProductVariantInventoryItem:list:*"],
+     *   computeAutomaticTags: true
+     * })
+     * ```
+     */
+    computeAutomaticTags?: boolean
     /**
      * Options for storing the item. The options are stored with the item, allowing you to later match against them when clearing the item.
      * For example, if you set `autoInvalidate: false`, the item will only be invalidated when calling the `clear` method directly with the same key or tags.

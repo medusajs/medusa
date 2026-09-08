@@ -7,6 +7,7 @@ const pkgs = [
   glob.sync(`./packages/cli/*`).map((p) => p.replace(/^\./, `<rootDir>`)),
   glob.sync(`./packages/core/*`).map((p) => p.replace(/^\./, `<rootDir>`)),
   glob.sync(`./packages/modules/*`).map((p) => p.replace(/^\./, `<rootDir>`)),
+  glob.sync(`./packages/plugins/*`).map((p) => p.replace(/^\./, `<rootDir>`)),
   glob
     .sync(`./packages/modules/providers/*`)
     .map((p) => p.replace(/^\./, `<rootDir>`)),
@@ -39,6 +40,7 @@ module.exports = {
     "<rootDir>/packages/cli/*/jest.config.js",
     "<rootDir>/packages/core/*/jest.config.js",
     "<rootDir>/packages/modules/*/jest.config.js",
+    "<rootDir>/packages/plugins/*/jest.config.js",
     "<rootDir>/packages/modules/providers/*/jest.config.js",
   ],
   modulePathIgnorePatterns: ignoreDirs,

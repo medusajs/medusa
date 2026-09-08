@@ -108,7 +108,10 @@ interface AdminCreateShippingOptionBase {
    */
   data?: Record<string, unknown>
   /**
-   * The type of shipping option's price.
+   * The type of the shipping option's price:
+   *
+   * - `flat`: the price is a fixed amount set in the `prices` property.
+   * - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider.
    */
   price_type: ShippingOptionPriceType
   /**
@@ -145,11 +148,19 @@ interface AdminCreateShippingOptionBase {
 }
 
 /**
- * Flat rate shipping option creation input.
+ * The details of a flat-rate shipping option to create. A flat-rate shipping option
+ * has a fixed price set in the `prices` property.
  */
 export interface AdminCreateFlatRateShippingOption
   extends AdminCreateShippingOptionBase {
+  /**
+   * The shipping option's price type. `flat` indicates that the price is a fixed
+   * amount set in the `prices` property.
+   */
   price_type: "flat"
+  /**
+   * The shipping option's prices, each for a different currency or region.
+   */
   prices: (
     | AdminCreateShippingOptionPriceWithCurrency
     | AdminCreateShippingOptionPriceWithRegion
@@ -157,11 +168,20 @@ export interface AdminCreateFlatRateShippingOption
 }
 
 /**
- * Calculated shipping option creation input.
+ * The details of a calculated shipping option to create. A calculated shipping option's
+ * price is calculated during checkout by its fulfillment provider, rather than being set
+ * to a fixed amount.
  */
 export interface AdminCreateCalculatedShippingOption
   extends AdminCreateShippingOptionBase {
+  /**
+   * The shipping option's price type. `calculated` indicates that the price is calculated
+   * during checkout by the shipping option's fulfillment provider.
+   */
   price_type: "calculated"
+  /**
+   * The shipping option's prices, each for a different currency or region.
+   */
   prices: (
     | AdminCreateShippingOptionPriceWithCurrency
     | AdminCreateShippingOptionPriceWithRegion

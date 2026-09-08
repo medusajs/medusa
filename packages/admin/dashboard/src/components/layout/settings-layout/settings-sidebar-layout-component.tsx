@@ -1,5 +1,5 @@
 import { MinusMini } from "@medusajs/icons"
-import { Divider, IconButton, Text } from "@medusajs/ui"
+import { clx, Divider, IconButton, Text } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import { Fragment, ReactNode } from "react"
 import { useTranslation } from "react-i18next"
@@ -45,11 +45,12 @@ const GroupDivider = () => (
 
 export const SettingsSidebarLayoutComponent = ({
   sections,
+  className,
 }: LayoutComponentProps) => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className={clx("flex flex-1 flex-col", className)}>
       <CollapsibleGroup label={t("app.nav.settings.general")}>
         {sections["general"]}
       </CollapsibleGroup>

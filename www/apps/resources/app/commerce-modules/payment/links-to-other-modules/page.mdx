@@ -311,6 +311,12 @@ createRemoteLinkStep({
   </CodeTab>
 </CodeTabs>
 
+<Note>
+
+A customer can have many account holders, but each account holder belongs to only one customer. If you try to link an account holder that already belongs to another customer, Medusa throws a `Cannot create multiple links between 'customer' and 'payment'` error. To transfer an account holder to a different customer, remove the existing link first, then create the new one.
+
+</Note>
+
 ---
 
 ## Order Module

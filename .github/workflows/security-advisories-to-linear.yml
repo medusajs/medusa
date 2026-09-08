@@ -1,0 +1,51 @@
+name: Security Advisories to Linear
+
+# Creates a triage ticket in the DX Linear team for each TRIAGE-state repository
+# security advisory (reported at github.com/medusajs/medusa/security/advisories).
+#
+# Triage advisories are not delivered by the `repository_advisory` event (that only
+# fires on published/reported), so they are only reachable by polling the REST API.
+# Dedup is handled in the script, so daily runs never create duplicate tickets.
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Every day at 08:00 UTC
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-advisories-to-linear
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync advisories to Linear triage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The built-in GITHUB_TOKEN cannot read repository security advisories
+      # (especially drafts). The Medusa GitHub App must be granted the
+      # "Repository security advisories: Read" permission for this token to
+      # list draft advisories.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Create Linear triage tickets
+        run: node scripts/security-advisories-to-linear.mjs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }} # DX team

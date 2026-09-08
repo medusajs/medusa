@@ -100,7 +100,7 @@ export const removeReturnShippingMethodWorkflowId =
   "remove-return-shipping-method"
 /**
  * This workflow removes a shipping method from a return. It's used by the
- * [Remove Shipping Method from Return Admin API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidshippingmethodaction_id).
+ * [Remove Shipping Method from Return Admin API Route](https://docs.medusajs.com/api/admin/returns/remove-shipping-method).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to remove a shipping method from a return in your custom flows.

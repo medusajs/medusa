@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom"
 
 import { useLogout } from "../../hooks/api/auth"
 import { queryClient } from "../../lib/query-client"
+import {
+  getSearchEntityShortcuts,
+  resolveSearchEntityShortcutLabel,
+} from "../../lib/search/search-entities"
 import { KeybindContext } from "./keybind-context"
 import { Shortcut } from "./types"
 import { findShortcut } from "./utils"
@@ -110,96 +114,17 @@ export const useGlobalShortcuts = () => {
   }
 
   const globalShortcuts: Shortcut[] = [
-    // Pages
-    {
-      keys: {
-        Mac: ["G", "O"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToOrders"),
-      type: "pageShortcut",
-      to: "/orders",
-    },
-    {
-      keys: {
-        Mac: ["G", "P"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToProducts"),
-      type: "pageShortcut",
-      to: "/products",
-    },
-    {
-      keys: {
-        Mac: ["G", "C"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToCollections"),
-      type: "pageShortcut",
-      to: "/collections",
-    },
-    {
-      keys: {
-        Mac: ["G", "A"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToCategories"),
-      type: "pageShortcut",
-      to: "/categories",
-    },
-    {
-      keys: {
-        Mac: ["G", "U"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToCustomers"),
-      type: "pageShortcut",
-      to: "/customers",
-    },
-    {
-      keys: {
-        Mac: ["G", "G"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToCustomerGroups"),
-      type: "pageShortcut",
-      to: "/customer-groups",
-    },
-    {
-      keys: {
-        Mac: ["G", "I"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToInventory"),
-      type: "pageShortcut",
-      to: "/inventory",
-    },
-    {
-      keys: {
-        Mac: ["G", "R"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToReservations"),
-      type: "pageShortcut",
-      to: "/reservations",
-    },
-    {
-      keys: {
-        Mac: ["G", "L"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToPriceLists"),
-      type: "pageShortcut",
-      to: "/price-lists",
-    },
-    {
-      keys: {
-        Mac: ["G", "M"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToPromotions"),
-      type: "pageShortcut",
-      to: "/promotions",
-    },
-    {
-      keys: {
-        Mac: ["G", "K"],
-      },
-      label: t("app.keyboardShortcuts.navigation.goToCampaigns"),
-      type: "pageShortcut",
-      to: "/campaigns",
-    },
-    // Settings
+    // "Jump to" entries come from the search entity registry, so apps and
+    // plugins customize them through their `search-entities.tsx` definitions.
+    ...getSearchEntityShortcuts().map(
+      ({ entity, shortcut }): Shortcut => ({
+        keys: shortcut.keys,
+        label: resolveSearchEntityShortcutLabel(entity, t),
+        type: shortcut.type ?? "pageShortcut",
+        to: shortcut.to,
+      })
+    ),
+    // The admin shell's own destinations, which belong to no entity.
     {
       keys: {
         Mac: ["G", ","],
@@ -218,78 +143,6 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
-        Mac: ["G", ",", "U"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToUsers"),
-      type: "settingShortcut",
-      to: "/settings/users",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "R"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToRegions"),
-      type: "settingShortcut",
-      to: "/settings/regions",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "T"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToTaxRegions"),
-      type: "settingShortcut",
-      to: "/settings/tax-regions",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "A"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToSalesChannels"),
-      type: "settingShortcut",
-      to: "/settings/sales-channels",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "P"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToProductTypes"),
-      type: "settingShortcut",
-      to: "/settings/product-types",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "L"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToLocations"),
-      type: "settingShortcut",
-      to: "/settings/locations",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "M"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToReturnReasons"),
-      type: "settingShortcut",
-      to: "/settings/return-reasons",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "J"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToPublishableApiKeys"),
-      type: "settingShortcut",
-      to: "/settings/publishable-api-keys",
-    },
-    {
-      keys: {
-        Mac: ["G", ",", "K"],
-      },
-      label: t("app.keyboardShortcuts.settings.goToSecretApiKeys"),
-      type: "settingShortcut",
-      to: "/settings/secret-api-keys",
-    },
-    {
-      keys: {
         Mac: ["G", ",", "W"],
       },
       label: t("app.keyboardShortcuts.settings.goToWorkflows"),
@@ -304,7 +157,7 @@ export const useGlobalShortcuts = () => {
       type: "settingShortcut",
       to: "/settings/profile",
     },
-    // Commands
+    // Commands that need app hooks stay built in.
     {
       keys: {
         Mac: ["B", "Y", "E"],

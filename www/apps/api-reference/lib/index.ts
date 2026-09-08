@@ -2,7 +2,11 @@
 
 import { OpenAPI } from "types"
 
-const URL = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PATH}`
+// Mirror the defaults used by config/index.ts (baseUrl) and next.config.mjs
+// (basePath) so dev works without every env var set.
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api"
+const URL = `${baseUrl}${basePath}`
 
 export async function getBaseSpecs(area: OpenAPI.Area) {
   try {

@@ -84,7 +84,18 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateReservationsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: reservation-item.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are updated.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

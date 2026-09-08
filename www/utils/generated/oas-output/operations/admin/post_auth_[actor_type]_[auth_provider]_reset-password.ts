@@ -76,6 +76,13 @@
  * responses:
  *   "201":
  *     description: OK
+ *     content:
+ *       text/plain:
+ *         schema:
+ *           type: string
+ *           title: message
+ *           description: The 201 status code's message.
+ *           example: Created
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -26,7 +26,7 @@ export const createUserAccountWorkflowId = "create-user-account"
 /**
  * This workflow creates a user and attaches it to an auth identity.
  *
- * You can create an auth identity first using the [Retrieve Registration JWT Token API Route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider_register).
+ * You can create an auth identity first using the [Retrieve Registration JWT Token API Route](https://docs.medusajs.com/api/admin/auth/retrieve-registration-jwt-token).
  * Learn more about basic authentication flows in [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to

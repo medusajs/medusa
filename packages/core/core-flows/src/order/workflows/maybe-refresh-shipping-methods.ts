@@ -3,7 +3,9 @@ import {
   CalculateShippingOptionPriceDTO,
 } from "@medusajs/framework/types"
 import {
+  Hook,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -16,6 +18,7 @@ import {
   updateOrderShippingMethodsStep,
 } from "../steps"
 import { useQueryGraphStep } from "../../common"
+import { calculatedShippingPricingContextResult } from "../../cart/utils/schemas"
 
 const COMMON_OPTIONS_FIELDS = [
   "id",
@@ -65,6 +68,15 @@ export type MaybeRefreshShippingMethodsWorkflowInput = {
   context: CalculatedRMAShippingContext
 }
 
+/**
+ * The `setCalculatedShippingPricingContext` hook of {@link maybeRefreshShippingMethodsWorkflow}.
+ */
+type SetCalculatedShippingPricingContextHook = Hook<
+  "setCalculatedShippingPricingContext",
+  { input: MaybeRefreshShippingMethodsWorkflowInput },
+  Record<string, any> | undefined
+>
+
 export const maybeRefreshShippingMethodsWorkflowId =
   "maybe-refresh-shipping-methods"
 /**
@@ -96,12 +108,30 @@ export const maybeRefreshShippingMethodsWorkflowId =
  * @summary
  *
  * Refreshes the shipping method prices of an order and its changes.
+ *
+ * @property hooks.setCalculatedShippingPricingContext - This hook is executed before a calculated shipping method's price is refreshed.
+ * You can consume this hook to return any custom context that is forwarded as-is to the fulfillment provider's `calculatePrice` method.
+ *
+ * ```ts
+ * import { maybeRefreshShippingMethodsWorkflow } from "@medusajs/medusa/core-flows"
+ * import { StepResponse } from "@medusajs/workflows-sdk"
+ *
+ * maybeRefreshShippingMethodsWorkflow.hooks.setCalculatedShippingPricingContext(
+ *   async ({ input }, { container }) => {
+ *     return new StepResponse({
+ *       account_number: "acc_123",
+ *     })
+ *   }
+ * )
+ * ```
+ *
+ * The returned object is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method. If a key here conflicts with a framework-provided key, the framework-provided value takes precedence.
  */
 export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
   maybeRefreshShippingMethodsWorkflowId,
   function (
     input: MaybeRefreshShippingMethodsWorkflowInput
-  ): WorkflowResponse<void> {
+  ): WorkflowResponse<void, [SetCalculatedShippingPricingContextHook]> {
     const shippingMethodQuery = useQueryGraphStep({
       entity: "order_shipping_method",
       fields: ["id", "shipping_option_id"],
@@ -118,7 +148,17 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       filters: { id: shippingMethod.shipping_option_id },
       options: {
         cache: {
-          enable: true,
+          // The shipping option, its type, provider and the resolved location are all
+          // computed from the response. These are what computation cannot see: the
+          // service zone, fulfillment set and rules are selected without their ids,
+          // and the fulfillment set resolves its location through a link row.
+          tags: [
+            "ServiceZone:list:*",
+            "FulfillmentSet:list:*",
+            "ShippingOptionRule:list:*",
+            "LinkLocationFulfillmentSet:list:*",
+          ],
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "calculated-option" })
@@ -130,10 +170,17 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       (option) => option?.price_type === ShippingOptionPriceType.CALCULATED
     )
 
+    const setCalculatedShippingPricingContext = createHook(
+      "setCalculatedShippingPricingContext",
+      { input },
+      { resultValidator: calculatedShippingPricingContextResult }
+    )
+    const setCalculatedShippingPricingContextResult =
+      setCalculatedShippingPricingContext.getResult()
+
     when(
-      { isCalculatedPriceShippingOption, shippingOption },
-      ({ isCalculatedPriceShippingOption, shippingOption }) =>
-        isCalculatedPriceShippingOption
+      { isCalculatedPriceShippingOption },
+      ({ isCalculatedPriceShippingOption }) => isCalculatedPriceShippingOption
     ).then(() => {
       const orderQuery = useQueryGraphStep({
         entity: "order",
@@ -149,13 +196,20 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
           shippingOption,
           order,
           input,
+          setCalculatedShippingPricingContextResult,
         },
-        ({ shippingOption, order, input }) => {
+        ({
+          shippingOption,
+          order,
+          input,
+          setCalculatedShippingPricingContextResult,
+        }) => {
           return [
             {
               id: shippingOption.id as string,
               optionData: shippingOption.data,
               context: {
+                ...setCalculatedShippingPricingContextResult,
                 ...order,
                 ...input.context,
                 from_location:
@@ -199,6 +253,8 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       )
     })
 
-    return new WorkflowResponse(void 0)
+    return new WorkflowResponse(void 0, {
+      hooks: [setCalculatedShippingPricingContext],
+    })
   }
 )

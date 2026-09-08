@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.addToCartWorkflowId","title":"addToCartWorkflowId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"addToCartWorkflowId","type":"`\"add-to-cart\"`","description":"","optional":false,"defaultValue":"\"add-to-cart\"","expandable":false,"children":[]}]}]}

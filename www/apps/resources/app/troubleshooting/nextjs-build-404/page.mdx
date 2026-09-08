@@ -1,0 +1,109 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Next.js Storefront Dynamic Routes Return 404 During Build`,
+}
+
+# {metadata.title}
+
+When building a storefront that uses dynamic routes (for example, `/[countryCode]/categories/[...category]`), the build may fail with errors like:
+
+```bash
+Failed to collect page data for /[countryCode]/categories/[...category]
+Error: 404 - Not Found
+```
+
+This guide explains why this happens and how to resolve it.
+
+---
+
+## Why This Happens
+
+Next.js attempts to prerender pages with dynamic routes at build time. To generate these pages, it calls the `generateStaticParams` function (or `getStaticPaths` in the Pages Router) which fetches data from the Medusa backend.
+
+If the backend is unreachable during the build, those requests return 404 or network errors, and Next.js fails to collect the page data.
+
+Common causes:
+
+- The Medusa backend is not running or not reachable from the build environment.
+- The `NEXT_PUBLIC_MEDUSA_BACKEND_URL` (or equivalent) environment variable is not set or points to the wrong URL.
+- The publishable API key (`NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`) is missing or invalid.
+- Network policies in the deployment environment block outbound requests to the backend.
+
+---
+
+## Diagnose the Issue
+
+### Check the build logs
+
+Look for lines like:
+
+```bash
+Failed to collect page data for /[countryCode]/products/[handle]
+```
+
+or HTTP errors such as:
+
+```bash
+FetchError: request to http://localhost:9000/store/... failed
+```
+
+These confirm that Next.js is trying to reach the backend during the build.
+
+### Verify environment variables
+
+Confirm that the following environment variables are set in your build environment:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://your-medusa-backend.com
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_...
+```
+
+### Verify backend connectivity
+
+From the machine or container running the build, confirm the backend is reachable:
+
+```bash
+curl https://your-medusa-backend.com/health
+```
+
+A successful response returns `{ "status": "ok" }`. A 404 or connection error means the backend is not reachable from the build environment.
+
+---
+
+## Resolve the Issue
+
+### Make the backend reachable
+
+The most reliable fix is to ensure the Medusa backend is running and accessible before starting the storefront build.
+
+If you're using a CI/CD pipeline, start the backend first and wait for it to be healthy before triggering the storefront build step.
+
+### Set the correct environment variables
+
+In your build environment or deployment platform, set the backend URL and publishable API key:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://your-medusa-backend.com
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_...
+```
+
+Replace `https://your-medusa-backend.com` with the actual URL of your deployed Medusa backend.
+
+### Disable static generation for dynamic routes
+
+If you don't need to prerender the dynamic routes at build time, you can disable static generation by returning an empty array from `generateStaticParams` or by setting the dynamic rendering option.
+
+For example, in the Next.js App Router, add this to the affected route file:
+
+```ts
+export const dynamic = "force-dynamic"
+```
+
+This tells Next.js to skip prerendering and render the page at request time instead, so no backend connection is needed during the build.
+
+<Note title="Tip">
+
+Disabling static generation means pages are rendered at request time, which may affect performance. Use this option only when the backend is not available during builds or when prerendering is not needed.
+
+</Note>

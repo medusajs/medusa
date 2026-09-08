@@ -1,0 +1,39 @@
+/**
+ * @schema AdminSetLayoutConfiguration
+ * type: object
+ * description: The details of setting the layout configuration for a zone in the admin dashboard.
+ * x-schemaName: AdminSetLayoutConfiguration
+ * required:
+ *   - configuration
+ * properties:
+ *   is_default:
+ *     type: boolean
+ *     title: is_default
+ *     description: Whether the layout configuration is set as the default for the zone.
+ *   configuration:
+ *     type: object
+ *     description: The layout's configuration.
+ *     required:
+ *       - widgets
+ *     properties:
+ *       widgets:
+ *         type: object
+ *         description: The widgets configuration for the layout. Each key represents a widget's ID, and the value is an object containing the widget's configuration details.
+ *         additionalProperties:
+ *           type: object
+ *           properties:
+ *             hidden:
+ *               type: boolean
+ *               title: hidden
+ *               description: Whether the widget is hidden in the layout.
+ *             section:
+ *               type: string
+ *               title: section
+ *               description: The section of the layout where the widget is placed.
+ *             order:
+ *               type: number
+ *               title: order
+ *               description: The widget's order.
+ * 
+*/
+

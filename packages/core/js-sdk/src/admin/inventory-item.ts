@@ -16,7 +16,7 @@ export class InventoryItem {
 
   /**
    * This method creates an inventory item. It sends a request to the
-   * [Create Inventory Item](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems)
+   * [Create Inventory Item](https://docs.medusajs.com/api/admin/inventory-items/create-inventory-item)
    * API route.
    *
    * @param body - The inventory item's details.
@@ -50,7 +50,7 @@ export class InventoryItem {
 
   /**
    * This method updates an inventory level. It sends a request to the
-   * [Update Inventory Item](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsid)
+   * [Update Inventory Item](https://docs.medusajs.com/api/admin/inventory-items/update-an-inventory-item)
    * API route.
    *
    * @param id - The inventory item's ID.
@@ -85,8 +85,44 @@ export class InventoryItem {
   }
 
   /**
+   * This method exports inventory items to a CSV file. The CSV file includes the
+   * inventory levels of each item per stock location. It sends a request to the
+   * [Export Inventory Items](https://docs.medusajs.com/api/admin/inventory-items/export-inventory-items)
+   * API route.
+   *
+   * The export is processed asynchronously. Once it's done, admin users receive
+   * a notification with the URL to download the exported file.
+   *
+   * @param body - The export's details.
+   * @param query - Filters to select which inventory items to export.
+   * @param headers - Headers to pass in the request.
+   * @returns The ID of the workflow transaction processing the export.
+   *
+   * @example
+   * sdk.admin.inventoryItem.export({})
+   * .then(({ transaction_id }) => {
+   *   console.log(transaction_id)
+   * })
+   */
+  async export(
+    body: HttpTypes.AdminExportInventoryItemRequest,
+    query?: HttpTypes.AdminInventoryItemsParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminExportInventoryItemResponse>(
+      `/admin/inventory-items/export`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  /**
    * This method retrieves a paginated list of inventory items. It sends a request to the
-   * [List Inventory Items](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems)
+   * [List Inventory Items](https://docs.medusajs.com/api/admin/inventory-items/list-inventory-items)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -129,7 +165,7 @@ export class InventoryItem {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminInventoryItemsParams,
@@ -146,7 +182,7 @@ export class InventoryItem {
 
   /**
    * This method retrieves an inventory item by its ID. It sends a request to the
-   * [Get Inventory Item](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsid) API route.
+   * [Get Inventory Item](https://docs.medusajs.com/api/admin/inventory-items/get-a-inventory-item) API route.
    *
    * @param id - The inventory item's ID.
    * @param query - Configure the fields to retrieve in the inventory item.
@@ -174,7 +210,7 @@ export class InventoryItem {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminInventoryItemResponse>(
@@ -188,7 +224,7 @@ export class InventoryItem {
 
   /**
    * This method deletes an inventory item. This sends a request to the
-   * [Delete Inventory Item](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsid)
+   * [Delete Inventory Item](https://docs.medusajs.com/api/admin/inventory-items/delete-inventory-item)
    * API route.
    *
    * @param id - The inventory item's ID.
@@ -213,7 +249,7 @@ export class InventoryItem {
 
   /**
    * This method retrieves a paginated list of inventory levels that belong to an inventory item.
-   * It sends a request to the [List Inventory Items](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems)
+   * It sends a request to the [List Inventory Items](https://docs.medusajs.com/api/admin/inventory-items/list-inventory-items)
    * API route.
    *
    * @param id - The inventory item's ID.
@@ -257,7 +293,7 @@ export class InventoryItem {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async listLevels(
     id: string,
@@ -278,7 +314,7 @@ export class InventoryItem {
    * stock location.
    *
    * This method sends a request to the
-   * [Update Inventory Level](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelslocation_id)
+   * [Update Inventory Level](https://docs.medusajs.com/api/admin/inventory-items/update-inventory-level)
    * API route.
    *
    * @param id - The inventory item's ID.
@@ -323,7 +359,7 @@ export class InventoryItem {
    * and a stock location.
    *
    * This method sends a request to the
-   * [Remove Inventory Level](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id)
+   * [Remove Inventory Level](https://docs.medusajs.com/api/admin/inventory-items/remove-inventory-level)
    * API route.
    *
    * @param id - The inventory item's ID.
@@ -352,7 +388,7 @@ export class InventoryItem {
 
   /**
    * This method manages the inventory levels of an inventory item. It sends a request to the
-   * [Manage Inventory Levels](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelsbatch)
+   * [Manage Inventory Levels](https://docs.medusajs.com/api/admin/inventory-items/manage-inventory-levels-2)
    * API route.
    *
    * @deprecated Use `batchInventoryItemLocationLevels` instead.
@@ -394,7 +430,7 @@ export class InventoryItem {
 
   /**
    * This method manages the inventory levels of an inventory item. It sends a request to the
-   * [Manage Inventory Levels](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelsbatch)
+   * [Manage Inventory Levels](https://docs.medusajs.com/api/admin/inventory-items/manage-inventory-levels-2)
    * API route.
    *
    * @param id - The inventory item's ID.

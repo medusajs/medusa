@@ -1,5 +1,5 @@
 type: object
-description: The list of prices.
+description: The list of prices associated with a price list.
 x-schemaName: AdminPriceListPriceListResponse
 required:
   - limit
@@ -10,7 +10,7 @@ properties:
   limit:
     type: number
     title: limit
-    description: The maximum number of prices returned.
+    description: The maximum number of prices to return.
   offset:
     type: number
     title: offset
@@ -18,7 +18,7 @@ properties:
   count:
     type: number
     title: count
-    description: The total number of prices.
+    description: The maximum number of prices available.
   estimate_count:
     type: number
     title: estimate_count
@@ -28,6 +28,6 @@ properties:
     x-featureFlag: index_engine
   prices:
     type: array
-    description: The list of prices.
+    description: The list of prices associated with the price list.
     items:
       $ref: ./AdminPrice.yaml
