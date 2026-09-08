@@ -1614,7 +1614,9 @@ export function getRouteMap({
                     {
                       path: "create",
                       element: <RoutePermissionGuard />,
-                      handle: { permissions: "rbac_role:create" },
+                      handle: {
+                        permissions: ["rbac_role:create", "rbac_policy:read"],
+                      },
                       children: [
                         {
                           path: "",

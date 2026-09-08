@@ -20,13 +20,23 @@ import {
 } from "../../../../../hooks/api/rbac-roles"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { useRbacRolePermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const RoleListTable = () => {
   const { t } = useTranslation()
-  const { canCreate, canUpdate, canDelete } = useRbacRolePermissions()
+  const {
+    canCreate: canCreateRole,
+    canUpdate,
+    canDelete,
+  } = useRbacRolePermissions()
+  const { canRead: canReadPolicies } = useRbacPolicyPermissions()
+
+  const canCreate = canCreateRole && canReadPolicies
 
   const { q, order, offset, created_at } = useQueryParams([
     "q",
