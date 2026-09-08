@@ -11,6 +11,44 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 {/* Entries are added automatically when webhook changes are deployed.
     Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
 
+## September 8, 2026
+
+### build.canceled
+
+- Added the `build.canceled` event. Cloud delivers this event when a build is canceled.
+
+### build.created
+
+- Added the `build.created` event. Cloud delivers this event when a new build is created for an environment.
+
+### build.failed
+
+- Added the `build.failed` event. Cloud delivers this event when a build fails.
+
+### build.succeeded
+
+- Added the `build.succeeded` event. Cloud delivers this event when a build completes successfully.
+
+### deployment.canceled
+
+- Added the `deployment.canceled` event. Cloud delivers this event when a deployment is canceled.
+
+### deployment.created
+
+- Added the `deployment.created` event. Cloud delivers this event when a new deployment is created for an environment.
+
+### deployment.failed
+
+- Added the `deployment.failed` event. Cloud delivers this event when a deployment fails.
+
+### deployment.succeeded
+
+- Added the `deployment.succeeded` event. Cloud delivers this event when a deployment completes successfully.
+
+### Delivery
+
+Cloud now delivers webhooks for build and deployment lifecycle events. Each request is a POST with a JSON body and the following headers: X-Medusa-Signature (HMAC-SHA256 signature in the format t={unix_timestamp},v1={hex_digest}, signed over the string {timestamp}.{raw_body} using the endpoint secret), X-Medusa-Event (the event type string), X-Medusa-Delivery (the webhook event ID), and User-Agent (MedusaCloud-Webhook/1.0). Cloud expects a 2xx response within 10 seconds; if none is received the delivery is marked failed. Failed deliveries are retried automatically with exponential backoff starting at 5 minutes and doubling on each attempt, up to 24 hours from the original event.
+
 ## August 10, 2026
 
 Medusa released webhooks for Cloud organizations with the following events:

@@ -33,7 +33,9 @@ Refer to the [Webhooks Changelog](../changelog/page.mdx) for dated updates to th
 
 ---
 
-## Webhook Delivery Details
+## Delivery Details
+
+Medusa delivers webhooks for build and deployment lifecycle events. Each request is a `POST` with a JSON body.
 
 Medusa wraps every event in the same envelope. The `data` property holds the event's payload, which differs per event:
 
@@ -97,7 +99,7 @@ Every delivery includes the following headers:
 
       </Table.Cell>
       <Table.Cell>
-        The name of the event, matching the `type` property of the body.
+        The event type string, matching the `type` property of the body.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -107,7 +109,7 @@ Every delivery includes the following headers:
 
       </Table.Cell>
       <Table.Cell>
-        The ID of the delivered event, matching the `id` property of the body.
+        The webhook event ID, matching the `id` property of the body.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -117,7 +119,7 @@ Every delivery includes the following headers:
 
       </Table.Cell>
       <Table.Cell>
-        The signature of the request, which you use to verify that Medusa sent it. Refer to the [Verify Webhook Signatures](#verify-webhook-signatures) section for details.
+        The HMAC-SHA256 signature in the format `t={unix_timestamp},v1={hex_digest}`, signed over the string `{timestamp}.{raw_body}` using the endpoint secret. Refer to the [Verify Webhook Signatures](#verify-webhook-signatures) section for details.
         
       </Table.Cell>
     </Table.Row>
@@ -373,15 +375,15 @@ Medusa signs every delivery attempt at the time it sends it, so retries of the s
 
 ### Webhook Retries
 
-Medusa attempts the first delivery as soon as it queues the event. If your endpoint doesn't respond with a `2xx` status code within ten seconds, Medusa retries the delivery with an exponential backoff, starting at five minutes and doubling after every attempt.
+Cloud expects a `2xx` response within 10 seconds; if none is received the delivery is marked failed. Failed deliveries are retried automatically with exponential backoff starting at 5 minutes and doubling on each attempt, up to 24 hours from the original event.
 
-Medusa will retry within twenty-four hours of the first attempt. After that, it stops retrying and marks the event as failed. You can [track the status of deliveries in the Cloud dashboard](../events/page.mdx).
+You can [track the status of deliveries in the Cloud dashboard](../events/page.mdx).
 
 A delivery fails when your endpoint responds with a status code outside the `2xx` range, when it doesn't respond within ten seconds, or when Medusa can't reach it. Medusa doesn't follow redirects, so a `3xx` response also counts as a failed delivery.
 
 ---
 
-## Webhook Events
+## Events
 
 Medusa sends the following events:
 
@@ -498,9 +500,9 @@ Medusa sends the following events:
 
 ---
 
-## Webhook Build Events
+## Build Events
 
-Medusa sends these events related to an environment's builds, which happen after you push a commit to the environment's branch.
+Medusa sends these events when a build's status changes.
 
 ### build.canceled
 
@@ -513,22 +515,22 @@ Cloud delivers this event when a build is canceled.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "build.canceled".`,
+      description: `The event type. Always "build.canceled" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the build event.`,
       children: [
         {
           name: "build",
@@ -541,24 +543,24 @@ Cloud delivers this event when a build is canceled.
               description: `Unique identifier of the build.`,
             },
             {
-              name: "status",
-              type: "`\"canceled\"`",
-              description: `Status of the build at the time of the event.`,
-            },
-            {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash that triggered the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\" | \"in-progress\" | \"failed\" | \"succeeded\" | \"canceled\"`",
+              description: `The current status of the build. Always "canceled" for this event.`,
             },
           ],
         },
@@ -602,12 +604,12 @@ Cloud delivers this event when a build is canceled.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
@@ -634,7 +636,7 @@ Cloud delivers this event when a build is canceled.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -648,34 +650,34 @@ Cloud delivers this event when a build is canceled.
 
 ```json
 {
-  "created_at": "2024-11-12T10:03:00.000Z",
+  "created_at": "2024-11-15T10:28:55.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF",
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K",
       "status": "canceled"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ4567ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0R",
   "type": "build.canceled"
 }
 ```
@@ -691,22 +693,22 @@ Cloud delivers this event when a new build is created for an environment.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "build.created".`,
+      description: `The event type. Always "build.created" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the build event.`,
       children: [
         {
           name: "build",
@@ -719,24 +721,24 @@ Cloud delivers this event when a new build is created for an environment.
               description: `Unique identifier of the build.`,
             },
             {
-              name: "status",
-              type: "`\"created\"`",
-              description: `Status of the build at the time of the event.`,
-            },
-            {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash that triggered the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\" | \"in-progress\" | \"failed\" | \"succeeded\" | \"canceled\"`",
+              description: `The current status of the build. Always "created" for this event.`,
             },
           ],
         },
@@ -780,12 +782,12 @@ Cloud delivers this event when a new build is created for an environment.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
@@ -812,7 +814,7 @@ Cloud delivers this event when a new build is created for an environment.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -826,34 +828,34 @@ Cloud delivers this event when a new build is created for an environment.
 
 ```json
 {
-  "created_at": "2024-11-12T10:00:00.000Z",
+  "created_at": "2024-11-15T10:23:45.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF",
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K",
       "status": "created"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ1234ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0J",
   "type": "build.created"
 }
 ```
@@ -869,22 +871,22 @@ Cloud delivers this event when a build fails.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "build.failed".`,
+      description: `The event type. Always "build.failed" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the build event.`,
       children: [
         {
           name: "build",
@@ -897,24 +899,24 @@ Cloud delivers this event when a build fails.
               description: `Unique identifier of the build.`,
             },
             {
-              name: "status",
-              type: "`\"failed\"`",
-              description: `Status of the build at the time of the event.`,
-            },
-            {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash that triggered the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\" | \"in-progress\" | \"failed\" | \"succeeded\" | \"canceled\"`",
+              description: `The current status of the build. Always "failed" for this event.`,
             },
           ],
         },
@@ -958,12 +960,12 @@ Cloud delivers this event when a build fails.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
@@ -990,7 +992,7 @@ Cloud delivers this event when a build fails.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -1004,34 +1006,34 @@ Cloud delivers this event when a build fails.
 
 ```json
 {
-  "created_at": "2024-11-12T10:05:00.000Z",
+  "created_at": "2024-11-15T10:35:18.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF",
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K",
       "status": "failed"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ3456ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0Q",
   "type": "build.failed"
 }
 ```
@@ -1047,22 +1049,22 @@ Cloud delivers this event when a build completes successfully.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "build.succeeded".`,
+      description: `The event type. Always "build.succeeded" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the build event.`,
       children: [
         {
           name: "build",
@@ -1075,24 +1077,24 @@ Cloud delivers this event when a build completes successfully.
               description: `Unique identifier of the build.`,
             },
             {
-              name: "status",
-              type: "`\"succeeded\"`",
-              description: `Status of the build at the time of the event.`,
-            },
-            {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash that triggered the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\" | \"in-progress\" | \"failed\" | \"succeeded\" | \"canceled\"`",
+              description: `The current status of the build. Always "succeeded" for this event.`,
             },
           ],
         },
@@ -1136,12 +1138,12 @@ Cloud delivers this event when a build completes successfully.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
@@ -1168,7 +1170,7 @@ Cloud delivers this event when a build completes successfully.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -1182,43 +1184,43 @@ Cloud delivers this event when a build completes successfully.
 
 ```json
 {
-  "created_at": "2024-11-12T10:05:00.000Z",
+  "created_at": "2024-11-15T10:31:02.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF",
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K",
       "status": "succeeded"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ2345ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0P",
   "type": "build.succeeded"
 }
 ```
 
 ---
 
-## Webhook Deployment Events
+## Deployment Events
 
-Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
+Medusa sends these events when a deployment's status changes.
 
 ### deployment.canceled
 
@@ -1231,22 +1233,22 @@ Cloud delivers this event when a deployment is canceled.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "deployment.canceled".`,
+      description: `The event type. Always "deployment.canceled" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the deployment event.`,
       children: [
         {
           name: "deployment",
@@ -1260,15 +1262,15 @@ Cloud delivers this event when a deployment is canceled.
             },
             {
               name: "status",
-              type: "`\"canceled\"`",
-              description: `Status of the deployment at the time of the event.`,
+              type: "`\"created\" | \"in-progress\" | \"succeeded\" | \"failed\" | \"canceled\" | \"idle\"`",
+              description: `The current status of the deployment. Always "canceled" for this event.`,
             },
           ],
         },
         {
           name: "build",
           type: "`object`",
-          description: `The build associated with this deployment.`,
+          description: `The build associated with the deployment.`,
           children: [
             {
               name: "id",
@@ -1278,17 +1280,17 @@ Cloud delivers this event when a deployment is canceled.
             {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash of the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
             },
           ],
         },
@@ -1332,205 +1334,12 @@ Cloud delivers this event when a deployment is canceled.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
-            },
-          ],
-        },
-        {
-          name: "environment",
-          type: "`object`",
-          description: `The environment that was being deployed to.`,
-          children: [
-            {
-              name: "id",
-              type: "`string`",
-              description: `Unique identifier of the environment.`,
-            },
-            {
-              name: "name",
-              type: "`string`",
-              description: `Display name of the environment.`,
-            },
-            {
-              name: "handle",
-              type: "`string`",
-              description: `URL-safe handle of the environment.`,
-            },
-            {
-              name: "branch",
-              type: "`string`",
-              description: `Git branch associated with this environment.`,
-            },
-          ],
-        },
-      ],
-    },
-  ]}
-  sectionTitle="deployment.canceled"
-/>
-
-#### Example Payload
-
-```json
-{
-  "created_at": "2024-11-12T10:08:00.000Z",
-  "data": {
-    "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF"
-    },
-    "deployment": {
-      "id": "depl_01HXYZ6789ABCDEF",
-      "status": "canceled"
-    },
-    "environment": {
-      "branch": "main",
-      "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
-      "name": "Production"
-    },
-    "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
-      "name": "Acme Corp"
-    },
-    "project": {
-      "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
-      "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
-    }
-  },
-  "id": "whev_01HXYZ8901ABCDEF",
-  "type": "deployment.canceled"
-}
-```
-
-### deployment.created
-
-Cloud delivers this event when a new deployment is created for an environment.
-
-#### Payload
-
-<TypeList
-  types={[
-    {
-      name: "id",
-      type: "`string`",
-      description: `Unique identifier for this webhook event.`,
-    },
-    {
-      name: "type",
-      type: "`string`",
-      description: `The event type, always "deployment.created".`,
-    },
-    {
-      name: "created_at",
-      type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
-    },
-    {
-      name: "data",
-      type: "`object`",
-      description: `The payload of the event.`,
-      children: [
-        {
-          name: "deployment",
-          type: "`object`",
-          description: `The deployment that was created.`,
-          children: [
-            {
-              name: "id",
-              type: "`string`",
-              description: `Unique identifier of the deployment.`,
-            },
-            {
-              name: "status",
-              type: "`\"created\"`",
-              description: `Status of the deployment at the time of the event.`,
-            },
-          ],
-        },
-        {
-          name: "build",
-          type: "`object`",
-          description: `The build associated with this deployment.`,
-          children: [
-            {
-              name: "id",
-              type: "`string`",
-              description: `Unique identifier of the build.`,
-            },
-            {
-              name: "commit_hash",
-              type: "`string`",
-              description: `Git commit hash of the build.`,
-            },
-            {
-              name: "commit_message",
-              type: "`string`",
-              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
-            },
-            {
-              name: "commit_author",
-              type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
-            },
-          ],
-        },
-        {
-          name: "organization",
-          type: "`object`",
-          description: `The organization that owns the project.`,
-          children: [
-            {
-              name: "id",
-              type: "`string`",
-              description: `Unique identifier of the organization.`,
-            },
-            {
-              name: "name",
-              type: "`string`",
-              description: `Display name of the organization.`,
-            },
-          ],
-        },
-        {
-          name: "project",
-          type: "`object`",
-          description: `The project the deployment belongs to.`,
-          children: [
-            {
-              name: "id",
-              type: "`string`",
-              description: `Unique identifier of the project.`,
-            },
-            {
-              name: "name",
-              type: "`string`",
-              description: `Display name of the project.`,
-            },
-            {
-              name: "handle",
-              type: "`string`",
-              description: `URL-safe handle of the project.`,
-            },
-            {
-              name: "repository",
-              type: "`string`",
-              description: `Git repository URL linked to the project.`,
-            },
-            {
-              name: "region",
-              type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
@@ -1557,7 +1366,200 @@ Cloud delivers this event when a new deployment is created for an environment.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.canceled"
+/>
+
+#### Example Payload
+
+```json
+{
+  "created_at": "2024-11-15T10:38:47.000Z",
+  "data": {
+    "build": {
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K"
+    },
+    "deployment": {
+      "id": "dep_01J9KXQP2A3B4C5D6E7F8G9H0T",
+      "status": "canceled"
+    },
+    "environment": {
+      "branch": "main",
+      "handle": "production",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
+      "name": "Production"
+    },
+    "organization": {
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
+      "name": "Acme Corp"
+    },
+    "project": {
+      "handle": "my-storefront",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
+      "name": "My Storefront",
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
+    }
+  },
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0W",
+  "type": "deployment.canceled"
+}
+```
+
+### deployment.created
+
+Cloud delivers this event when a new deployment is created for an environment.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `Unique identifier for the webhook event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The event type. Always "deployment.created" for this event.`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The details of the deployment event.`,
+      children: [
+        {
+          name: "deployment",
+          type: "`object`",
+          description: `The deployment that was created.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the deployment.`,
+            },
+            {
+              name: "status",
+              type: "`\"created\" | \"in-progress\" | \"succeeded\" | \"failed\" | \"canceled\" | \"idle\"`",
+              description: `The current status of the deployment. Always "created" for this event.`,
+            },
+          ],
+        },
+        {
+          name: "build",
+          type: "`object`",
+          description: `The build associated with the deployment.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the build.`,
+            },
+            {
+              name: "commit_hash",
+              type: "`string`",
+              description: `The Git commit hash that triggered the build.`,
+            },
+            {
+              name: "commit_message",
+              type: "`string`",
+              description: `The Git commit message.`,
+            },
+            {
+              name: "commit_author",
+              type: "`string`",
+              description: `The author of the Git commit.`,
+            },
+          ],
+        },
+        {
+          name: "organization",
+          type: "`object`",
+          description: `The organization that owns the project.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the organization.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the organization.`,
+            },
+          ],
+        },
+        {
+          name: "project",
+          type: "`object`",
+          description: `The project the deployment belongs to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the project.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the project.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the project.`,
+            },
+            {
+              name: "repository",
+              type: "`string`",
+              description: `The Git repository associated with the project.`,
+            },
+            {
+              name: "region",
+              type: "`string`",
+              description: `The cloud region the project is deployed in.`,
+            },
+          ],
+        },
+        {
+          name: "environment",
+          type: "`object`",
+          description: `The environment being deployed to.`,
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              description: `Unique identifier of the environment.`,
+            },
+            {
+              name: "name",
+              type: "`string`",
+              description: `Display name of the environment.`,
+            },
+            {
+              name: "handle",
+              type: "`string`",
+              description: `URL-safe handle of the environment.`,
+            },
+            {
+              name: "branch",
+              type: "`string`",
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -1571,37 +1573,37 @@ Cloud delivers this event when a new deployment is created for an environment.
 
 ```json
 {
-  "created_at": "2024-11-12T10:06:00.000Z",
+  "created_at": "2024-11-15T10:32:00.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF"
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K"
     },
     "deployment": {
-      "id": "depl_01HXYZ6789ABCDEF",
+      "id": "dep_01J9KXQP2A3B4C5D6E7F8G9H0T",
       "status": "created"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ5678ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0S",
   "type": "deployment.created"
 }
 ```
@@ -1617,22 +1619,22 @@ Cloud delivers this event when a deployment fails.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "deployment.failed".`,
+      description: `The event type. Always "deployment.failed" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the deployment event.`,
       children: [
         {
           name: "deployment",
@@ -1646,15 +1648,15 @@ Cloud delivers this event when a deployment fails.
             },
             {
               name: "status",
-              type: "`\"failed\"`",
-              description: `Status of the deployment at the time of the event.`,
+              type: "`\"created\" | \"in-progress\" | \"succeeded\" | \"failed\" | \"canceled\" | \"idle\"`",
+              description: `The current status of the deployment. Always "failed" for this event.`,
             },
           ],
         },
         {
           name: "build",
           type: "`object`",
-          description: `The build associated with this deployment.`,
+          description: `The build associated with the deployment.`,
           children: [
             {
               name: "id",
@@ -1664,17 +1666,17 @@ Cloud delivers this event when a deployment fails.
             {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash of the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
             },
           ],
         },
@@ -1718,19 +1720,19 @@ Cloud delivers this event when a deployment fails.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
         {
           name: "environment",
           type: "`object`",
-          description: `The environment that was being deployed to.`,
+          description: `The environment being deployed to.`,
           children: [
             {
               name: "id",
@@ -1750,7 +1752,7 @@ Cloud delivers this event when a deployment fails.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -1764,37 +1766,37 @@ Cloud delivers this event when a deployment fails.
 
 ```json
 {
-  "created_at": "2024-11-12T10:10:00.000Z",
+  "created_at": "2024-11-15T10:50:12.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF"
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K"
     },
     "deployment": {
-      "id": "depl_01HXYZ6789ABCDEF",
+      "id": "dep_01J9KXQP2A3B4C5D6E7F8G9H0T",
       "status": "failed"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ7890ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0V",
   "type": "deployment.failed"
 }
 ```
@@ -1810,22 +1812,22 @@ Cloud delivers this event when a deployment completes successfully.
     {
       name: "id",
       type: "`string`",
-      description: `Unique identifier for this webhook event.`,
+      description: `Unique identifier for the webhook event.`,
     },
     {
       name: "type",
       type: "`string`",
-      description: `The event type, always "deployment.succeeded".`,
+      description: `The event type. Always "deployment.succeeded" for this event.`,
     },
     {
       name: "created_at",
       type: "`string`",
-      description: `ISO 8601 timestamp of when the event was created.`,
+      description: `ISO 8601 timestamp of when the webhook event was created.`,
     },
     {
       name: "data",
       type: "`object`",
-      description: `The payload of the event.`,
+      description: `The details of the deployment event.`,
       children: [
         {
           name: "deployment",
@@ -1839,15 +1841,15 @@ Cloud delivers this event when a deployment completes successfully.
             },
             {
               name: "status",
-              type: "`\"succeeded\"`",
-              description: `Status of the deployment at the time of the event.`,
+              type: "`\"created\" | \"in-progress\" | \"succeeded\" | \"failed\" | \"canceled\" | \"idle\"`",
+              description: `The current status of the deployment. Always "succeeded" for this event.`,
             },
           ],
         },
         {
           name: "build",
           type: "`object`",
-          description: `The build associated with this deployment.`,
+          description: `The build associated with the deployment.`,
           children: [
             {
               name: "id",
@@ -1857,17 +1859,17 @@ Cloud delivers this event when a deployment completes successfully.
             {
               name: "commit_hash",
               type: "`string`",
-              description: `Git commit hash of the build.`,
+              description: `The Git commit hash that triggered the build.`,
             },
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
+              description: `The Git commit message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
+              description: `The author of the Git commit.`,
             },
           ],
         },
@@ -1911,19 +1913,19 @@ Cloud delivers this event when a deployment completes successfully.
             {
               name: "repository",
               type: "`string`",
-              description: `Git repository URL linked to the project.`,
+              description: `The Git repository associated with the project.`,
             },
             {
               name: "region",
               type: "`string`",
-              description: `Deployment region of the project.`,
+              description: `The cloud region the project is deployed in.`,
             },
           ],
         },
         {
           name: "environment",
           type: "`object`",
-          description: `The environment that was deployed to.`,
+          description: `The environment being deployed to.`,
           children: [
             {
               name: "id",
@@ -1943,7 +1945,7 @@ Cloud delivers this event when a deployment completes successfully.
             {
               name: "branch",
               type: "`string`",
-              description: `Git branch associated with this environment.`,
+              description: `The Git branch associated with the environment.`,
             },
           ],
         },
@@ -1957,37 +1959,37 @@ Cloud delivers this event when a deployment completes successfully.
 
 ```json
 {
-  "created_at": "2024-11-12T10:10:00.000Z",
+  "created_at": "2024-11-15T10:45:30.000Z",
   "data": {
     "build": {
-      "commit_author": "Jane Doe",
-      "commit_hash": "a1b2c3d4e5f6",
-      "commit_message": "Add new product feature",
-      "id": "build_01HXYZ5678ABCDEF"
+      "commit_author": "Jane Smith",
+      "commit_hash": "a1b2c3d4e5f6789012345678901234567890abcd",
+      "commit_message": "feat: add new product feature",
+      "id": "bld_01J9KXQP2A3B4C5D6E7F8G9H0K"
     },
     "deployment": {
-      "id": "depl_01HXYZ6789ABCDEF",
+      "id": "dep_01J9KXQP2A3B4C5D6E7F8G9H0T",
       "status": "succeeded"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "projenv_01HXYZ7890ABCDEF",
+      "id": "env_01J9KXQP2A3B4C5D6E7F8G9H0N",
       "name": "Production"
     },
     "organization": {
-      "id": "org_01HXYZ9012ABCDEF",
+      "id": "org_01J9KXQP2A3B4C5D6E7F8G9H0L",
       "name": "Acme Corp"
     },
     "project": {
       "handle": "my-storefront",
-      "id": "proj_01HXYZ3456ABCDEF",
+      "id": "proj_01J9KXQP2A3B4C5D6E7F8G9H0M",
       "name": "My Storefront",
-      "region": "eu-west-1",
-      "repository": "https://github.com/acme/storefront"
+      "region": "us-east-1",
+      "repository": "acme-corp/my-storefront"
     }
   },
-  "id": "whev_01HXYZ6789ABCDEF",
+  "id": "whev_01J9KXQP2A3B4C5D6E7F8G9H0U",
   "type": "deployment.succeeded"
 }
 ```
