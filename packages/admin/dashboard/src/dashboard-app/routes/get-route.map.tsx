@@ -1672,7 +1672,9 @@ export function getRouteMap({
                     {
                       path: "permissions",
                       element: <RoutePermissionGuard />,
-                      handle: { permissions: "rbac_role:update" },
+                      handle: {
+                        permissions: ["rbac_role:update", "rbac_policy:read"],
+                      },
                       children: [
                         {
                           path: "",

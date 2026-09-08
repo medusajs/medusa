@@ -69,7 +69,7 @@ export const TaxRegionDetail = () => {
             <LayoutComposer.Entry id="TaxRegionProviderSection">
               <TaxRegionProviderSection taxRegion={taxRegion} />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
+            {detailPageDefaultEntries(taxRegion, { metadata: false })}
           </>
         ),
       }}

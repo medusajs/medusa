@@ -51,7 +51,7 @@ export const StoreDetail = () => {
                 </PermissionGuard>
               </LayoutComposer.Entry>
             )}
-            {detailPageDefaultEntries(store, { permissions: false })}
+            {detailPageDefaultEntries(store)}
           </>
         ),
       }}

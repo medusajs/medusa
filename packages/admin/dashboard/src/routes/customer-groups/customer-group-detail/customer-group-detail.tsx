@@ -60,7 +60,7 @@ export const CustomerGroupDetail = () => {
                 )}
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(customer_group, { permissions: false })}
+            {detailPageDefaultEntries(customer_group)}
           </>
         ),
       }}

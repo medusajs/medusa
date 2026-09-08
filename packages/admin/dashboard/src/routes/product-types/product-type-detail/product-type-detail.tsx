@@ -59,7 +59,7 @@ export const ProductTypeDetail = () => {
                 )}
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(product_type, { permissions: false })}
+            {detailPageDefaultEntries(product_type)}
           </>
         ),
       }}

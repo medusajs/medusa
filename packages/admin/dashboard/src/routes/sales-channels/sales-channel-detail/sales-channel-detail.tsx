@@ -39,7 +39,7 @@ export const SalesChannelDetail = () => {
                 <SalesChannelProductSection salesChannel={sales_channel} />
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(sales_channel, { permissions: false })}
+            {detailPageDefaultEntries(sales_channel)}
           </>
         ),
       }}

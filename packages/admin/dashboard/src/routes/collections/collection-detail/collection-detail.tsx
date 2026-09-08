@@ -55,7 +55,7 @@ export const CollectionDetail = () => {
                 )}
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(collection, { permissions: false })}
+            {detailPageDefaultEntries(collection)}
           </>
         ),
       }}

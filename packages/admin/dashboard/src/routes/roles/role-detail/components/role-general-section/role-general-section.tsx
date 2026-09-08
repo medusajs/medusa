@@ -33,6 +33,8 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const prompt = usePrompt()
   const navigate = useNavigate()
 
+  const canManagePolicies = canUpdate && canReadPolicies
+
   const { mutateAsync: deleteRole, isPending: isDeleting } = useDeleteRbacRole(
     role.id
   )
@@ -100,11 +102,15 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
           label: t("actions.edit"),
           to: `edit`,
         },
-        {
-          icon: <Key />,
-          label: t("roles.actions.managePermissions"),
-          to: `permissions`,
-        },
+        ...(canManagePolicies
+          ? [
+              {
+                icon: <Key />,
+                label: t("roles.actions.managePermissions"),
+                to: `permissions`,
+              },
+            ]
+          : []),
       ],
     })
   }

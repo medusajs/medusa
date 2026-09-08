@@ -48,7 +48,7 @@ export const TaxRegionDetail = () => {
                 <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
+            {detailPageDefaultEntries(taxRegion, { metadata: false })}
           </>
         ),
       }}

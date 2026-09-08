@@ -72,7 +72,7 @@ export const RegionDetail = () => {
             <LayoutComposer.Entry id="RegionCountrySection">
               <RegionCountrySection region={region} />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(region, { permissions: false })}
+            {detailPageDefaultEntries(region)}
           </>
         ),
       }}

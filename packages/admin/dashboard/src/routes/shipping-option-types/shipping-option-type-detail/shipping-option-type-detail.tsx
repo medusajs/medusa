@@ -39,7 +39,7 @@ export const ShippingOptionTypeDetail = () => {
                 shippingOptionType={shipping_option_type}
               />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(shipping_option_type, { permissions: false })}
+            {detailPageDefaultEntries(shipping_option_type)}
           </>
         ),
       }}

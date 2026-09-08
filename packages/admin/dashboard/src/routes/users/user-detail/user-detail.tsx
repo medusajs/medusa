@@ -47,7 +47,7 @@ export const UserDetail = () => {
                 <UserRoleSection user={user} />
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(user, { permissions: false })}
+            {detailPageDefaultEntries(user)}
           </>
         ),
       }}
