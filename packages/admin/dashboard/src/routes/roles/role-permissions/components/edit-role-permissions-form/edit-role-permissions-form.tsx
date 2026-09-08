@@ -13,7 +13,10 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { DataTable } from "../../../../../components/data-table"
-import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRbacAssignablePolicies } from "../../../../../hooks/api/rbac-policies"
 import {
@@ -155,12 +158,12 @@ export const EditRolePermissionsForm = ({
   }
 
   return (
-    <RouteDrawer.Form form={form}>
+    <RouteFocusModal.Form form={form}>
       <KeyboundForm
-        className="flex flex-1 flex-col overflow-hidden"
+        className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <RouteDrawer.Body className="-mx-4 flex flex-1 flex-col overflow-hidden p-0">
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <DataTable
             data={visiblePolicies}
             columns={columns}
@@ -186,14 +189,14 @@ export const EditRolePermissionsForm = ({
             }}
             prefix={PREFIX}
           />
-        </RouteDrawer.Body>
-        <RouteDrawer.Footer className="shrink-0">
+        </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <RouteDrawer.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </RouteDrawer.Close>
+            </RouteFocusModal.Close>
             <Button
               size="small"
               type="submit"
@@ -203,9 +206,9 @@ export const EditRolePermissionsForm = ({
               {t("actions.save")}
             </Button>
           </div>
-        </RouteDrawer.Footer>
+        </RouteFocusModal.Footer>
       </KeyboundForm>
-    </RouteDrawer.Form>
+    </RouteFocusModal.Form>
   )
 }
 
