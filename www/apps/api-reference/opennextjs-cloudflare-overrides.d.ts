@@ -25,7 +25,9 @@ interface CloudflareEnv {
       prefix?: string
       delimiter?: string
       cursor?: string
+      limit?: number
     }): Promise<{
+      objects: { key: string }[]
       delimitedPrefixes: string[]
       truncated: boolean
       cursor?: string
