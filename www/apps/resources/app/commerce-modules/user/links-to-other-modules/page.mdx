@@ -40,10 +40,10 @@ The User Module has the following links to other modules:
         [User](/references/user/models/User)
       </Table.Cell>
       <Table.Cell>
-        `RbacRole` in [RBAC Module](../../rbac/page.mdx)
+        `RbacRoleAssignment` in [RBAC Module](../../rbac/page.mdx)
       </Table.Cell>
       <Table.Cell>
-        Stored - many-to-many
+        Read-only - has many
       </Table.Cell>
       <Table.Cell>
         [Learn more](#rbac-module)
@@ -58,7 +58,7 @@ The User Module has the following links to other modules:
 
 <EnterpriseNotice featureFlag="rbac" featureFlagHref="../../rbac/page.mdx#how-to-use-the-rbac-module" />
 
-You assign roles to admin users to control their access. Medusa defines a link between the `User` data model and the `RbacRole` data model from the [RBAC Module](../../rbac/page.mdx).
+You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../rbac/page.mdx), then exposes an admin user's roles through a read-only link.
 
 An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
 
@@ -101,50 +101,31 @@ const { data: users } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-You can also retrieve the users of a role by passing `users.*` in `fields` when querying the `rbac_role` entity.
+To find the users a role is assigned to, query the `rbac_role_assignment` entity and filter by the role's ID.
 
-### Manage with Link
+### Manage Role Assignments
 
-To assign a role to a user, use [Link](!docs!/learn/fundamentals/module-links/link):
-
-<CodeTabs group="relation-link">
-  <CodeTab label="link.create" value="method">
+To assign a role to an admin user, use the `assignRolesWorkflow`:
 
 ```ts
-import { Modules } from "@medusajs/framework/utils"
+import {
+  assignRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
 
-// ...
-
-await link.create({
-  [Modules.USER]: {
-    user_id: "user_123",
-  },
-  [Modules.RBAC]: {
-    rbac_role_id: "role_123",
+await assignRolesWorkflow(container).run({
+  input: {
+    assignments: [
+      {
+        role_id: "role_123",
+        reference: "user",
+        reference_id: "user_123",
+      },
+    ],
+    granting_actor_id: "user_456",
   },
 })
 ```
 
-  </CodeTab>
-  <CodeTab label="createRemoteLinkStep" value="step">
+To remove a role from an admin user, use the `unassignRolesWorkflow` with the same input shape.
 
-```ts
-import { Modules } from "@medusajs/framework/utils"
-import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
-
-// ...
-
-createRemoteLinkStep([
-  {
-    [Modules.USER]: {
-      user_id: "user_123",
-    },
-    [Modules.RBAC]: {
-      rbac_role_id: "role_123",
-    },
-  },
-])
-```
-
-  </CodeTab>
-</CodeTabs>
+Learn more in the [RBAC Module's links documentation](../../rbac/links-to-other-modules/page.mdx#user-module).

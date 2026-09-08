@@ -6,7 +6,7 @@ tags:
   - how to
 ---
 
-import { Prerequisites } from "docs-ui"
+import { Prerequisites, TypeList } from "docs-ui"
 
 export const metadata = {
   title: `Define Custom Policies`,
@@ -27,70 +27,234 @@ In this guide, you'll learn how to define policies for your custom resources so 
   ]}
 />
 
-## How Policies are Discovered
+## How Custom Policies Work
 
-When the application starts, Medusa scans your project and plugins for directories named `policies`. It imports the files in those directories and registers the policies they define, then syncs them to the database.
+Medusa syncs the policies of its own resources, such as products and orders, every time the application starts. Those core policies live in the RBAC Module and you can't change them.
 
-This allows you to define policies for your custom resources in your project or plugin code. For example, if you have a Brand Module with brand data models, you can define policies for the `brand` resource to ensure only authorized users can access it.
+Policies for your custom resources work differently. You create them yourself by running the `createRbacPoliciesWorkflow` workflow, which stores them in the database. Medusa doesn't scan your project for policy files, so a policy only exists after you create it.
+
+To keep the resource and operation names of your custom policies type-safe, you also register them in Medusa's type registries.
 
 ---
 
-## Define a Policy
+## 1. Register your Resources and Operations
 
-To define policies, use the `definePolicies` function. It accepts a single policy definition or an array of definitions.
+Medusa constrains the `resource` and `operation` of a policy to the values in two type registries. Add your custom resources and operations to those registries so that typos become compile errors.
 
-For example, create the file `src/policies/brand.ts` with the following content:
+Create the file `src/types/rbac.d.ts` with the following content:
 
 export const highlights = [
-  ["3", "definePolicies", "Define the policies to register."],
-  ["6", "resource", "The resource the policy applies to."],
-  ["7", "operation", "The allowed operation on the resource."],
+  ["2", "PolicyResourceRegistry", "Register your custom resources."],
+  ["6", "PolicyOperationRegistry", "Register your custom operations."],
 ]
 
-```ts title="src/policies/brand.ts" highlights={highlights}
-import { definePolicies } from "@medusajs/framework/utils"
+```ts title="src/types/rbac.d.ts" highlights={highlights}
+declare module "@medusajs/types" {
+  interface PolicyResourceRegistry {
+    brand: "brand"
+  }
 
-export const brandPolicies = definePolicies([
-  {
-    name: "ReadBrands",
-    resource: "brand",
-    operation: "read",
-    description: "Read brands",
-  },
-  {
-    name: "CreateBrands",
-    resource: "brand",
-    operation: "create",
-    description: "Create brands",
-  },
-])
+  interface PolicyOperationRegistry {
+    approve: "approve"
+  }
+}
+
+export {}
 ```
 
-Each policy definition accepts the following properties:
+You only need `PolicyOperationRegistry` if you use an operation other than `read`, `create`, `update`, and `delete`, which Medusa registers for you.
 
-- `name`: A unique name for the policy.
-- `resource`: The resource the policy applies to. It's normalized to snake_case. This is the name passed as the first parameter to `model.define` when defining a data model.
-- `operation`: The allowed operation, such as `read`, `create`, `update`, `delete`, or the wildcard `*`.
-- `description`: An optional description of the policy.
+After this, `"brand"` and `"approve"` are valid everywhere Medusa expects a resource or operation: the `authorize` middleware, `buildPolicies`, the RBAC Module's service methods, and the admin dashboard's permission checks.
 
-The exported policies are registered the next time the application starts.
+<Note title="Tip">
+
+The Medusa application's `tsconfig.json` includes all the files in your project, so TypeScript picks up the augmentation file without any change. If you narrowed the `include` option, make sure it still matches `src/types/rbac.d.ts`. Also, keep the `export {}` line, as TypeScript only applies the augmentation if the file is a module.
+
+</Note>
 
 ---
 
-## Use the Policy
+## 2. Create the Policies
 
-After defining a policy, you can assign it to roles. Admin users assigned a role with the policy can then perform the policy's operation on its resource.
+To create the policies, build them with the `buildPolicies` function which generates a policy for every operation on a resource, then pass them to the `createRbacPoliciesWorkflow` to store them in the database.
+
+Create the policies in a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts), which the Medusa application runs once when you run migrations. This way, your policies reach every environment you deploy to.
+
+For example, create the file `src/migration-scripts/create-brand-policies.ts` with the following content:
+
+export const createHighlights = [
+  ["10", "buildPolicies", "Build a policy for every brand operation."],
+  ["14", "createRbacPoliciesWorkflow", "Store the policies in the database."],
+]
+
+```ts title="src/migration-scripts/create-brand-policies.ts" highlights={createHighlights}
+import { ExecArgs } from "@medusajs/framework/types"
+import { buildPolicies } from "@medusajs/framework/utils"
+import {
+  createRbacPoliciesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function ({ container }: ExecArgs) {
+  const logger = container.resolve("logger")
+
+  const policies = buildPolicies({
+    resource: ["brand"],
+  })
+
+  const { result } = await createRbacPoliciesWorkflow(
+    container
+  ).run({
+    input: { policies },
+  })
+
+  logger.info(`Created ${result.length} policies.`)
+}
+```
+
+`buildPolicies` expands each resource you pass into one policy per operation. So, the above creates four policies for the `read`, `create`, `update`, and `delete` operations on brands, with a `key`, `name`, and `description`:
+
+- key: `brand:read`, name: `ReadBrand`, description: `Read Brand`
+- key: `brand:create`, name: `CreateBrand`, description: `Create Brand`
+- key: `brand:update`, name: `UpdateBrand`, description: `Update Brand`
+- key: `brand:delete`, name: `DeleteBrand`, description: `Delete Brand`
+
+The RBAC Module also has the `updateRbacPoliciesWorkflow` and `deleteRbacPoliciesWorkflow` workflows to change or remove policies later.
+
+### Customize the Built Policies
+
+`buildPolicies` accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "resource",
+      type: "`string` \\| `string[]`",
+      optional: false,
+      description: "The resource, or resources, the policies apply to. Accepts the resources you registered in `PolicyResourceRegistry`, Medusa's core resources such as `product` and `order`, or the wildcard `*`."
+    },
+    {
+      name: "operation",
+      type: "`\"read\"` \\| `\"create\"` \\| `\"update\"` \\| `\"delete\"` \\| `\"*\"` \\| `string[]`",
+      optional: true,
+      defaultValue: "[\"read\", \"create\", \"update\", \"delete\"]",
+      description: "The operation, or operations, to build a policy for. Also accepts the operations you registered in `PolicyOperationRegistry`."
+    },
+    {
+      name: "key",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{resource}:{operation}",
+      description: "The policy's unique key."
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{Operation}{Resource}",
+      description: "The policy's name."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{Operation} {Resource}",
+      description: "The policy's description."
+    }
+  ]}
+/>
+
+For example, to build a policy for a custom operation with your own name and description:
+
+```ts
+const policies = buildPolicies({
+  resource: "brand",
+  operation: "approve",
+  name: "ApproveBrand",
+  description: "Approve a brand before it goes live",
+})
+```
+
+You can only pass `key`, `name`, or `description` when you build a single policy, since a key must be unique. Passing them alongside multiple resources or operations throws an error.
+
+To build a single policy that allows all operations on a resource, pass the wildcard `*` as the operation:
+
+```ts
+const policies = buildPolicies({
+  resource: "brand",
+  operation: "*",
+})
+```
+
+Learn more about wildcard policies in the [RBAC Concepts](../concepts/page.mdx#wildcard-policies) guide.
+
+---
+
+## 3. Run the Migrations
+
+To run the migration script and create the policies, run the following command:
+
+```bash
+npx medusa db:migrate
+```
+
+Medusa tracks the scripts it ran, so this one doesn't run again on later migrations.
+
+<Note title="Tip">
+
+To add policies later, create another migration script rather than editing the one above. Medusa skips scripts it already ran, and creating a policy whose key already exists throws an error.
+
+</Note>
+
+---
+
+## 4. Guard your Routes
+
+A policy only restricts access once a route checks it. To guard an [API route](!docs!/learn/fundamentals/api-routes), use the `authorize` middleware imported from `@medusajs/framework/http`:
+
+export const authorizeHighlights = [
+  ["12", "authorize", "Guard the route with the policy."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={authorizeHighlights}
+import {
+  authorize,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/brands",
+      methods: ["POST"],
+      middlewares: [
+        authorize({
+          resource: "brand",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+Requests from admin users that don't have the `brand:create` policy now receive a `403` error. When the RBAC feature flag is disabled, the middleware allows every request.
+
+---
+
+## 5. Assign the Policies to Roles
+
+After creating a policy, assign it to roles. Admin users assigned a role with the policy can then perform the policy's operation on its resource.
 
 You can manage roles and their policies:
 
 - In the [Medusa Admin dashboard](!user-guide!/settings/roles).
 - Or using the RBAC Module's workflows and service in your customizations.
 
-### Example: Create a Role with a CLI Script
+### Example: Create a Role with a Migration Script
 
-The following example uses the `createRbacRolesWorkflow` from Medusa's core flows to create a "Brand Manager" role that grants the brand policies. It's written as a [custom CLI script](!docs!/learn/fundamentals/custom-cli-scripts):
+The following [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) uses the `createRbacRolesWorkflow` to create a "Brand Manager" role that grants the brand policies:
 
-```ts title="src/scripts/create-brand-role.ts"
+```ts title="src/migration-scripts/create-brand-role.ts"
 import { ExecArgs } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import {
@@ -101,12 +265,10 @@ export default async function ({ container }: ExecArgs) {
   const rbacModuleService = container.resolve(Modules.RBAC)
   const logger = container.resolve("logger")
 
-  // find the brand policies registered in src/policies
   const policies = await rbacModuleService.listRbacPolicies({
     key: ["brand:read", "brand:create"],
   })
 
-  // create a role that grants the brand policies
   const { result } = await createRbacRolesWorkflow(
     container
   ).run({
@@ -121,7 +283,7 @@ export default async function ({ container }: ExecArgs) {
     },
   })
 
-  logger.info(`Created role: ${result.roles[0].name} with policies: ${policies.map((policy) => policy.name).join(", ")}`)
+  logger.info(`Created role: ${result[0].name}`)
 }
 ```
 
@@ -130,29 +292,12 @@ In the script, you:
 1. Resolve the RBAC Module's service to find the brand policies by their keys.
 2. Run the `createRbacRolesWorkflow` to create the role with the policies' IDs.
 
-Then, run the script with the following command:
+Then, run the migrations with the following command:
 
 ```bash
-npx medusa exec ./src/scripts/create-brand-role.ts
+npx medusa db:migrate
 ```
 
-The RBAC Module also has workflows to update or delete roles and policies, such as `updateRbacRolesWorkflow` and `deleteRbacRolesWorkflow`.
+This will create the "Brand Manager" role in the database, which you can assign to admin users in the Medusa Admin dashboard.
 
----
-
-## Wildcard Policies
-
-To grant all operations on a resource, use the wildcard `*` as the operation:
-
-```ts title="src/policies/brand.ts"
-import { definePolicies } from "@medusajs/framework/utils"
-
-export const brandPolicies = definePolicies({
-  name: "ManageBrands",
-  resource: "brand",
-  operation: "*",
-  description: "Manage brands",
-})
-```
-
-Learn more about wildcard policies in the [RBAC Concepts](../concepts/page.mdx#wildcard-policies) guide.
+The RBAC Module also has workflows to update or delete roles, such as `updateRbacRolesWorkflow` and `deleteRbacRolesWorkflow`.

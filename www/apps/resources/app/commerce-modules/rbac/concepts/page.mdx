@@ -6,7 +6,7 @@ export const metadata = {
 
 <EnterpriseNotice featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
 
-In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, role hierarchy, and how roles link to admin users.
+In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, role hierarchy, and role assignments.
 
 ## Policy
 
@@ -33,16 +33,23 @@ A policy can use the wildcard `*` for its resource, operation, or both:
 - `*:read` allows reading all resources.
 - `*:*` allows all operations on all resources. This is the policy granted to the Super Admin role.
 
-### Registered Policies
+### Core Policies
 
-Medusa registers the policies for its commerce resources, such as products and orders. When the application starts, Medusa compares the policies registered in code with those in the database, then:
+Medusa defines a policy for every operation on each of its own commerce resources, such as products and orders. Every time the application starts, the RBAC Module syncs those core policies to the database, matching them by their `key`. The sync does the following:
 
-- Creates a policy for each registered policy that doesn't exist in the database yet.
-- Updates a policy whose name or description changed in code.
-- Restores a policy that was previously deleted from the database, if it's registered in code again.
-- Deletes a policy from the database if it's no longer registered in code.
+- Creates a policy that doesn't exist in the database yet.
+- Updates a policy whose name or description changed.
+- Restores a policy that was previously deleted.
 
-You can also define policies for your custom resources. Learn how in the [Defining Custom Policies](../define-policies/page.mdx) guide.
+The sync never deletes a policy, and it never changes a policy that you created yourself.
+
+<Note>
+
+You can't delete a core policy from the Medusa Admin dashboard, since policies are read-only there. If you delete one in your customizations, with the Delete Policy API route or the `deleteRbacPoliciesWorkflow`, the next restart restores it.
+
+</Note>
+
+You can also create policies for your custom resources. Learn how in the [Define Custom Policies](../define-policies/page.mdx) guide.
 
 ---
 
@@ -56,7 +63,7 @@ A role has the following main properties:
 - `description`: An optional description of the role's purpose.
 - `policies`: The policies granted by the role.
 
-When an admin user is assigned a role, they gain all the policies of that role.
+An admin user assigned a role gains all the policies of that role.
 
 ### Super Admin Role
 
@@ -87,20 +94,108 @@ Role inheritance is resolved recursively, so a role inherits the policies of its
 
 ---
 
-## Linking Roles to Admin Users
+## Role Assignment
 
-Roles are linked to admin users through a [module link](!docs!/learn/fundamentals/module-links) between the [User Module](../../user/page.mdx) and the RBAC Module.
+A role assignment, represented by the `RbacRoleAssignment` data model, grants a role to an entity. Each assignment is a single record with the following main properties:
 
-An admin user can have multiple roles. Their effective policies are the union of the policies from all their assigned roles, including any policies inherited through role hierarchy.
+- `role_id`: The ID of the granted role.
+- `reference`: The type of entity the role is granted to, such as `user` or `invite`.
+- `reference_id`: The ID of that entity, such as a user ID or invite ID.
+- `scope` and `scope_id`: An optional constraint on where the role applies.
 
-When you assign a role to a user in your customizations, the user performing the assignment must already have all the policies granted by that role. This prevents an admin user from granting access that they don't have themselves.
+Since the assignment stores the entity's type and ID rather than pointing to a specific data model, you can grant roles to admin users, pending invites, or your own custom entities.
 
-Learn how the link is defined and how to manage it in the [Links to Other Modules](../links-to-other-modules/page.mdx) guide.
+An entity can have multiple roles. Its effective policies are the union of the policies from all its assignments, including any policies inherited through role hierarchy.
+
+### Assign a Role
+
+To assign or remove a role in your customizations, use the `assignRolesWorkflow` and `unassignRolesWorkflow` workflows. For example:
+
+export const assignHighlights = [
+  ["10", "reference", "The type of entity to assign the role to."],
+  ["11", "reference_id", "The ID of that entity."],
+  ["14", "granting_actor_id", "The user performing the assignment."],
+]
+
+```ts highlights={assignHighlights}
+import {
+  assignRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+await assignRolesWorkflow(container).run({
+  input: {
+    assignments: [
+      {
+        role_id: "role_123",
+        reference: "user",
+        reference_id: "user_123",
+      },
+    ],
+    granting_actor_id: "user_456",
+  },
+})
+```
+
+When you pass a `granting_actor_id`, the workflow checks that the granting actor already has all the policies of the roles being assigned. This prevents an admin user from granting access that they don't have themselves.
+
+Learn how to retrieve an entity's roles in the [Links to Other Modules](../links-to-other-modules/page.mdx) guide.
+
+### Scoped Assignments
+
+An assignment's `scope` and `scope_id` restrict the role to a single entity instance. For example, an assignment whose `scope` is `organization` and whose `scope_id` is `org_123` grants its policies on requests acting within that organization.
+
+A request only acts within a scope if your application sets one, as explained in the [Permission Resolution](#permission-resolution) section. Requests without a scope consider every assignment, scoped or not.
+
+When you assign a role with the `assignRolesWorkflow`, you pass the two values as one `scope` object instead:
+
+export const scopedHighlights = [
+  ["12", "scope", "Restrict the role to this organization."],
+  ["16", "granting_scope", "Resolve the granting actor's roles in the same scope."],
+]
+
+```ts highlights={scopedHighlights}
+import {
+  assignRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+await assignRolesWorkflow(container).run({
+  input: {
+    assignments: [
+      {
+        role_id: "role_123",
+        reference: "user",
+        reference_id: "user_123",
+        scope: { type: "organization", id: "org_123" },
+      },
+    ],
+    granting_actor_id: "user_456",
+    granting_scope: { type: "organization", id: "org_123" },
+  },
+})
+```
+
+The workflow stores the object's `type` in the assignment's `scope` property, and its `id` in the `scope_id` property.
+
+### Granting Scope
+
+When you assign a role, you can pass a `granting_scope` to restrict the granting actor's effective policies to a specific scope. This prevents a user from granting a role in a scope where they don't have access.
+
+In the above example, the user assigning the role can only grant it in the `org_123` organization, since their effective policies are resolved in that scope. They can't assign the role in another organization, since they don't have access there.
+
+If you omit `granting_scope`, the workflow resolves the granting actor's effective policies across all their assignments, whatever scope each one has. A user with a role in one organization can then grant that role in another, so pass `granting_scope` whenever the grant happens within a scope.
+
+An unscoped assignment always counts, in both cases. For example, a Super Admin can assign roles in any scope, since they have the `*:*` wildcard policy without a scope.
+
+Medusa's own resources don't use scopes. An assignment without a scope applies to every request.
 
 ---
 
 ## Permission Resolution
 
-When the RBAC feature flag is enabled, Medusa checks an admin user's effective policies before allowing an operation on a resource. A request is allowed if the user has a matching policy, including a wildcard policy that covers the resource or operation.
+When the RBAC feature flag is enabled, Medusa checks an admin user's effective policies before allowing an operation on a resource. A request succeeds if the user has a matching policy, including a wildcard policy that covers the resource or operation. Otherwise, the request fails with a `403` error.
 
-When the RBAC feature flag is disabled, no access control is enforced, and admin users have access to all resources and operations.
+Medusa resolves the roles of the request's actor for the scope the request acts within, considering the assignments that are unscoped or scoped to it. Your application sets that scope in a middleware that runs before the route's access check. Medusa's own routes don't set a scope, and requests without one consider every assignment of the actor.
+
+Medusa also applies the policies to the fields a request asks for. If the actor can't read a related resource, Medusa removes the fields of that resource from the response instead of rejecting the request.
+
+When the RBAC feature flag is disabled, Medusa enforces no access control, and admin users have access to all resources and operations.
