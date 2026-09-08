@@ -184,6 +184,10 @@ export interface AdminCreatePromotion {
    * The rules of the promotion.
    */
   rules?: AdminCreatePromotionRule[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdatePromotion {
@@ -221,6 +225,10 @@ export interface AdminUpdatePromotion {
    * The maximum number of times this promotion can be used.
    */
   limit?: number | null
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface BatchAddPromotionRulesReq {

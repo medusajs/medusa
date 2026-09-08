@@ -228,7 +228,7 @@ async function runSeed(
 // catches a live write the bulk pass's own snapshot could otherwise miss or
 // revert, including a delete (`streamSeed` applies whatever mutations `seed`
 // yields, in order). Runs once, into the same target, right before the
-// version is considered ready.
+// version is considered ready. Race-conditions are still possible, but unlikely.
 async function catchUp(
   context: SearchSeedRuntime,
   {
@@ -247,7 +247,9 @@ async function catchUp(
   const sync = await startSync(context, { versionId: target.id, jobId })
 
   context.logger.info(
-    `[Search] Catching up "${definition.name}" on changes since ${since.toISOString()}`
+    `[Search] Catching up "${
+      definition.name
+    }" on changes since ${since.toISOString()}`
   )
 
   try {
@@ -311,9 +313,13 @@ async function reindexOne(
   const provider = context.providers.retrieve(definition.provider)
   const record = await retrieveIndexRecord(context, definition.name)
 
-  // A partial rebuild must never swap: the replacement would only hold the
-  // filtered slice, so making it active would drop everything else.
-  const useSwap = (input.strategy ?? "swap") === "swap" && !input.filters
+  // Either input narrows the run to a slice of the index: `filters` selects
+  // source records, `since` only what changed at or after a cursor.
+  const scoped = !!input.filters || !!input.since
+
+  // A partial rebuild must never swap: the replacement would only hold that
+  // slice, so making it active would drop everything else.
+  const useSwap = (input.strategy ?? "swap") === "swap" && !scoped
 
   const target = useSwap
     ? await createPendingVersion(context, { definition, record, provider })
@@ -323,6 +329,11 @@ async function reindexOne(
     versionId: target.id,
     jobId,
     filters: input.filters,
+    // A scoped run covers a different set of documents than the full run whose
+    // cursor it would otherwise inherit: resuming from that cursor would skip
+    // documents it was asked to rebuild, and cancelling that run would throw
+    // away its progress. It starts clean and leaves the other one alone.
+    resume: !scoped,
   })
   const startedAt = Date.now()
 
@@ -340,13 +351,15 @@ async function reindexOne(
   try {
     // A fresh version has nothing to discard. Rebuilding in place does, so a
     // record the new seed stream doesn't re-emit (a deleted row, say) doesn't
-    // survive as stale data — but only for a full rebuild: `input.filters`
+    // survive as stale data — but only for a full rebuild: a scoped run
     // selects source records for the seed, not search-engine filter syntax,
     // so it can't be reused to delete a matching subset here. And skip this
     // entirely when resuming an interrupted run, since the target already
     // holds that run's progress.
-    if (!useSwap && !sync.last_key && !input.filters) {
-      const clearTask = await provider.clearIndex({ index: target.physical_name })
+    if (!useSwap && !sync.last_key && !scoped) {
+      const clearTask = await provider.clearIndex({
+        index: target.physical_name,
+      })
 
       assertTaskAccepted(clearTask, definition.name)
       await settle(context, definition, clearTask)
@@ -358,12 +371,15 @@ async function reindexOne(
       target_index: target.physical_name,
       filters: input.filters,
       last_key: sync.last_key ?? undefined,
+      // `since` is the same "only what changed at or after this" question the
+      // catch-up pass asks, so it reaches `seed` the same way.
+      catchup: input.since ? { since: input.since } : undefined,
     })
 
-    // Skipped for a filtered reindex: it's already a narrow, caller-scoped
+    // Skipped for a scoped reindex: it's already a narrow, caller-scoped
     // rebuild, and catching up on everything changed since would silently
     // do more than asked.
-    if (!input.filters) {
+    if (!scoped) {
       await catchUp(context, {
         definition,
         target,
@@ -521,9 +537,9 @@ async function streamSeed(
     const cursor = lastKey ? `, last key ${lastKey}` : ""
 
     context.logger.info(
-      `[Search] "${index.name}": ${formatCount(synced)} synced in ${formatElapsed(
-        elapsedMs
-      )} (${rate}/s)${cursor}`
+      `[Search] "${index.name}": ${formatCount(
+        synced
+      )} synced in ${formatElapsed(elapsedMs)} (${rate}/s)${cursor}`
     )
     lastLoggedAt = now
     lastLoggedCount = synced
@@ -622,20 +638,25 @@ async function settle(
 /* ------------------------------ sync records ------------------------------ */
 
 // Opens a sync row, cancelling any earlier unfinished one and inheriting its
-// `last_key` so an interrupted run resumes.
+// `last_key` so an interrupted run resumes. `resume: false` opts out of both,
+// for a run whose cursor means nothing to (and must not consume) the other's.
 async function startSync(
   context: SyncContext,
   {
     versionId,
     jobId,
     filters,
+    resume = true,
   }: {
     versionId: string
     jobId?: string
     filters?: Record<string, unknown>
+    resume?: boolean
   }
 ): Promise<SearchIndexSyncRecord> {
-  const resumable = await findResumableSync(context, versionId)
+  const resumable = resume
+    ? await findResumableSync(context, versionId)
+    : undefined
 
   if (resumable) {
     await context.syncService.update({
@@ -747,9 +768,7 @@ async function countDocuments(
     .retrieve(definition.provider)
     .listIndexes()
 
-  return (
-    indexes.find((info) => info.name === physicalName)?.document_count ?? 0
-  )
+  return indexes.find((info) => info.name === physicalName)?.document_count ?? 0
 }
 
 async function withIndexLock<T>(

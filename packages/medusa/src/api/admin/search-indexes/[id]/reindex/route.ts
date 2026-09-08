@@ -10,7 +10,7 @@ import { MedusaError, Modules } from "@medusajs/framework/utils"
  * Rebuild a search index from its seed.
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminReindexSearchIndex>,
   res: MedusaResponse<HttpTypes.AdminSearchIndexReindexResponse>
 ) => {
   const searchModule = req.scope.resolve(Modules.SEARCH, {
@@ -24,9 +24,14 @@ export const POST = async (
     )
   }
 
+  const { since, filters, strategy } = req.validatedBody
+
   const { transaction } = await reindexSearchIndexesWorkflow(req.scope).run({
     input: {
       index: req.params.id,
+      since,
+      filters,
+      strategy,
     },
   })
 

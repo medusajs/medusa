@@ -733,6 +733,11 @@ export function getRouteMap({
                         import("../../routes/promotions/common/edit-rules"),
                       handle: { permissions: "promotion:update" },
                     },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/promotions/promotion-metadata"),
+                    },
                   ],
                 },
               ],
