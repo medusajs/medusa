@@ -657,12 +657,17 @@ For example, you can create a loader that checks an environment variable to enab
 
 ```ts title="src/loaders/maintenance.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function maintenanceLoader(
   container: MedusaContainer
 ) {
   if (process.env.MAINTENANCE_MODE === "true") {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Maintenance mode is enabled.")
   }
 }

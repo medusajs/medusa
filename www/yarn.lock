@@ -3373,6 +3373,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/eslint-plugin@link:../packages/eslint-plugin::locator=docs-root%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/eslint-plugin@link:../packages/eslint-plugin::locator=docs-root%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "@medusajs/icons@npm:2.20.1":
   version: 2.20.1
   resolution: "@medusajs/icons@npm:2.20.1"
@@ -10423,6 +10429,7 @@ __metadata:
   dependencies:
     "@babel/eslint-parser": ^7.25.9
     "@eslint/js": 9.13.0
+    "@medusajs/eslint-plugin": "link:../packages/eslint-plugin"
     "@testing-library/dom": ^10.4.0
     "@testing-library/jest-dom": ^6.6.3
     "@testing-library/react": ^16.1.0
