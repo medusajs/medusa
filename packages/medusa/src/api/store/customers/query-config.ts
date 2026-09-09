@@ -15,12 +15,6 @@ const defaultStoreCustomersFields = [
   "*addresses",
 ]
 
-export const retrieveTransformQueryConfig = {
-  defaults: defaultStoreCustomersFields,
-  allowed: buildAllowedFields(defaultStoreCustomersFields, ["orders"]),
-  isList: false,
-}
-
 export const defaultStoreCustomerAddressFields = [
   "id",
   "address_name",
@@ -41,6 +35,20 @@ export const defaultStoreCustomerAddressFields = [
   "created_at",
   "updated_at",
 ]
+
+const nestedStoreCustomerAddressFields = defaultStoreCustomerAddressFields.map(
+  (field) => `addresses.${field}`
+)
+
+export const retrieveTransformQueryConfig = {
+  defaults: defaultStoreCustomersFields,
+  allowed: buildAllowedFields(
+    defaultStoreCustomersFields,
+    ["orders"],
+    nestedStoreCustomerAddressFields
+  ),
+  isList: false,
+}
 
 export const retrieveAddressTransformQueryConfig = {
   defaults: defaultStoreCustomerAddressFields,

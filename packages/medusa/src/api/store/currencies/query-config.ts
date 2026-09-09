@@ -9,9 +9,14 @@ export const defaultStoreCurrencyFields = [
   "rounding",
 ]
 
+const additionalStoreCurrencyFields = ["created_at", "updated_at", "deleted_at"]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCurrencyFields,
-  allowed: buildAllowedFields(defaultStoreCurrencyFields),
+  allowed: buildAllowedFields(
+    defaultStoreCurrencyFields,
+    additionalStoreCurrencyFields
+  ),
   isList: false,
 }
 

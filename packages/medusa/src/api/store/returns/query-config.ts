@@ -9,8 +9,20 @@ export const defaultReturnFields = [
   "metadata",
 ]
 
+export const allowedStoreReturnExtraFields = [
+  "display_id",
+  "items",
+  "received_at",
+  "created_by",
+  "canceled_at",
+  "requested_at",
+]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultReturnFields,
-  allowed: buildAllowedFields(defaultReturnFields),
+  allowed: buildAllowedFields(
+    defaultReturnFields,
+    allowedStoreReturnExtraFields
+  ),
   isList: false,
 }

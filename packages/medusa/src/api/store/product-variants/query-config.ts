@@ -29,9 +29,23 @@ export const defaultStoreProductVariantFields = [
   "product.type_id",
 ]
 
+export const allowedStoreProductVariantExtraFields = [
+  "deleted_at",
+  "calculated_price",
+  "inventory_quantity",
+  "options.id",
+  "options.value",
+  "images.id",
+  "images.url",
+  "images.rank",
+]
+
 export const retrieveProductVariantConfig = {
   defaults: defaultStoreProductVariantFields,
-  allowed: buildAllowedFields(defaultStoreProductVariantFields),
+  allowed: buildAllowedFields(
+    defaultStoreProductVariantFields,
+    allowedStoreProductVariantExtraFields
+  ),
   isList: false,
 }
 

@@ -9,7 +9,14 @@ export const defaultStoreCollectionFields = [
   "updated_at",
 ]
 
-export const allowedStoreCollectionExtraFields = ["products", "metadata"]
+export const allowedStoreCollectionExtraFields = [
+  "products",
+  "metadata",
+  "deleted_at",
+  "products.variants",
+  "products.options",
+  "products.images",
+]
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCollectionFields,
