@@ -16,6 +16,14 @@ const Payment = model
     metadata: model.json().nullable(),
     captured_at: model.dateTime().nullable(),
     canceled_at: model.dateTime().nullable(),
+    // Tracks capture attempts that are reserved (in flight to the provider)
+    // or settled-but-failed (kept only as an idempotency-key reuse hint for
+    // a retry of that same capture). A retry after an ambiguous provider
+    // failure (e.g. a timeout) reuses the matching entry's key instead of
+    // minting a new one, which could double-capture funds; a settled,
+    // reserved entry still counts toward the authorized-amount guard so a
+    // genuinely concurrent second capture is still rejected.
+    pending_captures: model.json().nullable(),
     payment_collection: model.belongsTo(() => PaymentCollection, {
       mappedBy: "payments",
     }),
