@@ -18,8 +18,6 @@ await blogModuleService.getMessage()
 
 So, make sure your service's methods are always async to avoid unexpected errors or behavior.
 
-{/* eslint-disable @medusajs/service-methods-must-be-async */}
-
 ```ts highlights={[["8", "", "Method must be async."], ["13", "async", "Correct way of defining the method."]]}
 import { MedusaService } from "@medusajs/framework/utils"
 import Post from "./models/post"

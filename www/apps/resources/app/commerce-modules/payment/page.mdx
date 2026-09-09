@@ -64,7 +64,7 @@ const createPaymentCollectionStep = createStep(
 
     const paymentCollection = await paymentModuleService.createPaymentCollections({
       currency_code: "usd",
-      amount: 50,
+      amount: 5000,
     })
 
     return new StepResponse({ paymentCollection }, paymentCollection.id)

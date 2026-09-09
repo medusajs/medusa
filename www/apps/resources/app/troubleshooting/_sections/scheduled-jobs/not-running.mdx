@@ -14,16 +14,11 @@ By using an interval, the job will run after a defined duration, regardless of t
 
 For example, to run a scheduled job every minute, you can set the interval to 60000 milliseconds (1 minute):
 
-```ts highlights={[["17"]]}
+```ts highlights={[["12"]]}
 import { MedusaContainer } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   logger.info("Greeting!")
 }

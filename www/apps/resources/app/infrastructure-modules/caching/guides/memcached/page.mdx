@@ -66,27 +66,24 @@ Next, establish a connection to Memcached in your module using a [Loader](!docs!
 Create the file `src/modules/memcached/loaders/connection.ts` with the following content:
 
 export const loaderHighlights = [
-  ["8", "serverUrls", "Memcached server URLs"],
-  ["9", "username", "Username for authentication"],
-  ["10", "password", "Password for authentication"],
-  ["11", "options", "Additional Memcached client options"],
-  ["12", "cachePrefix", "Prefix for cache keys"],
-  ["13", "defaultTtl", "Default time-to-live for cached items"],
-  ["14", "compression", "Compression settings"],
-  ["15", "enable", "Enable compression"],
-  ["16", "threshold", "Minimum size to compress"],
-  ["17", "level", "Compression level"],
-  ["39", "client", "Create Memcached client"],
-  ["47", "stats", "Test the connection to Memcached"],
-  ["59", "register", "Register the client in the container"],
+  ["5", "serverUrls", "Memcached server URLs"],
+  ["6", "username", "Username for authentication"],
+  ["7", "password", "Password for authentication"],
+  ["8", "options", "Additional Memcached client options"],
+  ["9", "cachePrefix", "Prefix for cache keys"],
+  ["10", "defaultTtl", "Default time-to-live for cached items"],
+  ["11", "compression", "Compression settings"],
+  ["12", "enable", "Enable compression"],
+  ["13", "threshold", "Minimum size to compress"],
+  ["14", "level", "Compression level"],
+  ["34", "client", "Create Memcached client"],
+  ["42", "stats", "Test the connection to Memcached"],
+  ["54", "register", "Register the client in the container"],
 ]
 
 ```ts title="src/modules/memcached/loaders/connection.ts" highlights={loaderHighlights}
 import { LoaderOptions } from "@medusajs/framework/types"
 import * as memjs from "memjs"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export type ModuleOptions = {
   serverUrls?: string[]
@@ -106,9 +103,7 @@ export default async function connection({
   container,
   options,
 }: LoaderOptions<ModuleOptions>) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
   const { 
     serverUrls = ["127.0.0.1:11211"], 
     username, 
@@ -1041,14 +1036,9 @@ To create an API route, create a new file at `src/api/test-cache/route.ts` with 
 
 ```ts title="src/api/test-cache/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
     
   // Test caching with a simple query
   const { data } = await query.graph({

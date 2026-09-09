@@ -181,19 +181,14 @@ To retrieve data models with translated fields, pass the `locale` property in th
 For example, to retrieve products with translated names and descriptions:
 
 export const queryHighlights = [
-  ["17", "locale", "Pass the request locale to retrieve localized data"],
+  ["12", "locale", "Pass the request locale to retrieve localized data"],
 ]
 
 ```ts title="src/api/store/products/route.ts" highlights={queryHighlights}
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { data: products } = await query.graph(
     {

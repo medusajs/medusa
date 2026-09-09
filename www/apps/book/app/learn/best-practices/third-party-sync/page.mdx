@@ -145,10 +145,7 @@ async function fetchWithRetry(
       clearTimeout(timeoutId)
 
       if (!response.ok) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          `HTTP ${response.status}: ${response.statusText}`
-        )
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
       return response
@@ -730,17 +727,15 @@ Errors can occur during data syncing due to transient network issues, rate limit
 For example, implement a custom function that fetches data with retry logic, then use it to fetch data from the third-party service:
 
 export const retryHighlights = [
-  ["3", "MAX_RETRIES", "Maximum number of retry attempts"],
-  ["4", "RETRY_DELAY_MS", "Base delay for retries"],
-  ["6", "fetchWithRetry", "Function to fetch with retry logic"],
-  ["15", "fetch", "Fetch data from API"],
-  ["27", "isRetryable", "Check if error is retryable"],
-  ["36", "delay", "Calculate exponential backoff delay"],
+  ["1", "MAX_RETRIES", "Maximum number of retry attempts"],
+  ["2", "RETRY_DELAY_MS", "Base delay for retries"],
+  ["4", "fetchWithRetry", "Function to fetch with retry logic"],
+  ["13", "fetch", "Fetch data from API"],
+  ["22", "isRetryable", "Check if error is retryable"],
+  ["31", "delay", "Calculate exponential backoff delay"],
 ]
 
 ```ts title="src/jobs/sync-products.ts" highlights={retryHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
-
 const MAX_RETRIES = 3
 const RETRY_DELAY_MS = 1000
 
@@ -756,10 +751,7 @@ async function fetchWithRetry(
       const response = await fetch(url)
 
       if (!response.ok) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          `HTTP ${response.status}: ${response.statusText}`
-        )
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
       return response
@@ -815,15 +807,13 @@ When making API calls to third-party services, always set request timeouts. This
 For example, set a request timeout on a `fetch` call using the `AbortController`:
 
 export const timeoutHighlights = [
-  ["3", "FETCH_TIMEOUT_MS", "Timeout duration for fetch requests"],
-  ["13", "AbortController", "Create an `AbortController` for request timeout"],
-  ["14", "setTimeout", "Set a timeout to abort the request"],
-  ["24", "clearTimeout", "Clear the timeout on successful response"],
+  ["1", "FETCH_TIMEOUT_MS", "Timeout duration for fetch requests"],
+  ["11", "AbortController", "Create an `AbortController` for request timeout"],
+  ["12", "setTimeout", "Set a timeout to abort the request"],
+  ["22", "clearTimeout", "Clear the timeout on successful response"],
 ]
 
 ```ts title="src/jobs/sync-products.ts" highlights={timeoutHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
-
 const FETCH_TIMEOUT_MS = 30000
 
 async function fetchWithRetry(
@@ -848,10 +838,7 @@ async function fetchWithRetry(
       clearTimeout(timeoutId)
 
       if (!response.ok) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          `HTTP ${response.status}: ${response.statusText}`
-        )
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
       return response

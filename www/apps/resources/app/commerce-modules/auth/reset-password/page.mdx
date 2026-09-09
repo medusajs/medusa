@@ -87,27 +87,24 @@ The Local provider logs email details to your terminal instead of sending actual
 To create a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that handles the `auth.password_reset` event, create the file `src/subscribers/password-reset.ts` with the following content:
 
 export const highlights=[
-  ["11", "data", "The data payload of the event."],
-  ["12", "entity_id", "The user's identifier, which is the email when using the `emailpass` provider."],
-  ["13", "token", "The password reset token."],
-  ["14", "actor_type", "The user's actor type."],
-  ["25", "urlPrefix", "Set the page's URL based on the user's actor type."],
-  ["36", "createNotifications", "Send a notification to the user."],
-  ["38", `"email"`, "The channel to send the notification through."],
-  ["40", "template", "The template defined in the third-party provider."],
-  ["41", "data", "The data to pass to the template in the third-party provider."],
-  ["43", "reset_url", "The frontend URL to redirect the user to reset their password."]
+  ["8", "data", "The data payload of the event."],
+  ["9", "entity_id", "The user's identifier, which is the email when using the `emailpass` provider."],
+  ["10", "token", "The password reset token."],
+  ["11", "actor_type", "The user's actor type."],
+  ["20", "urlPrefix", "Set the page's URL based on the user's actor type."],
+  ["31", "createNotifications", "Send a notification to the user."],
+  ["33", `"email"`, "The channel to send the notification through."],
+  ["35", "template", "The template defined in the third-party provider."],
+  ["36", "data", "The data to pass to the template in the third-party provider."],
+  ["38", "reset_url", "The frontend URL to redirect the user to reset their password."]
 ]
 
-```ts title="src/subscribers/handle-reset.ts" highlights={highlights} collapsibleLines="1-9" expandMoreLabel="Show Imports"
+```ts title="src/subscribers/handle-reset.ts" highlights={highlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
 import {
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
-import {
-  Modules,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function resetPasswordTokenHandler({
   event: { data: {
@@ -120,9 +117,7 @@ export default async function resetPasswordTokenHandler({
   const notificationModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const config = container.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
+  const config = container.resolve("configModule")
 
   let urlPrefix = ""
 

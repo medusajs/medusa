@@ -118,7 +118,8 @@ And consider that the file `src/api/custom/route.ts` defines another route handl
 
 ```ts title="src/api/custom/route.ts"
 // other imports...
-import createPostWorkflow from "../../workflows/create-post"
+import BlogModuleService from "../../../modules/blog/service"
+import { BLOG_MODULE } from "../../../modules/blog"
 
 // ...
 
@@ -126,10 +127,13 @@ export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const { result: post } = await createPostWorkflow(req.scope)
-    .run({
-      input: req.body,
-    })
+  const blogModuleService: BlogModuleService = req.scope.resolve(
+    BLOG_MODULE
+  )
+
+  const post = await blogModuleService.createPosts(
+    req.body
+  )
 
   res.json({
     post,
@@ -137,7 +141,7 @@ export async function POST(
 }
 ```
 
-This API route executes a `createPostWorkflow` workflow that creates a new record of `Post`. The workflow's implementation isn't shown here, as it isn't relevant to writing the test. Learn how to create a workflow in the [Workflows](../../../../fundamentals/workflows/page.mdx) chapter.
+This API route creates a new record of `Post`.
 
 To write tests for this API route, add the following at the end of the `testSuite` function in `integration-tests/http/custom-routes.spec.ts`:
 
@@ -233,17 +237,18 @@ Consider a `/custom/:id` API route created at `src/api/custom/[id]/route.ts`:
 
 ```ts title="src/api/custom/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import deletePostWorkflow from "../../../workflows/delete-post"
+import BlogModuleService from "../../../modules/blog/service"
+import { BLOG_MODULE } from "../../../modules/blog"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  await deletePostWorkflow(req.scope).run({
-    input: {
-      id: req.params.id,
-    },
-  })
+  const blogModuleService: BlogModuleService = req.scope.resolve(
+    BLOG_MODULE
+  )
+
+  await blogModuleService.deletePosts(req.params.id)
 
   res.json({
     success: true,
@@ -251,7 +256,7 @@ export async function DELETE(
 }
 ```
 
-This API route accepts an ID path parameter, and executes a `deletePostWorkflow` workflow that deletes a `Post` record by that ID. As with the previous example, the workflow's implementation isn't shown here.
+This API route accepts an ID path parameter, and uses the `BlogModuleService` to delete a `Post` record by that ID.
 
 To add tests for this API route, add the following to `integration-tests/http/custom-routes.spec.ts`:
 
@@ -390,19 +395,18 @@ For custom actor types, you only need to change the `actorType` value in the `jw
   <CodeTab label="Admin User" value="admin">
 
 export const adminHighlights = [
-  ["9", "headers", "Define the headers that you'll pass in the request."],
-  ["11", "beforeEach", "Run before every test."],
-  ["21", "user", "Create the admin user."],
-  ["25", "authIdentity", "Create the auth identity for the user."],
-  ["40", "token", "Generate a JWT token for the user."],
-  ["52", "headers", "Set the token in the Authorization header."],
-  ["57", "headers", "Pass the headers to the request."]
+  ["8", "headers", "Define the headers that you'll pass in the request."],
+  ["10", "beforeEach", "Run before every test."],
+  ["16", "user", "Create the admin user."],
+  ["20", "authIdentity", "Create the auth identity for the user."],
+  ["35", "token", "Generate a JWT token for the user."],
+  ["47", "headers", "Set the token in the Authorization header."],
+  ["52", "headers", "Pass the headers to the request."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={adminHighlights}
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
-import { Modules } from "@medusajs/framework/utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
@@ -413,12 +417,8 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           const container = getContainer()
           
-          const authModuleService = container.resolve(
-            Modules.AUTH
-          )
-          const userModuleService = container.resolve(
-            Modules.USER
-          )
+          const authModuleService = container.resolve("auth")
+          const userModuleService = container.resolve("user")
           
           const user = await userModuleService.createUsers({
             email: "admin@medusa.js",
@@ -473,15 +473,15 @@ jest.setTimeout(60 * 1000)
   <CodeTab label="Customer User" value="customer">
 
 export const customerHighlights = [
-  ["11", "headers", "Define the headers that you'll pass in the request."],
-  ["13", "beforeEach", "Run before every test."],
-  ["23", "customer", "Create the customer."],
-  ["27", "authIdentity", "Create the auth identity for the customer."],
-  ["42", "token", "Generate a JWT token for the customer."],
-  ["54", "headers", "Set the token in the Authorization header."],
-  ["57", "pak", "Create a publishable API key"],
-  ["69", "headers", "Set the publishable API key in the request's header."],
-  ["74", "headers", "Pass the headers to the request."]
+  ["10", "headers", "Define the headers that you'll pass in the request."],
+  ["12", "beforeEach", "Run before every test."],
+  ["18", "customer", "Create the customer."],
+  ["22", "authIdentity", "Create the auth identity for the customer."],
+  ["37", "token", "Generate a JWT token for the customer."],
+  ["49", "headers", "Set the token in the Authorization header."],
+  ["52", "pak", "Create a publishable API key"],
+  ["64", "headers", "Set the publishable API key in the request's header."],
+  ["69", "headers", "Pass the headers to the request."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={customerHighlights}
@@ -489,7 +489,6 @@ import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ApiKeyDTO } from "@medusajs/framework/types"
 import jwt from "jsonwebtoken"
 import { createApiKeysWorkflow } from "@medusajs/medusa/core-flows"
-import { Modules } from "@medusajs/framework/utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
@@ -500,12 +499,8 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           const container = getContainer()
           
-          const authModuleService = container.resolve(
-            Modules.AUTH
-          )
-          const customerModuleService = container.resolve(
-            Modules.CUSTOMER
-          )
+          const authModuleService = container.resolve("auth")
+          const customerModuleService = container.resolve("customer")
           
           const customer = await customerModuleService.createCustomers({
             email: "admin@medusa.js",

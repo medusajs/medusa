@@ -34,7 +34,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
     "@eslint/js": "9.13.0",
-    "@medusajs/eslint-plugin": "link:../packages/eslint-plugin",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",

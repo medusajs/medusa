@@ -1817,9 +1817,6 @@ Create the file `src/workflows/delivery/steps/await-driver-claim.ts` with the fo
 
 ```ts title="src/workflows/delivery/steps/await-driver-claim.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const awaitDriverClaimStepId = "await-driver-claim-step"
 export const awaitDriverClaimStep = createStep(
@@ -1830,9 +1827,7 @@ export const awaitDriverClaimStep = createStep(
     maxRetries: 2,
   },
   async function (_, { container }) {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.info("Awaiting driver to claim...")
   }
 )
@@ -1992,17 +1987,12 @@ Create the file `src/workflows/delivery/steps/await-start-preparation.ts` with t
 
 ```ts title="src/workflows/delivery/steps/await-start-preparation.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const awaitStartPreparationStepId = "await-start-preparation-step"
 export const awaitStartPreparationStep = createStep(
   { name: awaitStartPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.info("Awaiting start of preparation...")
   }
 )
@@ -2016,17 +2006,12 @@ Create the file `src/workflows/delivery/steps/await-preparation.ts` with the fol
 
 ```ts title="src/workflows/delivery/steps/await-preparation.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const awaitPreparationStepId = "await-preparation-step"
 export const awaitPreparationStep = createStep(
   { name: awaitPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.info("Awaiting preparation...")
   }
 )
@@ -2094,17 +2079,12 @@ Create the file `src/workflows/delivery/steps/await-pick-up.ts` with the followi
 
 ```ts title="src/workflows/delivery/steps/await-pick-up.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const awaitPickUpStepId = "await-pick-up-step"
 export const awaitPickUpStep = createStep(
   { name: awaitPickUpStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.info("Awaiting pick up by driver...")
   }
 )
@@ -2119,17 +2099,12 @@ Create the file `src/workflows/delivery/steps/await-delivery.ts` with the follow
 
 ```ts title="src/workflows/delivery/steps/await-delivery.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const awaitDeliveryStepId = "await-delivery-step"
 export const awaitDeliveryStep = createStep(
   { name: awaitDeliveryStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.info("Awaiting delivery by driver...")
   }
 )

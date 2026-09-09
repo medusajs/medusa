@@ -55,16 +55,11 @@ For example, to pass a negotiated carrier contract number when listing shipping 
 
 ```ts
 import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
-import { StepResponse } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { StepResponse } from "@medusajs/workflows-sdk"
 
 listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
   async ({ input }, { container }) => {
-    const query = container.resolve(
-      ContainerRegistrationKeys.QUERY
-    )
+    const query = container.resolve("query")
 
     const { data: [cart] } = await query.graph({
       entity: "cart",

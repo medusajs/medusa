@@ -433,11 +433,7 @@ Create the file `src/workflows/create-restock-subscription/steps/validate-varian
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733227547/Medusa%20Resources/restock-dir-overview-10_g3dbi3.jpg)
 
 ```ts title="src/workflows/create-restock-subscription/steps/validate-variant-out-of-stock.ts"
-import {
-  getVariantAvailability,
-  MedusaError,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability, MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type ValidateVariantOutOfStockStepInput = {
@@ -448,9 +444,7 @@ type ValidateVariantOutOfStockStepInput = {
 export const validateVariantOutOfStockStep = createStep(
   "validate-variant-out-of-stock",
   async ({ variant_id, sales_channel_id }: ValidateVariantOutOfStockStepInput, { container }) => {
-    const query = container.resolve(
-      ContainerRegistrationKeys.QUERY
-    )
+    const query = container.resolve("query")
     const availability = await getVariantAvailability(query, {
       variant_ids: [variant_id],
       sales_channel_id,
@@ -1209,11 +1203,7 @@ Create the file `src/workflows/send-restock-notifications/steps/get-restocked.ts
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733234506/Medusa%20Resources/restock-dir-overview-17_pdtees.jpg)
 
 ```ts title="src/workflows/send-restock-notifications/steps/get-restocked.ts"
-import {
-  getVariantAvailability,
-  promiseAll,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability, promiseAll } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type GetRestockedStepInput = {
@@ -1225,9 +1215,7 @@ export const getRestockedStep = createStep(
   "get-restocked",
   async (input: GetRestockedStepInput, { container }) => {
     const restocked: GetRestockedStepInput = []
-    const query = container.resolve(
-      ContainerRegistrationKeys.QUERY
-    )
+    const query = container.resolve("query")
     
     await promiseAll(
       input.map(async (restockSubscription) => {
@@ -1260,7 +1248,7 @@ Create the file `src/workflows/send-restock-notifications/steps/send-restock-not
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733234507/Medusa%20Resources/restock-dir-overview-18_uvlu0l.jpg)
 
 ```ts title="src/workflows/send-restock-notifications/steps/send-restock-notification.ts"
-import { promiseAll, Modules } from "@medusajs/framework/utils"
+import { promiseAll } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { InferTypeOf, ProductVariantDTO } from "@medusajs/framework/types"
 import RestockSubscription from "../../../modules/restock/models/restock-subscription"
@@ -1272,9 +1260,7 @@ type SendRestockNotificationStepInput = (InferTypeOf<typeof RestockSubscription>
 export const sendRestockNotificationStep = createStep(
   "send-restock-notification",
   async (input: SendRestockNotificationStepInput, { container }) => {
-    const notificationModuleService = container.resolve(
-      Modules.NOTIFICATION
-    )
+    const notificationModuleService = container.resolve("notification")
 
     const notificationData = input.map((subscription) => ({
       to: subscription.email,

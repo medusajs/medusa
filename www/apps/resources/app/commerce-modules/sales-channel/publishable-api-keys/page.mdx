@@ -42,18 +42,13 @@ For example:
 
 ```ts
 import { MedusaStoreRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  getVariantAvailability,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaStoreRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const sales_channel_ids = req.publishable_key_context.sales_channel_ids
 
   res.json({

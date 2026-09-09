@@ -887,9 +887,9 @@ To create the API route, add the following at the end of `src/api/admin/bundled-
 
 export const getBundledProductsRouteHighlights = [
   ["5", "query", "Resolve Query from the Medusa container."],
-  ["12", "graph", "Retrieve the bundles."],
-  ["14", "queryConfig", "Pass the query configurations."],
-  ["17", "json", "Return the bundles in the response."]
+  ["10", "graph", "Retrieve the bundles."],
+  ["12", "queryConfig", "Pass the query configurations."],
+  ["15", "json", "Return the bundles in the response."]
 ]
 
 ```ts title="src/api/admin/bundled-products/route.ts" highlights={getBundledProductsRouteHighlights}
@@ -897,9 +897,7 @@ export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { 
     data: bundledProducts, 
@@ -1010,7 +1008,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: import.meta.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -2115,27 +2113,22 @@ Before customizing the storefront, you'll create an API route to retrieve the de
 To create the API route, create the file `src/api/store/bundle-products/[id]/route.ts` with the following content:
 
 export const bundleProductsRouteHighlights = [
-  ["11", "id", "The ID of the bundle, received as a path parameter."],
-  ["15", "currency_code", "The currency code to retrieve the prices in."],
-  ["15", "region_id", "The region ID to retrieve the prices in."],
-  ["32", "context", "Pass the context necessary to retrieve correct prices."]
+  ["8", "id", "The ID of the bundle, received as a path parameter."],
+  ["10", "currency_code", "The currency code to retrieve the prices in."],
+  ["10", "region_id", "The region ID to retrieve the prices in."],
+  ["27", "context", "Pass the context necessary to retrieve correct prices."]
 ]
 
 ```ts title="src/api/store/bundle-products/[id]/route.ts" highlights={bundleProductsRouteHighlights} 
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  QueryContext,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { QueryContext } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
   const { id } = req.params
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const { currency_code, region_id } = req.query
 
   const { data } = await query.graph({

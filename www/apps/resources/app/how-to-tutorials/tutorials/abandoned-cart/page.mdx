@@ -503,19 +503,12 @@ import {
   sendAbandonedCartsWorkflow, 
   SendAbandonedCartsWorkflowInput,
 } from "../workflows/send-abandoned-carts"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function abandonedCartJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
-  const query = container.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const logger = container.resolve("logger")
+  const query = container.resolve("query")
 
   const oneDayAgo = new Date()
   oneDayAgo.setDate(oneDayAgo.getDate() - 1)

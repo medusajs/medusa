@@ -257,23 +257,18 @@ For example:
 <CodeTabs group="debug-type">
   <CodeTab label="Step Function" value="step-function">
 
-```ts highlights={[["19"]]} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+```ts highlights={[["14"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { 
   createStep, 
   createWorkflow, 
   StepResponse, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 const step1 = createStep(
   "step-1",
   async ({}, { container }) => {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     const message = "Hello from step 1!"
 
     logger.info(`Step 1 output: ${message}`)
@@ -299,23 +294,18 @@ export const myWorkflow = createWorkflow(
   </CodeTab>
   <CodeTab label="Compensation Function" value="compensation-function">
 
-```ts highlights={[["29"]]} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+```ts highlights={[["22"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { 
   createStep, 
   createWorkflow, 
   StepResponse, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 const step1 = createStep(
   "step-1",
   async ({}, { container }) => {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     const message = "Hello from step 1!"
 
     logger.info(`Step 1 output: ${message}`)
@@ -325,9 +315,7 @@ const step1 = createStep(
     )
   },
   async (_, { container }) => {
-    const logger = container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    )
+    const logger = container.resolve("logger")
     logger.warn("Compensating step 1")
   }
 )

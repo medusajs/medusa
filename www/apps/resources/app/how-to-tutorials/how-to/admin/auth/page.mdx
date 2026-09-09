@@ -253,10 +253,7 @@ import {
   MedusaResponse,
   MedusaNextFunction,
 } from "@medusajs/framework/http"
-import {
-  MedusaError,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export default async function validateCustomAuthProvider(
   req: AuthenticatedMedusaRequest, 
@@ -270,9 +267,7 @@ export default async function validateCustomAuthProvider(
     )
   }
 
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const { data: [authIdentity] } = await query.graph({
     entity: "auth_identity",
     fields: [

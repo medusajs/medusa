@@ -39,17 +39,12 @@ For example, create the file `src/subscribers/order-placed.ts` with the followin
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   logger.info("Sending confirmation email...")
 

@@ -43,22 +43,19 @@ To retrieve the inventory quantity of a product variant, use the `getVariantAvai
 For example:
 
 export const variantAvailabilityHighlights = [
-  ["9", "query", "Resolve Query from the Medusa container."],
-  ["11", "query", "Pass Query as a parameter."],
-  ["12", "variant_ids", "The IDs of the variants to retrieve their inventory availability."],
-  ["13", "sales_channel_id", "The ID of the sales channel to retrieve the variant availability in."],
+  ["6", "query", "Resolve Query from the Medusa container."],
+  ["8", "query", "Pass Query as a parameter."],
+  ["9", "variant_ids", "The IDs of the variants to retrieve their inventory availability."],
+  ["10", "sales_channel_id", "The ID of the sales channel to retrieve the variant availability in."],
 ]
 
 ```ts highlights={variantAvailabilityHighlights}
-import {
-  getVariantAvailability,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability } from "@medusajs/framework/utils"
 
 // ...
 
 // use req.scope instead of container in API routes
-const query = container.resolve(ContainerRegistrationKeys.QUERY)
+const query = container.resolve("query")
 
 const availability = await getVariantAvailability(query, {
   variant_ids: ["variant_123"],
@@ -165,24 +162,19 @@ Requests sent to API routes starting with `/store` must include a [publishable A
 So, if you're retrieving the variant inventory availability in an API route starting with `/store`, you can access the sales channel using the `publishable_key_context.sales_channel_ids` property of the request object:
 
 export const salesChannelScopeHighlights = [
-  ["14", "sales_channel_ids", "Retrieve the sales channel IDs from the request's publishable key context."],
-  ["18", "sales_channel_ids[0]", "Pass the first sales channel ID to retrieve availability in."]
+  ["9", "sales_channel_ids", "Retrieve the sales channel IDs from the request's publishable key context."],
+  ["13", "sales_channel_ids[0]", "Pass the first sales channel ID to retrieve availability in."]
 ]
 
 ```ts highlights={salesChannelScopeHighlights}
 import { MedusaStoreRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  getVariantAvailability,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaStoreRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const sales_channel_ids = req.publishable_key_context.sales_channel_ids
 
   const availability = await getVariantAvailability(query, {
@@ -213,20 +205,17 @@ A product is linked to the sales channels it's available in. So, you can retriev
 For example:
 
 export const productSalesChannelHighlights = [
-  ["13", `"product.sales_channels.*"`, "Retrieve the sales channels of the variant's product."],
-  ["21", "sales_channel_id", "Pass the first sales channel ID to retrieve availability in."]
+  ["10", `"product.sales_channels.*"`, "Retrieve the sales channels of the variant's product."],
+  ["18", "sales_channel_id", "Pass the first sales channel ID to retrieve availability in."]
 ]
 
 ```ts highlights={productSalesChannelHighlights}
-import {
-  getVariantAvailability,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { getVariantAvailability } from "@medusajs/framework/utils"
 
 // ...
 
 // use req.scope instead of container in API routes
-const query = container.resolve(ContainerRegistrationKeys.QUERY)
+const query = container.resolve("query")
 
 const { data: variants } = await query.graph({
   entity: "variant",

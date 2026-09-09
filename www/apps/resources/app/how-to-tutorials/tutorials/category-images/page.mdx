@@ -725,9 +725,7 @@ export async function GET(
   res: MedusaResponse
 ): Promise<void> {
   const { category_id } = req.params
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { data: categoryImages } = await query.graph({
     entity: "product_category_image",

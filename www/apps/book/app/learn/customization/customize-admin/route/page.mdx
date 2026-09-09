@@ -24,8 +24,8 @@ In a [previous chapter](../../extend-features/query-linked-records/page.mdx), yo
 Replace or create the `GET` API route at `src/api/admin/brands/route.ts` with the following:
 
 export const apiRouteHighlights = [
-  ["20", "metadata", "Pagination details, such as the total count or how many items were skipped."],
-  ["23", "queryConfig", "Query configurations parsed from the request."],
+  ["15", "metadata", "Pagination details, such as the total count or how many items were skipped."],
+  ["18", "queryConfig", "Query configurations parsed from the request."],
 ]
 
 ```ts title="src/api/admin/brands/route.ts" highlights={apiRouteHighlights}
@@ -34,17 +34,12 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { 
     data: brands, 

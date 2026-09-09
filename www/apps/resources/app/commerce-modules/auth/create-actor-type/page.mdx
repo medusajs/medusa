@@ -24,9 +24,9 @@ Learn how to create a module in [this guide](!docs!/learn/fundamentals/modules).
 
 </Note>
 
-The rest of this guide uses this `Manager` data model, defined in a `company` module, as an example:
+The rest of this guide uses this `Manager` data model as an example:
 
-```ts title="src/modules/company/models/manager.ts"
+```ts title="src/modules/manager/models/manager.ts"
 import { model } from "@medusajs/framework/utils"
 
 const Manager = model.define("manager", {
@@ -67,7 +67,7 @@ import {
 import { 
   setAuthAppMetadataStep,
 } from "@medusajs/medusa/core-flows"
-import CompanyModuleService from "../modules/company/service"
+import ManagerModuleService from "../modules/manager/service"
 
 type CreateManagerWorkflowInput = {
   manager: {
@@ -84,10 +84,10 @@ const createManagerStep = createStep(
     manager: managerData,
   }: Pick<CreateManagerWorkflowInput, "manager">, 
   { container }) => {
-    const companyModuleService: CompanyModuleService = 
-      container.resolve("company")
+    const managerModuleService: ManagerModuleService = 
+      container.resolve("manager")
 
-    const manager = await companyModuleService.createManagers(
+    const manager = await managerModuleService.createManager(
       managerData
     )
 
@@ -237,18 +237,13 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import CompanyModuleService from "../../../modules/company/service"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import ManagerModuleService from "../../../modules/manager/service"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const managerId = req.auth_context?.actor_id
 
   const { data: [manager] } = await query.graph({
@@ -336,7 +331,7 @@ import {
   createStep,
   StepResponse,
 } from "@medusajs/framework/workflows-sdk"
-import CompanyModuleService from "../modules/company/service"
+import ManagerModuleService from "../modules/manager/service"
 
 export type DeleteManagerWorkflow = {
   id: string
@@ -347,20 +342,20 @@ const deleteManagerStep = createStep(
   async (
     { id }: DeleteManagerWorkflow, 
     { container }) => {
-      const companyModuleService: CompanyModuleService = 
-        container.resolve("company")
+      const managerModuleService: ManagerModuleService = 
+        container.resolve("manager")
 
-      const manager = await companyModuleService.retrieveManager(id)
+      const manager = await managerModuleService.retrieve(id)
 
-      await companyModuleService.deleteManagers(id)
+      await managerModuleService.deleteManagers(id)
 
       return new StepResponse(undefined, { manager })
     },
     async ({ manager }, { container }) => {
-      const companyModuleService: CompanyModuleService = 
-        container.resolve("company")
+      const managerModuleService: ManagerModuleService = 
+        container.resolve("manager")
 
-      await companyModuleService.createManagers(manager)
+      await managerModuleService.createManagers(manager)
     }
   )
 ```
