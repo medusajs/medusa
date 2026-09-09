@@ -104,7 +104,7 @@ medusaIntegrationTestRunner({
         const payment = order.payment_collections[0].payments[0]
 
         const response = await api.post(
-          `/admin/payments/${payment.id}/capture`,
+          `/admin/payments/${payment.id}/capture?fields=+captures.created_by`,
           undefined,
           adminHeaders
         )
