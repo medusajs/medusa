@@ -45,14 +45,14 @@ import { Context } from "../shared-context"
  *
  * export default MyLockingProviderService
  * ```
- * 
+ *
  * ### Identifier
- * 
+ *
  * Every locking module provider must have an `identifier` static property. The provider's ID
  * will be stored as `lp_{identifier}`.
- * 
+ *
  * For example:
- * 
+ *
  * ```ts
  * class MyLockingProviderService implements ILockingProvider {
  *   static identifier = "my-lock"
@@ -64,62 +64,88 @@ export interface ILockingProvider {
   /**
    * This method executes a given asynchronous job with a lock on the given keys. The Locking Module uses this method
    * when you call its `execute` method and your provider is the default provider, or you pass your provider's identifier to its `execute` method.
-   * 
+   *
    * In the method, you should first try to acquire the lock on the given keys before the specified timeout passes.
    * Then, once the lock is acquired, you execute the job. Otherwise, if the timeout passes before the lock is acquired, you cancel the job.
-   * 
+   *
+   * If your provider's locks expire, acquire the lock with an owner that is unique to this call, and release it
+   * with that same owner once the job is done. Otherwise, a job whose lock expired while it was still running
+   * releases whichever lock is on the keys by then, which is the next job's.
+   *
+   * You should also keep the lock alive while the job runs by extending its expiration periodically, rather than
+   * relying on the `expire` value to outlast the job: a job may take much longer than the caller expected, and
+   * the keys must not become available to another process while it's still running. If you find that the lock has
+   * been lost, abort the signal you pass to the job and throw, since the job no longer has exclusive access.
+   *
    * @param keys - The keys to lock during the job's execution.
-   * @param job - The asynchronous job to execute while the keys are locked.
+   * @param job - The asynchronous job to execute while the keys are locked. Pass it a signal that you abort if
+   * the lock is lost while the job is running.
    * @param args - Additional arguments for the job execution.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns The result of the job.
    * @typeParam T - The type of the job's result.
-   * 
+   *
    * @example
    * An example of how to implement the `execute` method:
-   * 
+   *
    * ```ts
    * // other imports...
    * import { Context } from "@medusajs/framework/types"
+   * import { randomUUID } from "node:crypto"
    * import { setTimeout } from "node:timers/promises"
-   * 
+   *
    * class MyLockingProviderService implements ILockingProvider {
    *   // ...
    * async execute<T>(
-   *     keys: string | string[], 
-   *     job: () => Promise<T>, 
-   *     args?: { timeout?: number }, 
+   *     keys: string | string[],
+   *     job: (signal?: AbortSignal) => Promise<T>,
+   *     args?: { timeout?: number, expire?: number },
    *     sharedContext?: Context
    *   ): Promise<T> {
    *     // TODO you can add actions using the third-party client you initialized in the constructor
    *     const timeout = Math.max(args?.timeout ?? 5, 1)
    *     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
+   *     const expire = Math.max(args?.expire ?? 60, 1)
+   *     const expireSeconds = Number.isNaN(expire) ? 60 : expire
+   *     const ownerId = `execute:${randomUUID()}`
    *     const cancellationToken = { cancelled: false }
    *     const promises: Promise<any>[] = []
-   * 
+   *
    *     if (timeoutSeconds > 0) {
    *       promises.push(this.getTimeout(timeoutSeconds, cancellationToken))
    *     }
-   * 
+   *
    *     promises.push(
    *       this.acquire_(
    *         keys,
    *         {
-   *           expire: args?.timeout ? timeoutSeconds : 0,
+   *           ownerId,
+   *           expire: expireSeconds,
    *         },
    *         cancellationToken
    *       )
    *     )
-   * 
+   *
    *     await Promise.race(promises)
-   * 
+   *
+   *     // TODO extend the lock's expiration every `expireSeconds / 3` seconds while
+   *     // the job runs, and abort `renewal.signal` if the lock has been lost
+   *     const renewal = this.renewUntilStopped(keys, ownerId, expireSeconds)
+   *
    *     try {
-   *       return await job()
+   *       const result = await job(renewal.signal)
+   *
+   *       if (renewal.signal.aborted) {
+   *         throw renewal.signal.reason
+   *       }
+   *
+   *       return result
    *     } finally {
-   *       await this.release(keys)
+   *       renewal.stop()
+   *       await this.release(keys, { ownerId })
    *     }
    *   }
-   * 
+   *
    *   private async getTimeout(
    *     seconds: number,
    *     cancellationToken: { cancelled: boolean }
@@ -132,55 +158,65 @@ export interface ILockingProvider {
    *   }
    * }
    * ```
-   * 
-   * In this example, you first determine the timeout for acquiring the lock. You also create a `cancellationToken` object that you'll use to determine if the lock aquisition has timed out.
-   * 
+   *
+   * In this example, you first determine the timeout for acquiring the lock and how long the lock should live once
+   * acquired. You also create an owner ID that is unique to this call, and a `cancellationToken` object that you'll
+   * use to determine if the lock aquisition has timed out.
+   *
    * You then create an array of the following promises:
-   * 
+   *
    * - A timeout promise that, if the lock acquisition takes longer than the timeout, sets the `cancelled` property of the `cancellationToken` object to `true`.
-   * - A promise that acquires the lock. You use a private `acquire_` method which you can find its implementation in the `aquire` method's example. If the first promise 
+   * - A promise that acquires the lock. You use a private `acquire_` method which you can find its implementation in the `aquire` method's example. If the first promise
    * resolves and cancels the lock acquisition, the lock will not be acquired.
-   * 
-   * Finally, if the lock is acquired, you execute the job and release the lock after the job is done using the `release` method.
+   *
+   * Finally, if the lock is acquired, you start renewing it, execute the job, and release the lock with the same owner
+   * ID you acquired it with once the job is done, using the `release` method.
    */
   execute<T>(
     keys: string | string[],
-    job: () => Promise<T>,
+    job: (signal?: AbortSignal) => Promise<T>,
     args?: {
       /**
-       * The timeout (in seconds) for acquiring the lock. If the time out is passed, the job is canceled and the lock is released.
+       * The timeout (in seconds) to wait for the lock to be acquired. If the timeout passes before the lock
+       * is acquired, the job isn't executed and an error is thrown.
        */
       timeout?: number
+      /**
+       * How long (in seconds) the lock is held before it expires, if your provider's locks can expire. The
+       * lock should be renewed while the job is running, so this only decides how long the keys stay locked
+       * when the process holding them dies without releasing them.
+       */
+      expire?: number
     },
     sharedContext?: Context
   ): Promise<T>
   /**
    * This method acquires a lock on the given keys. The Locking Module uses this method when you call its `acquire` method and your provider is the default provider,
    * or you pass your provider's identifier to its `acquire` method.
-   * 
+   *
    * In this method, you should only aquire the lock if the timeout hasn't passed. As explained in the {@link execute} method's example,
    * you can use a `cancellationToken` object to determine if the lock acquisition has timed out.
-   * 
+   *
    * If the lock aquisition isn't canceled, you should aquire the lock, setting its expiry and owner. You should account for the following scenarios:
-   * 
+   *
    * - The lock doesn't have an owner and you don't pass an owner, in which case the lock can be extended or released by anyone.
    * - The lock doesn't have an owner or has the same owner that you pass, in which case you can extend the lock's expiration time and set the owner.
    * - The lock has an owner, but you pass a different owner, in which case the method should throw an error.
-   * 
+   *
    * @param keys - The keys to acquire the lock on.
    * @param args - Additional arguments for acquiring the lock.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Resolves when the lock is acquired.
-   * 
+   *
    * @example
    * An example of how to implement the `acquire` method:
-   * 
+   *
    * ```ts
    * type ResolvablePromise = {
    *   promise: Promise<any>
    *   resolve: () => void
    * }
-   * 
+   *
    * class MyLockingProviderService implements ILockingProvider {
    *   // ...
    *   async acquire(
@@ -193,7 +229,7 @@ export interface ILockingProvider {
    *   ): Promise<void> {
    *     return this.acquire_(keys, args)
    *   }
-   * 
+   *
    *   async acquire_(
    *     keys: string | string[],
    *     args?: {
@@ -205,15 +241,15 @@ export interface ILockingProvider {
    *   ): Promise<void> {
    *     keys = Array.isArray(keys) ? keys : [keys]
    *     const { ownerId, expire } = args ?? {}
-   * 
+   *
    *     for (const key of keys) {
    *       if (cancellationToken?.cancelled) {
    *         throw new Error("Timed-out acquiring lock.")
    *       }
-   * 
+   *
    *       // assuming your client has this method and it validates the owner and expiration
    *       const result = await this.client.acquireLock(key, ownerId, expire)
-   * 
+   *
    *       if (result !== 1) {
    *         throw new Error(`Failed to acquire lock for key "${key}"`)
    *       }
@@ -221,10 +257,10 @@ export interface ILockingProvider {
    *   }
    * }
    * ```
-   * 
+   *
    * In this example, you add a private `acquire_` method that you use to acquire the lock. This method accepts an additional `cancellationToken` argument that you can use to determine if the lock acquisition has timed out.
    * You can then use this method in other methods, such as the `execute` method.
-   * 
+   *
    * In the `acquire_` method, you loop through the keys and try to acquire the lock on each key if the lock acquisition hasn't timed out. If the lock acquisition fails, you throw an error.
    * This method assumes that the client you're integrating has a method called `acquireLock` that validates the owner and expiration time, and returns `1` if the lock is successfully acquired.
    */
@@ -246,44 +282,44 @@ export interface ILockingProvider {
   /**
    * This method releases a lock on the given keys. The Locking Module uses this method when you call its `release` method and your provider is the default provider,
    * or you pass your provider's identifier to its `release` method.
-   * 
+   *
    * In this method, you should release the lock on the given keys. If the lock has an owner, you should only release the lock if the owner is the same as the one passed.
-   * 
+   *
    * @param keys - The keys to release the lock from.
    * @param args - Additional arguments for releasing the lock.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the lock was successfully released. If the lock has a different owner than the one passed, the method returns `false`.
-   * 
+   *
    * @example
    * An example of how to implement the `release` method:
-   * 
+   *
    * ```ts
    * // other imports...
    * import { promiseAll } from "@medusajs/framework/utils"
-   * 
+   *
    * class MyLockingProviderService implements ILockingProvider {
    *   // ...
    *   async release(
-   *     keys: string | string[], 
-   *     args?: { ownerId?: string | null }, 
+   *     keys: string | string[],
+   *     args?: { ownerId?: string | null },
    *     sharedContext?: Context
    *   ): Promise<boolean> {
    *     const ownerId = args?.ownerId ?? "*"
    *     keys = Array.isArray(keys) ? keys : [keys]
-   * 
+   *
    *     const releasePromises = keys.map(async (key) => {
    *       // assuming your client has this method and it validates the owner
    *       const result = await this.client.releaseLock(key, ownerId)
    *       return result === 1
    *     })
-   * 
+   *
    *     const results = await promiseAll(releasePromises)
-   * 
+   *
    *     return results.every((released) => released)
    *   }
    * }
    * ```
-   * 
+   *
    * In this example, you loop through the keys and try to release the lock on each key using the client you're integrating. This implementation assumes that the client validates
    * ownership of the lock and returns a result of `1` if the lock is successfully released.
    */
@@ -301,29 +337,29 @@ export interface ILockingProvider {
   /**
    * This method releases all locks. The Locking Module uses this method when you call its `releaseAll` method and your provider is the default provider,
    * or you pass your provider's identifier to its `releaseAll` method.
-   * 
+   *
    * In this method, you should release all locks if no owner is passed. If an owner is passed, you should only release the locks that the owner has acquired.
-   * 
+   *
    * @param args - Additional arguments for releasing the locks.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * 
+   *
    * @example
    * An example of how to implement the `releaseAll` method:
-   * 
+   *
    * ```ts
    * class MyLockingProviderService implements ILockingProvider {
    *   // ...
    *   async releaseAll(
-   *     args?: { ownerId?: string | null }, 
+   *     args?: { ownerId?: string | null },
    *     sharedContext?: Context
    *   ): Promise<void> {
    *     const ownerId = args?.ownerId ?? "*"
-   * 
+   *
    *     await this.client.releaseAllLock(ownerId)
    *   }
    * }
    * ```
-   * 
+   *
    * In this example, you release all locks either of all owners or the owner passed as an argument. This implementation assumes that the client you're integrating has a method called `releaseAllLock` that releases all locks
    * for all owners or a specific owner.
    */
@@ -340,31 +376,31 @@ export interface ILockingProvider {
 
 export interface ILockingModule {
   /**
-   * This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a 
-   * provider name to be used for locking. If no provider is passed, the default provider (in-memory or the 
+   * This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a
+   * provider name to be used for locking. If no provider is passed, the default provider (in-memory or the
    * provider configuerd in `medusa-config.ts`) will be used.
-   * 
+   *
    * @param keys - The keys to lock durng the job's execution.
    * @param job - The asynchronous job to execute while the keys are locked.
    * @param args - Additional arguments for the job execution.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns The result of the job execution.
    * @typeParam T - The type of the job's result.
-   * 
+   *
    * @example
    * For example, to use the lock module when deleting a product:
-   * 
+   *
    * ```ts
    * await lockingModuleService.execute("prod_123", async () => {
    *    // assuming you've resolved the product service from the container
    *    await productModuleService.delete("prod_123")
    * })
    * ```
-   * 
+   *
    * In the above example, the product of ID `prod_123` is locked while it's being deleted.
-   * 
+   *
    * To specify the provider to use for locking, you can pass the provider name in the `args` argument:
-   * 
+   *
    * ```ts
    * await lockingModuleService.execute("prod_123", async () => {
    *   // assuming you've resolved the product service from the container
@@ -376,13 +412,25 @@ export interface ILockingModule {
    */
   execute<T>(
     keys: string | string[],
-    job: () => Promise<T>,
+    job: (signal?: AbortSignal) => Promise<T>,
     args?: {
       /**
-       * The timeout (in seconds) for acquiring the lock. If the time out is passed, the job is canceled and the lock is released.
+       * The timeout (in seconds) to wait for the lock to be acquired. If the timeout passes before the lock
+       * is acquired, the job isn't executed and an error is thrown.
        * Its value defaults to `5` seconds if no value is passed or if you pass a value less than `1`.
        */
       timeout?: number
+      /**
+       * How long (in seconds) the lock is held before it expires, for providers whose locks can expire. The
+       * lock is renewed while the job is running, so a job that takes longer than this keeps its lock; the
+       * expiration only decides how long the keys stay locked when the process holding them dies without
+       * releasing them. Its value defaults to `60` seconds.
+       *
+       * If the lock is lost while the job is running anyway — the provider was unreachable long enough for
+       * the lock to expire, for example — the `signal` passed to the job is aborted and this method throws,
+       * since the job didn't run with exclusive access to the keys.
+       */
+      expire?: number
       /**
        * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
        */
@@ -391,33 +439,33 @@ export interface ILockingModule {
     sharedContext?: Context
   ): Promise<T>
   /**
-   * This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking. 
+   * This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking.
    * If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
-   * 
+   *
    * You can pass an owner for the lock, which limits who can extend or release the acquired lock. Then, if you use this method again
    * passing the same owner, the lock's expiration time is extended with the value passed in the `expire` argument. Otherwise, if you pass a
    * different owner, the method throws an error.
-   * 
+   *
    * @param keys - The keys to acquire the lock on.
    * @param args - Additional arguments for acquiring the lock.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Resolves when the lock is acquired.
-   * 
+   *
    * @example
    * For example, to acquire a lock on a product with ID `prod_123` for a user with ID `user_123`:
-   * 
+   *
    * ```ts
    * await lockingModuleService.acquire("prod_123", {
    *   ownerId: "user_123",
    *   expire: 60
    * })
    * ```
-   * 
-   * In this example, you acquire a lock on the product with ID `prod_123` for the user with ID `user_123`. You extend the 
+   *
+   * In this example, you acquire a lock on the product with ID `prod_123` for the user with ID `user_123`. You extend the
    * lock's expiration time by `60` seconds.
-   * 
+   *
    * To specify the provider to use for locking, you can pass the provider name in the `args` argument:
-   * 
+   *
    * ```ts
    * await lockingModuleService.acquire("prod_123", {
    *   ownerId: "user_123",
@@ -448,27 +496,27 @@ export interface ILockingModule {
   /**
    * This method releases a lock on the given keys. You can optionally pass a provider name to be used for locking.
    * If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
-   * 
+   *
    * If the lock has an owner, you must pass the same owner to release the lock.
-   * 
+   *
    * @param keys - The keys to release the lock from.
    * @param args - Additional arguments for releasing the lock.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the lock was successfully released. If the lock has a different owner than the one passed, the method returns `false`.
-   * 
+   *
    * @example
    * For example, to release a lock on a product with ID `prod_123` for a user with ID `user_123`:
-   * 
+   *
    * ```ts
    * await lockingModuleService.release("prod_123", {
    *   ownerId: "user_123"
    * })
    * ```
-   * 
+   *
    * In this example, you release the lock on the product with ID `prod_123` for the user with ID `user_123`.
-   * 
+   *
    * To specify the provider to use for locking, you can pass the provider name in the `args` argument:
-   * 
+   *
    * ```ts
    * await lockingModuleService.release("prod_123", {
    *   ownerId: "user_123",
@@ -480,7 +528,7 @@ export interface ILockingModule {
     keys: string | string[],
     args?: {
       /**
-       * The ID of the lock's owner. The lock can be released either if it doesn't have an owner, or 
+       * The ID of the lock's owner. The lock can be released either if it doesn't have an owner, or
        * if its owner ID matches the one passed in this property.
        */
       ownerId?: string | null
@@ -493,25 +541,25 @@ export interface ILockingModule {
   ): Promise<boolean>
   /**
    * This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released.
-   * 
+   *
    * You can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
-   * 
+   *
    * @param args - Additional arguments for releasing the locks.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * 
+   *
    * @example
    * For example, to release all locks for a user with ID `user_123`:
-   * 
+   *
    * ```ts
    * await lockingModuleService.releaseAll({
    *   ownerId: "user_123"
    * })
    * ```
-   * 
+   *
    * In this example, you release all locks for the user with ID `user_123`.
-   * 
+   *
    * To specify the provider to use for locking, you can pass the provider name in the `args` argument:
-   * 
+   *
    * ```ts
    * await lockingModuleService.releaseAll({
    *   ownerId: "user_123",

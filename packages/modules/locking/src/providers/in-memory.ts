@@ -1,5 +1,6 @@
 import { ILockingProvider } from "@medusajs/framework/types"
 import { isDefined } from "@medusajs/framework/utils"
+import { randomUUID } from "node:crypto"
 
 type LockInfo = {
   ownerId: string | null
@@ -31,15 +32,30 @@ export class InMemoryLockingProvider implements ILockingProvider {
     }
   }
 
+  /**
+   * Runs `job` while holding `keys`. The lock is held for exactly as long as
+   * the job runs: these locks live in this process' memory, so there is no
+   * peer that could need them back, and nothing to recover from if the process
+   * dies. `expire` is accepted for parity with the distributed providers and
+   * deliberately unused — a lease that outlives the job is what let a second
+   * writer in, and a job that hangs should keep the keys rather than hand them
+   * over. `job`'s signal is never aborted here for the same reason: an
+   * in-memory lock cannot be lost while it is held.
+   */
   async execute<T>(
     keys: string | string[],
-    job: () => Promise<T>,
+    job: (signal?: AbortSignal) => Promise<T>,
     args?: {
       timeout?: number
+      expire?: number
     }
   ): Promise<T> {
     const timeout = Math.max(args?.timeout ?? 5, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
+
+    // Unique per call, so the release below can only delete the lock this call
+    // took, and never one a queued caller acquired in the meantime.
+    const ownerId = `execute:${randomUUID()}`
 
     const cancellationToken = { cancelled: false }
     const promises: Promise<any>[] = []
@@ -47,23 +63,34 @@ export class InMemoryLockingProvider implements ILockingProvider {
       promises.push(this.getTimeout(timeoutSeconds, cancellationToken))
     }
 
-    promises.push(
-      this.acquire_(
-        keys,
-        {
-          expire: timeoutSeconds,
-          awaitQueue: true,
-        },
-        cancellationToken
-      )
+    const acquisition = this.acquire_(
+      keys,
+      {
+        ownerId,
+        awaitQueue: true,
+      },
+      cancellationToken
     )
+    promises.push(acquisition)
 
-    await Promise.race(promises)
+    try {
+      await Promise.race(promises)
+    } catch (error) {
+      // The queued acquisition can still take the keys in the same tick the
+      // timeout fires, and no job is going to use them. Since nothing expires
+      // them, they have to be given back explicitly.
+      void acquisition.then(
+        () => this.release(keys, { ownerId }),
+        () => {}
+      )
+
+      throw error
+    }
 
     try {
       return await job()
     } finally {
-      await this.release(keys)
+      await this.release(keys, { ownerId })
     }
   }
 
@@ -130,7 +157,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
           return
         }
 
-        return this.acquire(keys, args)
+        return this.acquire_(keys, args, cancellationToken)
       }
 
       throw new Error(`Failed to acquire lock for key "${key}"`)
