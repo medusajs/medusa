@@ -33,7 +33,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: products } = await query.graph({
     entity: "product",
