@@ -716,8 +716,14 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
     }
 
+    // The index's `distinct_attribute` is the default for every query on it.
+    // Resolved once here and threaded down, so a code path that must not
+    // deduplicate (a hybrid arm) says so explicitly rather than relying on
+    // having cleared `search_options.distinct`.
+    const distinct = options.distinct ?? input.index.settings.distinct_attribute
+
     // Fails early on unknown / unsupported distinct fields.
-    this.resolveDistinct(options.distinct, plan, input.index.name)
+    this.resolveDistinct(distinct, plan, input.index.name)
 
     const q = input.q?.trim()
     const vectorOpts = options.vector
@@ -748,6 +754,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         catalog,
         queryEmbedding: queryEmbedding!,
         semanticRatio,
+        distinct,
         skip,
         take,
       }))
@@ -756,6 +763,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input,
         catalog,
         queryEmbedding: queryEmbedding!,
+        distinct,
         skip,
         take,
       }))
@@ -763,6 +771,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       ;({ hitRows, count } = await this.searchKeyword({
         input,
         catalog,
+        distinct,
         skip,
         take,
       }))
@@ -875,7 +884,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const q = query.q?.trim() || undefined
-    const typo = !!(q && options.typo_tolerance)
+    // `search_options.typo_tolerance` is a preference; an index that turned
+    // typo tolerance off in its settings serves exact matches instead.
+    const typo = !!(
+      q &&
+      options.typo_tolerance &&
+      (query.index.settings.typo_tolerance?.enabled ?? true)
+    )
     const matchLast = options.match_strategy === "last"
     const searchOn = options.attributes_to_search_on ?? plan.searchable
     const searchAllFields =
@@ -933,10 +948,11 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   protected async searchKeyword(input: {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, skip, take } = input
+    const { input: query, catalog, distinct, skip, take } = input
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const filterWhere = toWhereClause(query.filters, plan)
@@ -977,11 +993,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       conditionsSql,
       orderSql: this.resolveOrderBy(query, plan, !!fragments.q),
       minScore: options.min_score,
-      distinctExpr: this.resolveDistinct(
-        options.distinct,
-        plan,
-        query.index.name
-      ),
+      distinctExpr: this.resolveDistinct(distinct, plan, query.index.name),
       count: options.count !== "none",
       take,
       skip,
@@ -993,10 +1005,18 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
     queryEmbedding: number[]
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, queryEmbedding, skip, take } = input
+    const {
+      input: query,
+      catalog,
+      queryEmbedding,
+      distinct,
+      skip,
+      take,
+    } = input
     const options = query.search_options ?? {}
     const field = resolveVectorField(options.vector!, catalog.plan)
     const col = vectorColumnName(field)
@@ -1037,7 +1057,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       fastOrderSql,
       minScore: options.min_score,
       distinctExpr: this.resolveDistinct(
-        options.distinct,
+        distinct,
         catalog.plan,
         query.index.name
       ),
@@ -1052,6 +1072,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     catalog: StoredIndex
     queryEmbedding: number[]
     semanticRatio: number
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
@@ -1060,6 +1081,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       catalog,
       queryEmbedding,
       semanticRatio,
+      distinct,
       skip,
       take,
     } = input
@@ -1078,7 +1100,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     // Arms are relevance-ranked candidate lists; page-level options (distinct,
-    // min_score, count, order) apply to the fused list instead.
+    // min_score, count, order) apply to the fused list instead. `distinct` is
+    // passed to each arm explicitly below.
     const candidateLimit = Math.max(take + skip, 40) * 2
     const armQuery: SearchTypes.ProviderSearchQuery = {
       ...query,
@@ -1086,7 +1109,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       search_options: {
         ...options,
         min_score: undefined,
-        distinct: undefined,
         count: "none",
       },
     }
@@ -1095,6 +1117,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       this.searchKeyword({
         input: armQuery,
         catalog,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1102,6 +1125,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input: armQuery,
         catalog,
         queryEmbedding,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1144,10 +1168,10 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     let ranked = [...scores.values()].sort((a, b) => b.score - a.score)
 
-    if (options.distinct) {
+    if (distinct) {
       const seen = new Set<string>()
       ranked = ranked.filter((row) => {
-        const key = this.readIndexedValue(row.indexed, options.distinct!)
+        const key = this.readIndexedValue(row.indexed, distinct)
         if (key === undefined) {
           return true
         }
@@ -1186,7 +1210,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
 
       const distinctExpr = this.resolveDistinct(
-        options.distinct,
+        distinct,
         plan,
         query.index.name
       )
@@ -1481,8 +1505,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }
 
   /**
-   * Validates `search_options.distinct` and returns the SQL expression to
-   * deduplicate on, or undefined when not requested.
+   * Validates the field to deduplicate by — `search_options.distinct` or the
+   * index's `settings.distinct_attribute` — and returns the SQL expression for
+   * it, or undefined when neither is set.
    */
   protected resolveDistinct(
     distinct: string | undefined,

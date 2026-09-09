@@ -185,13 +185,6 @@ export function assertIndexSupported(
     }
   }
 
-  if (definition.settings.synonyms) {
-    fail("The Medusa search provider does not support synonyms")
-  }
-  if (definition.settings.stop_words?.length) {
-    fail("The Medusa search provider does not support custom stop-word lists")
-  }
-
   walk(definition.fields, "")
   assertTypoToleranceSupported(definition.settings, paths)
 }

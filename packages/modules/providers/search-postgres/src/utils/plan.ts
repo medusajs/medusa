@@ -104,6 +104,25 @@ function fieldKind(
 }
 
 /**
+ * Postgres matches typos with `pg_trgm` word similarity over the whole
+ * `search_text` column. It honours `enabled`, but it doesn't support fine-tuning.
+ *
+ * `disabled_on_attributes` states that a field must only ever
+ * match exactly, and ignoring it would fuzzy-match a SKU or a handle the index
+ * deliberately excluded. There is no per-attribute similarity to switch off
+ * here, so it is rejected instead.
+ */
+function assertTypoToleranceSupported(
+  settings: SearchTypes.SearchIndexSettings
+): void {
+  if (settings.typo_tolerance?.disabled_on_attributes?.length) {
+    fail(
+      "The postgres search provider matches typos across all searchable fields at once, so it does not support settings.typo_tolerance.disabled_on_attributes"
+    )
+  }
+}
+
+/**
  * Refuses a definition this engine cannot honour.
  */
 export function assertIndexSupported(
@@ -146,6 +165,7 @@ export function assertIndexSupported(
   }
 
   walk(definition.fields, "")
+  assertTypoToleranceSupported(definition.settings)
 }
 
 /**

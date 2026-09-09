@@ -24,12 +24,6 @@ export type MedusaSearchIndexOptions = {
   distance_metric?: DistanceMetric
 }
 
-/**
- * Field options with no portable equivalent in `SearchFieldDefinition`. The
- * column type and whether it is filterable are derived from the field
- * definition itself, and typo tolerance from `settings.typo_tolerance`, so
- * none of those are overridable here.
- */
 export type MedusaSearchFieldOptions = {
   ann?: AttributeSchemaConfig["ann"]
   full_text_search?: FullTextSearch
