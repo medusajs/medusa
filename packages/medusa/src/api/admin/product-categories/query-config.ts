@@ -19,7 +19,7 @@ export const defaults = [
   "*category_children",
 ]
 
-export const allowed = [
+const categoryScalarFields = [
   "id",
   "name",
   "description",
@@ -31,9 +31,16 @@ export const allowed = [
   "parent_category_id",
   "created_at",
   "updated_at",
+  "deleted_at",
   "metadata",
+]
+
+export const allowed = [
+  ...categoryScalarFields,
   "category_children",
+  ...categoryScalarFields.map((field) => `category_children.${field}`),
   "parent_category",
+  ...categoryScalarFields.map((field) => `parent_category.${field}`),
   "products",
   "translations",
 ]
