@@ -366,6 +366,30 @@ medusaIntegrationTestRunner({
         ])
       })
 
+      it("rejects a since value that is not a date", async () => {
+        const error = await api
+          .post(
+            "/admin/search-indexes/product/reindex",
+            { since: "yesterday" },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
+      it("rejects an unknown field in the body", async () => {
+        const error = await api
+          .post(
+            "/admin/search-indexes/product/reindex",
+            { nope: true },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
       it("fails when the index is not registered", async () => {
         const error = await api
           .post("/admin/search-indexes/nope/reindex", {}, adminHeaders)

@@ -88,7 +88,7 @@ export const PromotionDetail = () => {
                 />
               </LayoutComposer.Entry>
             )}
-            {detailPageDefaultEntries(promotion, { metadata: false })}
+            {detailPageDefaultEntries(promotion)}
           </>
         ),
         side: (

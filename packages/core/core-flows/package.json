@@ -32,7 +32,7 @@
     "@medusajs/framework": "2.20.1"
   },
   "dependencies": {
-    "csv-parse": "^5.6.0",
+    "csv-parse": "^7.0.2",
     "deeks": "^3.2.1",
     "json-2-csv": "^5.5.11"
   },
