@@ -32,6 +32,9 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import QueryConfigHelper, {
+  FieldRestrictions,
+} from "../helpers/query-config.js"
 import TypesHelper from "../helpers/types.js"
 import {
   isLevelExceeded,
@@ -160,6 +163,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   protected oasSchemaHelper: OasSchemaHelper
   protected schemaFactory: SchemaFactory
   protected typesHelper: TypesHelper
+  protected queryConfigHelper: QueryConfigHelper
   protected events: MedusaEvent[] = []
 
   constructor(options: GeneratorOptions) {
@@ -174,6 +178,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.typesHelper = new TypesHelper({
       checker: this.checker,
     })
+    this.queryConfigHelper = new QueryConfigHelper()
     this.init()
 
     this.generatorEventManager.listen(
@@ -477,6 +482,16 @@ class OasKindGenerator extends FunctionKindGenerator {
       // get associated events
       oas["x-events"] = this.getOasEvents(oas["x-workflow"])
     }
+
+    // get the fields and relations restrictions of the route's query config
+    const fieldRestrictions = this.getFieldRestrictions({
+      node,
+      oasPath,
+      methodName,
+    })
+
+    oas["x-allowed"] = fieldRestrictions?.allowed
+    oas["x-disallowed"] = fieldRestrictions?.disallowed
 
     // check deprecation and version in tags
     const { deprecatedTag, sinceTag, featureFlagTag } =
@@ -812,6 +827,25 @@ class OasKindGenerator extends FunctionKindGenerator {
     if (oas["x-workflow"]) {
       // get associated events
       oas["x-events"] = this.getOasEvents(oas["x-workflow"])
+    }
+
+    // update the fields and relations restrictions of the route's query config
+    const fieldRestrictions = this.getFieldRestrictions({
+      node,
+      oasPath,
+      methodName,
+    })
+
+    if (fieldRestrictions?.allowed) {
+      oas["x-allowed"] = fieldRestrictions.allowed
+    } else {
+      delete oas["x-allowed"]
+    }
+
+    if (fieldRestrictions?.disallowed) {
+      oas["x-disallowed"] = fieldRestrictions.disallowed
+    } else {
+      delete oas["x-disallowed"]
     }
 
     // check deprecation and version in tags
@@ -2738,6 +2772,38 @@ class OasKindGenerator extends FunctionKindGenerator {
       default:
         return "object"
     }
+  }
+
+  /**
+   * Retrieve the fields and relations that an API route allows or disallows
+   * requesting, as configured in the route's middleware.
+   *
+   * @param param0 - The route's details.
+   * @returns The route's restrictions, if it has any.
+   */
+  getFieldRestrictions({
+    node,
+    oasPath,
+    methodName,
+  }: {
+    /**
+     * The node of the route's function.
+     */
+    node: FunctionNode
+    /**
+     * The route's OAS path.
+     */
+    oasPath: string
+    /**
+     * The lowercase name of the method. For example, `get`.
+     */
+    methodName: string
+  }): FieldRestrictions | undefined {
+    return this.queryConfigHelper.getFieldRestrictions({
+      routeFilePath: node.getSourceFile().fileName,
+      oasPath,
+      httpMethod: methodName,
+    })
   }
 
   /**

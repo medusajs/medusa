@@ -5,8 +5,10 @@ import {
   SearchFieldDefinition,
   SearchFieldKind,
 } from "./field"
+import { Event } from "../event-bus"
 import {
   SearchIndexDefinition,
+  SearchIngestionContext,
   SearchMutation,
   SearchSeedContext,
 } from "./index-definition"
@@ -116,15 +118,21 @@ export type SearchIndexSeedMutation<Fields extends SearchIndexFieldsInput> =
 
 /**
  * Definition accepted by `defineSearchIndex` before fields are normalized.
- * `seed` is type-checked against the declared `search.define(...)` schema.
+ * `seed` and `consume` are type-checked against the declared
+ * `search.define(...)` schema.
  */
 export type SearchIndexDefinitionInput<
   Fields extends SearchIndexFieldsInput = SearchIndexFieldsInput
-> = Omit<SearchIndexDefinition, "fields" | "seed"> & {
+> = Omit<SearchIndexDefinition, "fields" | "seed" | "consume"> & {
   fields: Fields
   // Ran when there is no data in the index, on reindex, and for the
   // catch-up pass after a full seed.
   seed: (
     context: SearchSeedContext
   ) => AsyncIterable<SearchIndexSeedMutation<Fields>[]>
+  // Ran on event ingestion to turn an event into index writes.
+  consume?: (
+    event: Event<any>,
+    context: SearchIngestionContext
+  ) => Promise<SearchIndexSeedMutation<Fields>[]>
 }

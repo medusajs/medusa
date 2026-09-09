@@ -86,6 +86,11 @@ export const sidebar = [
                 title: "Log Drains",
                 path: "/projects/log-drains",
               },
+              {
+                type: "link",
+                title: "Troubleshooting",
+                path: "/projects/troubleshooting",
+              },
             ],
           },
           {

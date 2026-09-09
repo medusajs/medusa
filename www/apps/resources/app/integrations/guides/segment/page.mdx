@@ -189,7 +189,9 @@ Add the `identify` method to the `SegmentAnalyticsProviderService` class:
 
 ```ts title="src/modules/segment/service.ts"
 // other imports...
-import { ProviderIdentifyAnalyticsEventDTO } from "@medusajs/types"
+import {
+  ProviderIdentifyAnalyticsEventDTO,
+} from "@medusajs/framework/types"
 
 class SegmentAnalyticsProviderService extends AbstractAnalyticsProviderService {
   // ...
@@ -247,7 +249,9 @@ Add the `track` method to the `SegmentAnalyticsProviderService` class:
 
 ```ts title="src/modules/segment/service.ts"
 // other imports...
-import { ProviderTrackAnalyticsEventDTO } from "@medusajs/types"
+import {
+  ProviderTrackAnalyticsEventDTO,
+} from "@medusajs/framework/types"
 
 class SegmentAnalyticsProviderService extends AbstractAnalyticsProviderService {
   // ...
@@ -433,17 +437,18 @@ Before you create the workflow, you'll create a step that tracks an event in Seg
 To create a step, create the file `src/workflows/steps/track-event.ts` with the following content:
 
 export const stepHighlights = [
-  ["4", "event", "The name of the event to track."],
-  ["5", "userId", "The ID of the user performing the event."],
-  ["6", "properties", "Additional properties associated with the event."],
-  ["7", "timestamp", "The timestamp of the event."],
-  ["13", "analyticsModuleService", "Resolve the Analytics Module's service from the Medusa container."],
-  ["21", "anonymousId", "Set a random ID if no user ID is passed."],
-  ["26", "track", "Track the event in Segment."]
+  ["5", "event", "The name of the event to track."],
+  ["6", "userId", "The ID of the user performing the event."],
+  ["7", "properties", "Additional properties associated with the event."],
+  ["8", "timestamp", "The timestamp of the event."],
+  ["14", "analyticsModuleService", "Resolve the Analytics Module's service from the Medusa container."],
+  ["22", "anonymousId", "Set a random ID if no user ID is passed."],
+  ["27", "track", "Track the event in Segment."]
 ]
 
 ```ts title="src/workflows/steps/track-event.ts" highlights={stepHighlights}
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 type TrackEventStepInput = {
   event: string
@@ -456,7 +461,7 @@ export const trackEventStep = createStep(
   "track-event",
   async (input: TrackEventStepInput, { container }) => {
     const analyticsModuleService = container.resolve(
-      "analytics"
+      Modules.ANALYTICS
     )
 
     if (!input.userId) {
@@ -571,7 +576,7 @@ export const trackOrderPlacedWorkflow = createWorkflow(
 
     trackEventStep({
       event: "order.placed",
-      userId: order.customer?.id,
+      userId: order.customer.id,
       properties: order,
     })
   }

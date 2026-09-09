@@ -1,3 +1,4 @@
+import { QueryContextType } from "../common"
 import { SearchFilters } from "./filters"
 
 /**
@@ -312,4 +313,9 @@ export interface SearchQuery<TEntry extends string = string> {
    * The options changing how the query is matched, scored, and aggregated.
    */
   search_options?: SearchOptions
+
+  /**
+   * The context passed to the `query.graph` call during hydration.
+   */
+  context?: QueryContextType
 }
