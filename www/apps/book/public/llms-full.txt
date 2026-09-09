@@ -139,7 +139,10 @@ async function fetchWithRetry(
       clearTimeout(timeoutId)
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `HTTP ${response.status}: ${response.statusText}`
+        )
       }
 
       return response
@@ -701,6 +704,8 @@ Errors can occur during data syncing due to transient network issues, rate limit
 For example, implement a custom function that fetches data with retry logic, then use it to fetch data from the third-party service:
 
 ```ts title="src/jobs/sync-products.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 const MAX_RETRIES = 3
 const RETRY_DELAY_MS = 1000
 
@@ -716,7 +721,10 @@ async function fetchWithRetry(
       const response = await fetch(url)
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `HTTP ${response.status}: ${response.statusText}`
+        )
       }
 
       return response
@@ -772,6 +780,8 @@ When making API calls to third-party services, always set request timeouts. This
 For example, set a request timeout on a `fetch` call using the `AbortController`:
 
 ```ts title="src/jobs/sync-products.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 const FETCH_TIMEOUT_MS = 30000
 
 async function fetchWithRetry(
@@ -796,7 +806,10 @@ async function fetchWithRetry(
       clearTimeout(timeoutId)
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `HTTP ${response.status}: ${response.statusText}`
+        )
       }
 
       return response
@@ -1597,12 +1610,17 @@ import type {
   MedusaResponse, 
 } from "@medusajs/framework/http"
 import crypto from "crypto"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const configModule = req.scope.resolve("configModule")
+  const configModule = req.scope.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const { projectConfig } = configModule
 
   // If JWKS_CONTENT is set, use it
@@ -1661,6 +1679,7 @@ import {
 } from "@medusajs/framework/http"
 import jwt from "jsonwebtoken"
 import { JwksClient } from "jwks-rsa"
+import { MedusaError } from "@medusajs/framework/utils"
 
 const MEDUSA_BACKEND_URL = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
 
@@ -1681,7 +1700,10 @@ async function getKey(header: any) {
 
     return key.getPublicKey()
   } catch (err: any) {
-    throw new Error(`Failed to get signing key: ${err.message}`)
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      `Failed to get signing key: ${err.message}`
+    )
   }
 }
 
@@ -3853,12 +3875,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { 
     data: brands, 
@@ -4494,8 +4521,10 @@ Next, you want to create a link between the created products and the brand. To d
 To use Link in the `productsCreated` hook, replace the `TODO` with the following:
 
 ```ts title="src/workflows/hooks/created-product.ts"
-const link = container.resolve("link")
-const logger = container.resolve("logger")
+const link = container.resolve(ContainerRegistrationKeys.LINK)
+const logger = container.resolve(
+  ContainerRegistrationKeys.LOGGER
+)
 
 const links: LinkDefinition[] = []
 
@@ -4539,7 +4568,9 @@ createProductsWorkflow.hooks.productsCreated(
       return
     }
 
-    const link = container.resolve("link")
+    const link = container.resolve(
+      ContainerRegistrationKeys.LINK
+    )
 
     await link.dismiss(links)
   })
@@ -4671,9 +4702,9 @@ In this chapter, you'll learn how to retrieve a product's brand (and vice-versa)
 
 ## Approach 1: Retrieve Brands in Existing API Routes
 
-Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](undefined/api/admin/products/list-products), [Get Product](undefined/api/admin/products/get-a-product), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
+Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](undefined/api/admin/products/list-products), [Get Product](undefined/api/admin/products/get-a-product), or any product-related admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
 
-Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](undefined/learn/fundamentals/api-routes/retrieve-custom-links) chapter.
+Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](undefined/learn/fundamentals/api-routes/retrieve-custom-links) chapter. For store routes, you'll need to override the allowed fields and relations to retrieve your custom linked data models.
 
 For example, send the following request to retrieve the list of products with their brands:
 
@@ -4722,12 +4753,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { data: brands } = await query.graph({
     entity: "brand",
@@ -5355,9 +5391,14 @@ A scheduled job is created in a TypeScript or JavaScript file under the `src/job
 ```ts title="src/jobs/sync-brands-from-cms.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { syncBrandsFromCmsWorkflow } from "../workflows/sync-brands-from-cms"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function (container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   const { result } = await syncBrandsFromCmsWorkflow(container).run()
 
@@ -5823,11 +5864,16 @@ import {
   StepResponse, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 const step1 = createStep(
   "step-1",
   async ({}, { container }) => {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     const message = "Hello from step 1!"
 
     logger.info(`Step 1 output: ${message}`)
@@ -5859,11 +5905,16 @@ import {
   StepResponse, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 const step1 = createStep(
   "step-1",
   async ({}, { container }) => {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     const message = "Hello from step 1!"
 
     logger.info(`Step 1 output: ${message}`)
@@ -5873,7 +5924,9 @@ const step1 = createStep(
     )
   },
   async (_, { container }) => {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.warn("Compensating step 1")
   }
 )
@@ -6776,8 +6829,7 @@ And consider that the file `src/api/custom/route.ts` defines another route handl
 
 ```ts title="src/api/custom/route.ts"
 // other imports...
-import BlogModuleService from "../../../modules/blog/service"
-import { BLOG_MODULE } from "../../../modules/blog"
+import createPostWorkflow from "../../workflows/create-post"
 
 // ...
 
@@ -6785,13 +6837,10 @@ export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const blogModuleService: BlogModuleService = req.scope.resolve(
-    BLOG_MODULE
-  )
-
-  const post = await blogModuleService.createPosts(
-    req.body
-  )
+  const { result: post } = await createPostWorkflow(req.scope)
+    .run({
+      input: req.body,
+    })
 
   res.json({
     post,
@@ -6799,7 +6848,7 @@ export async function POST(
 }
 ```
 
-This API route creates a new record of `Post`.
+This API route executes a `createPostWorkflow` workflow that creates a new record of `Post`. The workflow's implementation isn't shown here, as it isn't relevant to writing the test. Learn how to create a workflow in the [Workflows](undefined/learn/fundamentals/workflows) chapter.
 
 To write tests for this API route, add the following at the end of the `testSuite` function in `integration-tests/http/custom-routes.spec.ts`:
 
@@ -6891,18 +6940,17 @@ Consider a `/custom/:id` API route created at `src/api/custom/[id]/route.ts`:
 
 ```ts title="src/api/custom/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import BlogModuleService from "../../../modules/blog/service"
-import { BLOG_MODULE } from "../../../modules/blog"
+import deletePostWorkflow from "../../../workflows/delete-post"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const blogModuleService: BlogModuleService = req.scope.resolve(
-    BLOG_MODULE
-  )
-
-  await blogModuleService.deletePosts(req.params.id)
+  await deletePostWorkflow(req.scope).run({
+    input: {
+      id: req.params.id,
+    },
+  })
 
   res.json({
     success: true,
@@ -6910,7 +6958,7 @@ export async function DELETE(
 }
 ```
 
-This API route accepts an ID path parameter, and uses the `BlogModuleService` to delete a `Post` record by that ID.
+This API route accepts an ID path parameter, and executes a `deletePostWorkflow` workflow that deletes a `Post` record by that ID. As with the previous example, the workflow's implementation isn't shown here.
 
 To add tests for this API route, add the following to `integration-tests/http/custom-routes.spec.ts`:
 
@@ -7037,6 +7085,7 @@ For custom actor types, you only need to change the `actorType` value in the `jw
 ```ts title="integration-tests/http/custom-routes.spec.ts"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
+import { Modules } from "@medusajs/framework/utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
@@ -7047,8 +7096,12 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           const container = getContainer()
           
-          const authModuleService = container.resolve("auth")
-          const userModuleService = container.resolve("user")
+          const authModuleService = container.resolve(
+            Modules.AUTH
+          )
+          const userModuleService = container.resolve(
+            Modules.USER
+          )
           
           const user = await userModuleService.createUsers({
             email: "admin@medusa.js",
@@ -7106,6 +7159,7 @@ import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ApiKeyDTO } from "@medusajs/framework/types"
 import jwt from "jsonwebtoken"
 import { createApiKeysWorkflow } from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
@@ -7116,8 +7170,12 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           const container = getContainer()
           
-          const authModuleService = container.resolve("auth")
-          const customerModuleService = container.resolve("customer")
+          const authModuleService = container.resolve(
+            Modules.AUTH
+          )
+          const customerModuleService = container.resolve(
+            Modules.CUSTOMER
+          )
           
           const customer = await customerModuleService.createCustomers({
             email: "admin@medusa.js",
@@ -10805,14 +10863,14 @@ In this chapter, you'll learn about allowed fields in API routes, how to set the
 
 An API route's `fields` query parameter accepts any field or relation name by default, including custom [linked data models](undefined/learn/fundamentals/api-routes/retrieve-custom-links) that you add after the route is created.
 
-To restrict which fields and relations a route can retrieve, pass an `allowed` array to the route's `validateAndTransformQuery` configuration. Once you set `allowed`, only the fields in that array, or fields whose path starts with one of them, can be requested. Every other field is silently removed from the query before it executes.
+To restrict which fields and relations a route can retrieve, pass an `allowed` array to the route's `validateAndTransformQuery` configuration. Once you set `allowed`, a client can only request a field whose full path appears in that array. A relation in `allowed` doesn't grant access to the fields nested under it. Medusa silently removes every other field from the query before it executes.
 
 Set `allowed` even on your custom API routes, not only on Medusa's routes. Since the `fields` query parameter is open by default, a route without `allowed` exposes every relation you link to its underlying data model, including relations you add later without realizing they're now reachable through that route.
 
 `allowed` is different than [disallowed fields](undefined/learn/fundamentals/api-routes/disallowed-fields):
 
 - `allowed` is an opt-in list. Without it, a route retrieves any field a client requests.
-- `disallowed` is a deny list that Medusa always enforces, even for fields in the `allowed` list. Use it for a hard security boundary, such as blocking order or payment data on unauthenticated Store API routes.
+- `disallowed` is a deny list that Medusa always enforces, even for fields in the `allowed` list. Medusa's API routes don't set it, so use it on your own routes to block a segment that the allowed list would otherwise let through.
 
 ***
 
@@ -10849,7 +10907,53 @@ export default defineMiddlewares({
 
 In this example, a request to `GET /store/custom?fields=*owner` doesn't retrieve the `owner` field, since it's not in the `allowed` array, even though the underlying data model has an `owner` relation.
 
-An entry in `allowed` matches a requested field that's equal to it, or that starts with it. So, `variants` in `allowed` also allows `variants.options` and `variants.prices`.
+An entry in `allowed` only matches a requested field equal to it. Medusa normalizes the `*` and `.*` prefixes and suffixes before it compares the paths, so `variants` in `allowed` also allows `*variants`. It rejects `variants.options` and `variants.prices`, unless you add those exact paths to the array as well:
+
+```ts title="src/api/middlewares.ts"
+import {
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          createFindParams(),
+          {
+            defaults: ["id", "title"],
+            isList: true,
+            allowed: [
+              "variants",
+              "variants.options",
+              "variants.prices",
+            ],
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+Medusa strips a rejected field silently. The request still succeeds, but the response doesn't include the field.
+
+The `order` query parameter is the exception. If you sort by a field that isn't in `allowed`, the request fails with a `400` error.
+
+### Allowed Fields and the Relations Limit
+
+An allowed field must also comply with the [http.storeRelationsLimit](undefined/learn/fundamentals/configurations/medusa-config#httpstorerelationslimit) configuration, which caps how many relations a Store API route expands in one request. The two restrictions are separate:
+
+- `allowed` controls which paths a client can request.
+- `http.storeRelationsLimit` controls how deep those paths can go.
+
+So, adding a path to `allowed` doesn't exempt it from the limit. Medusa counts every segment of a path that selects a whole relation, such as `*items.variant.options`, and every segment but the last of a path that selects a property, such as `items.variant.title`. Both count as three relations.
+
+A path that exceeds the limit fails the request with a `400` error, unlike a path that isn't in `allowed`, which Medusa strips silently. A route can also set a lower limit than the application-wide configuration, in which case the route's limit applies and raising `http.storeRelationsLimit` has no effect on it.
 
 ***
 
@@ -10857,9 +10961,10 @@ An entry in `allowed` matches a requested field that's equal to it, or that star
 
 Some of Medusa's API routes already set `allowed`, which means you can't pass your custom linked data models in the `fields` query parameter of these routes. Medusa restricts these routes to keep them performant and secure.
 
-The API routes that restrict the fields and relations you can retrieve are:
+Every [Store API route](undefined/api/store) sets `allowed`. Each route allows its default fields and a small set of extra fields and relations, and rejects everything else. Refer to the API reference of an API route for its full list of allowed fields.
 
-- [Customer Store API Routes](undefined/api/store/customers)
+The Admin API routes that restrict the fields and relations you can retrieve are:
+
 - [Customer Admin API Routes](undefined/api/admin/customers)
 - [Product Category Admin API Routes](undefined/api/admin/product-categories)
 
@@ -10869,9 +10974,11 @@ The API routes that restrict the fields and relations you can retrieve are:
 
 For the routes mentioned above, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](undefined/learn/fundamentals/api-routes/middlewares) to those routes.
 
-For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
+Since every Store API route restricts its retrievable fields, retrieving a custom linked data model through a Store API route always requires this override.
 
-Learn how to create a middleware in the [Middlewares](undefined/learn/fundamentals/api-routes/middlewares) chapter.
+Only add the specific fields and relations that the client needs. A broad entry, such as a relation that pulls in multiple relations, or a sensitive relation like an order, a payment, or another customer, exposes that data to anyone who calls the route. Store API routes are public, so treat every path you add to `allowed` as data you're willing to publish.
+
+For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Store API Route](undefined/api/store/customers/get-customer), create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/medusa"
@@ -10891,15 +10998,20 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer).
+In this example, you apply a middleware to the [Get Customer Store API Route](undefined/api/store/customers/get-customer).
+
+Learn how to create a middleware in the [Middlewares](undefined/learn/fundamentals/api-routes/middlewares) chapter.
 
 The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you push `b2b_company` to the `allowed` array, alongside the fields and relations already configured on the route.
 
-You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer):
+Push the normalized field path, without a `*`, `+`, or `.*` prefix or suffix.
+
+You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Store API Route](undefined/api/store/customers/get-customer):
 
 ```bash
-curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
--H 'Authorization: Bearer {access_token}'
+curl 'http://localhost:9000/store/customers/me?fields=*b2b_company' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H 'Authorization: Bearer {jwt_token}'
 ```
 
 In this example, you retrieve the `b2b_company` relation of the customer using the `fields` query parameter.
@@ -10987,7 +11099,10 @@ import type {
   MedusaResponse, 
 } from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/framework/types"
-import { parseCorsOrigins } from "@medusajs/framework/utils"
+import {
+  parseCorsOrigins,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import cors from "cors"
 
 export default defineMiddlewares({
@@ -11001,7 +11116,9 @@ export default defineMiddlewares({
           next: MedusaNextFunction
         ) => {
           const configModule: ConfigModule =
-            req.scope.resolve("configModule")
+            req.scope.resolve(
+              ContainerRegistrationKeys.CONFIG_MODULE
+            )
 
           return cors({
             origin: parseCorsOrigins(
@@ -11021,28 +11138,30 @@ This retrieves the configurations exported from `medusa-config.ts` and applies t
 
 # Disallowed Fields in API Routes
 
-In this chapter, you'll learn about disallowed fields in API routes, how to apply them to custom API routes, and how to override them for Medusa's API routes.
+In this chapter, you'll learn about disallowed fields in API routes, how to apply them to custom API routes, and how to apply them to Medusa's API routes.
 
 The `disallowed` query configuration is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
 
 ## What are Disallowed Fields?
 
-Some of Medusa's API routes block specific field path segments as a hard security boundary. Medusa removes these fields from the query before it executes, regardless of what the client requests.
+An API route can block specific field path segments as a hard security boundary. Medusa removes these fields from the query before it executes, regardless of what the client requests.
 
-Disallowed fields guard sensitive relations, such as orders, customers, and payment data, on unauthenticated Store API routes. This prevents a client from pivoting from a public resource into private data.
+Use disallowed fields to guard internal or sensitive relations on a route, such as stock locations, price sets, or a custom link. This prevents a client from pivoting from a public resource into private data.
 
-For example, a Store API route for products blocks the `orders` segment. So, a request to `GET /store/products?fields=orders.customer.email` returns products without the `orders` relation, even if the client explicitly requests it.
+For example, if a custom API route blocks the `campaign` segment, a request to `GET /store/custom?fields=promotions.campaign.budget` returns the data without the `campaign` relation, even if the client explicitly requests it.
 
-Disallowed fields are different than [allowed fields](undefined/learn/fundamentals/api-routes/retrieve-custom-links#api-routes-that-restrict-retrievable-fields):
+Medusa's own API routes don't set disallowed fields. They restrict what a client can retrieve through their [allowed fields](undefined/learn/fundamentals/api-routes/allowed-fields) instead. A field that isn't in a route's `allowed` array never reaches the query, so the allowed list is the boundary that protects Medusa's routes.
 
-- Allowed fields are an opt-in list of the fields a route can retrieve. Medusa applies them to keep API routes performant and secure.
-- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly.
+Disallowed fields are different than [allowed fields](undefined/learn/fundamentals/api-routes/allowed-fields):
+
+- Allowed fields are an opt-in list of the fields a route can retrieve. Medusa applies them to its API routes to keep them performant and secure.
+- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly. Medusa doesn't apply them to its API routes, so you set them on the routes that need them.
 
 ***
 
 ## How to Disallow Fields in Custom API Routes?
 
-If you create a custom Store API route and want to apply the same protection, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
+To block field path segments in a custom API route, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
 
 ```ts title="src/api/middlewares.ts"
 import {
@@ -11078,39 +11197,28 @@ Each entry of the `disallowed` array is either:
 - A string, which Medusa matches against a whole field path segment. So, `orders` also blocks `orders.customer.email`.
 - A regular expression, which Medusa tests against each segment, such as `/_link$/`, and against the full dotted path. This allows you to block a relation at a specific position. For example, `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root.
 
+A disallowed array isn't a substitute for an `allowed` array. A deny list only blocks the segments you thought of, whereas an allowed list blocks everything you didn't list, including relations that you add to the data model later. Set `allowed` on your custom API routes, and use `disallowed` to block a segment that the allowed list would otherwise let through.
+
 ***
 
-## How to Override Disallowed Fields of Medusa's API Routes?
+## How to Disallow Fields in Medusa's API Routes?
 
-Overriding disallowed fields is available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
+Setting disallowed fields on a request is available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
 
-Medusa's Store API routes disallow the field path segments of sensitive relations, including custom links whose name ends with `_link`. If your use case requires retrieving one of these segments, you can override the disallowed fields of an API route.
+Medusa's API routes don't set disallowed fields. If you [add a field to a route's allowed list](undefined/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) and want to block a segment under it, apply a [global middleware](undefined/learn/fundamentals/api-routes/middlewares) that sets the `disallowed` property of the request object.
 
-Disallowed fields protect sensitive data from clients that only have a publishable API key. Setting the `disallowed` property to an empty array removes that protection from the route.
-
-To do that, apply a [global middleware](undefined/learn/fundamentals/api-routes/middlewares) that sets the `disallowed` property of the request object. Medusa then enforces the fields you set instead of the ones configured by the route, similar to [overriding allowed fields](undefined/learn/fundamentals/api-routes/retrieve-custom-links#how-to-override-allowed-fields-and-relations).
-
-Since the property replaces the route's disallowed fields, set it to the fields that Medusa disallows minus the ones you need, rather than to a short list of your own. Medusa exports the lists that its Store API routes use, so you can filter one of them:
-
-- `disallowedStoreFields`: used by public routes, such as the product and region routes.
-- `disallowedStorePivotFields`: used by routes that expose the requesting caller's own cart, order, or customer data, such as the cart and order routes.
-- `disallowedStoreCustomerFields`: used by the customer routes.
-
-For example, to retrieve the campaign applied to a cart's promotions on the [Get Cart Store API Route](undefined/api/store/carts/get-a-cart), create the file `src/api/middlewares.ts` with the following content:
+For example, to block the `payment_collection` segment on the [List Products Store API Route](undefined/api/store/products/list-products), create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/medusa"
-import { disallowedStorePivotFields } from "@medusajs/medusa/utils"
+import { defineMiddlewares } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/carts/:id",
+      matcher: "/store/products",
       middlewares: [
         (req, res, next) => {
-          req.disallowed = disallowedStorePivotFields.filter(
-            (field) => field !== "campaign"
-          )
+          req.disallowed = ["payment_collection"]
           next()
         },
       ],
@@ -11119,21 +11227,16 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Cart Store API Route](undefined/api/store/carts/get-a-cart). The middleware sets the `disallowed` property of the request object to the fields that Medusa disallows on routes exposing the caller's own cart data, except for the `campaign` segment.
+Medusa strips any field path that contains `payment_collection` as a segment, even if the path is in the route's allowed list.
 
-You can now retrieve the campaign of a cart's promotions using the `fields` query parameter:
-
-```bash
-curl 'http://localhost:9000/store/carts/{id}?fields=*promotions.campaign' \
--H 'x-publishable-api-key: {your_publishable_api_key}'
-```
-
-Medusa still strips the other disallowed segments, such as `orders` and `customers`, from the query.
-
-You can also use the `disallowed` property to block more segments on an existing API route:
+The property replaces the route's configured disallowed fields rather than adding to them. Medusa's API routes configure none, so the array you set is the full deny list for the request. On a custom API route that configures `disallowed`, include the segments you still want to block:
 
 ```ts title="src/api/middlewares.ts"
-req.disallowed = [...disallowedStorePivotFields, "payment_collection"]
+req.disallowed = [
+  "orders",
+  "customer",
+  "payment_collection",
+]
 ```
 
 This approach only works using a global middleware, since Medusa applies the disallowed fields in a route middleware. It also only applies to the request that the middleware handles, so it never leaks into other requests.
@@ -11481,9 +11584,14 @@ For example, to retrieve products with translated names and descriptions:
 
 ```ts title="src/api/store/products/route.ts"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: products } = await query.graph(
     {
@@ -12640,13 +12748,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [customer] } = await query.graph({
     entity: "customer",
@@ -12679,13 +12792,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const userId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [user] } = await query.graph({
     entity: "user",
@@ -12900,24 +13018,26 @@ By prefixing `brand` with an asterisk (`*`), you retrieve all the default fields
 
 Some of Medusa's API routes restrict the fields and relations you can retrieve, which means you can't pass your custom linked data models in the `fields` query parameter. Medusa makes this restriction to ensure the API routes are performant and secure.
 
+Every Store API route sets this restriction. A route only accepts a requested field whose full path is in its allowed list, and a relation in that list doesn't grant access to the fields nested under it. Medusa silently strips every other field from the query.
+
 Learn more about restricting retrievable fields, including how to apply the same restriction to your custom API routes and the full list of restricted core routes, in the [Allowed Fields in API Routes](undefined/learn/fundamentals/api-routes/allowed-fields) chapter.
 
 For these routes, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](undefined/learn/fundamentals/api-routes/middlewares) to those routes.
 
-For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
+For example, to allow retrieving the `brand` of a product using the [List Products Store API Route](undefined/api/store/products/list-products), create the file `src/api/middlewares.ts` with the following content:
 
-Learn how to create a middleware in the [Middlewares](undefined/learn/fundamentals/api-routes/middlewares) chapter.
+Only add the specific paths that the client needs. A broad entry, such as a relation that pulls in a whole data model, or a sensitive relation like an order, a payment, or another customer, exposes that data to anyone who calls the route. Store API routes are public, so treat every path you add to `allowed` as data you're willing to publish.
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/medusa"
+import { defineMiddlewares } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/customers/me",
+      matcher: "/store/products",
       middlewares: [
         (req, res, next) => {
-          (req.allowed ??= []).push("b2b_company")
+          (req.allowed ??= []).push("brand")
           next()
         },
       ],
@@ -12926,28 +13046,30 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer).
+In this example, you apply a middleware to the [List Products Store API Route](undefined/api/store/products/list-products).
 
-The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `b2b_company` field.
+The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `brand` field.
 
-You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](undefined/api/admin/customers/get-a-customer):
+Push the plain field path, without a `*`, `+`, or `.*` prefix or suffix. To also retrieve a field nested under the link, such as `brand.name`, push that full path too.
+
+You can now retrieve the `brand` field using the `fields` query parameter of the [List Products Store API Route](undefined/api/store/products/list-products):
 
 ```bash
-curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
--H 'Authorization: Bearer {access_token}'
+curl 'http://localhost:9000/store/products?fields=*brand' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
 
-In this example, you retrieve the `b2b_company` relation of the customer using the `fields` query parameter.
+In this example, you retrieve the `brand` relation of each product using the `fields` query parameter.
 
 This approach only works using a global middleware. It doesn't work in a route middleware.
 
 ***
 
-## API Routes that Disallow Retrievable Fields
+## Disallowed Fields in API Routes
 
-Some of Medusa's API routes block specific field path segments as a hard security boundary, which means you can't retrieve them even if you override the allowed fields and relations.
+An API route can also block specific field path segments as a hard security boundary, which strips them from the query even if they're in the allowed list.
 
-Learn more about disallowed fields, how to apply them to custom API routes, and how to override them in the [Disallowed Fields in API Routes](undefined/learn/fundamentals/api-routes/disallowed-fields) chapter.
+Medusa's API routes don't set disallowed fields, so overriding a route's allowed fields is enough to retrieve your custom linked data model. Learn how to block a segment on your own API routes in the [Disallowed Fields in API Routes](undefined/learn/fundamentals/api-routes/disallowed-fields) chapter.
 
 
 # Request Body and Query Parameter Validation
@@ -16215,12 +16337,17 @@ For example, create the file `src/subscribers/order-placed.ts` with the followin
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Sending confirmation email...")
 
@@ -17170,7 +17297,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: products } = await query.graph({
     entity: "product",
@@ -17741,12 +17870,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { data: products } = await query.index({
     entity: "product",
@@ -17880,12 +18014,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { data: products } = await query.index({
     entity: "product",
@@ -17941,12 +18080,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { 
     data: products,
@@ -18364,12 +18508,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { 
     data: products,
@@ -18403,11 +18552,16 @@ import {
   StepResponse,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 const retrieveBrandsStep = createStep(
   "retrieve-brands",
   async ({}, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: brands } = await query.index({
       entity: "brand",
@@ -21611,11 +21765,14 @@ For example, consider you have a [workflow](undefined/learn/fundamentals/workflo
 
 ```ts
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 export const countProductsStep = createStep(
   "count-products",
   async ({ }, { container }) => {
-    const productModuleService = container.resolve("product")
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
 
     const [,count] = await productModuleService.listAndCountProducts()
 
@@ -22557,7 +22714,11 @@ You should, instead, build workflows that use these APIs and tools along with yo
 For example, you can create a workflow that retrieves data using Query, then pass the data to your module's service to perform some action.
 
 ```ts title="Example Workflow"
-import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 
 const createBrandsInCmsStep = createStep(
@@ -22692,11 +22853,16 @@ Learn how to create a module in [this chapter](undefined/learn/fundamentals/modu
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function helloWorldLoader({
   container,
 }: LoaderOptions) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("[HELLO MODULE] Just started the Medusa application!")
 }
@@ -22794,6 +22960,10 @@ As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0),
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
 import { MongoClient } from "mongodb"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 type ModuleOptions = {
   connection_url?: string
@@ -22805,12 +22975,20 @@ export default async function mongoConnectionLoader({
   options,
 }: LoaderOptions<ModuleOptions>) {
   if (!options.connection_url) {
-    throw new Error(`[MONGO MDOULE]: connection_url option is required.`)
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `[MONGO MDOULE]: connection_url option is required.`
+    )
   }
   if (!options.db_name) {
-    throw new Error(`[MONGO MDOULE]: db_name option is required.`)
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `[MONGO MDOULE]: db_name option is required.`
+    )
   }
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   
   try {
     const clientDb = (
@@ -24349,9 +24527,14 @@ For example:
 
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Greeting!")
 }
@@ -24434,9 +24617,14 @@ For example, create the file `src/jobs/hello-world.ts` with the following conten
 
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Greeting!")
 }
@@ -24522,12 +24710,17 @@ For example:
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ScheduledJobContext } from "@medusajs/framework"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(
   container: MedusaContainer,
   context: ScheduledJobContext
 ) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info(`Greeting! Scheduled for: ${context.scheduledFor}`)
 }
@@ -24632,10 +24825,15 @@ For example:
 
 ```ts title="src/workflows/hooks/create-blog-post.ts"
 import { createBlogPostWorkflow } from "../create-blog-post"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 createBlogPostWorkflow.hooks.validate(
   async ({ post }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: existingPosts } = await query.graph({
       entity: "post",
@@ -24703,7 +24901,10 @@ Create a step in the same `src/workflows/hello-world.ts` file that throws an err
 const step2 = createStep(
   "step-2",
   async () => {
-    throw new Error("Throwing an error...")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Throwing an error..."
+    )
   }
 )
 ```
@@ -24943,6 +25144,7 @@ const workflow = createWorkflow(
   }) {
 
     const result = when(
+      "is-active",
       input, 
       (input) => {
         return input.is_active
@@ -25875,7 +26077,7 @@ import {
 
 const workflow = createWorkflow(
   "hello-world",
-  async (input) => {
+  (input) => {
     const products = createProductsWorkflow.runAsStep({
       input: {
         products: [
@@ -25922,7 +26124,7 @@ type WorkflowInput = {
 
 const workflow = createWorkflow(
   "hello-product",
-  async (input: WorkflowInput) => {
+  (input: WorkflowInput) => {
     const createProductsData = transform({
       input,
     }, (data) => [
@@ -25973,7 +26175,7 @@ type WorkflowInput = {
 
 const workflow = createWorkflow(
   "hello-product",
-  async (input: WorkflowInput) => {
+  (input: WorkflowInput) => {
     const product = when(input, ({ should_create }) => should_create)
       .then(() => {
         return createProductsWorkflow.runAsStep({
@@ -26090,6 +26292,7 @@ For example:
 
 ```ts title="src/workflows/steps/charge-customer.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   order_id: string
@@ -26099,7 +26302,9 @@ type StepInput = {
 export const chargeCustomerStep = createStep(
   "charge-customer",
   async (input: StepInput, { container }) => {
-    const lockingModuleService = container.resolve("locking")
+    const lockingModuleService = container.resolve(
+      Modules.LOCKING
+    )
 
     await lockingModuleService.acquire(input.order_id, {
       // Lock will auto-expire after 10 seconds
@@ -26757,11 +26962,14 @@ import {
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 const getProductCountStep = createStep(
   "get-product-count", 
   async (_, { container }) => {
-    const productModuleService = container.resolve("product")
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
 
     const [, count] = await productModuleService.listAndCountProducts()
 
@@ -26875,6 +27083,7 @@ import {
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { MedusaError } from "@medusajs/framework/utils"
 
 const step1 = createStep(
   {
@@ -26884,7 +27093,10 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new Error("Oops! Something happened.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Oops! Something happened."
+    )
   }
 )
 
@@ -26935,7 +27147,10 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new Error("Oops! Something happened.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Oops! Something happened."
+    )
   }
 )
 ```
@@ -26960,7 +27175,10 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new Error("Oops! Something happened.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Oops! Something happened."
+    )
   }
 )
 ```
@@ -26983,7 +27201,10 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new Error("Oops! Something happened.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Oops! Something happened."
+    )
   }
 )
 ```
@@ -27016,13 +27237,18 @@ For example, to do it in an API route:
 
 ```ts title="src/api/retry-step/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { TransactionHandlerType } from "@medusajs/framework/utils"
+import {
+  TransactionHandlerType,
+  Modules,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const workflowEngine = req.scope.resolve("workflows")
+  const workflowEngine = req.scope.resolve(
+    Modules.WORKFLOW_ENGINE
+  )
 
   workflowEngine.retryStep({
     idempotencyKey: {
@@ -30874,12 +31100,17 @@ For example:
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function helloWorldLoader({
   container,
   options,
 }: LoaderOptions) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("[HELLO MODULE] Just started the Medusa application!")
 }
@@ -30901,9 +31132,14 @@ In Medusa v2, a scheduled job function receives only the Medusa container as a p
 
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Greeting!")
 }
@@ -33397,9 +33633,9 @@ Before creating an actor type, you must have a module with a data model represen
 
 Learn how to create a module in [this guide](undefined/docs/learn/fundamentals/modules).
 
-The rest of this guide uses this `Manager` data model as an example:
+The rest of this guide uses this `Manager` data model, defined in a `company` module, as an example:
 
-```ts title="src/modules/manager/models/manager.ts"
+```ts title="src/modules/company/models/manager.ts"
 import { model } from "@medusajs/framework/utils"
 
 const Manager = model.define("manager", {
@@ -33433,7 +33669,7 @@ import {
 import { 
   setAuthAppMetadataStep,
 } from "@medusajs/medusa/core-flows"
-import ManagerModuleService from "../modules/manager/service"
+import CompanyModuleService from "../modules/company/service"
 
 type CreateManagerWorkflowInput = {
   manager: {
@@ -33450,10 +33686,10 @@ const createManagerStep = createStep(
     manager: managerData,
   }: Pick<CreateManagerWorkflowInput, "manager">, 
   { container }) => {
-    const managerModuleService: ManagerModuleService = 
-      container.resolve("manager")
+    const companyModuleService: CompanyModuleService = 
+      container.resolve("company")
 
-    const manager = await managerModuleService.createManager(
+    const manager = await companyModuleService.createManagers(
       managerData
     )
 
@@ -33591,13 +33827,18 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import ManagerModuleService from "../../../modules/manager/service"
+import CompanyModuleService from "../../../modules/company/service"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const managerId = req.auth_context?.actor_id
 
   const { data: [manager] } = await query.graph({
@@ -33685,7 +33926,7 @@ import {
   createStep,
   StepResponse,
 } from "@medusajs/framework/workflows-sdk"
-import ManagerModuleService from "../modules/manager/service"
+import CompanyModuleService from "../modules/company/service"
 
 export type DeleteManagerWorkflow = {
   id: string
@@ -33696,20 +33937,20 @@ const deleteManagerStep = createStep(
   async (
     { id }: DeleteManagerWorkflow, 
     { container }) => {
-      const managerModuleService: ManagerModuleService = 
-        container.resolve("manager")
+      const companyModuleService: CompanyModuleService = 
+        container.resolve("company")
 
-      const manager = await managerModuleService.retrieve(id)
+      const manager = await companyModuleService.retrieveManager(id)
 
-      await managerModuleService.deleteManagers(id)
+      await companyModuleService.deleteManagers(id)
 
       return new StepResponse(undefined, { manager })
     },
     async ({ manager }, { container }) => {
-      const managerModuleService: ManagerModuleService = 
-        container.resolve("manager")
+      const companyModuleService: CompanyModuleService = 
+        container.resolve("company")
 
-      await managerModuleService.createManagers(manager)
+      await companyModuleService.createManagers(manager)
     }
   )
 ```
@@ -33939,7 +34180,10 @@ import {
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function verificationRequestedHandler({
   event: { data: {
@@ -33965,7 +34209,9 @@ export default async function verificationRequestedHandler({
   const notificationModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const config = container.resolve("configModule")
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
 
@@ -35297,7 +35543,10 @@ import {
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function resetPasswordTokenHandler({
   event: { data: {
@@ -35310,7 +35559,9 @@ export default async function resetPasswordTokenHandler({
   const notificationModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const config = container.resolve("configModule")
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   let urlPrefix = ""
 
@@ -35766,7 +36017,9 @@ export const myWorkflow = createWorkflow(
 ### query.graph
 
 ```ts
-const query = container.resolve("query") // or req.scope.resolve in API routes
+const query = container.resolve(
+  ContainerRegistrationKeys.QUERY
+) // or req.scope.resolve in API routes
 
 const { data: [cart] } = await query.graph({
   entity: "cart",
@@ -36718,7 +36971,7 @@ const createCartStep = createStep(
       items: [
         {
           title: "Shirt",
-          unit_price: 1000,
+          unit_price: 10,
           quantity: 1,
         },
       ],
@@ -36972,6 +37225,9 @@ Create the file `src/utils/sales-channel-availability.ts` with the following con
 
 ```ts title="src/utils/sales-channel-availability.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function getUnavailableVariantIds({
   container,
@@ -36982,7 +37238,9 @@ export async function getUnavailableVariantIds({
   variantIds: string[]
   salesChannelId: string
 }) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: variants } = await query.graph({
     entity: "variant",
@@ -38771,11 +39029,16 @@ For example, to pass a negotiated carrier contract number when listing shipping 
 
 ```ts
 import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
-import { StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
   async ({ input }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [cart] } = await query.graph({
       entity: "cart",
@@ -41503,7 +41766,9 @@ export const myWorkflow = createWorkflow(
 ### query.graph
 
 ```ts
-const query = container.resolve("query") // or req.scope.resolve in API routes
+const query = container.resolve(
+  ContainerRegistrationKeys.QUERY
+) // or req.scope.resolve in API routes
 
 const { data: [order] } = await query.graph({
   entity: "order",
@@ -41970,13 +42235,13 @@ const createDraftOrderStep = createStep(
         {
           title: "Shirt",
           quantity: 1,
-          unit_price: 3000,
+          unit_price: 30,
         },
       ],
       shipping_methods: [
         {
           name: "Express shipping",
-          amount: 3000,
+          amount: 30,
         },
       ],
       status: "draft",
@@ -42696,7 +42961,9 @@ To retrieve an order's refunds, you can retrieve the order's transactions using 
 For example:
 
 ```ts
-const query = container.resolve("query") // or req.scope.resolve("query")
+const query = container.resolve(
+  ContainerRegistrationKeys.QUERY
+) // or req.scope.resolve("query")
 
 const { data: [order] } = await query.graph({
   entity: "order",
@@ -43334,7 +43601,7 @@ const createPaymentCollectionStep = createStep(
 
     const paymentCollection = await paymentModuleService.createPaymentCollections({
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
     })
 
     return new StepResponse({ paymentCollection }, paymentCollection.id)
@@ -43571,7 +43838,7 @@ await createPaymentCollectionForCartWorkflow(container)
 const paymentCollection =
   await paymentModuleService.createPaymentCollections({
     currency_code: "usd",
-    amount: 5000,
+    amount: 50,
   })
 ```
 
@@ -43584,7 +43851,7 @@ In the Medusa application, you need to use [Query](undefined/docs/learn/fundamen
 ### Using Query
 
 ```ts
-const query = container.resolve("query")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
 const { data: regionPaymentProviders } = await query.graph({
   entryPoint: "region_payment_provider",
@@ -43644,7 +43911,7 @@ const paymentSession =
     {
       provider_id: "pp_stripe_stripe",
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
       data: {
         // any necessary data for the
         // payment provider
@@ -43773,7 +44040,7 @@ await refundPaymentsWorkflow(container)
     input: [
       {
         payment_id: "pay_123",
-        amount: 1000, // refund amount
+        amount: 10, // refund amount
         note: "Customer requested refund", // optional note
         metadata: { // optional custom data
           reason: "damaged_goods",
@@ -43789,7 +44056,7 @@ await refundPaymentsWorkflow(container)
 ```ts
 const refund = await paymentModuleService.refundPayment({
   payment_id: "pay_123",
-  amount: 1000,
+  amount: 10,
   refund_reason_id: "rr_123",
   note: "Customer requested refund",
   metadata: {
@@ -46277,12 +46544,15 @@ To retrieve the inventory quantity of a product variant, use the `getVariantAvai
 For example:
 
 ```ts
-import { getVariantAvailability } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 // ...
 
 // use req.scope instead of container in API routes
-const query = container.resolve("query")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
 const availability = await getVariantAvailability(query, {
   variant_ids: ["variant_123"],
@@ -46344,13 +46614,18 @@ So, if you're retrieving the variant inventory availability in an API route star
 
 ```ts
 import { MedusaStoreRequest, MedusaResponse } from "@medusajs/framework/http"
-import { getVariantAvailability } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaStoreRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const sales_channel_ids = req.publishable_key_context.sales_channel_ids
 
   const availability = await getVariantAvailability(query, {
@@ -46377,12 +46652,15 @@ A product is linked to the sales channels it's available in. So, you can retriev
 For example:
 
 ```ts
-import { getVariantAvailability } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 // ...
 
 // use req.scope instead of container in API routes
-const query = container.resolve("query")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
 const { data: variants } = await query.graph({
   entity: "variant",
@@ -49337,13 +49615,18 @@ For example:
 
 ```ts
 import { MedusaStoreRequest, MedusaResponse } from "@medusajs/framework/http"
-import { getVariantAvailability } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaStoreRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const sales_channel_ids = req.publishable_key_context.sales_channel_ids
 
   res.json({
@@ -51617,13 +51900,13 @@ const taxLines = await taxModuleService.getTaxLines(
     {
       id: "cali_123",
       product_id: "prod_123",
-      unit_price: 1000,
+      unit_price: 10,
       quantity: 1,
     },
     {
       id: "casm_123",
       shipping_option_id: "so_123",
-      unit_price: 2000,
+      unit_price: 20,
     },
   ],
   {
@@ -52137,12 +52420,17 @@ For example, to retrieve blog posts with translated titles in the `/store/posts`
 
 ```ts title="src/api/routes/store/posts.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: posts } = await query.graph(
     {
@@ -52751,6 +53039,10 @@ To create a [subscriber](undefined/docs/learn/fundamentals/events-and-subscriber
 
 ```ts title="src/subscribers/user-invited.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function inviteCreatedHandler({
   event: { data },
@@ -52758,11 +53050,15 @@ export default async function inviteCreatedHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve(
-    "notification"
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
   )
-  const config = container.resolve("configModule")
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const { data: [invite] } = await query.graph({
     entity: "invite",
@@ -53888,16 +54184,26 @@ The Cache Module's main service must implement the `ICacheService` interface imp
 
 ```ts title="src/modules/my-cache/service.ts"
 import { ICacheService } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 
 class MyCacheService implements ICacheService {
   get<T>(key: string): Promise<T> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   set(key: string, data: unknown, ttl?: number): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   invalidate(key: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
 }
 
@@ -54005,7 +54311,7 @@ Create the file `src/modules/my-cache/index.ts` with the following content:
 import MyCacheService from "./service"
 import { Module } from "@medusajs/framework/utils"
 
-export default Module("my-cache", {
+export default Module("my_cache", {
   service: MyCacheService,
 })
 ```
@@ -54590,6 +54896,9 @@ Create the file `src/modules/memcached/loaders/connection.ts` with the following
 ```ts title="src/modules/memcached/loaders/connection.ts"
 import { LoaderOptions } from "@medusajs/framework/types"
 import * as memjs from "memjs"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export type ModuleOptions = {
   serverUrls?: string[]
@@ -54609,7 +54918,9 @@ export default async function connection({
   container,
   options,
 }: LoaderOptions<ModuleOptions>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const { 
     serverUrls = ["127.0.0.1:11211"], 
     username, 
@@ -55533,9 +55844,14 @@ To create an API route, create a new file at `src/api/test-cache/route.ts` with 
 
 ```ts title="src/api/test-cache/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
     
   // Test caching with a simple query
   const { data } = await query.graph({
@@ -55687,7 +56003,7 @@ Now, use the `Modules.CACHING` or `caching` key to resolve the Caching Module's 
 ```ts
 const cachingModuleService = container.resolve(Modules.CACHING)
 // or
-const cachingModuleService = container.resolve("caching")
+const cachingModuleService = container.resolve(Modules.CACHING)
 ```
 
 #### Method Changes
@@ -56190,18 +56506,30 @@ Create the file `src/modules/my-event/service.ts` that holds the implementation 
 The Event Module's main service must extend the `AbstractEventBusModuleService` class from the Medusa Framework:
 
 ```ts title="src/modules/my-event/service.ts"
-import { AbstractEventBusModuleService } from "@medusajs/framework/utils"
-import { Message } from "@medusajs/types"
+import {
+  AbstractEventBusModuleService,
+  MedusaError,
+} from "@medusajs/framework/utils"
+import { Message } from "@medusajs/framework/types"
 
 class MyEventService extends AbstractEventBusModuleService {
   async emit<T>(data: Message<T> | Message<T>[], options: Record<string, unknown>): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   async releaseGroupedEvents(eventGroupId: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   async clearGroupedEvents(eventGroupId: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
 }
 
@@ -56356,7 +56684,7 @@ Create the file `src/modules/my-event/index.ts` with the following content:
 import MyEventService from "./service"
 import { Module } from "@medusajs/framework/utils"
 
-export default Module("my-event", {
+export default Module("my_event", {
   service: MyEventService,
 })
 ```
@@ -57495,7 +57823,10 @@ If you want to send a notification as part of a workflow, You can use the [sendN
 For example:
 
 ```ts title="src/workflows/send-email.ts"
-import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
 import { 
   sendNotificationsStep, 
   useQueryGraphStep,
@@ -57519,14 +57850,19 @@ export const sendEmailWorkflow = createWorkflow(
       },
     })
 
+    const notificationData = transform(
+      { products },
+      ({ products }) => ({
+        product_title: products[0].title,
+        product_image: products[0].images[0]?.url,
+      })
+    )
+
     sendNotificationsStep({
       to: "user@gmail.com",
       channel: "email",
       template: "product-created",
-      data: {
-        product_title: product[0].title,
-        product_image: product[0].images[0]?.url,
-      },
+      data: notificationData,
     })
   }
 )
@@ -57697,14 +58033,19 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/framework"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productCreateHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService = container.resolve(Modules.NOTIFICATION)
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [product] } = await query.graph({
     entity: "product",
@@ -57761,7 +58102,10 @@ You can use the [sendNotificationsStep](undefined/references/medusa-workflows/st
 For example:
 
 ```ts title="src/workflows/send-email.ts"
-import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
 import { 
   sendNotificationsStep, 
   useQueryGraphStep,
@@ -57785,14 +58129,19 @@ export const sendEmailWorkflow = createWorkflow(
       },
     })
 
+    const notificationData = transform(
+      { products },
+      ({ products }) => ({
+        product_title: products[0].title,
+        product_image: products[0].images[0]?.url,
+      })
+    )
+
     sendNotificationsStep({
       to: "test@gmail.com",
       channel: "email",
       template: "product-created",
-      data: {
-        product_title: product[0].title,
-        product_image: product[0].images[0]?.url,
-      },
+      data: notificationData,
     })
   }
 )
@@ -60460,7 +60809,7 @@ So, create the file `src/modules/metal-prices/index.ts` with the following conte
 import { Module } from "@medusajs/framework/utils"
 import MetalPricesModuleService from "./service"
 
-export const METAL_PRICES_MODULE = "metal-prices"
+export const METAL_PRICES_MODULE = "metal_prices"
 
 export default Module(METAL_PRICES_MODULE, {
   service: MetalPricesModuleService,
@@ -65526,7 +65875,10 @@ import type {
   defineMiddlewares,
 } from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/framework/types"
-import { parseCorsOrigins } from "@medusajs/framework/utils"
+import {
+  parseCorsOrigins,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import cors from "cors"
 
 export default defineMiddlewares({
@@ -65540,7 +65892,9 @@ export default defineMiddlewares({
           next: MedusaNextFunction
         ) => {
           const configModule: ConfigModule =
-            req.scope.resolve("configModule")
+            req.scope.resolve(
+              ContainerRegistrationKeys.CONFIG_MODULE
+            )
 
           return cors({
             origin: parseCorsOrigins(
@@ -65666,24 +66020,75 @@ npx medusa db:generate blog
 npx medusa db:migrate
 ```
 
-7. Use the module's main service in an API route:
+7. Create a workflow that uses the module's main service in a step in the file `src/workflows/create-post.ts`:
+
+```ts title="src/workflows/create-post.ts"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import BlogModuleService from "../modules/blog/service"
+import { BLOG_MODULE } from "../modules/blog"
+
+type CreatePostInput = {
+  title: string
+}
+
+const createPostStep = createStep(
+  "create-post",
+  async (input: CreatePostInput, { container }) => {
+    const blogModuleService: BlogModuleService =
+      container.resolve(BLOG_MODULE)
+
+    const post = await blogModuleService.createPosts(input)
+
+    return new StepResponse(post, post.id)
+  },
+  async (postId, { container }) => {
+    if (!postId) {
+      return
+    }
+
+    const blogModuleService: BlogModuleService =
+      container.resolve(BLOG_MODULE)
+
+    await blogModuleService.deletePosts(postId)
+  }
+)
+
+const createPostWorkflow = createWorkflow(
+  "create-post",
+  (input: CreatePostInput) => {
+    const post = createPostStep(input)
+
+    return new WorkflowResponse(post)
+  }
+)
+
+export default createPostWorkflow
+```
+
+8. Execute the workflow in an API route:
 
 ```ts title="src/api/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import BlogModuleService from "../../modules/blog/service"
-import { BLOG_MODULE } from "../../modules/blog"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import createPostWorkflow from "../../workflows/create-post"
 
-export async function GET(
+export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const blogModuleService: BlogModuleService = req.scope.resolve(
-    BLOG_MODULE
-  )
-
-  const post = await blogModuleService.createPosts({
-    title: "test",
-  })
+  const { result: post } = await createPostWorkflow(req.scope)
+    .run({
+      input: {
+        title: "test",
+      },
+    })
 
   res.json({
     post,
@@ -67183,7 +67588,7 @@ import {
 
 const workflow = createWorkflow(
   "hello-world",
-  async (input) => {
+  (input) => {
     const products = createProductsWorkflow.runAsStep({
       input: {
         products: [
@@ -67640,7 +68045,7 @@ To create a scheduled job, create the file `src/jobs/hello-world.ts` with the fo
 
 ```ts title="src/jobs/hello-world.ts"
 // the scheduled-job function
-export default function () {
+export default async function () {
   console.log("Time to say hello world!")
 }
 
@@ -68534,7 +68939,7 @@ const paymentCollection =
   await paymentModuleService.createPaymentCollections({
     region_id: "reg_123",
     currency_code: "usd",
-    amount: 5000,
+    amount: 50,
   })
 
 // resolve Link
@@ -68562,7 +68967,7 @@ const paymentSession =
     {
       provider_id: "stripe",
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
       data: {
         // any necessary data for the
         // payment provider
@@ -68996,7 +69401,10 @@ import {
   MedusaResponse,
   MedusaNextFunction,
 } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function validateCustomAuthProvider(
   req: AuthenticatedMedusaRequest, 
@@ -69010,7 +69418,9 @@ export default async function validateCustomAuthProvider(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const { data: [authIdentity] } = await query.graph({
     entity: "auth_identity",
     fields: [
@@ -69662,12 +70072,19 @@ import {
   sendAbandonedCartsWorkflow, 
   SendAbandonedCartsWorkflowInput,
 } from "../workflows/send-abandoned-carts"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function abandonedCartJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const oneDayAgo = new Date()
   oneDayAgo.setDate(oneDayAgo.getDate() - 1)
@@ -70289,8 +70706,12 @@ export const getProductFeedItemsStep = createStep(
   "get-product-feed-items", 
   async (input: StepInput, { container }) => {
   const feedItems: FeedItem[] = []
-  const query = container.resolve("query")
-  const configModule = container.resolve("configModule")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const storefrontUrl = configModule.admin.storefrontUrl || 
     process.env.STOREFRONT_URL
 
@@ -70601,10 +71022,17 @@ import {
   MedusaContainer,
 } from "@medusajs/framework/types"
 import sendProductFeedWorkflow from "../workflows/send-product-feed"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function syncProductFeed(container: MedusaContainer) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: regions } = await query.graph({
     entity: "region",
@@ -71234,7 +71662,10 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { z } from "@medusajs/framework/zod"
 import { createCheckoutSessionWorkflow } from "../../workflows/create-checkout-session"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const PostCreateSessionSchema = z.object({
   items: z.array(z.object({
@@ -71264,7 +71695,9 @@ export const POST = async (
   >,
   res: MedusaResponse
 ) => {
-  const logger = req.scope.resolve("logger")
+  const logger = req.scope.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const responseHeaders = {
     "Idempotency-Key": req.headers["idempotency-key"] as string,
     "Request-Id": req.headers["request-id"] as string,
@@ -71315,6 +71748,7 @@ Create the file `src/api/middlewares/validate-agentic-request.ts` with the follo
 ```ts title="src/api/middlewares/validate-agentic-request.ts"
 import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { AGENTIC_COMMERCE_MODULE } from "../../modules/agentic-commerce"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function validateAgenticRequest(
   req: MedusaRequest, 
@@ -71322,7 +71756,7 @@ export async function validateAgenticRequest(
   next: MedusaNextFunction
 ) {
   const agenticCommerceModuleService = req.scope.resolve(AGENTIC_COMMERCE_MODULE)
-  const apiKeyModuleService = req.scope.resolve("api_key")
+  const apiKeyModuleService = req.scope.resolve(Modules.API_KEY)
   const signature = req.headers["signature"] as string
   const apiKey = req.headers["authorization"]?.replaceAll("Bearer ", "")
 
@@ -72669,7 +73103,7 @@ The `cancelPaymentSessionsStep` step cancels payment sessions associated with th
 To create the step, create the file `src/workflows/steps/cancel-payment-sessions.ts` with the following content:
 
 ```ts title="src/workflows/steps/cancel-payment-sessions.ts"
-import { promiseAll } from "@medusajs/framework/utils"
+import { promiseAll, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type StepInput = {
@@ -72679,7 +73113,9 @@ type StepInput = {
 export const cancelPaymentSessionsStep = createStep(
   "cancel-payment-session",
   async ({ payment_session_ids }: StepInput, { container }) => {
-    const paymentModuleService = container.resolve("payment")
+    const paymentModuleService = container.resolve(
+      Modules.PAYMENT
+    )
 
     const paymentSessions = await paymentModuleService.listPaymentSessions({
       id: payment_session_ids,
@@ -72703,7 +73139,9 @@ export const cancelPaymentSessionsStep = createStep(
     if (!paymentSessions) {
       return
     }
-    const paymentModuleService = container.resolve("payment")
+    const paymentModuleService = container.resolve(
+      Modules.PAYMENT
+    )
 
     await promiseAll(
       paymentSessions.map((session) => {
@@ -72934,19 +73372,28 @@ import type {
 } from "@medusajs/framework"
 import { AGENTIC_COMMERCE_MODULE } from "../modules/agentic-commerce"
 import { AgenticCommerceWebhookEvent } from "../modules/agentic-commerce/service"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 export default async function orderWebhookHandler({
   event: { data, name },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const orderId = data.id
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const agenticCommerceModuleService = container.resolve(AGENTIC_COMMERCE_MODULE)
-  const configModule = container.resolve("configModule")
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
   if (!storefrontUrl) {
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
       "A storefront URL is required to send ACP order webhooks"
     )
   }
@@ -73012,6 +73459,7 @@ export default async function orderWebhookHandler({
           transaction!.created_at
         ).toISOString(),
         status: "completed",
+        // eslint-disable-next-line @medusajs/prices-in-major-units
         amount: Math.abs(transaction!.amount) * 100,
       })) || [],
     },
@@ -73660,7 +74108,9 @@ export async function GET(
   res: MedusaResponse
 ): Promise<void> {
   const { category_id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: categoryImages } = await query.graph({
     entity: "product_category_image",
@@ -75592,7 +76042,38 @@ You define a link using the `defineLink` function. It accepts three parameters:
 
 You'll learn how this link allows you to retrieve category images in the next section.
 
-### b. Retrieve Category Images
+### b. Allow Retrieving Category Images
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve category images, you must add `product_category_image` to the allowed fields of the `/store/product-categories` route.
+
+You do that with a middleware that pushes the field to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add a new route object passed to the array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/product-categories",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "product_category_image"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Retrieve Category Images
 
 You'll now begin customizing the storefront.
 
@@ -75636,9 +76117,9 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
 }
 ```
 
-You add `*product_category_image` to the `fields` query parameter in both functions. The asterisk (`*`) indicates that you want to include all fields in the product category image record.
+You add `*product_category_image` to the `fields` query parameter in both functions. The asterisk (`*`) indicates that you want to include all fields in the product category image record. The route allows the other fields, such as `*category_children` and `*parent_category`, by default, so the middleware you added earlier only allows `product_category_image`.
 
-### c. Add Category Image Type
+### d. Add Category Image Type
 
 Next, you'll add a TypeScript type for a category image.
 
@@ -75655,7 +76136,7 @@ export type CategoryImage = {
 
 You define a `CategoryImage` type that represents a category image.
 
-### d. Add Megamenu
+### e. Add Megamenu
 
 Next, you'll add a megamenu that shows categories with their thumbnail. You'll then change the navigation bar to show the megamenu.
 
@@ -75841,7 +76322,7 @@ Hover over the "Shop" item to see the megamenu with categories and their thumbna
 
 ![Storefront showing megamenu with categories and their thumbnails](https://res.cloudinary.com/dza7lstvk/image/upload/v1760518332/Medusa%20Resources/CleanShot_2025-10-15_at_11.51.56_2x_mifvqx.png)
 
-### e. Show Banner Image on Category Page
+### f. Show Banner Image on Category Page
 
 Next, you'll show a banner image on a category's page.
 
@@ -76524,10 +77005,15 @@ export const createTierWorkflow = createWorkflow(
           },
         })
       })
+    const promoId = transform(
+      { input },
+      ({ input }) => input.promo_id || null
+    )
+
     // Create the tier
     const tier = createTierStep({
       name: input.name,
-      promo_id: input.promo_id || null,
+      promo_id: promoId,
     })
 
     // Create tier rules if provided
@@ -76675,7 +77161,7 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: tiers, metadata } = await query.graph({
     entity: "tier",
@@ -76761,8 +77247,8 @@ Create the file `src/admin/lib/sdk.ts` with the following content:
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -77286,12 +77772,13 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { id } = req.params
 
   const { data: tiers } = await query.graph({
@@ -77517,11 +78004,16 @@ export const updateTierWorkflow = createWorkflow(
           },
         }).config({ name: "retrieve-promotion" })
       })
+    const promoId = transform(
+      { input },
+      ({ input }) => input.promo_id || null
+    )
+
     // Update the tier
     updateTierStep({
       id: input.id,
       name: input.name,
-      promo_id: input.promo_id || null,
+      promo_id: promoId,
     })
 
     when({ input }, (data) => {
@@ -78369,7 +78861,6 @@ Finally, you'll create the UI route that displays the details of a tier.
 To create the UI route, create the file `src/admin/routes/tiers/[id]/page.tsx` with the following content:
 
 ```tsx title="src/admin/routes/tiers/[id]/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { sdk } from "../../../lib/sdk"
@@ -78404,10 +78895,6 @@ const TierDetailsPage = () => {
     </>
   )
 }
-
-export const config = defineRouteConfig({
-  label: "Tier Details",
-})
 
 export default TierDetailsPage
 ```
@@ -78686,13 +79173,18 @@ export const updateCustomerTierOnOrderWorkflow = createWorkflow(
       purchase_value: purchasedValue,
     })
 
+    const existingTierId = transform(
+      { orders },
+      ({ orders }) => orders[0].customer?.tier?.id as string
+    )
+
     // Dismiss existing tier link if it exists
     // and the tier id is not the same as the tier id in the determine tier step
     when({ orders, tierId }, (data) => !!data.orders[0].customer?.tier?.id && data.tierId !== data.orders[0].customer?.tier?.id).then(
       () => {
         dismissRemoteLinkStep([
           {
-            [TIER_MODULE]: { tier_id: orders[0].customer?.tier?.id as string },
+            [TIER_MODULE]: { tier_id: existingTierId },
             [Modules.CUSTOMER]: { customer_id: validatedCustomer.id },
           },
         ])
@@ -78745,12 +79237,15 @@ import {
   SubscriberConfig,
 } from "@medusajs/framework"
 import { updateCustomerTierOnOrderWorkflow } from "../workflows/update-customer-tier-on-order"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   try {
     await updateCustomerTierOnOrderWorkflow(container).run({
       input: {
@@ -78937,20 +79432,22 @@ export const addTierPromotionToCartWorkflow = createWorkflow(
 
 
     // Check if customer exists and has tier
+    // @ts-ignore
+    const tierPromotionInput = transform({ carts }, ({ carts }) => ({
+      has_account: carts[0].customer!.has_account,
+      tier: {
+        promo_id: carts[0].customer!.tier!.promo_id || null,
+        promotion: {
+          id: carts[0].customer!.tier!.promotion!.id,
+          code: carts[0].customer!.tier!.promotion!.code || null,
+          status: carts[0].customer!.tier!.promotion!.status || null,
+        },
+      },
+    }))
+
     const validationResult = when({ carts }, (data) => !!data.carts[0].customer).then(() => {
       return validateTierPromotionStep({
-        customer: {
-          has_account: carts[0].customer!.has_account,
-          tier: {
-            promo_id: carts[0].customer!.tier!.promo_id || null,
-            promotion: {
-              id: carts[0].customer!.tier!.promotion!.id,
-              code: carts[0].customer!.tier!.promotion!.code || null,
-              // @ts-ignore
-              status: carts[0].customer!.tier!.promotion!.status || null,
-            },
-          },
-        },
+        customer: tierPromotionInput,
       })
     })
 
@@ -78969,10 +79466,15 @@ export const addTierPromotionToCartWorkflow = createWorkflow(
         !appliedPromotionCodes.includes(data.validationResult?.promotion_code!)
       )
     }).then(() => {
+      const promoCodes = transform(
+        { validationResult },
+        ({ validationResult }) => [validationResult?.promotion_code!]
+      )
+
       return updateCartPromotionsWorkflow.runAsStep({
         input: {
           cart_id: input.cart_id,
-          promo_codes: [validationResult?.promotion_code!],
+          promo_codes: promoCodes,
           action: PromotionActions.ADD,
         },
       })
@@ -79056,11 +79558,16 @@ To consume the hook, create the file `src/workflows/hooks/update-cart-promotions
 
 ```ts title="src/workflows/hooks/update-cart-promotions-validate.ts"
 import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { PromotionActions } from "@medusajs/framework/utils"
 
 updateCartPromotionsWorkflow.hooks.validate(async ({ input, cart }, { container }) => {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Only validate when adding promotions
   if (
@@ -79144,10 +79651,15 @@ Create the file `src/workflows/hooks/complete-cart-validate.ts` with the followi
 
 ```ts title="src/workflows/hooks/complete-cart-validate.ts"
 import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 completeCartWorkflow.hooks.validate(async ({ cart }, { container }) => {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Get cart with promotions
   const { data: [detailedCart] } = await query.graph({
@@ -79277,7 +79789,10 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { TIER_MODULE } from "../../../../../modules/tier"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import { OrderStatus } from "@medusajs/framework/utils"
 
@@ -79301,7 +79816,7 @@ export async function GET(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const tierModuleService = req.scope.resolve(TIER_MODULE)
 
   // Get customer details to validate they're registered
@@ -80133,7 +80648,10 @@ import {
   updateCartPromotionsWorkflow,
 } from "@medusajs/medusa/core-flows"
 import { FIRST_PURCHASE_PROMOTION_CODE } from "../../constants"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 updateCartPromotionsWorkflow.hooks.validate(
   (async ({ input, cart }, { container }) => {
@@ -80151,7 +80669,9 @@ updateCartPromotionsWorkflow.hooks.validate(
         "First purchase discount can only be applied to carts with a customer"
       )
     }
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [customer] } = await query.graph({
       entity: "customer",
@@ -80222,7 +80742,9 @@ completeCartWorkflow.hooks.validate(
       )
     }
 
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [customer] } = await query.graph({
       entity: "customer",
@@ -81522,12 +82044,17 @@ Create the file `src/api/admin/invoice-config/route.ts` with the following conte
 
 ```ts title="src/api/admin/invoice-config/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [invoiceConfig] } = await query.graph({
     entity: "invoice_config",
@@ -83095,6 +83622,10 @@ To create a subscriber, create the file `src/subscribers/order-placed.ts` with t
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { generateInvoicePdfWorkflow } from "../workflows/generate-invoice-pdf"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
@@ -83102,8 +83633,12 @@ export default async function orderPlacedHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve("notification")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
 
   const { data: [order] } = await query.graph({
     entity: "order",
@@ -85137,11 +85672,16 @@ import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
 import LoyaltyModuleService from "../../modules/loyalty/service"
 import { LOYALTY_MODULE } from "../../modules/loyalty"
 import { CartData, getCartLoyaltyPromotion } from "../../utils/promo"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 completeCartWorkflow.hooks.validate(
   async ({ cart }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const loyaltyModuleService: LoyaltyModuleService = container.resolve(
       LOYALTY_MODULE
     )
@@ -85325,7 +85865,7 @@ import {
 } from "@medusajs/framework/utils"
 import { 
   Logger, 
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -85426,7 +85966,7 @@ import {
   AuthenticationInput, 
   AuthIdentityProviderService, 
   AuthenticationResponse, 
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class PhoneAuthService extends AbstractAuthModuleProvider {
   // ...
@@ -85508,7 +86048,7 @@ So, add the `authenticate` method to the `PhoneAuthService` class:
 // other imports...
 import { 
   AuthIdentityDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import jwt from "jsonwebtoken"
 
 class PhoneAuthService extends AbstractAuthModuleProvider {
@@ -85615,6 +86155,8 @@ You can use this method to verify the OTP that the user entered. If valid, you r
 So, add the `validateCallback` method to the `PhoneAuthService` class:
 
 ```ts title="src/modules/phone-auth/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 class PhoneAuthService extends AbstractAuthModuleProvider {
   // ...
   async validateCallback(
@@ -85657,7 +86199,10 @@ class PhoneAuthService extends AbstractAuthModuleProvider {
       ) as { otp: string }
   
       if (decodedOTP.otp !== otp) {
-        throw new Error("Invalid OTP")
+        throw new MedusaError(
+          MedusaError.Types.UNAUTHORIZED,
+          "Invalid OTP"
+        )
       }
     } catch (error) {
       return {
@@ -86060,17 +86605,28 @@ The `validateOptions` method is used to validate the options passed to the modul
 So, add the `validateOptions` method to the `TwilioSmsService` class:
 
 ```ts title="src/modules/twilio-sms/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 class TwilioSmsService extends AbstractNotificationProviderService {
   // ...
   static validateOptions(options: Record<any, any>): void | never {
     if (!options.accountSid) {
-      throw new Error("Account SID is required")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Account SID is required"
+      )
     }
     if (!options.authToken) {
-      throw new Error("Auth token is required")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Auth token is required"
+      )
     }
     if (!options.from) {
-      throw new Error("From is required")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "From is required"
+      )
     }
   }
 }
@@ -86091,7 +86647,8 @@ So, add the `send` method to the `TwilioSmsService` class:
 import { 
   ProviderSendNotificationDTO, 
   ProviderSendNotificationResultsDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 
 class TwilioSmsService extends AbstractNotificationProviderService {
   // ...
@@ -86121,12 +86678,18 @@ class TwilioSmsService extends AbstractNotificationProviderService {
     switch (template) {
       case "otp-template":
         if (!data?.otp) {
-          throw new Error("OTP is required for OTP template")
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "OTP is required for OTP template"
+          )
         }
 
         return `Your OTP is ${data.otp}`
       default:
-        throw new Error(`Template ${template} not found`)
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Template ${template} not found`
+        )
     }
   }
 }
@@ -87360,7 +87923,7 @@ For the Preorder Module, you'll define a data model to represent pre-order confi
 To create the first data model, create the file `src/modules/preorder/models/preorder-variant.ts` with the following content:
 
 ```ts title="src/modules/preorder/models/preorder-variant.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { Preorder } from "./preorder"
 
 export enum PreorderVariantStatus {
@@ -87403,7 +87966,7 @@ Next, you'll create the `Preorder` data model that represents a customer's purch
 Create the file `src/modules/preorder/models/preorder.ts` with the following content:
 
 ```ts title="src/modules/preorder/models/preorder.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { PreorderVariant } from "./preorder-variant"
 
 export enum PreorderStatus {
@@ -87809,6 +88372,7 @@ export const upsertProductVariantPreorderWorkflow = createWorkflow(
     }).config({ name: "retrieve-preorder-variant" })
 
     const updatedPreorderVariant = when(
+      "update-preorder-variant",
       { preorderVariants }, 
       (data) => data.preorderVariants.length > 0
     ).then(() => {
@@ -87823,6 +88387,7 @@ export const upsertProductVariantPreorderWorkflow = createWorkflow(
     })
 
     const createdPreorderVariant = when(
+      "create-preorder-variant",
       { preorderVariants }, 
       (data) => data.preorderVariants.length === 0
     ).then(() => {
@@ -88830,7 +89395,10 @@ You do this using [workflow hooks](undefined/docs/learn/fundamentals/workflows/w
 To consume the `validate` hook of the `addToCartWorkflow` that holds the add-to-cart logic, create the file `src/workflows/hooks/validate-cart.ts` with the following content:
 
 ```ts title="src/workflows/hooks/validate-cart.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { PreorderVariant } from "../../modules/preorder/models/preorder-variant"
@@ -88847,7 +89415,9 @@ function isPreorderVariant(
 
 addToCartWorkflow.hooks.validate(
   (async ({ input, cart }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: itemsInCart } = await query.graph({
       entity: "line_item",
@@ -88909,13 +89479,70 @@ You can test this out after customizing the storefront in the next section.
 
 In this step, you'll customize the Next.js Starter Storefront to show when products are pre-orderable, use the custom complete pre-order cart API route, and show pre-order information in the order confirmation page.
 
+You'll also allow the storefront to retrieve pre-order variants from the Store API routes it uses.
+
 The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
 
 ```bash
 cd apps/storefront
 ```
 
-### a. Add Pre-order Types
+### a. Allow Retrieving Pre-order Variants
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve pre-order variants, you must add the fields of the pre-order variant link to the allowed fields of the routes that the storefront uses.
+
+You do that with middlewares that push the fields to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add the following route objects to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "variants.preorder_variant"
+          )
+          next()
+        },
+      ],
+    },
+    {
+      matcher: "/store/carts",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "items.variant.preorder_variant"
+          )
+          next()
+        },
+      ],
+    },
+    {
+      matcher: "/store/orders",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "items.variant.preorder_variant"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The storefront can now request the pre-order variant when it retrieves products, carts, and orders. The other fields that the storefront requests, such as `+items.total` and `*region`, are already allowed by default.
+
+The middlewares must be global, so don't set a `method` property on the route objects. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### b. Add Pre-order Types
 
 You'll start by defining types related to pre-orders that you'll use in the storefront.
 
@@ -88946,7 +89573,7 @@ export type StoreCartLineItemWithPreorder = HttpTypes.StoreCartLineItem & {
 
 You'll use these type definitions in other customizations.
 
-### b. Add isPreorder Utility
+### c. Add isPreorder Utility
 
 In product, cart, and order related pages, you'll need to check if a product variant is a pre-order variant. So, you'll create a utility function that you can reuse in those pages.
 
@@ -88967,7 +89594,7 @@ export function isPreorder(
 
 The function returns `true` if the pre-order variant has a `status` of `enabled` and an `available_date` in the future.
 
-### c. Show Pre-order Information in Product Page
+### d. Show Pre-order Information in Product Page
 
 In this section, you'll customize the product page to show pre-order information when a customer selects a pre-order variant.
 
@@ -89104,7 +89731,7 @@ You can click on the "Pre-order" button to add the item to the cart.
 
 If you consumed the `validate` hook of the `addToCartWorkflow` as explained in the [optional step](#optional-restrict-cart-to-pre-order-or-regular-items), you can test it out now by trying to add a regular item to the cart.
 
-### d. Show Pre-order Information in Cart Page
+### e. Show Pre-order Information in Cart Page
 
 Next, you'll customize the component showing items in the cart and checkout pages to show pre-order information.
 
@@ -89215,7 +89842,7 @@ Then, in the storefront, click on the "Cart" link at the top right of the page. 
 
 You can also see this message on the checkout page.
 
-### e. Use Custom Complete Pre-order Cart API Route
+### f. Use Custom Complete Pre-order Cart API Route
 
 Next, you'll use the custom API route you created to complete carts. This will allow you to create `Preorder` records for pre-order items in the cart when the customer places an order.
 
@@ -89256,7 +89883,7 @@ Then, in the storefront, proceed to checkout with a pre-order item in the cart.
 
 When you place the order, the custom API route will be executed and the order will be placed.
 
-### f. Show Pre-order Information in Order Confirmation Page
+### g. Show Pre-order Information in Order Confirmation Page
 
 Finally, you'll show the pre-order information in the order confirmation and detail pages.
 
@@ -89360,12 +89987,17 @@ Create the file `src/api/admin/orders/[id]/preorders/route.ts` with the followin
 
 ```ts title="src/api/admin/orders/[id]/preorders/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const { id: orderId } = req.params
 
   const { data: preorders } = await query.graph({
@@ -89831,8 +90463,18 @@ export const fulfillPreorderWorkflow = createWorkflow(
       return data.items_total + shippingPrice
     })
 
+    const paymentCollection = transform(
+      { orders },
+      ({ orders }) => orders[0].payment_collections?.[0]
+    )
+
+    const paymentId = transform(
+      { orders },
+      ({ orders }) => orders[0].payment_collections?.[0]?.payments[0].id
+    )
+
     when({
-      payment_collection: orders[0].payment_collections?.[0],
+      payment_collection: paymentCollection,
       capture_total: totalCaptureAmount,
     }, (data) => {
       return data.payment_collection?.amount !== undefined && data.payment_collection.captured_amount !== null &&  
@@ -89841,7 +90483,7 @@ export const fulfillPreorderWorkflow = createWorkflow(
       capturePaymentWorkflow.runAsStep({
         input: {
           // @ts-ignore
-          payment_id: orders[0].payment_collections?.[0]?.payments[0].id,
+          payment_id: paymentId,
           amount: totalCaptureAmount,
         },
       })
@@ -89886,10 +90528,17 @@ import {
 } from "@medusajs/framework/types"
 import { fulfillPreorderWorkflow } from "../workflows/fulfill-preorder"
 import { PreorderVariant } from "../modules/preorder/models/preorder-variant"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function fulfillPreordersJob(container: MedusaContainer) {
-  const query = container.resolve("query")
-  const logger = container.resolve("logger")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Starting daily fulfill preorders job...")
 
@@ -90076,6 +90725,10 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/framework"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productCreateHandler({
   event: { data },
@@ -90084,9 +90737,11 @@ export default async function productCreateHandler({
   order_id: string;
   preorder_variant_id: string;
  }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const notificationModuleService = container.resolve(
-    "notification"
+    Modules.NOTIFICATION
   )
 
   const { data: preorderVariants } = await query.graph({
@@ -90228,6 +90883,9 @@ import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { cancelPreordersWorkflow, CancelPreordersWorkflowInput } from "../workflows/cancel-preorders"
 import { Preorder } from "../modules/preorder/models/preorder"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderCanceledHandler({
   event: { data },
@@ -90235,7 +90893,9 @@ export default async function orderCanceledHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const workflowInput: CancelPreordersWorkflowInput = {
     preorders: [],
@@ -90421,7 +91081,6 @@ export const handleOrderEditWorkflow = createWorkflow(
       entity: "order",
       fields: [
         "*",
-        "items",
         "items.variant.*",
         "items.variant.preorder_variant.*",
       ],
@@ -92103,7 +92762,9 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<{ id: string }>,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { data: productBuilders } = await query.graph({
     entity: "product_builder",
@@ -92151,6 +92812,9 @@ To create the API route, create the file `src/api/admin/products/complementary/r
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { createFindParams } from "@medusajs/medusa/api/utils/validators"
 import { z } from "@medusajs/framework/zod"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GetComplementaryProductsSchema = z.object({
   exclude_product_id: z.string(),
@@ -92164,7 +92828,9 @@ export const GET = async (
     exclude_product_id,
   } = req.validatedQuery
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: products,
@@ -92264,12 +92930,17 @@ To create the API route, create the file `src/api/admin/products/addons/route.ts
 
 ```ts title="src/api/admin/products/addons/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: products,
@@ -92355,8 +93026,8 @@ Create the file `src/admin/lib/sdk.ts` with the following content:
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -93395,7 +94066,45 @@ You define the following types:
 - `AddonSelection`: A selected add-on product in a product builder configuration.
 - `BuilderConfiguration`: The overall builder configuration chosen by the customer for a product.
 
-### b. Retrieve Product Builder Configuration
+### b. Allow Retrieving Product Builder Configuration
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve the builder configuration, you must add the fields of the product builder link to the allowed fields of the `/store/products` route.
+
+Medusa matches each requested field against the allowed fields by its full path. A relation doesn't allow the fields nested in it, so you must add every nested path that the storefront requests.
+
+In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "product_builder",
+            "product_builder.custom_fields",
+            "product_builder.complementary_products",
+            "product_builder.complementary_products.product",
+            "product_builder.complementary_products.product.variants",
+            "product_builder.addons",
+            "product_builder.addons.product",
+            "product_builder.addons.product.variants"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Retrieve Product Builder Configuration
 
 Next, you need to retrieve the builder configuration for a product when the customer views its details page.
 
@@ -93448,7 +94157,7 @@ return sdk.client
   )
 ```
 
-You retrieve for each product its builder configurations, its custom fields, complementary products, and add-on products. You also retrieve the product and variant details of the complementary and addon products.
+You retrieve for each product its builder configurations, its custom fields, complementary products, and add-on products. You also retrieve the product and variant details of the complementary and addon products. Medusa returns these fields because you allowed them in the previous section.
 
 Finally, change the return type of the `listProductsWithSort` to also include the product builder data:
 
@@ -93465,7 +94174,7 @@ export const listProductsWithSort = async ({
 }
 ```
 
-### c. Add Product Builder Configuration Utilities
+### d. Add Product Builder Configuration Utilities
 
 Next, you'll add utility functions that are useful in your customizations.
 
@@ -93510,7 +94219,7 @@ You define the following utilities:
 - `hasComplementaryProducts`: Checks if a product has complementary products.
 - `hasAddons`: Checks if a product has addons.
 
-### d. Implement Product Builder Configuration Component
+### e. Implement Product Builder Configuration Component
 
 In this section, you'll implement the component that will show the product builder configurations on the product details page. It will show inputs for custom fields, and variant selection for complementary and addon products.
 
@@ -93982,7 +94691,7 @@ return (
 
 You display a separate section for each custom field, complementary product, and addon in the product builder configuration. You also use the `VariantSelector` component to display the variants of each complementary and addon product.
 
-### e. Modify Price Component to Include Builder Prices
+### f. Modify Price Component to Include Builder Prices
 
 When a customer chooses complementary and addon products, the price shown on the product page should reflect that selection. So, you need to modify the pricing component to accept the builder configuration, and update the displayed price accordingly.
 
@@ -94102,7 +94811,7 @@ You make the following key changes:
 - Remove the existing condition on `selectedPrice`, and replace it instead with a condition on `finalPrice`. The condition's body is still the same.
 - Modify the return statement to use `finalPrice` instead of `selectedPrice`.
 
-### f. Display Product Builder on Product Page
+### g. Display Product Builder on Product Page
 
 Finally, to display the product builder component on the product details page, you need to modify two components:
 
@@ -94389,7 +95098,10 @@ To create the step, create the file `src/workflows/steps/validate-product-builde
 
 ```ts title="src/workflows/steps/validate-product-builder-configuration.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export type ValidateProductBuilderConfigurationStepInput = {
   product_id: string
@@ -94406,7 +95118,9 @@ export const validateProductBuilderConfigurationStep = createStep(
     complementary_product_variants,
     addon_variants,
   }: ValidateProductBuilderConfigurationStepInput, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [productBuilder] } = await query.graph({
       entity: "product_builder",
@@ -96474,8 +97188,10 @@ Next, you'll implement the step's logic. Add the following in the step function:
 
 ```ts title="src/workflows/steps/get-product-feed-items.ts"
 const feedItems: FeedItem[] = []
-const query = container.resolve("query")
-const configModule = container.resolve("configModule")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
+const configModule = container.resolve(
+  ContainerRegistrationKeys.CONFIG_MODULE
+)
 const storefrontUrl = configModule.admin.storefrontUrl || 
   process.env.STOREFRONT_URL
 
@@ -97476,9 +98192,11 @@ export const upsertRentalConfigWorkflow = createWorkflow(
     })
 
     // If rental config doesn't exist, create it and link
-    const createdConfig = when({ products }, (data) => {
-      return !data.products[0]?.rental_configuration
-    }).then(() => {
+    const createdConfig = when(
+      "create-rental-configuration",
+      { products },
+      (data) => !data.products[0]?.rental_configuration
+    ).then(() => {
       const newConfig = createRentalConfigurationStep({
         product_id: input.product_id,
         min_rental_days: input.min_rental_days,
@@ -97655,7 +98373,9 @@ In `src/api/admin/products/[id]/rental-config/route.ts`, add the following at th
 ```ts title="src/api/admin/products/[id]/rental-config/route.ts"
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Query rental configuration for the product
   const { data: rentalConfigs } = await query.graph({
@@ -97696,8 +98416,8 @@ Create the file `src/admin/lib/sdk.ts` with the following content:
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -98140,7 +98860,11 @@ To create the API route, create the file `src/api/store/products/[id]/rental-ava
 
 ```ts title="src/api/store/products/[id]/rental-availability/route.ts"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError, QueryContext } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  QueryContext,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import { RENTAL_MODULE } from "../../../../../modules/rental"
 import RentalModuleService from "../../../../../modules/rental/service"
@@ -98173,7 +98897,9 @@ export const GET = async (
     currency_code,
   } = req.validatedQuery
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const rentalModuleService: RentalModuleService = req.scope.resolve(
     RENTAL_MODULE
   )
@@ -98349,7 +99075,38 @@ export interface RentalAvailabilityResponse {
 
 You'll use these types in the next sections.
 
-### b. Fetch Rental Configuration with Product Details
+### b. Allow Retrieving Rental Configuration
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve the rental configuration, you must add `rental_configuration` to the allowed fields of the `/store/products` route.
+
+You do that with a middleware that pushes the field to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "rental_configuration"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Fetch Rental Configuration with Product Details
 
 Next, you'll ensure that the rental configuration is fetched when retrieving the product details. You can retrieve linked data models by passing its name in the `fields` query parameter when fetching the product.
 
@@ -98382,7 +99139,7 @@ export const listProducts = async ({
 
 You pass `*rental_configuration` at the end of the `fields` parameter. This will attach a `rental_configuration` object to each product returned by the API if it has one.
 
-### c. Add Rental Availability Function
+### d. Add Rental Availability Function
 
 Next, you'll add a server function that retrieves the rental availability of a product by calling the Rental Availability API route you created earlier.
 
@@ -98450,7 +99207,7 @@ In the function, you send a `GET` request to the Rental Availability API route, 
 
 The function returns the rental availability response.
 
-### d. Create Rental Date Picker Component
+### e. Create Rental Date Picker Component
 
 Next, you'll create the component that shows start and end date pickers for selecting rental dates. You'll show this component for rentable products only.
 
@@ -98691,7 +99448,7 @@ If the product does not have an active rental configuration, you return `null` t
 
 Otherwise, you render two date pickers for selecting the rental start and end dates. You also show error messages, loading indicators, and the calculated rental period.
 
-### e. Customize Product Price Component
+### f. Customize Product Price Component
 
 Next, you'll customize the product price component to show the rental price for rental products.
 
@@ -98787,7 +99544,7 @@ You make the following key changes:
 
 For non-rentable products, the price is shown as usual.
 
-### f. Show Rental Options on Product Details Page
+### g. Show Rental Options on Product Details Page
 
 Finally, you'll customize the product actions component shown on the product details page to display the rental date picker and pass the rental price to the product price component.
 
@@ -98914,7 +99671,7 @@ Finally, update the "Add to Cart" button to be disabled if rental dates are requ
 </Button>
 ```
 
-### g. Test Rental Options in Storefront
+### h. Test Rental Options in Storefront
 
 You can now view and select the rental options in the Next.js Starter Storefront.
 
@@ -99231,6 +99988,11 @@ export const addToCartWithRentalWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-variant" })
 
+    const rentalConfiguration = transform(
+      { variants },
+      ({ variants }) => variants[0].product?.rental_configuration || null
+    )
+
     const rentalData = when({ variants }, (data) => {
       return data.variants[0].product?.rental_configuration?.status === "active"
     }).then(() => {
@@ -99238,7 +100000,7 @@ export const addToCartWithRentalWorkflow = createWorkflow(
         variant: variants[0],
         quantity: input.quantity,
         metadata: input.metadata,
-        rental_configuration: variants[0].product?.rental_configuration || null,
+        rental_configuration: rentalConfiguration,
         existing_cart_items: carts[0].items,
       } as unknown as ValidateRentalCartItemInput)
     })
@@ -100031,10 +100793,13 @@ Create the file `src/api/admin/orders/[id]/rentals/route.ts` with the following 
 
 ```ts title="src/api/admin/orders/[id]/rentals/route.ts"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: rentals } = await query.graph({
     entity: "rental",
@@ -100644,13 +101409,16 @@ To create the subscriber, create the file `src/subscribers/order-canceled.ts` wi
 ```ts title="src/subscribers/order-canceled.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { updateRentalWorkflow } from "../workflows/update-rental"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function orderCanceledHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   logger.info(`Processing rental cancellations for order ${data.id}`)
 
@@ -100751,7 +101519,9 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { updateRentalWorkflow } from "../workflows/update-rental"
 
 export default async function activateRentalsJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   // Get current date at start of day for comparison
@@ -100854,7 +101624,9 @@ export default async function shipmentCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string; no_notification?: boolean }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   logger.info(`Processing rental activations for shipment ${data.id}`)
@@ -101719,6 +102491,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GetAdminReviewsSchema = createFindParams()
 
@@ -101726,7 +102499,7 @@ export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   
   const { 
     data: reviews, 
@@ -101835,7 +102608,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -103173,7 +103946,14 @@ Replace the `TODO` in the workflow with the following:
 const { data: carts } = useQueryGraphStep({
   entity: "cart",
   fields: [
-    "*",
+    "id",
+    "email",
+    "currency_code",
+    "subtotal",
+    "item_total",
+    "total",
+    "item_subtotal",
+    "shipping_subtotal",
     "items.*",
     "shipping_methods.*",
     "shipping_address.*",
@@ -103181,15 +103961,8 @@ const { data: carts } = useQueryGraphStep({
     "region.*",
     "sales_channel.*",
     "promotions.*",
-    "currency_code",
-    "subtotal",
-    "item_total",
-    "total",
-    "item_subtotal",
-    "shipping_subtotal",
     "customer.*",
     "payment_collection.*",
-    
   ],
   filters: {
     id: cart_id,
@@ -103624,7 +104397,11 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 So, to create an API route at the path `/store/payment-methods/:account-holder-id`, create the file `src/api/store/payment-methods/[account_holder_id]/route.ts` with the following content:
 
 ```ts title="src/api/store/payment-methods/[account_holder_id]/route.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export async function GET(
@@ -103632,8 +104409,12 @@ export async function GET(
   res: MedusaResponse
 ) {
   const { account_holder_id } = req.params
-  const query = req.scope.resolve("query")
-  const paymentModuleService = req.scope.resolve("payment")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const paymentModuleService = req.scope.resolve(
+    Modules.PAYMENT
+  )
 
   const { data: [accountHolder] } = await query.graph({
     entity: "account_holder",
@@ -104405,6 +105186,8 @@ The first method you need to add to the service is a method that receives an arr
 Add the following methods to the `AlgoliaModuleService` class:
 
 ```ts title="src/modules/algolia/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 export default class AlgoliaModuleService {
   // ...
   async getIndexName(type: AlgoliaIndexType) {
@@ -104412,7 +105195,10 @@ export default class AlgoliaModuleService {
       case "product":
         return this.options.productIndexName
       default:
-        throw new Error(`Invalid index type: ${type}`)
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid index type: ${type}`
+        )
     }
   }
 
@@ -104902,11 +105688,16 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { syncProductsWorkflow } from "../workflows/sync-products"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function algoliaSyncHandler({ 
   container,
 }: SubscriberArgs) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   
   let hasMore = true
   let offset = 0
@@ -105013,7 +105804,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -106115,6 +106906,7 @@ To create the step, create the file `src/workflows/steps/create-transaction.ts` 
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import AvalaraTaxModuleProvider from "../../modules/avalara/service"
 import { DocumentType } from "avatax/lib/enums/DocumentType"
+import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   lines: {
@@ -106143,7 +106935,7 @@ type StepInput = {
 export const createTransactionStep = createStep(
   "create-transaction",
   async (input: StepInput, { container }) => {
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106156,7 +106948,7 @@ export const createTransactionStep = createStep(
     if (!data?.code) {
       return
     }
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106527,6 +107319,7 @@ To create the step, create the file `src/workflows/steps/create-item.ts` with th
 ```ts title="src/workflows/steps/create-item.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import AvalaraTaxModuleProvider from "../../modules/avalara/service"
+import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   item: {
@@ -106540,7 +107333,7 @@ type StepInput = {
 export const createItemStep = createStep(
   "create-item",
   async ({ item }: StepInput, { container }) => {
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106555,7 +107348,7 @@ export const createItemStep = createStep(
     if (!data) {
       return
     }
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106699,6 +107492,7 @@ To create the step, create the file `src/workflows/steps/update-item.ts` with th
 ```ts title="src/workflows/steps/update-item.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import AvalaraTaxModuleProvider from "../../modules/avalara/service"
+import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   item: {
@@ -106713,7 +107507,7 @@ type StepInput = {
 export const updateItemStep = createStep(
   "update-item",
   async ({ item }: StepInput, { container }) => {
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106733,7 +107527,7 @@ export const updateItemStep = createStep(
       return
     }
 
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106806,9 +107600,14 @@ export const updateProductItemWorkflow = createWorkflow(
       products.length > 0 && !!products[0].metadata?.avalara_item_id
     )
       .then(() => {
+        const avalaraItemId = transform(
+          { products },
+          ({ products }) => products[0].metadata?.avalara_item_id as number
+        )
+
         return updateItemStep({
           item: {
-            id: products[0].metadata?.avalara_item_id as number,
+            id: avalaraItemId,
             medusaId: products[0].id,
             itemCode: products[0].id,
             description: products[0].title,
@@ -106900,6 +107699,7 @@ To create the step, create the file `src/workflows/steps/delete-item.ts` with th
 ```ts title="src/workflows/steps/delete-item.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import AvalaraTaxModuleProvider from "../../modules/avalara/service"
+import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   item_id: number
@@ -106908,7 +107708,7 @@ type StepInput = {
 export const deleteItemStep = createStep(
   "delete-item",
   async ({ item_id }: StepInput, { container }) => {
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -106933,7 +107733,7 @@ export const deleteItemStep = createStep(
       return
     }
 
-    const taxModuleService = container.resolve("tax")
+    const taxModuleService = container.resolve(Modules.TAX)
     const avalaraProviderService = taxModuleService.getProvider(
       `tp_${AvalaraTaxModuleProvider.identifier}_avalara`
     ) as AvalaraTaxModuleProvider
@@ -107175,7 +107975,10 @@ Loaders are created in a TypeScript or JavaScript file under the `loaders` direc
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
 import { createClient } from "contentful-management"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 const { createClient: createDeliveryClient } = require("contentful")
 
@@ -107201,7 +108004,9 @@ export default async function syncContentModelsLoader({
     )
   }
 
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   try {
     const managementClient = createClient({
@@ -108864,12 +109669,13 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const eventService = req.scope.resolve("event_bus")
+  const eventService = req.scope.resolve(Modules.EVENT_BUS)
 
   await eventService.emit({
     name: "products.sync",
@@ -108908,7 +109714,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -109506,7 +110312,10 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { QueryContext } from "@medusajs/framework/utils"
+import {
+  QueryContext,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
@@ -109514,7 +110323,9 @@ export const GET = async (
 ) => {
   const { locale, id } = req.params
   
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "product",
@@ -111261,11 +112072,16 @@ To create a scheduled job, in your plugin, create the file `src/jobs/migrate-mag
 ```ts title="src/jobs/migrate-magento.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { migrateProductsFromMagentoWorkflow } from "../workflows"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function migrateMagentoJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
     logger.info("Migrating products from Magento...")
     
     let currentPage = 0
@@ -112118,6 +112934,7 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 ```ts title="src/api/store/newsletter/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { z } from "@medusajs/framework/zod"
+import { Modules } from "@medusajs/framework/utils"
 
 export const newsletterSignupSchema = z.object({
   email: z.email(),
@@ -112129,7 +112946,9 @@ export async function POST(
   req: MedusaRequest<z.infer<typeof newsletterSignupSchema>>,
   res: MedusaResponse
 ) {
-  const eventModuleService = req.scope.resolve("event_bus")
+  const eventModuleService = req.scope.resolve(
+    Modules.EVENT_BUS
+  )
 
   await eventModuleService.emit({
     name: "newsletter.signup",
@@ -112199,12 +113018,15 @@ Create the file `src/subscribers/newsletter-signup.ts` with the following conten
 
 ```ts title="src/subscribers/newsletter-signup.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework" 
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ email: string, first_name: string, last_name: string }>) {
-  const notificationModuleService = container.resolve("notification")
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
 
   await notificationModuleService.createNotifications({
     channel: "email",
@@ -112441,6 +113263,7 @@ Create the file `src/workflows/send-newsletter.ts` with the following content:
 ```ts title="src/workflows/send-newsletter.ts"
 import { 
   createWorkflow, 
+  transform,
   when, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -112452,6 +113275,12 @@ import {
 export const sendNewProductsNewsletter = createWorkflow(
   "send-new-products-newsletter", 
   (input) => {
+    // Get products created in the last 7 days
+    // 7 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+    const createdAfter = transform({}, () => {
+      return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    })
+
     const { data: products } = useQueryGraphStep({
       entity: "product",
       fields: [
@@ -112462,9 +113291,7 @@ export const sendNewProductsNewsletter = createWorkflow(
       ],
       filters: {
         created_at: {
-          // Get products created in the last 7 days
-          // 7 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-          $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          $gte: createdAfter,
         },
       },
     })
@@ -112519,9 +113346,14 @@ import {
   MedusaContainer,
 } from "@medusajs/framework/types"
 import { sendNewProductsNewsletter } from "../workflows/send-newsletter"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function myCustomJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Sending weekly newsletter...")
 
@@ -112762,6 +113594,8 @@ The first method you need to add to the service is a method that receives an arr
 Add the following methods to the `MeilisearchModuleService` class:
 
 ```ts title="src/modules/meilisearch/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 export default class MeilisearchModuleService {
   // ...
   async getIndexName(type: MeilisearchIndexType) {
@@ -112769,7 +113603,10 @@ export default class MeilisearchModuleService {
       case "product":
         return this.options.productIndexName
       default:
-        throw new Error(`Invalid index type: ${type}`)
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid index type: ${type}`
+        )
     }
   }
 
@@ -113252,11 +114089,16 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { syncProductsWorkflow } from "../workflows/sync-products"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function meilisearchSyncHandler({ 
   container,
 }: SubscriberArgs) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   
   let hasMore = true
   let offset = 0
@@ -113574,12 +114416,17 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { deleteProductsFromMeilisearchWorkflow } from "../workflows/delete-products-from-meilisearch"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productDeleteHandler({ 
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   
   logger.info(`Deleting product ${data.id} from Meilisearch`)
 
@@ -114626,7 +115473,10 @@ import {
   MedusaResponse,
   MedusaNextFunction,
 } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function validateOktaProvider(
   req: AuthenticatedMedusaRequest, 
@@ -114640,7 +115490,9 @@ export default async function validateOktaProvider(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const { data: [authIdentity] } = await query.graph({
     entity: "auth_identity",
     fields: [
@@ -117130,13 +117982,16 @@ Create the file `src/api/admin/payload/sync/[collection]/route.ts` with the foll
 
 ```ts title="src/api/admin/payload/sync/[collection]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
   const { collection } = req.params
-  const eventModuleService = req.scope.resolve("event_bus")
+  const eventModuleService = req.scope.resolve(
+    Modules.EVENT_BUS
+  )
 
   await eventModuleService.emit({
     name: `${collection}.sync-payload`,
@@ -117168,11 +118023,16 @@ To create a subscriber, create the file `src/subscribers/products-sync-payload.t
 ```ts title="src/subscribers/products-sync-payload.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { createPayloadProductsWorkflow } from "../workflows/create-payload-products"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productSyncPayloadHandler({
   container,
 }: SubscriberArgs) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const limit = 1000
   let offset = 0
@@ -117399,7 +118259,39 @@ Now that you've integrated Payload with Medusa, you can customize the Next.js St
 
 In this step, you'll customize the Next.js Starter Storefront to show the product title, description, images, and option values from Payload.
 
-### a. Fetch Payload Data with Product Data
+### a. Allow Retrieving Payload Data in Store Products
+
+The Store API routes only return the fields that they allow in the `fields` query parameter. Any other field, including a field added by a custom link like `payload_product`, is removed from the response without an error.
+
+So, before you can retrieve Payload data in the storefront, you must add `payload_product` to the allowed fields of the Products API route.
+
+In your Medusa application, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("payload_product")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+This middleware pushes `payload_product` to the route's allowed fields, so Medusa keeps the field when a request asks for it.
+
+The middleware must be global, so don't set a `method` property in the route object. Medusa runs a middleware scoped to a method after it validates the `fields` query parameter, so it has no effect.
+
+Learn more in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### b. Fetch Payload Data with Product Data
 
 When you fetch product data in the Next.js Starter Storefront from the Medusa server, you can also retrieve the linked product data from Payload.
 
@@ -117438,11 +118330,11 @@ export const listProducts = async ({
 }
 ```
 
-Passing this field is possible because you [defined the virtual read-only link](#step-4-create-virtual-read-only-link-to-products) between the `Product` model in Medusa and the `Products` collection in Payload.
+Passing this field is possible because you [defined the virtual read-only link](#step-4-create-virtual-read-only-link-to-products) between the `Product` model in Medusa and the `Products` collection in Payload, and because you allowed the field in the previous section.
 
 Medusa will now return the payload data of a product from Payload and include it in the `payload_product` field of the product object.
 
-### b. Define Payload Product Type
+### c. Define Payload Product Type
 
 Next, you'll define a TypeScript type that adds the `payload_product` property to Medusa's `StoreProduct` type.
 
@@ -117493,7 +118385,7 @@ export type StoreProductWithPayload = StoreProduct & {
 
 The `StoreProductWithPayload` type extends the `StoreProduct` type from Medusa and adds the `payload_product` property. This property contains the product data from Payload, including its title, description, images, options, and variants.
 
-### c. Display Payload Product Title and Description
+### d. Display Payload Product Title and Description
 
 Next, you'll customize the product details page to display the product title and description from Payload.
 
@@ -117562,7 +118454,7 @@ return (
 
 If the product has a description in Payload, it will be displayed using Payload's `RichText` component, which renders the rich text content. Otherwise, it will display the product description from Medusa.
 
-### d. Display Payload Product Images
+### e. Display Payload Product Images
 
 Next, you'll display the product images from Payload in the product details page and in the product preview component that is shown in the product list.
 
@@ -117750,7 +118642,7 @@ return (
 
 The product title in the product preview will now be the title from Payload if available, or the title from Medusa if not.
 
-### e. Display Product Options and Values
+### f. Display Product Options and Values
 
 The last change you'll make is to display the title of product options and their values from Payload in the product details page.
 
@@ -123453,6 +124345,8 @@ In this section, you'll create the API route to retrieve a sanity document, and 
 To retrieve the URL to the Sanity studio, add the following method in the Sanity Module's service in `src/modules/sanity/service.ts`:
 
 ```ts title="src/modules/sanity/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 class SanityModuleService {
   // ...
   async getStudioLink(
@@ -123462,7 +124356,10 @@ class SanityModuleService {
   ) {
     const resolvedType = config.explicit_type ? type : this.typeMap[type]
     if (!this.studioUrl) {
-      throw new Error("No studio URL provided")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "No studio URL provided"
+      )
     }
     return `${this.studioUrl}/structure/${resolvedType};${id}`
   }
@@ -123659,7 +124556,10 @@ So, create the file `src/admin/widgets/sanity-product.tsx` with the following co
 
 ```tsx title="src/admin/widgets/sanity-product.tsx"
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { AdminProduct, DetailWidgetProps } from "@medusajs/types"
+import {
+  AdminProduct,
+  DetailWidgetProps,
+} from "@medusajs/types"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { Button, CodeBlock, Container, StatusBadge, toast } from "@medusajs/ui"
 import { useState } from "react"
@@ -124177,7 +125077,9 @@ Add the `identify` method to the `SegmentAnalyticsProviderService` class:
 
 ```ts title="src/modules/segment/service.ts"
 // other imports...
-import { ProviderIdentifyAnalyticsEventDTO } from "@medusajs/types"
+import {
+  ProviderIdentifyAnalyticsEventDTO,
+} from "@medusajs/framework/types"
 
 class SegmentAnalyticsProviderService extends AbstractAnalyticsProviderService {
   // ...
@@ -124231,7 +125133,9 @@ Add the `track` method to the `SegmentAnalyticsProviderService` class:
 
 ```ts title="src/modules/segment/service.ts"
 // other imports...
-import { ProviderTrackAnalyticsEventDTO } from "@medusajs/types"
+import {
+  ProviderTrackAnalyticsEventDTO,
+} from "@medusajs/framework/types"
 
 class SegmentAnalyticsProviderService extends AbstractAnalyticsProviderService {
   // ...
@@ -124414,6 +125318,7 @@ To create a step, create the file `src/workflows/steps/track-event.ts` with the 
 
 ```ts title="src/workflows/steps/track-event.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
 type TrackEventStepInput = {
   event: string
@@ -124426,7 +125331,7 @@ export const trackEventStep = createStep(
   "track-event",
   async (input: TrackEventStepInput, { container }) => {
     const analyticsModuleService = container.resolve(
-      "analytics"
+      Modules.ANALYTICS
     )
 
     if (!input.userId) {
@@ -124531,7 +125436,7 @@ export const trackOrderPlacedWorkflow = createWorkflow(
 
     trackEventStep({
       event: "order.placed",
-      userId: order.customer?.id,
+      userId: order.customer.id,
       properties: order,
     })
   }
@@ -127589,7 +128494,10 @@ To create the loader that initializes the Strapi client, create the file `src/mo
 ```ts title="src/modules/strapi/loaders/init-client.ts"
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { strapi } from "@strapi/client"
 
 export type ModuleOptions = {
@@ -127609,7 +128517,9 @@ export default async function initStrapiClientLoader({
     )
   }
 
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   try {
     // Create Strapi client instance
@@ -128903,10 +129813,11 @@ export const createVariantsInStrapiWorkflow = createWorkflow(
       },
     })
 
-    const strapiVariants = when({ 
-      variants,
-    }, (data) => !!(data.variants[0].product as any)?.strapi_product)
-      .then(() => {
+    const strapiVariants = when(
+      "sync-strapi-variants",
+      { variants },
+      (data) => !!(data.variants[0].product as any)?.strapi_product
+    ).then(() => {
         const variantImages = transform({ 
           variants,
         }, (data) => {
@@ -129809,7 +130720,11 @@ To create the API route, create the file `src/api/webhooks/strapi/route.ts` with
 
 ```ts title="src/api/webhooks/strapi/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { simpleHash, Modules } from "@medusajs/framework/utils"
+import {
+  simpleHash,
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { 
   handleStrapiWebhookWorkflow, 
   WorkflowInput,
@@ -129820,7 +130735,9 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const body = req.body as Record<string, unknown>
-  const logger = req.scope.resolve("logger")
+  const logger = req.scope.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const cachingService = req.scope.resolve(Modules.CACHING)
   
   // Generate a hash of the webhook payload to detect duplicates
@@ -130064,7 +130981,38 @@ The Next.js Starter Storefront is available in the `apps/storefront` directory o
 cd apps/storefront
 ```
 
-### a. Retrieve Strapi Product Data
+### a. Allow Retrieving Strapi Data in Store Products
+
+The Store API routes only return the fields that they allow in the `fields` query parameter. Any other field, including a field added by a custom link like `strapi_product`, is removed from the response without an error.
+
+So, before you can retrieve Strapi data in the storefront, you must add `strapi_product` to the allowed fields of the Products API route.
+
+In your Medusa application, add a route object to the `src/api/middlewares.ts` file that you created earlier:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("strapi_product")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+This middleware pushes `strapi_product` to the route's allowed fields, so Medusa keeps the field when a request asks for it. The other fields that you'll pass in the next section, such as `*variants.images`, are already among the route's allowed fields.
+
+The middleware must be global, so don't set a `method` property in the route object. Medusa runs a middleware scoped to a method after it validates the `fields` query parameter, so it has no effect.
+
+Learn more in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### b. Retrieve Strapi Product Data
 
 Since you've created a [virtual read-only link](#step-4-create-virtual-read-only-link-to-strapi-products) to Strapi products in Medusa, you can retrieve Strapi product data when retrieving Medusa products.
 
@@ -130098,7 +131046,7 @@ export const listProducts = async ({
 
 The Strapi product data will now be included in the `strapi_product` property of each Medusa product.
 
-### b. Define Strapi Product Types
+### c. Define Strapi Product Types
 
 Next, you'll define types for the Strapi product data to use in the storefront.
 
@@ -130167,7 +131115,7 @@ export interface StrapiProduct {
 
 You define types for Strapi media, product option values, product options, product variants, and products.
 
-### c. Add Strapi Product Utilities
+### d. Add Strapi Product Utilities
 
 Next, add utilities that will allow you to easily retrieve Strapi product data from a product object.
 
@@ -130384,7 +131332,7 @@ You define the following utilities:
 - `getVariantOptionValues`: Retrieves all option values for a variant with Strapi labels.
 - `getVariantImages`: Retrieves images for a specific variant from Strapi, falling back to Medusa if not available.
 
-### d. Customize Product Preview
+### e. Customize Product Preview
 
 Next, you'll customize the product preview component to show Strapi product data. This component is displayed on the product listing page.
 
@@ -130436,7 +131384,7 @@ You make two key changes:
 1. Pass the `images` and `thumbnail` variables as props to the `Thumbnail` component to show Strapi product images.
 2. Use the `title` variable to display the Strapi product title.
 
-### e. Customize Product Details Metadata
+### f. Customize Product Details Metadata
 
 Next, you'll customize the product details component to show Strapi product data.
 
@@ -130514,7 +131462,7 @@ return {
 
 You use the Strapi product title, subtitle, and thumbnail in the page's metadata.
 
-### f. Customize Product Details Page
+### g. Customize Product Details Page
 
 Next, you'll customize the product details page to show Strapi product data.
 
@@ -130741,7 +131689,7 @@ return (
 
 You retrieve the Strapi option title and pass the `product` prop to the `OptionSelect` component.
 
-### g. Customize Line Item Options
+### h. Customize Line Item Options
 
 Finally, you'll customize the line item options to either show Strapi variant titles or option titles and values.
 
@@ -131383,7 +132331,7 @@ export default defineLink(
     linkable: WishlistModule.linkable.wishlist.id,
     field: "customer_id",
   },
-  CustomerModule.linkable.customer.id,
+  CustomerModule.linkable.customer,
   {
     readOnly: true,
   }
@@ -131472,7 +132420,10 @@ To create the step, create the file `src/workflows/steps/validate-customer-creat
 ![Directory structure after adding the step file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737467678/Medusa%20Resources/wishlist-9_lzlifn.jpg)
 
 ```ts title="src/workflows/steps/validate-customer-create-wishlist.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
 type ValidateCustomerCreateWishlistStepInput = {
@@ -131482,7 +132433,9 @@ type ValidateCustomerCreateWishlistStepInput = {
 export const validateCustomerCreateWishlistStep = createStep(
   "validate-customer-create-wishlist",
   async ({ customer_id }: ValidateCustomerCreateWishlistStepInput, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data } = await query.graph({
       entity: "wishlist",
@@ -131770,7 +132723,9 @@ export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -131882,6 +132837,7 @@ To create the step, create the file `src/workflows/steps/validate-wishlist-sales
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { Wishlist } from "../../modules/wishlist/models/wishlist"
+import { MedusaError } from "@medusajs/framework/utils"
 
 type ValidateWishlistSalesChannelStepInput = {
   wishlist: InferTypeOf<typeof Wishlist>
@@ -131894,7 +132850,10 @@ export const validateWishlistSalesChannelStep = createStep(
     const { wishlist, sales_channel_id } = input
 
     if (wishlist.sales_channel_id !== sales_channel_id) {
-      throw new Error("Wishlist does not belong to the current sales channel")
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Wishlist does not belong to the current sales channel"
+      )
     }
   }
 )
@@ -131916,7 +132875,10 @@ Create the file `src/workflows/steps/validate-variant-wishlist.ts` with the foll
 import { InferTypeOf } from "@medusajs/framework/types"
 import { Wishlist } from "../../modules/wishlist/models/wishlist"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 type ValidateVariantWishlistStepInput = {
   variant_id: string
@@ -131944,7 +132906,9 @@ export const validateVariantWishlistStep = createStep(
     }
 
     // validate that the variant is available in the specified sales channel
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const { data } = await query.graph({
       entity: "variant",
       fields: ["product.sales_channels.*"],
@@ -132517,7 +133481,10 @@ Then, to create the API route, create the file `src/api/store/customers/me/wishl
 
 ```ts title="src/api/store/customers/me/wishlists/share/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import jwt from "jsonwebtoken"
 
 export async function POST(
@@ -132531,7 +133498,9 @@ export async function POST(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -132564,7 +133533,9 @@ This route exposes a `POST` endpoint at `/store/customers/me/wishlists/share`. I
 You'll now generate a token that contains the wishlist ID. To do this, replace the `TODO` in the route handler function with the following:
 
 ```ts title="src/api/store/customers/me/wishlists/share/route.ts"
-const { http } = req.scope.resolve("configModule").projectConfig
+const { http } = req.scope.resolve(
+  ContainerRegistrationKeys.CONFIG_MODULE
+).projectConfig
 
 const wishlistToken = jwt.sign({
   wishlist_id: data[0].id,
@@ -132612,7 +133583,10 @@ Create the file `src/api/store/wishlists/[token]/route.ts` with the following co
 
 ```ts title="src/api/store/wishlists/[token]/route.ts"
 import { MedusaResponse, MedusaStoreRequest } from "@medusajs/framework"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { decode, JwtPayload } from "jsonwebtoken"
 
 export async function GET(
@@ -132635,7 +133609,9 @@ export async function GET(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -132752,7 +133728,10 @@ Create the file `src/api/store/products/[id]/wishlist/route.ts` with the followi
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import WishlistModuleService from "../../../../../modules/wishlist/service"
 import { WISHLIST_MODULE } from "../../../../../modules/wishlist"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -132760,7 +133739,9 @@ export async function GET(
 ) {
   const { id } = req.params
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const wishlistModuleService: WishlistModuleService = req.scope.resolve(
     WISHLIST_MODULE
   )
@@ -140071,9 +141052,37 @@ You create the `ReturnRequestPage` component that fetches the order details, ava
 
 If the order is not found, you return a 404 page. Otherwise, you render the `ReturnRequestTemplate` component with the fetched data.
 
+### Allow the Order's Cart Field
+
+Medusa restricts the fields that you can request from a Store API route through an allowed-fields list. The order routes don't allow the `cart.id` field, so Medusa omits it from the response unless you allow it.
+
+In the Medusa application, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/orders",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("cart.id")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+Don't add a `method` or `methods` key to the middleware's object. Medusa runs a method-scoped middleware after it validates the query parameters, so pushing to `req.allowed` in it has no effect.
+
+Learn more about allowed fields and how to override them in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ### Retrieve Cart with Order Data
 
-Since you need the cart ID to retrieve data like return shipping options, you need to retrieve the cart along with the order data. You can do this by adding `+cart.id` to the `fields` query parameter when retrieving the order.
+Since you need the cart ID to retrieve data like return shipping options, you need to retrieve the cart along with the order data. You can do this by adding `+cart.id` to the `fields` query parameter when retrieving the order. This works only after you add the middleware from the previous section.
 
 In `src/lib/data/orders.ts`, update the `retrieveOrder` function to include the cart in the `fields` parameter:
 
@@ -149947,7 +150956,9 @@ export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { 
     data: bundledProducts, 
@@ -150046,7 +151057,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -151023,14 +152034,19 @@ To create the API route, create the file `src/api/store/bundle-products/[id]/rou
 
 ```ts title="src/api/store/bundle-products/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { QueryContext } from "@medusajs/framework/utils"
+import {
+  QueryContext,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const { currency_code, region_id } = req.query
 
   const { data } = await query.graph({
@@ -151147,6 +152163,31 @@ export const getBundleProduct = async (id: string, {
 You define a `BundledProduct` type that represents the structure of a bundled product.
 
 Then, you define a `getBundleProduct` function that retrieves the bundle's details from the API route you created in the previous step.
+
+### Allow Retrieving Bundles with Products
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve bundles from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("bundle")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
 
 ### Retrieve Bundle with Product
 
@@ -152456,7 +153497,11 @@ Create the file `src/workflows/create-restock-subscription/steps/validate-varian
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733227547/Medusa%20Resources/restock-dir-overview-10_g3dbi3.jpg)
 
 ```ts title="src/workflows/create-restock-subscription/steps/validate-variant-out-of-stock.ts"
-import { getVariantAvailability, MedusaError } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type ValidateVariantOutOfStockStepInput = {
@@ -152467,7 +153512,9 @@ type ValidateVariantOutOfStockStepInput = {
 export const validateVariantOutOfStockStep = createStep(
   "validate-variant-out-of-stock",
   async ({ variant_id, sales_channel_id }: ValidateVariantOutOfStockStepInput, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const availability = await getVariantAvailability(query, {
       variant_ids: [variant_id],
       sales_channel_id,
@@ -153109,7 +154156,11 @@ Create the file `src/workflows/send-restock-notifications/steps/get-restocked.ts
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733234506/Medusa%20Resources/restock-dir-overview-17_pdtees.jpg)
 
 ```ts title="src/workflows/send-restock-notifications/steps/get-restocked.ts"
-import { getVariantAvailability, promiseAll } from "@medusajs/framework/utils"
+import {
+  getVariantAvailability,
+  promiseAll,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type GetRestockedStepInput = {
@@ -153121,7 +154172,9 @@ export const getRestockedStep = createStep(
   "get-restocked",
   async (input: GetRestockedStepInput, { container }) => {
     const restocked: GetRestockedStepInput = []
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     
     await promiseAll(
       input.map(async (restockSubscription) => {
@@ -153154,7 +154207,7 @@ Create the file `src/workflows/send-restock-notifications/steps/send-restock-not
 ![The directory structure of the Medusa application after adding the step.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733234507/Medusa%20Resources/restock-dir-overview-18_uvlu0l.jpg)
 
 ```ts title="src/workflows/send-restock-notifications/steps/send-restock-notification.ts"
-import { promiseAll } from "@medusajs/framework/utils"
+import { promiseAll, Modules } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { InferTypeOf, ProductVariantDTO } from "@medusajs/framework/types"
 import RestockSubscription from "../../../modules/restock/models/restock-subscription"
@@ -153166,7 +154219,9 @@ type SendRestockNotificationStepInput = (InferTypeOf<typeof RestockSubscription>
 export const sendRestockNotificationStep = createStep(
   "send-restock-notification",
   async (input: SendRestockNotificationStepInput, { container }) => {
-    const notificationModuleService = container.resolve("notification")
+    const notificationModuleService = container.resolve(
+      Modules.NOTIFICATION
+    )
 
     const notificationData = input.map((subscription) => ({
       to: subscription.email,
@@ -154074,7 +155129,7 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 
 ```ts title="src/api/admin/digital-products/route.ts"
 // other imports...
-import type { CreateProductWorkflowInputDTO } from "@medusajs/types"
+import type { CreateProductWorkflowInputDTO } from "@medusajs/framework/types"
 import { z } from "@medusajs/framework/zod"
 import createDigitalProductWorkflow from "../../../workflows/create-digital-product"
 import { CreateDigitalProductMediaInput } from "../../../workflows/create-digital-product/steps/create-digital-product-medias"
@@ -154876,6 +155931,10 @@ Create the file `src/workflows/delete-product-digital-products/steps/retrieve-di
 ```ts title="src/workflows/delete-product-digital-products/steps/retrieve-digital-products-to-delete.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import DigitalProductVariantLink from "../../../links/digital-product-variant"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 type RetrieveDigitalProductsToDeleteStepInput = {
   product_id: string
@@ -154884,8 +155943,10 @@ type RetrieveDigitalProductsToDeleteStepInput = {
 export const retrieveDigitalProductsToDeleteStep = createStep(
   "retrieve-digital-products-to-delete",
   async ({ product_id }: RetrieveDigitalProductsToDeleteStepInput, { container }) => {
-    const productService = container.resolve("product")
-    const query = container.resolve("query")
+    const productService = container.resolve(Modules.PRODUCT)
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const productVariants = await productService.listProductVariants({
       product_id: product_id,
@@ -156064,6 +157125,33 @@ export type VariantWithDigitalProduct = StoreProductVariant & {
 }
 
 ```
+
+### Allow Retrieving Digital Products
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve digital products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "variants.digital_product"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
 
 ### Retrieve Digital Products with Variants
 
@@ -157793,9 +158881,14 @@ export const addCustomToCartWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-variant" })
 
+    const variantExternalId = transform(
+      { variants },
+      ({ variants }) => variants[0].metadata?.external_id as string
+    )
+
     // get the variant's price from the ERP
     const price = getVariantErpPriceStep({
-      variant_external_id: variants[0].metadata?.external_id as string,
+      variant_external_id: variantExternalId,
       currencyCode: carts[0].currency_code,
       quantity: item.quantity,
     })
@@ -157875,14 +158968,18 @@ Since Medusa implements the add-to-cart functionality within a workflow, it allo
 So, to implement the use case of product-purchase restriction, you can use the `validate` hook of the `addToCartWorkflow` or the [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow) to check if the customer is allowed to purchase the product. For example:
 
 ```ts title="src/workflows/hooks/validate-purchase.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input, cart }, { container }) => {
     const erpModuleService = container.resolve("erp")
-    const productModuleService = container.resolve("product")
-    const customerModuleService = container.resolve("customer")
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
+    const customerModuleService = container.resolve(
+      Modules.CUSTOMER
+    )
     
     const customer = cart.customer_id ? await customerModuleService.retrieveCustomer(cart.customer_id) : undefined
     const productVariants = await productModuleService.listProductVariants({
@@ -158156,13 +159253,15 @@ An ERP system often manages the inventory of products, with the ability to track
 Similar to the [product-purchase restriction](#restrict-purchase-with-custom-erp-rules) use case, you can use the `validate` hook of the `addToCartWorkflow` or the [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow) to check the product's availability in the ERP system. For example:
 
 ```ts title="src/workflows/hooks/validate-inventory.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
     const erpModuleService = container.resolve("erp")
-    const productModuleService = container.resolve("product")
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
     
     const productVariants = await productModuleService.listProductVariants({
       id: input.items.map((item) => item.variant_id).filter(Boolean) as string[],
@@ -159845,6 +160944,9 @@ Create the file `src/workflows/delivery/steps/await-driver-claim.ts` with the fo
 
 ```ts title="src/workflows/delivery/steps/await-driver-claim.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const awaitDriverClaimStepId = "await-driver-claim-step"
 export const awaitDriverClaimStep = createStep(
@@ -159855,7 +160957,9 @@ export const awaitDriverClaimStep = createStep(
     maxRetries: 2,
   },
   async function (_, { container }) {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Awaiting driver to claim...")
   }
 )
@@ -160006,12 +161110,17 @@ Create the file `src/workflows/delivery/steps/await-start-preparation.ts` with t
 
 ```ts title="src/workflows/delivery/steps/await-start-preparation.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const awaitStartPreparationStepId = "await-start-preparation-step"
 export const awaitStartPreparationStep = createStep(
   { name: awaitStartPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Awaiting start of preparation...")
   }
 )
@@ -160025,12 +161134,17 @@ Create the file `src/workflows/delivery/steps/await-preparation.ts` with the fol
 
 ```ts title="src/workflows/delivery/steps/await-preparation.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const awaitPreparationStepId = "await-preparation-step"
 export const awaitPreparationStep = createStep(
   { name: awaitPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Awaiting preparation...")
   }
 )
@@ -160093,12 +161207,17 @@ Create the file `src/workflows/delivery/steps/await-pick-up.ts` with the followi
 
 ```ts title="src/workflows/delivery/steps/await-pick-up.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const awaitPickUpStepId = "await-pick-up-step"
 export const awaitPickUpStep = createStep(
   { name: awaitPickUpStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Awaiting pick up by driver...")
   }
 )
@@ -160113,12 +161232,17 @@ Create the file `src/workflows/delivery/steps/await-delivery.ts` with the follow
 
 ```ts title="src/workflows/delivery/steps/await-delivery.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const awaitDeliveryStepId = "await-delivery-step"
 export const awaitDeliveryStep = createStep(
   { name: awaitDeliveryStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Awaiting delivery by driver...")
   }
 )
@@ -164373,12 +165497,17 @@ Medusa's `addToCartWorkflow` workflow supports performing custom validation on t
 To consume the `validate` hook that runs before an item is added to the cart, create the file `src/workflows/hooks/validate-personalized-product.ts` with the following content:
 
 ```ts title="src/workflows/hooks/validate-personalized-product.ts"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const { data: variants } = await query.graph({
       entity: "variant",
       fields: ["product.*"],
@@ -167024,13 +168153,16 @@ import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
 import createSubscriptionOrderWorkflow from "../workflows/create-subscription-order"
 import { SubscriptionStatus } from "../modules/subscription/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function createSubscriptionOrdersJob(
   container: MedusaContainer
 ) {
   const subscriptionModuleService: SubscriptionModuleService =
     container.resolve(SUBSCRIPTION_MODULE)
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   let page = 0
   const limit = 20
@@ -167156,13 +168288,16 @@ import SubscriptionModuleService from "../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
 import { SubscriptionStatus } from "../modules/subscription/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function expireSubscriptionOrdersJob(
   container: MedusaContainer
 ) {
   const subscriptionModuleService: SubscriptionModuleService =
     container.resolve(SUBSCRIPTION_MODULE)
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   let page = 0
   const limit = 20
@@ -168277,7 +169412,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { 
     data: venues,
@@ -169680,7 +170817,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: ticketProducts,
@@ -170798,13 +171937,18 @@ To consume the `validate` hook of the `addToCartWorkflow` that holds the add-to-
 
 ```ts title="src/workflows/hooks/add-to-cart-validation.ts"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 // Hook for addToCartWorkflow to validate seat availability
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
     const items = input.items
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     // Get the product variant to check if it's a ticket product variant
     const { data: productVariants } = await query.graph({
@@ -171312,11 +172456,16 @@ Create the file `src/api/store/ticket-products/[id]/availability/route.ts` with 
 
 ```ts title="src/api/store/ticket-products/[id]/availability/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [ticketProduct] } = await query.graph({
     entity: "ticket_product",
@@ -171433,7 +172582,10 @@ Create the file `src/api/store/ticket-products/[id]/seats/route.ts` with the fol
 
 ```ts title="src/api/store/ticket-products/[id]/seats/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 
 export const GetTicketProductSeatsSchema = z.object({
@@ -171443,7 +172595,9 @@ export const GetTicketProductSeatsSchema = z.object({
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
   const { date } = req.validatedQuery
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [ticketProduct] } = await query.graph({
     entity: "ticket_product",
@@ -171781,13 +172935,21 @@ To create a subscriber that sends a notification to the customer when an order i
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
 import { TICKET_BOOKING_MODULE } from "../modules/ticket-booking"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function handleOrderPlaced({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve("notification")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
   const ticketBookingModuleService = container.resolve(TICKET_BOOKING_MODULE)
 
   const { data: [order] } = await query.graph({
@@ -173146,6 +174308,31 @@ This makes the following main changes:
 
 - Removes the `ProductTabs` component since it's not needed for ticket products.
 - Shows the `TicketLayout` component on the right side of the product images.
+
+### Allow Retrieving Ticket Products
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve ticket products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in the Medusa application's `src/api/middlewares.ts` file:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("ticket_product")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+Learn more about this behavior in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
 
 ### Retrieve Ticket Product with Product
 
