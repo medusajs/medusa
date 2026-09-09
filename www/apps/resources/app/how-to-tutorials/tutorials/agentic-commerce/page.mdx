@@ -508,8 +508,12 @@ export const getProductFeedItemsStep = createStep(
   "get-product-feed-items", 
   async (input: StepInput, { container }) => {
   const feedItems: FeedItem[] = []
-  const query = container.resolve("query")
-  const configModule = container.resolve("configModule")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const storefrontUrl = configModule.admin.storefrontUrl || 
     process.env.STOREFRONT_URL
 
@@ -824,10 +828,17 @@ import {
   MedusaContainer,
 } from "@medusajs/framework/types"
 import sendProductFeedWorkflow from "../workflows/send-product-feed"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function syncProductFeed(container: MedusaContainer) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: regions } = await query.graph({
     entity: "region",
@@ -1581,7 +1592,10 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { z } from "@medusajs/framework/zod"
 import { createCheckoutSessionWorkflow } from "../../workflows/create-checkout-session"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const PostCreateSessionSchema = z.object({
   items: z.array(z.object({
@@ -1611,7 +1625,9 @@ export const POST = async (
   >,
   res: MedusaResponse
 ) => {
-  const logger = req.scope.resolve("logger")
+  const logger = req.scope.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const responseHeaders = {
     "Idempotency-Key": req.headers["idempotency-key"] as string,
     "Request-Id": req.headers["request-id"] as string,
@@ -1662,6 +1678,7 @@ Create the file `src/api/middlewares/validate-agentic-request.ts` with the follo
 ```ts title="src/api/middlewares/validate-agentic-request.ts"
 import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { AGENTIC_COMMERCE_MODULE } from "../../modules/agentic-commerce"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function validateAgenticRequest(
   req: MedusaRequest, 
@@ -1669,7 +1686,7 @@ export async function validateAgenticRequest(
   next: MedusaNextFunction
 ) {
   const agenticCommerceModuleService = req.scope.resolve(AGENTIC_COMMERCE_MODULE)
-  const apiKeyModuleService = req.scope.resolve("api_key")
+  const apiKeyModuleService = req.scope.resolve(Modules.API_KEY)
   const signature = req.headers["signature"] as string
   const apiKey = req.headers["authorization"]?.replaceAll("Bearer ", "")
 
@@ -3244,7 +3261,7 @@ The `cancelPaymentSessionsStep` step cancels payment sessions associated with th
 To create the step, create the file `src/workflows/steps/cancel-payment-sessions.ts` with the following content:
 
 ```ts title="src/workflows/steps/cancel-payment-sessions.ts"
-import { promiseAll } from "@medusajs/framework/utils"
+import { promiseAll, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 type StepInput = {
@@ -3254,7 +3271,9 @@ type StepInput = {
 export const cancelPaymentSessionsStep = createStep(
   "cancel-payment-session",
   async ({ payment_session_ids }: StepInput, { container }) => {
-    const paymentModuleService = container.resolve("payment")
+    const paymentModuleService = container.resolve(
+      Modules.PAYMENT
+    )
 
     const paymentSessions = await paymentModuleService.listPaymentSessions({
       id: payment_session_ids,
@@ -3278,7 +3297,9 @@ export const cancelPaymentSessionsStep = createStep(
     if (!paymentSessions) {
       return
     }
-    const paymentModuleService = container.resolve("payment")
+    const paymentModuleService = container.resolve(
+      Modules.PAYMENT
+    )
 
     await promiseAll(
       paymentSessions.map((session) => {
@@ -3509,19 +3530,28 @@ import type {
 } from "@medusajs/framework"
 import { AGENTIC_COMMERCE_MODULE } from "../modules/agentic-commerce"
 import { AgenticCommerceWebhookEvent } from "../modules/agentic-commerce/service"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 export default async function orderWebhookHandler({
   event: { data, name },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const orderId = data.id
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const agenticCommerceModuleService = container.resolve(AGENTIC_COMMERCE_MODULE)
-  const configModule = container.resolve("configModule")
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const storefrontUrl = configModule.admin.storefrontUrl || process.env.STOREFRONT_URL
 
   if (!storefrontUrl) {
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
       "A storefront URL is required to send ACP order webhooks"
     )
   }
@@ -3587,6 +3617,7 @@ export default async function orderWebhookHandler({
           transaction!.created_at
         ).toISOString(),
         status: "completed",
+        // eslint-disable-next-line @medusajs/prices-in-major-units
         amount: Math.abs(transaction!.amount) * 100,
       })) || [],
     },

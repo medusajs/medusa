@@ -3363,7 +3363,7 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/framework": 2.20.1
-    csv-parse: ^5.6.0
+    csv-parse: ^7.0.2
     deeks: ^3.2.1
     json-2-csv: ^5.5.11
   peerDependencies:
@@ -3629,7 +3629,7 @@ __metadata:
     http-errors: 2.0.0
     jsonwebtoken: ^9.0.2
     lodash.memoize: ^4.1.2
-    morgan: ^1.11.0
+    morgan: ^1.12.0
     path-to-regexp: ^8.4.0
     tsconfig-paths: ^4.2.0
     zod-validation-error: 5.0.0
@@ -3918,7 +3918,7 @@ __metadata:
     express: ^4.21.0
     fs-exists-cached: ^1.0.0
     jsonwebtoken: ^9.0.2
-    multer: ^2.2.0
+    multer: ^2.3.0
     node-schedule: ^2.1.1
     qs: ^6.15.2
     request-ip: ^3.3.0
@@ -10023,13 +10023,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trysound/sax@npm:0.2.0":
-  version: 0.2.0
-  resolution: "@trysound/sax@npm:0.2.0"
-  checksum: 44907308549ce775a41c38a815f747009ac45929a45d642b836aa6b0a536e4978d30b8d7d680bbd116e9dd73b7dbe2ef0d1369dcfc2d09e83ba381e485ecbe12
-  languageName: node
-  linkType: hard
-
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.12
   resolution: "@tsconfig/node10@npm:1.0.12"
@@ -13609,10 +13602,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.6.0":
-  version: 5.6.0
-  resolution: "csv-parse@npm:5.6.0"
-  checksum: 52f5e6c45359902e0c8e57fc2eeed41366dc6b6d283b495b538dd50c8e8510413d6f924096ea056319cbbb8ed26e111c3a3485d7985c021bcf5abaa9e92425c7
+"csv-parse@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "csv-parse@npm:7.0.2"
+  checksum: 52ffaafbf7be37201ad782ec3eda37bc24ee0ec6e8967b5a68d5ad2973f10b4154fd11a5b90a002615ef98395c4cd699a13d13509b10067297795b9d3c9320e9
   languageName: node
   linkType: hard
 
@@ -17867,8 +17860,8 @@ __metadata:
   linkType: hard
 
 "joi@npm:^18.0.1":
-  version: 18.2.3
-  resolution: "joi@npm:18.2.3"
+  version: 18.2.8
+  resolution: "joi@npm:18.2.8"
   dependencies:
     "@hapi/address": ^5.1.1
     "@hapi/formula": ^3.0.2
@@ -17877,7 +17870,7 @@ __metadata:
     "@hapi/tlds": ^1.1.1
     "@hapi/topo": ^6.0.2
     "@standard-schema/spec": ^1.1.0
-  checksum: ccf2cba791968330208d05ab2e4459d1f9532a31fd5323795734184dfa628a9373bca4252fc0b636a36656c5b7be4a28e986715737a8a779b8103a28d9988cd2
+  checksum: 45e6626aa02be8633618f6ec0c2785d9178886e74c18e93007d8e311246f31a9b15e49904f87c1c05c9e2a43c6ab071fc081db7fbb0ab949403026d4f9f0bf0c
   languageName: node
   linkType: hard
 
@@ -17917,36 +17910,36 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^3.13.1, js-yaml@npm:^3.6.1":
-  version: 3.15.1
-  resolution: "js-yaml@npm:3.15.1"
+  version: 3.15.2
+  resolution: "js-yaml@npm:3.15.2"
   dependencies:
     argparse: ^1.0.7
     esprima: ^4.0.0
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 6c693b8c59ffe12021df3b36994b090df19d920826dd810baab81652b40861e1974509dd11fe92225ab4c00cc14de053300c94db015c2c0e211edea39b118737
+  checksum: e341df211dece9d4b784849647ad7568b5b6a58a9ee58ead750482316d83276387343649fe4b71522705dc6c76acf97718588f23dc19443833ef3e75033af967
   languageName: node
   linkType: hard
 
 "js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
-  version: 4.3.1
-  resolution: "js-yaml@npm:4.3.1"
+  version: 4.3.2
+  resolution: "js-yaml@npm:4.3.2"
   dependencies:
     argparse: ^2.0.1
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 13c500ca322e0c3f8c81686e6ecda96d2ea37b45247a420c17c7db36932d6965cc27391abc2d1a104501600e7f0d947a5f8b7be6db619c4fefa87901b3512807
+  checksum: dedd34c2e8fef1d504687f1bc94ed0ee1311a1f78770fa2800352c6d59c635ccf555009d74e9afe529ae62199da2b1ccef30e53dc84dcd8d2d8187c22574bc97
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.2.3":
-  version: 5.2.3
-  resolution: "js-yaml@npm:5.2.3"
+"js-yaml@npm:^5.3.0":
+  version: 5.4.1
+  resolution: "js-yaml@npm:5.4.1"
   dependencies:
     argparse: ^2.0.1
   bin:
     js-yaml: bin/js-yaml.mjs
-  checksum: 55cd6310c8eee88d432ae038d451ac9d6aa0eb9e5d38a94df3d6c4a4015d08c9dad7c18669e0e8854e4173a615d6b6b7448bd0aac408773f8a46122ffd863c69
+  checksum: efe9dfaf222809694d375ad5ecca825561d2432eb55bc0f628911c0dfa4dbce98a71dcbc3252f630208bbdf5f4e9ac363847e4a7f49845b577ae2548b8fcf147
   languageName: node
   linkType: hard
 
@@ -19114,16 +19107,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"morgan@npm:^1.11.0":
-  version: 1.11.0
-  resolution: "morgan@npm:1.11.0"
+"morgan@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "morgan@npm:1.12.0"
   dependencies:
     basic-auth: ~2.0.1
     debug: 2.6.9
     depd: ~2.0.0
     on-finished: ~2.4.1
     on-headers: ~1.1.0
-  checksum: 1d8c67bdeb34dc4112f5b6cbff0d5b4ef14bfdcb9f67a7ae67fc7a77282c18dd493a11dc8dff1ff2e285c1846947cfdc3698fdceb1fa7bea2a09fe6cb754455d
+  checksum: 84480e2414c0df6986ae7ade3cd92f74b960e26e31ba4f8e0791d0a9909813882249f85fde03542b93cdefc7cd9a13f382a28f167a063d01d2877294e059970e
   languageName: node
   linkType: hard
 
@@ -19275,15 +19268,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "multer@npm:2.2.0"
+"multer@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "multer@npm:2.3.0"
   dependencies:
     append-field: ^1.0.0
     busboy: ^1.6.0
     concat-stream: ^2.0.0
     type-is: ^1.6.18
-  checksum: 7aa366d89042427347b6ab8e4a203405d7fe942e4a3095648a14526fcf3691d98ffc2da62abf85d8aca0a341f828168eb197b33cfdcfcce29d6ef593a5625591
+  checksum: e78fe6b1fe2132cdd33eeec4146643b906046edc1bbbcc90a43ea3d3aed6a7271272897a6d2e40e711e595a156d99b6761848a76fecca6ae3b9a7ee4892ee30c
   languageName: node
   linkType: hard
 
@@ -22398,7 +22391,7 @@ __metadata:
     import-from: ^3.0.0
     ioredis: ^5.4.1
     jest: ^29.7.0
-    js-yaml: ^5.2.3
+    js-yaml: ^5.3.0
     jsdom: ^27.1.0
     lint-staged: ^11.2.6
     msw: ^2.3.0
@@ -22546,6 +22539,13 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: 7e3c8b2e88a1841c9671094bbaeebd94448111dd90a81a1f606f3f67708a6ec57763b3b47f06da09fc6054193e0e6709e77325415dc8422b04497a8070fa02d4
+  languageName: node
+  linkType: hard
+
+"sax@npm:^1.5.0":
+  version: 1.6.1
+  resolution: "sax@npm:1.6.1"
+  checksum: c91a71043d60da50fdf1e2cee936fc7ad4c9376afb8d1022aef5655f279433640859ec06b3b49abfcbe578fc7da2828cc1661e45aaedf835f5393496193437fa
   languageName: node
   linkType: hard
 
@@ -23666,19 +23666,19 @@ __metadata:
   linkType: hard
 
 "svgo@npm:^3.0.2":
-  version: 3.3.2
-  resolution: "svgo@npm:3.3.2"
+  version: 3.3.5
+  resolution: "svgo@npm:3.3.5"
   dependencies:
-    "@trysound/sax": 0.2.0
     commander: ^7.2.0
     css-select: ^5.1.0
     css-tree: ^2.3.1
     css-what: ^6.1.0
     csso: ^5.0.5
     picocolors: ^1.0.0
+    sax: ^1.5.0
   bin:
-    svgo: ./bin/svgo
-  checksum: a6badbd3d1d6dbb177f872787699ab34320b990d12e20798ecae915f0008796a0f3c69164f1485c9def399e0ce0a5683eb4a8045e51a5e1c364bb13a0d9f79e1
+    svgo: bin/svgo
+  checksum: c4772b2f5ff164323e37d866d28f05163b78a61c44b3412db724a37175c7cf75261a362df22607c2e4afcc40b96aad77d07e8af1970fb92e5802ee6c76ea2ea4
   languageName: node
   linkType: hard
 

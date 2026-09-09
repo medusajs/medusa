@@ -75,7 +75,10 @@ You can also combine this with Query to retrieve related data across modules. Fo
 
 ```ts title="src/api/orders/custom-metadata-search/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { IOrderModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
@@ -85,7 +88,9 @@ export const GET = async (
   const orderModuleService: IOrderModuleService = req.scope.resolve(
     Modules.ORDER
   )
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Step 1: Use the module service to get order IDs matching the metadata filter
   const orderIds = await orderModuleService.listOrders({

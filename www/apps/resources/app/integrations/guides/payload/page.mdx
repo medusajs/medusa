@@ -2243,13 +2243,16 @@ Create the file `src/api/admin/payload/sync/[collection]/route.ts` with the foll
 
 ```ts title="src/api/admin/payload/sync/[collection]/route.ts" badgeLabel="Medusa application" badgeColor="green"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
   const { collection } = req.params
-  const eventModuleService = req.scope.resolve("event_bus")
+  const eventModuleService = req.scope.resolve(
+    Modules.EVENT_BUS
+  )
 
   await eventModuleService.emit({
     name: `${collection}.sync-payload`,
@@ -2283,19 +2286,24 @@ Refer to the [Subscribers documentation](!docs!/learn/fundamentals/events-and-su
 To create a subscriber, create the file `src/subscribers/products-sync-payload.ts` with the following content:
 
 export const productsSyncPayloadSubscriberHighlights = [
-  ["15", "products", "Retrieve paginated products from Medusa."],
-  ["31", "filteredProducts", "Filter out the products that are already linked to Payload."],
-  ["37", "createPayloadProductsWorkflow", "Execute the workflow to create products in Payload."]
+  ["20", "products", "Retrieve paginated products from Medusa."],
+  ["36", "filteredProducts", "Filter out the products that are already linked to Payload."],
+  ["42", "createPayloadProductsWorkflow", "Execute the workflow to create products in Payload."]
 ]
 
 ```ts title="src/subscribers/products-sync-payload.ts" badgeLabel="Medusa application" badgeColor="green" highlights={productsSyncPayloadSubscriberHighlights}
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { createPayloadProductsWorkflow } from "../workflows/create-payload-products"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productSyncPayloadHandler({
   container,
 }: SubscriberArgs) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const limit = 1000
   let offset = 0

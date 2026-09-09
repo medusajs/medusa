@@ -1351,6 +1351,8 @@ In this section, you'll create the API route to retrieve a sanity document, and 
 To retrieve the URL to the Sanity studio, add the following method in the Sanity Module's service in `src/modules/sanity/service.ts`:
 
 ```ts title="src/modules/sanity/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 class SanityModuleService {
   // ...
   async getStudioLink(
@@ -1360,7 +1362,10 @@ class SanityModuleService {
   ) {
     const resolvedType = config.explicit_type ? type : this.typeMap[type]
     if (!this.studioUrl) {
-      throw new Error("No studio URL provided")
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "No studio URL provided"
+      )
     }
     return `${this.studioUrl}/structure/${resolvedType};${id}`
   }
@@ -1565,7 +1570,10 @@ So, create the file `src/admin/widgets/sanity-product.tsx` with the following co
 
 ```tsx title="src/admin/widgets/sanity-product.tsx"
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { AdminProduct, DetailWidgetProps } from "@medusajs/types"
+import {
+  AdminProduct,
+  DetailWidgetProps,
+} from "@medusajs/types"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { Button, CodeBlock, Container, StatusBadge, toast } from "@medusajs/ui"
 import { useState } from "react"

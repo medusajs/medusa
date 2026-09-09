@@ -7,6 +7,7 @@ import {
   StoreProductCategoryListResponse,
 } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { publishedProductsContext } from "../utils/published-products-context"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreProductCategoryListParams>,
@@ -18,6 +19,7 @@ export const GET = async (
     {
       entity: "product_category",
       fields: req.queryConfig.fields,
+      context: publishedProductsContext(),
       filters: req.filterableFields,
       pagination: req.queryConfig.pagination,
     },
