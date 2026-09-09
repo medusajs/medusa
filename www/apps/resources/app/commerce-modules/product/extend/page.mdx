@@ -389,6 +389,37 @@ Among the returned `product` object, you'll find a `custom` property which holds
 }
 ```
 
+### Retrieve in Store API Routes
+
+The Store API routes only return the fields in their allowed fields, and `custom` isn't one of them, so Medusa removes it from the response without an error. To retrieve it through a route like the [List Products API Route](!api!/store/products/list-products), add it to the route's allowed fields in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("custom")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+You can then pass `+custom.*` in the `fields` query parameter of the Store Product API routes.
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property in the route object. Medusa runs a middleware scoped to a method after it validates the `fields` query parameter, so it has no effect.
+
+</Note>
+
+Learn more in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ### Retrieve using Query
 
 You can also retrieve the `Custom` record linked to a product in your code using [Query](!docs!/learn/fundamentals/module-links/query).

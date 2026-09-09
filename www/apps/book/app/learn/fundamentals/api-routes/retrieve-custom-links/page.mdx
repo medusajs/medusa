@@ -37,6 +37,8 @@ By prefixing `brand` with an asterisk (`*`), you retrieve all the default fields
 
 Some of Medusa's API routes restrict the fields and relations you can retrieve, which means you can't pass your custom linked data models in the `fields` query parameter. Medusa makes this restriction to ensure the API routes are performant and secure.
 
+Every Store API route sets this restriction. A route only accepts a requested field whose full path is in its allowed list, and a relation in that list doesn't grant access to the fields nested under it. Medusa silently strips every other field from the query.
+
 <Note>
 
 Learn more about restricting retrievable fields, including how to apply the same restriction to your custom API routes and the full list of restricted core routes, in the [Allowed Fields in API Routes](../allowed-fields/page.mdx) chapter.
@@ -45,11 +47,11 @@ Learn more about restricting retrievable fields, including how to apply the same
 
 For these routes, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](../middlewares/page.mdx) to those routes.
 
-For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
+For example, to allow retrieving the `brand` of a product using the [List Products Store API Route](!api!/store/products/list-products), create the file `src/api/middlewares.ts` with the following content:
 
-<Note>
+<Note title="Warning" type="warning">
 
-Learn how to create a middleware in the [Middlewares](../middlewares/page.mdx) chapter.
+Only add the specific paths that the client needs. A broad entry, such as a relation that pulls in a whole data model, or a sensitive relation like an order, a payment, or another customer, exposes that data to anyone who calls the route. Store API routes are public, so treat every path you add to `allowed` as data you're willing to publish.
 
 </Note>
 
@@ -58,15 +60,15 @@ export const highlights = [
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import { defineMiddlewares } from "@medusajs/medusa"
+import { defineMiddlewares } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/customers/me",
+      matcher: "/store/products",
       middlewares: [
         (req, res, next) => {
-          (req.allowed ??= []).push("b2b_company")
+          (req.allowed ??= []).push("brand")
           next()
         },
       ],
@@ -75,18 +77,20 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer).
+In this example, you apply a middleware to the [List Products Store API Route](!api!/store/products/list-products).
 
-The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `b2b_company` field.
+The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `brand` field.
 
-You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer):
+Push the plain field path, without a `*`, `+`, or `.*` prefix or suffix. To also retrieve a field nested under the link, such as `brand.name`, push that full path too.
+
+You can now retrieve the `brand` field using the `fields` query parameter of the [List Products Store API Route](!api!/store/products/list-products):
 
 ```bash
-curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
--H 'Authorization: Bearer {access_token}'
+curl 'http://localhost:9000/store/products?fields=*brand' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
 
-In this example, you retrieve the `b2b_company` relation of the customer using the `fields` query parameter.
+In this example, you retrieve the `brand` relation of each product using the `fields` query parameter.
 
 <Note title="Important">
 
@@ -96,8 +100,8 @@ This approach only works using a global middleware. It doesn't work in a route m
 
 ---
 
-## API Routes that Disallow Retrievable Fields
+## Disallowed Fields in API Routes
 
-Some of Medusa's API routes block specific field path segments as a hard security boundary, which means you can't retrieve them even if you override the allowed fields and relations.
+An API route can also block specific field path segments as a hard security boundary, which strips them from the query even if they're in the allowed list.
 
-Learn more about disallowed fields, how to apply them to custom API routes, and how to override them in the [Disallowed Fields in API Routes](../disallowed-fields/page.mdx) chapter.
+Medusa's API routes don't set disallowed fields, so overriding a route's allowed fields is enough to retrieve your custom linked data model. Learn how to block a segment on your own API routes in the [Disallowed Fields in API Routes](../disallowed-fields/page.mdx) chapter.

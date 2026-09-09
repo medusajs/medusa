@@ -364,6 +364,37 @@ You can use Query in a custom route to retrieve the customer with its linked `Cu
 
 Learn more about how to use Query in [this guide](!docs!/learn/fundamentals/module-links/query).
 
+### Retrieve in Store API Routes
+
+The [Store Customer API routes](!api!/store/customers) only return the fields in their allowed fields, and `custom` isn't one of them, so Medusa removes it from the response without an error. To retrieve it, add it to the route's allowed fields in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/customers/me",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("custom")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+You can then pass `+custom.*` in the `fields` query parameter of the Store Customer API routes.
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property in the route object. Medusa runs a middleware scoped to a method after it validates the `fields` query parameter, so it has no effect.
+
+</Note>
+
+Learn more in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ---
 
 ## Step 6: Consume customersUpdated Workflow Hook

@@ -26,6 +26,45 @@ There are two ways to retrieve nested categories:
 - [Retrieve nested categories of a category](#retrieve-nested-categories-of-a-category). This is useful if you're showing the nested categories on a category page.
 - [Retrieve all categories as a hierarchy](#retrieve-categories-as-a-hierarchy). This is useful if you're showing the categories in a tree structure, such as in a menu or navigation bar.
 
+Both approaches select specific fields of a child category, which requires the [configuration explained in the next section](#allow-selecting-child-category-fields).
+
+---
+
+## Allow Selecting Child Category Fields
+
+Medusa restricts the fields that you can request from a Store API route through an allowed-fields list. The product category routes allow `*category_children`, which returns all fields of a child category. However, they don't allow selecting specific child fields, such as `category_children.id`, and Medusa omits them from the response.
+
+Since selecting specific fields keeps the response size small, add the following middleware to your Medusa application to allow the `category_children.id` and `category_children.name` fields:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/product-categories",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "category_children.id",
+            "category_children.name"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+<Note title="Important">
+
+Don't add a `method` or `methods` key to the middleware's object. Medusa runs a method-scoped middleware after it validates the query parameters, so pushing to `req.allowed` in it has no effect.
+
+</Note>
+
+Learn more about allowed fields and how to override them in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ---
 
 ## Retrieve Nested Categories of a Category
@@ -34,7 +73,8 @@ To retrieve the child or nested categories of a category in your storefront, pas
 
 - `include_descendants_tree=true` to retrieve each category's nested categories at all levels.
 - Add `category_children` to `fields`, which is the field that will hold a category's nested categories.
-    - You can either pass `*category_children` to retrieve all fields of a child category, or specify the fields specifically to avoid a large response size. For example, `field=category_children.id,category_children.name`.
+    - You can either pass `*category_children` to retrieve all fields of a child category, or specify the fields specifically to avoid a large response size. For example, `fields=category_children.id,category_children.name`.
+    - `*category_children` works out of the box. To select specific fields of a child category, first apply the middleware in the [Allow Selecting Child Category Fields](#allow-selecting-child-category-fields) section.
 
 For example:
 

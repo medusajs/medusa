@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn about disallowed fields in API routes, how to apply them to custom API routes, and how to override them for Medusa's API routes.
+In this chapter, you'll learn about disallowed fields in API routes, how to apply them to custom API routes, and how to apply them to Medusa's API routes.
 
 <Note>
 
@@ -14,22 +14,28 @@ The `disallowed` query configuration is available since Medusa [v2.18.0](https:/
 
 ## What are Disallowed Fields?
 
-Some of Medusa's API routes block specific field path segments as a hard security boundary. Medusa removes these fields from the query before it executes, regardless of what the client requests.
+An API route can block specific field path segments as a hard security boundary. Medusa removes these fields from the query before it executes, regardless of what the client requests.
 
-Disallowed fields guard sensitive relations, such as orders, customers, and payment data, on unauthenticated Store API routes. This prevents a client from pivoting from a public resource into private data.
+Use disallowed fields to guard internal or sensitive relations on a route, such as stock locations, price sets, or a custom link. This prevents a client from pivoting from a public resource into private data.
 
-For example, a Store API route for products blocks the `orders` segment. So, a request to `GET /store/products?fields=orders.customer.email` returns products without the `orders` relation, even if the client explicitly requests it.
+For example, if a custom API route blocks the `campaign` segment, a request to `GET /store/custom?fields=promotions.campaign.budget` returns the data without the `campaign` relation, even if the client explicitly requests it.
 
-Disallowed fields are different than [allowed fields](../retrieve-custom-links/page.mdx#api-routes-that-restrict-retrievable-fields):
+<Note title="Important">
 
-- Allowed fields are an opt-in list of the fields a route can retrieve. Medusa applies them to keep API routes performant and secure.
-- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly.
+Medusa's own API routes don't set disallowed fields. They restrict what a client can retrieve through their [allowed fields](../allowed-fields/page.mdx) instead. A field that isn't in a route's `allowed` array never reaches the query, so the allowed list is the boundary that protects Medusa's routes.
+
+</Note>
+
+Disallowed fields are different than [allowed fields](../allowed-fields/page.mdx):
+
+- Allowed fields are an opt-in list of the fields a route can retrieve. Medusa applies them to its API routes to keep them performant and secure.
+- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly. Medusa doesn't apply them to its API routes, so you set them on the routes that need them.
 
 ---
 
 ## How to Disallow Fields in Custom API Routes?
 
-If you create a custom Store API route and want to apply the same protection, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
+To block field path segments in a custom API route, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
 
 export const disallowHighlights = [
   ["18", "disallowed", "The field path segments to always strip from the query."],
@@ -69,52 +75,40 @@ Each entry of the `disallowed` array is either:
 - A string, which Medusa matches against a whole field path segment. So, `orders` also blocks `orders.customer.email`.
 - A regular expression, which Medusa tests against each segment, such as `/_link$/`, and against the full dotted path. This allows you to block a relation at a specific position. For example, `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root.
 
+<Note title="Warning" type="warning">
+
+A disallowed array isn't a substitute for an `allowed` array. A deny list only blocks the segments you thought of, whereas an allowed list blocks everything you didn't list, including relations that you add to the data model later. Set `allowed` on your custom API routes, and use `disallowed` to block a segment that the allowed list would otherwise let through.
+
+</Note>
+
 ---
 
-## How to Override Disallowed Fields of Medusa's API Routes?
+## How to Disallow Fields in Medusa's API Routes?
 
 <Note>
 
-Overriding disallowed fields is available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
+Setting disallowed fields on a request is available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
 
 </Note>
 
-Medusa's Store API routes disallow the field path segments of sensitive relations, including custom links whose name ends with `_link`. If your use case requires retrieving one of these segments, you can override the disallowed fields of an API route.
+Medusa's API routes don't set disallowed fields. If you [add a field to a route's allowed list](../allowed-fields/page.mdx#how-to-override-allowed-fields-of-medusas-api-routes) and want to block a segment under it, apply a [global middleware](../middlewares/page.mdx) that sets the `disallowed` property of the request object.
 
-<Note title="Warning" type="warning">
-
-Disallowed fields protect sensitive data from clients that only have a publishable API key. Setting the `disallowed` property to an empty array removes that protection from the route.
-
-</Note>
-
-To do that, apply a [global middleware](../middlewares/page.mdx) that sets the `disallowed` property of the request object. Medusa then enforces the fields you set instead of the ones configured by the route, similar to [overriding allowed fields](../retrieve-custom-links/page.mdx#how-to-override-allowed-fields-and-relations).
-
-Since the property replaces the route's disallowed fields, set it to the fields that Medusa disallows minus the ones you need, rather than to a short list of your own. Medusa exports the lists that its Store API routes use, so you can filter one of them:
-
-- `disallowedStoreFields`: used by public routes, such as the product and region routes.
-- `disallowedStorePivotFields`: used by routes that expose the requesting caller's own cart, order, or customer data, such as the cart and order routes.
-- `disallowedStoreCustomerFields`: used by the customer routes.
-
-For example, to retrieve the campaign applied to a cart's promotions on the [Get Cart Store API Route](!api!/store/carts/get-a-cart), create the file `src/api/middlewares.ts` with the following content:
+For example, to block the `payment_collection` segment on the [List Products Store API Route](!api!/store/products/list-products), create the file `src/api/middlewares.ts` with the following content:
 
 export const highlights = [
-  ["10", "disallowed", "Enforce these fields instead of the route's fields."],
-  ["10", "filter", "Remove the segment that blocks the campaign relation."],
+  ["9", "req.disallowed", "Block these segments for this request."],
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import { defineMiddlewares } from "@medusajs/medusa"
-import { disallowedStorePivotFields } from "@medusajs/medusa/utils"
+import { defineMiddlewares } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/carts/:id",
+      matcher: "/store/products",
       middlewares: [
         (req, res, next) => {
-          req.disallowed = disallowedStorePivotFields.filter(
-            (field) => field !== "campaign"
-          )
+          req.disallowed = ["payment_collection"]
           next()
         },
       ],
@@ -123,21 +117,16 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Cart Store API Route](!api!/store/carts/get-a-cart). The middleware sets the `disallowed` property of the request object to the fields that Medusa disallows on routes exposing the caller's own cart data, except for the `campaign` segment.
+Medusa strips any field path that contains `payment_collection` as a segment, even if the path is in the route's allowed list.
 
-You can now retrieve the campaign of a cart's promotions using the `fields` query parameter:
-
-```bash
-curl 'http://localhost:9000/store/carts/{id}?fields=*promotions.campaign' \
--H 'x-publishable-api-key: {your_publishable_api_key}'
-```
-
-Medusa still strips the other disallowed segments, such as `orders` and `customers`, from the query.
-
-You can also use the `disallowed` property to block more segments on an existing API route:
+The property replaces the route's configured disallowed fields rather than adding to them. Medusa's API routes configure none, so the array you set is the full deny list for the request. On a custom API route that configures `disallowed`, include the segments you still want to block:
 
 ```ts title="src/api/middlewares.ts"
-req.disallowed = [...disallowedStorePivotFields, "payment_collection"]
+req.disallowed = [
+  "orders",
+  "customer",
+  "payment_collection",
+]
 ```
 
 <Note title="Important">

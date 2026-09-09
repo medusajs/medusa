@@ -2784,7 +2784,42 @@ You define a link using the `defineLink` function. It accepts three parameters:
 
 You'll learn how this link allows you to retrieve category images in the next section.
 
-### b. Retrieve Category Images
+### b. Allow Retrieving Category Images
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve category images, you must add `product_category_image` to the allowed fields of the `/store/product-categories` route.
+
+You do that with a middleware that pushes the field to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add a new route object passed to the array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/product-categories",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "product_category_image"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Retrieve Category Images
 
 You'll now begin customizing the storefront.
 
@@ -2828,9 +2863,9 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
 }
 ```
 
-You add `*product_category_image` to the `fields` query parameter in both functions. The asterisk (`*`) indicates that you want to include all fields in the product category image record.
+You add `*product_category_image` to the `fields` query parameter in both functions. The asterisk (`*`) indicates that you want to include all fields in the product category image record. The route allows the other fields, such as `*category_children` and `*parent_category`, by default, so the middleware you added earlier only allows `product_category_image`.
 
-### c. Add Category Image Type
+### d. Add Category Image Type
 
 Next, you'll add a TypeScript type for a category image.
 
@@ -2847,7 +2882,7 @@ export type CategoryImage = {
 
 You define a `CategoryImage` type that represents a category image.
 
-### d. Add Megamenu
+### e. Add Megamenu
 
 Next, you'll add a megamenu that shows categories with their thumbnail. You'll then change the navigation bar to show the megamenu.
 
@@ -3033,7 +3068,7 @@ Hover over the "Shop" item to see the megamenu with categories and their thumbna
 
 ![Storefront showing megamenu with categories and their thumbnails](https://res.cloudinary.com/dza7lstvk/image/upload/v1760518332/Medusa%20Resources/CleanShot_2025-10-15_at_11.51.56_2x_mifvqx.png)
 
-### e. Show Banner Image on Category Page
+### f. Show Banner Image on Category Page
 
 Next, you'll show a banner image on a category's page.
 

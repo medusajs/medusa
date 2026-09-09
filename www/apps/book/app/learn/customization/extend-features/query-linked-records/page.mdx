@@ -32,11 +32,11 @@ In this chapter, you'll learn how to retrieve a product's brand (and vice-versa)
 
 ## Approach 1: Retrieve Brands in Existing API Routes
 
-Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin/products/list-products), [Get Product](!api!/admin/products/get-a-product), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
+Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin/products/list-products), [Get Product](!api!/admin/products/get-a-product), or any product-related admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
 
 <Note>
 
-Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](../../../fundamentals/api-routes/retrieve-custom-links/page.mdx) chapter.
+Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](../../../fundamentals/api-routes/retrieve-custom-links/page.mdx) chapter. For store routes, you'll need to override the allowed fields and relations to retrieve your custom linked data models.
 
 </Note>
 

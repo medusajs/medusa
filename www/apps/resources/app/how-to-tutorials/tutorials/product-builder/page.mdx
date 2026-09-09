@@ -3291,7 +3291,49 @@ You define the following types:
 - `AddonSelection`: A selected add-on product in a product builder configuration.
 - `BuilderConfiguration`: The overall builder configuration chosen by the customer for a product.
 
-### b. Retrieve Product Builder Configuration
+### b. Allow Retrieving Product Builder Configuration
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve the builder configuration, you must add the fields of the product builder link to the allowed fields of the `/store/products` route.
+
+Medusa matches each requested field against the allowed fields by its full path. A relation doesn't allow the fields nested in it, so you must add every nested path that the storefront requests.
+
+In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push(
+            "product_builder",
+            "product_builder.custom_fields",
+            "product_builder.complementary_products",
+            "product_builder.complementary_products.product",
+            "product_builder.complementary_products.product.variants",
+            "product_builder.addons",
+            "product_builder.addons.product",
+            "product_builder.addons.product.variants"
+          )
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Retrieve Product Builder Configuration
 
 Next, you need to retrieve the builder configuration for a product when the customer views its details page.
 
@@ -3344,7 +3386,7 @@ return sdk.client
   )
 ```
 
-You retrieve for each product its builder configurations, its custom fields, complementary products, and add-on products. You also retrieve the product and variant details of the complementary and addon products.
+You retrieve for each product its builder configurations, its custom fields, complementary products, and add-on products. You also retrieve the product and variant details of the complementary and addon products. Medusa returns these fields because you allowed them in the previous section.
 
 Finally, change the return type of the `listProductsWithSort` to also include the product builder data:
 
@@ -3361,7 +3403,7 @@ export const listProductsWithSort = async ({
 }
 ```
 
-### c. Add Product Builder Configuration Utilities
+### d. Add Product Builder Configuration Utilities
 
 Next, you'll add utility functions that are useful in your customizations.
 
@@ -3413,7 +3455,7 @@ You define the following utilities:
 - `hasComplementaryProducts`: Checks if a product has complementary products.
 - `hasAddons`: Checks if a product has addons.
 
-### d. Implement Product Builder Configuration Component
+### e. Implement Product Builder Configuration Component
 
 In this section, you'll implement the component that will show the product builder configurations on the product details page. It will show inputs for custom fields, and variant selection for complementary and addon products.
 
@@ -3909,7 +3951,7 @@ return (
 
 You display a separate section for each custom field, complementary product, and addon in the product builder configuration. You also use the `VariantSelector` component to display the variants of each complementary and addon product.
 
-### e. Modify Price Component to Include Builder Prices
+### f. Modify Price Component to Include Builder Prices
 
 When a customer chooses complementary and addon products, the price shown on the product page should reflect that selection. So, you need to modify the pricing component to accept the builder configuration, and update the displayed price accordingly.
 
@@ -4035,7 +4077,7 @@ You make the following key changes:
 - Remove the existing condition on `selectedPrice`, and replace it instead with a condition on `finalPrice`. The condition's body is still the same.
 - Modify the return statement to use `finalPrice` instead of `selectedPrice`.
 
-### f. Display Product Builder on Product Page
+### g. Display Product Builder on Product Page
 
 Finally, to display the product builder component on the product details page, you need to modify two components:
 

@@ -1070,6 +1070,35 @@ This makes the following main changes:
 - Removes the `ProductTabs` component since it's not needed for ticket products.
 - Shows the `TicketLayout` component on the right side of the product images.
 
+### Allow Retrieving Ticket Products
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve ticket products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in the Medusa application's `src/api/middlewares.ts` file:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          (req.allowed ??= []).push("ticket_product")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ### Retrieve Ticket Product with Product
 
 Next, you'll update the server function that retrieves products to include ticket products. This allows you to access the ticket product details when fetching a product.
