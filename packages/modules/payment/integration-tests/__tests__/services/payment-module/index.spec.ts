@@ -1080,6 +1080,169 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should reuse the same idempotency key when retrying a capture after a provider-side failure", async () => {
+            const capturePaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "capturePayment")
+              .mockRejectedValueOnce(new Error("simulated provider timeout"))
+              .mockResolvedValueOnce({ data: { captured: true } })
+
+            // First attempt: the provider call fails (e.g. a network timeout).
+            // The provider may or may not have actually processed the request.
+            await expect(
+              service.capturePayment({ amount: 100, payment_id: "pay-id-1" })
+            ).rejects.toThrow("simulated provider timeout")
+
+            // Retry, as a client would after seeing the first request fail.
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturePaymentMock).toHaveBeenCalledTimes(2)
+            const firstIdempotencyKey =
+              capturePaymentMock.mock.calls[0][1].context.idempotency_key
+            const secondIdempotencyKey =
+              capturePaymentMock.mock.calls[1][1].context.idempotency_key
+
+            // The retry must reuse the same idempotency key as the failed
+            // attempt, so a provider that already processed the first request
+            // recognizes the retry as the same operation instead of
+            // capturing the funds a second time.
+            expect(firstIdempotencyKey).toBeDefined()
+            expect(secondIdempotencyKey).toEqual(firstIdempotencyKey)
+
+            // The retry must also leave the payment in the correct final
+            // state: exactly one confirmed capture of the requested amount,
+            // not two, and not an orphaned unconfirmed capture alongside it.
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
+            )
+          })
+
+          it("should capture the full amount normally when no prior attempt failed", async () => {
+            const capturePaymentMock = jest.spyOn(
+              (service as any).paymentProviderService_,
+              "capturePayment"
+            )
+
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturePaymentMock).toHaveBeenCalledTimes(1)
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [expect.objectContaining({ amount: 100 })],
+                captured_at: expect.any(Date),
+              })
+            )
+          })
+
+          it("should rotate the idempotency key when a reused key fails again, so a deterministic provider failure can converge", async () => {
+            // Providers with idempotency-keyed APIs (e.g. Stripe) bind the
+            // response of the FIRST request -- including 4xx errors -- to the
+            // key and replay it on every reuse. A retry that reuses the key
+            // of a deterministically-failed attempt therefore replays the
+            // failure regardless of whether the underlying state was fixed.
+            // Model that contract: fail the first key, replay the failure on
+            // its reuse, succeed on any fresh key.
+            const failedKeys = new Set<string>()
+            const capturePaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "capturePayment")
+              .mockImplementation(async (_provider, input: any) => {
+                const key = input.context.idempotency_key
+                if (failedKeys.has(key)) {
+                  throw new Error("provider replayed stored failure")
+                }
+                if (failedKeys.size === 0) {
+                  failedKeys.add(key)
+                  throw new Error("deterministic provider rejection")
+                }
+                return { data: { captured: true } }
+              })
+
+            // Attempt 1: deterministic rejection (e.g. a vendor-side 4xx).
+            await expect(
+              service.capturePayment({ amount: 100, payment_id: "pay-id-1" })
+            ).rejects.toThrow("deterministic provider rejection")
+
+            // Attempt 2: the retry reuses the same key (ambiguity-safe), and
+            // the provider replays the stored failure.
+            await expect(
+              service.capturePayment({ amount: 100, payment_id: "pay-id-1" })
+            ).rejects.toThrow("provider replayed stored failure")
+
+            // Attempt 3: the failed reuse rotated the capture row, so this
+            // retry carries a fresh key and converges.
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturePaymentMock).toHaveBeenCalledTimes(3)
+            const keys = capturePaymentMock.mock.calls.map(
+              (c: any[]) => c[1].context.idempotency_key
+            )
+            expect(keys[1]).toEqual(keys[0]) // reuse once for ambiguity safety
+            expect(keys[2]).not.toEqual(keys[0]) // then rotate
+
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                captures: [expect.objectContaining({ amount: 100 })],
+                captured_at: expect.any(Date),
+              })
+            )
+          })
+
+          it("should not reuse a failed capture's idempotency key for a different amount", async () => {
+            const capturePaymentMock = jest
+              .spyOn((service as any).paymentProviderService_, "capturePayment")
+              .mockRejectedValueOnce(new Error("simulated provider timeout"))
+              .mockResolvedValueOnce({ data: { captured: true } })
+
+            await expect(
+              service.capturePayment({ amount: 60, payment_id: "pay-id-1" })
+            ).rejects.toThrow("simulated provider timeout")
+
+            // A DIFFERENT logical capture must not inherit the failed
+            // attempt's key -- the provider may have bound the previous
+            // request to it.
+            const capturedPayment = await service.capturePayment({
+              amount: 40,
+              payment_id: "pay-id-1",
+            })
+
+            const keys = capturePaymentMock.mock.calls.map(
+              (c: any[]) => c[1].context.idempotency_key
+            )
+            expect(keys).toHaveLength(2)
+            expect(keys[1]).not.toEqual(keys[0])
+
+            // The 40 capture is confirmed; the failed 60 attempt stays
+            // recorded (and excluded from captured totals) for a future
+            // same-amount retry.
+            expect(capturedPayment.captured_at).toBeNull()
+            const confirmed = capturedPayment.captures!.filter(
+              (c: any) => c.metadata?.__capture_status === undefined
+            )
+            expect(confirmed).toEqual([
+              expect.objectContaining({ amount: 40 }),
+            ])
+          })
         })
 
         describe("refund", () => {

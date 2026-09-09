@@ -732,11 +732,8 @@ export default class PaymentModuleService
       isCaptured = isAutoCaptured
     }
 
-    const { isFullyCaptured, capture } = await this.capturePayment_(
-      data_,
-      payment,
-      sharedContext
-    )
+    const { isFullyCaptured, capture, reusedFailedCapture } =
+      await this.capturePayment_(data_, payment, sharedContext)
 
     try {
       await this.capturePaymentFromProvider_(
@@ -746,8 +743,40 @@ export default class PaymentModuleService
         sharedContext
       )
     } catch (error) {
+      // Mark the capture as failed instead of deleting it. The provider was
+      // already given this capture's id as its idempotency key, so if this
+      // failure was ambiguous (e.g. a timeout after the provider actually
+      // processed the request), a subsequent retry must reuse that same
+      // id/idempotency key -- deleting it here would force a retry to mint a
+      // new key, defeating provider-side deduplication. See `capturePayment_`
+      // for where a retry finds and reuses a failed capture; while this
+      // capture is failed (not deleted, not confirmed), a *concurrent*
+      // capture attempt still counts it toward the captured total until this
+      // call's own failure is recorded, so it can't be raced by another call
+      // mistaking it for a stale, reusable attempt.
       if (capture?.id) {
-        await super.deleteCaptures({ id: capture.id }, sharedContext)
+        if (reusedFailedCapture) {
+          // This attempt already reused a previously-failed capture's key and
+          // the provider failed AGAIN. If the failure is deterministic, the
+          // provider has bound an error response to this key (Stripe replays
+          // a stored 4xx verbatim), so keeping it would brick every future
+          // retry. Rotate: delete the row so the next retry mints a fresh
+          // key. The one same-key retry already performed is what makes this
+          // safe for the ambiguous case -- a processed-but-lost capture was
+          // recovered by that retry, not re-executed.
+          await super.deleteCaptures({ id: capture.id }, sharedContext)
+        } else {
+          await this.captureService_.update(
+            {
+              id: capture.id,
+              metadata: {
+                ...(capture.metadata as object | null),
+                __capture_status: "failed",
+              },
+            },
+            sharedContext
+          )
+        }
       }
       throw error
     }
@@ -778,6 +807,7 @@ export default class PaymentModuleService
   ): Promise<{
     isFullyCaptured: boolean
     capture?: InferEntityType<typeof Capture>
+    reusedFailedCapture?: boolean
   }> {
     if (payment.canceled_at) {
       throw new MedusaError(
@@ -829,7 +859,24 @@ export default class PaymentModuleService
       { select: ["id"], relations: ["captures.raw_amount"] },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
+
+    // A capture whose owning call caught a provider-call failure (see the
+    // catch block in `capturePayment`) is marked failed rather than deleted,
+    // so its idempotency key can be reused by a genuine retry below. Until a
+    // capture is marked failed, it still counts toward the captured total --
+    // it may be a live, in-flight capture from a *concurrent* call whose
+    // provider request hasn't resolved yet, and treating it as "not really
+    // captured" here would let a concurrent second call race past the
+    // over-capture guard serialized by the row lock above. Only a capture
+    // this payment's own failed attempt marked `failed` is safe to treat as
+    // reusable/excluded.
+    const isFailed = (c: InferEntityType<typeof Capture>) =>
+      (c.metadata as Record<string, unknown> | null)?.__capture_status ===
+      "failed"
+    const nonFailedCaptures = lockedPayment.captures.filter((c) => !isFailed(c))
+    const failedCapture = lockedPayment.captures.find(isFailed)
+
+    const capturedAmount = nonFailedCaptures.reduce((captureAmount, next) => {
       return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
@@ -858,16 +905,53 @@ export default class PaymentModuleService
       this.roundToCurrencyPrecision(authorizedAmount, payment.currency_code)
     )
 
-    const capture = await this.captureService_.create(
-      {
-        payment: data.payment_id,
-        amount: data.amount,
-        captured_by: data.captured_by,
-      },
-      sharedContext
-    )
+    // Reuse a capture from a prior *failed* attempt on this payment instead
+    // of minting a fresh id, so the idempotency key handed to the provider in
+    // `capturePaymentFromProvider_` stays stable across a retry of the same
+    // logical capture. Reuse is only safe when the retry is the SAME logical
+    // capture -- the amounts must match, otherwise a new capture must not
+    // inherit a key the provider may have bound to the earlier request.
+    // New captures start `pending`; `capturePaymentFromProvider_` clears the
+    // status once the provider call actually succeeds. On failure,
+    // `capturePayment`'s catch block marks a first-attempt capture `failed`
+    // (keeping the key reusable for one retry) but DELETES a capture whose
+    // reused-key retry failed again: a provider that has bound a
+    // deterministic error response to the key (as Stripe binds a 4xx) would
+    // otherwise replay that error forever and the capture could never
+    // converge. The next retry then mints a fresh key.
+    const reusableFailedCapture =
+      failedCapture &&
+      MathBN.eq(failedCapture.raw_amount as BigNumberInput, data.amount)
+        ? failedCapture
+        : undefined
 
-    return { isFullyCaptured, capture }
+    const capture = reusableFailedCapture
+      ? await this.captureService_.update(
+          {
+            id: reusableFailedCapture.id,
+            captured_by: data.captured_by,
+            metadata: {
+              ...(reusableFailedCapture.metadata as object | null),
+              __capture_status: "pending",
+            },
+          },
+          sharedContext
+        )
+      : await this.captureService_.create(
+          {
+            payment: data.payment_id,
+            amount: data.amount,
+            captured_by: data.captured_by,
+            metadata: { __capture_status: "pending" },
+          },
+          sharedContext
+        )
+
+    return {
+      isFullyCaptured,
+      capture,
+      reusedFailedCapture: !!reusableFailedCapture,
+    }
   }
 
   @InjectManager()
@@ -909,6 +993,20 @@ export default class PaymentModuleService
           id: payment.id,
           captured_at: new Date(),
         },
+        sharedContext
+      )
+    }
+
+    // The provider call above succeeded (or was skipped because this capture
+    // was already auto-captured), so this capture is confirmed -- clear the
+    // `pending`/`failed` status `capturePayment_` set so a future capture on
+    // this payment can never mistake it for a reusable failed attempt.
+    if (
+      capture &&
+      (capture.metadata as Record<string, unknown> | null)?.__capture_status
+    ) {
+      await this.captureService_.update(
+        { id: capture.id, metadata: null },
         sharedContext
       )
     }
