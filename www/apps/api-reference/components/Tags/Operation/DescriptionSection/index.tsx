@@ -19,6 +19,7 @@ import {
 import { TagsOperationDescriptionSectionWorkflowBadgeProps } from "./WorkflowBadge"
 import { TagsOperationDescriptionSectionEventsProps } from "./Events"
 import { TagsOperationDescriptionSectionDeprecationNoticeProps } from "./DeprecationNotice"
+import { TagsOperationDescriptionSectionFieldRestrictionsProps } from "./FieldRestrictions"
 import { Feedback } from "@/components/Feedback"
 import { useArea } from "@/providers/area"
 import { resolveApiRefDocUrl } from "@/utils/resolve-doc-url"
@@ -54,6 +55,11 @@ const TagsOperationDescriptionSectionDeprecationNotice =
     async () => import("./DeprecationNotice")
   ) as React.FC<TagsOperationDescriptionSectionDeprecationNoticeProps>
 
+const TagsOperationDescriptionSectionFieldRestrictions =
+  dynamic<TagsOperationDescriptionSectionFieldRestrictionsProps>(
+    async () => import("./FieldRestrictions")
+  ) as React.FC<TagsOperationDescriptionSectionFieldRestrictionsProps>
+
 type TagsOperationDescriptionSectionProps = {
   operation: OpenAPI.Operation
 }
@@ -61,6 +67,12 @@ const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
   const { area } = useArea()
+  // eslint-disable-next-line no-console
+  console.log(
+    operation.summary,
+    operation["x-allowed"],
+    operation["x-disallowed"]
+  )
   return (
     <>
       <H2>
@@ -149,6 +161,13 @@ const TagsOperationDescriptionSection = ({
       {operation.parameters && operation.parameters.length > 0 && (
         <TagsOperationDescriptionSectionParameters
           parameters={operation.parameters}
+        />
+      )}
+      {((operation["x-allowed"]?.length || 0) > 0 ||
+        (operation["x-disallowed"]?.length || 0) > 0) && (
+        <TagsOperationDescriptionSectionFieldRestrictions
+          allowed={operation["x-allowed"]}
+          disallowed={operation["x-disallowed"]}
         />
       )}
       {operation.requestBody?.content !== undefined &&
