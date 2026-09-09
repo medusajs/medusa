@@ -66,6 +66,10 @@ export const defaultStoreRetrieveOrderFields = [
 ]
 
 export const allowedStoreOrderExtraFields = [
+  "customer_id",
+  "customer.id",
+  "customer.email",
+  "cart.id",
   "items.metadata",
   "items.product",
   "payment_collections.payments",
