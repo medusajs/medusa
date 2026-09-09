@@ -148,7 +148,7 @@ export const preorderVariantHighlights = [
 ]
 
 ```ts title="src/modules/preorder/models/preorder-variant.ts" highlights={preorderVariantHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { Preorder } from "./preorder"
 
 export enum PreorderVariantStatus {
@@ -207,7 +207,7 @@ export const preorderHighlights = [
 ]
 
 ```ts title="src/modules/preorder/models/preorder.ts" highlights={preorderHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { PreorderVariant } from "./preorder-variant"
 
 export enum PreorderStatus {
@@ -679,12 +679,12 @@ export const upsertProductVariantPreorderWorkflowHighlights = [
   ["18", "useQueryGraphStep", "Confirm that the product variant exists."],
   ["29", "useQueryGraphStep", "Try to retrieve the existing pre-order variant."],
   ["37", "when", "Check if there's an existing pre-order variant."],
-  ["41", "updatePreorderVariantStep", "Update the existing pre-order variant."],
-  ["51", "when", "Check if there isn't an existing pre-order variant."],
-  ["55", "createPreorderVariantStep", "Create a pre-order variant for the product variant."],
-  ["57", "createRemoteLinkStep", "Link the pre-order variant to the product variant."],
-  ["71", "transform", "Return either the created or updated pre-order variant."],
-  ["78", "preorderVariant", "Return the pre-order variant to the workflow's executor."],
+  ["42", "updatePreorderVariantStep", "Update the existing pre-order variant."],
+  ["52", "when", "Check if there isn't an existing pre-order variant."],
+  ["57", "createPreorderVariantStep", "Create a pre-order variant for the product variant."],
+  ["59", "createRemoteLinkStep", "Link the pre-order variant to the product variant."],
+  ["73", "transform", "Return either the created or updated pre-order variant."],
+  ["80", "preorderVariant", "Return the pre-order variant to the workflow's executor."],
 ]
 
 ```ts title="src/workflows/upsert-product-variant-preorder.ts" highlights={upsertProductVariantPreorderWorkflowHighlights}
@@ -725,6 +725,7 @@ export const upsertProductVariantPreorderWorkflow = createWorkflow(
     }).config({ name: "retrieve-preorder-variant" })
 
     const updatedPreorderVariant = when(
+      "update-preorder-variant",
       { preorderVariants }, 
       (data) => data.preorderVariants.length > 0
     ).then(() => {
@@ -739,6 +740,7 @@ export const upsertProductVariantPreorderWorkflow = createWorkflow(
     })
 
     const createdPreorderVariant = when(
+      "create-preorder-variant",
       { preorderVariants }, 
       (data) => data.preorderVariants.length === 0
     ).then(() => {
@@ -1927,17 +1929,20 @@ You do this using [workflow hooks](!docs!/learn/fundamentals/workflows/workflow-
 To consume the `validate` hook of the `addToCartWorkflow` that holds the add-to-cart logic, create the file `src/workflows/hooks/validate-cart.ts` with the following content:
 
 export const validateCartHookHighlights = [
-  ["6", "isPreorderVariant", "Check if a pre-order variant is enabled and in the future."],
-  ["16", "validate", "Consume the `validate` hook of the `addToCartWorkflow`."],
-  ["20", "itemsInCart", "Retrieve all items in the cart."],
-  ["32", "variantsToAdd", "Retrieve the pre-order variants of the new items being added to the cart."],
-  ["42", "cartHasPreorderVariants", "Check if the cart has pre-order variants."],
-  ["48", "newItemsHavePreorderVariants", "Check if the new items being added have pre-order variants."],
-  ["55", "MedusaError", "Throw an error if the cart has mixed pre-order and available items."],
+  ["9", "isPreorderVariant", "Check if a pre-order variant is enabled and in the future."],
+  ["19", "validate", "Consume the `validate` hook of the `addToCartWorkflow`."],
+  ["25", "itemsInCart", "Retrieve all items in the cart."],
+  ["37", "variantsToAdd", "Retrieve the pre-order variants of the new items being added to the cart."],
+  ["47", "cartHasPreorderVariants", "Check if the cart has pre-order variants."],
+  ["53", "newItemsHavePreorderVariants", "Check if the new items being added have pre-order variants."],
+  ["60", "MedusaError", "Throw an error if the cart has mixed pre-order and available items."],
 ]
 
 ```ts title="src/workflows/hooks/validate-cart.ts" highlights={validateCartHookHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { PreorderVariant } from "../../modules/preorder/models/preorder-variant"
@@ -1954,7 +1959,9 @@ function isPreorderVariant(
 
 addToCartWorkflow.hooks.validate(
   (async ({ input, cart }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: itemsInCart } = await query.graph({
       entity: "line_item",
@@ -2485,12 +2492,17 @@ Create the file `src/api/admin/orders/[id]/preorders/route.ts` with the followin
 
 ```ts title="src/api/admin/orders/[id]/preorders/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const { id: orderId } = req.params
 
   const { data: preorders } = await query.graph({
@@ -3034,8 +3046,18 @@ export const fulfillPreorderWorkflow = createWorkflow(
       return data.items_total + shippingPrice
     })
 
+    const paymentCollection = transform(
+      { orders },
+      ({ orders }) => orders[0].payment_collections?.[0]
+    )
+
+    const paymentId = transform(
+      { orders },
+      ({ orders }) => orders[0].payment_collections?.[0]?.payments[0].id
+    )
+
     when({
-      payment_collection: orders[0].payment_collections?.[0],
+      payment_collection: paymentCollection,
       capture_total: totalCaptureAmount,
     }, (data) => {
       return data.payment_collection?.amount !== undefined && data.payment_collection.captured_amount !== null &&  
@@ -3044,7 +3066,7 @@ export const fulfillPreorderWorkflow = createWorkflow(
       capturePaymentWorkflow.runAsStep({
         input: {
           // @ts-ignore
-          payment_id: orders[0].payment_collections?.[0]?.payments[0].id,
+          payment_id: paymentId,
           amount: totalCaptureAmount,
         },
       })
@@ -3087,8 +3109,8 @@ Refer to the [Scheduled Jobs](!docs!/learn/fundamentals/scheduled-jobs) document
 To create a scheduled job, create the file `src/jobs/fulfill-preorders.ts` with the following content:
 
 export const fulfillPreordersJobHighlights = [
-  ["8", "fulfillPreordersJob", "The scheduled job that fulfills pre-orders."],
-  ["19", "schedule", "The cron schedule for the job."]
+  ["11", "fulfillPreordersJob", "The scheduled job that fulfills pre-orders."],
+  ["26", "schedule", "The cron schedule for the job."]
 ]
 
 ```ts title="src/jobs/fulfill-preorders.ts" highlights={fulfillPreordersJobHighlights}
@@ -3098,10 +3120,17 @@ import {
 } from "@medusajs/framework/types"
 import { fulfillPreorderWorkflow } from "../workflows/fulfill-preorder"
 import { PreorderVariant } from "../modules/preorder/models/preorder-variant"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function fulfillPreordersJob(container: MedusaContainer) {
-  const query = container.resolve("query")
-  const logger = container.resolve("logger")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Starting daily fulfill preorders job...")
 
@@ -3300,13 +3329,13 @@ A subscriber is an asynchronous function that is executed when its associated ev
 To create a subscriber that sends a notification to the customer when a pre-order is fulfilled, create the file `src/subscribers/preorder-notification.ts` with the following content:
 
 export const preorderNotificationHighlights = [
-  ["6", "productCreateHandler", "The function that's executed when the event is emitted."],
-  ["18", "preorderVariants", "Retrieve the pre-order variant details."],
-  ["26", "order", "Retrieve the order details."],
-  ["34", "notificationModuleService.createNotifications", "Send a notification to the customer."],
-  ["36", "channel", "The channel to send the notification with."],
-  ["36", `"feed"`, "The feed channel is useful for debugging."],
-  ["46", "event", "The event that the subscriber is listening to."],
+  ["10", "productCreateHandler", "The function that's executed when the event is emitted."],
+  ["24", "preorderVariants", "Retrieve the pre-order variant details."],
+  ["32", "order", "Retrieve the order details."],
+  ["40", "notificationModuleService.createNotifications", "Send a notification to the customer."],
+  ["42", "channel", "The channel to send the notification with."],
+  ["42", `"feed"`, "The feed channel is useful for debugging."],
+  ["52", "event", "The event that the subscriber is listening to."],
 ]
 
 ```ts title="src/subscribers/preorder-notification.ts" highlights={preorderNotificationHighlights}
@@ -3314,6 +3343,10 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/framework"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function productCreateHandler({
   event: { data },
@@ -3322,9 +3355,11 @@ export default async function productCreateHandler({
   order_id: string;
   preorder_variant_id: string;
  }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const notificationModuleService = container.resolve(
-    "notification"
+    Modules.NOTIFICATION
   )
 
   const { data: preorderVariants } = await query.graph({
@@ -3492,10 +3527,10 @@ Next, you'll create the subscriber that listens to the `order.canceled` event an
 Create the file `src/subscribers/order-canceled.ts` with the following content:
 
 export const orderCanceledHighlights = [
-  ["14", "workflowInput", "Prepare the input to pass to the workflow."],
-  ["24", "preorders", "Retrieve the pre-orders of the order."],
-  ["41", "push", "Add the pre-orders to the workflow input."],
-  ["46", "cancelPreordersWorkflow", "Execute the cancel pre-orders workflow."],
+  ["19", "workflowInput", "Prepare the input to pass to the workflow."],
+  ["29", "preorders", "Retrieve the pre-orders of the order."],
+  ["46", "push", "Add the pre-orders to the workflow input."],
+  ["51", "cancelPreordersWorkflow", "Execute the cancel pre-orders workflow."],
 ]
 
 ```ts title="src/subscribers/order-canceled.ts" highlights={orderCanceledHighlights}
@@ -3503,6 +3538,9 @@ import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { cancelPreordersWorkflow, CancelPreordersWorkflowInput } from "../workflows/cancel-preorders"
 import { Preorder } from "../modules/preorder/models/preorder"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderCanceledHandler({
   event: { data },
@@ -3510,7 +3548,9 @@ export default async function orderCanceledHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const workflowInput: CancelPreordersWorkflowInput = {
     preorders: [],
@@ -3727,12 +3767,12 @@ Create the file `src/workflows/handle-order-edit.ts` with the following content:
 
 export const handleOrderEditWorkflowHighlights = [
   ["14", "useQueryGraphStep", "Retrieve the order's items with their pre-order variants."],
-  ["30", "useQueryGraphStep", "Retrieve the pre-orders of the order."],
-  ["39", "retrievePreorderUpdatesStep", "Retrieve the pre-orders to cancel and create."],
-  ["44", "updatePreordersStep", "Update the pre-orders to cancel."],
-  ["46", "createPreordersStep", "Create the pre-orders to create."],
-  ["58", "emitEventStep", "Emit the `preorder.cancelled` event for canceled pre-orders."],
-  ["63", "WorkflowResponse", "Return the created and canceled pre-orders."]
+  ["29", "useQueryGraphStep", "Retrieve the pre-orders of the order."],
+  ["38", "retrievePreorderUpdatesStep", "Retrieve the pre-orders to cancel and create."],
+  ["43", "updatePreordersStep", "Update the pre-orders to cancel."],
+  ["45", "createPreordersStep", "Create the pre-orders to create."],
+  ["57", "emitEventStep", "Emit the `preorder.cancelled` event for canceled pre-orders."],
+  ["62", "WorkflowResponse", "Return the created and canceled pre-orders."]
 ]
 
 ```ts title="src/workflows/handle-order-edit.ts" highlights={handleOrderEditWorkflowHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
@@ -3753,7 +3793,6 @@ export const handleOrderEditWorkflow = createWorkflow(
       entity: "order",
       fields: [
         "*",
-        "items",
         "items.variant.*",
         "items.variant.preorder_variant.*",
       ],

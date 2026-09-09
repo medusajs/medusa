@@ -715,7 +715,10 @@ To create the loader that initializes the Strapi client, create the file `src/mo
 ```ts title="src/modules/strapi/loaders/init-client.ts" badgeLabel="Medusa application" badgeColor="green"
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { strapi } from "@strapi/client"
 
 export type ModuleOptions = {
@@ -735,7 +738,9 @@ export default async function initStrapiClientLoader({
     )
   }
 
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   try {
     // Create Strapi client instance
@@ -2122,10 +2127,11 @@ export const createVariantsInStrapiWorkflow = createWorkflow(
       },
     })
 
-    const strapiVariants = when({ 
-      variants,
-    }, (data) => !!(data.variants[0].product as any)?.strapi_product)
-      .then(() => {
+    const strapiVariants = when(
+      "sync-strapi-variants",
+      { variants },
+      (data) => !!(data.variants[0].product as any)?.strapi_product
+    ).then(() => {
         const variantImages = transform({ 
           variants,
         }, (data) => {
@@ -3213,9 +3219,15 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) to learn more ab
 
 To create the API route, create the file `src/api/webhooks/strapi/route.ts` with the following content:
 
+{/* eslint-disable @medusajs/no-service-mutations-in-api-route */}
+
 ```ts title="src/api/webhooks/strapi/route.ts" badgeLabel="Medusa application" badgeColor="green"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { simpleHash, Modules } from "@medusajs/framework/utils"
+import {
+  simpleHash,
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { 
   handleStrapiWebhookWorkflow, 
   WorkflowInput,
@@ -3226,7 +3238,9 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const body = req.body as Record<string, unknown>
-  const logger = req.scope.resolve("logger")
+  const logger = req.scope.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const cachingService = req.scope.resolve(Modules.CACHING)
   
   // Generate a hash of the webhook payload to detect duplicates
