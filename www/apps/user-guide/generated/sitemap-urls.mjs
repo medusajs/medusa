@@ -62,6 +62,7 @@ export const sitemapUrls = [
   "/settings/regions",
   "/settings/return-reasons",
   "/settings/sales-channels",
+  "/settings/search",
   "/settings/store",
   "/settings/tax-regions",
   "/settings/translations",

@@ -937,7 +937,7 @@ export default async function validateOktaProvider(
 You create a middleware function that checks if:
 
 - The user already has an associated Medusa user. If so, you throw an error since the user shouldn't access the route.
-- The user's auth identity was authenticated by Okta. You use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the user's auth identity with its provider identities, then check whether Okta is one of the providers. If not, you throw an unauthorized error.
+- The user's auth identity was authenticated by Okta. You use [Query](!docs!/learn/fundamentals/query) to retrieve the user's auth identity with its provider identities, then check whether Okta is one of the providers. If not, you throw an unauthorized error.
 
 If both checks pass, you call the `next` function to proceed to the next middleware or route handler.
 

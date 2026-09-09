@@ -161,8 +161,84 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "CLI",
+        title: "Resources",
         initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Storefront",
+            path: "/storefront",
+          },
+          {
+            type: "link",
+            title: "Database",
+            path: "/database",
+          },
+          {
+            type: "link",
+            title: "Redis",
+            path: "/redis",
+          },
+          {
+            type: "link",
+            title: "S3",
+            path: "/s3",
+          },
+          {
+            type: "link",
+            title: "Cache",
+            path: "/cache",
+          },
+          {
+            type: "link",
+            title: "Emails",
+            path: "/emails",
+            children: [
+              {
+                type: "link",
+                title: "React Email Templates",
+                path: "/emails/react-email",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Search",
+            path: "/search",
+            children: [
+              {
+                type: "link",
+                title: "Compare to PostgreSQL",
+                path: "/search/postgres",
+              },
+              {
+                type: "link",
+                title: "Compare to Algolia",
+                path: "/search/algolia",
+              },
+              {
+                type: "link",
+                title: "Compare to Meilisearch",
+                path: "/search/meilisearch",
+              },
+              {
+                type: "link",
+                title: "Migrate from Algolia",
+                path: "/search/migrate-from-algolia",
+              },
+              {
+                type: "link",
+                title: "Migrate from Meilisearch",
+                path: "/search/migrate-from-meilisearch",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "CLI",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -245,50 +321,6 @@ export const sidebar = [
             type: "link",
             title: "logout",
             path: "/cli/commands/logout",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Resources",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Storefront",
-            path: "/storefront",
-          },
-          {
-            type: "link",
-            title: "Database",
-            path: "/database",
-          },
-          {
-            type: "link",
-            title: "Redis",
-            path: "/redis",
-          },
-          {
-            type: "link",
-            title: "S3",
-            path: "/s3",
-          },
-          {
-            type: "link",
-            title: "Cache",
-            path: "/cache",
-          },
-          {
-            type: "link",
-            title: "Emails",
-            path: "/emails",
-            children: [
-              {
-                type: "link",
-                title: "React Email Templates",
-                path: "/emails/react-email",
-              },
-            ],
           },
         ],
       },

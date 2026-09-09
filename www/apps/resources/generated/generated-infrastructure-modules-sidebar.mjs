@@ -506,6 +506,122 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     {
       "loaded": true,
       "type": "category",
+      "title": "Search Module",
+      "initialOpen": true,
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search/index-definitions",
+          "title": "Index Definitions",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/index-definitions/fields",
+              "title": "Index Fields",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/index-definitions/modifiers",
+              "title": "Index Field Modifiers",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search/reindexing",
+          "title": "Reindexing and Migrations",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "ref",
+          "path": "/instantsearch",
+          "title": "InstantSearch Adapter",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "title": "Providers",
+          "path": "/infrastructure-modules/search/providers",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/providers/postgres",
+              "title": "PostgreSQL",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "path": "https://docs.medusajs.com/cloud/search",
+              "title": "Medusa Search",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/postgres",
+                  "title": "Compare to PostgreSQL",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/algolia",
+                  "title": "Compare to Algolia",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/meilisearch",
+                  "title": "Compare to Meilisearch",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "sub-category",
+          "title": "Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/references/search/provider",
+              "title": "Create Search Module Provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/references/search/service",
+              "title": "Use Search Module",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "type": "category",
       "title": "Workflow Engine Module",
       "initialOpen": true,
       "children": [

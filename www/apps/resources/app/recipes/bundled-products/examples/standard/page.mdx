@@ -719,7 +719,7 @@ In the workflow's constructor function, you:
     - You must use the `transform` function whenever you want to manipulate data in a workflow, as Medusa creates an internal representation of the workflow when the application starts, not when the workflow is executed. Learn more in the [Transform Data documentation](!docs!/learn/fundamentals/workflows/variable-manipulation).
 6. Create a link between the bundle items and the Medusa products using the `createRemoteLinkStep`.
 7. Retrieve the bundle and its items using the `useQueryGraphStep`.
-    - `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/module-links/query), which allows you to retrieve data across modules.
+    - `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/query), which allows you to retrieve data across modules.
 
 A workflow must return an instance of `WorkflowResponse`. The `WorkflowResponse` constructor accepts the workflow's output as a parameter, which is the created bundle.
 
@@ -918,7 +918,7 @@ export async function GET(
 
 Since you export a `GET` route handler function, you expose a `GET` API route at `/admin/bundled-products`.
 
-In the route handler, you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container. Then, you call its `graph` method to retrieve the bundles.
+In the route handler, you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container. Then, you call its `graph` method to retrieve the bundles.
 
 Notice that you pass to `query.graph` the `req.queryConfig` object. This object contains default query configurations related to pagination and the fields to be retrieved. You'll learn how to set the query configurations in a bit.
 
@@ -2171,11 +2171,11 @@ export async function GET(
 
 You export a `GET` route handler, which exposes a `GET` API route at `/store/bundle-products/:id`.
 
-In the route handler, you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container.
+In the route handler, you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container.
 
 Then, you use Query to retrieve the bundle with its items and their products, variants, and options. These are useful to display to the customer the options for each product to select from, which will result in selecting a variant for a bundle item.
 
-To retrieve the correct price for each variant, you also pass a [Query Context](!docs!/learn/fundamentals/module-links/query-context) with the region ID and currency code that are passed as query parameters. This ensures that the prices are shown accurately to the customer.
+To retrieve the correct price for each variant, you also pass a [Query Context](!docs!/learn/fundamentals/query/query-context) with the region ID and currency code that are passed as query parameters. This ensures that the prices are shown accurately to the customer.
 
 <Note>
 

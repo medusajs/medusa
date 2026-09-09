@@ -123,7 +123,7 @@ A plain number.
 The difference in server-side code comes down to how the value is produced:
 
 - Medusa reads a stored `bigNumber` property back as its numeric value, so you get a plain number. The precise value is available in the property's `raw_` field when you request it, as explained in the next section.
-- Commerce Modules compute some totals, such as an order's `total`, and wrap them in a `BigNumber` instance. For example, if you retrieve an order's total with [Query](../../module-links/query/page.mdx), the `total` property is a `BigNumber` instance:
+- Commerce Modules compute some totals, such as an order's `total`, and wrap them in a `BigNumber` instance. For example, if you retrieve an order's total with [Query](../../query/page.mdx), the `total` property is a `BigNumber` instance:
 
 ```ts
 const { data: orders } = await query.graph({

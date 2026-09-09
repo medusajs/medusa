@@ -1549,7 +1549,7 @@ const productBuilderId = transform({
 In this snippet, you:
 
 1. Try to retrieve the existing product builder using the `useQueryGraphStep`.
-    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data across modules.
+    - This step uses [Query](!docs!/learn/fundamentals/query) to retrieve data across modules.
 2. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check whether the existing product builder was found.
     - If there's no existing product builder, you create a new one using the `createProductBuilderStep`, then link it to the product using the `createRemoteLinkStep`.
 3. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to extract the product builder ID from either the existing or newly created product builder.
@@ -1979,7 +1979,7 @@ export const GET = async (
 
 Since you export a `GET` route handler function, you expose a `GET` API route at `/admin/products/:id/builder`.
 
-In the route handler function, you resolve [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the product builder configuration for the specified product ID. You also retrieve its custom fields, complementary products, and addon products.
+In the route handler function, you resolve [Query](!docs!/learn/fundamentals/query) to retrieve the product builder configuration for the specified product ID. You also retrieve its custom fields, complementary products, and addon products.
 
 You return the product builder configuration in the response.
 
@@ -2103,7 +2103,7 @@ export default defineMiddlewares({
 You apply the `validateAndTransformQuery` middleware to the `GET` API route at `/admin/products/complementary`. The middleware accepts two parameters:
 
 1. The Zod schema to validate the query parameters.
-2. An object of [Request Query Configurations](!docs!/learn/fundamentals/module-links/query#request-query-configurations). You enable the `isList` option to indicate that the pagination query parameters should be added as query configurations in the `req.queryConfig.pagination` object.
+2. An object of [Request Query Configurations](!docs!/learn/fundamentals/query#request-query-configurations). You enable the `isList` option to indicate that the pagination query parameters should be added as query configurations in the `req.queryConfig.pagination` object.
 
 ### c. Retrieve Addon Products API Route
 

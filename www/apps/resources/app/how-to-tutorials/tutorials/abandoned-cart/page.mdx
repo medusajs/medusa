@@ -535,7 +535,7 @@ In a scheduled job's file, you must export:
 1. An asynchronous function that holds the job's logic. The function receives the [Medusa container](!docs!/learn/fundamentals/medusa-container) as a parameter.
 2. A `config` object that specifies the job's name and schedule. The schedule is a [cron expression](https://crontab.guru/) that defines the interval at which the job runs.
 
-In the scheduled job function, so far you resolve the [Logger](!docs!/learn/debugging-and-testing/logging) to log messages, and [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data across modules.
+In the scheduled job function, so far you resolve the [Logger](!docs!/learn/debugging-and-testing/logging) to log messages, and [Query](!docs!/learn/fundamentals/query) to retrieve data across modules.
 
 You also define a `oneDayAgo` date, which is the date that you will use as the condition of an abandoned cart. In addition, you define variables to paginate the carts.
 

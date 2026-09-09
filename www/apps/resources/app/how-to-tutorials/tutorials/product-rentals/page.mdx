@@ -771,7 +771,7 @@ The function accepts an input object holding the rental configuration's details.
 
 In the workflow, you:
 
-1. Retrieve the product's details with its rental configuration using the `useQueryGraphStep`. This step uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood, which retrieves data across modules.
+1. Retrieve the product's details with its rental configuration using the `useQueryGraphStep`. This step uses [Query](!docs!/learn/fundamentals/query) under the hood, which retrieves data across modules.
     - You enable the `throwIfKeyNotFound` option to throw an error if the product doesn't exist.
 2. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if the product doesn't have a rental configuration. If true, you:
     - Create a rental configuration using the `createRentalConfigurationStep`.
@@ -916,7 +916,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 ```
 
-You expose a `GET` API route at `/admin/products/:id/rental-config`. In the route handler, you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container and use it to query the rental configuration for the product.
+You expose a `GET` API route at `/admin/products/:id/rental-config`. In the route handler, you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container and use it to query the rental configuration for the product.
 
 Then, you return the rental configuration in the response.
 

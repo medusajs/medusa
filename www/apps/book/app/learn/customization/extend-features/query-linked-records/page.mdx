@@ -75,13 +75,13 @@ By using the `fields` query parameter, you don't have to re-create existing API 
 
 While you can retrieve linked records using the `fields` query parameter of an existing API route, you can't filter by linked records.
 
-Instead, you'll have to create a custom API route that uses [Query](../../../fundamentals/module-links/query/page.mdx#apply-filters-and-pagination-on-linked-records) to retrieve linked records with filters.
+Instead, you'll have to create a custom API route that uses [Query](../../../fundamentals/query/page.mdx#apply-filters-and-pagination-on-linked-records) to retrieve linked records with filters.
 
 ---
 
 ## Approach 2: Use Query to Retrieve Linked Records
 
-You can also retrieve linked records using [Query](../../../fundamentals/module-links/query/page.mdx). Query allows you to retrieve data across modules with filters, pagination, and more. You can resolve Query from the Medusa container and use it in your API route or workflow.
+You can also retrieve linked records using [Query](../../../fundamentals/query/page.mdx). Query allows you to retrieve data across modules with filters, pagination, and more. You can resolve Query from the Medusa container and use it in your API route or workflow.
 
 For example, you can create an API route that retrieves brands and their products. If you followed the [Create Brands API route chapter](../../custom-features/api-route/page.mdx), you'll have the file `src/api/admin/brands/route.ts` with a `POST` API route. Add a new `GET` function to the same file:
 
@@ -161,7 +161,7 @@ This returns the brands in your store with their linked products. For example:
 
 While you can use Query to retrieve linked records, you can't filter by linked records.
 
-For an alternative approach, refer to the [Query documentation](../../../fundamentals/module-links/query/page.mdx#apply-filters-and-pagination-on-linked-records).
+For an alternative approach, refer to the [Query documentation](../../../fundamentals/query/page.mdx#apply-filters-and-pagination-on-linked-records).
 
 ---
 

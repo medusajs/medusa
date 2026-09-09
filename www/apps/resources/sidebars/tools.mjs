@@ -121,6 +121,23 @@ export const toolsSidebar = [
           },
         ],
       },
+      {
+        type: "category",
+        title: "InstantSearch Adapter",
+        childSidebarTitle: "InstantSearch Adapter",
+        children: [
+          {
+            type: "link",
+            path: "/instantsearch",
+            title: "Overview",
+          },
+          {
+            type: "link",
+            path: "/instantsearch/examples/filtering-sorting-pagination",
+            title: "Filtering, Sorting, and Pagination",
+          },
+        ],
+      },
     ],
   },
   {

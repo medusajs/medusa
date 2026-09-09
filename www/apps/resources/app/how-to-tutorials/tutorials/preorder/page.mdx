@@ -776,7 +776,7 @@ It accepts as a second parameter a constructor function that holds the workflow'
 
 In the workflow, you:
 
-1. Try to retrieve the variant's details to confirm it exists. The [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) uses [Query](!docs!/learn/fundamentals/module-links/query) which allows you to retrieve data across modules.
+1. Try to retrieve the variant's details to confirm it exists. The [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) uses [Query](!docs!/learn/fundamentals/query) which allows you to retrieve data across modules.
     - If it doesn't exist, an error is thrown and the workflow will stop executing.
 2. Try to retrieve the variant's existing preorder configurations, if any.
 3. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if there are existing pre-order configurations.

@@ -12,7 +12,7 @@ In this chapter, you’ll learn about Query and how to use it to fetch data from
 
 Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
 
-In all resources that can access the [Medusa Container](../../medusa-container/page.mdx), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
+In all resources that can access the [Medusa Container](../medusa-container/page.mdx), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
 
 <Note title="Best Practices">
 
@@ -79,7 +79,7 @@ The method returns an object that has a `data` property, which holds an array of
 
 ### Query Usage in Workflows
 
-To retrieve data with Query in a [workflow](../../workflows/page.mdx), use the [useQueryGraphStep](!resources!/references/helper-steps/useQueryGraphStep).
+To retrieve data with Query in a [workflow](../workflows/page.mdx), use the [useQueryGraphStep](!resources!/references/helper-steps/useQueryGraphStep).
 
 For example:
 
@@ -418,7 +418,7 @@ Filtering by a linked data model's property isn't supported at any level of the 
 
 Consider that you want to apply filters or pagination configurations on the product(s) linked to a `post`. To do that, you must query the module link's table instead.
 
-As mentioned in the [Module Link](../page.mdx) documentation, Medusa creates a table for your module link. So, not only can you retrieve linked records, but you can also retrieve the records in a module link's table.
+As mentioned in the [Module Link](../module-links/page.mdx) documentation, Medusa creates a table for your module link. So, not only can you retrieve linked records, but you can also retrieve the records in a module link's table.
 
 A module link's definition, exported by a file under `src/links`, has a special `entryPoint` property. Use this property when specifying the `entity` property in Query's `graph` method.
 
@@ -458,7 +458,7 @@ In the object passed to the `graph` method:
 
 - You pass the `entryPoint` property of the link definition as the value for `entity`. So, Query will retrieve records from the module link's table.
 - You pass in the `fields` property:
-    - The link table's columns, such as `id`, `product_id`, and `post_id`. You can also select [custom columns](../custom-columns/page.mdx) that you defined in the link table.
+    - The link table's columns, such as `id`, `product_id`, and `post_id`. You can also select [custom columns](../module-links/custom-columns/page.mdx) that you defined in the link table.
     - `product.id` and `product.title` to retrieve those properties of a product record linked to a `Post` record.
     - `post.id` and `post.title` to retrieve those properties of a `Post` record linked to a product record.
 
@@ -1467,7 +1467,7 @@ You can also pass a function as the value of `cache.key`:
 
 <Note>
 
-Passing a function to `cache.key` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+Passing a function to `cache.key` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
 
 </Note>
 
@@ -1568,7 +1568,7 @@ You can also pass a function as the value of `cache.tags`:
 
 <Note>
 
-Passing a function to `cache.tags` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+Passing a function to `cache.tags` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
 
 </Note>
 
@@ -1642,7 +1642,7 @@ You can also pass a function as the value of `cache.ttl`:
 
 <Note>
 
-Passing a function to `cache.ttl` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+Passing a function to `cache.ttl` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
 
 </Note>
 
@@ -1715,7 +1715,7 @@ You can also pass a function as the value of `cache.autoInvalidate`:
 
 <Note>
 
-Passing a function to `cache.autoInvalidate` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+Passing a function to `cache.autoInvalidate` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
 
 </Note>
 
@@ -1793,7 +1793,7 @@ You can also pass a function as the value of `cache.providers`:
 
 <Note>
 
-Passing a function to `cache.providers` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+Passing a function to `cache.providers` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
 
 </Note>
 
@@ -1824,7 +1824,7 @@ Then, you set the providers based on the ID of the product passed in the filters
 
 For API routes that retrieve a single or list of resources, Medusa provides a `validateAndTransformQuery` middleware that:
 
-- Validates accepted query parameters, as explained in [this documentation](../../../fundamentals/api-routes/validation/page.mdx).
+- Validates accepted query parameters, as explained in [this documentation](../api-routes/validation/page.mdx).
 - Parses configurations that are received as query parameters to be passed to Query.
 
 Using this middleware allows you to have default configurations for retrieved fields and relations or pagination, while allowing clients to customize them per request.
@@ -1868,7 +1868,7 @@ export default defineMiddlewares({
 
 The `validateAndTransformQuery` accepts two parameters:
 
-1. A Zod validation schema for the query parameters, which you can learn more about in the [API Route Validation documentation](../../../fundamentals/api-routes/validation/page.mdx). Medusa has a `createFindParams` utility that generates a Zod schema that accepts four query parameters:
+1. A Zod validation schema for the query parameters, which you can learn more about in the [API Route Validation documentation](../api-routes/validation/page.mdx). Medusa has a `createFindParams` utility that generates a Zod schema that accepts four query parameters:
     1. `fields`: The fields and relations to retrieve in the returned resources.
     2. `offset`: The number of items to skip before retrieving the returned items.
     3. `limit`: The maximum number of items to return.

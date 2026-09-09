@@ -3,7 +3,7 @@ products:
   - product
 ---
 
-import { Card, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
+import { Card, Note, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
 import { Github, PlaySolid } from "@medusajs/icons"
 
 export const metadata = {
@@ -13,6 +13,17 @@ export const metadata = {
 # {metadata.title}
 
 In this tutorial, you'll learn how to integrate Meilisearch with Medusa to enable advanced search capabilities in your storefront.
+
+<Note title="Deprecated" type="warning">
+
+This guide is deprecated as of Medusa v2.20.0, which introduced the [Search Module](/infrastructure-modules/search). Rather than the custom module this guide builds, consider one of the following instead:
+
+- [Medusa Search](!cloud!/search), the managed search service for Cloud projects. Refer to [Medusa Search vs Meilisearch](!cloud!/search/meilisearch) for a comparison.
+- A [Search Module Provider](/references/search/provider) for Meilisearch, which keeps Meilisearch behind the Search Module's index definitions and `query.search`.
+
+If you already followed this guide, refer to [Migrate from Meilisearch to Medusa Search](!cloud!/search/migrate-from-meilisearch) for the migration steps.
+
+</Note>
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa's architecture supports integrating third-party services, such as search engines, allowing you to build custom features around core commerce flows.
 
@@ -670,7 +681,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Retrieve products from Medusa's database using `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
+1. Retrieve products from Medusa's database using `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
 2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare two lists: one for published products to index in Meilisearch and another for unpublished products to delete from Meilisearch.
 3. Index the published products in Meilisearch using `syncProductsStep`.
 4. Delete unpublished products from Meilisearch using `deleteProductsFromMeilisearchStep`.

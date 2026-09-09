@@ -83,3 +83,31 @@ module.exports = defineConfig({
 ```
 
 Refer to the [Medusa configuration](!docs!/learn/configurations/medusa-config#httpstorecors) guide to learn more about configuring CORS in the Medusa application.
+
+---
+
+## Add Search to Your Storefront
+
+The JS SDK sends requests to Medusa’s Store API routes, which is enough for listing and filtering by a field’s exact value. For a search experience with full-text search, facets, and sorting, use the [InstantSearch adapter](../../instantsearch/page.mdx) instead. It’s the recommended approach since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0), and it requires the [Search Module](../../infrastructure-modules/search/page.mdx) configured with a provider in your Medusa application.
+
+[InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) is a family of UI widget libraries, available for React, Vue, Angular, and plain JavaScript. The `@medusajs/instantsearch-adapter` package provides the search client that connects those widgets to Medusa: it converts each widget’s request into a Medusa search query, sends it to the `/store/search` API route, and converts the results back.
+
+The adapter reuses the SDK instance you created above, so it sends the publishable API key and other headers the same way. For example, create the file `src/lib/search-client.ts` with the following content:
+
+```ts title="src/lib/search-client.ts"
+import {
+  createInstantSearchAdapter,
+} from "@medusajs/instantsearch-adapter"
+import { sdk } from "./sdk"
+
+export const PRODUCT_INDEX_NAME = "product"
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+})
+```
+
+You then pass `searchClient` and `PRODUCT_INDEX_NAME` to an `InstantSearch` provider, and add the widgets for the search box, results, filters, sorting, and pagination inside it.
+
+Refer to the [InstantSearch Adapter](../../instantsearch/page.mdx) guide to install the adapter and build the search interface, and to the [Filtering, Sorting, and Pagination](../../instantsearch/examples/filtering-sorting-pagination/page.mdx) guide to add refinements to the results.

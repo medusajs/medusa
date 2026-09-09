@@ -613,7 +613,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-- Retrieve the order's details using the `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the order ID to retrieve.
+- Retrieve the order's details using the `useQueryGraphStep`. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the order ID to retrieve.
 - Send a notification using the `sendNotificationsStep`. You pass the step an array of notifications to send, and each notification is an object with the following properties:
   - `to`: The channel to send the notification to. Since you configure this in the Slack app, you just set it to `slack-channel`.
   - `channel`: The channel to use for sending the notification. By setting it to `slack`, the Notification Module will use the Slack Notification Module Provider to send the notification.

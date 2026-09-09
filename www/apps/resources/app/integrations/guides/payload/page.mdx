@@ -2201,7 +2201,7 @@ It accepts a second parameter: a constructor function that holds the workflow's 
 In the workflow, you:
 
 1. Retrieve the products from Medusa using the `useQueryGraphStep`.
-    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data across modules.
+    - This step uses [Query](!docs!/learn/fundamentals/query) to retrieve data across modules.
 2. Check which product options already exist in Payload by retrieving them using `retrievePayloadItemsStep`.
     - To manipulate data in a workflow, you need to use the `transform` function. Learn more in the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) documentation.
 3. Create missing product options using the `createPayloadProductOptionsWorkflow` if any options don't exist yet.
@@ -2345,7 +2345,7 @@ A subscriber file must export:
 - An asynchronous function, which is the subscriber function that is executed when the event is emitted.
 - A configuration object that defines the event the subscriber listens to.
 
-In the subscriber, you use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve all products from Medusa.
+In the subscriber, you use [Query](!docs!/learn/fundamentals/query) to retrieve all products from Medusa.
 
 Then, you filter the products to only include those that don't have a payload product ID set in `product.metadata.payload_id`, and you execute the `createPayloadProductsWorkflow` with the filtered products' IDs.
 

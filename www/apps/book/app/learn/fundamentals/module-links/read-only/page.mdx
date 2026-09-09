@@ -67,7 +67,7 @@ Unlike the stored module link, Medusa will not create a table in the database fo
 
 ## Retrieve Read-Only Linked Record
 
-[Query](../query/page.mdx) allows you to retrieve records linked through a read-only module link.
+[Query](../../query/page.mdx) allows you to retrieve records linked through a read-only module link.
 
 For example, assuming you have the module link created in [the above section](#how-to-define-a-read-only-module-link), you can retrieve a post and its linked product as follows:
 
@@ -569,7 +569,7 @@ The `list` method accepts an object of filters holding the ID(s) of the products
 
 The returned posts must include the product's ID in a field with the same name as the `primary_key` option in the link configurations, which is `product_id` in this case.
 
-You can also create a `listAndCount` method to retrieve the posts with pagination. This method is called if you pass [pagination parameters to Query](../query/page.mdx#apply-pagination).
+You can also create a `listAndCount` method to retrieve the posts with pagination. This method is called if you pass [pagination parameters to Query](../../query/page.mdx#apply-pagination).
 
 ### c. Query Linked Records
 

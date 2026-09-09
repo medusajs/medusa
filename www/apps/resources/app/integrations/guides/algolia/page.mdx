@@ -3,7 +3,7 @@ products:
   - product
 ---
 
-import { Card, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
+import { Card, Note, Prerequisites, Details, WorkflowDiagram } from "docs-ui"
 import { Github, PlaySolid } from "@medusajs/icons"
 
 export const ogImage = "https://res.cloudinary.com/dza7lstvk/image/upload/v1743097088/Medusa%20Resources/integrations-algolia_qwpguu.jpg"
@@ -35,6 +35,17 @@ export const metadata = {
 # {metadata.title}
 
 In this tutorial, you'll learn how to integrate Medusa with Algolia.
+
+<Note title="Deprecated" type="warning">
+
+This guide is deprecated as of Medusa v2.20.0, which introduced the [Search Module](/infrastructure-modules/search). Rather than the custom module this guide builds, consider one of the following instead:
+
+- [Medusa Search](!cloud!/search), the managed search service for [Cloud](!cloud!) projects. Refer to [Medusa Search vs Algolia](!cloud!/search/algolia) for a comparison.
+- A [Search Module Provider](/references/search/provider) for Algolia, which keeps Algolia behind the Search Module's index definitions and `query.search`.
+
+If you already followed this guide, refer to [Migrate from Algolia to Medusa Search](!cloud!/search/migrate-from-algolia) for the migration steps.
+
+</Note>
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa's architecture supports integrating third-party services, such as a search engine, allowing you to build your unique requirements around core commerce flows.
 
@@ -690,7 +701,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 In the workflow's constructor function, you:
 
-1. Execute `useQueryGraphStep` to retrieve products from Medusa's database. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
+1. Execute `useQueryGraphStep` to retrieve products from Medusa's database. This step uses Medusa's [Query](!docs!/learn/fundamentals/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
 2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare two lists: one for published products to index in Algolia and another for unpublished products to delete from Algolia.
 2. Execute `syncProductsStep` to index the published products in Algolia.
 3. Execute `deleteProductsFromAlgoliaStep` to delete unpublished products from Algolia.

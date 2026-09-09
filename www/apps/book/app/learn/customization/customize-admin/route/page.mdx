@@ -19,7 +19,7 @@ In this chapter, you'll add a UI route to the admin dashboard that shows all [br
 
 ## 1. Get Brands API Route
 
-In a [previous chapter](../../extend-features/query-linked-records/page.mdx), you learned how to add an API route that retrieves brands and their products using [Query](../../../fundamentals/module-links/query/page.mdx). You'll expand that API route to support pagination, so that on the admin dashboard you can show the brands in a paginated table.
+In a [previous chapter](../../extend-features/query-linked-records/page.mdx), you learned how to add an API route that retrieves brands and their products using [Query](../../../fundamentals/query/page.mdx). You'll expand that API route to support pagination, so that on the admin dashboard you can show the brands in a paginated table.
 
 Replace or create the `GET` API route at `src/api/admin/brands/route.ts` with the following:
 
@@ -76,7 +76,7 @@ You return in the response the retrieved brands and the pagination configuration
 
 <Note>
 
-Refer to the [Query](../../../fundamentals/module-links/query/page.mdx#apply-pagination) chapter to learn more about applying pagination when retrieving linked records.
+Refer to the [Query](../../../fundamentals/query/page.mdx#apply-pagination) chapter to learn more about applying pagination when retrieving linked records.
 
 </Note>
 
@@ -138,7 +138,7 @@ By applying the above middleware, you can pass pagination configurations to `GET
 
 <Note>
 
-Refer to the [Query](../../../fundamentals/module-links/query/page.mdx#request-query-configurations) chapter to learn more about using the `validateAndTransformQuery` middleware to configure Query.
+Refer to the [Query](../../../fundamentals/query/page.mdx#request-query-configurations) chapter to learn more about using the `validateAndTransformQuery` middleware to configure Query.
 
 </Note>
 

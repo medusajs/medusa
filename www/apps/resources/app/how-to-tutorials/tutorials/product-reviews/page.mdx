@@ -543,7 +543,7 @@ In the workflow's constructor function, you:
 
 <Note title="Tip">
 
-`useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/module-links/query), which allows you to retrieve data across modules. For example, in the above snippet you're retrieving the product, which is managed in the [Product Module](../../../commerce-modules/product/page.mdx), by passing `id` to the `fields` array.
+`useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/query), which allows you to retrieve data across modules. For example, in the above snippet you're retrieving the product, which is managed in the [Product Module](../../../commerce-modules/product/page.mdx), by passing `id` to the `fields` array.
 
 </Note>
 
@@ -856,7 +856,7 @@ You first define a `GetAdminReviewsSchema` schema that will allow clients to pas
 - `offset`: The number of items to skip before retrieving the reviews.
 - `order`: The fields to sort the reviews by in ascending or descending order.
 
-Then, you export a `GET` function, which exposes a `GET` API Route at the path `/admin/reviews`. In the route handler you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container, which allows you to retrieve data across modules.
+Then, you export a `GET` function, which exposes a `GET` API Route at the path `/admin/reviews`. In the route handler you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container, which allows you to retrieve data across modules.
 
 Next, you retrieve all reviews using Query. Notice that you pass in `query.graph` the `req.queryConfig` object. This object holds the fields to retrieve and the pagination configurations.
 
@@ -1594,7 +1594,7 @@ You first define a `GetStoreReviewsSchema` schema that will allow clients to pas
 - `offset`: The number of items to skip before retrieving the reviews.
 - `order`: The fields to sort the reviews by in ascending or descending order.
 
-Then, you export a `GET` function, and that exposes a `GET` API Route at the path `/store/products/[id]/reviews`. In the route handler you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container, which allows you to retrieve data across modules.
+Then, you export a `GET` function, and that exposes a `GET` API Route at the path `/store/products/[id]/reviews`. In the route handler you resolve [Query](!docs!/learn/fundamentals/query) from the Medusa container, which allows you to retrieve data across modules.
 
 Next, you retrieve the approved reviews of a product using Query. Notice that you pass in `query.graph` the `req.queryConfig` object. This object holds the fields to retrieve and the pagination configurations. You'll configure this object in a bit.
 

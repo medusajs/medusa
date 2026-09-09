@@ -214,8 +214,109 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "CLI",
+        "title": "Resources",
         "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Storefront",
+            "path": "/storefront",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Database",
+            "path": "/database",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Redis",
+            "path": "/redis",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "S3",
+            "path": "/s3",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cache",
+            "path": "/cache",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Emails",
+            "path": "/emails",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "React Email Templates",
+                "path": "/emails/react-email",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Search",
+            "path": "/search",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to PostgreSQL",
+                "path": "/search/postgres",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Algolia",
+                "path": "/search/algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Meilisearch",
+                "path": "/search/meilisearch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Algolia",
+                "path": "/search/migrate-from-algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Meilisearch",
+                "path": "/search/migrate-from-meilisearch",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "CLI",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -330,64 +431,6 @@ export const generatedSidebars = [
             "title": "logout",
             "path": "/cli/commands/logout",
             "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Resources",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Storefront",
-            "path": "/storefront",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Database",
-            "path": "/database",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Redis",
-            "path": "/redis",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "S3",
-            "path": "/s3",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Cache",
-            "path": "/cache",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Emails",
-            "path": "/emails",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "React Email Templates",
-                "path": "/emails/react-email",
-                "children": []
-              }
-            ]
           }
         ]
       },

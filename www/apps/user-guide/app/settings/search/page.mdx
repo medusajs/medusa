@@ -1,0 +1,55 @@
+---
+sidebar_label: "Manage Search Indexes"
+tags:
+    - user guide
+    - search
+products:
+    - search
+    - settings
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Search Indexes in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to view your store’s search indexes and rebuild them in the Medusa Admin.
+
+<Note>
+
+Search indexes are available from [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0). If you don’t see the Search settings in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update) or set up search for your store.
+
+</Note>
+
+## Overview
+
+A search index is a copy of some of your store’s data, such as your products, that your storefront searches instead of querying your database directly. This makes search results faster and ranks them by how well they match what the customer typed.
+
+Your technical team decides which data each index holds. In the Medusa Admin, you can see the indexes they set up and rebuild any of them.
+
+---
+
+## View Search Indexes
+
+To view your store’s search indexes, go to Settings → Search. Each index shows in its own card with a button to rebuild it.
+
+---
+
+## Reindex a Search Index
+
+Medusa keeps an index up to date as your data changes, so you rarely need to rebuild one. Rebuild an index, which is also called reindexing, in the following cases:
+
+- Search results show data that you already changed or deleted.
+- Search results miss items that you expect to find.
+- The index’s status is "Error".
+
+To rebuild an index:
+
+1. Go to Settings → Search.
+2. Find the index you want to rebuild.
+3. Click the **Reindex `type` Index** button in the index’s card. For example, if the index is for products, the button says **Reindex Product Index**.
+
+Medusa then rebuilds the index from your store’s data. Search results for that index may be incomplete while the status is "Building", and a large index can take a while to finish.

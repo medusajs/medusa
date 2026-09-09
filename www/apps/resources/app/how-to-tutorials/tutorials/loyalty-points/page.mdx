@@ -936,7 +936,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 In the workflow's constructor function, you:
 
 - Use `useQueryGraphStep` to retrieve the order's details. You pass the order's ID as a filter to retrieve the order.
-    - This step uses [Query](!docs!/learn/fundamentals/module-links/query), which is a tool that retrieves data across modules.
+    - This step uses [Query](!docs!/learn/fundamentals/query), which is a tool that retrieves data across modules.
 - Validate that the customer is registered using the `validateCustomerExistsStep`.
 - Retrieve the cart's loyalty promotion using the `getCartLoyaltyPromoStep`.
 - Use `when` to check whether the order's cart has a loyalty promotion.
