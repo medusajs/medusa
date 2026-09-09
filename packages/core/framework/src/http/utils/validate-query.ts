@@ -58,6 +58,8 @@ const getFilterableFields = <T extends RequestQueryFields>(obj: T): T => {
   return removeUndefinedProperties(result) as T
 }
 
+const consumedAllowedFields = new WeakMap<MedusaRequest, string[]>()
+
 export function validateAndTransformQuery<TEntity extends BaseEntity>(
   zodSchema: z.ZodObject<any, any> | z.ZodType<any, any, any>,
   queryConfig: QueryConfig<TEntity>
@@ -76,8 +78,16 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       const allowed = [...(queryConfig.allowed ?? [])]
 
       // If any custom allowed fields are set, we add them to the allowed list along side the one configured in the query config if any
-      if (req.allowed?.length) {
-        allowed.push(...req.allowed)
+      // `req.allowed` is deleted so it never reaches the route handler, but the
+      // consumed value is kept off-request so a second run of this middleware on
+      // the same request still honours it.
+      const customAllowed = req.allowed?.length
+        ? req.allowed
+        : consumedAllowedFields.get(req)
+
+      if (customAllowed?.length) {
+        allowed.push(...customAllowed)
+        consumedAllowedFields.set(req, customAllowed)
       }
 
       delete req.allowed
