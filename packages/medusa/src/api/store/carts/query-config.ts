@@ -1,5 +1,4 @@
 import { buildAllowedFields } from "../utils/allowed-fields"
-import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 // TODO: Global todo, review all default fields to prevent over fetching by default
 export const defaultStoreCartFields = [
@@ -159,7 +158,6 @@ export const retrieveTransformQueryConfig = {
     defaultStoreCartFields,
     allowedStoreCartExtraFields
   ),
-  disallowed: disallowedStoreFields,
   storeRelationsLimit: 3,
   isList: false,
 }

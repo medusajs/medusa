@@ -1,5 +1,4 @@
 import { buildAllowedFields } from "../utils/allowed-fields"
-import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaultStoreShippingOptionsFields = [
   "id",
@@ -13,7 +12,6 @@ export const defaultStoreShippingOptionsFields = [
 ]
 
 export const listTransformQueryConfig = {
-  disallowed: disallowedStoreFields,
   defaultLimit: 20,
   isList: true,
 }
@@ -21,6 +19,5 @@ export const listTransformQueryConfig = {
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreShippingOptionsFields,
   allowed: buildAllowedFields(defaultStoreShippingOptionsFields),
-  disallowed: disallowedStoreFields,
   isList: false,
 }

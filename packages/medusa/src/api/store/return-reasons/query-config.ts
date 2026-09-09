@@ -1,5 +1,4 @@
 import { buildAllowedFields } from "../utils/allowed-fields"
-import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaultStoreRetrieveReturnReasonFields = [
   "id",
@@ -17,14 +16,12 @@ export const defaultStoreRetrieveReturnReasonFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreRetrieveReturnReasonFields,
   allowed: buildAllowedFields(defaultStoreRetrieveReturnReasonFields),
-  disallowed: disallowedStoreFields,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultStoreRetrieveReturnReasonFields,
   allowed: buildAllowedFields(defaultStoreRetrieveReturnReasonFields),
-  disallowed: disallowedStoreFields,
   defaultLimit: 20,
   isList: true,
 }

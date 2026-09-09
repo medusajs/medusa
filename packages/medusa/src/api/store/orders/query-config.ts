@@ -1,5 +1,4 @@
 import { buildAllowedFields } from "../utils/allowed-fields"
-import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 // TODO: This is copied over from admin. Scope what fields and relations are allowed for store
 
@@ -97,7 +96,6 @@ export const retrieveTransformQueryConfig = {
     defaultStoreRetrieveOrderFields,
     allowedStoreOrderExtraFields
   ),
-  disallowed: disallowedStoreFields,
   storeRelationsLimit: 3,
   isList: false,
 }
@@ -108,6 +106,5 @@ export const listTransformQueryConfig = {
     defaultStoreOrderFields,
     allowedStoreOrderListExtraFields
   ),
-  disallowed: disallowedStoreFields,
   isList: true,
 }

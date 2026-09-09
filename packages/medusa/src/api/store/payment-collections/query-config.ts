@@ -1,5 +1,4 @@
 import { buildAllowedFields } from "../utils/allowed-fields"
-import { disallowedStoreFields } from "../utils/disallowed-fields"
 
 export const defaultPaymentCollectionFields = [
   "id",
@@ -11,6 +10,5 @@ export const defaultPaymentCollectionFields = [
 export const retrievePaymentCollectionTransformQueryConfig = {
   defaults: defaultPaymentCollectionFields,
   allowed: buildAllowedFields(defaultPaymentCollectionFields),
-  disallowed: disallowedStoreFields,
   isList: false,
 }
