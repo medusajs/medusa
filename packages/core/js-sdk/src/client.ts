@@ -97,11 +97,15 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   if (resp.status >= 300) {
     const jsonError = (await resp.json().catch(() => ({}))) as {
       message?: string
+      code?: string
+      type?: string
     }
     throw new FetchError(
       jsonError.message ?? resp.statusText,
       resp.statusText,
-      resp.status
+      resp.status,
+      jsonError.code,
+      jsonError.type
     )
   }
 
@@ -116,11 +120,23 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
 export class FetchError extends Error {
   status: number | undefined
   statusText: string | undefined
+  /** The `code` returned by the API, for example `insufficient_inventory`. */
+  code: string | undefined
+  /** The `type` returned by the API, for example `not_allowed`. */
+  type: string | undefined
 
-  constructor(message: string, statusText?: string, status?: number) {
+  constructor(
+    message: string,
+    statusText?: string,
+    status?: number,
+    code?: string,
+    type?: string
+  ) {
     super(message)
     this.statusText = statusText
     this.status = status
+    this.code = code
+    this.type = type
   }
 }
 
