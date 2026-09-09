@@ -131,10 +131,7 @@ export interface SearchIngestionContext {
    */
   container: SearchContainer
 
-  /**
-   * The definition of the index the documents are written to.
-   */
-  index: SearchIndexDefinition
+  index: ResolvedSearchIndexDefinition
 }
 
 /**
