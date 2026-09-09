@@ -33,19 +33,24 @@ For example, create the file `src/jobs/hello-world.ts` with the following conten
 ![Example of scheduled job file in the application's directory structure](https://res.cloudinary.com/dza7lstvk/image/upload/v1732866423/Medusa%20Book/scheduled-job-dir-overview_ediqgm.jpg)
 
 export const highlights = [
-  ["3", "greetingJob", "The scheduled job function to execute at a specified interval."]
-  ["3", "container", "Receive the Medusa container as a parameter"],
-  ["4", "logger", "Resolve the logger from the container"],
-  ["9", "config", "The scheduled job's configurations."],
-  ["10", "name", "The job's unique name"],
-  ["11", "schedule", "The schedule to run the job on."]
+  ["6", "greetingJob", "The scheduled job function to execute at a specified interval."]
+  ["6", "container", "Receive the Medusa container as a parameter"],
+  ["7", "logger", "Resolve the logger from the container"],
+  ["14", "config", "The scheduled job's configurations."],
+  ["15", "name", "The job's unique name"],
+  ["16", "schedule", "The schedule to run the job on."]
 ]
 
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Greeting!")
 }
@@ -135,12 +140,17 @@ For example:
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ScheduledJobContext } from "@medusajs/framework"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function greetingJob(
   container: MedusaContainer,
   context: ScheduledJobContext
 ) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info(`Greeting! Scheduled for: ${context.scheduledFor}`)
 }

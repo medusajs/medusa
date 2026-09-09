@@ -2,7 +2,6 @@ import type {
   AttributeSchemaConfig,
   DistanceMetric,
   FullTextSearch,
-  ShardingConfig,
 } from "./api-types"
 
 export type MedusaSearchProviderOptions = {
@@ -23,7 +22,6 @@ export type MedusaSearchProviderOptions = {
 
 export type MedusaSearchIndexOptions = {
   distance_metric?: DistanceMetric
-  sharding?: ShardingConfig
 }
 
 export type MedusaSearchFieldOptions = {

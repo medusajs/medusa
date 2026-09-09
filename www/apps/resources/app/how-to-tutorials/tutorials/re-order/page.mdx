@@ -366,7 +366,14 @@ export const workflowHighlights4 = [
 const { data: carts } = useQueryGraphStep({
   entity: "cart",
   fields: [
-    "*",
+    "id",
+    "email",
+    "currency_code",
+    "subtotal",
+    "item_total",
+    "total",
+    "item_subtotal",
+    "shipping_subtotal",
     "items.*",
     "shipping_methods.*",
     "shipping_address.*",
@@ -374,15 +381,8 @@ const { data: carts } = useQueryGraphStep({
     "region.*",
     "sales_channel.*",
     "promotions.*",
-    "currency_code",
-    "subtotal",
-    "item_total",
-    "total",
-    "item_subtotal",
-    "shipping_subtotal",
     "customer.*",
     "payment_collection.*",
-    
   ],
   filters: {
     id: cart_id,

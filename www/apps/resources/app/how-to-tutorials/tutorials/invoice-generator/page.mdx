@@ -578,20 +578,25 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) to learn more ab
 Create the file `src/api/admin/invoice-config/route.ts` with the following content:
 
 export const retrieveInvoiceConfigHighlights = [
-  ["3", "GET", "Expose a `GET` API route at `/admin/invoice-config`."],
-  ["7", "query", "Resolve Query from the Medusa container."],
-  ["9", "invoiceConfig", "Retrieve the default invoice configuration."],
-  ["14", "json", "Return the invoice configuration in the response."]
+  ["6", "GET", "Expose a `GET` API route at `/admin/invoice-config`."],
+  ["10", "query", "Resolve Query from the Medusa container."],
+  ["14", "invoiceConfig", "Retrieve the default invoice configuration."],
+  ["19", "json", "Return the invoice configuration in the response."]
 ]
 
 ```ts title="src/api/admin/invoice-config/route.ts" highlights={retrieveInvoiceConfigHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [invoiceConfig] } = await query.graph({
     entity: "invoice_config",
@@ -2303,16 +2308,20 @@ You can listen to events that occur in your Medusa application, such as when an 
 To create a subscriber, create the file `src/subscribers/order-placed.ts` with the following content:
 
 export const orderPlacedHighlights = [
-  ["4", "orderPlacedHandler", "Subscriber function that handles the `order.placed` event."],
-  ["13", "order", "Retrieve the order details using Query."],
-  ["40", "generateInvoicePdfWorkflow", "Generate the invoice PDF using the workflow."],
-  ["50", "binaryString", "Convert the PDF buffer to a binary string for email attachment."],
-  ["54", "createNotifications", "Send the email with the invoice attached."]
+  ["8", "orderPlacedHandler", "Subscriber function that handles the `order.placed` event."],
+  ["21", "order", "Retrieve the order details using Query."],
+  ["48", "generateInvoicePdfWorkflow", "Generate the invoice PDF using the workflow."],
+  ["58", "binaryString", "Convert the PDF buffer to a binary string for email attachment."],
+  ["62", "createNotifications", "Send the email with the invoice attached."]
 ]
 
 ```ts title="src/subscribers/order-placed.ts" highlights={orderPlacedHighlights}
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { generateInvoicePdfWorkflow } from "../workflows/generate-invoice-pdf"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
@@ -2320,8 +2329,12 @@ export default async function orderPlacedHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve("notification")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
 
   const { data: [order] } = await query.graph({
     entity: "order",
