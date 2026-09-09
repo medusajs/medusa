@@ -708,11 +708,9 @@ export const upsertRentalConfigWorkflow = createWorkflow(
     })
 
     // If rental config doesn't exist, create it and link
-    const createdConfig = when(
-      "create-rental-configuration",
-      { products },
-      (data) => !data.products[0]?.rental_configuration
-    ).then(() => {
+    const createdConfig = when({ products }, (data) => {
+      return !data.products[0]?.rental_configuration
+    }).then(() => {
       const newConfig = createRentalConfigurationStep({
         product_id: input.product_id,
         min_rental_days: input.min_rental_days,
@@ -905,9 +903,7 @@ In `src/api/admin/products/[id]/rental-config/route.ts`, add the following at th
 ```ts title="src/api/admin/products/[id]/rental-config/route.ts"
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   // Query rental configuration for the product
   const { data: rentalConfigs } = await query.graph({
@@ -959,8 +955,8 @@ export const sdkHighlights = [
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: import.meta.env.NODE_ENV === "development",
+  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -1401,13 +1397,9 @@ Next, you'll create the API route to retrieve the rental availability of a produ
 
 To create the API route, create the file `src/api/store/products/[id]/rental-availability/route.ts` with the following content:
 
-```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
+```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  MedusaError,
-  QueryContext,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { MedusaError, QueryContext } from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import { RENTAL_MODULE } from "../../../../../modules/rental"
 import RentalModuleService from "../../../../../modules/rental/service"
@@ -1440,9 +1432,7 @@ export const GET = async (
     currency_code,
   } = req.validatedQuery
 
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   const rentalModuleService: RentalModuleService = req.scope.resolve(
     RENTAL_MODULE
   )
@@ -2595,11 +2585,6 @@ export const addToCartWithRentalWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-variant" })
 
-    const rentalConfiguration = transform(
-      { variants },
-      ({ variants }) => variants[0].product?.rental_configuration || null
-    )
-
     const rentalData = when({ variants }, (data) => {
       return data.variants[0].product?.rental_configuration?.status === "active"
     }).then(() => {
@@ -2607,7 +2592,7 @@ export const addToCartWithRentalWorkflow = createWorkflow(
         variant: variants[0],
         quantity: input.quantity,
         metadata: input.metadata,
-        rental_configuration: rentalConfiguration,
+        rental_configuration: variants[0].product?.rental_configuration || null,
         existing_cart_items: carts[0].items,
       } as unknown as ValidateRentalCartItemInput)
     })
@@ -3462,13 +3447,10 @@ Create the file `src/api/admin/orders/[id]/rentals/route.ts` with the following 
 
 ```ts title="src/api/admin/orders/[id]/rentals/route.ts" badgeLabel="Medusa Application" badgeColor="green"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { data: rentals } = await query.graph({
     entity: "rental",
@@ -4078,16 +4060,13 @@ To create the subscriber, create the file `src/subscribers/order-canceled.ts` wi
 ```ts title="src/subscribers/order-canceled.ts" badgeLabel="Medusa Application" badgeColor="green"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { updateRentalWorkflow } from "../workflows/update-rental"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function orderCanceledHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  const logger = container.resolve("logger")
+  const query = container.resolve("query")
 
   logger.info(`Processing rental cancellations for order ${data.id}`)
 
@@ -4188,9 +4167,7 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { updateRentalWorkflow } from "../workflows/update-rental"
 
 export default async function activateRentalsJob(container: MedusaContainer) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   // Get current date at start of day for comparison
@@ -4293,9 +4270,7 @@ export default async function shipmentCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string; no_notification?: boolean }>) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   logger.info(`Processing rental activations for shipment ${data.id}`)

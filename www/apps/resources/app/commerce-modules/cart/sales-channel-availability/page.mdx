@@ -60,16 +60,13 @@ Start by creating a function that finds the variants that aren't available in a 
 Create the file `src/utils/sales-channel-availability.ts` with the following content:
 
 export const helperHighlights = [
-  ["15", "query", "Use Query to retrieve data across modules."],
-  ["21", "fields", "Retrieve the sales channels of each variant's product."],
-  ["32", "some", "Check whether the product is linked to the cart's sales channel."],
+  ["12", "query", "Use Query to retrieve data across modules."],
+  ["16", "fields", "Retrieve the sales channels of each variant's product."],
+  ["27", "some", "Check whether the product is linked to the cart's sales channel."],
 ]
 
 ```ts title="src/utils/sales-channel-availability.ts" highlights={helperHighlights}
 import { MedusaContainer } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export async function getUnavailableVariantIds({
   container,
@@ -80,9 +77,7 @@ export async function getUnavailableVariantIds({
   variantIds: string[]
   salesChannelId: string
 }) {
-  const query = container.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = container.resolve("query")
 
   const { data: variants } = await query.graph({
     entity: "variant",

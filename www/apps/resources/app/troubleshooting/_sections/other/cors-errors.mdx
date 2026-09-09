@@ -61,10 +61,7 @@ import type {
   MedusaResponse, 
 } from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/framework/types"
-import {
-  parseCorsOrigins,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { parseCorsOrigins } from "@medusajs/framework/utils"
 import cors from "cors"
 
 export default defineMiddlewares({
@@ -78,9 +75,7 @@ export default defineMiddlewares({
           next: MedusaNextFunction
         ) => {
           const configModule: ConfigModule =
-            req.scope.resolve(
-              ContainerRegistrationKeys.CONFIG_MODULE
-            )
+            req.scope.resolve("configModule")
 
           return cors({
             origin: parseCorsOrigins(

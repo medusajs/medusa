@@ -98,16 +98,14 @@ To use Link in the `productsCreated` hook, replace the `TODO` with the following
 
 export const hook2Highlights = [
   ["1", `"link"`, "Resolve Link from the container."]
-  ["6", "links", "Define an array to store the links in."],
-  ["9", "push", "Add a link to be created."],
-  ["19", "create", "Create the links."]
+  ["4", "links", "Define an array to store the links in."],
+  ["7", "push", "Add a link to be created."],
+  ["17", "create", "Create the links."]
 ]
 
 ```ts title="src/workflows/hooks/created-product.ts" highlights={hook2Highlights}
-const link = container.resolve(ContainerRegistrationKeys.LINK)
-const logger = container.resolve(
-  ContainerRegistrationKeys.LOGGER
-)
+const link = container.resolve("link")
+const logger = container.resolve("logger")
 
 const links: LinkDefinition[] = []
 
@@ -151,9 +149,7 @@ createProductsWorkflow.hooks.productsCreated(
       return
     }
 
-    const link = container.resolve(
-      ContainerRegistrationKeys.LINK
-    )
+    const link = container.resolve("link")
 
     await link.dismiss(links)
   })

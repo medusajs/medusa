@@ -29,9 +29,9 @@ The Workflows SDK provides a `when` function that is used to check whether a con
 For example:
 
 export const highlights = [
-  ["16", "input", "The data to pass as a parameter to the function in the second parameter"],
-  ["18", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
-  ["20", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
+  ["15", "input", "The data to pass as a parameter to the function in the second parameter"],
+  ["17", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
+  ["19", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
 ]
 
 ```ts highlights={highlights}
@@ -49,7 +49,6 @@ const workflow = createWorkflow(
   }) {
 
     const result = when(
-      "is-active",
       input, 
       (input) => {
         return input.is_active

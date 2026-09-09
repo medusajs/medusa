@@ -28,13 +28,12 @@ You can configure the step to retry on failure. The `createStep` function can ac
 
 For example:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["11"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+```ts title="src/workflows/hello-world.ts" highlights={[["10"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { 
   createStep, 
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { MedusaError } from "@medusajs/framework/utils"
 
 const step1 = createStep(
   {
@@ -44,10 +43,7 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Oops! Something happened."
-    )
+    throw new Error("Oops! Something happened.")
   }
 )
 
@@ -102,10 +98,7 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Oops! Something happened."
-    )
+    throw new Error("Oops! Something happened.")
   }
 )
 ```
@@ -130,10 +123,7 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Oops! Something happened."
-    )
+    throw new Error("Oops! Something happened.")
   }
 )
 ```
@@ -156,10 +146,7 @@ const step1 = createStep(
   async () => {
     console.log("Executing step 1")
 
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Oops! Something happened."
-    )
+    throw new Error("Oops! Something happened.")
   }
 )
 ```
@@ -195,24 +182,19 @@ The `retryStep` method is available since [Medusa v2.10.2](https://github.com/me
 For example, to do it in an API route:
 
 export const retryHighlights = [
-  ["11", "workflowEngine", "Resolve the Workflow Engine Module's service from the Medusa container."],
-  ["15", "retryStep", "Retry the step."],
+  ["8", "workflowEngine", "Resolve the Workflow Engine Module's service from the Medusa container."],
+  ["10", "retryStep", "Retry the step."],
 ]
 
 ```ts title="src/api/retry-step/route.ts" highlights={retryHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  TransactionHandlerType,
-  Modules,
-} from "@medusajs/framework/utils"
+import { TransactionHandlerType } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const workflowEngine = req.scope.resolve(
-    Modules.WORKFLOW_ENGINE
-  )
+  const workflowEngine = req.scope.resolve("workflows")
 
   workflowEngine.retryStep({
     idempotencyKey: {

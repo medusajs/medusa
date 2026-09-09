@@ -200,17 +200,15 @@ Next, you'll implement the step's logic. Add the following in the step function:
 
 export const getProductFeedItemsHighlights2 = [
   ["1", "feedItems", "The items to be added to the product feed."],
-  ["6", "storefrontUrl", "The storefront URL to format the product links."],
-  ["17", "products", "Retrieve the products with pagintion"],
-  ["57", "feedItems", "Return the feed items."]
+  ["4", "storefrontUrl", "The storefront URL to format the product links."],
+  ["15", "products", "Retrieve the products with pagintion"],
+  ["55", "feedItems", "Return the feed items."]
 ]
 
 ```ts title="src/workflows/steps/get-product-feed-items.ts" highlights={getProductFeedItemsHighlights2}
 const feedItems: FeedItem[] = []
-const query = container.resolve(ContainerRegistrationKeys.QUERY)
-const configModule = container.resolve(
-  ContainerRegistrationKeys.CONFIG_MODULE
-)
+const query = container.resolve("query")
+const configModule = container.resolve("configModule")
 const storefrontUrl = configModule.admin.storefrontUrl || 
   process.env.STOREFRONT_URL
 

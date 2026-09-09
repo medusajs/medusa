@@ -36,26 +36,16 @@ The Cache Module's main service must implement the `ICacheService` interface imp
 
 ```ts title="src/modules/my-cache/service.ts"
 import { ICacheService } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
 
 class MyCacheService implements ICacheService {
   get<T>(key: string): Promise<T> {
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Method not implemented."
-    )
+    throw new Error("Method not implemented.")
   }
   set(key: string, data: unknown, ttl?: number): Promise<void> {
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Method not implemented."
-    )
+    throw new Error("Method not implemented.")
   }
   invalidate(key: string): Promise<void> {
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Method not implemented."
-    )
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -163,7 +153,7 @@ Create the file `src/modules/my-cache/index.ts` with the following content:
 import MyCacheService from "./service"
 import { Module } from "@medusajs/framework/utils"
 
-export default Module("my_cache", {
+export default Module("my-cache", {
   service: MyCacheService,
 })
 ```

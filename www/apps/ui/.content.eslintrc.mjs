@@ -1,7 +1,5 @@
 import prettier from "eslint-plugin-prettier"
 import markdown from "eslint-plugin-markdown"
-import medusaContentConfigs from "../../content-lint-medusa.mjs"
-import titledMarkdownProcessor from "../../content-lint-processor.mjs"
 import globals from "globals"
 import babelParser from "@babel/eslint-parser"
 import typescriptEslintEslintPlugin from "@typescript-eslint/eslint-plugin"
@@ -122,32 +120,17 @@ export default [
   },
   {
     files: ["**/*.md", "**/*.mdx"],
-    processor: titledMarkdownProcessor,
+    processor: "markdown/markdown",
   },
   {
-    files: [
-      "**/*.md/**/*.js",
-      "**/*.mdx/**/*.js",
-      "**/*.md/**/*.jsx",
-      "**/*.mdx/**/*.jsx",
-    ],
+    files: ["**/*.md/*.js", "**/*.mdx/*.js", "**/*.md/*.jsx", "**/*.mdx/*.jsx"],
   },
   ...compat.extends("plugin:@typescript-eslint/recommended").map((config) => ({
     ...config,
-    files: [
-      "**/*.md/**/*.ts",
-      "**/*.mdx/**/*.ts",
-      "**/*.md/**/*.tsx",
-      "**/*.mdx/**/*.tsx",
-    ],
+    files: ["**/*.md/*.ts", "**/*.mdx/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.tsx"],
   })),
   {
-    files: [
-      "**/*.md/**/*.ts",
-      "**/*.mdx/**/*.ts",
-      "**/*.md/**/*.tsx",
-      "**/*.mdx/**/*.tsx",
-    ],
+    files: ["**/*.md/*.ts", "**/*.mdx/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.tsx"],
 
     plugins: {
       "@typescript-eslint": typescriptEslintEslintPlugin,
@@ -170,5 +153,4 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
     },
   },
-  ...medusaContentConfigs,
 ]

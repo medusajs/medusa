@@ -55,10 +55,7 @@ Create a step in the same `src/workflows/hello-world.ts` file that throws an err
 const step2 = createStep(
   "step-2",
   async () => {
-    throw new MedusaError(
-      MedusaError.Types.UNEXPECTED_STATE,
-      "Throwing an error..."
-    )
+    throw new Error("Throwing an error...")
   }
 )
 ```

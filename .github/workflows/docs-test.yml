@@ -413,14 +413,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Monorepo dependencies
-        run: yarn install
-
-      # www consumes the plugin via `link:../packages/eslint-plugin`, and its
-      # `dist` isn't committed, so it must be built before the content lint.
-      - name: Build ESLint plugin
-        run: yarn workspace @medusajs/eslint-plugin build
-
       - name: Install dependencies
         working-directory: www
         run: yarn install

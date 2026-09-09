@@ -2348,32 +2348,29 @@ In this step, you’ll create a scheduled job that runs once a day. It finds all
 Create the file `src/jobs/create-subscription-orders.ts` with the following content:
 
 export const createSubscriptionOrdersJob1Highlights = [
-  ["18", "page", "The current page number"],
-  ["19", "limit", "The number of subscriptions per page."],
-  ["20", "pagesCount", "The total number of pages."],
-  ["23", "beginningToday", "Get the date for today at `00:00:00`."],
-  ["29", "endToday", "Get the date for today at `23:59:59`."],
-  ["39", "$gte", "The `next_order_date` must be greater than or equal to `beginningToday`."],
-  ["40", "$lte", "The `next_order_date` must be less than or equal to `endToday`."],
+  ["15", "page", "The current page number"],
+  ["16", "limit", "The number of subscriptions per page."],
+  ["17", "pagesCount", "The total number of pages."],
+  ["20", "beginningToday", "Get the date for today at `00:00:00`."],
+  ["26", "endToday", "Get the date for today at `23:59:59`."],
+  ["36", "$gte", "The `next_order_date` must be greater than or equal to `beginningToday`."],
+  ["37", "$lte", "The `next_order_date` must be less than or equal to `endToday`."],
 ]
 
-```ts title="src/jobs/create-subscription-orders.ts" highlights={createSubscriptionOrdersJob1Highlights} collapsibleLines="1-8" expandMoreLabel="Show Imports"
+```ts title="src/jobs/create-subscription-orders.ts" highlights={createSubscriptionOrdersJob1Highlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
 import { MedusaContainer } from "@medusajs/framework/types"
 import SubscriptionModuleService from "../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
 import createSubscriptionOrderWorkflow from "../workflows/create-subscription-order"
 import { SubscriptionStatus } from "../modules/subscription/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function createSubscriptionOrdersJob(
   container: MedusaContainer
 ) {
   const subscriptionModuleService: SubscriptionModuleService =
     container.resolve(SUBSCRIPTION_MODULE)
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   let page = 0
   const limit = 20
@@ -2494,32 +2491,29 @@ The `expireSubscription` updates the following properties of the specified subsc
 Then, create the file `src/jobs/expire-subscription-orders.ts` with the following content:
 
 export const expireSubscriptionOrdersJobHighlights = [
-  ["17", "page", "The current page number"],
-  ["18", "limit", "The number of subscriptions per page."],
-  ["19", "pagesCount", "The total number of pages."],
-  ["22", "beginningToday", "Get the date for today at `00:00:00`."],
-  ["28", "endToday", "Get the date for today at `23:59:59`."],
-  ["38", "$gte", "The `expiration_date` must be greater than or equal to `beginningToday`."],
-  ["39", "$lte", "The `expiration_date` must be less than or equal to `endToday`."],
-  ["49", "expireSubscription", "Set the subscriptions as expired."]
+  ["14", "page", "The current page number"],
+  ["15", "limit", "The number of subscriptions per page."],
+  ["16", "pagesCount", "The total number of pages."],
+  ["19", "beginningToday", "Get the date for today at `00:00:00`."],
+  ["25", "endToday", "Get the date for today at `23:59:59`."],
+  ["35", "$gte", "The `expiration_date` must be greater than or equal to `beginningToday`."],
+  ["36", "$lte", "The `expiration_date` must be less than or equal to `endToday`."],
+  ["46", "expireSubscription", "Set the subscriptions as expired."]
 ]
 
-```ts title="src/jobs/expire-subscription-orders.ts" highlights={expireSubscriptionOrdersJobHighlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
+```ts title="src/jobs/expire-subscription-orders.ts" highlights={expireSubscriptionOrdersJobHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
 import { MedusaContainer } from "@medusajs/framework/types"
 import SubscriptionModuleService from "../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
 import { SubscriptionStatus } from "../modules/subscription/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function expireSubscriptionOrdersJob(
   container: MedusaContainer
 ) {
   const subscriptionModuleService: SubscriptionModuleService =
     container.resolve(SUBSCRIPTION_MODULE)
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   let page = 0
   const limit = 20
@@ -2653,8 +2647,6 @@ class SubscriptionModuleService extends MedusaService({
 The `cancelSubscriptions` method updates the specified subscribers to set their `next_order_date` to `null` and their status to `canceled`.
 
 Then, create the file `src/api/store/customers/me/subscriptions/[id]/route.ts` with the following content:
-
-{/* eslint-disable @medusajs/no-service-mutations-in-api-route */}
 
 ```ts title="src/api/store/customers/me/subscriptions/[id]/route.ts"
 import { 

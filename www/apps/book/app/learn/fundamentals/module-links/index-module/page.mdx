@@ -114,7 +114,7 @@ The Index Module adds a new `index` method to [Query](../query/page.mdx) and it 
 For example, to filter products by a sales channel ID:
 
 export const basicHighlights = [
-  ["22", "id", "Filter products by their linked sales channel ID."]
+  ["17", "id", "Filter products by their linked sales channel ID."]
 ]
 
 ```ts title="src/api/custom/products/route.ts" highlights={basicHighlights}
@@ -122,17 +122,12 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { data: products } = await query.index({
     entity: "product",
@@ -274,17 +269,12 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { data: products } = await query.index({
     entity: "product",
@@ -340,8 +330,8 @@ Similar to Query's `graph` method, the Index Module accepts a `pagination` objec
 For example, to paginate the products and retrieve `10` products per page:
 
 export const paginationHighlights = [
-  ["19", "metadata", "Pagination details."],
-  ["28", "pagination", "Apply pagination to the retrieved records."]
+  ["14", "metadata", "Pagination details."],
+  ["23", "pagination", "Apply pagination to the retrieved records."]
 ]
 
 ```ts title="src/api/custom/products/route.ts" highlights={paginationHighlights}
@@ -349,17 +339,12 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { 
     data: products,
@@ -815,22 +800,17 @@ API routes using the `graph` method can configure default [query configurations]
 
 The `index` method supports the same configurations. For example, if you add the request query configuration as explained in the [Query documentation](../query/page.mdx#request-query-configurations), you can use those configurations in the `index` method:
 
-```ts title="src/api/custom/products/route.ts" highlights={[["22"]]}
+```ts title="src/api/custom/products/route.ts" highlights={[["17"]]}
 import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { 
     data: products,
@@ -858,8 +838,8 @@ In a workflow's step, you can resolve `query` and use its `index` method to retr
 For example:
 
 export const workflowHighlights = [
-  ["14", "query", "Resolve query in a workflow step."],
-  ["18", "index", "Use the `index` method to retrieve data."],
+  ["11", "query", "Resolve query in a workflow step."],
+  ["13", "index", "Use the `index` method to retrieve data."],
 ]
 
 ```ts title="src/workflows/custom-workflow.ts" highlights={workflowHighlights}
@@ -869,16 +849,11 @@ import {
   StepResponse,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 const retrieveBrandsStep = createStep(
   "retrieve-brands",
   async ({}, { container }) => {
-    const query = container.resolve(
-      ContainerRegistrationKeys.QUERY
-    )
+    const query = container.resolve("query")
 
     const { data: brands } = await query.index({
       entity: "brand",

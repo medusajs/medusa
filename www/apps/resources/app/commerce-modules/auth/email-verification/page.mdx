@@ -167,10 +167,7 @@ import {
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
-import {
-  Modules,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function verificationRequestedHandler({
   event: { data: {
@@ -196,9 +193,7 @@ export default async function verificationRequestedHandler({
   const notificationModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const config = container.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
+  const config = container.resolve("configModule")
 
   const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
 

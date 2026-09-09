@@ -1552,17 +1552,12 @@ For example:
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function helloWorldLoader({
   container,
   options,
 }: LoaderOptions) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   logger.info("[HELLO MODULE] Just started the Medusa application!")
 }
@@ -1584,14 +1579,9 @@ In Medusa v2, a scheduled job function receives only the Medusa container as a p
 
 ```ts title="src/jobs/hello-world.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
 
   logger.info("Greeting!")
 }

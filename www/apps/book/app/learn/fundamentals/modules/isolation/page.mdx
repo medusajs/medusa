@@ -168,11 +168,7 @@ You should, instead, build workflows that use these APIs and tools along with yo
 For example, you can create a workflow that retrieves data using Query, then pass the data to your module's service to perform some action.
 
 ```ts title="Example Workflow"
-import {
-  createWorkflow,
-  createStep,
-  StepResponse,
-} from "@medusajs/framework/workflows-sdk"
+import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 
 const createBrandsInCmsStep = createStep(

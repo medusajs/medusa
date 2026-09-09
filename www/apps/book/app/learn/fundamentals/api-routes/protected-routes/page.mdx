@@ -249,9 +249,9 @@ You can access the logged-in customer’s ID in all API routes starting with `/s
 For example:
 
 export const customerHighlights = [
-  ["13", "customerId", "Retrieve the logged-in customer's ID."],
-  ["18", "query", "Retrieve the customer details."],
-  ["25", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
+  ["10", "customerId", "Retrieve the logged-in customer's ID."],
+  ["13", "query", "Retrieve the customer details."],
+  ["20", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={customerHighlights}
@@ -259,18 +259,13 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerId = req.auth_context?.actor_id
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { data: [customer] } = await query.graph({
     entity: "customer",
@@ -299,9 +294,9 @@ You can access the logged-in admin user’s ID in all API routes starting with `
 For example:
 
 export const adminHighlights = [
-  ["13", "userId", "Retrieve the logged-in admin user's ID."],
-  ["18", "query", "Retrieve the user details."],
-  ["25", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
+  ["10", "userId", "Retrieve the logged-in admin user's ID."],
+  ["13", "query", "Retrieve the user details."],
+  ["20", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/admin/custom/route.ts" highlights={adminHighlights}
@@ -309,18 +304,13 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const userId = req.auth_context?.actor_id
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
 
   const { data: [user] } = await query.graph({
     entity: "user",

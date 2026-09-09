@@ -86,10 +86,10 @@ You can also retrieve linked records using [Query](../../../fundamentals/module-
 For example, you can create an API route that retrieves brands and their products. If you followed the [Create Brands API route chapter](../../custom-features/api-route/page.mdx), you'll have the file `src/api/admin/brands/route.ts` with a `POST` API route. Add a new `GET` function to the same file:
 
 export const highlights = [
-  ["14", "resolve", "Resolve Query from the Medusa container."],
-  ["18", "graph", "Run a query to retrieve brands with their linked products."],
-  ["19", "entity", "The name of the model to query."],
-  ["20", "fields", "The fields and relations to retrieve."]
+  ["11", "resolve", "Resolve Query from the Medusa container."],
+  ["13", "graph", "Run a query to retrieve brands with their linked products."],
+  ["14", "entity", "The name of the model to query."],
+  ["15", "fields", "The fields and relations to retrieve."]
 ]
 
 ```ts title="src/api/admin/brands/route.ts" highlights={highlights}
@@ -98,17 +98,12 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve(
-    ContainerRegistrationKeys.QUERY
-  )
+  const query = req.scope.resolve("query")
   
   const { data: brands } = await query.graph({
     entity: "brand",

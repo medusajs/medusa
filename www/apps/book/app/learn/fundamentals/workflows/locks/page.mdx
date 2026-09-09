@@ -95,7 +95,6 @@ For example:
 
 ```ts title="src/workflows/steps/charge-customer.ts"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { Modules } from "@medusajs/framework/utils"
 
 type StepInput = {
   order_id: string
@@ -105,9 +104,7 @@ type StepInput = {
 export const chargeCustomerStep = createStep(
   "charge-customer",
   async (input: StepInput, { container }) => {
-    const lockingModuleService = container.resolve(
-      Modules.LOCKING
-    )
+    const lockingModuleService = container.resolve("locking")
 
     await lockingModuleService.acquire(input.order_id, {
       // Lock will auto-expire after 10 seconds

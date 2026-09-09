@@ -160,7 +160,7 @@ import {
 } from "@medusajs/framework/utils"
 import { 
   Logger, 
-} from "@medusajs/framework/types"
+} from "@medusajs/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -275,7 +275,7 @@ import {
   AuthenticationInput, 
   AuthIdentityProviderService, 
   AuthenticationResponse, 
-} from "@medusajs/framework/types"
+} from "@medusajs/types"
 
 class PhoneAuthService extends AbstractAuthModuleProvider {
   // ...
@@ -373,7 +373,7 @@ export const authenticateHighlights = [
 // other imports...
 import { 
   AuthIdentityDTO,
-} from "@medusajs/framework/types"
+} from "@medusajs/types"
 import jwt from "jsonwebtoken"
 
 class PhoneAuthService extends AbstractAuthModuleProvider {
@@ -484,16 +484,14 @@ You can use this method to verify the OTP that the user entered. If valid, you r
 So, add the `validateCallback` method to the `PhoneAuthService` class:
 
 export const validateCallbackHighlights = [
-  ["9", "phone", "Extract phone from request query."],
-  ["9", "otp", "Extract OTP from request query."],
-  ["18", "retrieve", "Check that the user exists."],
-  ["39", "verify", "Verify that the OTP is correct and hasn't expired."],
-  ["57", "update", "Remove OTP from provider metadata."],
+  ["7", "phone", "Extract phone from request query."],
+  ["7", "otp", "Extract OTP from request query."],
+  ["16", "retrieve", "Check that the user exists."],
+  ["37", "verify", "Verify that the OTP is correct and hasn't expired."],
+  ["52", "update", "Remove OTP from provider metadata."],
 ]
 
 ```ts title="src/modules/phone-auth/service.ts" highlights={validateCallbackHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
-
 class PhoneAuthService extends AbstractAuthModuleProvider {
   // ...
   async validateCallback(
@@ -536,10 +534,7 @@ class PhoneAuthService extends AbstractAuthModuleProvider {
       ) as { otp: string }
   
       if (decodedOTP.otp !== otp) {
-        throw new MedusaError(
-          MedusaError.Types.UNAUTHORIZED,
-          "Invalid OTP"
-        )
+        throw new Error("Invalid OTP")
       }
     } catch (error) {
       return {
@@ -992,28 +987,17 @@ The `validateOptions` method is used to validate the options passed to the modul
 So, add the `validateOptions` method to the `TwilioSmsService` class:
 
 ```ts title="src/modules/twilio-sms/service.ts"
-import { MedusaError } from "@medusajs/framework/utils"
-
 class TwilioSmsService extends AbstractNotificationProviderService {
   // ...
   static validateOptions(options: Record<any, any>): void | never {
     if (!options.accountSid) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Account SID is required"
-      )
+      throw new Error("Account SID is required")
     }
     if (!options.authToken) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Auth token is required"
-      )
+      throw new Error("Auth token is required")
     }
     if (!options.from) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "From is required"
-      )
+      throw new Error("From is required")
     }
   }
 }
@@ -1030,14 +1014,14 @@ The only required method for a Notification Module Provider is the `send` method
 So, add the `send` method to the `TwilioSmsService` class:
 
 export const sendHighlights = [
-  ["13", "to", "Extract the phone number to send the SMS to."],
-  ["13", "content", "Extract the content of the SMS."],
-  ["13", "template", "Extract the template to use for the SMS."],
-  ["13", "data", "Extract the data to use in the template."],
-  ["14", "contentText", "Set the content text to either the text or template content."],
-  ["14", "getTemplateContent", "Get the content for the template."],
-  ["18", "message", "Send the SMS using Twilio's client."],
-  ["29", "getTemplateContent", "A method to get the content for the template."],
+  ["12", "to", "Extract the phone number to send the SMS to."],
+  ["12", "content", "Extract the content of the SMS."],
+  ["12", "template", "Extract the template to use for the SMS."],
+  ["12", "data", "Extract the data to use in the template."],
+  ["13", "contentText", "Set the content text to either the text or template content."],
+  ["13", "getTemplateContent", "Get the content for the template."],
+  ["17", "message", "Send the SMS using Twilio's client."],
+  ["28", "getTemplateContent", "A method to get the content for the template."],
 ]
 
 ```ts title="src/modules/twilio-sms/service.ts" highlights={sendHighlights}
@@ -1045,8 +1029,7 @@ export const sendHighlights = [
 import { 
   ProviderSendNotificationDTO, 
   ProviderSendNotificationResultsDTO,
-} from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+} from "@medusajs/types"
 
 class TwilioSmsService extends AbstractNotificationProviderService {
   // ...
@@ -1076,18 +1059,12 @@ class TwilioSmsService extends AbstractNotificationProviderService {
     switch (template) {
       case "otp-template":
         if (!data?.otp) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "OTP is required for OTP template"
-          )
+          throw new Error("OTP is required for OTP template")
         }
 
         return `Your OTP is ${data.otp}`
       default:
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Template ${template} not found`
-        )
+        throw new Error(`Template ${template} not found`)
     }
   }
 }

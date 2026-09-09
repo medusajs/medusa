@@ -105,9 +105,7 @@ To retrieve an order's refunds, you can retrieve the order's transactions using 
 For example:
 
 ```ts
-const query = container.resolve(
-  ContainerRegistrationKeys.QUERY
-) // or req.scope.resolve("query")
+const query = container.resolve("query") // or req.scope.resolve("query")
 
 const { data: [order] } = await query.graph({
   entity: "order",

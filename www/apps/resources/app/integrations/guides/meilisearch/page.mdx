@@ -185,8 +185,6 @@ The first method you need to add to the service is a method that receives an arr
 Add the following methods to the `MeilisearchModuleService` class:
 
 ```ts title="src/modules/meilisearch/service.ts"
-import { MedusaError } from "@medusajs/framework/utils"
-
 export default class MeilisearchModuleService {
   // ...
   async getIndexName(type: MeilisearchIndexType) {
@@ -194,10 +192,7 @@ export default class MeilisearchModuleService {
       case "product":
         return this.options.productIndexName
       default:
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Invalid index type: ${type}`
-        )
+        throw new Error(`Invalid index type: ${type}`)
     }
   }
 
@@ -720,16 +715,11 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { syncProductsWorkflow } from "../workflows/sync-products"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function meilisearchSyncHandler({ 
   container,
 }: SubscriberArgs) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
   
   let hasMore = true
   let offset = 0
@@ -1063,17 +1053,12 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { deleteProductsFromMeilisearchWorkflow } from "../workflows/delete-products-from-meilisearch"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 
 export default async function productDeleteHandler({ 
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve(
-    ContainerRegistrationKeys.LOGGER
-  )
+  const logger = container.resolve("logger")
   
   logger.info(`Deleting product ${data.id} from Meilisearch`)
 

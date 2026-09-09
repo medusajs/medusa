@@ -347,14 +347,9 @@ export const addCustomToCartWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-variant" })
 
-    const variantExternalId = transform(
-      { variants },
-      ({ variants }) => variants[0].metadata?.external_id as string
-    )
-
     // get the variant's price from the ERP
     const price = getVariantErpPriceStep({
-      variant_external_id: variantExternalId,
+      variant_external_id: variants[0].metadata?.external_id as string,
       currencyCode: carts[0].currency_code,
       quantity: item.quantity,
     })
@@ -434,18 +429,14 @@ Since Medusa implements the add-to-cart functionality within a workflow, it allo
 So, to implement the use case of product-purchase restriction, you can use the `validate` hook of the `addToCartWorkflow` or the [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) to check if the customer is allowed to purchase the product. For example:
 
 ```ts title="src/workflows/hooks/validate-purchase.ts"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input, cart }, { container }) => {
     const erpModuleService = container.resolve("erp")
-    const productModuleService = container.resolve(
-      Modules.PRODUCT
-    )
-    const customerModuleService = container.resolve(
-      Modules.CUSTOMER
-    )
+    const productModuleService = container.resolve("product")
+    const customerModuleService = container.resolve("customer")
     
     const customer = cart.customer_id ? await customerModuleService.retrieveCustomer(cart.customer_id) : undefined
     const productVariants = await productModuleService.listProductVariants({
@@ -727,15 +718,13 @@ An ERP system often manages the inventory of products, with the ability to track
 Similar to the [product-purchase restriction](#restrict-purchase-with-custom-erp-rules) use case, you can use the `validate` hook of the `addToCartWorkflow` or the [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) to check the product's availability in the ERP system. For example:
 
 ```ts title="src/workflows/hooks/validate-inventory.ts"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
     const erpModuleService = container.resolve("erp")
-    const productModuleService = container.resolve(
-      Modules.PRODUCT
-    )
+    const productModuleService = container.resolve("product")
     
     const productVariants = await productModuleService.listProductVariants({
       id: input.items.map((item) => item.variant_id).filter(Boolean) as string[],

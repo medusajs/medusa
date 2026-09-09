@@ -35,7 +35,7 @@ To retrieve a linked data model like `customer`, use Query instead:
 
 ```ts
 // use req.scope instead of container in API routes
-const query = container.resolve(ContainerRegistrationKeys.QUERY)
+const query = container.resolve("query")
 
 const { data } = await query.graph({
   entity: "order",
