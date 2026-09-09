@@ -39,10 +39,6 @@ medusaIntegrationTestRunner({
 
       searchModule = container.resolve(Modules.SEARCH)
 
-      await searchModule.executeIndexMigrationPlan(
-        await searchModule.createIndexMigrationPlan()
-      )
-
       await api.post(
         "/admin/products",
         {
@@ -223,7 +219,7 @@ medusaIntegrationTestRunner({
 
         expect(
           Object.keys(groupFor(response.data, "product").data[0]).sort()
-        ).toEqual(["handle", "id", "status", "title"])
+        ).toEqual(["handle", "id", "sales_channel_ids", "status", "title"])
       })
 
       it("queries the database for an entity that has no index", async () => {
@@ -253,7 +249,7 @@ medusaIntegrationTestRunner({
         // Index fields for product; graph fields would be id/thumbnail/title.
         expect(
           Object.keys(groupFor(response.data, "product").data[0]).sort()
-        ).toEqual(["handle", "id", "status", "title"])
+        ).toEqual(["handle", "id", "sales_channel_ids", "status", "title"])
         expect(groupFor(response.data, "product").data).toEqual([
           expect.objectContaining({
             title: "Zephyr Shirt",
@@ -311,7 +307,7 @@ medusaIntegrationTestRunner({
           status: "ready",
         })
         expect(product.fields.map((field) => field.name).sort()).toEqual(
-          ["handle", "id", "status", "title"].sort()
+          ["handle", "id", "sales_channel_ids", "status", "title"].sort()
         )
         expect(
           product.fields.find((field) => field.name === "title")
