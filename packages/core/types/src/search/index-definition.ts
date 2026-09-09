@@ -25,16 +25,20 @@ export interface SearchIndexSettings {
   typo_tolerance?: {
     /**
      * Whether typo tolerance is enabled at all.
+     *
+     * @default true
      */
     enabled?: boolean
 
     /**
-     * The shortest term length that tolerates a single typo.
+     * The shortest term length that tolerates a single typo. A provider with a
+     * higher floor of its own rejects a shorter length from `upsertIndex`.
      */
     min_word_size_for_one_typo?: number
 
     /**
-     * The shortest term length that tolerates two typos.
+     * The shortest term length that tolerates two typos. Cannot be lower than
+     * `min_word_size_for_one_typo`.
      */
     min_word_size_for_two_typos?: number
 

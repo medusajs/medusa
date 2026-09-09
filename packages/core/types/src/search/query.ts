@@ -183,8 +183,9 @@ export interface SearchOptions {
   match_strategy?: SearchMatchStrategy
 
   /**
-   * Whether to match terms that are misspelled by a character or two. Applied
-   * only when the query includes a free-text `q`; otherwise it is ignored.
+   * Whether to match terms that are misspelled by a character or two.
+   * it is ignored unless the query includes a free-text `q` and the
+   * searched fields have typo tolerance enabled in the index's `settings.typo_tolerance`.
    */
   typo_tolerance?: boolean
 
