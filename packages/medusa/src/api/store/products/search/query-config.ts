@@ -1,4 +1,4 @@
-import { disallowedStoreFields } from "../../utils/disallowed-fields"
+import { buildAllowedFields } from "../../utils/allowed-fields"
 
 export const defaultStoreProductSearchFields = [
   "id",
@@ -15,7 +15,7 @@ export const defaultStoreProductSearchFields = [
 
 export const searchProductQueryConfig = {
   defaults: defaultStoreProductSearchFields,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaultStoreProductSearchFields),
   storeRelationsLimit: 4,
   defaultLimit: 20,
   isList: true,
