@@ -81,20 +81,37 @@ describe("graphSeed", () => {
     expect(graph.mock.calls[0][0].filters).toEqual({ id: { $gt: "prod_9" } })
   })
 
-  it("merges the source's filters with the reindex filters", async () => {
+  it("applies the reindex filters", async () => {
     const graph = jest.fn().mockResolvedValue({ data: [] })
 
-    const seed = graphSeed<typeof fields>({
-      fields: ["id", "title"],
-      filters: { status: "published" },
-    })
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
     await collect(
       seed(createContext(graph, { filters: { collection_id: "pcol_1" } }))
     )
 
     expect(graph.mock.calls[0][0].filters).toEqual({
-      status: "published",
       collection_id: "pcol_1",
+    })
+  })
+
+  it("keeps a reindex filter the cursor collides with", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({ data: [{ id: "prod_1", title: "One" }] })
+      .mockResolvedValueOnce({ data: [] })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      batch_size: 1,
+    })
+    await collect(
+      seed(createContext(graph, { filters: { id: ["prod_1", "prod_2"] } }))
+    )
+
+    // Spreading them together would drop one of the two.
+    expect(graph.mock.calls[1][0].filters).toEqual({
+      id: ["prod_1", "prod_2"],
+      $and: [{ id: { $gt: "prod_1" } }],
     })
   })
 
@@ -129,6 +146,46 @@ describe("graphSeed", () => {
       { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
       { action: "delete", filters: { id: ["prod_2", "prod_3"] } },
     ])
+  })
+
+  it("pages and deletes by the index' own primary key", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: [{ handle: "one", title: "One", deleted_at: new Date() }],
+      })
+      .mockResolvedValueOnce({ data: [] })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["title"],
+      batch_size: 1,
+    })
+
+    const batches = await collect(
+      seed(
+        createContext(graph, {
+          // An index keyed by something other than `id`.
+          index: { ...index, primary_key: "handle" },
+          catchup: { since: new Date("2026-01-01") },
+        })
+      )
+    )
+
+    // Selected even though `fields` left it out — the seed cannot page or
+    // delete without it.
+    expect(graph.mock.calls[0][0].fields).toEqual([
+      "title",
+      "handle",
+      "deleted_at",
+    ])
+    expect(graph.mock.calls[0][0].pagination.order).toEqual({ handle: "ASC" })
+    expect(batches[0]).toEqual([
+      { action: "delete", filters: { handle: ["one"] } },
+    ])
+    expect(graph.mock.calls[1][0].filters).toEqual({
+      updated_at: { $gte: new Date("2026-01-01") },
+      handle: { $gt: "one" },
+    })
   })
 
   it("skips rejected rows without deleting on a full seed", async () => {
@@ -207,7 +264,6 @@ describe("graphConsume", () => {
 
     const consume = graphConsume<typeof fields>({
       fields: ["id", "title"],
-      filters: { status: "published" },
       transform: (row) => (row.title ? { id: row.id, title: row.title } : null),
     })
     const mutations = await consume(
@@ -219,12 +275,11 @@ describe("graphConsume", () => {
     )
 
     expect(graph.mock.calls[0][0].filters).toEqual({
-      status: "published",
       id: ["prod_1", "prod_2", "prod_3"],
     })
     expect(mutations).toEqual([
       { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
-      // prod_2 stopped qualifying, prod_3 was never returned.
+      // prod_2 was rejected by the transform, prod_3 was never returned.
       { action: "delete", filters: { id: ["prod_2", "prod_3"] } },
     ])
   })

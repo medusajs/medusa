@@ -35,16 +35,13 @@ export interface SearchGraphSourceOptions<
   fields: string[]
 
   /**
-   * Filters applied to every read, on top of the ones the caller of a partial
-   * reindex passes. A row excluded by them is never indexed, and is deleted
-   * from the index when an event brings it back through `consume`.
-   */
-  filters?: Record<string, any>
-
-  /**
    * Maps a row to the document to index. Returning `null` or `undefined`
-   * excludes the row, which `consume` and the catch-up pass turn into a delete
-   * so a row that stops qualifying leaves the index.
+   * excludes the row, and is how an index that only holds part of an entity
+   * says so — narrowing the read with a filter instead would hide a row that
+   * stops qualifying, leaving its document behind.
+   *
+   * `consume` and the catch-up pass turn a rejection into a delete, so an
+   * excluded row leaves the index rather than going stale in it.
    *
    * Defaults to indexing the row as-is.
    */
@@ -64,16 +61,6 @@ export interface SearchGraphSeedOptions<
    * @default 200
    */
   batch_size?: number
-
-  /**
-   * The field the seed pages on. Rows are read in ascending order of it and
-   * the next page starts after the last row's value, so a seed interrupted
-   * halfway resumes from the context's `last_key` instead of restarting.
-   *
-   * It has to be unique and stable, which is why it defaults to the index'
-   * `primary_key`.
-   */
-  order_by?: string
 }
 
 export interface SearchGraphConsumeOptions<
@@ -106,48 +93,40 @@ function toArray(value: unknown): string[] {
 }
 
 /**
- * Combines filter objects, falling back to `$and` only for the keys they
- * disagree on so the common case stays a flat, readable filter.
+ * The reindex filters, narrowed by the catch-up window and the paging cursor.
+ *
+ * Those two go under `$and` rather than beside the caller's filters: they are
+ * keyed on `updated_at` and on the primary key, so overwriting would quietly
+ * widen a `reindex({ filters: { id: [...] } })` into a full scan from the
+ * cursor once it pages.
  */
-function mergeFilters(
-  ...parts: (Record<string, any> | undefined)[]
+function seedFilters(
+  filters: Record<string, any> | undefined,
+  constraints: Record<string, any>[]
 ): Record<string, any> {
-  const present = parts.filter(
-    (part): part is Record<string, any> => !!part && !!Object.keys(part).length
-  )
-
-  const merged: Record<string, any> = {}
-  const conflicting: Record<string, any>[] = []
-
-  for (const part of present) {
-    for (const [key, value] of Object.entries(part)) {
-      if (key in merged) {
-        conflicting.push({ [key]: value })
-        continue
-      }
-      merged[key] = value
-    }
+  if (!constraints.length) {
+    return filters ?? {}
   }
 
-  if (!conflicting.length) {
-    return merged
+  if (!filters || !Object.keys(filters).length) {
+    return Object.assign({}, ...constraints)
   }
 
-  return {
-    ...merged,
-    $and: [...(Array.isArray(merged.$and) ? merged.$and : []), ...conflicting],
-  }
+  const existing = Array.isArray(filters.$and) ? filters.$and : []
+  return { ...filters, $and: [...existing, ...constraints] }
 }
 
-function withField(fields: string[], field: string): string[] {
-  return fields.includes(field) ? fields : [...fields, field]
+function withFields(fields: string[], ...extra: string[]): string[] {
+  const missing = extra.filter((field) => !fields.includes(field))
+  return missing.length ? [...fields, ...missing] : fields
 }
 
 /**
  * Builds an index definition's `seed` from a `query.graph` query.
  *
- * The seed pages the entity in ascending order of `order_by`, resuming from
- * the context's `last_key` when a previous run was interrupted. The catch-up
+ * The seed pages the entity in ascending order of the index' primary key, so
+ * the next page starts after the last row and a run interrupted halfway
+ * resumes from the context's `last_key` rather than restarting. The catch-up
  * pass that follows a full seed reads the rows touched since it started with
  * soft-deleted ones included, and turns those — along with any row the
  * `transform` rejects — into deletes.
@@ -177,15 +156,14 @@ export function graphSeed<
     const { container, index, catchup, last_key: lastKey } = context
 
     const entity = options.entity ?? index.entity
-    const orderBy = options.order_by ?? index.primary_key
     const primaryKey = index.primary_key
 
-    // The cursor and the soft-delete marker have to be readable off the rows,
-    // whether or not the index itself holds them.
-    let selection = withField(fields, orderBy)
-    if (catchup) {
-      selection = withField(selection, DELETED_AT_FIELD)
-    }
+    // The key pages the rows and identifies them in a delete, and the
+    // soft-delete marker decides which is which — both have to be readable off
+    // the rows, whether or not the index itself holds them.
+    const selection = catchup
+      ? withFields(fields, primaryKey, DELETED_AT_FIELD)
+      : withFields(fields, primaryKey)
 
     let cursor: string | undefined = lastKey
 
@@ -193,13 +171,11 @@ export function graphSeed<
       const { data } = (await container.query.graph({
         entity,
         fields: selection,
-        filters: mergeFilters(
-          options.filters,
-          context.filters,
-          catchup ? { [UPDATED_AT_FIELD]: { $gte: catchup.since } } : undefined,
-          cursor !== undefined ? { [orderBy]: { $gt: cursor } } : undefined
-        ),
-        pagination: { take: batchSize, order: { [orderBy]: "ASC" } },
+        filters: seedFilters(context.filters, [
+          ...(catchup ? [{ [UPDATED_AT_FIELD]: { $gte: catchup.since } }] : []),
+          ...(cursor !== undefined ? [{ [primaryKey]: { $gt: cursor } }] : []),
+        ]),
+        pagination: { take: batchSize, order: { [primaryKey]: "ASC" } },
         withDeleted: !!catchup,
       })) as { data: TRow[] }
 
@@ -226,7 +202,7 @@ export function graphSeed<
         }
 
         if (catchup) {
-          deletedIds.push(String(row[orderBy]))
+          deletedIds.push(String(row[primaryKey]))
         }
       }
 
@@ -234,8 +210,7 @@ export function graphSeed<
       if (documents.length) {
         mutations.push({ action: "upsert", documents })
       }
-      // A delete forces the buffered upserts to be flushed first, so it is only
-      // yielded when there is something to remove.
+
       if (deletedIds.length) {
         mutations.push({
           action: "delete",
@@ -251,7 +226,7 @@ export function graphSeed<
         return
       }
 
-      cursor = String(data[data.length - 1][orderBy])
+      cursor = String(data[data.length - 1][primaryKey])
     }
   }
 }
@@ -304,8 +279,8 @@ export function graphConsume<
 
     const { data } = (await container.query.graph({
       entity,
-      fields: withField(fields, primaryKey),
-      filters: mergeFilters(options.filters, { [primaryKey]: ids }),
+      fields: withFields(fields, primaryKey),
+      filters: { [primaryKey]: ids },
     })) as { data: TRow[] }
 
     const documents: SearchTypes.InferSearchDocumentType<Fields>[] = []
@@ -330,8 +305,8 @@ export function graphConsume<
       mutations.push({ action: "upsert", documents })
     }
 
-    // Gone, or no longer matching the source's filters — either way it has no
-    // business being in the index anymore.
+    // Gone, or rejected by the transform — either way it has no business being
+    // in the index anymore.
     const removedIds = ids.filter((id) => !seen.has(id))
     if (removedIds.length) {
       mutations.push({
