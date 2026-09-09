@@ -84,17 +84,21 @@ The Local provider logs email details to your terminal instead of sending actual
 To create a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that handles the `invite.created` and `invite.resent` events, create the file `src/subscribers/user-invited.ts` with the following content:
 
 export const highlights = [
-  ["15", "invite", "Retrieve the invite's details."],
-  ["26", "backend_url", "Construct the backend URL."],
-  ["28", "adminPath", "Get the admin path from the config."],
-  ["30", "createNotifications", "Send the notification to the user."],
-  ["34", "channel", "Use the Notification Module Provider configured for the email channel."],
-  ["35", "data", "Pass the invite URL to the notification template."],
-  ["42", "event", "Subscribe to the invite events."]
+  ["23", "invite", "Retrieve the invite's details."],
+  ["34", "backend_url", "Construct the backend URL."],
+  ["36", "adminPath", "Get the admin path from the config."],
+  ["38", "createNotifications", "Send the notification to the user."],
+  ["42", "channel", "Use the Notification Module Provider configured for the email channel."],
+  ["43", "data", "Pass the invite URL to the notification template."],
+  ["50", "event", "Subscribe to the invite events."]
 ]
 
 ```ts title="src/subscribers/user-invited.ts" highlights={highlights}
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function inviteCreatedHandler({
   event: { data },
@@ -102,11 +106,15 @@ export default async function inviteCreatedHandler({
 }: SubscriberArgs<{
   id: string
 }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve(
-    "notification"
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
   )
-  const config = container.resolve("configModule")
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const { data: [invite] } = await query.graph({
     entity: "invite",
