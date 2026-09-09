@@ -240,6 +240,15 @@ export class ApiLoader {
     baseRestrictedFields: string[],
     storeRelationsLimit?: number
   ) {
+    this.#app.use(((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.allowed = []
+      next()
+    }) as unknown as RequestHandler)
+
     this.#app.use("/store", ((
       req: MedusaRequest,
       _: MedusaResponse,
