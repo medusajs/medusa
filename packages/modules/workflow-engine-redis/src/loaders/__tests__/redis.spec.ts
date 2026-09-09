@@ -295,6 +295,7 @@ describe("Redis Loader", () => {
         {} as any
       )
 
+      const registerCall = containerMock.register.mock.calls[0][0]
       expect(registerCall.redisQueueName.resolve()).toEqual("custom-workflows")
       expect(registerCall.redisJobQueueName.resolve()).toEqual("custom-jobs")
     })
