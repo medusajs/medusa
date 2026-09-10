@@ -428,6 +428,37 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should return an array when updating via selector", async () => {
+            const result = await service.updatePaymentCollections(
+              { id: "pay-col-id-2" },
+              { amount: 500 }
+            )
+
+            expect(Array.isArray(result)).toBe(true)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 500,
+              })
+            )
+          })
+
+          it("should return a single DTO when updating via string ID", async () => {
+            const result = await service.updatePaymentCollections(
+              "pay-col-id-2",
+              { amount: 600 }
+            )
+
+            expect(Array.isArray(result)).toBe(false)
+            expect(result).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 600,
+              })
+            )
+          })
         })
 
         describe("complete", () => {

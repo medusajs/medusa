@@ -195,7 +195,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     const paymentCollections = transform(
       { updatedPaymentCollections, createdPaymentCollection },
       ({ updatedPaymentCollections, createdPaymentCollection }) =>
-        updatedPaymentCollections || createdPaymentCollection
+        updatedPaymentCollections || createdPaymentCollection || []
     )
 
     return new WorkflowResponse(paymentCollections)
