@@ -459,6 +459,16 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should return an empty array when selector matches no records", async () => {
+            const result = await service.updatePaymentCollections(
+              { id: "non-existent-id" },
+              { amount: 999 }
+            )
+
+            expect(Array.isArray(result)).toBe(true)
+            expect(result).toHaveLength(0)
+          })
         })
 
         describe("complete", () => {
