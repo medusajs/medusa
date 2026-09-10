@@ -52,12 +52,12 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },
   {
-    "title": "Configure View Configurations",
-    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
-  },
-  {
     "title": "Define Custom Policies",
     "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",

@@ -142,14 +142,14 @@ Learn how to retrieve an entity's roles in the [Links to Other Modules](../links
 
 ### Scoped Assignments
 
-An assignment's `scope` and `scope_id` restrict the role to a single entity instance. For example, an assignment whose `scope` is `organization` and whose `scope_id` is `org_123` grants its policies on requests acting within that organization.
+An assignment's `scope` and `scope_id` restrict the role to a single entity instance. For example, an assignment whose `scope` is `vendor` and whose `scope_id` is `ven_123` grants its policies on requests acting within that vendor.
 
 A request only acts within a scope if your application sets one, as explained in the [Permission Resolution](#permission-resolution) section. Requests without a scope consider every assignment, scoped or not.
 
 When you assign a role with the `assignRolesWorkflow`, you pass the two values as one `scope` object instead:
 
 export const scopedHighlights = [
-  ["12", "scope", "Restrict the role to this organization."],
+  ["12", "scope", "Restrict the role to this vendor."],
   ["16", "granting_scope", "Resolve the granting actor's roles in the same scope."],
 ]
 
@@ -165,11 +165,11 @@ await assignRolesWorkflow(container).run({
         role_id: "role_123",
         reference: "user",
         reference_id: "user_123",
-        scope: { type: "organization", id: "org_123" },
+        scope: { type: "vendor", id: "ven_123" },
       },
     ],
     granting_actor_id: "user_456",
-    granting_scope: { type: "organization", id: "org_123" },
+    granting_scope: { type: "vendor", id: "ven_123" },
   },
 })
 ```
@@ -180,9 +180,9 @@ The workflow stores the object's `type` in the assignment's `scope` property, an
 
 When you assign a role, you can pass a `granting_scope` to restrict the granting actor's effective policies to a specific scope. This prevents a user from granting a role in a scope where they don't have access.
 
-In the above example, the user assigning the role can only grant it in the `org_123` organization, since their effective policies are resolved in that scope. They can't assign the role in another organization, since they don't have access there.
+In the above example, the user assigning the role can only grant it for the `ven_123` vendor, since their effective policies are resolved in that scope. They can't assign the role for another vendor, since they don't have access there.
 
-If you omit `granting_scope`, the workflow resolves the granting actor's effective policies across all their assignments, whatever scope each one has. A user with a role in one organization can then grant that role in another, so pass `granting_scope` whenever the grant happens within a scope.
+If you omit `granting_scope`, the workflow resolves the granting actor's effective policies across all their assignments, whatever scope each one has. A user with a role for one vendor can then grant that role for another, so pass `granting_scope` whenever the grant happens within a scope.
 
 An unscoped assignment always counts, in both cases. For example, a Super Admin can assign roles in any scope, since they have the `*:*` wildcard policy without a scope.
 
@@ -196,6 +196,6 @@ When the RBAC feature flag is enabled, Medusa checks an admin user's effective p
 
 Medusa resolves the roles of the request's actor for the scope the request acts within, considering the assignments that are unscoped or scoped to it. Your application sets that scope in a middleware that runs before the route's access check. Medusa's own routes don't set a scope, and requests without one consider every assignment of the actor.
 
-Medusa also applies the policies to the fields a request asks for. If the actor can't read a related resource, Medusa removes the fields of that resource from the response instead of rejecting the request.
+Medusa also applies the policies to the fields a request asks for. If the actor can't read a related resource, Medusa removes the fields of that resource from the response instead of rejecting the request. This requires the separate `rbac_filter_fields` feature flag, as explained in the [Protect API Routes](../protect-routes/page.mdx#field-level-filtering) guide.
 
 When the RBAC feature flag is disabled, Medusa enforces no access control, and admin users have access to all resources and operations.

@@ -7650,5 +7650,12 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-08-13T17:02:22.238Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
-  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z"
+  "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
+  "app/commerce-modules/rbac/module-options/page.mdx": "2026-09-10T06:29:35.024Z",
+  "app/commerce-modules/rbac/protect-routes/page.mdx": "2026-09-10T06:22:49.329Z",
+  "app/commerce-modules/rbac/scopes/page.mdx": "2026-09-10T06:22:49.330Z",
+  "app/commerce-modules/rbac/concepts/page.mdx": "2026-09-10T06:22:49.328Z",
+  "app/commerce-modules/rbac/define-policies/page.mdx": "2026-09-10T06:22:49.328Z",
+  "app/commerce-modules/rbac/js-sdk/page.mdx": "2026-09-10T06:22:49.329Z",
+  "app/commerce-modules/rbac/page.mdx": "2026-09-10T06:30:21.211Z"
 }

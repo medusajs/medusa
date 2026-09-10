@@ -51,7 +51,7 @@ export const highlights = [
 ```ts title="src/types/rbac.d.ts" highlights={highlights}
 declare module "@medusajs/types" {
   interface PolicyResourceRegistry {
-    brand: "brand"
+    vendor: "vendor"
   }
 
   interface PolicyOperationRegistry {
@@ -64,7 +64,7 @@ export {}
 
 You only need `PolicyOperationRegistry` if you use an operation other than `read`, `create`, `update`, and `delete`, which Medusa registers for you.
 
-After this, `"brand"` and `"approve"` are valid everywhere Medusa expects a resource or operation: the `authorize` middleware, `buildPolicies`, the RBAC Module's service methods, and the admin dashboard's permission checks.
+After this, `"vendor"` and `"approve"` are valid everywhere Medusa expects a resource or operation: the `authorize` middleware, `buildPolicies`, the RBAC Module's service methods, and the admin dashboard's permission checks.
 
 <Note title="Tip">
 
@@ -80,14 +80,14 @@ To create the policies, build them with the `buildPolicies` function which gener
 
 Create the policies in a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts), which the Medusa application runs once when you run migrations. This way, your policies reach every environment you deploy to.
 
-For example, create the file `src/migration-scripts/create-brand-policies.ts` with the following content:
+For example, create the file `src/migration-scripts/create-vendor-policies.ts` with the following content:
 
 export const createHighlights = [
-  ["10", "buildPolicies", "Build a policy for every brand operation."],
+  ["10", "buildPolicies", "Build a policy for every vendor operation."],
   ["14", "createRbacPoliciesWorkflow", "Store the policies in the database."],
 ]
 
-```ts title="src/migration-scripts/create-brand-policies.ts" highlights={createHighlights}
+```ts title="src/migration-scripts/create-vendor-policies.ts" highlights={createHighlights}
 import { ExecArgs } from "@medusajs/framework/types"
 import { buildPolicies } from "@medusajs/framework/utils"
 import {
@@ -98,7 +98,7 @@ export default async function ({ container }: ExecArgs) {
   const logger = container.resolve("logger")
 
   const policies = buildPolicies({
-    resource: ["brand"],
+    resource: ["vendor"],
   })
 
   const { result } = await createRbacPoliciesWorkflow(
@@ -111,12 +111,12 @@ export default async function ({ container }: ExecArgs) {
 }
 ```
 
-`buildPolicies` expands each resource you pass into one policy per operation. So, the above creates four policies for the `read`, `create`, `update`, and `delete` operations on brands, with a `key`, `name`, and `description`:
+`buildPolicies` expands each resource you pass into one policy per operation. So, the above creates four policies for the `read`, `create`, `update`, and `delete` operations on vendors, with a `key`, `name`, and `description`:
 
-- key: `brand:read`, name: `ReadBrand`, description: `Read Brand`
-- key: `brand:create`, name: `CreateBrand`, description: `Create Brand`
-- key: `brand:update`, name: `UpdateBrand`, description: `Update Brand`
-- key: `brand:delete`, name: `DeleteBrand`, description: `Delete Brand`
+- key: `vendor:read`, name: `ReadVendor`, description: `Read Vendor`
+- key: `vendor:create`, name: `CreateVendor`, description: `Create Vendor`
+- key: `vendor:update`, name: `UpdateVendor`, description: `Update Vendor`
+- key: `vendor:delete`, name: `DeleteVendor`, description: `Delete Vendor`
 
 The RBAC Module also has the `updateRbacPoliciesWorkflow` and `deleteRbacPoliciesWorkflow` workflows to change or remove policies later.
 
@@ -167,10 +167,10 @@ For example, to build a policy for a custom operation with your own name and des
 
 ```ts
 const policies = buildPolicies({
-  resource: "brand",
+  resource: "vendor",
   operation: "approve",
-  name: "ApproveBrand",
-  description: "Approve a brand before it goes live",
+  name: "ApproveVendor",
+  description: "Approve a vendor before it goes live",
 })
 ```
 
@@ -180,7 +180,7 @@ To build a single policy that allows all operations on a resource, pass the wild
 
 ```ts
 const policies = buildPolicies({
-  resource: "brand",
+  resource: "vendor",
   operation: "*",
 })
 ```
@@ -224,11 +224,11 @@ import {
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/admin/brands",
+      matcher: "/admin/vendors",
       methods: ["POST"],
       middlewares: [
         authorize({
-          resource: "brand",
+          resource: "vendor",
           operation: "create",
         }),
       ],
@@ -237,7 +237,7 @@ export default defineMiddlewares({
 })
 ```
 
-Requests from admin users that don't have the `brand:create` policy now receive a `403` error. When the RBAC feature flag is disabled, the middleware allows every request.
+Requests from admin users that don't have the `vendor:create` policy now receive a `403` error. When the RBAC feature flag is disabled, the middleware allows every request.
 
 ---
 
@@ -252,9 +252,9 @@ You can manage roles and their policies:
 
 ### Example: Create a Role with a Migration Script
 
-The following [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) uses the `createRbacRolesWorkflow` to create a "Brand Manager" role that grants the brand policies:
+The following [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) uses the `createRbacRolesWorkflow` to create a "Vendor Manager" role that grants the vendor policies:
 
-```ts title="src/migration-scripts/create-brand-role.ts"
+```ts title="src/migration-scripts/create-vendor-role.ts"
 import { ExecArgs } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import {
@@ -266,7 +266,7 @@ export default async function ({ container }: ExecArgs) {
   const logger = container.resolve("logger")
 
   const policies = await rbacModuleService.listRbacPolicies({
-    key: ["brand:read", "brand:create"],
+    key: ["vendor:read", "vendor:create"],
   })
 
   const { result } = await createRbacRolesWorkflow(
@@ -275,8 +275,8 @@ export default async function ({ container }: ExecArgs) {
     input: {
       roles: [
         {
-          name: "Brand Manager",
-          description: "Manage brands",
+          name: "Vendor Manager",
+          description: "Manage vendors",
           policy_ids: policies.map((policy) => policy.id),
         },
       ],
@@ -289,7 +289,7 @@ export default async function ({ container }: ExecArgs) {
 
 In the script, you:
 
-1. Resolve the RBAC Module's service to find the brand policies by their keys.
+1. Resolve the RBAC Module's service to find the vendor policies by their keys.
 2. Run the `createRbacRolesWorkflow` to create the role with the policies' IDs.
 
 Then, run the migrations with the following command:
@@ -298,6 +298,6 @@ Then, run the migrations with the following command:
 npx medusa db:migrate
 ```
 
-This will create the "Brand Manager" role in the database, which you can assign to admin users in the Medusa Admin dashboard.
+This will create the "Vendor Manager" role in the database, which you can assign to admin users in the Medusa Admin dashboard.
 
 The RBAC Module also has workflows to update or delete roles, such as `updateRbacRolesWorkflow` and `deleteRbacRolesWorkflow`.

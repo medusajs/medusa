@@ -1,0 +1,273 @@
+export const metadata = {
+  title: `RBAC Scopes`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+
+In this guide, you'll learn what an RBAC scope is, when to use one, and how to add scopes to your application.
+
+## What is a Scope?
+
+A scope restricts a role assignment to a single entity instance. Without a scope, an assignment applies everywhere: a user with the "Product Manager" role manages every product in the store.
+
+With a scope, the same role only applies within one instance of an entity that you own, such as a single vendor on a marketplace. The user manages that vendor's products, and nothing else.
+
+A scope is a `type` and an `id`, such as the type `vendor` and the ID `ven_123`. When a request acts within a scope, Medusa resolves the actor's roles from the assignments that are either unscoped or scoped to that exact pair. So an unscoped assignment always counts, which is how a Super Admin keeps access in every scope.
+
+Learn more about assignments and how their `scope` and `scope_id` properties are stored in the [RBAC Concepts](../concepts/page.mdx#scoped-assignments) guide.
+
+---
+
+## When to Use Scopes
+
+Scopes are useful when the same role means different things in different parts of your store, and one user shouldn't hold it everywhere. For example:
+
+- A marketplace where each vendor manages its own products and orders.
+- A multi-brand business where a manager runs one brand's catalog.
+- An agency that operates a subset of your stores or regions on behalf of a client.
+
+If every role in your application applies to the whole store, you don't need scopes. Medusa's own resources don't use them, and its API routes don't put a request in a scope, so roles work without any scope configuration.
+
+Scopes also only apply to actor types of your own, such as a `vendor_admin`. You can't scope the roles of the `user` actor type, which is the admin user that Medusa owns.
+
+---
+
+## Add Scopes to Your Application
+
+You set a scope up once, then use it every time you grant a role:
+
+1. [Declare the scope in the RBAC Module's options](#1-declare-the-scope), so Medusa knows which entities a role can be restricted to.
+2. [Set the scope of each request in a middleware](#2-set-the-scope-of-a-request), so Medusa knows which entity the request acts within.
+3. [Assign roles restricted to a scope](#3-assign-a-scoped-role) as you onboard users.
+
+The first two steps are one-time configuration, and you need both of them. If you skip either one, a role keeps granting its policies on every request the actor makes. For example, a `vendor_admin` with the "Product Manager" role can then manage the products of every vendor, not just their own.
+
+### 1. Declare the Scope
+
+The RBAC Module's `actors` option, set in `medusa-config.ts`, tells Medusa which of your actor types can hold roles and which scopes those roles can be restricted to.
+
+For example, to let a `vendor_admin` actor hold roles scoped to a vendor:
+
+export const configHighlights = [
+  ["9", "grantees", "The entities that can hold role assignments."],
+  ["11", "entity", "The name of the grantee entity."],
+  ["12", "path", "The path from the actor to the entity's ID."],
+  ["13", "scope_configs", "The scopes this grantee supports."],
+]
+
+```ts title="medusa-config.ts" highlights={configHighlights}
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+      options: {
+        actors: {
+          vendor_admin: {
+            grantees: [
+              {
+                entity: "vendor_admin",
+                path: "id",
+                scope_configs: [
+                  {
+                    type: "vendor",
+                    path: "vendors",
+                    id_field: "id",
+                    display_field: "name",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+On every request, Medusa queries the actor with the paths of its grantees, collects the IDs it reaches, and looks up the assignments that match them. An actor type without an entry resolves to no roles at all, and a grantee without `scope_configs` can only hold unscoped assignments.
+
+Each grantee in the `grantees` array accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "entity",
+      type: "`string`",
+      optional: false,
+      description: "The name of the entity that can hold role assignments. Medusa matches it against the `reference` property of a role assignment. This is the name of a data model as passed in the first parameter of `model.define`."
+    },
+    {
+      name: "path",
+      type: "`string`",
+      optional: false,
+      description: "The path from the actor to the entity's ID, resolved with [Query](!docs!/learn/fundamentals/module-links/query). Use `id` when the actor itself holds the assignments, or a relation path such as `vendors.id` when another entity does. Medusa flattens to-many relations at any level, so one actor can reach several grantees."
+    },
+    {
+      name: "scope_configs",
+      type: "`object[]`",
+      optional: true,
+      description: "The scopes you can restrict this grantee's assignments to.",
+      children: [
+        {
+          name: "type",
+          type: "`string`",
+          optional: false,
+          description: "The scope's type, such as `vendor`. Medusa stores it in the `scope` property of a role assignment."
+        },
+        {
+          name: "path",
+          type: "`string`",
+          optional: false,
+          description: "The path from the actor's entity to the scope entity, such as `vendors`, or `vendors.stores` to reach a nested entity. Medusa resolves it to list the scope values available to an actor."
+        },
+        {
+          name: "id_field",
+          type: "`string`",
+          optional: true,
+          defaultValue: "id",
+          description: "The field of the scope entity that identifies a scope value."
+        },
+        {
+          name: "display_field",
+          type: "`string`",
+          optional: true,
+          description: "The field of the scope entity to label a scope value with in a UI. When you omit it, Medusa falls back to the entity's `name`, then its `title`, then the value of `id_field`."
+        }
+      ]
+    }
+  ]}
+/>
+
+<Note title="Warning" type="warning">
+
+The RBAC Module always overwrites the `user` entry of the `actors` option with a single grantee whose `entity` is `user`, whose `path` is `id`, and that has no scopes. Declare scopes for an actor type of your own instead.
+
+</Note>
+
+### 2. Set the Scope of a Request
+
+Declaring a scope doesn't put any request in it. A request acts within a scope only when a middleware you write sets `req.rbac_context.scope`. Where the scope's ID comes from is up to you, such as a request header, the authenticated actor, or a path parameter.
+
+List the middleware before the route's `authorize` middleware, since Medusa runs a route's middlewares in the order you list them.
+
+For example, to scope a request to the vendor passed in a header:
+
+export const middlewareHighlights = [
+  ["13", "req.rbac_context", "Set the scope before authorize runs."],
+  ["16", "x-vendor-id", "Read the scope's ID from a request header."],
+  ["22", "authorize", "Resolves the actor's roles for that scope."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
+import {
+  defineMiddlewares,
+  authorize,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/vendors/:id/products",
+      methods: ["POST"],
+      middlewares: [
+        (req, res, next) => {
+          req.rbac_context = {
+            ...req.rbac_context,
+            scope: {
+              type: "vendor",
+              id: req.headers["x-vendor-id"] as string,
+            },
+          }
+          return next()
+        },
+        authorize({
+          resource: "product",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+A `vendor_admin` can now create products for the vendor in the header, but only if one of their role assignments is unscoped or scoped to that vendor.
+
+Refer to the [Protect API Routes](../protect-routes/page.mdx#set-the-scope-before-authorize) guide for more ordering rules, including how to share one scope middleware across many routes.
+
+### 3. Assign a Scoped Role
+
+Once the scope is declared, you restrict an assignment to one of its values with the `assignRolesWorkflow`. You run this every time a user gains a role, such as when a vendor adds a member to its team, so it happens once per user and role rather than once per application.
+
+For example, the following workflow creates a vendor admin, then grants it a role scoped to the vendor it belongs to:
+
+export const assignHighlights = [
+  ["22", "createVendorAdminStep", "Your own step that creates the vendor admin."],
+  ["27", "assignRolesWorkflow", "Grant the new admin a role."],
+  ["32", "reference", "The entity holding the assignment, matching the grantee's entity."],
+  ["33", "reference_id", "The ID of the created vendor admin."],
+  ["34", "scope", "Restrict the role to the vendor."],
+]
+
+```ts title="src/workflows/create-vendor-admin.ts" highlights={assignHighlights}
+import {
+  createWorkflow,
+  WorkflowResponse,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  assignRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+import {
+  createVendorAdminStep,
+} from "./steps/create-vendor-admin"
+
+type Input = {
+  vendor_id: string
+  email: string
+  role_id: string
+}
+
+export const createVendorAdminWorkflow = createWorkflow(
+  "create-vendor-admin",
+  (input: WorkflowData<Input>) => {
+    const vendorAdmin = createVendorAdminStep({
+      vendor_id: input.vendor_id,
+      email: input.email,
+    })
+
+    assignRolesWorkflow.runAsStep({
+      input: {
+        assignments: [
+          {
+            role_id: input.role_id,
+            reference: "vendor_admin",
+            reference_id: vendorAdmin.id,
+            scope: {
+              type: "vendor",
+              id: input.vendor_id,
+            },
+          },
+        ],
+      },
+    })
+
+    return new WorkflowResponse(vendorAdmin)
+  }
+)
+```
+
+The assignment's `reference` matches the `entity` of the grantee you declared, and its `scope` uses the type you declared for that grantee. So the new admin holds the role on requests that enter their own vendor's scope, and holds nothing on requests that enter another vendor's scope.
+
+You can assign scoped roles before you add the middleware of the previous step, but the scope has no effect until a request enters it.
+
+Learn more about assigning roles, including how to prevent a user from granting access in a scope they don't have, in the [RBAC Concepts](../concepts/page.mdx#assign-a-role) guide.
+
+#### Listing Scope Types and Options
+
+{/* TODO replace with URLs in the API reference */}
+
+To let a user pick a scope in a custom dashboard, use the `GET /rbac/roles/scopes` route to list the scope types a grantee supports, and the `GET /rbac/roles/scopes/:type/options` route to list the values of a type that one actor can reach.

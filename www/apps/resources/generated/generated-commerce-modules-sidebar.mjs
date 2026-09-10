@@ -682,14 +682,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
-                      "title": "generateResetPasswordTokenWorkflow",
-                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "ref",
                       "title": "removeCustomerAccountWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeCustomerAccountWorkflow",
                       "children": []
@@ -741,14 +733,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "type": "ref",
-                      "title": "createPasswordResetTokenStep",
-                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "requestVerificationStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep",
@@ -3573,6 +3557,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "addDraftOrderItemsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderItemsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "addDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "addGiftCardToCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow",
                       "children": []
@@ -3631,6 +3629,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "confirmClaimRequestWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmClaimRequestWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "confirmDraftOrderEditWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmDraftOrderEditWorkflow",
                       "children": []
                     },
                     {
@@ -3790,6 +3795,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "fetchShippingOptionForDraftOrderWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "fetchShippingOptionForOrderWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/fetchShippingOptionForOrderWorkflow",
                       "children": []
@@ -3839,6 +3851,27 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "removeDraftOrderActionItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "removeGiftCardFromCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow",
                       "children": []
@@ -3855,6 +3888,34 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderActionItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderActionShippingMethodWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionShippingMethodWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderWorkflow",
                       "children": []
                     },
                     {
@@ -6903,6 +6964,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "fetchShippingOptionForDraftOrderWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "markOrderFulfillmentAsDeliveredWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow",
                       "children": []
@@ -6982,6 +7050,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "receiveItemReturnRequestWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/receiveItemReturnRequestWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow",
                       "children": []
                     },
                     {
@@ -13972,10 +14054,16 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/commerce-modules/rbac",
           "title": "Overview",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/commerce-modules/rbac/module-options",
+          "title": "Module Options",
           "children": []
         },
         {
@@ -13983,13 +14071,11 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "Concepts",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/rbac/concepts",
               "title": "RBAC Concepts",
@@ -13997,7 +14083,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/rbac/links-to-other-modules",
               "title": "Link to Modules",
@@ -14007,23 +14092,34 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "Server Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/rbac/define-policies",
               "title": "Define Custom Policies",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/rbac/protect-routes",
+              "title": "Protect API Routes",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/rbac/scopes",
+              "title": "RBAC Scopes",
               "children": []
             }
           ]
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "Admin User Guides",
           "autogenerate_tags": "userGuide+rbac",
@@ -14033,7 +14129,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Common Roles",
               "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
@@ -14041,7 +14136,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Manage Roles",
               "path": "https://docs.medusajs.com/user-guide/settings/roles",
@@ -14049,7 +14143,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "View Policies",
               "path": "https://docs.medusajs.com/user-guide/settings/policies",
@@ -14059,14 +14152,12 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "References",
           "description": "Find references for tools and resources related to the RBAC Module, such as data models, methods, and more. These are useful for your customizations.",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/rbac/workflows",
               "title": "Workflows",
@@ -14074,7 +14165,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "category",
                   "title": "Workflows",
                   "autogenerate_tags": "workflow+rbac",
@@ -14083,7 +14173,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacPoliciesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacPoliciesWorkflow",
@@ -14091,7 +14180,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacRolePoliciesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolePoliciesWorkflow",
@@ -14099,7 +14187,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacRolesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolesWorkflow",
@@ -14107,7 +14194,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacPoliciesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacPoliciesWorkflow",
@@ -14115,7 +14201,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacRolePoliciesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
@@ -14123,7 +14208,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacRolesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow",
@@ -14131,7 +14215,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "updateRbacPoliciesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacPoliciesWorkflow",
@@ -14139,7 +14222,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "updateRbacRolesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacRolesWorkflow",
@@ -14149,7 +14231,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "category",
                   "title": "Steps",
                   "autogenerate_tags": "step+rbac",
@@ -14158,7 +14239,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacPoliciesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacPoliciesStep",
@@ -14166,7 +14246,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacRoleParentsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRoleParentsStep",
@@ -14174,7 +14253,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacRolePoliciesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolePoliciesStep",
@@ -14182,7 +14260,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "createRbacRolesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolesStep",
@@ -14190,7 +14267,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacPoliciesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacPoliciesStep",
@@ -14198,7 +14274,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacRolePoliciesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolePoliciesStep",
@@ -14206,7 +14281,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "deleteRbacRolesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolesStep",
@@ -14214,7 +14288,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "setRoleParentStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setRoleParentStep",
@@ -14222,7 +14295,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "updateRbacPoliciesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacPoliciesStep",
@@ -14230,7 +14302,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "updateRbacRolesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacRolesStep",
@@ -14242,7 +14313,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/rbac/js-sdk",
               "title": "JS SDK",
@@ -14250,7 +14320,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "sub-category",
                   "title": "Admin",
                   "autogenerate_tags": "jsSdk+admin+rbac",
@@ -14260,7 +14329,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "rbacPolicy",
                       "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/rbacPolicy",
@@ -14268,7 +14336,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "ref",
                       "title": "rbacRole",
                       "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/rbacRole",
@@ -14280,7 +14347,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "sidebar",
               "sidebar_id": "rbac-service-reference",
               "title": "Main Service Reference",
@@ -14288,7 +14354,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/rbac",
                   "title": "Reference Overview",
@@ -14299,14 +14364,12 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "category",
                   "title": "Methods",
                   "autogenerate_path": "/references/rbac/IRbacModuleService/methods",
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/createRbacPolicies",
                       "title": "createRbacPolicies",
@@ -14315,7 +14378,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/createRbacRoleParents",
                       "title": "createRbacRoleParents",
@@ -14324,7 +14386,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/createRbacRolePolicies",
                       "title": "createRbacRolePolicies",
@@ -14333,7 +14394,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/createRbacRoles",
                       "title": "createRbacRoles",
@@ -14342,7 +14402,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/deleteRbacPolicies",
                       "title": "deleteRbacPolicies",
@@ -14351,7 +14410,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/deleteRbacRoleParents",
                       "title": "deleteRbacRoleParents",
@@ -14360,7 +14418,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/deleteRbacRolePolicies",
                       "title": "deleteRbacRolePolicies",
@@ -14369,7 +14426,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/deleteRbacRoles",
                       "title": "deleteRbacRoles",
@@ -14378,7 +14434,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listAndCountRbacPolicies",
                       "title": "listAndCountRbacPolicies",
@@ -14387,7 +14442,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listAndCountRbacRoleParents",
                       "title": "listAndCountRbacRoleParents",
@@ -14396,7 +14450,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listAndCountRbacRolePolicies",
                       "title": "listAndCountRbacRolePolicies",
@@ -14405,7 +14458,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listAndCountRbacRoles",
                       "title": "listAndCountRbacRoles",
@@ -14414,7 +14466,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listPoliciesForRole",
                       "title": "listPoliciesForRole",
@@ -14423,7 +14474,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listRbacPolicies",
                       "title": "listRbacPolicies",
@@ -14432,7 +14482,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listRbacRoleParents",
                       "title": "listRbacRoleParents",
@@ -14441,7 +14490,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listRbacRolePolicies",
                       "title": "listRbacRolePolicies",
@@ -14450,7 +14498,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/listRbacRoles",
                       "title": "listRbacRoles",
@@ -14459,7 +14506,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/restoreRbacPolicies",
                       "title": "restoreRbacPolicies",
@@ -14468,7 +14514,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/restoreRbacRoleParents",
                       "title": "restoreRbacRoleParents",
@@ -14477,7 +14522,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/restoreRbacRolePolicies",
                       "title": "restoreRbacRolePolicies",
@@ -14486,7 +14530,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/restoreRbacRoles",
                       "title": "restoreRbacRoles",
@@ -14495,7 +14538,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/retrieveRbacPolicy",
                       "title": "retrieveRbacPolicy",
@@ -14504,7 +14546,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/retrieveRbacRole",
                       "title": "retrieveRbacRole",
@@ -14513,7 +14554,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/retrieveRbacRoleParent",
                       "title": "retrieveRbacRoleParent",
@@ -14522,7 +14562,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/retrieveRbacRolePolicy",
                       "title": "retrieveRbacRolePolicy",
@@ -14531,7 +14570,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/softDeleteRbacPolicies",
                       "title": "softDeleteRbacPolicies",
@@ -14540,7 +14578,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/softDeleteRbacRoleParents",
                       "title": "softDeleteRbacRoleParents",
@@ -14549,7 +14586,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/softDeleteRbacRolePolicies",
                       "title": "softDeleteRbacRolePolicies",
@@ -14558,7 +14594,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/softDeleteRbacRoles",
                       "title": "softDeleteRbacRoles",
@@ -14567,7 +14602,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/updateRbacPolicies",
                       "title": "updateRbacPolicies",
@@ -14576,7 +14610,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/updateRbacRoleParents",
                       "title": "updateRbacRoleParents",
@@ -14585,7 +14618,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/updateRbacRolePolicies",
                       "title": "updateRbacRolePolicies",
@@ -14594,7 +14626,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/updateRbacRoles",
                       "title": "updateRbacRoles",
@@ -14607,7 +14638,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "sidebar",
               "sidebar_id": "rbac-models-reference",
               "title": "Data Models Reference",
@@ -14615,7 +14645,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/rbac/models",
                   "title": "Reference Overview",
@@ -14626,7 +14655,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "category",
                   "title": "Data Models",
                   "hasTitleStyling": true,
@@ -14634,7 +14662,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/models/RbacPolicy",
                       "title": "RbacPolicy",
@@ -14643,7 +14670,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/models/RbacRole",
                       "title": "RbacRole",
@@ -14652,7 +14678,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/models/RbacRoleParent",
                       "title": "RbacRoleParent",
@@ -14661,7 +14686,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/references/rbac/models/RbacRolePolicy",
                       "title": "RbacRolePolicy",
@@ -14678,7 +14702,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "sidebar",
       "sidebar_id": "region",
       "title": "Region Module",
@@ -17471,6 +17494,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "confirmDraftOrderEditWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmDraftOrderEditWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "convertDraftOrderWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/convertDraftOrderWorkflow",
                       "children": []
@@ -17597,6 +17627,27 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "removeDraftOrderActionItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "removeGiftCardFromCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow",
                       "children": []
@@ -17620,6 +17671,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderActionItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionItemWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateDraftOrderItemWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderItemWorkflow",
                       "children": []
                     },
                     {
@@ -18612,7 +18677,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/user/links-to-other-modules",
               "title": "Link to Modules",
@@ -18622,7 +18686,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "Server Guides",
           "autogenerate_tags": "server+user",
@@ -18671,7 +18734,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Manage Invites",
               "path": "https://docs.medusajs.com/user-guide/settings/users/invites",
@@ -18693,7 +18755,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Manage Users",
               "path": "https://docs.medusajs.com/user-guide/settings/users",
@@ -18708,7 +18769,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "View Policies",
               "path": "https://docs.medusajs.com/user-guide/settings/policies",

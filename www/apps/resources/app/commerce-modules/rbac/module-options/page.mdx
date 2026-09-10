@@ -1,0 +1,99 @@
+---
+sidebar_label: "Module Options"
+---
+
+export const metadata = {
+  title: `RBAC Module Options`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+
+In this guide, you'll learn about the options of the RBAC Module, and the configuration of the Medusa application that affects it.
+
+## actors
+
+The `actors` option tells Medusa which of your actor types can hold roles, which entities hold those roles, and which scopes the roles can be restricted to.
+
+You only need this option when you add roles to actor types of your own, such as a `vendor_admin` on a marketplace. The RBAC Module always sets the entry of the `user` actor type, which is the admin user, so admin roles work without any configuration.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+      options: {
+        actors: {
+          vendor_admin: {
+            grantees: [
+              {
+                entity: "vendor_admin",
+                path: "id",
+                scope_configs: [
+                  {
+                    type: "vendor",
+                    path: "vendors",
+                    id_field: "id",
+                    display_field: "name",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+The `actors` option is an object whose keys are actor types. Each actor type accepts the following property:
+
+- `grantees`: An array of objects, each specifying an entity that can hold role assignments for that actor type. Each object accepts the following properties:
+  - `entity`: A string indicating the name of the entity that holds the assignments. Medusa matches it against the `reference` property of a role assignment.
+  - `path`: A string indicating the path from the actor to the entity's ID, such as `id` or `vendors.id`.
+  - `scope_configs`: An optional array of objects, each declaring a scope that the entity's assignments can be restricted to.
+
+An actor type without an entry resolves to no roles at all.
+
+Refer to the [RBAC Scopes](../scopes/page.mdx#1-declare-the-scope) guide for the properties of a scope configuration, and for how a request enters a scope.
+
+---
+
+## rbacActorTypes Configuration
+
+The RBAC API routes live under the `/rbac` prefix, and they aren't admin routes. They reuse the admin CORS configuration, since the Medusa Admin dashboard consumes them, but they don't restrict authentication to the `user` actor type the way the `/admin` routes do.
+
+Use the `http.rbacActorTypes` configuration in `medusa-config.ts` to set the actor types allowed to authenticate against these routes. It defaults to `["user"]`, so only admin users reach them out of the box. Medusa rejects a request authenticated as any other actor type with a `401` error.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      rbacActorTypes: ["user", "vendor_admin"],
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+Pass `["*"]` to allow every authenticated actor type:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      rbacActorTypes: ["*"],
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+The `/rbac` routes accept bearer tokens and sessions. They don't accept secret API keys, since those authenticate as the `user` actor type only.

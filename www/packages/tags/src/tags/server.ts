@@ -68,12 +68,12 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/promotion/extend"
   },
   {
-    "title": "Configure View Configurations",
-    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
-  },
-  {
     "title": "Define Custom Policies",
     "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",

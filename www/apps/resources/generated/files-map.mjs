@@ -616,8 +616,20 @@ export const filesMap = [
     "pathname": "/commerce-modules/rbac/links-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/module-options/page.mdx",
+    "pathname": "/commerce-modules/rbac/module-options"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/rbac/page.mdx",
     "pathname": "/commerce-modules/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/protect-routes/page.mdx",
+    "pathname": "/commerce-modules/rbac/protect-routes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/scopes/page.mdx",
+    "pathname": "/commerce-modules/rbac/scopes"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/rbac/workflows/page.mdx",

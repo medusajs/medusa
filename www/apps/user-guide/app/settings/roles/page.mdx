@@ -32,6 +32,16 @@ A role groups a set of permissions, called policies, under a name such as "Produ
 
 ---
 
+## When You Don't Have Access
+
+Your roles decide which parts of the Medusa Admin you can open. When you try to open a page that your roles don't cover, the dashboard shows an **Access Denied** message instead of the page, along with the permission the page requires. Nothing is broken, and you can keep using the pages you do have access to.
+
+If your account has no permissions at all, the dashboard sends you to a **No permissions yet** page after you log in, instead of a section of the store. Reach out to your administrator to request access to the areas you need.
+
+When you have at least one permission, the dashboard opens the first section you can access after you log in, such as **Orders** or **Products**.
+
+---
+
 ## View Roles
 
 <PermissionsBadge permissions={["rbac_role:read"]} />

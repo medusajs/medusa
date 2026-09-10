@@ -5551,13 +5551,11 @@ const generatedgeneratedReferencesSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "sub-category",
               "title": "Workflows",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/createRbacPoliciesWorkflow",
                   "title": "createRbacPoliciesWorkflow",
@@ -5566,7 +5564,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/createRbacRolePoliciesWorkflow",
                   "title": "createRbacRolePoliciesWorkflow",
@@ -5575,7 +5572,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/createRbacRolesWorkflow",
                   "title": "createRbacRolesWorkflow",
@@ -5584,7 +5580,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/deleteRbacPoliciesWorkflow",
                   "title": "deleteRbacPoliciesWorkflow",
@@ -5593,7 +5588,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
                   "title": "deleteRbacRolePoliciesWorkflow",
@@ -5602,7 +5596,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/deleteRbacRolesWorkflow",
                   "title": "deleteRbacRolesWorkflow",
@@ -5611,7 +5604,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/updateRbacPoliciesWorkflow",
                   "title": "updateRbacPoliciesWorkflow",
@@ -5620,7 +5612,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/updateRbacRolesWorkflow",
                   "title": "updateRbacRolesWorkflow",
@@ -5631,13 +5622,11 @@ const generatedgeneratedReferencesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "sub-category",
               "title": "Steps",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/createRbacPoliciesStep",
                   "title": "createRbacPoliciesStep",
@@ -5646,7 +5635,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/createRbacRoleParentsStep",
                   "title": "createRbacRoleParentsStep",
@@ -5655,7 +5643,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/createRbacRolePoliciesStep",
                   "title": "createRbacRolePoliciesStep",
@@ -5664,7 +5651,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/createRbacRolesStep",
                   "title": "createRbacRolesStep",
@@ -5673,7 +5659,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteRbacPoliciesStep",
                   "title": "deleteRbacPoliciesStep",
@@ -5682,7 +5667,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteRbacRolePoliciesStep",
                   "title": "deleteRbacRolePoliciesStep",
@@ -5691,7 +5675,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteRbacRolesStep",
                   "title": "deleteRbacRolesStep",
@@ -5700,7 +5683,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/setRoleParentStep",
                   "title": "setRoleParentStep",
@@ -5709,7 +5691,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateRbacPoliciesStep",
                   "title": "updateRbacPoliciesStep",
@@ -5718,7 +5699,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateRbacRolesStep",
                   "title": "updateRbacRolesStep",
@@ -5727,7 +5707,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/validateUserPermissionsStep",
                   "title": "validateUserPermissionsStep",
@@ -5740,7 +5719,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "category",
           "title": "Region",
           "children": [
@@ -7008,7 +6986,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/createUserAccountWorkflow",
                   "title": "createUserAccountWorkflow",
@@ -7041,7 +7018,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/getAssignableRolesWorkflow",
                   "title": "getAssignableRolesWorkflow",
@@ -7050,7 +7026,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/removeUserAccountWorkflow",
                   "title": "removeUserAccountWorkflow",
@@ -7067,7 +7042,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/updateUsersWorkflow",
                   "title": "updateUsersWorkflow",
@@ -7107,7 +7081,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/getAssignableRolesStep",
                   "title": "getAssignableRolesStep",
@@ -7116,7 +7089,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateUsersStep",
                   "title": "updateUsersStep",
@@ -7125,7 +7097,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/validateUserRolePermissionsStep",
                   "title": "validateUserRolePermissionsStep",

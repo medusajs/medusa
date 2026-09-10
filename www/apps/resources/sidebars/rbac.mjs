@@ -11,6 +11,11 @@ export const rbacSidebar = [
         title: "Overview",
       },
       {
+        type: "link",
+        path: "/commerce-modules/rbac/module-options",
+        title: "Module Options",
+      },
+      {
         type: "separator",
       },
       {
@@ -37,6 +42,16 @@ export const rbacSidebar = [
             type: "link",
             path: "/commerce-modules/rbac/define-policies",
             title: "Define Custom Policies",
+          },
+          {
+            type: "link",
+            path: "/commerce-modules/rbac/protect-routes",
+            title: "Protect API Routes",
+          },
+          {
+            type: "link",
+            path: "/commerce-modules/rbac/scopes",
+            title: "RBAC Scopes",
           },
         ],
       },
