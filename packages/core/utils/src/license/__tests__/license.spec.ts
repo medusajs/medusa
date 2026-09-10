@@ -129,9 +129,7 @@ describe("verifyLicenseKey", () => {
 
 describe("assertLicensed", () => {
   it("throws when no license key is set", () => {
-    expect(() => assertLicensed("rbac")).toThrow(
-      /requires a Medusa license key, but MEDUSA_LICENSE_KEY is not set/
-    )
+    expect(() => assertLicensed("rbac")).toThrow(/must be set and valid/)
   })
 
   it("throws and names both env vars when the key cannot be verified", () => {
