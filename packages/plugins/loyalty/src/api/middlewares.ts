@@ -1,9 +1,5 @@
 import { defineMiddlewares } from "@medusajs/framework";
-import {
-  MedusaNextFunction,
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http";
+import { allowFields } from "@medusajs/framework/http";
 import { MiddlewareRoute } from "@medusajs/medusa";
 import { adminGiftCardMiddlewares } from "./admin/gift-cards/middlewares";
 import { adminStoreCreditAccountMiddlewares } from "./admin/store-credit-accounts/middlewares";
@@ -14,12 +10,7 @@ import { storeStoreCreditAccountMiddlewares } from "./store/store-credit-account
 
 const allowGiftCardRelation: MiddlewareRoute = {
   matcher: "/store",
-  middlewares: [
-    (req: MedusaRequest, _res: MedusaResponse, next: MedusaNextFunction) => {
-      req.allowed.push(...giftCardRelationAllowedFields);
-      next();
-    },
-  ],
+  middlewares: [allowFields(giftCardRelationAllowedFields)],
 };
 
 export default defineMiddlewares({

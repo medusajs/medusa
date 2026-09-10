@@ -30,6 +30,7 @@ const run = async (
   const middleware = validateAndTransformQuery(schema, queryConfig)
   const request = req as MedusaRequest
   request.query ??= {}
+  request.allowed ??= []
   const next = jest.fn()
 
   await middleware(request, {} as MedusaResponse, next)

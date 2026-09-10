@@ -77,11 +77,9 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       const restricted = req.restrictedFields?.list()
       const allowed = [...(queryConfig.allowed ?? [])]
 
-      // If any custom allowed fields are set, we add them to the allowed list along side the one configured in the query config if any
-      // `req.allowed` is reset so it never reaches the route handler, but the
-      // consumed value is kept off-request so a second run of this middleware on
-      // the same request still honours it.
-      const customAllowed = req.allowed?.length
+      // `req.allowed` is reset below so it never reaches the route handler, so the
+      // consumed value is kept off-request for a second run on the same request.
+      const customAllowed = req.allowed.length
         ? req.allowed
         : consumedAllowedFields.get(req)
 

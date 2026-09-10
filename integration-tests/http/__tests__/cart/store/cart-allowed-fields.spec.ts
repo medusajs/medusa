@@ -13,7 +13,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 medusaIntegrationTestRunner({
   cwd: path.join(__dirname, "../../../__fixtures__/allowed-fields"),
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("Store Carts API - req.allowed overrides", () => {
+    describe("Store Carts API - allowFields overrides", () => {
       let storeHeaders
       let cart
 
@@ -41,7 +41,7 @@ medusaIntegrationTestRunner({
         ).data.cart
       })
 
-      it("should honour a global middleware pushing onto req.allowed", async () => {
+      it("should honour a middleware allowing extra fields", async () => {
         const response = await api.get(
           `/store/carts/${cart.id}?fields=%2Bregion.created_at`,
           storeHeaders

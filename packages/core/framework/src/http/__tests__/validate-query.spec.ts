@@ -60,9 +60,10 @@ describe("validateAndTransformQuery", () => {
 
   it("should transform the input query", async () => {
     let mockRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {},
-    } as MedusaRequest
+    } as unknown as MedusaRequest
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
 
@@ -205,6 +206,7 @@ describe("validateAndTransformQuery", () => {
 
   it("should transform the input query taking into account the fields symbols (+,- or no symbol)", async () => {
     let mockRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {
         fields: "id",
@@ -323,6 +325,7 @@ describe("validateAndTransformQuery", () => {
   it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
     const restrictedFields = new RestrictedFields()
     let mockRequest = {
+      allowed: [],
       restrictedFields,
       query: {
         fields: "product.*, *product.variants,+product.id",
@@ -477,6 +480,7 @@ describe("validateAndTransformQuery", () => {
     expect(queryConfig.allowed).toEqual(["id"])
 
     const secondRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {
         order: "created_at",
