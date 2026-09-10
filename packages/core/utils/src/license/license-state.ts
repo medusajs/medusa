@@ -16,7 +16,7 @@ export function loadLicense(): LicenseState {
   const token = process.env.MEDUSA_LICENSE_KEY
 
   if (!token) {
-    licenseState = { status: "none", claims: null, token: null }
+    licenseState = { status: "invalid", claims: null, token: null }
     return licenseState
   }
 
