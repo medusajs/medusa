@@ -600,42 +600,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/promotion/workflows"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/concepts/page.mdx",
-    "pathname": "/commerce-modules/rbac/concepts"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/define-policies/page.mdx",
-    "pathname": "/commerce-modules/rbac/define-policies"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/js-sdk/page.mdx",
-    "pathname": "/commerce-modules/rbac/js-sdk"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/links-to-other-modules/page.mdx",
-    "pathname": "/commerce-modules/rbac/links-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/module-options/page.mdx",
-    "pathname": "/commerce-modules/rbac/module-options"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/page.mdx",
-    "pathname": "/commerce-modules/rbac"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/protect-routes/page.mdx",
-    "pathname": "/commerce-modules/rbac/protect-routes"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/scopes/page.mdx",
-    "pathname": "/commerce-modules/rbac/scopes"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/rbac/workflows/page.mdx",
-    "pathname": "/commerce-modules/rbac/workflows"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/region/admin-widget-zones/page.mdx",
     "pathname": "/commerce-modules/region/admin-widget-zones"
   },
@@ -938,6 +902,46 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
     "pathname": "/deployment/storefront/vercel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/page.mdx",
+    "pathname": "/enterprise"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/concepts/page.mdx",
+    "pathname": "/enterprise/rbac/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/define-policies/page.mdx",
+    "pathname": "/enterprise/rbac/define-policies"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/js-sdk/page.mdx",
+    "pathname": "/enterprise/rbac/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/links-to-other-modules/page.mdx",
+    "pathname": "/enterprise/rbac/links-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/module-options/page.mdx",
+    "pathname": "/enterprise/rbac/module-options"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/page.mdx",
+    "pathname": "/enterprise/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/protect-routes/page.mdx",
+    "pathname": "/enterprise/rbac/protect-routes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/scopes/page.mdx",
+    "pathname": "/enterprise/rbac/scopes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/workflows/page.mdx",
+    "pathname": "/enterprise/rbac/workflows"
   },
   {
     "filePath": "/www/apps/resources/app/examples/guides/custom-item-price/page.mdx",

@@ -40,7 +40,7 @@ The User Module has the following links to other modules:
         [User](/references/user/models/User)
       </Table.Cell>
       <Table.Cell>
-        `RbacRoleAssignment` in [RBAC Module](../../rbac/page.mdx)
+        `RbacRoleAssignment` in [RBAC Module](../../../enterprise/rbac/page.mdx)
       </Table.Cell>
       <Table.Cell>
         Read-only - has many
@@ -56,9 +56,9 @@ The User Module has the following links to other modules:
 
 ## RBAC Module
 
-<EnterpriseNotice featureFlag="rbac" featureFlagHref="../../rbac/page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="../../../enterprise/rbac/page.mdx#how-to-use-the-rbac-module" />
 
-You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../rbac/page.mdx), then exposes an admin user's roles through a read-only link.
+You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../../enterprise/rbac/page.mdx), then exposes an admin user's roles through a read-only link.
 
 An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
 
@@ -128,4 +128,4 @@ await assignRolesWorkflow(container).run({
 
 To remove a role from an admin user, use the `unassignRolesWorkflow` with the same input shape.
 
-Learn more in the [RBAC Module's links documentation](../../rbac/links-to-other-modules/page.mdx#user-module).
+Learn more in the [RBAC Module's links documentation](../../../enterprise/rbac/links-to-other-modules/page.mdx#user-module).

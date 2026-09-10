@@ -68,16 +68,16 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/promotion/extend"
   },
   {
-    "title": "Define Custom Policies",
-    "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies"
-  },
-  {
     "title": "Configure View Configurations",
     "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
+  },
+  {
+    "title": "Define Custom Policies",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
   },
   {
     "title": "Implement Custom Line Item Pricing in Medusa",

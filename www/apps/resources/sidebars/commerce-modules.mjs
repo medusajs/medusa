@@ -11,7 +11,6 @@ import { paymentSidebar } from "./payment.mjs"
 import { pricingSidebar } from "./pricing.mjs"
 import { productSidebar } from "./product.mjs"
 import { promotionSidebar } from "./promotion.mjs"
-import { rbacSidebar } from "./rbac.mjs"
 import { regionSidebar } from "./region.mjs"
 import { salesChannelSidebar } from "./sales-channel.mjs"
 import { settingsSidebar } from "./settings.mjs"
@@ -45,7 +44,15 @@ export const commerceModulesSidebar = [
   ...pricingSidebar,
   ...productSidebar,
   ...promotionSidebar,
-  ...rbacSidebar,
+  {
+    type: "ref",
+    path: "/enterprise/rbac",
+    title: "RBAC Module",
+    badge: {
+      variant: "purple",
+      text: "Enterprise",
+    },
+  },
   ...regionSidebar,
   ...salesChannelSidebar,
   ...settingsSidebar,

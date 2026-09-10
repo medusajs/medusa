@@ -52,16 +52,16 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },
   {
-    "title": "Define Custom Policies",
-    "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies"
-  },
-  {
     "title": "Configure View Configurations",
     "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
+  },
+  {
+    "title": "Define Custom Policies",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
   },
   {
     "title": "Create Cache Module",

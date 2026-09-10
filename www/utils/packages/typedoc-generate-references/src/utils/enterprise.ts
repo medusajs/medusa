@@ -5,7 +5,7 @@ export function isEnterprise(featureName: string): boolean {
 export function getEnterpriseFeatureFlagUrl(featureName: string): string | undefined {
   switch (featureName) {
     case "rbac":
-      return "/resources/commerce-modules/rbac#how-to-use-the-rbac-module"
+      return "/resources/enterprise/rbac#how-to-use-the-rbac-module"
     default:
       return undefined
   }

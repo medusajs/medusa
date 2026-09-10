@@ -43,17 +43,20 @@ The RBAC Module restricts what admin users can do based on the roles assigned to
   ]}
 />
 
-### 1. Enable the RBAC Feature Flag
+### 1. Configure an Enterprise License Key
+
+The RBAC Module is an [enterprise feature](../page.mdx), so it only loads when you configure a license key that covers the `rbac` feature:
+
+```shell
+MEDUSA_LICENSE_KEY=your_license_key
+MEDUSA_LICENSE_PUBLIC_KEY=your_license_public_key
+```
+
+If the key is missing or doesn't cover the `rbac` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
+
+### 2. Enable the RBAC Feature Flag
 
 The RBAC Module is only registered when its feature flag is enabled. You can enable it in `medusa-config.ts`:
-
-<Note type="warning">
-
-{/* TODO check details */}
-
-The RBAC Module is an enterprise feature and requires a valid enterprise license. By using it, you agree to the license terms. Contact Medusa for more information.
-
-</Note>
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -74,7 +77,7 @@ Learn more about feature flags in the [feature flags documentation](!docs!/learn
 
 You can also configure the RBAC Module and the actor types allowed on its API routes. Learn more in the [Module Options](./module-options/page.mdx) guide.
 
-### 2. Run Migrations
+### 3. Run Migrations
 
 After enabling the feature flag, run the migrations to create the RBAC tables in the database:
 
@@ -89,7 +92,7 @@ The command also runs Medusa's migration scripts, which:
 
 Then, every time the application starts, the RBAC Module syncs the policies of Medusa's commerce resources to the database. Learn more in the [RBAC Concepts](./concepts/page.mdx#core-policies) guide.
 
-### 3. Use RBAC Features in Your Application
+### 4. Use RBAC Features in Your Application
 
 In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](!docs!/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and a reliable roll-back mechanism.
 

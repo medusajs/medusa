@@ -1,0 +1,153 @@
+import { CardList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Enterprise Features`,
+}
+
+# {metadata.title}
+
+In this section of the documentation, you'll find guides and references related to Medusa's enterprise features.
+
+An enterprise feature is a Medusa module, provider, or capability that requires a valid enterprise license. Medusa distributes these features in the same packages as the rest of the framework, but they only load when you configure a license key that covers them.
+
+## Enterprise Features
+
+<CardList
+  items={[
+    {
+      title: "RBAC Module",
+      href: "/enterprise/rbac",
+    },
+  ]}
+/>
+
+---
+
+## How to Use an Enterprise Feature
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.0"
+    },
+    {
+      text: "Cloud user",
+      link: "!cloud!"
+    }
+  ]}
+/>
+
+### 1. Obtain a License Key
+
+Contact the Medusa team at [support@medusajs.com](mailto:support@medusajs.com) to obtain a license key for the features you need.
+
+### 2. Configure the License Key (Optional)
+
+In your [Cloud](!cloud!) deployments, the license key is injected for you automatically. However, if you're running Medusa locally or outside of Cloud, you need to manually configure the license key in your environment.
+
+Set the license key and the public key that verifies it as environment variables in your Medusa project:
+
+```shell
+MEDUSA_LICENSE_KEY=your_license_key
+MEDUSA_LICENSE_PUBLIC_KEY=your_license_public_key
+```
+
+Medusa provides both values with your license. Keep them in your environment configuration rather than in your code, since the license key identifies your organization.
+
+### 3. Enable the Feature
+
+Some enterprise features are also behind a [feature flag](!docs!/learn/debugging-and-testing/feature-flags), which you enable in `medusa-config.ts` or with an environment variable. Refer to the documentation of the feature you're using for its configuration steps.
+
+For example, the [RBAC Module](./rbac/page.mdx) requires the `rbac` feature flag along with the license key.
+
+### 4. Run Migrations
+
+If the feature introduces new tables, run the migrations to create them in your database:
+
+```bash
+npx medusa db:migrate
+```
+
+---
+
+## Troubleshoot License Key Errors
+
+Medusa checks the license key in two places:
+
+- At boot, when it loads an enterprise module or provider. This check runs locally, so it doesn't require a network connection.
+- After boot, when it asks Medusa's license service whether the license is still active. This check runs in the background, so it never delays startup.
+
+The following sections cover the errors each check can produce.
+
+### The license key could not be verified
+
+```bash
+The Medusa license key required by the "rbac" feature could not be verified. Both MEDUSA_LICENSE_KEY and MEDUSA_LICENSE_PUBLIC_KEY must be set and valid.
+```
+
+The local check couldn't confirm that Medusa issued the key. The application exits without loading the enterprise module, so this error stops both `medusa develop` and `medusa build`.
+
+Check the following, in this order:
+
+1. Both `MEDUSA_LICENSE_KEY` and `MEDUSA_LICENSE_PUBLIC_KEY` are set in the environment that runs the command. Medusa reports this same error when either one is missing.
+2. `MEDUSA_LICENSE_PUBLIC_KEY` holds the full PEM public key, including its `BEGIN` and `END` lines. If your environment tooling strips line breaks, keep the value quoted.
+3. `MEDUSA_LICENSE_KEY` holds the license key as Medusa issued it, with all three of its dot-separated segments and no added whitespace or line breaks. Medusa rejects a key whose contents changed after it was signed.
+4. The public key belongs to the same license as the key. Medusa rejects a key that another public key verifies.
+
+<Note title="Tip">
+
+The license key encodes which features it covers, so editing it to add a feature invalidates it. Request a new key instead.
+
+</Note>
+
+### The license key doesn't cover the feature
+
+```bash
+The configured Medusa license key does not cover the "rbac" feature. It covers: auth-oidc.
+```
+
+Medusa verified the key, but the feature you're using isn't among the features the license covers. The message lists the features it does cover, or `no features` when it covers none.
+
+Either remove the module or provider of the uncovered feature from `medusa-config.ts`, or contact the Medusa team to extend your license to that feature.
+
+### The license key was not issued by Medusa
+
+```bash
+The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Set a license key obtained from the Medusa Cloud dashboard.
+```
+
+The validation with Cloud ran and Medusa doesn't recognize the key. Since this check runs after boot, the application starts and then exits, which can look like a crash a few seconds into startup.
+
+Replace the key with one issued to your organization. A key that passes the local check can still fail here, because the local check only confirms that the key is authentic and never decides whether it's still valid.
+
+### The license is expired or revoked
+
+Medusa logs a warning while an expired or revoked license is still within its grace window:
+
+```bash
+The configured license key no longer entitles this instance: the license is expired on 2026-01-01T00:00:00.000Z. Licensed features stop loading at boot after 2026-01-15T00:00:00.000Z. Renew the license in the Medusa Cloud dashboard.
+```
+
+The application keeps running until that date. Once the grace window passes, Medusa logs an error and exits instead:
+
+```bash
+The configured license key no longer entitles this instance: the license is expired on 2026-01-01T00:00:00.000Z and its grace window has passed. Renew the license in the Medusa Cloud dashboard.
+```
+
+Renew the license, then set the new key in your environment and restart the application. A revoked license has no grace window, so Medusa exits on the first check.
+
+<Note type="warning">
+
+The local check at boot ignores the license's expiry date, so an expired key still loads your enterprise modules. Only the remote check against Cloud stops the application, which is why an expired license surfaces after startup rather than at boot.
+
+</Note>
+
+### The application starts with no license logs
+
+Medusa skips the remote check against Cloud, and logs nothing about the license, in these cases:
+
+- No enterprise module or provider is registered, so no feature needs a license.
+- The local check already failed, which stops the application at boot.
+
+Medusa also fails open when the license service is unreachable: a network error, a timeout, or an unexpected response from Cloud leaves the application running without a warning. If you expect a license error and don't see one, check that the machine can reach Medusa's API before assuming the license is valid.

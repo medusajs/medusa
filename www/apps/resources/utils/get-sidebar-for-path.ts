@@ -111,8 +111,14 @@ const sidebarMappings: {
       "/references/loyalty",
       "/references/store-credit",
       "/references/settings",
-      "/references/rbac",
     ],
+  },
+  {
+    module: async () =>
+      import("@/generated/generated-enterprise-sidebar.mjs") as Promise<{
+        default: Sidebar.Sidebar
+      }>,
+    paths: ["/enterprise", "/references/rbac"],
   },
   {
     module: async () =>

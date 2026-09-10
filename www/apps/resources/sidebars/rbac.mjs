@@ -7,12 +7,12 @@ export const rbacSidebar = [
     children: [
       {
         type: "link",
-        path: "/commerce-modules/rbac",
+        path: "/enterprise/rbac",
         title: "Overview",
       },
       {
         type: "link",
-        path: "/commerce-modules/rbac/module-options",
+        path: "/enterprise/rbac/module-options",
         title: "Module Options",
       },
       {
@@ -24,12 +24,12 @@ export const rbacSidebar = [
         children: [
           {
             type: "link",
-            path: "/commerce-modules/rbac/concepts",
+            path: "/enterprise/rbac/concepts",
             title: "RBAC Concepts",
           },
           {
             type: "link",
-            path: "/commerce-modules/rbac/links-to-other-modules",
+            path: "/enterprise/rbac/links-to-other-modules",
             title: "Link to Modules",
           },
         ],
@@ -40,17 +40,17 @@ export const rbacSidebar = [
         children: [
           {
             type: "link",
-            path: "/commerce-modules/rbac/define-policies",
+            path: "/enterprise/rbac/define-policies",
             title: "Define Custom Policies",
           },
           {
             type: "link",
-            path: "/commerce-modules/rbac/protect-routes",
+            path: "/enterprise/rbac/protect-routes",
             title: "Protect API Routes",
           },
           {
             type: "link",
-            path: "/commerce-modules/rbac/scopes",
+            path: "/enterprise/rbac/scopes",
             title: "RBAC Scopes",
           },
         ],
@@ -82,7 +82,7 @@ export const rbacSidebar = [
         children: [
           {
             type: "link",
-            path: "/commerce-modules/rbac/workflows",
+            path: "/enterprise/rbac/workflows",
             title: "Workflows",
             hideChildren: true,
             children: [
@@ -104,7 +104,7 @@ export const rbacSidebar = [
           },
           {
             type: "link",
-            path: "/commerce-modules/rbac/js-sdk",
+            path: "/enterprise/rbac/js-sdk",
             title: "JS SDK",
             hideChildren: true,
             children: [

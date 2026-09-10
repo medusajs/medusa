@@ -24,11 +24,17 @@ export const EnterpriseNotice = ({
     <Tooltip
       tooltipChildren={
         <span className={tooltipTextClassName}>
-          This {featureName} requires an enterprise license.<br/>
+          This {featureName} requires an{" "}
+          <Link href="https://docs.medusajs.com/resources/enterprise">
+            enterprise license
+          </Link>
+          .
+          <br />
           {featureFlag && (
             <>
               {" "}
-              You must also <Link href={featureFlagHref}>enable its feature flag</Link>:{" "}
+              You must also{" "}
+              <Link href={featureFlagHref}>enable its feature flag</Link>:{" "}
               <code>{featureFlag}</code>.
             </>
           )}

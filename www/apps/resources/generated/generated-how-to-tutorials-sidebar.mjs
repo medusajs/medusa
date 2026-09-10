@@ -129,7 +129,7 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "type": "ref",
               "title": "Define Custom Policies",
-              "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies",
               "children": []
             },
             {
