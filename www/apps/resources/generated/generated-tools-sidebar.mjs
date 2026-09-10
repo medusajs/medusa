@@ -214,6 +214,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/allow-fields-must-be-global-middleware",
+                      "title": "allow-fields-must-be-global-middleware",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/authenticate-flag-name-and-type",
                       "title": "authenticate-flag-name-and-type",
                       "description": "",
@@ -464,6 +472,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "type": "link",
                       "path": "/lint/rules/no-workflow-call-without-container",
                       "title": "no-workflow-call-without-container",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/lint/rules/prefer-allow-fields-middleware",
+                      "title": "prefer-allow-fields-middleware",
                       "description": "",
                       "children": []
                     },

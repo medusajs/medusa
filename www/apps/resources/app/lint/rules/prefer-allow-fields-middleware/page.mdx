@@ -1,0 +1,93 @@
+---
+sidebar_label: "prefer-allow-fields-middleware"
+---
+
+export const metadata = {
+  title: `prefer-allow-fields-middleware - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule suggests using the `allowFields` middleware instead of writing to `req.allowed` directly.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets the `src/api/middlewares.ts` file. It reports inline middleware functions inside `defineMiddlewares` that mutate `req.allowed`, whether by assignment or by calling `.push()`.
+
+The following code is reported by the rule:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/customers/me",
+      middlewares: [
+        (req, res, next) => {
+          req.allowed.push("b2b_company")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+Instead, use the `allowFields` middleware from `@medusajs/framework/http`:
+
+```ts title="src/api/middlewares.ts"
+import { allowFields, defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/customers/me",
+      middlewares: [allowFields("b2b_company")],
+    },
+  ],
+})
+```
+
+## Why it's Important
+
+The `allowFields` middleware is the idiomatic way to expand the allowed fields on a route. It is more concise, self-documenting, and composable: several plugins or middlewares can each call `allowFields` on the same route without overwriting one another.
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). If the project runs an earlier version, keep the `req.allowed.push(...)` pattern and disable this rule.
+
+</Note>
+
+Learn more in the [Allowed Fields in API Routes documentation](!docs!/learn/fundamentals/api-routes/allowed-fields).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prefer-allow-fields-middleware": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prefer-allow-fields-middleware
+req.allowed.push("b2b_company")
+```

@@ -1212,6 +1212,10 @@ export const filesMap = [
     "pathname": "/lint/rules/admin-no-medusa-utils-import"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/allow-fields-must-be-global-middleware/page.mdx",
+    "pathname": "/lint/rules/allow-fields-must-be-global-middleware"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/authenticate-flag-name-and-type/page.mdx",
     "pathname": "/lint/rules/authenticate-flag-name-and-type"
   },
@@ -1342,6 +1346,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/lint/rules/page.mdx",
     "pathname": "/lint/rules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-allow-fields-middleware/page.mdx",
+    "pathname": "/lint/rules/prefer-allow-fields-middleware"
   },
   {
     "filePath": "/www/apps/resources/app/lint/rules/prefer-container-registration-keys/page.mdx",

@@ -7651,5 +7651,7 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-09-08T03:46:56.257Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
   "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
-  "app/admin-components/hooks/page.mdx": "2026-09-04T14:14:10.194Z"
+  "app/admin-components/hooks/page.mdx": "2026-09-04T14:14:10.194Z",
+  "app/lint/rules/allow-fields-must-be-global-middleware/page.mdx": "2026-09-10T15:14:43.336Z",
+  "app/lint/rules/prefer-allow-fields-middleware/page.mdx": "2026-09-10T15:14:58.686Z"
 }
