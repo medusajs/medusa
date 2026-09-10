@@ -85,16 +85,21 @@ export const collectMiddlewareRoutes = (
   return routes
 }
 
+/** Request properties that only a global middleware can meaningfully set. */
+export type RequestFieldsProperty = "allowed" | "disallowed"
+
 /**
- * Finds the first expression under `node` that writes to a request's `allowed`
- * property, covering `req.allowed = [...]`, `req.allowed ??= []`, and
- * `req.allowed.push(...)`.
+ * Finds the first expression under `node` that writes to one of the request's
+ * field-filtering properties, covering `req.allowed = [...]`,
+ * `req.allowed ??= []`, and `req.allowed.push(...)`.
  *
  * When `node` is a function, only its own first parameter counts as the
- * request, so an unrelated object with an `allowed` property doesn't match.
+ * request, so an unrelated object with a property of the same name doesn't
+ * match.
  */
-export const findAllowedMutation = (
-  node: TSESTree.Node
+export const findRequestFieldsMutation = (
+  node: TSESTree.Node,
+  property: RequestFieldsProperty
 ): TSESTree.Node | null => {
   let requestName: string | null = null
 
@@ -110,11 +115,11 @@ export const findAllowedMutation = (
     candidate.type === AST_NODE_TYPES.Identifier &&
     (requestName === null || candidate.name === requestName)
 
-  const isAllowedMember = (candidate: TSESTree.Node): boolean =>
+  const isFieldsMember = (candidate: TSESTree.Node): boolean =>
     candidate.type === AST_NODE_TYPES.MemberExpression &&
     !candidate.computed &&
     candidate.property.type === AST_NODE_TYPES.Identifier &&
-    candidate.property.name === "allowed" &&
+    candidate.property.name === property &&
     isRequestRef(candidate.object)
 
   let found: TSESTree.Node | null = null
@@ -126,7 +131,7 @@ export const findAllowedMutation = (
 
     if (
       current.type === AST_NODE_TYPES.AssignmentExpression &&
-      isAllowedMember(current.left)
+      isFieldsMember(current.left)
     ) {
       found = current
       return false
@@ -135,7 +140,7 @@ export const findAllowedMutation = (
     if (
       current.type === AST_NODE_TYPES.CallExpression &&
       current.callee.type === AST_NODE_TYPES.MemberExpression &&
-      isAllowedMember(current.callee.object)
+      isFieldsMember(current.callee.object)
     ) {
       found = current
       return false
@@ -171,3 +176,8 @@ export const findAllowFieldsCall = (
 
   return found
 }
+
+/** Convenience wrapper for the `allowed` property. */
+export const findAllowedMutation = (
+  node: TSESTree.Node
+): TSESTree.Node | null => findRequestFieldsMutation(node, "allowed")

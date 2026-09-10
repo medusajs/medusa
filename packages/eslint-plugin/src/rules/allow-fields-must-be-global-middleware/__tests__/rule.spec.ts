@@ -74,6 +74,44 @@ ruleTester.run("allow-fields-must-be-global-middleware", rule, {
         })
       `,
     },
+    // Global middleware replacing the disallowed fields.
+    {
+      code: `
+        export default defineMiddlewares({
+          routes: [
+            {
+              matcher: "/store/products",
+              middlewares: [
+                (req, res, next) => {
+                  req.disallowed = ["variants.prices"]
+                  next()
+                },
+              ],
+            },
+          ],
+        })
+      `,
+    },
+    // A `disallowed` property on something other than the request param.
+    {
+      code: `
+        export default defineMiddlewares({
+          routes: [
+            {
+              matcher: "/store/products",
+              method: "GET",
+              middlewares: [
+                (req, res, next) => {
+                  const config = { disallowed: [] }
+                  config.disallowed.push("variants.prices")
+                  next()
+                },
+              ],
+            },
+          ],
+        })
+      `,
+    },
     // A method-scoped middleware validating the body.
     {
       code: `
@@ -152,6 +190,86 @@ ruleTester.run("allow-fields-must-be-global-middleware", rule, {
         {
           messageId: "methodScoped",
           data: { source: "req.allowed", key: "method" },
+        },
+      ],
+    },
+    // req.disallowed assignment under `method`.
+    {
+      code: `
+        export default defineMiddlewares({
+          routes: [
+            {
+              matcher: "/store/products",
+              method: "GET",
+              middlewares: [
+                (req, res, next) => {
+                  req.disallowed = ["variants.prices"]
+                  next()
+                },
+              ],
+            },
+          ],
+        })
+      `,
+      errors: [
+        {
+          messageId: "methodScoped",
+          data: { source: "req.disallowed", key: "method" },
+        },
+      ],
+    },
+    // req.disallowed push under `methods`.
+    {
+      code: `
+        export default defineMiddlewares({
+          routes: [
+            {
+              matcher: "/store/products",
+              methods: ["GET"],
+              middlewares: [
+                (req, res, next) => {
+                  req.disallowed.push("variants.prices")
+                  next()
+                },
+              ],
+            },
+          ],
+        })
+      `,
+      errors: [
+        {
+          messageId: "methodScoped",
+          data: { source: "req.disallowed", key: "methods" },
+        },
+      ],
+    },
+    // A middleware setting both properties reports each one.
+    {
+      code: `
+        export default defineMiddlewares({
+          routes: [
+            {
+              matcher: "/store/products",
+              method: "GET",
+              middlewares: [
+                (req, res, next) => {
+                  req.allowed.push("brand")
+                  req.disallowed = ["variants.prices"]
+                  next()
+                },
+              ],
+            },
+          ],
+        })
+      `,
+      errors: [
+        {
+          messageId: "methodScoped",
+          data: { source: "req.allowed", key: "method" },
+        },
+        {
+          messageId: "methodScoped",
+          data: { source: "req.disallowed", key: "method" },
         },
       ],
     },

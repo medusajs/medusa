@@ -2,11 +2,14 @@ import { createRule } from "../../create-rule"
 import {
   collectMiddlewareRoutes,
   findAllowFieldsCall,
-  findAllowedMutation,
+  findRequestFieldsMutation,
   getDefineMiddlewaresArg,
+  RequestFieldsProperty,
 } from "../../util/middlewares"
 
 type MessageIds = "methodScoped"
+
+const FIELDS_PROPERTIES: RequestFieldsProperty[] = ["allowed", "disallowed"]
 
 export const rule = createRule<[], MessageIds>({
   name: "allow-fields-must-be-global-middleware",
@@ -14,7 +17,7 @@ export const rule = createRule<[], MessageIds>({
     type: "problem",
     docs: {
       description:
-        "Allowed fields must be added by a global middleware. Medusa runs a method-scoped middleware after it validates the query parameters, so `allowFields` and `req.allowed` have no effect there.",
+        "Allowed and disallowed fields must be set by a global middleware. Medusa runs a method-scoped middleware after it validates the query parameters, so `allowFields`, `req.allowed`, and `req.disallowed` have no effect there.",
     },
     messages: {
       methodScoped:
@@ -53,13 +56,15 @@ export const rule = createRule<[], MessageIds>({
               continue
             }
 
-            const mutation = findAllowedMutation(middleware)
-            if (mutation) {
-              context.report({
-                node: mutation,
-                messageId: "methodScoped",
-                data: { source: "req.allowed", key },
-              })
+            for (const property of FIELDS_PROPERTIES) {
+              const mutation = findRequestFieldsMutation(middleware, property)
+              if (mutation) {
+                context.report({
+                  node: mutation,
+                  messageId: "methodScoped",
+                  data: { source: `req.${property}`, key },
+                })
+              }
             }
           }
         }
