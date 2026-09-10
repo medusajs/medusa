@@ -474,6 +474,13 @@ export type QueryConfig<TEntity> = {
    * `/\.orders(?:\.|$)/` blocks `orders` everywhere but at the root).
    */
   disallowed?: (string | RegExp)[]
+  /**
+   * Fields rejected in the `order` query param (sorting). Unlike `allowed`,
+   * this does NOT affect field selection — a field can stay selectable while
+   * being disallowed as a sort key. Sorting by a field in this list throws
+   * INVALID_DATA (400).
+   */
+  disallowedOrderBy?: string[]
   defaultLimit?: number
   /**
    * The maximum number of relations that can be expanded on a Store API route using this
