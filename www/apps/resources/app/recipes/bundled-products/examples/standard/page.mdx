@@ -2271,21 +2271,24 @@ Then, you define a `getBundleProduct` function that retrieves the bundle's detai
 Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve bundles from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("bundle")
-          next()
-        },
-      ],
+      middlewares: [allowFields("bundle")],
     },
   ],
 })
 ```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
 
 <Note title="Important">
 

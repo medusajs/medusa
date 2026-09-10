@@ -2048,45 +2048,40 @@ You do that with middlewares that push the fields to the request's `allowed` arr
 In `src/api/middlewares.ts`, add the following route objects to the array passed to `defineMiddlewares`:
 
 ```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "variants.preorder_variant"
-          )
-          next()
-        },
-      ],
+      middlewares: [allowFields("variants.preorder_variant")],
     },
     {
       matcher: "/store/carts",
       middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "items.variant.preorder_variant"
-          )
-          next()
-        },
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
       ],
     },
     {
       matcher: "/store/orders",
       middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "items.variant.preorder_variant"
-          )
-          next()
-        },
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
       ],
     },
   ],
 })
 ```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
 
 The storefront can now request the pre-order variant when it retrieves products, carts, and orders. The other fields that the storefront requests, such as `+items.total` and `*region`, are already allowed by default.
 

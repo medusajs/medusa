@@ -341,21 +341,24 @@ So, before you can retrieve the linked `Custom` record through the Store Cart AP
 To do that, add a new route middleware configuration object in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/carts",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("custom")
-          next()
-        },
-      ],
+      middlewares: [allowFields("custom")],
     },
   ],
 })
 ```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
 
 This middleware pushes `custom` to the allowed fields of the Store Cart API routes, so Medusa keeps the field when a request asks for it.
 
