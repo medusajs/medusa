@@ -83,6 +83,14 @@ export const allowedStoreOrderExtraFields = [
   "payment_collections.payment_sessions",
   "payment_collections.payment_providers",
   "fulfillments",
+  "promotions",
+  "promotions.id",
+  "promotions.code",
+  "promotions.is_automatic",
+  "promotions.is_tax_inclusive",
+  "promotions.application_method.value",
+  "promotions.application_method.type",
+  "promotions.application_method.currency_code",
 ]
 
 export const allowedStoreOrderRetrieveExtraFields = [
