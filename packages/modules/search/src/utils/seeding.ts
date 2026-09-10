@@ -141,8 +141,8 @@ export async function executeSeedPlan(
 
     // One instance per index. Without this every replica in a rolling deploy
     // would seed the same index at the same time.
-    await withIndexLock(context, definition.name, async () => {
-      await runSeed(context, { definition, action })
+    await withIndexLock(context, definition.name, async (signal) => {
+      await runSeed(context, { definition, action, signal })
     })
   }
 }
@@ -152,14 +152,17 @@ async function runSeed(
   {
     definition,
     action,
+    signal,
   }: {
     definition: SearchTypes.ResolvedSearchIndexDefinition
     action: SearchIndexSeedAction
+    signal?: AbortSignal
   }
 ): Promise<void> {
   const target = action.target_version
   const sync = await startSync(context, { versionId: target.id })
   const startedAt = Date.now()
+  const assertLockHeld = lockGuard(definition.name, signal)
 
   context.logger.info(
     `[Search] Seeding "${definition.name}" (${action.reason}) into "${
@@ -178,6 +181,7 @@ async function runSeed(
       sync_id: sync.id,
       target_index: target.physical_name,
       last_key: sync.last_key ?? undefined,
+      assertLockHeld,
     })
 
     await catchUp(context, {
@@ -185,7 +189,11 @@ async function runSeed(
       target,
       since: sync.started_at!,
       jobId: sync.job_id!,
+      assertLockHeld,
     })
+
+    // Ensure it is this instance that holds the lock before marking anything as ready.
+    assertLockHeld()
 
     await context.versionService.update({
       selector: { id: target.id },
@@ -236,21 +244,17 @@ async function catchUp(
     target,
     since,
     jobId,
+    assertLockHeld,
   }: {
     definition: SearchTypes.ResolvedSearchIndexDefinition
     target: SearchIndexVersionRecord
     since: Date
     jobId: string
+    assertLockHeld: () => void
   }
 ): Promise<void> {
   // Shares the bulk pass' `job_id` — same logical run, a second sync row.
   const sync = await startSync(context, { versionId: target.id, jobId })
-
-  context.logger.info(
-    `[Search] Catching up "${
-      definition.name
-    }" on changes since ${since.toISOString()}`
-  )
 
   try {
     const { documents_synced } = await streamSeed(context, {
@@ -258,9 +262,16 @@ async function catchUp(
       sync_id: sync.id,
       target_index: target.physical_name,
       catchup: { since },
+      assertLockHeld,
     })
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
+
+    context.logger.info(
+      `[Search] Caught up "${definition.name}": ${formatCount(
+        documents_synced
+      )} synced since ${since.toISOString()}`
+    )
   } catch (error) {
     await failSync(context, { sync_id: sync.id, version_id: target.id, error })
     throw error
@@ -287,8 +298,9 @@ export async function reindexIndexes(
     // (or another reindex) on the same index. Unlike boot, an explicit reindex
     // must not quietly skip — the caller asked for work to happen.
     if (context.locking) {
-      await context.locking.execute(`search:seed:${definition.name}`, () =>
-        reindexOne(context, { definition, jobId, input })
+      await context.locking.execute(
+        `search:seed:${definition.name}`,
+        (signal) => reindexOne(context, { definition, jobId, input, signal })
       )
     } else {
       await reindexOne(context, { definition, jobId, input })
@@ -304,10 +316,12 @@ async function reindexOne(
     definition,
     jobId,
     input,
+    signal,
   }: {
     definition: SearchTypes.ResolvedSearchIndexDefinition
     jobId: string
     input: SearchTypes.SearchReindexInput
+    signal?: AbortSignal
   }
 ): Promise<void> {
   const provider = context.providers.retrieve(definition.provider)
@@ -336,6 +350,7 @@ async function reindexOne(
     resume: !scoped,
   })
   const startedAt = Date.now()
+  const assertLockHeld = lockGuard(definition.name, signal)
 
   context.logger.info(
     `[Search] Reindexing "${definition.name}" into "${
@@ -374,6 +389,7 @@ async function reindexOne(
       // `since` is the same "only what changed at or after this" question the
       // catch-up pass asks, so it reaches `seed` the same way.
       catchup: input.since ? { since: input.since } : undefined,
+      assertLockHeld,
     })
 
     // Skipped for a scoped reindex: it's already a narrow, caller-scoped
@@ -385,8 +401,12 @@ async function reindexOne(
         target,
         since: sync.started_at!,
         jobId,
+        assertLockHeld,
       })
     }
+
+    // Ensure it is this instance that holds the lock before marking anything as ready.
+    assertLockHeld()
 
     await context.versionService.update({
       selector: { id: target.id },
@@ -501,6 +521,7 @@ async function streamSeed(
     filters,
     last_key,
     catchup,
+    assertLockHeld,
   }: {
     index: SearchTypes.ResolvedSearchIndexDefinition
     sync_id: string
@@ -508,6 +529,7 @@ async function streamSeed(
     filters?: Record<string, unknown>
     last_key?: string
     catchup?: { since: Date }
+    assertLockHeld: () => void
   }
 ): Promise<{ documents_synced: number }> {
   const provider = context.providers.retrieve(index.provider)
@@ -550,6 +572,10 @@ async function streamSeed(
       return
     }
 
+    // Before the write rather than after it: a run that has lost its lock
+    // stops adding to an index another instance may already be seeding.
+    assertLockHeld()
+
     const batch = buffer
     buffer = []
 
@@ -581,6 +607,7 @@ async function streamSeed(
 
   const applyDelete = async (deleteFilters: SearchTypes.SearchFilters) => {
     await flushUpserts()
+    assertLockHeld()
 
     const task = await provider.deleteDocuments({
       index: target_index,
@@ -633,6 +660,28 @@ async function settle(
   }
 
   assertTaskAccepted(await provider.waitForTask(task), definition.name)
+}
+
+/* -------------------------------- the lock -------------------------------- */
+
+export class SearchSeedLockLost extends MedusaError {
+  constructor(message: string) {
+    super(MedusaError.Types.CONFLICT, message)
+    this.name = "SearchSeedLockLost"
+  }
+}
+
+/**
+ * If the lock got aborted we want to throw, as the lock may be held by another instance now.
+ */
+function lockGuard(index: string, signal?: AbortSignal): () => void {
+  return () => {
+    if (signal?.aborted) {
+      throw new SearchSeedLockLost(
+        `Seed of "${index}" lost its lock while running, so another instance may already be seeding it`
+      )
+    }
+  }
 }
 
 /* ------------------------------ sync records ------------------------------ */
@@ -701,6 +750,12 @@ async function failSync(
     error,
   }: { sync_id: string; version_id: string; error: Error }
 ): Promise<void> {
+  // A run that lost its lock doesn't own the version or its syncs any more, so
+  // it must not mark either as failed.
+  if (error instanceof SearchSeedLockLost) {
+    return
+  }
+
   await context.syncService.update({
     selector: { id: sync_id },
     data: {
@@ -774,17 +829,37 @@ async function countDocuments(
 async function withIndexLock<T>(
   context: LockContext,
   name: string,
-  job: () => Promise<T>
+  job: (signal?: AbortSignal) => Promise<T>
 ): Promise<T | undefined> {
   if (!context.locking) {
     return await job()
   }
 
+  let started = false
+
   try {
-    return await context.locking.execute(`search:seed:${name}`, job)
+    return await context.locking.execute(`search:seed:${name}`, (signal) => {
+      started = true
+      return job(signal)
+    })
   } catch (error) {
-    // Another instance holds the lock and is doing the work.
-    context.logger.info(`[Search] Skipping seed of "${name}": ${error.message}`)
+    // Happens when a lock could not be acquired.
+    if (!started) {
+      context.logger.info(
+        `[Search] Skipping seed of "${name}": ${error.message}`
+      )
+      return undefined
+    }
+
+    if (error instanceof SearchSeedLockLost) {
+      context.logger.warn(`[Search] ${error.message}`)
+      return undefined
+    }
+
+    context.logger.error(
+      `[Search] Failed to seed "${name}": ${error.message}`,
+      error
+    )
     return undefined
   }
 }
