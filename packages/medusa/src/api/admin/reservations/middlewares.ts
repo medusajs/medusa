@@ -5,7 +5,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import {
   AdminCreateReservation,
@@ -17,27 +17,29 @@ import {
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/reservations/*",
-    policies: [
-      {
-        resource: Entities.reservation_item,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.reservation_item,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/reservations",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.reservation_item,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetReservationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.reservation_item,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -54,45 +56,46 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/reservations",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.reservation_item,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateReservation),
       validateAndTransformQuery(
         AdminGetReservationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.reservation_item,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/reservations/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.reservation_item,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateReservation),
       validateAndTransformQuery(
         AdminGetReservationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.reservation_item,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/reservations/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.reservation_item,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.reservation_item,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

@@ -3,10 +3,17 @@ import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeletePriceListAction } from "../../../common/hooks/use-delete-price-list-action"
 import { getPriceListStatus } from "../../../common/utils"
 import { usePriceListPrices } from "../../../../../hooks/api"
+import {
+  usePriceListPermissions,
+  usePricePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type PriceListGeneralSectionProps = {
   priceList: HttpTypes.AdminPriceList
@@ -16,13 +23,19 @@ export const PriceListGeneralSection = ({
   priceList,
 }: PriceListGeneralSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate, canDelete } = usePriceListPermissions()
+  const { canRead: canReadPrices } = usePricePermissions()
   const {
     count: overrideCount,
     isLoading,
     error,
-  } = usePriceListPrices(priceList.id, {
-    limit: 1,
-  })
+  } = usePriceListPrices(
+    priceList.id,
+    {
+      limit: 1,
+    },
+    { enabled: canReadPrices }
+  )
 
   const { color, text } = getPriceListStatus(t, priceList)
 
@@ -39,9 +52,11 @@ export const PriceListGeneralSection = ({
         <Heading>{priceList.title}</Heading>
         <div className="flex items-center gap-x-4">
           <StatusBadge color={color}>{text}</StatusBadge>
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.edit"),
@@ -49,8 +64,11 @@ export const PriceListGeneralSection = ({
                     icon: <PencilSquare />,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.delete"),
@@ -58,9 +76,11 @@ export const PriceListGeneralSection = ({
                     icon: <Trash />,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
@@ -83,7 +103,7 @@ export const PriceListGeneralSection = ({
         <Text leading="compact" size="small" weight="plus">
           {t("priceLists.fields.priceOverrides.label")}
         </Text>
-        {!isLoading && !error && (
+        {canReadPrices && !isLoading && !error && (
           <Text size="small" className="text-pretty">
             {overrideCount || "-"}
           </Text>

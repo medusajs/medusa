@@ -4,6 +4,7 @@ import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
 import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query"
+import { useTaxRegionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { getCountryProvinceObjectByIso2 } from "../../../../../lib/data/country-states"
 import { TaxRegionTable } from "../../../common/components/tax-region-table"
 import { useTaxRegionTable } from "../../../common/hooks/use-tax-region-table"
@@ -21,6 +22,7 @@ export const TaxRegionProvinceSection = ({
   showSublevelRegions,
 }: TaxRateListProps) => {
   const { t } = useTranslation()
+  const { canCreate } = useTaxRegionPermissions()
 
   const { searchParams, raw } = useTaxRegionTableQuery({
     pageSize: PAGE_SIZE,
@@ -59,7 +61,11 @@ export const TaxRegionProvinceSection = ({
     <Container className="divide-y p-0">
       <TaxRegionTable
         variant="province"
-        action={{ to: `provinces/create`, label: t("actions.create") }}
+        action={
+          canCreate
+            ? { to: `provinces/create`, label: t("actions.create") }
+            : undefined
+        }
         table={table}
         isPending={isPending}
         queryObject={raw}

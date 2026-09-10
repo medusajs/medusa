@@ -19,7 +19,10 @@ import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { Combobox } from "../../../../../components/inputs/combobox"
@@ -37,7 +40,10 @@ import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-us
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useInvitePermissions,
+  useRbacRolePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -53,8 +59,7 @@ const INVITE_URL = `${window.location.origin}${
 export const InviteUserForm = () => {
   const { t } = useTranslation()
   const isRbacEnabled = useFeatureFlag("rbac")
-  const { hasPermission } = usePermissions()
-  const canReadRbacRoles = hasPermission("rbac_role:read")
+  const { canRead: canReadRbacRoles } = useRbacRolePermissions()
   const showRbacRolesField = isRbacEnabled && canReadRbacRoles
 
   const form = useForm<zod.infer<typeof InviteUserSchema>>({
@@ -131,7 +136,7 @@ export const InviteUserForm = () => {
       }
 
       if (showRbacRolesField && values.roles?.length) {
-        payload.roles = values.roles
+        payload.roles = values.roles.map((roleId) => ({ role_id: roleId }))
       }
 
       await mutateAsync(payload)
@@ -273,6 +278,7 @@ export const InviteUserForm = () => {
 const InviteActions = ({ invite }: { invite: HttpTypes.AdminInvite }) => {
   const { mutateAsync: revokeAsync } = useDeleteInvite(invite.id)
   const { mutateAsync: resendAsync } = useResendInvite(invite.id)
+  const { canUpdate, canDelete } = useInvitePermissions()
 
   const prompt = usePrompt()
   const { t } = useTranslation()
@@ -303,39 +309,43 @@ const InviteActions = ({ invite }: { invite: HttpTypes.AdminInvite }) => {
     copy(inviteUrl)
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <ArrowPath />,
-              label: t("users.resendInvite"),
-              onClick: handleResend,
-            },
-          ],
+          icon: <ArrowPath />,
+          label: t("users.resendInvite"),
+          onClick: handleResend,
         },
+      ],
+    })
+  }
+
+  groups.push({
+    actions: [
+      {
+        icon: <Link />,
+        label: t("users.copyInviteLink"),
+        onClick: handleCopyInviteLink,
+      },
+    ],
+  })
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Link />,
-              label: t("users.copyInviteLink"),
-              onClick: handleCopyInviteLink,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<HttpTypes.AdminInvite>()

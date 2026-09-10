@@ -22,6 +22,10 @@ import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
+import {
+  usePricePreferencePermissions,
+  useStorePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type StoreCurrencySectionProps = {
   store: HttpTypes.AdminStore
@@ -31,6 +35,8 @@ const PAGE_SIZE = 10
 
 export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const { canUpdate } = useStorePermissions()
+  const { canRead: canReadPricePreferences } = usePricePreferencePermissions()
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
@@ -62,11 +68,11 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       value: store.supported_currencies?.map((c) => c.currency_code),
     },
     {
-      enabled: !!store.supported_currencies?.length,
+      enabled: canReadPricePreferences && !!store.supported_currencies?.length,
     }
   )
 
-  const columns = useColumns()
+  const columns = useColumns({ canUpdate })
   const prefMap = useMemo(() => {
     return new Map(pricePreferences?.map((pref) => [pref.value!, pref]))
   }, [pricePreferences])
@@ -86,7 +92,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       updater: setRowSelection,
     },
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdate,
     pageSize: PAGE_SIZE,
     meta: {
       storeId: store.id,
@@ -150,19 +156,21 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("store.currencies")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <Plus />,
-                  label: t("actions.add"),
-                  to: "currencies",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <Plus />,
+                    label: t("actions.add"),
+                    to: "currencies",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         orderBy={[
@@ -178,7 +186,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         isLoading={!store.supported_currencies?.length ? false : isLoading}
         queryObject={raw}
       />
-      <CommandBar open={!!Object.keys(rowSelection).length}>
+      <CommandBar open={canUpdate && !!Object.keys(rowSelection).length}>
         <CommandBar.Bar>
           <CommandBar.Value>
             {t("general.countSelected", {
@@ -213,6 +221,7 @@ const CurrencyActions = ({
   const { mutateAsync } = useUpdateStore(storeId)
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate } = useStorePermissions()
 
   const handleRemove = async () => {
     const result = await prompt({
@@ -272,6 +281,10 @@ const CurrencyActions = ({
     )
   }
 
+  if (!canUpdate) {
+    return null
+  }
+
   return (
     <ActionMenu
       groups={[
@@ -309,79 +322,92 @@ const columnHelper = createColumnHelper<
   HttpTypes.AdminCurrency & { is_tax_inclusive?: boolean }
 >()
 
-const useColumns = () => {
+const useColumns = ({ canUpdate }: { canUpdate: boolean }) => {
   const base = useCurrenciesTableColumns()
+  const { canRead: canReadPricePreferences } = usePricePreferencePermissions()
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
-      columnHelper.accessor("is_tax_inclusive", {
-        header: t("fields.taxInclusivePricing"),
-        cell: ({ getValue }) => {
-          const isTaxInclusive = getValue()
-          return (
-            <StatusCell color={isTaxInclusive ? "green" : "grey"}>
-              {isTaxInclusive ? t("fields.true") : t("fields.false")}
-            </StatusCell>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row, table }) => {
-          const {
-            supportedCurrencies,
-            storeId,
-            defaultCurrencyCode,
-            preferencesMap,
-          } = table.options.meta as {
-            supportedCurrencies: HttpTypes.AdminStoreCurrency[]
-            storeId: string
-            defaultCurrencyCode: string
-            preferencesMap: Map<string, HttpTypes.AdminPricePreference>
-          }
+      ...(canReadPricePreferences
+        ? [
+            columnHelper.accessor("is_tax_inclusive", {
+              header: t("fields.taxInclusivePricing"),
+              cell: ({ getValue }) => {
+                const isTaxInclusive = getValue()
+                return (
+                  <StatusCell color={isTaxInclusive ? "green" : "grey"}>
+                    {isTaxInclusive ? t("fields.true") : t("fields.false")}
+                  </StatusCell>
+                )
+              },
+            }),
+          ]
+        : []),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row, table }) => {
+                const {
+                  supportedCurrencies,
+                  storeId,
+                  defaultCurrencyCode,
+                  preferencesMap,
+                } = table.options.meta as {
+                  supportedCurrencies: HttpTypes.AdminStoreCurrency[]
+                  storeId: string
+                  defaultCurrencyCode: string
+                  preferencesMap: Map<string, HttpTypes.AdminPricePreference>
+                }
 
-          return (
-            <CurrencyActions
-              storeId={storeId}
-              currency={row.original}
-              supportedCurrencies={supportedCurrencies}
-              defaultCurrencyCode={defaultCurrencyCode}
-              preferencesMap={preferencesMap}
-            />
-          )
-        },
-      }),
+                return (
+                  <CurrencyActions
+                    storeId={storeId}
+                    currency={row.original}
+                    supportedCurrencies={supportedCurrencies}
+                    defaultCurrencyCode={defaultCurrencyCode}
+                    preferencesMap={preferencesMap}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
     ],
-    [base, t]
+    [base, t, canUpdate, canReadPricePreferences]
   )
 }

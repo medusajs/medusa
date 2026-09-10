@@ -580,6 +580,9 @@
         "edit": {
           "type": "string"
         },
+        "view": {
+          "type": "string"
+        },
         "addItems": {
           "type": "string"
         },
@@ -10915,9 +10918,19 @@
               },
               "required": ["heading", "description"],
               "additionalProperties": false
+            },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["manage"],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered"],
+          "required": ["header", "hint", "empty", "filtered", "manage"],
           "additionalProperties": false
         },
         "list": {
@@ -14483,6 +14496,19 @@
             }
           },
           "required": ["title", "description", "requiredPermission", "action"],
+          "additionalProperties": false
+        },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
           "additionalProperties": false
         },
         "requiredPermissions": {

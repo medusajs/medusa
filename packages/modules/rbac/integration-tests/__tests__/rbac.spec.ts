@@ -1,5 +1,5 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules, WILDCARD } from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -226,7 +226,9 @@ moduleIntegrationTestRunner<IRbacModuleService>({
         )
 
         // Check if the wildcard policy was created
-        const existingWildcardPolicies = await service.listRbacPolicies()
+        const existingWildcardPolicies = await service.listRbacPolicies({
+          key: `${WILDCARD}:${WILDCARD}`,
+        })
 
         expect(existingWildcardPolicies).toHaveLength(1)
         expect(existingWildcardPolicies[0].key).toBe("*:*")
@@ -261,6 +263,27 @@ moduleIntegrationTestRunner<IRbacModuleService>({
         expect(roleWithPolicies[0].policies![0].resource).toBe("*")
         expect(roleWithPolicies[0].policies![0].operation).toBe("*")
         expect(roleWithPolicies[0].policies![0].key).toBe("*:*")
+      })
+
+      it("should sync the core policies on module init", async () => {
+        const corePolicies = await service.listRbacPolicies({
+          key: ["product:read", "customer_address:update"],
+        })
+
+        const corePoliciesByKey = new Map(corePolicies.map((p) => [p.key, p]))
+
+        expect(corePoliciesByKey.get("product:read")).toMatchObject({
+          resource: "product",
+          operation: "read",
+          name: "ReadProduct",
+          description: "Read Product",
+        })
+        expect(corePoliciesByKey.get("customer_address:update")).toMatchObject({
+          resource: "customer_address",
+          operation: "update",
+          name: "UpdateCustomerAddress",
+          description: "Update CustomerAddress",
+        })
       })
 
       it("should upsert roles correctly", async () => {

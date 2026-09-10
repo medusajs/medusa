@@ -71,7 +71,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleListResponse>(
-      `/admin/rbac/roles`,
+      `/rbac/roles`,
       {
         query: queryParams,
         headers,
@@ -103,7 +103,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         query,
         headers,
@@ -138,7 +138,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles`,
+      `/rbac/roles`,
       {
         method: "POST",
         headers,
@@ -176,7 +176,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         method: "POST",
         headers,
@@ -202,7 +202,7 @@ export class RbacRole {
    */
   async delete(id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleDeleteResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         method: "DELETE",
         headers,
@@ -231,7 +231,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
-      `/admin/rbac/roles/${roleId}/policies`,
+      `/rbac/roles/${roleId}/policies`,
       {
         query: queryParams,
         headers,
@@ -260,7 +260,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUserListResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
       {
         query: queryParams,
         headers,
@@ -291,7 +291,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUsersResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
       {
         method: "POST",
         headers,
@@ -323,7 +323,107 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUsersDeleteResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
+      {
+        method: "DELETE",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
+   * This method retrieves a paginated list of an RBAC role's assignments. An
+   * assignment links the role to any entity (for example a user or an invite).
+   * It sends a request to the List Role Assignments API route.
+   *
+   * @param roleId - The role's ID.
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The paginated list of assignments.
+   *
+   * @example
+   * sdk.admin.rbacRole.listAssignments("role_123", {
+   *   reference: "user"
+   * })
+   * .then(({ assignments, count, limit, offset }) => {
+   *   console.log(assignments)
+   * })
+   */
+  async listAssignments(
+    roleId: string,
+    queryParams?: HttpTypes.AdminRbacRoleAssignmentListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentListResponse>(
+      `/rbac/roles/${roleId}/assignments`,
+      {
+        query: queryParams,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method assigns an RBAC role to one or more entities of a given
+   * reference type. It sends a request to the Create Role Assignments API
+   * route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The reference type and the IDs of the entities to assign the role to.
+   * @param headers - Headers to pass in the request.
+   * @returns The role's assignments for the provided reference type.
+   *
+   * @example
+   * sdk.admin.rbacRole.addAssignments("role_123", {
+   *   reference: "user",
+   *   reference_ids: ["user_123"]
+   * })
+   * .then(({ assignments }) => {
+   *   console.log(assignments)
+   * })
+   */
+  async addAssignments(
+    roleId: string,
+    body: HttpTypes.AdminCreateRoleAssignments,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsResponse>(
+      `/rbac/roles/${roleId}/assignments`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
+   * This method removes an RBAC role from one or more entities of a given
+   * reference type. It sends a request to the Remove Role Assignments API
+   * route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The reference type and the IDs of the entities to remove the role from.
+   * @param headers - Headers to pass in the request.
+   * @returns The removal's details.
+   *
+   * @example
+   * sdk.admin.rbacRole.removeAssignments("role_123", {
+   *   reference: "user",
+   *   reference_ids: ["user_123"]
+   * })
+   * .then(({ deleted }) => {
+   *   console.log(deleted)
+   * })
+   */
+  async removeAssignments(
+    roleId: string,
+    body: HttpTypes.AdminRemoveRoleAssignments,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsDeleteResponse>(
+      `/rbac/roles/${roleId}/assignments`,
       {
         method: "DELETE",
         headers,
@@ -355,7 +455,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
-      `/admin/rbac/roles/${roleId}/policies`,
+      `/rbac/roles/${roleId}/policies`,
       {
         method: "POST",
         headers,
@@ -385,7 +485,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyDeleteResponse>(
-      `/admin/rbac/roles/${roleId}/policies/${policyId}`,
+      `/rbac/roles/${roleId}/policies/${policyId}`,
       {
         method: "DELETE",
         headers,
@@ -395,19 +495,24 @@ export class RbacRole {
 
   /**
    * Retrieves the authenticated actor's resolved permission set: a flat list
-   * of `resource:operation` strings with wildcards already expanded.
+   * of `resource:operation` strings with wildcards already expanded, along
+   * with the actor's assigned roles and the names of the roles the actor's
+   * permissions fully cover.
    *
    * @param headers - Headers to pass in the request.
-   * @returns The flat permission list.
+   * @returns The flat permission list, assigned roles, and covered role names.
    *
    * @example
-   * sdk.admin.rbacRole.mePermissions().then(({ permissions }) => {
+   * sdk.admin.rbacRole.mePermissions()
+   * .then(({ permissions, roles, covered_roles }) => {
    *   console.log(permissions) // ["product:read", "customer:read", ...]
+   *   console.log(roles) // [{ id: "role_123", name: "Product Manager" }]
+   *   console.log(covered_roles) // ["Product Manager", "Product Reader"]
    * })
    */
   async mePermissions(headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacMePermissionsResponse>(
-      `/admin/rbac/me/permissions`,
+      `/rbac/me/permissions`,
       {
         method: "GET",
         headers,
@@ -427,7 +532,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacAssignableRolesListResponse>(
-      `/admin/rbac/roles/assignable`,
+      `/rbac/roles/assignable`,
       {
         method: "GET",
         query: queryParams,

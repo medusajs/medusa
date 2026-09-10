@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -16,27 +16,29 @@ import {
 export const adminProductTagRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/product-tags/*",
-    policies: [
-      {
-        resource: Entities.product_tag,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_tag,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/product-tags",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_tag,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductTagsParams,
         QueryConfig.listProductTagsTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_tag,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -54,45 +56,46 @@ export const adminProductTagRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/product-tags",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_tag,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateProductTag),
       validateAndTransformQuery(
         AdminGetProductTagParams,
         QueryConfig.retrieveProductTagTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_tag,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/product-tags/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_tag,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateProductTag),
       validateAndTransformQuery(
         AdminGetProductTagParams,
         QueryConfig.retrieveProductTagTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_tag,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/product-tags/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.product_tag,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_tag,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

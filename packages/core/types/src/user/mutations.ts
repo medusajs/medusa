@@ -1,3 +1,23 @@
+import { RbacScope } from "../rbac"
+
+/**
+ * An RBAC role to assign to an actor (a user or an invite), optionally
+ * constrained to one or more scopes. One role assignment is created per scope,
+ * or a single unscoped assignment when no scopes are provided.
+ */
+export interface CreateActorRoleDTO {
+  /**
+   * The ID of the role to assign.
+   */
+  role_id: string
+
+  /**
+   * The scopes the role is constrained to, e.g.
+   * `[{ type: "organization", id: "org_123" }]`.
+   */
+  scopes?: RbacScope[] | null
+}
+
 /**
  * The user to be created.
  */
@@ -28,11 +48,11 @@ export interface CreateUserDTO {
   metadata?: Record<string, unknown> | null
 
   /**
-   * The RBAC roles to assign to the user.
+   * The RBAC roles to assign to the user, each optionally scoped.
    *
    * @ignore
    */
-  roles?: string[] | null
+  roles?: CreateActorRoleDTO[] | null
 }
 
 /**
@@ -65,11 +85,12 @@ export interface CreateInviteDTO {
   metadata?: Record<string, unknown> | null
 
   /**
-   * The RBAC roles to assign to the user when the invite is accepted.
+   * The RBAC roles to assign to the user when the invite is accepted, each
+   * optionally scoped.
    *
    * @ignore
    */
-  roles?: string[] | null
+  roles?: CreateActorRoleDTO[] | null
 }
 
 /**

@@ -13,6 +13,40 @@ import {
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
 import { DynamicSearchResult, SearchArea } from "./types"
+import { PermissionResource } from "../../lib/permissions"
+
+/**
+ * Maps each searchable dynamic area to the permission resource that gates
+ * reading it. Areas without an entry (e.g. "all", "command", "navigation")
+ * are never used for dynamic resource lookups and don't need gating.
+ */
+export const SEARCH_AREA_RESOURCE: Record<
+  Exclude<SearchArea, "all" | "command" | "navigation">,
+  PermissionResource
+> = {
+  order: "order",
+  product: "product",
+  productVariant: "product_variant",
+  collection: "product_collection",
+  category: "product_category",
+  inventory: "inventory_item",
+  customer: "customer",
+  customerGroup: "customer_group",
+  promotion: "promotion",
+  campaign: "campaign",
+  priceList: "price_list",
+  user: "user",
+  region: "region",
+  taxRegion: "tax_region",
+  returnReason: "return_reason",
+  salesChannel: "sales_channel",
+  productType: "product_type",
+  productTag: "product_tag",
+  location: "stock_location",
+  shippingProfile: "shipping_profile",
+  publishableApiKey: "api_key",
+  secretApiKey: "api_key",
+}
 
 type UseSearchProps = {
   q?: string

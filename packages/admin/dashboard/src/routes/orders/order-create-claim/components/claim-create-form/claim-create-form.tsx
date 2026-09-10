@@ -53,6 +53,7 @@ import {
 } from "../../../../../hooks/api/claims"
 import { useUpdateOrderChange } from "../../../../../hooks/api/orders"
 import { useUpdateReturn } from "../../../../../hooks/api/returns"
+import { useOrderPermissions } from "../../../../../hooks/use-resource-permissions"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { ReturnShippingPlaceholder } from "../../../common/placeholders"
@@ -79,6 +80,7 @@ export const ClaimCreateForm = ({
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { canUpdate: canConfirm } = useOrderPermissions()
 
   /**
    * STATE
@@ -1153,15 +1155,17 @@ export const ClaimCreateForm = ({
                   {t("orders.claims.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button
-                key="submit-button"
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isRequestLoading}
-              >
-                {t("orders.claims.confirm")}
-              </Button>
+              {canConfirm && (
+                <Button
+                  key="submit-button"
+                  type="submit"
+                  variant="primary"
+                  size="small"
+                  isLoading={isRequestLoading}
+                >
+                  {t("orders.claims.confirm")}
+                </Button>
+              )}
             </div>
           </div>
         </RouteFocusModal.Footer>

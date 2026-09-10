@@ -16,6 +16,7 @@ import { ConfigurableCustomerGroupSection } from "./components/customer-group-se
 import { CustomerOrderSection } from "./components/customer-order-section"
 import { ConfigurableCustomerOrderSection } from "./components/customer-order-section/configurable-customer-order-section"
 import { customerLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
@@ -51,18 +52,22 @@ export const CustomerDetail = () => {
                 <CustomerGeneralSection customer={customer} />
               </LayoutComposer.Entry>
               <LayoutComposer.Entry id="CustomerOrderSection">
-                {isViewConfigEnabled ? (
-                  <ConfigurableCustomerOrderSection customer={customer} />
-                ) : (
-                  <CustomerOrderSection customer={customer} />
-                )}
+                <PermissionGuard permission="order:read">
+                  {isViewConfigEnabled ? (
+                    <ConfigurableCustomerOrderSection customer={customer} />
+                  ) : (
+                    <CustomerOrderSection customer={customer} />
+                  )}
+                </PermissionGuard>
               </LayoutComposer.Entry>
               <LayoutComposer.Entry id="CustomerGroupSection">
-                {isViewConfigEnabled ? (
-                  <ConfigurableCustomerGroupSection customer={customer} />
-                ) : (
-                  <CustomerGroupSection customer={customer} />
-                )}
+                <PermissionGuard permission="customer_group:read">
+                  {isViewConfigEnabled ? (
+                    <ConfigurableCustomerGroupSection customer={customer} />
+                  ) : (
+                    <CustomerGroupSection customer={customer} />
+                  )}
+                </PermissionGuard>
               </LayoutComposer.Entry>
               {detailPageDefaultEntries(customer)}
             </>
@@ -70,7 +75,9 @@ export const CustomerDetail = () => {
           side: (
             <>
               <LayoutComposer.Entry id="CustomerAddressSection">
-                <CustomerAddressSection customer={customer} />
+                <PermissionGuard permission="customer_address:read">
+                  <CustomerAddressSection customer={customer} />
+                </PermissionGuard>
               </LayoutComposer.Entry>
             </>
           ),

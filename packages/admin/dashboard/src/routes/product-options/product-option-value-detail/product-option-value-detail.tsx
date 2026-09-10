@@ -44,9 +44,7 @@ export const ProductOptionValueDetail = () => {
                 productOptionValue={product_option_value}
               />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(product_option_value, {
-              permissions: false,
-            })}
+            {detailPageDefaultEntries(product_option_value)}
           </>
         ),
       }}

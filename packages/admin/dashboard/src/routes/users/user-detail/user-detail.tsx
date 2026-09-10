@@ -3,8 +3,10 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { useUser } from "../../../hooks/api/users"
 import { UserGeneralSection } from "./components/user-general-section"
+import { UserRoleSection } from "./components/user-role-section"
 import { userLoader } from "./loader"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
@@ -40,7 +42,12 @@ export const UserDetail = () => {
             <LayoutComposer.Entry id="UserGeneralSection">
               <UserGeneralSection user={user} />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(user, { permissions: false })}
+            <LayoutComposer.Entry id="UserRoleSection">
+              <PermissionGuard permission="rbac_role:read">
+                <UserRoleSection user={user} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(user)}
           </>
         ),
       }}

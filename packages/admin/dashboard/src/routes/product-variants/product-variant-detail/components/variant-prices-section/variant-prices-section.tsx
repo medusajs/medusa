@@ -8,6 +8,7 @@ import { Button, Container, Heading } from "@medusajs/ui"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type VariantPricesSectionProps = {
   variant: Omit<HttpTypes.AdminProductVariant, "prices"> & {
@@ -19,6 +20,13 @@ type VariantPricesSectionProps = {
 
 export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+    "price:update",
+  ])
+
   const prices = variant.prices
     ?.filter((p) => !Object.keys(p.rules || {}).length)
     .sort((p1, p2) => p1.currency_code?.localeCompare(p2.currency_code))
@@ -35,19 +43,21 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
     <Container className="flex flex-col divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("labels.prices")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: `/products/${variant.product_id}/variants/${variant.id}/prices`,
-                  icon: <CurrencyDollar />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: `/products/${variant.product_id}/variants/${variant.id}/prices`,
+                    icon: <CurrencyDollar />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       {!hasPrices && <NoRecords className="h-60" />}
       {displayPrices?.map((price) => {

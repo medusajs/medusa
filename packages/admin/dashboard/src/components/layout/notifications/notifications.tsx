@@ -14,6 +14,7 @@ import {
   useMe,
   useNotifications,
 } from "../../../hooks/api"
+import { useNotificationPermissions } from "../../../hooks/use-resource-permissions"
 import { sdk } from "../../../lib/client"
 import { FilePreview } from "../../common/file-preview"
 import { InfiniteList } from "../../common/infinite-list"
@@ -32,6 +33,7 @@ const LAST_READ_NOTIFICATION_KEY = "notificationsLastReadAt"
 
 export const Notifications = () => {
   const { t } = useTranslation()
+  const { canRead } = useNotificationPermissions()
   const [open, setOpen] = useState(false)
   const [hasUnread, setHasUnread] = useUnreadNotifications()
   // This is used to show the unread icon on the notification when the drawer is open,
@@ -64,6 +66,10 @@ export const Notifications = () => {
       setOpen(false)
       setLastReadAt(localStorage.getItem(LAST_READ_NOTIFICATION_KEY))
     }
+  }
+
+  if (!canRead) {
+    return null
   }
 
   return (

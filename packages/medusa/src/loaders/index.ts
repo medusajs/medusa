@@ -1,4 +1,4 @@
-import { container, MedusaAppLoader, policiesLoader } from "@medusajs/framework"
+import { container, MedusaAppLoader } from "@medusajs/framework"
 import { asValue } from "@medusajs/framework/awilix"
 import { configLoader } from "@medusajs/framework/config"
 import { pgConnectionLoader } from "@medusajs/framework/database"
@@ -144,10 +144,6 @@ export async function initializeContainer(
   })
   await featureFlagsLoader(join(__dirname, ".."))
 
-  // Load policies from core medusa package and project root
-  await policiesLoader(join(__dirname, ".."))
-  await policiesLoader(rootDirectory)
-
   const customLogger = configDir.logger ?? defaultLogger
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(customLogger),
@@ -194,12 +190,7 @@ export default async ({
   // constructed, and the seed on application start only fills indexes it knows
   // about. A no-op unless the module is registered.
   await loadSearchIndexes({ plugins, configModule, logger })
-
-  // Load policies from all plugins (rootDirectory already loaded in initializeContainer)
-  for (const plugin of plugins) {
-    await policiesLoader(plugin.resolve)
-  }
-
+  
   const {
     onApplicationStart,
     onApplicationShutdown,

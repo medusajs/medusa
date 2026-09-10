@@ -71,7 +71,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
-      `/admin/rbac/policies`,
+      `/rbac/policies`,
       {
         query: queryParams,
         headers,
@@ -103,7 +103,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyResponse>(
-      `/admin/rbac/policies/${id}`,
+      `/rbac/policies/${id}`,
       {
         query,
         headers,
@@ -139,7 +139,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyResponse>(
-      `/admin/rbac/policies`,
+      `/rbac/policies`,
       {
         method: "POST",
         headers,
@@ -178,7 +178,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyResponse>(
-      `/admin/rbac/policies/${id}`,
+      `/rbac/policies/${id}`,
       {
         method: "POST",
         headers,
@@ -207,7 +207,7 @@ export class RbacPolicy {
    */
   async delete(id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyDeleteResponse>(
-      `/admin/rbac/policies/${id}`,
+      `/rbac/policies/${id}`,
       {
         method: "DELETE",
         headers,
@@ -224,7 +224,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyRolesListResponse>(
-      `/admin/rbac/policies/${id}/roles`,
+      `/rbac/policies/${id}/roles`,
       {
         query: queryParams,
         headers,
@@ -244,7 +244,7 @@ export class RbacPolicy {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacAssignablePoliciesListResponse>(
-      `/admin/rbac/policies/assignable`,
+      `/rbac/policies/assignable`,
       {
         method: "GET",
         query: queryParams,

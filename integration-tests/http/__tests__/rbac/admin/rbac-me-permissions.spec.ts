@@ -138,10 +138,10 @@ medusaIntegrationTestRunner({
       delete process.env.MEDUSA_FF_RBAC
     })
 
-    describe("GET /admin/rbac/me/permissions", () => {
+    describe("GET /rbac/me/permissions", () => {
       it("returns the full universe for a super-admin (`*:*`)", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -160,7 +160,7 @@ medusaIntegrationTestRunner({
 
       it("does not include wildcard-only entries in the response", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -173,7 +173,7 @@ medusaIntegrationTestRunner({
 
       it("returns sorted output for deterministic ordering", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -183,7 +183,7 @@ medusaIntegrationTestRunner({
 
       it("expands `resource:*` to all ops on that resource only", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           productManagerHeaders
         )
 
@@ -203,7 +203,7 @@ medusaIntegrationTestRunner({
 
       it("expands `*:op` to that op on every resource in the universe", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           universalReaderHeaders
         )
 
@@ -219,7 +219,7 @@ medusaIntegrationTestRunner({
 
       it("returns only the literal grant for an exact-match holder", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           productReaderHeaders
         )
 
@@ -227,14 +227,79 @@ medusaIntegrationTestRunner({
         expect(response.data.permissions).toEqual(["product:read"])
       })
 
+      it("returns the actor's assigned roles", async () => {
+        const response = await api.get(
+          "/rbac/me/permissions",
+          productReaderHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.roles).toEqual([
+          { id: expect.stringMatching(/^role_/), name: "Product Reader" },
+        ])
+      })
+
       it("returns an empty array when the actor has no roles", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           noRolesUserHeaders
         )
 
         expect(response.status).toEqual(200)
         expect(response.data.permissions).toEqual([])
+        expect(response.data.roles).toEqual([])
+        expect(response.data.covered_roles).toEqual([])
+      })
+
+      it("covers roles whose grants the actor's permissions encompass, without assignment", async () => {
+        // The super-admin (`*:*`) is not assigned any of the roles created in
+        // setup, but their permissions encompass all of them.
+        const response = await api.get(
+          "/rbac/me/permissions",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.covered_roles).toEqual(
+          expect.arrayContaining([
+            "Product Manager",
+            "Product Reader",
+            "Universal Reader",
+          ])
+        )
+      })
+
+      it("always covers the actor's own assigned roles, and no partial supersets", async () => {
+        const response = await api.get(
+          "/rbac/me/permissions",
+          productReaderHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        // Assigned role is covered by definition.
+        expect(response.data.covered_roles).toContain("Product Reader")
+        // product:read alone covers neither product:* nor *:read roles.
+        expect(response.data.covered_roles).not.toContain("Product Manager")
+        expect(response.data.covered_roles).not.toContain("Universal Reader")
+      })
+
+      it("treats a role without policies as covered by no one", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+        const [existing] = await rbacModule.listRbacRoles({
+          name: "Empty Role",
+        })
+        if (!existing) {
+          await rbacModule.createRbacRoles({ name: "Empty Role" })
+        }
+
+        const response = await api.get(
+          "/rbac/me/permissions",
+          adminHeaders
+        )
+
+        // Even the super-admin does not cover a role with no grants — an
+        // empty role must not open its guards to all actors.
+        expect(response.data.covered_roles).not.toContain("Empty Role")
       })
 
       it("includes resources persisted at runtime in the universe", async () => {
@@ -257,7 +322,7 @@ medusaIntegrationTestRunner({
         }
 
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -288,7 +353,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           multiRoleHeaders
         )
 
@@ -299,6 +364,12 @@ medusaIntegrationTestRunner({
         // No grants beyond what the two roles provide.
         expect(response.data.permissions).not.toContain("product:create")
         expect(response.data.permissions).not.toContain("customer:read")
+
+        // Both roles are returned, sorted by name.
+        expect(response.data.roles.map((role) => role.name)).toEqual([
+          "Customer Creator Only",
+          "Product Reader Only",
+        ])
       })
     })
   },

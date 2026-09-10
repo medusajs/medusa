@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -16,27 +16,29 @@ import {
 export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/product-types/*",
-    policies: [
-      {
-        resource: Entities.product_type,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_type,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/product-types",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_type,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductTypesParams,
         QueryConfig.listProductTypesTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_type,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -54,45 +56,46 @@ export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/product-types",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_type,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateProductType),
       validateAndTransformQuery(
         AdminGetProductTypeParams,
         QueryConfig.retrieveProductTypeTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_type,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/product-types/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_type,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateProductType),
       validateAndTransformQuery(
         AdminGetProductTypeParams,
         QueryConfig.retrieveProductTypeTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_type,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/product-types/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.product_type,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_type,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

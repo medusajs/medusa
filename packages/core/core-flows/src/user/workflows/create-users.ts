@@ -6,9 +6,10 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
-import { validateRolesExistStep } from "../../invite/steps/validate-roles-exist"
+import { createRoleAssignmentsStep } from "../../rbac/steps/create-role-assignments"
+import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
+import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
 import { createUsersStep } from "../steps"
 
 export const createUsersWorkflowId = "create-users-workflow"
@@ -20,7 +21,9 @@ export const createUsersWorkflowId = "create-users-workflow"
  * {@link setAuthAppMetadataStep}. Learn more about auth identities in
  * [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
  *
- * You can provide roles to be assigned to each user during creation.
+ * You can provide roles to be assigned to each user during creation. Each role
+ * can be constrained to one or more scopes, creating one role assignment per
+ * scope.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create users within your custom flows.
@@ -33,7 +36,13 @@ export const createUsersWorkflowId = "create-users-workflow"
  *       email: "example@gmail.com",
  *       first_name: "John",
  *       last_name: "Doe",
- *       roles: ["role_super_admin"]
+ *       roles: [
+ *         { role_id: "role_super_admin" },
+ *         {
+ *           role_id: "role_editor",
+ *           scopes: [{ type: "organization", id: "org_123" }]
+ *         }
+ *       ]
  *     }]
  *   }
  * })
@@ -50,8 +59,8 @@ export const createUsersWorkflow = createWorkflow(
     const allRoleIds = transform({ input }, ({ input }) => {
       const roleIds = new Set<string>()
       input.users.forEach((user) => {
-        for (const roleId of user.roles || []) {
-          roleIds.add(roleId)
+        for (const role of user.roles || []) {
+          roleIds.add(role.role_id)
         }
       })
       return Array.from(roleIds)
@@ -61,26 +70,16 @@ export const createUsersWorkflow = createWorkflow(
 
     const createdUsers = createUsersStep(input.users)
 
-    const userRoleLinks = transform(
+    const userRoleAssignments = transform(
       { input, createdUsers },
       ({ input, createdUsers }) => {
-        const links: {
-          [key: string]: { user_id?: string; rbac_role_id?: string }
-        }[] = []
-        input.users.forEach((user, index) => {
-          const userId = createdUsers[index].id
-          for (const roleId of user.roles || []) {
-            links.push({
-              user: { user_id: userId },
-              rbac: { rbac_role_id: roleId },
-            })
-          }
-        })
-        return links
+        return input.users.flatMap((user, index) =>
+          buildRoleAssignments(user.roles, "user", createdUsers[index].id)
+        )
       }
     )
 
-    createRemoteLinkStep(userRoleLinks)
+    createRoleAssignmentsStep(userRoleAssignments)
 
     const userIdEvents = transform({ createdUsers }, ({ createdUsers }) => {
       return createdUsers.map((v) => {

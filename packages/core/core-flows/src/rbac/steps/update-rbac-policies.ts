@@ -3,14 +3,20 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { IRbacModuleService, UpdateRbacPolicyDTO } from "@medusajs/types"
+import {
+  FilterableRbacPolicyProps,
+  IRbacModuleService,
+  PolicyOperationValue,
+  PolicyResourceValue,
+  UpdateRbacPolicyDTO,
+} from "@medusajs/framework/types"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
 export type UpdateRbacPoliciesStepInput = {
-  selector: Record<string, any>
+  selector: FilterableRbacPolicyProps
   update: Omit<UpdateRbacPolicyDTO, "id">
 }
 
@@ -41,10 +47,12 @@ export const updateRbacPoliciesStep = createStep(
     // Normalize resource and operation to lowercase if present
     const normalizedUpdate = { ...data.update }
     if (normalizedUpdate.resource) {
-      normalizedUpdate.resource = normalizedUpdate.resource.toLowerCase()
+      normalizedUpdate.resource =
+        normalizedUpdate.resource.toLowerCase() as PolicyResourceValue
     }
     if (normalizedUpdate.operation) {
-      normalizedUpdate.operation = normalizedUpdate.operation.toLowerCase()
+      normalizedUpdate.operation =
+        normalizedUpdate.operation.toLowerCase() as PolicyOperationValue
     }
 
     const updates = (prevData ?? []).map((p) => ({

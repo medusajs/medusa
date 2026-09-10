@@ -7,13 +7,30 @@ import { Link, useLocation } from "react-router-dom"
 
 import { useSearchIndexes } from "../../../hooks/api/search-indexes"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../providers/permissions-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
+import {
+  useApiKeyPermissions,
+  useProductTagPermissions,
+  useProductTypePermissions,
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+  useRefundReasonPermissions,
+  useRegionPermissions,
+  useResourcePermissions,
+  useReturnReasonPermissions,
+  useSalesChannelPermissions,
+  useStockLocationPermissions,
+  useStorePermissions,
+  useTaxRegionPermissions,
+  useTranslationPermissions,
+  useUserPermissions,
+  useWorkflowExecutionPermissions,
+} from "../../../hooks/use-resource-permissions"
 
 export const SettingsLayout = () => {
   return (
@@ -27,22 +44,45 @@ const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
   const isRbacEnabled = useFeatureFlag("rbac")
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
-  const { hasPermission } = usePermissions()
   const { t } = useTranslation()
 
-  const canReadRoles = isRbacEnabled && hasPermission("rbac_role:read")
-  const canReadPolicies = isRbacEnabled && hasPermission("rbac_policy:read")
+  const { canRead: canReadRbacRoles } = useRbacRolePermissions()
+  const { canRead: canReadRbacPolicies } = useRbacPolicyPermissions()
+  const { canRead: canReadProductTags } = useProductTagPermissions()
+  const { canRead: canReadProductTypes } = useProductTypePermissions()
+  const { canRead: canReadRegions } = useRegionPermissions()
+  const { canRead: canReadReturnReasons } = useReturnReasonPermissions()
+  const { canRead: canReadRefundReasons } = useRefundReasonPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadTaxRegions } = useTaxRegionPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
+  const { canRead: canReadPropertyLabels } =
+    useResourcePermissions("property_label")
+  const { canRead: canReadStore } = useStorePermissions()
+  const { canRead: canReadUsers } = useUserPermissions()
+  const { canRead: canReadTranslations } = useTranslationPermissions()
+
+  const canReadRoles = isRbacEnabled && canReadRbacRoles
+  const canReadPolicies = isRbacEnabled && canReadRbacPolicies
 
   return useMemo(
     () => [
-      {
-        label: t("store.domain"),
-        to: "/settings/store",
-      },
-      {
-        label: t("users.domain"),
-        to: "/settings/users",
-      },
+      ...(canReadStore
+        ? [
+            {
+              label: t("store.domain"),
+              to: "/settings/store",
+            },
+          ]
+        : []),
+      ...(canReadUsers
+        ? [
+            {
+              label: t("users.domain"),
+              to: "/settings/users",
+            },
+          ]
+        : []),
       ...(canReadRoles
         ? [
             {
@@ -59,39 +99,71 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      {
-        label: t("regions.domain"),
-        to: "/settings/regions",
-      },
-      {
-        label: t("taxRegions.domain"),
-        to: "/settings/tax-regions",
-      },
-      {
-        label: t("returnReasons.domain"),
-        to: "/settings/return-reasons",
-      },
-      {
-        label: t("refundReasons.domain"),
-        to: "/settings/refund-reasons",
-      },
-      {
-        label: t("salesChannels.domain"),
-        to: "/settings/sales-channels",
-      },
-      {
-        label: t("productTypes.domain"),
-        to: "/settings/product-types",
-      },
-      {
-        label: t("productTags.domain"),
-        to: "/settings/product-tags",
-      },
-      {
-        label: t("stockLocations.domain"),
-        to: "/settings/locations",
-      },
-      ...(isViewConfigEnabled
+      ...(canReadRegions
+        ? [
+            {
+              label: t("regions.domain"),
+              to: "/settings/regions",
+            },
+          ]
+        : []),
+      ...(canReadTaxRegions
+        ? [
+            {
+              label: t("taxRegions.domain"),
+              to: "/settings/tax-regions",
+            },
+          ]
+        : []),
+      ...(canReadReturnReasons
+        ? [
+            {
+              label: t("returnReasons.domain"),
+              to: "/settings/return-reasons",
+            },
+          ]
+        : []),
+      ...(canReadRefundReasons
+        ? [
+            {
+              label: t("refundReasons.domain"),
+              to: "/settings/refund-reasons",
+            },
+          ]
+        : []),
+      ...(canReadSalesChannels
+        ? [
+            {
+              label: t("salesChannels.domain"),
+              to: "/settings/sales-channels",
+            },
+          ]
+        : []),
+      ...(canReadProductTypes
+        ? [
+            {
+              label: t("productTypes.domain"),
+              to: "/settings/product-types",
+            },
+          ]
+        : []),
+      ...(canReadProductTags
+        ? [
+            {
+              label: t("productTags.domain"),
+              to: "/settings/product-tags",
+            },
+          ]
+        : []),
+      ...(canReadStockLocations
+        ? [
+            {
+              label: t("stockLocations.domain"),
+              to: "/settings/locations",
+            },
+          ]
+        : []),
+      ...(isViewConfigEnabled && canReadPropertyLabels
         ? [
             {
               label: t("propertyLabels.domain", "Property Labels"),
@@ -99,7 +171,7 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      ...(isTranslationsEnabled
+      ...(isTranslationsEnabled && canReadTranslations
         ? [
             {
               label: t("translations.domain"),
@@ -111,9 +183,21 @@ const useSettingRoutes = (): INavItem[] => {
     [
       t,
       isTranslationsEnabled,
-      isViewConfigEnabled,
+      canReadTranslations,
       canReadRoles,
       canReadPolicies,
+      canReadProductTags,
+      canReadProductTypes,
+      canReadRegions,
+      canReadReturnReasons,
+      canReadRefundReasons,
+      canReadSalesChannels,
+      canReadTaxRegions,
+      canReadStockLocations,
+      canReadPropertyLabels,
+      canReadStore,
+      canReadUsers,
+      isViewConfigEnabled,
     ]
   )
 }
@@ -122,20 +206,31 @@ const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
   const { enabled: isSearchEnabled } = useSearchIndexes()
 
+  const { canRead: canReadApiKeys } = useApiKeyPermissions()
+  const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
+
   return useMemo(
     () => [
-      {
-        label: t("apiKeyManagement.domain.publishable"),
-        to: "/settings/publishable-api-keys",
-      },
-      {
-        label: t("apiKeyManagement.domain.secret"),
-        to: "/settings/secret-api-keys",
-      },
-      {
-        label: t("workflowExecutions.domain"),
-        to: "/settings/workflows",
-      },
+      ...(canReadApiKeys
+        ? [
+            {
+              label: t("apiKeyManagement.domain.publishable"),
+              to: "/settings/publishable-api-keys",
+            },
+            {
+              label: t("apiKeyManagement.domain.secret"),
+              to: "/settings/secret-api-keys",
+            },
+          ]
+        : []),
+      ...(canReadWorkflows
+        ? [
+            {
+              label: t("workflowExecutions.domain"),
+              to: "/settings/workflows",
+            },
+          ]
+        : []),
       ...(isSearchEnabled
         ? [
             {
@@ -145,7 +240,7 @@ const useDeveloperRoutes = (): INavItem[] => {
           ]
         : []),
     ],
-    [t, isSearchEnabled]
+    [t, canReadApiKeys, canReadWorkflows, isSearchEnabled]
   )
 }
 

@@ -8,6 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { useFulfillmentProviders } from "../../../../../hooks/api"
+import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
 import { formatProvider } from "../../../../../lib/format-provider"
 
 type LocationsFulfillmentProvidersSectionProps = {
@@ -18,6 +19,7 @@ function LocationsFulfillmentProvidersSection({
   location,
 }: LocationsFulfillmentProvidersSectionProps) {
   const { t } = useTranslation()
+  const { canUpdate } = useStockLocationPermissions()
   const { fulfillment_providers } = useFulfillmentProviders({
     stock_location_id: location.id,
     fields: "id",
@@ -31,19 +33,21 @@ function LocationsFulfillmentProvidersSection({
           {t("stockLocations.fulfillmentProviders.header")}
         </Heading>
 
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "fulfillment-providers",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "fulfillment-providers",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       {fulfillment_providers?.length ? (
@@ -67,10 +71,14 @@ function LocationsFulfillmentProvidersSection({
       ) : (
         <NoRecords
           className="h-fit pb-2 pt-6 text-center"
-          action={{
-            label: t("stockLocations.fulfillmentProviders.action"),
-            to: "fulfillment-providers",
-          }}
+          action={
+            canUpdate
+              ? {
+                  label: t("stockLocations.fulfillmentProviders.action"),
+                  to: "fulfillment-providers",
+                }
+              : undefined
+          }
           message={t("stockLocations.fulfillmentProviders.noProviders")}
         />
       )}

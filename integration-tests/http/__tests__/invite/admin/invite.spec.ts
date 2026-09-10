@@ -221,7 +221,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         // Create test roles
         const viewerResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Viewer",
             description: "Can view products",
@@ -231,7 +231,7 @@ medusaIntegrationTestRunner({
         viewerRole = viewerResponse.data.role
 
         const editorResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Editor",
             description: "Can edit products",
@@ -242,7 +242,7 @@ medusaIntegrationTestRunner({
 
         // Get the super admin role created by migration
         const superAdminResponse = await api.get(
-          "/admin/rbac/roles?id=role_super_admin",
+          "/rbac/roles?id=role_super_admin",
           adminHeaders
         )
         superAdminRole = superAdminResponse.data.roles[0]
@@ -255,7 +255,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "role-test@medusa-commerce.com",
-              roles: [viewerRole.id, editorRole.id],
+              roles: [{ role_id: viewerRole.id }, { role_id: editorRole.id }],
             },
             adminHeaders
           )
@@ -269,25 +269,16 @@ medusaIntegrationTestRunner({
 
         // Verify invite is linked to roles
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const inviteLinkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "invite_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const inviteRoles = await inviteLinkService.list({
-          invite_id: createdInvite.id,
+        const inviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
         })
 
         expect(inviteRoles).toHaveLength(2)
-        expect(inviteRoles.map((link) => link.rbac_role_id)).toEqual(
+        expect(inviteRoles.map((assignment) => assignment.role_id)).toEqual(
           expect.arrayContaining([viewerRole.id, editorRole.id])
         )
 
@@ -318,20 +309,14 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const userLinkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
         // Verify user was assigned the roles
-        const userRoles = await userLinkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(2)
-        expect(userRoles.map((link) => link.rbac_role_id)).toEqual(
+        expect(userRoles.map((assignment) => assignment.role_id)).toEqual(
           expect.arrayContaining([viewerRole.id, editorRole.id])
         )
       })
@@ -343,7 +328,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "admin-test@medusa-commerce.com",
-              roles: [superAdminRole.id],
+              roles: [{ role_id: superAdminRole.id }],
             },
             adminHeaders
           )
@@ -368,25 +353,121 @@ medusaIntegrationTestRunner({
 
         // Verify user was assigned the super admin role
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const linkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const userRoles = await linkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(1)
-        expect(userRoles[0].rbac_role_id).toEqual(superAdminRole.id)
+        expect(userRoles[0].role_id).toEqual(superAdminRole.id)
+      })
+
+      it("should create invite with scoped roles and transfer the scopes to the user on acceptance", async () => {
+        const createdInvite = (
+          await api.post(
+            "/admin/invites",
+            {
+              email: "scoped-role-test@medusa-commerce.com",
+              roles: [
+                {
+                  role_id: viewerRole.id,
+                  scopes: [
+                    { type: "organization", id: "org_1" },
+                    { type: "organization", id: "org_2" },
+                  ],
+                },
+                // Unscoped role, alongside the scoped one
+                { role_id: editorRole.id },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.invite
+
+        const container = getContainer()
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
+
+        // One assignment per scope, plus one for the unscoped role
+        const inviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
+        })
+
+        expect(inviteRoles).toHaveLength(3)
+        expect(inviteRoles).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+            expect.objectContaining({
+              role_id: editorRole.id,
+              scope: null,
+              scope_id: null,
+            }),
+          ])
+        )
+
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "scoped-role-test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const acceptedUser = (
+          await api.post(
+            `/admin/invites/accept?token=${createdInvite.token}`,
+            {
+              first_name: "Scoped",
+              last_name: "Test",
+            },
+            { headers: { authorization: `Bearer ${signup.data.token}` } }
+          )
+        ).data.user
+
+        // The scopes are carried over to the user's assignments
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
+        })
+
+        expect(userRoles).toHaveLength(3)
+        expect(userRoles).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+            expect.objectContaining({
+              role_id: editorRole.id,
+              scope: null,
+              scope_id: null,
+            }),
+          ])
+        )
+
+        // The invite's own assignments are removed once transferred
+        const remainingInviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
+        })
+
+        expect(remainingInviteRoles).toHaveLength(0)
       })
 
       it("should create invite without roles and work normally", async () => {
@@ -420,21 +501,12 @@ medusaIntegrationTestRunner({
 
         // Verify user has no roles assigned
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const linkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const userRoles = await linkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(0)
@@ -447,7 +519,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "invalid-role-test@medusa-commerce.com",
-              roles: ["non_existent_role_id"],
+              roles: [{ role_id: "non_existent_role_id" }],
             },
             adminHeaders
           )

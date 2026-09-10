@@ -55,7 +55,6 @@ describe("Middleware file loader", () => {
           "handler": [Function],
           "matcher": "/customers",
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
@@ -63,19 +62,16 @@ describe("Middleware file loader", () => {
           "methods": [
             "POST",
           ],
-          "policies": undefined,
         },
         {
           "handler": [Function],
           "matcher": "/store/*",
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
           "matcher": /\\^\\\\/admin\\(\\\\/\\.\\*\\)\\?\\$/,
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
@@ -83,7 +79,6 @@ describe("Middleware file loader", () => {
           "methods": [
             "POST",
           ],
-          "policies": undefined,
         },
       ]
     `)

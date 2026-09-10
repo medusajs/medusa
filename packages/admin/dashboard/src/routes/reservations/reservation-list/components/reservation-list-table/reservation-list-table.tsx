@@ -5,6 +5,10 @@ import { Link } from "react-router-dom"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import {
+  useReservationItemPermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useReservationTableColumns } from "./use-reservation-table-columns"
 import { useReservationTableFilters } from "./use-reservation-table-filters"
 import { useReservationTableQuery } from "./use-reservation-table-query"
@@ -13,6 +17,11 @@ const PAGE_SIZE = 20
 
 export const ReservationListTable = () => {
   const { t } = useTranslation()
+  const { canCreate: canCreateReservationItem } =
+    useReservationItemPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
+
+  const canCreate = canCreateReservationItem && canReadStockLocations
 
   const { searchParams } = useReservationTableQuery({
     pageSize: PAGE_SIZE,
@@ -47,9 +56,11 @@ export const ReservationListTable = () => {
             {t("reservations.subtitle")}
           </Text>
         </div>
-        <Button variant="secondary" size="small" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button variant="secondary" size="small" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}

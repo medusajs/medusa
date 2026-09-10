@@ -7,13 +7,14 @@ import { useStockLocations } from "../../../hooks/api/stock-locations"
 import { LOCATION_LIST_FIELDS } from "./constants"
 import { useLocationListTableColumns } from "./use-location-list-table-columns"
 import { useLocationListTableQuery } from "./use-location-list-table-query"
+import { useStockLocationPermissions } from "../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 const PREFIX = "loc"
 
 export const LocationListTable = () => {
   const { t } = useTranslation()
-
+  const { canCreate } = useStockLocationPermissions()
   const searchParams = useLocationListTableQuery({
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
@@ -61,12 +62,16 @@ export const LocationListTable = () => {
             description: t("stockLocations.list.noRecordsMessageFiltered"),
           },
         }}
-        actions={[
-          {
-            label: t("actions.create"),
-            to: "create",
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  label: t("actions.create"),
+                  to: "create",
+                },
+              ]
+            : []
+        }
         isLoading={isLoading}
         rowHref={(row) => `/settings/locations/${row.id}`}
         enableSearch={true}

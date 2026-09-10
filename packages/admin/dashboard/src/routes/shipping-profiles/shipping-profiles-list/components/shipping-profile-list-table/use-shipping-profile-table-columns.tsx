@@ -4,12 +4,14 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ShippingOptionsRowActions } from "./shipping-options-row-actions"
+import { useShippingProfilePermissions } from "../../../../../hooks/use-resource-permissions"
 
 const columnHelper =
   createColumnHelper<AdminShippingProfileResponse["shipping_profile"]>()
 
 export const useShippingProfileTableColumns = () => {
   const { t } = useTranslation()
+  const { canDelete } = useShippingProfilePermissions()
 
   return useMemo(
     () => [
@@ -21,11 +23,17 @@ export const useShippingProfileTableColumns = () => {
         header: t("fields.type"),
         cell: (cell) => cell.getValue(),
       }),
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => <ShippingOptionsRowActions profile={row.original} />,
-      }),
+      ...(canDelete
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row }) => (
+                <ShippingOptionsRowActions profile={row.original} />
+              ),
+            }),
+          ]
+        : []),
     ],
-    [t]
+    [t, canDelete]
   )
 }

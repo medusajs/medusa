@@ -11,22 +11,29 @@ import {
 } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
-import { useDeleteRbacRole } from "../../../../../hooks/api/rbac-roles"
-import { usePermissions } from "../../../../../providers/permissions-provider"
-
-type RoleWithUsers = HttpTypes.AdminRbacRole & {
-  users_link?: { user?: HttpTypes.AdminUser | null }[]
-}
+import {
+  useDeleteRbacRole,
+  useRbacRoleUsers,
+} from "../../../../../hooks/api/rbac-roles"
+import {
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+  useUserPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type RoleGeneralSectionProps = {
-  role: RoleWithUsers
+  role: HttpTypes.AdminRbacRole
 }
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useRbacRolePermissions()
+  const { canRead: canReadUsers } = useUserPermissions()
+  const { canRead: canReadPolicies } = useRbacPolicyPermissions()
   const prompt = usePrompt()
   const navigate = useNavigate()
+
+  const canManagePolicies = canUpdate && canReadPolicies
 
   const { mutateAsync: deleteRole, isPending: isDeleting } = useDeleteRbacRole(
     role.id
@@ -53,13 +60,11 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     }
   }
 
-  const users = useMemo(() => {
-    return (
-      role.users_link
-        ?.map((link) => link.user)
-        .filter((user): user is HttpTypes.AdminUser => !!user) ?? []
-    )
-  }, [role.users_link])
+  const { users = [] } = useRbacRoleUsers(
+    role.id,
+    {},
+    { enabled: canReadUsers }
+  )
 
   const userLabels = useMemo(() => {
     return users.map((user) => {
@@ -87,9 +92,6 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     )
   }, [role.policies])
 
-  const canUpdate = hasPermission("rbac_role:update")
-  const canDelete = hasPermission("rbac_role:delete")
-
   const groups: ActionGroup[] = []
 
   if (canUpdate) {
@@ -100,11 +102,15 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
           label: t("actions.edit"),
           to: `edit`,
         },
-        {
-          icon: <Key />,
-          label: t("roles.actions.managePermissions"),
-          to: `permissions`,
-        },
+        ...(canManagePolicies
+          ? [
+              {
+                icon: <Key />,
+                label: t("roles.actions.managePermissions"),
+                to: `permissions`,
+              },
+            ]
+          : []),
       ],
     })
   }
@@ -126,10 +132,10 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{role.name}</Heading>
-        {groups.length && <ActionMenu groups={groups} />}
+        {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
       <SectionRow title={t("fields.description")} value={role.description} />
-      {hasPermission("user:read") && (
+      {canReadUsers && (
         <SectionRow
           title={t("users.domain")}
           value={
@@ -143,7 +149,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
           }
         />
       )}
-      {hasPermission("rbac_policy:read") && (
+      {canReadPolicies && (
         <SectionRow
           title={t("roles.fields.permissions")}
           value={

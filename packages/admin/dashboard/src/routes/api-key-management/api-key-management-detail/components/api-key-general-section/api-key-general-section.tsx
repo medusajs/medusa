@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import {
   Action,
+  ActionGroup,
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
@@ -22,6 +23,7 @@ import {
   useDeleteApiKey,
   useRevokeApiKey,
 } from "../../../../../hooks/api/api-keys"
+import { useApiKeyPermissions } from "../../../../../hooks/use-resource-permissions"
 import { useUser } from "../../../../../hooks/api/users"
 import { useDate } from "../../../../../hooks/use-date"
 import {
@@ -39,6 +41,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const navigate = useNavigate()
   const prompt = usePrompt()
   const { getFullDate } = useDate()
+  const { canUpdate, canDelete } = useApiKeyPermissions()
 
   const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
   const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
@@ -100,22 +103,42 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
     })
   }
 
-  const dangerousActions: Action[] = [
-    {
-      icon: <Trash />,
-      label: t("actions.delete"),
-      onClick: handleDelete,
-      disabled: !apiKey.revoked_at,
-    },
-  ]
+  const dangerousActions: Action[] = []
 
-  if (!apiKey.revoked_at) {
-    dangerousActions.unshift({
+  if (!apiKey.revoked_at && canUpdate) {
+    dangerousActions.push({
       icon: <XCircle />,
       label: t("apiKeyManagement.actions.revoke"),
       onClick: handleRevoke,
       disabled: !!apiKey.revoked_at,
     })
+  }
+
+  if (canDelete) {
+    dangerousActions.push({
+      icon: <Trash />,
+      label: t("actions.delete"),
+      onClick: handleDelete,
+      disabled: !apiKey.revoked_at,
+    })
+  }
+
+  const menuGroups: ActionGroup[] = []
+
+  if (canUpdate) {
+    menuGroups.push({
+      actions: [
+        {
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: "edit",
+        },
+      ],
+    })
+  }
+
+  if (dangerousActions.length) {
+    menuGroups.push({ actions: dangerousActions })
   }
 
   const apiKeyStatus = getApiKeyStatusProps(apiKey.revoked_at, t)
@@ -131,22 +154,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
               {apiKeyStatus.label}
             </StatusBadge>
           </div>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    icon: <PencilSquare />,
-                    to: "edit",
-                  },
-                ],
-              },
-              {
-                actions: dangerousActions,
-              },
-            ]}
-          />
+          {menuGroups.length > 0 && <ActionMenu groups={menuGroups} />}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">

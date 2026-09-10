@@ -12,8 +12,12 @@ import {
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeletePromotion } from "../../../../../hooks/api/promotions"
+import { usePromotionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { getPromotionStatus } from "../../../../../lib/promotions"
@@ -50,6 +54,7 @@ export const PromotionGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = usePromotionPermissions()
   const { mutateAsync } = useDeletePromotion(promotion.id)
 
   const handleDelete = async () => {
@@ -87,9 +92,11 @@ export const PromotionGeneralSection = ({
 
         <div className="flex items-center gap-x-2">
           <StatusBadge color={color}>{text}</StatusBadge>
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     icon: <PencilSquare />,
@@ -97,8 +104,11 @@ export const PromotionGeneralSection = ({
                     to: `/promotions/${promotion.id}/edit`,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     icon: <Trash />,
@@ -106,9 +116,11 @@ export const PromotionGeneralSection = ({
                     onClick: handleDelete,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
 

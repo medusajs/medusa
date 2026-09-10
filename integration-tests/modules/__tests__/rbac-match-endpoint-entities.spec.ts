@@ -1,4 +1,8 @@
-import { dynamicImport, PolicyResource } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  dynamicImport,
+} from "@medusajs/framework/utils"
+import { MedusaContainer } from "@medusajs/framework/types"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { readdir } from "fs/promises"
 import { isObject } from "lodash"
@@ -14,7 +18,9 @@ medusaIntegrationTestRunner({
     describe("RBAC - Endpoint entities match policy resources", () => {
       it("should have all endpoint entities present in policy resources", async () => {
         const adminEndpointEntities = await collectAdminEndpointEntities()
-        const policyResourceEntities = collectPolicyResourceEntities()
+        const policyResourceEntities = await collectPolicyResourceEntities(
+          getContainer()
+        )
 
         const missingInPolicies = [...adminEndpointEntities].filter(
           (entity) => !policyResourceEntities.has(entity)
@@ -22,7 +28,7 @@ medusaIntegrationTestRunner({
 
         if (missingInPolicies.length > 0) {
           console.log(
-            `\n❌ Missing in policy resources (${missingInPolicies.length}):\n` +
+            `\nMissing in policy resources (${missingInPolicies.length}):\n` +
               missingInPolicies.sort().join(", ")
           )
         }
@@ -39,14 +45,16 @@ medusaIntegrationTestRunner({
  * Collect all Entities from admin endpoint query-config files
  */
 async function collectAdminEndpointEntities(): Promise<Set<string>> {
-  let entities = new Set<string>()
+  const entities = new Set<string>()
   const adminApiPath = join(__dirname, "../../../packages/medusa/src/api/admin")
 
   try {
     const directories = await readdir(adminApiPath, { withFileTypes: true })
 
     for (const dir of directories) {
-      if (!dir.isDirectory()) continue
+      if (!dir.isDirectory()) {
+        continue
+      }
 
       const queryConfigPath = join(adminApiPath, dir.name, "query-config.ts")
 
@@ -55,11 +63,11 @@ async function collectAdminEndpointEntities(): Promise<Set<string>> {
         const moduleExports = await dynamicImport(queryConfigPath)
 
         if (isObject(moduleExports.Entities)) {
-          entities = new Set(
-            Array.from(
-              Object.values(moduleExports.Entities as Record<string, string>)
-            )
-          )
+          for (const entity of Object.values(
+            moduleExports.Entities as Record<string, string>
+          )) {
+            entities.add(entity)
+          }
         }
       } catch (error) {
         continue
@@ -73,14 +81,17 @@ async function collectAdminEndpointEntities(): Promise<Set<string>> {
 }
 
 /**
- * Collect all entities from global PolicyResource registry
+ * Collect all unique resources of the persisted policies.
  */
-function collectPolicyResourceEntities(): Set<string> {
-  const entities = new Set<string>()
+async function collectPolicyResourceEntities(
+  container: MedusaContainer
+): Promise<Set<string>> {
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-  for (const resource of Object.values(PolicyResource)) {
-    entities.add(resource)
-  }
+  const { data: policies } = await query.graph({
+    entity: "rbac_policy",
+    fields: ["resource"],
+  })
 
-  return entities
+  return new Set((policies ?? []).map((policy) => policy.resource as string))
 }

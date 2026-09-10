@@ -12,6 +12,10 @@ import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-ord
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import {
+  useCustomerPermissions,
+  useOrderPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type CustomerGeneralSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -95,6 +99,14 @@ export const CustomerOrderSection = ({
 
 const CustomerOrderActions = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrders } = useOrderPermissions()
+  const { canUpdate: canUpdateCustomers } = useCustomerPermissions()
+
+  const canTransferOwnership = canUpdateCustomers && canUpdateOrders
+
+  if (!canTransferOwnership) {
+    return null
+  }
 
   return (
     <ActionMenu

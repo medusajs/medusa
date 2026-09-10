@@ -4,8 +4,12 @@ import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteCustomerGroup } from "../../../../../hooks/api/customer-groups"
+import { useCustomerGroupPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type CustomerGroupGeneralSectionProps = {
   group: HttpTypes.AdminCustomerGroup
@@ -17,6 +21,7 @@ export const CustomerGroupGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useCustomerGroupPermissions()
 
   const { mutateAsync } = useDeleteCustomerGroup(group.id)
 
@@ -50,32 +55,37 @@ export const CustomerGroupGeneralSection = ({
     })
   }
 
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
+        {
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/customer-groups/${group.id}/edit`,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{group.name}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: `/customer-groups/${group.id}/edit`,
-                },
-              ],
-            },
-            {
-              actions: [
-                {
-                  icon: <Trash />,
-                  label: t("actions.delete"),
-                  onClick: handleDelete,
-                },
-              ],
-            },
-          ]}
-        />
+        {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

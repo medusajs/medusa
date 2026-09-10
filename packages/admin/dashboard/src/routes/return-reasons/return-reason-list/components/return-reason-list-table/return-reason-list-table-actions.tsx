@@ -4,8 +4,12 @@ import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteReturnReason } from "../../../../../hooks/api/return-reasons"
+import { useReturnReasonPermissions } from "../../../../../hooks/use-resource-permissions"
 
 export const ReturnReasonListTableActions = ({
   returnReason,
@@ -15,6 +19,7 @@ export const ReturnReasonListTableActions = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useReturnReasonPermissions()
 
   const { mutateAsync } = useDeleteReturnReason()
 
@@ -46,29 +51,36 @@ export const ReturnReasonListTableActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(`/settings/return-reasons/${returnReason.id}/edit`),
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          onClick: () =>
+            navigate(`/settings/return-reasons/${returnReason.id}/edit`),
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: () => handleDelete(),
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

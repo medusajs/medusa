@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
 import { useCancelClaimRequest } from "../../../../../hooks/api/claims"
+import { useOrderClaimPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ActiveOrderClaimSectionProps = {
   orderPreview: HttpTypes.AdminOrderPreview
@@ -14,6 +15,13 @@ export const ActiveOrderClaimSection = ({
   orderPreview,
 }: ActiveOrderClaimSectionProps) => {
   const { t } = useTranslation()
+  const {
+    canCreate: canCreateClaim,
+    canUpdate: canUpdateClaim,
+    canDelete: canDeleteClaim,
+  } = useOrderClaimPermissions()
+  const canContinue = canCreateClaim && canUpdateClaim
+  const canDiscard = canDeleteClaim
   const claimId = orderPreview?.order_change?.claim_id
 
   const { mutateAsync: cancelClaim } = useCancelClaimRequest(
@@ -63,15 +71,29 @@ export const ActiveOrderClaimSection = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={onCancelClaim}>
-              {t("orders.claims.cancel.title")}
-            </Button>
+          {(canDiscard || canContinue) && (
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              {canDiscard && (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={onCancelClaim}
+                >
+                  {t("orders.claims.cancel.title")}
+                </Button>
+              )}
 
-            <Button size="small" variant="secondary" onClick={onContinueClaim}>
-              {t("actions.continue")}
-            </Button>
-          </div>
+              {canContinue && (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={onContinueClaim}
+                >
+                  {t("actions.continue")}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </Container>
     </div>

@@ -43,7 +43,7 @@ export const ExecutionDetail = () => {
             <LayoutComposer.Entry id="WorkflowExecutionHistorySection">
               <WorkflowExecutionHistorySection execution={workflow_execution} />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(workflow_execution, { metadata: false, permissions: false })}
+            {detailPageDefaultEntries(workflow_execution, { metadata: false })}
           </>
         ),
       }}

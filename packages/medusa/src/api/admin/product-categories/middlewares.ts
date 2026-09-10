@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
@@ -17,27 +17,29 @@ import {
 export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/product-categories/*",
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/product-categories",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminProductCategoriesParams,
         QueryConfig.listProductCategoryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -54,62 +56,67 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/product-categories",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateProductCategory),
       validateAndTransformQuery(
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/product-categories/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateProductCategory),
       validateAndTransformQuery(
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/product-categories/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/product-categories/:id/products",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_category,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_category,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

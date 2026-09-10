@@ -321,6 +321,12 @@ const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
 
 export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY
 
+export const mePermissionsQueryOptions = {
+  queryKey: mePermissionsQueryKey,
+  queryFn: () => sdk.admin.rbacRole.mePermissions(),
+  staleTime: 5 * 60 * 1000,
+}
+
 /**
  * Fetches the authenticated actor's resolved permission set. The response is always a flat list of `resource:operation` strings.
  */
@@ -336,9 +342,7 @@ export const useMePermissions = (
   >
 ) => {
   return useQuery({
-    queryFn: () => sdk.admin.rbacRole.mePermissions(),
-    queryKey: mePermissionsQueryKey,
-    staleTime: 5 * 60 * 1000,
+    ...mePermissionsQueryOptions,
     ...options,
   })
 }

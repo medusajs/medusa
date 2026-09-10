@@ -59,7 +59,7 @@ export const RoleDetail = () => {
                 <RoleUsersSection role={role} />
               </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(role, { permissions: false })}
+            {detailPageDefaultEntries(role)}
           </>
         ),
       }}

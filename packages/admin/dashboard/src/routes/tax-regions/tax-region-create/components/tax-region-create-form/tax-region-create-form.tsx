@@ -19,6 +19,7 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { sdk } from "../../../../../lib/client"
 import { i18n } from "../../../../../components/utilities/i18n"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type TaxRegionCreateFormProps = {
   parentId?: string
@@ -173,88 +174,90 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-x-1">
-                  <Heading level="h2" className="!txt-compact-small-plus">
-                    {t("taxRegions.fields.defaultTaxRate.label")}
-                  </Heading>
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-muted"
-                  >
-                    ({t("fields.optional")})
-                  </Text>
-                  <Tooltip
-                    content={t("taxRegions.fields.defaultTaxRate.tooltip")}
-                  >
-                    <InformationCircleSolid className="text-ui-fg-muted" />
-                  </Tooltip>
-                </div>
-                <div className="flex flex-col gap-y-4">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.name")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                    <Form.Field
-                      control={form.control}
-                      name="rate"
-                      render={({ field: { value, onChange, ...field } }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("taxRegions.fields.taxRate")}
-                            </Form.Label>
-                            <Form.Control>
-                              <PercentageInput
-                                {...field}
-                                value={value?.value}
-                                decimalsLimit={4}
-                                onValueChange={(value, _name, values) =>
-                                  onChange({
-                                    value: value,
-                                    float: values?.float,
-                                  })
-                                }
-                              />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                    <Form.Field
-                      control={form.control}
-                      name="code"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("taxRegions.fields.taxCode")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
+              <PermissionGuard permission="tax_rate:create">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-x-1">
+                    <Heading level="h2" className="!txt-compact-small-plus">
+                      {t("taxRegions.fields.defaultTaxRate.label")}
+                    </Heading>
+                    <Text
+                      size="small"
+                      leading="compact"
+                      className="text-ui-fg-muted"
+                    >
+                      ({t("fields.optional")})
+                    </Text>
+                    <Tooltip
+                      content={t("taxRegions.fields.defaultTaxRate.tooltip")}
+                    >
+                      <InformationCircleSolid className="text-ui-fg-muted" />
+                    </Tooltip>
+                  </div>
+                  <div className="flex flex-col gap-y-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      <Form.Field
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => {
+                          return (
+                            <Form.Item>
+                              <Form.Label>{t("fields.name")}</Form.Label>
+                              <Form.Control>
+                                <Input {...field} />
+                              </Form.Control>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                      <Form.Field
+                        control={form.control}
+                        name="rate"
+                        render={({ field: { value, onChange, ...field } }) => {
+                          return (
+                            <Form.Item>
+                              <Form.Label>
+                                {t("taxRegions.fields.taxRate")}
+                              </Form.Label>
+                              <Form.Control>
+                                <PercentageInput
+                                  {...field}
+                                  value={value?.value}
+                                  decimalsLimit={4}
+                                  onValueChange={(value, _name, values) =>
+                                    onChange({
+                                      value: value,
+                                      float: values?.float,
+                                    })
+                                  }
+                                />
+                              </Form.Control>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                      <Form.Field
+                        control={form.control}
+                        name="code"
+                        render={({ field }) => {
+                          return (
+                            <Form.Item>
+                              <Form.Label>
+                                {t("taxRegions.fields.taxCode")}
+                              </Form.Label>
+                              <Form.Control>
+                                <Input {...field} />
+                              </Form.Control>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </PermissionGuard>
             </div>
           </div>
         </RouteFocusModal.Body>

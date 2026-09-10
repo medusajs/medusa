@@ -33,6 +33,7 @@ import { ActionMenu } from "../../../../../../../components/common/action-menu"
 import { formatFileSize } from "../../../../../../../lib/format-file-size"
 import { UploadMediaFormItem } from "../../../../../common/components/upload-media-form-item"
 import { ProductCreateSchemaType } from "../../../../types"
+import { PermissionGuard } from "../../../../../../../components/common/permission-guard"
 
 type ProductCreateMediaSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -120,7 +121,9 @@ export const ProductCreateMediaSection = ({
 
   return (
     <div id="media" className="flex flex-col gap-y-2">
-      <UploadMediaFormItem form={form} append={append} showHint={false} />
+      <PermissionGuard permission="file:create">
+        <UploadMediaFormItem form={form} append={append} showHint={false} />
+      </PermissionGuard>
       <DndContext
         sensors={sensors}
         onDragEnd={handleDragEnd}

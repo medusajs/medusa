@@ -1,13 +1,14 @@
 import {
   GraphQLUtils,
-  PolicyDefinition,
-  PolicyResource,
   promiseAll,
   toSnakeCase,
 } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import type { MedusaContainer } from "@medusajs/types"
-import { hasPermission } from "../../../policies/has-permission"
+import type { MedusaContainer, PolicyAction } from "@medusajs/types"
+import {
+  fetchPolicyResources,
+  hasPermission,
+} from "../../../policies/has-permission"
 import { FieldFilterContext, IFieldFilter } from "../field-filtering/index"
 
 /**
@@ -402,21 +403,21 @@ function collectUniqueEntityPaths(
  * Optimized for parallel permission checks
  */
 export class RBACFieldFilter implements IFieldFilter {
-  private policies: PolicyDefinition[]
-  private userRoles: string[]
+  private policies: PolicyAction[]
+  private getActorRoles: () => Promise<string[]>
   private container: MedusaContainer
 
   constructor({
     policies,
-    userRoles,
+    getActorRoles,
     container,
   }: {
-    policies: PolicyDefinition[]
-    userRoles: string[]
+    policies: PolicyAction[]
+    getActorRoles: () => Promise<string[]>
     container: MedusaContainer
   }) {
     this.policies = policies
-    this.userRoles = userRoles
+    this.getActorRoles = getActorRoles
     this.container = container
   }
 
@@ -429,11 +430,14 @@ export class RBACFieldFilter implements IFieldFilter {
       return []
     }
 
+    const actorRoles = await this.getActorRoles()
+    const policyResources = await fetchPolicyResources(this.container)
+
     const uniquePaths = collectUniqueEntityPaths(entity, fieldsToCheck)
 
     const pathsNeedingCheck: { path: string; entityName: string }[] = []
     for (const [path, info] of uniquePaths) {
-      if (info.entityName && PolicyResource[info.entityName]) {
+      if (info.entityName && policyResources.has(info.entityName)) {
         pathsNeedingCheck.push({ path, entityName: info.entityName })
       }
     }
@@ -441,7 +445,7 @@ export class RBACFieldFilter implements IFieldFilter {
     const permissionResults = await promiseAll(
       pathsNeedingCheck.map(async ({ path, entityName }) => {
         const hasAccess = await hasPermission({
-          roles: this.userRoles,
+          roles: actorRoles,
           actions: { resource: entityName, operation: "read" },
           container: this.container,
         })

@@ -7,6 +7,13 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useSalesChannel, useStockLocation } from "../../../../../hooks/api"
 import { useRegion } from "../../../../../hooks/api/regions"
+import {
+  useRegionPermissions,
+  useSalesChannelPermissions,
+  useStockLocationPermissions,
+  useStorePermissions,
+} from "../../../../../hooks/use-resource-permissions"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type StoreGeneralSectionProps = {
   store: AdminStore
@@ -14,15 +21,19 @@ type StoreGeneralSectionProps = {
 
 export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = useStorePermissions()
+  const { canRead: canReadRegions } = useRegionPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
   const { region } = useRegion(store.default_region_id!, undefined, {
-    enabled: !!store.default_region_id,
+    enabled: canReadRegions && !!store.default_region_id,
   })
 
   const defaultCurrency = store.supported_currencies?.find((c) => c.is_default)
 
   const { sales_channel } = useSalesChannel(store.default_sales_channel_id!, {
-    enabled: !!store.default_sales_channel_id,
+    enabled: canReadSalesChannels && !!store.default_sales_channel_id,
   })
 
   const { stock_location } = useStockLocation(
@@ -31,7 +42,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
       fields: "id,name",
     },
     {
-      enabled: !!store.default_location_id,
+      enabled: canReadStockLocations && !!store.default_location_id,
     }
   )
 
@@ -44,19 +55,21 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
             {t("store.manageYourStoresDetails")}
           </Text>
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: "edit",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
+                    to: "edit",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
@@ -66,77 +79,88 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {store.name}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("store.defaultCurrency")}
-        </Text>
-        {defaultCurrency ? (
-          <div className="flex items-center gap-x-2">
-            <Badge size="2xsmall">
-              {defaultCurrency.currency_code?.toUpperCase()}
-            </Badge>
-            <Text size="small" leading="compact">
-              {defaultCurrency.currency?.name}
-            </Text>
-          </div>
-        ) : (
-          <Text size="small" leading="compact">
-            -
+      <PermissionGuard permission="currency:read">
+        <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+          <Text size="small" leading="compact" weight="plus">
+            {t("store.defaultCurrency")}
           </Text>
-        )}
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("store.defaultRegion")}
-        </Text>
-        <div className="flex items-center gap-x-2">
-          {region ? (
-            <Badge size="2xsmall" asChild>
-              <Link to={`/settings/regions/${region.id}`}>{region.name}</Link>
-            </Badge>
+          {defaultCurrency ? (
+            <div className="flex items-center gap-x-2">
+              <Badge size="2xsmall">
+                {defaultCurrency.currency_code?.toUpperCase()}
+              </Badge>
+              <Text size="small" leading="compact">
+                {defaultCurrency.currency?.name}
+              </Text>
+            </div>
           ) : (
             <Text size="small" leading="compact">
               -
             </Text>
           )}
         </div>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("store.defaultSalesChannel")}
-        </Text>
-        <div className="flex items-center gap-x-2">
-          {sales_channel ? (
-            <Badge size="2xsmall" asChild>
-              <Link to={`/settings/sales-channels/${sales_channel.id}`}>
-                {sales_channel.name}
-              </Link>
-            </Badge>
-          ) : (
-            <Text size="small" leading="compact">
-              -
-            </Text>
-          )}
+      </PermissionGuard>
+
+      <PermissionGuard permission="region:read">
+        <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+          <Text size="small" leading="compact" weight="plus">
+            {t("store.defaultRegion")}
+          </Text>
+          <div className="flex items-center gap-x-2">
+            {region ? (
+              <Badge size="2xsmall" asChild>
+                <Link to={`/settings/regions/${region.id}`}>{region.name}</Link>
+              </Badge>
+            ) : (
+              <Text size="small" leading="compact">
+                -
+              </Text>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("store.defaultLocation")}
-        </Text>
-        <div className="flex items-center gap-x-2">
-          {stock_location ? (
-            <Badge size="2xsmall" asChild>
-              <Link to={`/settings/locations/${stock_location.id}`}>
-                {stock_location.name}
-              </Link>
-            </Badge>
-          ) : (
-            <Text size="small" leading="compact">
-              -
-            </Text>
-          )}
+      </PermissionGuard>
+
+      <PermissionGuard permission="sales_channel:read">
+        <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+          <Text size="small" leading="compact" weight="plus">
+            {t("store.defaultSalesChannel")}
+          </Text>
+          <div className="flex items-center gap-x-2">
+            {sales_channel ? (
+              <Badge size="2xsmall" asChild>
+                <Link to={`/settings/sales-channels/${sales_channel.id}`}>
+                  {sales_channel.name}
+                </Link>
+              </Badge>
+            ) : (
+              <Text size="small" leading="compact">
+                -
+              </Text>
+            )}
+          </div>
         </div>
-      </div>
+      </PermissionGuard>
+
+      <PermissionGuard permission="stock_location:read">
+        <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+          <Text size="small" leading="compact" weight="plus">
+            {t("store.defaultLocation")}
+          </Text>
+          <div className="flex items-center gap-x-2">
+            {stock_location ? (
+              <Badge size="2xsmall" asChild>
+                <Link to={`/settings/locations/${stock_location.id}`}>
+                  {stock_location.name}
+                </Link>
+              </Badge>
+            ) : (
+              <Text size="small" leading="compact">
+                -
+              </Text>
+            )}
+          </div>
+        </div>
+      </PermissionGuard>
     </Container>
   )
 }
