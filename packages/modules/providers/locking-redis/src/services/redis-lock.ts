@@ -2,18 +2,14 @@ import { MedusaError, promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
 import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
+import type { ChainableCommander } from "ioredis"
 import { setTimeout } from "node:timers/promises"
 
 export class RedisLockingProvider implements ILockingProvider {
   static identifier = "locking-redis"
 
   protected redisClient: Redis & {
-    acquireLock: (
-      key: string,
-      ownerId: string,
-      ttl: number,
-      awaitQueue?: boolean
-    ) => Promise<number>
+    acquireLock: (key: string, ownerId: string, ttl: number) => Promise<number>
     releaseLock: (key: string, ownerId: string) => Promise<number>
   }
   protected keyNamePrefix: string
@@ -42,14 +38,16 @@ export class RedisLockingProvider implements ILockingProvider {
       this.backoffFactor = +options.backoffFactor!
     }
 
-    // Define the custom command for acquiring locks
+    // The script only reports the state of the key; whether to wait for a lock
+    // held by someone else is the caller's decision, which is why it takes no
+    // awaitQueue argument. The anonymous owner '*' is not an identity - two
+    // anonymous callers are indistinguishable - so it can never re-enter.
     this.redisClient.defineCommand("acquireLock", {
       numberOfKeys: 1,
       lua: `
         local key = KEYS[1]
         local ownerId = ARGV[1]
         local ttl = tonumber(ARGV[2])
-        local awaitQueue = ARGV[3] == 'true'
 
         local setArgs = {key, ownerId, 'NX'}
         if ttl > 0 then
@@ -57,30 +55,22 @@ export class RedisLockingProvider implements ILockingProvider {
             table.insert(setArgs, ttl)
         end
 
-        local setResult = redis.call('SET', unpack(setArgs))
-
-        if setResult then
+        if redis.call('SET', unpack(setArgs)) then
             return 1
-        elseif not awaitQueue then
-            -- Key already exists; retrieve the current ownerId
-            local currentOwnerId = redis.call('GET', key)
-            if currentOwnerId == '*' then
-              return 0
-            elseif currentOwnerId == ownerId then
-                setArgs = {key, ownerId, 'XX'}
-                if ttl > 0 then
-                    table.insert(setArgs, 'EX')
-                    table.insert(setArgs, ttl)
-                end
-                redis.call('SET', unpack(setArgs))
-                return 1
-            else
-                return 0
-            end
-        else
-            return 0
         end
 
+        local currentOwnerId = redis.call('GET', key)
+        if currentOwnerId == ownerId and ownerId ~= '*' then
+            setArgs = {key, ownerId, 'XX'}
+            if ttl > 0 then
+                table.insert(setArgs, 'EX')
+                table.insert(setArgs, ttl)
+            end
+            redis.call('SET', unpack(setArgs))
+            return 1
+        end
+
+        return 0
       `,
     })
 
@@ -165,51 +155,55 @@ export class RedisLockingProvider implements ILockingProvider {
 
     const timeout = Math.max(args?.expire ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
-    let retryDelay = this.defaultRetryInterval
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
 
-    const acquirePromises = keys.map(async (key) => {
+    // Deduplicated and taken in a single global order: two callers asking for
+    // the same keys in opposite orders would otherwise each hold a key the
+    // other is waiting on and deadlock under awaitQueue.
+    const orderedKeys = [...new Set(keys)].sort()
+
+    for (const key of orderedKeys) {
       const errMessage = `Failed to acquire lock for key "${key}"`
       const keyName = this.getKeyName(key)
+      let retryDelay = this.defaultRetryInterval
 
-      const acquireLock = async () => {
-        while (true) {
-          if (cancellationToken?.cancelled) {
-            throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
-          }
-
-          const result = await this.redisClient.acquireLock(
-            keyName,
-            ownerId,
-            args?.expire ? timeoutSeconds : 0,
-            awaitQueue
-          )
-
-          if (result === 1) {
-            break
-          } else {
-            if (awaitQueue) {
-              // Wait before retrying with exponential backoff and jitter
-              const jitteredDelay = retryDelay * (0.5 + Math.random() * 0.5)
-              await setTimeout(jitteredDelay)
-
-              retryDelay = Math.min(
-                retryDelay * this.backoffFactor,
-                this.maximumRetryInterval
-              )
-            } else {
-              throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
-            }
-          }
+      while (true) {
+        if (cancellationToken?.cancelled) {
+          throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
         }
+
+        const result = await this.redisClient.acquireLock(
+          keyName,
+          ownerId,
+          args?.expire ? timeoutSeconds : 0
+        )
+
+        if (result === 1) {
+          break
+        }
+
+        if (!awaitQueue) {
+          throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
+        }
+
+        const jitteredDelay = retryDelay * (0.5 + Math.random() * 0.5)
+        await setTimeout(jitteredDelay)
+
+        retryDelay = Math.min(
+          retryDelay * this.backoffFactor,
+          this.maximumRetryInterval
+        )
       }
+    }
 
-      await acquireLock()
-    })
-
-    await promiseAll(acquirePromises)
+    // Known limitation: when one key of a multi-key acquire fails, the keys
+    // already taken stay held until their TTL expires, or forever when no
+    // `expire` was passed. A compare-and-delete rollback keyed on the owner is
+    // not a safe fix: if one of those keys expired and was re-acquired by
+    // another call sharing the same ownerId, the rollback would delete that
+    // live lease. Telling the two apart requires a per-call acquisition token.
   }
 
   async release(
@@ -250,24 +244,19 @@ export class RedisLockingProvider implements ILockingProvider {
       const keys = result[1]
 
       if (keys.length > 0) {
-        const pipeline = this.redisClient.pipeline()
+        // One atomic compare-and-delete per key, replacing a GET pipeline
+        // followed by an UNLINK pipeline: in the window between the two, a key
+        // could expire and be re-acquired by another owner, and the delete
+        // then destroyed that new owner's lock.
+        const pipeline = this.redisClient.pipeline() as ChainableCommander & {
+          releaseLock: (key: string, ownerId: string) => ChainableCommander
+        }
 
         keys.forEach((key) => {
-          pipeline.get(key)
+          pipeline.releaseLock(key, ownerId)
         })
 
-        const currentOwners = await pipeline.exec()
-
-        const deletePipeline = this.redisClient.pipeline()
-        keys.forEach((key, idx) => {
-          const currentOwner = currentOwners?.[idx]?.[1]
-
-          if (currentOwner === ownerId) {
-            deletePipeline.unlink(key)
-          }
-        })
-
-        await deletePipeline.exec()
+        await pipeline.exec()
       }
     } while (cursor !== "0")
   }
