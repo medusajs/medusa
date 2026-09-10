@@ -90,8 +90,8 @@ export type SearchIndexContext = {
   locking?: {
     execute<T>(
       keys: string | string[],
-      job: () => Promise<T>,
-      args?: { timeout?: number }
+      job: (signal?: AbortSignal) => Promise<T>,
+      args?: { timeout?: number; expire?: number }
     ): Promise<T>
   }
   // Resolves which physical index currently serves reads/writes for a

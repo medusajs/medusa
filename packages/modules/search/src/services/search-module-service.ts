@@ -415,7 +415,9 @@ export default class SearchModuleService
       const versions = record ? versionsByIndexId.get(record.id) ?? [] : []
       const activeVersion =
         record?.active_version != null
-          ? versions.find((version) => version.version === record.active_version)
+          ? versions.find(
+              (version) => version.version === record.active_version
+            )
           : undefined
 
       return {
