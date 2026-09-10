@@ -14,7 +14,7 @@ module.exports = defineConfig({
   },
   projectConfig: {
     http: {
-      jwtSecret: "test",
+      jwtSecret: "secret",
     },
   },
 })
