@@ -18,7 +18,7 @@ describe("Order Fulfillment Workflows Definition", () => {
   })
 
   it("should define markOrderFulfillmentAsDeliveredWorkflow correctly", () => {
-    expect(markOrderFulfillmentAsDeliveredWorkflow.getName()).toEqual("mark-order-fulfillment-as-delivered")
+    expect(markOrderFulfillmentAsDeliveredWorkflow.getName()).toEqual("mark-order-fulfillment-as-delivered-workflow")
   })
 
   it("should define listShippingOptionsForOrderWorkflow correctly", () => {
