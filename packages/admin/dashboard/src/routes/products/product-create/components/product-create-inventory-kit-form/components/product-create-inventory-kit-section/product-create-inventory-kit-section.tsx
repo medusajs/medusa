@@ -236,8 +236,9 @@ export const ProductCreateInventoryKitSection = ({
       <Heading>{t("products.create.inventory.heading")}</Heading>
 
       {variants.fields
-        .filter((v) => v.inventory_kit)
-        .map((variant, variantIndex) => (
+        .map((variant, variantIndex) => ({ variant, variantIndex }))
+        .filter(({ variant }) => variant.inventory_kit)
+        .map(({ variant, variantIndex }) => (
           <VariantSection
             key={variant.id}
             form={form}

@@ -31,9 +31,9 @@ medusaIntegrationTestRunner({
       const { data: { order } } = await api.get("/admin/orders/order_123")
 
       expect(normalizeBigNumbers(order)).toMatchObject({
-        total: 5000,
-        subtotal: 4500,
-        tax_total: 500,
+        total: 50,
+        subtotal: 45,
+        tax_total: 5,
       })
     })
   },

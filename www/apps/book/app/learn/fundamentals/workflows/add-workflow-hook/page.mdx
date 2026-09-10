@@ -106,10 +106,15 @@ For example:
 
 ```ts title="src/workflows/hooks/create-blog-post.ts"
 import { createBlogPostWorkflow } from "../create-blog-post"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 createBlogPostWorkflow.hooks.validate(
   async ({ post }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: existingPosts } = await query.graph({
       entity: "post",

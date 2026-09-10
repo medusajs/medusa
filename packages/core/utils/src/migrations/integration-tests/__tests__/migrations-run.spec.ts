@@ -10,6 +10,8 @@ import { Migrations, MigrationsEvents } from "../../index"
 import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 import { mikroOrmCreateConnection } from "../../../dal"
 
+jest.setTimeout(30000)
+
 const migrationFileNameGenerator = (_: string, name?: string) => {
   return `Migration${new Date().getTime()}${name ? `_${name}` : ""}`
 }

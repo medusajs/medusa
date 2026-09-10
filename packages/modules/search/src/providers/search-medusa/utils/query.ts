@@ -4,11 +4,13 @@ import type {
   AttributeSchemaConfig,
   ComputeAttributes,
   Filter,
+  FuzzyEditDistanceThreshold,
   HighlightFragment,
   Limit,
   IndexQuery,
   RankBy,
   Row,
+  TokenFilterOptions,
 } from "./api-types"
 import { mergeFilters, textMatchFilter, toSearchFilter } from "./filters"
 import type { MedusaSearchQueryOptions } from "./options"
@@ -62,19 +64,31 @@ function searchableFields(
   return fields
 }
 
+/**
+ * The last word of the query is a prefix, not a whole token, when
+ * `match_strategy` is "last" (typeahead) — every BM25 clause built over
+ * `input.q` needs this so a prefix-only match (query "egg" against document
+ * "Eggs") is scored/highlighted consistently with how `textMatchFilter`
+ * decided the document matches in the first place.
+ */
+function matchStrategySuffix(
+  input: SearchTypes.ProviderSearchQuery
+): TokenFilterOptions | undefined {
+  return input.search_options?.match_strategy === "last"
+    ? { last_as_prefix: true }
+    : undefined
+}
+
 function textRank(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
 ): RankBy {
   const fields = searchableFields(input, plan)
+  const suffix = matchStrategySuffix(input)
 
   const clauses = fields.map((path): unknown => {
     const field = plan.fields.get(path)!
 
-    const suffix =
-      input.search_options?.match_strategy === "last"
-        ? { last_as_prefix: true }
-        : undefined
     const clause = suffix
       ? [path, "BM25", input.q!, suffix]
       : [path, "BM25", input.q!]
@@ -93,51 +107,47 @@ function textRank(
 
 const TYPO_TOLERANCE_RANK_WEIGHT = 0.01
 
-function minQueryCharsForDistance(distance: number): number {
-  // Cloud: min_query_chars must be at least 3 * (distance + 1).
-  return 3 * (distance + 1)
+function fuzzyMaxEditDistance(plan: IndexPlan): FuzzyEditDistanceThreshold[] {
+  // Both thresholds are validated against Cloud's floor when the index is
+  // planned, so they can be passed through as configured.
+  return [
+    {
+      min_query_chars: plan.typo_tolerance.min_word_size_for_one_typo,
+      distance: 1,
+    },
+    {
+      min_query_chars: plan.typo_tolerance.min_word_size_for_two_typos,
+      distance: 2,
+    },
+  ]
 }
 
-function fuzzyMaxEditDistance(plan: IndexPlan) {
-  const one = Math.max(
-    plan.typo_tolerance.min_word_size_for_one_typo,
-    minQueryCharsForDistance(1)
-  )
-  const two = Math.max(
-    plan.typo_tolerance.min_word_size_for_two_typos,
-    minQueryCharsForDistance(2),
-    one
-  )
-
-  return [
-    { min_query_chars: one, distance: 1 },
-    { min_query_chars: two, distance: 2 },
-  ]
+function fuzzyFields(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): string[] {
+  return searchableFields(input, plan).filter((path) => {
+    const schema = plan.schema[path]
+    return (
+      typeof schema === "object" && !!(schema as AttributeSchemaConfig).fuzzy
+    )
+  })
 }
 
 function fuzzyMatchFilter(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
 ): Filter | undefined {
-  if (!input.q?.trim()) {
+  const fields = fuzzyFields(input, plan)
+  const words = (input.q ?? "").trim().split(/\s+/).filter(Boolean)
+
+  if (!fields.length || !words.length) {
     return undefined
   }
 
-  const eligible = searchableFields(input, plan).filter((path) => {
-    const schema = plan.schema[path]
-    return typeof schema === "object" && (schema as AttributeSchemaConfig).fuzzy
-  })
-
-  if (!eligible.length) {
-    fail(
-      `Search index "${input.index.name}" has no fuzzy-enabled fields for typo tolerance — check settings.typo_tolerance`
-    )
-  }
-
   const maxEditDistance = fuzzyMaxEditDistance(plan)
-  const words = input.q.trim().split(/\s+/).filter(Boolean)
   const wordClauses = words.map((word): Filter => {
-    const fieldClauses = eligible.map(
+    const fieldClauses = fields.map(
       (path): Filter => [
         path,
         "Fuzzy",
@@ -158,12 +168,14 @@ function boostWithTypoTolerance(
   plan: IndexPlan,
   rankBy: RankBy
 ): RankBy {
+  const fuzzy = fuzzyMatchFilter(input, plan)
+  if (!fuzzy) {
+    return rankBy
+  }
+
   return [
     "Sum",
-    [
-      rankBy,
-      ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzyMatchFilter(input, plan)],
-    ],
+    [rankBy, ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzy]],
   ] as RankBy
 }
 
@@ -181,7 +193,7 @@ export function buildQueryFilters(
       )
     : undefined
   const match =
-    includeTextMatch && input.search_options?.typo_tolerance
+    includeTextMatch && applyTypoTolerance(input, plan)
       ? mergeFilters([text, fuzzyMatchFilter(input, plan)], "Or")
       : text
 
@@ -193,18 +205,52 @@ const DEFAULT_HIGHLIGHT_POST_TAG = "</mark>"
 const DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT = 1
 const SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT = 3
 
-function buildHighlightPlan(
+function hasTextQuery(input: SearchTypes.ProviderSearchQuery): boolean {
+  return !!input.q?.trim()
+}
+
+function applyTypoTolerance(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
-): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
-  const highlight = input.search_options!.highlight!
+): boolean {
+  return (
+    !!input.search_options?.typo_tolerance &&
+    hasTextQuery(input) &&
+    fuzzyFields(input, plan).length > 0
+  )
+}
 
+function resolveHighlightOptions(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): SearchTypes.SearchHighlightOptions | undefined {
+  const highlight = input.search_options?.highlight
+  if (!highlight || !hasTextQuery(input)) {
+    return undefined
+  }
+
+  if (highlight === true) {
+    return { fields: searchableFields(input, plan) }
+  }
+
+  return highlight
+}
+
+function buildHighlightPlan(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan,
+  highlight: SearchTypes.SearchHighlightOptions
+): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
   if (!highlight.fields.length) {
     fail("Medusa search highlighting requires at least one field")
   }
 
   const snippet = !!highlight.snippet
   const computeAttributes: ComputeAttributes = {}
+  const suffix = matchStrategySuffix(input)
+  const rankFragmentsBy = suffix
+    ? ["$fragment", "BM25", input.q!, suffix]
+    : ["$fragment", "BM25", input.q!]
 
   const fields = highlight.fields.map((path, index) => {
     const field = plan.fields.get(path)
@@ -220,7 +266,7 @@ function buildHighlightPlan(
       path,
       {
         fragment_by: snippet ? "sentence" : "none",
-        rank_fragments_by: ["$fragment", "BM25", input.q!],
+        rank_fragments_by: rankFragmentsBy,
         fragment_limit: snippet
           ? SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT
           : DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT,
@@ -354,15 +400,13 @@ function vectorRank(
     )
   }
 
-  const rankField = planned.embed ?? field
-
   if (vector.value) {
     if (planned.dimensions && vector.value.length !== planned.dimensions) {
       fail(
         `Vector value for "${field}" expected ${planned.dimensions} dimensions, got ${vector.value.length}`
       )
     }
-    return [rankField, "ANN", vector.value] as RankBy
+    return [field, "ANN", vector.value] as RankBy
   }
 
   const text = vector.query
@@ -378,7 +422,7 @@ function vectorRank(
     )
   }
 
-  return [rankField, "ANN", ["Embed", text]] as RankBy
+  return [field, "ANN", ["Embed", text]] as RankBy
 }
 
 export function buildQueryPlan(
@@ -394,9 +438,6 @@ export function buildQueryPlan(
   }
   if (skip + take > 10000) {
     fail("Medusa search can return at most 10,000 results per query")
-  }
-  if ((options.typo_tolerance || options.highlight) && !input.q) {
-    fail("Medusa search typo tolerance and highlighting require a text query")
   }
   if (options.locales?.length) {
     fail(
@@ -418,7 +459,7 @@ export function buildQueryPlan(
     const semanticRatio = vectorSemanticRatio(input)
     if (input.q && semanticRatio < 1) {
       let text = textRank(input, plan)
-      if (options.typo_tolerance) {
+      if (applyTypoTolerance(input, plan)) {
         text = boostWithTypoTolerance(input, plan, text)
       }
       rankBy =
@@ -440,7 +481,7 @@ export function buildQueryPlan(
       rankBy = ordered
     } else {
       rankBy = textRank(input, plan)
-      if (options.typo_tolerance) {
+      if (applyTypoTolerance(input, plan)) {
         rankBy = boostWithTypoTolerance(input, plan, rankBy)
       }
     }
@@ -457,8 +498,9 @@ export function buildQueryPlan(
     }
   }
 
-  const highlightPlan = options.highlight
-    ? buildHighlightPlan(input, plan)
+  const highlight = resolveHighlightOptions(input, plan)
+  const highlightPlan = highlight
+    ? buildHighlightPlan(input, plan, highlight)
     : undefined
 
   return {

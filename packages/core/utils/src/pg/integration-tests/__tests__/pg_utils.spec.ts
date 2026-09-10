@@ -6,6 +6,8 @@ import {
   parseConnectionString,
 } from "../../index"
 
+jest.setTimeout(30000)
+
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? ""

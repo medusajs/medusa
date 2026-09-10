@@ -1,0 +1,8 @@
+This package contains software under two licenses. Enterprise Edition
+materials, and generated or compiled forms of those materials, are proprietary
+and require a commercial agreement with MedusaJS, Inc. All other materials are
+licensed under the MIT License.
+
+The complete, authoritative scope and terms are available in `LICENSE` and
+`ENTERPRISE-LICENSE.md` at the root of the corresponding Medusa source release:
+https://github.com/medusajs/medusa

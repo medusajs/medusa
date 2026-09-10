@@ -2,6 +2,7 @@ import {
   AuthIdentityDTO,
   AuthMfaChallengeDTO,
   ConfigModule,
+  IAuthModuleService,
   MedusaContainer,
   ProjectConfigOptions,
 } from "@medusajs/framework/types"
@@ -9,6 +10,7 @@ import {
   ContainerRegistrationKeys,
   FeatureFlag,
   generateJwtToken,
+  Modules,
 } from "@medusajs/framework/utils"
 import { type Secret } from "jsonwebtoken"
 import RbacFeatureFlag from "../../../feature-flags/rbac"
@@ -33,22 +35,24 @@ export async function generateJwtTokenWithChecks(
   )
   const { http } = config.projectConfig
 
-  const actorlessToken = await generateJwtTokenForAuthIdentity(
-    {
-      authIdentity,
-      actorType: actorType,
-      authProvider: authProvider,
-      container: container,
-    },
-    {
-      secret: http.jwtSecret!,
-      expiresIn: http.jwtExpiresIn,
-      // Running a verification is about the auth identity, so we return a token to be able to authenticate the requests
-      // without having an actor tied to it until the verification is completed.
-      skipActorType: true,
-      options: http.jwtOptions,
-    }
-  )
+  const generateActorlessToken = async () =>
+    await generateJwtTokenForAuthIdentity(
+      {
+        authIdentity,
+        actorType: actorType,
+        authProvider: authProvider,
+        container: container,
+        mfaEnabled: !!mfaChallenge,
+      },
+      {
+        secret: http.jwtSecret!,
+        expiresIn: http.jwtExpiresIn,
+        // Running a verification is about the auth identity, so we return a token to be able to authenticate the requests
+        // without having an actor tied to it until the verification is completed.
+        skipActorType: true,
+        options: http.jwtOptions,
+      }
+    )
 
   // Check if verification of the provider entity data is required (such as email verification)
   const { requiresVerification, verification } = await validateVerification(
@@ -64,7 +68,7 @@ export async function generateJwtTokenWithChecks(
     return {
       verification_required: true,
       verification,
-      token: actorlessToken,
+      token: await generateActorlessToken(),
     }
   }
 
@@ -72,7 +76,7 @@ export async function generateJwtTokenWithChecks(
     return {
       mfa_required: true,
       mfa_challenge: mfaChallenge,
-      token: actorlessToken,
+      token: await generateActorlessToken(),
     }
   }
 
@@ -82,6 +86,7 @@ export async function generateJwtTokenWithChecks(
       actorType: actorType,
       authProvider: authProvider,
       container,
+      mfaEnabled: !!mfaChallenge,
     },
     {
       secret: http.jwtSecret!,
@@ -99,11 +104,15 @@ export async function generateJwtTokenForAuthIdentity(
     actorType,
     authProvider,
     container,
+    mfaEnabled,
+    mfaChallengeCompletedAt,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
     authProvider?: string
     container?: MedusaContainer
+    mfaEnabled?: boolean
+    mfaChallengeCompletedAt?: Date | string | null
   },
   {
     secret,
@@ -128,6 +137,21 @@ export async function generateJwtTokenForAuthIdentity(
     : authIdentity.provider_identities?.filter(
         (identity) => identity.provider === authProvider
       )[0]
+
+  let mfaEnabled_ = mfaEnabled ?? false
+
+  if (mfaEnabled === undefined && container && authIdentity?.id) {
+    const authModule = container.resolve<IAuthModuleService>(Modules.AUTH)
+    const enabledFactors = await authModule.listAuthMfa(
+      {
+        auth_identity_id: authIdentity.id,
+        status: "enabled",
+      },
+      { select: ["id"] }
+    )
+
+    mfaEnabled_ = enabledFactors.length > 0
+  }
 
   let roles: string[] | undefined
 
@@ -158,6 +182,10 @@ export async function generateJwtTokenForAuthIdentity(
       actor_type: actorType,
       auth_identity_id: authIdentity?.id ?? "",
       ...(authProvider ? { auth_provider: authProvider } : {}),
+      mfa_enabled: mfaEnabled_,
+      mfa_challenge_completed_at: mfaChallengeCompletedAt
+        ? new Date(mfaChallengeCompletedAt).toISOString()
+        : null,
       app_metadata: {
         ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,

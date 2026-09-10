@@ -17,7 +17,7 @@ export const BareboneLayout = ({
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
       <head />
       {children}
-      <GoogleAnalytics gaId={gaId || "temp"} />
+      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   )
 }

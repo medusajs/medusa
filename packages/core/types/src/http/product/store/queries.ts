@@ -110,3 +110,72 @@ export interface StoreProductListParams
    */
   option_value_id?: string | string[]
 }
+
+/**
+ * The parameters accepted by `GET /store/products/search`.
+ *
+ * The filters are narrower than `StoreProductListParams`: each one has to
+ * exist as a filterable field on the product search index, and a search engine
+ * rejects a filter on a field its index doesn't hold.
+ */
+export interface StoreProductSearchParams extends StoreProductPricingContext {
+  /**
+   * The free-text query matched against the index' searchable fields.
+   */
+  q?: string
+  /**
+   * Filter by the product's ID(s).
+   */
+  id?: string | string[]
+  /**
+   * Filter by the product's handle(s).
+   */
+  handle?: string | string[]
+  /**
+   * Filter by the product's collection(s).
+   */
+  collection_id?: string | string[]
+  /**
+   * Filter by the product's type(s).
+   */
+  type_id?: string | string[]
+  /**
+   * Filter by the product's tag(s).
+   */
+  tag_id?: string | string[]
+  /**
+   * Filter by the product's category(ies).
+   */
+  category_id?: string | string[]
+  /**
+   * Filter by the sales channel(s) the product is available in. Must be a
+   * subset of the sales channels the publishable key is scoped to.
+   */
+  sales_channel_id?: string | string[]
+  /**
+   * The dotted paths of the fields to return. Fields the index holds come back
+   * from the search engine; anything else is fetched for the matching products
+   * and merged in.
+   */
+  fields?: string
+  /**
+   * The field to sort the results by, prefixed with `-` for descending order.
+   * Left unset, results come back in relevance order.
+   */
+  order?: string
+  /**
+   * The maximum number of products to return.
+   */
+  limit?: number
+  /**
+   * The number of products to skip before the returned ones.
+   */
+  offset?: number
+  /**
+   * The locale code in BCP 47 format, used to localize the returned products.
+   *
+   * @example
+   * "en-US"
+   */
+  locale?: string
+}

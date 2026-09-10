@@ -20,25 +20,41 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/session",
-    middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
+    middlewares: [
+      authenticate("*", "bearer", {
+        allowUnregistered: true,
+        requireMfa: false,
+      }),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/auth/session",
-    middlewares: [authenticate("*", ["session"], { allowUnregistered: true })],
+    middlewares: [
+      authenticate("*", ["session"], {
+        allowUnregistered: true,
+        requireMfa: false,
+      }),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/auth/token/refresh",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"], {
+        allowUnregistered: true,
+        requireMfa: false,
+      }),
     ],
   },
   {
     method: ["POST"],
     matcher: "/auth/mfa/challenges/:id/verify",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"], {
+        allowUnregistered: true,
+        requireMfa: false,
+      }),
       validateAndTransformBody(AuthMfaVerifyChallengeRequest),
     ],
   },
@@ -127,7 +143,10 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/verification/request",
     middlewares: [
-      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("*", ["session", "bearer"], {
+        allowUnregistered: true,
+        requireMfa: false,
+      }),
       validateAndTransformBody(VerificationRequest),
     ],
   },

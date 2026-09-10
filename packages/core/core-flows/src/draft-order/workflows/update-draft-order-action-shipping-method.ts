@@ -88,9 +88,13 @@ export const updateDraftOrderActionShippingMethodWorkflow = createWorkflow(
 
     validateDraftOrderChangeStep({ order, orderChange })
 
-    const shippingOptions = when({ input }, ({ input }) => {
-      return input.data?.custom_amount === null
-    }).then(() => {
+    const shippingOptions = when(
+      "get-shipping-options",
+      { input },
+      ({ input }) => {
+        return input.data?.custom_amount === null
+      }
+    ).then(() => {
       const action = transform(
         { orderChange, input, order },
         ({ orderChange, input, order }) => {

@@ -1,3 +1,4 @@
+export * from "./allow-fields-middleware"
 export * from "./apply-default-filters"
 export * from "./apply-locale"
 export * from "./apply-params-as-filters"

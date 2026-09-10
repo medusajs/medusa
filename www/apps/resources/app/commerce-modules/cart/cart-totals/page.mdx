@@ -89,8 +89,10 @@ export const myWorkflow = createWorkflow(
   </CodeTab>
   <CodeTab label="query.graph" value="query.graph">
 
-```ts highlights={[["8"]]}
-const query = container.resolve("query") // or req.scope.resolve in API routes
+```ts highlights={[["10"]]}
+const query = container.resolve(
+  ContainerRegistrationKeys.QUERY
+) // or req.scope.resolve in API routes
 
 const { data: [cart] } = await query.graph({
   entity: "cart",
@@ -429,6 +431,8 @@ You also can't pass `*` along with `total` in the Query's fields option. Passing
 <CodeTabs group="query-type">
   <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
 
+{/* eslint-disable @medusajs/no-wildcard-with-specific-fields */}
+
 ```ts
 const { data: carts } = useQueryGraphStep({
   entity: "cart",
@@ -442,6 +446,8 @@ const { data: carts } = useQueryGraphStep({
 ```
   </CodeTab>
   <CodeTab label="query.graph" value="query.graph">
+
+{/* eslint-disable @medusajs/no-wildcard-with-specific-fields */}
 
 ```ts
 const { data: [cart] } = await query.graph({
