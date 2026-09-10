@@ -52,7 +52,7 @@ const CreateRegionSchema = zod.object({
   automatic_taxes: zod.boolean(),
   is_tax_inclusive: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
-  payment_providers: zod.array(zod.string()).min(1),
+  payment_providers: zod.array(zod.string()),
 })
 
 const PREFIX = "cr"
@@ -89,6 +89,15 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
     useCreateRegion()
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    if (values.payment_providers.length === 0) {
+      form.setError("payment_providers", {
+        type: "manual",
+        message: "Select at least one payment provider",
+      })
+
+      return
+    }
+
     await createRegion(
       {
         name: values.name,
