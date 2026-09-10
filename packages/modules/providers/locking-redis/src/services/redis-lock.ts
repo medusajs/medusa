@@ -171,10 +171,7 @@ export class RedisLockingProvider implements ILockingProvider {
       ? DEFAULT_LOCK_EXPIRATION
       : expire
 
-    // Unique per call, so the release at the end can only delete the lock this
-    // call took. One owner shared by every caller makes the release's owner
-    // check vacuous: a job whose lease had already lapsed would delete the
-    // lock of whichever job took the keys after it.
+    // Unique per call, so the release at the end can only delete the lock this call took.
     const ownerId = `execute:${randomUUID()}`
 
     const cancellationToken = { cancelled: false }
@@ -233,9 +230,7 @@ export class RedisLockingProvider implements ILockingProvider {
    * available to anyone else.
    *
    * A renewal that reports the key as gone or owned by someone else is
-   * definitive — no later renewal can win it back — so the signal aborts. A
-   * renewal that could not reach Redis says nothing yet, and the next attempt
-   * decides.
+   * definitive — no later renewal can win it back — so the signal aborts.
    */
   private renewUntilStopped(
     keys: string | string[],

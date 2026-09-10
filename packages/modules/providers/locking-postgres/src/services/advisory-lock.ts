@@ -27,10 +27,8 @@ export class PostgresAdvisoryLockProvider
 
   /**
    * Runs `job` while holding `keys` as transaction-scoped advisory locks. They
-   * are held by the transaction below for as long as it is open, so there is no
-   * lease to renew and no way for the job to lose them while it runs: `expire`
-   * is accepted for parity with the other providers and unused, and `job`'s
-   * signal is never aborted.
+   * are held by the transaction below for as long as it is open, so lease renewal
+   * is not necessary.
    */
   async execute<T>(
     keys: string | string[],

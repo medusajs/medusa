@@ -34,13 +34,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
 
   /**
    * Runs `job` while holding `keys`. The lock is held for exactly as long as
-   * the job runs: these locks live in this process' memory, so there is no
-   * peer that could need them back, and nothing to recover from if the process
-   * dies. `expire` is accepted for parity with the distributed providers and
-   * deliberately unused — a lease that outlives the job is what let a second
-   * writer in, and a job that hangs should keep the keys rather than hand them
-   * over. `job`'s signal is never aborted here for the same reason: an
-   * in-memory lock cannot be lost while it is held.
+   * the job runs, lease renewal and aborts are not necessary as everything is in-memory.
    */
   async execute<T>(
     keys: string | string[],

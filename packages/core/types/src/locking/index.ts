@@ -72,10 +72,8 @@ export interface ILockingProvider {
    * with that same owner once the job is done. Otherwise, a job whose lock expired while it was still running
    * releases whichever lock is on the keys by then, which is the next job's.
    *
-   * You should also keep the lock alive while the job runs by extending its expiration periodically, rather than
-   * relying on the `expire` value to outlast the job: a job may take much longer than the caller expected, and
-   * the keys must not become available to another process while it's still running. If you find that the lock has
-   * been lost, abort the signal you pass to the job and throw, since the job no longer has exclusive access.
+   * You should also keep the lock alive while the job runs by extending its expiration periodically.
+   * If you find that the lock has been lost, abort the signal you pass to the job and throw, since the job no longer has exclusive access.
    *
    * @param keys - The keys to lock during the job's execution.
    * @param job - The asynchronous job to execute while the keys are locked. Pass it a signal that you abort if
