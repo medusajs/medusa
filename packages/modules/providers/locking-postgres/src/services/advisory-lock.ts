@@ -25,11 +25,17 @@ export class PostgresAdvisoryLockProvider
     return this.manager
   }
 
+  /**
+   * Runs `job` while holding `keys` as transaction-scoped advisory locks. They
+   * are held by the transaction below for as long as it is open, so lease renewal
+   * is not necessary.
+   */
   async execute<T>(
     keys: string | string[],
-    job: () => Promise<T>,
+    job: (signal?: AbortSignal) => Promise<T>,
     args?: {
       timeout?: number
+      expire?: number
     }
   ): Promise<T> {
     const timeout = Math.max(args?.timeout ?? 5, 1)
