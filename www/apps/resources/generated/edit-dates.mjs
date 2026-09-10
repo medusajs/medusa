@@ -7655,11 +7655,12 @@ export const generatedEditDates = {
   "app/enterprise/rbac/concepts/page.mdx": "2026-09-10T07:49:02.923Z",
   "app/enterprise/rbac/define-policies/page.mdx": "2026-09-10T07:49:02.924Z",
   "app/enterprise/rbac/js-sdk/page.mdx": "2026-09-10T07:49:02.924Z",
-  "app/enterprise/rbac/module-options/page.mdx": "2026-09-10T07:49:02.925Z",
+  "app/enterprise/rbac/module-options/page.mdx": "2026-09-10T08:28:52.660Z",
   "app/enterprise/rbac/links-to-other-modules/page.mdx": "2026-09-10T07:49:02.924Z",
   "app/enterprise/rbac/page.mdx": "2026-09-10T07:49:02.925Z",
   "app/enterprise/rbac/protect-routes/page.mdx": "2026-09-10T07:49:02.925Z",
   "app/enterprise/rbac/workflows/page.mdx": "2026-09-10T07:49:26.309Z",
-  "app/enterprise/rbac/scopes/page.mdx": "2026-09-10T07:49:02.926Z",
-  "app/commerce-modules/user/links-to-other-modules/page.mdx": "2026-09-10T07:49:02.919Z"
+  "app/enterprise/rbac/scopes/page.mdx": "2026-09-10T08:28:43.310Z",
+  "app/commerce-modules/user/links-to-other-modules/page.mdx": "2026-09-10T07:49:02.919Z",
+  "app/enterprise/rbac/api-routes/page.mdx": "2026-09-10T10:22:42.289Z"
 }

@@ -81,6 +81,13 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
               "path": "/enterprise/rbac/scopes",
               "title": "RBAC Scopes",
               "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/rbac/api-routes",
+              "title": "RBAC API Routes",
+              "children": []
             }
           ]
         },

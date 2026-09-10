@@ -53,6 +53,11 @@ export const rbacSidebar = [
             path: "/enterprise/rbac/scopes",
             title: "RBAC Scopes",
           },
+          {
+            type: "link",
+            path: "/enterprise/rbac/api-routes",
+            title: "RBAC API Routes",
+          },
         ],
       },
       {
