@@ -4,6 +4,7 @@ import type {
   AttributeSchemaConfig,
   ComputeAttributes,
   Filter,
+  FuzzyEditDistanceThreshold,
   HighlightFragment,
   Limit,
   IndexQuery,
@@ -106,51 +107,47 @@ function textRank(
 
 const TYPO_TOLERANCE_RANK_WEIGHT = 0.01
 
-function minQueryCharsForDistance(distance: number): number {
-  // Cloud: min_query_chars must be at least 3 * (distance + 1).
-  return 3 * (distance + 1)
+function fuzzyMaxEditDistance(plan: IndexPlan): FuzzyEditDistanceThreshold[] {
+  // Both thresholds are validated against Cloud's floor when the index is
+  // planned, so they can be passed through as configured.
+  return [
+    {
+      min_query_chars: plan.typo_tolerance.min_word_size_for_one_typo,
+      distance: 1,
+    },
+    {
+      min_query_chars: plan.typo_tolerance.min_word_size_for_two_typos,
+      distance: 2,
+    },
+  ]
 }
 
-function fuzzyMaxEditDistance(plan: IndexPlan) {
-  const one = Math.max(
-    plan.typo_tolerance.min_word_size_for_one_typo,
-    minQueryCharsForDistance(1)
-  )
-  const two = Math.max(
-    plan.typo_tolerance.min_word_size_for_two_typos,
-    minQueryCharsForDistance(2),
-    one
-  )
-
-  return [
-    { min_query_chars: one, distance: 1 },
-    { min_query_chars: two, distance: 2 },
-  ]
+function fuzzyFields(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): string[] {
+  return searchableFields(input, plan).filter((path) => {
+    const schema = plan.schema[path]
+    return (
+      typeof schema === "object" && !!(schema as AttributeSchemaConfig).fuzzy
+    )
+  })
 }
 
 function fuzzyMatchFilter(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
 ): Filter | undefined {
-  if (!input.q?.trim()) {
+  const fields = fuzzyFields(input, plan)
+  const words = (input.q ?? "").trim().split(/\s+/).filter(Boolean)
+
+  if (!fields.length || !words.length) {
     return undefined
   }
 
-  const eligible = searchableFields(input, plan).filter((path) => {
-    const schema = plan.schema[path]
-    return typeof schema === "object" && (schema as AttributeSchemaConfig).fuzzy
-  })
-
-  if (!eligible.length) {
-    fail(
-      `Search index "${input.index.name}" has no fuzzy-enabled fields for typo tolerance — check settings.typo_tolerance`
-    )
-  }
-
   const maxEditDistance = fuzzyMaxEditDistance(plan)
-  const words = input.q.trim().split(/\s+/).filter(Boolean)
   const wordClauses = words.map((word): Filter => {
-    const fieldClauses = eligible.map(
+    const fieldClauses = fields.map(
       (path): Filter => [
         path,
         "Fuzzy",
@@ -171,12 +168,14 @@ function boostWithTypoTolerance(
   plan: IndexPlan,
   rankBy: RankBy
 ): RankBy {
+  const fuzzy = fuzzyMatchFilter(input, plan)
+  if (!fuzzy) {
+    return rankBy
+  }
+
   return [
     "Sum",
-    [
-      rankBy,
-      ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzyMatchFilter(input, plan)],
-    ],
+    [rankBy, ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzy]],
   ] as RankBy
 }
 
@@ -194,7 +193,7 @@ export function buildQueryFilters(
       )
     : undefined
   const match =
-    includeTextMatch && applyTypoTolerance(input)
+    includeTextMatch && applyTypoTolerance(input, plan)
       ? mergeFilters([text, fuzzyMatchFilter(input, plan)], "Or")
       : text
 
@@ -210,8 +209,15 @@ function hasTextQuery(input: SearchTypes.ProviderSearchQuery): boolean {
   return !!input.q?.trim()
 }
 
-function applyTypoTolerance(input: SearchTypes.ProviderSearchQuery): boolean {
-  return !!input.search_options?.typo_tolerance && hasTextQuery(input)
+function applyTypoTolerance(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): boolean {
+  return (
+    !!input.search_options?.typo_tolerance &&
+    hasTextQuery(input) &&
+    fuzzyFields(input, plan).length > 0
+  )
 }
 
 function resolveHighlightOptions(
@@ -453,7 +459,7 @@ export function buildQueryPlan(
     const semanticRatio = vectorSemanticRatio(input)
     if (input.q && semanticRatio < 1) {
       let text = textRank(input, plan)
-      if (applyTypoTolerance(input)) {
+      if (applyTypoTolerance(input, plan)) {
         text = boostWithTypoTolerance(input, plan, text)
       }
       rankBy =
@@ -475,7 +481,7 @@ export function buildQueryPlan(
       rankBy = ordered
     } else {
       rankBy = textRank(input, plan)
-      if (applyTypoTolerance(input)) {
+      if (applyTypoTolerance(input, plan)) {
         rankBy = boostWithTypoTolerance(input, plan, rankBy)
       }
     }
