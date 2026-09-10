@@ -1,4 +1,7 @@
-import { buildAllowedFields } from "../utils/allowed-fields"
+import {
+  buildAllowedFields,
+  prefixAllowedFields,
+} from "../utils/allowed-fields"
 
 export const defaults = [
   "id",
@@ -45,11 +48,11 @@ const buildNestedCategoryFields = (depth: number) => {
     }
 
     for (const prefix of prefixes) {
-      paths.push(...storeCategoryFields.map((field) => `${prefix}.${field}`))
+      paths.push(...prefixAllowedFields(prefix, storeCategoryFields))
     }
 
     prefixes = prefixes.flatMap((prefix) =>
-      storeCategoryRelations.map((relation) => `${prefix}.${relation}`)
+      prefixAllowedFields(prefix, storeCategoryRelations)
     )
   }
 

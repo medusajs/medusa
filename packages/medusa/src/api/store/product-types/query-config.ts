@@ -1,4 +1,11 @@
-import { buildAllowedFields } from "../utils/allowed-fields"
+import {
+  allowedStoreProductExtraFields,
+  defaultStoreProductFields,
+} from "../products/query-config"
+import {
+  buildAllowedFields,
+  prefixAllowedFields,
+} from "../utils/allowed-fields"
 
 export const defaults = [
   "id",
@@ -10,15 +17,24 @@ export const defaults = [
   "*products",
 ]
 
+const allowed = buildAllowedFields(
+  defaults,
+  prefixAllowedFields(
+    "products",
+    defaultStoreProductFields,
+    allowedStoreProductExtraFields
+  )
+)
+
 export const retrieveProductTypeConfig = {
   defaults,
-  allowed: buildAllowedFields(defaults),
+  allowed,
   isList: false,
 }
 
 export const listProductTypeConfig = {
   defaults,
-  allowed: buildAllowedFields(defaults),
+  allowed,
   defaultLimit: 50,
   isList: true,
 }

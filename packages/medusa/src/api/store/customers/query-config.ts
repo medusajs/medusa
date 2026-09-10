@@ -1,4 +1,7 @@
-import { buildAllowedFields } from "../utils/allowed-fields"
+import {
+  buildAllowedFields,
+  prefixAllowedFields,
+} from "../utils/allowed-fields"
 
 const defaultStoreCustomersFields = [
   "id",
@@ -36,8 +39,9 @@ export const defaultStoreCustomerAddressFields = [
   "updated_at",
 ]
 
-const nestedStoreCustomerAddressFields = defaultStoreCustomerAddressFields.map(
-  (field) => `addresses.${field}`
+const nestedStoreCustomerAddressFields = prefixAllowedFields(
+  "addresses",
+  defaultStoreCustomerAddressFields
 )
 
 export const retrieveTransformQueryConfig = {

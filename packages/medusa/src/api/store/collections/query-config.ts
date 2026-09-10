@@ -1,4 +1,11 @@
-import { buildAllowedFields } from "../utils/allowed-fields"
+import {
+  allowedStoreProductExtraFields,
+  defaultStoreProductFields,
+} from "../products/query-config"
+import {
+  buildAllowedFields,
+  prefixAllowedFields,
+} from "../utils/allowed-fields"
 
 export const defaultStoreCollectionFields = [
   "id",
@@ -13,9 +20,11 @@ export const allowedStoreCollectionExtraFields = [
   "products",
   "metadata",
   "deleted_at",
-  "products.variants",
-  "products.options",
-  "products.images",
+  ...prefixAllowedFields(
+    "products",
+    defaultStoreProductFields,
+    allowedStoreProductExtraFields
+  ),
 ]
 
 export const retrieveTransformQueryConfig = {
