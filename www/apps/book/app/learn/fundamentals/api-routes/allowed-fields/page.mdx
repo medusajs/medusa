@@ -184,7 +184,7 @@ In this example, you apply the `allowFields` middleware to the [Get Customer Sto
   matcher: "/store/customers/me",
   middlewares: [
     (req, res, next) => {
-      (req.allowed ??= []).push("b2b_company")
+      req.allowed.push("b2b_company")
       next()
     },
   ],

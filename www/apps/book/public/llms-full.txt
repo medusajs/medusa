@@ -10981,30 +10981,49 @@ Only add the specific fields and relations that the client needs. A broad entry,
 For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Store API Route](undefined/api/store/customers/get-customer), create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/medusa"
+import {
+  allowFields,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/customers/me",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("b2b_company")
-          next()
-        },
-      ],
+      middlewares: [allowFields("b2b_company")],
     },
   ],
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Store API Route](undefined/api/store/customers/get-customer).
+In this example, you apply the `allowFields` middleware to the [Get Customer Store API Route](undefined/api/store/customers/get-customer). The middleware adds `b2b_company` to the fields and relations that the route already allows.
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself and push the fields to the request's `allowed` property:
+
+```ts
+{
+  matcher: "/store/customers/me",
+  middlewares: [
+    (req, res, next) => {
+      req.allowed.push("b2b_company")
+      next()
+    },
+  ],
+}
+```
+
+`allowFields` accepts the field paths as separate parameters, an array, or a mix of both:
+
+```ts
+allowFields("b2b_company", "b2b_company.name")
+allowFields(["b2b_company", "b2b_company.name"])
+```
+
+Pass the normalized field path, without a `*`, `+`, or `.*` prefix or suffix.
+
+Each `allowFields` middleware adds to what the route and the other middlewares allow, so several plugins or middlewares can each expose their own fields on the same route.
 
 Learn how to create a middleware in the [Middlewares](undefined/learn/fundamentals/api-routes/middlewares) chapter.
-
-The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you push `b2b_company` to the `allowed` array, alongside the fields and relations already configured on the route.
-
-Push the normalized field path, without a `*`, `+`, or `.*` prefix or suffix.
 
 You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Store API Route](undefined/api/store/customers/get-customer):
 
@@ -13029,28 +13048,26 @@ For example, to allow retrieving the `brand` of a product using the [List Produc
 Only add the specific paths that the client needs. A broad entry, such as a relation that pulls in a whole data model, or a sensitive relation like an order, a payment, or another customer, exposes that data to anyone who calls the route. Store API routes are public, so treat every path you add to `allowed` as data you're willing to publish.
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/framework/http"
+import {
+  allowFields,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("brand")
-          next()
-        },
-      ],
+      middlewares: [allowFields("brand")],
     },
   ],
 })
 ```
 
-In this example, you apply a middleware to the [List Products Store API Route](undefined/api/store/products/list-products).
+In this example, you apply the `allowFields` middleware to the [List Products Store API Route](undefined/api/store/products/list-products). The middleware adds `brand` to the fields and relations that the route already allows.
 
-The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `brand` field.
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself and push the fields to the request's `allowed` property, as explained in the [Allowed Fields](undefined/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) chapter.
 
-Push the plain field path, without a `*`, `+`, or `.*` prefix or suffix. To also retrieve a field nested under the link, such as `brand.name`, push that full path too.
+Pass the plain field path, without a `*`, `+`, or `.*` prefix or suffix. To also retrieve a field nested under the link, such as `brand.name`, pass that full path too.
 
 You can now retrieve the `brand` field using the `fields` query parameter of the [List Products Store API Route](undefined/api/store/products/list-products):
 
@@ -17856,6 +17873,8 @@ The Index Module automatically updates its data store when data in the ingested 
 Incremental sync requires a Redis-based event bus. If you're using the in-memory event bus (the default when no `event-bus-redis` module is configured), the Index Module will not receive change events and the data store will only be updated on the next server startup. To enable incremental sync, configure the [Redis Event Module](undefined/resources/infrastructure-modules/event/redis).
 
 For example, if you create a new product, the Index Module will ingest it into its data store.
+
+Before \[Medusa v2.21.0], you had to enable the `MEDUSA_FF_INDEX_ENGINE` flag to use the Index Module in the `/store/products` and `/admin/products` API routes. As of v2.21.0, the Index Module is no longer used and cross-module filters are applied through `query.graph` instead.
 
 ***
 
@@ -36403,6 +36422,8 @@ Refer to the [Translation Module](undefined/home/runner/work/medusa/medusa/www/a
 A cart's currency is determined by its region. When you create a cart using the [createCartWorkflow](undefined/references/medusa-workflows/createCartWorkflow), if you provide a `currency_code`, it must match the `currency_code` of the cart's region. Otherwise, an error is thrown.
 
 If you don't provide a `currency_code`, the cart will use the region's currency automatically.
+
+This behavior is enforced since [Medusa v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
 
 ***
 
@@ -76051,23 +76072,20 @@ You do that with a middleware that pushes the field to the request's `allowed` a
 In `src/api/middlewares.ts`, add a new route object passed to the array in `defineMiddlewares`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/product-categories",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "product_category_image"
-          )
-          next()
-        },
-      ],
+      middlewares: [allowFields("product_category_image")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
@@ -89496,45 +89514,36 @@ You do that with middlewares that push the fields to the request's `allowed` arr
 In `src/api/middlewares.ts`, add the following route objects to the array passed to `defineMiddlewares`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "variants.preorder_variant"
-          )
-          next()
-        },
-      ],
+      middlewares: [allowFields("variants.preorder_variant")],
     },
     {
       matcher: "/store/carts",
       middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "items.variant.preorder_variant"
-          )
-          next()
-        },
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
       ],
     },
     {
       matcher: "/store/orders",
       middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "items.variant.preorder_variant"
-          )
-          next()
-        },
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
       ],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The storefront can now request the pre-order variant when it retrieves products, carts, and orders. The other fields that the storefront requests, such as `+items.total` and `*region`, are already allowed by default.
 
@@ -94075,30 +94084,31 @@ Medusa matches each requested field against the allowed fields by its full path.
 In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
       middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "product_builder",
-            "product_builder.custom_fields",
-            "product_builder.complementary_products",
-            "product_builder.complementary_products.product",
-            "product_builder.complementary_products.product.variants",
-            "product_builder.addons",
-            "product_builder.addons.product",
-            "product_builder.addons.product.variants"
-          )
-          next()
-        },
+        allowFields(
+          "product_builder",
+          "product_builder.custom_fields",
+          "product_builder.complementary_products",
+          "product_builder.complementary_products.product",
+          "product_builder.complementary_products.product.variants",
+          "product_builder.addons",
+          "product_builder.addons.product",
+          "product_builder.addons.product.variants"
+        ),
       ],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
@@ -99084,23 +99094,20 @@ You do that with a middleware that pushes the field to the request's `allowed` a
 In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "rental_configuration"
-          )
-          next()
-        },
-      ],
+      middlewares: [allowFields("rental_configuration")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
@@ -118268,22 +118275,22 @@ So, before you can retrieve Payload data in the storefront, you must add `payloa
 In your Medusa application, create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/framework/http"
+import {
+  allowFields,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("payload_product")
-          next()
-        },
-      ],
+      middlewares: [allowFields("payload_product")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 This middleware pushes `payload_product` to the route's allowed fields, so Medusa keeps the field when a request asks for it.
 
@@ -130990,21 +130997,20 @@ So, before you can retrieve Strapi data in the storefront, you must add `strapi_
 In your Medusa application, add a route object to the `src/api/middlewares.ts` file that you created earlier:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("strapi_product")
-          next()
-        },
-      ],
+      middlewares: [allowFields("strapi_product")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 This middleware pushes `strapi_product` to the route's allowed fields, so Medusa keeps the field when a request asks for it. The other fields that you'll pass in the next section, such as `*variants.images`, are already among the route's allowed fields.
 
@@ -136156,7 +136162,7 @@ To test it out, log into the Medusa Admin and open `http://localhost:9000/app/cu
 
 # Hooks - Admin Components
 
-These hooks are available since Medusa [v2.20.2](https://github.com/medusajs/medusa/releases/tag/v2.20.2).
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
 
 The `@medusajs/dashboard/hooks` package exports React hooks that you can use in your [admin extensions](undefined/docs/learn/fundamentals/admin/widgets). These hooks provide data-fetching utilities for core Medusa resources and general-purpose helpers for building admin UI.
 
@@ -141059,24 +141065,24 @@ Medusa restricts the fields that you can request from a Store API route through 
 In the Medusa application, create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
-import { defineMiddlewares } from "@medusajs/framework/http"
+import {
+  allowFields,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/orders",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("cart.id")
-          next()
-        },
-      ],
+      middlewares: [allowFields("cart.id")],
     },
   ],
 })
 ```
 
-Don't add a `method` or `methods` key to the middleware's object. Medusa runs a method-scoped middleware after it validates the query parameters, so pushing to `req.allowed` in it has no effect.
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+Don't add a `method` or `methods` key to the middleware's object. Medusa runs a method-scoped middleware after it validates the query parameters, so it has no effect there.
 
 Learn more about allowed fields and how to override them in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields) documentation.
 
@@ -152169,21 +152175,20 @@ Then, you define a `getBundleProduct` function that retrieves the bundle's detai
 Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve bundles from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("bundle")
-          next()
-        },
-      ],
+      middlewares: [allowFields("bundle")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
@@ -157131,23 +157136,20 @@ export type VariantWithDigitalProduct = StoreProductVariant & {
 Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve digital products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push(
-            "variants.digital_product"
-          )
-          next()
-        },
-      ],
+      middlewares: [allowFields("variants.digital_product")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
@@ -174314,21 +174316,20 @@ This makes the following main changes:
 Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve ticket products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in the Medusa application's `src/api/middlewares.ts` file:
 
 ```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
 export default defineMiddlewares({
   routes: [
     // ...
     {
       matcher: "/store/products",
-      middlewares: [
-        (req, res, next) => {
-          (req.allowed ??= []).push("ticket_product")
-          next()
-        },
-      ],
+      middlewares: [allowFields("ticket_product")],
     },
   ],
 })
 ```
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](undefined/docs/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
 
 The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
 
