@@ -6,7 +6,7 @@ import {
 
 export async function configLoaderOverride(
   entryDirectory: string,
-  override: { clientUrl: string; debug?: boolean }
+  override: { clientUrl: string; schema?: string; debug?: boolean }
 ) {
   const { configManager } = await import("@medusajs/framework/config")
   const { logger } = await import("@medusajs/framework")
@@ -29,6 +29,9 @@ export async function configLoaderOverride(
   configModule.projectConfig.databaseDriverOptions
   configModule.projectConfig.databaseUrl = override.clientUrl
   configModule.projectConfig.databaseLogging = !!override.debug
+  if (override.schema) {
+    configModule.projectConfig.databaseSchema = override.schema
+  }
   configModule.projectConfig.databaseDriverOptions =
     override.clientUrl.includes("localhost")
       ? {}
