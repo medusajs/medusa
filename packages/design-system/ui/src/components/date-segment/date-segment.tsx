@@ -15,8 +15,9 @@ const DateSegment = ({ segment, state }: DateSegmentProps) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const { segmentProps } = useDateSegment(segment, state, ref)
 
-  const isEmptyLiteral =
-    segment.type === "literal" && segment.text.trim() === ""
+  const isSpacingLiteral =
+    segment.type === "literal" &&
+    (segment.text === ", " || segment.text.trim() === "")
 
   /**
    * We render an empty span with a margin to maintain the correct spacing
@@ -25,7 +26,7 @@ const DateSegment = ({ segment, state }: DateSegmentProps) => {
    * node made only of whitespace collapses to nothing at a line edge, so
    * both cases take the span.
    */
-  if (isEmptyLiteral) {
+  if (isSpacingLiteral) {
     return <span className="mx-1" />
   }
 
