@@ -6,7 +6,7 @@ import {
   SearchIndexVersionRecord,
 } from "@types"
 import { SearchIndexState, SearchSyncStatus } from "../index"
-import { executeSeedPlan, reindexIndexes } from "../seeding"
+import { createSeedPlan, executeSeedPlan, reindexIndexes } from "../seeding"
 
 type Mutation =
   | { action: "upsert"; documents: Record<string, unknown>[] }
@@ -41,12 +41,19 @@ const buildContext = ({
   indexes,
   locking,
   upsertDocuments,
+  deleteDocuments,
+  documentCounts,
 }: {
   indexes: SearchTypes.ResolvedSearchIndexDefinition[]
   locking?: {
     execute: jest.Mock
   }
   upsertDocuments?: jest.Mock
+  deleteDocuments?: jest.Mock
+  // What the engine reports it holds, keyed by physical index name. Only the
+  // planner asks, and only to tell an index that lost its data apart from one
+  // that merely failed part-way through.
+  documentCounts?: Record<string, number>
 }) => {
   const records = indexes.map((index, position) => ({
     id: `idx_${position + 1}`,
@@ -132,14 +139,19 @@ const buildContext = ({
     upsertDocuments:
       upsertDocuments ??
       jest.fn().mockResolvedValue({ index: "x", status: "succeeded" }),
-    deleteDocuments: jest
-      .fn()
-      .mockResolvedValue({ index: "x", status: "succeeded" }),
+    deleteDocuments:
+      deleteDocuments ??
+      jest.fn().mockResolvedValue({ index: "x", status: "succeeded" }),
     clearIndex: jest
       .fn()
       .mockResolvedValue({ index: "x", status: "succeeded" }),
     upsertIndex: jest.fn().mockResolvedValue(undefined),
-    listIndexes: jest.fn().mockResolvedValue([]),
+    listIndexes: jest.fn().mockResolvedValue(
+      Object.entries(documentCounts ?? {}).map(([name, document_count]) => ({
+        name,
+        document_count,
+      }))
+    ),
   }
 
   const logger = {
@@ -201,6 +213,22 @@ const lockingThatAborts = (
 const passthroughLocking = (): { execute: jest.Mock } => ({
   execute: jest.fn(async (_keys, job) => await job(undefined)),
 })
+
+const streamOfFour = (cursors: (string | undefined)[]) =>
+  definition("product", async function* ({ catchup, last_key }: any) {
+    if (catchup) {
+      return
+    }
+
+    cursors.push(last_key)
+
+    for (const id of ["1", "2", "3", "4"]) {
+      if (last_key && id <= last_key) {
+        continue
+      }
+      yield [{ action: "upsert", documents: [{ id }] }]
+    }
+  })
 
 describe("search index seeding", () => {
   beforeEach(() => {
@@ -416,6 +444,373 @@ describe("search index seeding", () => {
       })
       expect(context.logger_.error).not.toHaveBeenCalled()
       expect(context.logger_.warn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("picking up where a failed run stopped", () => {
+    const ok = { index: "x", status: "succeeded" }
+
+    const writtenIds = (upsertDocuments: jest.Mock) =>
+      upsertDocuments.mock.calls.map(([call]) => call.documents[0].id)
+
+    it("should resume from the cursor after a document the engine rejected", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(
+          new Error('document IDs cannot exceed 64 bytes ("3")')
+        )
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "2",
+        resumable: true,
+      })
+      expect(writtenIds(upsertDocuments)).toEqual(["1", "2", "3"])
+
+      await executeSeedPlan(context as any, [action])
+
+      // The second run is handed the cursor and writes only what is left.
+      expect(cursors).toEqual([undefined, "2"])
+      expect(writtenIds(upsertDocuments)).toEqual(["1", "2", "3", "3", "4"])
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should count what the version took in across both runs", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(new Error("engine rejected the batch"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0].documents_synced).toBe(2)
+
+      await executeSeedPlan(context as any, [action])
+
+      // Two documents from the first run, two from the second — not the two
+      // this run happened to write.
+      expect(context.syncs[1]).toMatchObject({
+        status: SearchSyncStatus.DONE,
+        documents_synced: 4,
+      })
+      expect(context.logger_.info).toHaveBeenCalledWith(
+        expect.stringContaining("4 documents in total")
+      )
+    })
+
+    it("should report only its own count when it started from nothing", async () => {
+      const context = buildContext({
+        indexes: [streamOfFour([])],
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(context.syncs[0].documents_synced).toBe(4)
+      expect(context.logger_.info).not.toHaveBeenCalledWith(
+        expect.stringContaining("in total")
+      )
+    })
+
+    it("should carry the cursor onto the run that picks it up", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(new Error("engine rejected the batch"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+      await executeSeedPlan(context as any, [action])
+
+      // The row the second run opened starts at the cursor the first one
+      // reached, rather than at nothing.
+      const [opened] = context.syncService.create.mock.calls[1][0]
+      expect(opened).toMatchObject({ last_key: "1", resumable: true })
+    })
+
+    it("should resume a run that was interrupted rather than failed", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest.fn().mockResolvedValue(ok)
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+
+      // A killed process leaves its row open, the way a lost lock does.
+      context.syncs.push({
+        id: "sync_interrupted",
+        search_index_version_id: context.versions[0].id,
+        status: SearchSyncStatus.PROCESSING,
+        last_key: "3",
+        resumable: true,
+        documents_synced: 3,
+        sequence: 99,
+      } as any)
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(cursors).toEqual(["3"])
+      expect(writtenIds(upsertDocuments)).toEqual(["4"])
+      expect(
+        context.syncs.find((sync) => sync.id === "sync_interrupted")!.status
+      ).toBe(SearchSyncStatus.CANCELED)
+    })
+
+    it("should start over when the failure was a delete the cursor cannot describe", async () => {
+      const cursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            return
+          }
+
+          cursors.push(last_key)
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "delete", filters: { id: ["9"] } }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const deleteDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(new Error("engine refused the delete"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [index],
+        deleteDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "1",
+        resumable: false,
+      })
+      expect(context.syncs[0].error).toContain("cannot be resumed")
+
+      await executeSeedPlan(context as any, [action])
+
+      // A resumed stream would carry on past the delete and never apply it.
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should start over when the stream finished and the run failed after it", async () => {
+      const cursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            throw new Error("the catch-up query failed")
+          }
+
+          cursors.push(last_key)
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const context = buildContext({
+        indexes: [index],
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      // The bulk stream ran out, so its cursor has nothing left to hand over —
+      // and a fresh catch-up would only cover what changed since the new run
+      // started, missing everything the failed one was meant to catch.
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        resumable: false,
+      })
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should not hand the bulk pass's cursor to the catch-up pass", async () => {
+      const catchupCursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            catchupCursors.push(last_key)
+            return
+          }
+
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const context = buildContext({
+        indexes: [index],
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      const [bulk, catchUp] = context.syncs
+
+      expect(catchupCursors).toEqual([undefined])
+      // The catch-up walks its own stream, so it neither takes the bulk
+      // pass's cursor nor supersedes its row.
+      expect(catchUp).toMatchObject({ last_key: null, resumable: false })
+      expect(bulk.status).toBe(SearchSyncStatus.DONE)
+      expect(context.syncService.update).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            status: SearchSyncStatus.CANCELED,
+          }),
+        })
+      )
+    })
+
+    it("should hand nothing over once a run has completed", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should leave no cursor behind after a scoped reindex", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+      })
+
+      await reindexIndexes(context as any, {
+        index: "product",
+        filters: { status: "published" },
+        strategy: "in_place",
+      })
+
+      expect(context.syncs[0]).toMatchObject({
+        filters: { status: "published" },
+        resumable: false,
+      })
+
+      // A slice of the index is not a position in the full stream, so a seed
+      // after it rebuilds rather than continuing from where it stopped.
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+  })
+
+  describe("planning a rebuild after a failure", () => {
+    const index = () =>
+      definition("product", async function* () {
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+      })
+
+    const planFor = async (documentCounts: Record<string, number>) => {
+      const context = buildContext({ indexes: [index()], documentCounts })
+      context.versions[0].status = SearchIndexState.ERROR
+
+      return { context, plan: await createSeedPlan(context as any) }
+    }
+
+    it("should continue an index that still holds what the failed run wrote", async () => {
+      const { plan } = await planFor({ product_v1: 1000 })
+
+      expect(plan).toEqual([
+        expect.objectContaining({
+          index: "product",
+          reason: "last_run_failed",
+        }),
+      ])
+    })
+
+    it("should rebuild an index that lost its data", async () => {
+      const { plan } = await planFor({ product_v1: 0 })
+
+      expect(plan).toEqual([
+        expect.objectContaining({ index: "product", reason: "index_empty" }),
+      ])
+    })
+
+    it("should not resume into an index that lost its data", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+        documentCounts: { product_v1: 0 },
+      })
+
+      context.syncs.push({
+        id: "sync_failed",
+        search_index_version_id: context.versions[0].id,
+        status: SearchSyncStatus.FAILED,
+        last_key: "3",
+        resumable: true,
+        documents_synced: 3,
+        sequence: 99,
+      } as any)
+
+      await executeSeedPlan(context as any, [
+        {
+          ...seedAction("product", context.versions[0]),
+          reason: "index_empty",
+        },
+      ])
+
+      expect(cursors).toEqual([undefined])
     })
   })
 })
