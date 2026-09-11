@@ -107,7 +107,7 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 <Note>
 
-Before [Medusa v2.21.0], you had to enable the `MEDUSA_FF_INDEX_ENGINE` flag to use the Index Module in the `/store/products` and `/admin/products` API routes. As of v2.21.0, the Index Module is no longer used and cross-module filters are applied through `query.graph` instead.
+When the `MEDUSA_FF_INDEX_ENGINE` feature flag is enabled, the `/store/products` and `/admin/products` API routes use `query.index` for most filters instead of `query.graph`. Filters by `tags`, `categories`, or `options` always fall back to `query.graph` regardless of the flag.
 
 </Note>
 
