@@ -3216,10 +3216,10 @@ export const apiRefPaths = {
             "method": "get"
           },
           "PostUsersIdResetPassword": {
-            "slug": "add-reset-password-to-user",
-            "path": "/admin/users/add-reset-password-to-user",
+            "slug": "generate-reset-password-token",
+            "path": "/admin/users/generate-reset-password-token",
             "oldHash": "users_postusersidresetpassword",
-            "title": "Add Reset Password to User",
+            "title": "Generate Reset Password Token",
             "method": "post"
           },
           "PostUsersId": {
@@ -3971,6 +3971,13 @@ export const apiRefPaths = {
             "oldHash": "products_getproducts",
             "title": "List Products",
             "method": "get"
+          },
+          "GetProductsSearch": {
+            "slug": "list-products-2",
+            "path": "/store/products/list-products-2",
+            "oldHash": "products_getproductssearch",
+            "title": "List Products",
+            "method": "get"
           }
         }
       },
@@ -4588,7 +4595,7 @@ export const apiRefRedirects = {
     "users_getusersme": "/admin/users/get-logged-in-user",
     "users_getusersidauthproviders": "/admin/users/list-auth-providers",
     "users_getusers": "/admin/users/list-users",
-    "users_postusersidresetpassword": "/admin/users/add-reset-password-to-user",
+    "users_postusersidresetpassword": "/admin/users/generate-reset-password-token",
     "users_postusersid": "/admin/users/update-a-user",
     "users_deleteusersid": "/admin/users/delete-a-user",
     "users_user_schema": "/admin/users/schema",
@@ -4721,6 +4728,7 @@ export const apiRefRedirects = {
     "product-variants": "/store/product-variants",
     "products_getproductsid": "/store/products/get-a-product",
     "products_getproducts": "/store/products/list-products",
+    "products_getproductssearch": "/store/products/list-products-2",
     "products_product_schema": "/store/products/schema",
     "products": "/store/products",
     "regions_getregionsid": "/store/regions/get-a-region",

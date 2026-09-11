@@ -1,0 +1,35 @@
+type: object
+description: A leaf field stored in a search index, with the capabilities declared on it.
+x-schemaName: AdminSearchIndexField
+required:
+  - name
+  - type
+  - searchable
+  - filterable
+  - sortable
+  - facetable
+properties:
+  name:
+    type: string
+    title: name
+    description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+  type:
+    type: string
+    title: type
+    description: The field's index type.
+  searchable:
+    type: boolean
+    title: searchable
+    description: Whether the field is used for free-text matching.
+  filterable:
+    type: boolean
+    title: filterable
+    description: Whether the field can be used in filters.
+  sortable:
+    type: boolean
+    title: sortable
+    description: Whether results can be sorted by this field.
+  facetable:
+    type: boolean
+    title: facetable
+    description: Whether the field can be faceted.

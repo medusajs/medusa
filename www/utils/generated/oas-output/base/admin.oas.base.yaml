@@ -574,6 +574,9 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminSalesChannel"
   - name: Search
+  - name: Search Indexes
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminSearchIndex"
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: "#/components/schemas/AdminShippingOptionType"

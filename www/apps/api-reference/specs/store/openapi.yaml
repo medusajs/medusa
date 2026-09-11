@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.20.1
+  version: 2.21.0
   title: Medusa Storefront API
   license:
     name: MIT
@@ -382,6 +382,8 @@ paths:
     $ref: paths/store_product-variants.yaml
   /store/products:
     $ref: paths/store_products.yaml
+  /store/products/search:
+    $ref: paths/store_products_search.yaml
   /store/products/{id}:
     $ref: paths/store_products_{id}.yaml
   /store/regions:

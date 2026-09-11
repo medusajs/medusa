@@ -75,6 +75,9 @@
  *     type: number
  *     title: used
  *     description: The number of times the promotion has been used.
+ *   metadata:
+ *     type: object
+ *     description: The promotion's metadata.
  * 
 */
 
