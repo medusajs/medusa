@@ -1803,7 +1803,8 @@
         "header": "Preços condicionais para {{name}}",
         "description": "Gerencie os preços condicionais desta opção de envio com base no total dos itens do carrinho.",
         "attributes": {
-          "cartItemTotal": "Total dos itens do carrinho"
+          "cartItemTotal": "Total dos itens do carrinho",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Se <0>{{attribute}}</0> estiver entre <1>{{gte}}</1> e <2>{{lte}}</2>",
@@ -1817,7 +1818,13 @@
         "rules": {
           "amount": "Preço da opção de envio",
           "gte": "Total mínimo dos itens do carrinho",
-          "lte": "Total máximo dos itens do carrinho"
+          "lte": "Total máximo dos itens do carrinho",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         },
         "customRules": {
           "label": "Regras personalizadas",
@@ -1831,7 +1838,8 @@
           "minOrMaxRequired": "Pelo menos um dos totais, mínimo ou máximo, dos itens do carrinho deve ser informado",
           "minGreaterThanMax": "O total mínimo dos itens do carrinho deve ser menor ou igual ao total máximo",
           "duplicateAmount": "O preço da opção de envio deve ser único para cada condição",
-          "overlappingConditions": "As condições devem ser únicas em todas as regras de preço"
+          "overlappingConditions": "As condições devem ser únicas em todas as regras de preço",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
         }
       },
       "fields": {

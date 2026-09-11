@@ -1893,7 +1893,8 @@
         "header": "Условные цены для {{name}}",
         "description": "Управляйте условными ценами для этого способа доставки на основе общей стоимости товаров в корзине.",
         "attributes": {
-          "cartItemTotal": "Общая стоимость товаров в корзине"
+          "cartItemTotal": "Общая стоимость товаров в корзине",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Если <0>{{attribute}}</0> между <1>{{gte}}</1> и <2>{{lte}}</2>",
@@ -1907,7 +1908,9 @@
         "rules": {
           "amount": "Цена способа доставки",
           "gte": "Минимальная общая стоимость товаров",
-          "lte": "Максимальная общая стоимость товаров"
+          "lte": "Максимальная общая стоимость товаров",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Пользовательские правила",
@@ -1921,7 +1924,12 @@
           "minOrMaxRequired": "Необходимо указать минимальную или максимальную общую стоимость товаров",
           "minGreaterThanMax": "Минимальная общая стоимость товаров должна быть меньше или равна максимальной",
           "duplicateAmount": "Цена способа доставки должна быть уникальной для каждого условия",
-          "overlappingConditions": "Условия должны быть уникальными для всех правил цен"
+          "overlappingConditions": "Условия должны быть уникальными для всех правил цен",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

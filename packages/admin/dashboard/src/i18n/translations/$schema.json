@@ -7190,9 +7190,12 @@
                   "properties": {
                     "cartItemTotal": {
                       "type": "string"
+                    },
+                    "cartWeightTotal": {
+                      "type": "string"
                     }
                   },
-                  "required": ["cartItemTotal"],
+                  "required": ["cartItemTotal", "cartWeightTotal"],
                   "additionalProperties": false
                 },
                 "summaries": {
@@ -7235,9 +7238,28 @@
                     },
                     "lte": {
                       "type": "string"
+                    },
+                    "weightGte": {
+                      "type": "string"
+                    },
+                    "weightLte": {
+                      "type": "string"
                     }
                   },
-                  "required": ["amount", "gte", "lte"],
+                  "required": ["amount", "gte", "lte", "weightGte", "weightLte"],
+                  "additionalProperties": false
+                },
+                "placeholders": {
+                  "type": "object",
+                  "properties": {
+                    "weightGte": {
+                      "type": "string"
+                    },
+                    "weightLte": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["weightGte", "weightLte"],
                   "additionalProperties": false
                 },
                 "customRules": {
@@ -7274,6 +7296,9 @@
                     "minGreaterThanMax": {
                       "type": "string"
                     },
+                    "weightMinGreaterThanMax": {
+                      "type": "string"
+                    },
                     "duplicateAmount": {
                       "type": "string"
                     },
@@ -7285,6 +7310,7 @@
                     "amountRequired",
                     "minOrMaxRequired",
                     "minGreaterThanMax",
+                    "weightMinGreaterThanMax",
                     "duplicateAmount",
                     "overlappingConditions"
                   ],

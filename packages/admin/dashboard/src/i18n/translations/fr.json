@@ -1459,6 +1459,49 @@
       "pricing": {
         "action": "Modifier les prix"
       },
+      "conditionalPrices": {
+        "header": "Prix conditionnels pour {{name}}",
+        "description": "Gérez les prix conditionnels pour cette option de livraison en fonction du total des articles du panier et du total du poids.",
+        "attributes": {
+          "cartItemTotal": "Total des articles du panier",
+          "cartWeightTotal": "Cart weight total"
+        },
+        "summaries": {
+          "range": "Si <0>{{attribute}}</0> est entre <1>{{gte}}</1> et <2>{{lte}}</2>",
+          "greaterThan": "Si <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Si <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+        },
+        "actions": {
+          "addPrice": "Ajouter un prix",
+          "manageConditionalPrices": "Gérer les prix conditionnels"
+        },
+        "rules": {
+          "amount": "Prix de l'option de livraison",
+          "gte": "Total minimum des articles du panier",
+          "lte": "Total maximum des articles du panier",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
+        },
+        "customRules": {
+          "label": "Règles personnalisées",
+          "tooltip": "Ce prix conditionnel a des règles qui ne peuvent pas être gérées dans le tableau de bord.",
+          "eq": "Le total des articles du panier doit être égal à",
+          "gt": "Le total des articles du panier doit être supérieur à",
+          "lt": "Le total des articles du panier doit être inférieur à"
+        },
+        "errors": {
+          "amountRequired": "Le prix de l'option de livraison est requis",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
+          "minGreaterThanMax": "Le total minimum des articles du panier doit être inférieur ou égal au total maximum",
+          "duplicateAmount": "Le prix de l'option de livraison doit être unique pour chaque condition",
+          "overlappingConditions": "Les conditions doivent être uniques pour toutes les règles de prix",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        }
+      },
       "fields": {
         "count": {
           "shipping_one": "{{count}} shipping option",

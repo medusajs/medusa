@@ -1596,9 +1596,10 @@
       },
       "conditionalPrices": {
         "header": "מחירים מותנים עבור {{name}}",
-        "description": "נהל את המחירים המותנים עבור אפשרות משלוח זו בהתבסס על סכום פריטי העגלה.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "סך פריטי העגלה"
+          "cartItemTotal": "סך פריטי העגלה",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "אם <0>{{attribute}}</0> בין <1>{{gte}}</1> ל<2>{{lte}}</2>",
@@ -1612,7 +1613,9 @@
         "rules": {
           "amount": "מחיר אפשרות משלוח",
           "gte": "סכום מינימלי של פריטי העגלה",
-          "lte": "סכום מקסימלי של פריטי העגלה"
+          "lte": "סכום מקסימלי של פריטי העגלה",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "כללים מותאמים",
@@ -1623,10 +1626,15 @@
         },
         "errors": {
           "amountRequired": "מחיר אפשרות משלוח הוא שדה חובה",
-          "minOrMaxRequired": "יש לספק לפחות סכום מינימלי או מקסימלי של פריטי העגלה",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "סכום מינימלי של פריטי העגלה חייב להיות קטן או שווה לסכום המקסימלי",
           "duplicateAmount": "מחיר אפשרות המשלוח חייב להיות ייחודי לכל תנאי",
-          "overlappingConditions": "התנאים חייבים להיות ייחודיים בכל כללי המחיר"
+          "overlappingConditions": "התנאים חייבים להיות ייחודיים בכל כללי המחיר",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2666,7 +2674,10 @@
         "placeholder": "wrong_size",
         "tooltip": "הערך צריך להיות מזהה ייחודי לסיבת ההחזרה."
       },
-      "label": { "label": "תווית", "placeholder": "מידה שגויה" },
+      "label": {
+        "label": "תווית",
+        "placeholder": "מידה שגויה"
+      },
       "description": {
         "label": "תיאור",
         "placeholder": "הלקוח קיבל את המידה הלא נכונה"

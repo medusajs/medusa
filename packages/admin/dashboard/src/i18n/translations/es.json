@@ -1773,9 +1773,10 @@
       },
       "conditionalPrices": {
         "header": "Precios Condicionales",
-        "description": "Establece precios diferentes basados en condiciones específicas.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Total de artículos del carrito"
+          "cartItemTotal": "Total de artículos del carrito",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Rango",
@@ -1789,7 +1790,9 @@
         "rules": {
           "amount": "Monto",
           "gte": "Mayor o igual que",
-          "lte": "Menor o igual que"
+          "lte": "Menor o igual que",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Reglas personalizadas",
@@ -1800,10 +1803,15 @@
         },
         "errors": {
           "amountRequired": "El monto es obligatorio",
-          "minOrMaxRequired": "Se requiere mínimo o máximo",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "El mínimo debe ser menor que el máximo",
           "duplicateAmount": "Monto duplicado",
-          "overlappingConditions": "Condiciones superpuestas"
+          "overlappingConditions": "Condiciones superpuestas",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

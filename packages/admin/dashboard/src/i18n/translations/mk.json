@@ -1535,9 +1535,10 @@
       },
       "conditionalPrices": {
         "header": "Условни цени за {{name}}",
-        "description": "Управувајте со условните цени за оваа опција за испорака врз основа на вкупниот дел од количката.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Вкупно артикли во количка"
+          "cartItemTotal": "Вкупно артикли во количка",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Ако <0>{{attribute}}</0> е помеѓу <1>{{gte}}</1> и <2>{{lte}}</2>",
@@ -1551,7 +1552,9 @@
         "rules": {
           "amount": "Цена на опцијата за испорака",
           "gte": "Минимална количина",
-          "lte": "Максимална количина"
+          "lte": "Максимална количина",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Прилагодени правила",
@@ -1562,10 +1565,15 @@
         },
         "errors": {
           "amountRequired": "Потребна е цена на опцијата за испорака",
-          "minOrMaxRequired": "Мора да се обезбеди најмалку една од минималните или максималните артикли во количката",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Минималниот вкупен артикл во количката мора да биде помал или еднаков на максималниот вкупен артикл во количката",
           "duplicateAmount": "Цената на опцијата за испорака мора да биде единствена за секоја состојба",
-          "overlappingConditions": "Условите мора да бидат единствени според сите правила за цени"
+          "overlappingConditions": "Условите мора да бидат единствени според сите правила за цени",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

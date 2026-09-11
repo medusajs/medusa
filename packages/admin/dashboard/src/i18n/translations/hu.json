@@ -1592,9 +1592,10 @@
       },
       "conditionalPrices": {
         "header": "Feltételes Árak a(z) {{name}} számára",
-        "description": "Kezelje a feltételes árakat ehhez a szállítási opcióhoz a kosár tétel összesen alapján.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Kosár tétel összesen"
+          "cartItemTotal": "Kosár tétel összesen",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Ha <0>{{attribute}}</0> értéke <1>{{gte}}</1> és <2>{{lte}}</2> között van",
@@ -1608,7 +1609,9 @@
         "rules": {
           "amount": "Szállítási opció ára",
           "gte": "Minimális kosár tétel összesen",
-          "lte": "Maximális kosár tétel összesen"
+          "lte": "Maximális kosár tétel összesen",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Egyedi szabályok",
@@ -1619,10 +1622,15 @@
         },
         "errors": {
           "amountRequired": "Szállítási opció ára szükséges",
-          "minOrMaxRequired": "Legalább egy minimális vagy maximális kosár tétel összesen megadása szükséges",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "A minimális kosár tétel összesen kisebbnek vagy egyenlőnek kell lennie a maximális kosár tétel összesen értékkel",
           "duplicateAmount": "Szállítási opció ára egyedinek kell lennie minden feltételhez",
-          "overlappingConditions": "A feltételeknek egyedinek kell lenniük az összes ár szabály között"
+          "overlappingConditions": "A feltételeknek egyedinek kell lenniük az összes ár szabály között",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2654,7 +2662,10 @@
         "placeholder": "wrong_size",
         "tooltip": "Az értéknek egyedi azonosítónak kell lennie a visszaküldési okhoz."
       },
-      "label": { "label": "Címke", "placeholder": "Rossz méret" },
+      "label": {
+        "label": "Címke",
+        "placeholder": "Rossz méret"
+      },
       "description": {
         "label": "Leírás",
         "placeholder": "A vásárló rossz méretet kapott"

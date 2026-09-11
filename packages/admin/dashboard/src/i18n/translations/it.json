@@ -1482,6 +1482,49 @@
       "pricing": {
         "action": "Modifica prezzi"
       },
+      "conditionalPrices": {
+        "header": "Prezzi condizionali per {{name}}",
+        "description": "Gestisci i prezzi condizionali per questa opzione di spedizione in base al totale articoli del carrello e al totale peso.",
+        "attributes": {
+          "cartItemTotal": "Totale articoli carrello",
+          "cartWeightTotal": "Cart weight total"
+        },
+        "summaries": {
+          "range": "Se <0>{{attribute}}</0> è compreso tra <1>{{gte}}</1> e <2>{{lte}}</2>",
+          "greaterThan": "Se <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Se <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+        },
+        "actions": {
+          "addPrice": "Aggiungi prezzo",
+          "manageConditionalPrices": "Gestisci prezzi condizionali"
+        },
+        "rules": {
+          "amount": "Prezzo opzione di spedizione",
+          "gte": "Totale minimo articoli carrello",
+          "lte": "Totale massimo articoli carrello",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
+        },
+        "customRules": {
+          "label": "Regole personalizzate",
+          "tooltip": "Questo prezzo condizionale ha regole che non possono essere gestite nella dashboard.",
+          "eq": "Il totale articoli del carrello deve essere uguale a",
+          "gt": "Il totale articoli del carrello deve essere maggiore di",
+          "lt": "Il totale articoli del carrello deve essere minore di"
+        },
+        "errors": {
+          "amountRequired": "Il prezzo dell'opzione di spedizione è obbligatorio",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
+          "minGreaterThanMax": "Il totale minimo articoli carrello deve essere minore o uguale al totale massimo",
+          "duplicateAmount": "Il prezzo dell'opzione di spedizione deve essere univoco per ogni condizione",
+          "overlappingConditions": "Le condizioni devono essere univoche per tutte le regole di prezzo",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        }
+      },
       "fields": {
         "count": {
           "shipping_one": "{{count}} opzione di spedizione",
