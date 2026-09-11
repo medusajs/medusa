@@ -203,12 +203,27 @@ export class TransactionStep {
 
   canInvoke(flowState: TransactionState): boolean {
     const { status, state } = this.getStates()
+
+    // A step that keeps hitting TEMPORARY_FAILURE stays eligible for retry
+    // independently of the NOT_STARTED check above, but the retry is only
+    // meaningful while the flow is still in the same phase (invoke vs
+    // compensate) the step itself is in. Without this, a step that is still
+    // retrying its *invoke* can keep being re-invoked after the transaction
+    // has already moved on to COMPENSATING because of a sibling's permanent
+    // failure - re-running an invoke handler whose side effects nothing will
+    // then roll back.
+    const canRetryInCurrentPhase = this.isCompensating()
+      ? flowState === TransactionState.COMPENSATING
+      : flowState === TransactionState.INVOKING ||
+        flowState === TransactionState.WAITING_TO_COMPENSATE
+
     return (
       (!this.isCompensating() &&
         state === TransactionStepState.NOT_STARTED &&
         flowState === TransactionState.INVOKING) ||
       (status === TransactionStepStatus.TEMPORARY_FAILURE &&
-        !this.temporaryFailedAt)
+        !this.temporaryFailedAt &&
+        canRetryInCurrentPhase)
     )
   }
 
