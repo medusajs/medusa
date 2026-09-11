@@ -3,6 +3,7 @@ import { builtinModules } from "node:module"
 import path from "path"
 import type { UserConfig } from "vite"
 import { clearPluginBuild } from "../plugins/clear-plugin-build"
+import { readTsPathAliases } from "../utils/tsconfig-alias"
 
 interface PluginOptions {
   root: string
@@ -33,10 +34,8 @@ export async function plugin(options: PluginOptions) {
   ])
 
   const outDir = path.resolve(options.root, options.outDir, "src/admin")
-  const entryPoint = path.resolve(
-    options.root,
-    "src/admin/__admin-extensions__.js"
-  )
+  const adminDir = path.resolve(options.root, "src/admin")
+  const entryPoint = path.resolve(adminDir, "__admin-extensions__.js")
 
   /**
    * We need to ensure that the NODE_ENV is set to production,
@@ -46,6 +45,16 @@ export async function plugin(options: PluginOptions) {
   process.env.NODE_ENV = "production"
 
   const pluginConfig: UserConfig = {
+    /**
+     * Path aliases from the admin tsconfig (`@/*` and friends) so the bundle
+     * resolves them the way the editor and the backend build do.
+     * Vite runs with the package root as cwd, so without this the admin-only
+     * tsconfig is never consulted and Rollup reads the aliases as bare
+     * package specifiers.
+     */
+    resolve: {
+      alias: readTsPathAliases(path.join(adminDir, "tsconfig.json")),
+    },
     build: {
       /**
        * Must match the target in `utils/config.ts` — plugin admin extensions are
