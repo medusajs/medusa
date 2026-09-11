@@ -1,8 +1,4 @@
-import {
-  DmlEntity,
-  DMLEntitySchemaBuilder,
-  model,
-} from "@medusajs/framework/utils"
+import { model } from "@medusajs/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderExchange } from "./exchange"
 import { Order } from "./order"
@@ -86,7 +82,4 @@ const _OrderTransaction = model
     },
   ])
 
-export const OrderTransaction = _OrderTransaction as DmlEntity<
-  DMLEntitySchemaBuilder<(typeof _OrderTransaction)["schema"]>,
-  "OrderTransaction"
->
+export const OrderTransaction = _OrderTransaction

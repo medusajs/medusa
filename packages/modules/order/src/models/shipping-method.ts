@@ -13,18 +13,12 @@ const _OrderShippingMethod = model
     shipping_option_id: model.text().nullable(),
     data: model.json().nullable(),
     metadata: model.json().nullable(),
-    tax_lines: model.hasMany<() => typeof OrderShippingMethodTaxLine>(
-      () => OrderShippingMethodTaxLine,
-      {
-        mappedBy: "shipping_method",
-      }
-    ),
-    adjustments: model.hasMany<() => typeof OrderShippingMethodAdjustment>(
-      () => OrderShippingMethodAdjustment,
-      {
-        mappedBy: "shipping_method",
-      }
-    ),
+    tax_lines: model.hasMany<any>(() => OrderShippingMethodTaxLine, {
+      mappedBy: "shipping_method",
+    }),
+    adjustments: model.hasMany<any>(() => OrderShippingMethodAdjustment, {
+      mappedBy: "shipping_method",
+    }),
   })
   .cascades({
     delete: ["tax_lines", "adjustments"],

@@ -24,32 +24,26 @@ const _Return = model
       mappedBy: "returns",
     }),
     exchange: model
-      .hasOne<() => typeof OrderExchange>(() => OrderExchange, {
+      .hasOne<any>(() => OrderExchange, {
         mappedBy: undefined,
         foreignKey: true,
       })
       .nullable(),
     claim: model
-      .hasOne<() => typeof OrderClaim>(() => OrderClaim, {
+      .hasOne<any>(() => OrderClaim, {
         mappedBy: undefined,
         foreignKey: true,
       })
       .nullable(),
-    items: model.hasMany<() => typeof ReturnItem>(() => ReturnItem, {
+    items: model.hasMany<any>(() => ReturnItem, {
       mappedBy: "return",
     }),
-    shipping_methods: model.hasMany<() => typeof OrderShipping>(
-      () => OrderShipping,
-      {
-        mappedBy: "return",
-      }
-    ),
-    transactions: model.hasMany<() => typeof OrderTransaction>(
-      () => OrderTransaction,
-      {
-        mappedBy: "return",
-      }
-    ),
+    shipping_methods: model.hasMany<any>(() => OrderShipping, {
+      mappedBy: "return",
+    }),
+    transactions: model.hasMany<any>(() => OrderTransaction, {
+      mappedBy: "return",
+    }),
   })
   .cascades({
     delete: ["items", "shipping_methods", "transactions"],
