@@ -171,22 +171,44 @@ export default class InventoryModuleService
     }
 
     if (validateQuantityAtLocation) {
+      // Entries for the same (item, location) share one stock pool, and the
+      // reservation write below aggregates their quantities per key — the
+      // check must too: validating each entry against the same undecremented
+      // available_quantity let a batch whose combined demand exceeds stock
+      // pass and over-reserve the location (bundle line items sharing an
+      // inventory item reach checkout exactly this way).
+      const demandedPerLocation = new Map<
+        string,
+        Map<string, BigNumberInput>
+      >()
+
       for (const item of data) {
-        if (!!item.allow_backorder) {
+        if (!!item.allow_backorder || item.quantity == null) {
           continue
         }
 
-        const locations = inventoryLevelItemLocationMap.get(
-          item.inventory_item_id
-        )!
+        const byLocation =
+          demandedPerLocation.get(item.inventory_item_id) ?? new Map()
+        const current = byLocation.get(item.location_id) ?? 0
+        byLocation.set(
+          item.location_id,
+          MathBN.add(current, item.quantity)
+        )
+        demandedPerLocation.set(item.inventory_item_id, byLocation)
+      }
 
-        const level = locations?.get(item.location_id)!
+      for (const [inventoryItemId, byLocation] of demandedPerLocation) {
+        for (const [locationId, demanded] of byLocation) {
+          const level = inventoryLevelItemLocationMap
+            .get(inventoryItemId)
+            ?.get(locationId)!
 
-        if (MathBN.lt(level.available_quantity, item.quantity!)) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
-          )
+          if (MathBN.lt(level.available_quantity, demanded)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Not enough stock available for item ${inventoryItemId} at location ${locationId}`
+            )
+          }
         }
       }
     }
