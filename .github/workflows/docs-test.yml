@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - www/**
+      - .github/workflows/docs-test.yml
 
 jobs:
   apps-test:
