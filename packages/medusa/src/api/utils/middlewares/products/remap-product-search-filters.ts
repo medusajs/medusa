@@ -17,9 +17,7 @@ const SEARCH_INDEX_FIELDS = {
 } as const
 
 /**
- * Renames the product filter params a search index holds under another name,
- * the way `remapProductCrossModuleFilters` rewrites them into relation filters
- * for `query.graph`.
+ * Renames the product filter params a search index holds under another name.
  *
  * The value is passed through as-is: a list on an array field means "contains
  * one of" to a search engine, which is what these ids need.
