@@ -62,7 +62,7 @@ export const confirmVariantInventoryWorkflowId = "confirm-item-inventory"
  * You can use this workflow within your own customizations or custom workflows, allowing you to check whether a product variant has enough inventory quantity before adding them to the cart.
  *
  * @example
- * You can retrieve a variant's required details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query):
+ * You can retrieve a variant's required details using [Query](https://docs.medusajs.com/learn/fundamentals/query):
  *
  * ```ts workflow={false}
  * const { data: variants } = await query.graph({

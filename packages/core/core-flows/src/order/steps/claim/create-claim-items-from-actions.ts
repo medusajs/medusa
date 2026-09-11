@@ -24,7 +24,7 @@ export type CreateOrderClaimItemsFromActionsInput = {
  * 
  * :::note
  * 
- * You can retrieve an order change action details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
+ * You can retrieve an order change action details using [Query](https://docs.medusajs.com/learn/fundamentals/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
  * 
  * :::

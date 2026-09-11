@@ -50,7 +50,7 @@ export const useRemoteQueryStepId = "use-remote-query"
 /**
  * This step fetches data across modules using the remote query.
  *
- * Learn more in the [Remote Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).
+ * Learn more in the [Remote Query documentation](https://docs.medusajs.com/learn/fundamentals/query).
  *
  * :::note
  *

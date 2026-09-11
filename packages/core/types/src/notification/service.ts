@@ -73,7 +73,7 @@ export interface INotificationModuleService extends IModuleService {
    * :::note
    * 
    * You can only retrieve data models defined in the same module. To retrieve linked data models
-   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
+   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/query) instead.
    * 
    * :::
    *
@@ -116,7 +116,7 @@ export interface INotificationModuleService extends IModuleService {
    * :::note
    * 
    * You can only retrieve data models defined in the same module. To retrieve linked data models
-   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
+   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/query) instead.
    * 
    * :::
    *
@@ -177,7 +177,7 @@ export interface INotificationModuleService extends IModuleService {
    * :::note
    * 
    * You can only retrieve data models defined in the same module. To retrieve linked data models
-   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
+   * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/query) instead.
    * 
    * :::
    *

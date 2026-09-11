@@ -94,7 +94,7 @@ export interface UpdateDraftOrderStepInput {
  *
  * :::note
  *
- * You can retrieve a draft order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
+ * You can retrieve a draft order's details using [Query](https://docs.medusajs.com/learn/fundamentals/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
  *
  * :::
