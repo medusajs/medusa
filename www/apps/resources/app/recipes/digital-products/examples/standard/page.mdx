@@ -2853,6 +2853,38 @@ export type VariantWithDigitalProduct = StoreProductVariant & {
 
 ```
 
+### Allow Retrieving Digital Products
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, to retrieve digital products from the `/store/products` route, add the following route object to the array passed to `defineMiddlewares` in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import { allowFields } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [allowFields("variants.digital_product")],
+    },
+  ],
+})
+```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ### Retrieve Digital Products with Variants
 
 To retrieve the digital products details when retrieving a product and its variants, in the `src/lib/data/products.ts` file, change the `listProducts` function to pass the digital products in the `fields` property passed to the `sdk.store.product.list` method:

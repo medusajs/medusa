@@ -727,6 +727,25 @@ This returns only the `title` and `handle` fields of a product.
 
 </DividedMarkdownLayout>
 
+<DividedMarkdownLayout>
+
+<DividedMarkdownContent>
+
+### Allowed and Disallowed Fields
+
+An API route can restrict the fields and relations that you can retrieve:
+
+- Allowed fields and relations are the only ones you can retrieve in the API route. If an API route has no allowed fields, you can retrieve any field or relation.
+- Disallowed fields and relations are the ones you can never retrieve in the API route, even if you pass them in the `fields` query parameter.
+
+If an API route has any of these restrictions, they're listed in its documentation in the Allowed and Disallowed collapsibles.
+
+To learn more about these restrictions and how to override them, refer to the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) and [Disallowed Fields](!docs!/learn/fundamentals/api-routes/disallowed-fields) documentation.
+
+</DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
 <DividedMarkdownLayout addYSpacing>
 
 <DividedMarkdownContent>

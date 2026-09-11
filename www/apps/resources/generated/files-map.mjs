@@ -1,51 +1,231 @@
 export const filesMap = [
   {
+    "filePath": "/www/apps/resources/app/admin-components/archive/action-menu/page.mdx",
+    "pathname": "/admin-components/archive/action-menu"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/archive/json-view-section/page.mdx",
+    "pathname": "/admin-components/archive/json-view-section"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/archive/page.mdx",
+    "pathname": "/admin-components/archive"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/archive/section-row/page.mdx",
+    "pathname": "/admin-components/archive/section-row"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/archive/single-column-layout/page.mdx",
+    "pathname": "/admin-components/archive/single-column-layout"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/archive/two-column-layout/page.mdx",
+    "pathname": "/admin-components/archive/two-column-layout"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/action-menu/page.mdx",
     "pathname": "/admin-components/components/action-menu"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/container/page.mdx",
-    "pathname": "/admin-components/components/container"
+    "filePath": "/www/apps/resources/app/admin-components/components/combobox/page.mdx",
+    "pathname": "/admin-components/components/combobox"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/data-table/page.mdx",
-    "pathname": "/admin-components/components/data-table"
+    "filePath": "/www/apps/resources/app/admin-components/components/conditional-tooltip/page.mdx",
+    "pathname": "/admin-components/components/conditional-tooltip"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/forms/page.mdx",
-    "pathname": "/admin-components/components/forms"
+    "filePath": "/www/apps/resources/app/admin-components/components/configurable-data-table/page.mdx",
+    "pathname": "/admin-components/components/configurable-data-table"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/header/page.mdx",
-    "pathname": "/admin-components/components/header"
+    "filePath": "/www/apps/resources/app/admin-components/components/country-select/page.mdx",
+    "pathname": "/admin-components/components/country-select"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/data-grid/page.mdx",
+    "pathname": "/admin-components/components/data-grid"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/display-id/page.mdx",
+    "pathname": "/admin-components/components/display-id"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/empty-states/page.mdx",
+    "pathname": "/admin-components/components/empty-states"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/handle-input/page.mdx",
+    "pathname": "/admin-components/components/handle-input"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/icon-avatar/page.mdx",
+    "pathname": "/admin-components/components/icon-avatar"
   },
   {
     "filePath": "/www/apps/resources/app/admin-components/components/json-view-section/page.mdx",
     "pathname": "/admin-components/components/json-view-section"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/layout-composer/page.mdx",
-    "pathname": "/admin-components/components/layout-composer"
+    "filePath": "/www/apps/resources/app/admin-components/components/keybound-form/page.mdx",
+    "pathname": "/admin-components/components/keybound-form"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/listicle/page.mdx",
+    "pathname": "/admin-components/components/listicle"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/page.mdx",
+    "pathname": "/admin-components/components"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/product-table-cells/page.mdx",
+    "pathname": "/admin-components/components/product-table-cells"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/route-drawer/page.mdx",
+    "pathname": "/admin-components/components/route-drawer"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/components/route-focus-modal/page.mdx",
+    "pathname": "/admin-components/components/route-focus-modal"
   },
   {
     "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
     "pathname": "/admin-components/components/section-row"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/components/table/page.mdx",
-    "pathname": "/admin-components/components/table"
+    "filePath": "/www/apps/resources/app/admin-components/components/stacked-drawer/page.mdx",
+    "pathname": "/admin-components/components/stacked-drawer"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/layouts/single-column/page.mdx",
-    "pathname": "/admin-components/layouts/single-column"
+    "filePath": "/www/apps/resources/app/admin-components/components/stacked-focus-modal/page.mdx",
+    "pathname": "/admin-components/components/stacked-focus-modal"
   },
   {
-    "filePath": "/www/apps/resources/app/admin-components/layouts/two-column/page.mdx",
-    "pathname": "/admin-components/layouts/two-column"
+    "filePath": "/www/apps/resources/app/admin-components/components/thumbnail/page.mdx",
+    "pathname": "/admin-components/components/thumbnail"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/guides/container/page.mdx",
+    "pathname": "/admin-components/guides/container"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/guides/data-table/page.mdx",
+    "pathname": "/admin-components/guides/data-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/guides/forms/page.mdx",
+    "pathname": "/admin-components/guides/forms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/guides/header/page.mdx",
+    "pathname": "/admin-components/guides/header"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/guides/table/page.mdx",
+    "pathname": "/admin-components/guides/table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/customers/page.mdx",
+    "pathname": "/admin-components/hooks/customers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/data-table-helpers/page.mdx",
+    "pathname": "/admin-components/hooks/data-table-helpers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/orders/page.mdx",
+    "pathname": "/admin-components/hooks/orders"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/page.mdx",
+    "pathname": "/admin-components/hooks"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/price-preferences/page.mdx",
+    "pathname": "/admin-components/hooks/price-preferences"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/product-variants/page.mdx",
+    "pathname": "/admin-components/hooks/product-variants"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/products/page.mdx",
+    "pathname": "/admin-components/hooks/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/promotions/page.mdx",
+    "pathname": "/admin-components/hooks/promotions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/regions/page.mdx",
+    "pathname": "/admin-components/hooks/regions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/sales-channels/page.mdx",
+    "pathname": "/admin-components/hooks/sales-channels"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/shipping-options/page.mdx",
+    "pathname": "/admin-components/hooks/shipping-options"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/store/page.mdx",
+    "pathname": "/admin-components/hooks/store"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/use-combobox-data/page.mdx",
+    "pathname": "/admin-components/hooks/use-combobox-data"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/use-date/page.mdx",
+    "pathname": "/admin-components/hooks/use-date"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/use-debounced-search/page.mdx",
+    "pathname": "/admin-components/hooks/use-debounced-search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/use-query-params/page.mdx",
+    "pathname": "/admin-components/hooks/use-query-params"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/hooks/users/page.mdx",
+    "pathname": "/admin-components/hooks/users"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/layouts/layout-composer/page.mdx",
+    "pathname": "/admin-components/layouts/layout-composer"
   },
   {
     "filePath": "/www/apps/resources/app/admin-components/page.mdx",
     "pathname": "/admin-components"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/addresses/page.mdx",
+    "pathname": "/admin-components/utilities/addresses"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/form-validation/page.mdx",
+    "pathname": "/admin-components/utilities/form-validation"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/money-and-currency/page.mdx",
+    "pathname": "/admin-components/utilities/money-and-currency"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/page.mdx",
+    "pathname": "/admin-components/utilities"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/search/page.mdx",
+    "pathname": "/admin-components/utilities/search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/admin-components/utilities/table/page.mdx",
+    "pathname": "/admin-components/utilities/table"
   },
   {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
@@ -1208,6 +1388,10 @@ export const filesMap = [
     "pathname": "/lint/rules/admin-no-medusa-utils-import"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/allow-fields-must-be-global-middleware/page.mdx",
+    "pathname": "/lint/rules/allow-fields-must-be-global-middleware"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/authenticate-flag-name-and-type/page.mdx",
     "pathname": "/lint/rules/authenticate-flag-name-and-type"
   },
@@ -1338,6 +1522,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/lint/rules/page.mdx",
     "pathname": "/lint/rules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-allow-fields-middleware/page.mdx",
+    "pathname": "/lint/rules/prefer-allow-fields-middleware"
   },
   {
     "filePath": "/www/apps/resources/app/lint/rules/prefer-container-registration-keys/page.mdx",

@@ -1,0 +1,71 @@
+---
+sidebar_label: "useDate"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `useDate - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This hook is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `useDate` hook formats dates using the locale of the Medusa Admin's active language. The Medusa Admin uses it to render dates in tables, detail pages, and timelines.
+
+```tsx
+import { useDate } from "@medusajs/dashboard/hooks"
+```
+
+---
+
+## Example
+
+Use the hook's functions to format a date as an absolute or a relative date:
+
+```tsx
+import { useDate } from "@medusajs/dashboard/hooks"
+import { Text } from "@medusajs/ui"
+
+const OrderDate = ({ order }) => {
+  const { getFullDate, getRelativeDate } = useDate()
+
+  return (
+    <div>
+      <Text>
+        {getFullDate({
+          date: order.created_at,
+          includeTime: true,
+        })}
+      </Text>
+      <Text>{getRelativeDate(order.created_at)}</Text>
+    </div>
+  )
+}
+```
+
+`getFullDate` returns a formatted date, such as `Apr 29, 2025`, and `getRelativeDate` returns a distance from the current time, such as `3 days ago`.
+
+---
+
+## Returns
+
+<TypeList
+  types={[
+    {
+      name: "getFullDate",
+      type: "`(params: { date: string | Date; includeTime?: boolean }) => string`",
+      description: "Formats a date in the active locale. Set `includeTime` to `true` to append the time, which is `false` by default. If the passed date is invalid, the function returns an empty string.",
+    },
+    {
+      name: "getRelativeDate",
+      type: "`(date: string | Date) => string`",
+      description: "Formats the distance between the passed date and the current time in the active locale, with a suffix such as `ago` or `in`.",
+    },
+  ]}
+/>

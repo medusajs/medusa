@@ -36,7 +36,7 @@ Adding custom injection zones in a plugin requires two steps:
   ]}
 />
 
-When you build a custom admin page in a plugin, use the [LayoutComposer](!resources!/admin-components/components/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
+When you build a custom admin page in a plugin, use the [LayoutComposer](!resources!/admin-components/layouts/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
 
 ### Single-Column Layout Example
 
@@ -76,7 +76,7 @@ Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example expos
 
 Widgets injected into this zone appear inside the main section and can be reordered by admin users.
 
-Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+Refer to the [LayoutComposer](!resources!/admin-components/layouts/layout-composer) reference for more details on the component's props and layouts.
 
 ### Two-Column Layout Example
 
@@ -122,7 +122,7 @@ Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example expos
 
 Widgets injected into these zones appear inside the respective sections and can be reordered by admin users. The `data` prop is passed to the widgets, allowing them to access the page's main data. In this example, widgets can access the `brand` object through their `data` prop.
 
-Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+Refer to the [LayoutComposer](!resources!/admin-components/layouts/layout-composer) reference for more details on the component's props and layouts.
 
 ### Custom Zone Naming Convention
 
