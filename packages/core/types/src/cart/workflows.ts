@@ -122,6 +122,11 @@ export interface CreateCartCreateLineItemDTO {
   compare_at_unit_price?: BigNumberInput
 
   /**
+   * The weight of the item.
+   */
+  unit_weight?: number
+
+  /**
    * The price of a single quantity of the item.
    */
   unit_price?: BigNumberInput

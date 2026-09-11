@@ -618,6 +618,11 @@ export interface CreateLineItemDTO {
   compare_at_unit_price?: BigNumberInput
 
   /**
+   * The unit weight of the line item.
+   */
+  unit_weight?: number
+
+  /**
    * The unit price of the line item.
    */
   unit_price: BigNumberInput

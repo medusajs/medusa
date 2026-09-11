@@ -514,6 +514,11 @@ export interface CartLineItemTotalsDTO {
   discount_tax_total: BigNumberValue
 
   /**
+   * The weight total of the cart line item.
+   */
+  weight_total?: BigNumberValue
+
+  /**
    * The raw original total of the cart line item.
    */
   raw_original_total: BigNumberRawValue
@@ -567,6 +572,11 @@ export interface CartLineItemTotalsDTO {
    * The raw discount tax total of the cart line item.
    */
   raw_discount_tax_total: BigNumberRawValue
+
+  /**
+   * The raw weight total of the cart line item.
+   */
+  raw_weight_total?: BigNumberRawValue
 }
 
 /**
@@ -692,6 +702,11 @@ export interface CartLineItemDTO extends CartLineItemTotalsDTO {
    * The calculated price of the line item.
    */
   compare_at_unit_price?: BigNumberValue
+
+  /**
+   * The unit weight of the item.
+   */
+  unit_weight?: number
 
   /**
    * The unit price of the item.
@@ -860,6 +875,11 @@ export interface CartDTO {
   item_total: BigNumberValue
 
   /**
+   * The weight total of the cart.
+   */
+  weight_total?: BigNumberValue
+
+  /**
    * The item subtotal of the cart.
    */
   item_subtotal: BigNumberValue
@@ -968,6 +988,11 @@ export interface CartDTO {
    * The raw item total of the cart.
    */
   raw_item_total: BigNumberRawValue
+
+  /**
+   * The raw weight total of the cart.
+   */
+  raw_weight_total?: BigNumberRawValue
 
   /**
    * The raw item subtotal of the cart.
