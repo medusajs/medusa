@@ -28,8 +28,21 @@ export default async ({
       ...c,
       code: c.code.toLowerCase(),
     }))
-    const resp = await currencyService_.upsert(normalizedCurrencies)
-    logger.debug(`Loaded ${resp.length} currencies`)
+
+    const existingCurrencies = await currencyService_.list(
+      { code: normalizedCurrencies.map((c) => c.code) },
+      { select: ["code"] }
+    )
+
+    const existingCodes = new Set(existingCurrencies.map((c) => c.code))
+    const toCreate = normalizedCurrencies.filter(
+      (c) => !existingCodes.has(c.code)
+    )
+
+    if (toCreate.length) {
+      const resp = await currencyService_.create(toCreate)
+      logger.debug(`Loaded ${resp.length} currencies`)
+    }
   } catch (error) {
     logger.warn(
       `Failed to load currencies, skipping loader. Original error: ${error.message}`
