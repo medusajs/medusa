@@ -201,6 +201,31 @@ moduleIntegrationTestRunner<IInventoryService>({
           ])
         })
 
+        it("should reject a batch that reserves more than available for the same item and location", async () => {
+          await expect(
+            service.createReservationItems([
+              {
+                inventory_item_id: inventoryItem.id,
+                location_id: "location-1",
+                quantity: 2,
+              },
+              {
+                inventory_item_id: inventoryItem.id,
+                location_id: "location-1",
+                quantity: 2,
+              },
+            ])
+          ).rejects.toThrow(
+            `Not enough stock available for item ${inventoryItem.id} at location location-1`
+          )
+
+          const level = await service.retrieveInventoryLevelByItemAndLocation(
+            inventoryItem.id,
+            "location-1"
+          )
+          expect(level.reserved_quantity).toEqual(0)
+        })
+
         it("should fail to create a reservationItem for a non-existing location", async () => {
           const data = [
             {
@@ -709,7 +734,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
-              stocked_quantity: 2,
+              stocked_quantity: 6,
             },
             {
               inventory_item_id: inventoryItem.id,
@@ -822,7 +847,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
-              stocked_quantity: 2,
+              stocked_quantity: 4,
             },
             {
               inventory_item_id: inventoryItem.id,
