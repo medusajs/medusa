@@ -159,6 +159,8 @@ export type SearchIndexSyncRecord = {
   status: string
   filters: Record<string, unknown> | null
   last_key: string | null
+  /** Whether a later run may continue from `last_key`. */
+  resumable: boolean
   documents_synced: number
   started_at: Date | null
   completed_at: Date | null
