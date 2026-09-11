@@ -1,21 +1,22 @@
-import { HttpTypes } from "@medusajs/types";
-import { useMemo } from "react";
-import { UseFormReturn, useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next"
+import { HttpTypes } from "@medusajs/types"
+import { useMemo } from "react"
+import { UseFormReturn, useWatch } from "react-hook-form"
+import { ProductCreateVariantSchema } from "./schema"
+import { ProductCreateSchemaType } from "./types"
 import {
   createDataGridHelper,
   createDataGridPriceColumns,
   DataGrid,
-} from "../../../../../components/data-grid";
-import { useRouteModal } from "../../../../../components/modals";
-import { ProductCreateVariantSchema } from "./schema";
-import { ProductCreateSchemaType } from "./types";
+  useRouteModal,
+} from "@medusajs/dashboard/components"
 
 type GiftCardProductCreateDenominationsFormProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-  regions: HttpTypes.AdminRegion[];
-  store: HttpTypes.AdminStore;
-  pricePreferences: HttpTypes.AdminPricePreference[];
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+  regions: HttpTypes.AdminRegion[]
+  store: HttpTypes.AdminStore
+  pricePreferences: HttpTypes.AdminPricePreference[]
+}
 
 export const GiftCardProductCreateDenominationsForm = ({
   form,
@@ -23,35 +24,35 @@ export const GiftCardProductCreateDenominationsForm = ({
   store,
   pricePreferences,
 }: GiftCardProductCreateDenominationsFormProps) => {
-  const { setCloseOnEscape } = useRouteModal();
+  const { setCloseOnEscape } = useRouteModal()
 
   const currencyCodes = useMemo(
     () => store?.supported_currencies?.map((c) => c.currency_code) || [],
     [store]
-  );
+  )
 
   const denominations = useWatch({
     control: form.control,
     name: "denominations",
     defaultValue: [],
-  });
+  })
 
   const columns = useColumns({
     denominations,
     currencies: currencyCodes,
     regions,
     pricePreferences,
-  });
+  })
 
   const variantData = useMemo(() => {
-    const ret: any[] = [];
+    const ret: any[] = []
 
     denominations.forEach((v, i) => {
-      ret.push({ ...v, originalIndex: i });
-    });
+      ret.push({ ...v, originalIndex: i })
+    })
 
-    return ret;
-  }, [denominations]);
+    return ret
+  }, [denominations])
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
@@ -62,13 +63,13 @@ export const GiftCardProductCreateDenominationsForm = ({
         onEditingChange={(editing) => setCloseOnEscape(!editing)}
       />
     </div>
-  );
-};
+  )
+}
 
 const columnHelper = createDataGridHelper<
   ProductCreateVariantSchema,
   ProductCreateSchemaType
->();
+>()
 
 const useColumns = ({
   denominations = [],
@@ -76,11 +77,13 @@ const useColumns = ({
   regions = [],
   pricePreferences = [],
 }: {
-  denominations: { value: string }[];
-  currencies?: string[];
-  regions?: HttpTypes.AdminRegion[];
-  pricePreferences?: HttpTypes.AdminPricePreference[];
+  denominations: { value: string }[]
+  currencies?: string[]
+  regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
+  const { t } = useTranslation()
+
   return useMemo(
     () => [
       columnHelper.column({
@@ -95,7 +98,7 @@ const useColumns = ({
             <DataGrid.ReadonlyCell context={context}>
               {context.row.original.value}
             </DataGrid.ReadonlyCell>
-          );
+          )
         },
         disableHiding: true,
       }),
@@ -108,10 +111,11 @@ const useColumns = ({
         regions,
         pricePreferences,
         getFieldName: (context, value) => {
-          return `denominations.${context.row.original.originalIndex}.prices.${value}`;
+          return `denominations.${context.row.original.originalIndex}.prices.${value}`
         },
+        t,
       }),
     ],
-    [currencies, regions, denominations, pricePreferences]
-  );
-};
+    [currencies, regions, denominations, pricePreferences, t]
+  )
+}

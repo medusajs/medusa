@@ -1,3 +1,9 @@
+import {
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Button,
@@ -12,9 +18,6 @@ import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "@medusajs/framework/zod"
 import { AdminGiftCard } from "../../../../../types"
-import { Form } from "../../../../components/form"
-import { KeyboundForm } from "../../../../components/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import {
   useGiftCard,
   useUpdateGiftCard,
@@ -77,9 +80,7 @@ const GiftCardExpirationForm = ({ giftCard }: GiftCardExpirationFormProps) => {
 
     await mutateAsync(
       {
-        expires_at: isSettingExpiration
-          ? data.expires_at!.toISOString()
-          : null,
+        expires_at: isSettingExpiration ? data.expires_at!.toISOString() : null,
       },
       {
         onSuccess: () => {

@@ -1,1 +1,1 @@
-export * from "./gift-card-product-create-form";
+export * from "./gift-card-product-create-form"

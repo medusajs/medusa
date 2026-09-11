@@ -11,8 +11,7 @@ import {
 import { Collapsible } from "radix-ui"
 import { ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
-import { useUser } from "../../hooks/api/users"
-import { getFullDate, getRelativeDate } from "../../lib/utils/date-utils"
+import { useDate, useUser } from "@medusajs/dashboard/hooks"
 
 interface ActivitySectionProps {
   order: HttpTypes.AdminOrder
@@ -118,6 +117,8 @@ interface ActivityItemProps {
 }
 
 const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
+  const { getFullDate, getRelativeDate } = useDate()
+
   const { user, isPending, isError, error } = useUser(item.userId!, undefined, {
     enabled: !!item.userId,
   })

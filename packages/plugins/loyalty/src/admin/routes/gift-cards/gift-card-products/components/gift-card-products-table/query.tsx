@@ -1,10 +1,10 @@
-import { AdminGetGiftCardsParams } from "../../../../../../types";
-import { useQueryParams } from "../../../../../hooks/common/use-query-params";
+import { AdminGetGiftCardsParams } from "../../../../../../types"
+import { useQueryParams } from "@medusajs/dashboard/hooks"
 
 type UseGiftCardTableQueryProps = {
-  prefix?: string;
-  pageSize?: number;
-};
+  prefix?: string
+  pageSize?: number
+}
 
 export const useGiftCardProductsTableQuery = ({
   prefix,
@@ -13,9 +13,9 @@ export const useGiftCardProductsTableQuery = ({
   const queryObject = useQueryParams(
     ["offset", "customer_id", "created_at", "updated_at"],
     prefix
-  );
+  )
 
-  const { offset, created_at, updated_at, customer_id, ...rest } = queryObject;
+  const { offset, created_at, updated_at, customer_id, ...rest } = queryObject
 
   const searchParams: AdminGetGiftCardsParams = {
     limit: pageSize,
@@ -24,7 +24,7 @@ export const useGiftCardProductsTableQuery = ({
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
     customer_id: customer_id ? JSON.parse(customer_id) : undefined,
     ...rest,
-  };
+  }
 
-  return searchParams;
-};
+  return searchParams
+}

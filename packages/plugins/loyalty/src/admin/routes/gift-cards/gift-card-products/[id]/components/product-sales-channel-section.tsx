@@ -1,26 +1,25 @@
-import { HttpTypes } from "@medusajs/types";
-import { Container, Heading } from "@medusajs/ui";
-import { Link } from "react-router-dom";
-import { IconAvatar } from "../../../../../components/icon-avatar";
-import { ChannelIcon } from "../../../../../components/icons/channel-icon";
-import { Listicle } from "../../../../../components/listicle";
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels";
+import { HttpTypes } from "@medusajs/types"
+import { Container, Heading } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+import { ChannelIcon } from "../../../../../components/icons/channel-icon"
+import { IconAvatar, Listicle } from "@medusajs/dashboard/components"
+import { useSalesChannels } from "@medusajs/dashboard/hooks"
 
 type ProductSalesChannelSectionProps = {
-  product: HttpTypes.AdminProduct;
-};
+  product: HttpTypes.AdminProduct
+}
 
 // TODO: The fetched sales channel doesn't contain all necessary info
 export const ProductSalesChannelSection = ({
   product,
 }: ProductSalesChannelSectionProps) => {
-  const { count } = useSalesChannels();
+  const { count } = useSalesChannels()
 
   const availableInSalesChannels =
     product.sales_channels?.map((sc) => ({
       id: sc.id,
       name: sc.name,
-    })) ?? [];
+    })) ?? []
 
   return (
     <Container className="flex flex-col p-2">
@@ -29,7 +28,7 @@ export const ProductSalesChannelSection = ({
 
         <Link
           to={`sales-channels`}
-          className="text-ui-fg-muted text-sm  txt-compact-medium-plus"
+          className="text-ui-fg-muted txt-compact-medium-plus  text-sm"
         >
           Edit
         </Link>
@@ -48,5 +47,5 @@ export const ProductSalesChannelSection = ({
         }
       ></Listicle>
     </Container>
-  );
-};
+  )
+}

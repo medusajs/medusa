@@ -10,9 +10,8 @@ import {
   toast,
 } from "@medusajs/ui"
 import { Link, useNavigate } from "react-router-dom"
-import { useRegion } from "../../hooks/api/regions"
-import { getFullDate } from "../../lib/utils/date-utils"
-import { ActionMenu } from "../common/action-menu"
+import { ActionMenu } from "@medusajs/dashboard/components"
+import { useDate, useRegion } from "@medusajs/dashboard/hooks"
 import { useDeleteDraftOrder } from "../../hooks/api/draft-orders"
 
 interface GeneralSectionProps {
@@ -20,6 +19,8 @@ interface GeneralSectionProps {
 }
 
 export const GeneralSection = ({ order }: GeneralSectionProps) => {
+  const { getFullDate } = useDate()
+
   const navigate = useNavigate()
 
   const { mutateAsync: deleteDraftOrder, isPending: isDeleting } =
@@ -50,7 +51,7 @@ export const GeneralSection = ({ order }: GeneralSectionProps) => {
               <Link to={`/settings/regions/${region?.id}`}>{region?.name}</Link>
             </Badge>
           ) : (
-            <Skeleton className="w-14 h-5 rounded-full" />
+            <Skeleton className="h-5 w-14 rounded-full" />
           )}
         </div>
         <Text size="small" className="text-ui-fg-subtle">

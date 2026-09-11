@@ -2,7 +2,7 @@ import { ExclamationCircleSolid } from "@medusajs/icons"
 import { Button, Container, Divider, Heading, Text, toast } from "@medusajs/ui"
 import { useLocation } from "react-router-dom"
 import { useDraftOrderCancelEdit } from "../../hooks/api/draft-orders"
-import { useOrderPreview } from "../../hooks/api/orders"
+import { useOrderPreview } from "@medusajs/dashboard/hooks"
 
 const DETAILS_PAGE_REGEX = /\/draft-orders\/[a-zA-Z0-9_-]+\/?$/
 interface ActiveOrderChangeProps {
@@ -39,14 +39,14 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
 
   return (
     <div
-      className="border-b border-x px-3 py-3 -mx-4 -mt-3"
+      className="-mx-4 -mt-3 border-x border-b px-3 py-3"
       style={{
         background:
           "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
       }}
     >
-      <Container className="p-0 overflow-hidden">
-        <div className="px-6 py-4 flex items-center gap-x-2">
+      <Container className="overflow-hidden p-0">
+        <div className="flex items-center gap-x-2 px-6 py-4">
           <ExclamationCircleSolid className="text-ui-fg-interactive" />
           <Heading>Edit pending</Heading>
         </div>
@@ -59,7 +59,7 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
           </Text>
         </div>
         <Divider variant="dashed" />
-        <div className="bg-ui-bg-component px-6 py-4 justify-end items-center flex gap-x-2">
+        <div className="bg-ui-bg-component flex items-center justify-end gap-x-2 px-6 py-4">
           {!noActions && (
             <Button
               size="small"

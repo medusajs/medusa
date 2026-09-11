@@ -3,17 +3,16 @@ import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "@medusajs/framework/zod"
-import { Combobox } from "../../../../../components/combobox"
-import { Form } from "../../../../../components/form"
+import { useCreateStoreCreditAccount } from "../../../../../hooks/api/store-credit-accounts"
+import { sdk } from "../../../../../lib/sdk"
 import {
+  Combobox,
+  Form,
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/modals"
-import { customersQueryKeys } from "../../../../../hooks/api/customers"
-import { useCreateStoreCreditAccount } from "../../../../../hooks/api/store-credit-accounts"
-import { useComboboxData } from "../../../../../hooks/common/use-combobox-data"
-import { currencies } from "../../../../../lib/currencies"
-import { sdk } from "../../../../../lib/sdk"
+} from "@medusajs/dashboard/components"
+import { customersQueryKeys, useComboboxData } from "@medusajs/dashboard/hooks"
+import { currencies } from "@medusajs/dashboard/lib"
 
 export const formSchema = z.object({
   currency_code: z.string().min(1, "Please select a currency"),

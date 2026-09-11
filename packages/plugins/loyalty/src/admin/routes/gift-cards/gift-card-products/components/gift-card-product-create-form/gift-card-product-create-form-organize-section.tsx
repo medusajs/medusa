@@ -1,31 +1,33 @@
-import { Button, Text } from "@medusajs/ui";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
-import { Form } from "../../../../../components/form";
-import { IconAvatar } from "../../../../../components/icon-avatar";
-import { ChannelIcon } from "../../../../../components/icons/channel-icon";
-import { Listicle } from "../../../../../components/listicle";
-import { StackedFocusModal } from "../../../../../components/modals";
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels";
-import { ProductCreateSchemaType } from "./types";
+import { Button, Text } from "@medusajs/ui"
+import { UseFormReturn, useFieldArray } from "react-hook-form"
+import { ChannelIcon } from "../../../../../components/icons/channel-icon"
+import { ProductCreateSchemaType } from "./types"
+import {
+  Form,
+  IconAvatar,
+  Listicle,
+  StackedFocusModal,
+} from "@medusajs/dashboard/components"
+import { useSalesChannels } from "@medusajs/dashboard/hooks"
 
 type GiftCardProductCreateOrganizationSectionProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+}
 
 export const GiftCardProductCreateOrganizationSection = ({
   form,
 }: GiftCardProductCreateOrganizationSectionProps) => {
-  const { count } = useSalesChannels();
+  const { count } = useSalesChannels()
   const { fields } = useFieldArray({
     control: form.control,
     name: "sales_channels",
     keyName: "key",
-  });
+  })
 
   return (
     <div
       id="organize"
-      className="grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2"
+      className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2"
     >
       <div>
         <Text className="txt-small-plus text-ui-fg-base" weight="plus">
@@ -72,10 +74,10 @@ export const GiftCardProductCreateOrganizationSection = ({
                   }
                 </Form.Control>
               </Form.Item>
-            );
+            )
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}

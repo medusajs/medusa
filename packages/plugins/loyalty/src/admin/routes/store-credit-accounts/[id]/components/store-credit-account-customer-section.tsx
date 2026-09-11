@@ -1,21 +1,21 @@
-import { Container } from "@medusajs/ui";
-import { User } from "@medusajs/icons";
+import { Container } from "@medusajs/ui"
+import { User } from "@medusajs/icons"
 
-import { SidebarLink } from "../../../../components/sidebar-link";
-import { useCustomer } from "../../../../hooks/api/customers";
-import { Header } from "../../../../components/header";
+import { Header } from "../../../../components/header"
+import { SidebarLink } from "@medusajs/dashboard/components"
+import { useCustomer } from "@medusajs/dashboard/hooks"
 
 function StoreCreditAccountCustomerSection({
   customerId,
 }: {
-  customerId?: string;
+  customerId?: string
 }) {
   const { customer, isPending } = useCustomer(customerId as string, undefined, {
     enabled: !!customerId,
-  });
+  })
 
   if (isPending || !customer) {
-    return null;
+    return null
   }
 
   return (
@@ -34,7 +34,7 @@ function StoreCreditAccountCustomerSection({
         to={`/customers/${customer.id}`}
       />
     </Container>
-  );
+  )
 }
 
-export default StoreCreditAccountCustomerSection;
+export default StoreCreditAccountCustomerSection

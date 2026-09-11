@@ -1,15 +1,15 @@
 /* eslint-disable @medusajs/widget-must-have-default-export */
 /* eslint-disable @medusajs/widget-must-export-config */
-import { HttpTypes } from "@medusajs/types";
-import { useQueryParams } from "../../hooks/common/use-query-params";
+import { HttpTypes } from "@medusajs/types"
+import { useQueryParams } from "@medusajs/dashboard/hooks"
 
 type UseGiftCardProductsTableQueryProps = {
-  prefix?: string;
-  pageSize?: number;
-};
+  prefix?: string
+  pageSize?: number
+}
 
 const DEFAULT_FIELDS =
-  "id,title,handle,status,*sales_channels,variants.id,thumbnail";
+  "id,title,handle,status,*sales_channels,variants.id,thumbnail"
 
 export const useGiftCardProductsTableQuery = ({
   prefix,
@@ -27,10 +27,10 @@ export const useGiftCardProductsTableQuery = ({
       "id",
     ],
     prefix
-  );
+  )
 
   const { offset, sales_channel_id, created_at, updated_at, status, order, q } =
-    queryObject;
+    queryObject
 
   const searchParams: HttpTypes.AdminProductListParams = {
     limit: pageSize,
@@ -42,10 +42,10 @@ export const useGiftCardProductsTableQuery = ({
     status: status?.split(",") as HttpTypes.AdminProductStatus[],
     q,
     fields: DEFAULT_FIELDS,
-  };
+  }
 
   return {
     searchParams,
     raw: queryObject,
-  };
-};
+  }
+}

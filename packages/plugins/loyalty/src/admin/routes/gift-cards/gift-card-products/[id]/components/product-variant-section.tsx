@@ -1,5 +1,5 @@
-import { PencilSquare, Trash } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Container,
@@ -7,27 +7,27 @@ import {
   DataTableAction,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui";
-import { keepPreviousData } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
+} from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
+import { useCallback, useMemo } from "react"
 
-import { CellContext } from "@tanstack/react-table";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { DataTable } from "../../../../../components/data-table";
-import { useDataTableDateColumns } from "../../../../../components/data-table/helpers/general/use-data-table-date-columns";
+import { CellContext } from "@tanstack/react-table"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { DataTable } from "@medusajs/dashboard/components"
 import {
+  useDataTableDateColumns,
+  useDataTableDateFilters,
   useDeleteVariantLazy,
   useProductVariants,
-} from "../../../../../hooks/api/products";
-import { useDataTableDateFilters } from "../../../../../hooks/common/use-data-table-date-filters";
-import { useQueryParams } from "../../../../../hooks/common/use-query-params";
+  useQueryParams,
+} from "@medusajs/dashboard/hooks"
 
 type ProductVariantSectionProps = {
-  product: HttpTypes.AdminProduct;
-};
+  product: HttpTypes.AdminProduct
+}
 
-const PAGE_SIZE = 10;
-const PREFIX = "pv";
+const PAGE_SIZE = 10
+const PREFIX = "pv"
 
 export const ProductVariantSection = ({
   product,
@@ -51,10 +51,10 @@ export const ProductVariantSection = ({
       "updated_at",
     ],
     PREFIX
-  );
+  )
 
-  const columns = useColumns(product);
-  const filters = useFilters();
+  const columns = useColumns(product)
+  const filters = useFilters()
 
   const { variants, count, isPending, isError, error } = useProductVariants(
     product.id,
@@ -76,10 +76,10 @@ export const ProductVariantSection = ({
     {
       placeholderData: keepPreviousData,
     }
-  );
+  )
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   return (
@@ -125,29 +125,29 @@ export const ProductVariantSection = ({
         prefix={PREFIX}
       />
     </Container>
-  );
-};
+  )
+}
 
 const columnHelper =
-  createDataTableColumnHelper<HttpTypes.AdminProductVariant>();
+  createDataTableColumnHelper<HttpTypes.AdminProductVariant>()
 
 const useColumns = (product: HttpTypes.AdminProduct) => {
-  const navigate = useNavigate();
-  const { mutateAsync } = useDeleteVariantLazy(product.id);
-  const prompt = usePrompt();
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate()
+  const { mutateAsync } = useDeleteVariantLazy(product.id)
+  const prompt = usePrompt()
+  const [searchParams] = useSearchParams()
 
   const tableSearchParams = useMemo(() => {
-    const filtered = new URLSearchParams();
+    const filtered = new URLSearchParams()
     for (const [key, value] of searchParams.entries()) {
       if (key.startsWith(`${PREFIX}_`)) {
-        filtered.append(key, value);
+        filtered.append(key, value)
       }
     }
-    return filtered;
-  }, [searchParams]);
+    return filtered
+  }, [searchParams])
 
-  const dateColumns = useDataTableDateColumns<HttpTypes.AdminProductVariant>();
+  const dateColumns = useDataTableDateColumns<HttpTypes.AdminProductVariant>()
 
   const handleDelete = useCallback(
     async (id: string, title: string) => {
@@ -156,20 +156,20 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         description: `Are you sure you want to delete denomination ${title}?`,
         confirmText: "Delete",
         cancelText: "Cancel",
-      });
+      })
 
       if (!res) {
-        return;
+        return
       }
 
-      await mutateAsync({ variantId: id });
+      await mutateAsync({ variantId: id })
     },
     [mutateAsync, prompt]
-  );
+  )
 
   const optionColumns = useMemo(() => {
     if (!product?.options) {
-      return [];
+      return []
     }
 
     return product.options.map((option) => {
@@ -179,10 +179,10 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         cell: ({ row }) => {
           const variantOpt = row.original.options?.find(
             (opt) => opt.option_id === option.id
-          );
+          )
 
           if (!variantOpt) {
-            return <span className="text-ui-fg-muted">-</span>;
+            return <span className="text-ui-fg-muted">-</span>
           }
 
           return (
@@ -197,17 +197,17 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
                 </Badge>
               </Tooltip>
             </div>
-          );
+          )
         },
-      });
-    });
-  }, [product]);
+      })
+    })
+  }, [product])
 
   const getActions = useCallback(
     (ctx: CellContext<HttpTypes.AdminProductVariant, unknown>) => {
       const variant = ctx.row.original as HttpTypes.AdminProductVariant & {
-        inventory_items: { inventory: HttpTypes.AdminInventoryItem }[];
-      };
+        inventory_items: { inventory: HttpTypes.AdminInventoryItem }[]
+      }
 
       const mainActions: DataTableAction<HttpTypes.AdminProductVariant>[] = [
         {
@@ -215,12 +215,12 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
           label: "Delete",
           onClick: () => handleDelete(variant.id, variant.title!),
         },
-      ];
+      ]
 
-      return [mainActions];
+      return [mainActions]
     },
     [handleDelete, navigate, tableSearchParams]
-  );
+  )
 
   return useMemo(() => {
     return [
@@ -233,14 +233,14 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
       columnHelper.action({
         actions: getActions,
       }),
-    ];
-  }, [optionColumns, dateColumns, getActions]);
-};
+    ]
+  }, [optionColumns, dateColumns, getActions])
+}
 
 const useFilters = () => {
-  const dateFilters = useDataTableDateFilters();
+  const dateFilters = useDataTableDateFilters()
 
   return useMemo(() => {
-    return [];
-  }, [dateFilters]);
-};
+    return []
+  }, [dateFilters])
+}

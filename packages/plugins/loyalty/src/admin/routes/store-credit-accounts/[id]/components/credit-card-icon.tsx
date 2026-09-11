@@ -92,7 +92,7 @@ const CreditCardIcon = ({ className }: { className?: string }) => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default CreditCardIcon;
+export default CreditCardIcon

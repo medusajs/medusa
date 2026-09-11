@@ -25,7 +25,7 @@ export const isSameAddress = (
 export const getFormattedAddress = ({
   address,
 }: {
-  address?: HttpTypes.AdminOrderAddress | null
+  address?: HttpTypes.AdminOrderAddress | HttpTypes.AdminCustomerAddress | null
 }) => {
   if (!address) {
     return []
@@ -40,9 +40,10 @@ export const getFormattedAddress = ({
     city,
     postal_code,
     province,
-    country,
     country_code,
   } = address
+
+  const country = "country" in address ? address.country : null
 
   const name = [first_name, last_name].filter(Boolean).join(" ")
 

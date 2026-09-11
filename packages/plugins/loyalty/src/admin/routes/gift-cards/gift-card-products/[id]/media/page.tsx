@@ -1,16 +1,16 @@
-import { useParams } from "react-router-dom";
-import { RouteFocusModal } from "../../../../../components/modals";
-import { useProduct } from "../../../../../hooks/api/products";
-import { ProductMediaView } from "./components/product-media-view";
+import { useParams } from "react-router-dom"
+import { ProductMediaView } from "./components/product-media-view"
+import { RouteFocusModal } from "@medusajs/dashboard/components"
+import { useProduct } from "@medusajs/dashboard/hooks"
 
 export const ProductMedia = () => {
-  const { id } = useParams();
-  const { product, isLoading, isError, error } = useProduct(id!);
+  const { id } = useParams()
+  const { product, isLoading, isError, error } = useProduct(id!)
 
-  const ready = !isLoading && product;
+  const ready = !isLoading && product
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   return (
@@ -25,7 +25,7 @@ export const ProductMedia = () => {
 
       {ready && <ProductMediaView product={product} />}
     </RouteFocusModal>
-  );
-};
+  )
+}
 
-export default ProductMedia;
+export default ProductMedia

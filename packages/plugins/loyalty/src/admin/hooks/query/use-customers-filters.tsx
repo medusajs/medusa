@@ -1,25 +1,25 @@
-import { createDataTableFilterHelper } from "@medusajs/ui";
-import { useMemo } from "react";
-import { useCustomers } from "../api/customers";
+import { createDataTableFilterHelper } from "@medusajs/ui"
+import { useMemo } from "react"
+import { useCustomers } from "@medusajs/dashboard/hooks"
 
-const filterHelper = createDataTableFilterHelper<any>();
+const filterHelper = createDataTableFilterHelper<any>()
 
 const useCustomerFilterOptions = () => {
   // TODO: Add ability to filter by email or name
-  const { customers } = useCustomers({ limit: 1000 });
+  const { customers } = useCustomers({ limit: 1000 })
 
   return useMemo(() => {
     return customers?.map((customer) => {
       return {
         label: customer.email,
         value: customer.id,
-      };
-    });
-  }, [customers]);
-};
+      }
+    })
+  }, [customers])
+}
 
 export const useCustomerFilters = () => {
-  const customerFilterOptions = useCustomerFilterOptions();
+  const customerFilterOptions = useCustomerFilterOptions()
 
   return useMemo(() => {
     return [
@@ -28,6 +28,6 @@ export const useCustomerFilters = () => {
         label: "Customer",
         options: customerFilterOptions ?? [],
       }),
-    ];
-  }, [customerFilterOptions]);
-};
+    ]
+  }, [customerFilterOptions])
+}

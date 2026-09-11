@@ -1,14 +1,16 @@
-import { Badge, createDataTableColumnHelper, Text } from "@medusajs/ui";
-import { useMemo } from "react";
+import { Badge, createDataTableColumnHelper, Text } from "@medusajs/ui"
+import { useMemo } from "react"
 
-import { AdminTransaction } from "../../../../../../types";
-import DisplayId from "../../../../../components/display-id";
-import { getRelativeDate } from "../../../../../utils/date-utils";
-import { formatAmount } from "../../../../../utils/format-amount";
+import { AdminTransaction } from "../../../../../../types"
+import { DisplayId } from "@medusajs/dashboard/components"
+import { useDate } from "@medusajs/dashboard/hooks"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
-const columnHelper = createDataTableColumnHelper<AdminTransaction>();
+const columnHelper = createDataTableColumnHelper<AdminTransaction>()
 
 export const useTransactionColumns = () => {
+  const { getRelativeDate } = useDate()
+
   return useMemo(() => {
     return [
       columnHelper.accessor("type", {
@@ -21,7 +23,7 @@ export const useTransactionColumns = () => {
             >
               {row.original.type}
             </Badge>
-          );
+          )
         },
       }),
 
@@ -30,11 +32,11 @@ export const useTransactionColumns = () => {
         cell: ({ row }) => {
           return (
             row.original.account.currency_code &&
-            formatAmount(
+            formatCurrency(
               row.original.amount as number,
               row.original.account.currency_code
             )
-          );
+          )
         },
       }),
 
@@ -45,16 +47,16 @@ export const useTransactionColumns = () => {
             ?.split("_")
             .join(" ")
             .split("-")
-            .join(" ");
+            .join(" ")
 
-          return <Text className="capitalize">{prettyReference}</Text>;
+          return <Text className="capitalize">{prettyReference}</Text>
         },
       }),
 
       columnHelper.accessor("reference_id", {
         header: "Reference ID",
         cell: ({ row }) => {
-          return <DisplayId id={row.original.reference_id!} />;
+          return <DisplayId id={row.original.reference_id!} />
         },
       }),
 
@@ -62,6 +64,6 @@ export const useTransactionColumns = () => {
         header: "Created At",
         cell: ({ row }) => getRelativeDate(row.original.created_at),
       }),
-    ];
-  }, []);
-};
+    ]
+  }, [getRelativeDate])
+}

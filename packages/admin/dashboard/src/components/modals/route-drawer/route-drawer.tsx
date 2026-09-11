@@ -8,9 +8,14 @@ import { StackedModalProvider } from "../stacked-modal-provider"
 
 type RouteDrawerProps = PropsWithChildren<{
   prev?: string | Partial<Path> | number
+  /**
+   * Called before the modal closes. Return `false` to keep the modal open,
+   * e.g. to run an async clean-up that the user can still cancel.
+   */
+  onClose?: () => boolean | Promise<boolean>
 }>
 
-const Root = ({ prev = "..", children }: RouteDrawerProps) => {
+const Root = ({ prev = "..", onClose, children }: RouteDrawerProps) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [stackedModalOpen, onStackedModalOpen] = useState(false)
@@ -30,8 +35,12 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
     }
   }, [])
 
-  const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = async (open: boolean) => {
     if (!open) {
+      if (onClose && !(await onClose())) {
+        return
+      }
+
       document.body.style.pointerEvents = "auto"
       if (typeof to === "number") {
         navigate(to)

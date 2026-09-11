@@ -3,10 +3,13 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { z } from "@medusajs/framework/zod"
-import { Form } from "../../../../../../components/form"
-import { KeyboundForm } from "../../../../../../components/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
-import { useUpdateProduct } from "../../../../../../hooks/api/products"
+import {
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useUpdateProduct } from "@medusajs/dashboard/hooks"
 
 type GiftCardProductEditFormProps = {
   product: HttpTypes.AdminProduct

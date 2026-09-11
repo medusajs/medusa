@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useDataTableDateFilters } from "../common/use-data-table-date-filters";
+import { useMemo } from "react"
+import { useDataTableDateFilters } from "@medusajs/dashboard/hooks"
 
 const useGiftCardProductStatusFilterOptions = () => {
   return useMemo(() => {
@@ -20,21 +20,21 @@ const useGiftCardProductStatusFilterOptions = () => {
         label: "Rejected",
         value: "rejected",
       },
-    ];
+    ]
 
     return options?.map(({ label, value }) => ({
       label,
       value,
-    }));
-  }, []);
-};
+    }))
+  }, [])
+}
 
 export const useGiftCardProductsFilters = () => {
-  const dateFilterOptions = useDataTableDateFilters();
+  const dateFilterOptions = useDataTableDateFilters()
   const giftCardProductStatusFilterOptions =
-    useGiftCardProductStatusFilterOptions();
+    useGiftCardProductStatusFilterOptions()
 
   return useMemo(() => {
-    return [...dateFilterOptions];
-  }, [giftCardProductStatusFilterOptions]);
-};
+    return [...dateFilterOptions]
+  }, [giftCardProductStatusFilterOptions])
+}

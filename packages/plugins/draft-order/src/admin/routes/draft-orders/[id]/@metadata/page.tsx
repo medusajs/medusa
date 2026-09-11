@@ -7,11 +7,12 @@ import {
 } from "@medusajs/icons"
 import {
   Button,
+  clx,
   DropdownMenu,
   Heading,
   IconButton,
+  InlineTip,
   Skeleton,
-  clx,
   toast,
 } from "@medusajs/ui"
 import { ComponentPropsWithoutRef, forwardRef } from "react"
@@ -19,13 +20,15 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { useParams } from "react-router-dom"
-import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
-import { Form } from "../../../../components/common/form"
-import { InlineTip } from "../../../../components/common/inline-tip"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
-import { useOrder } from "../../../../hooks/api/orders"
+import {
+  ConditionalTooltip,
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useOrder } from "@medusajs/dashboard/hooks"
 
 const MetadataFieldSchema = z.object({
   key: z.string(),

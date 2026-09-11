@@ -1,20 +1,20 @@
-import { Container } from "@medusajs/ui";
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
+import { Container } from "@medusajs/ui"
+import { Fragment } from "react"
+import { Outlet } from "react-router-dom"
 
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { DataTable } from "../../../../components/data-table";
-import { useStoreCreditAccounts } from "../../../../hooks/api/store-credit-accounts";
-import { useStoreCreditAccountTableColumns } from "./columns";
-import { useStoreCreditAccountFilters } from "./filters";
-import { useStoreCreditAccountsTableQuery } from "./query";
+import { AdminStoreCreditAccount } from "../../../../../types"
+import { useStoreCreditAccounts } from "../../../../hooks/api/store-credit-accounts"
+import { useStoreCreditAccountTableColumns } from "./columns"
+import { useStoreCreditAccountFilters } from "./filters"
+import { useStoreCreditAccountsTableQuery } from "./query"
+import { DataTable } from "@medusajs/dashboard/components"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 export function StoreCreditAccountsTable() {
   const queryParams = useStoreCreditAccountsTableQuery({
     pageSize: PAGE_SIZE,
-  });
+  })
 
   const {
     store_credit_accounts: storeCreditAccounts,
@@ -23,10 +23,10 @@ export function StoreCreditAccountsTable() {
   } = useStoreCreditAccounts({
     ...queryParams,
     order: queryParams.order ?? "-created_at",
-  });
+  })
 
-  const columns = useStoreCreditAccountTableColumns();
-  const filters = useStoreCreditAccountFilters();
+  const columns = useStoreCreditAccountTableColumns()
+  const filters = useStoreCreditAccountFilters()
 
   return (
     <Fragment>
@@ -64,5 +64,5 @@ export function StoreCreditAccountsTable() {
 
       <Outlet />
     </Fragment>
-  );
+  )
 }

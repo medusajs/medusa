@@ -1,33 +1,34 @@
 /* eslint-disable @medusajs/widget-must-have-default-export */
 /* eslint-disable @medusajs/widget-must-export-config */
-import { PencilSquare, Trash } from "@medusajs/icons";
-import { AdminSalesChannel, HttpTypes } from "@medusajs/types";
-import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui";
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { AdminSalesChannel, HttpTypes } from "@medusajs/types"
+import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { useMemo, useState } from "react"
 
-import { ActionMenu } from "../../components/action-menu";
-import { DataTable } from "../../components/data-table";
-import { useProducts } from "../../hooks/api/products";
-import { useSalesChannelRemoveProducts } from "../../hooks/api/sales-channels";
-import { useGeneralEmptyState } from "../../hooks/common/use-general-empty-state";
-import { useGiftCardProductsFilters } from "../../hooks/query/use-gift-card-products-filters";
-import { useProductTableColumns } from "./use-gift-card-products-table-columns";
-import { useGiftCardProductsTableQuery } from "./use-gift-card-products-table-query";
+import { useGeneralEmptyState } from "../../hooks/common/use-general-empty-state"
+import { useGiftCardProductsFilters } from "../../hooks/query/use-gift-card-products-filters"
+import { useProductTableColumns } from "./use-gift-card-products-table-columns"
+import { useGiftCardProductsTableQuery } from "./use-gift-card-products-table-query"
+import { ActionMenu, DataTable } from "@medusajs/dashboard/components"
+import {
+  useProducts,
+  useSalesChannelRemoveProducts,
+} from "@medusajs/dashboard/hooks"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 type SalesChannelGiftCardsSectionProps = {
-  salesChannel: AdminSalesChannel;
-};
+  salesChannel: AdminSalesChannel
+}
 
 export const SalesChannelGiftCardsSection = ({
   salesChannel,
 }: SalesChannelGiftCardsSectionProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { searchParams, raw } = useGiftCardProductsTableQuery({
     pageSize: PAGE_SIZE,
-  });
+  })
 
   const {
     products,
@@ -39,42 +40,42 @@ export const SalesChannelGiftCardsSection = ({
     ...searchParams,
     sales_channel_id: [salesChannel.id],
     is_giftcard: true,
-  });
-  const columns = useColumns({ salesChannel });
-  const filters = useGiftCardProductsFilters();
-  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannel.id);
-  const prompt = usePrompt();
+  })
+  const columns = useColumns({ salesChannel })
+  const filters = useGiftCardProductsFilters()
+  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannel.id)
+  const prompt = usePrompt()
 
   const handleRemove = async () => {
-    const ids = Object.keys(rowSelection);
+    const ids = Object.keys(rowSelection)
 
     const result = await prompt({
       title: "Are you sure?",
       description: `Are you sure you want to remove ${ids.length} gift card products from ${salesChannel.name}?`,
       confirmText: "Remove",
       cancelText: "Cancel",
-    });
+    })
 
     if (!result) {
-      return;
+      return
     }
 
     await mutateAsync(ids, {
       onSuccess: () => {
-        toast.success("Gift card product(s) removed");
-        setRowSelection({});
+        toast.success("Gift card product(s) removed")
+        setRowSelection({})
       },
       onError: (error: { message: string }) => {
-        toast.error(error.message);
+        toast.error(error.message)
       },
-    });
-  };
-
-  if (isError) {
-    throw error;
+    })
   }
 
-  const emptyState = useGeneralEmptyState();
+  if (isError) {
+    throw error
+  }
+
+  const emptyState = useGeneralEmptyState()
 
   return (
     <Container className="divide-y p-0">
@@ -115,13 +116,13 @@ export const SalesChannelGiftCardsSection = ({
         ]}
       />
     </Container>
-  );
-};
+  )
+}
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>();
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
-  const base = useProductTableColumns();
+  const base = useProductTableColumns()
 
   return useMemo(
     () => [
@@ -137,11 +138,11 @@ const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
               }
               onCheckedChange={(value) =>
                 table.getRowModel().rows.forEach((row) => {
-                  row.toggleSelected(!!value);
+                  row.toggleSelected(!!value)
                 })
               }
             />
-          );
+          )
         },
         cell: ({ row }) => {
           return (
@@ -149,10 +150,10 @@ const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
               checked={row.getIsSelected()}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation()
               }}
             />
-          );
+          )
         },
       }),
       ...base,
@@ -166,33 +167,33 @@ const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
                 salesChannelId={salesChannel.id}
               />
             </div>
-          );
+          )
         },
       }),
     ],
     [base]
-  );
-};
+  )
+}
 
 const ProductListCellActions = ({
   salesChannelId,
   productId,
 }: {
-  productId: string;
-  salesChannelId: string;
+  productId: string
+  salesChannelId: string
 }) => {
-  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId);
+  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
 
   const onRemove = async () => {
     await mutateAsync([productId], {
       onSuccess: () => {
-        toast.success("Gift card product(s) removed");
+        toast.success("Gift card product(s) removed")
       },
       onError: (e: { message: string }) => {
-        toast.error(e.message);
+        toast.error(e.message)
       },
-    });
-  };
+    })
+  }
 
   return (
     <ActionMenu
@@ -217,5 +218,5 @@ const ProductListCellActions = ({
         },
       ]}
     />
-  );
-};
+  )
+}

@@ -10,6 +10,10 @@ export interface SidebarLinkProps {
   labelKey: string
   descriptionKey: string
   icon: ReactNode
+  /**
+   * Rendered in place of the trailing chevron when provided.
+   */
+  children?: ReactNode
 }
 
 export const SidebarLink = ({
@@ -17,6 +21,7 @@ export const SidebarLink = ({
   labelKey,
   descriptionKey,
   icon,
+  children,
 }: SidebarLinkProps) => {
   return (
     <Link to={to} className="group outline-none">
@@ -37,7 +42,9 @@ export const SidebarLink = ({
               </Text>
             </div>
             <div className="flex size-7 items-center justify-center">
-              <TriangleRightMini className="text-ui-fg-muted rtl:rotate-180" />
+              {children ?? (
+                <TriangleRightMini className="text-ui-fg-muted rtl:rotate-180" />
+              )}
             </div>
           </div>
         </div>

@@ -27,19 +27,19 @@ import { Fragment, useCallback, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { z } from "@medusajs/framework/zod"
-import { KeyboundForm } from "../../../../../../../components/keybound-form"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../../../../components/modals"
 import { UploadMediaFormItem } from "../../../../../../../components/upload-media-form-item"
-import { useUpdateProduct } from "../../../../../../../hooks/api/products"
 import { sdk } from "../../../../../../../lib/sdk"
 import {
   EditProductMediaSchema,
   MediaSchema,
 } from "../../../../components/gift-card-product-create-form/schema"
 import { EditProductMediaSchemaType } from "../../../../components/gift-card-product-create-form/types"
+import {
+  KeyboundForm,
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useUpdateProduct } from "@medusajs/dashboard/hooks"
 
 type ProductMediaViewProps = {
   product: HttpTypes.AdminProduct

@@ -1,29 +1,29 @@
-import { InformationCircleSolid } from "@medusajs/icons";
-import { Button, Heading, Text, Tooltip } from "@medusajs/ui";
-import React from "react";
-import { Link, LinkProps } from "react-router-dom";
-import { ActionMenu, ActionMenuProps } from "./action-menu";
+import { InformationCircleSolid } from "@medusajs/icons"
+import { Button, Heading, Text, Tooltip } from "@medusajs/ui"
+import React from "react"
+import { Link, LinkProps } from "react-router-dom"
+import { ActionMenu, ActionMenuProps } from "@medusajs/dashboard/components"
 
 export type HeadingProps = {
-  title: string;
-  subtitle?: string;
-  tooltip?: React.ReactNode;
+  title: string
+  subtitle?: string
+  tooltip?: React.ReactNode
   actions?: (
     | {
-        type: "button";
-        props: React.ComponentProps<typeof Button>;
-        link?: LinkProps;
+        type: "button"
+        props: React.ComponentProps<typeof Button>
+        link?: LinkProps
       }
     | {
-        type: "action-menu";
-        props: ActionMenuProps;
+        type: "action-menu"
+        props: ActionMenuProps
       }
     | {
-        type: "custom";
-        children: React.ReactNode;
+        type: "custom"
+        children: React.ReactNode
       }
-  )[];
-};
+  )[]
+}
 
 export const Header = ({
   title,
@@ -33,7 +33,7 @@ export const Header = ({
 }: HeadingProps) => {
   return (
     <div className="flex px-6 py-4">
-      <div className="flex justify-between w-full">
+      <div className="flex w-full justify-between">
         <div className="flex flex-col">
           <Heading level="h2">{title}</Heading>
           {subtitle && (
@@ -74,5 +74,5 @@ export const Header = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}

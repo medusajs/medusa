@@ -1,10 +1,10 @@
-import { useMemo } from "react";
-import { useDataTableDateFilters } from "../../../../../hooks/common/use-data-table-date-filters";
+import { useMemo } from "react"
+import { useDataTableDateFilters } from "@medusajs/dashboard/hooks"
 
 export const useTransactionsTableFilters = ({}: {}) => {
-  const dateFilterOptions = useDataTableDateFilters();
+  const dateFilterOptions = useDataTableDateFilters()
 
   return useMemo(() => {
-    return [...dateFilterOptions];
-  }, [dateFilterOptions]);
-};
+    return [...dateFilterOptions]
+  }, [dateFilterOptions])
+}
