@@ -1,5 +1,14 @@
 # @medusajs/search
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16796](https://github.com/medusajs/medusa/pull/16796) [`989e83d74d19bdbe4cde290c23aea5a0693ad9e8`](https://github.com/medusajs/medusa/commit/989e83d74d19bdbe4cde290c23aea5a0693ad9e8) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): resume a failed seed from where it stopped instead of rebuilding from scratch
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

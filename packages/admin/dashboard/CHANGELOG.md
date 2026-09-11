@@ -1,5 +1,15 @@
 # @medusajs/dashboard
 
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes
