@@ -41,6 +41,7 @@ export const fieldsToRefreshOrderEdit = [
   "promotions.*",
   "subtotal",
   "items.*",
+  "items.detail.*",
   "items.subtotal",
   "items.product.id",
   "items.product_id",

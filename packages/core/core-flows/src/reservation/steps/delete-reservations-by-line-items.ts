@@ -16,6 +16,14 @@ export const deleteReservationsByLineItemsStepId =
 export const deleteReservationsByLineItemsStep = createStep(
   deleteReservationsByLineItemsStepId,
   async (ids: DeleteReservationsByLineItemsStepInput, { container }) => {
+    if (!ids?.length) {
+      return new StepResponse([], {
+        ids: [],
+        inventoryItemIds: [],
+        reservationIds: [],
+      })
+    }
+
     const service = container.resolve<IInventoryService>(Modules.INVENTORY)
     const locking = container.resolve(Modules.LOCKING)
 
@@ -28,14 +36,20 @@ export const deleteReservationsByLineItemsStep = createStep(
     const inventoryItemIds = reservations.map((r) => r.inventory_item_id)
     const lockingKeys = Array.from(new Set(inventoryItemIds))
 
-    await locking.execute(lockingKeys, async () => {
-      await service.deleteReservationItemsByLineItem(ids)
-    })
+    if (reservationIds.length) {
+      await locking.execute(lockingKeys, async () => {
+        await service.deleteReservationItemsByLineItem(ids)
+      })
+    }
 
-    return new StepResponse(reservationIds, { ids, inventoryItemIds })
+    return new StepResponse(reservationIds, {
+      ids,
+      inventoryItemIds,
+      reservationIds,
+    })
   },
   async (data, { container }) => {
-    if (!data?.ids?.length) {
+    if (!data?.reservationIds?.length) {
       return
     }
 
@@ -45,7 +59,7 @@ export const deleteReservationsByLineItemsStep = createStep(
     const lockingKeys = Array.from(new Set(data.inventoryItemIds))
 
     await locking.execute(lockingKeys, async () => {
-      await service.restoreReservationItemsByLineItem(data.ids)
+      await service.restoreReservationItems(data.reservationIds)
     })
   }
 )
