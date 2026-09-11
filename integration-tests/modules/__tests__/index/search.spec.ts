@@ -184,45 +184,6 @@ medusaIntegrationTestRunner({
           expect(variant.prices[0].currency_code).toBe("aud")
         }
       })
-
-      it("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
-        await populateData(api)
-
-        const queryArgs = {
-          fields: [
-            "product.*",
-            "product.variants.*",
-            "product.variants.prices.*",
-          ],
-          filters: {
-            product: {
-              variants: {
-                prices: {
-                  amount: { $gt: 50 },
-                  currency_code: { $eq: "AUD" },
-                },
-              },
-            },
-          },
-          pagination: {
-            order: {
-              product: {
-                variants: {
-                  prices: {
-                    amount: "DESC",
-                  },
-                },
-              },
-            },
-          },
-        }
-
-        await indexEngine.query<"product">(queryArgs)
-
-        const { data: results, metadata } = await indexEngine.query<"product">(
-          queryArgs
-        )
-      })
     })
   },
 })

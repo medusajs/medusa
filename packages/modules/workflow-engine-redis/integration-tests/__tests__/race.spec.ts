@@ -12,11 +12,9 @@ import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { setTimeout } from "timers/promises"
 import { ulid } from "ulid"
 import "../__fixtures__"
-import { TestDatabase } from "../utils/database"
+import { jobQueueName, queueName, TestDatabase } from "../utils/database"
 
 jest.setTimeout(20000)
-
-const testRunId = ulid()
 
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
@@ -24,12 +22,8 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleOptions: {
     redis: {
       redisUrl: "localhost:6379",
-      queueName: `medusa-workflows-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
-      jobQueueName: `medusa-workflows-jobs-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
+      queueName,
+      jobQueueName,
     },
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {

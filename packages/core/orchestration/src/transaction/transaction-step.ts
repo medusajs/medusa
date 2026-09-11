@@ -159,6 +159,13 @@ export class TransactionStep {
     return !!this.hasScheduledRetry
   }
 
+  hasPendingScheduledRetry(): boolean {
+    return (
+      !!this.retryRescheduledAt &&
+      this.retryRescheduledAt >= (this.lastAttempt ?? 0)
+    )
+  }
+
   hasRetryInterval(): boolean {
     return !!this.definition.retryInterval
   }
