@@ -10,7 +10,7 @@ import {
   Switch,
   toast,
 } from "@medusajs/ui"
-import { Fragment, useCallback } from "react"
+import { Fragment, useCallback, useMemo } from "react"
 import { Control, useForm, UseFormSetValue, useWatch } from "react-hook-form"
 import { z } from "zod"
 import { AddressCard } from "../../../components/common/address-card"
@@ -39,21 +39,6 @@ const Create = () => {
 const CreateForm = () => {
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<z.infer<typeof schema>>({
-    defaultValues: {
-      region_id: "",
-      sales_channel_id: "",
-      customer_id: "",
-      email: "",
-      shipping_address_id: "",
-      shipping_address: initialAddress,
-      billing_address_id: "",
-      billing_address: null,
-      same_as_shipping: true,
-    },
-    resolver: zodResolver(schema),
-  })
-
   const regions = useComboboxData({
     queryFn: async (params) => {
       return await sdk.admin.region.list(params)
@@ -78,6 +63,34 @@ const CreateForm = () => {
         value: salesChannel.id,
       }))
     },
+  })
+
+  const formValues = useMemo(
+    () => ({
+      region_id:
+        regions.count === 1 && regions.options?.[0]
+          ? regions.options?.[0].value
+          : "",
+      sales_channel_id:
+        salesChannels.count === 1 && salesChannels.options?.[0]
+          ? salesChannels.options?.[0].value
+          : "",
+      customer_id: "",
+      email: "",
+      shipping_address_id: "",
+      shipping_address: initialAddress,
+      billing_address_id: "",
+      billing_address: null,
+      same_as_shipping: true,
+    }),
+    [regions.count, regions.options, salesChannels.count, salesChannels.options]
+  )
+
+  const form = useForm<z.infer<typeof schema>>({
+    defaultValues: formValues,
+    values: formValues,
+    resetOptions: { keepDirtyValues: true },
+    resolver: zodResolver(schema),
   })
 
   const { mutateAsync } = useCreateDraftOrder()
