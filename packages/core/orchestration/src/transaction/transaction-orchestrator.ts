@@ -951,7 +951,27 @@ export class TransactionOrchestrator extends EventEmitter {
         return
       }
 
+      const executeAsyncStepsLocally =
+        transaction.shouldExecuteAsyncStepsLocally()
+      const deferredSteps: TransactionStep[] = []
+
       const stepsShouldContinueExecution = nextSteps.next.map((step) => {
+        const stepIsAsync = step.isCompensating()
+          ? step.definition.compensateAsync
+          : step.definition.async
+
+        /**
+         * Instances that don't execute async steps locally (e.g. server
+         * instances when the storage delegates async work to worker instances)
+         * leave the step untouched and schedule an immediate retry below, so
+         * that the instance consuming the job queue picks up the invocation
+         * through the regular execution path.
+         */
+        if (stepIsAsync && !executeAsyncStepsLocally) {
+          deferredSteps.push(step)
+          return false
+        }
+
         const { shouldContinueExecution } = this.prepareStepForExecution(
           step,
           flow
@@ -1048,6 +1068,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
           throw error
         })
+
+        for (const step of deferredSteps) {
+          await transaction.scheduleRetry(step, 0)
+        }
 
         for (const exec of executionAsync) {
           void exec()
