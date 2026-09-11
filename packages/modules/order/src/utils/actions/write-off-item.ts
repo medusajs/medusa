@@ -45,7 +45,15 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       )
     }
 
-    const quantityAvailable = existing!.quantity ?? 0
+    // A later write-off has to be checked against what's left after earlier
+    // ones, not against the item's original ordered quantity again - otherwise
+    // each write-off is validated in isolation and their sum can run past the
+    // quantity that was actually ordered.
+    const alreadyWrittenOff = existing!.detail?.written_off_quantity ?? 0
+    const quantityAvailable = MathBN.sub(
+      existing!.quantity ?? 0,
+      alreadyWrittenOff
+    )
     const greater = MathBN.gt(action.details?.quantity, quantityAvailable)
     if (greater) {
       throw new MedusaError(

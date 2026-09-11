@@ -45,7 +45,10 @@ OrderChangeProcessing.registerActionType(ChangeActionType.REINSTATE_ITEM, {
       )
     }
 
-    const quantityAvailable = existing!.quantity ?? 0
+    // You can only reinstate quantity that was actually written off, not the
+    // item's full ordered quantity - checking against the ordered quantity
+    // lets a reinstate drive written_off_quantity negative.
+    const quantityAvailable = existing!.detail?.written_off_quantity ?? 0
     const greater = MathBN.gt(action.details?.quantity, quantityAvailable)
     if (greater) {
       throw new MedusaError(
