@@ -25,6 +25,9 @@ interface DataTableToolbarProps {
   className?: string
   /**
    * The children to show in the toolbar.
+   *
+   * If a `DataTable.FilterBar` is provided as a direct child, the toolbar uses
+   * it as its filter bar instead of rendering the default one.
    */
   children?: React.ReactNode
   /**
@@ -47,21 +50,33 @@ interface DataTableToolbarProps {
  * Toolbar shown for the data table.
  */
 const DataTableToolbar = (props: DataTableToolbarProps) => {
+  const children = React.Children.toArray(props.children)
+  const explicitFilterBar = children.find(
+    (child) => React.isValidElement(child) && child.type === DataTableFilterBar
+  )
+  const toolbarChildren = explicitFilterBar
+    ? children.filter(
+        (child) =>
+          !(React.isValidElement(child) && child.type === DataTableFilterBar)
+      )
+    : children
+
   return (
     <div className="flex flex-col divide-y">
       <div className={clx("flex items-center px-6 py-4", props.className)}>
-        {props.children}
+        {toolbarChildren}
       </div>
-      <DataTableFilterBar
-        clearAllFiltersLabel={props.translations?.clearAll}
-        alwaysShow={props.alwaysShowFilterBar}
-      >
-        {props.filterBarContent}
-      </DataTableFilterBar>
+      {explicitFilterBar ?? (
+        <DataTableFilterBar
+          clearAllFiltersLabel={props.translations?.clearAll}
+          alwaysShow={props.alwaysShowFilterBar}
+        >
+          {props.filterBarContent}
+        </DataTableFilterBar>
+      )}
     </div>
   )
 }
 
 export { DataTableToolbar }
 export type { DataTableToolbarProps, DataTableToolbarTranslations }
-
