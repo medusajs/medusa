@@ -17,6 +17,7 @@ import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   defineJoinerConfig,
+  assertLicensed,
   discoverAndRegisterFeatureFlags,
   DmlEntity,
   dynamicImport,
@@ -28,6 +29,7 @@ import {
   MedusaModuleType,
   Modules,
   ModulesSdkUtils,
+  registerLicensedFeature,
   stringifyCircular,
   toMikroOrmEntities,
 } from "@medusajs/utils"
@@ -220,6 +222,17 @@ export async function loadInternalModule(args: {
   }
 
   const loadedModule_ = loadedModule as ModuleExports
+
+  if (loadedModule_?.licensedFeature) {
+    try {
+      assertLicensed(loadedModule_.licensedFeature)
+    } catch (error) {
+      return { error: error as Error }
+    }
+
+    registerLicensedFeature(loadedModule_.licensedFeature)
+  }
+
   if (
     !loadingProviders &&
     !loadedModule_?.service &&

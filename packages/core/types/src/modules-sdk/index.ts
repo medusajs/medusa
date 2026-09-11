@@ -270,6 +270,13 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
 export type ModuleExports<T = Constructor<any>> = {
   service: T
   loaders?: ModuleLoaderFunction[]
+  /**
+   * The licensed feature handle covering this module. When set, the module
+   * only loads when the license key in the environment covers the feature. The
+   * value must equal the feature handle encoded in the license key's
+   * `features` claim.
+   */
+  licensedFeature?: string
   runMigrations?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration

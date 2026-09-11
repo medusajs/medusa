@@ -1,5 +1,9 @@
 import { ModuleResolution } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  createMedusaContainer,
+  getRegisteredLicensedFeatures,
+  resetLicenseState,
+} from "@medusajs/utils"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
@@ -212,5 +216,104 @@ describe("modules loader", () => {
         "The module TestService has to define its scope (internal | external)"
       )
     }
+  })
+})
+
+describe("license gated modules", () => {
+  const setLicenseEnv = (features: string[]): void => {
+    const { generateKeyPairSync, sign } = require("crypto")
+    const { publicKey, privateKey } = generateKeyPairSync("ed25519")
+
+    const toSegment = (value: object): string =>
+      Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
+
+    const headerSegment = toSegment({ alg: "EdDSA", kid: "test-key" })
+    const payloadSegment = toSegment({
+      sub: "org_test",
+      jti: "lic_test",
+      features,
+      iat: Math.floor(Date.now() / 1000),
+    })
+    const signature = sign(
+      null,
+      Buffer.from(`${headerSegment}.${payloadSegment}`, "utf-8"),
+      privateKey
+    ).toString("base64url")
+
+    process.env.MEDUSA_LICENSE_KEY = `${headerSegment}.${payloadSegment}.${signature}`
+    process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicKey
+      .export({ type: "spki", format: "pem" })
+      .toString()
+
+    resetLicenseState()
+  }
+
+  const buildResolutions = (): Record<string, ModuleResolution> => ({
+    licensedService: {
+      resolutionPath: require.resolve("../__mocks__/@modules/licensed"),
+      definition: {
+        key: "licensedService",
+        defaultPackage: "licensedService",
+        label: "LicensedService",
+        defaultModuleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+      },
+      moduleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+      },
+    },
+  })
+
+  afterEach(() => {
+    delete process.env.MEDUSA_LICENSE_KEY
+    delete process.env.MEDUSA_LICENSE_PUBLIC_KEY
+
+    resetLicenseState()
+  })
+
+  it("refuses to load a module declaring a licensed feature without a license key", async () => {
+    expect.assertions(1)
+    const container = createMedusaContainer()
+
+    try {
+      await moduleLoader({
+        container,
+        moduleResolutions: buildResolutions(),
+        logger,
+      })
+    } catch (err) {
+      expect(err.message).toContain("requires a Medusa license key")
+    }
+  })
+
+  it("refuses to load a module whose licensed feature the key does not cover", async () => {
+    expect.assertions(1)
+    setLicenseEnv(["other-feature"])
+    const container = createMedusaContainer()
+
+    try {
+      await moduleLoader({
+        container,
+        moduleResolutions: buildResolutions(),
+        logger,
+      })
+    } catch (err) {
+      expect(err.message).toContain('does not cover the "test-feature" feature')
+    }
+  })
+
+  it("loads a module whose licensed feature the key covers, and records the feature", async () => {
+    setLicenseEnv(["test-feature"])
+    const container = createMedusaContainer()
+
+    await moduleLoader({
+      container,
+      moduleResolutions: buildResolutions(),
+      logger,
+    })
+
+    expect(container.resolve("licensedService")).toBeDefined()
+    expect(getRegisteredLicensedFeatures()).toEqual(["test-feature"])
   })
 })
