@@ -77,7 +77,7 @@
  *     description: The number of times the promotion has been used.
  *   metadata:
  *     type: object
- *     description: The promotion's metadata.
+ *     description: Custom key-value pairs for the promotion.
  * 
 */
 

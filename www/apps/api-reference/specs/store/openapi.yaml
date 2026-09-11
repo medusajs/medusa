@@ -382,8 +382,6 @@ paths:
     $ref: paths/store_product-variants.yaml
   /store/products:
     $ref: paths/store_products.yaml
-  /store/products/search:
-    $ref: paths/store_products_search.yaml
   /store/products/{id}:
     $ref: paths/store_products_{id}.yaml
   /store/regions:
