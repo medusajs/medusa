@@ -353,7 +353,13 @@ In the example above, you retrieve all products linked to a post.
 
 ### Retrieve Nested Relations
 
-You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. There's no limit on how deep the chain can be, and a chain can traverse relations within the same module and links between different modules.
+You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. A chain can traverse relations within the same module and links between different modules.
+
+<Note title="Same-module relation depth">
+
+Chaining relations that are defined within the same module is currently limited to one level deep. For example, if model `A` has a relation to model `B`, and `B` has a relation to model `C` (all in the same module), querying `a.b.c` will not return `b` or `c`. To work around this, run two separate queries: first retrieve `A` with `b.id`, then query `B` with `c.id` using the IDs from the first result.
+
+</Note>
 
 For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](!resources!/commerce-modules/fulfillment/links-to-other-modules#stock-location-module) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
 

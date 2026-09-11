@@ -34,13 +34,20 @@ Learn more about translation, how to manage translations, and how to translate c
 
 ## Routes with Localization Enabled by Default
 
-The Medusa application automatically supports retrieving localized content from all routes under the `/store` prefix, including both core and custom store API routes.
+The Medusa application automatically applies the `applyLocale` middleware to all routes under the `/store` prefix. This makes `req.locale` available in every store route handler, and it allows your custom store routes to read the locale without additional middleware configuration.
 
-For example, the following store routes have localization enabled by default:
+However, applying the locale middleware does not mean every route translates its response automatically. Translation only happens when the route handler (or an underlying helper) calls `applyTranslations` with the resolved locale. In Medusa's built-in store routes, translation is applied to the following routes:
 
-- `/store/products` -> Get products with translated fields
-- `/store/collections` -> Get collections with translated fields
-- `/store/categories` -> Get categories with translated fields
+- `/store/products` and `/store/products/:id`: product fields such as `title` and `description`
+- `/store/product-variants` and `/store/product-variants/:id`: product variant fields
+
+Other built-in store routes (including `/store/carts/:id`, `/store/customers/me`, and `/store/orders/:id`) receive the locale header but do not call `applyTranslations`. Fields on data models reached through those routes, including custom models linked to their records, are returned untranslated even when `x-medusa-locale` is set.
+
+<Note>
+
+If you need translated fields on a model that is fetched through a non-translating route (for example, a custom model linked to a cart or order), store translations as a locale-keyed JSON column on the model and read the appropriate value in your route handler. Alternatively, create a custom store route that queries the model directly and calls `applyTranslations`.
+
+</Note>
 
 Refer to the [Translation Module](!resources!/commerce-modules/translation#supported-module-translations) documentation for a list of supported core data models with localization support.
 
