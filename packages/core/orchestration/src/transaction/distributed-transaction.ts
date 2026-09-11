@@ -219,15 +219,15 @@ export class TransactionCheckpoint {
             stateFlowOrderMap.get(storedData.flow.state) ?? -1
 
           if (storedStateIndex > currentStateIndex) {
-            currentTransactionData.flow.state = storedData.flow.state
-          } else if (
-            currentStateIndex < storedStateIndex &&
-            currentTransactionData.flow.state !==
+            if (
+              currentTransactionData.flow.state !==
               TransactionState.WAITING_TO_COMPENSATE
-          ) {
-            throw new SkipExecutionError(
-              `Transaction is behind another execution`
-            )
+            ) {
+              throw new SkipExecutionError(
+                `Transaction is behind another execution`
+              )
+            }
+            currentTransactionData.flow.state = storedData.flow.state
           }
         } else if (
           storedData.flow[prop] &&
@@ -579,7 +579,7 @@ class DistributedTransaction extends EventEmitter {
          * TransactionStep instance, taken from the flow at the time they were
          * scheduled. Swapping `this.flow` for a freshly built object graph
          * would detach those references, so any state transition applied to them
-         * while this save is being retried would be written to an orphaned object 
+         * while this save is being retried would be written to an orphaned object
          * and silently lost, leaving the transaction stuck.
          */
         TransactionCheckpoint.mergeCheckpoints(
