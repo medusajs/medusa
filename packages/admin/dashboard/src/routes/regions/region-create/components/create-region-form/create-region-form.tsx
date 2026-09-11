@@ -47,12 +47,14 @@ type CreateRegionFormProps = {
 }
 
 const CreateRegionSchema = zod.object({
-  name: zod.string().min(1),
+  name: zod.string().min(1, "Enter a name for the region"),
   currency_code: zod.string().min(2, "Select a currency"),
   automatic_taxes: zod.boolean(),
   is_tax_inclusive: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
-  payment_providers: zod.array(zod.string()).min(1),
+  payment_providers: zod
+    .array(zod.string())
+    .min(1, "Select at least one payment provider"),
 })
 
 const PREFIX = "cr"
