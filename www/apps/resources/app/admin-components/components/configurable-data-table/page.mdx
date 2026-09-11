@@ -96,7 +96,9 @@ const adapter = createTableAdapter({
 ```tsx
 const adapter = createTableAdapter({
   entity: "products",
-  useData: /* ... */,
+  useData: (fields, params) => {
+    // ...
+  },
   getRowId: (product) => product.id,
   getRowHref: (product) => `/products/${product.id}`,
 })
@@ -107,7 +109,9 @@ To set the type argument explicitly, pass it to `createTableAdapter`. This is us
 ```tsx
 const adapter = createTableAdapter<Brand>({
   entity: "brands",
-  useData: /* ... */,
+  useData: (fields, params) => {
+    // ...
+  },
 })
 ```
 
