@@ -188,7 +188,7 @@ export interface MedusaRequest<
    * endpoint, set this to the route's configured fields minus the ones you need, rather
    * than to a short list of your own. An empty array removes the boundary entirely.
    *
-   * @since v2.20.2
+   * @since v2.21.0
    */
   disallowed?: (string | RegExp)[]
   errors: string[]
