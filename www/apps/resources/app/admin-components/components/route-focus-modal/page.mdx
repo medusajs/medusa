@@ -1,0 +1,332 @@
+---
+sidebar_label: "Route Focus Modal"
+---
+
+import { Table, TypeList, Kbd } from "docs-ui"
+
+export const metadata = {
+  title: `RouteFocusModal - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `RouteFocusModal` component renders a full-screen modal that covers the page behind it. The Medusa Admin uses it for forms that need a lot of space, such as the form that creates a region.
+
+```tsx
+import { RouteFocusModal } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Route Modals
+
+`RouteFocusModal` is tied to a route, not to a trigger button. You render it as the root element of a [UI route](!docs!/learn/fundamentals/admin/ui-routes) that is nested under the page it belongs to. When the user navigates to that route, the modal opens. When the user closes the modal, `RouteFocusModal` navigates back to the previous route.
+
+So, to open the modal, link the user to the modal's route. For example, link to `/brands/create` from the brand list page.
+
+Use `RouteFocusModal` for create forms and multi-step flows, and use the [RouteDrawer](../route-drawer/page.mdx) for smaller edit forms.
+
+---
+
+## Example
+
+Consider a UI route at `src/admin/routes/brands/create/page.tsx` that creates a brand:
+
+```tsx title="src/admin/routes/brands/create/page.tsx"
+import { Button, Heading, Input } from "@medusajs/ui"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useForm } from "react-hook-form"
+
+const BrandCreate = () => {
+  return (
+    <RouteFocusModal>
+      <CreateBrandForm />
+    </RouteFocusModal>
+  )
+}
+
+const CreateBrandForm = () => {
+  const { handleSuccess } = useRouteModal()
+  const form = useForm({
+    defaultValues: {
+      name: "",
+    },
+  })
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const brand = await createBrand(data)
+    handleSuccess(`../${brand.id}`)
+  })
+
+  return (
+    <RouteFocusModal.Form form={form}>
+      <form onSubmit={handleSubmit}>
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body>
+          <Heading>Create Brand</Heading>
+          <Input {...form.register("name")} />
+        </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              Cancel
+            </Button>
+          </RouteFocusModal.Close>
+          <Button type="submit" size="small">
+            Create
+          </Button>
+        </RouteFocusModal.Footer>
+      </form>
+    </RouteFocusModal.Form>
+  )
+}
+
+export default BrandCreate
+```
+
+Call the `useRouteModal` hook in a child of the `RouteFocusModal`, since the modal provides its context. The hook returns `handleSuccess`, which closes the modal after a successful submission. Refer to the [Route Drawer](../route-drawer/page.mdx#useroutemodal) documentation for the hook's returned values, including `setCloseOnEscape` that controls whether the <Kbd>Escape</Kbd> key closes the modal.
+
+---
+
+## Props
+
+`RouteFocusModal` accepts the following props, in addition to its children:
+
+<TypeList
+  types={[
+    {
+      name: "prev",
+      type: "`string` \\| `object` \\| `number`",
+      optional: true,
+      defaultValue: "..",
+      description:
+        "The route to navigate to when the modal closes. Pass a string, such as `\"../..\"`, or an object with the path's parts. You can also pass a number, such as `-1`, to go back that many entries in the browser's history instead of navigating to a route.",
+      children: [
+        {
+          name: "pathname",
+          type: "`string`",
+          optional: true,
+          description: "The path to navigate to, such as `/brands`.",
+        },
+        {
+          name: "search",
+          type: "`string`",
+          optional: true,
+          description:
+            "The query string to append to the path, such as `?order=created_at`.",
+        },
+        {
+          name: "hash",
+          type: "`string`",
+          optional: true,
+          description: "The hash to append to the path, such as `#details`.",
+        },
+      ],
+    },
+  ]}
+/>
+
+---
+
+## Sub-components
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Header`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's header. It renders the close button, so render it even when it has no children.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Title`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's title. Pass `asChild` to render your own heading element.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Description`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An accessible description of the modal's purpose.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Body`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's scrollable content area.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Footer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's footer. Place the cancel and submit buttons in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Close`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Closes the modal when clicked, which navigates back to the `prev` route. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteFocusModal.Form`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Wraps a [React Hook Form](https://react-hook-form.com/) form. It provides the form's context to the fields, and shows a confirmation prompt if the user leaves the route while the form has unsaved changes.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### RouteFocusModal.Form Props
+
+<TypeList
+  types={[
+    {
+      name: "form",
+      type: "`object`",
+      optional: false,
+      description: `The form instance returned by the \`useForm\` hook of [React Hook Form](https://react-hook-form.com/). Refer to [React Hook Form's documentation](https://react-hook-form.com/docs/useform) for all of its properties.`,
+      children: [
+        {
+          name: "control",
+          type: "`object`",
+          optional: false,
+          description:
+            "The object that registers the form's fields and manages their state. Pass it to the fields you render in the form.",
+        },
+        {
+          name: "formState",
+          type: "`object`",
+          optional: false,
+          description:
+            "The form's state, including whether it has unsaved changes. The modal uses it to decide whether to show the unsaved-changes prompt.",
+          children: [
+            {
+              name: "isDirty",
+              type: "`boolean`",
+              optional: false,
+              description:
+                "Whether the user changed any of the form's fields.",
+            },
+          ],
+        },
+        {
+          name: "handleSubmit",
+          type: "`(onValid: (data: object) => unknown, onInvalid?: (errors: object) => unknown) => (event?: React.BaseSyntheticEvent) => Promise<void>`",
+          optional: false,
+          description:
+            "Creates the submit handler that you pass to the `onSubmit` prop of the `form` element. It validates the fields before running your callback.",
+        },
+        {
+          name: "register",
+          type: "`(name: string, options?: object) => object`",
+          optional: false,
+          description:
+            "Registers an input in the form. Spread its returned value on the input you render.",
+        },
+        {
+          name: "watch",
+          type: "`(name?: string) => unknown`",
+          optional: false,
+          description:
+            "Returns the current value of a field, or of the entire form if you don't pass a name.",
+        },
+        {
+          name: "setValue",
+          type: "`(name: string, value: unknown, options?: object) => void`",
+          optional: false,
+          description: "Sets a field's value programmatically.",
+        },
+        {
+          name: "reset",
+          type: "`(values?: object, options?: object) => void`",
+          optional: false,
+          description:
+            "Resets the form's fields to the specified values, or to their default values.",
+        },
+      ],
+    },
+    {
+      name: "blockSearchParams",
+      type: "`boolean`",
+      optional: true,
+      defaultValue: "false",
+      description:
+        "Whether to also show the unsaved-changes prompt when only the search parameters of the route change.",
+    },
+    {
+      name: "onClose",
+      type: "`(isSubmitSuccessful: boolean) => void`",
+      optional: true,
+      description:
+        "A function to run when the user leaves the form's route. It receives whether the form was submitted successfully.",
+    },
+  ]}
+/>
+
+---
+
+## Stacking Modals
+
+To open another modal above a `RouteFocusModal`, such as a table for the user to select items from, use the [StackedFocusModal](../stacked-focus-modal/page.mdx) or the [StackedDrawer](../stacked-drawer/page.mdx) components. Both are controlled with the `useStackedModal` hook.

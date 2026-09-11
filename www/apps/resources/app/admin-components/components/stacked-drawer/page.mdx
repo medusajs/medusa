@@ -1,0 +1,281 @@
+---
+sidebar_label: "Stacked Drawer"
+---
+
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `StackedDrawer - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `StackedDrawer` component renders a drawer above a route modal. The Medusa Admin uses it to let the user pick resources without leaving the form, such as choosing customer groups while configuring a price list.
+
+```tsx
+import { StackedDrawer } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Stacked Modals
+
+Render a `StackedDrawer` inside a [RouteDrawer](../route-drawer/page.mdx) or a [RouteFocusModal](../route-focus-modal/page.mdx), which both provide the stacked modal context. Unlike route modals, a `StackedDrawer` is not tied to a route. The user opens it with a trigger, and the parent modal stays mounted underneath.
+
+Every `StackedDrawer` requires an `id` prop. The parent modal uses the ID to track which stacked modal is open, so you can render more than one stacked modal in the same form.
+
+---
+
+## Example
+
+The following UI route renders a `StackedDrawer` inside a `RouteFocusModal` to select a brand:
+
+```tsx title="src/admin/routes/products/[id]/brand/page.tsx"
+import { Button, Heading } from "@medusajs/ui"
+import {
+  RouteFocusModal,
+  StackedDrawer,
+} from "@medusajs/dashboard/components"
+
+const STACKED_MODAL_ID = "select-brand"
+
+const ProductBrand = () => {
+  return (
+    <RouteFocusModal>
+      <RouteFocusModal.Header />
+      <RouteFocusModal.Body>
+        <StackedDrawer id={STACKED_MODAL_ID}>
+          <StackedDrawer.Trigger asChild>
+            <Button variant="secondary" size="small">
+              Select Brand
+            </Button>
+          </StackedDrawer.Trigger>
+          <StackedDrawer.Content>
+            <StackedDrawer.Header>
+              <StackedDrawer.Title asChild>
+                <Heading>Select Brand</Heading>
+              </StackedDrawer.Title>
+            </StackedDrawer.Header>
+            <StackedDrawer.Body>
+              <BrandList />
+            </StackedDrawer.Body>
+            <StackedDrawer.Footer>
+              <StackedDrawer.Close asChild>
+                <Button variant="secondary" size="small">
+                  Cancel
+                </Button>
+              </StackedDrawer.Close>
+            </StackedDrawer.Footer>
+          </StackedDrawer.Content>
+        </StackedDrawer>
+      </RouteFocusModal.Body>
+    </RouteFocusModal>
+  )
+}
+
+export default ProductBrand
+```
+
+---
+
+## Props
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description:
+        "A unique identifier for the drawer. It differentiates stacked modals registered to the same parent modal. This prop is required.",
+    },
+  ]}
+/>
+
+---
+
+## Sub-components
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Trigger`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Opens the drawer when clicked. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Content`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's content. It renders a transparent overlay so that the parent modal stays visible.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Header`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's header. Place the title and description in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Title`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's title. Pass `asChild` to render your own heading element.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Description`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An accessible description of the drawer's purpose.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Body`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's scrollable content area.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Footer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's footer. Place the cancel and confirm buttons in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedDrawer.Close`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Closes the drawer when clicked, keeping the parent modal open. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## useStackedModal
+
+Use the `useStackedModal` hook to control a stacked modal programmatically. For example, close the drawer after the user confirms their selection.
+
+```tsx
+import { useStackedModal } from "@medusajs/dashboard/components"
+```
+
+Call the hook in a component rendered inside a route modal. It throws an error if you use it elsewhere.
+
+### Returned Values
+
+<TypeList
+  types={[
+    {
+      name: "getIsOpen",
+      type: "`(id: string) => boolean`",
+      optional: false,
+      description:
+        "Returns whether the stacked modal of the specified ID is open.",
+    },
+    {
+      name: "setIsOpen",
+      type: "`(id: string, open: boolean) => void`",
+      optional: false,
+      description: "Opens or closes the stacked modal of the specified ID.",
+    },
+    {
+      name: "register",
+      type: "`(id: string) => void`",
+      optional: false,
+      description:
+        "Registers a stacked modal in the parent modal. `StackedDrawer` and `StackedFocusModal` call it for you when they mount.",
+    },
+    {
+      name: "unregister",
+      type: "`(id: string) => void`",
+      optional: false,
+      description:
+        "Removes a stacked modal from the parent modal. The components call it for you when they unmount.",
+    },
+  ]}
+/>
+
+### Example
+
+```tsx title="src/admin/routes/products/[id]/brand/page.tsx"
+import { Button } from "@medusajs/ui"
+import { useStackedModal } from "@medusajs/dashboard/components"
+
+const BrandList = () => {
+  const { setIsOpen } = useStackedModal()
+
+  const handleSave = () => {
+    setIsOpen("select-brand", false)
+  }
+
+  return (
+    <Button size="small" onClick={handleSave}>
+      Save
+    </Button>
+  )
+}
+```
