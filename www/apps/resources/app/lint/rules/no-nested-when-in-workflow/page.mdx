@@ -1,0 +1,70 @@
+---
+sidebar_label: "no-nested-when-in-workflow"
+---
+
+export const metadata = {
+  title: `no-nested-when-in-workflow - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows calling `when(...)` inside a `when().then()` callback in a workflow composition function.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `when(...)` calls that appear inside the callback of another `when().then()` call within a `createWorkflow` body.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  when,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const result = when({ input }, (d) => d.input.items.length > 0).then(() => {
+    // Reported: `when` nested inside another `when().then()` callback
+    const inner = when({ input }, (d) => d.input.flag).then(() => someStep(input))
+    return inner
+  })
+
+  return new WorkflowResponse(result)
+})
+```
+
+Instead, restructure the logic into sibling `when(...).then(...)` calls at the same level:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  when,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const result = when({ input }, (d) => d.input.items.length > 0).then(() =>
+    outerStep(input)
+  )
+
+  const inner = when({ input }, (d) => d.input.items.length > 0 && d.input.flag)
+    .then(() => someStep(input))
+
+  return new WorkflowResponse(result)
+})
+```
+
+## Why it's Important
+
+`when` tracks its pending condition in a single shared slot rather than a stack. When you nest a `when(...)` call inside a `when().then()` callback, the inner `.then()` clears that shared slot before the outer `.then()` reads it. This causes a `TypeError: Cannot read properties of undefined (reading 'steps')` at server boot rather than at build time, making the bug difficult to trace.
+
+Learn more in the [Conditions in Workflows documentation](!docs!/learn/fundamentals/workflows/conditions).
+
+## Fixable
+
+This rule isn't auto-fixable.

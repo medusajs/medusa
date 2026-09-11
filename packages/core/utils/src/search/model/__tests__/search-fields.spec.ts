@@ -90,14 +90,13 @@ describe("search fields DSL", () => {
     expect(registered[0].definition.fields).toEqual(definition.fields)
   })
 
-  test("vector fields can declare an embed source", () => {
+  test("vector fields opt into retrieval", () => {
     const definition = defineSearchIndex({
       name: "product",
       entity: "product",
       fields: search.define({
         id: search.keyword(),
-        title: search.text().searchable(),
-        embedding: search.vector(1536).embed("title"),
+        embedding: search.vector(1536).retrievable(),
       }),
       async *seed() {},
     })
@@ -105,7 +104,26 @@ describe("search fields DSL", () => {
     expect(definition.fields.embedding).toEqual({
       type: "vector",
       dimensions: 1536,
-      embed: "title",
+      retrievable: true,
+    })
+  })
+
+  test("vector fields can ask the engine to embed their own text", () => {
+    const definition = defineSearchIndex({
+      name: "product",
+      entity: "product",
+      fields: search.define({
+        id: search.keyword(),
+        title: search.text().searchable(),
+        embedding: search.vector(1536).embed(),
+      }),
+      async *seed() {},
+    })
+
+    expect(definition.fields.embedding).toEqual({
+      type: "vector",
+      dimensions: 1536,
+      embed: true,
     })
   })
 
@@ -126,24 +144,21 @@ describe("search fields DSL", () => {
     })
   })
 
-  test("defineSearchIndex still accepts plain JSON fields", () => {
-    const definition = defineSearchIndex({
-      name: "product",
-      entity: "product",
-      fields: {
-        id: { type: "keyword", filterable: true },
-        title: { type: "text", searchable: true },
-      },
-      async *seed() {},
-    })
-
-    expect(definition.fields).toEqual({
-      id: { type: "keyword", filterable: true },
-      title: { type: "text", searchable: true },
-    })
+  test("defineSearchIndex rejects plain JSON fields", () => {
+    expect(() =>
+      defineSearchIndex({
+        name: "product",
+        entity: "product",
+        fields: {
+          // @ts-expect-error — fields must come from `search.define({ ... })`.
+          id: { type: "keyword", filterable: true },
+        },
+        async *seed() {},
+      })
+    ).toThrow("`defineSearchIndex` fields must come from `search.define({ ... })`")
   })
 
-  test("provider options and correlated object arrays", () => {
+  test("provider options on object arrays", () => {
     const definition = defineSearchIndex({
       name: "product",
       entity: "product",
@@ -154,7 +169,6 @@ describe("search fields DSL", () => {
             sku: search.keyword(),
           })
           .array()
-          .correlated()
           .providerOptions({ meilisearch: { foo: "bar" } }),
       }),
       async *seed() {},
@@ -163,7 +177,6 @@ describe("search fields DSL", () => {
     expect(definition.fields.variants).toEqual({
       type: "object",
       array: true,
-      correlated: true,
       provider_options: { meilisearch: { foo: "bar" } },
       fields: {
         sku: { type: "keyword" },
@@ -185,23 +198,31 @@ describe("search fields DSL", () => {
       async *seed() {
         yield [
           {
-            id: "prod_1",
-            title: "Shirt",
-            min_price: 10,
-            tags: ["a", "b"],
-            variants: [{ sku: "SHIRT-S" }],
-            // Extra fields are allowed: seeds commonly spread whole entities.
-            not_indexed: "ok",
+            action: "upsert",
+            documents: [
+              {
+                id: "prod_1",
+                title: "Shirt",
+                min_price: 10,
+                tags: ["a", "b"],
+                variants: [{ sku: "SHIRT-S" }],
+                // Extra fields are allowed: seeds commonly spread whole entities.
+                not_indexed: "ok",
+              },
+            ],
           },
         ]
       },
     })
 
-    const batches: SearchTypes.SearchDocument[][] = []
+    const batches: SearchTypes.SearchMutation[][] = []
     for await (const batch of definition.seed({} as any)) {
       batches.push(batch)
     }
-    expect(batches[0][0].id).toEqual("prod_1")
+    expect(batches[0][0]).toMatchObject({
+      action: "upsert",
+      documents: [{ id: "prod_1" }],
+    })
   })
 
   test("the type surface rejects what boot validation would", () => {
@@ -210,9 +231,6 @@ describe("search fields DSL", () => {
 
     // @ts-expect-error — vectors cannot hold arrays.
     void search.vector(3).array
-
-    // @ts-expect-error — correlated requires .array() first.
-    void search.object({ sku: search.keyword() }).correlated()
 
     // @ts-expect-error — range facets only exist on numeric/date fields.
     void search.keyword().facetable({ types: ["range"] })
@@ -240,18 +258,31 @@ describe("search fields DSL", () => {
     const embeddedFields = search.define({
       id: search.keyword(),
       title: search.text(),
-      embedding: search.vector(3).embed("title"),
+      embedding: search.vector(3).embed(),
     })
 
-    // Engine-embedded fields are omitted from the document type — seeds pass
-    // the source text, not a vector.
+    // Engine-embedded fields accept the source text, not a vector.
     const embeddedDocument: SearchTypes.InferSearchDocumentType<
       typeof embeddedFields
     > = {
       id: "1",
       title: "Shirt",
+      embedding: "Shirt",
     }
     void embeddedDocument
+
+    const badEmbeddedDocument: SearchTypes.InferSearchDocumentType<
+      typeof embeddedFields
+    > = {
+      id: "1",
+      title: "Shirt",
+      // @ts-expect-error — embed fields accept a string, not a vector
+      embedding: [0.1, 0.2, 0.3],
+    }
+    void badEmbeddedDocument
+
+    // @ts-expect-error — embed() takes no source path
+    void search.vector(3).embed("title")
 
     expect(true).toBe(true)
   })

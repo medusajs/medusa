@@ -20,10 +20,13 @@ import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import {
   filterByValidSalesChannels,
   normalizeDataForContext,
+  remapProductSearchFilters,
   setPricingContext,
   setTaxContext,
 } from "../../utils/middlewares"
 import * as QueryConfig from "./query-config"
+import * as SearchQueryConfig from "./search/query-config"
+import { StoreGetProductsSearchParams } from "./search/validators"
 import { StoreGetProductsParams } from "./validators"
 
 async function applyMaybeLinkFilterIfNecessary(
@@ -94,6 +97,30 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       setPricingContext(),
       setTaxContext(),
       clearFiltersByKey(["region_id", "country_code", "province", "cart_id"]),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/store/products/search",
+    middlewares: [
+      authenticate("customer", ["session", "bearer"], {
+        allowUnauthenticated: true,
+      }),
+      validateAndTransformQuery(
+        StoreGetProductsSearchParams,
+        SearchQueryConfig.searchProductQueryConfig
+      ),
+      filterByValidSalesChannels(),
+      applyDefaultFilters({
+        status: ProductStatus.PUBLISHED,
+      }),
+      normalizeDataForContext(),
+      setPricingContext(),
+      setTaxContext(),
+      clearFiltersByKey(["region_id", "country_code", "province", "cart_id"]),
+      // Runs last, once the pricing params the middlewares above read are
+      // cleared: whatever is left is a filter the search index can evaluate.
+      remapProductSearchFilters(),
     ],
   },
   {

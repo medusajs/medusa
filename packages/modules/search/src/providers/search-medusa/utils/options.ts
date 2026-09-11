@@ -2,7 +2,6 @@ import type {
   AttributeSchemaConfig,
   DistanceMetric,
   FullTextSearch,
-  ShardingConfig,
 } from "./api-types"
 
 export type MedusaSearchProviderOptions = {
@@ -23,15 +22,11 @@ export type MedusaSearchProviderOptions = {
 
 export type MedusaSearchIndexOptions = {
   distance_metric?: DistanceMetric
-  sharding?: ShardingConfig
 }
 
 export type MedusaSearchFieldOptions = {
-  type?: string
   ann?: AttributeSchemaConfig["ann"]
-  filterable?: boolean
   full_text_search?: FullTextSearch
-  fuzzy?: boolean
   /**
    * Build a trigram index so `$prefix` / `$like` filters can glob-match
    * this string. Defaults to `true` for filterable, sortable, or

@@ -2093,24 +2093,29 @@ Medusa uses the [completeCartWorkflow](/references/medusa-workflows/completeCart
 To consume the `validate` hook, create the file `src/workflows/hooks/complete-cart.ts` with the following content:
 
 export const completeCartWorkflowHookHighlights = [
-  ["7", "validate", "Consume the validate hook."],
-  ["14", "graph", "Retrieve the cart's details."],
-  ["32", "getCartLoyaltyPromotion", "Get the cart's loyalty promotion."],
-  ["40", "getPoints", "Get the customer's loyalty points."],
-  ["43", "requiredPoints", "Calculate the amount to be discounted based on the loyalty points."],
-  ["49", "MedusaError", "Throw an error if the customer doesn't have enough loyalty points."],
+  ["10", "validate", "Consume the validate hook."],
+  ["19", "graph", "Retrieve the cart's details."],
+  ["37", "getCartLoyaltyPromotion", "Get the cart's loyalty promotion."],
+  ["45", "getPoints", "Get the customer's loyalty points."],
+  ["48", "requiredPoints", "Calculate the amount to be discounted based on the loyalty points."],
+  ["54", "MedusaError", "Throw an error if the customer doesn't have enough loyalty points."],
 ]
 
-```ts title="src/workflows/hooks/complete-cart.ts" highlights={completeCartWorkflowHookHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+```ts title="src/workflows/hooks/complete-cart.ts" highlights={completeCartWorkflowHookHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
 import LoyaltyModuleService from "../../modules/loyalty/service"
 import { LOYALTY_MODULE } from "../../modules/loyalty"
 import { CartData, getCartLoyaltyPromotion } from "../../utils/promo"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 completeCartWorkflow.hooks.validate(
   async ({ cart }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const loyaltyModuleService: LoyaltyModuleService = container.resolve(
       LOYALTY_MODULE
     )

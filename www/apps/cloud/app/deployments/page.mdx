@@ -309,6 +309,12 @@ To redeploy a deployment:
 1. [Go to the deployment's details page](#find-deployment-details).
 2. Click the "Redeploy" button at the top right of the page.
 
+<Note>
+
+The "Redeploy" button is disabled if the build's container image has been deleted. In that case, you must create a new deployment by pushing a new commit to the environment's branch.
+
+</Note>
+
 This will trigger the redeployment process for the selected deployment. The deployment will go through [the same lifecycle](#deployment-statuses-and-lifecycle) as a new deployment.
 
 Once the redeployment is complete, the deployment's status will change to "Live" and it will become the new live version of the environment.

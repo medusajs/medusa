@@ -528,7 +528,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -673,7 +678,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -814,7 +824,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1075,7 +1090,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1239,7 +1259,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1335,7 +1360,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1487,7 +1517,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1614,7 +1649,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1772,7 +1812,12 @@ medusaIntegrationTestRunner({
             const region = (
               await api.post(
                 "/admin/regions",
-                { name: "US", currency_code: "usd", countries: ["us"] },
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "US",
+                  currency_code: "usd",
+                  countries: ["us"],
+                },
                 adminHeaders
               )
             ).data.region
@@ -1998,6 +2043,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "DK",
                 currency_code: "dkk",
                 countries: ["dk"],
@@ -2244,6 +2290,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "DK",
                 currency_code: "dkk",
                 countries: ["dk"],
@@ -2580,6 +2627,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "DK",
                 currency_code: "dkk",
                 countries: ["dk"],
@@ -2815,6 +2863,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/regions",
               {
+                payment_providers: ["pp_system_default"],
                 name: "DK",
                 currency_code: "dkk",
                 countries: ["dk"],
@@ -3923,7 +3972,11 @@ medusaIntegrationTestRunner({
           const region1 = (
             await api.post(
               "/admin/regions",
-              { name: "North America", currency_code: "usd" },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "North America",
+                currency_code: "usd",
+              },
               adminHeaders
             )
           ).data.region
@@ -3931,7 +3984,11 @@ medusaIntegrationTestRunner({
           const region2 = (
             await api.post(
               "/admin/regions",
-              { name: "Europe", currency_code: "eur" },
+              {
+                payment_providers: ["pp_system_default"],
+                name: "Europe",
+                currency_code: "eur",
+              },
               adminHeaders
             )
           ).data.region

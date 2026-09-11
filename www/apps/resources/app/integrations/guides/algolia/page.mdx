@@ -196,6 +196,8 @@ The first method you need to add to the service is a method that receives an arr
 Add the following methods to the `AlgoliaModuleService` class:
 
 ```ts title="src/modules/algolia/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
 export default class AlgoliaModuleService {
   // ...
   async getIndexName(type: AlgoliaIndexType) {
@@ -203,7 +205,10 @@ export default class AlgoliaModuleService {
       case "product":
         return this.options.productIndexName
       default:
-        throw new Error(`Invalid index type: ${type}`)
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid index type: ${type}`
+        )
     }
   }
 
@@ -729,11 +734,16 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { syncProductsWorkflow } from "../workflows/sync-products"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function algoliaSyncHandler({ 
   container,
 }: SubscriberArgs) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   
   let hasMore = true
   let offset = 0
@@ -852,7 +862,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },

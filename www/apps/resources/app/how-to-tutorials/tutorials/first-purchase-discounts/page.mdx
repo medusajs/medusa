@@ -392,10 +392,10 @@ You'll start by consuming the `validate` hook of the `updateCartPromotionsWorkfl
 To consume the hook, create the file `src/workflows/hooks/validate-promotion.ts` with the following content:
 
 export const validatePromotionHighlights = [
-  ["9", "hasFirstPurchasePromo", "Check if the first-purchase promotion is being applied."],
-  ["17", "", "Throw an error if the cart isn't associated with a customer."],
-  ["25", "customer", "Retrieve the customer associated with the cart."],
-  ["33", "", "Throw an error if the customer doesn't have an account or has previous orders."],
+  ["12", "hasFirstPurchasePromo", "Check if the first-purchase promotion is being applied."],
+  ["20", "", "Throw an error if the cart isn't associated with a customer."],
+  ["30", "customer", "Retrieve the customer associated with the cart."],
+  ["38", "", "Throw an error if the customer doesn't have an account or has previous orders."],
 ]
 
 ```ts title="src/workflows/hooks/validate-promotion.ts" highlights={validatePromotionHighlights}
@@ -403,7 +403,10 @@ import {
   updateCartPromotionsWorkflow,
 } from "@medusajs/medusa/core-flows"
 import { FIRST_PURCHASE_PROMOTION_CODE } from "../../constants"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 updateCartPromotionsWorkflow.hooks.validate(
   (async ({ input, cart }, { container }) => {
@@ -421,7 +424,9 @@ updateCartPromotionsWorkflow.hooks.validate(
         "First purchase discount can only be applied to carts with a customer"
       )
     }
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [customer] } = await query.graph({
       entity: "customer",
@@ -481,8 +486,8 @@ Then, consume the hook at the end of the file:
 export const validateCartCompletionHighlights = [
   ["3", "hasFirstPurchasePromo", "Check if the first-purchase promotion is being applied."],
   ["11", "", "Throw an error if the cart isn't associated with a customer."],
-  ["20", "customer", "Retrieve the customer associated with the cart."],
-  ["28", "", "Throw an error if the customer doesn't have an account or has previous orders."],
+  ["22", "customer", "Retrieve the customer associated with the cart."],
+  ["30", "", "Throw an error if the customer doesn't have an account or has previous orders."],
 ]
 
 ```ts title="src/workflows/hooks/validate-promotion.ts" highlights={validateCartCompletionHighlights}
@@ -503,7 +508,9 @@ completeCartWorkflow.hooks.validate(
       )
     }
 
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data: [customer] } = await query.graph({
       entity: "customer",

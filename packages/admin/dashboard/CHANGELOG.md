@@ -1,5 +1,116 @@
 # @medusajs/dashboard
 
+## 2.21.0
+
+### Patch Changes
+
+- [#16587](https://github.com/medusajs/medusa/pull/16587) [`c511dbb072270b01cddc52a0b77040701ffe34ff`](https://github.com/medusajs/medusa/commit/c511dbb072270b01cddc52a0b77040701ffe34ff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(dashboard,medusa): name admin search entities after their graph entity
+
+- [#16366](https://github.com/medusajs/medusa/pull/16366) [`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a) Thanks [@sansynx](https://github.com/sansynx)! - fix(dashboard): inventory kit inputs written to wrong variant when earlier variants are filtered out
+
+- [#16719](https://github.com/medusajs/medusa/pull/16719) [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard, types, medusa): add support for metadata management for promotions
+
+- [#16763](https://github.com/medusajs/medusa/pull/16763) [`b16a37bd23e13bee8f4f6a332e30e8f6da1bd704`](https://github.com/medusajs/medusa/commit/b16a37bd23e13bee8f4f6a332e30e8f6da1bd704) Thanks [@owlcode](https://github.com/owlcode)! - fix(dashboard): add missing Polish translations
+
+  The Polish (`pl`) translation file covered 2105 of the 2438 keys in
+  `en.json`, so 441 keys fell through to the English fallback inside an
+  otherwise Polish dashboard. The gaps included very common labels such as
+  `actions.saveChanges`, `actions.manage`, `general.selectAll` and the whole
+  `layout.customize*` group, as well as entire newer domains: `roles`,
+  `policies`, `permissions`, `translations`, `searchIndexes`,
+  `propertyLabels`, `views`, `productOptions`, `priceLists.quantityPricing`
+  and two-factor auth in both `profile.mfa` and `login.mfa`.
+
+  - Add the 441 missing keys. Polish plural groups are expanded to all four
+    categories its `plural-config.json` declares (`one`, `few`, `many`,
+    `other`), so the 441 English keys become 451 Polish entries.
+  - Remove 15 stale `app.search.groups.*` keys (`customerGroup`,
+    `productVariant`, `category`, ...). These were renamed to snake_case
+    (`customer_group`, `product_variant`, `product_category`, ...), so the
+    camelCase names were dead code i18next could never reach and the
+    translation schema rejects them.
+
+  No pre-existing Polish value is modified or dropped. `yarn i18n:validate
+pl.json` failed before this change and now passes.
+
+- [#16288](https://github.com/medusajs/medusa/pull/16288) [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): add global add-row action to metadata editor
+
+- [#16393](https://github.com/medusajs/medusa/pull/16393) [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): strip the table query prefix in the product tag list loader
+
+- [#16506](https://github.com/medusajs/medusa/pull/16506) [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(dashboard,js-sdk): export common components, hooks
+
+- Updated dependencies [[`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a)]:
+  - @medusajs/js-sdk@2.21.0
+  - @medusajs/admin-shared@2.21.0
+  - @medusajs/icons@2.21.0
+  - @medusajs/ui@4.2.4
+
+## 2.20.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.20.1
+  - @medusajs/admin-shared@2.20.1
+  - @medusajs/icons@2.20.1
+  - @medusajs/ui@4.2.3
+
+## 2.20.0
+
+### Patch Changes
+
+- [#16455](https://github.com/medusajs/medusa/pull/16455) [`b33f14a334769e9265b2c7ff1b120db183bc1e07`](https://github.com/medusajs/medusa/commit/b33f14a334769e9265b2c7ff1b120db183bc1e07) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): reload on preload error
+
+- [#16557](https://github.com/medusajs/medusa/pull/16557) [`a1a784b66ac872b1a863ae23180630ebf2bf839a`](https://github.com/medusajs/medusa/commit/a1a784b66ac872b1a863ae23180630ebf2bf839a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,draft-order): show inventory availability in relevant screens
+
+- [#16513](https://github.com/medusajs/medusa/pull/16513) [`1a9fe477d265e8861ca68ef9a445b40d006b28ca`](https://github.com/medusajs/medusa/commit/1a9fe477d265e8861ca68ef9a445b40d006b28ca) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): remove duplicate Medusa Cloud auth button
+
+- [#16450](https://github.com/medusajs/medusa/pull/16450) [`e528fc5bd2cbcd9995694953580a20e525eafb9c`](https://github.com/medusajs/medusa/commit/e528fc5bd2cbcd9995694953580a20e525eafb9c) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): set the lang attribute on the html element
+
+- [#16006](https://github.com/medusajs/medusa/pull/16006) [`5796a0c00f35eba2533847f6697fae8d7c282ae7`](https://github.com/medusajs/medusa/commit/5796a0c00f35eba2533847f6697fae8d7c282ae7) Thanks [@iruzen-dono](https://github.com/iruzen-dono)! - fix(dashboard): handle deleted stock locations in order fulfillment section
+
+- [#16638](https://github.com/medusajs/medusa/pull/16638) [`01e23d60538bd97b1bde471ddd3e5196a5b56094`](https://github.com/medusajs/medusa/commit/01e23d60538bd97b1bde471ddd3e5196a5b56094) Thanks [@PranshulSoni](https://github.com/PranshulSoni)! - fix(dashboard): fill missing plural forms in Polish translations
+
+  The Polish (`pl`) translation file was missing several CLDR plural categories
+  its own plural-config.json declares, so a count that resolved to a category
+  the file did not define (e.g. `few` for 2-4 items in `dataGrid.errors.count`)
+  fell through to the English fallback inside an otherwise Polish screen.
+
+  - `dataGrid.errors.count`: add `count_few` and `count_many`. Polish CLDR
+    plural rules: 1 -> `one`, 2-4 and 22-24 -> `few`, 5-21 and 25+ -> `many`.
+    The file had only `count_one` and `count_other`, so counts of 2, 3, 4,
+    22, 23, or 24 rendered in English.
+  - `orders.fulfillment.error.wrongQuantity`: add `wrongQuantity_one`,
+    `wrongQuantity_few`, and `wrongQuantity_many`. The file had only the
+    bare `wrongQuantity` (which is itself the `_one` form, "Tylko jeden
+    produkt jest dostępny do realizacji") and `wrongQuantity_other`, so
+    counts of 2-4 and 5-21/25+ rendered in English.
+  - Remove the orphan `dataGrid.errors.numberOfKeys_few` and
+    `dataGrid.errors.numberOfKeys_many`. The English source of truth
+    (`en.json`) does not declare a `dataGrid.errors.numberOfKeys` key, so
+    these Polish variants were dead code i18next could never reach. The
+    issue's own table identified these as part of Polish's
+    `incomplete=3` count even though they were not real missing forms
+    and could not be fixed by adding translations.
+
+- [#16477](https://github.com/medusajs/medusa/pull/16477) [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings): support fractional quantities and unit of measure in dashboard
+
+- [#16495](https://github.com/medusajs/medusa/pull/16495) [`9dd56bf579747aa1f191c4990c90e91a168b634e`](https://github.com/medusajs/medusa/commit/9dd56bf579747aa1f191c4990c90e91a168b634e) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): fix create fulfillment form select pagination issues
+
+- [#16425](https://github.com/medusajs/medusa/pull/16425) [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55) Thanks [@sradevski](https://github.com/sradevski)! - Add support for configuring the global search in admin
+
+- [#16402](https://github.com/medusajs/medusa/pull/16402) [`321efe20e56d1d11b88974d80cd713e928763e80`](https://github.com/medusajs/medusa/commit/321efe20e56d1d11b88974d80cd713e928763e80) Thanks [@lvkmsk](https://github.com/lvkmsk)! - Update Russian (ru) admin translations: add missing keys, add Russian plural forms (\_few/\_many), fix mistranslations
+
+- [#16415](https://github.com/medusajs/medusa/pull/16415) [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,js-sdk,types): request and copy reset password link from dashboard
+
+- [#16594](https://github.com/medusajs/medusa/pull/16594) [`3914a322c5257742c977468d9aa5bf088953b511`](https://github.com/medusajs/medusa/commit/3914a322c5257742c977468d9aa5bf088953b511) Thanks [@dhruvdavest07](https://github.com/dhruvdavest07)! - fix(dashboard): give the workflow execution state column its own translation key
+
+- Updated dependencies [[`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55), [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964)]:
+  - @medusajs/admin-shared@2.20.0
+  - @medusajs/js-sdk@2.20.0
+  - @medusajs/icons@2.20.0
+  - @medusajs/ui@4.2.2
+
 ## 2.19.0
 
 ### Minor Changes

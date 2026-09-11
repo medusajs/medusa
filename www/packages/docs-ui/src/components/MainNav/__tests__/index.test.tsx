@@ -243,6 +243,14 @@ describe("rendering", () => {
     expect(topBar).toHaveClass("border-medusa-border-base")
   })
 
+  test("main nav content stacks above the collapsed nav items row", () => {
+    const { container } = render(<MainNav />)
+    const topBar = container.querySelector("[data-testid='main-nav-content']")
+    expect(topBar).toBeInTheDocument()
+    expect(topBar).toHaveClass("relative")
+    expect(topBar).toHaveClass("z-50")
+  })
+
   test("adjusts layout when collapsed", () => {
     mockUseLayout.mockReturnValueOnce({
       ...defaultUseLayoutReturn,
@@ -252,6 +260,8 @@ describe("rendering", () => {
     const topBar = container.querySelector("[data-testid='main-nav-content']")
     expect(topBar).toBeInTheDocument()
     expect(topBar).toHaveClass("border-b border-medusa-border-base")
+    expect(topBar).toHaveClass("relative")
+    expect(topBar).toHaveClass("z-50")
     const actionsContainer = container.querySelector(
       "[data-testid='main-nav-actions']"
     )
@@ -261,6 +271,8 @@ describe("rendering", () => {
       "[data-testid='collapsed-nav-items']"
     )
     expect(collapsedNavItems).toBeInTheDocument()
+    expect(collapsedNavItems).toHaveClass("relative")
+    expect(collapsedNavItems).toHaveClass("z-10")
   })
 
   test("renders custom logo when provided", () => {

@@ -214,6 +214,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/allow-fields-must-be-global-middleware",
+                      "title": "allow-fields-must-be-global-middleware",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/authenticate-flag-name-and-type",
                       "title": "authenticate-flag-name-and-type",
                       "description": "",
@@ -382,6 +390,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/lint/rules/no-nested-when-in-workflow",
+                      "title": "no-nested-when-in-workflow",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/lint/rules/no-new-date-in-workflow",
                       "title": "no-new-date-in-workflow",
                       "description": "",
@@ -456,6 +472,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "type": "link",
                       "path": "/lint/rules/no-workflow-call-without-container",
                       "title": "no-workflow-call-without-container",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/lint/rules/prefer-allow-fields-middleware",
+                      "title": "prefer-allow-fields-middleware",
                       "description": "",
                       "children": []
                     },
@@ -696,6 +720,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "type": "link",
                       "path": "/lint/rules/use-validated-body-or-query",
                       "title": "use-validated-body-or-query",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/lint/rules/when-block-must-have-name",
+                      "title": "when-block-must-have-name",
                       "description": "",
                       "children": []
                     },
@@ -1398,6 +1430,467 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "path": "/references/js-sdk/admin/workflowExecution",
                   "title": "workflowExecution",
                   "description": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "sidebar",
+          "sidebar_id": "admin-components",
+          "title": "Medusa Admin Components",
+          "childSidebarTitle": "Admin Components Reference",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/admin-components",
+              "title": "Overview",
+              "children": []
+            },
+            {
+              "type": "separator"
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Components",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components",
+                  "title": "Overview",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/action-menu",
+                  "title": "Action Menu",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/combobox",
+                  "title": "Combobox",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/conditional-tooltip",
+                  "title": "Conditional Tooltip",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/configurable-data-table",
+                  "title": "Configurable Data Table",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/country-select",
+                  "title": "Country Select",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/data-grid",
+                  "title": "Data Grid",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/display-id",
+                  "title": "Display ID",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/empty-states",
+                  "title": "Empty States",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/handle-input",
+                  "title": "Handle Input",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/icon-avatar",
+                  "title": "Icon Avatar",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/json-view-section",
+                  "title": "JSON View Section",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/keybound-form",
+                  "title": "Keybound Form",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/listicle",
+                  "title": "Listicle",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/product-table-cells",
+                  "title": "Product Table Cells",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/route-drawer",
+                  "title": "Route Drawer",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/route-focus-modal",
+                  "title": "Route Focus Modal",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/section-row",
+                  "title": "Section Row",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/stacked-drawer",
+                  "title": "Stacked Drawer",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/stacked-focus-modal",
+                  "title": "Stacked Focus Modal",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/components/thumbnail",
+                  "title": "Thumbnail",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Layouts",
+              "autogenerate_path": "/admin-components/layouts",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/layouts/layout-composer",
+                  "title": "LayoutComposer",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Hooks",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks",
+                  "title": "Overview",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/customers",
+                  "title": "Customers",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/data-table-helpers",
+                  "title": "Data Table Hooks",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/orders",
+                  "title": "Orders",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/price-preferences",
+                  "title": "Price Preferences",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/product-variants",
+                  "title": "Product Variants",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/products",
+                  "title": "Products",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/promotions",
+                  "title": "Promotions",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/regions",
+                  "title": "Regions",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/sales-channels",
+                  "title": "Sales Channels",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/shipping-options",
+                  "title": "Shipping Options",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/store",
+                  "title": "Store",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/use-combobox-data",
+                  "title": "useComboboxData",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/use-date",
+                  "title": "useDate",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/use-debounced-search",
+                  "title": "useDebouncedSearch",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/use-query-params",
+                  "title": "useQueryParams",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/hooks/users",
+                  "title": "Users",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Utilities",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities",
+                  "title": "Overview",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities/addresses",
+                  "title": "Addresses",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities/form-validation",
+                  "title": "Form Validation",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities/money-and-currency",
+                  "title": "Money & Currency",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities/search",
+                  "title": "Search Entities",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/utilities/table",
+                  "title": "Table Utilities",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Guides",
+              "autogenerate_path": "/admin-components/guides",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/guides/container",
+                  "title": "Container",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/guides/data-table",
+                  "title": "Data Table",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/guides/forms",
+                  "title": "Forms",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/guides/header",
+                  "title": "Header",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/guides/table",
+                  "title": "Table",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "category",
+              "title": "Archive",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive",
+                  "title": "Overview",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive/action-menu",
+                  "title": "Action Menu",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive/json-view-section",
+                  "title": "JSON View",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive/section-row",
+                  "title": "Section Row",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive/single-column-layout",
+                  "title": "Single Column Layout",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/admin-components/archive/two-column-layout",
+                  "title": "Two Column Layout",
                   "children": []
                 }
               ]

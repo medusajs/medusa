@@ -708,9 +708,11 @@ export const upsertRentalConfigWorkflow = createWorkflow(
     })
 
     // If rental config doesn't exist, create it and link
-    const createdConfig = when({ products }, (data) => {
-      return !data.products[0]?.rental_configuration
-    }).then(() => {
+    const createdConfig = when(
+      "create-rental-configuration",
+      { products },
+      (data) => !data.products[0]?.rental_configuration
+    ).then(() => {
       const newConfig = createRentalConfigurationStep({
         product_id: input.product_id,
         min_rental_days: input.min_rental_days,
@@ -903,7 +905,9 @@ In `src/api/admin/products/[id]/rental-config/route.ts`, add the following at th
 ```ts title="src/api/admin/products/[id]/rental-config/route.ts"
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Query rental configuration for the product
   const { data: rentalConfigs } = await query.graph({
@@ -955,8 +959,8 @@ export const sdkHighlights = [
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -1397,9 +1401,13 @@ Next, you'll create the API route to retrieve the rental availability of a produ
 
 To create the API route, create the file `src/api/store/products/[id]/rental-availability/route.ts` with the following content:
 
-```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError, QueryContext } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  QueryContext,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import { RENTAL_MODULE } from "../../../../../modules/rental"
 import RentalModuleService from "../../../../../modules/rental/service"
@@ -1432,7 +1440,9 @@ export const GET = async (
     currency_code,
   } = req.validatedQuery
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const rentalModuleService: RentalModuleService = req.scope.resolve(
     RENTAL_MODULE
   )
@@ -1612,7 +1622,43 @@ export interface RentalAvailabilityResponse {
 
 You'll use these types in the next sections.
 
-### b. Fetch Rental Configuration with Product Details
+### b. Allow Retrieving Rental Configuration
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve the rental configuration, you must add `rental_configuration` to the allowed fields of the `/store/products` route.
+
+You do that with a middleware that pushes the field to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add the following route object to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { allowFields } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [allowFields("rental_configuration")],
+    },
+  ],
+})
+```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property on the route object. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### c. Fetch Rental Configuration with Product Details
 
 Next, you'll ensure that the rental configuration is fetched when retrieving the product details. You can retrieve linked data models by passing its name in the `fields` query parameter when fetching the product.
 
@@ -1645,7 +1691,7 @@ export const listProducts = async ({
 
 You pass `*rental_configuration` at the end of the `fields` parameter. This will attach a `rental_configuration` object to each product returned by the API if it has one.
 
-### c. Add Rental Availability Function
+### d. Add Rental Availability Function
 
 Next, you'll add a server function that retrieves the rental availability of a product by calling the Rental Availability API route you created earlier.
 
@@ -1713,7 +1759,7 @@ In the function, you send a `GET` request to the Rental Availability API route, 
 
 The function returns the rental availability response.
 
-### d. Create Rental Date Picker Component
+### e. Create Rental Date Picker Component
 
 Next, you'll create the component that shows start and end date pickers for selecting rental dates. You'll show this component for rentable products only.
 
@@ -1954,7 +2000,7 @@ If the product does not have an active rental configuration, you return `null` t
 
 Otherwise, you render two date pickers for selecting the rental start and end dates. You also show error messages, loading indicators, and the calculated rental period.
 
-### e. Customize Product Price Component
+### f. Customize Product Price Component
 
 Next, you'll customize the product price component to show the rental price for rental products.
 
@@ -2050,7 +2096,7 @@ You make the following key changes:
 
 For non-rentable products, the price is shown as usual.
 
-### f. Show Rental Options on Product Details Page
+### g. Show Rental Options on Product Details Page
 
 Finally, you'll customize the product actions component shown on the product details page to display the rental date picker and pass the rental price to the product price component.
 
@@ -2177,7 +2223,7 @@ Finally, update the "Add to Cart" button to be disabled if rental dates are requ
 </Button>
 ```
 
-### g. Test Rental Options in Storefront
+### h. Test Rental Options in Storefront
 
 You can now view and select the rental options in the Next.js Starter Storefront.
 
@@ -2550,6 +2596,11 @@ export const addToCartWithRentalWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-variant" })
 
+    const rentalConfiguration = transform(
+      { variants },
+      ({ variants }) => variants[0].product?.rental_configuration || null
+    )
+
     const rentalData = when({ variants }, (data) => {
       return data.variants[0].product?.rental_configuration?.status === "active"
     }).then(() => {
@@ -2557,7 +2608,7 @@ export const addToCartWithRentalWorkflow = createWorkflow(
         variant: variants[0],
         quantity: input.quantity,
         metadata: input.metadata,
-        rental_configuration: variants[0].product?.rental_configuration || null,
+        rental_configuration: rentalConfiguration,
         existing_cart_items: carts[0].items,
       } as unknown as ValidateRentalCartItemInput)
     })
@@ -3412,10 +3463,13 @@ Create the file `src/api/admin/orders/[id]/rentals/route.ts` with the following 
 
 ```ts title="src/api/admin/orders/[id]/rentals/route.ts" badgeLabel="Medusa Application" badgeColor="green"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: rentals } = await query.graph({
     entity: "rental",
@@ -4025,13 +4079,16 @@ To create the subscriber, create the file `src/subscribers/order-canceled.ts` wi
 ```ts title="src/subscribers/order-canceled.ts" badgeLabel="Medusa Application" badgeColor="green"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { updateRentalWorkflow } from "../workflows/update-rental"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function orderCanceledHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   logger.info(`Processing rental cancellations for order ${data.id}`)
 
@@ -4132,7 +4189,9 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { updateRentalWorkflow } from "../workflows/update-rental"
 
 export default async function activateRentalsJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   // Get current date at start of day for comparison
@@ -4235,7 +4294,9 @@ export default async function shipmentCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string; no_notification?: boolean }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
   logger.info(`Processing rental activations for shipment ${data.id}`)

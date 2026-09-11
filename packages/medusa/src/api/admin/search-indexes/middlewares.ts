@@ -1,5 +1,7 @@
+import { validateAndTransformBody } from "@medusajs/framework"
 import { MiddlewareRoute } from "@medusajs/framework/http"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
+import { AdminReindexSearchIndex } from "./validators"
 
 export const adminSearchIndexRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -10,6 +12,9 @@ export const adminSearchIndexRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/search-indexes/:id/reindex",
-    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+    middlewares: [
+      authenticate("user", ["session", "bearer", "api-key"]),
+      validateAndTransformBody(AdminReindexSearchIndex),
+    ],
   },
 ]

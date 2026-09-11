@@ -61,6 +61,64 @@ export async function POST(
 }
 ```
 
+<Note title="Important">
+
+The default body parser only parses JSON, URL-encoded, and text content types, so `preserveRawBody` only populates `req.rawBody` when the request's `Content-Type` header is set to one of those types. If your route receives a request with another content type, such as a webhook whose provider doesn't document its `Content-Type` header, use the [Express middleware](https://expressjs.com/en/guide/using-middleware.html) approach mentioned earlier in this chapter to read the raw request stream yourself.
+
+</Note>
+
+---
+
+## Disable the Default Body Parser
+
+You can disable the default body parser for a route by setting its `bodyParser` property to `false`. This is useful if you want to parse the request body yourself, for example, using custom [Express middleware](https://expressjs.com/en/guide/using-middleware.html).
+
+When `bodyParser` is set to `false`, the Medusa application skips its JSON, URL-encoded, and text parsers for that route, and `req.rawBody` isn't set. Use this option instead of `preserveRawBody` when you need full control over how the request body is read, rather than only preserving the raw body alongside the parsed one.
+
+For example:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+function readRawBody(req, res, next) {
+  const chunks: Buffer[] = []
+
+  req.on("data", (chunk) => chunks.push(chunk))
+  req.on("end", () => {
+    req.rawBody = Buffer.concat(chunks)
+    next()
+  })
+}
+
+export default defineMiddlewares({
+  routes: [
+    {
+      method: ["POST"],
+      bodyParser: false,
+      matcher: "/custom",
+      middlewares: [readRawBody],
+    },
+  ],
+})
+```
+
+In the example above, the custom `readRawBody` middleware reads the raw request stream regardless of its content type, then stores it in `req.rawBody` for the route handler to use.
+
+You can then access the raw body data in your API route handler:
+
+```ts title="src/api/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  console.log(req.rawBody)
+
+  // TODO use raw body
+}
+```
+
 ---
 
 ## Configure Request Body Size Limit
