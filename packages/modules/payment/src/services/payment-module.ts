@@ -281,7 +281,7 @@ export default class PaymentModuleService
     )
 
     return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
-      Array.isArray(data) ? result : result[0]
+      isString(idOrSelector) ? result[0] : result
     )
   }
 
