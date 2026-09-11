@@ -1,15 +1,15 @@
 import { z } from "zod"
-import { optionalFloat, optionalInt } from "../../../../../lib/validation"
+import { optionalFloat } from "../../../../../lib/validation"
 
 export const CreateInventoryItemSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   sku: z.string().optional(),
   hs_code: z.string().optional(),
-  weight: optionalInt,
-  length: optionalInt,
-  height: optionalInt,
-  width: optionalInt,
+  weight: optionalFloat,
+  length: optionalFloat,
+  height: optionalFloat,
+  width: optionalFloat,
   origin_country: z.string().optional(),
   mid_code: z.string().optional(),
   material: z.string().optional(),
