@@ -1,0 +1,156 @@
+---
+sidebar_label: "useComboboxData"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `useComboboxData - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This hook is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `useComboboxData` hook loads paginated and searchable options from the Medusa backend for a [Combobox](../../components/combobox/page.mdx) component. The Medusa Admin uses it in forms where the user selects a record, such as a product's collection or a region's countries.
+
+```tsx
+import { useComboboxData } from "@medusajs/dashboard/hooks"
+```
+
+---
+
+## Example
+
+Pass the hook's returned properties to the `Combobox` component:
+
+```tsx
+import { Combobox } from "@medusajs/dashboard/components"
+import { useComboboxData } from "@medusajs/dashboard/hooks"
+import { sdk } from "../lib/sdk"
+
+const CollectionSelect = ({ value, onChange }) => {
+  const collections = useComboboxData({
+    queryKey: ["product_collections"],
+    queryFn: (params) =>
+      sdk.admin.productCollection.list(params),
+    getOptions: (data) =>
+      data.collections.map((collection) => ({
+        label: collection.title,
+        value: collection.id,
+      })),
+  })
+
+  return (
+    <Combobox
+      value={value}
+      onChange={onChange}
+      options={collections.options}
+      searchValue={collections.searchValue}
+      onSearchValueChange={
+        collections.onSearchValueChange
+      }
+      fetchNextPage={collections.fetchNextPage}
+      disabled={collections.disabled}
+    />
+  )
+}
+```
+
+The hook debounces the search value before sending the `q` query parameter to the Medusa backend, and it loads the next page of options when `fetchNextPage` is called.
+
+To keep a record that the form already selected in the list, pass its ID to `defaultValue` or `selectedValue`. The hook then fetches that record separately and adds it to the beginning of `options`, even when the current page doesn't include it.
+
+---
+
+## Parameters
+
+The hook accepts an object with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "queryKey",
+      type: "`QueryKey`",
+      optional: false,
+      description: "Required. The TanStack Query key that the hook uses as the base for its queries. The hook appends the search query and the default or selected value to it.",
+    },
+    {
+      name: "queryFn",
+      type: "`(params) => Promise<TResponse>`",
+      optional: false,
+      description: "Required. A function that fetches the options from the Medusa backend. It receives an object that may have the `id`, `q`, `offset`, and `limit` query parameters, and it must resolve to a response that has the `offset`, `limit`, and `count` properties.",
+    },
+    {
+      name: "getOptions",
+      type: "`(data: TResponse) => TOption[]`",
+      optional: false,
+      description: "Required. A function that transforms a page of the response into an array of options. Each option has a `label` and a `value`.",
+    },
+    {
+      name: "defaultValue",
+      type: "`string | string[]`",
+      optional: false,
+      description: "The value or values that the hook must always include in the returned options. The hook fetches them in a separate query and adds them to the beginning of `options` when the user hasn't typed a search value.",
+    },
+    {
+      name: "defaultValueKey",
+      type: "`keyof TParams`",
+      optional: false,
+      description: "The query parameter that the hook uses to fetch the `defaultValue`. The default value is `id`.",
+    },
+    {
+      name: "selectedValue",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the currently selected record. The hook fetches it in a separate query and adds it to the beginning of `options` so that the selection stays visible while the user searches or paginates.",
+    },
+    {
+      name: "pageSize",
+      type: "`number`",
+      optional: false,
+      description: "The number of options to fetch per page. The default value is `10`.",
+    },
+    {
+      name: "enabled",
+      type: "`boolean`",
+      optional: false,
+      description: "Whether the hook sends its queries. Set it to `false` to defer loading, for example until another field has a value. The default value is `true`.",
+    },
+  ]}
+/>
+
+---
+
+## Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useInfiniteQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useInfiniteQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "options",
+      type: "`TOption[]`",
+      description: "The options of all loaded pages, including the default and selected values. Pass it to the `options` prop of the `Combobox` component.",
+    },
+    {
+      name: "searchValue",
+      type: "`string`",
+      description: "The current value of the search input before debouncing.",
+    },
+    {
+      name: "onSearchValueChange",
+      type: "`(value: string) => void`",
+      description: "A function that changes the search value. The hook debounces it for 300 milliseconds before it refetches the options.",
+    },
+    {
+      name: "disabled",
+      type: "`boolean`",
+      description: "Whether the combobox has no data to search in. It's `true` when `enabled` is `false`, or when the first request resolved with no options and the user hasn't typed a search value.",
+    },
+  ]}
+/>

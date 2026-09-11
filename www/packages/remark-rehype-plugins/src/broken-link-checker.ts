@@ -213,6 +213,46 @@ function componentChecker({
   maybeCheckAttribute()
 }
 
+/**
+ * Checks the markdown links within a string, returning whether it had any.
+ */
+function checkMarkdownLinks({
+  link,
+  ...rest
+}: {
+  link: string
+  file: VFile
+  currentPageFilePath: string
+  options: BrokenLinkCheckerOptions
+}): boolean {
+  MD_LINK_REGEX.lastIndex = 0
+
+  if (!MD_LINK_REGEX.test(link)) {
+    return false
+  }
+
+  let linkMatches
+  let tempLink = link
+  MD_LINK_REGEX.lastIndex = 0
+
+  while ((linkMatches = MD_LINK_REGEX.exec(tempLink)) !== null) {
+    if (!linkMatches.groups?.link) {
+      break
+    }
+
+    checkLink({
+      link: linkMatches.groups.link,
+      ...rest,
+    })
+
+    tempLink = tempLink.replace(linkMatches.groups.link, "")
+    // reset regex
+    MD_LINK_REGEX.lastIndex = 0
+  }
+
+  return true
+}
+
 function checkLink({
   link,
   file,
@@ -227,6 +267,17 @@ function checkLink({
   if (!link || typeof link !== "string" || link === "/" || link === "#") {
     return
   }
+
+  /**
+   * A string can be prose holding markdown links, such as a `TypeList`
+   * description. Its links must be extracted before the checks below, since a
+   * link ending with an anchor would otherwise make the whole string look like
+   * a path to a local file.
+   */
+  if (checkMarkdownLinks({ link, file, currentPageFilePath, options })) {
+    return
+  }
+
   // try to remove hash
   const hashIndex = link.lastIndexOf("#")
   const likeWithoutHash = hashIndex !== -1 ? link.substring(0, hashIndex) : link
@@ -244,29 +295,6 @@ function checkLink({
   const parsedLink = parseCrossProjectLink(likeWithoutHash)
 
   if (!parsedLink) {
-    if (MD_LINK_REGEX.test(link)) {
-      // try fixing MDX links
-      let linkMatches
-      let tempLink = link
-      MD_LINK_REGEX.lastIndex = 0
-
-      while ((linkMatches = MD_LINK_REGEX.exec(tempLink)) !== null) {
-        if (!linkMatches.groups?.link) {
-          return
-        }
-
-        checkLink({
-          link: linkMatches.groups.link,
-          file,
-          currentPageFilePath,
-          options,
-        })
-
-        tempLink = tempLink.replace(linkMatches.groups.link, "")
-        // reset regex
-        MD_LINK_REGEX.lastIndex = 0
-      }
-    }
     return
   } else if (!Object.hasOwn(options.crossProjects, parsedLink.area)) {
     throw new Error(

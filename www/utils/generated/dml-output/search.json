@@ -11,7 +11,7 @@
 			"started_at": "The started at of the search index sync",
 			"completed_at": "The completed at of the search index sync",
 			"error": "The error of the search index sync",
-			"search_index": "The associated search_index.\n\n@expandable"
+			"search_index_version": "The associated search index version.\n\n@expandable"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -22,9 +22,23 @@
 		"properties": {
 			"id": "The ID of the search index.",
 			"name": "The name of the search index",
+			"active_version": "The active version of the search index",
+			"versions": "The associated versions.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"SearchIndexVersion": {
+		"filePath": "packages/modules/search/src/models/search-index-version.ts",
+		"properties": {
+			"id": "The ID of the search index version.",
+			"version": "The version of the search index",
 			"provider": "The provider of the search index",
-			"status": "The status of the search index",
-			"definition_hash": "The definition hash of the search index",
+			"physical_name": "The physical name of the search index in this version",
+			"definition_hash": "The definition hash of the search index in this version",
+			"status": "The status of the search index version",
+			"search_index": "The associated search index.\n\n@expandable",
 			"syncs": "The associated syncs.\n\n@expandable"
 		},
 		"deprecated": {

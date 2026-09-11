@@ -3493,7 +3493,45 @@ cd apps/storefront
 
 </Note>
 
-### a. Retrieve Strapi Product Data
+### a. Allow Retrieving Strapi Data in Store Products
+
+The Store API routes only return the fields that they allow in the `fields` query parameter. Any other field, including a field added by a custom link like `strapi_product`, is removed from the response without an error.
+
+So, before you can retrieve Strapi data in the storefront, you must add `strapi_product` to the allowed fields of the Products API route.
+
+In your Medusa application, add a route object to the `src/api/middlewares.ts` file that you created earlier:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa application" badgeColor="green"
+import { allowFields } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [allowFields("strapi_product")],
+    },
+  ],
+})
+```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
+
+This middleware pushes `strapi_product` to the route's allowed fields, so Medusa keeps the field when a request asks for it. The other fields that you'll pass in the next section, such as `*variants.images`, are already among the route's allowed fields.
+
+<Note title="Important">
+
+The middleware must be global, so don't set a `method` property in the route object. Medusa runs a middleware scoped to a method after it validates the `fields` query parameter, so it has no effect.
+
+</Note>
+
+Learn more in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### b. Retrieve Strapi Product Data
 
 Since you've created a [virtual read-only link](#step-4-create-virtual-read-only-link-to-strapi-products) to Strapi products in Medusa, you can retrieve Strapi product data when retrieving Medusa products.
 
@@ -3527,7 +3565,7 @@ export const listProducts = async ({
 
 The Strapi product data will now be included in the `strapi_product` property of each Medusa product.
 
-### b. Define Strapi Product Types
+### c. Define Strapi Product Types
 
 Next, you'll define types for the Strapi product data to use in the storefront.
 
@@ -3596,7 +3634,7 @@ export interface StrapiProduct {
 
 You define types for Strapi media, product option values, product options, product variants, and products.
 
-### c. Add Strapi Product Utilities
+### d. Add Strapi Product Utilities
 
 Next, add utilities that will allow you to easily retrieve Strapi product data from a product object.
 
@@ -3813,7 +3851,7 @@ You define the following utilities:
 - `getVariantOptionValues`: Retrieves all option values for a variant with Strapi labels.
 - `getVariantImages`: Retrieves images for a specific variant from Strapi, falling back to Medusa if not available.
 
-### d. Customize Product Preview
+### e. Customize Product Preview
 
 Next, you'll customize the product preview component to show Strapi product data. This component is displayed on the product listing page.
 
@@ -3865,7 +3903,7 @@ You make two key changes:
 1. Pass the `images` and `thumbnail` variables as props to the `Thumbnail` component to show Strapi product images.
 2. Use the `title` variable to display the Strapi product title.
 
-### e. Customize Product Details Metadata
+### f. Customize Product Details Metadata
 
 Next, you'll customize the product details component to show Strapi product data.
 
@@ -3943,7 +3981,7 @@ return {
 
 You use the Strapi product title, subtitle, and thumbnail in the page's metadata.
 
-### f. Customize Product Details Page
+### g. Customize Product Details Page
 
 Next, you'll customize the product details page to show Strapi product data.
 
@@ -4174,7 +4212,7 @@ return (
 
 You retrieve the Strapi option title and pass the `product` prop to the `OptionSelect` component.
 
-### g. Customize Line Item Options
+### h. Customize Line Item Options
 
 Finally, you'll customize the line item options to either show Strapi variant titles or option titles and values.
 

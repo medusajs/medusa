@@ -135,7 +135,7 @@
     "js-sdk": "sdk.admin.customer.deleteAddress(\"cus_123\", \"cus_addr_123\")\n.then(({ customer }) => {\n  console.log(customer)\n})"
   },
   "GET /admin/customers/{id}/addresses/{addressid}": {
-    "js-sdk": "sdk.admin.customer.retrieveAddress(\"cus_123\", \"cus_addr_123\")\n.then(({ customer }) => {\n  console.log(customer)\n})"
+    "js-sdk": "sdk.admin.customer.retrieveAddress(\"cus_123\", \"cus_addr_123\")\n.then(({ address }) => {\n  console.log(address)\n})"
   },
   "GET /admin/customers/{id}/addresses": {
     "js-sdk": "sdk.admin.customer.listAddresses(\"cus_123\")\n.then(({ addresses }) => {\n  console.log(addresses)\n})"

@@ -717,6 +717,25 @@ This returns only the `title` and `handle` fields of a product.
 
 </DividedMarkdownLayout>
 
+<DividedMarkdownLayout>
+
+<DividedMarkdownContent>
+
+### Allowed and Disallowed Fields
+
+An API route can restrict the fields and relations that you can retrieve:
+
+- Allowed fields and relations are the only ones you can retrieve in the API route. Every Store API route has an allowed list, so you can only retrieve the fields and relations that it includes. A field is permitted only if its full path is in the list, so selecting a relation doesn't grant access to the fields nested under it.
+- Disallowed fields and relations are the ones you can never retrieve in the API route, even if you pass them in the `fields` query parameter.
+
+If an API route has any of these restrictions, they're listed in this reference under the Allowed and Disallowed collapsibles. Medusa removes restricted fields from the response silently, so the request still succeeds with a `200` status code.
+
+To learn more about these restrictions and how to override them, refer to the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) and [Disallowed Fields](!docs!/learn/fundamentals/api-routes/disallowed-fields) documentation.
+
+</DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
 <DividedMarkdownLayout addYSpacing>
 
 <DividedMarkdownContent>
@@ -856,7 +875,7 @@ The `*` prefix selects all fields of the relation's data model.
 
 <DividedMarkdownContent>
 
-To select a specific field, pass a `.<field>` suffix instead of the `*` prefix. For example, `variants.title`.
+To select a specific field, pass a `.<field>` suffix instead of the `*` prefix. For example, `variants.manage_inventory`.
 
 To specify multiple fields, pass each of the fields with the `<relation>.<field>` format, separated by a comma. You can do the same for multiple relations.
 
@@ -870,7 +889,7 @@ To specify multiple fields, pass each of the fields with the `<relation>.<field>
 
 ```js title="Select relation's fields"
 sdk.store.product.list({
-  fields: "variants.title,variants.sku,options.title"
+  fields: "variants.manage_inventory,variants.allow_backorder,options.values"
 })
 ```
 
@@ -879,14 +898,20 @@ sdk.store.product.list({
 <CodeTab label="cURL" value="curl">
 
 ```bash title="Select relation's fields"
-curl 'localhost:9000/store/products?fields=variants.title,variants.sku,options.title'
+curl 'localhost:9000/store/products?fields=variants.manage_inventory,variants.allow_backorder,options.values'
 ```
 
 </CodeTab>
 
 </CodeTabs>
 
-This returns the variants and options of each product, but the variants only have their `id`, `title`, and `sku` fields, and the options only have their `id` and `title` fields. The `id` is always included.
+This returns the variants and options of each product, but the variants only have their `id`, `manage_inventory`, and `allow_backorder` fields, and the options only have their `id` and `values` fields. The `id` is always included.
+
+<Note>
+
+Each Store API route accepts only the field paths listed in its allowed fields. So, the nested paths you pass must appear in that list. Learn more in the [Allowed and Disallowed Fields](#allowed-and-disallowed-fields) section.
+
+</Note>
 
 </DividedMarkdownCode>
 
@@ -910,7 +935,7 @@ A relation can have relations of its own. To select a nested relation, chain the
 
 Prefixing a relation with `*` only selects that relation's own fields, not its nested relations. So, to retrieve a nested relation, you must reference it explicitly through its parent, as shown in the example.
 
-You can chain more relations to select deeper levels, such as `*items.variant.product`.
+You can chain more relations to select deeper levels, such as `*items.variant.product`. On Store API routes, the route's allowed fields must include the full nested path, such as `variants.prices`. Referencing the parent relation alone doesn't grant access to what's nested under it.
 
 </DividedMarkdownContent>
 
@@ -950,9 +975,9 @@ This returns the variants of each product, each with its `prices` relation popul
 
 ### Select Custom Linked Data Models
 
-Most of the API routes that accept a `fields` query parameter allow you to specify custom linked data models. For example, if you linked a `Brand` to a `Product`, you can pass `brand` in the `fields` query parameter to retrieve the brand of each product.
+You can retrieve custom linked data models in the `fields` query parameter. For example, if you linked a `Brand` to a `Product`, you can pass `brand` in the `fields` query parameter to retrieve the brand of each product.
 
-However, some API routes restrict the fields and relations you can retrieve. To learn about those API routes and how to override the allowed fields and relations, refer to the [Retrieve Custom Linked Data Models from Medusa's API routes](!docs!/learn/fundamentals/api-routes/retrieve-custom-links) documentation.
+Since every Store API route restricts the fields and relations you can retrieve, you must first add the custom linked data model to the route's allowed list. To learn how to override the allowed fields and relations, refer to the [Retrieve Custom Linked Data Models from Medusa's API routes](!docs!/learn/fundamentals/api-routes/retrieve-custom-links) documentation.
 
 </DividedMarkdownContent>
 
@@ -1421,6 +1446,8 @@ For example, if the `count` is `100` and the `limit` is `50`, divide the
 
 The `order` field (available on API Routes that support pagination) allows you to
 sort the retrieved items by a field of that item.
+
+On Store API routes, the field you sort by must also be in the route's allowed list. If it isn't, the request fails with a `400` error, such as `Order field X is not valid`. This differs from the `fields` query parameter, which removes disallowed fields silently instead of returning an error.
 
 </DividedMarkdownContent>
 
