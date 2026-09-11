@@ -709,7 +709,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
-              stocked_quantity: 2,
+              stocked_quantity: 6,
             },
             {
               inventory_item_id: inventoryItem.id,
@@ -822,7 +822,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
-              stocked_quantity: 2,
+              stocked_quantity: 6,
             },
             {
               inventory_item_id: inventoryItem.id,
