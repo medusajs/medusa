@@ -83,19 +83,24 @@ Create the policies in a [data migration script](!docs!/learn/fundamentals/data-
 For example, create the file `src/migration-scripts/create-vendor-policies.ts` with the following content:
 
 export const createHighlights = [
-  ["10", "buildPolicies", "Build a policy for every vendor operation."],
-  ["14", "createRbacPoliciesWorkflow", "Store the policies in the database."],
+  ["15", "buildPolicies", "Build a policy for every vendor operation."],
+  ["19", "createRbacPoliciesWorkflow", "Store the policies in the database."],
 ]
 
 ```ts title="src/migration-scripts/create-vendor-policies.ts" highlights={createHighlights}
 import { ExecArgs } from "@medusajs/framework/types"
-import { buildPolicies } from "@medusajs/framework/utils"
+import { 
+  buildPolicies,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import {
   createRbacPoliciesWorkflow,
 } from "@medusajs/medusa/core-flows"
 
 export default async function ({ container }: ExecArgs) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.Logger
+  )
 
   const policies = buildPolicies({
     resource: ["vendor"],
@@ -256,14 +261,19 @@ The following [data migration script](!docs!/learn/fundamentals/data-models/writ
 
 ```ts title="src/migration-scripts/create-vendor-role.ts"
 import { ExecArgs } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { 
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import {
   createRbacRolesWorkflow,
 } from "@medusajs/medusa/core-flows"
 
 export default async function ({ container }: ExecArgs) {
   const rbacModuleService = container.resolve(Modules.RBAC)
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.Logger
+  )
 
   const policies = await rbacModuleService.listRbacPolicies({
     key: ["vendor:read", "vendor:create"],
