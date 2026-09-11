@@ -35,7 +35,7 @@ import {
   UpdatePaymentOutput,
   WebhookActionResult,
 } from "@medusajs/framework/types"
-import { ModulesSdkUtils } from "@medusajs/framework/utils"
+import { MedusaError, ModulesSdkUtils } from "@medusajs/framework/utils"
 import { PaymentProvider } from "@models"
 
 type InjectedDependencies = {
@@ -68,7 +68,7 @@ Please make sure that the provider is registered in the container and it is conf
         // Log full error for debugging
         this.#logger.error(`AwilixResolutionError: ${err.message}`, err)
 
-        throw new Error(errMessage)
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, errMessage)
       }
 
       const errMessage = `Unable to retrieve the payment provider with id: ${providerId}, the following error occurred: ${err.message}`

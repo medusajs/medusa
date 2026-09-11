@@ -114,6 +114,12 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
   ): Promise<WebhookActionResult> {
     const body = data.data as Record<string, unknown>
 
+    // Stands in for a provider rejecting a forged payload, the way Stripe's
+    // `constructEvent` throws when the signature does not match.
+    if (body?.invalid_signature) {
+      throw new Error("Webhook signature verification failed.")
+    }
+
     if (!body?.action || !body?.session_id) {
       return { action: PaymentActions.NOT_SUPPORTED }
     }
