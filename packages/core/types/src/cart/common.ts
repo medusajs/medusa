@@ -14,8 +14,10 @@ export interface AdjustmentLineDTO {
   /**
    * The code of the promotion that lead to
    * this adjustment.
+   *
+   * This is `null` for custom adjustments that aren't created by a promotion.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.

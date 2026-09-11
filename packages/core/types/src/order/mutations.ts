@@ -285,7 +285,7 @@ export interface CreateOrderAdjustmentDTO {
   /**
    * The code of the adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount of the adjustment.
@@ -330,7 +330,7 @@ export interface UpdateOrderAdjustmentDTO {
   /**
    * The code of the adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount of the adjustment.
@@ -392,7 +392,7 @@ export interface UpsertOrderLineItemAdjustmentDTO {
   /**
    * The code of the line item adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount of the line item adjustment.
@@ -837,9 +837,13 @@ export interface CreateOrderShippingMethodAdjustmentDTO {
   shipping_method_id: string
 
   /**
-   * The code of the adjustment.
+   * The code of the promotion that lead to this adjustment.
+   *
+   * Omit the code for custom adjustments that aren't created by a promotion.
+   * The Promotion Module ignores adjustments without a code, so they're not
+   * attributed to a promotion's usage limit or campaign budget.
    */
-  code: string
+  code?: string | null
 
   /**
    * The amount of the adjustment.
@@ -881,7 +885,7 @@ export interface UpdateOrderShippingMethodAdjustmentDTO {
   /**
    * The code of the adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount of the adjustment.
