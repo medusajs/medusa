@@ -75,8 +75,9 @@ export const updateOrderValidationStep = createStep(
 
     if (
       input.shipping_address?.country_code &&
-      order.shipping_address?.country_code !==
-        input.shipping_address?.country_code
+      order.shipping_address?.country_code &&
+      order.shipping_address.country_code !==
+        input.shipping_address.country_code
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -86,8 +87,8 @@ export const updateOrderValidationStep = createStep(
 
     if (
       input.billing_address?.country_code &&
-      order.billing_address?.country_code !==
-        input.billing_address?.country_code
+      order.billing_address?.country_code &&
+      order.billing_address.country_code !== input.billing_address.country_code
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
