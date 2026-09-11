@@ -228,6 +228,10 @@ export class MemoryCachingProvider implements ICachingProviderService {
         this.tagIndex.clear()
         this.keyTags.clear()
         this.entryOptions.clear()
+        // flushAll only emits "flush", not a "del" per key, so the size
+        // bookkeeping that cleanupTagReferences maintains has to be reset here.
+        this.keySizes.clear()
+        this.approximateMemoryUsage = 0
         return
       }
 
