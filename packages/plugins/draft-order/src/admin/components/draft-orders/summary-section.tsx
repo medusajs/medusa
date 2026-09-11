@@ -10,6 +10,7 @@ import {
   toast,
   usePrompt,
 } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 import { useConvertDraftOrder } from "../../hooks/api/draft-orders"
 import { getLocaleAmount, getStylizedAmount } from "../../lib/data/currencies"
@@ -23,18 +24,19 @@ interface SummarySectionProps {
 }
 
 export const SummarySection = ({ order }: SummarySectionProps) => {
+  const { t } = useTranslation()
   const promotions: HttpTypes.AdminPromotion[] | null = order.promotions || []
 
   return (
     <Container className="p-0 overflow-hidden">
       <div className="px-6 py-4 flex items-center justify-between gap-x-4">
-        <Heading>Summary</Heading>
+        <Heading>{t("fields.summary")}</Heading>
         <ActionMenu
           groups={[
             {
               actions: [
                 {
-                  label: "Edit items",
+                  label: t("draftOrders.summary.editItemsAction"),
                   icon: <Plus />,
                   to: "items",
                 },
@@ -43,7 +45,7 @@ export const SummarySection = ({ order }: SummarySectionProps) => {
             {
               actions: [
                 {
-                  label: "Edit promotions",
+                  label: t("draftOrders.summary.editPromotionsAction"),
                   icon: <ReceiptPercent />,
                   to: "promotions",
                 },
@@ -158,16 +160,18 @@ const Total = ({
   itemSubTotal,
   itemCount,
 }: TotalProps) => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-col px-6 py-4 gap-y-2">
       {itemCount > 0 && (
         <div className="grid grid-cols-3 items-center justify-between gap-x-4 text-ui-fg-subtle">
           <Text size="small" leading="compact">
-            Subtotal
+            {t("fields.subtotal")}
           </Text>
           <div className="flex items-center justify-end">
             <Text size="small" leading="compact">
-              {`${itemCount} ${itemCount === 1 ? "item" : "items"}`}
+              {t("general.items", { count: itemCount })}
             </Text>
           </div>
           <div className="flex items-center justify-end">
@@ -180,7 +184,7 @@ const Total = ({
       {shippingSubtotal !== null && (
         <div className="flex items-center justify-between gap-x-4 text-ui-fg-subtle">
           <Text size="small" leading="compact">
-            Shipping
+            {t("fields.shipping")}
           </Text>
           <Text size="small" leading="compact">
             {getLocaleAmount(shippingSubtotal, currencyCode)}
@@ -197,7 +201,7 @@ const Total = ({
           )}
         >
           <Text size="small" leading="compact">
-            Discount
+            {t("fields.discount")}
           </Text>
           <div className="flex items-center justify-end gap-x-2">
             {promotions.map((promotion) => (
@@ -218,7 +222,7 @@ const Total = ({
       {taxTotal !== null && (
         <div className="flex items-center justify-between gap-x-4 text-ui-fg-subtle">
           <Text size="small" leading="compact">
-            Tax
+            {t("fields.tax")}
           </Text>
           <Text size="small" leading="compact">
             {taxTotal > 0 ? getLocaleAmount(taxTotal, currencyCode) : "-"}
@@ -227,7 +231,7 @@ const Total = ({
       )}
       <div className="flex items-center justify-between gap-x-4">
         <Text size="small" leading="compact" weight="plus">
-          Total
+          {t("draftOrders.summary.total")}
         </Text>
         <Text
           size="small"
@@ -243,6 +247,7 @@ const Total = ({
 }
 
 const Footer = ({ order }: { order: HttpTypes.AdminOrder }) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
 
@@ -252,9 +257,8 @@ const Footer = ({ order }: { order: HttpTypes.AdminOrder }) => {
 
   const handleConvert = async () => {
     const res = await prompt({
-      title: "Are you sure?",
-      description:
-        "You are about to convert this draft order to an order. This action cannot be undone.",
+      title: t("general.areYouSure"),
+      description: t("draftOrders.summary.convertWarning"),
       variant: "confirmation",
     })
 
@@ -264,7 +268,7 @@ const Footer = ({ order }: { order: HttpTypes.AdminOrder }) => {
 
     await convertDraftOrder(undefined, {
       onSuccess: () => {
-        toast.success("Draft order converted to order")
+        toast.success(t("draftOrders.summary.convertSuccess"))
         navigate(`/orders/${order.id}`)
       },
       onError: (error) => {
@@ -281,7 +285,7 @@ const Footer = ({ order }: { order: HttpTypes.AdminOrder }) => {
         isLoading={isPending}
         onClick={handleConvert}
       >
-        Convert to order
+        {t("draftOrders.summary.convertToOrderAction")}
       </Button>
     </div>
   )

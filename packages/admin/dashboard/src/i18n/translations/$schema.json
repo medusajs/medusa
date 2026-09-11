@@ -627,6 +627,9 @@
         },
         "goToProductOption": {
           "type": "string"
+        },
+        "update": {
+          "type": "string"
         }
       },
       "required": [
@@ -678,7 +681,8 @@
         "import",
         "cannotUndo",
         "manage",
-        "goToProductOption"
+        "goToProductOption",
+        "update"
       ],
       "additionalProperties": false
     },
@@ -6526,9 +6530,21 @@
                     },
                     "email": {
                       "type": "string"
+                    },
+                    "customer_id": {
+                      "type": "string"
+                    },
+                    "sales_channel_id": {
+                      "type": "string"
                     }
                   },
-                  "required": ["shipping_address", "billing_address", "email"],
+                  "required": [
+                    "shipping_address",
+                    "billing_address",
+                    "email",
+                    "customer_id",
+                    "sales_channel_id"
+                  ],
                   "additionalProperties": false
                 }
               },
@@ -6711,6 +6727,33 @@
             },
             "sendNotificationHint": {
               "type": "string"
+            },
+            "chooseSalesChannelHint": {
+              "type": "string"
+            },
+            "emailHint": {
+              "type": "string"
+            },
+            "emailDisabledTooltip": {
+              "type": "string"
+            },
+            "chooseExistingCustomerHint": {
+              "type": "string"
+            },
+            "shippingAddressHint": {
+              "type": "string"
+            },
+            "billingAddressHint": {
+              "type": "string"
+            },
+            "sameAsShippingHint": {
+              "type": "string"
+            },
+            "savedAddressesLabel": {
+              "type": "string"
+            },
+            "savedAddressesHint": {
+              "type": "string"
             }
           },
           "required": [
@@ -6734,7 +6777,16 @@
             "shippingPriceOverrideLabel",
             "shippingPriceOverrideHint",
             "sendNotificationLabel",
-            "sendNotificationHint"
+            "sendNotificationHint",
+            "chooseSalesChannelHint",
+            "emailHint",
+            "emailDisabledTooltip",
+            "chooseExistingCustomerHint",
+            "shippingAddressHint",
+            "billingAddressHint",
+            "sameAsShippingHint",
+            "savedAddressesLabel",
+            "savedAddressesHint"
           ],
           "additionalProperties": false
         },
@@ -6783,6 +6835,472 @@
             "invalidEmail"
           ],
           "additionalProperties": false
+        },
+        "sidebarLabel": {
+          "type": "string"
+        },
+        "deleteAction": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object",
+          "properties": {
+            "heading": {
+              "type": "string"
+            }
+          },
+          "required": ["heading"],
+          "additionalProperties": false
+        },
+        "placeholders": {
+          "type": "object",
+          "properties": {
+            "selectRegion": {
+              "type": "string"
+            },
+            "selectSalesChannel": {
+              "type": "string"
+            },
+            "selectCustomer": {
+              "type": "string"
+            },
+            "selectShippingAddress": {
+              "type": "string"
+            },
+            "selectBillingAddress": {
+              "type": "string"
+            },
+            "selectLocation": {
+              "type": "string"
+            },
+            "selectShippingOption": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "selectRegion",
+            "selectSalesChannel",
+            "selectCustomer",
+            "selectShippingAddress",
+            "selectBillingAddress",
+            "selectLocation",
+            "selectShippingOption"
+          ],
+          "additionalProperties": false
+        },
+        "email": {
+          "type": "object",
+          "properties": {
+            "editHint": {
+              "type": "string"
+            }
+          },
+          "required": ["editHint"],
+          "additionalProperties": false
+        },
+        "salesChannel": {
+          "type": "object",
+          "properties": {
+            "editHint": {
+              "type": "string"
+            }
+          },
+          "required": ["editHint"],
+          "additionalProperties": false
+        },
+        "shippingAddress": {
+          "type": "object",
+          "properties": {
+            "editHint": {
+              "type": "string"
+            }
+          },
+          "required": ["editHint"],
+          "additionalProperties": false
+        },
+        "billingAddress": {
+          "type": "object",
+          "properties": {
+            "editHint": {
+              "type": "string"
+            }
+          },
+          "required": ["editHint"],
+          "additionalProperties": false
+        },
+        "customItems": {
+          "type": "object",
+          "properties": {
+            "editHeader": {
+              "type": "string"
+            }
+          },
+          "required": ["editHeader"],
+          "additionalProperties": false
+        },
+        "transferOwnership": {
+          "type": "object",
+          "properties": {
+            "hint": {
+              "type": "string"
+            }
+          },
+          "required": ["hint"],
+          "additionalProperties": false
+        },
+        "promotions": {
+          "type": "object",
+          "properties": {
+            "editHeader": {
+              "type": "string"
+            },
+            "applyLabel": {
+              "type": "string"
+            },
+            "applyHint": {
+              "type": "string"
+            }
+          },
+          "required": ["editHeader", "applyLabel", "applyHint"],
+          "additionalProperties": false
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "string"
+            },
+            "editItemsAction": {
+              "type": "string"
+            },
+            "editPromotionsAction": {
+              "type": "string"
+            },
+            "convertToOrderAction": {
+              "type": "string"
+            },
+            "convertWarning": {
+              "type": "string"
+            },
+            "convertSuccess": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "total",
+            "editItemsAction",
+            "editPromotionsAction",
+            "convertToOrderAction",
+            "convertWarning",
+            "convertSuccess"
+          ],
+          "additionalProperties": false
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "pendingTitle": {
+              "type": "string"
+            },
+            "pendingDescriptionNoChanges": {
+              "type": "string"
+            },
+            "pendingDescriptionWithChanges": {
+              "type": "string"
+            },
+            "cancelSuccess": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pendingTitle",
+            "pendingDescriptionNoChanges",
+            "pendingDescriptionWithChanges",
+            "cancelSuccess"
+          ],
+          "additionalProperties": false
+        },
+        "activity": {
+          "type": "object",
+          "properties": {
+            "transferredLabel": {
+              "type": "string"
+            },
+            "transferredContent": {
+              "type": "string"
+            },
+            "createdContent": {
+              "type": "string"
+            },
+            "shippingMethodCount_zero": {
+              "type": "string"
+            },
+            "shippingMethodCount_one": {
+              "type": "string"
+            },
+            "shippingMethodCount_two": {
+              "type": "string"
+            },
+            "shippingMethodCount_few": {
+              "type": "string"
+            },
+            "shippingMethodCount_many": {
+              "type": "string"
+            },
+            "shippingMethodCount_other": {
+              "type": "string"
+            },
+            "promotionCount_zero": {
+              "type": "string"
+            },
+            "promotionCount_one": {
+              "type": "string"
+            },
+            "promotionCount_two": {
+              "type": "string"
+            },
+            "promotionCount_few": {
+              "type": "string"
+            },
+            "promotionCount_many": {
+              "type": "string"
+            },
+            "promotionCount_other": {
+              "type": "string"
+            },
+            "added": {
+              "type": "string"
+            },
+            "removed": {
+              "type": "string"
+            },
+            "addedAndRemoved": {
+              "type": "string"
+            },
+            "labels": {
+              "type": "object",
+              "properties": {
+                "itemsAdded": {
+                  "type": "string"
+                },
+                "itemsRemoved": {
+                  "type": "string"
+                },
+                "itemsUpdated": {
+                  "type": "string"
+                },
+                "shippingAdded": {
+                  "type": "string"
+                },
+                "shippingRemoved": {
+                  "type": "string"
+                },
+                "shippingUpdated": {
+                  "type": "string"
+                },
+                "promotionsAdded": {
+                  "type": "string"
+                },
+                "promotionsRemoved": {
+                  "type": "string"
+                },
+                "promotionsUpdated": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "itemsAdded",
+                "itemsRemoved",
+                "itemsUpdated",
+                "shippingAdded",
+                "shippingRemoved",
+                "shippingUpdated",
+                "promotionsAdded",
+                "promotionsRemoved",
+                "promotionsUpdated"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "transferredLabel",
+            "transferredContent",
+            "createdContent",
+            "added",
+            "removed",
+            "addedAndRemoved",
+            "labels"
+          ],
+          "additionalProperties": false
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "editHeader": {
+              "type": "string"
+            },
+            "editHint": {
+              "type": "string"
+            },
+            "chooseItemsHint": {
+              "type": "string"
+            },
+            "emptyHeading": {
+              "type": "string"
+            },
+            "emptyDescription": {
+              "type": "string"
+            },
+            "noResultsHeading": {
+              "type": "string"
+            },
+            "noResultsDescription": {
+              "type": "string"
+            },
+            "updateItemsAction": {
+              "type": "string"
+            },
+            "chooseVariantsHint": {
+              "type": "string"
+            },
+            "addCustomItemHint": {
+              "type": "string"
+            },
+            "customItemTitleHint": {
+              "type": "string"
+            },
+            "customItemUnitPriceHint": {
+              "type": "string"
+            },
+            "customItemQuantityHint": {
+              "type": "string"
+            },
+            "addItemAction": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "editHeader",
+            "editHint",
+            "chooseItemsHint",
+            "emptyHeading",
+            "emptyDescription",
+            "noResultsHeading",
+            "noResultsDescription",
+            "updateItemsAction",
+            "chooseVariantsHint",
+            "addCustomItemHint",
+            "customItemTitleHint",
+            "customItemUnitPriceHint",
+            "customItemQuantityHint",
+            "addItemAction"
+          ],
+          "additionalProperties": false
+        },
+        "shipping": {
+          "type": "object",
+          "properties": {
+            "editHeader": {
+              "type": "string"
+            },
+            "editHint": {
+              "type": "string"
+            },
+            "noItemsHint": {
+              "type": "string"
+            },
+            "actionColumn": {
+              "type": "string"
+            },
+            "editOptionAction": {
+              "type": "string"
+            },
+            "removeOptionAction": {
+              "type": "string"
+            },
+            "addOptionAction": {
+              "type": "string"
+            },
+            "addMethodHint": {
+              "type": "string"
+            },
+            "itemsToShipLabel": {
+              "type": "string"
+            },
+            "itemsToShipHint": {
+              "type": "string"
+            },
+            "noItemsForProfile": {
+              "type": "string"
+            },
+            "chooseLocationHint": {
+              "type": "string"
+            },
+            "chooseLocationAndProfileFirst": {
+              "type": "string"
+            },
+            "chooseLocationFirst": {
+              "type": "string"
+            },
+            "chooseProfileFirst": {
+              "type": "string"
+            },
+            "customAmountLabel": {
+              "type": "string"
+            },
+            "customAmountHint": {
+              "type": "string"
+            },
+            "editAction": {
+              "type": "string"
+            },
+            "addAction": {
+              "type": "string"
+            },
+            "quantityTimesItems_zero": {
+              "type": "string"
+            },
+            "quantityTimesItems_one": {
+              "type": "string"
+            },
+            "quantityTimesItems_two": {
+              "type": "string"
+            },
+            "quantityTimesItems_few": {
+              "type": "string"
+            },
+            "quantityTimesItems_many": {
+              "type": "string"
+            },
+            "quantityTimesItems_other": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "editHeader",
+            "editHint",
+            "noItemsHint",
+            "actionColumn",
+            "editOptionAction",
+            "removeOptionAction",
+            "addOptionAction",
+            "addMethodHint",
+            "itemsToShipLabel",
+            "itemsToShipHint",
+            "noItemsForProfile",
+            "chooseLocationHint",
+            "chooseLocationAndProfileFirst",
+            "chooseLocationFirst",
+            "chooseProfileFirst",
+            "customAmountLabel",
+            "customAmountHint",
+            "editAction",
+            "addAction"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -6794,7 +7312,24 @@
         "status",
         "create",
         "list",
-        "validation"
+        "validation",
+        "sidebarLabel",
+        "deleteAction",
+        "loading",
+        "details",
+        "placeholders",
+        "email",
+        "salesChannel",
+        "shippingAddress",
+        "billingAddress",
+        "customItems",
+        "transferOwnership",
+        "promotions",
+        "summary",
+        "edit",
+        "activity",
+        "items",
+        "shipping"
       ],
       "additionalProperties": false
     },
