@@ -32,6 +32,7 @@ import {
 } from "@models"
 import { AuthModuleOptions } from "@types"
 import { joinerConfig } from "../joiner-config"
+import { warnIfAuthCacheIsInMemoryDefault } from "../utils/cache-in-memory-warning"
 import AuthProviderService from "./auth-provider"
 import AuthMfaProviderService from "./mfa-provider"
 import AuthVerificationProviderService from "./verification-provider"
@@ -83,6 +84,7 @@ export default class AuthModuleService
   protected readonly authVerificationProviderService_: AuthVerificationProviderService
   protected readonly cache_: ICacheService | undefined
   protected readonly moduleOptions_: AuthModuleOptions
+  protected readonly logger_: Logger | undefined
 
   constructor(
     {
@@ -97,6 +99,7 @@ export default class AuthModuleService
       authVerificationProviderService,
       baseRepository,
       cache,
+      logger,
     }: InjectedDependencies,
     moduleOptions: AuthModuleOptions = {},
     protected readonly moduleDeclaration?: InternalModuleDeclaration
@@ -115,7 +118,14 @@ export default class AuthModuleService
     this.authVerificationProviderService_ = authVerificationProviderService
     this.providerIdentityService_ = providerIdentityService
     this.cache_ = cache
+    this.logger_ = logger
     this.moduleOptions_ = moduleOptions
+  }
+
+  __hooks = {
+    onApplicationStart: async () => {
+      warnIfAuthCacheIsInMemoryDefault(this.cache_, this.logger_)
+    },
   }
 
   __joinerConfig(): ModuleJoinerConfig {
