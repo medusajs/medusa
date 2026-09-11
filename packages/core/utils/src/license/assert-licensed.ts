@@ -2,8 +2,7 @@ import { MedusaError } from "../common/errors"
 import { LICENSE_CHECK_ERROR_CODE, LicenseKeyEnvVars } from "./constants"
 import { loadLicense } from "./license-state"
 
-// TODO: confirm wording
-const OBTAIN_KEY_HINT = "Reach out to support@medusajs.com to learn more."
+const OBTAIN_KEY_HINT = "Contact support@medusajs.com for more information."
 
 function licenseCheckError(message: string): MedusaError {
   return new MedusaError(
