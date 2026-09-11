@@ -16,9 +16,6 @@ export function loadLicense(): LicenseState {
   const token = process.env.MEDUSA_LICENSE_KEY
 
   if (!token) {
-    console.error(
-      `No license key token found in environment variables. License variables: private ${process.env.MEDUSA_LICENSE_KEY} public ${process.env.MEDUSA_LICENSE_PUBLIC_KEY}`
-    )
     licenseState = { status: "invalid", claims: null, token: null }
     return licenseState
   }
