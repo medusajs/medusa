@@ -15,13 +15,17 @@ const DateSegment = ({ segment, state }: DateSegmentProps) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const { segmentProps } = useDateSegment(segment, state, ref)
 
-  const isComma = segment.type === "literal" && segment.text === ", "
+  const isEmptyLiteral =
+    segment.type === "literal" && segment.text.trim() === ""
 
   /**
    * We render an empty span with a margin to maintain the correct spacing
-   * between date and time segments.
+   * between date and time segments. The literal between them depends on the
+   * locale: ", " in en-US, but a lone " " in fr-FR and many others. A text
+   * node made only of whitespace collapses to nothing at a line edge, so
+   * both cases take the span.
    */
-  if (isComma) {
+  if (isEmptyLiteral) {
     return <span className="mx-1" />
   }
 
