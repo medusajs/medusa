@@ -3,7 +3,8 @@
  * operationId: PostUsersIdResetPassword
  * summary: Generate Reset Password Token for a User
  * x-sidebar-summary: Generate Reset Password Token
- * description: Generate a reset password token for a user. This is useful if another user wants to reset the password of a user. The reset password token can be used to reset the user's password. This route only emits the `auth.password_reset` event. You can listen to this event to send a reset password email to the user, for example.
+ * description: Generate a reset password token for a user. This is useful if another user wants to reset the password of a user. The reset password token can be used to reset the user's password. This
+ *   route only emits the `auth.password_reset` event. You can listen to this event to send a reset password email to the user, for example.
  * x-authenticated: true
  * parameters:
  *   - name: id

@@ -16950,6 +16950,377 @@ paths:
         - collection.updated_at
         - collection.deleted_at
         - collection.metadata
+  /store/products/search:
+    get:
+      operationId: GetProductsSearch
+      summary: List Products
+      description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
+      x-authenticated: false
+      parameters:
+        - name: x-publishable-api-key
+          in: header
+          description: Publishable API Key created in the Medusa Admin.
+          required: true
+          schema:
+            type: string
+            externalDocs:
+              url: https://docs.medusajs.com/api/store/publishable-api-key
+        - name: x-medusa-locale
+          in: header
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: locale
+          in: query
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+            externalDocs:
+              url: '#pagination'
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+            externalDocs:
+              url: '#pagination'
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            externalDocs:
+              url: '#pagination'
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+        - name: with_deleted
+          in: query
+          description: The product's with deleted.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: The product's with deleted.
+        - name: q
+          in: query
+          description: The product's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The product's q.
+        - name: id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: id
+                description: The product's ID.
+              - type: array
+                description: The product's ID.
+                items:
+                  type: string
+                  title: id
+                  description: The id's ID.
+        - name: handle
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: handle
+                description: The product's handle.
+              - type: array
+                description: The product's handle.
+                items:
+                  type: string
+                  title: handle
+                  description: The handle's details.
+        - name: collection_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: collection_id
+                description: The product's collection id.
+              - type: array
+                description: The product's collection id.
+                items:
+                  type: string
+                  title: collection_id
+                  description: The collection id's details.
+        - name: type_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: type_id
+                description: The product's type id.
+              - type: array
+                description: The product's type id.
+                items:
+                  type: string
+                  title: type_id
+                  description: The type id's details.
+        - name: tag_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: tag_id
+                description: The product's tag id.
+              - type: array
+                description: The product's tag id.
+                items:
+                  type: string
+                  title: tag_id
+                  description: The tag id's details.
+        - name: category_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: category_id
+                description: The product's category id.
+              - type: array
+                description: The product's category id.
+                items:
+                  type: string
+                  title: category_id
+                  description: The category id's details.
+        - name: sales_channel_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: sales_channel_id
+                description: The product's sales channel id.
+              - type: array
+                description: The product's sales channel id.
+                items:
+                  type: string
+                  title: sales_channel_id
+                  description: The sales channel id's details.
+        - name: region_id
+          in: query
+          description: The product's region id.
+          required: false
+          schema:
+            type: string
+            title: region_id
+            description: The product's region id.
+        - name: country_code
+          in: query
+          description: The product's country code.
+          required: false
+          schema:
+            type: string
+            title: country_code
+            description: The product's country code.
+        - name: province
+          in: query
+          description: The product's province.
+          required: false
+          schema:
+            type: string
+            title: province
+            description: The product's province.
+        - name: cart_id
+          in: query
+          description: The product's cart id.
+          required: false
+          schema:
+            type: string
+            title: cart_id
+            description: The product's cart id.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/store/products/search' \
+            -H 'x-publishable-api-key: {your_publishable_api_key}'
+      tags:
+        - Products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    description: SUMMARY
+                    required:
+                      - limit
+                      - offset
+                      - count
+                    properties:
+                      limit:
+                        type: number
+                        title: limit
+                        description: The maximum number of items retrieved.
+                      offset:
+                        type: number
+                        title: offset
+                        description: The number of items to skip before retrieving the returned items.
+                      count:
+                        type: number
+                        title: count
+                        description: The total number of items.
+                      estimate_count:
+                        type: number
+                        title: estimate_count
+                        description: The product's estimate count.
+                        x-featureFlag: index_engine
+                  - type: object
+                    description: SUMMARY
+                    required:
+                      - products
+                    properties:
+                      products:
+                        type: array
+                        description: The list of products.
+                        items:
+                          type: object
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-allowed:
+        - id
+        - title
+        - subtitle
+        - description
+        - handle
+        - status
+        - collection_id
+        - type_id
+        - created_at
+        - updated_at
+        - is_giftcard
+        - discountable
+        - thumbnail
+        - weight
+        - length
+        - height
+        - width
+        - hs_code
+        - origin_country
+        - mid_code
+        - material
+        - type
+        - collection
+        - options
+        - options.values
+        - tags
+        - images
+        - variants
+        - variants.options
+        - metadata
+        - categories
+        - external_id
+        - deleted_at
+        - variants.calculated_price
+        - variants.inventory_quantity
+        - variants.manage_inventory
+        - variants.allow_backorder
+        - variants.images
+        - variants.thumbnail
+        - variants.options.option
+        - variants.inventory_items
+        - variants.inventory_items.inventory_item_id
+        - variants.inventory_items.required_quantity
+        - variants.inventory_items.inventory
+        - variants.inventory_items.inventory.location_levels
+        - variants.prices
+        - variants.id
+        - variants.title
+        - variants.sku
+        - variants.barcode
+        - variants.ean
+        - variants.upc
+        - variants.hs_code
+        - variants.origin_country
+        - variants.mid_code
+        - variants.material
+        - variants.weight
+        - variants.length
+        - variants.height
+        - variants.width
+        - variants.created_at
+        - variants.updated_at
+        - variants.deleted_at
+        - variants.options.id
+        - variants.options.value
+        - options.id
+        - options.title
+        - options.is_exclusive
+        - options.values.id
+        - options.values.value
+        - images.id
+        - images.url
+        - images.rank
+        - type.id
+        - type.value
+        - type.created_at
+        - type.updated_at
+        - tags.id
+        - tags.value
+        - tags.created_at
+        - tags.updated_at
+        - collection.id
+        - collection.title
+        - collection.handle
+        - collection.created_at
+        - collection.updated_at
+        - collection.deleted_at
+        - collection.metadata
   /store/products/{id}:
     get:
       operationId: GetProductsId
@@ -30348,7 +30719,7 @@ components:
           description: The number of times the promotion has been used.
         metadata:
           type: object
-          description: Custom key-value pairs for the promotion.
+          description: The promotion's metadata.
     AdminPromotionResponse:
       type: object
       description: The promotion's details.
@@ -30860,6 +31231,28 @@ components:
       properties:
         region:
           $ref: '#/components/schemas/AdminRegion'
+    AdminReindexSearchIndex:
+      type: object
+      description: |-
+        The details to reindex a search index. Everything is optional — an empty
+        body triggers a full rebuild, same as today.
+      x-schemaName: AdminReindexSearchIndex
+      properties:
+        since:
+          type: string
+          title: since
+          description: The search index's since.
+        filters:
+          type: object
+          description: The search index's filters.
+        strategy:
+          type: string
+          description: |-
+            How to rebuild. Ignored — always in place — when `filters` or `since`
+            is set.
+          enum:
+            - swap
+            - in_place
     AdminRemoveDraftOrderPromotions:
       type: object
       description: The promotion codes to remove from the draft order.
@@ -31387,6 +31780,116 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
+    AdminSearchIndex:
+      type: object
+      description: A registered search index and the fields it stores.
+      x-schemaName: AdminSearchIndex
+      required:
+        - name
+        - entity
+        - provider
+        - status
+        - fields
+      properties:
+        name:
+          type: string
+          title: name
+          description: Unique index name, as used in `query.search({ entity })`.
+        entity:
+          type: string
+          title: entity
+          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
+        provider:
+          type: string
+          title: provider
+          description: Identifier of the provider backing this index.
+        status:
+          type: string
+          description: Lifecycle status of the index.
+          enum:
+            - error
+            - pending
+            - building
+            - ready
+        fields:
+          type: array
+          description: Leaf fields stored in the index.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndexField'
+    AdminSearchIndexField:
+      type: object
+      description: A leaf field stored in a search index, with the capabilities declared on it.
+      x-schemaName: AdminSearchIndexField
+      required:
+        - name
+        - type
+        - searchable
+        - filterable
+        - sortable
+        - facetable
+      properties:
+        name:
+          type: string
+          title: name
+          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+        type:
+          type: string
+          title: type
+          description: The field's index type.
+        searchable:
+          type: boolean
+          title: searchable
+          description: Whether the field is used for free-text matching.
+        filterable:
+          type: boolean
+          title: filterable
+          description: Whether the field can be used in filters.
+        sortable:
+          type: boolean
+          title: sortable
+          description: Whether results can be sorted by this field.
+        facetable:
+          type: boolean
+          title: facetable
+          description: Whether the field can be faceted.
+    AdminSearchIndexListResponse:
+      type: object
+      description: The list of registered search indexes.
+      x-schemaName: AdminSearchIndexListResponse
+      required:
+        - search_indexes
+        - enabled
+      properties:
+        search_indexes:
+          type: array
+          description: The registered search indexes.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndex'
+        enabled:
+          type: boolean
+          title: enabled
+          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+    AdminSearchIndexReindexResponse:
+      type: object
+      description: |-
+        The result of triggering a search index reindex. The reindex runs in the
+        background - check the index's `status` to know when it's done.
+      x-schemaName: AdminSearchIndexReindexResponse
+      required:
+        - job_id
+        - indexes
+      properties:
+        job_id:
+          type: string
+          title: job_id
+          description: Identifier of the triggered reindex job.
+        indexes:
+          type: array
+          description: Names of the indexes being reindexed.
+          items:
+            type: string
+            title: indexes
+            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.
