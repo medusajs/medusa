@@ -21192,6 +21192,10 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.Message"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.MetadataType/page.json",
+    "pathname": "/references/promotion/types/promotion.MetadataType"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ModuleJoinerConfig/page.json",
     "pathname": "/references/promotion/types/promotion.ModuleJoinerConfig"
   },
@@ -25904,6 +25908,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRegionResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReindexSearchIndex/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReindexSearchIndex"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions"
   },
@@ -27088,6 +27096,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductSearchParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductSearchParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductTag/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductTag"
   },
@@ -27578,6 +27590,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreProductOptionListResponse/page.json",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreProductOptionListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreProductSearchResponse/page.json",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreProductSearchResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreProductStatus/page.json",
@@ -28130,6 +28146,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchIndexMigrationAction/page.json",
     "pathname": "/references/types/SearchTypes/types/types.SearchTypes.SearchIndexMigrationAction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchIndexSeedMutation/page.json",
+    "pathname": "/references/types/SearchTypes/types/types.SearchTypes.SearchIndexSeedMutation"
   },
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/types/types.SearchTypes.SearchIndexStatus/page.json",
@@ -31020,6 +31040,22 @@ export const filesMap = [
     "pathname": "/references/utils/SearchUtils/classes/utils.SearchUtils.SearchFieldsSchema"
   },
   {
+    "filePath": "/www/apps/resources/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphConsumeOptions/page.json",
+    "pathname": "/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphConsumeOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphSeedOptions/page.json",
+    "pathname": "/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphSeedOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphSourceOptions/page.json",
+    "pathname": "/references/utils/SearchUtils/interfaces/utils.SearchUtils.SearchGraphSourceOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/SearchUtils/types/utils.SearchUtils.SearchConsumeEvent/page.json",
+    "pathname": "/references/utils/SearchUtils/types/utils.SearchUtils.SearchConsumeEvent"
+  },
+  {
     "filePath": "/www/apps/resources/references/utils/ShippingProfileUtils/enums/utils.ShippingProfileUtils.ShippingProfileType/page.json",
     "pathname": "/references/utils/ShippingProfileUtils/enums/utils.ShippingProfileUtils.ShippingProfileType"
   },
@@ -31134,6 +31170,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/interfaces/utils.WorkflowResourceData/page.json",
     "pathname": "/references/utils/interfaces/utils.WorkflowResourceData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.GraphRow/page.json",
+    "pathname": "/references/utils/types/utils.GraphRow"
   },
   {
     "filePath": "/www/apps/resources/references/utils/types/utils.NormalizedRow/page.json",
