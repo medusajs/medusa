@@ -662,6 +662,10 @@ export default class InventoryModuleService
     const availabilityData = input.map((data) => {
       const reservation = reservationMap.get(data.id)!
 
+      const changesLocation =
+        isDefined(data.location_id) &&
+        data.location_id !== reservation.location_id
+
       let adjustment = data.quantity
         ? MathBN.sub(data.quantity, reservation.quantity)
         : 0
@@ -670,10 +674,21 @@ export default class InventoryModuleService
         adjustment = 0
       }
 
+      // A location move re-homes the reservation's FULL quantity onto the
+      // destination (the adjustments map above moves exactly that), but the
+      // delta is 0 when the quantity is unchanged — so the destination was
+      // validated against available_quantity >= 0 and a move to a location
+      // with less stock than the reservation over-reserved it, going
+      // negative. Validate the full incoming quantity against the
+      // destination: the delta only stands in when the reservation stays put.
+      const quantityToValidate = changesLocation
+        ? data.quantity || reservation.quantity
+        : adjustment
+
       return {
         inventory_item_id: reservation.inventory_item_id,
         location_id: data.location_id ?? reservation.location_id,
-        quantity: adjustment,
+        quantity: quantityToValidate,
         allow_backorder:
           data.allow_backorder || reservation.allow_backorder || false,
       }
