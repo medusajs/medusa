@@ -1,5 +1,67 @@
 # Change Log
 
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies [[`f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c`](https://github.com/medusajs/medusa/commit/f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c), [`7ff721850c22a886af25f251685f6bca59434664`](https://github.com/medusajs/medusa/commit/7ff721850c22a886af25f251685f6bca59434664), [`989e83d74d19bdbe4cde290c23aea5a0693ad9e8`](https://github.com/medusajs/medusa/commit/989e83d74d19bdbe4cde290c23aea5a0693ad9e8), [`8c224dc79070dd173a783aea0c6c76785f7ab71c`](https://github.com/medusajs/medusa/commit/8c224dc79070dd173a783aea0c6c76785f7ab71c)]:
+  - @medusajs/core-flows@2.21.1
+  - @medusajs/order@2.21.1
+  - @medusajs/search@2.21.1
+  - @medusajs/payment-stripe@2.21.1
+  - @medusajs/analytics@2.21.1
+  - @medusajs/api-key@2.21.1
+  - @medusajs/auth@2.21.1
+  - @medusajs/caching@2.21.1
+  - @medusajs/cart@2.21.1
+  - @medusajs/currency@2.21.1
+  - @medusajs/customer@2.21.1
+  - @medusajs/file@2.21.1
+  - @medusajs/fulfillment@2.21.1
+  - @medusajs/index@2.21.1
+  - @medusajs/inventory@2.21.1
+  - @medusajs/link-modules@2.21.1
+  - @medusajs/locking@2.21.1
+  - @medusajs/notification@2.21.1
+  - @medusajs/payment@2.21.1
+  - @medusajs/pricing@2.21.1
+  - @medusajs/product@2.21.1
+  - @medusajs/promotion@2.21.1
+  - @medusajs/search-postgres@2.21.1
+  - @medusajs/rbac@2.21.1
+  - @medusajs/region@2.21.1
+  - @medusajs/sales-channel@2.21.1
+  - @medusajs/settings@2.21.1
+  - @medusajs/stock-location@2.21.1
+  - @medusajs/store@2.21.1
+  - @medusajs/tax@2.21.1
+  - @medusajs/translation@2.21.1
+  - @medusajs/user@2.21.1
+  - @medusajs/workflow-engine-inmemory@2.21.1
+  - @medusajs/workflow-engine-redis@2.21.1
+  - @medusajs/draft-order@2.21.1
+  - @medusajs/admin-bundler@2.21.1
+  - @medusajs/framework@2.21.1
+  - @medusajs/telemetry@2.21.1
+  - @medusajs/cache-inmemory@2.21.1
+  - @medusajs/cache-redis@2.21.1
+  - @medusajs/event-bus-local@2.21.1
+  - @medusajs/event-bus-redis@2.21.1
+  - @medusajs/analytics-local@2.21.1
+  - @medusajs/analytics-posthog@2.21.1
+  - @medusajs/auth-emailpass@2.21.1
+  - @medusajs/auth-github@2.21.1
+  - @medusajs/auth-google@2.21.1
+  - @medusajs/auth-oidc@2.21.1
+  - @medusajs/caching-redis@2.21.1
+  - @medusajs/file-local@2.21.1
+  - @medusajs/file-s3@2.21.1
+  - @medusajs/fulfillment-manual@2.21.1
+  - @medusajs/locking-postgres@2.21.1
+  - @medusajs/locking-redis@2.21.1
+  - @medusajs/notification-local@2.21.1
+  - @medusajs/notification-sendgrid@2.21.1
+
 ## 2.21.0
 
 ### Minor Changes
