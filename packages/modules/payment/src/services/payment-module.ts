@@ -732,17 +732,14 @@ export default class PaymentModuleService
       isCaptured = isAutoCaptured
     }
 
-    const { isFullyCaptured, capture } = await this.capturePayment_(
-      data_,
-      payment,
-      sharedContext
-    )
+    const { isFullyCaptured, capture, idempotencyKey } =
+      await this.capturePayment_(data_, payment, sharedContext)
 
     try {
       await this.capturePaymentFromProvider_(
         payment,
         capture,
-        { isFullyCaptured, isCaptured },
+        { isFullyCaptured, isCaptured, idempotencyKey },
         sharedContext
       )
     } catch (error) {
@@ -778,6 +775,7 @@ export default class PaymentModuleService
   ): Promise<{
     isFullyCaptured: boolean
     capture?: InferEntityType<typeof Capture>
+    idempotencyKey?: string
   }> {
     if (payment.canceled_at) {
       throw new MedusaError(
@@ -833,6 +831,20 @@ export default class PaymentModuleService
       return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
+    // The idempotency key sent to the provider must stay the same across a
+    // retry of this same logical capture, so the provider can dedupe it
+    // instead of moving money twice. A freshly created `Capture` row's id
+    // can't be used for that: it's minted before the provider call and
+    // deleted below if that call fails, so a retry would mint a new id and
+    // therefore a new key. Deriving the key from this capture's position
+    // among the payment's already-*confirmed* captures instead keeps it
+    // stable: a retry of an attempt that never got confirmed (the row was
+    // deleted) lands on the same position again, while a genuinely new
+    // capture only gets attempted once the previous one is confirmed and
+    // has advanced the count.
+    const captureSequence = lockedPayment.captures.length + 1
+    const idempotencyKey = `${payment.id}-capture-${captureSequence}`
+
     const authorizedAmount = new BigNumber(payment.raw_amount as BigNumberInput)
     const newCaptureAmount = new BigNumber(data.amount)
     const remainingToCapture = MathBN.sub(authorizedAmount, capturedAmount)
@@ -867,7 +879,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return { isFullyCaptured, capture }
+    return { isFullyCaptured, capture, idempotencyKey }
   }
 
   @InjectManager()
@@ -877,6 +889,7 @@ export default class PaymentModuleService
     options: {
       isFullyCaptured?: boolean
       isCaptured?: boolean
+      idempotencyKey?: string
     } = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -886,7 +899,7 @@ export default class PaymentModuleService
         {
           data: payment.data!,
           context: {
-            idempotency_key: capture?.id,
+            idempotency_key: options.idempotencyKey ?? capture?.id,
           },
         }
       )
