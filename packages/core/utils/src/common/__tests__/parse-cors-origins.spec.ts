@@ -13,4 +13,16 @@ describe("parseCorsOrigins", function () {
     expect(typeof origin5).toBe("string")
     expect(typeof origin6).toBe("string")
   })
+
+  it("should consistently match the same origin against a /g regexp on repeated requests", () => {
+    const [origin] = parseCorsOrigins(
+      "/https:\\/\\/.*\\.example\\.com/g"
+    ) as RegExp[]
+
+    const target = "https://shop.example.com"
+
+    expect(origin.test(target)).toBe(true)
+    expect(origin.test(target)).toBe(true)
+    expect(origin.test(target)).toBe(true)
+  })
 })
