@@ -106,6 +106,16 @@ const server = setupServer(
       test: "test",
     })
   }),
+  http.get(`${baseUrl}/throw-with-code`, ({ request, params, cookies }) => {
+    return HttpResponse.json(
+      {
+        code: "insufficient_inventory",
+        type: "not_allowed",
+        message: "Some variant does not have the required inventory",
+      },
+      { status: 400, statusText: "Bad Request" }
+    )
+  }),
   http.all("*", ({ request, params, cookies }) => {
     return new HttpResponse(null, {
       status: 404,
@@ -239,6 +249,18 @@ describe("Client", () => {
       const err: FetchError = await client.fetch<any>("throw").catch((e) => e)
       expect(err.status).toEqual(500)
       expect(err.message).toEqual("Internal Server Error")
+    })
+
+    it("should preserve the code and type returned in the error body", async () => {
+      const err: FetchError = await client
+        .fetch<any>("throw-with-code")
+        .catch((e) => e)
+      expect(err.status).toEqual(400)
+      expect(err.message).toEqual(
+        "Some variant does not have the required inventory"
+      )
+      expect(err.code).toEqual("insufficient_inventory")
+      expect(err.type).toEqual("not_allowed")
     })
   })
 
