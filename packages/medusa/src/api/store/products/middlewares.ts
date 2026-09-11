@@ -4,6 +4,7 @@ import {
   applyParamsAsFilters,
   authenticate,
   clearFiltersByKey,
+  maybeApplyLinkFilter,
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
@@ -11,13 +12,14 @@ import {
 } from "@medusajs/framework/http"
 import {
   ContainerRegistrationKeys,
+  FeatureFlag,
   isPresent,
   ProductStatus,
 } from "@medusajs/framework/utils"
+import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import {
   filterByValidSalesChannels,
   normalizeDataForContext,
-  remapProductCrossModuleFilters,
   remapProductSearchFilters,
   setPricingContext,
   setTaxContext,
@@ -27,12 +29,16 @@ import * as SearchQueryConfig from "./search/query-config"
 import { StoreGetProductsSearchParams } from "./search/validators"
 import { StoreGetProductsParams } from "./validators"
 
-async function applySalesChannelCrossModuleFilter(
+async function applyMaybeLinkFilterIfNecessary(
   req: MedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction
 ) {
-  if (!isPresent(req.filterableFields.sales_channel_id)) {
+  const canUseIndex = !(
+    isPresent(req.filterableFields.tags) ||
+    isPresent(req.filterableFields.categories)
+  )
+  if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) && canUseIndex) {
     return next()
   }
 
@@ -52,8 +58,11 @@ async function applySalesChannelCrossModuleFilter(
     return next()
   }
 
-  remapProductCrossModuleFilters(req.filterableFields)
-  return next()
+  return maybeApplyLinkFilter({
+    entryPoint: "product_sales_channel",
+    resourceId: "product_id",
+    filterableField: "sales_channel_id",
+  })(req, res, next)
 }
 
 export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
@@ -69,7 +78,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductQueryConfig
       ),
       filterByValidSalesChannels(),
-      applySalesChannelCrossModuleFilter,
+      applyMaybeLinkFilterIfNecessary,
       applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
         // TODO: the type here seems off and the implementation does not take into account $and and $or possible filters. Might be worth re working (original type used here was StoreGetProductsParamsType)
@@ -127,7 +136,11 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       applyParamsAsFilters({ id: "id" }),
       filterByValidSalesChannels(),
-      applySalesChannelCrossModuleFilter,
+      maybeApplyLinkFilter({
+        entryPoint: "product_sales_channel",
+        resourceId: "product_id",
+        filterableField: "sales_channel_id",
+      }),
       applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
       }),

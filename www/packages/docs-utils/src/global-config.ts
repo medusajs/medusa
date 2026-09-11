@@ -4,8 +4,8 @@ import { DocsConfig } from "types"
 
 export const globalConfig: Pick<DocsConfig, "version"> = {
   "version": {
-    "number": "2.20.1",
-    "releaseUrl": "https://github.com/medusajs/medusa/releases/tag/v2.20.1",
-    "releaseDate": "2026-09-03T09:41:28Z"
+    "number": "2.21",
+    "releaseUrl": "https://github.com/medusajs/medusa/releases/tag/v2.21.0",
+    "releaseDate": "2026-09-11T10:13:57Z"
   }
 }

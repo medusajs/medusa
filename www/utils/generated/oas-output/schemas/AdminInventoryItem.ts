@@ -85,7 +85,7 @@
  *     type: string
  *     title: unit_of_measure
  *     description: The inventory's unit of measure.
- *     example: "kg"
+ *     example: kg
  * 
 */
 

@@ -1,5 +1,83 @@
 # Change Log
 
+## 2.21.0
+
+### Minor Changes
+
+- [#16702](https://github.com/medusajs/medusa/pull/16702) [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework, medusa, loyalty-plugin): set a strict allowed list for store API routes
+
+### Patch Changes
+
+- [#16587](https://github.com/medusajs/medusa/pull/16587) [`c511dbb072270b01cddc52a0b77040701ffe34ff`](https://github.com/medusajs/medusa/commit/c511dbb072270b01cddc52a0b77040701ffe34ff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(dashboard,medusa): name admin search entities after their graph entity
+
+- [#16762](https://github.com/medusajs/medusa/pull/16762) [`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34) Thanks [@sradevski](https://github.com/sradevski)! - Add search helpers for better DX
+
+- [#16719](https://github.com/medusajs/medusa/pull/16719) [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard, types, medusa): add support for metadata management for promotions
+
+- [#16787](https://github.com/medusajs/medusa/pull/16787) [`c07aa54827922badb6348ed942f73d8d7ebc1d62`](https://github.com/medusajs/medusa/commit/c07aa54827922badb6348ed942f73d8d7ebc1d62) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa): revert using cross-modules back to index module
+
+- [#16674](https://github.com/medusajs/medusa/pull/16674) [`ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17`](https://github.com/medusajs/medusa/commit/ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(product, utils, medusa): return published products only for tags, collections, categories, and type store routes
+
+- [#16716](https://github.com/medusajs/medusa/pull/16716) [`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(framework,medusa): allow overriding a route's disallowed query fields from a global middleware
+
+- Updated dependencies [[`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34), [`ce19ae663c3edaa6b58bd596a406bcde24d5956f`](https://github.com/medusajs/medusa/commit/ce19ae663c3edaa6b58bd596a406bcde24d5956f), [`2097e7b43f3d4525b1a909dbe4cb6fb634765893`](https://github.com/medusajs/medusa/commit/2097e7b43f3d4525b1a909dbe4cb6fb634765893), [`0f08725d4c0dc0b65d48e3240e72237027cbd34a`](https://github.com/medusajs/medusa/commit/0f08725d4c0dc0b65d48e3240e72237027cbd34a), [`a85c552b236772253d075279ab4dacbf9cc9041d`](https://github.com/medusajs/medusa/commit/a85c552b236772253d075279ab4dacbf9cc9041d), [`14e630faa1c31d37626068004e3f00acad1fd51d`](https://github.com/medusajs/medusa/commit/14e630faa1c31d37626068004e3f00acad1fd51d), [`8f2f438b29d0037f826cf0e6328f2f451d55ccd9`](https://github.com/medusajs/medusa/commit/8f2f438b29d0037f826cf0e6328f2f451d55ccd9), [`ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17`](https://github.com/medusajs/medusa/commit/ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17), [`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8), [`9508d6ebaa7bd6222b37a25c0f62eb6264411600`](https://github.com/medusajs/medusa/commit/9508d6ebaa7bd6222b37a25c0f62eb6264411600), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3)]:
+  - @medusajs/search@2.21.0
+  - @medusajs/promotion@2.21.0
+  - @medusajs/core-flows@2.21.0
+  - @medusajs/event-bus-redis@2.21.0
+  - @medusajs/fulfillment@2.21.0
+  - @medusajs/notification@2.21.0
+  - @medusajs/product@2.21.0
+  - @medusajs/framework@2.21.0
+  - @medusajs/payment@2.21.0
+  - @medusajs/admin-bundler@2.21.0
+  - @medusajs/draft-order@2.21.0
+  - @medusajs/analytics@2.21.0
+  - @medusajs/api-key@2.21.0
+  - @medusajs/auth@2.21.0
+  - @medusajs/cache-inmemory@2.21.0
+  - @medusajs/cache-redis@2.21.0
+  - @medusajs/caching@2.21.0
+  - @medusajs/cart@2.21.0
+  - @medusajs/currency@2.21.0
+  - @medusajs/customer@2.21.0
+  - @medusajs/event-bus-local@2.21.0
+  - @medusajs/file@2.21.0
+  - @medusajs/index@2.21.0
+  - @medusajs/inventory@2.21.0
+  - @medusajs/link-modules@2.21.0
+  - @medusajs/locking@2.21.0
+  - @medusajs/order@2.21.0
+  - @medusajs/pricing@2.21.0
+  - @medusajs/analytics-local@2.21.0
+  - @medusajs/analytics-posthog@2.21.0
+  - @medusajs/auth-emailpass@2.21.0
+  - @medusajs/auth-github@2.21.0
+  - @medusajs/auth-google@2.21.0
+  - @medusajs/auth-oidc@2.21.0
+  - @medusajs/caching-redis@2.21.0
+  - @medusajs/file-local@2.21.0
+  - @medusajs/file-s3@2.21.0
+  - @medusajs/fulfillment-manual@2.21.0
+  - @medusajs/locking-postgres@2.21.0
+  - @medusajs/locking-redis@2.21.0
+  - @medusajs/notification-local@2.21.0
+  - @medusajs/notification-sendgrid@2.21.0
+  - @medusajs/payment-stripe@2.21.0
+  - @medusajs/search-postgres@2.21.0
+  - @medusajs/rbac@2.21.0
+  - @medusajs/region@2.21.0
+  - @medusajs/sales-channel@2.21.0
+  - @medusajs/settings@2.21.0
+  - @medusajs/stock-location@2.21.0
+  - @medusajs/store@2.21.0
+  - @medusajs/tax@2.21.0
+  - @medusajs/translation@2.21.0
+  - @medusajs/user@2.21.0
+  - @medusajs/workflow-engine-inmemory@2.21.0
+  - @medusajs/workflow-engine-redis@2.21.0
+  - @medusajs/telemetry@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

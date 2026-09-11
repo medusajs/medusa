@@ -5,20 +5,42 @@ generate_toc: true
 import { ChildDocs } from "docs-ui"
 
 export const metadata = {
-  title: `Admin Components & Layouts`,
+  title: `Medusa Admin Components, Hooks, and Utilities`,
 }
 
 # {metadata.title}
 
-In this section of the documentation, you'll learn how to implement common Medusa Admin components and layouts.
+In this section of the documentation, you'll find the components, hooks, layouts, and utilities that the `@medusajs/dashboard` package exports, and how to use them in your [admin extensions](!docs!/learn/fundamentals/admin).
 
-These guides are useful to build components and layouts that follow the same design conventions as the Medusa Admin. The components and layouts are built on top of the [Medusa UI package](!ui!).
+Use these exports to build widgets and UI routes that follow the same design conventions as the Medusa Admin, without re-implementing its components.
+
+<Note>
+
+The `@medusajs/dashboard` package exports these components, hooks, and utilities since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). Before that version, you had to build the components yourself, as shown in the [archived guides](./archive/page.mdx).
+
+</Note>
+
+The package has the following subpaths:
+
+- `@medusajs/dashboard/components`: React components, such as `ActionMenu` and `DataTable`.
+- `@medusajs/dashboard/hooks`: React hooks, such as `useProducts` and `useComboboxData`.
+- `@medusajs/dashboard/lib`: Utilities, such as `getStylizedAmount` and `defineSearchEntity`.
 
 <Note title="Tip">
 
-Refer to the [Medusa UI documentation](!ui!) for a full list of components.
+These exports build on the [Medusa UI package](!ui!). Refer to the [Medusa UI documentation](!ui!) for a full list of the underlying components.
 
 </Note>
+
+---
+
+## Components
+
+These components allow you to use the Medusa Admin's components in your custom UI routes and widgets.
+
+<ChildDocs showItems={["Components"]} onlyTopLevel={false} hideTitle />
+
+---
 
 ## Layouts
 
@@ -28,8 +50,32 @@ These layout components allow you to set the layout of your [UI routes](!docs!/l
 
 ---
 
-## Components
+## Hooks
 
-These components allow you to use common Medusa Admin components in your custom UI routes and widgets.
+These hooks allow you to fetch and mutate Medusa resources, and to build admin UI with the same behavior as the Medusa Admin.
 
-<ChildDocs showItems={["Components"]} onlyTopLevel={false} hideTitle />
+<ChildDocs showItems={["Hooks"]} onlyTopLevel={false} hideTitle />
+
+---
+
+## Utilities
+
+These utilities allow you to format data, validate forms, and register custom table and search behavior.
+
+<ChildDocs showItems={["Utilities"]} onlyTopLevel={false} hideTitle />
+
+---
+
+## Custom Component Guides
+
+These guides show how to build components and pages that the `@medusajs/dashboard` package doesn't export an equivalent for.
+
+<ChildDocs showItems={["Guides"]} onlyTopLevel={false} hideTitle />
+
+---
+
+## Archive
+
+These guides show how to build components that Medusa now exports. They're kept for reference only. Refer to the [archive](./archive/page.mdx) for the exported component that replaces each guide.
+
+<ChildDocs showItems={["Archive"]} onlyTopLevel={false} hideTitle />

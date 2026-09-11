@@ -1,5 +1,14 @@
 # @medusajs/notification
 
+## 2.21.0
+
+### Patch Changes
+
+- [#16721](https://github.com/medusajs/medusa/pull/16721) [`8f2f438b29d0037f826cf0e6328f2f451d55ccd9`](https://github.com/medusajs/medusa/commit/8f2f438b29d0037f826cf0e6328f2f451d55ccd9) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(notification): forward the shared context into getProviderForChannels
+
+- Updated dependencies [[`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3)]:
+  - @medusajs/framework@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

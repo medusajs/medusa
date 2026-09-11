@@ -1,0 +1,653 @@
+---
+sidebar_label: "Data Grid"
+---
+
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `DataGrid - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `DataGrid` component shows an editable spreadsheet-like grid whose values are bound to a [react-hook-form](https://react-hook-form.com/) form. The Medusa Admin uses it to bulk-edit variant prices and inventory quantities.
+
+```tsx
+import {
+  DataGrid,
+  createDataGridHelper,
+} from "@medusajs/dashboard/components"
+```
+
+The grid supports keyboard navigation, range selection, copying and pasting across cells, and undo and redo.
+
+---
+
+## Example
+
+Create the grid's columns with `createDataGridHelper`, then pass your form to the grid's `state` prop:
+
+```tsx title="src/admin/routes/variants/page.tsx"
+import {
+  DataGrid,
+  createDataGridHelper,
+} from "@medusajs/dashboard/components"
+import { useForm } from "react-hook-form"
+
+const columnHelper = createDataGridHelper<
+  Variant,
+  VariantsFormValues
+>()
+
+const VariantsPage = ({ variants }) => {
+  const form = useForm<VariantsFormValues>({
+    defaultValues: { variants },
+  })
+
+  const columns = [
+    columnHelper.column({
+      id: "title",
+      name: "Title",
+      header: "Title",
+      cell: (context) => (
+        <DataGrid.ReadonlyCell context={context}>
+          {context.row.original.title}
+        </DataGrid.ReadonlyCell>
+      ),
+    }),
+    columnHelper.column({
+      id: "sku",
+      name: "SKU",
+      header: "SKU",
+      type: "text",
+      field: (context) =>
+        `variants.${context.row.index}.sku`,
+      cell: (context) => (
+        <DataGrid.TextCell context={context} />
+      ),
+    }),
+  ]
+
+  return (
+    <DataGrid
+      columns={columns}
+      data={variants}
+      state={form}
+    />
+  )
+}
+
+export default VariantsPage
+```
+
+The `field` function returns the path of the form field that the cell edits. If it returns `null`, the cell isn't editable.
+
+---
+
+## Type Arguments
+
+`DataGrid` accepts two type arguments:
+
+- `TData`: the type of a single row in the grid.
+- `TFieldValues`: the shape of the values in the [react-hook-form](https://react-hook-form.com/) form that the grid edits. It defaults to `FieldValues`.
+
+You rarely set them explicitly. TypeScript infers `TData` from the `columns` and `data` props, and `TFieldValues` from the `state` prop:
+
+```tsx
+import { useForm } from "react-hook-form"
+import { HttpTypes } from "@medusajs/framework/types"
+
+type PricesForm = {
+  variants: Record<string, Record<string, number>>
+}
+
+const form = useForm<PricesForm>()
+```
+
+Passing that form as `state` sets `TFieldValues` to `PricesForm`, and typing the columns sets `TData`:
+
+```tsx
+const columnHelper = createDataGridHelper<
+  HttpTypes.AdminProductVariant,
+  PricesForm
+>()
+```
+
+`createDataGridHelper` takes the same two type arguments, so set them there and the grid infers the rest:
+
+```tsx
+<DataGrid
+  columns={columns}
+  data={variants}
+  state={form}
+/>
+```
+
+To set the type arguments explicitly, pass them when you use the component:
+
+```tsx
+<DataGrid<HttpTypes.AdminProductVariant, PricesForm>
+  columns={columns}
+  data={variants}
+  state={form}
+/>
+```
+
+---
+
+## Props
+
+`DataGrid` accepts the `DataGridProps` type, which extends `DataGridRootProps`:
+
+<TypeList
+  types={[
+    {
+      name: "columns",
+      type: "`ColumnDef<TData>[]`",
+      optional: false,
+      description: "The grid's columns. Create them with `createDataGridHelper` or `createDataGridPriceColumns`, which also set the [`TData` and `TFieldValues` type arguments](#type-arguments).",
+    },
+    {
+      name: "data",
+      type: "`TData[]`",
+      optional: true,
+      description: `The records to show in the grid. \`TData\` is the [row type](#type-arguments).`,
+    },
+    {
+      name: "state",
+      type: "`UseFormReturn<TFieldValues>`",
+      optional: false,
+      description: `The [react-hook-form](https://react-hook-form.com/) form that holds the grid's values. \`TFieldValues\` is the [form's value type](#type-arguments).`,
+    },
+    {
+      name: "isLoading",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether the grid shows its loading skeleton instead of the grid.",
+    },
+    {
+      name: "getSubRows",
+      type: "`(row: TData) => TData[] | undefined`",
+      optional: true,
+      description: `Returns the sub-rows of a row, such as a product's variants, where \`TData\` is the [row type](#type-arguments).`,
+    },
+    {
+      name: "onEditingChange",
+      type: "`(isEditing: boolean) => void`",
+      optional: true,
+      description: "A function that runs when the user starts or stops editing a cell. Use it to prevent a modal from closing while the user edits a cell.",
+    },
+    {
+      name: "disableInteractions",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether to disable the grid's keyboard navigation and selection.",
+    },
+    {
+      name: "multiColumnSelection",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether the user can select cells across more than one column.",
+    },
+    {
+      name: "showColumnsDropdown",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether to show the dropdown that toggles the grid's columns.",
+    },
+    {
+      name: "headerContent",
+      type: "`ReactNode`",
+      optional: true,
+      description: "Custom content shown in the grid's header, between the column controls and the error section.",
+    },
+    {
+      name: "totalRowCount",
+      type: "`number`",
+      optional: true,
+      description: "The total number of rows. Pass it to enable lazy loading, where the grid fetches more rows as the user scrolls.",
+    },
+    {
+      name: "onFetchMore",
+      type: "`() => void`",
+      optional: true,
+      description: "A function that runs when the grid needs to fetch more rows in lazy loading mode.",
+    },
+    {
+      name: "isFetchingMore",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether the grid is currently fetching more rows.",
+    },
+    {
+      name: "hasNextPage",
+      type: "`boolean`",
+      optional: true,
+      description: "Whether there are more rows to fetch.",
+    },
+  ]}
+/>
+
+---
+
+## Cell Components
+
+`DataGrid` has the following sub-components to render a column's cells. Each of them accepts a `context` prop, which is the cell context that the column's `cell` function receives:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.TextCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits the cell's value in a single-line text input.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.MultilineCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits the cell's value in a multi-line text input.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.ExpandableTextCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits long text. The user can expand the cell into a modal.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.NumberCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits the cell's value in a number input. It also accepts the `min` and `max` props.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.CurrencyCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits a price. It also accepts a `code` prop, which is the currency's code.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.BooleanCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Edits the cell's value with a checkbox. It also accepts a `disabled` prop.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `DataGrid.ReadonlyCell`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Shows its `children` in a cell that the user can't edit.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## createDataGridHelper
+
+`createDataGridHelper` returns a typed helper whose `column` method defines a grid column. It accepts two type parameters: the type of a row, and the type of the form's values.
+
+```tsx
+const columnHelper = createDataGridHelper<
+  Variant,
+  VariantsFormValues
+>()
+```
+
+For example, the following column shows a variant's title in an editable text cell:
+
+```tsx
+columnHelper.column({
+  id: "title",
+  name: "Title",
+  header: "Title",
+  field: (context) =>
+    `variants.${context.row.index}.title`,
+  type: "text",
+  cell: (context) => (
+    <DataGrid.TextCell context={context} />
+  ),
+})
+```
+
+The `header` and `cell` properties accept either a string or a function. The function receives a context object that you pass to the cell component, which uses it to read and write the cell's value.
+
+The `column` method accepts an object with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The column's ID.",
+    },
+    {
+      name: "header",
+      type: "`string` \\| `(context) => ReactNode`",
+      optional: false,
+      description: "The column's header. Pass a string to show it as plain text, or a function to render custom content.",
+      children: [
+        {
+          name: "context",
+          type: "`object`",
+          optional: false,
+          description: `The header's context, which is TanStack Table's [HeaderContext](https://tanstack.com/table/latest/docs/api/core/header). It is passed to the header's rendering function.`,
+          children: [
+            {
+              name: "column",
+              type: "`Column<TData, unknown>`",
+              optional: false,
+              description: "The column that the header belongs to. `TData` is the [row type](#type-arguments).",
+            },
+            {
+              name: "header",
+              type: "`Header<TData, unknown>`",
+              optional: false,
+              description: "The header's instance, which holds its ID and size.",
+            },
+            {
+              name: "table",
+              type: "`Table<TData>`",
+              optional: false,
+              description: "The grid's table instance.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "cell",
+      type: "`string` \\| `(context) => ReactNode`",
+      optional: false,
+      description: "The cell's content. Pass a function that returns one of the [cell components](#cell-components), and pass the function's `context` to that component so it can read and edit the cell's value.",
+      children: [
+        {
+          name: "context",
+          type: "`object`",
+          optional: false,
+          description: `The cell's context, which is TanStack Table's [CellContext](https://tanstack.com/table/latest/docs/api/core/cell). Pass it as-is to a cell component.`,
+          children: [
+            {
+              name: "row",
+              type: "`Row<TData>`",
+              optional: false,
+              description: "The cell's row. Use `row.original` to access the record, and `row.index` for its position. `TData` is the [row type](#type-arguments).",
+            },
+            {
+              name: "column",
+              type: "`Column<TData, unknown>`",
+              optional: false,
+              description: "The column that the cell belongs to.",
+            },
+            {
+              name: "getValue",
+              type: "`() => unknown`",
+              optional: false,
+              description: "Returns the cell's value.",
+            },
+            {
+              name: "table",
+              type: "`Table<TData>`",
+              optional: false,
+              description: "The grid's table instance.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      description: "The column's name, shown in the column visibility menu.",
+    },
+    {
+      name: "field",
+      type: "`(context: FieldContext<TData>) => FieldPath<TFieldValues>` \\| `null`",
+      optional: true,
+      description: "Returns the path of the form field that the cell edits, where `TData` and `TFieldValues` are the [type arguments](#type-arguments). Return `null`, or omit the property, to make the cell read-only. Pass `type` with it.",
+      children: [
+        {
+          name: "context",
+          type: "`object`",
+          optional: false,
+          description: "The cell's context.",
+          children: [
+            {
+              name: "row",
+              type: "`Row<TData>`",
+              optional: false,
+              description: `The cell's row. Refer to [TanStack Table](https://tanstack.com/table/latest/docs/api/core/row) for the type's details.`,
+            },
+            {
+              name: "column",
+              type: "`ColumnDef<TData>`",
+              optional: false,
+              description: `The cell's column. Refer to [TanStack Table](https://tanstack.com/table/latest/docs/api/core/column-def) for the type's details.`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "type",
+      type: "`\"text\"` \\| `\"multiline-text\"` \\| `\"number\"` \\| `\"boolean\"` \\| `\"togglable-number\"`",
+      optional: true,
+      description: "The type of value the cell holds. It's required when you pass `field`, and not allowed otherwise.",
+    },
+    {
+      name: "disableHiding",
+      type: "`boolean`",
+      optional: true,
+      defaultValue: "false",
+      description: "Whether the user can't hide the column.",
+    },
+    {
+      name: "size",
+      type: "`number`",
+      optional: true,
+      description: "The column's size in pixels.",
+    },
+    {
+      name: "minSize",
+      type: "`number`",
+      optional: true,
+      description: "The column's minimum size in pixels.",
+    },
+    {
+      name: "maxSize",
+      type: "`number`",
+      optional: true,
+      description: "The column's maximum size in pixels.",
+    },
+  ]}
+/>
+---
+
+## createDataGridPriceColumns
+
+`createDataGridPriceColumns` returns a price column for each of the passed currencies and regions. Use it to let the user edit prices for many currencies and regions at once.
+
+```tsx
+import {
+  createDataGridPriceColumns,
+} from "@medusajs/dashboard/components"
+import { useTranslation } from "react-i18next"
+
+const { t } = useTranslation()
+
+const priceColumns = createDataGridPriceColumns<
+  Variant,
+  VariantsFormValues
+>({
+  currencies: ["usd", "eur"],
+  regions,
+  pricePreferences,
+  getFieldName: (context, value) =>
+    `variants.${context.row.index}.prices.${value}`,
+  t,
+})
+```
+
+It accepts an object with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "getFieldName",
+      type: "`(context: FieldContext<TData>, value: string) => FieldPath<TFieldValues>` \\| `null`",
+      optional: false,
+      description: "Returns the path of the form field that a price cell edits, where `TData` and `TFieldValues` are the [type arguments](#type-arguments). `value` is the currency's code or the region's ID.",
+      children: [
+        {
+          name: "context",
+          type: "`object`",
+          optional: false,
+          description: "The cell's context.",
+          children: [
+            {
+              name: "row",
+              type: "`Row<TData>`",
+              optional: false,
+              description: `The cell's row. Refer to [TanStack Table](https://tanstack.com/table/latest/docs/api/core/row) for the type's details.`,
+            },
+            {
+              name: "column",
+              type: "`ColumnDef<TData>`",
+              optional: false,
+              description: `The cell's column. Refer to [TanStack Table](https://tanstack.com/table/latest/docs/api/core/column-def) for the type's details.`,
+            },
+          ],
+        },
+        {
+          name: "value",
+          type: "`string`",
+          optional: false,
+          description: "The currency's code or the region's ID that the column shows prices for.",
+        },
+      ],
+    },
+    {
+      name: "t",
+      type: "`TFunction`",
+      optional: false,
+      description: `The translation function returned by \`useTranslation\` of [react-i18next](https://react.i18next.com/), used for the columns' names.`,
+    },
+    {
+      name: "currencies",
+      type: "`string[]`",
+      optional: true,
+      description: "The currency codes to create a column for. Each column's ID is `currency_prices.{code}`.",
+    },
+    {
+      name: "regions",
+      type: "`AdminRegion[]`",
+      optional: true,
+      description: "The regions to create a column for. Each column's ID is `region_prices.{id}`.",
+    },
+    {
+      name: "pricePreferences",
+      type: "`AdminPricePreference[]`",
+      optional: true,
+      description: "The price preferences, used to show whether a column's prices include taxes.",
+    },
+    {
+      name: "isReadyOnly",
+      type: "`(context: FieldContext<TData>) => boolean`",
+      optional: true,
+      description: "Returns whether a cell is read-only, where `TData` is the [row type](#type-arguments). The function renders a read-only cell when it returns `true`.",
+      children: [
+        {
+          name: "context",
+          type: "`object`",
+          optional: false,
+          description: "The cell's context, with the same `row` and `column` properties that `getFieldName` receives.",
+        },
+      ],
+    },
+    {
+      name: "renderPriceCell",
+      type: "`(code: string, context: CellContext<TData, any>) => ReactNode`",
+      optional: true,
+      description: "Renders a custom price cell, where `TData` is the [row type](#type-arguments). If you don't pass it, the function renders a `DataGrid.CurrencyCell`.",
+      children: [
+        {
+          name: "code",
+          type: "`string`",
+          optional: false,
+          description: "The currency's code that the cell shows a price for.",
+        },
+        {
+          name: "context",
+          type: "`CellContext<TData, any>`",
+          optional: false,
+          description: `The cell's context. Refer to [TanStack Table](https://tanstack.com/table/latest/docs/api/core/column-def) for the type's details.`,
+        },
+      ],
+    },
+  ]}
+/>
+---
+
+## Related Components
+
+- [Data Table](../../guides/data-table/page.mdx): a read-only table for a list of records.

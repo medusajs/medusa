@@ -2027,6 +2027,8 @@ You can test this out after customizing the storefront in the next section.
 
 In this step, you'll customize the Next.js Starter Storefront to show when products are pre-orderable, use the custom complete pre-order cart API route, and show pre-order information in the order confirmation page.
 
+You'll also allow the storefront to retrieve pre-order variants from the Store API routes it uses.
+
 <Note title="Reminder" forceMultiline>
 
 The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
@@ -2037,7 +2039,61 @@ cd apps/storefront
 
 </Note>
 
-### a. Add Pre-order Types
+### a. Allow Retrieving Pre-order Variants
+
+Every Store API route defines the fields that clients can request in the `fields` query parameter. Medusa strips any other field from the response without throwing an error. So, before the storefront can retrieve pre-order variants, you must add the fields of the pre-order variant link to the allowed fields of the routes that the storefront uses.
+
+You do that with middlewares that push the fields to the request's `allowed` array.
+
+In `src/api/middlewares.ts`, add the following route objects to the array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { allowFields } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products",
+      middlewares: [allowFields("variants.preorder_variant")],
+    },
+    {
+      matcher: "/store/carts",
+      middlewares: [
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
+      ],
+    },
+    {
+      matcher: "/store/orders",
+      middlewares: [
+        allowFields(
+          "items.variant.preorder_variant"
+        ),
+      ],
+    },
+  ],
+})
+```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
+
+The storefront can now request the pre-order variant when it retrieves products, carts, and orders. The other fields that the storefront requests, such as `+items.total` and `*region`, are already allowed by default.
+
+<Note title="Important">
+
+The middlewares must be global, so don't set a `method` property on the route objects. Medusa runs a method-scoped middleware after it validates the `fields` query parameter, which is too late to change the allowed fields.
+
+</Note>
+
+Learn more about this behavior in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
+### b. Add Pre-order Types
 
 You'll start by defining types related to pre-orders that you'll use in the storefront.
 
@@ -2074,7 +2130,7 @@ export type StoreCartLineItemWithPreorder = HttpTypes.StoreCartLineItem & {
 
 You'll use these type definitions in other customizations.
 
-### b. Add isPreorder Utility
+### c. Add isPreorder Utility
 
 In product, cart, and order related pages, you'll need to check if a product variant is a pre-order variant. So, you'll create a utility function that you can reuse in those pages.
 
@@ -2095,7 +2151,7 @@ export function isPreorder(
 
 The function returns `true` if the pre-order variant has a `status` of `enabled` and an `available_date` in the future.
 
-### c. Show Pre-order Information in Product Page
+### d. Show Pre-order Information in Product Page
 
 In this section, you'll customize the product page to show pre-order information when a customer selects a pre-order variant.
 
@@ -2236,7 +2292,7 @@ If you consumed the `validate` hook of the `addToCartWorkflow` as explained in t
 
 </Note>
 
-### d. Show Pre-order Information in Cart Page
+### e. Show Pre-order Information in Cart Page
 
 Next, you'll customize the component showing items in the cart and checkout pages to show pre-order information.
 
@@ -2347,7 +2403,7 @@ Then, in the storefront, click on the "Cart" link at the top right of the page. 
 
 You can also see this message on the checkout page.
 
-### e. Use Custom Complete Pre-order Cart API Route
+### f. Use Custom Complete Pre-order Cart API Route
 
 Next, you'll use the custom API route you created to complete carts. This will allow you to create `Preorder` records for pre-order items in the cart when the customer places an order.
 
@@ -2388,7 +2444,7 @@ Then, in the storefront, proceed to checkout with a pre-order item in the cart.
 
 When you place the order, the custom API route will be executed and the order will be placed.
 
-### f. Show Pre-order Information in Order Confirmation Page
+### g. Show Pre-order Information in Order Confirmation Page
 
 Finally, you'll show the pre-order information in the order confirmation and detail pages.
 

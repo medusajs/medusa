@@ -1,0 +1,140 @@
+---
+sidebar_label: "Listicle"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Listicle - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `Listicle` component shows a single card-styled list item with a label, a description, and an optional trailing element such as an action menu. The Medusa Admin uses it to list a customer's addresses in the customer details page.
+
+```tsx
+import { Listicle } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Show a list of addresses in a widget, each with a delete action:
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import {
+  ActionMenu,
+  Listicle,
+} from "@medusajs/dashboard/components"
+import { Trash } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
+
+const AddressesWidget = () => {
+  const { t } = useTranslation()
+  const addresses = [
+    { id: "addr_1", name: "Home", street: "1 Main St" },
+  ]
+
+  return (
+    <Container className="p-0">
+      <Heading level="h2" className="px-6 py-4">
+        Addresses
+      </Heading>
+      {addresses.map((address) => (
+        <Listicle
+          key={address.id}
+          labelKey={address.name}
+          descriptionKey={address.street}
+        >
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <Trash />,
+                    label: t("actions.delete"),
+                    onClick: () => {},
+                  },
+                ],
+              },
+            ]}
+          />
+        </Listicle>
+      ))}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "customer.details.after",
+})
+
+export default AddressesWidget
+```
+
+---
+
+## Translations
+
+The `labelKey` and `descriptionKey` props are named after the translation keys that the Medusa Admin passes to them, but the component renders their values as they are. So, translate the values before passing them to the component using the `t` function of the `useTranslation` hook from `react-i18next`:
+
+```tsx
+import { useTranslation } from "react-i18next"
+
+const { t } = useTranslation()
+
+return (
+  <Listicle
+    labelKey={t("stockLocations.sidebar.label")}
+    descriptionKey={t(
+      "stockLocations.sidebar.description"
+    )}
+  />
+)
+```
+
+Learn more about translations and how to add your own keys in the [Admin Translations](!docs!/learn/fundamentals/admin/translations) documentation.
+
+---
+
+## Props
+
+<TypeList
+  types={[
+    {
+      name: "labelKey",
+      type: "`string`",
+      optional: false,
+      description: `The item's label, shown as the card's title.`,
+    },
+    {
+      name: "descriptionKey",
+      type: "`string`",
+      optional: false,
+      description: `The item's description, shown under the label.`,
+    },
+    {
+      name: "children",
+      type: "`React.ReactNode`",
+      optional: true,
+      description: `An element shown at the end of the item, such as an [ActionMenu](../action-menu/page.mdx).`,
+    },
+  ]}
+/>
+
+The `ListicleProps` type is also exported, so you can use it to type your own wrapper components:
+
+```tsx
+import type {
+  ListicleProps,
+} from "@medusajs/dashboard/components"
+```
