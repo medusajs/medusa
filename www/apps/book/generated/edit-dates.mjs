@@ -159,5 +159,5 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-10T15:01:34.694Z",
-  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-03T13:53:55.043Z"
+  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z"
 }
