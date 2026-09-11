@@ -13,12 +13,6 @@ import {
  * its grace window stops the process.
  */
 export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
-  // TODO: this would only be true if upon changes to the key we trigger a new
-  // build? Otherwise it would wait until injection happens on next customer
-  // triggered one
-
-  // Hosted instances are entitled by the platform directly: it injects,
-  // reconciles, and clears their keys on plan changes.
   if (process.env.EXECUTION_CONTEXT === MEDUSA_CLOUD_EXECUTION_CONTEXT) {
     return
   }
@@ -44,7 +38,7 @@ export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
 
     if (response.status === "invalid") {
       logger.error(
-        "The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Set a license key obtained from the Medusa Cloud dashboard."
+        "The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Contact support@medusajs.com for more information."
       )
       process.exit(1)
     }
@@ -58,13 +52,13 @@ export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
       logger.warn(
         `The configured license key no longer entitles this instance: the license is ${
           response.status
-        }${expiredAt}. Licensed features stop loading at boot after ${graceUntil.toISOString()}. Renew the license in the Medusa Cloud dashboard.`
+        }${expiredAt}. Licensed features stop loading at boot after ${graceUntil.toISOString()}. To renew the license, contact support@medusajs.com.`
       )
       return
     }
 
     logger.error(
-      `The configured license key no longer entitles this instance: the license is ${response.status}${expiredAt} and its grace window has passed. Renew the license in the Medusa Cloud dashboard.`
+      `The configured license key no longer entitles this instance: the license is ${response.status}${expiredAt} and its grace window has passed. To renew the license, contact support@medusajs.com.`
     )
     process.exit(1)
   } catch (error) {
