@@ -20,6 +20,7 @@ import {
   SearchSyncStatus,
 } from "./index"
 import { versionPhysicalName } from "./migrations"
+import { retryOnRateLimit } from "./rate-limit"
 
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
 type SyncContext = Pick<SearchIndexContext, "syncService">
@@ -400,12 +401,20 @@ async function reindexOne(
     // entirely when resuming an interrupted run, since the target already
     // holds that run's progress.
     if (!useSwap && !sync.last_key && !scoped) {
-      const clearTask = await provider.clearIndex({
-        index: target.physical_name,
-      })
+      await retryOnRateLimit(
+        async () => {
+          const clearTask = await provider.clearIndex({
+            index: target.physical_name,
+          })
 
-      assertTaskAccepted(clearTask, definition.name)
-      await settle(context, definition, clearTask)
+          assertTaskAccepted(clearTask, definition.name)
+          await settle(context, definition, clearTask)
+        },
+        {
+          label: `clearing "${definition.name}"`,
+          logger: context.logger,
+        }
+      )
     }
 
     const { documents_synced, written } = await streamSeed(context, {
@@ -608,23 +617,27 @@ async function streamSeed(
       return
     }
 
-    // Before the write rather than after it: a run that has lost its lock
-    // stops adding to an index another instance may already be seeding.
-    assertLockHeld()
-
     const batch = buffer
     buffer = []
 
-    const task = await provider.upsertDocuments({
-      index: target_index,
-      definition: index,
-      documents: batch,
-    })
+    await retryOnRateLimit(
+      async () => {
+        assertLockHeld()
 
-    // Per batch rather than once at the end: it bounds how much can be in
-    // flight, and a swap that follows depends on all of it having landed.
-    assertTaskAccepted(task, index.name)
-    await settle(context, index, task)
+        const task = await provider.upsertDocuments({
+          index: target_index,
+          definition: index,
+          documents: batch,
+        })
+
+        assertTaskAccepted(task, index.name)
+        await settle(context, index, task)
+      },
+      {
+        label: `writing ${batch.length} document(s) to "${index.name}"`,
+        logger: context.logger,
+      }
+    )
 
     written += batch.length
     lastKey = batch[batch.length - 1][index.primary_key] as string
@@ -643,16 +656,25 @@ async function streamSeed(
 
   const applyDelete = async (deleteFilters: SearchTypes.SearchFilters) => {
     await flushUpserts()
-    assertLockHeld()
 
     try {
-      const task = await provider.deleteDocuments({
-        index: target_index,
-        filters: deleteFilters,
-      })
+      await retryOnRateLimit(
+        async () => {
+          assertLockHeld()
 
-      assertTaskAccepted(task, index.name)
-      await settle(context, index, task)
+          const task = await provider.deleteDocuments({
+            index: target_index,
+            filters: deleteFilters,
+          })
+
+          assertTaskAccepted(task, index.name)
+          await settle(context, index, task)
+        },
+        {
+          label: `deleting documents from "${index.name}"`,
+          logger: context.logger,
+        }
+      )
     } catch (error) {
       if (error instanceof SearchSeedLockLost) {
         throw error
