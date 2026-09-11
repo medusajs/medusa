@@ -296,7 +296,11 @@ export class AbstractFulfillmentProviderService
    * since a fulfillment is created, such as purchase a label.
    *
    * @param data - The `data` property of the shipping method this fulfillment is created for.
-   * @param items - The items in the fulfillment.
+   * @param items - The items in the fulfillment. These are `fulfillment_item`
+   * records: they carry `line_item_id`, `quantity`, `title`, `sku`, and `barcode`,
+   * and have no variant relation. To read variant data (including `metadata`),
+   * match `item.line_item_id` against `order.items[].id` and read the variant
+   * from the `order` argument.
    * @param order - The order this fulfillment is created for.
    * @param fulfillment - The fulfillment's details.
    * @param additionalData - Custom key-value pairs forwarded from the workflow that
