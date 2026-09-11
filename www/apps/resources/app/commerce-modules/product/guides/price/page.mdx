@@ -46,7 +46,36 @@ const { data: products } = await query.graph({
 })
 ```
 
-Each variant in the retrieved products has a `prices` array property with all the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](/references/pricing/models/Price).
+Each variant in the retrieved products has a `prices` array property with the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](/references/pricing/models/Price).
+
+<Note title="Warning" type="warning">
+
+`variants.prices.*` only returns prices that are not part of a price list. Prices belonging to a price list have a non-null `price_list_id` and are excluded from this result.
+
+To retrieve a variant's price-list prices, query the `price` entity directly using the variant's linked price set ID and the price list's ID:
+
+```ts
+// First retrieve the variant's price set ID
+const { data: variants } = await query.graph({
+  entity: "product_variant",
+  fields: ["id", "price_set.*"],
+  filters: { id: "variant_123" },
+})
+
+const priceSetId = variants[0].price_set.id
+
+// Then fetch prices for a specific price list
+const { data: priceListPrices } = await query.graph({
+  entity: "price",
+  fields: ["*"],
+  filters: {
+    price_set_id: priceSetId,
+    price_list_id: "pl_123",
+  },
+})
+```
+
+</Note>
 
 ---
 
