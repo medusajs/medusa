@@ -1457,6 +1457,49 @@
       "pricing": {
         "action": "Preise bearbeiten"
       },
+      "conditionalPrices": {
+        "header": "Bedingte Preise für {{name}}",
+        "description": "Verwalten Sie die bedingten Preise für diese Versandoption basierend auf dem Warenkorb-Artikelgesamtwert und dem Gewichtsgesamtwert.",
+        "attributes": {
+          "cartItemTotal": "Warenkorb-Artikelgesamtwert",
+          "cartWeightTotal": "Cart weight total"
+        },
+        "summaries": {
+          "range": "Wenn <0>{{attribute}}</0> zwischen <1>{{gte}}</1> und <2>{{lte}}</2> liegt",
+          "greaterThan": "Wenn <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Wenn <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+        },
+        "actions": {
+          "addPrice": "Preis hinzufügen",
+          "manageConditionalPrices": "Bedingte Preise verwalten"
+        },
+        "rules": {
+          "amount": "Versandoption Preis",
+          "gte": "Mindest-Warenkorb-Artikelgesamtwert",
+          "lte": "Maximaler Warenkorb-Artikelgesamtwert",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
+        },
+        "customRules": {
+          "label": "Benutzerdefinierte Regeln",
+          "tooltip": "Dieser bedingte Preis hat Regeln, die im Dashboard nicht verwaltet werden können.",
+          "eq": "Warenkorb-Artikelgesamtwert muss gleich sein",
+          "gt": "Warenkorb-Artikelgesamtwert muss größer sein als",
+          "lt": "Warenkorb-Artikelgesamtwert muss kleiner sein als"
+        },
+        "errors": {
+          "amountRequired": "Versandoption Preis ist erforderlich",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
+          "minGreaterThanMax": "Mindest-Warenkorb-Artikelgesamtwert muss kleiner oder gleich dem maximalen Warenkorb-Artikelgesamtwert sein",
+          "duplicateAmount": "Versandoption Preis muss für jede Bedingung einzigartig sein",
+          "overlappingConditions": "Bedingungen müssen über alle Preisregeln einzigartig sein",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        }
+      },
       "fields": {
         "count": {
           "shipping_one": "{{count}} Versandoption",

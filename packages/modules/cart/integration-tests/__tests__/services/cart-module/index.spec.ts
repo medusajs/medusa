@@ -3034,8 +3034,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
             ],
             compare_at_unit_price: null,
             unit_price: 100,
+            unit_weight: null,
             subtotal: 100,
             total: 0,
+            weight_total: 0,
             original_total: 100,
             original_subtotal: 100,
             discount_total: 100,
@@ -3048,6 +3050,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
               precision: 20,
             },
             raw_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_weight_total: {
               value: "0",
               precision: 20,
             },
@@ -3147,8 +3153,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
             ],
             compare_at_unit_price: null,
             unit_price: 200,
+            unit_weight: null,
             subtotal: 400,
             total: 200,
+            weight_total: 0,
             original_total: 400,
             original_subtotal: 400,
             discount_total: 200,
@@ -3162,6 +3170,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
             },
             raw_total: {
               value: "200",
+              precision: 20,
+            },
+            raw_weight_total: {
+              value: "0",
               precision: 20,
             },
             raw_original_total: {
@@ -3290,6 +3302,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
         item_subtotal: 500,
         item_tax_total: 0,
         item_discount_total: 300,
+        weight_total: 0,
         original_item_total: 500,
         original_item_subtotal: 500,
         original_item_tax_total: 0,
@@ -3365,6 +3378,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
           precision: 20,
         },
         raw_original_item_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_weight_total: {
           value: "0",
           precision: 20,
         },

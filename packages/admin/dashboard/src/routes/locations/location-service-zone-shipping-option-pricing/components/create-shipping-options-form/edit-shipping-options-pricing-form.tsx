@@ -26,6 +26,7 @@ import {
   CONDITIONAL_PRICES_STACKED_MODAL_ID,
   ITEM_TOTAL_ATTRIBUTE,
   REGION_ID_ATTRIBUTE,
+  WEIGHT_TOTAL_ATTRIBUTE,
 } from "../../../common/constants"
 import { useShippingOptionPriceColumns } from "../../../common/hooks/use-shipping-option-price-columns"
 import {
@@ -33,7 +34,10 @@ import {
   UpdateConditionalPriceSchema,
 } from "../../../common/schema"
 import { ConditionalPriceInfo } from "../../../common/types"
-import { buildShippingOptionPriceRules } from "../../../common/utils/price-rule-helpers"
+import {
+  buildShippingOptionPriceRules,
+  buildWeightTotalPriceRules,
+} from "../../../common/utils/price-rule-helpers"
 
 type PriceRecord = {
   id?: string
@@ -133,7 +137,8 @@ export function EditShippingOptionsPricingForm({
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
         if (
-          (value === undefined || value === "") ||
+          value === undefined ||
+          value === "" ||
           !currencies.some((c) => c.toLowerCase() === code.toLowerCase())
         ) {
           return undefined
@@ -163,7 +168,13 @@ export function EditShippingOptionsPricingForm({
         id: rule.id,
         currency_code,
         amount: castNumber(rule.amount),
-        rules: buildShippingOptionPriceRules(rule),
+        rules: [
+          ...buildShippingOptionPriceRules(rule),
+          ...buildWeightTotalPriceRules({
+            weight_total_gte: rule.weight_total_gte,
+            weight_total_lte: rule.weight_total_lte,
+          }),
+        ],
       }))
     ) as PriceRecord[]
 
@@ -174,7 +185,8 @@ export function EditShippingOptionsPricingForm({
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
         if (
-          (value === undefined || value === "") ||
+          value === undefined ||
+          value === "" ||
           !regions?.some((region) => region.id === region_id)
         ) {
           return undefined
@@ -196,7 +208,13 @@ export function EditShippingOptionsPricingForm({
         id: rule.id,
         region_id,
         amount: castNumber(rule.amount),
-        rules: buildShippingOptionPriceRules(rule),
+        rules: [
+          ...buildShippingOptionPriceRules(rule),
+          ...buildWeightTotalPriceRules({
+            weight_total_gte: rule.weight_total_gte,
+            weight_total_lte: rule.weight_total_lte,
+          }),
+        ],
       }))
     ) as PriceRecord[]
 
@@ -296,14 +314,14 @@ export function EditShippingOptionsPricingForm({
 
 const findRuleValue = (
   rules: HttpTypes.AdminShippingOptionPriceRule[],
+  attribute: string,
   operator: string
 ) => {
   const fallbackValue = ["eq", "gt", "lt"].includes(operator) ? undefined : null
 
   return (
-    rules?.find(
-      (r) => r.attribute === ITEM_TOTAL_ATTRIBUTE && r.operator === operator
-    )?.value ?? fallbackValue
+    rules?.find((r) => r.attribute === attribute && r.operator === operator)
+      ?.value ?? fallbackValue
   )
 }
 
@@ -315,27 +333,17 @@ const mapToConditionalPrice = (
   return {
     id: price.id,
     amount: price.amount,
-    gte: findRuleValue(rules, "gte"),
-    lte: findRuleValue(rules, "lte"),
-    gt: findRuleValue(rules, "gt") as undefined | null,
-    lt: findRuleValue(rules, "lt") as undefined | null,
-    eq: findRuleValue(rules, "eq") as undefined | null,
+    gte: findRuleValue(rules, ITEM_TOTAL_ATTRIBUTE, "gte"),
+    lte: findRuleValue(rules, ITEM_TOTAL_ATTRIBUTE, "lte"),
+    weight_total_gte: findRuleValue(rules, WEIGHT_TOTAL_ATTRIBUTE, "gte"),
+    weight_total_lte: findRuleValue(rules, WEIGHT_TOTAL_ATTRIBUTE, "lte"),
+    gt: findRuleValue(rules, ITEM_TOTAL_ATTRIBUTE, "gt") as undefined | null,
+    lt: findRuleValue(rules, ITEM_TOTAL_ATTRIBUTE, "lt") as undefined | null,
+    eq: findRuleValue(rules, ITEM_TOTAL_ATTRIBUTE, "eq") as undefined | null,
   }
 }
 
 const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
-  const hasAttributes = (
-    price: HttpTypes.AdminShippingOptionPrice,
-    required: string[],
-    forbidden: string[] = []
-  ) => {
-    const attributes = price.price_rules?.map((r) => r.attribute) || []
-    return (
-      required.every((attr) => attributes.includes(attr)) &&
-      !forbidden.some((attr) => attributes.includes(attr))
-    )
-  }
-
   const currency_prices: Record<string, number> = {}
   const conditional_currency_prices: Record<string, UpdateConditionalPrice[]> =
     {}
@@ -343,12 +351,18 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
   const conditional_region_prices: Record<string, UpdateConditionalPrice[]> = {}
 
   prices.forEach((price) => {
+    const attributes = price.price_rules?.map((r) => r.attribute) || []
+    const hasRegion = attributes.includes(REGION_ID_ATTRIBUTE)
+    const hasItemTotal = attributes.includes(ITEM_TOTAL_ATTRIBUTE)
+    const hasWeightTotal = attributes.includes(WEIGHT_TOTAL_ATTRIBUTE)
+    const hasConditionalAttribute = hasItemTotal || hasWeightTotal
+
     if (!price.price_rules?.length) {
       currency_prices[price.currency_code!] = price.amount
       return
     }
 
-    if (hasAttributes(price, [ITEM_TOTAL_ATTRIBUTE], [REGION_ID_ATTRIBUTE])) {
+    if (hasConditionalAttribute && !hasRegion) {
       const code = price.currency_code!
       if (!conditional_currency_prices[code]) {
         conditional_currency_prices[code] = []
@@ -357,7 +371,7 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
       return
     }
 
-    if (hasAttributes(price, [REGION_ID_ATTRIBUTE], [ITEM_TOTAL_ATTRIBUTE])) {
+    if (hasRegion && !hasConditionalAttribute) {
       const regionId = price.price_rules.find(
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value
@@ -370,7 +384,7 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
       return
     }
 
-    if (hasAttributes(price, [REGION_ID_ATTRIBUTE, ITEM_TOTAL_ATTRIBUTE])) {
+    if (hasRegion && hasConditionalAttribute) {
       const regionId = price.price_rules.find(
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value

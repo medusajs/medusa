@@ -395,7 +395,6 @@
       "required": "新擁有者為必填項。"
     }
   },
-
   "sales_channels": {
     "availableIn": "在 <1>{{y}}</1> 個銷售管道中的 <0>{{x}}</0> 個可用"
   },
@@ -1685,9 +1684,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}} 的條件價格",
-        "description": "根據購物車項目總計管理此運送選項的條件價格。",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "購物車項目總計"
+          "cartItemTotal": "購物車項目總計",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "如果 <0>{{attribute}}</0> 在 <1>{{gte}}</1> 和 <2>{{lte}}</2> 之間",
@@ -1701,7 +1701,9 @@
         "rules": {
           "amount": "運送選項價格",
           "gte": "最低購物車項目總計",
-          "lte": "最高購物車項目總計"
+          "lte": "最高購物車項目總計",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "自訂規則",
@@ -1712,10 +1714,15 @@
         },
         "errors": {
           "amountRequired": "運送選項價格為必填",
-          "minOrMaxRequired": "必須提供最低或最高購物車項目總計其中之一",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "最低購物車項目總計必須小於或等於最高購物車項目總計",
           "duplicateAmount": "每個條件的運送選項價格必須是唯一的",
-          "overlappingConditions": "所有價格規則中的條件必須是唯一的"
+          "overlappingConditions": "所有價格規則中的條件必須是唯一的",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

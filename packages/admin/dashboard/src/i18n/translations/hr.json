@@ -1801,9 +1801,10 @@
       },
       "conditionalPrices": {
         "header": "Uvjetne cijene za {{name}}",
-        "description": "Upravljajte uvjetnim cijenama za ovu opciju dostave na temelju ukupne cijene artikala u košarici.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Ukupna cijena artikala u košarici"
+          "cartItemTotal": "Ukupna cijena artikala u košarici",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Ako je <0>{{attribute}}</0> između <1>{{gte}}</1> i <2>{{lte}}</2>",
@@ -1817,7 +1818,9 @@
         "rules": {
           "amount": "Cijena opcije dostave",
           "gte": "Minimalna ukupna cijena artikala u košarici",
-          "lte": "Maksimalna ukupna cijena artikala u košarici"
+          "lte": "Maksimalna ukupna cijena artikala u košarici",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Pravila po mjeri",
@@ -1828,10 +1831,15 @@
         },
         "errors": {
           "amountRequired": "Cijena opcije dostave je obvezna",
-          "minOrMaxRequired": "Mora biti naveden barem jedan od iznosa: minimalna ili maksimalna ukupna cijena artikala u košarici",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimalna ukupna cijena artikala u košarici mora biti manja ili jednaka maksimalnoj ukupnoj cijeni artikala u košarici",
           "duplicateAmount": "Cijena opcije dostave mora biti jedinstvena za svaku uvjetnu situaciju",
-          "overlappingConditions": "Uvjeti moraju biti jedinstveni za sva pravila cijena"
+          "overlappingConditions": "Uvjeti moraju biti jedinstveni za sva pravila cijena",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

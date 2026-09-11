@@ -67,6 +67,7 @@ const cartFields = [
   "sales_channel_id",
   "item_total",
   "total",
+  "weight_total",
 ]
 
 export const listShippingOptionsForCartWithPricingWorkflowId =
@@ -341,7 +342,11 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
           flatRateOptionsQuery: {
             ...commonOptions,
             id: flatRateShippingOptionIds,
-            calculated_price: { context: cart },
+            calculated_price: {
+              context: {
+                ...cart,
+              },
+            },
           },
           calculatedShippingOptionsQuery: {
             ...commonOptions,

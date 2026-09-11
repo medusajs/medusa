@@ -1809,9 +1809,10 @@
       },
       "conditionalPrices": {
         "header": "قیمت‌های شرطی برای {{name}}",
-        "description": "هزینه‌ی این گزینه‌ی حمل و نقل را بر اساس مجموع آیتم‌های سبد خرید مدیریت کنید.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "مجموع آیتم‌های سبد خرید"
+          "cartItemTotal": "مجموع آیتم‌های سبد خرید",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "اگر <0>{{attribute}}</0> بین <1>{{gte}}</1> و <2>{{lte}}</2> باشد",
@@ -1825,7 +1826,9 @@
         "rules": {
           "amount": "قیمت گزینه حمل و نقل",
           "gte": "حداقل مجموع آیتم‌های سبد خرید",
-          "lte": "حداکثر مجموع آیتم‌های سبد خرید"
+          "lte": "حداکثر مجموع آیتم‌های سبد خرید",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "قوانین سفارشی",
@@ -1836,10 +1839,15 @@
         },
         "errors": {
           "amountRequired": "قیمت گزینه حمل و نقل الزامی است",
-          "minOrMaxRequired": "حداقل یکی از موارد حداقل یا حداکثر مجموع آیتم‌های سبد خرید باید ارائه شود",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "حداقل مجموع آیتم‌های سبد خرید باید کمتر یا مساوی حداکثر باشد",
           "duplicateAmount": "قیمت گزینه حمل و نقل باید برای هر شرط منحصر به فرد باشد",
-          "overlappingConditions": "شرایط باید در تمام قوانین قیمت منحصر به فرد باشند"
+          "overlappingConditions": "شرایط باید در تمام قوانین قیمت منحصر به فرد باشند",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

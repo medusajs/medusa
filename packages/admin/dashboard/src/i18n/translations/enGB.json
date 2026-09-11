@@ -1709,9 +1709,10 @@
       },
       "conditionalPrices": {
         "header": "Conditional Prices for {{name}}",
-        "description": "Manage the conditional prices for this shipping option based on the basket item total.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Basket item total"
+          "cartItemTotal": "Basket item total",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "If <0>{{attribute}}</0> is between <1>{{gte}}</1> and <2>{{lte}}</2>",
@@ -1725,7 +1726,9 @@
         "rules": {
           "amount": "Shipping option price",
           "gte": "Minimum basket item total",
-          "lte": "Maximum basket item total"
+          "lte": "Maximum basket item total",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Custom rules",
@@ -1736,10 +1739,15 @@
         },
         "errors": {
           "amountRequired": "Shipping option price is required",
-          "minOrMaxRequired": "At least one of minimum or maximum basket item total must be provided",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimum basket item total must be less than or equal to maximum basket item total",
           "duplicateAmount": "Shipping option price must be unique for each condition",
-          "overlappingConditions": "Conditions must be unique across all price rules"
+          "overlappingConditions": "Conditions must be unique across all price rules",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

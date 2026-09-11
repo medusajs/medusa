@@ -1398,7 +1398,7 @@
       "refundableAmount": "Буцаах боломжтой хэмжээ",
       "returnableQuantity": "Буцаах боломжтой хэмжээ"
     }
-  },    
+  },
   "draftOrders": {
     "domain": "Ноорог захиалгууд",
     "deleteWarning": "Та {{id}} ноорог захиалгыг устгах гэж байна. Энэ үйлдлийг буцаах боломжгүй.",
@@ -1535,9 +1535,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}}-д зориулсан нөхцөлт үнийн санал",
-        "description": "Энэ хүргэлтийн сонголтын нөхцөлт үнийн саналыг сагсны зүйлийн нийт дүнгээр удирдах.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Сагсны зүйлийн нийт дүн"
+          "cartItemTotal": "Сагсны зүйлийн нийт дүн",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Хэрэв <0>{{attribute}}</0> нь <1>{{gte}}</1> ба <2>{{lte}}</2> хооронд байвал",
@@ -1551,7 +1552,9 @@
         "rules": {
           "amount": "Хүргэлтийн сонголтын үнэ",
           "gte": "Сагсны зүйлийн хамгийн бага нийт дүн",
-          "lte": "Сагсны зүйлийн хамгийн их нийт дүн"
+          "lte": "Сагсны зүйлийн хамгийн их нийт дүн",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Захиалгат дүрмүүд",
@@ -1562,10 +1565,15 @@
         },
         "errors": {
           "amountRequired": "Хүргэлтийн сонголтын үнэ шаардагдана",
-          "minOrMaxRequired": "Сагсны зүйлийн хамгийн бага эсвэл хамгийн их нийт дүнг заавал өгөх ёстой",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Сагсны зүйлийн хамгийн бага нийт дүн хамгийн их нийт дүнгээс бага эсвэл тэнцүү байх ёстой",
           "duplicateAmount": "Хүргэлтийн сонголтын үнэ нь нөхцөл бүрт давтагдашгүй байх ёстой",
-          "overlappingConditions": "Нөхцөлүүд нь бүх үнийн дүрмүүдийн хооронд давтагдашгүй байх ёстой"
+          "overlappingConditions": "Нөхцөлүүд нь бүх үнийн дүрмүүдийн хооронд давтагдашгүй байх ёстой",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2242,7 +2250,7 @@
         "attribute": "Үйлчлүүлэгчдийн бүлгүүд"
       }
     }
-  },  
+  },
   "profile": {
     "domain": "Профайл",
     "manageYourProfileDetails": "Профайлын дэлгэрэнгүй мэдээллийг удирдах.",
@@ -2312,7 +2320,7 @@
       "currenciesRemoved": "Дэлгүүрээс валютууд амжилттай устгагдлаа",
       "updatedTaxInclusivitySuccessfully": "Татвар багтсан үнийг амжилттай шинэчлэгдлээ"
     }
-  },  
+  },
   "regions": {
     "domain": "Бүсүүд",
     "subtitle": "Бүс гэдэг нь та бүтээгдэхүүнээ борлуулдаг газар юм. Энэ нь олон улсыг хамарч, өөр өөр татварын хувь, үйлчилгээ үзүүлэгчид, валюттай байж болно.",
@@ -2415,7 +2423,7 @@
       "productTypeOverridesHeader": "Бүтээгдэхүүний төрлүүд",
       "shippingOptionOverridesHeader": "Хүргэлтийн сонголтууд"
     }
-  },  
+  },
   "locations": {
     "domain": "Байршлууд",
     "editLocation": "Байршлыг засах",
@@ -2546,7 +2554,7 @@
       "revokedAtLabel": "Цуцлагдсан",
       "createdByLabel": "Үүсгэсэн"
     }
-  },  
+  },
   "returnReasons": {
     "domain": "Буцаалтын Шалтгаанууд",
     "subtitle": "Буцаагдсан зүйлсийн шалтгааныг удирдах.",
@@ -2573,7 +2581,10 @@
         "placeholder": "wrong_size",
         "tooltip": "Утга нь буцаалтын шалтгааны хувьд өвөрмөц танигч байх ёстой."
       },
-      "label": { "label": "Шошго", "placeholder": "Буруу хэмжээ" },
+      "label": {
+        "label": "Шошго",
+        "placeholder": "Буруу хэмжээ"
+      },
       "description": {
         "label": "Тайлбар",
         "placeholder": "Үйлчлүүлэгч буруу хэмжээтэй бүтээгдэхүүн хүлээн авсан"
@@ -2671,7 +2682,7 @@
         "timeout": "Цаг хэтрэх"
       }
     }
-  },  
+  },
   "productTypes": {
     "domain": "Бүтээгдэхүүний Төрлүүд",
     "subtitle": "Бүтээгдэхүүнээ төрөлд ангилах.",
@@ -2918,5 +2929,5 @@
     "minutes_other": "Минут",
     "seconds_one": "Секунд",
     "seconds_other": "Секунд"
-  }  
+  }
 }

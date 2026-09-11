@@ -33,6 +33,7 @@ export const fieldsForPricingContext = [
   "shipping_address.postal_code",
   "item_total",
   "total",
+  "weight_total",
   "locale",
   "customer.id",
   "email",

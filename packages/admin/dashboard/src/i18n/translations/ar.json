@@ -1530,7 +1530,8 @@
           "manageConditionalPrices": "إدارة الأسعار المخصصة"
         },
         "attributes": {
-          "cartItemTotal": "إجمالي عناصر السلة"
+          "cartItemTotal": "إجمالي عناصر السلة",
+          "cartWeightTotal": "Cart weight total"
         },
         "customRules": {
           "eq": "يساوي",
@@ -1539,24 +1540,31 @@
           "lt": "أقل من",
           "tooltip": "إضافة قواعد مخصصة لتحديد الأسعار بناءً على المنتجات الموجودة في السلة."
         },
-        "description": "إضافة قواعد مخصصة لتحديد الأسعار بناءً على المنتجات الموجودة في السلة.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "errors": {
           "amountRequired": "يجب أن يكون الحد موجود.",
           "duplicateAmount": "لا يمكن أن يكون الحد متساوياً لقواعد مخصصة أخرى.",
           "minGreaterThanMax": "لا يمكن أن يكون الحد الأدنى أكبر من الحد الأعلى.",
-          "minOrMaxRequired": "يجب أن يكون الحد الأدنى أو الحد الأعلى موجود.",
-          "overlappingConditions": "لا يمكن أن يكون الحد الأدنى أكبر من الحد الأعلى."
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
+          "overlappingConditions": "لا يمكن أن يكون الحد الأدنى أكبر من الحد الأعلى.",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
         },
         "header": "قواعد الأسعار المخصصة",
         "rules": {
           "amount": "الحد",
           "gte": "أكبر من أو يساوي",
-          "lte": "أقل من أو يساوي"
+          "lte": "أقل من أو يساوي",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "summaries": {
           "greaterThan": "أكبر من",
           "lessThan": "أقل من",
           "range": "في النطاق"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "create": {
@@ -2605,7 +2613,10 @@
         "placeholder": "خطأ في الحجم",
         "tooltip": "يجب أن تكون القيمة معرفًا فريدًا لسبب الإرجاع."
       },
-      "label": { "label": "التسمية", "placeholder": "خطأ في الحجم" },
+      "label": {
+        "label": "التسمية",
+        "placeholder": "خطأ في الحجم"
+      },
       "description": {
         "label": "الوصف",
         "placeholder": "تلقى العميل الحجم الخطأ"

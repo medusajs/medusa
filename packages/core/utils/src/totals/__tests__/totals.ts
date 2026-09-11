@@ -30,6 +30,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 30,
+          weight_total: 0,
           quantity: 2,
           tax_lines: [
             {
@@ -50,6 +51,7 @@ describe("Total calculation", function () {
         },
         {
           unit_price: 5,
+          weight_total: 0,
           quantity: 1,
           tax_lines: [
             {
@@ -72,6 +74,7 @@ describe("Total calculation", function () {
       total: 73.5,
       subtotal: 65,
       tax_total: 8.5,
+      weight_total: 0,
       discount_total: 0,
       discount_subtotal: 0,
       discount_tax_total: 0,
@@ -117,6 +120,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           tax_lines: [
             {
@@ -146,6 +150,7 @@ describe("Total calculation", function () {
       total: 99,
       subtotal: 100,
       tax_total: 9,
+      weight_total: 0,
       discount_total: 11,
       discount_subtotal: 10,
       discount_tax_total: 1,
@@ -239,6 +244,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 99,
+          weight_total: 0,
           quantity: 1,
           is_tax_inclusive: true,
           tax_lines: [
@@ -267,6 +273,7 @@ describe("Total calculation", function () {
         },
         {
           unit_price: 9,
+          weight_total: 0,
           quantity: 1,
           is_tax_inclusive: false,
           tax_lines: [
@@ -353,6 +360,7 @@ describe("Total calculation", function () {
       total: 191.4,
       subtotal: 198,
       tax_total: 17.4,
+      weight_total: 0,
       discount_total: 26.4,
       discount_subtotal: 24,
       discount_tax_total: 2.4,
@@ -429,6 +437,7 @@ describe("Total calculation", function () {
         {
           discount_subtotal: 0,
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           is_tax_inclusive: true,
           tax_lines: [
@@ -452,6 +461,7 @@ describe("Total calculation", function () {
       total: 100,
       subtotal: 90.9090909090909,
       tax_total: 9.090909090909092,
+      weight_total: 0,
       discount_total: 0,
       discount_tax_total: 0,
       original_total: 100,
@@ -474,6 +484,7 @@ describe("Total calculation", function () {
         {
           discount_subtotal: 0,
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           is_tax_inclusive: false,
           tax_lines: [
@@ -497,6 +508,7 @@ describe("Total calculation", function () {
       discount_subtotal: 0,
       subtotal: 100,
       tax_total: 10,
+      weight_total: 0,
       discount_total: 0,
       discount_tax_total: 0,
       original_total: 110,
@@ -519,6 +531,7 @@ describe("Total calculation", function () {
         {
           discount_subtotal: 0,
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           is_tax_inclusive: true,
           tax_lines: [
@@ -540,6 +553,7 @@ describe("Total calculation", function () {
         {
           discount_subtotal: 0,
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           is_tax_inclusive: false,
           tax_lines: [
@@ -563,6 +577,7 @@ describe("Total calculation", function () {
       total: 210,
       subtotal: 190.9090909090909,
       tax_total: 19.09090909090909,
+      weight_total: 0,
       discount_total: 0,
       discount_tax_total: 0,
       original_total: 210,
@@ -616,6 +631,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 60,
+          weight_total: 0,
           quantity: 2,
           subtotal: 100,
           tax_total: 18.333333333333332,
@@ -648,6 +664,7 @@ describe("Total calculation", function () {
       ],
       subtotal: 100,
       tax_total: 18.333333333333332,
+      weight_total: 0,
       total: 110,
 
       original_item_subtotal: 100,
@@ -713,6 +730,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           tax_lines: [
             {
@@ -770,6 +788,7 @@ describe("Total calculation", function () {
       total: 113.3,
       subtotal: 125,
       tax_total: 10.3,
+      weight_total: 0,
       discount_total: 24.2,
       discount_subtotal: 22,
       discount_tax_total: 2.2,
@@ -846,6 +865,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 50,
+          weight_total: 0,
           quantity: 2,
           detail: {
             fulfilled_quantity: 2,
@@ -891,6 +911,7 @@ describe("Total calculation", function () {
       total: -40,
       subtotal: 0,
       tax_total: 0,
+      weight_total: 0,
       discount_total: 0,
       discount_subtotal: 0,
       discount_tax_total: 0,
@@ -968,6 +989,7 @@ describe("Total calculation", function () {
       items: [
         {
           unit_price: 119,
+          weight_total: 0,
           quantity: 1,
           tax_lines: [
             {
@@ -997,6 +1019,7 @@ describe("Total calculation", function () {
       total: 0,
       subtotal: 119,
       tax_total: 0,
+      weight_total: 0,
       discount_total: 141.61,
       discount_subtotal: 119,
       discount_tax_total: 22.61,
@@ -1093,6 +1116,7 @@ describe("Total calculation", function () {
           tax_total: 19,
           total: 119,
           unit_price: 119,
+          weight_total: 0,
         },
       ],
       original_item_subtotal: 100,
@@ -1103,6 +1127,7 @@ describe("Total calculation", function () {
       original_total: 119,
       subtotal: 100,
       tax_total: 19,
+      weight_total: 0,
       total: 119,
     })
 
@@ -1138,6 +1163,7 @@ describe("Total calculation", function () {
           tax_total: 22.61,
           total: 141.61,
           unit_price: 119,
+          weight_total: 0,
         },
       ],
       original_item_subtotal: 119,
@@ -1148,6 +1174,7 @@ describe("Total calculation", function () {
       original_total: 141.61,
       subtotal: 119,
       tax_total: 22.61,
+      weight_total: 0,
       total: 141.61,
     })
 
@@ -1183,6 +1210,7 @@ describe("Total calculation", function () {
           tax_total: 19,
           total: 119,
           unit_price: 119,
+          weight_total: 0,
         },
         {
           discount_subtotal: 0,
@@ -1204,6 +1232,7 @@ describe("Total calculation", function () {
           tax_total: 22.61,
           total: 141.61,
           unit_price: 119,
+          weight_total: 0,
         },
       ],
       original_item_subtotal: 219,
@@ -1214,6 +1243,7 @@ describe("Total calculation", function () {
       original_total: 260.61,
       subtotal: 219,
       tax_total: 41.61,
+      weight_total: 0,
       total: 260.61,
     })
   })
@@ -1280,6 +1310,7 @@ describe("Total calculation", function () {
           tax_total: 0,
           total: 0,
           unit_price: 119,
+          weight_total: 0,
         },
       ],
       original_item_subtotal: 100,
@@ -1290,6 +1321,7 @@ describe("Total calculation", function () {
       original_total: 119,
       subtotal: 100,
       tax_total: 0,
+      weight_total: 0,
       total: 0,
     })
   })
@@ -1331,6 +1363,43 @@ describe("Total calculation", function () {
     expect(serializedTaxInclusive.items[0].refundable_total_per_unit).toBe(94)
   })
 
+  it("should calculate weight_total for items with unit_weight", function () {
+    const cart = {
+      items: [
+        {
+          unit_price: 30,
+          unit_weight: 100,
+          quantity: 2,
+        },
+        {
+          unit_price: 5,
+          unit_weight: 50,
+          quantity: 3,
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+    expect(serialized.items[0].weight_total).toBe(200)
+    expect(serialized.items[1].weight_total).toBe(150)
+    expect(serialized.weight_total).toBe(350)
+  })
+
+  it("should default weight_total to zero when unit_weight is not provided", function () {
+    const cart = {
+      items: [
+        {
+          unit_price: 30,
+          quantity: 2,
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+    expect(serialized.items[0].weight_total).toBe(0)
+    expect(serialized.weight_total).toBe(0)
+  })
+
   it("should not double-count tax on the discount when computing refundable_total for non-tax-inclusive items with a pending return", function () {
     const cart = {
       items: [
@@ -1361,7 +1430,6 @@ describe("Total calculation", function () {
     }
 
     const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
-
     // 1 unit is still refundable (2 - 1 requested). The discount is pre-tax for
     // non-tax-inclusive items: net = 100 - (20 / 2) = 90, plus 10% tax = 9 => 99.
     // The tax on the discount must not be deducted a second time.

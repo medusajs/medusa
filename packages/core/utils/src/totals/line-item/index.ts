@@ -14,6 +14,7 @@ export interface GetItemTotalInput {
   id: string
   unit_price: BigNumber
   quantity: BigNumber
+  unit_weight?: BigNumberInput
   is_tax_inclusive?: boolean
   tax_lines?: Pick<TaxLineDTO, "rate">[]
   adjustments?: Pick<AdjustmentLineDTO, "amount" | "is_tax_inclusive">[]
@@ -31,12 +32,15 @@ export interface GetItemTotalInput {
 export interface GetItemTotalOutput {
   quantity: BigNumber
   unit_price: BigNumber
+  unit_weight?: BigNumber
 
   subtotal: BigNumber
   original_subtotal: BigNumber
 
   total: BigNumber
   original_total: BigNumber
+
+  weight_total?: BigNumber
 
   discount_total: BigNumber
   discount_subtotal: BigNumber
@@ -224,6 +228,10 @@ export function getLineItemTotals(
     tax_total: new BigNumber(taxTotal),
     original_tax_total: new BigNumber(originalTaxTotal),
   }
+
+  totals.weight_total = new BigNumber(
+    MathBN.mult(item.unit_weight ?? 0, item.quantity)
+  )
 
   if (
     isDefined(item.detail?.return_requested_quantity) ||
