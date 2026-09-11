@@ -40,7 +40,6 @@ import {
   validateShippingStep,
 } from "../steps"
 import { compensatePaymentIfNeededStep } from "../steps/compensate-payment-if-needed"
-import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import {
@@ -49,6 +48,7 @@ import {
   PrepareLineItemDataInput,
   prepareTaxLinesData,
 } from "../utils/prepare-line-item-data"
+import { reserveInventoryWorkflow } from "./reserve-inventory"
 /**
  * The data to complete a cart and place an order.
  */
@@ -336,6 +336,12 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * If the validation is successful and the workflow is retried, the validation step will be skipped since the link from the order to the
  * ticket order already exists. This ensures that the workflow remains idempotent.
+ *
+ * ## Inventory Reservations
+ *
+ * When the order is placed, the items' quantities are reserved through the {@link reserveInventoryWorkflow}. To customize at which
+ * stock locations quantities are reserved — for example, to reserve at a pickup store the customer selected — consume that workflow's
+ * `setReservationAllocations` hook.
  *
  * @example
  * const { result } = await completeCartWorkflow(container)
@@ -648,7 +654,13 @@ export const completeCartWorkflow = createWorkflow(
       const [, , createdReservations] = parallelize(
         createRemoteLinkStep(linksToCreate),
         updateCartsStep([updateCompletedAt]),
-        reserveInventoryStep(formatedInventoryItems),
+        reserveInventoryWorkflow.runAsStep({
+          input: {
+            items: formatedInventoryItems.items,
+            cart: cartData.data,
+            order: createdOrder,
+          },
+        }),
         registerUsageStep(promotionUsage),
         emitEventStep({
           eventName: OrderWorkflowEvents.PLACED,
