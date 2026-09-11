@@ -25,6 +25,8 @@ This will open the form to create a promotion, which is made up of three steps: 
 
 ## Step 1: Type
 
+<PermissionsBadge permissions={["promotion:create"]} />
+
 In the first step of creating a promotion, you need to specify the type of the promotion, which can be one of the following:
 
 1. **Amount off products**: Discount a fixed amount of products matching custom and dynamic conditions.
@@ -365,6 +367,8 @@ In the campaigns section, you can select whether to:
 - Continue with a **New Campaign**. If selected, you'll see fields to create a new campaign.
 
 ### Create Campaign
+
+<PermissionsBadge permissions={["promotion:create", "campaign:create"]} />
 
 If you selected a new campaign, you need to fill out the following to create a campaign and add the promotion to it:
 

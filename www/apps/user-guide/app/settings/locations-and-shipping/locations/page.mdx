@@ -34,6 +34,8 @@ Then, during checkout, a customer can only choose shipping options available fro
 
 ## Create Location
 
+<PermissionsBadge permissions={["stock_location:create"]} />
+
 To create a stock location:
 
 1. Go to Settings → Locations & Shipping.
@@ -49,6 +51,8 @@ To create a stock location:
 
 ## View Location Details
 
+<PermissionsBadge permissions={["stock_location:read"]} />
+
 To view the details of a location:
 
 1. Go to Settings → Locations.
@@ -61,6 +65,8 @@ This opens the location's details page where you can also manage the location.
 ---
 
 ## Edit Location
+
+<PermissionsBadge permissions={["stock_location:update"]} />
 
 To edit a stock location:
 
@@ -84,15 +90,19 @@ So, to create a shipping option for either pick-up or shipping, you need to enab
 
 ### 1. Enable Shipping Mode
 
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create"]} />
+
 By default, pick-up and shipping are disabled in a location. To enable either:
 
 1. Go to the location's details page.
 2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the header of the "Pickup" or "Shipping" section.
 3. Choose Enable from the dropdown.
 
-You can also disable the shipping mode by following the same steps.
+You can also disable the shipping mode by following the same steps. Disabling a shipping mode requires the `fulfillment_set:delete` policy instead of the `fulfillment_set:create` policy.
 
 ### 2. Create Service Zone
+
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create", "service_zone:create"]} />
 
 To ceate a service zone for pick-up or shipping:
 
@@ -112,6 +122,8 @@ To ceate a service zone for pick-up or shipping:
 Learn how you can further manage this service zone in the [Manage Service Zones section](#manage-service-zones).
 
 ### 3. Create Shipping Options
+
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:create"]} />
 
 You can now add shipping options to the service zone you created. You can either add a standard shipping option that's used during checkout, or a return shipping option, which is only used to return items from the customer.
 
@@ -183,6 +195,8 @@ You can manage service zones in pick-up or shipping mode by [creating](#2-create
 
 ### Edit Service Zone Details
 
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update"]} />
+
 To edit a service zone in a location:
 
 1. Go to the location's details page.
@@ -194,6 +208,8 @@ To edit a service zone in a location:
 ![Edit service zone form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739983657/User%20Guide/Screenshot_2025-02-19_at_6.47.22_PM_xsktmj.png)
 
 ### Manage Service Zone Areas
+
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update"]} />
 
 To manage the areas in a service zone:
 
@@ -209,6 +225,8 @@ To manage the areas in a service zone:
 ![Manage service zone areas](https://res.cloudinary.com/dza7lstvk/image/upload/v1739983833/User%20Guide/Screenshot_2025-02-19_at_6.49.50_PM_zoud5i.png)
 
 ### Delete Service Zone
+
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:delete"]} />
 
 <Note type="warning">
 
@@ -231,6 +249,8 @@ You can manage shipping options in pick-up and shipping modes by [creating](#cre
 
 ### Edit Shipping Option Details
 
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:update"]} />
+
 To edit a shipping option's details:
 
 1. Go to the location's details page.
@@ -248,6 +268,8 @@ You can't edit a shipping option's fulfillment provider or fulfillment option af
 ![Edit shipping option details form](https://res.cloudinary.com/dza7lstvk/image/upload/v1756372512/User%20Guide/CleanShot_2025-08-28_at_12.14.55_2x_sr391l.png)
 
 ### Edit Shipping Option Prices
+
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:update"]} />
 
 To edit the prices of shipping options whose price type is Fixed:
 
@@ -271,6 +293,8 @@ Tax-inclusive pricing is configured in the [currency's](../../store/page.mdx#edi
 
 ### Delete Shipping Option
 
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:delete"]} />
+
 <Note type="warning">
 
 Deleting a shipping option is irreversible.
@@ -288,6 +312,8 @@ To delete a shipping option:
 
 ## Change Associated Sales Channels
 
+<PermissionsBadge permissions={["stock_location:update", "sales_channel:read"]} />
+
 To change the sales channels associated with a location:
 
 1. Go to the location's details page.
@@ -302,6 +328,8 @@ To change the sales channels associated with a location:
 
 ## Manage Fulfillment Providers
 
+<PermissionsBadge permissions={["stock_location:update"]} />
+
 To manage the fulfillment providers available in a location:
 
 1. Go to the location's details page.
@@ -315,6 +343,8 @@ To manage the fulfillment providers available in a location:
 ---
 
 ## Delete Location
+
+<PermissionsBadge permissions={["stock_location:delete"]} />
 
 <Note type="warning">
 

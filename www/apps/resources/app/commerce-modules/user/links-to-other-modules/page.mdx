@@ -1,0 +1,131 @@
+---
+products:
+  - rbac
+---
+
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Links between User Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the User Module and other Commerce Modules.
+
+## Summary
+
+The User Module has the following links to other modules:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        First Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Second Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [User](/references/user/models/User)
+      </Table.Cell>
+      <Table.Cell>
+        `RbacRoleAssignment` in [RBAC Module](../../../enterprise/rbac/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - has many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#rbac-module)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## RBAC Module
+
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="../../../enterprise/rbac/page.mdx#how-to-use-the-rbac-module" />
+
+You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../../enterprise/rbac/page.mdx), then exposes an admin user's roles through a read-only link.
+
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+
+### Retrieve with Query
+
+To retrieve the roles of a user with [Query](!docs!/learn/fundamentals/module-links/query), pass `rbac_roles.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: users } = await query.graph({
+  entity: "user",
+  fields: [
+    "rbac_roles.*",
+  ],
+})
+
+// users[0].rbac_roles
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: users } = useQueryGraphStep({
+  entity: "user",
+  fields: [
+    "rbac_roles.*",
+  ],
+})
+
+// users[0].rbac_roles
+```
+
+  </CodeTab>
+</CodeTabs>
+
+To find the users a role is assigned to, query the `rbac_role_assignment` entity and filter by the role's ID.
+
+### Manage Role Assignments
+
+To assign a role to an admin user, use the `assignRolesWorkflow`:
+
+```ts
+import {
+  assignRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+await assignRolesWorkflow(container).run({
+  input: {
+    assignments: [
+      {
+        role_id: "role_123",
+        reference: "user",
+        reference_id: "user_123",
+      },
+    ],
+    granting_actor_id: "user_456",
+  },
+})
+```
+
+To remove a role from an admin user, use the `unassignRolesWorkflow` with the same input shape.
+
+Learn more in the [RBAC Module's links documentation](../../../enterprise/rbac/links-to-other-modules/page.mdx#user-module).

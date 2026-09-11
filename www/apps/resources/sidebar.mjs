@@ -7,6 +7,7 @@ import { storefrontDevelopmentSidebar } from "./sidebars/storefront.mjs"
 import { troubleshootingSidebar } from "./sidebars/troubleshooting.mjs"
 import { howToTutorialsSidebar } from "./sidebars/how-to-tutorials.mjs"
 import { commerceModulesSidebar } from "./sidebars/commerce-modules.mjs"
+import { enterpriseSidebar } from "./sidebars/enterprise.mjs"
 
 /** @type {import("types").Sidebar.RawSidebar[]} */
 export const sidebar = [
@@ -44,6 +45,11 @@ export const sidebar = [
     sidebar_id: "commerce-modules",
     title: "Commerce Modules",
     items: commerceModulesSidebar,
+  },
+  {
+    sidebar_id: "enterprise",
+    title: "Enterprise",
+    items: enterpriseSidebar,
   },
   {
     sidebar_id: "infrastructure-modules",

@@ -39,6 +39,8 @@ As an admin user, you can then manage the return to either [cancel it](#cancel-r
 
 ## Find Return Requests of an Order
 
+<PermissionsBadge permissions={["order:read", "return:read"]} />
+
 To find return requests of an order:
 
 1. Open the order's details page.
@@ -51,6 +53,8 @@ You'll also find the items requested to be returned in the Summary section, with
 ---
 
 ## Create an Order Return
+
+<PermissionsBadge permissions={["return:create", "return:update"]} />
 
 You can create a return from the Medusa Admin for [delivered items](../fulfillments/page.mdx#mark-fulfillment-as-delivered) in an order.
 
@@ -92,6 +96,8 @@ This creates the return, which you can see in the Summary and Activity sections 
 
 ## Mark Return Items as Received
 
+<PermissionsBadge permissions={["return:update"]} />
+
 Once the customer returns the item, you can mark it as received. This triggers a refund to the customer and the non-damaged item quantity is added to the stock quantity in the inventory.
 
 To mark return items as received:
@@ -114,6 +120,8 @@ To mark return items as received:
 
 ## Cancel Requested Return
 
+<PermissionsBadge permissions={["return:update", "order:update"]} />
+
 You can cancel a return, whether requested by the customer or that you created.
 
 <Note type="warning">
@@ -130,6 +138,8 @@ To cancel a requested return:
 ---
 
 ## Refund Customer for a Return
+
+<PermissionsBadge permissions={["refund:create", "order:update"]} />
 
 If a return causes an outstanding amount, you can see it in the Summary section of an order. Refer to the [Manage Payments guide](../payments/page.mdx#refund-payment) to learn how to refund the customer for the return.
 

@@ -39,6 +39,8 @@ When you request an order edit, the changes aren’t saved on the order until th
 
 ## Request an Order Edit
 
+<PermissionsBadge permissions={["order_change:create", "order_change:update"]} />
+
 You can only request one order edit at a time. If you need to make additional changes, you’ll have to cancel the current order edit and request a new one, or force-confirm the current order edit.
 
 To request an order edit:
@@ -77,6 +79,8 @@ Once requested, a new section "Order edit requested" will show at the top of the
 
 ## Force Confirm an Order Edit
 
+<PermissionsBadge permissions={["order_change:update", "order:update"]} />
+
 As mentioned in the beginning of this guide, the customer must confirm the order edit for the changes to be saved on the order. However, you can force-confirm an order edit if you need to make the changes immediately, or if the customer delegates you to do so.
 
 <Note type="warning">
@@ -109,6 +113,8 @@ If the order edit added new items to the order, they'll be shown in the "Unfulfi
 ---
 
 ## Cancel an Order Edit Request
+
+<PermissionsBadge permissions={["order_change:delete"]} />
 
 If an order edit request hasn't been confirmed yet, you can cancel it.
 

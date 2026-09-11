@@ -20,6 +20,17 @@ export const userSidebar = [
       },
       {
         type: "category",
+        title: "Concepts",
+        children: [
+          {
+            type: "link",
+            path: "/commerce-modules/user/links-to-other-modules",
+            title: "Link to Modules",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Server Guides",
         autogenerate_tags: "server+user",
         autogenerate_as_ref: true,

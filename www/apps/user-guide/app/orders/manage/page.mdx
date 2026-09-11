@@ -25,6 +25,8 @@ In this guide, you’ll learn how to find an order’s details page, what inform
 
 ## Open Order’s Details
 
+<PermissionsBadge permissions={["order:read"]} />
+
 To open an order’s details:
 
 1. Go to Orders from the sidebar.
@@ -78,6 +80,8 @@ To view the JSON structure, click on the <InlineIcon Icon={ArrowUpRightOnBox} al
 
 ## Allocate Order Items Manually
 
+<PermissionsBadge permissions={["reservation_item:create"]} />
+
 If Medusa manages the inventory of an ordered item, it reserves or allocates the ordered quantity from the inventory. This ensures that the item's available quantity is reduced by the ordered quantity.
 
 Medusa allocates the ordered quantity from the stock location of the chosen shipping option in the order. For example, if the customer chooses a shipping option that uses a stock location in the US, Medusa allocates the ordered quantity from that stock location.
@@ -101,6 +105,8 @@ To allocate these items manually:
 
 ## Edit the Shipping Address
 
+<PermissionsBadge permissions={["order_address:update", "order:update"]} />
+
 To edit the shipping address used for an order:
 
 1. Open the order details page.
@@ -115,6 +121,8 @@ To edit the shipping address used for an order:
 
 ## Edit the Billing Address
 
+<PermissionsBadge permissions={["order_address:update", "order:update"]} />
+
 To edit the billing address used for an order:
 
 1. Open the order details page.
@@ -128,6 +136,8 @@ To edit the billing address used for an order:
 ---
 
 ## Edit Email Address
+
+<PermissionsBadge permissions={["order:update"]} />
 
 You can edit the email address of an order to send order-update notifications to a new email address. This doesn't update the associated customer's email address or transfer the order to a new customer. To transfer the order to a new customer, see the [Transfer Customer Ownership](#transfer-customer-ownership) section.
 
@@ -144,6 +154,8 @@ To edit the email address associated with an order:
 ---
 
 ## Transfer Customer Ownership
+
+<PermissionsBadge permissions={["customer:update", "order:update"]} />
 
 You can transfer the ownership of an order to another registered customer. This changes the customer associated with the order and sends notifications for order updates to the new customer.
 
@@ -176,6 +188,8 @@ If a notification isn't sent, check with your technical team to debug the [integ
 ---
 
 ## Cancel an Order
+
+<PermissionsBadge permissions={["order:update"]} />
 
 You can cancel an order if no items have been fulfilled. Canceling an order will:
 

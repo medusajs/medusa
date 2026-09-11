@@ -19,6 +19,8 @@ In this guide, you’ll learn how to manage product types in the Medusa Admin.
 
 ## View Product Types
 
+<PermissionsBadge permissions={["product_type:read"]} />
+
 Product types are useful to group products by a general type, such as "Physical" and "Digital" product types.
 
 To view product types in your store, go to Settings → Product Types. Here, you can see a list of all the product types you have set up in your store. You can also search, filter, and sort the product types to find the one you are looking for.
@@ -28,6 +30,8 @@ To view product types in your store, go to Settings → Product Types. Here, you
 ---
 
 ## Create Product Type
+
+<PermissionsBadge permissions={["product_type:create"]} />
 
 To create a product type:
 
@@ -42,18 +46,22 @@ To create a product type:
 
 ## View Product Type Details
 
+<PermissionsBadge permissions={["product_type:read"]} />
+
 To view the details of a product type:
 
 1. Go to Settings → Product Types.
 2. Click on a product type from the list.
 
-This opens the product type's details page where you can also manage the product type.
+This opens the product type's details page where you can also manage the product type. To see the products assigned to the type, you also need the `product:read` policy.
 
 ![Product type details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739979095/User%20Guide/Screenshot_2025-02-19_at_5.30.49_PM_wr7mro.png)
 
 ---
 
 ## Edit Product Type Details
+
+<PermissionsBadge permissions={["product_type:update"]} />
 
 To edit the details of a product type:
 
@@ -75,6 +83,8 @@ Locales are available from [Medusa v2.12.3](https://github.com/medusajs/medusa/r
 
 </Note>
 
+<PermissionsBadge permissions={["translation:update"]} />
+
 Product types can be translated to locales (languages) [supported by your store](../store/page.mdx#manage-store-locales). You can either manage translations [in bulk](../translations/page.mdx), or manage translations for an individual product type from its details page.
 
 To manage translations for the product type:
@@ -95,6 +105,8 @@ You can manage the type of a product in the [product's details page](../../produ
 
 ## Manage Product Type Metadata
 
+<PermissionsBadge permissions={["product_type:update"]} />
+
 Metadata is custom data that can be associated with the product type in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the product type.
 
 To edit the product type's metadata:
@@ -113,6 +125,8 @@ To edit the product type's metadata:
 ---
 
 ## Delete Product Type
+
+<PermissionsBadge permissions={["product_type:delete"]} />
 
 <Note type="warning">
 

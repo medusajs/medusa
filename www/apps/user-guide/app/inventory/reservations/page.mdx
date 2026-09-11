@@ -26,6 +26,8 @@ You can also manually create reservations for inventory items. For example, you 
 
 ### View Reservations
 
+<PermissionsBadge permissions={["reservation_item:read"]} />
+
 To view reservations, go to Inventory from the sidebar, then click the Reservations sub-item shown in the sidebar.
 
 In the list, you can see reservation details such as the SKU and reserved quantity. You can also search, filter, and sort the reservations to find the specific item you are looking for.
@@ -35,6 +37,8 @@ In the list, you can see reservation details such as the SKU and reserved quanti
 ---
 
 ## Create a Reservation
+
+<PermissionsBadge permissions={["reservation_item:create", "stock_location:read"]} />
 
 To create a reservation manually:
 
@@ -54,6 +58,8 @@ To create a reservation manually:
 
 ## View Reservation Details
 
+<PermissionsBadge permissions={["reservation_item:read", "inventory_item:read", "inventory_level:read", "stock_location:read"]} />
+
 To view a reservation's details:
 
 1. Go to Inventory → Reservations.
@@ -66,6 +72,8 @@ This will open the reservation's details page.
 ---
 
 ## Edit Reservation
+
+<PermissionsBadge permissions={["reservation_item:read", "inventory_item:read", "inventory_level:read", "stock_location:read", "reservation_item:update"]} />
 
 To edit a reservation:
 
@@ -80,6 +88,8 @@ To edit a reservation:
 ---
 
 ## Edit Reservation Metadata
+
+<PermissionsBadge permissions={["reservation_item:update"]} />
 
 Metadata is custom data that can be associated with the reservation in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the reservation.
 
@@ -100,6 +110,8 @@ To edit the reservation's metadata:
 ---
 
 ## Delete Reservation
+
+<PermissionsBadge permissions={["reservation_item:delete"]} />
 
 <Note type="warning">
 
