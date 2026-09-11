@@ -861,6 +861,7 @@ export const specsSitemapData = {
       "tagSectionId": "products",
       "operationSectionIds": [
         "products_getproducts",
+        "products_getproductssearch",
         "products_getproductsid"
       ]
     },
