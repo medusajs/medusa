@@ -1512,6 +1512,366 @@ medusaIntegrationTestRunner({
               })
             )
           })
+
+          it("should apply a weight_total shipping-option price rule", async () => {
+            const weightBasedOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Shipping by weight`,
+                  service_zone_id: shippingOption.service_zone_id,
+                  shipping_profile_id: shippingOption.shipping_profile_id,
+                  provider_id: shippingOption.provider_id,
+                  price_type: shippingOption.price_type,
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [
+                    { currency_code: "usd", amount: 1000 },
+                    {
+                      currency_code: "usd",
+                      amount: 500,
+                      rules: [
+                        {
+                          attribute: "weight_total",
+                          operator: "gt",
+                          value: 50,
+                        },
+                      ],
+                    },
+                  ],
+                  rules: shippingOption.rules.map((rule) => ({
+                    attribute: rule.attribute,
+                    operator: rule.operator,
+                    value: rule.value,
+                  })),
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            const response = await api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              { option_id: weightBasedOption.id },
+              storeHeaders
+            )
+
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                id: cart.id,
+                shipping_methods: expect.arrayContaining([
+                  expect.objectContaining({
+                    shipping_option_id: weightBasedOption.id,
+                    amount: 500,
+                    is_tax_inclusive: true,
+                  }),
+                ]),
+              })
+            )
+          })
+
+          it("should reject a price_total shipping-option price rule", async () => {
+            const response = await api
+              .post(
+                `/admin/shipping-options`,
+                {
+                  name: `Shipping by price`,
+                  service_zone_id: shippingOption.service_zone_id,
+                  shipping_profile_id: shippingOption.shipping_profile_id,
+                  provider_id: shippingOption.provider_id,
+                  price_type: shippingOption.price_type,
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [
+                    { currency_code: "usd", amount: 1000 },
+                    {
+                      currency_code: "usd",
+                      amount: 500,
+                      rules: [
+                        {
+                          attribute: "price_total",
+                          operator: "gt",
+                          value: 1000,
+                        },
+                      ],
+                    },
+                  ],
+                  rules: shippingOption.rules.map((rule) => ({
+                    attribute: rule.attribute,
+                    operator: rule.operator,
+                    value: rule.value,
+                  })),
+                },
+                adminHeaders
+              )
+              .catch((e) => e)
+
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data.message).toContain(
+              "Invalid option"
+            )
+          })
+
+          it("should select a price rule only when both weight_total and item_total match", async () => {
+            const combinedOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Shipping by weight and item total`,
+                  service_zone_id: shippingOption.service_zone_id,
+                  shipping_profile_id: shippingOption.shipping_profile_id,
+                  provider_id: shippingOption.provider_id,
+                  price_type: shippingOption.price_type,
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [
+                    { currency_code: "usd", amount: 1000 },
+                    {
+                      currency_code: "usd",
+                      amount: 500,
+                      rules: [
+                        {
+                          attribute: "weight_total",
+                          operator: "gte",
+                          value: 200,
+                        },
+                        {
+                          attribute: "item_total",
+                          operator: "gte",
+                          value: 2500,
+                        },
+                      ],
+                    },
+                  ],
+                  rules: shippingOption.rules.map((rule) => ({
+                    attribute: rule.attribute,
+                    operator: rule.operator,
+                    value: rule.value,
+                  })),
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            // Single item: weight_total 100 and item total below 2500.
+            // Neither rule matches, so the flat default price is used.
+            let response = await api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              { option_id: combinedOption.id },
+              storeHeaders
+            )
+
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                id: cart.id,
+                shipping_methods: expect.arrayContaining([
+                  expect.objectContaining({
+                    shipping_option_id: combinedOption.id,
+                    amount: 1000,
+                    is_tax_inclusive: true,
+                  }),
+                ]),
+              })
+            )
+
+            // Two items: weight_total 200 and item total above 2500.
+            // Both rules match, so the rule price is used.
+            const heavyCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  items: [
+                    { variant_id: product.variants[0].id, quantity: 2 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            response = await api.post(
+              `/store/carts/${heavyCart.id}/shipping-methods`,
+              { option_id: combinedOption.id },
+              storeHeaders
+            )
+
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                id: heavyCart.id,
+                shipping_methods: expect.arrayContaining([
+                  expect.objectContaining({
+                    shipping_option_id: combinedOption.id,
+                    amount: 500,
+                    is_tax_inclusive: true,
+                  }),
+                ]),
+              })
+            )
+          })
+
+          it("should apply a weight_total shipping-option price rule when listing shipping options", async () => {
+            const weightBasedOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Shipping by weight (list)`,
+                  service_zone_id: shippingOption.service_zone_id,
+                  shipping_profile_id: shippingOption.shipping_profile_id,
+                  provider_id: shippingOption.provider_id,
+                  price_type: shippingOption.price_type,
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [
+                    { currency_code: "usd", amount: 1000 },
+                    {
+                      currency_code: "usd",
+                      amount: 500,
+                      rules: [
+                        {
+                          attribute: "weight_total",
+                          operator: "gt",
+                          value: 50,
+                        },
+                      ],
+                    },
+                  ],
+                  rules: shippingOption.rules.map((rule) => ({
+                    attribute: rule.attribute,
+                    operator: rule.operator,
+                    value: rule.value,
+                  })),
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            // Cart has one item with weight_total 100, so the rule matches.
+            const response = await api.get(
+              `/store/shipping-options?cart_id=${cart.id}`,
+              storeHeaders
+            )
+
+            expect(response.data.shipping_options).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: weightBasedOption.id,
+                  amount: 500,
+                  is_tax_inclusive: true,
+                  calculated_price: expect.objectContaining({
+                    calculated_amount: 500,
+                    is_calculated_price_tax_inclusive: true,
+                  }),
+                }),
+              ])
+            )
+
+            // Cart without items has weight_total 0, so the rule does not match.
+            const lightCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                },
+                storeHeaders
+              )
+            ).data.cart
+
+            const lightResponse = await api.get(
+              `/store/shipping-options?cart_id=${lightCart.id}`,
+              storeHeaders
+            )
+
+            expect(lightResponse.data.shipping_options).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: weightBasedOption.id,
+                  amount: 1000,
+                  is_tax_inclusive: true,
+                }),
+              ])
+            )
+          })
+
+          it("should not apply a rule when only one of its rules matches", async () => {
+            const combinedOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Shipping by weight and item total (exclusion)`,
+                  service_zone_id: shippingOption.service_zone_id,
+                  shipping_profile_id: shippingOption.shipping_profile_id,
+                  provider_id: shippingOption.provider_id,
+                  price_type: shippingOption.price_type,
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [
+                    { currency_code: "usd", amount: 1000 },
+                    {
+                      currency_code: "usd",
+                      amount: 500,
+                      rules: [
+                        {
+                          attribute: "weight_total",
+                          operator: "gte",
+                          value: 100,
+                        },
+                        {
+                          attribute: "item_total",
+                          operator: "gte",
+                          value: 2500,
+                        },
+                      ],
+                    },
+                  ],
+                  rules: shippingOption.rules.map((rule) => ({
+                    attribute: rule.attribute,
+                    operator: rule.operator,
+                    value: rule.value,
+                  })),
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            // Single item: weight_total 100 matches, but the item total is below
+            // 2500. Rules are combined with AND, so the rule price is not applied.
+            const response = await api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              { option_id: combinedOption.id },
+              storeHeaders
+            )
+
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                id: cart.id,
+                shipping_methods: expect.arrayContaining([
+                  expect.objectContaining({
+                    shipping_option_id: combinedOption.id,
+                    amount: 1000,
+                    is_tax_inclusive: true,
+                  }),
+                ]),
+              })
+            )
+          })
         })
 
         it("should add item to cart with tax lines multiple times", async () => {
