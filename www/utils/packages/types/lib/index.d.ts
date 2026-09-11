@@ -474,6 +474,13 @@ export declare type DocBlock =
       text?: string
     }
   | {
+      kind: "enterpriseNotice"
+      featureName?: string
+      featureFlag?: string
+      featureFlagHref?: string
+      beta?: boolean
+    }
+  | {
       kind: "table"
       headers: string[]
       rows: string[][]

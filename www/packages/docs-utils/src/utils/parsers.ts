@@ -1014,7 +1014,9 @@ export const parsePermissionsBadge: ComponentParser = (
   }
 
   const permissions = permissionsJsVar
-    .map((item) => (isExpressionJsVarLiteral(item) ? (item.data as string) : ""))
+    .map((item) =>
+      isExpressionJsVarLiteral(item) ? (item.data as string) : ""
+    )
     .filter((permission) => permission.length > 0)
 
   if (!permissions.length) {
@@ -1079,6 +1081,7 @@ export const parseEnterpriseNotice: ComponentParser = (
   const featureFlag = node.attributes?.find(
     (attr) => attr.name === "featureFlag"
   )?.value as string | undefined
+  const beta = node.attributes?.some((attr) => attr.name === "beta")
 
   const children: UnistNode[] = [
     {
@@ -1102,6 +1105,13 @@ export const parseEnterpriseNotice: ComponentParser = (
         value: `.`,
       }
     )
+  }
+
+  if (beta) {
+    children.push({
+      type: "text",
+      value: ` This ${featureName} is in beta. Its API and behavior may change in future releases.`,
+    })
   }
 
   parent?.children.splice(index, 1, {

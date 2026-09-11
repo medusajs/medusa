@@ -1096,38 +1096,6 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePromotionsWorkflow"
   },
   {
-    "title": "createRbacPoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacPoliciesWorkflow"
-  },
-  {
-    "title": "createRbacRolePoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolePoliciesWorkflow"
-  },
-  {
-    "title": "createRbacRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolesWorkflow"
-  },
-  {
-    "title": "deleteRbacPoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacPoliciesWorkflow"
-  },
-  {
-    "title": "deleteRbacRolePoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolePoliciesWorkflow"
-  },
-  {
-    "title": "deleteRbacRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow"
-  },
-  {
-    "title": "updateRbacPoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacPoliciesWorkflow"
-  },
-  {
-    "title": "updateRbacRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacRolesWorkflow"
-  },
-  {
     "title": "createRegionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRegionsWorkflow"
   },
@@ -1344,10 +1312,6 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTranslationsWorkflow"
   },
   {
-    "title": "assignUserRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/assignUserRolesWorkflow"
-  },
-  {
     "title": "createUserAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
   },
@@ -1360,20 +1324,8 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteUsersWorkflow"
   },
   {
-    "title": "getAssignablePoliciesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignablePoliciesWorkflow"
-  },
-  {
-    "title": "getAssignableRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignableRolesWorkflow"
-  },
-  {
     "title": "removeUserAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow"
-  },
-  {
-    "title": "removeUserRolesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserRolesWorkflow"
   },
   {
     "title": "updateUsersWorkflow",

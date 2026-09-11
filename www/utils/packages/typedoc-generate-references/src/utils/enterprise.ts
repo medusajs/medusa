@@ -2,7 +2,9 @@ export function isEnterprise(featureName: string): boolean {
   return featureName === "rbac"
 }
 
-export function getEnterpriseFeatureFlagUrl(featureName: string): string | undefined {
+export function getEnterpriseFeatureFlagUrl(
+  featureName: string
+): string | undefined {
   switch (featureName) {
     case "rbac":
       return "/resources/enterprise/rbac#how-to-use-the-rbac-module"
@@ -20,7 +22,9 @@ export function getEnterpriseFeatureName(featureName: string): string {
   }
 }
 
-export function getEnterpriseFeatureFlag(featureName: string): string | undefined {
+export function getEnterpriseFeatureFlag(
+  featureName: string
+): string | undefined {
   switch (featureName) {
     case "rbac":
       return "rbac"
@@ -48,11 +52,12 @@ export function getEnterpriseInfo(featureName: string): EnterpriseInfo {
 
 export function getEnterpriseNotice(featureName: string): string {
   const enterpriseInfo = getEnterpriseInfo(featureName)
-  const { isEnterprise, featureFlag, featureFlagUrl, featureNameForDisplay } = enterpriseInfo
+  const { isEnterprise, featureFlag, featureFlagUrl, featureNameForDisplay } =
+    enterpriseInfo
 
   if (!isEnterprise) {
     return ""
   }
 
-  return `<EnterpriseNotice featureName="${featureNameForDisplay}" featureFlag="${featureFlag}" featureFlagHref="${featureFlagUrl}" />\n\n`
+  return `<EnterpriseNotice beta featureName="${featureNameForDisplay}" featureFlag="${featureFlag}" featureFlagHref="${featureFlagUrl}" />\n\n`
 }

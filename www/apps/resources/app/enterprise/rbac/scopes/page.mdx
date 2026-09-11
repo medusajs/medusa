@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
 
 In this guide, you'll learn what an RBAC scope is, when to use one, and how to add scopes to your application.
 
@@ -158,7 +158,7 @@ For example, to scope a request to the vendor passed in a header:
 
 export const middlewareHighlights = [
   ["13", "req.rbac_context", "Set the scope before authorize runs."],
-  ["16", "x-vendor-id", "Read the scope's ID from a request header."],
+  ["17", "x-vendor-id", "Read the scope's ID from a request header."],
   ["22", "authorize", "Resolves the actor's roles for that scope."],
 ]
 

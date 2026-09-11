@@ -17576,6 +17576,14 @@ export const filesMap = [
     "pathname": "/references/promotion/models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/rbac/page.json",
+    "pathname": "/references/modules/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/rbac_models/page.json",
+    "pathname": "/references/rbac/models"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/region/page.json",
     "pathname": "/references/modules/region"
   },
@@ -21322,6 +21330,378 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.PromotionRuleValue/page.json",
     "pathname": "/references/promotion/models/PromotionRuleValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.clearMessages/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.getMessages/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.save/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.saveRawMessageData/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IModuleService/methods/rbac.IModuleService.__joinerConfig/page.json",
+    "pathname": "/references/rbac/IModuleService/methods/rbac.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacPolicies/page.json",
+    "pathname": "/references/rbac/createRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents/page.json",
+    "pathname": "/references/rbac/createRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/createRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoles/page.json",
+    "pathname": "/references/rbac/createRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacPolicies/page.json",
+    "pathname": "/references/rbac/deleteRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents/page.json",
+    "pathname": "/references/rbac/deleteRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/deleteRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoles/page.json",
+    "pathname": "/references/rbac/deleteRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacPolicies/page.json",
+    "pathname": "/references/rbac/listAndCountRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoles/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole/page.json",
+    "pathname": "/references/rbac/listPoliciesForRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacPolicies/page.json",
+    "pathname": "/references/rbac/listRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents/page.json",
+    "pathname": "/references/rbac/listRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/listRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoles/page.json",
+    "pathname": "/references/rbac/listRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacPolicies/page.json",
+    "pathname": "/references/rbac/restoreRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents/page.json",
+    "pathname": "/references/rbac/restoreRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/restoreRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoles/page.json",
+    "pathname": "/references/rbac/restoreRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy/page.json",
+    "pathname": "/references/rbac/retrieveRbacPolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRole/page.json",
+    "pathname": "/references/rbac/retrieveRbacRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent/page.json",
+    "pathname": "/references/rbac/retrieveRbacRoleParent"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy/page.json",
+    "pathname": "/references/rbac/retrieveRbacRolePolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacPolicies/page.json",
+    "pathname": "/references/rbac/softDeleteRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoles/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacPolicies/page.json",
+    "pathname": "/references/rbac/updateRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents/page.json",
+    "pathname": "/references/rbac/updateRbacRoleParents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/updateRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoles/page.json",
+    "pathname": "/references/rbac/updateRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.Context/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.FindConfig/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IMessageAggregator/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IModuleService/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IRbacModuleService/page.json",
+    "pathname": "/references/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.JoinerServiceConfig/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.JoinerServiceConfigAlias/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.MessageAggregatorFormat/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.RestoreReturn/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.SoftDeleteReturn/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.SoftDeleteReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Constructor/page.json",
+    "pathname": "/references/rbac/types/rbac.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleParentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinLink/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinTarget"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Event/page.json",
+    "pathname": "/references/rbac/types/rbac.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.EventMetadata/page.json",
+    "pathname": "/references/rbac/types/rbac.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ExpandScalar/page.json",
+    "pathname": "/references/rbac/types/rbac.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterQuery/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterQueryProperties/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterValue/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterValue2/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterValue2"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacPolicyProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacPolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRoleParentProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacRoleParentProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRolePolicyProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacRolePolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRoleProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacRoleProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FindConfigOrder/page.json",
+    "pathname": "/references/rbac/types/rbac.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.InternalQueryOptions/page.json",
+    "pathname": "/references/rbac/types/rbac.InternalQueryOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.JoinerRelationship/page.json",
+    "pathname": "/references/rbac/types/rbac.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.LinkModulesExtraFields/page.json",
+    "pathname": "/references/rbac/types/rbac.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Message/page.json",
+    "pathname": "/references/rbac/types/rbac.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ModuleJoinerConfig/page.json",
+    "pathname": "/references/rbac/types/rbac.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ModuleJoinerRelationship/page.json",
+    "pathname": "/references/rbac/types/rbac.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.OperatorMap/page.json",
+    "pathname": "/references/rbac/types/rbac.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PrevLimit/page.json",
+    "pathname": "/references/rbac/types/rbac.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Primary/page.json",
+    "pathname": "/references/rbac/types/rbac.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Query/page.json",
+    "pathname": "/references/rbac/types/rbac.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RawMessageFormat/page.json",
+    "pathname": "/references/rbac/types/rbac.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleParentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ReadonlyPrimary/page.json",
+    "pathname": "/references/rbac/types/rbac.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Scalar/page.json",
+    "pathname": "/references/rbac/types/rbac.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleParentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleParentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacPolicy/page.json",
+    "pathname": "/references/rbac/models/RbacPolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRole/page.json",
+    "pathname": "/references/rbac/models/RbacRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleParent/page.json",
+    "pathname": "/references/rbac/models/RbacRoleParent"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRolePolicy/page.json",
+    "pathname": "/references/rbac/models/RbacRolePolicy"
   },
   {
     "filePath": "/www/apps/resources/references/region/IMessageAggregator/methods/region.IMessageAggregator.clearMessages/page.json",

@@ -86,6 +86,21 @@ function renderBlock(block: DocBlock): string {
     }
     case "sourceCodeLink":
       return `[${block.text || "View source code"}](${block.link})`
+    case "enterpriseNotice": {
+      const featureName = block.featureName || "feature"
+      const sentences = [`This ${featureName} requires an enterprise license.`]
+      if (block.featureFlag) {
+        sentences.push(
+          `You must also enable its feature flag: \`${block.featureFlag}\`.`
+        )
+      }
+      if (block.beta) {
+        sentences.push(
+          `This ${featureName} is in beta. Its API and behavior may change in future releases.`
+        )
+      }
+      return sentences.join(" ")
+    }
     case "linkList":
       return block.items
         .map(

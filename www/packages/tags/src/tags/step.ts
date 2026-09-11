@@ -1328,50 +1328,6 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePromotionsValidationStep"
   },
   {
-    "title": "createRbacPoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacPoliciesStep"
-  },
-  {
-    "title": "createRbacRoleParentsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRoleParentsStep"
-  },
-  {
-    "title": "createRbacRolePoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolePoliciesStep"
-  },
-  {
-    "title": "createRbacRolesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolesStep"
-  },
-  {
-    "title": "deleteRbacPoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacPoliciesStep"
-  },
-  {
-    "title": "deleteRbacRolePoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolePoliciesStep"
-  },
-  {
-    "title": "deleteRbacRolesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolesStep"
-  },
-  {
-    "title": "setRoleParentStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setRoleParentStep"
-  },
-  {
-    "title": "updateRbacPoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacPoliciesStep"
-  },
-  {
-    "title": "updateRbacRolesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacRolesStep"
-  },
-  {
-    "title": "validateUserPermissionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateUserPermissionsStep"
-  },
-  {
     "title": "createRegionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRegionsStep"
   },
@@ -1636,19 +1592,7 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteUsersStep"
   },
   {
-    "title": "getAssignablePoliciesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignablePoliciesStep"
-  },
-  {
-    "title": "getAssignableRolesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignableRolesStep"
-  },
-  {
     "title": "updateUsersStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateUsersStep"
-  },
-  {
-    "title": "validateUserRolePermissionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateUserRolePermissionsStep"
   }
 ]

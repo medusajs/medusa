@@ -46,9 +46,7 @@ describe("render", () => {
   })
 
   test("uses the featureName in the tooltip text", () => {
-    const { container } = render(
-      <EnterpriseNotice featureName="RBAC Module" />
-    )
+    const { container } = render(<EnterpriseNotice featureName="RBAC Module" />)
     const tooltipChildren = container.querySelector(
       "[data-testid='tooltip-children']"
     )
@@ -109,5 +107,24 @@ describe("render", () => {
     const badge = container.querySelector("[data-testid='badge']")
     expect(badge).toBeInTheDocument()
     expect(badge).toHaveTextContent("Custom badge content")
+  })
+
+  test("renders a beta badge when beta is enabled", () => {
+    const { container } = render(<EnterpriseNotice beta />)
+    const badges = container.querySelectorAll("[data-testid='badge']")
+    expect(badges).toHaveLength(2)
+    expect(badges[0]).toHaveTextContent("Enterprise")
+    expect(badges[1]).toHaveTextContent("Beta")
+
+    const tooltipChildren = container.querySelectorAll(
+      "[data-testid='tooltip-children']"
+    )
+    expect(tooltipChildren[1]).toHaveTextContent("This feature is in beta.")
+  })
+
+  test("omits the beta badge by default", () => {
+    const { container } = render(<EnterpriseNotice />)
+    const badges = container.querySelectorAll("[data-testid='badge']")
+    expect(badges).toHaveLength(1)
   })
 })
