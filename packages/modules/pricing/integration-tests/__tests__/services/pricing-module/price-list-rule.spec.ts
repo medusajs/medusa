@@ -214,6 +214,57 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           )
         })
+
+        it("should persist a nin operator on a price list rule", async () => {
+          await service.setPriceListRules({
+            price_list_id: "price-list-1",
+            rules: {
+              "customer.groups.id": {
+                operator: "nin",
+                value: ["cg-1", "cg-2"],
+              },
+            },
+          })
+
+          const [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            { relations: ["price_list_rules"] }
+          )
+
+          expect(priceList.price_list_rules).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                attribute: "customer.groups.id",
+                value: ["cg-1", "cg-2"],
+                operator: "nin",
+              }),
+            ])
+          )
+        })
+
+        it("should default the operator to in for a bare array rule", async () => {
+          await service.setPriceListRules({
+            price_list_id: "price-list-1",
+            rules: {
+              sales_channel: ["sc-1"],
+            },
+          })
+
+          const [priceList] = await service.listPriceLists(
+            { id: ["price-list-1"] },
+            { relations: ["price_list_rules"] }
+          )
+
+          expect(priceList.price_list_rules).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                attribute: "sales_channel",
+                value: ["sc-1"],
+                operator: "in",
+              }),
+            ])
+          )
+        })
       })
 
       describe("removePriceListRules", () => {

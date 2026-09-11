@@ -1,4 +1,8 @@
-import { PriceListStatus, PriceListType } from "../../../pricing"
+import {
+  PriceListRuleValue,
+  PriceListStatus,
+  PriceListType,
+} from "../../../pricing"
 
 /**
  * The details of a price to create and add to a price list.
@@ -62,9 +66,16 @@ export interface AdminCreatePriceList {
    */
   type?: PriceListType
   /**
-   * The price list's rules.
+   * The price list's rules. Each value is either an array of values (treated
+   * as the `in` operator) or an object that specifies the operator explicitly.
+   *
+   * @example
+   * // include customers in a group:
+   * { "customer.groups.id": ["cusgroup_123"] }
+   * // exclude customers in a group:
+   * { "customer.groups.id": { operator: "nin", value: ["cusgroup_123"] } }
    */
-  rules?: Record<string, string[]>
+  rules?: Record<string, PriceListRuleValue>
   /**
    * The price list's prices.
    */
@@ -142,9 +153,16 @@ export interface AdminUpdatePriceList {
    */
   type?: PriceListType
   /**
-   * The price list's rules.
+   * The price list's rules. Each value is either an array of values (treated
+   * as the `in` operator) or an object that specifies the operator explicitly.
+   *
+   * @example
+   * // include customers in a group:
+   * { "customer.groups.id": ["cusgroup_123"] }
+   * // exclude customers in a group:
+   * { "customer.groups.id": { operator: "nin", value: ["cusgroup_123"] } }
    */
-  rules?: Record<string, string[]>
+  rules?: Record<string, PriceListRuleValue>
   /**
    * Holds custom data in key-value pairs.
    * @since 2.14.2

@@ -12,9 +12,18 @@ export const PriceListConfiguration = () => {
 
   const { price_list, isPending, isError, error } = usePriceList(id!)
 
-  const customerGroupIds = price_list?.rules?.["customer.groups.id"] as
+  const customerGroupRule = price_list?.rules?.["customer.groups.id"] as
     | string[]
+    | { operator: "in" | "nin"; value: string[] }
     | undefined
+
+  const customerGroupIds = Array.isArray(customerGroupRule)
+    ? customerGroupRule
+    : customerGroupRule?.value
+
+  const customerGroupOperator: "in" | "nin" = Array.isArray(customerGroupRule)
+    ? "in"
+    : customerGroupRule?.operator ?? "in"
 
   const {
     customer_groups,
@@ -61,6 +70,7 @@ export const PriceListConfiguration = () => {
         <PriceListConfigurationForm
           priceList={price_list}
           customerGroups={initialCustomerGroups}
+          customerGroupOperator={customerGroupOperator}
         />
       )}
     </RouteDrawer>
