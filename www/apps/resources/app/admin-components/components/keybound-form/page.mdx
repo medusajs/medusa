@@ -1,0 +1,104 @@
+---
+sidebar_label: "Keybound Form"
+---
+
+import { TypeList, Kbd, getOsShortcut } from "docs-ui"
+
+export const metadata = {
+  title: `KeyboundForm - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `KeyboundForm` component is a `form` element that submits only when the user presses <Kbd>{getOsShortcut()}</Kbd>+<Kbd>Enter</Kbd>. The Medusa Admin uses it in its modals and drawers so that pressing <Kbd>Enter</Kbd> in a field doesn't submit the form by accident.
+
+```tsx
+import { KeyboundForm } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Use `KeyboundForm` in place of a native `form` element inside a `Form` component, as shown in the [Forms guide](../../guides/forms/page.mdx):
+
+```tsx
+import {
+  Form,
+  KeyboundForm,
+} from "@medusajs/dashboard/components"
+import { Button, Input } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
+
+const BrandForm = () => {
+  const form = useForm({
+    defaultValues: {
+      name: "",
+    },
+  })
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    console.log(data)
+  })
+
+  return (
+    <Form {...form}>
+      <KeyboundForm onSubmit={handleSubmit}>
+        <Form.Field
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>Name</Form.Label>
+              <Form.Control>
+                <Input {...field} />
+              </Form.Control>
+              <Form.ErrorMessage />
+            </Form.Item>
+          )}
+        />
+        <Button type="submit">Save</Button>
+      </KeyboundForm>
+    </Form>
+  )
+}
+```
+
+The user can still submit the form by clicking the submit button. When the user presses <Kbd>Enter</Kbd> in a field, `KeyboundForm` prevents the default submission. In a textarea, pressing <Kbd>Enter</Kbd> inserts a new line instead.
+
+---
+
+## Props
+
+`KeyboundForm` accepts the same props as a native `form` element, including the following:
+
+<TypeList
+  types={[
+    {
+      name: "onSubmit",
+      type: "`(event: React.FormEvent<HTMLFormElement>) => void`",
+      optional: true,
+      description: `The function to execute when the user submits the form. \`KeyboundForm\` prevents the event's default behavior before calling it.`,
+    },
+    {
+      name: "onKeyDown",
+      type: "`(event: React.KeyboardEvent<HTMLFormElement>) => void`",
+      optional: true,
+      description: `A custom key down handler. If you pass this prop, it replaces the default handler, so the keyboard shortcut no longer submits the form.`,
+    },
+    {
+      name: "children",
+      type: "`React.ReactNode`",
+      optional: true,
+      description: `The form's content, such as its fields and submit button.`,
+    },
+  ]}
+/>
+
+`KeyboundForm` also accepts every other attribute of a native [form element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form), such as `id`, `className`, and `noValidate`.

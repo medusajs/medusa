@@ -1,0 +1,197 @@
+---
+sidebar_label: "Empty States"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Empty States - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These components are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `NoRecords` and `NoResults` components show the empty states of lists and tables in the Medusa Admin. Use `NoRecords` when a list has no data at all, and `NoResults` when a search or filter returns no matches.
+
+```tsx
+import {
+  NoRecords,
+  NoResults,
+} from "@medusajs/dashboard/components"
+```
+
+Both components fall back to the Medusa Admin's default translated messages when you don't pass a title or a message. Learn more about translations in the [Admin Translations](!docs!/learn/fundamentals/admin/translations) documentation.
+
+---
+
+## NoRecords
+
+The `NoRecords` component shows an icon, a title, a message, and an optional link button. The Medusa Admin uses it in sections that have no data yet, such as a customer with no addresses.
+
+### Example
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { NoRecords } from "@medusajs/dashboard/components"
+import { Container } from "@medusajs/ui"
+
+const CampaignsWidget = () => {
+  const campaigns = []
+
+  return (
+    <Container className="p-0">
+      {campaigns.length === 0 && (
+        <NoRecords
+          title="No campaigns"
+          message="Create a campaign to get started."
+          action={{
+            to: "/campaigns/create",
+            label: "Create campaign",
+          }}
+        />
+      )}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default CampaignsWidget
+```
+
+### Props
+
+<TypeList
+  types={[
+    {
+      name: "title",
+      type: "`string`",
+      optional: true,
+      description:
+        "The empty state's title. Defaults to the Medusa Admin's translated `general.noRecordsTitle` message.",
+    },
+    {
+      name: "message",
+      type: "`string`",
+      optional: true,
+      description:
+        "The message shown under the title. Defaults to the Medusa Admin's translated `general.noRecordsMessage` message.",
+    },
+    {
+      name: "action",
+      type: "`object`",
+      optional: true,
+      description:
+        "A button shown under the message that links to the `to` path. If not passed, no button is shown.",
+      children: [
+        {
+          name: "to",
+          type: "`string`",
+          optional: false,
+          description: "The path that the button links to.",
+        },
+        {
+          name: "label",
+          type: "`string`",
+          optional: false,
+          description: "The button's label.",
+        },
+      ],
+    },
+    {
+      name: "buttonVariant",
+      type: "`\"default\"` \\| `\"transparentIconLeft\"`",
+      optional: true,
+      defaultValue: "default",
+      description:
+        "The action button's style. `default` shows a secondary button, and `transparentIconLeft` shows a transparent button with a plus icon.",
+    },
+    {
+      name: "icon",
+      type: "`React.ReactNode`",
+      optional: true,
+      description:
+        "The icon shown above the title. Defaults to an exclamation-circle icon.",
+    },
+    {
+      name: "className",
+      type: "`string`",
+      optional: true,
+      description:
+        "Additional CSS classes to apply to the empty state's container.",
+    },
+  ]}
+/>
+
+---
+
+## NoResults
+
+The `NoResults` component shows a magnifying-glass icon, a title, and a message. The Medusa Admin uses it in tables when a search query or a filter returns no matching records.
+
+### Example
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { NoResults } from "@medusajs/dashboard/components"
+import { Container } from "@medusajs/ui"
+
+const SearchResultsWidget = () => {
+  const results = []
+
+  return (
+    <Container className="p-0">
+      {results.length === 0 && <NoResults />}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default SearchResultsWidget
+```
+
+### Props
+
+<TypeList
+  types={[
+    {
+      name: "title",
+      type: "`string`",
+      optional: true,
+      description:
+        "The empty state's title. Defaults to the Medusa Admin's translated `general.noResultsTitle` message.",
+    },
+    {
+      name: "message",
+      type: "`string`",
+      optional: true,
+      description:
+        "The message shown under the title. Defaults to the Medusa Admin's translated `general.noResultsMessage` message.",
+    },
+    {
+      name: "className",
+      type: "`string`",
+      optional: true,
+      description:
+        "Additional CSS classes to apply to the empty state's container.",
+    },
+  ]}
+/>
+
+The `NoResultsProps` type is also exported, so you can use it to type your own wrapper components:
+
+```tsx
+import type {
+  NoResultsProps,
+} from "@medusajs/dashboard/components"
+```

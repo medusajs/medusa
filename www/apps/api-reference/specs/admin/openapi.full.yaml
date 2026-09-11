@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.20.1
+  version: 2.21.0
   title: Medusa Admin API
   license:
     name: MIT
@@ -16116,8 +16116,8 @@ paths:
             })
 
             sdk.admin.customer.retrieveAddress("cus_123", "cus_addr_123")
-            .then(({ customer }) => {
-              console.log(customer)
+            .then(({ address }) => {
+              console.log(address)
             })
         - lang: Shell
           label: cURL
@@ -84014,6 +84014,9 @@ components:
           type: number
           title: used
           description: The number of times the promotion has been used.
+        metadata:
+          type: object
+          description: Custom key-value pairs for the promotion.
     AdminPromotionResponse:
       type: object
       description: The promotion's details.

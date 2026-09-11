@@ -1,7 +1,17 @@
 import { NextResponse } from "next/server"
-import { withRouteErrorHandling } from "docs-utils"
+import { throwErrorResponse, withRouteErrorHandling } from "docs-utils"
 import { globalConfig } from "docs-utils/global-config"
-import { getSpecVersions } from "@/utils/get-spec-versions"
+import {
+  getCachedSpecVersions,
+  specVersionExists,
+} from "@/utils/get-spec-versions"
+
+const DEFAULT_LIMIT = 15
+const MAX_LIMIT = 100
+
+const cacheHeaders = {
+  "Cache-Control": "public, max-age=3600, must-revalidate",
+}
 
 type VersionSpecs = {
   version: string
@@ -9,8 +19,16 @@ type VersionSpecs = {
   store_url: string
 }
 
-// The number of archived versions returned alongside the latest one.
-const MAX_ARCHIVED_VERSIONS = 4
+function clampNumber(
+  value: string | null,
+  fallback: number,
+  min: number,
+  max: number
+): number {
+  const parsed = parseInt(value || "", 10)
+
+  return Number.isNaN(parsed) ? fallback : Math.min(Math.max(parsed, min), max)
+}
 
 /**
  * The latest version isn't archived under `specs/versions`, so it's derived
@@ -59,15 +77,62 @@ export const GET = withRouteErrorHandling(async (request: Request) => {
   })
 
   const latestVersion = getLatestVersion()
-  const archivedVersions = await getSpecVersions()
+  const versionFilter = requestUrl.searchParams.get("version")
 
+  // A single version is looked up on its own, so the full listing is never
+  // retrieved when it's filtered down to one version anyway.
+  if (versionFilter) {
+    const isLatest = versionFilter === latestVersion
+
+    if (!isLatest && !(await specVersionExists(versionFilter))) {
+      throwErrorResponse(
+        404,
+        `No OpenAPI specs found for version "${versionFilter}"`
+      )
+    }
+
+    return NextResponse.json(
+      {
+        versions: [
+          toVersionSpecs(versionFilter, isLatest ? undefined : versionFilter),
+        ],
+        count: 1,
+        limit: 1,
+        offset: 0,
+      },
+      { headers: cacheHeaders }
+    )
+  }
+
+  const archivedVersions = (await getCachedSpecVersions()).filter(
+    (version) => version !== latestVersion
+  )
+
+  const count = archivedVersions.length + 1
+  const limit = clampNumber(
+    requestUrl.searchParams.get("limit"),
+    DEFAULT_LIMIT,
+    1,
+    MAX_LIMIT
+  )
+  const offset = clampNumber(requestUrl.searchParams.get("offset"), 0, 0, count)
+
+  // The latest version heads the list, so it shifts the archived versions by
+  // one and only an offset of `0` includes it.
   const versions: VersionSpecs[] = [
-    toVersionSpecs(latestVersion),
+    ...(offset === 0 ? [toVersionSpecs(latestVersion)] : []),
     ...archivedVersions
-      .filter((version) => version !== latestVersion)
-      .slice(0, MAX_ARCHIVED_VERSIONS)
+      .slice(Math.max(offset - 1, 0), offset + limit - 1)
       .map((version) => toVersionSpecs(version, version)),
   ]
 
-  return NextResponse.json({ versions })
+  return NextResponse.json(
+    {
+      versions,
+      count,
+      limit,
+      offset,
+    },
+    { headers: cacheHeaders }
+  )
 })

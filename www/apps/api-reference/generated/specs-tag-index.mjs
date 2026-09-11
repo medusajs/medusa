@@ -484,6 +484,7 @@ export const specsTagIndex = {
     ],
     "products": [
       "store_products.yaml",
+      "store_products_search.yaml",
       "store_products_{id}.yaml"
     ],
     "regions": [

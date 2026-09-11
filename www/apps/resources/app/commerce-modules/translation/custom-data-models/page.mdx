@@ -225,17 +225,22 @@ In your custom API routes, you can retrieve the request's locale from the `local
 For example, to retrieve blog posts with translated titles in the `/store/posts` API route:
 
 export const apiRouteHighlights = [
-  ["15", "locale", "Pass the request locale to the query options."],
+  ["20", "locale", "Pass the request locale to the query options."],
 ]
 
 ```ts title="src/api/routes/store/posts.ts" highlights={apiRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: posts } = await query.graph(
     {

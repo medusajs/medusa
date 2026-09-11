@@ -1,5 +1,29 @@
 # @medusajs/framework
 
+## 2.21.0
+
+### Minor Changes
+
+- [#16702](https://github.com/medusajs/medusa/pull/16702) [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework, medusa, loyalty-plugin): set a strict allowed list for store API routes
+
+### Patch Changes
+
+- [#16716](https://github.com/medusajs/medusa/pull/16716) [`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(framework,medusa): allow overriding a route's disallowed query fields from a global middleware
+
+- [#16351](https://github.com/medusajs/medusa/pull/16351) [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): mark migration scripts as completed only after successful run
+
+- [#16370](https://github.com/medusajs/medusa/pull/16370) [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382) Thanks [@DS123-ally](https://github.com/DS123-ally)! - fix(framework): make unlessPath deterministic for stateful regular expressions
+
+- Updated dependencies [[`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34), [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b), [`ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17`](https://github.com/medusajs/medusa/commit/ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17), [`b650b6c9a486f50ac437614ba36c7f42a203a458`](https://github.com/medusajs/medusa/commit/b650b6c9a486f50ac437614ba36c7f42a203a458), [`bda24b9725ac697ec5e8f706b503013e20babf12`](https://github.com/medusajs/medusa/commit/bda24b9725ac697ec5e8f706b503013e20babf12)]:
+  - @medusajs/types@2.21.0
+  - @medusajs/utils@2.21.0
+  - @medusajs/modules-sdk@2.21.0
+  - @medusajs/orchestration@2.21.0
+  - @medusajs/workflows-sdk@2.21.0
+  - @medusajs/cli@2.21.0
+  - @medusajs/deps@2.21.0
+  - @medusajs/telemetry@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

@@ -1,4 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { MetadataType } from "../../common"
 import { CreateCampaignDTO } from "../mutations"
 import {
   ApplicationMethodDTO,
@@ -94,6 +95,11 @@ export interface PromotionDTO {
    * The associated campaign.
    */
   campaign?: CampaignDTO
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: MetadataType
 }
 
 /**
@@ -157,6 +163,11 @@ export interface CreatePromotionDTO {
    * The associated campaign's ID.
    */
   campaign_id?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: MetadataType
 }
 
 /**
@@ -211,6 +222,11 @@ export interface UpdatePromotionDTO {
    * The associated campaign's ID.
    */
   campaign_id?: string | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: MetadataType
 }
 
 /**

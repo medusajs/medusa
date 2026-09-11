@@ -40,6 +40,14 @@ export interface SearchReindexInput {
    * subset of the index's documents.
    */
   filters?: Record<string, unknown>
+
+  /**
+   * Rebuilds only documents that changed at or after this date, passed to the
+   * index definition's `seed` function. Like `filters`,
+   * this always runs in place — a version built from a subset was never
+   * meant to serve every read, so it never swaps in.
+   */
+  since?: Date
 }
 
 /**

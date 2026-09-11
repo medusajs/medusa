@@ -1,0 +1,222 @@
+---
+sidebar_label: "Form Validation"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Form Validation Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the [Zod](https://zod.dev/) schemas and validation helpers that the Medusa Admin uses in its forms. Use them with [react-hook-form](https://react-hook-form.com/) and the `Form` component, as shown in the [Forms guide](../../guides/forms/page.mdx), to validate your [admin extension](!docs!/learn/fundamentals/admin) forms the same way the Medusa Admin does.
+
+```tsx
+import {
+  AddressSchema,
+  EmailSchema,
+  metadataFormSchema,
+  optionalFloat,
+  optionalInt,
+  partialFormValidation,
+} from "@medusajs/dashboard/lib"
+```
+
+---
+
+## optionalInt and optionalFloat
+
+Zod schemas for optional number inputs that accept either a string or a number, since an input's value is a string. Both treat an empty string and `undefined` as valid, and both reject negative values. `optionalInt` also rejects values that aren't whole numbers.
+
+Both schemas use the Medusa Admin's translated error messages.
+
+```tsx
+import { z } from "zod"
+import {
+  optionalFloat,
+  optionalInt,
+} from "@medusajs/dashboard/lib"
+
+const schema = z.object({
+  quantity: optionalInt,
+  weight: optionalFloat,
+})
+```
+
+### Values
+
+<TypeList
+  types={[
+    {
+      name: "optionalInt",
+      type: "`ZodEffects<ZodOptional<ZodUnion<[ZodString, ZodNumber]>>>`",
+      description: "Validates that the value is a positive integer, allowing an empty string or `undefined`.",
+    },
+    {
+      name: "optionalFloat",
+      type: "`ZodEffects<ZodOptional<ZodUnion<[ZodString, ZodNumber]>>>`",
+      description: "Validates that the value is a positive number, allowing an empty string or `undefined`.",
+    },
+  ]}
+/>
+
+<Note>
+
+Both schemas keep the value as a string when the user types one. Use [castNumber](../money-and-currency/page.mdx#castnumber) to convert the validated value into a number before sending it to the Medusa backend.
+
+</Note>
+
+---
+
+## metadataFormSchema
+
+A Zod schema for the key-value metadata form that the Medusa Admin uses to edit a resource's `metadata` property. It validates an array of rows, where each row holds a key, a value, and flags that track how the row changed.
+
+```tsx
+import { z } from "zod"
+import { metadataFormSchema } from "@medusajs/dashboard/lib"
+
+const schema = z.object({
+  metadata: metadataFormSchema,
+})
+```
+
+### Row Properties
+
+<TypeList
+  types={[
+    {
+      name: "key",
+      type: "`string`",
+      optional: false,
+      description: "The metadata key.",
+    },
+    {
+      name: "value",
+      type: "`unknown`",
+      optional: false,
+      description: "The metadata value.",
+    },
+    {
+      name: "isInitial",
+      type: "`boolean | undefined`",
+      optional: false,
+      description: "Whether the row existed before the user edited the form.",
+    },
+    {
+      name: "isDeleted",
+      type: "`boolean | undefined`",
+      optional: false,
+      description: "Whether the user removed the row.",
+    },
+    {
+      name: "isIgnored",
+      type: "`boolean | undefined`",
+      optional: false,
+      description: "Whether the row is excluded from the submitted metadata.",
+    },
+  ]}
+/>
+
+---
+
+## partialFormValidation
+
+Validates a subset of a form's fields against a Zod schema. Use it in a multi-step form to validate only the fields of the current step before moving to the next one.
+
+The function clears the errors of the passed fields, validates their current values, and sets an error on each field that fails.
+
+```tsx
+import { z } from "zod"
+import {
+  partialFormValidation,
+} from "@medusajs/dashboard/lib"
+
+const schema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+})
+
+const onContinue = () => {
+  const isValid = partialFormValidation(
+    form,
+    ["name", "email"],
+    schema
+  )
+
+  if (isValid) {
+    setStep("details")
+  }
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "form",
+      type: "`UseFormReturn<TForm>`",
+      optional: false,
+      description: "The form returned by react-hook-form's `useForm` hook.",
+    },
+    {
+      name: "fields",
+      type: "`FieldPath<any>[]`",
+      optional: false,
+      description: "The names of the fields to validate.",
+    },
+    {
+      name: "schema",
+      type: "`z.ZodSchema<any>`",
+      optional: false,
+      description: "The Zod schema to validate the fields against.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `boolean` that is `true` when every passed field is valid. When it returns `false`, it has already set the errors on the form.
+
+---
+
+## AddressSchema and EmailSchema
+
+Zod schemas for the address and email fields that the Medusa Admin uses in its forms.
+
+```tsx
+import { z } from "zod"
+import {
+  AddressSchema,
+  EmailSchema,
+} from "@medusajs/dashboard/lib"
+
+const schema = z.object({
+  shipping_address: AddressSchema,
+}).merge(EmailSchema)
+```
+
+### Values
+
+<TypeList
+  types={[
+    {
+      name: "AddressSchema",
+      type: "`ZodObject`",
+      description: "An object schema that requires `first_name`, `last_name`, `address_1`, `city`, `postal_code`, and `country_code`, and optionally accepts `company`, `address_2`, `province`, and `phone`.",
+    },
+    {
+      name: "EmailSchema",
+      type: "`ZodObject`",
+      description: "An object schema with a required `email` property that must be a valid email address.",
+    },
+  ]}
+/>

@@ -1,0 +1,291 @@
+---
+sidebar_label: "Data Table Hooks"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Data Table Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The data table hooks build the columns, filters, query parameters, and empty state of a [DataTable](!ui!/components/data-table) component. The Medusa Admin uses them in its list pages, such as the sales channels list, to keep tables consistent across the dashboard.
+
+```tsx
+import {
+  useDataTableDateColumns,
+  useDataTableDateFilters,
+  useSalesChannelTableColumns,
+  useSalesChannelTableEmptyState,
+  useSalesChannelTableFilters,
+  useSalesChannelTableQuery,
+} from "@medusajs/dashboard/hooks"
+```
+
+---
+
+## useDataTableDateColumns
+
+The `useDataTableDateColumns` hook returns the sortable `created_at` and `updated_at` columns of a data table. Each column shows the formatted date and a tooltip with the date and time, both translated to the Medusa Admin's active language.
+
+### Example
+
+Append the date columns to your table's own columns:
+
+```tsx
+import {
+  useDataTableDateColumns,
+} from "@medusajs/dashboard/hooks"
+import { createDataTableColumnHelper } from "@medusajs/ui"
+import { useMemo } from "react"
+
+const columnHelper = createDataTableColumnHelper()
+
+const useColumns = () => {
+  const dateColumns = useDataTableDateColumns()
+
+  return useMemo(
+    () => [
+      columnHelper.accessor("name", {
+        header: "Name",
+        enableSorting: true,
+      }),
+      ...dateColumns,
+    ],
+    [dateColumns]
+  )
+}
+```
+
+The hook's type parameter is the table's row type, which must have the `created_at` and `updated_at` properties. For example, use `useDataTableDateColumns<HttpTypes.AdminProduct>()`.
+
+### Returns
+
+Returns a `DataTableColumnDef<TData>[]` with the `created_at` and `updated_at` column definitions, in that order. Both columns have sorting enabled. Pass them in the `columns` prop of the `DataTable` component. `TData` is the type of a single row in the table.
+
+---
+
+## useDataTableDateFilters
+
+The `useDataTableDateFilters` hook returns the `created_at` and `updated_at` filters of a data table. Each filter has the presets today, last seven days, last thirty days, last ninety days, and last twelve months, along with a custom range option.
+
+### Example
+
+Append the date filters to your table's own filters:
+
+```tsx
+import {
+  useDataTableDateFilters,
+} from "@medusajs/dashboard/hooks"
+import { createDataTableFilterHelper } from "@medusajs/ui"
+import { useMemo } from "react"
+
+const filterHelper = createDataTableFilterHelper()
+
+const useFilters = () => {
+  const dateFilters = useDataTableDateFilters()
+
+  return useMemo(
+    () => [
+      filterHelper.accessor("status", {
+        label: "Status",
+        type: "radio",
+        options: [
+          { label: "Draft", value: "draft" },
+          { label: "Published", value: "published" },
+        ],
+      }),
+      ...dateFilters,
+    ],
+    [dateFilters]
+  )
+}
+```
+
+The applied filters are set as query parameters whose values are JSON strings, such as `{"$gte":"2025-04-01T00:00:00.000Z"}`. Parse them with `JSON.parse` before you send them to the Medusa backend.
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "disableRangeOption",
+      type: "`boolean`",
+      optional: true,
+      defaultValue: "false",
+      description: "Whether to remove the custom range option, so that the user can only choose one of the presets.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `DataTableFilter[]` with the `created_at` and `updated_at` filter definitions, in that order. Pass them in the `filters` prop of the `DataTable` component.
+
+---
+
+## useSalesChannelTableColumns
+
+The `useSalesChannelTableColumns` hook returns the columns of a sales channels data table. The Medusa Admin uses it in the sales channels list page and in the forms that select a product's sales channels.
+
+### Example
+
+```tsx
+import { DataTable } from "@medusajs/dashboard/components"
+import {
+  useSalesChannels,
+  useSalesChannelTableColumns,
+} from "@medusajs/dashboard/hooks"
+
+const SalesChannelTable = () => {
+  const columns = useSalesChannelTableColumns()
+  const { sales_channels, count, isPending } =
+    useSalesChannels()
+
+  return (
+    <DataTable
+      data={sales_channels ?? []}
+      columns={columns}
+      rowCount={count}
+      getRowId={(row) => row.id}
+      isLoading={isPending}
+    />
+  )
+}
+```
+
+### Returns
+
+Returns a `DataTableColumnDef<HttpTypes.AdminSalesChannel>[]` with the sortable `name`, `description`, and `is_disabled` columns, followed by the `created_at` and `updated_at` columns of the `useDataTableDateColumns` hook. The `is_disabled` column renders a status cell that shows whether the sales channel is enabled or disabled.
+
+---
+
+## useSalesChannelTableFilters
+
+The `useSalesChannelTableFilters` hook returns the filters of a sales channels data table.
+
+### Example
+
+```tsx
+import { DataTable } from "@medusajs/dashboard/components"
+import {
+  useSalesChannelTableColumns,
+  useSalesChannelTableFilters,
+} from "@medusajs/dashboard/hooks"
+
+const SalesChannelTable = ({ salesChannels, count }) => {
+  const columns = useSalesChannelTableColumns()
+  const filters = useSalesChannelTableFilters()
+
+  return (
+    <DataTable
+      data={salesChannels}
+      columns={columns}
+      filters={filters}
+      rowCount={count}
+      getRowId={(row) => row.id}
+    />
+  )
+}
+```
+
+### Returns
+
+Returns a `DataTableFilter[]` with an `is_disabled` radio filter that has the enabled and disabled options, followed by the `created_at` and `updated_at` filters of the `useDataTableDateFilters` hook.
+
+---
+
+## useSalesChannelTableQuery
+
+The `useSalesChannelTableQuery` hook reads the sales channel table's query parameters from the URL and returns the parameters to pass to the list sales channels request.
+
+### Example
+
+```tsx
+import {
+  useSalesChannels,
+  useSalesChannelTableQuery,
+} from "@medusajs/dashboard/hooks"
+
+const PAGE_SIZE = 20
+
+const SalesChannelTable = () => {
+  const searchParams = useSalesChannelTableQuery({
+    pageSize: PAGE_SIZE,
+  })
+
+  const { sales_channels, count } =
+    useSalesChannels(searchParams)
+
+  // ...
+}
+```
+
+The hook reads the `offset`, `q`, `order`, `created_at`, `updated_at`, and `is_disabled` query parameters, and it parses the values that aren't strings.
+
+### Parameters
+
+The hook accepts an object with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "prefix",
+      type: "`string`",
+      optional: false,
+      description: "A prefix for the table's query parameters. Pass it when the page has more than one table, so that each table has its own query parameters.",
+    },
+    {
+      name: "pageSize",
+      type: "`number`",
+      optional: false,
+      description: "The number of sales channels per page, which the hook sets as the request's `limit`. The default value is `20`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns an `HttpTypes.AdminSalesChannelListParams` object with the query parameters of the list sales channels request, including `limit`, `offset`, `q`, `order`, `created_at`, `updated_at`, and `is_disabled`.
+
+---
+
+## useSalesChannelTableEmptyState
+
+The `useSalesChannelTableEmptyState` hook returns the translated empty state content of a sales channels data table.
+
+### Example
+
+```tsx
+import { DataTable } from "@medusajs/dashboard/components"
+import {
+  useSalesChannelTableColumns,
+  useSalesChannelTableEmptyState,
+} from "@medusajs/dashboard/hooks"
+
+const SalesChannelTable = ({ salesChannels, count }) => {
+  const columns = useSalesChannelTableColumns()
+  const emptyState = useSalesChannelTableEmptyState()
+
+  return (
+    <DataTable
+      data={salesChannels}
+      columns={columns}
+      rowCount={count}
+      getRowId={(row) => row.id}
+      emptyState={emptyState}
+    />
+  )
+}
+```
+
+### Returns
+
+Returns a `DataTableEmptyStateProps` object with an `empty` property, shown when the store has no sales channels, and a `filtered` property, shown when the applied filters match no sales channels. Each has a `heading` and a `description`.
