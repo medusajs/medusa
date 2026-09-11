@@ -123,13 +123,15 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
         results.push(result)
       } finally {
         running--
-        processAllBatches()
+        processAllBatches().catch(batchesFailed)
       }
     }
 
     let batchesDone: (value: void) => void = () => {}
-    const awaitBatches = new Promise((ok) => {
+    let batchesFailed: (reason?: unknown) => void = () => {}
+    const awaitBatches = new Promise<void>((ok, fail) => {
       batchesDone = ok
+      batchesFailed = fail
     })
     const processAllBatches = async () => {
       let isDone = false
@@ -150,7 +152,7 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
       }
     }
 
-    processAllBatches()
+    processAllBatches().catch(batchesFailed)
     await awaitBatches
 
     const flattenedResults = results.reduce((acc, result) => {
