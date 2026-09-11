@@ -502,6 +502,33 @@ moduleIntegrationTestRunner<ICachingModuleService>({
           expect(cachedAfterUpdate).toBeNull()
         })
       })
+
+      describe("Invalidation dispatch", () => {
+        it("should not register the invalidation handler as an event bus interceptor", async () => {
+          // Interceptors run in the process that emits the event, including a
+          // `worker_mode: "server"` process, and are redundant with the "*"
+          // subscriber since events with a matching subscriber are queued anyway.
+          expect(mockEventBus.interceptors_.size).toBe(0)
+        })
+
+        it("should await the provider before resolving a clear", async () => {
+          const product = {
+            id: "prod_await",
+            title: "Await",
+            handle: "await",
+          }
+          const key = await service.computeKey(product)
+
+          await service.set({ key, data: product })
+          expect(await service.get({ key })).toEqual(product)
+
+          await service.clear({ key })
+
+          // The entry is gone as soon as `clear` resolves, rather than at some
+          // later point once the provider catches up.
+          expect(await service.get({ key })).toBeNull()
+        })
+      })
     })
   },
 })
