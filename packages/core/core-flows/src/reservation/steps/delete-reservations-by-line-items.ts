@@ -32,10 +32,10 @@ export const deleteReservationsByLineItemsStep = createStep(
       await service.deleteReservationItemsByLineItem(ids)
     })
 
-    return new StepResponse(reservationIds, { ids, inventoryItemIds })
+    return new StepResponse(reservationIds, { reservationIds, inventoryItemIds })
   },
   async (data, { container }) => {
-    if (!data?.ids?.length) {
+    if (!data?.reservationIds?.length) {
       return
     }
 
@@ -44,8 +44,14 @@ export const deleteReservationsByLineItemsStep = createStep(
 
     const lockingKeys = Array.from(new Set(data.inventoryItemIds))
 
+    // Restore exactly the reservations this step deleted, by id - not
+    // restoreReservationItemsByLineItem, which un-soft-deletes *every*
+    // soft-deleted reservation for the line item, including ones that were
+    // legitimately consumed by fulfillment long before this workflow ran.
+    // Those don't belong to this step's delete and shouldn't come back just
+    // because this step is being compensated.
     await locking.execute(lockingKeys, async () => {
-      await service.restoreReservationItemsByLineItem(data.ids)
+      await service.restoreReservationItems(data.reservationIds)
     })
   }
 )
