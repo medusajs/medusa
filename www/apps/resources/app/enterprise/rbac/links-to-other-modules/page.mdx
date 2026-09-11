@@ -39,7 +39,7 @@ The RBAC Module has the following links to other modules:
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        [User](/references/user/models/User) in [User Module](../../commerce-modules/user/page.mdx)
+        [User](/references/user/models/User) in [User Module](../../../commerce-modules/user/page.mdx)
       </Table.Cell>
       <Table.Cell>
         `RbacRoleAssignment`
@@ -53,7 +53,7 @@ The RBAC Module has the following links to other modules:
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        [Invite](/references/user/models/Invite) in [User Module](../../commerce-modules/user/page.mdx)
+        [Invite](/references/user/models/Invite) in [User Module](../../../commerce-modules/user/page.mdx)
       </Table.Cell>
       <Table.Cell>
         `RbacRoleAssignment`
@@ -74,7 +74,7 @@ The RBAC Module has the following links to other modules:
 
 You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record, as explained in the [RBAC Concepts](../concepts/page.mdx#role-assignment) guide.
 
-Since the assignment stores the granted entity's type and ID, it isn't a stored link between two data models. Instead, Medusa defines read-only links that expose the roles of a `User` or an `Invite` from the [User Module](../../commerce-modules/user/page.mdx).
+Since the assignment stores the granted entity's type and ID, it isn't a stored link between two data models. Instead, Medusa defines read-only links that expose the roles of a `User` or an `Invite` from the [User Module](../../../commerce-modules/user/page.mdx).
 
 An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
 

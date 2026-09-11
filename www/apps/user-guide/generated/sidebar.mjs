@@ -473,7 +473,6 @@ export const generatedSidebars = [
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Common Roles",
                 "path": "/settings/roles/common-roles",
@@ -483,7 +482,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Policies",
             "path": "/settings/policies",
@@ -491,7 +489,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Regions",
             "path": "/settings/regions",
