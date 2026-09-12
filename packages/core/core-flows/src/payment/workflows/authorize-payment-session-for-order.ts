@@ -47,7 +47,7 @@ export function paymentCapturedEventData(payment?: {
   id: string
   captures?: unknown[]
   captured_at?: unknown
-}) {
+} | null) {
   if (!payment || (!payment.captures?.length && !payment.captured_at)) {
     return null
   }
