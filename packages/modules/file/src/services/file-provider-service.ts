@@ -48,6 +48,14 @@ export default class FileProviderService {
     return this.fileProvider_.delete(fileData)
   }
 
+  deleteByUrl(url: string): Promise<void> {
+    if (!this.fileProvider_.deleteByUrl) {
+      return Promise.resolve()
+    }
+
+    return this.fileProvider_.deleteByUrl(url)
+  }
+
   getPresignedDownloadUrl(
     fileData: FileTypes.ProviderGetFileDTO
   ): Promise<string> {

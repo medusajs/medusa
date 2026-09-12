@@ -324,6 +324,23 @@ export class S3FileService extends AbstractFileProviderService {
     }
   }
 
+  async deleteByUrl(url: string): Promise<void> {
+    await this.delete({ fileKey: this.getFileKeyFromUrl(url) })
+  }
+
+  private getFileKeyFromUrl(url: string): string {
+    const prefix = `${this.config_.fileUrl}/`
+
+    if (!url.startsWith(prefix)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `File ${url} is not managed by this file provider`
+      )
+    }
+
+    return url.slice(prefix.length).split("/").map(decodeURIComponent).join("/")
+  }
+
   async getPresignedDownloadUrl(
     fileData: FileTypes.ProviderGetFileDTO
   ): Promise<string> {
