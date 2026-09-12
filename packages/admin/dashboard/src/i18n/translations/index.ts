@@ -135,5 +135,5 @@ export default {
   },
   sv: {
     translation: sv,
-  }
+  },
 }

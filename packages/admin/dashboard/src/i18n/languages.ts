@@ -235,7 +235,7 @@ export const languages: Language[] = [
     ltr: true,
     date_locale: zhTW,
   },
-    {
+  {
     code: "sv",
     display_name: "Swedish",
     ltr: true,
