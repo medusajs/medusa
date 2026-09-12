@@ -32,6 +32,7 @@ import {
   vi,
   zhCN,
   zhTW,
+  sv,
 } from "date-fns/locale"
 import { Language } from "./types"
 
@@ -233,5 +234,11 @@ export const languages: Language[] = [
     display_name: "繁體中文(臺灣)",
     ltr: true,
     date_locale: zhTW,
+  },
+  {
+    code: "sv",
+    display_name: "Swedish",
+    ltr: true,
+    date_locale: sv,
   },
 ]
