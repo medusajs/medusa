@@ -31,5 +31,6 @@
   "uk": ["one", "few", "many", "other"],
   "vi": ["other"],
   "zhCN": ["other"],
-  "zhTW": ["other"]
+  "zhTW": ["other"],
+  "sv": ["one", "other"]
 }

@@ -31,6 +31,7 @@ import nl from "./nl.json"
 import bs from "./bs.json"
 import id from "./id.json"
 import zhTW from "./zhTW.json"
+import sv from "./sv.json"
 
 export default {
   bs: {
@@ -132,4 +133,7 @@ export default {
   zhTW: {
     translation: zhTW,
   },
+  sv: {
+    translation: sv,
+  }
 }
