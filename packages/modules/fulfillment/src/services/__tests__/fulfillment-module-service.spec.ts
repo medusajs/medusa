@@ -1,9 +1,9 @@
-import { FulfillmentModuleService } from "../fulfillment-module-service"
+import FulfillmentModuleService from "../fulfillment-module-service"
 
 describe("FulfillmentModuleService - Polymorphic cancel guard", () => {
   it("allows subclass override of canCancelFulfillmentOrThrow", async () => {
     class CustomFulfillmentService extends FulfillmentModuleService {
-      static override canCancelFulfillmentOrThrow = jest.fn()
+      static canCancelFulfillmentOrThrow = jest.fn()
     }
 
     const mockFulfillmentService = {
