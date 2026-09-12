@@ -68,39 +68,42 @@ export type UpdateOrderValidationStepInput = {
  *   }
  * })
  */
+export async function updateOrderValidationHandler({
+  order,
+  input,
+}: UpdateOrderValidationStepInput) {
+  throwIfOrderIsCancelled({ order })
+
+  if (
+    order.shipping_address?.country_code &&
+    input.shipping_address?.country_code &&
+    order.shipping_address.country_code !== input.shipping_address.country_code
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Country code cannot be changed"
+    )
+  }
+
+  if (
+    order.billing_address?.country_code &&
+    input.billing_address?.country_code &&
+    order.billing_address.country_code !== input.billing_address.country_code
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Country code cannot be changed"
+    )
+  }
+
+  if (input.email) {
+    validateEmail(input.email)
+  }
+}
+
 export const updateOrderValidationStep = createStep(
   "update-order-validation",
-  async function ({ order, input }: UpdateOrderValidationStepInput) {
-    throwIfOrderIsCancelled({ order })
-
-    if (
-      order.shipping_address?.country_code &&
-      input.shipping_address?.country_code &&
-      order.shipping_address.country_code !==
-        input.shipping_address.country_code
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Country code cannot be changed"
-      )
-    }
-
-    if (
-      order.billing_address?.country_code &&
-      input.billing_address?.country_code &&
-      order.billing_address.country_code !==
-        input.billing_address.country_code
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Country code cannot be changed"
-      )
-    }
-
-    if (input.email) {
-      validateEmail(input.email)
-    }
-  }
+  updateOrderValidationHandler
 )
 
 export const updateOrderWorkflowId = "update-order-workflow"
