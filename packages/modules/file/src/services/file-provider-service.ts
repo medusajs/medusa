@@ -48,6 +48,17 @@ export default class FileProviderService {
     return this.fileProvider_.delete(fileData)
   }
 
+  deleteByUrl(url: string): Promise<void> {
+    if (!this.fileProvider_.deleteByUrl) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Provider does not support deleting files by URL"
+      )
+    }
+
+    return this.fileProvider_.deleteByUrl(url)
+  }
+
   getPresignedDownloadUrl(
     fileData: FileTypes.ProviderGetFileDTO
   ): Promise<string> {
