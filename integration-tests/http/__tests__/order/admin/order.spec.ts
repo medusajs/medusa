@@ -507,6 +507,40 @@ medusaIntegrationTestRunner({
           order.billing_address.city
         )
       })
+
+      it("should expand the shipping option of a shipping method through the read-only link", async () => {
+        const fields = encodeURIComponent(
+          "id,*shipping_methods,*shipping_methods.shipping_option"
+        )
+
+        const detailShippingMethods = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=${fields}`,
+            adminHeaders
+          )
+        ).data.order.shipping_methods
+
+        const listShippingMethods = (
+          await api.get(`/admin/orders?fields=${fields}`, adminHeaders)
+        ).data.orders.find((o) => o.id === order.id).shipping_methods
+
+        for (const shippingMethods of [
+          detailShippingMethods,
+          listShippingMethods,
+        ]) {
+          expect(shippingMethods).toHaveLength(1)
+          expect(shippingMethods[0]).toEqual(
+            expect.objectContaining({
+              shipping_option_id: seeder.shippingOption.id,
+              shipping_option: expect.objectContaining({
+                id: seeder.shippingOption.id,
+                name: seeder.shippingOption.name,
+                shipping_profile_id: seeder.shippingOption.shipping_profile_id,
+              }),
+            })
+          )
+        }
+      })
     })
 
     // shipping-method adjustments must be version-scoped
