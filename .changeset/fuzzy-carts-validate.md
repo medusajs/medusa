@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix: reject fractional cart line item quantities
+fix(medusa): reject fractional cart line item quantities
