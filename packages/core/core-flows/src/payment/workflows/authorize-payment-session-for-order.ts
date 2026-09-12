@@ -42,6 +42,21 @@ const validatePendingAuthorizationStep = createStep(
 
 export const authorizePaymentSessionForOrderWorkflowId =
   "authorize-payment-session-for-order"
+
+export function paymentCapturedEventData(payment?: {
+  id: string
+  captures?: unknown[]
+  captured_at?: unknown
+}) {
+  if (!payment || (!payment.captures?.length && !payment.captured_at)) {
+    return null
+  }
+
+  return {
+    eventName: PaymentEvents.CAPTURED,
+    data: { id: payment.id },
+  }
+}
 /**
  * This workflow authorizes a payment session that is in pending_authorization status,
  * typically triggered by an admin action when a deferred payment (bank transfer,
@@ -110,17 +125,10 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       addOrderTransactionStep(orderTransactions)
     })
 
-    when(
-      "emit-payment-captured-event",
-      { payment },
-      ({ payment }) => {
-        return !!payment && (!!payment.captures?.length || !!payment.captured_at)
-      }
-    ).then(() => {
-      emitEventStep({
-        eventName: PaymentEvents.CAPTURED,
-        data: { id: payment.id },
-      })
+    when("emit-payment-captured-event", { payment }, ({ payment }) => {
+      return !!paymentCapturedEventData(payment)
+    }).then(() => {
+      emitEventStep(paymentCapturedEventData(payment)!)
     })
 
     return new WorkflowResponse(payment)
