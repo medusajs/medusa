@@ -47,6 +47,7 @@ import {
   getEpsilonFromDecimalPrecision,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   isPresent,
   isString,
   MathBN,
@@ -483,28 +484,46 @@ export default class PaymentModuleService
   ): Promise<PaymentSessionDTO> {
     const session = await this.paymentSessionService_.retrieve(
       data.id,
-      { select: ["id", "status", "data", "provider_id"] },
+      {
+        select: [
+          "id",
+          "status",
+          "data",
+          "provider_id",
+          "amount",
+          "raw_amount",
+          "currency_code",
+        ],
+      },
       sharedContext
     )
 
-    const providerData = await this.paymentProviderService_.updateSession(
-      session.provider_id,
-      {
-        data: data.data,
-        amount: data.amount,
-        currency_code: normalizeCurrencyCode(data.currency_code),
-        context: data.context,
-      }
-    )
+    const hasProviderUpdate =
+      isDefined(data.data) ||
+      isDefined(data.amount) ||
+      isDefined(data.currency_code)
+
+    const providerData = hasProviderUpdate
+      ? await this.paymentProviderService_.updateSession(session.provider_id, {
+          data: data.data ?? session.data,
+          amount: data.amount ?? session.amount,
+          currency_code: normalizeCurrencyCode(
+            data.currency_code ?? session.currency_code
+          ),
+          context: data.context,
+        })
+      : undefined
 
     const updated = await this.paymentSessionService_.update(
       {
         id: session.id,
-        amount: data.amount,
-        currency_code: normalizeCurrencyCode(data.currency_code),
-        data: providerData.data,
+        ...(isDefined(data.amount) ? { amount: data.amount } : {}),
+        ...(isDefined(data.currency_code)
+          ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+          : {}),
+        ...(providerData ? { data: providerData.data } : {}),
         // Allow the caller to explicitly set the status (eg. due to a webhook), fallback to the update response, and finally to the existing status.
-        status: data.status ?? providerData.status ?? session.status,
+        status: data.status ?? providerData?.status ?? session.status,
         metadata: data.metadata,
       },
       sharedContext

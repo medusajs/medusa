@@ -241,17 +241,17 @@ export interface UpdatePaymentSessionDTO {
   /**
    * Necessary data for the associated payment provider to process the payment.
    */
-  data: Record<string, unknown>
+  data?: Record<string, unknown>
 
   /**
    * The ISO 3 character currency code.
    */
-  currency_code: string
+  currency_code?: string
 
   /**
    * The amount to be authorized.
    */
-  amount: BigNumberInput
+  amount?: BigNumberInput
 
   /**
    * The status of the payment session.

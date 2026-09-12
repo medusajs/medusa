@@ -1,8 +1,11 @@
 import type { WebhookActionResult } from "@medusajs/framework/types"
-import { PaymentActions } from "@medusajs/utils"
+import { PaymentActions, PaymentSessionStatus } from "@medusajs/utils"
 import { createWorkflow, transform, when } from "@medusajs/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
-import { authorizePaymentSessionStep } from "../steps"
+import {
+  authorizePaymentSessionStep,
+  updatePaymentSessionStatusStep,
+} from "../steps"
 import { completeCartAfterPaymentStep } from "../steps/complete-cart-after-payment"
 import { capturePaymentWorkflow } from "./capture-payment"
 import { acquireLockStep, releaseLockStep } from "../../locking"
@@ -215,6 +218,31 @@ export const processPaymentWorkflow = createWorkflow(
       })
     })
 
+    const terminalSessionStatus = transform({ input }, ({ input }) => {
+      if (input.action === PaymentActions.CANCELED) {
+        return PaymentSessionStatus.CANCELED
+      }
+
+      if (input.action === PaymentActions.FAILED) {
+        return PaymentSessionStatus.ERROR
+      }
+
+      return undefined
+    })
+
+    when(
+      "record-terminal-payment-session-status",
+      { input, terminalSessionStatus },
+      ({ input, terminalSessionStatus }) => {
+        return !!input.data?.session_id && !!terminalSessionStatus
+      }
+    ).then(() => {
+      updatePaymentSessionStatusStep({
+        id: input.data!.session_id,
+        status: terminalSessionStatus!,
+      })
+    })
+
     // We release before the completion to prevent dead locks
     when("release-lock-cart-when-available", { cartId }, ({ cartId }) => {
       return !!cartId
@@ -230,7 +258,9 @@ export const processPaymentWorkflow = createWorkflow(
         return (
           !!input.data?.session_id &&
           !!cartPaymentCollection.data.length &&
-          !order
+          !order &&
+          (input.action === PaymentActions.SUCCESSFUL ||
+            input.action === PaymentActions.AUTHORIZED)
         )
       }
     ).then(() => {
