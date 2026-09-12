@@ -96,6 +96,17 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * If the cart's total is zero and covered by credit lines, the workflow can complete the cart without a payment session.
  *
+ * If you want completion to fail instead when a payment session's amount doesn't match the cart's total, opt in by calling
+ * {@link validateCartPaymentAmount} from the `validate` hook:
+ *
+ * ```ts
+ * import { completeCartWorkflow, validateCartPaymentAmount } from "@medusajs/core-flows"
+ *
+ * completeCartWorkflow.hooks.validate(async ({ cart }) => {
+ *   validateCartPaymentAmount({ cart })
+ * })
+ * ```
+ *
  * ### Don't Mutate the Cart in Hooks
  *
  * Don't use this workflow's hooks (such as the `validate` hook) to mutate the cart's line items, shipping methods, or totals.
