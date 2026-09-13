@@ -5,7 +5,6 @@ import {
   UpdateOrderDTO,
 } from "@medusajs/framework/types"
 import {
-  MedusaError,
   OrderWorkflowEvents,
   validateEmail,
 } from "@medusajs/framework/utils"
