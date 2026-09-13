@@ -223,6 +223,30 @@ medusaIntegrationTestRunner({
         expect(response.data.draft_order.customer_id).toBeFalsy()
         expect(response.data.draft_order.region_id).toBe(region.id)
       })
+
+      it("should reject negative unit prices when creating a draft order", async () => {
+        const response = await api
+          .post(
+            "/admin/draft-orders",
+            {
+              region_id: region.id,
+              items: [
+                {
+                  title: "Custom item",
+                  quantity: 1,
+                  unit_price: -500,
+                },
+              ],
+            },
+            adminHeaders
+          )
+          .catch((e) => e.response)
+
+        expect(response.status).toBe(400)
+        expect(response.data.message).toContain(
+          "Unit price must be greater than or equal to 0"
+        )
+      })
     })
 
     describe("GET /draft-orders/:id", () => {
