@@ -283,7 +283,7 @@ describe("license gated modules", () => {
         logger,
       })
     } catch (err) {
-      expect(err.message).toContain("requires a Medusa license key")
+      expect(err.message).toContain("The Medusa license key required")
     }
   })
 
