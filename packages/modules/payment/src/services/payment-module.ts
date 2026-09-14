@@ -862,7 +862,7 @@ export default class PaymentModuleService
       {
         payment: data.payment_id,
         amount: data.amount,
-        captured_by: data.captured_by,
+        created_by: data.captured_by,
       },
       sharedContext
     )

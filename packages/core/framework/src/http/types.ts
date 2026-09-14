@@ -172,8 +172,13 @@ export interface MedusaRequest<
    * An array of fields and relations that are allowed to be queried, this can be set by the
    * consumer as part of a middleware and it will take precedence over the req.allowed set
    * by the api
+   *
+   * Initialized per request, so add to it with `req.allowed.push(field)` — several
+   * middlewares can each contribute that way. Reassigning the array discards what other
+   * middlewares granted. To disallow an allowed field use {@link disallowed}, which is
+   * applied after this list.
    */
-  allowed?: string[]
+  allowed: string[]
   /**
    * An array of fields and relations that must never be resolved, this can be set by the
    * consumer as part of a global middleware and it replaces the disallowed fields
@@ -183,7 +188,7 @@ export interface MedusaRequest<
    * endpoint, set this to the route's configured fields minus the ones you need, rather
    * than to a short list of your own. An empty array removes the boundary entirely.
    *
-   * @since v2.20.2
+   * @since v2.21.0
    */
   disallowed?: (string | RegExp)[]
   errors: string[]

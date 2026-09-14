@@ -18,26 +18,8 @@ export const defaultAdminCustomerFields = [
   "deleted_at",
 ]
 
-export const allowed = [
-  "id",
-  "company_name",
-  "first_name",
-  "last_name",
-  "email",
-  "phone",
-  "metadata",
-  "has_account",
-  "created_by",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "addresses",
-  "groups",
-]
-
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminCustomerFields,
-  allowed,
   isList: false,
   entity: Entities.customer,
 }

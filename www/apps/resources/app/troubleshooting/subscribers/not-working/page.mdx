@@ -78,12 +78,17 @@ Make sure that your subscriber is correctly set up to listen to the event you're
 
 ```ts title="src/subscribers/your-subscriber.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   logger.info("Sending confirmation email...")
 

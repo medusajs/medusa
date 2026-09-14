@@ -100,6 +100,16 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-since: 2.16.0
+ * x-allowed:
+ *   - id
+ *   - title
+ *   - is_exclusive
+ *   - values
+ *   - created_at
+ *   - updated_at
+ *   - metadata
+ *   - values.id
+ *   - values.value
  * 
 */
 
