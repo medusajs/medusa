@@ -1,5 +1,5 @@
 import { Modules } from "../../modules-sdk"
-import { DEFAULT_STORE_RESTRICTED_FIELDS, defineConfig } from "../define-config"
+import { defineConfig } from "../define-config"
 
 describe("defineConfig", function () {
   const CLOUD_ENV_VARS = [
