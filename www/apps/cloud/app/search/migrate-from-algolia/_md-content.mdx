@@ -1,0 +1,184 @@
+# Migrate from Algolia to Medusa Search
+
+You are an AI coding agent. The prompt below migrates a Medusa project from a custom Algolia integration to [Medusa Search](../page.mdx), the managed search service of [Cloud](../../page.mdx). Follow it end-to-end in the user's project, then report the manual follow-ups it lists.
+
+```md title="Migration Prompt" noLineNumbers
+<role>
+You are a senior Medusa developer migrating an existing
+Medusa project from a custom Algolia integration to Medusa
+Search, the managed search service of Cloud.
+</role>
+
+<task>
+Replace this project's custom Algolia search integration
+with the Search Module and Medusa Search, keeping the
+storefront's search behavior intact.
+</task>
+
+<context>
+- Medusa Search is a provider of the Search Module, which
+  ships with Medusa v2.21.1 and later. Cloud registers and
+  configures it for every environment, so it needs no
+  credentials or configuration in the project.
+- Medusa creates a product index by default. A project only
+  declares its own index definition for custom fields,
+  custom index settings, or data models other than products.
+- An index definition lives in a file under `src/search`,
+  declares the fields the engine holds, fills the index with
+  a `seed` async generator, and keeps it current with its
+  `events` and `consume` properties.
+- Queries run through `query.search` in an API route. There
+  is no browser-side querying and no search-only key.
+- Medusa Search does not support synonyms, merchandising
+  rules, geo search, or search analytics. An index or a query
+  that relies on them fails.
+- Medusa Search supports typo tolerance and highlighting, but
+  both are opt-in per query through `search_options` and both
+  require a text query.
+</context>
+
+<steps>
+1. Inspect the project and report what it has before you
+   change anything: the Algolia module, the sync workflows
+   and their steps, the subscribers, the admin sync route
+   and UI route, the search API route, the storefront search
+   client, and the Medusa version in `package.json`.
+2. If the Medusa version is below v2.21.1, stop and tell the
+   user to upgrade first.
+3. List the fields the project indexes in Algolia, taken
+   from the sync workflow's `fields` array, and ask the user
+   for the index settings from their Algolia dashboard.
+4. Decide whether the project needs its own index
+   definition. If every indexed field and setting is covered
+   by the default product index, skip to step 6 and say why.
+5. Create the index definition under `src/search`. Map
+   Algolia's searchable attributes to `searchable()` fields
+   with a weight, faceting attributes to `facetable()` or
+   `filterable()`, sorting replicas to `sortable()`, and
+   unretrievable attributes to `retrievable(false)`.
+   Reproduce the project's indexing rules in `seed`, such as
+   indexing published products only, and handle create,
+   update, and delete events in `consume`.
+6. Rewrite the existing search API route to use
+   `query.search` instead of the Algolia client. Keep the
+   route's path and its validation middleware, and add
+   pagination. Move every filter, facet, and sort that the
+   storefront's search widgets applied into the query.
+   Respond with `{ products, count, limit, offset }`, where
+   `products` holds the hydrated records from `data` and the
+   other three come from `search_result.metadata`. Do not
+   also return `search_result.hits`, since each hit's
+   `document` repeats a record already in `products`. Add
+   `search_result.facets` only when the storefront renders
+   facet counts, and a hit's `highlights` only when the
+   query asks for highlighting.
+7. Replace any manual sync trigger with a workflow step that
+   calls the Search Module's `reindex` method.
+8. Delete the Algolia module, the sync workflows and steps,
+   the product subscribers, the module's entry in
+   `medusa-config.ts`, and the `algoliasearch` dependency.
+   Do this here and not earlier, since the application fails
+   to boot while the module is still registered and the
+   package is gone. Leave the Algolia environment variables
+   in place and tell the user to remove them after the
+   cutover.
+9. Update the storefront to call the search route directly
+   and read the route's new response shape, which returns
+   the hydrated records and the search metadata rather than
+   Algolia's `hits`. Remove the Algolia packages, the search
+   client, and the Algolia environment variables from it.
+10. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
+</steps>
+
+<constraints>
+- Do not add a feature that Medusa Search does not support.
+  When the project relies on one, report it and propose the
+  closest alternative instead of implementing it silently.
+- Do not delete the user's Algolia account, indexes, or
+  credentials, and do not call the Algolia API.
+- Do not change the search route's path or its request body
+  parameters, since a live storefront depends on them.
+- Do not run a deployment or push to any branch.
+- Never run a Medusa CLI command that can prompt without the
+  flag that skips its prompts. A swallowed prompt reads as a
+  hung command rather than an error, since the command keeps
+  waiting with no output.
+- Keep every package the current integration imports
+  installed until step 8, so the application boots at every
+  point before it.
+- Consult the Medusa documentation at
+  https://docs.medusajs.com or the Medusa MCP server for any
+  API details you need, including the index definition
+  properties, field types and modifiers, and the options of
+  `query.search`.
+</constraints>
+
+<error_handling>
+- If the project has no Algolia integration, report that and
+  stop.
+- If the integration differs from the files listed in step
+  1, map each responsibility you find to its Search Module
+  equivalent and report the mapping before you change code.
+- If you cannot tell whether a field is searched, filtered,
+  faceted, or only displayed, ask the user rather than
+  guessing its modifiers.
+- If a storefront feature has no Medusa Search equivalent,
+  list it under manual follow-ups instead of removing the
+  feature.
+</error_handling>
+
+<output_format>
+Respond with the following markdown sections:
+
+## Changes
+A table of every file you created, modified, or deleted,
+with one sentence on what changed in it.
+
+## Behavior differences
+Each Algolia behavior the project relied on that Medusa
+Search does not support, and what you did about it.
+
+## Manual follow-ups
+The steps the user has to take themselves, such as removing
+environment variables, validating relevance, and deploying.
+</output_format>
+
+<success_criteria>
+- The project builds and type checks with no reference to
+  `algoliasearch` left in the backend or the storefront.
+- Every field the project indexed in Algolia is either held
+  by the new index definition, covered by the default
+  product index, or listed as an intentional removal.
+- The search route responds to the same request body as
+  before and returns results from `query.search`.
+- The search route documents its response shape and returns
+  each record once.
+- Every unsupported Algolia behavior appears under
+  "Behavior differences".
+</success_criteria>
+```
+
+---
+
+## After the Migration
+
+The steps below need the user's Cloud account and their judgment, so hand them over rather than running them:
+
+1. **Deploy to a preview environment.** Push the changes to the branch of a [preview environment](../../environments/preview/page.mdx) rather than production. Cloud runs the search migrations during the deployment, then the Search Module fills the index with the documents that `seed` yields when the application starts.
+2. **Confirm the index filled.** Check the environment's [logs](../../logs/page.mdx) for `Search indexes migrated`, then send a request to the search route and confirm it returns results. If it returns none, query the `search_index_sync` table to see whether the seed ran and what it failed with.
+3. **Validate before the cutover.** Compare both engines on the same environment: the top customer queries, every filter and facet, the index's document count against the published products, the sync after creating and deleting a product, and the admin dashboard's global search.
+4. **Deploy to production.** Merge into the branch of the production environment once the preview environment holds up. Refer to the [Deployments](../../deployments/page.mdx) guide.
+5. **Remove the Algolia credentials.** Delete the `ALGOLIA_*` and `NEXT_PUBLIC_ALGOLIA_*` environment variables from the project and the storefront, and remove the Algolia account's indexes.
+
+---
+
+## Reference
+
+- [Medusa Search vs Algolia](../algolia/page.mdx): a feature-by-feature comparison, including the Algolia features that Medusa Search doesn't offer.
+- [Search Module](!resources!/infrastructure-modules/search): the module's documentation, including [index definitions](!resources!/infrastructure-modules/search/index-definitions) and [reindexing](!resources!/infrastructure-modules/search/reindexing).
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API that replaces the Algolia client in the search route.
