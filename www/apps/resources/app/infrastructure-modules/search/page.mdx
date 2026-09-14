@@ -50,6 +50,8 @@ Learn how the module builds an index, fills it, and rebuilds it when a definitio
 
 The Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can define an index and start searching without extra configuration. On Cloud, [Medusa Search](!cloud!/search) is registered by default instead.
 
+### Change Default Configuration
+
 To change its configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
@@ -74,12 +76,6 @@ module.exports = defineConfig({
   ].filter(Boolean),
 })
 ```
-
-<Note title="Warning" type="warning">
-
-Your registration replaces the module's default one, so it applies in every environment. On Cloud, Medusa still registers the [Medusa Search](!cloud!/search) provider alongside the providers you list, since it reads the credentials Cloud passes in. So set `default_provider` to the one that should serve an index that names none, otherwise the module throws at startup.
-
-</Note>
 
 <Note>
 
@@ -173,94 +169,107 @@ Refer to the [Search Module Providers guide](./providers/page.mdx) to learn how 
 
 ---
 
-## How to Use the Search Module
+## Search Products
+
+Medusa declares a `product` index by default, and its storefront API has a `GET /store/products/search` endpoint that searches it. So, products are searchable without an index definition or an API route of your own.
+
+The endpoint accepts a `q` parameter and the same pagination and field selection as `GET /store/products`, and it returns the products in the same shape:
+
+```bash
+curl "http://localhost:9000/store/products/search?q=shirt" \
+  -H "x-publishable-api-key: pk_123"
+```
+
+You'll receive a JSON response like the following:
+
+```json
+{
+  "products": [
+    {
+      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+      "title": "Medusa T-Shirt",
+      "handle": "t-shirt"
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+The endpoint narrows the search to published products in the request's sales channel, so it returns what a storefront can show as-is.
+
+<Note title="Tip">
+
+To build the search experience in your storefront, use the [InstantSearch adapter](../../instantsearch/page.mdx). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into Medusa search queries.
+
+</Note>
+
+### Override the Default Product Index
+
+An index definition named `product` replaces the one Medusa declares by default, so your definition alone decides the fields the engine holds, how they're filled, and the settings applied to them. Declare it as explained in [Create a Custom Search Index](#create-a-custom-search-index).
+
+Override the index when it doesn't hold a field your storefront searches, filters, or facets on, or when you need index settings that it doesn't apply. Keep the fields that `GET /store/products/search` filters by, which are `status` and `sales_channel_ids`, along with any of `handle`, `collection_id`, `type_id`, `category_ids`, and `tag_ids` that your storefront passes.
+
+---
+
+## Create a Custom Search Index
+
+To search data other than products, such as the custom data models of your own modules, declare a search index for it.
 
 ### 1. Define a Search Index
 
-Before you can search, define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, a `seed` generator that fills the index, and the events that keep it up-to-date.
+Define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, a `seed` that fills the index, and the events that keep it up-to-date.
 
-For example, create the file `src/search/product.ts`:
+For example, to index a custom `brand` data model, create the file `src/search/brand.ts`:
 
 export const definitionHighlights = [
-  ["9", "name", "The index name that a search query resolves against."],
-  ["10", "entity", "The Query entity used to hydrate non-indexed fields."],
-  ["11", "fields", "The fields the search engine holds."],
-  ["17", "events", "The events that change the data the index holds."],
-  ["22", "consume", "Turns each of those events into document writes."],
-  ["38", "seed", "Yields the writes that fill the index."],
-  ["48", "withDeleted", "Reads soft-deleted products on a catch-up pass."],
+  ["11", "name", "The index name that a search query resolves against."],
+  ["12", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["13", "fields", "The fields the search engine holds."],
+  ["19", "events", "The events that change the data the index holds."],
+  ["24", "consume", "Turns each of those events into document writes."],
+  ["25", "seed", "Fills the index with every brand."],
 ]
 
-```ts title="src/search/product.ts" highlights={definitionHighlights}
+```ts title="src/search/brand.ts" highlights={definitionHighlights}
 import {
   defineSearchIndex,
+  graphConsume,
+  graphSeed,
   search,
 } from "@medusajs/framework/utils"
 
-const fields = ["id", "title", "handle", "status"]
+const fields = ["id", "name", "country", "created_at"]
 
-export const productIndex = defineSearchIndex({
-  name: "product",
-  entity: "product",
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
   fields: search.define({
     id: search.keyword().filterable(),
-    title: search.text().searchable({ weight: 3 }),
-    handle: search.keyword().filterable(),
-    status: search.keyword().filterable().facetable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+    created_at: search.date().sortable(),
   }),
   events: [
-    "product.created",
-    "product.updated",
-    "product.deleted",
+    "brand.created",
+    "brand.updated",
+    "brand.deleted",
   ],
-  async consume(event, { container }) {
-    if (event.name === "product.deleted") {
-      return [{
-        action: "delete",
-        filters: { id: [event.data.id] },
-      }]
-    }
-
-    const { data } = await container.query.graph({
-      entity: "product",
-      fields,
-      filters: { id: event.data.id },
-    })
-
-    return [{ action: "upsert", documents: data }]
-  },
-  async *seed({ container, filters, catchup }) {
-    const { data } = await container.query.graph({
-      entity: "product",
-      fields: [...fields, "deleted_at"],
-      filters: {
-        ...filters,
-        ...(catchup
-          ? { updated_at: { $gte: catchup.since } }
-          : {}),
-      },
-      withDeleted: !!catchup,
-    })
-
-    const alive = data.filter((p) => !p.deleted_at)
-    const gone = data.filter((p) => p.deleted_at)
-
-    yield [
-      ...(alive.length
-        ? [{ action: "upsert", documents: alive }]
-        : []),
-      ...gone.map((product) => ({
-        action: "delete",
-        filters: { id: [product.id] },
-      })),
-    ]
-  },
+  consume: graphConsume({ fields }),
+  seed: graphSeed({ fields }),
 })
 ```
 
-Medusa subscribes to the workflow events in `events` and routes each one to `consume`, so the index reflects changes as they happen. `seed` fills the index in full when Medusa creates or rebuilds it. Learn more about each property in the [Search Index Definitions guide](./index-definitions/page.mdx).
+`seed` fills the index in full when Medusa creates or rebuilds it, and Medusa routes each of the workflow events in `events` to `consume`, so the index reflects changes as they happen.
 
-The `seed` function also runs a second time as a catch-up pass right after a full run, to pick up what changed while that run was writing. That's why it reads `catchup` to narrow the query, passes `withDeleted` to see soft-deleted products, and yields a `delete` write for each one it finds. Refer to [Catch Up on Changes During a Run](./index-definitions/page.mdx#catch-up-on-changes-during-a-run) for the details, and to [Fill the Index with `seed`](./index-definitions/page.mdx#fill-the-index-with-seed) for batching a large catalog.
+[`graphSeed`](./index-definitions/page.mdx#graphseed-options) and [`graphConsume`](./index-definitions/page.mdx#graphconsume-options) are helpers that read the data with [Query](!docs!/learn/fundamentals/query). `graphSeed` reads the entity's records to fill the index for the first time, and `graphConsume` provides the index changes, such as creating or deleting records, as the events in `events` arrive.
+
+<Note title="Tip">
+
+[Write `seed` and `consume` yourself](./index-definitions/page.mdx#write-seed-and-consume-yourself) when the index's data doesn't come from Query. Learn more about each property, and about the helpers, in the [Search Index Definitions guide](./index-definitions/page.mdx).
+
+</Note>
 
 ### 2. Run Migrations
 
@@ -276,7 +285,7 @@ Learn more about index migrations in the [Reindexing and Migrations guide](./rei
 
 Then, run a search with the `search` method of [Query](!docs!/learn/fundamentals/query).
 
-For example, create the [API route](!docs!/learn/fundamentals/api-routes) `src/api/search-products/route.ts`:
+For example, create the [API route](!docs!/learn/fundamentals/api-routes) `src/api/search-brands/route.ts`:
 
 export const searchHighlights = [
   ["10", "query", "Resolve Query from the Medusa container."],
@@ -286,7 +295,7 @@ export const searchHighlights = [
   ["16", "q", "The free-text query, passed among the filters."],
 ]
 
-```ts title="src/api/search-products/route.ts" highlights={searchHighlights}
+```ts title="src/api/search-brands/route.ts" highlights={searchHighlights}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -299,17 +308,16 @@ export const GET = async (
   const query = req.scope.resolve("query")
 
   const { data, search_result } = await query.search({
-    entity: "product",
-    fields: ["id", "title", "handle", "variants.*"],
+    entity: "brand",
+    fields: ["id", "name", "country"],
     filters: {
       q: req.query.q as string,
-      status: "published",
     },
     pagination: { take: 20 },
   })
 
   res.json({
-    products: data,
+    brands: data,
     metadata: search_result.metadata,
   })
 }
@@ -318,41 +326,36 @@ export const GET = async (
 Then, send a `GET` request to the route:
 
 ```bash
-curl "http://localhost:9000/search-products?q=shirt"
+curl "http://localhost:9000/search-brands?q=acme"
 ```
 
 You'll receive a JSON response like the following:
 
 ```json
 {
-  "products": [
+  "brands": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa T-Shirt",
-      "handle": "t-shirt",
-      "variants": [
-        // ...
-      ]
+      "id": "brand_01KXR3J9J610DT161E2E4ZS6P1",
+      "name": "Acme",
+      "country": "us"
     }
   ],
   "metadata": {
     "skip": 0,
     "take": 20,
     "count": 1,
-    "query": "shirt",
+    "query": "acme",
     "processing_time_ms": 9
   }
 }
 ```
 
-{/* TODO move to main docs */}
-
 Learn about filters, facets, highlighting, and vector search in the [Search Queries guide](!docs!/learn/fundamentals/query/search).
-
-To build the search experience in your storefront, use the [InstantSearch adapter](../../instantsearch/page.mdx). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into Medusa search queries.
 
 ### 4. Keeping Indexes Up to Date
 
 To ensure the search provider has the latest data, you need to specify the events that trigger updates in your index definitions, and how those events are handled. Those are defined in the `events` and `consume` properties of an index definition.
 
 Learn more in the [Search Index Definitions guide](./index-definitions/page.mdx#keep-an-index-up-to-date).
+
+To refill an index whose data drifted, such as after a bulk import that emitted no events, rebuild it from the Medusa Admin dashboard. Refer to [Reindex from the Dashboard](./reindexing/page.mdx#reindex-from-the-dashboard).

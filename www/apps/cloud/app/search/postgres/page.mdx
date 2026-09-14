@@ -22,7 +22,7 @@ Medusa Search is a managed search service for Cloud projects. It stores your sea
 
 The [Search Module](!resources!/infrastructure-modules/search) drives it through a provider that ships with Medusa. Cloud registers and configures that provider for every environment, so Medusa Search needs no setup. You declare an index definition in your codebase, and query it with [`query.search`](!docs!/learn/fundamentals/query/search).
 
-Unlike Algolia or Meilisearch, PostgreSQL is also a Search Module Provider that Medusa ships, so this comparison is between two providers rather than between Medusa and a third-party service. Both read the same index definitions and answer the same `query.search` calls. What differs is where the index lives and which parts of a query each one can serve.
+Medusa ships PostgreSQL as a Search Module Provider too, so both providers read the same index definitions and answer the same `query.search` calls. What differs is where the index lives and which parts of a query each one can serve.
 
 ---
 
@@ -511,7 +511,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
       </Table.Cell>
       <Table.Cell>
 
-      Widens the match with fuzzy matching on every searchable field that carries a fuzzy index, ranking those hits below the exact ones. Fails per query without a `q` filter, or when no searched field has a fuzzy index.
+      Widens the match with fuzzy matching on every searchable field that carries a fuzzy index, ranking those hits below the exact ones. Ignored when the query passes no `q` filter, or when no searched field has a fuzzy index.
 
       </Table.Cell>
       <Table.Cell>
@@ -586,7 +586,7 @@ What each provider does with the [search options](!docs!/learn/fundamentals/quer
       </Table.Cell>
       <Table.Cell>
 
-      Returns a fragment per highlighted field. Fails per query without a `q` filter, on an empty `fields` array, or on a field that isn't searchable.
+      Returns a fragment per highlighted field. Ignored when the query passes no `q` filter, and for a field that isn't searchable.
 
       </Table.Cell>
       <Table.Cell>

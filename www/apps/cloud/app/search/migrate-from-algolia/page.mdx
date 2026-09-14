@@ -530,7 +530,7 @@ Medusa creates the product index by default, so products are searchable on Medus
 
 Otherwise, skip to [Step 3](#step-3-replace-the-search-api-route) and query the default index.
 
-An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code.
+An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code. Naming it `product` also [overrides Medusa's default product index](!resources!/infrastructure-modules/search#override-the-default-product-index), so your definition alone decides what the index holds.
 
 For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
 

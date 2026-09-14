@@ -258,7 +258,7 @@ A full run reads your data while your application keeps writing to it, so a reco
 
 The pass runs after a full seed at application start and after a full reindex, under either strategy. The module skips it for a filtered reindex, since a partial rebuild is already scoped to what you asked for, and catching up on everything that changed would write more than that.
 
-Since the pass calls the same `seed` function, your definition decides what it costs: read the `catchup` property to narrow your query and to yield a `delete` write for a record deleted mid-run. Refer to [Catch Up on Changes During a Run](../index-definitions/page.mdx#catch-up-on-changes-during-a-run) for how to handle it.
+Since the pass calls the same `seed` function, your definition decides what it costs: read the `catchup` property to narrow your query and to yield a `delete` write for a record deleted mid-run. Refer to [Handle the Catch-Up Pass](../index-definitions/page.mdx#handle-the-catch-up-pass) for how to handle it, which the [`graphSeed`](../index-definitions/page.mdx#fill-the-index-from-query-with-graphseed) helper does for you.
 
 ---
 

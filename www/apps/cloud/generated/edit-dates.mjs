@@ -126,11 +126,11 @@ export const generatedEditDates = {
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/search/page.mdx": "2026-09-07T06:37:43.108Z",
+  "app/search/page.mdx": "2026-09-14T07:58:01.237Z",
   "app/search/algolia/page.mdx": "2026-09-07T06:08:13.246Z",
   "app/search/meilisearch/page.mdx": "2026-09-07T06:08:13.246Z",
-  "app/search/postgres/page.mdx": "2026-09-07T06:17:13.804Z",
-  "app/search/migrate-from-algolia/page.mdx": "2026-09-07T06:04:28.326Z",
-  "app/search/migrate-from-meilisearch/page.mdx": "2026-09-07T06:04:08.794Z",
+  "app/search/postgres/page.mdx": "2026-09-14T07:08:09.932Z",
+  "app/search/migrate-from-algolia/page.mdx": "2026-09-14T07:31:50.136Z",
+  "app/search/migrate-from-meilisearch/page.mdx": "2026-09-14T07:31:55.896Z",
   "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z"
 }

@@ -87,7 +87,11 @@ Medusa Search is enabled by default for Cloud projects with zero configuration. 
 
 To use it, upgrade your Medusa application to v2.20.0 or later, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
 
-{/* TODO add a section on searching medusa with default api route? */}
+### Search Products
+
+Medusa declares a `product` index by default and its storefront API has a `GET /store/products/search` endpoint that searches it, so a storefront needs no index definition or route of its own for product search. Once you deploy, call the endpoint on your environment's URL.
+
+To change what the index holds, such as adding a field your storefront facets on, declare your own definition named `product`. Refer to [Override the Default Product Index](!resources!/infrastructure-modules/search#override-the-default-product-index).
 
 ### Set Up Search in Local Development
 
@@ -109,9 +113,7 @@ The two providers don't support the same features, so a query that works locally
 
 ## Searching Custom Data Models
 
-Medusa indexes your products by default, so you can search them in Medusa Search without declaring anything.
-
-For any other data, including the custom data models of your own modules, declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under the `src/search` directory, then add an [API route](!docs!/learn/fundamentals/api-routes) that queries the index with [query.search](!docs!/learn/fundamentals/query/search).
+To search data other than products, including the custom data models of your own modules, declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under the `src/search` directory, then add an [API route](!docs!/learn/fundamentals/api-routes) that queries the index with [query.search](!docs!/learn/fundamentals/query/search).
 
 ### Step 1: Create the Index
 
@@ -120,6 +122,8 @@ For example, to index a custom `brand` data model, create the file `src/search/b
 ```ts title="src/search/brand.ts"
 import {
   defineSearchIndex,
+  graphConsume,
+  graphSeed,
   search,
 } from "@medusajs/framework/utils"
 
@@ -139,34 +143,14 @@ export const brandIndex = defineSearchIndex({
     "brand.updated",
     "brand.deleted",
   ],
-  async consume(event, { container }) {
-    if (event.name === "brand.deleted") {
-      return [{
-        action: "delete",
-        filters: { id: [event.data.id] },
-      }]
-    }
-
-    const { data } = await container.query.graph({
-      entity: "brand",
-      fields,
-      filters: { id: event.data.id },
-    })
-
-    return [{ action: "upsert", documents: data }]
-  },
-  async *seed({ container }) {
-    const { data } = await container.query.graph({
-      entity: "brand",
-      fields,
-    })
-
-    yield [{ action: "upsert", documents: data }]
-  },
+  consume: graphConsume({ fields }),
+  seed: graphSeed({ fields }),
 })
 ```
 
-The definition indexes every brand with a searchable `name` that outweighs the other fields, a `country` you can filter and facet on, and a `created_at` you can sort by. The `events` and `consume` properties then keep the index current as brands change, so Medusa upserts a created or updated brand and removes a deleted one.
+The definition indexes every brand with a searchable `name` that outweighs the other fields, a `country` you can filter and facet on, and a `created_at` you can sort by.
+
+The [`graphSeed`](!resources!/infrastructure-modules/search/index-definitions#graphseed-options) helper fills the index by paging the brands through [Query](!docs!/learn/fundamentals/query), and [`graphConsume`](!resources!/infrastructure-modules/search/index-definitions#graphconsume-options) keeps it current as the events in `events` arrive, upserting a created or updated brand and removing a deleted one. [Write `seed` and `consume` yourself](!resources!/infrastructure-modules/search/index-definitions#write-seed-and-consume-yourself) when the index's data doesn't come from Query.
 
 <Note title="Tip">
 
@@ -294,21 +278,6 @@ The example declares two settings for the `product` index:
       description: `The metric that vector search uses to compare embeddings. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts.`,
       defaultValue: "cosine_distance",
     },
-    {
-      name: "sharding",
-      type: "`object`",
-      optional: true,
-      description: `How Medusa Search shards the index. Only set it for a large index whose write throughput needs it.`,
-      defaultValue: "Medusa Search picks the shard count and adjusts it as the index grows",
-      children: [
-        {
-          name: "num_shards",
-          type: "`number`",
-          optional: false,
-          description: `The number of shards to split the index into.`,
-        },
-      ],
-    },
   ]}
   sectionTitle="Index Settings"
 />
@@ -393,10 +362,9 @@ const { data } = await query.search({
 
 Medusa Search ranks a fuzzy match below every exact match, so enabling the option adds results rather than reordering the ones you already had.
 
-<Note title="Errors to expect">
+<Note>
 
-- A query that passes `typo_tolerance` without a `q` filter fails, since there are no terms to match approximately.
-- A query fails when none of the fields it searches has a fuzzy index, such as when the index sets `enabled: false` or exempts every searched field.
+The option only widens a term match, so Medusa Search ignores it when the query passes no `q` filter, or when none of the fields it searches has a fuzzy index.
 
 </Note>
 
@@ -411,7 +379,6 @@ export const productIndex = defineSearchIndex({
   fields: search.define({
     title: search.text().searchable().providerOptions({
       "search-medusa": {
-        fuzzy: true,
         glob: true,
       },
     }),
@@ -426,25 +393,11 @@ Medusa Search reads the following field options:
 <TypeList
   types={[
     {
-      name: "filterable",
-      type: "`boolean`",
-      optional: true,
-      description: `Whether Medusa Search indexes the field for filtering.`,
-      defaultValue: "true for a filterable, sortable, or facetable field, and for the index's primary key",
-    },
-    {
       name: "full_text_search",
       type: "`boolean` \\| `object`",
       optional: true,
       description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language.`,
       defaultValue: "true for a searchable field, and unset otherwise",
-    },
-    {
-      name: "fuzzy",
-      type: "`boolean`",
-      optional: true,
-      description: `Whether full-text search on the field tolerates small differences in spelling. Medusa Search sets it from the index's [typo tolerance setting](#typo-tolerance), so only set it to override that field's behavior.`,
-      defaultValue: "true for a searchable field when the index's typo tolerance is enabled, and false otherwise",
     },
     {
       name: "glob",
@@ -475,13 +428,6 @@ Medusa Search reads the following field options:
           defaultValue: "The index's `distance_metric` setting",
         },
       ],
-    },
-    {
-      name: "type",
-      type: "`string`",
-      optional: true,
-      description: `The attribute type that Medusa Search stores the field as, such as \`string\`, \`[]string\` for an array of strings, \`int\`, \`datetime\`, or \`[1536]f32\` for a 1536-dimension vector. Medusa infers it from the field definition, so only set it when you need a type that the definition can't express.`,
-      defaultValue: "The type Medusa infers from the field definition",
     },
   ]}
   sectionTitle="Field Options"

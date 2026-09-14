@@ -7706,5 +7706,10 @@ export const generatedEditDates = {
   "app/admin-components/guides/header/page.mdx": "2026-09-11T07:48:56.253Z",
   "app/admin-components/guides/table/page.mdx": "2026-09-11T07:48:47.870Z",
   "app/admin-components/layouts/layout-composer/page.mdx": "2026-09-10T14:50:27.323Z",
-  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z"
+  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z",
+  "app/infrastructure-modules/search/index-definitions/modifiers/page.mdx": "2026-09-14T07:09:00.266Z",
+  "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-09-14T08:12:32.418Z",
+  "app/infrastructure-modules/search/page.mdx": "2026-09-14T07:58:01.236Z",
+  "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-14T08:18:11.700Z",
+  "app/infrastructure-modules/search/reindexing/page.mdx": "2026-09-14T07:57:08.106Z"
 }
