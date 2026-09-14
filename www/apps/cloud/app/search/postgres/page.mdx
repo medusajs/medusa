@@ -243,7 +243,9 @@ Medusa Search runs on Cloud only, so a Cloud project uses two providers across i
 
 ## Integration with Medusa
 
-Both providers ship with Medusa and implement the same [Search Module Provider](!resources!/infrastructure-modules/search/providers) interface, so there's no integration code to write for either one. You declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under `src/search`, and the module creates the index, fills it, applies events to it, and compiles your queries.
+Both providers ship with Medusa and implement the same [Search Module Provider](!resources!/infrastructure-modules/search/providers) interface, so there's no integration code to write for either one. Medusa declares the `product` index by default, so product search needs no code of yours on either provider.
+
+To search a custom entity, you declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under `src/search`, and the module creates the index, fills it, applies events to it, and compiles your queries.
 
 ```ts title="src/search/brand.ts"
 export const brandIndex = defineSearchIndex({
@@ -978,7 +980,7 @@ Neither provider bills separately, so compare where the load lands instead:
   </Table.Body>
 </Table>
 
-### Other Cloud Usage This Affects
+### Other Cloud Usage PostgreSQL Affects
 
 The PostgreSQL provider changes which Cloud metrics your search workload lands on. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so PostgreSQL search requests never appear there. They show up elsewhere instead:
 
@@ -989,25 +991,8 @@ Medusa Search keeps both off your database and meters the queries under Search i
 
 ---
 
-## Which One to Choose
-
-**Choose Medusa Search if:**
-
-- Your project runs on Cloud and you want search off your database, so a traffic spike in search doesn't slow down checkout.
-- Your catalog is large enough that indexes competing with your transactional workload is a real concern.
-- You want vector or semantic search, which only Medusa Search serves, on the Enterprise plan.
-
-**Choose the PostgreSQL provider if:**
-
-- You self-host your Medusa application, since Medusa Search runs on Cloud only.
-- Full-text search, filters, facets, and sorting cover your requirements, since the provider serves no vector or semantic search.
-- Your search volume is modest enough that your database absorbs it without a bigger tier.
-
-You don't have to pick one for everything. The Search Module accepts more than one provider, so you can point a high-traffic storefront index at Medusa Search and keep a low-traffic admin index on PostgreSQL.
-
----
-
 ## Comparisons to Other Search Engines
 
+- [All engines compared](../comparison/page.mdx)
 - [Medusa vs Algolia](../algolia/page.mdx)
 - [Medusa vs Meilisearch](../meilisearch/page.mdx)

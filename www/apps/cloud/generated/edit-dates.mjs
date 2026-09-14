@@ -126,11 +126,14 @@ export const generatedEditDates = {
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/search/page.mdx": "2026-09-14T07:58:01.237Z",
-  "app/search/algolia/page.mdx": "2026-09-07T06:08:13.246Z",
-  "app/search/meilisearch/page.mdx": "2026-09-07T06:08:13.246Z",
-  "app/search/postgres/page.mdx": "2026-09-14T07:08:09.932Z",
-  "app/search/migrate-from-algolia/page.mdx": "2026-09-14T07:31:50.136Z",
-  "app/search/migrate-from-meilisearch/page.mdx": "2026-09-14T07:31:55.896Z",
-  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z"
+  "app/search/page.mdx": "2026-09-14T08:51:19.850Z",
+  "app/search/algolia/page.mdx": "2026-09-14T08:30:28.886Z",
+  "app/search/meilisearch/page.mdx": "2026-09-14T08:30:28.886Z",
+  "app/search/postgres/page.mdx": "2026-09-14T08:30:36.719Z",
+  "app/search/migrate-from-algolia/page.mdx": "2026-09-14T08:43:37.002Z",
+  "app/search/migrate-from-meilisearch/page.mdx": "2026-09-14T08:43:37.003Z",
+  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z",
+  "app/search/comparison/page.mdx": "2026-09-14T08:32:56.261Z",
+  "app/search/semantic-search/page.mdx": "2026-09-14T08:50:31.802Z",
+  "app/search/settings/page.mdx": "2026-09-14T08:50:27.174Z"
 }

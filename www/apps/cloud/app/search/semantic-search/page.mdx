@@ -1,0 +1,98 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Semantic Search with Medusa Search`,
+  keywords: [
+    "search",
+    "medusa search",
+    "semantic search",
+    "vector search",
+    "embeddings",
+    "hybrid search",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use semantic search with [Medusa Search](../page.mdx), including how it creates the embeddings for you.
+
+## What is Semantic Search?
+
+[Semantic search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) ranks results by meaning rather than by matching terms, which needs an embedding of the text you search over. Medusa Search can create those embeddings for you, so you don't run an embedding model or store its output yourself.
+
+<Note>
+
+This feature is available for the Enterprise plan only. Refer to the [Plans & Pricing](../../pricing/page.mdx) guide for what your plan includes.
+
+</Note>
+
+---
+
+## Add a Vector Field to an Index
+
+To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier on it:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  // ...
+})
+```
+
+### Index the Text to Embed
+
+Your documents then pass the text to embed as a string on `title_embedding`, and Medusa Search replaces it with the embedding it computes. So a `seed` that indexes each product's title yields the following:
+
+```ts
+yield [{
+  action: "upsert",
+  documents: products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    title_embedding: product.title,
+  })),
+}]
+```
+
+---
+
+## Run a Semantic Search
+
+Then, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "comfortable running shoe" },
+  search_options: {
+    vector: {
+      field: "title_embedding",
+      query: "comfortable shoes for long runs",
+      semantic_ratio: 0.7,
+    },
+  },
+})
+```
+
+`semantic_ratio` balances the semantic score against the full-text score, where `0` is full-text only and `1` is semantic only. So this query blends both.
+
+Without `embed` on the field, a query must pass a pre-computed embedding as `search_options.vector.value` instead, and Medusa Search rejects a query that passes `query`.
+
+<Note>
+
+Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-modules/search/index-definitions/fields#let-medusa-search-create-the-embedding) for the full details of the modifier, including how it changes the documents your index holds.
+
+</Note>
+
+---
+
+## Next Steps
+
+- [Medusa Search Settings](../settings/page.mdx)
+- [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search)
+- [Vector Fields](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector)

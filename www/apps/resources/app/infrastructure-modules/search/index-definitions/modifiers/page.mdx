@@ -11,8 +11,8 @@ In this guide, you'll learn about the modifiers you can chain on a field in a [s
 <Prerequisites
   items={[
     {
-      text: "Medusa v2.20.0+",
-      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0"
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
     }
   ]}
 />
@@ -336,7 +336,7 @@ With `embed`, your documents pass a string on the vector field, and a query can 
 
 <Note>
 
-`embed` is a [Medusa Search](!cloud!/search#semantic-search-with-medusa-search) feature, available for Cloud projects on the Enterprise plan.
+`embed` is a [Medusa Search](!cloud!/search/semantic-search) feature, available for Cloud projects on the Enterprise plan.
 
 </Note>
 
@@ -367,7 +367,7 @@ export const productIndex = defineSearchIndex({
 
 The options are passed to the targeted provider only, so you can pass different options to different providers for the same field.
 
-An option only does something if the provider consumes it. A provider that doesn't read the `providerOptions` modifier ignores whatever you pass, so check the provider's documentation for the options it accepts. Of the providers Medusa ships, the [Medusa Search provider available for Cloud users](!cloud!/search) is the only one that reads them, and its [guide lists the full set](!cloud!/search#field-options).
+An option only does something if the provider consumes it. A provider that doesn't read the `providerOptions` modifier ignores whatever you pass, so check the provider's documentation for the options it accepts. Of the providers Medusa ships, the [Medusa Search provider available for Cloud users](!cloud!/search) is the only one that reads them, and its [guide lists the full set](!cloud!/search/settings#field-options).
 
 <Note title="Tip">
 

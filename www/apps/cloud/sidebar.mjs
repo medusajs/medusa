@@ -213,6 +213,21 @@ export const sidebar = [
             children: [
               {
                 type: "link",
+                title: "Settings",
+                path: "/search/settings",
+              },
+              {
+                type: "link",
+                title: "Semantic Search",
+                path: "/search/semantic-search",
+              },
+              {
+                type: "link",
+                title: "Compare Search Engines",
+                path: "/search/comparison",
+              },
+              {
+                type: "link",
                 title: "Compare to PostgreSQL",
                 path: "/search/postgres",
               },

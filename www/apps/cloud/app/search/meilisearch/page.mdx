@@ -92,10 +92,12 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        An index definition per entity.
+
+      None for products, since Medusa declares the `product` index by default. An index definition per custom entity you search.
+
       </Table.Cell>
       <Table.Cell>
-        A Search Module Provider you build and maintain.
+        A Search Module Provider you build and maintain, and an index definition per entity you search.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -641,7 +643,7 @@ Two things are worth checking before you commit:
 - **The real cost of MeiliSearch self-hosting.** The engine is free, and the on-call rotation, the upgrade work, and the disk you size for the index are not. Compare against Meilisearch Cloud honestly, not against zero.
 - **Search requests on either option.** A storefront that searches on every keystroke makes many more requests than one that searches on submit. Refer to [Usage](../../usage/page.mdx) to monitor your search requests on Medusa Search before you tune the storefront's behavior.
 
-### Other Cloud Usage This Affects
+### Other Cloud Usage MeiliSearch Affects
 
 Moving search to Meilisearch doesn't move it off your Cloud bill, it moves it to different metrics. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so Meilisearch requests never appear there. They land here instead:
 
@@ -652,28 +654,8 @@ Querying Meilisearch from the browser keeps those searches off your Data Transfe
 
 ---
 
-## Which One to Choose
-
-**Choose Medusa Search if:**
-
-- Your project runs on Cloud and you want search without a service to provision, key, and operate.
-- You want the index schema and the sync logic in your repository, reviewed and deployed with the rest of your code.
-- Filters, facets, sorting, and weighted full-text search cover your requirements.
-- You want admin dashboard search to improve as you index more entities.
-
-**Choose Meilisearch if:**
-
-- You want the same engine locally and in production, with identical relevance in both.
-- You have a reason to keep search inside your own infrastructure, such as data residency.
-- You have the capacity to operate the engine, or you're ready to pay for Meilisearch Cloud instead.
-
-Already using Meilisearch and moving to Medusa Search? Refer to [Migrate from Meilisearch to Medusa Search](../migrate-from-meilisearch/page.mdx) for the end-to-end steps.
-
-You can also use both. The Search Module accepts more than one provider, so you can keep admin search and most indexes on Medusa Search while a storefront index runs on Meilisearch through your own integration. Refer to [Configure the Search Module](!resources!/infrastructure-modules/search#configure-the-search-module) for how to register providers and set a default.
-
----
-
 ## Comparisons to Other Search Engines
 
+- [All engines compared](../comparison/page.mdx)
 - [Medusa vs PostgreSQL](../postgres/page.mdx)
 - [Medusa vs Algolia](../algolia/page.mdx)

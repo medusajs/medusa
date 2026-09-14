@@ -1,0 +1,303 @@
+import { CardList, Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Compare Medusa Search to Other Search Engines`,
+  keywords: [
+    "search",
+    "medusa search",
+    "comparison",
+    "postgres",
+    "postgresql",
+    "algolia",
+    "meilisearch",
+    "search engine",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll compare [Medusa Search](../page.mdx) to the search engines that Medusa projects commonly use, so you can decide which one fits your project. Each engine also has a detailed comparison guide, linked from every section.
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../../sign-up/page.mdx) to use Medusa Search and other Cloud features.
+
+</Note>
+
+## The Engines at a Glance
+
+Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them, from full-text queries with relevance ranking to vector search over embeddings.
+
+The [Search Module](!resources!/infrastructure-modules/search) drives every engine through a provider, so the [`query.search`](!docs!/learn/fundamentals/query/search) calls you write and the [index definitions](!resources!/infrastructure-modules/search/index-definitions) you declare for your own entities stay the same. What changes is which provider serves them:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Engine
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What it is
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Who provides the module provider
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Medusa Search
+      </Table.Cell>
+      <Table.Cell>
+        A managed search service that Cloud runs for every environment of your project.
+      </Table.Cell>
+      <Table.Cell>
+
+        Medusa, as the `search-medusa` provider that Cloud registers for you.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [PostgreSQL](!resources!/infrastructure-modules/search/providers/postgres)
+
+      </Table.Cell>
+      <Table.Cell>
+        Full-text search inside the database your Medusa application already uses.
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa, as the `search-postgres` provider that Medusa registers by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Algolia
+      </Table.Cell>
+      <Table.Cell>
+        A hosted search product with deep relevance tuning, merchandising, and analytics.
+      </Table.Cell>
+      <Table.Cell>
+        You, as a Search Module Provider you build and maintain.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Meilisearch
+      </Table.Cell>
+      <Table.Cell>
+        An open-source search engine you self-host, or run on Meilisearch Cloud.
+      </Table.Cell>
+      <Table.Cell>
+        You, as a Search Module Provider you build and maintain.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Summary Comparison
+
+The following table compares the four engines across the concerns that usually decide the choice. Refer to each engine's detailed guide for the behavior behind a row.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Concern
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Medusa Search
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        PostgreSQL
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Algolia
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Meilisearch
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Setup
+      </Table.Cell>
+      <Table.Cell>
+        None. Cloud provisions it per environment.
+      </Table.Cell>
+      <Table.Cell>
+
+      Run `db:migrate` to create its tables and extensions.
+
+      </Table.Cell>
+      <Table.Cell>
+        Create an account, an index, and keys per environment.
+      </Table.Cell>
+      <Table.Cell>
+        Run the engine yourself, or create a Meilisearch Cloud project.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Who operates it
+      </Table.Cell>
+      <Table.Cell>
+        Cloud.
+      </Table.Cell>
+      <Table.Cell>
+        You, as part of your database.
+      </Table.Cell>
+      <Table.Cell>
+        Algolia.
+      </Table.Cell>
+      <Table.Cell>
+        You when you self-host, or Meilisearch on their cloud.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Integration code you maintain
+      </Table.Cell>
+      <Table.Cell>
+        None for products. An index definition per custom entity you search.
+      </Table.Cell>
+      <Table.Cell>
+        None for products. An index definition per custom entity you search.
+      </Table.Cell>
+      <Table.Cell>
+        A provider you build, and an index definition per entity you search.
+      </Table.Cell>
+      <Table.Cell>
+        A provider you build, and an index definition per entity you search.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Local development
+      </Table.Cell>
+      <Table.Cell>
+        Unavailable. The PostgreSQL provider covers local instead.
+      </Table.Cell>
+      <Table.Cell>
+        The default provider locally, with no extra service.
+      </Table.Cell>
+      <Table.Cell>
+        No local engine. Local development points at a real index.
+      </Table.Cell>
+      <Table.Cell>
+        The same engine runs locally as a binary or container.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Relevance tuning
+      </Table.Cell>
+      <Table.Cell>
+        A weight per searchable field.
+      </Table.Cell>
+      <Table.Cell>
+        Four relevance tiers that weights collapse onto.
+      </Table.Cell>
+      <Table.Cell>
+        Ranking rules, synonyms, and merchandising controls.
+      </Table.Cell>
+      <Table.Cell>
+        Ranking rules, synonyms, and stop words.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Vector and hybrid search
+      </Table.Cell>
+      <Table.Cell>
+        Supported, with embeddings it can create for you on the Enterprise plan.
+      </Table.Cell>
+      <Table.Cell>
+        Not supported.
+      </Table.Cell>
+      <Table.Cell>
+        Supported through Algolia's own vector features.
+      </Table.Cell>
+      <Table.Cell>
+        Supported, with an embedder that can compute the embeddings.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Per-environment isolation
+      </Table.Cell>
+      <Table.Cell>
+        One set of indexes per environment, created for you.
+      </Table.Cell>
+      <Table.Cell>
+        Tables in the environment's database, so they travel with it.
+      </Table.Cell>
+      <Table.Cell>
+        You name and provision an index per environment.
+      </Table.Cell>
+      <Table.Cell>
+        You provision an index or an instance per environment.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        What you pay for
+      </Table.Cell>
+      <Table.Cell>
+        No separate subscription. Your plan includes an allowance of search requests.
+      </Table.Cell>
+      <Table.Cell>
+        Your database's own resources, which search shares with checkout. Other Cloud costs may apply depending on your usage, as explained in the [detailed comparison guide](../postgres/page.mdx#other-cloud-usage-postgresql-affects)
+      </Table.Cell>
+      <Table.Cell>
+        A subscription priced on stored records and search requests. Other Cloud costs may apply depending on your usage, as explained in the [detailed comparison guide](../algolia/page.mdx#other-cloud-usage-algolia-affects)
+      </Table.Cell>
+      <Table.Cell>
+        Your own infrastructure, or a Meilisearch Cloud subscription. Other Cloud costs may apply depending on your usage, as explained in the [detailed comparison guide](../meilisearch/page.mdx#other-cloud-usage-meilisearch-affects)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Detailed Comparisons
+
+Each guide compares Medusa Search to one engine across setup, integration, indexing, search capabilities, storefront querying, and cost:
+
+<CardList
+  itemsPerRow={1}
+  items={[
+    {
+      title: "PostgreSQL",
+      text: "The provider Medusa registers by default, and the one your local development uses.",
+      href: "../postgres/page.mdx",
+    },
+    {
+      title: "Algolia",
+      text: "A hosted search product with relevance tuning, merchandising, and analytics.",
+      href: "../algolia/page.mdx",
+    },
+    {
+      title: "Meilisearch",
+      text: "An open-source engine you self-host, or run on Meilisearch Cloud.",
+      href: "../meilisearch/page.mdx",
+    },
+  ]}
+/>
+
+---
+
+## Migrate to Medusa Search
+
+If you already run Algolia or Meilisearch and you're moving to Medusa Search, the following guides cover the end-to-end steps, including how to map your index settings and backfill your documents:
+
+- [Migrate from Algolia to Medusa Search](../migrate-from-algolia/page.mdx)
+- [Migrate from Meilisearch to Medusa Search](../migrate-from-meilisearch/page.mdx)

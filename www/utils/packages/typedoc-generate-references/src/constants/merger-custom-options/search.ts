@@ -9,7 +9,7 @@ const searchOptions: FormattingOptionsType = {
     
 :::note
 
-The Search Module is available starting [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+The Search Module is available starting [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
 
 :::`,
     frontmatterData: {

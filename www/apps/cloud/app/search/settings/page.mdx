@@ -1,0 +1,298 @@
+import { Note, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Search Settings`,
+  keywords: [
+    "search",
+    "medusa search",
+    "settings",
+    "typo tolerance",
+    "provider options",
+    "search options",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the settings and options that [Medusa Search](../page.mdx) supports, and how to set them on an index, on a field, and on a query.
+
+Aside from the fields and settings that every [index definition](!resources!/infrastructure-modules/search/index-definitions) declares, Medusa Search supports settings and options of its own.
+
+## Index Settings
+
+Set the `settings` property of an index definition to configure how Medusa Search treats the whole index.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable(),
+    brand: search.keyword().filterable(),
+  }),
+  settings: {
+    distinct_attribute: "brand",
+    provider_options: {
+      "search-medusa": {
+        distance_metric: "cosine_distance",
+      },
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The example declares two settings for the `product` index:
+
+- `distinct_attribute` deduplicates results on `brand`, so a search returns at most one product per brand instead of every product the brand sells.
+- `provider_options` passes options that only the `search-medusa` provider understands, in this case the distance metric it uses to compare embeddings.
+
+Medusa Search accepts the following index settings:
+
+<TypeList
+  types={[
+    {
+      name: "distinct_attribute",
+      type: "`string`",
+      optional: true,
+      description: `The dotted path of a field that Medusa Search deduplicates hits by, returning at most one hit per distinct value. A query that passes its own \`distinct\` search option overrides it.`,
+    },
+    {
+      name: "provider_options",
+      type: "`object`",
+      optional: true,
+      description: `The settings of a specific search engine, keyed by the provider's identifier. Medusa Search reads the \`search-medusa\` entry and ignores the rest.`,
+      children: [
+        {
+          name: "search-medusa",
+          type: "`object`",
+          optional: true,
+          description: `The settings that only Medusa Search understands.`,
+          children: [
+            {
+              name: "distance_metric",
+              type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+              optional: true,
+              description: `The metric that vector search uses to compare embeddings. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts. A [vector field](#field-options) can override it for itself.`,
+              defaultValue: "cosine_distance",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "typo_tolerance",
+      type: "`object`",
+      optional: true,
+      description: `The thresholds Medusa Search applies when it matches a misspelled term, and the fields it must never fuzzy-match. Refer to [Typo Tolerance](#typo-tolerance) for an example.`,
+      children: [
+        {
+          name: "enabled",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search builds a fuzzy index for the index's searchable fields. Set it to \`false\` to keep the index smaller when no query needs typo tolerance.`,
+          defaultValue: "true",
+        },
+        {
+          name: "min_word_size_for_one_typo",
+          type: "`number`",
+          optional: true,
+          description: `The shortest term length that tolerates a single typo.`,
+          defaultValue: "6",
+        },
+        {
+          name: "min_word_size_for_two_typos",
+          type: "`number`",
+          optional: true,
+          description: `The shortest term length that tolerates two typos. It can't be lower than \`min_word_size_for_one_typo\`.`,
+          defaultValue: "9",
+        },
+        {
+          name: "disabled_on_attributes",
+          type: "`string[]`",
+          optional: true,
+          description: `The dotted paths of the fields that must always match exactly, such as a SKU or a serial number where a single character changes the meaning.`,
+          defaultValue: "[]",
+        },
+      ],
+    },
+  ]}
+  sectionTitle="Index Settings"
+  openedLevel={1}
+/>
+
+The example above sets `distinct_attribute` and `provider_options`. The section below covers `typo_tolerance`, which has a few properties of its own.
+
+---
+
+## Typo Tolerance
+
+Medusa Search matches misspelled terms with a fuzzy index that it builds on every searchable field by default, so an index tolerates typos without declaring any setting. A query is the opposite: it matches terms exactly until you opt in, as explained in [Opt a Query Into Typo Tolerance](#opt-a-query-into-typo-tolerance).
+
+Set the `typo_tolerance` index setting to change the thresholds Medusa Search applies, to exempt a field, or to turn the fuzzy index off:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    sku: search.keyword().searchable(),
+  }),
+  settings: {
+    typo_tolerance: {
+      min_word_size_for_one_typo: 6,
+      min_word_size_for_two_typos: 9,
+      disabled_on_attributes: ["sku"],
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The example tolerates a typo on a term of six characters or more, two typos from nine characters, and never fuzzy-matches `sku`. Refer to [Index Settings](#index-settings) for every property the setting accepts.
+
+### Opt a Query Into Typo Tolerance
+
+The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options), which is what a search engine that tolerates typos by default, such as Algolia or Meilisearch, does for you:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshrit" },
+  search_options: {
+    typo_tolerance: true,
+  },
+})
+```
+
+Medusa Search ranks a fuzzy match below every exact match, so enabling the option adds results rather than reordering the ones you already had.
+
+<Note>
+
+The option only widens a term match, so Medusa Search ignores it when the query passes no `q` filter, or when none of the fields it searches has a fuzzy index.
+
+</Note>
+
+---
+
+## Field Options
+
+Use a field's [`providerOptions()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#provideroptions) modifier to configure how Medusa Search indexes that field.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable().providerOptions({
+      "search-medusa": {
+        glob: true,
+      },
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+Medusa Search reads the following field options:
+
+<TypeList
+  types={[
+    {
+      name: "full_text_search",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language.`,
+      defaultValue: "true for a searchable field, and unset otherwise",
+    },
+    {
+      name: "glob",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can wildcard-match the field's exact value, which the \`$prefix\` and \`$like\` filters need. Medusa Search always omits it on the \`id\` field.`,
+      defaultValue: "true for a filterable, sortable, or facetable keyword field, and false for a text field",
+    },
+    {
+      name: "regex",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can match the field with a regular expression.`,
+      defaultValue: "false",
+    },
+    {
+      name: "ann",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The approximate nearest neighbor configuration of a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector). Pass \`true\` to keep the defaults, or an object to override the index's metric for this field.`,
+      defaultValue: "true for a vector field, and unset otherwise",
+      children: [
+        {
+          name: "distance_metric",
+          type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+          optional: true,
+          description: `The metric that vector search uses for this field. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts.`,
+          defaultValue: "The index's `distance_metric` setting",
+        },
+      ],
+    },
+  ]}
+  sectionTitle="Field Options"
+/>
+
+---
+
+## Query Options
+
+Pass `provider_options` in a query's [search options](!docs!/learn/fundamentals/query/search#search-options) to change how Medusa Search runs that query.
+
+For example:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshirt" },
+  search_options: {
+    provider_options: {
+      "search-medusa": {
+        consistency: "eventual",
+      },
+    },
+  },
+})
+```
+
+Medusa Search reads one query option, `consistency`, which accepts the following values:
+
+<TypeList
+  types={[
+    {
+      name: "consistency",
+      type: "`\"strong\"` \\| `\"eventual\"`",
+      optional: true,
+      description: `How current the index must be for this query. \`strong\` searches every write made before the query started, so the query reflects a write you made moments ago. \`eventual\` skips that check and can miss the latest writes, which makes the query faster.`,
+      defaultValue: "strong",
+    },
+  ]}
+  sectionTitle="Query Options"
+/>
+
+Set `eventual` for queries where a slightly stale result is fine, such as a storefront's product listing. Keep the default for a query that must reflect a recent write, such as an admin view of a product you edited.
+
+---
+
+## Next Steps
+
+- [Semantic Search with Medusa Search](../semantic-search/page.mdx)
+- [Index Definitions](!resources!/infrastructure-modules/search/index-definitions)
+- [Search Options](!docs!/learn/fundamentals/query/search#search-options)

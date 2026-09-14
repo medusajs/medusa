@@ -29,8 +29,8 @@ In this guide, you'll migrate a Medusa project that indexes and searches product
       link: "/first-project",
     },
     {
-      text: "Medusa v2.20.0+",
-      link: "https://github.com/medusajs/medusa/releases/tag/v2.20.0",
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1",
     },
   ]}
 />
@@ -54,7 +54,7 @@ search behavior intact.
 
 <context>
 - Medusa Search is a provider of the Search Module, which
-  ships with Medusa v2.20.0 and later. Cloud registers and
+  ships with Medusa v2.21.1 and later. Cloud registers and
   configures it for every environment, so it needs no
   credentials or configuration in the project.
 - Medusa creates a product index by default. A project only
@@ -84,7 +84,7 @@ search behavior intact.
    workflows and their steps, the subscribers, the admin sync
    route and UI route, the storefront's search client and
    search modal, and the Medusa version in `package.json`.
-2. If the Medusa version is below v2.20.0, stop and tell the
+2. If the Medusa version is below v2.21.1, stop and tell the
    user to upgrade first.
 3. List the fields the project indexes in Meilisearch, taken
    from the `fields` array of `syncProductsWorkflow`, and ask
@@ -611,7 +611,7 @@ A field that your storefront neither displays, filters, sorts, nor searches on d
 
 ## Step 1: Upgrade Your Medusa Application
 
-Medusa Search requires [Medusa v2.20.0 or later](https://github.com/medusajs/medusa/releases/tag/v2.20.0). Upgrade your application, then confirm it starts locally before you change any search code.
+Medusa Search requires [Medusa v2.21.1 or later](https://github.com/medusajs/medusa/releases/tag/v2.21.1). Upgrade your application, then confirm it starts locally before you change any search code.
 
 Refer to the [Update Medusa](../../update-medusa/page.mdx) guide for the upgrade steps.
 

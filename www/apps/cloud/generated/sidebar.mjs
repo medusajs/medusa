@@ -283,6 +283,27 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Settings",
+                "path": "/search/settings",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Semantic Search",
+                "path": "/search/semantic-search",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare Search Engines",
+                "path": "/search/comparison",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Compare to PostgreSQL",
                 "path": "/search/postgres",
                 "children": []

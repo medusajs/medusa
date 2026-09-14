@@ -79,10 +79,12 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        An index definition per entity.
+
+      None for products, since Medusa declares the `product` index by default. An index definition per custom entity you search.
+
       </Table.Cell>
       <Table.Cell>
-        A Search Module Provider you build and maintain.
+        A Search Module Provider you build and maintain, and an index definition per entity you search.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -623,7 +625,7 @@ Three things are worth checking before you commit:
 - **Record count, not product count.** If you flatten variants or localized fields into separate records in Algolia, your record count grows much faster than your catalog does.
 - **Search requests on either option.** A storefront that searches on every keystroke makes many more requests than one that searches on submit. Refer to [Usage](../../usage/page.mdx) to monitor your search requests on Medusa Search before you tune the storefront's behavior.
 
-### Other Cloud Usage This Affects
+### Other Cloud Usage Algolia Affects
 
 Moving search to Algolia doesn't move it off your Cloud bill, it moves it to different metrics. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so Algolia requests never appear there. They land here instead:
 
@@ -634,28 +636,8 @@ Querying Algolia from the browser keeps those searches off your Data Transfer, s
 
 ---
 
-## Which One to Choose
-
-**Choose Medusa Search if:**
-
-- Your project runs on Cloud and you want search without a second vendor to provision, key, and bill.
-- You want the index schema and the sync logic in your repository, reviewed and deployed with the rest of your code.
-- Filters, facets, sorting, and weighted full-text search cover your requirements.
-- You want admin dashboard search to improve as you index more entities.
-
-**Choose Algolia if:**
-
-- Relevance tuning is a core part of your product, and you want ranking rules, synonyms, and merchandising controls.
-- You want built-in search analytics and A/B testing.
-- You accept a second vendor, a second set of credentials, and the integration code that connects them.
-
-Already using Algolia and moving to Medusa Search? Refer to [Migrate from Algolia to Medusa Search](../migrate-from-algolia/page.mdx) for the end-to-end steps.
-
-You can also use both. The Search Module accepts more than one provider, so you can keep admin search and most indexes on Medusa Search while a storefront index runs on Algolia through your own integration. Refer to [Configure the Search Module](!resources!/infrastructure-modules/search#configure-the-search-module) for how to register providers and set a default.
-
----
-
 ## Comparisons to Other Search Engines
 
+- [All engines compared](../comparison/page.mdx)
 - [Medusa vs PostgreSQL](../postgres/page.mdx)
 - [Medusa vs Meilisearch](../meilisearch/page.mdx)
