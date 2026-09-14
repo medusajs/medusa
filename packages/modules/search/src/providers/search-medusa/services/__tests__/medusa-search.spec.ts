@@ -33,11 +33,14 @@ const createService = () =>
 describe("MedusaSearchService", () => {
   it("requires Cloud credentials from provider options", () => {
     expect(() => new MedusaSearchService({}, {} as any)).toThrow(
-      /explicit "api_key"/
+      /explicit "endpoint"/
     )
     expect(
-      () => new MedusaSearchService({}, { api_key: "medusa_test" } as any)
-    ).toThrow(/explicit "endpoint"/)
+      () =>
+        new MedusaSearchService({}, {
+          endpoint: "https://search.medusa.example",
+        } as any)
+    ).toThrow(/explicit "api_key"/)
     expect(
       () =>
         new MedusaSearchService({}, {
