@@ -50,6 +50,11 @@ const buildContext = ({
   }
   upsertDocuments?: jest.Mock
   deleteDocuments?: jest.Mock
+  rateLimit?: {
+    max_retries?: number
+    initial_delay?: number
+    max_delay?: number
+  }
   // What the engine reports it holds, keyed by physical index name. Only the
   // planner asks, and only to tell an index that lost its data apart from one
   // that merely failed part-way through.
@@ -811,6 +816,156 @@ describe("search index seeding", () => {
       ])
 
       expect(cursors).toEqual([undefined])
+    })
+  })
+
+  describe("when the engine rate limits the writes", () => {
+    // Cloud sends a `Retry-After` with its 429s, and the seed honours it — a
+    // zero wait is what keeps these tests from sitting through the backoff.
+    const rateLimited = () =>
+      Object.assign(new Error("Too many requests"), {
+        status: 429,
+        type: "embedding_rate_limit",
+        retry_after: 0,
+      })
+
+    const twoDocuments = () =>
+      definition("product", async function* ({ catchup }) {
+        if (catchup) {
+          return
+        }
+
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+        yield [{ action: "upsert", documents: [{ id: "2" }] }]
+      })
+
+    it("should wait out the rate limit and finish the seed", async () => {
+      const upsertDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [twoDocuments()],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(upsertDocuments).toHaveBeenCalledTimes(4)
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+
+      const [bulk] = context.syncs
+      expect(bulk.status).toBe(SearchSyncStatus.DONE)
+      expect(bulk.documents_synced).toBe(2)
+      expect(context.logger_.warn).toHaveBeenCalledWith(
+        expect.stringContaining("Rate limited")
+      )
+    })
+
+    it("should wait out a rate-limited delete before calling the run unresumable", async () => {
+      const index = definition("product", async function* ({ catchup }: any) {
+        if (catchup) {
+          return
+        }
+
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+        yield [{ action: "delete", filters: { id: ["9"] } }]
+      })
+
+      const deleteDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [index],
+        deleteDocuments,
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      // A delete that cannot be resumed past is exactly the one worth waiting
+      // for, so the rate limit is ridden out before the run gives up on it.
+      expect(deleteDocuments).toHaveBeenCalledTimes(3)
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.DONE,
+        resumable: false,
+      })
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should leave a run that gave up waiting resumable", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce({ index: "x", status: "succeeded" })
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      // Spending the retries is not the kind of failure that invalidates what
+      // was already written, so the cursor still stands.
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "1",
+        resumable: true,
+      })
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, "1"])
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should stop retrying when it no longer holds the lock", async () => {
+      let abort: () => void
+      const upsertDocuments = jest.fn(async () => {
+        // The lock goes to another instance while this batch is being
+        // rate limited.
+        abort!()
+        throw rateLimited()
+      })
+
+      const context = buildContext({
+        indexes: [twoDocuments()],
+        upsertDocuments,
+        locking: lockingThatAborts((abortFn) => {
+          abort = abortFn
+        }),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      // Retried once, where the lock check that guards every attempt stopped
+      // it before it could write again.
+      expect(upsertDocuments).toHaveBeenCalledTimes(1)
+      // A run that lost its lock owns neither the version nor its syncs.
+      expect(context.versions[0].status).toBe(SearchIndexState.BUILDING)
+      expect(context.syncs[0].status).toBe(SearchSyncStatus.PROCESSING)
     })
   })
 })
