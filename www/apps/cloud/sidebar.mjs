@@ -206,14 +206,28 @@ export const sidebar = [
               },
             ],
           },
+        ],
+      },
+      {
+        type: "category",
+        title: "Search",
+        badge: {
+          variant: "green",
+          text: "New",
+        },
+        children: [
           {
             type: "link",
-            title: "Search",
+            title: "Overview",
             path: "/search",
+          },
+          {
+            type: "sub-category",
+            title: "API",
             children: [
               {
                 type: "link",
-                title: "Settings",
+                title: "Index Settings",
                 path: "/search/settings",
               },
               {
@@ -221,11 +235,13 @@ export const sidebar = [
                 title: "Semantic Search",
                 path: "/search/semantic-search",
               },
-              {
-                type: "link",
-                title: "Compare Search Engines",
-                path: "/search/comparison",
-              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Comparison",
+            path: "/search/comparison",
+            children: [
               {
                 type: "link",
                 title: "Compare to PostgreSQL",

@@ -7708,8 +7708,14 @@ export const generatedEditDates = {
   "app/admin-components/layouts/layout-composer/page.mdx": "2026-09-10T14:50:27.323Z",
   "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z",
   "app/infrastructure-modules/search/index-definitions/modifiers/page.mdx": "2026-09-14T07:09:00.266Z",
-  "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-09-14T08:12:32.418Z",
-  "app/infrastructure-modules/search/page.mdx": "2026-09-14T07:58:01.236Z",
-  "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-14T08:18:11.700Z",
-  "app/infrastructure-modules/search/reindexing/page.mdx": "2026-09-14T07:57:08.106Z"
+  "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-09-14T11:46:17.087Z",
+  "app/infrastructure-modules/search/page.mdx": "2026-09-14T10:32:27.892Z",
+  "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-14T13:08:22.428Z",
+  "app/infrastructure-modules/search/reindexing/page.mdx": "2026-09-14T11:59:49.575Z",
+  "app/infrastructure-modules/search/admin-search/page.mdx": "2026-09-14T12:59:00.139Z",
+  "app/infrastructure-modules/search/index-definitions/linked-data/page.mdx": "2026-09-14T11:38:52.591Z",
+  "app/infrastructure-modules/search/index-definitions/fields/page.mdx": "2026-09-14T10:46:03.481Z",
+  "app/infrastructure-modules/search/providers/page.mdx": "2026-09-14T13:05:27.554Z",
+  "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-09-14T13:58:55.717Z",
+  "app/instantsearch/page.mdx": "2026-09-14T13:36:07.625Z"
 }

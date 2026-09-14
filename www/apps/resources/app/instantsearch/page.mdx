@@ -176,9 +176,9 @@ The adapter needs a way to send requests to your Medusa application. Pass an ins
 For example, if you're using the default starter, it already exports an SDK instance from `apps/storefront/src/lib/config.ts`. So, create the file `apps/storefront/src/lib/search-client.ts` with the following content:
 
 export const clientHighlights = [
-  ["7", "PRODUCT_INDEX_NAME", "The name of the index to search."],
-  ["10", "sdk", "The storefront's existing SDK instance."],
-  ["11", "path", "Medusa's storefront search route."],
+  ["6", "PRODUCT_INDEX_NAME", "The name of the index to search."],
+  ["9", "sdk", "The storefront's existing SDK instance."],
+  ["10", "path", "Medusa's storefront search route."],
 ]
 
 <CodeTabs group="client">
@@ -187,7 +187,6 @@ export const clientHighlights = [
 ```ts title="apps/storefront/src/lib/search-client.ts" highlights={clientHighlights}
 import {
   createInstantSearchAdapter,
-  type MedusaSdkLike,
 } from "@medusajs/instantsearch-adapter"
 import { sdk } from "@lib/config"
 
@@ -905,9 +904,6 @@ Use `additionalSearchParameters` to add filters or search options that every que
 
 For example:
 
-<CodeTabs group="defaults">
-  <CodeTab label="Default Starter" value="starter">
-
 ```ts title="apps/storefront/src/lib/search-client.ts"
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
@@ -926,25 +922,6 @@ export const { searchClient } = createInstantSearchAdapter({
 })
 ```
 
-  </CodeTab>
-  <CodeTab label="Other Storefronts" value="other">
-
-```ts title="src/lib/search-client.ts"
-export const { searchClient } = createInstantSearchAdapter({
-  sdk,
-  path: "/store/search",
-  additionalSearchParameters: {
-    search_options: {
-      match_strategy: "last",
-      typo_tolerance: true,
-    },
-  },
-})
-```
-
-  </CodeTab>
-</CodeTabs>
-
 Every query then uses the `last` match strategy and typo tolerance, and the product index only returns the fields listed.
 
 <Note title="Warning" type="warning">
@@ -961,34 +938,12 @@ The `/store/search` route exposes the indexes that Medusa considers safe for cus
 
 For example, assuming you have an API route at `/store/article-search` that searches through articles using [query.search](!docs!/learn/fundamentals/query/search), point the InstantSearch adapter in the storefront to the route:
 
-<CodeTabs group="custom-path">
-  <CodeTab label="Default Starter" value="starter">
-
 ```ts title="apps/storefront/src/lib/search-client.ts"
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
   path: "/store/article-search",
 })
 ```
-
-  </CodeTab>
-  <CodeTab label="Other Storefronts" value="other">
-
-```ts title="src/lib/search-client.ts"
-export const { searchClient } = createInstantSearchAdapter({
-  sdk,
-  path: "/store/article-search",
-})
-```
-
-  </CodeTab>
-</CodeTabs>
-
-<Note title="Warning" type="warning">
-
-Apply the filters that protect data in the route, not in the storefront. Customers can change any filter the client sends.
-
-</Note>
 
 ---
 

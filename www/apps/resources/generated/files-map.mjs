@@ -1280,8 +1280,16 @@ export const filesMap = [
     "pathname": "/infrastructure-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/admin-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/admin-search"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/page.mdx",
     "pathname": "/infrastructure-modules/search/index-definitions/fields"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/linked-data/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/linked-data"
   },
   {
     "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers/page.mdx",

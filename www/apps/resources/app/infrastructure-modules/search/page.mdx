@@ -35,24 +35,24 @@ The Search Module writes to and reads from the search engine you integrate, such
 
 The Search Module has two parts that you control:
 
-- **Search Module Providers**: they implement the logic of talking to a search engine. Learn more in the [Search Module Providers guide](./providers/page.mdx).
-- **Search index definitions**: you declare which entity to index, which fields the engine holds, and how to fill the index. Learn more in the [Search Index Definitions guide](./index-definitions/page.mdx).
+- **[Search Module Providers](./providers/page.mdx)**: they implement the logic of talking to a search engine.
+- **[Search index definitions](./index-definitions/page.mdx)**: you declare which entity to index, which fields the engine holds, and how to fill the index.
 
 The Search Module handles everything between the two. It creates and migrates the physical indexes, fills them when they are empty, applies events to keep them current, and compiles a search query into whatever the provider's engine understands.
 
 It also keeps a version per physical index it builds, so a definition change builds a new version alongside the one serving reads and only makes it active once it's filled. Every provider rebuilds an index that way, so a schema change costs no downtime whichever one you use.
 
-Learn how the module builds an index, fills it, and rebuilds it when a definition changes in the [Reindexing and Migrations guide](./reindexing/page.mdx).
-
 ---
 
 ## Configure the Search Module
 
-The Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can define an index and start searching without extra configuration. On Cloud, [Medusa Search](!cloud!/search) is registered by default instead.
+As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can start searching products or custom data models without extra configurations.
 
-### Change Default Configuration
+On Cloud, [Medusa Search](!cloud!/search) is registered by default for all plans, unless you explicitly configure a different provider.
 
-To change its configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
+### Change Default Search Configuration
+
+To change the Search Module's configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 // To register only for development. This is necessary to use Medusa Search in Cloud
@@ -77,15 +77,9 @@ module.exports = defineConfig({
 })
 ```
 
-<Note>
-
-The Search Module requires at least one Search Module Provider once you declare a search index. If no provider is registered, it throws an error while it initializes.
-
-</Note>
-
 ### Run Migrations
 
-If you added the Search Module to an existing Medusa application, run the following command to create the necessary database tables for the module and its provider:
+If you upgraded an existing Medusa application to v2.21.1, run the following command to create the necessary database tables for the Search Module and its configured provider:
 
 ```bash npm2yarn
 npx medusa db:migrate
@@ -155,25 +149,27 @@ npx medusa db:migrate
   </Table.Body>
 </Table>
 
----
-
 ## Search Module Providers
 
 A Search Module Provider implements the logic of indexing and searching documents in a search engine. The Search Module uses the provider that each index definition resolves to.
 
 Medusa ships the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), and [Medusa Search](!cloud!/search) that's available for Cloud users only. You can also create your own.
 
-Providers don't back the same set of features, so the provider you pick decides which index definitions you can declare and which query features you can pass. Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for what each provider does with every feature they treat differently.
-
 Refer to the [Search Module Providers guide](./providers/page.mdx) to learn how to register providers, choose a default, and point an index at a specific provider.
+
+<Note title="Tip">
+
+Providers don't back the same set of features, so the provider you pick decides which index definitions you can declare and which query features you can pass. Refer to the [Comparison guide](!cloud!/search/comparison) for what each provider does with every feature they treat differently.
+
+</Note>
 
 ---
 
 ## Search Products
 
-Medusa declares a `product` index by default, and its storefront API has a `GET /store/products/search` endpoint that searches it. So, products are searchable without an index definition or an API route of your own.
+Medusa declares a `product` index by default, and its Store API has a [Search Products API route](!api!/store/products/search-products) that searches it. So, products are searchable out-of-the-box.
 
-The endpoint accepts a `q` parameter and the same pagination and field selection as `GET /store/products`, and it returns the products in the same shape:
+The Search Products API route accepts a `q` parameter and the same pagination and field selection as the [List Products API route](!api!/store/products/list-products):
 
 ```bash
 curl "http://localhost:9000/store/products/search?q=shirt" \
@@ -197,7 +193,7 @@ You'll receive a JSON response like the following:
 }
 ```
 
-The endpoint narrows the search to published products in the request's sales channel, so it returns what a storefront can show as-is.
+The API route narrows the search to published products in the request's sales channel, so it returns what a storefront can show as-is.
 
 <Note title="Tip">
 
@@ -207,9 +203,9 @@ To build the search experience in your storefront, use the [InstantSearch adapte
 
 ### Override the Default Product Index
 
-An index definition named `product` replaces the one Medusa declares by default, so your definition alone decides the fields the engine holds, how they're filled, and the settings applied to them. Declare it as explained in [Create a Custom Search Index](#create-a-custom-search-index).
+An index definition named `product` replaces the one Medusa declares by default, so your definition alone decides the fields the engine holds, how they're filled, and the settings applied to them. You can override it as explained in the [Create a Custom Search Index](#create-a-custom-search-index) section.
 
-Override the index when it doesn't hold a field your storefront searches, filters, or facets on, or when you need index settings that it doesn't apply. Keep the fields that `GET /store/products/search` filters by, which are `status` and `sales_channel_ids`, along with any of `handle`, `collection_id`, `type_id`, `category_ids`, and `tag_ids` that your storefront passes.
+Override the index when it doesn't hold a core or custom field your storefront searches, filters, or facets on, or when you need index settings that aren't applied by default. Keep the fields that the [Search Products API route](!api!/store/products/search-products) filters by to maintain compatibility with the storefront search functionality.
 
 ---
 
@@ -265,15 +261,11 @@ export const brandIndex = defineSearchIndex({
 
 [`graphSeed`](./index-definitions/page.mdx#graphseed-options) and [`graphConsume`](./index-definitions/page.mdx#graphconsume-options) are helpers that read the data with [Query](!docs!/learn/fundamentals/query). `graphSeed` reads the entity's records to fill the index for the first time, and `graphConsume` provides the index changes, such as creating or deleting records, as the events in `events` arrive.
 
-<Note title="Tip">
-
-[Write `seed` and `consume` yourself](./index-definitions/page.mdx#write-seed-and-consume-yourself) when the index's data doesn't come from Query. Learn more about each property, and about the helpers, in the [Search Index Definitions guide](./index-definitions/page.mdx).
-
-</Note>
+Learn more about creating search indexes in the [Search Index Definitions guide](./index-definitions/page.mdx).
 
 ### 2. Run Migrations
 
-If you're using the PostgreSQL provider (default) or another provider that requires modifications to the database when you make changes to an index definition, run the migrations command to create or update the physical index:
+Next, run the migrations command to create or update the physical index:
 
 ```bash npm2yarn
 npx medusa db:migrate
@@ -283,9 +275,9 @@ Learn more about index migrations in the [Reindexing and Migrations guide](./rei
 
 ### 3. Search the Index
 
-Then, run a search with the `search` method of [Query](!docs!/learn/fundamentals/query).
+Finally, run a search with the [`search` method of Query](!docs!/learn/fundamentals/query/search).
 
-For example, create the [API route](!docs!/learn/fundamentals/api-routes) `src/api/search-brands/route.ts`:
+For example, create the [API route](!docs!/learn/fundamentals/api-routes) `src/api/store/brands/search/route.ts` with the following content:
 
 export const searchHighlights = [
   ["10", "query", "Resolve Query from the Medusa container."],
@@ -295,7 +287,7 @@ export const searchHighlights = [
   ["16", "q", "The free-text query, passed among the filters."],
 ]
 
-```ts title="src/api/search-brands/route.ts" highlights={searchHighlights}
+```ts title="src/api/store/brands/search/route.ts" highlights={searchHighlights}
 import {
   MedusaRequest,
   MedusaResponse,
@@ -326,7 +318,8 @@ export const GET = async (
 Then, send a `GET` request to the route:
 
 ```bash
-curl "http://localhost:9000/search-brands?q=acme"
+curl "http://localhost:9000/store/brands/search?q=acme"
+  -H "x-publishable-api-key: pk_123"
 ```
 
 You'll receive a JSON response like the following:
@@ -351,11 +344,3 @@ You'll receive a JSON response like the following:
 ```
 
 Learn about filters, facets, highlighting, and vector search in the [Search Queries guide](!docs!/learn/fundamentals/query/search).
-
-### 4. Keeping Indexes Up to Date
-
-To ensure the search provider has the latest data, you need to specify the events that trigger updates in your index definitions, and how those events are handled. Those are defined in the `events` and `consume` properties of an index definition.
-
-Learn more in the [Search Index Definitions guide](./index-definitions/page.mdx#keep-an-index-up-to-date).
-
-To refill an index whose data drifted, such as after a bulk import that emitted no events, rebuild it from the Medusa Admin dashboard. Refer to [Reindex from the Dashboard](./reindexing/page.mdx#reindex-from-the-dashboard).

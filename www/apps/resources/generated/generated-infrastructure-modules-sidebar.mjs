@@ -535,6 +535,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
               "path": "/infrastructure-modules/search/index-definitions/modifiers",
               "title": "Index Field Modifiers",
               "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/infrastructure-modules/search/index-definitions/linked-data",
+              "title": "Index Linked Module Data",
+              "children": []
             }
           ]
         },
@@ -543,6 +550,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
           "type": "link",
           "path": "/infrastructure-modules/search/reindexing",
           "title": "Reindexing and Migrations",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/infrastructure-modules/search/admin-search",
+          "title": "Medusa Admin Search",
           "children": []
         },
         {
@@ -571,6 +585,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
               "path": "https://docs.medusajs.com/cloud/search",
               "title": "Medusa Search",
               "children": [
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/comparison",
+                  "title": "Compare Search Providers",
+                  "children": []
+                },
                 {
                   "loaded": true,
                   "type": "ref",

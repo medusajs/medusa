@@ -273,17 +273,34 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Search",
+        "badge": {
+          "variant": "green",
+          "text": "New"
+        },
+        "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Search",
+            "title": "Overview",
             "path": "/search",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "API",
             "children": [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "Settings",
+                "title": "Index Settings",
                 "path": "/search/settings",
                 "children": []
               },
@@ -293,14 +310,15 @@ export const generatedSidebars = [
                 "title": "Semantic Search",
                 "path": "/search/semantic-search",
                 "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Compare Search Engines",
-                "path": "/search/comparison",
-                "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Comparison",
+            "path": "/search/comparison",
+            "children": [
               {
                 "loaded": true,
                 "type": "link",

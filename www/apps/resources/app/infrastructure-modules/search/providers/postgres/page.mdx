@@ -16,12 +16,6 @@ Cloud provides pre-configured search infrastructure for your Medusa application.
 
 Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
 
-<Note>
-
-This provider doesn't support [vector fields](../../index-definitions/fields/page.mdx#searchvector) or vector search. It rejects an index that declares one, so your application fails to start.
-
-</Note>
-
 <Prerequisites
   items={[
     {
@@ -35,11 +29,11 @@ This provider doesn't support [vector fields](../../index-definitions/fields/pag
 
 ## Register the PostgreSQL Search Module Provider
 
-Medusa registers this provider by default, so you don't need to configure anything to use it. Its identifier is `search-postgres`.
+Medusa registers the PostgreSQL Search Module Provider locally by default, so you don't need to configure anything to use it. Its identifier is `search-postgres`.
 
 ### Change the Provider's Options
 
-To change its options, register the [Search Module](../../page.mdx) with the provider in `medusa-config.ts`:
+To change the PostgreSQL Search Module Provider's default options, or to use the provider in all environments, register the [Search Module](../../page.mdx) with the provider in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 // To register only for development. This is necessary to use Medusa Search in Cloud
@@ -120,90 +114,26 @@ npx medusa db:migrate
   </Table.Body>
 </Table>
 
----
-
 ## Test the PostgreSQL Search Module Provider
 
-Declare an index in your search provider. For example, in `src/search/product.ts`:
+Medusa declares a `product` search index by default, and its Store API has a [Search Products API route](!api!/store/products/search-products) that searches it.
 
-```ts title="src/search/product.ts"
-import {
-  defineSearchIndex,
-  search,
-} from "@medusajs/framework/utils"
-
-export const productIndex = defineSearchIndex({
-  name: "product",
-  entity: "product",
-  // Only specify if using more than one provider.
-  // provider: "search-postgres",
-  fields: search.define({
-    id: search.keyword().filterable(),
-    title: search.text().searchable({ weight: 3 }),
-    handle: search.keyword().filterable(),
-  }),
-  async *seed({ container }) {
-    const { data } = await container.query.graph({
-      entity: "product",
-      fields: ["id", "title", "handle"],
-    })
-
-    yield [{ action: "upsert", documents: data }]
-  },
-})
-```
-
-Then, create the physical index:
-
-```bash npm2yarn
-npx medusa db:migrate
-```
-
-Next, add an API route that searches the index. For example, in `src/api/search-products/route.ts`:
-
-```ts title="src/api/search-products/route.ts"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
-
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const query = req.scope.resolve("query")
-
-  const { data, search_result } = await query.search({
-    entity: "product",
-    fields: ["id", "title", "handle"],
-    filters: {
-      q: req.query.q as string,
-      status: "published",
-    },
-    pagination: { take: 20 },
-    search_options: {}
-  })
-
-  res.json({
-    products: data,
-    metadata: search_result.metadata,
-  })
-}
-```
-
-Finally, start your Medusa application:
+First, start your Medusa application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
-The Search Module fills the index while the application starts. Then, send a request to the route:
+Then, send a request to the search endpoint:
 
 ```bash
-curl "http://localhost:9000/search-products?q=shirt"
+curl "http://localhost:9000/store/products/search?q=shirt" \
+  -H "x-publishable-api-key: pk_123"
 ```
 
-You will receive the products whose titles match the query, ordered by relevance:
+Make sure to replace `pk_123` with a publishable API key, which you can find under Settings -> Publishable API Keys in the Medusa Admin dashboard.
+
+You'll receive the published products whose searchable fields match the query, ordered by relevance:
 
 ```json title="Example Response"
 {
@@ -214,15 +144,24 @@ You will receive the products whose titles match the query, ordered by relevance
       "handle": "t-shirt"
     }
   ],
-  "metadata": {
-    "skip": 0,
-    "take": 20,
-    "count": 1,
-    "query": "shirt",
-    "processing_time_ms": 9
-  }
+  "count": 1,
+  "offset": 0,
+  "limit": 20
 }
 ```
+
+<Note title="Tip">
+
+Learn more about the endpoint and the fields the default `product` index holds in the [Search Products guide](../../page.mdx#search-products).
+
+</Note>
+
+### Search Custom Data with the PostgreSQL Search Module Provider
+
+To search data other than products, such as a custom data model of your own module, declare a search index for it. The PostgreSQL Search Module Provider then creates the physical index, fills it, and serves searches on it the same way it does for products.
+
+Learn how to declare an index and search it in the [Create a Custom Search Index guide](../../page.mdx#create-a-custom-search-index), and learn about the properties you can set on an index in the [Search Index Definitions guide](../../index-definitions/page.mdx).
+
 
 ---
 
@@ -271,7 +210,7 @@ Running `db:migrate` creates everything the `native` engine needs:
   </Table.Body>
 </Table>
 
-<Note title="Warning" type="warning">
+<Note title="Tip">
 
 Creating an extension needs privileges that your application's database role may not have on managed PostgreSQL. The migration doesn't fail in that case, so check its output. If it reports that it couldn't enable an extension, create it yourself with a privileged role before you search.
 
@@ -279,7 +218,7 @@ Creating an extension needs privileges that your application's database role may
 
 ### Support Custom Languages
 
-The migration only creates the `medusa_search_english` configuration. If you set `language` to something else, create a matching `medusa_search_<language>` text search configuration.
+The migration only creates the `medusa_search_english` configuration. If you set the `language` option to something else, create a matching `medusa_search_<language>` text search configuration.
 
 To do that, add a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory. For example, create the file `src/migration-scripts/create-german-search-config.ts` for German:
 

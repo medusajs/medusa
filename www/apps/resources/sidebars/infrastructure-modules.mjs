@@ -379,12 +379,22 @@ export const infrastructureModulesSidebar = [
             path: "/infrastructure-modules/search/index-definitions/modifiers",
             title: "Index Field Modifiers",
           },
+          {
+            type: "link",
+            path: "/infrastructure-modules/search/index-definitions/linked-data",
+            title: "Index Linked Module Data",
+          },
         ],
       },
       {
         type: "link",
         path: "/infrastructure-modules/search/reindexing",
         title: "Reindexing and Migrations",
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/search/admin-search",
+        title: "Medusa Admin Search",
       },
       {
         type: "ref",
@@ -406,6 +416,11 @@ export const infrastructureModulesSidebar = [
             path: "https://docs.medusajs.com/cloud/search",
             title: "Medusa Search",
             children: [
+              {
+                type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/comparison",
+                title: "Compare Search Providers",
+              },
               {
                 type: "ref",
                 path: "https://docs.medusajs.com/cloud/search/postgres",

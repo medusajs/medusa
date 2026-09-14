@@ -681,8 +681,7 @@ It accepts the following properties:
   {
     name: "locales",
     type: "`string[]`",
-    description: "A language hint for this query, such as `[\"en\"]`.",
-    defaultValue: "The index's `settings.locales`"
+    description: "A language hint for this query, such as `[\"en\"]`. Neither first-party provider honors it: a provider that can't apply it rejects the query rather than matching differently. Set the analyzer language on the provider (PostgreSQL) or on the field (Medusa Search) instead."
   },
   {
     name: "vector",

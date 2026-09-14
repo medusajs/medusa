@@ -19,7 +19,7 @@ In this guide, you'll learn how to declare a search index and control what the s
 
 ## What is a Search Index Definition?
 
-A search index definition declares one index: the entity it indexes, the fields the search engine holds, and how to fill it. The [Search Module](../page.mdx) owns everything around it, including creating the physical index, batching writes, and rebuilding the index when the definition changes. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) for how it does that.
+A search index definition declares one index: the entity it indexes, the fields the search engine holds, and how to fill it. The [Search Module](../page.mdx) owns everything around it, including creating the physical index, batching writes, and rebuilding the index when the definition changes.
 
 Define an index with `defineSearchIndex` in a file under the `src/search` directory of your Medusa application or plugin. Medusa loads every file in that directory before the application boots, and each file registers its indexes on import.
 
@@ -29,9 +29,9 @@ export const highlights = [
   ["11", "name", "The unique index name a query resolves against."],
   ["12", "entity", "The Query entity used to hydrate other fields."],
   ["13", "fields", "The fields the search engine holds."],
-  ["17", "events", "The events that change the indexed data."],
-  ["22", "consume", "Applies each of those events to the index."],
-  ["23", "seed", "Fills the index with every brand."],
+  ["18", "events", "The events that change the indexed data."],
+  ["23", "consume", "Applies each of those events to the index."],
+  ["24", "seed", "Fills the index with every brand."],
 ]
 
 ```ts title="src/search/brand.ts" highlights={highlights}
@@ -67,7 +67,7 @@ export const brandIndex = defineSearchIndex({
 - [`graphSeed`](#fill-the-index-from-query-with-graphseed) reads the entity's records to fill the index for the first time.
 - [`graphConsume`](#consume-events-from-query-with-graphconsume) reads the records that an event changed to keep the index current.
 
-Most indexes are a projection of an entity that Query already exposes, so the helpers cover them. Refer to [Write `seed` and `consume` Yourself](#write-seed-and-consume-yourself) for an index whose data doesn't come from Query.
+Most indexes are a projection of an entity that Query already exposes, so the helpers cover them. Refer to [Custom `seed` and `consume` Implementation](#custom-seed-and-consume-implementation) for an index whose data doesn't come from Query.
 
 If you're using the [PostgreSQL Search Module Provider](../providers/postgres/page.mdx) or a provider that makes changes to the database, you must also run the migrations that create the necessary tables:
 
@@ -208,16 +208,7 @@ Changing `fields` or `settings` changes the definition's hash, which the Search 
 
 `seed` fills the index with documents. Every index definition must set it.
 
-The Search Module runs `seed` in the following cases:
-
-1. A migration created the index and nothing has filled it yet.
-2. The index exists but holds no documents, such as after an engine restart wiped it.
-3. A migration built a new version of the index for a changed schema, which the module fills and then makes active.
-4. The previous run didn't complete, so the module resumes it where it stopped.
-5. You rebuild the index on demand with the Search Module's `reindex` method.
-6. The catch-up pass that follows a full run, which picks up what changed while that run was writing. Refer to [Catch Up on Changes During a Run](#catch-up-on-changes-during-a-run).
-
-The first four cases run when your application starts. Refer to the [Reindexing and Migrations guide](../reindexing/page.mdx) to learn how the module plans and runs each of them.
+The Search Module decides when to run `seed`, such as when a migration creates the index, when you rebuild it on demand, or when it runs the [catch-up pass](#catch-up-on-changes-during-a-run). Refer to [Seeding at Application Start](../reindexing/page.mdx#seeding-at-application-start) for every case that triggers it and how the module plans each one.
 
 ### Fill the Index from Query with `graphSeed`
 
@@ -487,9 +478,15 @@ export const productIndex = defineSearchIndex({
   sectionTitle="graphConsume Options"
 />
 
+<Note title="Tip">
+
+`graphSeed` and `graphConsume` can also select fields from a linked module, such as a product's brand. Refer to the [Index Data from a Linked Module guide](./linked-data/page.mdx) to learn how.
+
+</Note>
+
 ---
 
-## Write `seed` and `consume` Yourself
+## Custom `seed` and `consume`
 
 Write `seed` and `consume` yourself when the index doesn't map to a single Query read, such as when its documents come from an external service, or when building a document takes more than reading the entity's fields.
 
@@ -506,15 +503,15 @@ The `container` that `seed` and `consume` receive isn't the Medusa container. It
 
 </Note>
 
-### Write `seed` Yourself
+### Custom `seed` Implementation
 
 `seed` is an async generator, so `yield` a batch of writes as you build it. The Search Module writes each batch to the engine as it arrives, rather than holding the entire index in memory.
 
 For example:
 
 export const customSeedHighlights = [
-  ["14", "listArticles", "Reads one page of articles from the CMS."],
-  ["23", "yield", "Writes the page before reading the next one."],
+  ["15", "listArticles", "Reads one page of articles from the CMS."],
+  ["24", "yield", "Writes the page before reading the next one."],
 ]
 
 ```ts title="src/search/article.ts" highlights={customSeedHighlights}
@@ -654,7 +651,7 @@ export const articleIndex = defineSearchIndex({
       ]
     }
   ]}
-  sectionTitle="Write seed Yourself"
+  sectionTitle="Custom `seed` Implementation"
 />
 
 #### Handle the Catch-Up Pass
@@ -692,11 +689,11 @@ export const articleIndex = defineSearchIndex({
 })
 ```
 
-### Write `consume` Yourself
+### Custom `consume` Implementation
 
 `consume` turns one event into the writes that apply it to the index. It returns them in an array rather than yielding them, since an event changes specific documents.
 
-It returns the same writes [`seed`](#write-seed-yourself) yields:
+It returns the same writes [`seed`](#custom-seed-implementation) yields:
 
 - `{ action: "upsert", documents }`: writes the documents into the index, replacing any document already stored under the same ID.
 - `{ action: "delete", filters }`: removes every document matching the filters.
@@ -779,12 +776,12 @@ export const articleIndex = defineSearchIndex({
       ]
     }
   ]}
-  sectionTitle="Write consume Yourself"
+  sectionTitle="Custom `consume` Implementation"
 />
 
 <Note>
 
-`context` holds `container` and `index` only. Unlike [`seed`](#write-seed-yourself), it carries no `filters`, `last_key`, or `catchup`, since an event changes specific documents rather than filling the whole index.
+`context` holds `container` and `index` only. Unlike [`seed`](#custom-seed-implementation), it carries no `filters`, `last_key`, or `catchup`, since an event changes specific documents rather than filling the whole index.
 
 </Note>
 

@@ -1,4 +1,4 @@
-import { CardList, Note, Prerequisites } from "docs-ui"
+import { CardList, Note, Prerequisites, Table } from "docs-ui"
 
 export const metadata = {
   title: `Medusa Search`,
@@ -30,83 +30,89 @@ Medusa Search is a managed search service for Cloud projects. It stores your sea
 
 Medusa Search gives your commerce application a search engine that serves storefront-grade search at scale, from full-text queries with relevance ranking to semantic search over embeddings. It's a low-cost yet highly performant solution, so you get sub-second search over large catalogs without paying for a dedicated search cluster or maintaining one.
 
-### Medusa Search Features
-
-Medusa Search provides the following features:
-
-- **Full-text search** with relevance ranking that respects the weight you set on each field.
-- **[Typo tolerance](./settings/page.mdx#typo-tolerance)** on every searchable field, which you opt into per query.
-- **[Semantic search](./semantic-search/page.mdx)** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
-- **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
-- **Facets** for values, ranges, and aggregate statistics, so a storefront can show counts per category or price bucket.
-- **Highlighting** of the matched terms in a hit's fields, so a storefront can mark what a result matched on.
-- **Sorting** by any number of fields.
-- **[Isolated indexes per environment](#search-indexes-per-environment)**, so a preview environment never writes to your production indexes.
-- **[Settings of its own](./settings/page.mdx)** on an index, a field, and a query, such as the distance metric it compares embeddings with, or how current an index must be for a query.
-
-### Search Indexes per Environment
-
-Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle. Preview environments are the exception, since they can start from another environment's data.
-
-{/* Preview environments are the exception, since they can start from another environment's data. When you configure a base environment in the [shared previews settings](../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment, similar to how it creates the preview environment's database. */}
-
 ---
 
-## Compare Medusa Search to Other Search Engines
-
-If you're considering or already using another search engine, refer to [Compare Medusa Search to Other Search Engines](./comparison/page.mdx) for a summarized comparison of all of them. The following guides go into detail on one engine each, across setup, integration, search capabilities, and cost:
-
-<CardList
-  itemsPerRow={3}
-  items={[
-    {
-      title: "PostgreSQL",
-      href: "./postgres/page.mdx",
-    },
-    {
-      title: "Algolia",
-      href: "./algolia/page.mdx",
-    },
-    {
-      title: "Meilisearch",
-      href: "./meilisearch/page.mdx",
-    },
-  ]}
-/>
-
----
-
-## Set Up Medusa Search in Cloud Projects
-
-<Prerequisites
-  items={[
-    {
-      text: "Medusa v2.21.1+",
-      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1",
-    },
-  ]}
-/>
+## Get Started with Medusa Search on Cloud
 
 Medusa Search is enabled by default for Cloud projects with zero configuration. Cloud provisions the search resources for every environment and passes the credentials to your Medusa application, so Medusa registers the provider and uses it for your indexes.
 
-To use it, upgrade your Medusa application to v2.21.1 or later, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
+### 1. Upgrade Your Medusa Application
 
-### Search Products
+To use Medusa Search, your Medusa application must be running v2.21.1 or later. If it isn't, upgrade it first, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
 
-Medusa declares a `product` index by default and its storefront API has a `GET /store/products/search` endpoint that searches it, so a storefront needs no index definition or route of its own for product search. Once you deploy, call the endpoint on your environment's URL.
+### 2. Confirm Products as Indexed
+
+In your Medusa Admin dashboard, you can track the indexing of your products and other entities with the Search Module.
+
+To view your indexes, go to Settings -> Search. Each registered index shows as a card with its name, the provider backing it, its status, and the fields it stores. Hover over a field to see its type and whether it's searchable, filterable, sortable, or facetable.
+
+Find the `product` card and check its status, which is one of the following:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Pending
+      </Table.Cell>
+      <Table.Cell>
+        Medusa created the index, but nothing has filled it yet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Building
+      </Table.Cell>
+      <Table.Cell>
+        A seed or reindex is in progress. Search results may be incomplete until it finishes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ready
+      </Table.Cell>
+      <Table.Cell>
+        The index is serving documents, so you can search your products.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Error
+      </Table.Cell>
+      <Table.Cell>
+        The last seed or reindex failed.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Once the `product` index is Ready, your products are searchable.
+
+### 3. Search Products
+
+You can search your indexed products using the [Search Products API Route](!api!/store/products/search-products).
 
 For example, to search for products matching `sweatshirt`:
 
 ```bash
 MEDUSA_URL=https://your-project.medusajs.app
 
-curl -G "$MEDUSA_URL/store/products/search" \
-  -H "x-publishable-api-key: pk_01KXR3J9J610DT161E2E4ZS6P1" \
-  --data-urlencode "q=sweatshirt" \
-  --data-urlencode "limit=2"
+curl "$MEDUSA_URL/store/products/search?q=sweatshirt" \
+  -H "x-publishable-api-key: pk_01KXR3J9J610DT161E2E4ZS6P1"
 ```
 
-The endpoint accepts the `q` free-text query, pagination parameters such as `limit` and `offset`, an `order` parameter, and filters like `collection_id`, `category_id`, or `handle`. You'll receive a JSON response like the following:
+The endpoint accepts the `q` free-text query, pagination parameters such as `limit` and `offset`, an `order` parameter, and filters like `collection_id`, `category_id`, or `handle`.
+
+You'll receive a JSON response like the following:
 
 ```json
 {
@@ -142,7 +148,7 @@ The endpoint accepts the `q` free-text query, pagination parameters such as `lim
 }
 ```
 
-The response holds the products the index matched, ranked by relevance, along with the `count` of every product that matched and the `offset` and `limit` of this page. Pass a `fields` parameter to change which fields each product holds, such as `fields=*variants.calculated_price` to add prices.
+The response holds the products the index matched, ranked by relevance, along with the `count` of every product that matched and the `offset` and `limit` of this page.
 
 <Note title="Tip">
 
@@ -150,19 +156,80 @@ To build a full search experience on this endpoint, including facets, filters, a
 
 </Note>
 
-To change what the index holds, such as adding a field your storefront facets on, declare your own definition named `product`. Refer to [Override the Default Product Index](!resources!/infrastructure-modules/search#override-the-default-product-index).
+---
 
-### Set Up Search in Local Development
+## Medusa Search Features
 
-Medusa Search isn't available in local development. Instead, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) by default, which indexes your data in your local PostgreSQL database. So, you can declare index definitions and test search locally without extra configuration.
+Medusa Search provides the following features:
+
+- **Full-text search** with relevance ranking that respects the weight you set on each field.
+- **[Typo tolerance](./settings/page.mdx#typo-tolerance)** on every searchable field, which you opt into per query.
+- **[Semantic search](./semantic-search/page.mdx)** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
+- **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
+- **Facets** for values, ranges, and aggregate statistics, so a storefront can show counts per category or price bucket.
+- **Highlighting** of the matched terms in a hit's fields, so a storefront can mark what a result matched on.
+- **Sorting** by any number of fields.
+- **[Isolated indexes per environment](#search-indexes-per-environment)**, so a preview environment never writes to your production indexes.
+- **[Settings of its own](./settings/page.mdx)** on an index, a field, and a query, such as the distance metric it compares embeddings with, or how current an index must be for a query.
 
 ---
 
-## Searching Custom Data Models
+## Compare Medusa Search to Other Search Engines
 
-To search data other than products, including the custom data models of your own modules, declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under the `src/search` directory, then add an [API route](!docs!/learn/fundamentals/api-routes) that queries the index with [query.search](!docs!/learn/fundamentals/query/search).
+If you're considering or already using another search engine, refer to [Compare Medusa Search to Other Search Engines](./comparison/page.mdx) for a summarized comparison of all of them. The following guides go into detail on one engine each, across setup, integration, search capabilities, and cost:
 
-### Step 1: Create the Index
+<CardList
+  itemsPerRow={3}
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "./postgres/page.mdx",
+    },
+    {
+      title: "Algolia",
+      href: "./algolia/page.mdx",
+    },
+    {
+      title: "Meilisearch",
+      href: "./meilisearch/page.mdx",
+    },
+  ]}
+/>
+
+---
+
+## Search Indexes per Environment
+
+Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle. Preview environments are the exception, since they can start from another environment's data.
+
+---
+
+## Start Building with Search
+
+### Use Search in Local Development
+
+In local development, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) by default. This is the recommended approach for testing search functionality locally.
+
+You can also setup your local Medusa instance to connect to Medusa Search with a connection string.
+
+<Note title="Warning" type="warning">
+
+The connection string gives you read and write access to your instances, so it's generally not recommended for local development. Only use it for testing purposes.
+
+</Note>
+
+To get the connection string for your local Medusa instance:
+
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Search** in the sidebar under the environment's section.
+5. Toggle the "Search endpoint" setting. If the environment is Production, only the organization owner can toggle it.
+6. Copy the connection string that appears after toggling the "Search endpoint" setting.
+
+### Search Custom Data Models
+
+To search data other than products, including the custom data models of your own modules, you can declare an [index definition](!resources!/infrastructure-modules/search/index-definitions), then add an [API route](!docs!/learn/fundamentals/api-routes) that searches the index.
 
 For example, to index a custom `brand` data model, create the file `src/search/brand.ts` with the following content:
 
@@ -195,84 +262,7 @@ export const brandIndex = defineSearchIndex({
 })
 ```
 
-The definition indexes every brand with a searchable `name` that outweighs the other fields, a `country` you can filter and facet on, and a `created_at` you can sort by.
-
-The [`graphSeed`](!resources!/infrastructure-modules/search/index-definitions#graphseed-options) helper fills the index by paging the brands through [Query](!docs!/learn/fundamentals/query), and [`graphConsume`](!resources!/infrastructure-modules/search/index-definitions#graphconsume-options) keeps it current as the events in `events` arrive, upserting a created or updated brand and removing a deleted one. [Write `seed` and `consume` yourself](!resources!/infrastructure-modules/search/index-definitions#write-seed-and-consume-yourself) when the index's data doesn't come from Query.
-
-<Note title="Tip">
-
-For local testing, make sure to [run the migrations](#set-up-search-in-local-development) after you create or change an index definition.
-
-</Note>
-
-### Step 2: Add a Search API Route
-
-Next, add an [API route](!docs!/learn/fundamentals/api-routes) that searches the index with [query.search](!docs!/learn/fundamentals/query/search).
-
-For example, create the file `src/api/search-brands/route.ts` with the following content:
-
-```ts title="src/api/search-brands/route.ts"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
-
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const query = req.scope.resolve("query")
-
-  const { data, search_result } = await query.search({
-    entity: "brand",
-    fields: ["id", "name", "country"],
-    filters: {
-      q: req.query.q as string,
-    },
-    pagination: { take: 20 },
-  })
-
-  res.json({
-    brands: data,
-    metadata: search_result.metadata,
-  })
-}
-```
-
-The route passes the request's `q` parameter to Medusa Search, which returns the matching brands ranked by relevance.
-
-### Step 3: Deploy to Cloud
-
-Finally, push your changes to the branch of a Cloud environment. Cloud builds and deploys your project, then creates the brand index and fills it with the documents that `seed` yields.
-
-Once the deployment finishes, send a `GET` request to the route on your environment's URL:
-
-```bash
-curl "https://your-project.medusajs.app/search-brands?q=acme"
-```
-
-You'll receive a JSON response like the following:
-
-```json
-{
-  "brands": [
-    {
-      "id": "brand_01KXR3J9J610DT161E2E4ZS6P1",
-      "name": "Acme",
-      "country": "us"
-    }
-  ],
-  "metadata": {
-    "skip": 0,
-    "take": 20,
-    "count": 1,
-    "query": "acme",
-    "processing_time_ms": 9
-  }
-}
-```
-
-Refer to the [Deployments](../deployments/page.mdx) guide to follow a deployment, and to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) to learn how Medusa creates, fills, and rebuilds an index.
+Refer to the [Create Custom Search Index](!resources!/infrastructure-modules/search#create-a-custom-search-index) guide for more details.
 
 ---
 

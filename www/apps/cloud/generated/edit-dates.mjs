@@ -126,7 +126,7 @@ export const generatedEditDates = {
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/search/page.mdx": "2026-09-14T08:51:19.850Z",
+  "app/search/page.mdx": "2026-09-14T14:38:56.213Z",
   "app/search/algolia/page.mdx": "2026-09-14T08:30:28.886Z",
   "app/search/meilisearch/page.mdx": "2026-09-14T08:30:28.886Z",
   "app/search/postgres/page.mdx": "2026-09-14T08:30:36.719Z",

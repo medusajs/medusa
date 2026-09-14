@@ -1438,17 +1438,11 @@ const generatedgeneratedToolsSidebarSidebar = {
         },
         {
           "loaded": true,
-          "type": "category",
+          "type": "link",
           "title": "InstantSearch Adapter",
           "childSidebarTitle": "InstantSearch Adapter",
+          "path": "/instantsearch",
           "children": [
-            {
-              "loaded": true,
-              "type": "link",
-              "path": "/instantsearch",
-              "title": "Overview",
-              "children": []
-            },
             {
               "loaded": true,
               "type": "link",
