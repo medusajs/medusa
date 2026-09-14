@@ -612,12 +612,6 @@ function normalizeProjectConfig(
     ...restOfProjectConfig,
   } satisfies ConfigModule["projectConfig"]
 
-  /**
-   * Admin (`user` actor) access is not opted into a redirect-based provider
-   * implicitly: without an explicit allowlist every registered provider,
-   * including ones installed purely for storefront login, could mint an admin
-   * token.
-   */
   config.http.authMethodsPerActor = {
     ...config.http.authMethodsPerActor,
     user: config.http.authMethodsPerActor?.user ?? DEFAULT_USER_AUTH_METHODS,
