@@ -185,6 +185,29 @@ export const useUpdateProduct = (
   });
 };
 
+export const useLinkProductOptions = (
+  productId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductResponse,
+    FetchError,
+    HttpTypes.AdminLinkProductOptions
+  >
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.product.linkOptions(productId, payload),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      });
+
+      options?.onSuccess?.(data, variables, context);
+    },
+    ...options,
+  });
+};
+
 export const useUpdateProductVariantsBatch = (
   productId: string,
   options?: UseMutationOptions<any, FetchError, any>

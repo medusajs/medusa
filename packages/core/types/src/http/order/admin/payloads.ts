@@ -54,6 +54,12 @@ export interface AdminCreateOrderFulfillment {
    */
   no_notification?: boolean
   /**
+   * The recipient address to use for the fulfillment. It's merged over the
+   * order's shipping address, allowing you to override recipient details
+   * (such as the first and last name) sent to the fulfillment provider.
+   */
+  delivery_address?: OrderAddress
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown> | null

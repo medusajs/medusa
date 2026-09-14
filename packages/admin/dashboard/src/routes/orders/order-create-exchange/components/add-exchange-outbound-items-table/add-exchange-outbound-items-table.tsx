@@ -47,7 +47,8 @@ export const AddExchangeOutboundItemsTable = ({
 
   const { variants = [], count } = useVariants({
     ...searchParams,
-    fields: "*inventory_items.inventory.location_levels,+inventory_quantity",
+    fields:
+      "*inventory_items.inventory.location_levels,+inventory_quantity,+manage_inventory",
   })
 
   const columns = useExchangeOutboundItemTableColumns(currencyCode)

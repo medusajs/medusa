@@ -242,6 +242,12 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       reserved_quantity: 300,
       stocked_quantity: 400,
     },
+    // Quantities are rendered with the item's unit of measure, which lives on
+    // the row itself.
+    fieldRenderModes: {
+      reserved_quantity: "quantity",
+      stocked_quantity: "quantity",
+    },
   },
   User: {
     excludeSuffixes: ["_link"],
@@ -422,6 +428,16 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       description: 200,
       created_at: 300,
       quantity: 400,
+    },
+    fieldRenderModes: {
+      quantity: "quantity",
+    },
+    // A reservation's unit of measure belongs to the inventory item it
+    // reserves, so point the renderer at the related item.
+    fieldMetadata: {
+      quantity: {
+        unit_of_measure_path: "inventory_item.unit_of_measure",
+      },
     },
   },
   StockLocation: {

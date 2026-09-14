@@ -22,6 +22,7 @@ export default defineConfig({
     "virtual:medusa/i18n",
     "virtual:medusa/cell-renderers",
     "virtual:medusa/layouts",
+    "virtual:medusa/search-entities",
   ],
   tsconfig: "tsconfig.build.json",
   dts: {

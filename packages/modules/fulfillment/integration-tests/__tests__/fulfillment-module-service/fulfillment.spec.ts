@@ -13,6 +13,7 @@ import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
+import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers/default-provider"
 
 jest.setTimeout(100000)
 
@@ -190,6 +191,58 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 internal: true,
               }
             )
+          })
+
+          it("should forward additional_data to the provider without persisting it", async () => {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.createFulfillmentSets({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                provider_id: providerId,
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+              })
+            )
+
+            const createFulfillmentProviderSpy = jest.spyOn(
+              FulfillmentProviderServiceFixtures.prototype,
+              "createFulfillment"
+            )
+
+            jest.clearAllMocks()
+
+            const additionalData = {
+              recipient_first_name: "John",
+              recipient_last_name: "Doe",
+            }
+
+            const fulfillment = await service.createFulfillment(
+              generateCreateFulfillmentData({
+                provider_id: providerId,
+                shipping_option_id: shippingOption.id,
+                additional_data: additionalData,
+              })
+            )
+
+            // the provider receives additional_data as its last argument
+            expect(createFulfillmentProviderSpy).toHaveBeenCalledTimes(1)
+            expect(createFulfillmentProviderSpy.mock.calls[0][4]).toEqual(
+              additionalData
+            )
+
+            // additional_data is not persisted on the fulfillment
+            expect(fulfillment).not.toHaveProperty("additional_data")
           })
 
           it("should create a return fulfillment", async () => {

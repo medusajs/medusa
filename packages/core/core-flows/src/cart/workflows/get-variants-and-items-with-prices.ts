@@ -29,6 +29,7 @@ import { useQueryGraphStep } from "../../common"
 import { getVariantPriceSetsStep } from "../steps"
 import {
   cartFieldsForPricingContext,
+  productVariantsCacheTags,
   productVariantsFields,
 } from "../utils/fields"
 import {
@@ -94,6 +95,17 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
     const priceNotFound: string[] = []
     const variantNotFoundOrPublished: string[] = []
 
+    // Index the variants by id so the per-item lookup below is O(1) instead of a
+    // `variantsData.find` scan. A cart refresh runs this for every line item, so the
+    // scan made the step O(items x variants) on carts with many lines. First match
+    // wins, mirroring `find`.
+    const variantsById = new Map<string, any>()
+    for (const variant of variantsData) {
+      if (!variantsById.has(variant.id)) {
+        variantsById.set(variant.id, variant)
+      }
+    }
+
     const items = (inputItems ?? cart.items ?? []).map((item) => {
       const item_ = item as any
       const idLike =
@@ -103,14 +115,13 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         calculatedPriceSet = calculatedPriceSets[item_.variant_id!]
       }
 
-      const isCustomPrice =
-        item_.is_custom_price ?? isDefined(item?.unit_price)
+      const isCustomPrice = item_.is_custom_price ?? isDefined(item?.unit_price)
 
       if (!calculatedPriceSet && item_.variant_id && !isCustomPrice) {
         priceNotFound.push(item_.variant_id)
       }
 
-      const variant = variantsData.find((v) => v.id === item.variant_id)
+      const variant = variantsById.get(item.variant_id!)
       if (
         (item.variant_id && !variant) || // variant specified but doesn't exist
         (variant &&
@@ -135,7 +146,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         isCustomPrice: isCustomPrice,
       }
 
-      if (variant && !isCustomPrice) {
+      if (variant && !isCustomPrice && calculatedPriceSet) {
         input.unitPrice = calculatedPriceSet.calculated_amount
         input.isTaxInclusive =
           calculatedPriceSet.is_calculated_price_tax_inclusive
@@ -174,25 +185,43 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
 
 export const getVariantsAndItemsWithPricesId =
   "get-variant-items-with-prices-workflow"
+/**
+ * This workflow retrieves product variants and cart line items with their
+ * calculated prices. It's used as a sub-workflow when adding items to a cart
+ * or refreshing cart prices to attach up-to-date pricing context to each line
+ * item.
+ *
+ * @example
+ * const { result } = await getVariantsAndItemsWithPrices(container)
+ *   .run({
+ *     input: {
+ *       cart: { id: "cart_123", items: [] },
+ *       setPricingContextResult: {},
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Retrieve variants and line items with their calculated prices.
+ */
 export const getVariantsAndItemsWithPrices = createWorkflow(
   getVariantsAndItemsWithPricesId,
   (
     input: WorkflowData<GetVariantsAndItemsWithPricesWorkflowInput>
   ): WorkflowResponse<GetVariantsAndItemsWithPricesWorkflowOutput> => {
-    const variantIds = transform(
-      { input },
-      (data): string[] => {
-        if (data.input.variants?.id) {
-          return data.input.variants.id
-        }
-
-        return Array.from(
-          new Set(
-            (data.input.cart.items ?? data.input.items ?? []).map((i) => i.variant_id)
-          )
-        ).filter((v): v is string => !!v)
+    const variantIds = transform({ input }, (data): string[] => {
+      if (data.input.variants?.id) {
+        return data.input.variants.id
       }
-    )
+
+      return Array.from(
+        new Set(
+          (data.input.cart.items ?? data.input.items ?? []).map(
+            (i) => i.variant_id
+          )
+        )
+      ).filter((v): v is string => !!v)
+    })
 
     const cartPricingContext = transform(
       {
@@ -251,7 +280,8 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
       },
       options: {
         cache: {
-          enable: true,
+          tags: productVariantsCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "fetch-variants" })

@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
+import { Button, Select, Text, Textarea, toast } from "@medusajs/ui"
 import * as zod from "zod"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
@@ -8,7 +8,9 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../../../../components/common/form"
+import { QuantityInput } from "../../../../../../components/inputs/quantity-input"
 import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
+import { formatQuantity } from "../../../../../../lib/format-quantity"
 import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
 import { useDocumentDirection } from "../../../../../../hooks/use-document-direction"
 
@@ -21,7 +23,7 @@ type EditReservationFormProps = {
 const EditReservationSchema = z.object({
   location_id: z.string(),
   description: z.string().optional(),
-  quantity: z.number().min(1),
+  quantity: z.number().positive(),
 })
 
 const AttributeGridRow = ({
@@ -135,15 +137,19 @@ export const EditReservationForm = ({
             <AttributeGridRow title={t("fields.sku")} value={item.sku!} />
             <AttributeGridRow
               title={t("fields.inStock")}
-              value={level!.stocked_quantity}
+              value={formatQuantity(
+                level!.stocked_quantity,
+                item.unit_of_measure
+              )}
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={
+              value={formatQuantity(
                 level!.stocked_quantity -
-                (level!.reserved_quantity - reservation.quantity) -
-                reservedQuantity
-              }
+                  (level!.reserved_quantity - reservation.quantity) -
+                  reservedQuantity,
+                item.unit_of_measure
+              )}
             />
           </div>
           <Form.Field
@@ -156,14 +162,15 @@ export const EditReservationForm = ({
                     {t("inventory.reservation.reservedAmount")}
                   </Form.Label>
                   <Form.Control>
-                    <Input
-                      type="number"
+                    <QuantityInput
+                      step="any"
                       min={0}
+                      unitOfMeasure={item.unit_of_measure}
                       max={
                         (level!.available_quantity || 0) +
                         (reservation.quantity || 0)
                       }
-                      value={value || ""}
+                      value={value}
                       onChange={(e) => {
                         const value = e.target.value
 

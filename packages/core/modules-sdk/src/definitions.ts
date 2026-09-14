@@ -302,6 +302,22 @@ export const ModulesDefinition: {
       scope: MODULE_SCOPE.INTERNAL,
     },
   },
+  [Modules.SEARCH]: {
+    key: Modules.SEARCH,
+    defaultPackage: false,
+    label: upperCaseFirst(Modules.SEARCH),
+    isRequired: false,
+    isQueryable: false,
+    dependencies: [
+      Modules.EVENT_BUS,
+      Modules.LOCKING,
+      ContainerRegistrationKeys.LOGGER,
+      ContainerRegistrationKeys.QUERY,
+    ],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+  },
   [Modules.LOCKING]: {
     key: Modules.LOCKING,
     defaultPackage: false,

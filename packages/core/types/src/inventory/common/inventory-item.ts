@@ -40,6 +40,11 @@ export interface InventoryItemDTO {
   material?: string | null
 
   /**
+   * The unit of measure of the inventory item's quantities, such as `lb` or `kg`.
+   */
+  unit_of_measure?: string | null
+
+  /**
    * The weight of the inventory item.
    */
   weight?: number | null

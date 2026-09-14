@@ -58,6 +58,11 @@ export const cartSidebar = [
             path: "/commerce-modules/cart/cart-totals",
             title: "Retrieve Cart Totals",
           },
+          {
+            type: "link",
+            path: "/commerce-modules/cart/sales-channel-availability",
+            title: "Enforce Sales Channel Availability",
+          },
         ],
       },
       {

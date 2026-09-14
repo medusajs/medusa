@@ -1,10 +1,11 @@
-import { json, useParams, useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { CreateShippingOptionsForm } from "./components/create-shipping-options-form"
 import { LOC_CREATE_SHIPPING_OPTION_FIELDS } from "./constants"
 import { FulfillmentSetType } from "../common/constants"
+import { jsonResponse } from "../../../lib/json-response"
 
 export function LocationServiceZoneShippingOptionCreate() {
   const { location_id, fset_id, zone_id } = useParams()
@@ -21,7 +22,7 @@ export function LocationServiceZoneShippingOptionCreate() {
   )
 
   if (!isPending && !isFetching && !fulfillmentSet) {
-    throw json(
+    throw jsonResponse(
       { message: `Fulfillment set with ID ${fset_id} was not found` },
       404
     )
@@ -30,7 +31,7 @@ export function LocationServiceZoneShippingOptionCreate() {
   const zone = fulfillmentSet?.service_zones?.find((z) => z.id === zone_id)
 
   if (!isPending && !isFetching && !zone) {
-    throw json(
+    throw jsonResponse(
       { message: `Service zone with ID ${zone_id} was not found` },
       404
     )

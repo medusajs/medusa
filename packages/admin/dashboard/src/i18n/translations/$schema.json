@@ -408,9 +408,17 @@
                 },
                 "deleteRow": {
                   "type": "string"
+                },
+                "addRow": {
+                  "type": "string"
                 }
               },
-              "required": ["insertRowAbove", "insertRowBelow", "deleteRow"],
+              "required": [
+                "insertRowAbove",
+                "insertRowBelow",
+                "deleteRow",
+                "addRow"
+              ],
               "additionalProperties": false
             },
             "labels": {
@@ -738,25 +746,25 @@
                 "customer": {
                   "type": "string"
                 },
-                "customerGroup": {
+                "customer_group": {
                   "type": "string"
                 },
                 "product": {
                   "type": "string"
                 },
-                "productVariant": {
+                "product_variant": {
                   "type": "string"
                 },
-                "inventory": {
+                "inventory_item": {
                   "type": "string"
                 },
                 "reservation": {
                   "type": "string"
                 },
-                "category": {
+                "product_category": {
                   "type": "string"
                 },
-                "collection": {
+                "product_collection": {
                   "type": "string"
                 },
                 "order": {
@@ -768,7 +776,7 @@
                 "campaign": {
                   "type": "string"
                 },
-                "priceList": {
+                "price_list": {
                   "type": "string"
                 },
                 "user": {
@@ -777,31 +785,31 @@
                 "region": {
                   "type": "string"
                 },
-                "taxRegion": {
+                "tax_region": {
                   "type": "string"
                 },
-                "returnReason": {
+                "return_reason": {
                   "type": "string"
                 },
-                "salesChannel": {
+                "sales_channel": {
                   "type": "string"
                 },
-                "productType": {
+                "product_type": {
                   "type": "string"
                 },
-                "productTag": {
+                "product_tag": {
                   "type": "string"
                 },
-                "location": {
+                "stock_location": {
                   "type": "string"
                 },
-                "shippingProfile": {
+                "shipping_profile": {
                   "type": "string"
                 },
-                "publishableApiKey": {
+                "publishable_api_key": {
                   "type": "string"
                 },
-                "secretApiKey": {
+                "secret_api_key": {
                   "type": "string"
                 },
                 "command": {
@@ -814,28 +822,28 @@
               "required": [
                 "all",
                 "customer",
-                "customerGroup",
+                "customer_group",
                 "product",
-                "productVariant",
-                "inventory",
+                "product_variant",
+                "inventory_item",
                 "reservation",
-                "category",
-                "collection",
+                "product_category",
+                "product_collection",
                 "order",
                 "promotion",
                 "campaign",
-                "priceList",
+                "price_list",
                 "user",
                 "region",
-                "taxRegion",
-                "returnReason",
-                "salesChannel",
-                "productType",
-                "productTag",
-                "location",
-                "shippingProfile",
-                "publishableApiKey",
-                "secretApiKey",
+                "tax_region",
+                "return_reason",
+                "sales_channel",
+                "product_type",
+                "product_tag",
+                "stock_location",
+                "shipping_profile",
+                "publishable_api_key",
+                "secret_api_key",
                 "command",
                 "navigation"
               ],
@@ -3798,6 +3806,12 @@
         "quantityAcrossLocations": {
           "type": "string"
         },
+        "unitOfMeasurePlaceholder": {
+          "type": "string"
+        },
+        "unitOfMeasureHint": {
+          "type": "string"
+        },
         "levelDeleted": {
           "type": "string"
         },
@@ -4028,6 +4042,8 @@
         "deleteWarning",
         "editItemDetails",
         "quantityAcrossLocations",
+        "unitOfMeasurePlaceholder",
+        "unitOfMeasureHint",
         "levelDeleted",
         "create",
         "reservation",
@@ -5123,6 +5139,12 @@
             "noteHint": {
               "type": "string"
             },
+            "sendNotification": {
+              "type": "string"
+            },
+            "sendNotificationHint": {
+              "type": "string"
+            },
             "cancelSuccessToast": {
               "type": "string"
             },
@@ -5184,6 +5206,8 @@
             "create",
             "currentTotal",
             "noteHint",
+            "sendNotification",
+            "sendNotificationHint",
             "cancelSuccessToast",
             "createSuccessToast",
             "activeChangeError",
@@ -5963,6 +5987,9 @@
             "locationDescription": {
               "type": "string"
             },
+            "locationUnavailable": {
+              "type": "string"
+            },
             "sendNotificationHint": {
               "type": "string"
             },
@@ -6134,6 +6161,7 @@
             "markAsDelivered",
             "itemsToFulfillDesc",
             "locationDescription",
+            "locationUnavailable",
             "sendNotificationHint",
             "methodDescription",
             "error",
@@ -10507,6 +10535,15 @@
         "copyInviteLink": {
           "type": "string"
         },
+        "copyResetPasswordLink": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkSuccess": {
+          "type": "string"
+        },
+        "copyResetPasswordLinkHint": {
+          "type": "string"
+        },
         "expiredOnDate": {
           "type": "string"
         },
@@ -10602,6 +10639,9 @@
         "deleteInviteWarning",
         "resendInvite",
         "copyInviteLink",
+        "copyResetPasswordLink",
+        "copyResetPasswordLinkSuccess",
+        "copyResetPasswordLinkHint",
         "expiredOnDate",
         "validFromUntil",
         "acceptedOnDate",
@@ -12863,6 +12903,9 @@
         "workflowIdLabel": {
           "type": "string"
         },
+        "stateLabel": {
+          "type": "string"
+        },
         "progressLabel": {
           "type": "string"
         },
@@ -13027,12 +13070,104 @@
         "subtitle",
         "transactionIdLabel",
         "workflowIdLabel",
+        "stateLabel",
         "progressLabel",
         "list",
         "history",
         "state",
         "transaction",
         "step"
+      ],
+      "additionalProperties": false
+    },
+    "searchIndexes": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "fieldsLabel": {
+          "type": "string"
+        },
+        "providerLabel": {
+          "type": "string"
+        },
+        "reindex": {
+          "type": "string"
+        },
+        "reindexConfirmationTitle": {
+          "type": "string"
+        },
+        "reindexConfirmation": {
+          "type": "string"
+        },
+        "reindexSuccess": {
+          "type": "string"
+        },
+        "reindexSinceLabel": {
+          "type": "string"
+        },
+        "reindexSinceHint": {
+          "type": "string"
+        },
+        "reindexEntityIdsLabel": {
+          "type": "string"
+        },
+        "reindexEntityIdsHint": {
+          "type": "string"
+        },
+        "noFields": {
+          "type": "string"
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "noRecordsMessage": {
+              "type": "string"
+            }
+          },
+          "required": ["noRecordsMessage"],
+          "additionalProperties": false
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "pending": {
+              "type": "string"
+            },
+            "building": {
+              "type": "string"
+            },
+            "ready": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            }
+          },
+          "required": ["pending", "building", "ready", "error"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "fieldsLabel",
+        "providerLabel",
+        "reindex",
+        "reindexConfirmationTitle",
+        "reindexConfirmation",
+        "reindexSuccess",
+        "reindexSinceLabel",
+        "reindexSinceHint",
+        "reindexEntityIdsLabel",
+        "reindexEntityIdsHint",
+        "noFields",
+        "list",
+        "status"
       ],
       "additionalProperties": false
     },
@@ -13842,6 +13977,9 @@
         "material": {
           "type": "string"
         },
+        "unitOfMeasure": {
+          "type": "string"
+        },
         "thumbnail": {
           "type": "string"
         },
@@ -14056,6 +14194,7 @@
         "barcode",
         "countryOfOrigin",
         "material",
+        "unitOfMeasure",
         "thumbnail",
         "sku",
         "managedInventory",
@@ -14291,14 +14430,33 @@
         "login": {
           "type": "object",
           "properties": {
+            "noProviders": {
+              "type": "string"
+            },
             "authenticationFailed": {
               "type": "string"
             },
             "cloud": {
               "type": "string"
+            },
+            "continueWithProvider": {
+              "type": "string"
+            },
+            "or": {
+              "type": "string"
+            },
+            "provisioningFailed": {
+              "type": "string"
             }
           },
-          "required": ["authenticationFailed", "cloud"],
+          "required": [
+            "noProviders",
+            "authenticationFailed",
+            "cloud",
+            "continueWithProvider",
+            "or",
+            "provisioningFailed"
+          ],
           "additionalProperties": false
         }
       },
@@ -14549,6 +14707,7 @@
     "invite",
     "resetPassword",
     "workflowExecutions",
+    "searchIndexes",
     "shippingOptionTypes",
     "productTypes",
     "productTags",

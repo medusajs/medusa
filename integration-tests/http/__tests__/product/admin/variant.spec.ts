@@ -767,6 +767,125 @@ medusaIntegrationTestRunner({
           inventoryItem2.id
         )
       })
+
+      it("should create an inventory item and link it when manage_inventory is enabled on an existing variant", async () => {
+        const createdProduct = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Test product for enabling manage inventory",
+              handle: "test-product-enable-manage-inventory",
+              options: [{ title: "size", values: ["large"] }],
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Variant without inventory",
+                  sku: "variant-enable-manage-inventory",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  manage_inventory: false,
+                  options: { size: "large" },
+                },
+              ],
+            },
+            {
+              ...adminHeaders,
+              params: {
+                fields:
+                  "+variants.inventory_items.*,+variants.inventory_items.inventory.*",
+              },
+            }
+          )
+        ).data.product
+
+        const variant = createdProduct.variants[0]
+
+        expect(variant.manage_inventory).toBe(false)
+        expect(variant.inventory_items).toHaveLength(0)
+
+        const updatedProduct = (
+          await api.post(
+            `/admin/products/${createdProduct.id}/variants/${variant.id}`,
+            { manage_inventory: true },
+            {
+              ...adminHeaders,
+              params: {
+                fields:
+                  "+variants.inventory_items.*,+variants.inventory_items.inventory.*",
+              },
+            }
+          )
+        ).data.product
+
+        const updatedVariant = updatedProduct.variants.find(
+          (v) => v.id === variant.id
+        )
+
+        expect(updatedVariant.manage_inventory).toBe(true)
+        expect(updatedVariant.inventory_items).toHaveLength(1)
+        expect(updatedVariant.inventory_items[0]).toEqual(
+          expect.objectContaining({
+            required_quantity: 1,
+            inventory: expect.objectContaining({
+              sku: "variant-enable-manage-inventory",
+              title: "Variant without inventory",
+              requires_shipping: true,
+            }),
+          })
+        )
+      })
+
+      it("should not create a second inventory item when manage_inventory is enabled again", async () => {
+        const createdProduct = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Test product for idempotent manage inventory",
+              handle: "test-product-idempotent-manage-inventory",
+              options: [{ title: "size", values: ["large"] }],
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Variant toggled twice",
+                  sku: "variant-idempotent-manage-inventory",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  manage_inventory: false,
+                  options: { size: "large" },
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        const variant = createdProduct.variants[0]
+
+        await api.post(
+          `/admin/products/${createdProduct.id}/variants/${variant.id}`,
+          { manage_inventory: true },
+          adminHeaders
+        )
+
+        const updatedProduct = (
+          await api.post(
+            `/admin/products/${createdProduct.id}/variants/${variant.id}`,
+            { manage_inventory: true },
+            {
+              ...adminHeaders,
+              params: {
+                fields:
+                  "+variants.inventory_items.*,+variants.inventory_items.inventory.*",
+              },
+            }
+          )
+        ).data.product
+
+        const updatedVariant = updatedProduct.variants.find(
+          (v) => v.id === variant.id
+        )
+
+        expect(updatedVariant.manage_inventory).toBe(true)
+        expect(updatedVariant.inventory_items).toHaveLength(1)
+      })
     })
 
     describe("POST /admin/products/:id/variants/:variant_id/inventory-items", () => {
@@ -811,6 +930,35 @@ medusaIntegrationTestRunner({
           expect.arrayContaining([
             expect.objectContaining({
               required_quantity: 5,
+              inventory_item_id: inventoryItem.id,
+            }),
+          ])
+        )
+      })
+
+      it("successfully adds inventory item to a variant with a fractional required quantity", async () => {
+        const inventoryItem = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "fractional-sku" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        const res = await api.post(
+          `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items?fields=inventory_items.inventory.*,inventory_items.*`,
+          {
+            inventory_item_id: inventoryItem.id,
+            required_quantity: 0.25,
+          },
+          adminHeaders
+        )
+
+        expect(res.status).toEqual(200)
+        expect(res.data.variant.inventory_items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              required_quantity: 0.25,
               inventory_item_id: inventoryItem.id,
             }),
           ])

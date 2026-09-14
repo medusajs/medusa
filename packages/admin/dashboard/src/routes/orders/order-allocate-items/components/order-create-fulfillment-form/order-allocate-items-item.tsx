@@ -11,6 +11,7 @@ import { Input, Text, clx } from "@medusajs/ui"
 import * as zod from "zod"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { divideDecimal } from "../../../../../lib/number-helper"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { Form } from "../../../../../components/common/form"
 import { AllocateItemsSchema } from "./constants"
@@ -83,9 +84,18 @@ export function OrderAllocateItemsItem({
     ] as number) ?? 0) > availableQuantity
 
   const minValue = 0
+
+  // The root input is expressed in line item units, so the stock available for
+  // it is the inventory item's availability divided by how much of that item a
+  // single unit consumes. That divisor is 1 outside of a kit.
+  const rootRequiredQuantity =
+    item.variant?.inventory_items?.[0]?.required_quantity ?? 1
+
   const maxValue = Math.min(
     getFulfillableQuantity(item),
-    availableQuantity || Number.MAX_SAFE_INTEGER
+    availableQuantity
+      ? Math.floor(divideDecimal(availableQuantity, rootRequiredQuantity))
+      : Number.MAX_SAFE_INTEGER
   )
 
   return (

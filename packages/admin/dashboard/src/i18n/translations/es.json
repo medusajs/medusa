@@ -123,6 +123,16 @@
     "mustBeInt": "El valor debe ser un número entero.",
     "mustBePositive": "El valor debe ser un número positivo."
   },
+  "auth": {
+    "login": {
+      "noProviders": "Registra un proveedor de autenticación en tu configuración de Medusa para poder iniciar sesión",
+      "authenticationFailed": "Autenticación fallida",
+      "cloud": "Iniciar sesión con Medusa Cloud",
+      "continueWithProvider": "Continuar con {{provider}}",
+      "or": "o",
+      "provisioningFailed": "No pudimos completar tu inicio de sesión. Por favor contacta a un administrador."
+    }
+  },
   "actions": {
     "save": "Guardar",
     "saveChanges": "Guardar cambios",

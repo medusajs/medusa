@@ -5,6 +5,7 @@ import {
 import { HttpTypes } from "@medusajs/framework/types"
 
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { publishedProductsContext } from "../utils/published-products-context"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreCollectionListParams>,
@@ -18,6 +19,7 @@ export const GET = async (
       filters: req.filterableFields,
       pagination: req.queryConfig.pagination,
       fields: req.queryConfig.fields,
+      context: publishedProductsContext(),
     },
     {
       locale: req.locale,

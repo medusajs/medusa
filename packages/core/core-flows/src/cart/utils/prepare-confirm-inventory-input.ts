@@ -9,6 +9,11 @@ import {
   deepFlatMap,
 } from "@medusajs/framework/utils"
 
+/**
+ * The order fields required to confirm inventory availability.
+ * Use these fields when querying an order to pass to
+ * `prepareConfirmInventoryInput`.
+ */
 export const requiredOrderFieldsForInventoryConfirmation = [
   "id",
   "version",
@@ -30,6 +35,11 @@ export const requiredOrderFieldsForInventoryConfirmation = [
   "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
+/**
+ * The variant fields required to confirm inventory availability.
+ * Use these fields when querying a variant to pass to
+ * `prepareConfirmInventoryInput`.
+ */
 export const requiredVariantFieldsForInventoryConfirmation = [
   "manage_inventory",
   "allow_backorder",
@@ -56,6 +66,7 @@ interface ConfirmInventoryPreparationInput {
     id?: string
     variant_id?: string | null
     quantity: BigNumberInput
+    allow_backorder?: boolean
   }[]
   variants: {
     id: string
@@ -97,6 +108,15 @@ export const prepareConfirmInventoryInput = (data: {
   let hasManagedInventory = false
 
   const salesChannelId = data.input.sales_channel_id
+
+  // Variants for which an item explicitly opts into backorder, overriding the
+  // variant's own `allow_backorder` setting (e.g. an admin adding an
+  // out-of-stock item to a draft order).
+  const itemBackorderVariantIds = new Set(
+    (data.input.items ?? [])
+      .filter((item) => item.allow_backorder && item.variant_id)
+      .map((item) => item.variant_id as string)
+  )
 
   for (const updateItem of data.input.itemsToUpdate ?? []) {
     const updateItem_ = "data" in updateItem ? updateItem.data : updateItem
@@ -190,7 +210,8 @@ export const prepareConfirmInventoryInput = (data: {
       if (
         variant.manage_inventory &&
         !variantsWithLocationForChannel.has(variant.id) &&
-        !variant.allow_backorder
+        !variant.allow_backorder &&
+        !itemBackorderVariantIds.has(variant.id)
       ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -269,7 +290,7 @@ const formatInventoryInput = ({
         id: item.id,
         inventory_item_id: variantInventoryItem.inventory_item_id,
         required_quantity: variantInventoryItem.required_quantity,
-        allow_backorder: !!variant.allow_backorder,
+        allow_backorder: !!variant.allow_backorder || !!item.allow_backorder,
         quantity: item.quantity,
         location_ids: locationsWithAvailability.length
           ? locationsWithAvailability

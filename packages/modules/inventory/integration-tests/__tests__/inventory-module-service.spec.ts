@@ -267,6 +267,51 @@ moduleIntegrationTestRunner<IInventoryService>({
           ])
         })
 
+        it("should support fractional quantities on levels, reservations and item rollups", async () => {
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 49.5,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 48.75,
+            },
+          ])
+
+          await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 0.25,
+          })
+
+          const getItems = await service.listInventoryItems(
+            {},
+            {
+              select: ["id", "reserved_quantity", "stocked_quantity"],
+            }
+          )
+
+          expect(getItems).toEqual([
+            expect.objectContaining({
+              id: inventoryItem.id,
+              stocked_quantity: 98.25,
+              reserved_quantity: 0.25,
+            }),
+          ])
+
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevel.reserved_quantity).toEqual(0.25)
+          expect(Number(inventoryLevel.available_quantity)).toEqual(49.25)
+        })
+
         it("should create inventoryLevels from array", async () => {
           const data = [
             {

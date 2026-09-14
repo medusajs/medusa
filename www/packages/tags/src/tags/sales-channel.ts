@@ -4,6 +4,10 @@ export const salesChannel = [
     "path": "https://docs.medusajs.com/user-guide/settings/sales-channels"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Get Variant Inventory",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },

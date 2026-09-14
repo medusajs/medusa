@@ -71,6 +71,20 @@ export function load(app: Application) {
         return
       }
 
+      // Only top-level declarations (direct children of the project or of an
+      // entry-point module) can be moved into a namespace. Nested declarations
+      // — an interface's properties, a type literal's members, ... — match the
+      // same source file, and moving them would detach them from their parent
+      // type, leaving it with no children to document.
+      const originalParent = reflection.parent
+      if (
+        originalParent &&
+        !originalParent.isProject() &&
+        originalParent.kind !== ReflectionKind.Module
+      ) {
+        return
+      }
+
       const symbol = context.project.getSymbolFromReflection(reflection)
       const filePath = symbol?.valueDeclaration?.getSourceFile().fileName
 
@@ -110,9 +124,6 @@ export function load(app: Application) {
       const namespace = findNamespace(namespaces)
 
       if (namespace) {
-        // Save original parent before addChild changes it
-        const originalParent = reflection.parent
-
         // Single entry point: reflection is a direct project child
         context.project.removeChild(reflection)
 

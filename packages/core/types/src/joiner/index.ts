@@ -269,9 +269,26 @@ export interface RemoteJoinerOptions {
           cachingModule: ICachingModuleService
         ) => string | Promise<string>)
     /**
-     * The tags to use for the cache.
+     * The tags to use for the cache. Used on their own unless
+     * `computeAutomaticTags` is set, in which case the automatically computed tags
+     * are stored alongside them.
      */
     tags?: string[] | ((args: any[]) => string[] | undefined)
+    /**
+     * Whether the automatically computed tags should be applied along with the ones
+     * given in `tags`, rather than `tags` being used on its own.
+     *
+     * Automatic tags are computed from the result, which only exposes entities that
+     * carry an `id`. They therefore never cover link tables (whose rows are usually
+     * not selected), relations queried without their `id`, or entities that affect
+     * the result without appearing in it - pass only those in `tags` and enable this,
+     * instead of restating every entity the result already exposes.
+     *
+     * Has no effect when `tags` is omitted, since tags are computed either way.
+     *
+     * @defaultValue false
+     */
+    computeAutomaticTags?: boolean
     /**
      * The time-to-live (TTL) value in seconds.
      */

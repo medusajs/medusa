@@ -1,9 +1,12 @@
 import type { ProductTypes } from "@medusajs/framework/types"
+import { ProductOptionValueWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { updateProductOptionValuesStep } from "../steps"
 
 /**
@@ -48,6 +51,15 @@ export const updateProductOptionValuesWorkflow = createWorkflow(
   updateProductOptionValuesWorkflowId,
   (input: WorkflowData<UpdateProductOptionValuesWorkflowInput>) => {
     const updatedProductOptionValue = updateProductOptionValuesStep(input)
+
+    const optionValueIdEvents = transform({ input }, ({ input }) => {
+      return { id: input.id }
+    })
+
+    emitEventStep({
+      eventName: ProductOptionValueWorkflowEvents.UPDATED,
+      data: optionValueIdEvents,
+    })
 
     return new WorkflowResponse(updatedProductOptionValue)
   }

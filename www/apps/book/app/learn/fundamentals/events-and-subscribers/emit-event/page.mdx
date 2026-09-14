@@ -167,6 +167,12 @@ To emit a service event:
 
 1. Resolve `event_bus` from the module's container in your service's constructor:
 
+<Note>
+
+The Event Module's service (`event_bus`) is available in every module's container by default. You don't need to add it to `dependencies` in `medusa-config.ts`.
+
+</Note>
+
 <CodeTabs group="service_type">
   <CodeTab label="Extending Service Factory" value="service_factory">
 
@@ -231,75 +237,8 @@ class BlogModuleService {
 
 The method accepts an object having the following properties:
 
-- `name`: The event's name. 
+- `name`: The event's name.
 - `data`: The data payload as an object. You can pass any properties in the object, and subscribers listening to the event will receive this data in the event's payload.
-
-3. By default, the Event Module's service isn't injected into your module's container. To add it to the container, pass it in the module's registration object in `medusa-config.ts` in the `dependencies` property:
-
-<CodeTabs group="module-deps">
-  <CodeTab label="Module Registration" value="module_registration">
-
-export const depsHighlight = [
-  ["8", "dependencies", "An array of module registration names to inject into the Module's container."],
-]
-
-```ts title="medusa-config.ts" highlights={depsHighlight}
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "./src/modules/blog",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-    },
-  ],
-})
-```
-
-  </CodeTab>
-  <CodeTab label="Module Provider Registration" value="module_registration_factory">
-
-export const providerHighlights = [
-  ["8", "dependencies", "An array of module registration names to inject into the module and provider's container."],
-]
-
-```ts title="medusa-config.ts" highlights={depsHighlight}
-import { Modules } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  modules: [
-    {
-      resolve: "@medusajs/medusa/payment",
-      dependencies: [
-        Modules.EVENT_BUS,
-      ],
-      options: {
-        providers: [
-          {
-            resolve: "./src/modules/my-provider",
-            id: "my-provider",
-            options: {
-              // ...
-            },
-          },
-        ],
-      },
-    },
-  ],
-})
-```
-  </CodeTab>
-</CodeTabs>
-
-
-
-The `dependencies` property accepts an array of module registration keys. The specified modules' main services are injected into the module's container.
-
-If a module has providers, the dependencies are also injected into the providers' containers.
 
 ### Test it Out
 

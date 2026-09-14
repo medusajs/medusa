@@ -1,6 +1,7 @@
 import { Command } from "commander"
 import { registerAnalyzeCommand } from "./commands/analyze.js"
 import { registerAnalyzeCloudCommand } from "./commands/analyze-cloud.js"
+import { registerAnalyzeWebhooksCommand } from "./commands/analyze-webhooks.js"
 
 const program = new Command()
 
@@ -13,5 +14,6 @@ program
 
 registerAnalyzeCommand(program)
 registerAnalyzeCloudCommand(program)
+registerAnalyzeWebhooksCommand(program)
 
 program.parse(process.argv)

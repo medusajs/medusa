@@ -73,7 +73,7 @@ By following this tutorial, you will:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "Node.js v20.19.0+ or v22.12.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -503,12 +503,19 @@ import {
   sendAbandonedCartsWorkflow, 
   SendAbandonedCartsWorkflowInput,
 } from "../workflows/send-abandoned-carts"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function abandonedCartJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve("logger")
-  const query = container.resolve("query")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const oneDayAgo = new Date()
   oneDayAgo.setDate(oneDayAgo.getDate() - 1)

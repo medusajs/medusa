@@ -3,7 +3,8 @@ type Options<T> = {
   responseTransformer: (response: Response) => Promise<T>
   fallbackAction: () => Promise<T>
   /**
-   * When enabled, overrides the default URL-based check.
+   * When set, replaces the default URL-based check — `false` forces the
+   * fallback even though the URL is an HTTP one.
    * Pass `!!process.env.CLOUDFLARE_ENV` for routes that always receive
    * an HTTP URL but should only fetch remotely on Cloudflare.
    */
@@ -27,7 +28,10 @@ export async function workerCompatibleFetch<T>({
   fallbackAction,
   useRemote,
 }: Options<T>): Promise<T> {
-  const shouldFetch = useRemote || /^https?:\/\//.test(url)
+  // `??`, not `||`: every caller passes `useRemote` as a gate meaning "only
+  // fetch remotely when this is true", and their URL is always an HTTP one, so
+  // `||` made passing `false` a no-op and skipped the fallback entirely.
+  const shouldFetch = useRemote ?? /^https?:\/\//.test(url)
   if (shouldFetch) {
     const res = await fetch(url)
     return await responseTransformer(res)

@@ -1,6 +1,10 @@
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  SuiteOptions,
+  moduleIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 
 jest.setTimeout(100000)
 
@@ -177,7 +181,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        expect(orderExchange).toEqual(
+        expect(normalizeBigNumbers(orderExchange)).toEqual(
           expect.objectContaining({
             id: orderExchange.id,
             order_id: createdOrder.id,

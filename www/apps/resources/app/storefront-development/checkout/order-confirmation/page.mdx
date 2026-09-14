@@ -18,6 +18,12 @@ In this guide, you'll learn how to show the different order details on the order
 
 After the customer completes the checkout process and places an order, you can show an order confirmation page to display the order details.
 
+<Note>
+
+The [Get an Order API route](!api!/store/orders/get-an-order) doesn't require customer authentication, so that guest customers can view their order confirmation page. To add access rules to the route, refer to the [Restrict Order Retrieval guide](../../../commerce-modules/order/secure-order-retrieval/page.mdx).
+
+</Note>
+
 ## Retrieve Order Details
 
 To show the order details, you need to retrieve the order by sending a request to the [Get an Order API route](!api!/store/orders/get-an-order).
@@ -168,8 +174,12 @@ An order has various fields for the order totals, which you can check out in the
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Field</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>
+        Field
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>

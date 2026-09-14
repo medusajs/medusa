@@ -14,6 +14,14 @@ In this chapter, you'll learn about routing-related customizations that you can 
 
 </Note>
 
+<Note title="React Router v7">
+
+Starting from [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the Medusa Admin uses React Router v7. If your project has its own `react-router-dom` dependency, update it to v7 to avoid installing two versions of React Router, which leads to a `useNavigate() may be used only in the context of a Router` error in your admin customizations.
+
+React Router v7 also removed the `json` and `defer` utilities. Instead of `json`, return a `Response` object with a JSON body from your loader. Instead of `defer`, return a plain object holding the unresolved promises.
+
+</Note>
+
 ## Link to a Page
 
 To link to a page in your admin customizations, you can use the `Link` component from `react-router-dom`. For example:
@@ -65,8 +73,8 @@ However, if you need the data to be fetched before the route is rendered, such a
 
 To fetch data with a route loader:
 
-1. Define and export a [React Router loader](https://reactrouter.com/6.29.0/route/loader#loader) function in the UI route's file. In this function, you can fetch and return data asynchronously.
-2. In your UI route's component, you can use the [useLoaderData hook from React Router](https://reactrouter.com/6.29.0/hooks/use-loader-data#useloaderdata) to access the data returned by the `loader` function.
+1. Define and export a [React Router loader](https://reactrouter.com/start/data/route-object#loader) function in the UI route's file. In this function, you can fetch and return data asynchronously.
+2. In your UI route's component, you can use the [useLoaderData hook from React Router](https://reactrouter.com/api/hooks/useLoaderData) to access the data returned by the `loader` function.
 
 For example, consider the following UI route created at `src/admin/routes/custom/page.tsx`:
 
@@ -176,7 +184,7 @@ Route handles are available starting from Medusa v2.5.1.
 
 </Note>
 
-In your UI route or any route file, you can export a `handle` object to define [route handles](https://reactrouter.com/start/framework/route-module#handle). The object is passed to the loader and route contexts.
+In your UI route or any route file, you can export a `handle` object to define [route handles](https://reactrouter.com/start/data/route-object#handle). The object is passed to the loader and route contexts.
 
 For example:
 
@@ -190,4 +198,4 @@ You can also use the `handle` object to define a breadcrumb for the route. Learn
 
 ### React Router Components and Hooks
 
-Refer to [react-router-dom’s documentation](https://reactrouter.com/en/6.29.0) for components and hooks that you can use in your admin customizations.
+Refer to [React Router’s documentation](https://reactrouter.com) for components and hooks that you can use in your admin customizations.

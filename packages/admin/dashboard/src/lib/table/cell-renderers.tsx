@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import ReactCountryFlag from "react-country-flag"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { getCountryByIso2 } from "../data/countries"
+import { formatQuantity } from "../format-quantity"
 import { ProductCell } from "../../components/table/table-cells/product/product-cell"
 import { CollectionCell } from "../../components/table/table-cells/product/collection-cell"
 import { VariantCell } from "../../components/table/table-cells/product/variant-cell"
@@ -19,6 +20,7 @@ import {
 import { DataTableStatusIndicator } from "../../components/data-table/components/data-table-status-cell/data-table-status-cell"
 import { TruncatedText } from "../../components/common/truncated-text"
 import { isEmpty } from "../is-empty"
+import { getUnitOfMeasurePath } from "./field-utils"
 
 export type CellRenderer<TData = any> = (
   value: any,
@@ -57,6 +59,7 @@ export type BuiltInRenderMode =
   | "address"
   | "country_code"
   | "display_id"
+  | "quantity"
 
 /**
  * A render mode key. Built-in modes are suggested for autocomplete, but any
@@ -459,6 +462,22 @@ const NumberRenderer: CellRenderer = (value, _row, _column, _t) => {
   return (num as number).toLocaleString()
 }
 
+/**
+ * Renders an inventory quantity with the unit of measure of the inventory item
+ * it belongs to, so a shared pool reads as "98.25 lb".
+ *
+ * The unit does not always live on the row itself — on a reservation it hangs
+ * off the related inventory item — so the column can point at it with a
+ * `unit_of_measure_path` metadata entry. Defaults to the row's own field.
+ */
+const QuantityRenderer: CellRenderer = (value, row, column, _t) => {
+  const unitOfMeasure = getUnitOfMeasurePath(column)
+    .split(".")
+    .reduce((acc: any, key: string) => acc?.[key], row)
+
+  return formatQuantity(value, unitOfMeasure)
+}
+
 const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {
   if (isEmpty(value)) {
     return "-"
@@ -589,6 +608,7 @@ cellRenderers.set("date", { render: DateRenderer })
 cellRenderers.set("timestamp", { render: DateRenderer })
 cellRenderers.set("currency", { render: CurrencyRenderer, align: "right" })
 cellRenderers.set("number", { render: NumberRenderer, align: "right" })
+cellRenderers.set("quantity", { render: QuantityRenderer, align: "right" })
 cellRenderers.set("boolean", {
   render: BooleanRenderer,
   align: "center",

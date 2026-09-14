@@ -1,5 +1,5 @@
 import { InlineIcon } from "docs-ui"
-import { EllipsisHorizontal, ArrowDownTray, ChevronUpDown } from "@medusajs/icons"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Manage Billing Details`,
@@ -15,34 +15,9 @@ To manage your plan, refer to the [Billing](../page.mdx) guide.
 
 </Note>
 
-## Edit Billing Email
+## Edit Billing Email or Tax ID
 
-To edit the email used for billing:
-
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-
-![Organization switcher dropdown opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1750238273/Cloud/CleanShot_2025-06-18_at_12.17.33_2x_zcg69z.png)
-
-4. In the Details section of the General settings, change the "Billing email" field.
-5. Once you're done, click the "Save changes" button.
-
-![Billing email field highlighted in the General settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750238440/Cloud/CleanShot_2025-06-18_at_12.19.41_2x_owgz4a.png)
-
----
-
-## Edit Tax ID
-
-To edit the Tax, VAT, EIN, GST, or other tax identification numbers for your organization:
-
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. In the Details section of the General settings, change the "Tax ID" field.
-5. Once you're done, click the "Save changes" button.
-
-![Tax ID field highlighted in the General settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755264073/Cloud/CleanShot_2025-08-15_at_16.20.44_2x_mukxbe.png)
+To edit your organization's billing email or tax ID, refer to the [Edit Organization Details](../../organizations/page.mdx#edit-organization-details) guide.
 
 ---
 
@@ -52,16 +27,13 @@ Billing information is used in your organization's invoices. You can edit the bi
 
 To edit the billing information:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Billing" settings from the sidebar.
-5. In the "Billing information" section, you can edit the legal name, country, address line, city, and post code.
-6. Once you're done, click the "Save changes" button.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. In the "Billing information" section, you can edit the legal name, country, address line, city, and post code.
+5. Once you're done, click the "Save changes" button.
 
 The new billing information will be used in your organization's next invoice.
-
-![Billing information section in the Billing settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750241643/Cloud/CleanShot_2025-06-18_at_13.13.34_2x_fjpqpu.png)
 
 ---
 
@@ -73,13 +45,12 @@ You can manage the payment methods used for the monthly Cloud payment subscripti
 
 To add a payment method that can be used for Cloud payments in an organization:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Billing" settings from the sidebar.
-5. In the "Payment methods" section, click the "Add new" button.
-6. This will open a form where you can add credit card details.
-7. Once you're done, click the "Save" button.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. In the "Payment methods" section, click the "Add new" button.
+5. This will open a form where you can add credit card details.
+6. Once you're done, click the "Save" button.
 
 <Note title="Restrictions">
 
@@ -95,13 +66,12 @@ When you have multiple payment methods added to your organization, you can chang
 
 To change the default payment method:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Billing" settings from the sidebar.
-5. In the "Payment methods" section, find the payment method you want to set as default.
-6. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the payment method.
-7. Choose "Set as default" from the dropdown.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. In the "Payment methods" section, find the payment method you want to set as default.
+5. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the payment method.
+6. Choose "Set as default" from the dropdown.
 
 The next time Cloud captures the subscription payment for your organization, it will use this payment method first.
 
@@ -121,14 +91,13 @@ If you need to delete the default payment method, first [set another payment met
 
 To delete a payment method:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Details" settings under Billing from the sidebar.
-5. In the "Payment methods" section, find the payment method you want to delete.
-6. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the payment method.
-7. Choose "Delete" from the dropdown.
-8. Confirm the deletion in the confirmation dialog that appears.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. In the "Payment methods" section, find the payment method you want to delete.
+5. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the payment method.
+6. Choose "Delete" from the dropdown.
+7. Confirm the deletion in the confirmation dialog that appears.
 
 After confirming the deletion, the payment method will be permanently removed from your organization and can no longer be used for future payments.
 
@@ -142,15 +111,12 @@ You can increase the concurrent previews limit, which would add it to your bill 
 
 To change the concurrent previews limit:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Billing" settings from the sidebar.
-5. In the "Concurrent previews" section, enter the number of concurrent previews you want to have.
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. In the "Concurrent previews" section, enter the number of concurrent previews you want to have.
     - You can't enter a number lower than your current active preview environments. For example, if you have two active preview environments, you can't set the limit to one.
     - You can see how much it would cost to increase the limit below the input field.
-6. Once you're done, click the "Save changes" button.
+5. Once you're done, click the "Save changes" button.
 
 This will apply the new limit to your organization, and you can view your updated bill in the [Invoices](../page.mdx#view-billing-history-and-invoices) settings.
-
-![Concurrent previews section in the Billing settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1759410004/Cloud/CleanShot_2025-10-02_at_15.59.33_2x_rutivf.png)

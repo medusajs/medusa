@@ -190,6 +190,11 @@ export const referencesSidebar = [
             title: "moduleIntegrationTestRunner",
             path: "/test-tools-reference/moduleIntegrationTestRunner",
           },
+          {
+            type: "link",
+            title: "normalizeBigNumbers",
+            path: "/test-tools-reference/normalizeBigNumbers",
+          },
         ],
       },
     ],

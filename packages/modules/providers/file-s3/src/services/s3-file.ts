@@ -49,7 +49,6 @@ function decodeFileContent(content: string, mimeType?: string): Buffer {
     : Buffer.from(content, "binary")
 }
 
-
 /**
  * Sanitizes a file path by:
  * - Normalizing slashes to posix format
@@ -133,10 +132,10 @@ export class S3FileService extends AbstractFileProviderService {
     const credentials =
       this.config_.authenticationMethod === "access-key"
         ? {
-          accessKeyId: this.config_.accessKeyId!,
-          secretAccessKey: this.config_.secretAccessKey!,
-          sessionToken: this.config_.sessionToken,
-        }
+            accessKeyId: this.config_.accessKeyId!,
+            secretAccessKey: this.config_.secretAccessKey!,
+            sessionToken: this.config_.sessionToken,
+          }
         : undefined
 
     const config: S3ClientConfigType = {
@@ -196,9 +195,9 @@ export class S3FileService extends AbstractFileProviderService {
     }
     const parsedFilename = path.posix.parse(sanitizedPath)
 
-    // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
-      }`
+    const fileKey = `${this.config_.prefix}${
+      parsedFilename.dir ? `${parsedFilename.dir}/` : ""
+    }${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
 
     const content = decodeFileContent(file.content, file.mimeType)
 
@@ -228,10 +227,7 @@ export class S3FileService extends AbstractFileProviderService {
       throw e
     }
 
-    const encodedKey = fileKey
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")
+    const encodedKey = fileKey.split("/").map(encodeURIComponent).join("/")
 
     return {
       url: `${this.config_.fileUrl}/${encodedKey}`,
@@ -260,8 +256,9 @@ export class S3FileService extends AbstractFileProviderService {
       )
     }
     const parsedFilename = path.posix.parse(sanitizedPath)
-    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
-      }`
+    const fileKey = `${this.config_.prefix}${
+      parsedFilename.dir ? `${parsedFilename.dir}/` : ""
+    }${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
 
     const pass = new PassThrough()
     const upload = new Upload({
@@ -279,10 +276,7 @@ export class S3FileService extends AbstractFileProviderService {
       },
     })
 
-    const encodedKey = fileKey
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")
+    const encodedKey = fileKey.split("/").map(encodeURIComponent).join("/")
 
     const promise = upload.done().then(() => ({
       url: `${this.config_.fileUrl}/${encodedKey}`,

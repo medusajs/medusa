@@ -128,6 +128,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Enforce Sales Channel Availability",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Filter Products",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
               "children": []
@@ -172,6 +179,20 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Reset Password Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Order Retrieval",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Return Creation",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation",
               "children": []
             },
             {
@@ -269,128 +290,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "These how-to guides help you customize the Medusa Admin dashboard with practical examples.",
           "children": [
-            {
-              "loaded": true,
-              "type": "sidebar",
-              "sidebar_id": "admin-components-layouts",
-              "title": "Components & Layouts",
-              "children": [
-                {
-                  "loaded": true,
-                  "type": "link",
-                  "path": "/admin-components",
-                  "title": "Overview",
-                  "children": []
-                },
-                {
-                  "type": "separator"
-                },
-                {
-                  "loaded": true,
-                  "type": "category",
-                  "title": "Layouts",
-                  "autogenerate_path": "/admin-components/layouts",
-                  "children": [
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/layouts/single-column",
-                      "title": "Single Column",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/layouts/two-column",
-                      "title": "Two Column",
-                      "description": "",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "loaded": true,
-                  "type": "category",
-                  "title": "Components",
-                  "autogenerate_path": "/admin-components/components",
-                  "children": [
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/action-menu",
-                      "title": "Action Menu",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/container",
-                      "title": "Container",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/data-table",
-                      "title": "Data Table",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/forms",
-                      "title": "Forms",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/header",
-                      "title": "Header",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/json-view-section",
-                      "title": "JSON View",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/layout-composer",
-                      "title": "LayoutComposer",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/section-row",
-                      "title": "Section Row",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "link",
-                      "path": "/admin-components/components/table",
-                      "title": "Table",
-                      "description": "",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
             {
               "loaded": true,
               "type": "ref",

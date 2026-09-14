@@ -137,6 +137,7 @@ export default class CartModuleService
 
   private shouldIncludeTotals(config: FindConfig<any>): boolean {
     const totalFields = [
+      "*",
       "total",
       "subtotal",
       "tax_total",
@@ -158,7 +159,7 @@ export default class CartModuleService
       "original_shipping_total",
     ]
 
-    const includeTotals = (config?.select ?? []).some((field) =>
+    const includeTotals = (config?.select ?? ["*"]).some((field) =>
       totalFields.includes(field as string)
     )
 
@@ -171,7 +172,6 @@ export default class CartModuleService
 
   private addRelationsToCalculateTotals(config: FindConfig<any>, totalFields) {
     config.relations ??= []
-    config.select ??= []
 
     const requiredFieldsForTotals = [
       "items",
@@ -187,10 +187,10 @@ export default class CartModuleService
       ...requiredFieldsForTotals,
     ])
 
-    config.select = config.select.filter((field) => {
+    config.select = config.select?.filter((field) => {
       return (
         !requiredFieldsForTotals.some((val) =>
-          val.startsWith(field as string)
+          (field as string).startsWith(val)
         ) && !totalFields.includes(field)
       )
     })

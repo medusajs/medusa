@@ -83,7 +83,7 @@ async function fetchVariantPriceSets(
       },
       {
         cache: {
-          enable: true,
+          tags: ["LinkProductVariantPriceSet:list:*"],
         },
       }
     )

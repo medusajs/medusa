@@ -252,6 +252,10 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCollectionsWorkflow"
   },
   {
+    "title": "deleteProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionValuesWorkflow"
+  },
+  {
     "title": "deleteProductOptionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionsWorkflow"
   },
@@ -274,6 +278,10 @@ export const eventBus = [
   {
     "title": "updateCollectionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCollectionsWorkflow"
+  },
+  {
+    "title": "updateProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionValuesWorkflow"
   },
   {
     "title": "updateProductOptionsWorkflow",

@@ -26,7 +26,7 @@ function getConfigPath() {
     "..",
     "..",
     "packages",
-    "docs-ui",
+    "docs-utils",
     "src",
     "global-config.ts"
   )

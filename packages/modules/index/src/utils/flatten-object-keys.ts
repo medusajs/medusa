@@ -1,3 +1,4 @@
+import { isObject } from "@medusajs/framework/utils"
 import { OPERATOR_MAP } from "./query-builder"
 
 /**
@@ -45,7 +46,7 @@ export function flattenObjectKeys(input: Record<string, any>) {
         continue
       }
 
-      if (typeof obj[key] === "object" && !isOperatorMap) {
+      if (isObject(obj[key]) && !isOperatorMap) {
         flatten(obj[key], newPath)
         continue
       }

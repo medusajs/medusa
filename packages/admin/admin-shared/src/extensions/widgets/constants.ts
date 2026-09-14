@@ -307,6 +307,8 @@ const LEGACY_WORKFLOW_INJECTION_ZONES = [
 
 const WORKFLOW_INJECTION_ZONES = ["workflow.details", "workflow.list"] as const
 
+const SEARCH_INJECTION_ZONES = ["search.list"] as const
+
 const LEGACY_TAX_INJECTION_ZONES = [
   "tax.details.before",
   "tax.details.after",
@@ -408,6 +410,7 @@ const GIFT_CARD_INJECTION_ZONES = [
   "gift_card.details",
   "gift_card.details.side",
   "gift_card.list",
+  "gift_card.list.side",
 ] as const
 
 const LEGACY_GIFT_CARD_PRODUCT_INJECTION_ZONES = [
@@ -483,6 +486,7 @@ export const INJECTION_ZONES = [
   ...API_KEY_INJECTION_ZONES,
   ...LEGACY_WORKFLOW_INJECTION_ZONES,
   ...WORKFLOW_INJECTION_ZONES,
+  ...SEARCH_INJECTION_ZONES,
   ...LEGACY_CAMPAIGN_INJECTION_ZONES,
   ...CAMPAIGN_INJECTION_ZONES,
   ...LEGACY_TAX_INJECTION_ZONES,

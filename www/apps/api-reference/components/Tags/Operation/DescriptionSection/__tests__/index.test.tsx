@@ -59,6 +59,11 @@ vi.mock("@/components/Tags/Operation/DescriptionSection/FeatureFlagNotice", () =
     <div data-testid="feature-flag">{featureFlag}</div>
   ),
 }))
+vi.mock("@/components/Tags/Operation/DescriptionSection/FieldRestrictions", () => ({
+  default: ({ allowed, disallowed }: { allowed?: string[], disallowed?: string[] }) => (
+    <div data-testid="field-restrictions">{JSON.stringify({ allowed, disallowed })}</div>
+  ),
+}))
 vi.mock("@/components/MDXContent/Client", () => ({
   default: ({ content }: { content: string }) => (
     <div data-testid="mdx-content">{content}</div>
@@ -205,6 +210,28 @@ describe("rendering", () => {
     const { container } = render(<TagsOperationDescriptionSection operation={mockOperation} />)
     const customBadgeElement = container.querySelector("[data-testid='custom-badge']")
     expect(customBadgeElement).not.toBeInTheDocument()
+  })
+
+  test("renders field restrictions when operation has allowed or disallowed fields", async () => {
+    const modifiedOperation: OpenAPI.Operation = {
+      ...mockOperation,
+      "x-allowed": ["id"],
+      "x-disallowed": ["carts"],
+    }
+    const { container } = render(<TagsOperationDescriptionSection operation={modifiedOperation} />)
+    await waitFor(() => {
+      const fieldRestrictionsElement = container.querySelector("[data-testid='field-restrictions']")
+      expect(fieldRestrictionsElement).toBeInTheDocument()
+      expect(fieldRestrictionsElement).toHaveTextContent(JSON.stringify({
+        allowed: ["id"],
+        disallowed: ["carts"],
+      }))
+    })
+  })
+
+  test("does not render field restrictions when operation has no allowed or disallowed fields", () => {
+    const { container } = render(<TagsOperationDescriptionSection operation={mockOperation} />)
+    expect(container.querySelector("[data-testid='field-restrictions']")).not.toBeInTheDocument()
   })
 
   test("renders operation's workflow badge when operation has a workflow", async () => {

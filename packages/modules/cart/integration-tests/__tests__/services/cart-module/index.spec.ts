@@ -3,6 +3,7 @@ import { BigNumber, Module, Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { CheckConstraintViolationException } from "@medusajs/framework/mikro-orm/core"
 import { CartModuleService } from "@services"
+import { normalizeBigNumbers } from "@medusajs/test-utils"
 
 jest.setTimeout(50000)
 
@@ -234,7 +235,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: createdCart.id,
               currency_code: "eur",
@@ -279,7 +280,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             }
           )
 
-          expect(carts).toEqual(
+          expect(normalizeBigNumbers(carts)).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 currency_code: "eur",
@@ -522,6 +523,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1072,6 +1074,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1195,6 +1198,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1537,6 +1541,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
+            select: [],
           })
 
           expect(cart.shipping_methods).toEqual(
@@ -1664,6 +1669,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
+            select: [],
           })
 
           expect(cart.shipping_methods).toEqual(

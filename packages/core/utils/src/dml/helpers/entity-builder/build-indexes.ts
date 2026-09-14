@@ -8,10 +8,19 @@ import { buildWhereQuery } from "./query-builder"
   We assume that deleted_at would be scoped in indexes in all cases as an index without the scope
   doesn't seem to be valid. If a case presents itself where one would like to remove the scope, 
   this will need to be updated to include that case.
+
+  Passing `where: null` opts out of the scope entirely and creates a non-partial
+  index. This is needed for indexes that back a foreign key: the referential
+  integrity triggers Postgres runs for ON UPDATE/ON DELETE CASCADE do not carry
+  a deleted_at predicate, so they cannot use a partial index.
 */
 export function transformIndexWhere<TSchema extends DMLSchema>(
   index: EntityIndex<TSchema, string | QueryCondition<TSchema>>
-): string {
+): string | undefined {
+  if (index.where === null) {
+    return undefined
+  }
+
   return isObject(index.where)
     ? transformWhereQb<TSchema>(index.where)
     : transformWhere(index.where)

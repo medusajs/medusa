@@ -164,6 +164,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/salesChannel"
   },
   {
+    "title": "search",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/search"
+  },
+  {
     "title": "shippingOption",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/shippingOption"
   },

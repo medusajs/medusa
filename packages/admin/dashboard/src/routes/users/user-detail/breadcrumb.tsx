@@ -8,7 +8,7 @@ export const UserDetailBreadcrumb = (props: UserDetailBreadcrumbProps) => {
   const { id } = props.params || {}
 
   const { user } = useUser(id!, undefined, {
-    initialData: props.data,
+    initialData: props.loaderData,
     enabled: Boolean(id),
   })
 
@@ -24,7 +24,7 @@ export const UserDetailBreadcrumb = (props: UserDetailBreadcrumbProps) => {
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminUserResponse>) => {
-  const user = match.data?.user
+  const user = match.loaderData?.user
 
   if (!user) {
     return { title: undefined }

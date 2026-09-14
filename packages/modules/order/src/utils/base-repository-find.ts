@@ -96,6 +96,58 @@ function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   }
 }
 
+function ensureOrderShippingMethodFieldsSelection(
+  config: any,
+  isRelatedEntity: boolean
+) {
+  const populate = config.options?.populate ?? []
+  const fields = config.options?.fields ?? []
+
+  const hasShippingMethodPopulate = populate.some(
+    (p: string) =>
+      p === "shipping_methods.shipping_method" ||
+      p.startsWith("shipping_methods.shipping_method.") ||
+      p === "order.shipping_methods.shipping_method" ||
+      p.startsWith("order.shipping_methods.shipping_method.")
+  )
+
+  if (!hasShippingMethodPopulate) {
+    return
+  }
+
+  const hasOrderShippingMethodFields = fields.some((field: string) => {
+    if (
+      field === "shipping_methods.*" ||
+      field === "order.shipping_methods.*"
+    ) {
+      return true
+    }
+
+    if (
+      field.startsWith("shipping_methods.") &&
+      !field.startsWith("shipping_methods.shipping_method.")
+    ) {
+      return true
+    }
+
+    if (
+      field.startsWith("order.shipping_methods.") &&
+      !field.startsWith("order.shipping_methods.shipping_method.")
+    ) {
+      return true
+    }
+
+    return false
+  })
+
+  if (!hasOrderShippingMethodFields) {
+    fields.push(
+      isRelatedEntity ? "order.shipping_methods.*" : "shipping_methods.*"
+    )
+    config.options.fields = fields
+  }
+}
+
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
   klass.prototype.find = async function find(
     this: any,
@@ -245,6 +297,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (strategy === LoadStrategy.SELECT_IN) {
       ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: config,
       })
@@ -393,6 +446,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (strategy === LoadStrategy.SELECT_IN) {
       ensureOrderItemFieldsSelection(config, isRelatedEntity)
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: config,
       })

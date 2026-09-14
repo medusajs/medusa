@@ -149,7 +149,7 @@ function prepareFulfillmentData({
   itemsList,
 }: {
   order: OrderDTO
-  input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput
+  input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput & AdditionalData
   shippingOption: {
     id: string
     provider_id: string
@@ -247,6 +247,14 @@ function prepareFulfillmentData({
   const shippingAddress = order.shipping_address ?? { id: undefined }
   delete shippingAddress.id
 
+  // Merge any recipient overrides passed in the request over the order's
+  // shipping address, so the fulfillment provider receives the resolved
+  // delivery address without mutating the order itself.
+  const deliveryAddress = {
+    ...shippingAddress,
+    ...(input.delivery_address ?? {}),
+  }
+
   return {
     input: {
       location_id: locationId,
@@ -257,10 +265,11 @@ function prepareFulfillmentData({
       items: fulfillmentItems,
       requires_shipping: someItemsRequireShipping,
       labels: input.labels ?? [],
-      delivery_address: shippingAddress as any,
+      delivery_address: deliveryAddress as any,
       created_by: input.created_by,
       packed_at: new Date(),
       metadata: input.metadata,
+      additional_data: input.additional_data,
     },
   }
 }

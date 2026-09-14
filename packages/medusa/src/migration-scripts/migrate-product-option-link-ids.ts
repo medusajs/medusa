@@ -1,5 +1,5 @@
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { ExecArgs } from "@medusajs/framework/types"
+import { ExecArgs, Logger } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
@@ -19,12 +19,14 @@ type UpdateIdsOptions = {
   tableName: string
   idPrefix: string
   pgConnection: PgConnection
+  logger: Logger
 }
 
 async function updateIdsInBatches({
   tableName,
   idPrefix,
   pgConnection,
+  logger,
 }: UpdateIdsOptions): Promise<void> {
   const idPrefixPattern = `${idPrefix}_%`
 
@@ -35,10 +37,14 @@ async function updateIdsInBatches({
   const totalRows = Number(countRows[0]?.count ?? 0)
   const maxBatches = Math.ceil(totalRows / BATCH_SIZE)
   let batchCount = 0
+  let updatedRows = 0
 
   if (!totalRows) {
+    logger.info(`No ids to rewrite in ${tableName}. Skipping.`)
     return
   }
+
+  logger.info(`Rewriting ${totalRows} ids in ${tableName}...`)
 
   while (batchCount < maxBatches) {
     const { rows } = await pgConnection.raw<{ id: string }>(
@@ -67,7 +73,13 @@ async function updateIdsInBatches({
         where t.id = v.old_id`,
       bindings
     )
+
+    updatedRows += rows.length
+
+    logger.info(`Rewrote ${updatedRows}/${totalRows} ids in ${tableName}.`)
   }
+
+  logger.info(`Finished rewriting ${updatedRows} ids in ${tableName}.`)
 }
 
 export default async function migrateProductOptionLinkIds({
@@ -82,20 +94,26 @@ export default async function migrateProductOptionLinkIds({
     ContainerRegistrationKeys.PG_CONNECTION
   )
 
+  logger.info("Starting migration of product option link ids...")
+
   try {
     await pgConnection.transaction(async (trx) => {
       await updateIdsInBatches({
         tableName: "product_product_option",
         idPrefix: "prodopt",
         pgConnection: trx,
+        logger,
       })
 
       await updateIdsInBatches({
         tableName: "product_product_option_value",
         idPrefix: "prodoptval",
         pgConnection: trx,
+        logger,
       })
     })
+
+    logger.info("Finished migration of product option link ids.")
   } catch (error) {
     logger.error(error)
     throw error

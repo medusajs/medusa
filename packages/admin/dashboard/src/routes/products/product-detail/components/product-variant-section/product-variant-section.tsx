@@ -8,7 +8,6 @@ import {
 import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
-  clx,
   Container,
   createDataTableColumnHelper,
   createDataTableCommandHelper,
@@ -25,6 +24,7 @@ import { CellContext } from "@tanstack/react-table"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
+import { VariantInventoryCell } from "../../../../../components/table/table-cells/product/variant-inventory-cell"
 import {
   useDeleteVariantLazy,
   useProductVariants,
@@ -312,53 +312,6 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
     [handleDelete, navigate, t, tableSearchParams]
   )
 
-  const getInventory = useCallback(
-    (variant: HttpTypes.AdminProductVariant) => {
-      const castVariant = variant as HttpTypes.AdminProductVariant & {
-        inventory_items: { inventory: HttpTypes.AdminInventoryItem }[]
-      }
-
-      if (!variant.manage_inventory) {
-        return {
-          text: t("products.variant.inventory.notManaged"),
-          hasInventoryKit: false,
-          notManaged: true,
-        }
-      }
-
-      const quantity = variant.inventory_quantity
-
-      const inventoryItems = castVariant.inventory_items
-        ?.map((i) => i.inventory)
-        .filter(Boolean) as HttpTypes.AdminInventoryItem[]
-
-      const hasInventoryKit = inventoryItems.length > 1
-
-      const locations: Record<string, boolean> = {}
-
-      inventoryItems.forEach((i) => {
-        i.location_levels?.forEach((l) => {
-          locations[l.id] = true
-        })
-      })
-
-      const locationCount = Object.keys(locations).length
-
-      const text = hasInventoryKit
-        ? t("products.variant.tableItemAvailable", {
-            availableCount: quantity,
-          })
-        : t("products.variant.tableItem", {
-            availableCount: quantity,
-            locationCount,
-            count: locationCount,
-          })
-
-      return { text, hasInventoryKit, quantity, notManaged: false }
-    },
-    [t]
-  )
-
   return useMemo(() => {
     return [
       columnHelper.accessor("thumbnail", {
@@ -389,33 +342,14 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
       columnHelper.display({
         id: "inventory",
         header: t("fields.inventory"),
-        cell: ({ row }) => {
-          const { text, hasInventoryKit, quantity, notManaged } = getInventory(
-            row.original
-          )
-
-          return (
-            <Tooltip content={text}>
-              <div className="flex h-full w-full items-center gap-2 overflow-hidden">
-                {hasInventoryKit && <Component />}
-                <span
-                  className={clx("truncate", {
-                    "text-ui-fg-error": !quantity && !notManaged,
-                  })}
-                >
-                  {text}
-                </span>
-              </div>
-            </Tooltip>
-          )
-        },
+        cell: ({ row }) => <VariantInventoryCell variant={row.original} />,
         maxSize: 250,
       }),
       columnHelper.action({
         actions: getActions,
       }),
     ]
-  }, [t, optionColumns, getActions, getInventory])
+  }, [t, optionColumns, getActions])
 }
 
 const filterHelper =

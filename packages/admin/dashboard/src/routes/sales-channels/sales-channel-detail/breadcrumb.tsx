@@ -11,7 +11,7 @@ export const SalesChannelDetailBreadcrumb = (
   const { id } = props.params || {}
 
   const { sales_channel } = useSalesChannel(id!, {
-    initialData: props.data,
+    initialData: props.loaderData,
     enabled: Boolean(id),
   })
 
@@ -23,5 +23,5 @@ export const SalesChannelDetailBreadcrumb = (
 }
 
 export const seo = (match: UIMatch<HttpTypes.AdminSalesChannelResponse>) => ({
-  title: match.data?.sales_channel?.name,
+  title: match.loaderData?.sales_channel?.name,
 })

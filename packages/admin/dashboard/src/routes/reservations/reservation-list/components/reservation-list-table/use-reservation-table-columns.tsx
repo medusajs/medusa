@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { formatQuantity } from "../../../../../lib/format-quantity"
 import { ReservationActions } from "./reservation-actions"
 import { ExtendedReservationItem } from "../../../../inventory/inventory-detail/components/reservations-table/use-reservation-list-table-columns"
 
@@ -82,12 +83,17 @@ export const useReservationTableColumns = () => {
             <span className="truncate">{t("fields.quantity")}</span>
           </div>
         ),
-        cell: ({ getValue }) => {
+        cell: ({ getValue, row }) => {
           const quantity = getValue()
 
           return (
             <div className="flex size-full items-center justify-end overflow-hidden text-right">
-              <span className="truncate">{quantity}</span>
+              <span className="truncate">
+                {formatQuantity(
+                  quantity,
+                  row.original.inventory_item?.unit_of_measure
+                )}
+              </span>
             </div>
           )
         },

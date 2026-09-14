@@ -3,17 +3,20 @@
  * type: object
  * description: The details of the user to be created.
  * properties:
- *   token:
+ *   email:
  *     type: string
- *     title: token
- *     description: The invite's token.
- *   fields:
+ *     title: email
+ *     description: The invite's email.
+ *     format: email
+ *   first_name:
  *     type: string
- *     title: fields
- *     description: The invite's fields.
+ *     title: first_name
+ *     description: The invited user's first name.
+ *   last_name:
+ *     type: string
+ *     title: last_name
+ *     description: The invited user's last name.
  * x-schemaName: AdminGetInviteAcceptParams
- * required:
- *   - token
  * 
 */
 

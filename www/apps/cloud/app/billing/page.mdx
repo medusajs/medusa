@@ -1,5 +1,5 @@
 import { InlineIcon, Table } from "docs-ui"
-import { ArrowDownTray, ChevronUpDown, EllipsisHorizontal } from "@medusajs/icons"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Billing`,
@@ -38,16 +38,13 @@ You can view your payment history in the organization's settings, and download i
 
 To view your organization's billing history and invoices:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
-4. Change to the "Invoices" settings from the sidebar.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Invoices** in the sidebar to open the organization's invoices history.
 
-This will show a table of your upcoming payment, including your plan's amount and flex charges.
+This will show a table of your upcoming payment, including your plan's amount and Flex Usage charges.
 
 You can also see a table with all the payments made for your organization, including the date, status, and amount of each payment.
-
-![Invoices section in the Invoices settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750242280/Cloud/CleanShot_2025-06-18_at_13.20.39_2x_gar9lb.png)
 
 ### Download Invoice
 
@@ -60,8 +57,6 @@ To download an invoice for a specific payment:
 
 This will open the invoice in a new tab, where you can view and download it as a PDF.
 
-![Download invoice icon in the Invoices settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750242445/Cloud/CleanShot_2025-06-18_at_13.27.05_2x_qqibor.png)
-
 ### Download Receipt
 
 A receipt is generated for every successful payment made for your organization. You can download the receipt as a PDF for your records. A receipt shows proof of payment for your organization's plan and any add-ons or Flex Usage charges.
@@ -72,8 +67,6 @@ To download a receipt for a specific payment:
 2. Choose "Download receipt" from the dropdown.
 
 This will open the receipt in a new tab, where you can view and download it as a PDF.
-
-![Download receipt icon in the Invoices settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750242445/Cloud/CleanShot_2025-06-18_at_13.27.05_2x_qqibor.png)
 
 ---
 
@@ -95,17 +88,16 @@ For example, you may see a note saying "Inviting an additional member adds $X to
 
 To view your organization's add-ons:
 
-1. [Open the organization's settings](../organizations/page.mdx#view-organization-settings).
-2. Click on "Add-ons" from the sidebar.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Add-ons** in the sidebar to open the organization's add-ons settings.
 
 This will show a list of all the add-ons that Cloud provides. For each add-on, you can see:
 
 1. **Usage**: The number of resources you're currently using for that add-on with respect to your plan's limits.
 2. **Add-ons**: The number of additional resources you've purchased for that add-on. For example, if your plan allows `5` user seats and you have `7` users, you've purchased `2` additional user seats as add-ons.
 3. **Renewal charge**: The amount you'll be charged to renew your add-ons at the start of each billing cycle.
-3. **Pending charge**: The amount you owe for add-ons added during the current billing cycle. For example, if you purchased an additional user seat halfway through the month, you'll see a pro-rated charge for that seat here.
-
-![Add-ons section in the Add-ons settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1765975143/Cloud/CleanShot_2025-12-17_at_14.37.35_2x_kkznru.png)
+4. **Pending charge**: The amount you owe for add-ons added during the current billing cycle. For example, if you purchased an additional user seat halfway through the month, you'll see a pro-rated charge for that seat here.
 
 ---
 
@@ -115,11 +107,12 @@ You can set a spending threshold at which Medusa will send you an alert. This he
 
 To set a Flex Budget Alert:
 
-1. [Open the organization's settings](../organizations/page.mdx#view-organization-settings).
-2. Click on "Details" under "Billing" in the sidebar.
-3. Scroll to the "Flex budget alert" section.
-4. In the "Monthly flex budget" field, enter the monetary threshold at which you want to receive an alert. The value is in USD. Leave the field empty to remove any existing budget alert.
-5. Click **Save Changes**.
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Billing** in the sidebar to open the organization's billing settings.
+4. Scroll to the "Flex budget alert" section.
+5. In the "Monthly flex budget" field, enter the monetary threshold at which you want to receive an alert. The value is in USD. Leave the field empty to remove any existing budget alert.
+6. Click **Save Changes**.
 
 Once set, you will receive an alert when your organization's Flex Usage charges reach the configured amount.
 

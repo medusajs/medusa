@@ -429,6 +429,10 @@ export interface OrderShippingMethodDTO {
    * Whether the shipping method price is tax inclusive or not.
    */
   is_tax_inclusive: boolean
+  /**
+   * Whether the shipping method price is custom amount or not.
+   */
+  is_custom_amount: boolean
 
   /**
    * The ID of the shipping option the method was created from.
@@ -2164,6 +2168,11 @@ export interface OrderChangeDTO {
    * Whether to carry over promotions (apply promotions to outbound exchange items).
    */
   carry_over_promotions?: boolean | null
+
+  /**
+   * Whether the customer shouldn't be notified of the order change.
+   */
+  no_notification?: boolean | null
 
   /**
    * The ID of the associated order

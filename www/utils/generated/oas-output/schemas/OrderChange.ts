@@ -143,6 +143,10 @@
  *     type: boolean
  *     title: carry_over_promotions
  *     description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: Whether to send notifications to the customer regarding the order change's updates.
  * 
 */
 

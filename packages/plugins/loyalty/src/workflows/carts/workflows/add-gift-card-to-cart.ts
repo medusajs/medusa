@@ -7,6 +7,7 @@ import {
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows";
 import {
+  createHook,
   createStep,
   createWorkflow,
   StepResponse,
@@ -21,6 +22,7 @@ import {
   ModuleAccountStats,
   ModuleStoreCreditAccount,
 } from "../../../types/store-credit";
+import { isGiftCardExpired } from "../../../utils/gift-card";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
 
 /**
@@ -127,8 +129,8 @@ export interface ValidateCartGiftCardStepInput {
 
 /**
  * This step validates that gift cards can be added to a cart. It throws an error
- * if a gift card is already applied to the cart or if the gift card currency does
- * not match the cart's currency.
+ * if a gift card is already applied to the cart, if the gift card has expired, or
+ * if the gift card currency does not match the cart's currency.
  *
  * @example
  * const data = validateCartGiftCardStep({
@@ -159,6 +161,13 @@ export const validateCartGiftCardStep = createStep(
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Gift card (${giftCard.code}) already applied to cart`
+        );
+      }
+
+      if (isGiftCardExpired(giftCard)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Gift card (${giftCard.code}) has expired`
         );
       }
 
@@ -206,6 +215,20 @@ export interface AddGiftCardToCartWorkflowInput {
  * @summary
  *
  * Apply a gift card to a cart.
+ *
+ * @property hooks.validate - This hook is executed after the gift card's built-in
+ * validations and before any credit line is created. You can consume this hook to
+ * perform any custom validation. If validation fails, you can throw an error to stop
+ * the workflow execution.
+ *
+ * @example
+ * import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows";
+ *
+ * addGiftCardToCartWorkflow.hooks.validate(
+ *   async ({ input, cart, giftCards }, { container }) => {
+ *     // throw an error to reject the gift card
+ *   }
+ * );
  */
 export const addGiftCardToCartWorkflow = createWorkflow(
   "add-gift-card-to-cart",
@@ -223,7 +246,7 @@ export const addGiftCardToCartWorkflow = createWorkflow(
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
       filters: { code: input.code },
-      fields: ["id", "code", "status", "currency_code"],
+      fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
     const giftCard = transform({ giftCardQuery }, ({ giftCardQuery }) => {
@@ -237,6 +260,12 @@ export const addGiftCardToCartWorkflow = createWorkflow(
     });
 
     validateCartGiftCardStep({ cart, giftCards });
+
+    const validate = createHook("validate", {
+      input,
+      cart,
+      giftCards,
+    });
 
     const giftCardStoreCreditAccountQuery = useQueryGraphStep({
       entity: "gift_card_store_credit_account",
@@ -326,6 +355,8 @@ export const addGiftCardToCartWorkflow = createWorkflow(
       input: { cart_id: input.cart_id },
     });
 
-    return new WorkflowResponse(creditLines);
+    return new WorkflowResponse(creditLines, {
+      hooks: [validate],
+    });
   }
 );

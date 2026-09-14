@@ -103,6 +103,24 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-allowed:
+ *   - id
+ *   - name
+ *   - currency_code
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
+ *   - metadata
+ *   - countries
+ *   - countries.id
+ *   - countries.iso_2
+ *   - countries.iso_3
+ *   - countries.num_code
+ *   - countries.name
+ *   - countries.display_name
+ *   - payment_providers
+ *   - payment_providers.id
+ *   - payment_providers.is_enabled
  * 
 */
 

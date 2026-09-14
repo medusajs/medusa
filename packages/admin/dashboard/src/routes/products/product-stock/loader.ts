@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { defer, LoaderFunctionArgs } from "react-router-dom"
+import { LoaderFunctionArgs } from "react-router-dom"
 import { sdk } from "../../../lib/client"
 import { PRODUCT_VARIANT_IDS_KEY } from "../common/constants"
 
@@ -49,7 +49,7 @@ export const productStockLoader = async ({
 
   const dataPromise = getProductStockData(id, productVariantIds)
 
-  return defer({
+  return {
     data: dataPromise,
-  })
+  }
 }

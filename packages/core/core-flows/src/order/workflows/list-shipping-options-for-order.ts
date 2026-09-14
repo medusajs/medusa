@@ -7,6 +7,7 @@ import {
 import type { ListShippingOptionsForOrderWorkflowInput } from "@medusajs/framework/types"
 
 import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
+import { salesChannelStockLocationCacheTags } from "../../common/utils/fields"
 
 export const listShippingOptionsForOrderWorkflowId =
   "list-shipping-options-for-order"
@@ -79,7 +80,8 @@ export const listShippingOptionsForOrderWorkflow = createWorkflow(
       ],
       options: {
         cache: {
-          enable: true,
+          tags: salesChannelStockLocationCacheTags,
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "sales_channels-fulfillment-query" })

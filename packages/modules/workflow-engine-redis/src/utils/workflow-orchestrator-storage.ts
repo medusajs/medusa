@@ -554,15 +554,17 @@ export class RedisDistributedTransactionStorage
       if (!lockAcquired) {
         throw new Error("Lock not acquired")
       }
-
-      storedData = await this.get(key, {
-        isCancelling: !!data.flow.cancelledAt,
-      } as any)
-
-      TransactionCheckpoint.mergeCheckpoints(data, storedData)
     }
 
     try {
+      if (lockAcquired) {
+        storedData = await this.get(key, {
+          isCancelling: !!data.flow.cancelledAt,
+        } as any)
+
+        TransactionCheckpoint.mergeCheckpoints(data, storedData)
+      }
+
       const hasFinished = finishedStates.has(data.flow.state)
 
       await this.#preventRaceConditionExecutionIfNecessary({

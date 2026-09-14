@@ -2,7 +2,10 @@ import {
   createOrderChangeWorkflow,
   createOrderWorkflow,
 } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  medusaIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 import {
   CreateOrderLineItemDTO,
   IOrderModuleService,
@@ -940,7 +943,7 @@ medusaIntegrationTestRunner({
 
       expect(orderSummary.length).toBe(1)
       expect(orderSummary[0].totals.original_order_total).toBe(
-        persistedOrder.summary.original_order_total
+        normalizeBigNumbers(persistedOrder.summary.original_order_total)
       )
 
       /**

@@ -76,7 +76,9 @@ export default class TypedocManager {
       enableInternalResolve: true,
       internalModule: "internal",
       checkVariables: true,
-      logLevel: this.options.verbose ? "Verbose" : "None",
+      // `Error` rather than `None` so that TypeScript compilation errors, which
+      // make `convert` below return `undefined`, are always visible.
+      logLevel: this.options.verbose ? "Verbose" : "Error",
     })
 
     // This listener sets the content of mappedReflectionSignatures
@@ -95,6 +97,21 @@ export default class TypedocManager {
     )
 
     this.project = await this.app.convert()
+
+    if (!this.project) {
+      // Typedoc returns `undefined` when the TypeScript program has compilation
+      // errors. Without it, specs silently lose their `tsType`s and curated
+      // props, and components resolved through Typedoc (such as re-exports like
+      // `const Group = SelectPrimitive.Group`) aren't detected at all. So fail
+      // loudly instead of generating incomplete specs.
+      throw new Error(
+        `Typedoc failed to convert ${filePath}. This is typically caused by TypeScript ` +
+          `compilation errors in the files included by ${this.options.tsconfigPath} ` +
+          `(the errors are logged above). Generating specs now would silently drop ` +
+          `types, props, and entire components, so aborting instead. Re-run with ` +
+          `--verbose-typedoc for the full Typedoc output.`
+      )
+    }
 
     return this.project
   }

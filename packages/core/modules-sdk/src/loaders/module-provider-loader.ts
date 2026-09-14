@@ -6,6 +6,7 @@ import {
   lowerCaseFirst,
   normalizeImportPathWithSource,
   promiseAll,
+  resolveFromProject,
 } from "@medusajs/utils"
 import { asFunction, Lifetime } from "@medusajs/deps/awilix"
 
@@ -46,7 +47,13 @@ export async function loadModuleProvider(
 
     if (isString(provider.resolve)) {
       const normalizedPath = normalizeImportPathWithSource(provider.resolve)
-      loadedProvider = await dynamicImport(normalizedPath)
+      /**
+       * Providers shipped by a plugin are referenced by a bare specifier
+       * ("<plugin>/providers/<name>"), so they must be resolved from the
+       * project directory rather than from wherever `@medusajs/modules-sdk`
+       * was hoisted to.
+       */
+      loadedProvider = await dynamicImport(resolveFromProject(normalizedPath))
     }
   } catch (error) {
     throw new Error(

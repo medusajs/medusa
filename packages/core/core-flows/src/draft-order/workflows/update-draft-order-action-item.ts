@@ -23,6 +23,7 @@ import { validateDraftOrderUpdateActionItemStep } from "../steps/validate-draft-
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
 
 export const updateDraftOrderActionItemId = "update-draft-order-action-item"
 
@@ -118,6 +119,12 @@ export const updateDraftOrderActionItemWorkflow = createWorkflow(
     )
 
     updateOrderChangeActionsStep([updateData])
+
+    // Calculated shipping prices can depend on item quantities, so refresh
+    // them after the item is updated.
+    refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
+      input: { order_id: input.order_id },
+    })
 
     const context = getDraftOrderPromotionContextStep({
       order,

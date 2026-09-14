@@ -1,6 +1,6 @@
 import { z } from "zod"
 import * as zod from "zod"
-import { optionalInt } from "../../../../../lib/validation"
+import { optionalFloat } from "../../../../../lib/validation"
 
 export const CreateProductVariantSchema = z.object({
   title: z.string().min(1),
@@ -16,7 +16,7 @@ export const CreateProductVariantSchema = z.object({
     .array(
       z.object({
         inventory_item_id: z.string(),
-        required_quantity: optionalInt,
+        required_quantity: optionalFloat,
       })
     )
     .optional(),

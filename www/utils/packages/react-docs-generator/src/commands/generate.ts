@@ -25,6 +25,19 @@ export default async function ({
   verboseTypedoc,
 }: GenerateOptions) {
   const fileContents = readFiles(src)
+
+  // optionally use typedoc to add missing props, descriptions
+  // or types.
+  const typedocManager = new TypedocManager({
+    tsconfigPath,
+    disable: disableTypedoc,
+    verbose: verboseTypedoc,
+  })
+
+  // set up typedoc before the output directory is cleaned, so that a failing
+  // setup doesn't leave the existing specs deleted.
+  await typedocManager.setup(src)
+
   let outputExists = existsSync(output)
 
   if (clean && outputExists) {
@@ -37,16 +50,6 @@ export default async function ({
   if (!outputExists) {
     mkdirSync(output)
   }
-
-  // optionally use typedoc to add missing props, descriptions
-  // or types.
-  const typedocManager = new TypedocManager({
-    tsconfigPath,
-    disable: disableTypedoc,
-    verbose: verboseTypedoc,
-  })
-
-  await typedocManager.setup(src)
 
   for (const [filePath, fileContent] of fileContents) {
     try {

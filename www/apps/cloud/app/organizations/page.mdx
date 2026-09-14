@@ -1,5 +1,5 @@
-import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { Plus, EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
   title: `Organizations`,
@@ -53,45 +53,6 @@ This will change the view to the selected organization, and you'll see its proje
 
 ---
 
-## View Organization Settings
-
-To view an organization's settings:
-
-<Note title="Tip">
-
-You can also navigate to an organization's settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Organization Settings**.
-
-</Note>
-
-
-<Tabs defaultValue="classic">
-  <TabsList>
-    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
-    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="classic">
-
-    1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
-    2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](#switch-organization) at the top left of the Cloud dashboard.
-    3. Choose "Organization Settings" from the dropdown.
-
-    </TabsContent>
-    <TabsContent value="global-sidebar">
-
-    1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
-    2. Click on Settings in the sidebar.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-This will open a new window where you can view and manage an organization's settings.
-
-![Window showing the organization settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1749733557/Cloud/CleanShot_2025-06-12_at_16.05.41_2x_zkkdff.png)
-
----
-
 ## Edit Organization Details
 
 To edit an organization's general details:
@@ -102,11 +63,11 @@ You can also navigate to an organization's settings from the [command palette](.
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. In the General tab, you can edit the organization's name, billing email address, and Tax ID.
-3. Once you're done making changes, click the "Save changes" button in the Details section.
-
-![Window showing the organization settings with the General tab selected and the Details section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749733691/Cloud/CleanShot_2025-06-12_at_16.07.52_2x_uaabq2.png)
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **General** in the sidebar to open the organization's settings.
+4. You can edit the organization's name, billing email address, or tax ID.
+5. Once you're done making changes, click the **Save changes** button in the Details section.
 
 ---
 
@@ -126,11 +87,10 @@ You can also navigate to an organization's settings from the [command palette](.
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. In the General tab, find the "Leave organization" section.
-3. Click the "Leave organization" button.
-
-![Window showing the organization settings with the General tab selected and the Leave organization section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749733992/Cloud/CleanShot_2025-06-12_at_16.11.39_2x_h9rn5g.png)
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **General** in the sidebar to open the organization's settings.
+4. Click the "Leave organization" button.
 
 ---
 
@@ -142,7 +102,7 @@ Deleting an organization will remove all its projects, resources, and settings. 
 
 </Note>
 
-Organization deletion is only available for organizations on the free plan. Organizations with active paid subscriptions cannot be deleted.
+Organization deletion is only available for organizations that have canceled their subscriptions. Organizations with active paid subscriptions cannot be deleted.
 
 To delete an organization:
 
@@ -152,13 +112,10 @@ You can also navigate to an organization's settings from the [command palette](.
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. In the General tab, find the "Delete organization" section.
-3. If your organization is on the free plan, click the "Delete organization" button to proceed with deletion.
-
-If your organization has an active paid subscription, the delete button will be disabled and you'll see a message indicating that your subscription is active. To delete the organization, you must first cancel your plan.
-
-![Window showing the organization settings with the General tab selected and the Delete organization section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734079/Cloud/CleanShot_2025-06-12_at_16.14.14_2x_hianix.png)
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **General** in the sidebar to open the organization's settings.
+4. If your organization has canceled its subscription, click the "Delete organization" button to proceed with deletion.
 
 ---
 
@@ -166,20 +123,17 @@ If your organization has an active paid subscription, the delete button will be 
 
 To view the members of an organization:
 
-1. [Open the organization's settings](#view-organization-settings).
-2. Click on the "Team" tab.
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
 
-In this window, you can view the members of the organization, their roles, and their email addresses. You can also view invited members who haven't accepted the invitation yet.
-
-![Window showing the organization members in the Team tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734177/Cloud/CleanShot_2025-06-12_at_16.15.56_2x_ytgcyg.png)
+This opens the Team page where you can view the members of the organization, their roles, and their email addresses. You can also view invited members who haven't accepted the invitation yet.
 
 ### View Available Seats
 
-Based on your organization's plan, you may have a limited number of seats available for members. You can view the number of available seats at the top of the Team tab.
+Based on your organization's plan, you may have a limited number of seats available for members. You can view the number of available seats at the top of the Team page.
 
 If you need more seats, learn more about [other available plans](../pricing/page.mdx) or [purchasing add-on resources](../billing/page.mdx#purchase-add-on-resources).
-
-![Window showing the organization members in the Team tab with the available seats highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749737803/Cloud/CleanShot_2025-06-12_at_17.16.13_2x_zk8n32.png)
 
 ### Invite Members to Organization
 
@@ -197,13 +151,12 @@ You can also navigate to an organization's team member settings from the [comman
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. Click on the "Team" tab.
-3. In the "Invite members" section, enter the email addresses of the users you want to invite. You can enter multiple email addresses separated by commas.
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
+4. In the "Invite members" section, enter the email addresses of the users you want to invite. You can enter multiple email addresses separated by commas.
 
 These users will receive an email invitation to join your organization. They can accept the invitation by clicking the link in the email.
-
-![Window showing the organization members in the Team tab with the Invite members section highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734465/Cloud/CleanShot_2025-06-12_at_16.20.40_2x_p23ygx.png)
 
 ### Resend Invitation
 
@@ -217,13 +170,12 @@ You can also navigate to an organization's team member settings from the [comman
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. Click on the "Team" tab.
-3. In the "Invited members" section, find the user whose invitation you want to resend.
-4. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the user's row.
-5. Choose "Resend invite" from the dropdown.
-
-![Window showing the organization members in the Team tab with the dropdown of an invited member opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734835/Cloud/CleanShot_2025-06-12_at_16.26.37_2x_ztph29.png)
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
+4. In the "Organization members" section, find the user whose invitation you want to resend. If a user's invitation has expired, you'll see an "Invite expired" badge in their row.
+5. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the user's row.
+6. Choose "Resend invite" from the dropdown.
 
 ### Revoke Invitation
 
@@ -237,13 +189,12 @@ You can also navigate to an organization's team member settings from the [comman
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. Click on the "Team" tab.
-3. In the "Invited members" section, find the user whose invitation you want to revoke.
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
+4. In the "Organization members" section, find the user whose invitation you want to resend. If a user's invitation has expired, you'll see an "Invite expired" badge in their row.
 4. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the user's row.
-5. Choose "Revoke invite" from the dropdown.
-
-![Window showing the organization members in the Team tab with the dropdown of an invited member opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734835/Cloud/CleanShot_2025-06-12_at_16.26.37_2x_ztph29.png)
+5. Choose **Revoke invite** from the dropdown.
 
 ### Remove Members from Organization
 
@@ -257,13 +208,12 @@ You can also navigate to an organization's team member settings from the [comman
 
 </Note>
 
-1. [Open the organization's settings](#view-organization-settings).
-2. Click on the "Team" tab.
-3. In the "Organization members" section, find the member you want to remove.
-4. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the member's row.
-5. Choose "Remove from organization" from the dropdown.
-
-![Window showing the organization members in the Team tab with the dropdown of a member opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1749734819/Cloud/CleanShot_2025-06-12_at_16.25.33_2x_a6jo82.png)
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
+4. In the "Organization members" section, find the member you want to remove.
+5. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the member's row.
+6. Choose **Remove from organization** from the dropdown.
 
 ---
 

@@ -78,7 +78,7 @@ async function writeHTMLFile(outDir: string) {
             />
             <meta
                 name="viewport"
-                content="width=device-width, initial-scale=1, user-scalable=no"
+                content="width=device-width, initial-scale=1"
             />
             <link rel="icon" href="data:," data-placeholder-favicon />
         </head>

@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
-import { DataGridContext } from "../context"
+import { DataGridContext, DataGridContextType } from "../context"
 import {
   useDataGridCellHandlers,
   useDataGridCellMetadata,
@@ -666,7 +666,7 @@ export const DataGridRoot = <
   }, [anchor, trapActive, setSingleRange, scrollToCoordinates, queryTool])
 
   return (
-    <DataGridContext.Provider value={values}>
+    <DataGridContext.Provider value={values as DataGridContextType<any>}>
       <div className="bg-ui-bg-subtle flex size-full flex-col">
         <DataGridHeader
           showColumnsDropdown={showColumnsDropdown}

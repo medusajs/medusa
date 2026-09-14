@@ -75,14 +75,19 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
 
   // The automation runs right after a deployment, so the current date is the
   // release date shown alongside the version in the changelog.
-  const releaseDate = new Date().toLocaleDateString("en-US", {
+  const now = new Date()
+  const releaseDate = now.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
   })
+  // The dashboard changelog stores each date as a `YYYY-MM-DD.mjs` entry file,
+  // so the same date is also needed in ISO form.
+  const isoReleaseDate = now.toISOString().split("T")[0]
 
   const builder = new CloudContextBuilder()
-  const result = builder.build(payload, releaseDate)
+  const result = builder.build(payload, releaseDate, isoReleaseDate)
 
   if (dryRun) {
     console.log(chalk.cyan("Dry run — prompt preview:"))

@@ -1,4 +1,4 @@
-import { InlineIcon, Table } from "docs-ui"
+import { InlineIcon, Note, Table } from "docs-ui"
 import { ArrowPath } from "@medusajs/icons"
 
 export const metadata = {
@@ -102,14 +102,20 @@ The following table outlines common worker performance issues, their potential c
   </Table.Body>
 </Table>
 
+<Note>
+
+If the metrics don't show a cause related to your application, [check the Cloud status page](../../status/page.mdx) for ongoing Cloud incidents that may be affecting your environment.
+
+</Note>
+
 ---
 
 ## View Worker Metrics
 
 To view your project environment's worker performance:
 
-1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click on the "Monitoring" tab.
-2. Select "Workers" from the sidebar.
+1. Go to the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard).
+2. Click **Monitoring** > **Workers** in the sidebar.
 
 This opens the Workers monitoring dashboard, where you can analyze your environment's worker performance across any time range.
 

@@ -91,6 +91,7 @@ Old links used hash anchors (`/api/store#carts_getcartsid`). Hashes never reach 
 - `utils/get-url.ts` — absolute URL from a page path (used by sitemaps).
 - `utils/base-path-url.ts` — prefixes `basePath`.
 - Data routes: `app/tag`, `app/schema`, `app/base-specs`, `app/download/[area]` (all read `specs/` from local fs or R2 via `utils/get-path-for-env.ts`).
+- `app/versions` — lists the latest version (from the docs' global config) plus the four archived versions before it, with the URLs of their full OAS documents. Version directories are listed from R2 (bucket binding) or `specs/versions` via `utils/get-spec-versions.ts`. The URLs point at the `openapi.full.json` files in R2, which only exist there (`scripts/upload-specs-to-r2.mjs` derives them from the YAML on upload), and fall back to `app/download/[area]` when `SPECS_R2_BASE_URL` isn't set.
 
 ## Regenerating
 

@@ -319,13 +319,22 @@ export class EntityBuilder {
   }
 
   /**
-   * This method defines a property whose value is a stringified JSON object.
+   * This method defines a property whose value is stringified JSON. The
+   * value is stored in a `jsonb` column, so any JSON-serializable value
+   * is supported, including arrays.
+   *
+   * @typeParam T - The type of the stored JSON value. By default, it's
+   * a JSON object (`Record<string, unknown>`). Pass a type parameter to
+   * store another shape, such as an array of objects. To store an array
+   * of strings, consider using {@link array} instead, which stores the
+   * value in a `text[]` column.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   metadata: model.json(),
+   *   warnings: model.json<{ code: string; message: string }[]>(),
    *   // ...
    * })
    *
@@ -333,8 +342,8 @@ export class EntityBuilder {
    *
    * @customNamespace Property Types
    */
-  json() {
-    return new JSONProperty()
+  json<T = Record<string, unknown>>(): JSONProperty<NoInfer<T>> {
+    return new JSONProperty<T>()
   }
 
   /**

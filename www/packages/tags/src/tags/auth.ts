@@ -1,5 +1,9 @@
 export const auth = [
   {
+    "title": "Reset Password",
+    "path": "https://docs.medusajs.com/user-guide/reset-password"
+  },
+  {
     "title": "Create Actor Type",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
@@ -8,8 +12,12 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
   },
   {
-    "title": "Reset Password",
-    "path": "https://docs.medusajs.com/user-guide/reset-password"
+    "title": "Restrict Order Retrieval",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
+  },
+  {
+    "title": "Restrict Return Creation",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation"
   },
   {
     "title": "How to Add Custom Authentication in Medusa Admin",
@@ -60,6 +68,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep"
   },
   {
+    "title": "deleteAuthIdentityStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteAuthIdentityStep"
+  },
+  {
     "title": "requestVerificationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
   },
@@ -102,6 +114,14 @@ export const auth = [
   {
     "title": "callback",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/callback"
+  },
+  {
+    "title": "createUser",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/createUser"
+  },
+  {
+    "title": "listProviders",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/listProviders"
   },
   {
     "title": "login",

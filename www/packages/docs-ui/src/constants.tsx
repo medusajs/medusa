@@ -3,6 +3,8 @@ import { NavigationItem, Product } from "types"
 export const GITHUB_ISSUES_LINK =
   "https://github.com/medusajs/medusa/issues/new/choose"
 
+export const CLOUD_STATUS_PAGE_URL = "https://status.medusajs.com"
+
 export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
@@ -299,6 +301,12 @@ export const navDropdownItems: NavigationItem[] = [
         title: "JS SDK",
         link: "/resources/js-sdk",
         sidebar_id: "js-sdk",
+      },
+      {
+        type: "link",
+        title: "Admin Components",
+        link: "/resources/admin-components",
+        sidebar_id: "admin-components",
       },
       {
         type: "link",

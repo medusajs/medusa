@@ -44,5 +44,6 @@ export function generateCreateFulfillmentData(
       },
     ],
     order: data.order ?? {},
+    additional_data: data.additional_data,
   }
 }

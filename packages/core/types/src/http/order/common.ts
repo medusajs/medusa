@@ -1031,6 +1031,11 @@ export interface BaseOrderChange {
   carry_over_promotions?: boolean | null
 
   /**
+   * Whether the customer shouldn't be notified of the order change.
+   */
+  no_notification?: boolean | null
+
+  /**
    * The status of the order change
    */
   status: OrderChangeStatus

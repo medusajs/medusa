@@ -7,6 +7,10 @@ import { generateCustomFieldHashes } from "./custom-fields"
 import { generateI18nHash } from "./i18n"
 import { generateLayoutHash } from "./layouts"
 import { generateRouteHashes } from "./routes"
+import {
+  generateSearchEntityHash,
+  SEARCH_ENTITY_FILES,
+} from "./search-entities"
 import { MedusaVitePlugin } from "./types"
 import { AdminSubdirectory, isFileInAdminSubdirectory } from "./utils"
 import {
@@ -18,6 +22,7 @@ import {
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
+  generateVirtualSearchEntityModule,
   generateVirtualWidgetModule,
 } from "./virtual-modules"
 import {
@@ -93,6 +98,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const i18nModule = await generateVirtualI18nModule(sources, true)
     const cellRendererModule = await generateVirtualCellRendererModule(sources, true)
     const layoutModule = await generateVirtualLayoutModule(sources, true)
+    const searchEntityModule = await generateVirtualSearchEntityModule(sources, true)
 
     // Create the index.js content that re-exports everything
     return `
@@ -105,6 +111,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     ${i18nModule.code}
     ${cellRendererModule.code}
     ${layoutModule.code}
+    ${searchEntityModule.code}
 
     const plugin = {
       widgetModule,
@@ -114,7 +121,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       displayModule,
       i18nModule,
       cellRendererModule,
-      layoutModule
+      layoutModule,
+      searchEntityModule
     }
 
     export default plugin
@@ -260,6 +268,12 @@ const loadConfigs: Record<string, ModuleConfig> = {
     moduleGenerator: async (sources) => generateVirtualLayoutModule(sources),
     hashKey: vmod.virtual.layout,
   },
+  [vmod.resolved.searchEntity]: {
+    hashGenerator: async (sources) => generateSearchEntityHash(sources),
+    moduleGenerator: async (sources) =>
+      generateVirtualSearchEntityModule(sources),
+    hashKey: vmod.virtual.searchEntity,
+  },
 }
 
 type WatcherConfig = {
@@ -362,4 +376,19 @@ const watcherConfigs: WatcherConfig[] = [
       },
     ],
   },
+  ...SEARCH_ENTITY_FILES.map(
+    (subdirectory): WatcherConfig => ({
+      subdirectory,
+      hashGenerator: async (sources) => ({
+        searchEntityHash: await generateSearchEntityHash(sources),
+      }),
+      modules: [
+        {
+          virtualModule: vmod.virtual.searchEntity,
+          resolvedModule: vmod.resolved.searchEntity,
+          hashKey: "searchEntityHash",
+        },
+      ],
+    })
+  ),
 ]

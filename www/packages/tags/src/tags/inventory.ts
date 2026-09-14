@@ -1,5 +1,9 @@
 export const inventory = [
   {
+    "title": "Export Inventory Items",
+    "path": "https://docs.medusajs.com/user-guide/inventory/export"
+  },
+  {
     "title": "Manage Inventory Items",
     "path": "https://docs.medusajs.com/user-guide/inventory/inventory"
   },

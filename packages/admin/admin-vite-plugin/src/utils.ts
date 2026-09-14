@@ -183,6 +183,8 @@ const ADMIN_SUBDIRECTORIES = [
   "i18n",
   "layouts",
   "cell-renderers.tsx",
+  "search-entities.tsx",
+  "search-entities.ts",
 ] as const
 
 export type AdminSubdirectory = (typeof ADMIN_SUBDIRECTORIES)[number]

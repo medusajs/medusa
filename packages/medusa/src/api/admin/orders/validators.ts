@@ -105,6 +105,7 @@ export const OrderCreateFulfillment = z.object({
   location_id: z.string().nullish(),
   shipping_option_id: z.string().optional(),
   no_notification: z.boolean().optional(),
+  delivery_address: AddressPayload.optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateFulfillment = WithAdditionalData(

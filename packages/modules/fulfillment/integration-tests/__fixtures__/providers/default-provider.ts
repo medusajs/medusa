@@ -3,7 +3,13 @@ import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProviderService {
   static identifier = "fixtures-fulfillment-provider"
 
-  async createFulfillment(data, items, order, fulfillment): Promise<any> {
+  async createFulfillment(
+    data,
+    items,
+    order,
+    fulfillment,
+    additionalData
+  ): Promise<any> {
     return {}
   }
 

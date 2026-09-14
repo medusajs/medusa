@@ -1,9 +1,10 @@
-import { json, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { CreateServiceZoneForm } from "./components/create-service-zone-form"
 import { FulfillmentSetType } from "../common/constants"
+import { jsonResponse } from "../../../lib/json-response"
 
 export function LocationCreateServiceZone() {
   const { fset_id, location_id } = useParams()
@@ -23,7 +24,7 @@ export function LocationCreateServiceZone() {
       : FulfillmentSetType.Shipping
 
   if (!isPending && !isFetching && !fulfillmentSet) {
-    throw json(
+    throw jsonResponse(
       { message: `Fulfillment set with ID: ${fset_id} was not found.` },
       404
     )

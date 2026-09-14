@@ -110,6 +110,50 @@ jobs:
           model: claude-sonnet-4-6
           max_turns: 40
 
+      - name: Read changelog entry metadata
+        id: changelog
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+          const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+          const entry = a.changelogEntry ?? {}
+          appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `date=${entry.date ?? ""}\ndisplay_date=${entry.displayDate ?? ""}\nfile=${entry.file ?? ""}\n`
+          )
+          EOF
+
+      # Runs after Claude, since the banner is attached to the entry file Claude
+      # writes. A missing banner is not worth failing the run over — the entry is
+      # the deliverable and the image is decoration — so this only warns.
+      - name: Render and upload the changelog banner
+        id: banner
+        if: steps.check.outputs.needs_docs == 'true' && steps.changelog.outputs.file != ''
+        continue-on-error: true
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          ENTRY_FILE: ${{ steps.changelog.outputs.file }}
+          ENTRY_DATE: ${{ steps.changelog.outputs.display_date }}
+        run: |
+          if [ ! -f "$ENTRY_FILE" ]; then
+            echo "Claude wrote no changelog entry for $ENTRY_DATE — skipping the banner."
+            exit 0
+          fi
+
+          if [ -z "$CLOUDINARY_URL" ]; then
+            echo "::warning::CLOUDINARY_URL is not set — skipping the changelog banner"
+            exit 1
+          fi
+
+          # Called directly rather than through `yarn upload` so that the only
+          # thing captured here is the URL the CLI prints.
+          BANNER_URL=$(node www/utils/packages/release-banner/dist/cli.js upload \
+            --type cloud-changelog --date "$ENTRY_DATE")
+
+          node www/apps/cloud/scripts/set-changelog-image.mjs \
+            --file "$ENTRY_FILE" --url "$BANNER_URL"
+
       - name: Run prep script for cloud project
         if: steps.check.outputs.needs_docs == 'true'
         run: |
@@ -126,7 +170,12 @@ jobs:
         id: changes
         if: steps.check.outputs.needs_docs == 'true'
         run: |
-          CHANGES=$(git diff --name-only -- www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs \
+          # Untracked files are listed too, since new documentation pages and
+          # new changelog entry files under `generated/changelog` don't show up
+          # in `git diff`.
+          PATHS="www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs"
+          CHANGES=$( { git diff --name-only -- $PATHS; \
+            git ls-files --others --exclude-standard -- $PATHS; } \
             | grep -E '\.(mdx|json|mjs)$' || true)
           if [ -n "$CHANGES" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"

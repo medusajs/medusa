@@ -25,6 +25,7 @@ const EditInventoryItemAttributesSchema = z.object({
   weight: z.number().positive().optional(),
   mid_code: z.string().optional(),
   material: z.string().optional(),
+  unit_of_measure: z.string().optional(),
   hs_code: z.string().optional(),
   origin_country: z.string().optional(),
 })
@@ -37,6 +38,7 @@ const getDefaultValues = (item: AdminInventoryItem) => {
     weight: item.weight ?? undefined,
     mid_code: item.mid_code ?? undefined,
     material: item.material ?? undefined,
+    unit_of_measure: item.unit_of_measure ?? undefined,
     hs_code: item.hs_code ?? undefined,
     origin_country: item.origin_country ?? undefined,
   }
@@ -60,6 +62,7 @@ export const EditInventoryItemAttributesForm = ({
       {
         ...values,
         origin_country: values.origin_country || null,
+        unit_of_measure: values.unit_of_measure || null,
       },
       {
         onSuccess: () => {
@@ -234,6 +237,25 @@ export const EditInventoryItemAttributesForm = ({
                   <Form.Control>
                     <Input {...field} />
                   </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="unit_of_measure"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label optional>{t("fields.unitOfMeasure")}</Form.Label>
+                  <Form.Control>
+                    <Input
+                      {...field}
+                      placeholder={t("inventory.unitOfMeasurePlaceholder")}
+                    />
+                  </Form.Control>
+                  <Form.Hint>{t("inventory.unitOfMeasureHint")}</Form.Hint>
                   <Form.ErrorMessage />
                 </Form.Item>
               )

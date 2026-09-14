@@ -289,10 +289,12 @@ describe("CacheInvalidationParser", () => {
       expect(events[0]).toMatchObject({
         entityType: "Product",
         entityId: "prod_123",
-        relatedEntities: [],
       })
 
-      expect(events[0].cacheKeys).toEqual(["Product:prod_123", "Product:list:*"])
+      expect(events[0].cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
     })
 
     it("should build invalidation events with related entities", () => {
@@ -308,7 +310,6 @@ describe("CacheInvalidationParser", () => {
 
       const productEvent = events.find((e) => e.entityType === "Product")
       expect(productEvent).toBeDefined()
-      expect(productEvent!.relatedEntities).toHaveLength(2)
       expect(productEvent!.cacheKeys).toEqual([
         "Product:prod_123",
         "Product:list:*",
@@ -503,6 +504,48 @@ describe("CacheInvalidationParser", () => {
         "Product:prod_123",
         "Product:list:*",
       ])
+    })
+
+    it("should invalidate list caches for restored operation", () => {
+      // A restored entity re-enters every list it was soft deleted out of.
+      const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
+
+      const events = parser.buildInvalidationEvents(entities, "restored")
+
+      expect(events[0].cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
+    })
+
+    it.each(["attached", "detached"] as const)(
+      "should invalidate list caches for %s operation",
+      (operation) => {
+        const entities: EntityReference[] = [
+          { type: "LinkProductVariantInventoryItem", id: "pvitem_123" },
+        ]
+
+        const events = parser.buildInvalidationEvents(entities, operation)
+
+        expect(events[0].cacheKeys).toEqual([
+          "LinkProductVariantInventoryItem:pvitem_123",
+          "LinkProductVariantInventoryItem:list:*",
+        ])
+      }
+    )
+
+    it("should still invalidate the list cache when a link is attached without an id", () => {
+      // Link modules emit the attach payload before the row is persisted, so no
+      // id is available. The list key is the only usable tag in that case.
+      const entities: EntityReference[] = [
+        { type: "LinkProductVariantInventoryItem", id: undefined as any },
+      ]
+
+      const events = parser.buildInvalidationEvents(entities, "attached")
+
+      expect(events[0].cacheKeys).toContain(
+        "LinkProductVariantInventoryItem:list:*"
+      )
     })
   })
 })

@@ -32,7 +32,10 @@ export const calculateShippingOptionsPricesStepId =
  *     from_location: {
  *       id: "sloc_123",
  *       // other location fields
- *     }
+ *     },
+ *     // any custom context can also be merged in here, typically set by a
+ *     // workflow's `setCalculatedShippingPricingContext` hook
+ *     contract_id: "contract_123",
  *   }
  * }])
  */

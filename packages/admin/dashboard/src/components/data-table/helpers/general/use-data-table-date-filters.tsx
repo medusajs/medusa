@@ -1,4 +1,4 @@
-import { createDataTableFilterHelper } from "@medusajs/ui"
+import { createDataTableFilterHelper, type DataTableFilter } from "@medusajs/ui"
 import { subDays, subMonths } from "date-fns"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -52,7 +52,9 @@ const useDateFilterOptions = () => {
   }, [today, t])
 }
 
-export const useDataTableDateFilters = (disableRangeOption?: boolean) => {
+export const useDataTableDateFilters = (
+  disableRangeOption?: boolean
+): DataTableFilter[] => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
   const dateFilterOptions = useDateFilterOptions()

@@ -1,0 +1,91 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Ask Medusa Questions with the MCP Server`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to let your AI agent answer questions from the official Medusa documentation.
+
+## What is the Ask Medusa Question Tool?
+
+The Medusa MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
+
+This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
+
+Everything in the Medusa documentation is available through it, from architecture and concepts to the Framework's tools, Commerce Modules, configuration, deployment, the API references, and integration guides.
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers new to Medusa who want accurate answers about concepts and APIs while they build.
+- Experienced developers who want their AI agent to stop hallucinating Medusa APIs, config keys, and method signatures.
+- Anyone building Medusa customizations with an AI agent, since the other guide tools direct your agent to call this tool for exact API shapes.
+- Teams evaluating Medusa who want to explore what's possible without reading the whole documentation.
+
+---
+
+## Why Use This Tool?
+
+Compared to browsing the documentation yourself, this tool gives you:
+
+- **Verifiable answers.** Every result carries its source URL, so you can check any claim your agent makes against the page it came from.
+- **The documentation where you're working.** Your agent retrieves what it needs mid-task without you switching to a browser, searching, and pasting context back in.
+- **Documentation your agent can act on directly.** The tool returns the actual content of the relevant sections, so your agent works from the real text rather than from a summary or a link it can't read.
+- **Fewer wrong turns while building.** When your agent checks the exact shape of an API before using it, you spend less time debugging code that was never going to work.
+
+---
+
+## How to Use the Ask Medusa Question Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+    }
+  ]}
+/>
+
+After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
+
+For example:
+
+```bash title="Example prompts"
+Explain the Medusa workflow system.
+```
+
+```bash title="Example prompts"
+How do I create a custom API route that requires admin authentication?
+```
+
+The tool is also useful mid-implementation, when your agent needs an exact shape rather than a concept:
+
+```bash title="Example prompts"
+Create a Product Review module for Medusa.
+```
+
+The agent will call the tool whenever it needs information from the documentation, such as how to implement a custom module.
+
+### What to Expect
+
+1. Your AI agent sends questions about Medusa to the tool.
+2. The tool returns the most relevant documentation sections, each with its source URL and full Markdown content.
+3. Your agent answers or writes code based on those sections, and can cite the source URLs so you can verify the answer.
+4. If your agent needs more detail, it calls the tool again with a narrower question.
+
+<Note>
+
+If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](../submit-feedback/page.mdx) so the Medusa team can add coverage.
+
+</Note>
+
+---
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.

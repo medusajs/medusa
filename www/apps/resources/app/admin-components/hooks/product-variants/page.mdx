@@ -1,0 +1,174 @@
+---
+sidebar_label: "Product Variants"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Product Variant Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The product variant hooks fetch product variants across all products from the Medusa backend. To fetch the variants of a single product, use [useProductVariants](../products/page.mdx#useproductvariants) instead.
+
+```tsx
+import {
+  productVariantQueryKeys,
+  useInfiniteVariants,
+  useVariants,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useVariants
+
+Fetches a paginated list of product variants.
+
+```tsx
+const { variants, count } = useVariants({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`AdminProductVariantParams`",
+      optional: true,
+      description: "Optional query parameters, such as `limit`, `offset`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "variants",
+      type: "`AdminProductVariant[]`",
+      description: "The list of product variants. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of variants matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of variants returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of variants skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## useInfiniteVariants
+
+Fetches product variants page by page, which is useful for infinite scrolling or "load more" lists. The hook manages the `offset` internally and defaults `limit` to `50`.
+
+```tsx
+const { data, fetchNextPage, hasNextPage } =
+  useInfiniteVariants({ limit: 20 })
+
+const variants = data?.pages.flatMap(
+  (page) => page.variants
+)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: `\`Omit<AdminProductVariantParams, "offset" | "limit"> & { limit?: number }\``,
+      optional: true,
+      description: "Optional query parameters. The hook sets the `offset` for each page, so you can only control the page size with `limit`.",
+    },
+    {
+      name: "options",
+      type: "`UseInfiniteQueryOptions`",
+      optional: true,
+      description: "Optional TanStack infinite query options, excluding `queryKey`, `queryFn`, `initialPageParam`, and `getNextPageParam`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useInfiniteQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useInfiniteQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "data",
+      type: "`InfiniteData<AdminProductVariantListResponse>`",
+      description: "The fetched pages. Each page in `data.pages` has `variants`, `count`, `limit`, and `offset`.",
+    },
+    {
+      name: "fetchNextPage",
+      type: "`() => Promise`",
+      description: "Fetches the next page of variants.",
+    },
+    {
+      name: "hasNextPage",
+      type: "`boolean`",
+      description: "Whether more variants are available to fetch.",
+    },
+  ]}
+/>
+
+---
+
+## productVariantQueryKeys
+
+A TanStack Query key factory for product variant queries. It provides `all`, `lists()`, `list(query)`, `details()`, and `detail(id, query)`.
+
+`useInfiniteVariants` appends `"__infinite"` to the list key, so its cache entries are separate from the ones of `useVariants`. Invalidating `lists()` invalidates both.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  productVariantQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshVariants = () => {
+    queryClient.invalidateQueries({
+      queryKey: productVariantQueryKeys.lists(),
+    })
+  }
+
+  // ...
+}
+```

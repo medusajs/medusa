@@ -1,0 +1,10 @@
+type: object
+description: The details of the request to edit an order.
+x-schemaName: AdminRequestOrderEdit
+properties:
+  no_notification:
+    type: boolean
+    title: no_notification
+    description: >-
+      Whether to send notifications to the customer regarding the order edit's
+      updates.

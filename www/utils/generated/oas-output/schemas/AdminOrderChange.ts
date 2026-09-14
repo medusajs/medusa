@@ -153,6 +153,10 @@
  *     type: string
  *     title: internal_note
  *     description: The order change's internal note.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: Whether to send notifications to the customer regarding the order change's updates.
  * 
 */
 

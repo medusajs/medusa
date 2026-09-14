@@ -11,7 +11,7 @@ const buildMatch = (
     id: "match",
     pathname: "/",
     params: {},
-    data: undefined,
+    loaderData: undefined,
     handle: undefined,
     ...overrides,
   } as UIMatch<unknown, RouteHandle>)
@@ -28,11 +28,12 @@ describe("getTitleFromMatch", () => {
   describe("seo resolver", () => {
     it("returns the resolved title", () => {
       const match = buildMatch({
-        data: { order: { display_id: 12345 } },
+        loaderData: { order: { display_id: 12345 } },
         handle: {
           seo: (m) => ({
             title: `#${
-              (m.data as { order: { display_id: number } }).order.display_id
+              (m.loaderData as { order: { display_id: number } }).order
+                .display_id
             }`,
           }),
         },
@@ -109,7 +110,7 @@ describe("getTitleFromMatch", () => {
 
     it("returns null for React-element breadcrumbs", () => {
       const match = buildMatch({
-        data: { product: { title: "Medusa Sweatpants" } },
+        loaderData: { product: { title: "Medusa Sweatpants" } },
         handle: { breadcrumb: () => createElement("span", null, "Hidden") },
       })
 

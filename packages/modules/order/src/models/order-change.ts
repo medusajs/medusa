@@ -31,6 +31,10 @@ const _OrderChange = model
      * @since 2.12.0
      */
     carry_over_promotions: model.boolean().nullable(),
+    /**
+     * @since 2.19.0
+     */
+    no_notification: model.boolean().nullable(),
     order: model.belongsTo<() => typeof Order>(() => Order, {
       mappedBy: "changes",
     }),

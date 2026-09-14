@@ -1,10 +1,4 @@
-import { 
-  Prerequisites, 
-  Note, 
-  Table,
-  CodeTab,
-  CodeTabs,
-} from "docs-ui"
+import { Note, Table, CodeTab, CodeTabs } from "docs-ui"
 
 export const metadata = {
   title: `Cloud CLI for AI Agents`,
@@ -215,7 +209,7 @@ The deployment table returned by [`mcloud deployments list`](../commands/deploym
 - `backend_status`: lifecycle of the backend (build + rollout)
 - `storefront_status`: lifecycle of the storefront
 
-Both fields use the same value set: `created`, `building`, `built`, `deploying`, `deployed`, `build-failed`, `deployment-failed`, `timed-out` (backend only), `canceled`, and `idle`. See the full reference in the [deployments command guide](../commands/deployments/page.mdx#deployment-and-build-statuses).
+Both fields use the same value set: `created`, `building`, `built`, `deploying`, `deployed`, `build-failed`, `deployment-failed`, `timed-out` (backend only), `canceled`, and `idle`. See the full reference in the [deployments command guide](../commands/deployments/page.mdx#backend-and-storefront-statuses).
 
 Use `--json` and `jq` to filter for the relevant deployments:
 

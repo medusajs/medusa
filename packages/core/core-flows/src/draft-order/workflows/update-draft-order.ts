@@ -27,6 +27,8 @@ import {
 } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
 import { updateOrderTaxLinesTranslationsStep } from "../../order/steps/update-order-tax-lines-translations"
+import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
+import { refreshConfirmedDraftOrderShippingMethodsWorkflow } from "./refresh-confirmed-draft-order-shipping-methods"
 
 export const updateDraftOrderWorkflowId = "update-draft-order"
 
@@ -343,6 +345,19 @@ export const updateDraftOrderWorkflow = createWorkflow(
     )
 
     registerOrderChangesStep(orderChangeInput)
+
+    // Calculated shipping prices can depend on the shipping address, so refresh
+    // them when the address changes.
+    when({ input }, ({ input }) => !!input.shipping_address).then(() => {
+      parallelize(
+        refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
+          input: { order_id: input.id },
+        }),
+        refreshConfirmedDraftOrderShippingMethodsWorkflow.runAsStep({
+          input: { order_id: input.id },
+        })
+      )
+    })
 
     // Changing the shipping or billing address can change the tax jurisdiction,
     // so recompute the order's tax lines. The recompute respects the region's

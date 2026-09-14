@@ -30,6 +30,11 @@ interface NewItem {
    */
   internal_note?: string | null
   /**
+   * Whether the item can be added even if its variant is out of stock. This
+   * overrides the variant's `allow_backorder` setting for this item only.
+   */
+  allow_backorder?: boolean
+  /**
    * Custom key-value pairs to store additional information about the item.
    */
   metadata?: Record<string, any> | null

@@ -17,6 +17,17 @@ export interface AdminInitiateOrderEditRequest {
   metadata?: Record<string, unknown>
 }
 
+export interface AdminRequestOrderEdit {
+  /**
+   * Whether to prevent sending the customer a notification about the requested
+   * order edit. The value is passed to the `order-edit.requested` event's payload,
+   * allowing subscribers to check it before sending a notification.
+   *
+   * @since 2.19.0
+   */
+  no_notification?: boolean
+}
+
 export interface AdminAddOrderEditItems {
   /**
    * The details of the items to add.

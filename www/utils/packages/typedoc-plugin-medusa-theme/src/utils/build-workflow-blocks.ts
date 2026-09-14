@@ -33,10 +33,9 @@ export function buildWorkflowBlocks(
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
-  const comment = getSignatureComment(signature)
-  if (comment) {
-    blocks.push({ kind: "markdown", html: comment })
-  }
+  // Split rather than pushing raw markdown: the comment can contain `:::`
+  // admonitions and other constructs that must become their own blocks.
+  blocks.push(...splitContentBlocks(getSignatureComment(signature)))
 
   // @deprecated + @since notes, then the locking note (member.workflow.hbs:
   // comment tags + version + workflowNotes, before the source link).
@@ -141,8 +140,10 @@ function buildWorkflowEventsBlock(
       name: parts[0].trim(),
       description: parts[1]?.trim() || undefined,
       payload:
-        parts[2]?.trim().replace(/^```ts\n/, "").replace(/\n```$/, "") ||
-        undefined,
+        parts[2]
+          ?.trim()
+          .replace(/^```ts\n/, "")
+          .replace(/\n```$/, "") || undefined,
       deprecated: deprecatedIndex !== -1 || undefined,
       deprecatedMessage:
         deprecatedIndex !== -1 ? rest[deprecatedIndex] || undefined : undefined,
@@ -163,10 +164,7 @@ export function buildStepBlocks(
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
-  const comment = getSignatureComment(signature)
-  if (comment) {
-    blocks.push({ kind: "markdown", html: comment })
-  }
+  blocks.push(...splitContentBlocks(getSignatureComment(signature)))
 
   blocks.push(...deprecatedNoteBlocks(signature))
   blocks.push(
@@ -223,7 +221,12 @@ function buildTypeParametersBlock(
   }
 
   return [
-    { kind: "heading", level: 2, text: title, id: slugId(`${signature.name}-${title}`) },
+    {
+      kind: "heading",
+      level: 2,
+      text: title,
+      id: slugId(`${signature.name}-${title}`),
+    },
     {
       kind: "typeList",
       sectionTitle: signature.name,
@@ -257,7 +260,9 @@ function buildWorkflowDiagramBlock(
         type: "when",
         name: document.name,
         condition: getDocumentTagValue(document, "@whenCondition"),
-        depth: parseInt(getDocumentTagValue(document, "@workflowDepth") || `${index}`),
+        depth: parseInt(
+          getDocumentTagValue(document, "@workflowDepth") || `${index}`
+        ),
         steps:
           document.children?.map((child) => getStep(theme, child, index)) || [],
       })
@@ -294,7 +299,8 @@ function getStep(
     ? findReflectionInNamespaces(
         theme.project
           .getChildrenByKind(ReflectionKind.Module)
-          .find((moduleRef) => moduleRef.name === "core-flows") || theme.project,
+          .find((moduleRef) => moduleRef.name === "core-flows") ||
+          theme.project,
         document.name
       )
     : undefined
@@ -321,7 +327,9 @@ function getStep(
     link:
       type === "hook" || !(associatedReflection as DeclarationReflection)?.url
         ? `#${document.name}`
-        : theme.getRelativeUrl((associatedReflection as DeclarationReflection).url!),
+        : theme.getRelativeUrl(
+            (associatedReflection as DeclarationReflection).url!
+          ),
     depth: parseInt(depth),
   }
 }

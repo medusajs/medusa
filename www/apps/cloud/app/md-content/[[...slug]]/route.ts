@@ -11,6 +11,7 @@ import {
 } from "remark-rehype-plugins"
 import type { Plugin } from "unified"
 import { fetchFromAssetsBinding } from "../../../utils/fetch-from-assets-binding"
+import { getChangelogMarkdown } from "../../../utils/changelog"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -54,7 +55,21 @@ export async function GET(req: NextRequest, { params }: Params) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(fileContent, {
+  // The changelog page renders its entries from generated files with a
+  // `<ChangelogList />` component, so its Markdown must be built here rather
+  // than read from the MDX file.
+  const parserOptions =
+    slug[0] === "changelog" && slug.length === 1
+      ? {
+          ChangelogList: {
+            content: await getChangelogMarkdown(
+              process.env.NEXT_PUBLIC_BASE_URL || origin
+            ),
+          },
+        }
+      : undefined
+
+  const cleanMdContent = await getCleanMd_(fileContent, parserOptions, {
     before: [
       [
         crossProjectLinksPlugin,
@@ -135,8 +150,11 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 const getCleanMd_ = unstable_cache(
-  async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
-    getCleanMd({ file: content, type: "content", plugins }),
+  async (
+    content: string,
+    parserOptions?: Record<string, unknown>,
+    plugins?: { before?: Plugin[]; after?: Plugin[] }
+  ) => getCleanMd({ file: content, type: "content", parserOptions, plugins }),
   ["clean-md"],
   {
     revalidate: 3600,

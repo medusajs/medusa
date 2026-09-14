@@ -28,6 +28,7 @@ export const defaultAdminInventoryItemFields = [
   "requires_shipping",
   "mid_code",
   "material",
+  "unit_of_measure",
   "weight",
   "length",
   "height",

@@ -1,14 +1,23 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { Link, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
+import copy from "copy-to-clipboard"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeleteUser } from "../../../../../hooks/api/users"
+import {
+  useDeleteUser,
+  useGenerateUserResetPasswordToken,
+  useUserAuthProviders,
+} from "../../../../../hooks/api/users"
 
 type UserGeneralSectionProps = {
   user: HttpTypes.AdminUser
 }
+
+const RESET_PASSWORD_URL = `${window.location.origin}${
+  __BASE__ === "/" ? "" : __BASE__
+}/reset-password?token=`
 
 export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
   const { t } = useTranslation()
@@ -16,6 +25,12 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
   const prompt = usePrompt()
 
   const { mutateAsync } = useDeleteUser(user.id)
+  const { mutate: generateResetPasswordToken } =
+    useGenerateUserResetPasswordToken(user.id)
+  const { providers } = useUserAuthProviders(user.id)
+
+  // emailpass is the only provider the reset password flow the dashboard handles.
+  const canResetPassword = !!providers?.includes("emailpass")
 
   const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
 
@@ -46,6 +61,21 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
     })
   }
 
+  const handleCopyResetPasswordLink = () => {
+    generateResetPasswordToken(undefined, {
+      onSuccess: ({ token }) => {
+        copy(`${RESET_PASSWORD_URL}${token}`)
+
+        toast.success(t("users.copyResetPasswordLinkSuccess"), {
+          description: t("users.copyResetPasswordLinkHint"),
+        })
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -61,6 +91,19 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
                 },
               ],
             },
+            ...(canResetPassword
+              ? [
+                  {
+                    actions: [
+                      {
+                        label: t("users.copyResetPasswordLink"),
+                        onClick: handleCopyResetPasswordLink,
+                        icon: <Link />,
+                      },
+                    ],
+                  },
+                ]
+              : []),
             {
               actions: [
                 {

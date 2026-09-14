@@ -20,6 +20,7 @@ export interface UnistNode extends Node {
   spread?: boolean
   depth?: number
   lang?: string
+  meta?: string | null
 }
 
 export type ArrayExpression = {

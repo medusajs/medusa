@@ -49,3 +49,7 @@ declare module "virtual:medusa/layouts" {
 declare module "virtual:medusa/cell-renderers" {
   // Side-effect only module: registers custom cell renderers.
 }
+
+declare module "virtual:medusa/search-entities" {
+  // Side-effect only module: registers custom search entities.
+}

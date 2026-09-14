@@ -603,7 +603,7 @@ export default class FulfillmentModuleService
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.FulfillmentDTO> {
-    const { order, ...fulfillmentDataToCreate } = data
+    const { order, additional_data, ...fulfillmentDataToCreate } = data
 
     const fulfillment = await this.fulfillmentService_.create(
       fulfillmentDataToCreate,
@@ -624,7 +624,8 @@ export default class FulfillmentModuleService
           fulfillmentData || {},
           items.map((i) => i),
           order,
-          fulfillmentRest as unknown as Partial<FulfillmentDTO>
+          fulfillmentRest as unknown as Partial<FulfillmentDTO>,
+          additional_data
         )
       await this.fulfillmentService_.update(
         {

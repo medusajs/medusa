@@ -142,6 +142,78 @@ moduleIntegrationTestRunner<ICachingModuleService>({
         })
       })
 
+      describe("Explicit vs computed tags", () => {
+        const product = { id: "prod_1", title: "Test Product" }
+        // A link row's own event. Nothing in `product` can produce this tag, so it
+        // only ever comes from the explicit list.
+        const linkTag = "LinkProductVariantInventoryItem:list:*"
+        const emitLinkAttached = () =>
+          mockEventBus.emit(
+            [
+              {
+                name: "link_product_variant_inventory_item.attached",
+                data: { id: "pvitem_1" },
+              },
+            ],
+            {}
+          )
+
+        it("should use the given tags on their own by default", async () => {
+          const key = await service.computeKey({ case: "tags-only" })
+          await service.set({ key, data: product, tags: [linkTag] })
+
+          await mockEventBus.emit(
+            [{ name: "product.updated", data: { id: product.id } }],
+            {}
+          )
+          expect(await service.get({ key })).toEqual(product)
+
+          await emitLinkAttached()
+          expect(await service.get({ key })).toBeNull()
+        })
+
+        it("should apply the computed tags alongside the given ones when enabled", async () => {
+          const key = await service.computeKey({ case: "both-computed" })
+          await service.set({
+            key,
+            data: product,
+            tags: [linkTag],
+            computeAutomaticTags: true,
+          })
+
+          // Computed from the data, which the explicit list never mentions.
+          await mockEventBus.emit(
+            [{ name: "product.updated", data: { id: product.id } }],
+            {}
+          )
+          expect(await service.get({ key })).toBeNull()
+        })
+
+        it("should keep the given tags when the computed ones are applied too", async () => {
+          const key = await service.computeKey({ case: "both-explicit" })
+          await service.set({
+            key,
+            data: product,
+            tags: [linkTag],
+            computeAutomaticTags: true,
+          })
+
+          await emitLinkAttached()
+          expect(await service.get({ key })).toBeNull()
+        })
+
+        it("should compute tags when no explicit tags are provided", async () => {
+          const key = await service.computeKey({ case: "no-tags" })
+          await service.set({ key, data: product })
+
+          await mockEventBus.emit(
+            [{ name: "product.updated", data: { id: product.id } }],
+            {}
+          )
+          expect(await service.get({ key })).toBeNull()
+        })
+      })
+
       describe("Entity List Caching", () => {
         it("should cache and retrieve lists of entities using computed keys", async () => {
           const publishedProductsQuery = {

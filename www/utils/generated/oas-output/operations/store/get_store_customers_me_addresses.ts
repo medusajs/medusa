@@ -213,6 +213,25 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-allowed:
+ *   - id
+ *   - address_name
+ *   - company
+ *   - customer_id
+ *   - first_name
+ *   - last_name
+ *   - address_1
+ *   - address_2
+ *   - city
+ *   - province
+ *   - postal_code
+ *   - country_code
+ *   - phone
+ *   - metadata
+ *   - is_default_shipping
+ *   - is_default_billing
+ *   - created_at
+ *   - updated_at
  * 
 */
 

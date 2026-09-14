@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import chalk from "chalk"
 import { program } from "commander"
 import generate from "./commands/generate.js"
 import path from "path"
@@ -27,4 +28,7 @@ program
   .option("--verbose-typedoc", "Whether to show Typedoc logs.", false)
   .parse()
 
-void generate(program.opts())
+generate(program.opts()).catch((e) => {
+  console.error(chalk.red(e instanceof Error ? e.message : e))
+  process.exit(1)
+})

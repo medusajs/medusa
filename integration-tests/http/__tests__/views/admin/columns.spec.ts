@@ -243,6 +243,32 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("promotions entity", () => {
+        it("should include the campaign budget type in the status column", async () => {
+          const response = await api.get(
+            `/admin/views/promotions/columns`,
+            adminHeaders
+          )
+
+          const statusColumn = response.data.columns.find(
+            (c) => c.id === "status_display"
+          )
+
+          expect(statusColumn).toMatchObject({
+            computed: {
+              required_fields: [
+                "status",
+                "campaign.starts_at",
+                "campaign.ends_at",
+                "campaign.budget.type",
+                "campaign.budget.limit",
+                "campaign.budget.used",
+              ],
+            },
+          })
+        })
+      })
+
       describe("unsupported entity", () => {
         it("should return 400 for unsupported entity", async () => {
           const response = await api

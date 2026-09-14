@@ -4,7 +4,7 @@ import {
   AdminStockLocation,
   HttpTypes,
 } from "@medusajs/types"
-import { Button, Input, Text, toast } from "@medusajs/ui"
+import { Button, Text, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -13,7 +13,9 @@ import { Form } from "../../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { useUpdateInventoryLevel } from "../../../../../../hooks/api/inventory"
+import { QuantityInput } from "../../../../../../components/inputs/quantity-input"
 import { castNumber } from "../../../../../../lib/cast-number"
+import { formatQuantity } from "../../../../../../lib/format-quantity"
 
 type AdjustInventoryFormProps = {
   item: HttpTypes.AdminInventoryItem
@@ -136,11 +138,14 @@ export const AdjustInventoryForm = ({
             />
             <AttributeGridRow
               title={t("inventory.reserved")}
-              value={level.reserved_quantity}
+              value={formatQuantity(
+                level.reserved_quantity,
+                item.unit_of_measure
+              )}
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={availableQuantity}
+              value={formatQuantity(availableQuantity, item.unit_of_measure)}
             />
           </div>
           <Form.Field
@@ -151,10 +156,11 @@ export const AdjustInventoryForm = ({
                 <Form.Item>
                   <Form.Label>{t("fields.inStock")}</Form.Label>
                   <Form.Control>
-                    <Input
-                      type="number"
+                    <QuantityInput
+                      step="any"
                       value={value}
                       onChange={onChange}
+                      unitOfMeasure={item.unit_of_measure}
                       {...field}
                     />
                   </Form.Control>

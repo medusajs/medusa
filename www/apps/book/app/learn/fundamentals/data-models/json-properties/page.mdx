@@ -8,7 +8,7 @@ In this chapter, you'll learn how to use and manage [JSON properties](../propert
 
 ## What is a JSON Property?
 
-A JSON property in a data model is a flexible object that can contain various types of values.
+A JSON property in a data model stores any JSON-serializable value in a `jsonb` column.
 
 For example, you can create a `Brand` data model with a `metadata` JSON property to store additional information about the brand:
 
@@ -22,9 +22,33 @@ const Brand = model.define("brand", {
 })
 ```
 
+By default, the TypeScript type of a `json` property is `Record<string, unknown>`. You can pass a type argument to use a different shape, including arrays:
+
+<Note>
+
+The type argument is supported since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Brand = model.define("brand", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  warnings: model.json<{ code: string; message: string }[]>(),
+})
+```
+
+<Note title="Tip">
+
+To store an array of strings, use the [array property type](../properties/page.mdx#array) instead, which stores the value in a `text[]` column.
+
+</Note>
+
 ### Accepted Values in JSON Property
 
-JSON properties are made up of key-value pairs. The keys are strings, and the values can be one of the following types:
+JSON properties support any JSON-serializable value, including objects, arrays, strings, numbers, and booleans. When the property stores an object, its keys are strings and values can be one of the following types:
 
 - **Strings**: Text values.
     - Empty strings remove the property from the JSON object. Learn more in the [Remove a Property from the JSON Property](#remove-a-property-from-the-json-property) section.

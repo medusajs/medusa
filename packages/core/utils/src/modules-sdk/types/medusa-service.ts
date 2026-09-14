@@ -201,6 +201,10 @@ export type AbstractModuleService<
       ...rest: any[]
     ): Promise<TModelsDtoConfig[TModelName]["dto"]>
     (
+      data: Prettify<GetServiceInput<TModelsDtoConfig[TModelName]>>[],
+      ...rest: any[]
+    ): Promise<TModelsDtoConfig[TModelName]["dto"][]>
+    (
       dataOrOptions:
         | Prettify<GetServiceInput<TModelsDtoConfig[TModelName]>>[]
         | {

@@ -160,6 +160,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/salesChannel"
   },
   {
+    "title": "search",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/search"
+  },
+  {
     "title": "shippingOption",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/shippingOption"
   },
@@ -214,6 +218,14 @@ export const jsSdk = [
   {
     "title": "callback",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/callback"
+  },
+  {
+    "title": "createUser",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/createUser"
+  },
+  {
+    "title": "listProviders",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/listProviders"
   },
   {
     "title": "login",

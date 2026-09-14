@@ -80,6 +80,66 @@ jobs:
       - name: Lint Medusa rules
         run: yarn lint:medusa
 
+  admin-bundle:
+    needs: setup
+    name: Admin Bundle (Vite)
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 100
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+          skip-build: "true"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
+
+      # @medusajs/admin-bundler is published as CommonJS, but `vite` (ESM-only
+      # since v6) and @vitejs/plugin-react (ESM-only since v5) can only be
+      # loaded through a genuine dynamic import(). If esbuild rewrites those to
+      # require(), the bundle still builds and typechecks — it only fails at
+      # runtime, with ERR_REQUIRE_ESM, for every `medusa develop` / `build` /
+      # `plugin:build`. Nothing else in CI would catch that.
+      - name: Assert admin-bundler loads ESM-only deps via import()
+        run: node ./packages/admin/admin-bundler/scripts/assert-esm-imports.mjs
+
+      - name: Assert admin-bundler is requireable from CommonJS
+        run: node -e 'require("./packages/admin/admin-bundler/dist/index.js")'
+
+      # `build:plugin` already runs during `setup` (root `yarn build` is
+      # `turbo run build build:plugin`), which exercises admin-bundler's Vite
+      # `build.lib` path. But a zero exit code does not prove both output
+      # formats were emitted, that externals stayed external, or that the
+      # emitted CJS interop is loadable.
+      - name: Assert plugin admin bundles
+        run: |
+          node ./scripts/assert-plugin-admin-bundle.mjs packages/plugins/draft-order
+          node ./scripts/assert-plugin-admin-bundle.mjs packages/plugins/loyalty
+
+      # The dashboard's own `build` script is tsgo + tsup, so a real `vite build`
+      # of the admin app runs nowhere else in CI. This targets a separate outDir
+      # (`dist-vite`), and runs after the steps above, so it cannot clobber the
+      # tsup output in `dist` that those steps depend on.
+      - name: Build admin dashboard with Vite
+        run: yarn workspace @medusajs/dashboard build:vite
+
+      - name: Assert admin dashboard bundle
+        run: |
+          test -f packages/admin/dashboard/dist-vite/index.html
+          grep -qE 'src="[^"]*/assets/index-[^"]+\.js"' packages/admin/dashboard/dist-vite/index.html
+          test -n "$(find packages/admin/dashboard/dist-vite/assets -name '*.css' -print -quit)"
+
   unit-tests-matrix:
     needs: setup
     name: Unit Tests - Shard ${{ matrix.shard_index }}

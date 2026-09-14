@@ -7,7 +7,10 @@ import {
 } from "@medusajs/framework/http"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetInviteAcceptParams>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminAcceptInvite,
+    HttpTypes.AdminGetInviteAcceptParams
+  >,
   res: MedusaResponse<HttpTypes.AdminAcceptInviteResponse>
 ) => {
   if (req.auth_context.actor_id) {

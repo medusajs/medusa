@@ -1,10 +1,11 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { json, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/modals"
 import { VariantsTableForm } from "./components/variants-table-form/variants-table-form"
 import { useProduct } from "../../../hooks/api"
+import { jsonResponse } from "../../../lib/json-response"
 
 type VariantImagesPartial = {
   id: string
@@ -38,7 +39,10 @@ export const ProductImageVariantsEdit = () => {
   }
 
   if (!isPending && !image) {
-    throw json({ message: `An image with ID ${image_id} was not found` }, 404)
+    throw jsonResponse(
+      { message: `An image with ID ${image_id} was not found` },
+      404
+    )
   }
 
   return (

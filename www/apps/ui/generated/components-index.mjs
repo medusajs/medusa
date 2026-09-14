@@ -81,4 +81,6 @@ export const ComponentSpecsIndex = {
   "Toaster": ["Toaster.json"],
   "Tooltip": ["Tooltip.json"],
   "TooltipProvider": ["TooltipProvider.json"],
+  "TruncatedCell": ["TruncatedCell.json"],
+  "renderAlignedCell": ["renderAlignedCell.json"],
 }

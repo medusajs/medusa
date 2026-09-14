@@ -54,8 +54,15 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Navigation Styles",
-            "path": "/navigation",
+            "title": "Cloud Assistant",
+            "path": "/assistant",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
             "children": []
           }
         ]
@@ -98,6 +105,20 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Log Drains",
+                "path": "/projects/log-drains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Troubleshooting",
+                "path": "/projects/troubleshooting",
                 "children": []
               }
             ]
@@ -459,6 +480,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Status Page",
+            "path": "/status",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Notifications",
             "path": "/notifications",
             "children": []
@@ -498,6 +526,42 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/webhooks/changelog",
+            "children": []
           }
         ]
       },

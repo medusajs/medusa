@@ -4,10 +4,10 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/framework/types"
 import { normalizeForExport } from "../helpers/normalize-for-export"
+import { appendProductExportKeys } from "../helpers/product-export-keys"
 import { json2csv } from "json-2-csv"
-
 /**
  * The step ID for exporting products.
  */
@@ -64,53 +64,72 @@ export const exportProductsStep = createStep(
       ? parseInt(input?.batch_size as string, 10)
       : DEFAULT_BATCH_SIZE
 
-    let page = 0
-    let hasHeader = false
-
     const fields = deduplicate(["id", "handle", ...input.select])
     const { sales_channel_id, ..._filters } = input.filter ?? {}
 
-    while (true) {
+    const getProducts = async (page: number) => {
       if (!!sales_channel_id) {
         const { data: salesChannelProducts } = await query.graph({
           entity: "product_sales_channel",
-          filters: {
-            sales_channel_id,
-          },
+          filters: { sales_channel_id },
           fields: ["product_id"],
-          pagination: {
-            skip: page * pageSize,
-            take: pageSize,
-          },
+          pagination: { skip: page * pageSize, take: pageSize, order: { product_id: "ASC" } as any },
         })
-
-        _filters.id = salesChannelProducts.map((product) => product.product_id)
+        _filters.id = salesChannelProducts.map((p) => p.product_id)
       }
 
       const { data: products } = await query.graph({
         entity: "product",
         fields,
         filters: _filters,
-        // If sales channel is specified, we already paginated
         pagination: sales_channel_id
           ? undefined
-          : {
-              skip: page * pageSize,
-              take: pageSize,
-            },
+          : { skip: page * pageSize, take: pageSize, order: { id: "ASC" } },
       })
 
-      if (products.length === 0) {
-        break
-      }
+      return products
+    }
+
+    const exportOptions = {
+      arrayIndexesAsKeys: true,
+      expandNestedObjects: true,
+      expandArrayObjects: true,
+      ignoreEmptyArraysWhenExpanding: true,
+      escapeNestedDots: true,
+    }
+
+    const seenExportKeys = new Set<string>()
+    const allProductIds: string[] = []
+    let page = 0
+    while (true) {
+      const products = await getProducts(page)
+      if (products.length === 0) break
 
       const normalizedProducts = normalizeForExport(products, { regions })
+      allProductIds.push(...products.map((p: any) => p.id))
+      appendProductExportKeys(normalizedProducts, seenExportKeys, exportOptions)
 
+      if (products.length < pageSize) break
+      page += 1
+    }
+
+    const exportKeys = Array.from(seenExportKeys)
+    let hasHeader = false
+    
+    for (let i = 0; i < allProductIds.length; i += pageSize) {
+      const batchIds = allProductIds.slice(i, i + pageSize)
+      const { data: products } = await query.graph({
+        entity: "product",
+        fields,
+        filters: { id: batchIds },
+      })
+
+      const normalizedProducts = normalizeForExport(products, { regions })
+      
       const batchCsv = json2csv(normalizedProducts, {
+        keys: exportKeys,
         prependHeader: !hasHeader,
-        arrayIndexesAsKeys: true,
-        expandNestedObjects: true,
-        expandArrayObjects: true,
+        ...exportOptions,
         unwindArrays: false,
         preventCsvInjection: true,
         emptyFieldValue: "",
@@ -122,12 +141,6 @@ export const exportProductsStep = createStep(
       }
 
       hasHeader = true
-
-      if (products.length < pageSize) {
-        break
-      }
-
-      page += 1
     }
 
     writeStream.end()

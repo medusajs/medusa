@@ -43,44 +43,47 @@ interface PropertyLabelSchema {
   [key: string]: PropertyLabelValue | PropertyLabelSchema
 }
 
-const propertyLabelSchema: z.ZodType<PropertyLabelSchema> = z.lazy(() =>
-  z.record(z.string(), z.any()).superRefine((obj, ctx) => {
-    Object.entries(obj).forEach(([key, value]) => {
-      if (isLeafNode(value)) {
-        const result = propertyLabelValueSchema.safeParse(value)
-        if (!result.success) {
-          result.error.issues.forEach((issue) => {
-            ctx.addIssue({
-              ...issue,
-              path: [key, ...issue.path],
+// The input type is pinned to the output type so the schema satisfies the
+// resolver's `FieldValues` constraint; it defaults to `unknown` otherwise.
+const propertyLabelSchema: z.ZodType<PropertyLabelSchema, PropertyLabelSchema> =
+  z.lazy(() =>
+    z.record(z.string(), z.any()).superRefine((obj, ctx) => {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (isLeafNode(value)) {
+          const result = propertyLabelValueSchema.safeParse(value)
+          if (!result.success) {
+            result.error.issues.forEach((issue) => {
+              ctx.addIssue({
+                ...issue,
+                path: [key, ...issue.path],
+              })
             })
-          })
-        }
+          }
 
-        const typedValue = value as PropertyLabelValue
-        if (typedValue.description && typedValue.description.trim() !== "") {
-          if (!typedValue.label || typedValue.label.trim() === "") {
-            ctx.addIssue({
-              code: "custom",
-              message: "Label is required when description is provided",
-              path: [key, "label"],
+          const typedValue = value as PropertyLabelValue
+          if (typedValue.description && typedValue.description.trim() !== "") {
+            if (!typedValue.label || typedValue.label.trim() === "") {
+              ctx.addIssue({
+                code: "custom",
+                message: "Label is required when description is provided",
+                path: [key, "label"],
+              })
+            }
+          }
+        } else if (typeof value === "object" && value !== null) {
+          const result = propertyLabelSchema.safeParse(value)
+          if (!result.success) {
+            result.error.issues.forEach((issue) => {
+              ctx.addIssue({
+                ...issue,
+                path: [key, ...issue.path],
+              })
             })
           }
         }
-      } else if (typeof value === "object" && value !== null) {
-        const result = propertyLabelSchema.safeParse(value)
-        if (!result.success) {
-          result.error.issues.forEach((issue) => {
-            ctx.addIssue({
-              ...issue,
-              path: [key, ...issue.path],
-            })
-          })
-        }
-      }
+      })
     })
-  })
-)
+  )
 
 const columnHelper = createDataGridHelper<
   PropertyFieldRow,

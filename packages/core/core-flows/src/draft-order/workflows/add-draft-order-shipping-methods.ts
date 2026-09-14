@@ -1,12 +1,5 @@
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
-  ChangeActionType,
-  isDefined,
-  MedusaError,
-  OrderChangeStatus,
-  ShippingOptionPriceType,
-} from "@medusajs/framework/utils"
-import {
-  createStep,
   createWorkflow,
   transform,
   when,
@@ -17,7 +10,6 @@ import {
   BigNumberInput,
   OrderChangeDTO,
   OrderDTO,
-  ShippingOptionDTO,
 } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import {
@@ -26,33 +18,13 @@ import {
   updateOrderTaxLinesWorkflow,
 } from "../../order"
 import { createOrderShippingMethods } from "../../order/steps/create-order-shipping-methods"
+import { fetchShippingOptionForDraftOrderWorkflow } from "./fetch-draft-order-shipping-option"
 import { prepareShippingMethod } from "../../order/utils/prepare-shipping-method"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
-
-const validateShippingOptionStep = createStep(
-  "validate-shipping-option",
-  async (data: {
-    shippingOptions: ShippingOptionDTO[]
-    input: AddDraftOrderShippingMethodsWorkflowInput
-  }) => {
-    const shippingOption = data.shippingOptions[0]
-    const customAmount = data.input.custom_amount
-
-    if (
-      shippingOption.price_type === ShippingOptionPriceType.CALCULATED &&
-      !isDefined(customAmount)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Calculated shipping options are not currently supported on draft orders without a custom amount."
-      )
-    }
-  }
-)
 
 export const addDraftOrderShippingMethodsWorkflowId =
   "add-draft-order-shipping-methods"
@@ -132,29 +104,22 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
 
     validateDraftOrderChangeStep({ order, orderChange })
 
-    const shippingOptions = useRemoteQueryStep({
-      entry_point: "shipping_option",
-      fields: [
-        "id",
-        "name",
-        "price_type",
-        "calculated_price.calculated_amount",
-        "calculated_price.is_calculated_price_tax_inclusive",
-      ],
-      variables: {
-        id: input.shipping_option_id,
-        calculated_price: {
-          context: { currency_code: order.currency_code },
-        },
+    const shippingOption = fetchShippingOptionForDraftOrderWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+        shipping_option_id: input.shipping_option_id,
+        currency_code: order.currency_code,
       },
-    }).config({ name: "fetch-shipping-option" })
+    })
+
+    const shippingOptions = transform(shippingOption, (shippingOption) => [
+      shippingOption,
+    ])
 
     const translatedShippingOptions = getTranslatedShippingOptionsStep({
       shippingOptions: shippingOptions,
       locale: order.locale!,
     })
-
-    validateShippingOptionStep({ shippingOptions, input })
 
     const shippingMethodInput = transform(
       {

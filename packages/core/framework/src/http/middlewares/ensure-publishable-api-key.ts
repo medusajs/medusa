@@ -47,7 +47,10 @@ export async function ensurePublishableApiKeyMiddleware(
       },
       {
         cache: {
-          enable: true,
+          // The api key itself is computed from the response. The linked sales
+          // channels are not.
+          tags: ["LinkPublishableApiKeySalesChannel:list:*"],
+          computeAutomaticTags: true,
         },
       }
     )

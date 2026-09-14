@@ -2,6 +2,9 @@
 /**
  * Uploads specs/ to Cloudflare R2.
  *
+ * Every `openapi.full.yaml` is additionally uploaded as `openapi.full.json`.
+ * The JSON isn't committed to the repository, it only exists in R2.
+ *
  * Usage:
  *   node ./scripts/upload-specs-to-r2.mjs
  *     Full upload of specs/ directory.
@@ -36,6 +39,7 @@ import {
 import { readFile, readdir } from "fs/promises"
 import path from "path"
 import { lookup as mimeLookup } from "mime-types"
+import { parse as parseYaml } from "yaml"
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID
 const accessKeyId = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID
@@ -84,10 +88,19 @@ for (const arg of args) {
 
 const isSelective = filesToUpload.length > 0 || filesToRemove.length > 0
 
-async function uploadFile(localPath, r2Key) {
-  const body = await readFile(localPath)
-  const contentType =
-    mimeLookup(path.basename(localPath)) || "application/octet-stream"
+// Full OAS documents are also stored as JSON in R2 for consumers that can't
+// parse YAML. The JSON isn't kept in the repository, so it's derived here.
+const FULL_SPEC_FILE_NAME = "openapi.full.yaml"
+
+function isFullSpec(fileOrKey) {
+  return path.basename(fileOrKey) === FULL_SPEC_FILE_NAME
+}
+
+function toJsonKey(r2Key) {
+  return r2Key.replace(/\.yaml$/, ".json")
+}
+
+async function putObject(r2Key, body, contentType) {
   await client.send(
     new PutObjectCommand({
       Bucket: bucket,
@@ -99,9 +112,27 @@ async function uploadFile(localPath, r2Key) {
   console.log(`  uploaded: ${r2Key}`)
 }
 
+async function uploadFile(localPath, r2Key) {
+  const body = await readFile(localPath)
+  const contentType =
+    mimeLookup(path.basename(localPath)) || "application/octet-stream"
+  await putObject(r2Key, body, contentType)
+
+  if (isFullSpec(localPath)) {
+    const json = JSON.stringify(parseYaml(body.toString("utf-8")))
+    await putObject(toJsonKey(r2Key), json, "application/json")
+  }
+}
+
 async function removeFile(r2Key) {
   await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: r2Key }))
   console.log(`  removed: ${r2Key}`)
+
+  if (isFullSpec(r2Key)) {
+    const jsonKey = toJsonKey(r2Key)
+    await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: jsonKey }))
+    console.log(`  removed: ${jsonKey}`)
+  }
 }
 
 async function uploadDir(localDir, r2Prefix) {

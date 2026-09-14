@@ -7,6 +7,7 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
+import { HydrateFallback } from "../../components/utilities/hydrate-fallback"
 
 export function getRouteMap({
   settingsRoutes,
@@ -19,6 +20,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           element: <MainLayout />,
@@ -550,6 +552,11 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/promotions/common/edit-rules"),
                     },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/promotions/promotion-metadata"),
+                    },
                   ],
                 },
               ],
@@ -1065,6 +1072,7 @@ export function getRouteMap({
     {
       element: <ProtectedRoute />,
       errorElement: <ErrorBoundary />,
+      hydrateFallbackElement: <HydrateFallback />,
       children: [
         {
           path: "/settings",
@@ -1797,6 +1805,15 @@ export function getRouteMap({
                   },
                 },
               ],
+            },
+            {
+              path: "search",
+              errorElement: <ErrorBoundary />,
+              handle: {
+                breadcrumb: () => t("searchIndexes.domain"),
+              },
+              lazy: () =>
+                import("../../routes/search-indexes/search-index-list"),
             },
             {
               path: "product-types",

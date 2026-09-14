@@ -20,6 +20,7 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { ordersQueryKeys } from "../../../../../hooks/api/orders"
 import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { multiplyDecimal } from "../../../../../lib/number-helper"
 import { queryClient } from "../../../../../lib/query-client"
 import { AllocateItemsSchema } from "./constants"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
@@ -156,7 +157,10 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
 
     form.setValue(key as keyof AllocateItemsSchemaType, `${value ?? ""}`)
 
-    if (value) {
+    // For a kit root, `value` is the line item quantity rather than a demand on
+    // any single inventory item. The per-item demand is derived below, once the
+    // line quantity has been multiplied by each item's required_quantity.
+    if (value && !(isRoot && hasInventoryKit)) {
       const location = inventoryItem.location_levels?.find(
         (l) => l.location_id === selectedLocationId
       )
@@ -180,10 +184,11 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
       item?.variant?.inventory_items?.forEach((ii, ind: number) => {
         const num = value || 0
         const inventory = item.variant?.inventory?.[ind]
+        const requiredQuantity = multiplyDecimal(num, ii.required_quantity ?? 1)
 
         form.setValue(
           `quantity.${lineItem.id}-${inventory?.id}`,
-          num * (ii.required_quantity ?? 1)
+          requiredQuantity
         )
 
         if (value) {
@@ -191,7 +196,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
             (l) => l.location_id === selectedLocationId
           )
           if (location) {
-            if ((location.available_quantity ?? 0) < value) {
+            if ((location.available_quantity ?? 0) < requiredQuantity) {
               shouldDisableSubmit = true
             }
           }
