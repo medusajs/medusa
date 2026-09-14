@@ -1,4 +1,8 @@
-import { CloudServiceError, MedusaSearchClient } from "../client"
+import {
+  CloudServiceError,
+  MedusaSearchClient,
+  resolveMedusaSearchOptions,
+} from "../client"
 
 describe("MedusaSearchClient", () => {
   it("should surface a rate limit with the wait Cloud asked for", async () => {
@@ -31,5 +35,41 @@ describe("MedusaSearchClient", () => {
     expect(error.type).toBe("embedding_rate_limit")
     // Seconds on the wire, milliseconds for the backoff that reads it.
     expect(error.retry_after).toBe(7_000)
+  })
+})
+
+describe("resolveMedusaSearchOptions", () => {
+  it("should move basic auth credentials off the endpoint and into the key", () => {
+    const resolved = resolveMedusaSearchOptions({
+      endpoint: "https://medusa_test:secret@search.medusa.example",
+      environment_handle: "test-env",
+    })
+
+    expect(resolved).toEqual({
+      api_key: Buffer.from("medusa_test:secret").toString("base64"),
+      endpoint: "https://search.medusa.example",
+      environment_handle: "test-env",
+    })
+  })
+
+  it("should keep using the api_key option for an endpoint without credentials", () => {
+    const resolved = resolveMedusaSearchOptions({
+      api_key: "medusa_test",
+      endpoint: "https://search.medusa.example",
+      environment_handle: "test-env",
+    })
+
+    expect(resolved.api_key).toBe("medusa_test")
+    expect(resolved.endpoint).toBe("https://search.medusa.example")
+  })
+
+  it("should throw when the endpoint and the api_key option both carry credentials", () => {
+    expect(() =>
+      resolveMedusaSearchOptions({
+        api_key: "medusa_option",
+        endpoint: "https://medusa_endpoint:secret@search.medusa.example",
+        environment_handle: "test-env",
+      })
+    ).toThrow(/Pass only one of them/)
   })
 })

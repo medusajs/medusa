@@ -6,11 +6,12 @@ import type {
 
 export type MedusaSearchProviderOptions = {
   /**
-   * API key for authenticating with Medusa Cloud search.
+   * Used only when the endpoint is not a basic auth-protected URL.
    */
-  api_key: string
+  api_key?: string
   /**
-   * Medusa Cloud search proxy base URL.
+   * Medusa Cloud search proxy base URL. Typically a basic auth URL for local access
+   * And a standard HTTP URL in Cloud
    */
   endpoint: string
   /**
