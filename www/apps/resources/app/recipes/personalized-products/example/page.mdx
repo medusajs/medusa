@@ -998,20 +998,25 @@ Medusa's `addToCartWorkflow` workflow supports performing custom validation on t
 To consume the `validate` hook that runs before an item is added to the cart, create the file `src/workflows/hooks/validate-personalized-product.ts` with the following content:
 
 export const validatePersonalizedProductHighlights = [
-  ["4", "validate", "Consume the `validate` hook of the `addToCartWorkflow`."],
-  ["6", "query", "Resolve Query from the Medusa container."],
-  ["7", "variants", "Retrieve the product variants being added to the cart."],
-  ["16", "", "Validate that the product is personalized."],
-  ["19", "", "Validate that the height and width metadata are set."],
+  ["7", "validate", "Consume the `validate` hook of the `addToCartWorkflow`."],
+  ["9", "query", "Resolve Query from the Medusa container."],
+  ["12", "variants", "Retrieve the product variants being added to the cart."],
+  ["21", "", "Validate that the product is personalized."],
+  ["24", "", "Validate that the height and width metadata are set."],
 ]
 
 ```ts title="src/workflows/hooks/validate-personalized-product.ts" highlights={validatePersonalizedProductHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const { data: variants } = await query.graph({
       entity: "variant",
       fields: ["product.*"],

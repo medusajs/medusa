@@ -96,7 +96,6 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         name: index.physical_name,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
-        sharding: plan.options.sharding,
       })
       return this.task(index.physical_name)
     }

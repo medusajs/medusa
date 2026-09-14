@@ -428,7 +428,7 @@ export default defineLink(
     linkable: WishlistModule.linkable.wishlist.id,
     field: "customer_id",
   },
-  CustomerModule.linkable.customer.id,
+  CustomerModule.linkable.customer,
   {
     readOnly: true,
   }
@@ -539,14 +539,17 @@ To create the step, create the file `src/workflows/steps/validate-customer-creat
 ![Directory structure after adding the step file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737467678/Medusa%20Resources/wishlist-9_lzlifn.jpg)
 
 export const validateCustomerWishlistHighlights = [
-  ["13", "graph", "Retrieve the wishlist based on the specified customer ID."],
-  ["21", "", "Throw an error if the customer already has a wishlist."],
-  ["29", "graph", "Retrieve the customer based on the specified customer ID."],
-  ["28", "", "Throw an error if the customer doesn't exist."],
+  ["18", "graph", "Retrieve the wishlist based on the specified customer ID."],
+  ["26", "", "Throw an error if the customer already has a wishlist."],
+  ["34", "graph", "Retrieve the customer based on the specified customer ID."],
+  ["33", "", "Throw an error if the customer doesn't exist."],
 ]
 
 ```ts title="src/workflows/steps/validate-customer-create-wishlist.ts" highlights={validateCustomerWishlistHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
 type ValidateCustomerCreateWishlistStepInput = {
@@ -556,7 +559,9 @@ type ValidateCustomerCreateWishlistStepInput = {
 export const validateCustomerCreateWishlistStep = createStep(
   "validate-customer-create-wishlist",
   async ({ customer_id }: ValidateCustomerCreateWishlistStepInput, { container }) => {
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     const { data } = await query.graph({
       entity: "wishlist",
@@ -874,7 +879,9 @@ export async function GET(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -1030,6 +1037,7 @@ To create the step, create the file `src/workflows/steps/validate-wishlist-sales
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { Wishlist } from "../../modules/wishlist/models/wishlist"
+import { MedusaError } from "@medusajs/framework/utils"
 
 type ValidateWishlistSalesChannelStepInput = {
   wishlist: InferTypeOf<typeof Wishlist>
@@ -1042,7 +1050,10 @@ export const validateWishlistSalesChannelStep = createStep(
     const { wishlist, sales_channel_id } = input
 
     if (wishlist.sales_channel_id !== sales_channel_id) {
-      throw new Error("Wishlist does not belong to the current sales channel")
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Wishlist does not belong to the current sales channel"
+      )
     }
   }
 )
@@ -1065,16 +1076,19 @@ Create the file `src/workflows/steps/validate-variant-wishlist.ts` with the foll
 ![Directory structure after adding the step file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737470156/Medusa%20Resources/wishlist-14_ckoesz.jpg)
 
 export const validateVariantWishlistHighlights = [
-  ["20", "isInWishlist", "Check whether the variant is already in the wishlist."],
-  ["33", "graph", "Retrieve the variant's details along with the sales channels that its product is available in."],
-  ["45", "variantInSalesChannel", "Throw an error if the variant isn't in the wishlist's sales channel."]
+  ["23", "isInWishlist", "Check whether the variant is already in the wishlist."],
+  ["38", "graph", "Retrieve the variant's details along with the sales channels that its product is available in."],
+  ["50", "variantInSalesChannel", "Throw an error if the variant isn't in the wishlist's sales channel."]
 ]
 
 ```ts title="src/workflows/steps/validate-variant-wishlist.ts" highlights={validateVariantWishlistHighlights}
 import { InferTypeOf } from "@medusajs/framework/types"
 import { Wishlist } from "../../modules/wishlist/models/wishlist"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 type ValidateVariantWishlistStepInput = {
   variant_id: string
@@ -1102,7 +1116,9 @@ export const validateVariantWishlistStep = createStep(
     }
 
     // validate that the variant is available in the specified sales channel
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
     const { data } = await query.graph({
       entity: "variant",
       fields: ["product.sales_channels.*"],
@@ -1762,7 +1778,10 @@ Then, to create the API route, create the file `src/api/store/customers/me/wishl
 
 ```ts title="src/api/store/customers/me/wishlists/share/route.ts"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import jwt from "jsonwebtoken"
 
 export async function POST(
@@ -1776,7 +1795,9 @@ export async function POST(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -1809,7 +1830,9 @@ This route exposes a `POST` endpoint at `/store/customers/me/wishlists/share`. I
 You'll now generate a token that contains the wishlist ID. To do this, replace the `TODO` in the route handler function with the following:
 
 ```ts title="src/api/store/customers/me/wishlists/share/route.ts"
-const { http } = req.scope.resolve("configModule").projectConfig
+const { http } = req.scope.resolve(
+  ContainerRegistrationKeys.CONFIG_MODULE
+).projectConfig
 
 const wishlistToken = jwt.sign({
   wishlist_id: data[0].id,
@@ -1861,7 +1884,10 @@ Create the file `src/api/store/wishlists/[token]/route.ts` with the following co
 
 ```ts title="src/api/store/wishlists/[token]/route.ts"
 import { MedusaResponse, MedusaStoreRequest } from "@medusajs/framework"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { decode, JwtPayload } from "jsonwebtoken"
 
 export async function GET(
@@ -1884,7 +1910,9 @@ export async function GET(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "wishlist",
@@ -2006,16 +2034,19 @@ Create the file `src/api/store/products/[id]/wishlist/route.ts` with the followi
 ![Directory structure after adding the route file](https://res.cloudinary.com/dza7lstvk/image/upload/v1737630927/Medusa%20Resources/wishlist-26_ervnfg.jpg)
 
 export const wishlistCountRouteHighlights = [
-  ["17", "graph", "Retrieve the product and its variants."],
-  ["25", "", "If product doesn't exist, throw an error."],
-  ["32", "count", "Retrieve the number of wishlists that the product is in."]
+  ["22", "graph", "Retrieve the product and its variants."],
+  ["30", "", "If product doesn't exist, throw an error."],
+  ["37", "count", "Retrieve the number of wishlists that the product is in."]
 ]
 
 ```ts title="src/api/store/products/[id]/wishlist/route.ts" highlights={wishlistCountRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import WishlistModuleService from "../../../../../modules/wishlist/service"
 import { WISHLIST_MODULE } from "../../../../../modules/wishlist"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -2023,7 +2054,9 @@ export async function GET(
 ) {
   const { id } = req.params
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   const wishlistModuleService: WishlistModuleService = req.scope.resolve(
     WISHLIST_MODULE
   )

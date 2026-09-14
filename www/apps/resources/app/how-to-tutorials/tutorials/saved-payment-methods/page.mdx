@@ -261,14 +261,18 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 So, to create an API route at the path `/store/payment-methods/:account-holder-id`, create the file `src/api/store/payment-methods/[account_holder_id]/route.ts` with the following content:
 
 export const apiRouteHighlights = [
-  ["9", "query", "Resolve Query from the Medusa container"],
-  ["10", "paymentModuleService", "Resolve the Payment Module's service from the Medusa container."],
-  ["12", "accountHolder", "Retrieve the account holder by its ID."],
-  ["30", "paymentMethods", "Retrieve the saved payment methods in the account holder's provider."]
+  ["13", "query", "Resolve Query from the Medusa container"],
+  ["16", "paymentModuleService", "Resolve the Payment Module's service from the Medusa container."],
+  ["20", "accountHolder", "Retrieve the account holder by its ID."],
+  ["38", "paymentMethods", "Retrieve the saved payment methods in the account holder's provider."]
 ]
 
 ```ts title="src/api/store/payment-methods/[account_holder_id]/route.ts" highlights={apiRouteHighlights}
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export async function GET(
@@ -276,8 +280,12 @@ export async function GET(
   res: MedusaResponse
 ) {
   const { account_holder_id } = req.params
-  const query = req.scope.resolve("query")
-  const paymentModuleService = req.scope.resolve("payment")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const paymentModuleService = req.scope.resolve(
+    Modules.PAYMENT
+  )
 
   const { data: [accountHolder] } = await query.graph({
     entity: "account_holder",
@@ -523,6 +531,8 @@ Next, you'll add the component that shows the saved payment methods and allows t
 The component that shows the Stripe card element is defined in `src/modules/checkout/components/payment-container/index.tsx`. So, you'll define the component for the saved payment methods in the same file.
 
 Start by adding the following import statements at the top of the file:
+
+{/* eslint-disable @medusajs/import-from-framework-not-internal */}
 
 ```ts title="src/modules/checkout/components/payment-container/index.tsx" badgeLabel="Storefront" badgeColor="blue"
 import { Button } from "@medusajs/ui"

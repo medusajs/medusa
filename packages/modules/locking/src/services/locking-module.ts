@@ -31,9 +31,10 @@ export default class LockingModuleService implements ILockingModule {
 
   async execute<T>(
     keys: string | string[],
-    job: () => Promise<T>,
+    job: (signal?: AbortSignal) => Promise<T>,
     args?: {
       timeout?: number
+      expire?: number
       provider?: string
     },
     sharedContext: Context = {}

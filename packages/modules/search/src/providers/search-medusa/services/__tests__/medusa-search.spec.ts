@@ -75,7 +75,6 @@ describe("MedusaSearchService", () => {
         title: expect.objectContaining({ full_text_search: true }),
       }),
       distance_metric: undefined,
-      sharding: undefined,
     })
   })
 

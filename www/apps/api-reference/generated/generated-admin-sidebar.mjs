@@ -4917,8 +4917,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/users/add-reset-password-to-user",
-          "title": "Add Reset Password to User",
+          "path": "/admin/users/generate-reset-password-token",
+          "title": "Generate Reset Password Token",
           "loaded": true,
           "badge": {
             "variant": "blue",

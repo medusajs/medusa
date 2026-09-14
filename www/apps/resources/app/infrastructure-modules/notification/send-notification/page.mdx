@@ -113,7 +113,10 @@ If you want to send a notification as part of a workflow, You can use the [sendN
 For example:
 
 ```ts title="src/workflows/send-email.ts"
-import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
 import { 
   sendNotificationsStep, 
   useQueryGraphStep,
@@ -137,14 +140,19 @@ export const sendEmailWorkflow = createWorkflow(
       },
     })
 
+    const notificationData = transform(
+      { products },
+      ({ products }) => ({
+        product_title: products[0].title,
+        product_image: products[0].images[0]?.url,
+      })
+    )
+
     sendNotificationsStep({
       to: "user@gmail.com",
       channel: "email",
       template: "product-created",
-      data: {
-        product_title: product[0].title,
-        product_image: product[0].images[0]?.url,
-      },
+      data: notificationData,
     })
   }
 )

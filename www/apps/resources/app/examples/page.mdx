@@ -638,7 +638,10 @@ import type {
   defineMiddlewares,
 } from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/framework/types"
-import { parseCorsOrigins } from "@medusajs/framework/utils"
+import {
+  parseCorsOrigins,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import cors from "cors"
 
 export default defineMiddlewares({
@@ -652,7 +655,9 @@ export default defineMiddlewares({
           next: MedusaNextFunction
         ) => {
           const configModule: ConfigModule =
-            req.scope.resolve("configModule")
+            req.scope.resolve(
+              ContainerRegistrationKeys.CONFIG_MODULE
+            )
 
           return cors({
             origin: parseCorsOrigins(
@@ -782,24 +787,75 @@ npx medusa db:generate blog
 npx medusa db:migrate
 ```
 
-7. Use the module's main service in an API route:
+7. Create a workflow that uses the module's main service in a step in the file `src/workflows/create-post.ts`:
+
+```ts title="src/workflows/create-post.ts"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import BlogModuleService from "../modules/blog/service"
+import { BLOG_MODULE } from "../modules/blog"
+
+type CreatePostInput = {
+  title: string
+}
+
+const createPostStep = createStep(
+  "create-post",
+  async (input: CreatePostInput, { container }) => {
+    const blogModuleService: BlogModuleService =
+      container.resolve(BLOG_MODULE)
+
+    const post = await blogModuleService.createPosts(input)
+
+    return new StepResponse(post, post.id)
+  },
+  async (postId, { container }) => {
+    if (!postId) {
+      return
+    }
+
+    const blogModuleService: BlogModuleService =
+      container.resolve(BLOG_MODULE)
+
+    await blogModuleService.deletePosts(postId)
+  }
+)
+
+const createPostWorkflow = createWorkflow(
+  "create-post",
+  (input: CreatePostInput) => {
+    const post = createPostStep(input)
+
+    return new WorkflowResponse(post)
+  }
+)
+
+export default createPostWorkflow
+```
+
+8. Execute the workflow in an API route:
 
 ```ts title="src/api/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import BlogModuleService from "../../modules/blog/service"
-import { BLOG_MODULE } from "../../modules/blog"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import createPostWorkflow from "../../workflows/create-post"
 
-export async function GET(
+export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const blogModuleService: BlogModuleService = req.scope.resolve(
-    BLOG_MODULE
-  )
-
-  const post = await blogModuleService.createPosts({
-    title: "test",
-  })
+  const { result: post } = await createPostWorkflow(req.scope)
+    .run({
+      input: {
+        title: "test",
+      },
+    })
 
   res.json({
     post,
@@ -2335,7 +2391,7 @@ import {
 
 const workflow = createWorkflow(
   "hello-world",
-  async (input) => {
+  (input) => {
     const products = createProductsWorkflow.runAsStep({
       input: {
         products: [
@@ -2806,7 +2862,7 @@ To create a scheduled job, create the file `src/jobs/hello-world.ts` with the fo
 
 ```ts title="src/jobs/hello-world.ts"
 // the scheduled-job function
-export default function () {
+export default async function () {
   console.log("Time to say hello world!")
 }
 
@@ -3712,7 +3768,7 @@ const paymentCollection =
   await paymentModuleService.createPaymentCollections({
     region_id: "reg_123",
     currency_code: "usd",
-    amount: 5000,
+    amount: 50,
   })
 
 // resolve Link
@@ -3740,7 +3796,7 @@ const paymentSession =
     {
       provider_id: "stripe",
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
       data: {
         // any necessary data for the
         // payment provider
