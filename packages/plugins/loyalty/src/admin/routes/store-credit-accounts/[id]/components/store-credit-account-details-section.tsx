@@ -1,21 +1,20 @@
-import { Container, Text } from "@medusajs/ui";
-import { CreditCard } from "@medusajs/icons";
+import { Container, Text } from "@medusajs/ui"
+import { CreditCard } from "@medusajs/icons"
 
-import { AdminStoreCreditAccount } from "../../../../../types";
-import DisplayId from "../../../../components/display-id";
-import CreditCardIcon from "./credit-card-icon";
-import { ActionMenu } from "../../../../components/action-menu";
+import { AdminStoreCreditAccount } from "../../../../../types"
+import { ActionMenu, DisplayId } from "@medusajs/dashboard/components"
+import CreditCardIcon from "./credit-card-icon"
 
 const StoreCreditAccountDetailsSection = ({
   storeCreditAccount,
 }: {
-  storeCreditAccount: AdminStoreCreditAccount;
+  storeCreditAccount: AdminStoreCreditAccount
 }) => {
   if (
     !storeCreditAccount ||
     typeof storeCreditAccount.balance === "undefined"
   ) {
-    return;
+    return
   }
 
   return (
@@ -60,7 +59,7 @@ const StoreCreditAccountDetailsSection = ({
         />
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default StoreCreditAccountDetailsSection;
+export default StoreCreditAccountDetailsSection

@@ -25,17 +25,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import type { AdminOrderPreviewLineItem } from "../../../../../types/http/orders/entity"
-import { DataTable } from "../../../../components/common/data-table"
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { Thumbnail } from "../../../../components/common/thumbnail"
 import { NumberInput } from "../../../../components/inputs/number-input"
-import {
-  RouteFocusModal,
-  StackedFocusModal,
-  useRouteModal,
-  useStackedModal,
-} from "../../../../components/modals"
 import {
   useDraftOrder,
   useDraftOrderAddItems,
@@ -45,19 +35,31 @@ import {
   useDraftOrderUpdateActionItem,
   useDraftOrderUpdateItem,
 } from "../../../../hooks/api/draft-orders"
-import { useOrderPreview } from "../../../../hooks/api/orders"
-import { useProductVariants } from "../../../../hooks/api/product-variants"
-import { useDebouncedSearch } from "../../../../hooks/common/use-debounced-search"
-import { useQueryParams } from "../../../../hooks/common/use-query-params"
 import { useCancelOrderEdit } from "../../../../hooks/order-edits/use-cancel-order-edit"
 import { useInitiateOrderEdit } from "../../../../hooks/order-edits/use-initiate-order-edit"
 import {
+  DataTable,
+  Form,
+  KeyboundForm,
+  RouteFocusModal,
+  StackedFocusModal,
+  Thumbnail,
+  useRouteModal,
+  useStackedModal,
+} from "@medusajs/dashboard/components"
+import {
+  useDate,
+  useDebouncedSearch,
+  useOrderPreview,
+  useQueryParams,
+  useVariants,
+} from "@medusajs/dashboard/hooks"
+import {
+  castNumber,
   getLocaleAmount,
   getNativeSymbol,
   getStylizedAmount,
-} from "../../../../lib/data/currencies"
-import { getFullDate } from "../../../../lib/utils/date-utils"
-import { convertNumber } from "../../../../lib/utils/number-utils"
+} from "@medusajs/dashboard/lib"
 
 const STACKED_MODAL_ID = "items_stacked_modal"
 
@@ -138,7 +140,7 @@ const ItemsForm = ({ preview, currencyCode }: ItemsFormProps) => {
     preview.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
 
   const matches = useMemo(() => {
-    return matchSorter(preview.items, query, {
+    return matchSorter(preview.items, query ?? "", {
       keys: ["product_title", "variant_title", "variant_sku", "title"],
     })
   }, [preview.items, query])
@@ -417,7 +419,7 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
      * If none of the values have changed, we don't need to update anything
      */
     if (
-      convertNumber(data.unit_price) === item.unit_price &&
+      castNumber(data.unit_price) === item.unit_price &&
       data.quantity === item.quantity
     ) {
       setEditing(false)
@@ -430,7 +432,7 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
         {
           item_id: item.id,
           quantity: data.quantity,
-          unit_price: convertNumber(data.unit_price),
+          unit_price: castNumber(data.unit_price),
         },
         {
           onSuccess: () => {
@@ -462,7 +464,7 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
       {
         action_id: actionId,
         quantity: data.quantity,
-        unit_price: convertNumber(data.unit_price),
+        unit_price: castNumber(data.unit_price),
       },
       {
         onSuccess: () => {
@@ -481,7 +483,7 @@ const VariantItem = ({ item, preview, currencyCode }: ItemProps) => {
         <div className="bg-ui-bg-base shadow-elevation-card-rest grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,2fr)_28px] items-center gap-3 rounded-lg px-4 py-2">
           <div className="flex w-full items-center gap-x-3">
             <Thumbnail
-              thumbnail={item.thumbnail}
+              src={item.thumbnail}
               alt={item.product_title ?? undefined}
             />
             <div className="flex flex-col">
@@ -625,7 +627,7 @@ const CustomItem = ({ item, preview, currencyCode }: ItemProps) => {
      * If none of the values have changed, we don't need to update anything
      */
     if (
-      convertNumber(data.unit_price) === item.unit_price &&
+      castNumber(data.unit_price) === item.unit_price &&
       data.quantity === item.quantity &&
       data.title === item.title
     ) {
@@ -639,7 +641,7 @@ const CustomItem = ({ item, preview, currencyCode }: ItemProps) => {
         {
           item_id: item.id,
           quantity: data.quantity,
-          unit_price: convertNumber(data.unit_price),
+          unit_price: castNumber(data.unit_price),
         },
         {
           onSuccess: () => {
@@ -671,7 +673,7 @@ const CustomItem = ({ item, preview, currencyCode }: ItemProps) => {
       {
         action_id: actionId,
         quantity: data.quantity,
-        unit_price: convertNumber(data.unit_price),
+        unit_price: castNumber(data.unit_price),
       },
       {
         onSuccess: () => {
@@ -689,10 +691,7 @@ const CustomItem = ({ item, preview, currencyCode }: ItemProps) => {
       <form onSubmit={onSubmit}>
         <div className="bg-ui-bg-base shadow-elevation-card-rest grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,2fr)_28px] items-center gap-3 rounded-lg px-4 py-2">
           <div className="flex items-center gap-x-3">
-            <Thumbnail
-              thumbnail={item.thumbnail}
-              alt={item.title ?? undefined}
-            />
+            <Thumbnail src={item.thumbnail} alt={item.title ?? undefined} />
             {editing ? (
               <Form.Field
                 control={form.control}
@@ -846,7 +845,7 @@ const ExistingItemsForm = ({ orderId, items }: ExistingItemsFormProps) => {
     ["q", "order", "offset"],
     VARIANT_PREFIX
   )
-  const { variants, count, isPending, isError, error } = useProductVariants(
+  const { variants, count, isPending, isError, error } = useVariants(
     {
       q,
       order,
@@ -985,6 +984,8 @@ const getVariantInventory = (variant: HttpTypes.AdminProductVariant) => {
 }
 
 const useColumns = () => {
+  const { getFullDate } = useDate()
+
   return useMemo(() => {
     return [
       columnHelper.select(),
@@ -994,7 +995,7 @@ const useColumns = () => {
           return (
             <div className="flex items-center gap-x-2">
               <Thumbnail
-                thumbnail={row.original.product?.thumbnail}
+                src={row.original.product?.thumbnail}
                 alt={row.original.product?.title}
               />
               <span>{row.original.product?.title}</span>
@@ -1068,7 +1069,7 @@ const useColumns = () => {
         },
       }),
     ]
-  }, [])
+  }, [getFullDate])
 }
 
 interface CustomItemFormProps {
@@ -1096,7 +1097,7 @@ const CustomItemForm = ({ orderId, currencyCode }: CustomItemFormProps) => {
           {
             title: data.title,
             quantity: data.quantity,
-            unit_price: convertNumber(data.unit_price),
+            unit_price: castNumber(data.unit_price),
           },
         ],
       },

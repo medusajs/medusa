@@ -1,8 +1,8 @@
 import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Badge, IconButton, Skeleton, Text } from "@medusajs/ui"
-import { useCustomerAddress } from "../../hooks/api/customers"
-import { getFormattedAddress } from "../../lib/utils/address-utils"
+import { useCustomerAddress } from "@medusajs/dashboard/hooks"
+import { getFormattedAddress } from "@medusajs/dashboard/lib"
 
 interface AddressCardProps {
   customerId: string
@@ -29,7 +29,7 @@ export const AddressCard = ({
   const isReady = !isPending && !!address
 
   return (
-    <div className="px-3 py-2 rounded-lg bg-ui-bg-component shadow-elevation-card-rest flex items-center gap-4">
+    <div className="bg-ui-bg-component shadow-elevation-card-rest flex items-center gap-4 rounded-lg px-3 py-2">
       {!isReady ? <LoadingState /> : <AddressInfo address={address} />}
       <Badge size="2xsmall">
         {tag === "shipping" ? "Shipping" : "Billing"}
@@ -52,9 +52,9 @@ export const AddressCard = ({
 const LoadingState = () => {
   return (
     <div className="flex flex-col gap-0.5">
-      <Skeleton className="w-20 h-5" />
-      <Skeleton className="w-16 h-5" />
-      <Skeleton className="w-16 h-5" />
+      <Skeleton className="h-5 w-20" />
+      <Skeleton className="h-5 w-16" />
+      <Skeleton className="h-5 w-16" />
     </div>
   )
 }
@@ -64,10 +64,10 @@ interface AddressInfoProps {
 }
 
 const AddressInfo = ({ address }: AddressInfoProps) => {
-  const addressSegments = getFormattedAddress(address)
+  const addressSegments = getFormattedAddress({ address })
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-1 flex-col">
       {address.address_name && (
         <Text size="small" weight="plus" leading="compact">
           {address.address_name}

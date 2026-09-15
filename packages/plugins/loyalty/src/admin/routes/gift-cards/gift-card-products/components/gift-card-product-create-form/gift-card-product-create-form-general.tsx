@@ -1,13 +1,12 @@
-import { Input, Text, Textarea } from "@medusajs/ui";
-import { UseFormReturn } from "react-hook-form";
-import { Form } from "../../../../../components/form";
-import { HandleInput } from "../../../../../components/handle-input";
-import { ProductCreateSchemaType } from "./types";
+import { Input, Text, Textarea } from "@medusajs/ui"
+import { UseFormReturn } from "react-hook-form"
+import { ProductCreateSchemaType } from "./types"
+import { Form, HandleInput } from "@medusajs/dashboard/components"
 
 type GiftCardProductCreateFormGeneralProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-  children: React.ReactNode;
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+  children: React.ReactNode
+}
 
 export const GiftCardProductCreateFormGeneral = ({
   form,
@@ -16,7 +15,7 @@ export const GiftCardProductCreateFormGeneral = ({
   return (
     <div
       id="general"
-      className="grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2"
+      className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2"
     >
       <div>
         <Text className="txt-small-plus text-ui-fg-base" weight="plus">
@@ -39,7 +38,7 @@ export const GiftCardProductCreateFormGeneral = ({
                   <Input {...field} placeholder="Medusa Gift Card" />
                 </Form.Control>
               </Form.Item>
-            );
+            )
           }}
         />
 
@@ -59,7 +58,7 @@ export const GiftCardProductCreateFormGeneral = ({
                   />
                 </Form.Control>
               </Form.Item>
-            );
+            )
           }}
         />
 
@@ -76,7 +75,7 @@ export const GiftCardProductCreateFormGeneral = ({
                   <HandleInput {...field} placeholder="medusa-gift-card" />
                 </Form.Control>
               </Form.Item>
-            );
+            )
           }}
         />
 
@@ -96,12 +95,12 @@ export const GiftCardProductCreateFormGeneral = ({
                   />
                 </Form.Control>
               </Form.Item>
-            );
+            )
           }}
         />
 
         {children}
       </div>
     </div>
-  );
-};
+  )
+}

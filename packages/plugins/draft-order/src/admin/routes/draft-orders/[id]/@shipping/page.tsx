@@ -26,17 +26,6 @@ import {
 } from "@medusajs/icons"
 import isEqual from "lodash.isequal"
 import { Accordion } from "radix-ui"
-import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { Thumbnail } from "../../../../components/common/thumbnail"
-import { Combobox } from "../../../../components/inputs/combobox"
-import {
-  RouteFocusModal,
-  StackedFocusModal,
-  useRouteModal,
-  useStackedModal,
-} from "../../../../components/modals"
 import {
   useDraftOrderAddShippingMethod,
   useDraftOrderConfirmEdit,
@@ -45,20 +34,33 @@ import {
   useDraftOrderRequestEdit,
   useDraftOrderUpdateShippingMethod,
 } from "../../../../hooks/api/draft-orders"
-import { useOrder, useOrderPreview } from "../../../../hooks/api/orders"
-import { useShippingOptions } from "../../../../hooks/api/shipping-options"
-import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { useCancelOrderEdit } from "../../../../hooks/order-edits/use-cancel-order-edit"
 import { useInitiateOrderEdit } from "../../../../hooks/order-edits/use-initiate-order-edit"
-import { getNativeSymbol } from "../../../../lib/data/currencies"
 import { sdk } from "../../../../lib/queries/sdk"
-import { convertNumber } from "../../../../lib/utils/number-utils"
 import {
   getItemsWithShippingProfile,
   getUniqueShippingProfiles,
 } from "../../../../lib/utils/order-utils"
 import { pluralize } from "../../../../lib/utils/string-utils"
-import { ActionMenu } from "../../../../components/common/action-menu"
+import {
+  ActionMenu,
+  Combobox,
+  ConditionalTooltip,
+  Form,
+  KeyboundForm,
+  RouteFocusModal,
+  StackedFocusModal,
+  Thumbnail,
+  useRouteModal,
+  useStackedModal,
+} from "@medusajs/dashboard/components"
+import {
+  useComboboxData,
+  useOrder,
+  useOrderPreview,
+  useShippingOptions,
+} from "@medusajs/dashboard/hooks"
+import { castNumber, getNativeSymbol } from "@medusajs/dashboard/lib"
 
 const STACKED_FOCUS_MODAL_ID = "shipping-form"
 
@@ -450,7 +452,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                         }
                                       },
                                     },
-                                  ].filter(Boolean),
+                                  ].filter(a => !!a),
                                 },
                               ]}
                             />
@@ -490,7 +492,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                         {item.quantity}x
                                       </Text>
                                     </div>
-                                    <Thumbnail thumbnail={item.thumbnail} />
+                                    <Thumbnail src={item.thumbnail} />
                                     <div>
                                       <Text
                                         size="small"
@@ -650,7 +652,7 @@ const ShippingProfileForm = ({
           method_id: data.shippingMethod.id,
           shipping_option_id: values.shipping_option_id,
           custom_amount: values.custom_amount
-            ? convertNumber(values.custom_amount)
+            ? castNumber(values.custom_amount)
             : undefined,
         },
         {
@@ -670,7 +672,7 @@ const ShippingProfileForm = ({
       {
         shipping_option_id: values.shipping_option_id,
         custom_amount: values.custom_amount
-          ? convertNumber(values.custom_amount)
+          ? castNumber(values.custom_amount)
           : undefined,
       },
       {
@@ -803,7 +805,7 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
               >
                 <div className="flex items-center gap-x-3">
                   <Thumbnail
-                    thumbnail={item.thumbnail}
+                    src={item.thumbnail}
                     alt={item.product_title ?? undefined}
                   />
                   <div className="flex flex-col">

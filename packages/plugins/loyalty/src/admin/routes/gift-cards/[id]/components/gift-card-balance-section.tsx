@@ -1,19 +1,19 @@
-import { Container, Text } from "@medusajs/ui";
-import { AdminGiftCard, ModuleStoreCreditAccount } from "../../../../../types";
-import { formatAmount } from "../../../../utils/format-amount";
+import { Container, Text } from "@medusajs/ui"
+import { AdminGiftCard, ModuleStoreCreditAccount } from "../../../../../types"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
 const GiftCardBalanceSection = ({
   storeCreditAccount,
   giftCard,
 }: {
-  storeCreditAccount: ModuleStoreCreditAccount;
-  giftCard: AdminGiftCard;
+  storeCreditAccount: ModuleStoreCreditAccount
+  giftCard: AdminGiftCard
 }) => {
   if (
     !storeCreditAccount ||
     typeof storeCreditAccount.balance === "undefined"
   ) {
-    return;
+    return
   }
 
   return (
@@ -29,9 +29,9 @@ const GiftCardBalanceSection = ({
           <Text
             weight="plus"
             size="xlarge"
-            className="tabular-nums text-ui-fg-base"
+            className="text-ui-fg-base tabular-nums"
           >
-            {formatAmount(
+            {formatCurrency(
               storeCreditAccount.balance as number,
               giftCard.currency_code
             )}
@@ -50,14 +50,14 @@ const GiftCardBalanceSection = ({
           <Text
             weight="plus"
             size="xlarge"
-            className="tabular-nums text-ui-fg-base"
+            className="text-ui-fg-base tabular-nums"
           >
-            {formatAmount(giftCard.value, giftCard.currency_code)}
+            {formatCurrency(giftCard.value, giftCard.currency_code)}
           </Text>
         </div>
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default GiftCardBalanceSection;
+export default GiftCardBalanceSection
