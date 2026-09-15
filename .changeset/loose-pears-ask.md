@@ -2,4 +2,4 @@
 "@medusajs/utils": patch
 ---
 
-fix(utils): support number enums in DML
+fix(utils): support enums that start with numbers in DML
