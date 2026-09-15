@@ -129,6 +129,19 @@ describe("toHandle and isValidHandle", function () {
       { input: "straße москва 서울", output: "strasse-москва-서울" },
       { input: "user@123!مرحبا", output: "user123مرحبا" },
 
+      // Devanagari
+      { input: "हिन्दी-किताब", output: "हिन्दी-किताब" },
+      { input: "नीला कुर्ता", output: "नीला-कुर्ता" },
+
+      // Bengali
+      { input: "নীল শাড়ি", output: "নীল-শাড়ি" },
+
+      // Tamil
+      { input: "தமிழ் புத்தகம்", output: "தமிழ்-புத்தகம்" },
+
+      // Thai
+      { input: "เสื้อยืด สีแดง", output: "เสื้อยืด-สีแดง" },
+
       // Greek
       { input: "αβγ-δεζ", output: "αβγ-δεζ" },
       { input: "καλημερα-κοσμε", output: "καλημερα-κοσμε" },
@@ -274,6 +287,11 @@ it("should produce handles that isValidHandle accepts (invariant)", () => {
     // Other scripts
     "کتاب فارسی",
     "الكتاب العربي",
+    // Combining marks carrying vowels
+    "हिन्दी किताब",
+    "নীল শাড়ি",
+    "தமிழ் புத்தகம்",
+    "เสื้อยืด สีแดง",
     "我的产品",
     "안녕하세요",
     "привет мир",

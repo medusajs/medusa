@@ -3,6 +3,7 @@
  *
  * - Converts the value to lowercase
  * - Preserves letters from any language (Persian, Arabic, Japanese, Chinese, Korean, Russian, etc.)
+ * - Preserves combining marks, which carry vowels in scripts such as Devanagari, Bengali, Tamil and Thai
  * - Removes special characters (apostrophes, punctuation, symbols, etc.)
  * - Replaces spaces and underscores with hyphens
  * - Collapses multiple hyphens into a single hyphen
@@ -13,7 +14,7 @@ export const toHandle = (value: string): string => {
   let handle = value
     .toLowerCase()
     .replace(/ß/g, "ss")
-    .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+    .replace(/[^\p{L}\p{M}\p{N}\s_-]/gu, "")
     .replace(/[\s_]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")

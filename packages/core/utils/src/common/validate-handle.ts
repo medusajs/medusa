@@ -7,6 +7,7 @@
  * Handles must contain only:
  * - Lowercase letters from any language (\p{Ll})
  * - Case-less letters (Arabic, Persian, Chinese, Japanese, Korean) (\p{Lo})
+ * - Combining marks, which carry vowels in Devanagari, Bengali, Tamil, Thai (\p{M})
  * - Numbers (\p{N})
  * - Hyphens (not at start or end, no consecutive hyphens)
  *
@@ -19,6 +20,7 @@
  * isValidHandle("کتاب-فارسی") // true
  * isValidHandle("私の-製品") // true
  * isValidHandle("我的-产品") // true
+ * isValidHandle("हिन्दी-किताब") // true
  * isValidHandle("Hello-World") // false (contains uppercase)
  * isValidHandle("my product") // false (spaces not allowed)
  * isValidHandle("-product") // false (leading hyphen)
@@ -31,8 +33,8 @@ export const isValidHandle = (value: string): boolean => {
     return false
   }
 
-  // Allow: lowercase letters, case-less letters, modifier letters, numbers
-  return /^[\p{Ll}\p{Lo}\p{Lm}\p{N}]+(?:-[\p{Ll}\p{Lo}\p{Lm}\p{N}]+)*$/u.test(
+  // Allow: lowercase letters, case-less letters, modifier letters, combining marks, numbers
+  return /^[\p{Ll}\p{Lo}\p{Lm}\p{M}\p{N}]+(?:-[\p{Ll}\p{Lo}\p{Lm}\p{M}\p{N}]+)*$/u.test(
     value
   )
 }
