@@ -1,0 +1,120 @@
+---
+sidebar_label: "Manage Search Indexes"
+tags:
+    - user guide
+    - search
+products:
+    - search
+    - settings
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Search Indexes in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to view your store’s search indexes and rebuild them in the Medusa Admin.
+
+<Note>
+
+Search indexes are available from [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). If you don’t see the Search settings in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update) or set up search for your store.
+
+</Note>
+
+## Overview
+
+A search index is a copy of some of your store’s data, such as your products, that your storefront searches instead of querying your database directly. This makes search results faster and ranks them by how well they match what the customer typed.
+
+Your technical team decides which data each index holds. In the Medusa Admin, you can see the indexes they set up and rebuild any of them.
+
+---
+
+## View Search Indexes
+
+To view your store’s search indexes, go to Settings → Search.
+
+Each index shows in its own card with the following details:
+
+- The index’s name, such as product.
+- **Provider**: the search service that stores this index, such as [Medusa Search](!cloud!/search) or PostgreSQL.
+- [The index’s status](#index-statuses), shown as a badge.
+- **Indexed fields**: the data that the index holds, such as `title` or `description`. Hover over a field to see its type and what customers can do with it, such as search, filter, or sort by it.
+- The **Reindex** button, which rebuilds the index. Refer to [Reindex a Search Index](#reindex-a-search-index).
+
+By default, all Medusa stores have the product index. Your technical team can also have [custom search indexes](!resources!/infrastructure-modules/search/index-definitions) set up for other entities, such as brands or orders.
+
+### Index Statuses
+
+<Table>
+
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Pending
+      </Table.Cell>
+      <Table.Cell>
+        The index is set up, but Medusa hasn’t built it yet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      Building
+      </Table.Cell>
+      <Table.Cell>
+      Medusa is currently building the index. Search results for this index may be incomplete until the build finishes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      Ready
+      </Table.Cell>
+      <Table.Cell>
+      The index is up to date, and customers can search it.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      Error
+      </Table.Cell>
+      <Table.Cell>
+      Medusa couldn’t build the index. Rebuild the index, and if the error persists, contact your technical team.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+
+</Table>
+
+---
+
+## Reindex a Search Index
+
+Medusa keeps an index up to date as your data changes, so you rarely need to rebuild one. Rebuild an index, which is also called reindexing, in the following cases:
+
+- Search results show data that you already changed or deleted.
+- Search results miss items that you expect to find.
+- The index’s status is "Error".
+
+To rebuild an index:
+
+1. Go to Settings → Search.
+2. Find the index you want to rebuild.
+3. Click the **Reindex** button in the index’s card. The button is disabled while the index’s status is "Building".
+4. In the window that opens, set the following optional fields:
+    - **Since**: choose a date and time to rebuild only the data that changed at or after that point. Leave this field empty to rebuild the whole index.
+    - **Entity IDs**: enter the IDs of the items you want to rebuild, separated by commas or new lines. Leave this field empty to rebuild the whole index.
+5. Click the **Reindex** button.
+
+Medusa then rebuilds the index from your store’s data. Search results for that index may be incomplete while the status is "Building", and a large index can take a while to finish.

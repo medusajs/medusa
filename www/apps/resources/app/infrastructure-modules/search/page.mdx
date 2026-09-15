@@ -1,0 +1,349 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Module`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the Search Module, its providers, and its index definitions.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+<Note title="Easier setup with Cloud">
+
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](!cloud!/search) documentation.
+
+</Note>
+
+## What is the Search Module?
+
+The Search Module provides full-text search functionality in your Medusa application. It indexes your data in a search engine, then serves queries with relevance ranking, filters, facets, highlighting, and vector search.
+
+For example, you can use the Search Module to power a storefront's product search with typo tolerance and category facets, or to let admin users find orders by customer name.
+
+The Search Module writes to and reads from the search engine you integrate, such as [PostgreSQL](./providers/postgres/page.mdx) or [Medusa Search](!cloud!/search) for Cloud users. This gives you flexibility in choosing the search infrastructure that matches your performance and scalability requirements.
+
+### How the Search Module Works
+
+The Search Module has two parts that you control:
+
+- **[Search Module Providers](./providers/page.mdx)**: they implement the logic of talking to a search engine.
+- **[Search index definitions](./index-definitions/page.mdx)**: you declare which entity to index, which fields the engine holds, and how to fill the index.
+
+The Search Module handles everything between the two. It creates and migrates the physical indexes, fills them when they are empty, applies events to keep them current, and compiles a search query into whatever the provider's engine understands.
+
+It also keeps a version per physical index it builds, so a definition change builds a new version alongside the one serving reads and only makes it active once it's filled. Every provider rebuilds an index that way, so a schema change costs no downtime whichever one you use.
+
+---
+
+## Configure the Search Module
+
+As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you can start searching products or custom data models without extra configurations.
+
+On Cloud, [Medusa Search](!cloud!/search) is registered by default for all plans, unless you explicitly configure a different provider.
+
+### Change Default Search Configuration
+
+To change the Search Module's configuration or use a different provider, add the Search Module to the `modules` property of the exported object in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+// To register only for development. This is necessary to use Medusa Search in Cloud
+const isDev = process.env.NODE_ENV !== "production"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    isDev && {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        index_prefix: "prod_",
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+          },
+        ],
+      },
+    },
+  ].filter(Boolean),
+})
+```
+
+### Run Migrations
+
+If you upgraded an existing Medusa application to v2.21.1, run the following command to create the necessary database tables for the Search Module and its configured provider:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+### Search Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `providers`
+      </Table.Cell>
+      <Table.Cell>
+        An array of Search Module Providers to register. You can register more than one provider and point each index at a different engine.
+      </Table.Cell>
+      <Table.Cell>
+        The PostgreSQL provider, whose identifier is `search-postgres`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `default_provider`
+      </Table.Cell>
+      <Table.Cell>
+        The identifier of the provider to use for index definitions that don't name one. Required when you register more than one provider. Its value is the `identifier` property defined in the provider's service.
+      </Table.Cell>
+      <Table.Cell>
+        If only one provider is registered, the module uses it as the default. Otherwise, an error is thrown while the module initializes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `index_prefix`
+      </Table.Cell>
+      <Table.Cell>
+        A string prepended to every physical index name. Use it when multiple applications share a search engine.
+      </Table.Cell>
+      <Table.Cell>
+        No prefix.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `reindex.batch_size`
+      </Table.Cell>
+      <Table.Cell>
+        The number of documents the module writes to the engine per request while filling an index.
+      </Table.Cell>
+      <Table.Cell>
+        `100`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Search Module Providers
+
+A Search Module Provider implements the logic of indexing and searching documents in a search engine. The Search Module uses the provider that each index definition resolves to.
+
+Medusa ships the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), and [Medusa Search](!cloud!/search) that's available for Cloud users only. You can also create your own.
+
+Refer to the [Search Module Providers guide](./providers/page.mdx) to learn how to register providers, choose a default, and point an index at a specific provider.
+
+<Note title="Tip">
+
+Providers don't back the same set of features, so the provider you pick decides which index definitions you can declare and which query features you can pass. Refer to the [Comparison guide](!cloud!/search/comparison) for what each provider does with every feature they treat differently.
+
+</Note>
+
+---
+
+## Search Products
+
+Medusa declares a `product` index by default, and its Store API has a [Search Products API route](!api!/store/products/search-products) that searches it. So, products are searchable out-of-the-box.
+
+The Search Products API route accepts a `q` parameter and the same pagination and field selection as the [List Products API route](!api!/store/products/list-products):
+
+```bash
+curl "http://localhost:9000/store/products/search?q=shirt" \
+  -H "x-publishable-api-key: pk_123"
+```
+
+You'll receive a JSON response like the following:
+
+```json
+{
+  "products": [
+    {
+      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+      "title": "Medusa T-Shirt",
+      "handle": "t-shirt"
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+The API route narrows the search to published products in the request's sales channel, so it returns what a storefront can show as-is.
+
+<Note title="Tip">
+
+To build the search experience in your storefront, use the [InstantSearch adapter](../../instantsearch/page.mdx). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into Medusa search queries.
+
+</Note>
+
+### Override the Default Product Index
+
+An index definition named `product` replaces the one Medusa declares by default, so your definition alone decides the fields the engine holds, how they're filled, and the settings applied to them. You can override it as explained in the [Create a Custom Search Index](#create-a-custom-search-index) section.
+
+Override the index when it doesn't hold a core or custom field your storefront searches, filters, or facets on, or when you need index settings that aren't applied by default. Keep the fields that the [Search Products API route](!api!/store/products/search-products) filters by to maintain compatibility with the storefront search functionality.
+
+---
+
+## Create a Custom Search Index
+
+To search data other than products, such as the custom data models of your own modules, declare a search index for it.
+
+### 1. Define a Search Index
+
+Define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, a `seed` that fills the index, and the events that keep it up-to-date.
+
+For example, to index a custom `brand` data model, create the file `src/search/brand.ts`:
+
+export const definitionHighlights = [
+  ["11", "name", "The index name that a search query resolves against."],
+  ["12", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["13", "fields", "The fields the search engine holds."],
+  ["19", "events", "The events that change the data the index holds."],
+  ["24", "consume", "Turns each of those events into document writes."],
+  ["25", "seed", "Fills the index with every brand."],
+]
+
+```ts title="src/search/brand.ts" highlights={definitionHighlights}
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = ["id", "name", "country", "created_at"]
+
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+    created_at: search.date().sortable(),
+  }),
+  events: [
+    "brand.created",
+    "brand.updated",
+    "brand.deleted",
+  ],
+  consume: graphConsume({ fields }),
+  seed: graphSeed({ fields }),
+})
+```
+
+`seed` fills the index in full when Medusa creates or rebuilds it, and Medusa routes each of the workflow events in `events` to `consume`, so the index reflects changes as they happen.
+
+[`graphSeed`](./index-definitions/page.mdx#graphseed-options) and [`graphConsume`](./index-definitions/page.mdx#graphconsume-options) are helpers that read the data with [Query](!docs!/learn/fundamentals/query). `graphSeed` reads the entity's records to fill the index for the first time, and `graphConsume` provides the index changes, such as creating or deleting records, as the events in `events` arrive.
+
+Learn more about creating search indexes in the [Search Index Definitions guide](./index-definitions/page.mdx).
+
+### 2. Run Migrations
+
+Next, run the migrations command to create or update the physical index:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Learn more about index migrations in the [Reindexing and Migrations guide](./reindexing/page.mdx).
+
+### 3. Search the Index
+
+Finally, run a search with the [`search` method of Query](!docs!/learn/fundamentals/query/search).
+
+For example, create the [API route](!docs!/learn/fundamentals/api-routes) `src/api/store/brands/search/route.ts` with the following content:
+
+export const searchHighlights = [
+  ["11", "query", "Resolve Query from the Medusa container."],
+  ["15", "search", "Returns the hydrated entities and the engine's result."],
+  ["16", "entity", "The name of the index to search."],
+  ["17", "fields", "The fields to return on every result."],
+  ["19", "q", "The free-text query, passed among the filters."],
+]
+
+```ts title="src/api/store/brands/search/route.ts" highlights={searchHighlights}
+import {
+  MedusaRequest,
+  MedusaResponse,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { data, search_result } = await query.search({
+    entity: "brand",
+    fields: ["id", "name", "country"],
+    filters: {
+      q: req.query.q as string,
+    },
+    pagination: { take: 20 },
+  })
+
+  res.json({
+    brands: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+Then, send a `GET` request to the route:
+
+```bash
+curl "http://localhost:9000/store/brands/search?q=acme"
+  -H "x-publishable-api-key: pk_123"
+```
+
+You'll receive a JSON response like the following:
+
+```json
+{
+  "brands": [
+    {
+      "id": "brand_01KXR3J9J610DT161E2E4ZS6P1",
+      "name": "Acme",
+      "country": "us"
+    }
+  ],
+  "metadata": {
+    "skip": 0,
+    "take": 20,
+    "count": 1,
+    "query": "acme",
+    "processing_time_ms": 9
+  }
+}
+```
+
+Learn about filters, facets, highlighting, and vector search in the [Search Queries guide](!docs!/learn/fundamentals/query/search).
