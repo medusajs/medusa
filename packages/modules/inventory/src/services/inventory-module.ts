@@ -171,6 +171,13 @@ export default class InventoryModuleService
     }
 
     if (validateQuantityAtLocation) {
+      // Track quantity already claimed by earlier entries in this same batch, so
+      // multiple items targeting the same (inventory_item, location) are
+      // validated against the running availability rather than the original
+      // level. Without this, two line items sharing an inventory item (e.g. a
+      // bundle/kit) could each pass independently and over-reserve the location.
+      const claimedByKey = new Map<string, BigNumberInput>()
+
       for (const item of data) {
         if (!!item.allow_backorder) {
           continue
@@ -182,12 +189,21 @@ export default class InventoryModuleService
 
         const level = locations?.get(item.location_id)!
 
-        if (MathBN.lt(level.available_quantity, item.quantity!)) {
+        const key = `${item.inventory_item_id}:${item.location_id}`
+        const alreadyClaimed = claimedByKey.get(key) ?? 0
+        const availableForItem = MathBN.sub(
+          level.available_quantity,
+          alreadyClaimed
+        )
+
+        if (MathBN.lt(availableForItem, item.quantity!)) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
           )
         }
+
+        claimedByKey.set(key, MathBN.add(alreadyClaimed, item.quantity!))
       }
     }
 
