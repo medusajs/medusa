@@ -24,7 +24,9 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useCreateOrderCreditLine,
   useRefundPayment,
+  useRefundReasons,
 } from "../../../../../hooks/api"
+import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
@@ -38,6 +40,7 @@ const OrderBalanceSettlementSchema = zod.object({
         value: zod.string().or(zod.number()).optional(),
         float: zod.number().or(zod.null()),
       }),
+      refund_reason_id: zod.string().optional(),
       note: zod.string().optional(),
     })
     .optional(),
@@ -60,6 +63,8 @@ export const OrderBalanceSettlementForm = ({
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
+  const { refund_reasons } = useRefundReasons()
+  const direction = useDocumentDirection()
   const paymentId = searchParams.get("paymentId")
   const payments = getPaymentsFromOrder(order)
   const pendingDifference = order.summary.pending_difference * -1
@@ -127,6 +132,7 @@ export const OrderBalanceSettlementForm = ({
         {
           amount: data.refund!.amount!.float!,
           note: data.refund!.note,
+          refund_reason_id: data.refund!.refund_reason_id,
         },
         {
           onSuccess: () => {
@@ -225,6 +231,7 @@ export const OrderBalanceSettlementForm = ({
               <>
                 <div className="flex flex-col gap-y-4">
                   <Select
+                    dir={direction}
                     defaultValue={activePayment?.id}
                     onValueChange={(value) => {
                       setActivePayment(payments.find((p) => p.id === value)!)
@@ -301,6 +308,40 @@ export const OrderBalanceSettlementForm = ({
                             }
                             autoFocus
                           />
+                        </Form.Control>
+
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+
+                <Form.Field
+                  control={form.control}
+                  name="refund.refund_reason_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.refundReason")}</Form.Label>
+
+                        <Form.Control>
+                          <Select
+                            dir={direction}
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <Select.Trigger>
+                              <Select.Value />
+                            </Select.Trigger>
+
+                            <Select.Content>
+                              {refund_reasons?.map((reason) => (
+                                <Select.Item key={reason.id} value={reason.id}>
+                                  {reason.label}
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select>
                         </Form.Control>
 
                         <Form.ErrorMessage />
