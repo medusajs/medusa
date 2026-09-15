@@ -17,6 +17,29 @@ const GRAPHQL_TYPES = {
   id: "ID",
 }
 
+function toGraphQLEnumValueName(value: string, seen: Set<string>): string {
+  let name = value
+    .replace(/[^a-z0-9_]/gi, "_")
+    .replace(/^([0-9])/, "_$1")
+    .toUpperCase()
+
+  if (!name.length) {
+    name = "_"
+  }
+
+  if (seen.has(name)) {
+    let suffix = 1
+    while (seen.has(`${name}_${suffix}`)) {
+      suffix++
+    }
+    name = `${name}_${suffix}`
+  }
+
+  seen.add(name)
+
+  return name
+}
+
 /**
  * Defines a DML entity schema field as a Mikro ORM property
  */
@@ -42,9 +65,10 @@ export function getGraphQLAttributeFromDMLPropety(
   const specialType = {
     enum: () => {
       const enumName = toPascalCase(modelName + "_" + field.fieldName + "Enum")
+      const seenEnumValues = new Set<string>()
       const enumValues = field.dataType
         .options!.choices.map((value) => {
-          const enumValue = value.replace(/[^a-z0-9_]/gi, "_").toUpperCase()
+          const enumValue = toGraphQLEnumValueName(value, seenEnumValues)
           return `  ${enumValue} @enumValue(value: "${value}")`
         })
         .join("\n")
