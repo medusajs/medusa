@@ -1,4 +1,4 @@
-import { Table, Prerequisites } from "docs-ui"
+import { Table, Prerequisites, CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
   title: `Search Index Fields`,
@@ -183,7 +183,44 @@ A `text` field only participates in free-text matching once you add the [searcha
 
 ### Search Text in Multiple Locales
 
-A `text` field holds a single string, and no field type stores translations of a value. An index only holds what its `seed` and `consume` functions write to it, so to match a free-text query in more than one locale, declare a field for each locale:
+A `text` field holds a single string, and no field type stores translations of a value. An index only holds what its `seed` and `consume` functions write to it, so to match a free-text query in more than one locale, declare a field for each locale.
+
+How you declare those fields depends on the provider:
+
+<CodeTabs group="search-provider">
+  <CodeTab label="Medusa Search" value="medusa-search">
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_en: search.text().searchable()
+      .providerOptions({
+        "search-medusa": {
+          full_text_search: {
+            language: "english",
+            stemming: true,
+          },
+        },
+      }),
+    title_fr: search.text().searchable()
+      .providerOptions({
+        "search-medusa": {
+          full_text_search: {
+            language: "french",
+            stemming: true,
+          },
+        },
+      }),
+  }),
+  // ...
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Other Providers" value="other-providers">
 
 ```ts title="src/search/product.ts"
 export const productIndex = defineSearchIndex({
@@ -194,39 +231,120 @@ export const productIndex = defineSearchIndex({
     title_en: search.text().searchable(),
     title_fr: search.text().searchable(),
   }),
-  async *seed({ container }) {
-    const { data: products } = await container.query
-      .graph({
-        entity: "product",
-        fields: ["id", "title"],
-      })
-    const { data: frProducts } = await container.query
-      .graph({
-        entity: "product",
-        fields: ["id", "title"],
-      }, { locale: "fr-FR" })
+  // ...
+})
+```
 
-    const frTitles = new Map(
-      frProducts.map((product) => [
-        product.id,
-        product.title,
-      ])
-    )
+  </CodeTab>
+</CodeTabs>
 
-    yield [{
-      action: "upsert",
-      documents: products.map((product) => ({
-        id: product.id,
-        title_en: product.title,
-        title_fr:
-          frTitles.get(product.id) ?? product.title,
-      })),
-    }]
+[Medusa Search](!cloud!/search) matches a searchable field term by term, and it stems those terms only when the field's `full_text_search` provider option asks for it. So its tab names a language per locale field and enables `stemming`, which gives each field the stemmer of its own language. Refer to [Set a Field's Language](!cloud!/search/settings#set-a-fields-language) for the languages and options it accepts.
+
+Other providers set the language for the whole index rather than per field, such as the `language` option of the [PostgreSQL Search Module Provider](../../providers/postgres/page.mdx#postgresql-search-module-provider-options), so a locale field needs no option of its own.
+
+Then, write each locale's value to its own field in the index's [`seed` function](../page.mdx#custom-seed-implementation). If you use the [Translation Module](../../../../commerce-modules/translation/page.mdx), pass the `locale` option to Query to retrieve the translated values of a locale:
+
+export const localeSeedHighlights = [
+  ["9", "cursor", "Page by the primary key, so an interrupted run resumes."],
+  ["31", "withDeleted", "Include deleted products in the catch-up pass."],
+  ["39", "gone", "The products the index must lose."],
+  ["46", "locale", "Read the same products again in the other locale."],
+  ["70", "delete", "Remove the documents of the deleted products."],
+]
+
+```ts title="src/search/product.ts" highlights={localeSeedHighlights}
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    // ...
+  }),
+  async *seed({ container, catchup, last_key: lastKey }) {
+    const batchSize = 200
+    let cursor = lastKey
+
+    while (true) {
+      const { data: products } = await container.query
+        .graph({
+          entity: "product",
+          fields: [
+            "id",
+            "title",
+            "updated_at",
+            "deleted_at",
+          ],
+          filters: {
+            ...(catchup
+              ? { updated_at: { $gte: catchup.since } }
+              : {}),
+            ...(cursor ? { id: { $gt: cursor } } : {}),
+          },
+          pagination: {
+            take: batchSize,
+            order: { id: "ASC" },
+          },
+          withDeleted: !!catchup,
+        })
+
+      if (!products.length) {
+        return
+      }
+
+      const live = products.filter((p) => !p.deleted_at)
+      const gone = products.filter((p) => !!p.deleted_at)
+
+      const { data: frProducts } = await container.query
+        .graph({
+          entity: "product",
+          fields: ["id", "title"],
+          filters: { id: live.map((p) => p.id) },
+        }, { locale: "fr-FR" })
+
+      const frTitles = new Map(
+        frProducts.map((product) => [
+          product.id,
+          product.title,
+        ])
+      )
+
+      yield [
+        ...(live.length
+          ? [{
+              action: "upsert" as const,
+              documents: live.map((product) => ({
+                id: product.id,
+                title_en: product.title,
+                title_fr:
+                  frTitles.get(product.id) ??
+                  product.title,
+              })),
+            }]
+          : []),
+        ...(gone.length
+          ? [{
+              action: "delete" as const,
+              filters: { id: gone.map((p) => p.id) },
+            }]
+          : []),
+      ]
+
+      if (products.length < batchSize) {
+        return
+      }
+
+      cursor = products[products.length - 1].id
+    }
   },
 })
 ```
 
-In this example, you store the English and French titles in separate fields. Then, you write each locale's value to its own field. If you use the [Translation Module](../../../../commerce-modules/translation/page.mdx), pass the `locale` option to Query to retrieve the translated values of a locale.
+The `seed` function pages the products by their ID, so an interrupted run resumes from the `last_key` it receives rather than starting over. It also runs as the [catch-up pass](../page.mdx#handle-the-catch-up-pass) that follows a full run, which is why it reads `catchup`: the pass narrows the read to the products changed since the run started, includes the deleted ones, and yields a `delete` write for them so the index loses their documents.
+
+<Note>
+
+You can't build this `seed` with [`graphSeed`](../page.mdx#fill-the-index-from-query-with-graphseed) and its `transform` option. `transform` is synchronous and receives the rows of a single `query.graph` call, while a translated value needs a second read with the `locale` option.
+
+</Note>
 
 Then, when running a search query, such as in an API route, pass the `search_options.attributes_to_search_on` option to specify which locale-specific fields to search on:
 
@@ -234,7 +352,9 @@ Then, when running a search query, such as in an API route, pass the `search_opt
 const { data } = await query.search({
   entity: "product",
   fields: ["id", "title_fr"],
-  q: "chaussures",
+  filters: {
+    q: "chaussures",
+  },
   search_options: {
     attributes_to_search_on: ["title_fr"],
   },

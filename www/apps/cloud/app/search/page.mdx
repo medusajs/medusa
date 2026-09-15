@@ -231,6 +231,23 @@ flowchart LR
     style project stroke-dasharray: 8
 ```
 
+### Indexes in Preview Environments
+
+A [preview environment](../environments/preview/page.mdx) can start from another environment's indexes. When you set a base environment in the [shared previews settings](../environments/preview/page.mdx#manage-shared-previews-settings), Cloud branches that environment's indexes into every preview it creates afterwards, the same way it replicates the base environment's database. A preview of a catalog with tens of thousands of products is then searchable as soon as it deploys, with no seed or reindex of your own.
+
+The branch is a copy, so a write in the preview changes only the preview's indexes. Your base environment's indexes stay as they were.
+
+Without a base environment for search, a preview starts with no indexes, and Medusa creates them as your application first writes to them.
+
+### Index Location and Latency
+
+Medusa Search stores an environment's indexes in the same region as the environment's backend, so a search query never leaves the region. A query your Medusa application sends to Medusa Search takes single-digit milliseconds on the network, and a filtered query that also computes facets and hydrates its hits returns in around 30 milliseconds at the 95th percentile.
+
+Two choices affect that number the most:
+
+- The number of facets a query computes, as explained in [How Medusa Search Counts Search Requests](#how-medusa-search-counts-search-requests).
+- The `consistency` [query option](./settings/page.mdx#search-query-options). The default `strong` value waits for every write made before the query started, while `eventual` skips that check and returns faster.
+
 ---
 
 ## Start Building with Search
@@ -316,8 +333,84 @@ Medusa Search is available on all Cloud plans, with the exception of vector sear
 
 Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organization's usage, and to the [Plans & Pricing](../pricing/page.mdx) guide for the allowance your plan includes.
 
+### How Medusa Search Counts Search Requests
+
+One `query.search` call doesn't always cost one search request. Medusa Search splits a search query into the following requests:
+
+- One request for the hits.
+- One request for the count, unless the query passes the [`count: "none"` search option](!docs!/learn/fundamentals/query/search#change-the-count-strategy).
+- One request per `value` or `range` [facet](!docs!/learn/fundamentals/query/search#facets).
+- Up to four requests per `stats` facet, since the minimum, maximum, count, and sum are each their own aggregate.
+
+Medusa Search sends those requests in batches of at most sixteen, and it adds more batches when a search needs more than that. Every request counts toward your plan's allowance, including the requests that share a batch.
+
+For example, a category page that shows four filter groups, a price slider, and two dimension sliders runs the following search:
+
+```ts
+const { data, search_result } = await query.search({
+  entity: "product",
+  fields: ["id", "title", "handle"],
+  filters: {
+    q: "jacket",
+    category_id: "pcat_01KXR3J9J610DT161E2E4ZS6P1",
+  },
+  search_options: {
+    facets: [
+      "brand",
+      "color",
+      "size",
+      "material",
+      {
+        field: "min_price",
+        type: "range",
+        ranges: [
+          { key: "cheap", to: 50 },
+          { key: "mid", from: 50, to: 200 },
+          { key: "expensive", from: 200 },
+        ],
+      },
+      { field: "min_price", type: "stats" },
+      { field: "width", type: "stats" },
+      { field: "height", type: "stats" },
+    ],
+  },
+})
+```
+
+That single call costs nineteen search requests:
+
+- **1** for the hits or search results.
+- **1** for the count.
+- **4** for the `brand`, `color`, `size`, and `material` value facets.
+- **1** for the `min_price` range facet.
+- **12** for the `min_price`, `width`, and `height` stats facets, at four aggregates each.
+
+Medusa Search sends those nineteen requests as two batches, and your plan's allowance drops by nineteen. The stats facets alone account for twelve of them, so each one you add or remove moves the total by four.
+
+To keep a search cheaper:
+
+- Pass `count: "none"` on a page that shows a "Load more" button rather than a total or page numbers.
+- Request a `stats` facet only for the fields whose range a shopper actually adjusts, such as price, and use a `range` facet with fixed buckets for the rest.
+- Request the facets a page renders on first load, and fetch the ones behind a collapsed filter group in a second search when the shopper opens it.
+
 ---
 
 ## Reindex on Medusa Search
 
 Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one [in code with the Search Module's reindex method](!resources!/infrastructure-modules/search/reindexing).
+
+---
+
+## Frequently Asked Questions
+
+### Can I boost a field's value without sorting by it?
+
+Not yet. Medusa Search ranks hits by the weight you set on each searchable field, so you influence relevance through [field weights](!docs!/learn/fundamentals/query/search#search-example) rather than through the value of an attribute. To put in-stock or fast-delivery products first, [sort](!docs!/learn/fundamentals/query/search#sort-hits) by the field, which overrides the relevance order, or run a second search for the products that don't qualify and append them to the first search's hits.
+
+### Which languages does Medusa Search stem?
+
+Medusa Search stems eighteen languages, including Dutch and German. Stemming is off by default, so set a searchable field's `language` and `stemming` with the [`full_text_search` field option](./settings/page.mdx#set-a-fields-language) to turn it on. Refer to the [list of supported languages](./settings/page.mdx#supported-languages-in-medusa-search) for more details.
+
+### Can I query a Cloud environment's indexes from my local project?
+
+Yes. Copy the environment's search endpoint from the Cloud dashboard and set it in your local project, as explained in [Use Search in Local Development](#use-search-in-local-development). The connection string carries read and write access to that environment's indexes, so use a preview or staging environment rather than production.

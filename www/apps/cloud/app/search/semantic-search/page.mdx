@@ -18,7 +18,10 @@ In this guide, you'll learn how to use semantic search with [Medusa Search](../p
 
 ## What is Semantic Search?
 
-[Semantic search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) ranks results by meaning rather than by matching terms, which needs an embedding of the text you search over. Medusa Search can create those embeddings for you, so you don't run an embedding model or store its output yourself.
+[Semantic search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search) ranks results by meaning rather than by matching terms, which needs an embedding of the text you search over. There are two ways to get those embeddings into your index:
+
+- You compute them with an embedding model of your choice, such as OpenAI's, and yield them on a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector). A query then passes a pre-computed embedding as `search_options.vector.value`.
+- Medusa Search computes them for you from a text field, which the rest of this guide covers. A query then passes raw text as `search_options.vector.query`.
 
 <Note>
 
@@ -149,3 +152,76 @@ Without `embed` on the field, a query must pass a pre-computed embedding as `sea
 Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-modules/search/index-definitions/fields#let-medusa-search-create-the-embedding) for the full details of the modifier, including how it changes the documents your index holds.
 
 </Note>
+
+---
+
+## Example: Build an AI Search Assistant
+
+A chat-style assistant that answers a shopper in natural language and shows the products it found is two layers, and Medusa Search is the second one:
+
+1. **The conversational layer.** A large language model of your choice turns the shopper's message into a search string, and writes the answer around the results it gets back. Medusa Search doesn't run this layer, so you call the model from your own API route with the provider and prompt you want.
+2. **The retrieval layer.** Your API route passes the string the model produced to `query.search` as `search_options.vector.query`, and Medusa Search embeds it and ranks your products by meaning.
+
+For example, create the API route `src/api/store/assistant/route.ts` with the following content:
+
+export const assistantHighlights = [
+  ["22", "toSearchQuery", "Turn the shopper's message into a search string with your model."],
+  ["24", "search", "Search the products with the string the model produced."],
+  ["34", "query", "Medusa Search embeds the string at query time."],
+  ["35", "semantic_ratio", "Blend the semantic score with the full-text score."],
+]
+
+```ts title="src/api/store/assistant/route.ts" highlights={assistantHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import { toSearchQuery } from "../../../lib/assistant"
+
+type AssistantRequest = {
+  message: string
+}
+
+export const POST = async (
+  req: MedusaRequest<AssistantRequest>,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const searchQuery = await toSearchQuery(req.body.message)
+
+  const { data } = await query.search({
+    entity: "product",
+    fields: ["id", "title", "handle", "thumbnail"],
+    filters: {
+      q: searchQuery,
+      status: "published",
+    },
+    search_options: {
+      vector: {
+        field: "title_embedding",
+        query: searchQuery,
+        semantic_ratio: 0.7,
+      },
+    },
+  })
+
+  res.json({
+    query: searchQuery,
+    products: data,
+  })
+}
+```
+
+`toSearchQuery` is the conversational layer, which you write yourself with your model provider's SDK. It receives the shopper's message, such as "something warm for a winter hike", and returns the string to search for, such as "insulated winter hiking jacket".
+
+The route then returns the products Medusa Search ranked, so your storefront renders them next to the model's answer.
+
+Keep the `semantic_ratio` below `1` so the search still respects the terms the shopper typed, such as a brand or a model number that a purely semantic ranking dilutes.
+
+You can then call this API route from your storefront whenever a shopper sends a message to the assistant, ensuring that the conversational and retrieval layers work together seamlessly.

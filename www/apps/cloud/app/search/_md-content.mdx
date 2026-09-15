@@ -48,7 +48,10 @@ indexed and served by it.
   There is no browser-side querying and no search-only key.
 - Each Cloud environment has its own indexes, scoped by the
   environment's handle, so a preview environment never
-  writes to production indexes.
+  writes to production indexes. A preview branches its
+  indexes from the base environment set in the shared
+  previews settings, and starts with none when no base is
+  set.
 - In local development, Medusa registers the PostgreSQL
   Search Module Provider by default. A local project reaches
   Cloud's search resources only through the
@@ -62,7 +65,19 @@ indexed and served by it.
   `search_options`, and both need a text query. Vector
   search is an Enterprise plan feature.
 - Search requests are a metered resource. Requests past the
-  plan's allowance count as Flex Usage.
+  plan's allowance count as Flex Usage. One `query.search`
+  call costs one request for the hits, one for the count
+  unless it passes `count: "none"`, one per value or range
+  facet, and up to four per stats facet, so a page with many
+  facets costs many requests.
+- A searchable field matches terms as written. Stemming is
+  off until the field's `full_text_search` provider option
+  sets `stemming: true` and a `language`, such as `dutch` or
+  `german`. A field holds one language, so a multi-market
+  catalog declares a field per locale.
+- Medusa Search doesn't support synonyms or boosting a hit
+  by an attribute's value. Relevance comes from the weight
+  of each searchable field.
 </context>
 
 <input>
@@ -579,9 +594,10 @@ details this reference leaves out:
   logs for the failed seed and report the cause rather than
   rebuilding the index repeatedly.
 - If a search returns no results while the index is Ready,
-  check that the query's fields are `searchable()` and that
-  the products are published and in the request's sales
-  channel, then report what you found.
+  check that the query's fields are `searchable()`, that the
+  products are published and in the request's sales channel,
+  and that the query passes `typo_tolerance` when the term
+  is misspelled, then report what you found.
 - If a feature the project needs has no Medusa Search
   equivalent, such as synonyms, merchandising rules, geo
   search, or search analytics, list it under manual

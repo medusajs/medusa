@@ -405,7 +405,7 @@ The Search Module provides the interface to perform search queries, but each Sea
         Facets
       </Table.Cell>
       <Table.Cell>
-        Value and range facets. The hits, the count, and every facet share a budget of 16 queries per search.
+        Value and range facets. The hits, the count, and every facet are search requests of their own, which Medusa Search sends in batches of 16.
       </Table.Cell>
       <Table.Cell>
         Facet counts and facet value search on faceted attributes.

@@ -207,8 +207,52 @@ Medusa Search reads the following field options:
       name: "full_text_search",
       type: "`boolean` \\| `object`",
       optional: true,
-      description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language.`,
+      description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language. Refer to [Set a Field's Language](#set-a-fields-language) for an example.`,
       defaultValue: "true for a searchable field, and unset otherwise",
+      children: [
+        {
+          name: "language",
+          type: "`string`",
+          optional: true,
+          description: `The language Medusa Search analyzes the field with, in lowercase. It decides the stemmer and the stop-word list the field uses, and it applies only when you also enable \`stemming\` or \`remove_stopwords\`. Refer to [Set a Field's Language](#set-a-fields-language) for the languages it accepts.`,
+          defaultValue: "english",
+        },
+        {
+          name: "stemming",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search reduces a term to its stem, so a query for \`banken\` also matches \`bank\`. It stems the field in the language that \`language\` names, so set both together.`,
+          defaultValue: "false",
+        },
+        {
+          name: "remove_stopwords",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search drops the language's common words, such as \`de\` in Dutch, from the field and from a query that searches it. Arabic, Greek, Romanian, Tamil, and Turkish have no stop-word list.`,
+          defaultValue: "false",
+        },
+        {
+          name: "ascii_folding",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search strips accents, so a query for \`muller\` matches \`müller\`. Enable it for a language written in Latin script with diacritics, such as French or Spanish.`,
+          defaultValue: "false",
+        },
+        {
+          name: "case_sensitive",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search keeps the case of a term, so a query only matches a term written the same way.`,
+          defaultValue: "false",
+        },
+        {
+          name: "max_token_length",
+          type: "`number`",
+          optional: true,
+          description: `The longest term Medusa Search indexes from the field, in bytes, between \`1\` and \`254\`. It drops anything longer, which keeps a field of long identifiers from growing the index.`,
+          defaultValue: "39",
+        },
+      ],
     },
     {
       name: "glob",
@@ -243,6 +287,154 @@ Medusa Search reads the following field options:
   ]}
   sectionTitle="Field Options"
 />
+
+### Set a Field's Language
+
+Medusa Search matches a searchable field term by term, and it doesn't stem those terms until you ask it to. Set the field's `language` along with `stemming` so a query matches the other forms of a word, which matters for a catalog whose titles and descriptions aren't in English.
+
+For example, to analyze a Dutch title and a German one:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_nl: search.text().searchable().providerOptions({
+      "search-medusa": {
+        full_text_search: {
+          language: "dutch",
+          stemming: true,
+          remove_stopwords: true,
+        },
+      },
+    }),
+    title_de: search.text().searchable().providerOptions({
+      "search-medusa": {
+        full_text_search: {
+          language: "german",
+          stemming: true,
+          remove_stopwords: true,
+        },
+      },
+    }),
+  }),
+  async *seed({ container, catchup, last_key: lastKey }) {
+    const batchSize = 200
+    let cursor = lastKey
+
+    while (true) {
+      const { data: products } = await container.query
+        .graph({
+          entity: "product",
+          fields: [
+            "id",
+            "title",
+            "updated_at",
+            "deleted_at",
+          ],
+          filters: {
+            ...(catchup
+              ? { updated_at: { $gte: catchup.since } }
+              : {}),
+            ...(cursor ? { id: { $gt: cursor } } : {}),
+          },
+          pagination: {
+            take: batchSize,
+            order: { id: "ASC" },
+          },
+          withDeleted: !!catchup,
+        })
+
+      if (!products.length) {
+        return
+      }
+
+      const live = products.filter((p) => !p.deleted_at)
+      const gone = products.filter((p) => !!p.deleted_at)
+      const ids = live.map((p) => p.id)
+
+      const [nlTitles, deTitles] = await Promise.all(
+        ["nl-NL", "de-DE"].map(async (locale) => {
+          const { data } = await container.query.graph({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { id: ids },
+          }, { locale })
+
+          return new Map(
+            data.map((p) => [p.id, p.title])
+          )
+        })
+      )
+
+      yield [
+        ...(live.length
+          ? [{
+              action: "upsert" as const,
+              documents: live.map((product) => ({
+                id: product.id,
+                title_nl:
+                  nlTitles.get(product.id) ?? product.title,
+                title_de:
+                  deTitles.get(product.id) ?? product.title,
+              })),
+            }]
+          : []),
+        ...(gone.length
+          ? [{
+              action: "delete" as const,
+              filters: { id: gone.map((p) => p.id) },
+            }]
+          : []),
+      ]
+
+      if (products.length < batchSize) {
+        return
+      }
+
+      cursor = products[products.length - 1].id
+    }
+  },
+})
+```
+
+The `seed` function reads each page of products once per locale with Query's `locale` option, then writes each locale's title to its own field. It falls back to the product's stored title when a locale has no translation. It also pages by ID so an interrupted run resumes, and yields a `delete` write for the products the [catch-up pass](!resources!/infrastructure-modules/search/index-definitions#handle-the-catch-up-pass) finds deleted.
+
+A Dutch query for `banken` now matches a product whose title holds `bank`, and a German query for `stühle` matches `Stuhl`.
+
+### Supported Languages in Medusa Search
+
+Medusa Search stems the following languages:
+
+- `arabic` (no stop-word list)
+- `danish`
+- `dutch`
+- `english`
+- `finnish`
+- `french`
+- `german`
+- `greek` (no stop-word list)
+- `hungarian`
+- `italian`
+- `norwegian`
+- `portuguese`
+- `romanian` (no stop-word list)
+- `russian`
+- `spanish`
+- `swedish`
+- `tamil` (no stop-word list)
+- `turkish` (no stop-word list)
+
+`remove_stopwords` has no effect on the languages marked above with `(no stop-word list)`. For a language written in Latin script with diacritics, such as French or Spanish, also set `ascii_folding` so a query without the accents still matches.
+
+A field holds one language, since it holds one string. To search a catalog in more than one market, declare a field per locale as explained in [Search Text in Multiple Locales](!resources!/infrastructure-modules/search/index-definitions/fields#search-text-in-multiple-locales), then pass the `attributes_to_search_on` search option to search the field of the shopper's locale.
+
+<Note>
+
+Configure the language on the index's fields rather than per query. Medusa Search rejects a query that passes the `locales` search option.
+
+</Note>
 
 ---
 
