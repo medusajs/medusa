@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-09-11T07:40:12.255Z",
-  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-08-11T19:51:11.728Z",
+  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-09-15T12:10:58.840Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
