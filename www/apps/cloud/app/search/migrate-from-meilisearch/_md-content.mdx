@@ -27,17 +27,31 @@ search behavior intact.
   declares the fields the engine holds, fills the index with
   a `seed` async generator, and keeps it current with its
   `events` and `consume` properties.
+- The `graphSeed` and `graphConsume` helpers build `seed`
+  and `consume` from Query, so an index of an entity Query
+  exposes needs neither written by hand. They take the same
+  options, including a `transform` that reshapes a record or
+  returns `null` to keep it out of the index.
+- Medusa's Store API has a `GET /store/products/search`
+  route that searches the `product` index out-of-the-box,
+  scoped to the request's sales channels and published
+  products. A project doesn't need its own product search
+  route.
 - Queries run through `query.search` in an API route. Medusa
   Search has no browser-side querying and no search-only
-  key, so a storefront that queries Meilisearch directly
-  needs a new API route on the Medusa backend.
+  key, so the storefront searches through the Medusa backend
+  rather than the engine.
+- The `@medusajs/instantsearch-adapter` package is a search
+  client for InstantSearch widgets, so a storefront built on
+  `react-instantsearch` keeps its widgets and swaps the
+  client.
 - Medusa Search does not support synonyms, custom stop-word
   lists, geo search, configurable ranking rules, engine-side
   embedders, or sorting alongside a text query. An index or a
   query that relies on them fails.
 - Medusa Search supports typo tolerance and highlighting, but
   unlike Meilisearch both are opt-in per query through
-  `search_options`. Pass them in the search route to keep the
+  `search_options`. Pass them in the search query to keep the
   storefront's current behavior.
 </context>
 
@@ -56,31 +70,38 @@ search behavior intact.
    `GET /indexes/{index}/settings`.
 4. Decide whether the project needs its own index
    definition. If every indexed field and setting is covered
-   by the default product index, skip to step 6 and say why.
+   by the default product index, skip to step 8 and say why.
 5. Create the index definition under `src/search`. Map
    Meilisearch's `searchableAttributes` to `searchable()`
    fields with a weight, `filterableAttributes` to
    `facetable()` or `filterable()`, `sortableAttributes` to
    `sortable()`, and the attributes missing from
-   `displayedAttributes` to `retrievable(false)`. Reproduce
-   the project's indexing rules in `seed`, such as indexing
-   published products only, and handle create, update, and
-   delete events in `consume`.
-6. Create a `POST /store/products/search` API route that
-   calls `query.search`, with a Zod validation middleware for
-   its body. The storefront queried Meilisearch from the
-   browser, so this route is new rather than a rewrite.
-   Respond with `{ products, count, limit, offset }`, where
-   `products` holds the hydrated records from `data` and the
-   other three come from `search_result.metadata`. Do not
-   also return `search_result.hits`, since each hit's
-   `document` repeats a record already in `products`. Add
-   `search_result.facets` only when the storefront renders
-   facet counts, and a hit's `highlights` only when the
-   query asks for highlighting.
-7. Replace any manual sync trigger with a workflow step that
+   `displayedAttributes` to `retrievable(false)`. Build
+   `seed` and `consume` with `graphSeed` and `graphConsume`,
+   sharing one options object between them, and reproduce
+   the project's indexing rules in its `transform`, such as
+   returning `null` for a product that isn't published. List
+   the entity's create, update, and delete events in
+   `events`.
+6. When the definition is named `product`, it overrides the
+   default index, so keep the fields
+   `GET /store/products/search` filters by as `filterable()`:
+   `id`, `handle`, `status`, `collection_id`, `type_id`, and
+   the `category_ids`, `tag_ids`, and `sales_channel_ids`
+   arrays. The route rejects a filter on a field the index
+   doesn't hold.
+7. Don't create a product search route, since
+   `GET /store/products/search` serves the storefront. Only
+   write a route with `query.search` for an index the Store
+   API doesn't expose, such as a custom data model, or for a
+   search option the built-in route doesn't accept, such as
+   facet counts. In such a route, respond with the hydrated
+   records from `data` and the metadata from `search_result`,
+   and don't also return `search_result.hits`, since each
+   hit's `document` repeats a record already returned.
+8. Replace any manual sync trigger with a workflow step that
    calls the Search Module's `reindex` method.
-8. Delete the Meilisearch module, the sync workflows and
+9. Delete the Meilisearch module, the sync workflows and
    steps, the product subscribers, the module's entry in
    `medusa-config.ts`, and the `meilisearch` dependency.
    Do this here and not earlier, since the application fails
@@ -88,13 +109,22 @@ search behavior intact.
    package is gone. Leave the Meilisearch environment
    variables in place and tell the user to remove them after
    the cutover.
-9. Update the storefront to call the new search route through
-   the JS SDK instead of the Meilisearch client, debouncing
-   the input, and read the route's response shape. Remove the
-   `@meilisearch/instant-meilisearch` and `react-instantsearch`
-   packages, the `searchClient` export, and the
-   `NEXT_PUBLIC_MEILISEARCH_*` variables.
-10. Run `npx medusa db:migrate --execute-all-links` to
+10. Update the storefront to search through Medusa. If it
+    uses InstantSearch widgets, install
+    `@medusajs/instantsearch-adapter`, create its search
+    client with the storefront's JS SDK instance and the
+    path `/store/products/search`, pass the client and the
+    index name to the existing `InstantSearch` provider, and
+    change every component that reads a hit's `_formatted`
+    fields to read its `highlights` instead. Otherwise, call
+    `GET /store/products/search` with the JS SDK and read
+    the `products`, `count`, `offset`, and `limit` it
+    returns. Remove the
+    `@meilisearch/instant-meilisearch` package, the
+    Meilisearch `searchClient` export, and the
+    `NEXT_PUBLIC_MEILISEARCH_*` variables. Keep
+    `react-instantsearch`, which the adapter works with.
+11. Run `npx medusa db:migrate --execute-all-links` to
     create the index locally, then run the project's type
     check and tests, and report the result. Never run
     `medusa db:migrate` without that flag: it asks which
@@ -109,19 +139,25 @@ search behavior intact.
 - Do not delete the user's Meilisearch instance, indexes, or
   keys, and do not call the Meilisearch API.
 - Do not expose the search index to the browser. Every query
-  goes through an API route on the Medusa backend.
+  goes through the Medusa backend.
+- Do not modify `GET /store/products/search` or recreate it
+  in the project.
+- Do not refine a widget or a filter on a field the index
+  definition doesn't mark `searchable()`, `filterable()`,
+  `facetable()`, or `sortable()`.
 - Do not run a deployment or push to any branch.
 - Never run a Medusa CLI command that can prompt without the
   flag that skips its prompts. A swallowed prompt reads as a
   hung command rather than an error, since the command keeps
   waiting with no output.
 - Keep every package the current integration imports
-  installed until step 8, so the application boots at every
+  installed until step 9, so the application boots at every
   point before it.
 - Consult the Medusa documentation at
   https://docs.medusajs.com or the Medusa MCP server for any
   API details you need, including the index definition
-  properties, field types and modifiers, and the options of
+  properties, field types and modifiers, the options of
+  `graphSeed` and `graphConsume`, and the options of
   `query.search`.
 </constraints>
 
@@ -136,7 +172,12 @@ search behavior intact.
   guessing its modifiers.
 - If a storefront feature has no Medusa Search equivalent,
   list it under manual follow-ups instead of removing the
-  feature.
+  feature. The adapter doesn't support `geoSearch`, Insights
+  and Analytics widgets, Query Rules, related-items widgets,
+  autocomplete, or Algolia-style `filters` strings.
+- If the storefront's search can't be expressed with the
+  built-in route's parameters, ask the user before adding a
+  custom search route for products.
 </error_handling>
 
 <output_format>
@@ -157,16 +198,18 @@ environment variables, validating relevance, and deploying.
 
 <success_criteria>
 - The project builds and type checks with no reference to
-  `meilisearch`, `@meilisearch/instant-meilisearch`, or
-  `react-instantsearch` left in the backend or the
-  storefront.
+  `meilisearch` or `@meilisearch/instant-meilisearch` left
+  in the backend or the storefront.
 - Every field the project indexed in Meilisearch is either
   held by the new index definition, covered by the default
   product index, or listed as an intentional removal.
-- The storefront searches through the new API route, and no
-  Meilisearch key reaches the browser.
-- The search route documents its response shape and returns
-  each record once.
+- A `product` index definition holds every field
+  `GET /store/products/search` filters by.
+- The storefront searches products through
+  `GET /store/products/search`, and no Meilisearch key
+  reaches the browser.
+- Every remaining search route uses `query.search` and
+  returns each record once.
 - Every unsupported Meilisearch behavior appears under
   "Behavior differences".
 </success_criteria>
@@ -190,4 +233,5 @@ The steps below need the user's Cloud account and their judgment, so hand them o
 
 - [Medusa Search vs Meilisearch](../meilisearch/page.mdx): a feature-by-feature comparison, including the Meilisearch features that Medusa Search doesn't offer.
 - [Search Module](!resources!/infrastructure-modules/search): the module's documentation, including [index definitions](!resources!/infrastructure-modules/search/index-definitions) and [reindexing](!resources!/infrastructure-modules/search/reindexing).
-- [`query.search`](!docs!/learn/fundamentals/query/search): the API that replaces the Meilisearch client in the search route.
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `GET /store/products/search`, for a custom route over an index the Store API doesn't expose.
+- [InstantSearch Adapter](!resources!/instantsearch): the storefront search client for InstantSearch widgets.

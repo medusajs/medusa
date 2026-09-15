@@ -322,13 +322,6 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "Compare to PostgreSQL",
-                "path": "/search/postgres",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
                 "title": "Compare to Algolia",
                 "path": "/search/algolia",
                 "children": []
@@ -340,6 +333,20 @@ export const generatedSidebars = [
                 "path": "/search/meilisearch",
                 "children": []
               },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to PostgreSQL",
+                "path": "/search/postgres",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "Migration",
+            "children": [
               {
                 "loaded": true,
                 "type": "link",
@@ -476,36 +483,6 @@ export const generatedSidebars = [
             "type": "link",
             "title": "logout",
             "path": "/cli/commands/logout",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Plugins",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Loyalty",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Draft Orders",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
             "children": []
           }
         ]

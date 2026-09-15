@@ -29,7 +29,13 @@ If you installed your Medusa application after v2.21.1, its storefront already h
 
 ## Integrate with an AI Agent
 
-If you use an AI coding agent, such as Claude Code or Cursor, pass it the following prompt to add the integration to your storefront. Then, use the rest of this guide to understand what the agent changed and to customize the search experience.
+If you use an AI agent, such as Claude Code or Codex, ask it to fetch this page:
+
+```bash
+Fetch https://docs.medusajs.com/resources/instantsearch and follow the instructions.
+```
+
+It will receive the following prompt with instructions on how to integrate the InstantSearch adapter into the storefront:
 
 ```md collapsed noLineNumbers
 <role>
@@ -42,8 +48,8 @@ Add a product search experience to this storefront using the `@medusajs/instants
 
 <context>
 - Medusa's Search Module indexes data in a search engine and serves queries with filters, facets, sorting, and pagination.
-- Medusa exposes a `/store/search` API route with a default `product` index. The route scopes every query to the storefront's context, so you don't create a route for product search.
-- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/search`, and converts the results back.
+- Medusa exposes a `/store/products/search` API route with a default `product` index. The route scopes every query to the storefront's context, so you don't create a route for product search.
+- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/products/search`, and converts the results back.
 - InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
 - Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
 - A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
@@ -67,7 +73,7 @@ You have access to the storefront's codebase. Before writing code, determine fro
    - A dedicated search page with the results as the page body.
    Ask in the same message which parts of the search they want beyond the field and the results, such as filters, sorting, or pagination. Don't start writing code until they answer.
 2. Install `@medusajs/instantsearch-adapter` and the InstantSearch library matching the storefront's framework, using the storefront's package manager. Install `@medusajs/js-sdk` only if the storefront doesn't already have it.
-3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/search`, and export the index name as a constant so the UI never repeats the string.
+3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/products/search`, and export the index name as a constant so the UI never repeats the string.
 4. Export the client from a shared module, so every search surface in the storefront uses the same one.
 5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
 6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
@@ -88,8 +94,8 @@ You have access to the storefront's codebase. Before writing code, determine fro
 - Never add these widgets, as the adapter doesn't support them: `geoSearch`, Insights and Analytics widgets, Query Rules, related-items widgets, autocomplete, vector-search widgets, and Algolia `filters` strings.
 - Never add a CSS framework, component library, state-management library, or UI primitive that the storefront doesn't already use. Style the search with the storefront's existing approach.
 - Never create more than one search client or more than one `InstantSearch` provider for the same search.
-- Never modify the Medusa application's `/store/search` route.
-- Create a custom API route only when searching an index other than the ones `/store/search` exposes. In that route, build the hits from the `data` that `query.search` returns.
+- Never modify the Medusa application's `/store/products/search` route.
+- Create a custom API route only when searching an index other than the `product` index that `/store/products/search` exposes. In that route, build the hits from the `data` that `query.search` returns.
 </constraints>
 
 <error_handling>
@@ -141,7 +147,7 @@ Any widget or feature you left out, each with the reason. Write "None" if there 
 
 [InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) is a family of open source UI libraries that render search interfaces from small widgets, such as a search box, a hit list, facet filters, and pagination. It's available for plain JavaScript, React, Vue, and Angular.
 
-The `@medusajs/instantsearch-adapter` package provides a search client for Medusa. It translates each InstantSearch request into a Medusa-compatible search query, sends it to Medusa's `/store/search` API route, then maps the result back into the shape the widgets expect.
+The `@medusajs/instantsearch-adapter` package provides a search client for Medusa. It translates each InstantSearch request into a Medusa-compatible search query, sends it to Medusa's `/store/products/search` API route, then maps the result back into the shape the widgets expect.
 
 So, you install the adapter and add InstantSearch widgets instead of writing the data fetching, filter serialization, and pagination logic yourself.
 
@@ -194,7 +200,7 @@ export const PRODUCT_INDEX_NAME = "product"
 
 export const { searchClient } = createInstantSearchAdapter({
   sdk: sdk,
-  path: "/store/search",
+  path: "/store/products/search",
 })
 ```
 
@@ -211,7 +217,7 @@ export const PRODUCT_INDEX_NAME = "product"
 
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/search",
+  path: "/store/products/search",
 })
 ```
 
@@ -735,7 +741,7 @@ To test the search integration:
         `path`
       </Table.Cell>
       <Table.Cell>
-        The path of the search route, or an absolute URL. Use `/store/search` unless you added a custom route. Required unless you pass `requester`.
+        The path of the search route, or an absolute URL. Use `/store/products/search` unless you added a custom route. Required unless you pass `requester`.
       </Table.Cell>
       <Table.Cell>
         \-
@@ -907,7 +913,7 @@ For example:
 ```ts title="apps/storefront/src/lib/search-client.ts"
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/search",
+  path: "/store/products/search",
   additionalSearchParameters: {
     search_options: {
       match_strategy: "last",
@@ -926,7 +932,7 @@ Every query then uses the `last` match strategy and typo tolerance, and the prod
 
 <Note title="Warning" type="warning">
 
-Filters you set in the storefront's client are visible to customers, who can change them. The `/store/search` route already scopes queries to the storefront's context, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data.
+Filters you set in the storefront's client are visible to customers, who can change them. The `/store/products/search` route already scopes queries to the storefront's context, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data.
 
 </Note>
 
@@ -934,7 +940,7 @@ Filters you set in the storefront's client are visible to customers, who can cha
 
 ## Search a Custom Index
 
-The `/store/search` route exposes the indexes that Medusa considers safe for customers. To search an index you defined yourself, add an API route for it and point the adapter's `path` option to it.
+The `/store/products/search` route exposes the `product` index only, scoped to what's safe for customers. To search an index you defined yourself, add an API route for it and point the adapter's `path` option to it.
 
 For example, assuming you have an API route at `/store/article-search` that searches through articles using [query.search](!docs!/learn/fundamentals/query/search), point the InstantSearch adapter in the storefront to the route:
 

@@ -244,11 +244,6 @@ export const sidebar = [
             children: [
               {
                 type: "link",
-                title: "Compare to PostgreSQL",
-                path: "/search/postgres",
-              },
-              {
-                type: "link",
                 title: "Compare to Algolia",
                 path: "/search/algolia",
               },
@@ -257,6 +252,17 @@ export const sidebar = [
                 title: "Compare to Meilisearch",
                 path: "/search/meilisearch",
               },
+              {
+                type: "link",
+                title: "Compare to PostgreSQL",
+                path: "/search/postgres",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Migration",
+            children: [
               {
                 type: "link",
                 title: "Migrate from Algolia",
@@ -357,31 +363,6 @@ export const sidebar = [
             type: "link",
             title: "logout",
             path: "/cli/commands/logout",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Plugins",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Loyalty",
-            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
-            badge: {
-              text: "Published",
-              variant: "blue",
-            },
-          },
-          {
-            type: "link",
-            title: "Draft Orders",
-            path: "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
-            badge: {
-              text: "Published",
-              variant: "blue",
-            },
           },
         ],
       },

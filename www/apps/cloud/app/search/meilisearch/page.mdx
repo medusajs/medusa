@@ -13,7 +13,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll compare [Medusa Search](../page.mdx) to Meilisearch so you can decide which one to use for your Medusa project.
+This guide compares Medusa Search and Meilisearch to help you decide which one to use for your Medusa project.
 
 <Note title="Not a Cloud user yet?">
 
@@ -25,11 +25,15 @@ In this guide, you'll compare [Medusa Search](../page.mdx) to Meilisearch so you
 
 Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them, from full-text queries with relevance ranking to vector search over embeddings.
 
-The [Search Module](!resources!/infrastructure-modules/search) drives it through a provider that ships with Medusa. Cloud registers and configures that provider for every environment, so Medusa Search needs no setup. You declare an index definition in your codebase, and query it with [`query.search`](!docs!/learn/fundamentals/query/search).
+---
+
+## What is Meilisearch?
+
+Meilisearch is an open source search engine that provides full-text search, typo tolerance, and faceted search out of the box. You either run it yourself or subscribe to Meilisearch Cloud, then provision an index and manage its keys and settings for each environment.
 
 ---
 
-## Summary
+## Comparison Summary
 
 <Table>
   <Table.Header>
@@ -53,23 +57,10 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        None. Cloud provisions the service and passes the credentials to your application.
+        Medusa provisions the service and passes the credentials to your application.
       </Table.Cell>
       <Table.Cell>
         Run the engine yourself, or create a Meilisearch Cloud project. Either way, add the host and key to every environment.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      [Who operates it](#setup-and-infrastructure)
-
-      </Table.Cell>
-      <Table.Cell>
-        Cloud.
-      </Table.Cell>
-      <Table.Cell>
-        You, when you self-host. Meilisearch, on Meilisearch Cloud.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -93,11 +84,39 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
       </Table.Cell>
       <Table.Cell>
 
-      None for products, since Medusa declares the `product` index by default. An index definition per custom entity you search.
+      None by default. Medusa provides Medusa Search and manages the infrastructure for you out of the box.
 
       </Table.Cell>
       <Table.Cell>
-        A Search Module Provider you build and maintain, and an index definition per entity you search.
+        A Search Module Provider you build and maintain to connect your application to Meilisearch and manage the search indexes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Per-environment isolation](#environments-and-previews)
+
+      </Table.Cell>
+      <Table.Cell>
+        Medusa manages one set of indexes per environment for you.
+      </Table.Cell>
+      <Table.Cell>
+        You name and provision an index per environment, or run an instance per environment.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [What you pay for](#cost-and-packaging)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No separate subscription. Your plan includes a monthly allowance of search requests, and anything above it is Flex Usage.
+
+      </Table.Cell>
+      <Table.Cell>
+        Your own infrastructure and engineering time when you self-host, or a Meilisearch Cloud subscription.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -107,10 +126,10 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
       </Table.Cell>
       <Table.Cell>
-        The Search Module applies the events you declare on the index.
+        Medusa provides the indexing logic and keeps the indexes current automatically.
       </Table.Cell>
       <Table.Cell>
-        The module applies the same events, and your provider writes them to the engine.
+        You must implement and maintain the indexing logic in your Algolia Search Module Provider to work with the Search Module. 
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -157,14 +176,14 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
     <Table.Row>
       <Table.Cell>
 
-      [Storefront querying](#querying-and-storefront-integration)
+      [Storefront querying](#storefront-integration)
 
       </Table.Cell>
       <Table.Cell>
-        Through your API routes only.
+        Supported by Medusa's InstantSearch adapter.
       </Table.Cell>
       <Table.Cell>
-        Through your API routes, or from the browser with a search-only key.
+        Supported by Medusa's InstantSearch adapter.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -177,35 +196,7 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
         Uses your indexes automatically.
       </Table.Cell>
       <Table.Cell>
-        Uses your indexes too, once your provider is in place.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      [Per-environment isolation](#environments-and-previews)
-
-      </Table.Cell>
-      <Table.Cell>
-        One set of indexes per environment, created for you.
-      </Table.Cell>
-      <Table.Cell>
-        You name and provision an index per environment, or run an instance per environment.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      [What you pay for](#cost-and-packaging)
-
-      </Table.Cell>
-      <Table.Cell>
-
-      No separate subscription. Your plan includes a monthly allowance of search requests, and anything above it is Flex Usage.
-
-      </Table.Cell>
-      <Table.Cell>
-        Your own infrastructure and engineering time when you self-host, or a Meilisearch Cloud subscription.
+        Uses your indexes automatically.
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -215,7 +206,11 @@ The [Search Module](!resources!/infrastructure-modules/search) drives it through
 
 ## Setup and Infrastructure
 
-Medusa Search is part of Cloud, so there's nothing to provision. Cloud creates the search resources for every environment and passes the credentials to your Medusa application, which registers the provider for you.
+### Medusa Search
+
+Medusa provisions Medusa Search for every Cloud environment. It passes the credentials to your Medusa application, which registers the provider for you. So, you don't need to manually configure or maintain the search infrastructure. You can immediately start searching.
+
+### Meilisearch
 
 Meilisearch takes considerably more work before you can run a single search:
 
@@ -237,7 +232,7 @@ If your Medusa application runs on Cloud, a self-hosted Meilisearch instance sti
 
 ### Local Development
 
-Medusa Search runs on Cloud only. In local development, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) instead, which indexes into your local database. You declare and test an index without running a search engine on your machine.
+Medusa Search runs on Cloud only. In local development, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) instead, which indexes into your local database. You declare and test an index without running a search engine on your machine. You can also [connect to your environment's search endpoint](../page.mdx#use-search-in-local-development).
 
 For MeiliSearch, you run the same engine locally that you run in production, so relevance behaves the same in both, and there's no second provider whose feature set you have to check against.
 
@@ -247,137 +242,129 @@ For MeiliSearch, you run the same engine locally that you run in production, so 
 
 ### With Medusa Search
 
-The [Search Module](!resources!/infrastructure-modules/search) is part of Medusa, and Medusa Search is one of its providers. You declare an [index definition](!resources!/infrastructure-modules/search/index-definitions) in a file under `src/search`, and the module does the rest. It creates the index, fills it, applies events to it, and compiles a query into what the provider understands.
-
-A definition names the entity, the fields the engine holds, the events that change it, and how to read the documents:
-
-```ts title="src/search/brand.ts"
-export const brandIndex = defineSearchIndex({
-  name: "brand",
-  entity: "brand",
-  fields: search.define({
-    id: search.keyword().filterable(),
-    name: search.text().searchable({ weight: 3 }),
-    country: search.keyword().filterable().facetable(),
-  }),
-  events: ["brand.created", "brand.updated"],
-  async consume(event, { container }) {
-    // return the documents to upsert or delete
-  },
-  async *seed({ container }) {
-    // yield the writes that fill the index
-  },
-})
-```
-
-Refer to [Searching Custom Data Models](../page.mdx#searching-custom-data-models) for the full example.
-
-Because the definition is declarative, the index schema, the field weights, and the sync logic all live in your repository and travel with a deployment. Switching providers doesn't change the definition either, so the same file runs against the PostgreSQL provider locally and against Medusa Search on Cloud.
+Medusa provides Medusa Search out of the box. You don't need to spend time building, maintaining, or configuring it yourself. The infrastructure is ready for you to use immediately, allowing you to focus on defining your search indexes and integrating them into your application.
 
 ### With Meilisearch
 
-Medusa doesn't maintain a Search Module Provider for Meilisearch, so you build one. A [Search Module Provider](!resources!/infrastructure-modules/search/providers) implements the interface the Search Module calls, and it's the same interface the provider behind Medusa Search implements. Once you register yours, the module drives Meilisearch the way it drives any provider, so index definitions, event-driven sync, reindexing, and `query.search` all keep working, and admin dashboard search picks up your indexes.
+Medusa doesn't maintain a Search Module Provider for Meilisearch, so you have to build a custom one. A [Search Module Provider](!resources!/infrastructure-modules/search/providers) implements the interface the Search Module calls to interact with the search engine.
 
-That keeps search idiomatic in your project, and the provider itself is a project of its own. The interface is wide:
+The provider needs to handle several responsibilities:
 
-1. Create, migrate, and delete a physical index from an index definition, including translating each field type and modifier into Meilisearch's index settings.
+1. Provide the connection layer to create, migrate, and delete a physical index from an index definition, including translating each field type and modifier into Meilisearch's index settings.
 2. Upsert and delete documents in batches, and delete by a filter.
 3. Compile the Search Module's filter tree, including `$or`, `$not`, and several operators on one field, into a Meilisearch filter expression.
 4. Compile facets, sorting, pagination, and search options into Meilisearch queries, and decide what to reject when the engine can't serve a request.
 5. Map Meilisearch's response back into the shape the module expects, including the relevance score and the facet results.
 
-Refer to [Search Module Providers](!resources!/infrastructure-modules/search/providers) for how the module loads and calls a provider, and to [Create Search Module Provider](!resources!/references/search/provider) for the interface to implement. [Medusa Search vs PostgreSQL](../postgres/page.mdx) shows how much behavior a provider decides, since the two providers Medusa ships answer the same request differently.
+So, by integrating Meilisearch, you spend more time building and maintaining the search infrastructure yourself, compared to using Medusa Search, which is ready to use out of the box.
+
+Refer to [Search Module Providers](!resources!/infrastructure-modules/search/providers) for how the module loads and calls a provider, and to [Create Search Module Provider](!resources!/references/search/provider) for the interface to implement.
 
 ---
 
-## Indexing and Synchronization
+## Environments and Previews
 
-With a provider in place, the Search Module drives both engines through the same flow. What differs is that your provider implements every call the module makes against Meilisearch, so each row below is behavior you own.
+### Medusa Search
+
+Medusa gives each Cloud environment its own set of Medusa Search indexes, scoped by the environment's handle, so a preview environment never writes to production indexes. When you configure a base environment in the [shared previews settings](../../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment along with its database.
+
+### Meilisearch
+
+With Meilisearch, index isolation is your responsibility, and you choose between two approaches:
+
+- **One instance, an index prefix per environment.** Cheaper, but every environment shares the instance's resources, and a bad write in a preview can reach a production index if the prefix is wrong.
+- **An instance per environment.** Fully isolated, and each instance costs infrastructure or a Meilisearch Cloud project.
+
+Either way, a preview environment starts with an empty index and needs a full sync before search works.
+
+---
+
+## Cost and Packaging
 
 <Table>
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell>
-        Concern
+        Option
       </Table.HeaderCell>
       <Table.HeaderCell>
-        Medusa Search
+        What you pay for
       </Table.HeaderCell>
       <Table.HeaderCell>
-        Meilisearch
+        What drives the cost up
       </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        Initial fill
+        Medusa Search
       </Table.Cell>
       <Table.Cell>
 
-        The Search Module calls the index definition's `seed` generator after it creates the index, during the deployment.
+        No separate subscription, since Medusa Search is available on all Cloud plans. Each plan includes a monthly allowance of search requests. Refer to [Plans & Pricing](../../pricing/page.mdx) for the allowance your plan includes.
 
       </Table.Cell>
       <Table.Cell>
-        The Search Module calls `seed` the same way, and your provider turns each batch it yields into Meilisearch writes.
+
+        Search requests beyond your plan's allowance, which count as [Flex Usage](../../usage/page.mdx#what-is-flex-usage).
+
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        Incremental updates
+        Meilisearch, self-hosted
       </Table.Cell>
       <Table.Cell>
-
-        The Search Module routes the events listed in `events` to the index definition's `consume` function.
-
+        The infrastructure you run it on, plus the engineering time to operate it. The engine itself is open source.
       </Table.Cell>
       <Table.Cell>
-        The Search Module routes the events the same way, and your provider implements the upserts and deletes it asks for in Meilisearch.
+        Index size and traffic, since both drive the instance you need. Operational time doesn't scale down with the catalog.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        Schema changes
+        Meilisearch Cloud
       </Table.Cell>
       <Table.Cell>
-
-        The Search Module detects the changed index definition and rebuilds the index. Refer to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing).
-
+        A separate subscription, priced on the documents you store and the searches you run.
       </Table.Cell>
       <Table.Cell>
-        The Search Module decides to rebuild, and your provider applies the changed definition to the index settings. Changing settings makes the engine reprocess the index.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Rebuild on demand
-      </Table.Cell>
-      <Table.Cell>
-
-        Call the Search Module's `reindex` method.
-
-      </Table.Cell>
-      <Table.Cell>
-        Call the same `reindex` method.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Write acknowledgment
-      </Table.Cell>
-      <Table.Cell>
-        The provider doesn't defer its writes, so there's nothing to wait on.
-      </Table.Cell>
-      <Table.Cell>
-        Meilisearch processes a write as an asynchronous task, so your provider decides whether to wait on it before reporting success.
+        Catalog size, traffic, and a project per environment.
       </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
 
+Meilisearch also has some important considerations to keep in mind:
+
+- **The real cost of self-hosting.** The engine is free, and the on-call rotation, the upgrade work, and the disk you size for the index are not.
+- **Document count, not product count.** If you flatten variants or localized fields into separate documents, your document count grows much faster than your catalog does.
+
+### Other Cloud Usage MeiliSearch Affects
+
+Using Meilisearch for Search on Cloud can drive up the costs of the following Cloud usage metrics:
+
+- **Data Transfer** covers external service communications, so every index write and every search your backend sends to Meilisearch counts toward it, along with the responses. This applies to a self-hosted instance and to Meilisearch Cloud alike, since both sit outside your Medusa server.
+- **Compute** covers the indexing work, since the seed and the event handlers that write to Meilisearch run in your Medusa application.
+
+Refer to [Usage](../../usage/page.mdx) on how to monitor both metrics.
+
+---
+
+## Indexing and Synchronization
+
+The Search Module orchestrates the flow for indexing and data synchronization. It uses the methods implemented in the configured provider to interact with the underlying search engine, whether it's Medusa Search or Meilisearch.
+
+Medusa maintains Medusa Search, so it already implements all the necessary methods for indexing and synchronization.
+
+For Meilisearch, it's your responsibility to provide an implementation that translates the Search Module's calls into Meilisearch API requests, allowing the Search Module to manage indexes and push documents into Meilisearch. You must maintain this implementation as Medusa updates the Search Module and its indexing logic.
+
 ---
 
 ## Search Capabilities
+
+The Search Module provides the interface to perform search queries, but each Search Module Provider must translate those features into the specific capabilities and syntax of the underlying search engine.
 
 <Table>
   <Table.Header>
@@ -413,7 +400,7 @@ With a provider in place, the Search Module drives both engines through the same
       </Table.Cell>
       <Table.Cell>
 
-        Supported, with the same word-length thresholds Meilisearch defaults to. Opt in per query with `typo_tolerance`, and tune or exempt a field with the index's [typo tolerance setting](../page.mdx#typo-tolerance).
+        Supported and configurable per index and query, with word-length thresholds and field exemptions.
 
       </Table.Cell>
       <Table.Cell>
@@ -463,7 +450,7 @@ With a provider in place, the Search Module drives both engines through the same
       </Table.Cell>
       <Table.Cell>
 
-        Supported per query on searchable fields, with configurable markers and optional snippets. Refer to [Highlighting](!docs!/learn/fundamentals/query/search#highlighting).
+        Supported on searchable fields, with your own markers and optional snippets.
 
       </Table.Cell>
       <Table.Cell>
@@ -532,129 +519,55 @@ With a provider in place, the Search Module drives both engines through the same
 
 ---
 
-## Querying and Storefront Integration
+## Storefront Integration
 
-{/* TODO update with instantsearch once we have the plugin */}
+[InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) is a family of open source UI libraries, which render a search interface from widgets such as a search box, a hit list, facet filters, and pagination. It's available for plain JavaScript, React, Vue, and Angular.
 
-With Medusa Search, you query through [`query.search`](!docs!/learn/fundamentals/query/search) from an API route, which keeps the search credentials on the backend and gives the storefront one endpoint to call:
+Medusa's [InstantSearch adapter](!resources!/instantsearch) connects those widgets to Medusa's Search Module. It works with any Search Module Provider you integrate in your Medusa application, including both Medusa Search and your custom Meilisearch provider.
 
-```ts title="src/api/search-brands/route.ts"
-const { data, search_result } = await query.search({
-  entity: "brand",
-  fields: ["id", "name", "country"],
-  filters: { q: req.query.q as string },
-  pagination: { take: 20 },
+```tsx
+import {
+  createInstantSearchAdapter,
+} from "@medusajs/instantsearch-adapter"
+import { sdk } from "./sdk"
+import {
+  Configure,
+  InstantSearch,
+} from "react-instantsearch"
+
+const PRODUCT_INDEX_NAME = "product"
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
 })
+
+const Search = () => (
+  <InstantSearch
+    indexName={PRODUCT_INDEX_NAME}
+    searchClient={searchClient}
+  >
+    <Configure hitsPerPage={12} />
+    {/* Render search widgets */}
+  </InstantSearch>
+)
 ```
 
-The storefront then calls your route, so search results pass through the same layer as the rest of your commerce data. You can apply your own authorization, shape the response, and mix in data that isn't in the index.
-
-With a provider in place, `query.search` reaches Meilisearch the same way, so the backend pattern is identical. Meilisearch also supports querying from the browser with a search-only key, which bypasses your provider entirely. Its client works with the InstantSearch component libraries, so a facet-and-pagination interface takes less code than building the same thing against your own API route.
-
-The tradeoff is exposure and control:
-
-- A browser-side key makes the index publicly readable, so anything you index becomes public. Tenant tokens can scope what a key returns, but that scoping lives in the token instead of your backend.
-- A self-hosted instance queried from the browser has to accept public traffic, which is a network and rate-limiting decision you own.
-
-Medusa Search has no browser-side mode, so it always runs behind your API routes. That costs you the direct browser queries and gives you one place to enforce authorization and shape results.
+Refer to the [InstantSearch Adapter guide](!resources!/instantsearch) for more details and examples of setting up search and filters.
 
 ---
 
 ## Admin Dashboard Search
 
-The Medusa admin dashboard's global search calls the `/admin/search` API route, which uses the Search Module for every entity that has an index and falls back to database queries for the rest. Declaring an index for an entity therefore improves admin search with no extra work.
+The Medusa admin dashboard's global search calls the [Admin Search API route](!api!/admin/search/search-admin), which uses the Search Module for every entity that has an index and falls back to database queries for the rest. Declaring an index for an entity therefore improves admin search with no extra work.
 
-Because a Meilisearch [Search Module Provider](!resources!/references/search/provider) sits inside the module, admin search uses it for every entity you index, the same way it uses Medusa Search. The difference is that the provider is yours, so an entity's admin search is only as good as the query compilation you wrote for it.
-
----
-
-## Environments and Previews
-
-Cloud gives each environment its own set of Medusa Search indexes, scoped by the environment's handle, so a preview environment never writes to production indexes. When you configure a base environment in the [shared previews settings](../../environments/preview/page.mdx#manage-shared-previews-settings), Cloud copies the base environment's indexes into the new preview environment along with its database.
-
-With Meilisearch, index isolation is your responsibility, and you choose between two approaches:
-
-- **One instance, an index prefix per environment.** Cheaper, but every environment shares the instance's resources, and a bad write in a preview can reach a production index if the prefix is wrong.
-- **An instance per environment.** Fully isolated, and each instance costs infrastructure or a Meilisearch Cloud project.
-
-Either way, a preview environment starts with an empty index and needs a full sync before search works.
-
----
-
-## Cost and Packaging
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-        Option
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        What you pay for
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        What drives the cost up
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-        Medusa Search
-      </Table.Cell>
-      <Table.Cell>
-
-        No separate subscription, since Medusa Search is available on all Cloud plans. Each plan includes a monthly allowance of search requests. Refer to [Plans & Pricing](../../pricing/page.mdx) for the allowance your plan includes.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Search requests beyond your plan's allowance, which count as [Flex Usage](../../usage/page.mdx#what-is-flex-usage).
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Meilisearch, self-hosted
-      </Table.Cell>
-      <Table.Cell>
-        The infrastructure you run it on, plus the engineering time to operate it. The engine itself is open source.
-      </Table.Cell>
-      <Table.Cell>
-        Index size and traffic, since both drive the instance you need. Operational time doesn't scale down with the catalog.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Meilisearch Cloud
-      </Table.Cell>
-      <Table.Cell>
-        A separate subscription, priced on the documents you store and the searches you run.
-      </Table.Cell>
-      <Table.Cell>
-        Catalog size, traffic, and a project per environment.
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-Two things are worth checking before you commit:
-
-- **The real cost of MeiliSearch self-hosting.** The engine is free, and the on-call rotation, the upgrade work, and the disk you size for the index are not. Compare against Meilisearch Cloud honestly, not against zero.
-- **Search requests on either option.** A storefront that searches on every keystroke makes many more requests than one that searches on submit. Refer to [Usage](../../usage/page.mdx) to monitor your search requests on Medusa Search before you tune the storefront's behavior.
-
-### Other Cloud Usage MeiliSearch Affects
-
-Moving search to Meilisearch doesn't move it off your Cloud bill, it moves it to different metrics. Only Medusa Search counts toward the [Search](../../usage/page.mdx#usage-metrics-definitions) metric, so Meilisearch requests never appear there. They land here instead:
-
-- **Data Transfer** covers external service communications, so every index write and every search your backend sends to Meilisearch counts toward it, along with the responses. This applies to a self-hosted instance and to Meilisearch Cloud alike, since both sit outside your Medusa server.
-- **Compute** covers the indexing work, since the seed and the event handlers that write to Meilisearch run in your Medusa application.
-
-Querying Meilisearch from the browser keeps those searches off your Data Transfer, since they never reach your Medusa server. Refer to [Usage](../../usage/page.mdx) to monitor both metrics.
+This is agnostic across different Search Module Providers, so it works the same for Medusa Search or your custom Meilisearch provider.
 
 ---
 
 ## Comparisons to Other Search Engines
+
+The following guides compare Medusa Search to other search engines:
 
 - [All engines compared](../comparison/page.mdx)
 - [Medusa vs PostgreSQL](../postgres/page.mdx)

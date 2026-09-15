@@ -30,7 +30,7 @@ This feature is available for the Enterprise plan only. Refer to the [Plans & Pr
 
 ## Add a Vector Field to an Index
 
-To use it, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier on it:
+To use semantic search, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier on it:
 
 ```ts title="src/search/product.ts"
 export const productIndex = defineSearchIndex({
@@ -43,26 +43,87 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
+In this example, `title_embedding` is a vector field that holds the embedding Medusa Search computes from the text you index on it, which is the product's title.
+
 ### Index the Text to Embed
 
-Your documents then pass the text to embed as a string on `title_embedding`, and Medusa Search replaces it with the embedding it computes. So a `seed` that indexes each product's title yields the following:
+Your documents pass the text to embed as a string on `title_embedding`, and Medusa Search replaces it with the embedding it computes.
 
-```ts
-yield [{
-  action: "upsert",
-  documents: products.map((product) => ({
+The [`graphSeed`](!resources!/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed) and [`graphConsume`](!resources!/infrastructure-modules/search/index-definitions#consume-events-from-query-with-graphconsume) helpers don't do that for you, since the vector field isn't a field of the entity they read. So, add a `transform` that copies the text onto the vector field, and share it between both helpers:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const source = {
+  fields: ["id", "title"],
+  transform: (product) => ({
     id: product.id,
     title: product.title,
     title_embedding: product.title,
-  })),
-}]
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+Every document the index writes now carries the product's title on `title_embedding`, so Medusa Search embeds it both on the first seed and as products change.
+
+If you write a [`seed` function](!resources!/infrastructure-modules/search/index-definitions#custom-seed-implementation) yourself, set the same field on the documents you yield:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    title_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  async *seed({ container }) {
+    const { data: products } = await container.query.graph({
+      entity: "product",
+      fields: ["id", "title"],
+      // ...
+    })
+
+    yield [{
+      action: "upsert",
+      documents: products.map((product) => ({
+        id: product.id,
+        title: product.title,
+        title_embedding: product.title,
+      })),
+    }]
+  },
+  // ...
+})
 ```
 
 ---
 
 ## Run a Semantic Search
 
-Then, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
+To run a semantic search, pass the text to search for as `search_options.vector.query` in `query.search`, and Medusa Search embeds it at query time:
 
 ```ts
 const { data } = await query.search({
@@ -88,11 +149,3 @@ Without `embed` on the field, a query must pass a pre-computed embedding as `sea
 Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-modules/search/index-definitions/fields#let-medusa-search-create-the-embedding) for the full details of the modifier, including how it changes the documents your index holds.
 
 </Note>
-
----
-
-## Next Steps
-
-- [Medusa Search Settings](../settings/page.mdx)
-- [Vector and Hybrid Search](!docs!/learn/fundamentals/query/search#vector-and-hybrid-search)
-- [Vector Fields](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector)

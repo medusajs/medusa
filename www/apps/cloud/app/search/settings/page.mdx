@@ -1,7 +1,7 @@
 import { Note, TypeList } from "docs-ui"
 
 export const metadata = {
-  title: `Medusa Search Settings`,
+  title: `Medusa Search API Settings`,
   keywords: [
     "search",
     "medusa search",
@@ -14,7 +14,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn about the settings and options that [Medusa Search](../page.mdx) supports, and how to set them on an index, on a field, and on a query.
+In this guide, you'll learn about the settings and options that [Medusa Search](../page.mdx) supports on indexes, fields, and queries.
 
 Aside from the fields and settings that every [index definition](!resources!/infrastructure-modules/search/index-definitions) declares, Medusa Search supports settings and options of its own.
 
@@ -47,10 +47,7 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
-The example declares two settings for the `product` index:
-
-- `distinct_attribute` deduplicates results on `brand`, so a search returns at most one product per brand instead of every product the brand sells.
-- `provider_options` passes options that only the `search-medusa` provider understands, in this case the distance metric it uses to compare embeddings.
+The example declares two settings for the `product` index to control result deduplication and provider-specific options.
 
 Medusa Search accepts the following index settings:
 
@@ -128,9 +125,7 @@ Medusa Search accepts the following index settings:
 
 The example above sets `distinct_attribute` and `provider_options`. The section below covers `typo_tolerance`, which has a few properties of its own.
 
----
-
-## Typo Tolerance
+### Typo Tolerance
 
 Medusa Search matches misspelled terms with a fuzzy index that it builds on every searchable field by default, so an index tolerates typos without declaring any setting. A query is the opposite: it matches terms exactly until you opt in, as explained in [Opt a Query Into Typo Tolerance](#opt-a-query-into-typo-tolerance).
 
@@ -159,9 +154,9 @@ export const productIndex = defineSearchIndex({
 
 The example tolerates a typo on a term of six characters or more, two typos from nine characters, and never fuzzy-matches `sku`. Refer to [Index Settings](#index-settings) for every property the setting accepts.
 
-### Opt a Query Into Typo Tolerance
+#### Opt a Query Into Typo Tolerance
 
-The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options), which is what a search engine that tolerates typos by default, such as Algolia or Meilisearch, does for you:
+The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options):
 
 ```ts
 const { data } = await query.search({
@@ -251,9 +246,9 @@ Medusa Search reads the following field options:
 
 ---
 
-## Query Options
+## Search Query Options
 
-Pass `provider_options` in a query's [search options](!docs!/learn/fundamentals/query/search#search-options) to change how Medusa Search runs that query.
+Pass `provider_options` to [query.search options](!docs!/learn/fundamentals/query/search#search-options) to change how Medusa Search runs that query.
 
 For example:
 
@@ -286,13 +281,3 @@ Medusa Search reads one query option, `consistency`, which accepts the following
   ]}
   sectionTitle="Query Options"
 />
-
-Set `eventual` for queries where a slightly stale result is fine, such as a storefront's product listing. Keep the default for a query that must reflect a recent write, such as an admin view of a product you edited.
-
----
-
-## Next Steps
-
-- [Semantic Search with Medusa Search](../semantic-search/page.mdx)
-- [Index Definitions](!resources!/infrastructure-modules/search/index-definitions)
-- [Search Options](!docs!/learn/fundamentals/query/search#search-options)

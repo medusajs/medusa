@@ -15,8 +15,8 @@ Add a product search experience to this storefront using the `@medusajs/instants
 
 <context>
 - Medusa's Search Module indexes data in a search engine and serves queries with filters, facets, sorting, and pagination.
-- Medusa exposes a `/store/search` API route with a default `product` index. The route scopes every query to the storefront's context, so you don't create a route for product search.
-- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/search`, and converts the results back.
+- Medusa exposes a `/store/products/search` API route with a default `product` index. The route scopes every query to the storefront's context, so you don't create a route for product search.
+- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/products/search`, and converts the results back.
 - InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
 - Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
 - A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
@@ -40,7 +40,7 @@ You have access to the storefront's codebase. Before writing code, determine fro
    - A dedicated search page with the results as the page body.
    Ask in the same message which parts of the search they want beyond the field and the results, such as filters, sorting, or pagination. Don't start writing code until they answer.
 2. Install `@medusajs/instantsearch-adapter` and the InstantSearch library matching the storefront's framework, using the storefront's package manager. Install `@medusajs/js-sdk` only if the storefront doesn't already have it.
-3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/search`, and export the index name as a constant so the UI never repeats the string.
+3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/products/search`, and export the index name as a constant so the UI never repeats the string.
 4. Export the client from a shared module, so every search surface in the storefront uses the same one.
 5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
 6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
@@ -61,8 +61,8 @@ You have access to the storefront's codebase. Before writing code, determine fro
 - Never add these widgets, as the adapter doesn't support them: `geoSearch`, Insights and Analytics widgets, Query Rules, related-items widgets, autocomplete, vector-search widgets, and Algolia `filters` strings.
 - Never add a CSS framework, component library, state-management library, or UI primitive that the storefront doesn't already use. Style the search with the storefront's existing approach.
 - Never create more than one search client or more than one `InstantSearch` provider for the same search.
-- Never modify the Medusa application's `/store/search` route.
-- Create a custom API route only when searching an index other than the ones `/store/search` exposes. In that route, build the hits from the `data` that `query.search` returns.
+- Never modify the Medusa application's `/store/products/search` route.
+- Create a custom API route only when searching an index other than the `product` index that `/store/products/search` exposes. In that route, build the hits from the `data` that `query.search` returns.
 </constraints>
 
 <error_handling>
@@ -114,4 +114,4 @@ Any widget or feature you left out, each with the reason. Write "None" if there 
 
 - [Filtering, Sorting, and Pagination](./examples/filtering-sorting-pagination/page.mdx): the prompt and guide for refining the results this search returns.
 - [Search Module](../infrastructure-modules/search/page.mdx): the module that indexes the data and serves the queries, including [index definitions](../infrastructure-modules/search/index-definitions/page.mdx) and the field modifiers a widget requires.
-- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind the `/store/search` route, for a custom route over an index the route doesn't expose.
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind the `/store/products/search` route, for a custom route over an index the route doesn't expose.

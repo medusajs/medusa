@@ -18,15 +18,15 @@ export const metadata = {
 
 In this guide, you'll learn about Medusa Search and how to use it in your Cloud projects.
 
-## What is Medusa Search?
-
-Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them.
-
 <Note title="Not a Cloud user yet?">
 
 [Sign up for Cloud](../sign-up/page.mdx) to use Medusa Search and other Cloud features.
 
 </Note>
+
+## What is Medusa Search?
+
+Medusa Search is a managed search service for Cloud projects. It stores your search indexes outside of your database and serves search queries for them.
 
 Medusa Search gives your commerce application a search engine that serves storefront-grade search at scale, from full-text queries with relevance ranking to semantic search over embeddings. It's a low-cost yet highly performant solution, so you get sub-second search over large catalogs without paying for a dedicated search cluster or maintaining one.
 
@@ -34,7 +34,7 @@ Medusa Search gives your commerce application a search engine that serves storef
 
 ## Get Started with Medusa Search on Cloud
 
-Medusa Search is enabled by default for Cloud projects with zero configuration. Cloud provisions the search resources for every environment and passes the credentials to your Medusa application, so Medusa registers the provider and uses it for your indexes.
+Medusa Search is enabled by default on Cloud for projects using Medusa v2.21.1+ with zero configuration. Medusa provisions the search resources for every Cloud environment and passes the credentials to your application, so it registers the provider and uses it for your indexes.
 
 ### 1. Upgrade Your Medusa Application
 
@@ -162,13 +162,13 @@ To build a full search experience on this endpoint, including facets, filters, a
 
 Medusa Search provides the following features:
 
-- **Full-text search** with relevance ranking that respects the weight you set on each field.
+- **[Full-text search](!docs!/learn/fundamentals/query/search)** with relevance ranking that respects the weight you set on each field.
 - **[Typo tolerance](./settings/page.mdx#typo-tolerance)** on every searchable field, which you opt into per query.
 - **[Semantic search](./semantic-search/page.mdx)** over embeddings, either ones you compute and store in your index, or ones Medusa Search creates for you from a text field.
-- **Flexible filters** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
-- **Facets** for values, ranges, and aggregate statistics, so a storefront can show counts per category or price bucket.
-- **Highlighting** of the matched terms in a hit's fields, so a storefront can mark what a result matched on.
-- **Sorting** by any number of fields.
+- **[Flexible filters](!docs!/learn/fundamentals/query/search#apply-filters)** that support every operator the Search Module offers, so you can narrow results down to complex conditions, such as products of two brands that are in stock and priced under a certain amount.
+- **[Facets](!docs!/learn/fundamentals/query/search#facets)** for values, ranges, and aggregate statistics, so a storefront can show counts per category or price bucket.
+- **[Highlighting](!docs!/learn/fundamentals/query/search#highlighting)** of the matched terms in a hit's fields, so a storefront can mark what a result matched on.
+- **[Sorting](!docs!/learn/fundamentals/query/search#sort-hits)** by any number of fields.
 - **[Isolated indexes per environment](#search-indexes-per-environment)**, so a preview environment never writes to your production indexes.
 - **[Settings of its own](./settings/page.mdx)** on an index, a field, and a query, such as the distance metric it compares embeddings with, or how current an index must be for a query.
 
@@ -202,6 +202,23 @@ If you're considering or already using another search engine, refer to [Compare 
 
 Each Cloud environment has its own search indexes, so a change in one environment never affects another. Medusa Search scopes them by the environment's handle. Preview environments are the exception, since they can start from another environment's data.
 
+```mermaid
+%%{init: {"flowchart": {"rankSpacing": 70, "subGraphTitleMargin": {"top": 8, "bottom": 8}}, "themeCSS": ".edgePaths { transform: translateY(-14px); }", "themeVariables": {"lineColor": "#A1A1AA", "clusterBorder": "#A1A1AA", "clusterBkg": "transparent", "nodeBorder": "#18181B", "nodeTextColor": "#52525B", "titleColor": "#52525B"}}}%%
+flowchart LR
+    subgraph project["Project"]
+        direction LR
+        prod@{ icon: "medusa:terminal", label: "Production Environment", h: 64, w: 64 }
+        prodIndexes@{ icon: "medusa:search", label: "Production Indexes", h: 64, w: 64 }
+        staging@{ icon: "medusa:terminal", label: "Staging Environment", h: 64, w: 64 }
+        stagingIndexes@{ icon: "medusa:search", label: "Staging Indexes", h: 64, w: 64 }
+
+        prod <--> prodIndexes
+        staging <--> stagingIndexes
+    end
+
+    style project stroke-dasharray: 8
+```
+
 ---
 
 ## Start Building with Search
@@ -226,6 +243,21 @@ To get the connection string for your local Medusa instance:
 4. Click **Search** in the sidebar under the environment's section.
 5. Toggle the "Search endpoint" setting. If the environment is Production, only the organization owner can toggle it.
 6. Copy the connection string that appears after toggling the "Search endpoint" setting.
+
+Set the connection string as the `MEDUSA_CLOUD_SEARCH_ENDPOINT` environment variable in your local project, along with the handle of the environment you took it from:
+
+```bash title=".env"
+MEDUSA_CLOUD_SEARCH_ENDPOINT=https://user:key@search.medusajs.app
+MEDUSA_CLOUD_ENVIRONMENT_HANDLE=your-environment-handle
+```
+
+Medusa reads both variables and registers Medusa Search as the default Search Module Provider, so you don't change `medusa-config.ts`. Your indexes then read from and write to your Cloud environment's search resources instead of your local PostgreSQL database.
+
+<Note title="Warning" type="warning">
+
+Don't also set `MEDUSA_CLOUD_API_KEY` for this. The connection string already carries the credentials, and passing them in both places throws an error when the provider initializes.
+
+</Note>
 
 ### Search Custom Data Models
 
@@ -276,6 +308,4 @@ Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organ
 
 ## Reindex on Medusa Search
 
-Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one in code with the Search Module's `reindex` method.
-
-Refer to the [Manage Search Indexes](!user-guide!/settings/search) user guide for the dashboard flow, and to [Reindexing and Migrations](!resources!/infrastructure-modules/search/reindexing) for how Medusa creates, fills, and rebuilds an index.
+Medusa rebuilds an index when its definition changes, and you can also rebuild one on demand. Admin users rebuild an index from Settings -> Search in the Medusa Admin dashboard, and you can rebuild one [in code with the Search Module's reindex method](!resources!/infrastructure-modules/search/reindexing).
