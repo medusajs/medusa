@@ -238,8 +238,13 @@ export interface CreateAdjustmentDTO {
   /**
    * The code of the promotion that lead to
    * this adjustment.
+   *
+   * Omit the code for custom adjustments that aren't created by a promotion.
+   * The Promotion Module ignores adjustments without a code, so they're not
+   * removed when promotions are re-computed, and they're not attributed to a
+   * promotion's usage limit or campaign budget.
    */
-  code: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.
@@ -280,7 +285,7 @@ export interface UpdateAdjustmentDTO {
    * The code of the promotion that lead to
    * this adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.
@@ -341,7 +346,7 @@ export interface UpsertLineItemAdjustmentDTO {
    * The code of the promotion that lead to the
    * adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.
@@ -862,8 +867,13 @@ export interface CreateShippingMethodAdjustmentDTO {
   /**
    * The code of the promotion that lead to
    * this adjustment.
+   *
+   * Omit the code for custom adjustments that aren't created by a promotion.
+   * The Promotion Module ignores adjustments without a code, so they're not
+   * removed when promotions are re-computed, and they're not attributed to a
+   * promotion's usage limit or campaign budget.
    */
-  code: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.
@@ -899,7 +909,7 @@ export interface UpdateShippingMethodAdjustmentDTO {
    * The code of the promotion that lead to
    * this adjustment.
    */
-  code?: string
+  code?: string | null
 
   /**
    * The amount to adjust the original amount with.

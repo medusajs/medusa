@@ -188,8 +188,11 @@ export interface ComputeActionAdjustmentLine extends Record<string, unknown> {
 
   /**
    * The promotion's code.
+   *
+   * Adjustments without a code aren't created by a promotion, so they're
+   * ignored when computing actions.
    */
-  code: string
+  code?: string | null
 }
 
 /**
