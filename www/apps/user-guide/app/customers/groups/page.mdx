@@ -26,6 +26,8 @@ For example, you can create a VIP customer group and offer them a 10% discount o
 
 ### View List of Customer Groups
 
+<PermissionsBadge permissions={["customer_group:read"]} />
+
 To view all customer groups, go to the Customers → Customer Groups page. From here, you can see a list, filter, and search through all customer groups.
 
 ![Customer Groups List](https://res.cloudinary.com/dza7lstvk/image/upload/v1739888390/User%20Guide/Screenshot_2025-02-18_at_4.19.35_PM_rhhfpx.png)
@@ -33,6 +35,8 @@ To view all customer groups, go to the Customers → Customer Groups page. From 
 ---
 
 ## Create a Customer Group
+
+<PermissionsBadge permissions={["customer_group:create"]} />
 
 To create a customer group:
 
@@ -47,6 +51,8 @@ To create a customer group:
 
 ## View Customer Group Details
 
+<PermissionsBadge permissions={["customer_group:read"]} />
+
 To view the details of a customer group:
 
 1. Go to the Customers → Customer Groups page.
@@ -59,6 +65,8 @@ This opens the customer group's details page.
 ---
 
 ## Edit a Customer Group
+
+<PermissionsBadge permissions={["customer_group:update"]} />
 
 To edit a customer group:
 
@@ -78,6 +86,8 @@ A customer group can have multiple customers. You can add or remove customers fr
 
 ### Add Customers to a Group
 
+<PermissionsBadge permissions={["customer:read", "customer:update", "customer_group:update"]} />
+
 To add customers to a customer group:
 
 1. Go to the customer group’s details page.
@@ -88,6 +98,8 @@ To add customers to a customer group:
 ![Add Customers to Group](https://res.cloudinary.com/dza7lstvk/image/upload/v1739888804/User%20Guide/Screenshot_2025-02-18_at_4.26.31_PM_oxfcva.png)
 
 ### Remove a Customer from a Group
+
+<PermissionsBadge permissions={["customer:update", "customer_group:update"]} />
 
 To remove customers from a customer group:
 
@@ -101,6 +113,8 @@ To remove customers from a customer group:
 ---
 
 ## Edit Customer Group Metadata
+
+<PermissionsBadge permissions={["customer_group:update"]} />
 
 Metadata is custom data that can be associated with the customer group in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the customer group.
 
@@ -121,6 +135,8 @@ To edit the customer group's metadata:
 ---
 
 ## Delete Customer Group
+
+<PermissionsBadge permissions={["customer_group:delete"]} />
 
 <Note type="warning">
 

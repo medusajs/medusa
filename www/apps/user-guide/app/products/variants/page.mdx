@@ -20,6 +20,8 @@ In this guide, you'll learn how to manage the variants of a product.
 
 ## View Product Variants
 
+<PermissionsBadge permissions={["product:read", "product_variant:read"]} />
+
 To view the variants of a product:
 
 1. Go to the Products page from the sidebar.
@@ -33,6 +35,8 @@ If you click on a variant, you can see its details in a separate page.
 ---
 
 ## Create Product Variant
+
+<PermissionsBadge permissions={["product:update", "product_variant:create"]} />
 
 You can only create a product variant if there are option combinations that aren't created as a variant yet. For example, if you [created a new option](../edit/page.mdx#create-options) or deleted an existing variant, you can create a new variant.
 
@@ -72,6 +76,8 @@ Tax-inclusive pricing is configured in the [currency's](../../settings/store/pag
 
 ## Edit Product Variant Details
 
+<PermissionsBadge permissions={["product:update", "product_variant:update"]} />
+
 To edit a product variant's general details:
 
 1. Go to its product's details page.
@@ -87,6 +93,8 @@ To edit a product variant's general details:
 ---
 
 ## Manage Product Variant's Translations
+
+<PermissionsBadge permissions={["translation:update"]} />
 
 <Note>
 
@@ -110,6 +118,8 @@ To manage translations for the product:
 
 ## Edit Product Variant Prices
 
+<PermissionsBadge permissions={["product:update", "product_variant:update", "price:update"]} />
+
 To edit the prices of product variants:
 
 1. Go to its product's details page.
@@ -131,6 +141,8 @@ Tax-inclusive pricing is configured in the [currency's](../../settings/store/pag
 
 ## Manage Product Variant Inventory
 
+<PermissionsBadge permissions={["product:update", "product_variant:update", "inventory_level:update"]} />
+
 There are many ways to manage the inventory of a product variant. From the product's details page, you can manage the inventory of its variants using the [bulk editor](../../tips/bulk-editor/page.mdx), providing you with an intuitive interface.
 
 ![Product Variant Inventory Bulk Editor](https://res.cloudinary.com/dza7lstvk/image/upload/v1739813716/User%20Guide/Screenshot_2025-02-17_at_7.35.03_PM_esoybv.png)
@@ -146,6 +158,8 @@ To manage the inventory of a product's variants:
 ---
 
 ## Manage Product Variant Media
+
+<PermissionsBadge permissions={["product:update", "product_variant:update"]} />
 
 <Note>
 
@@ -183,6 +197,8 @@ If you want to upload a new image, [add it to the product's media](../edit/page.
 
 ## Manage Product Variant Metadata
 
+<PermissionsBadge permissions={["product:update", "product_variant:update"]} />
+
 Metadata is custom data that can be associated with the product variant in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the variant.
 
 To manage the metadata of a product variant:
@@ -211,6 +227,8 @@ To view the JSON structure, click on the <InlineIcon Icon={ArrowUpRightOnBox} al
 ---
 
 ## Delete Product Variant
+
+<PermissionsBadge permissions={["product:update", "product_variant:delete"]} />
 
 <Note type="warning">
 

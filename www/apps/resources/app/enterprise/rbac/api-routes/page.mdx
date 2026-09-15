@@ -1,0 +1,1731 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `How to Use RBAC API Routes`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+
+In this guide, you'll learn about the RBAC API routes, how to authenticate against them, and how to use them for actor types of your own, such as a `vendor_admin` on a marketplace.
+
+<Note>
+
+These routes are added by Medusa's HTTP layer, not the RBAC Module. They only exist when the `rbac` feature flag is enabled.
+
+</Note>
+
+## The /rbac Prefix
+
+The RBAC routes live under the `/rbac` prefix, and they aren't admin routes. The Medusa Admin dashboard consumes them, so they reuse the admin CORS configuration, but they don't restrict authentication to the `user` actor type the way the `/admin` routes do.
+
+This is what makes them reusable: the same routes that manage the roles of admin users also manage the roles of a `vendor_admin`, a `supplier`, or any other actor type of your own. You don't build a second set of role management routes for each actor type.
+
+The routes fall into five groups:
+
+- [Role routes](#role-routes) that manage roles and their policies.
+- [Policy routes](#policy-routes) that manage policies.
+- [Role assignment routes](#role-assignment-routes) that grant roles to entities of any type.
+- [Role user routes](#role-user-routes) that grant roles to admin users.
+- [Introspection routes](#introspection-routes) that tell a client what the authenticated actor can do.
+
+<Note>
+
+The [JS SDK](../../../js-sdk/page.mdx) exposes these routes under `sdk.admin`, since the dashboard consumes them. The methods work for any allowed actor type, as the underlying routes aren't restricted to admin users.
+
+</Note>
+
+---
+
+## Configure Authentication Actor Types
+
+The `/rbac` routes accept a [bearer token](!api!/admin/authentication) or a session, the same as the tokens you obtain from the [authentication routes](../../../commerce-modules/auth/authentication-route/page.mdx). They don't accept secret API keys, since those authenticate as the `user` actor type only.
+
+Only the actor types in the `http.rbacActorTypes` configuration reach these routes. It defaults to `["user"]`, so an admin user works out of the box, and a request authenticated as any other actor type fails with a `401` error.
+
+To allow a custom actor type, add it to the configuration in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      rbacActorTypes: ["user", "vendor_admin"],
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+Learn more about this configuration, including how to allow every actor type, in the [Module Options](../module-options/page.mdx#rbacactortypes-configuration) guide.
+
+---
+
+## Required Policies
+
+Authentication alone isn't enough. Most RBAC routes are guarded by the [authorize middleware](../protect-routes/page.mdx), so the actor must hold the policies below through one of its roles. Otherwise, the request fails with a `403` error.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Routes
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required Policies
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+Read roles, their policies, and their assignments.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_role:read`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Create, update, or delete a role.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_role:create`, `rbac_role:update`, or `rbac_role:delete`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Change a role's policies or assignments.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_role:update`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Read policies.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_policy:read`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Create, update, or delete a policy.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_policy:create`, `rbac_policy:update`, or `rbac_policy:delete`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Manage the admin users of a role.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`user:update` and `rbac_role:update`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+The [introspection routes](#introspection-routes).
+
+      </Table.Cell>
+      <Table.Cell>
+
+None. They only require authentication.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+A `vendor_admin` that manages its own team therefore needs a role granting at least `rbac_role:read` and `rbac_role:update`.
+
+You create that role once with the [Create Role route](#create-role-route), then grant it to each vendor's owner as you onboard them with the [role assignment routes](#role-assignment-routes). To do either in your own customizations instead, use the [RBAC workflows](../workflows/page.mdx), such as the `assignRolesWorkflow` explained in the [RBAC Concepts](../concepts/page.mdx#assign-a-role) guide.
+
+---
+
+## Role Routes
+
+These routes manage roles and the policies each role grants.
+
+### List Roles Route
+
+The Medusa application defines an API route at `/rbac/roles` that lists the roles in your application.
+
+```bash
+curl 'http://localhost:9000/rbac/roles?limit=20' \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.list](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.list) method.
+
+#### Query Parameters
+
+Along with the [pagination and field selection parameters common to list routes](!api!/admin/pagination), this route accepts the following filters:
+
+<TypeList
+  types={[
+    {
+      name: "q",
+      type: "`string`",
+      optional: true,
+      description: "A search term to match a role's searchable properties."
+    },
+    {
+      name: "id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the roles to retrieve."
+    },
+    {
+      name: "name",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The name, or names, of the roles to retrieve."
+    },
+    {
+      name: "parent_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the parent roles whose children to retrieve."
+    },
+    {
+      name: "created_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the role was created. Accepts operators such as `$gt` and `$lt`."
+    },
+    {
+      name: "updated_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the role was last updated. Accepts operators such as `$gt` and `$lt`."
+    },
+    {
+      name: "deleted_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the role was deleted. Accepts operators such as `$gt` and `$lt`."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `roles` array, along with the `count`, `offset`, and `limit` pagination fields:
+
+```json
+{
+  "roles": [
+    {
+      "id": "role_123",
+      "name": "Vendor Owner",
+      "description": "Manages the vendor's team",
+      "parent_id": null,
+      "metadata": null,
+      "created_at": "2025-01-01T00:00:00.000Z",
+      "updated_at": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+### Create Role Route
+
+The Medusa application defines an API route at `/rbac/roles` that creates a role, optionally granting it policies at the same time.
+
+```bash
+curl -X POST http://localhost:9000/rbac/roles \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "name": "Vendor Owner",
+  "description": "Manages the vendor'\''s team",
+  "policy_ids": ["pol_123", "pol_456"]
+}'
+```
+
+In the JS SDK, use the [rbacRole.create](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create) method.
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "name",
+      type: "`string`",
+      optional: false,
+      description: "The role's unique name."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      description: "A description of the role's purpose."
+    },
+    {
+      name: "parent_id",
+      type: "`string`",
+      optional: true,
+      description: "The ID of a parent role to inherit policies from, as explained in the [RBAC Concepts](../concepts/page.mdx#role-hierarchy) guide."
+    },
+    {
+      name: "policy_ids",
+      type: "`string[]`",
+      optional: true,
+      description: "The IDs of the policies to grant. You can also add them later with the [Add Role Policies route](#add-role-policies-route)."
+    },
+    {
+      name: "metadata",
+      type: "`object`",
+      optional: true,
+      description: "Custom key-value pairs to store with the role."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `role` field holding the created role:
+
+```json
+{
+  "role": {
+    "id": "role_123",
+    "name": "Vendor Owner",
+    "description": "Manages the vendor's team",
+    "parent_id": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+<Note>
+
+Medusa rejects the request with a `403` error if the authenticated actor doesn't hold every policy in the `policy_ids` query parameter. This prevents an actor from creating a role that grants more access than they have.
+
+</Note>
+
+### Retrieve Role Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}` that retrieves a role by its ID.
+
+```bash
+curl http://localhost:9000/rbac/roles/{id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.retrieve](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.retrieve) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `role` field holding the retrieved role:
+
+```json
+{
+  "role": {
+    "id": "role_123",
+    "name": "Vendor Owner",
+    "description": "Manages the vendor's team",
+    "parent_id": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+If the role doesn't exist, the request fails with a `404` error.
+
+### Update Role Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}` that updates a role's details.
+
+```bash
+curl -X POST http://localhost:9000/rbac/roles/{id} \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "description": "Manages the vendor and its team"
+}'
+```
+
+In the JS SDK, use the [rbacRole.update](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.update) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+All the properties are optional, so you only pass the ones you change.
+
+<TypeList
+  types={[
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      description: "The role's unique name."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      description: "A description of the role's purpose."
+    },
+    {
+      name: "parent_id",
+      type: "`string`",
+      optional: true,
+      description: "The ID of a parent role to inherit policies from, as explained in the [RBAC Concepts](../concepts/page.mdx#role-hierarchy) guide."
+    },
+    {
+      name: "metadata",
+      type: "`object`",
+      optional: true,
+      description: "Custom key-value pairs to store with the role."
+    }
+  ]}
+/>
+
+To change the role's policies, use the [Add Role Policies](#add-role-policies-route) and [Remove Role Policy](#remove-role-policy-route) routes instead.
+
+#### Response Fields
+
+The response body has a `role` field holding the updated role:
+
+```json
+{
+  "role": {
+    "id": "role_123",
+    "name": "Vendor Owner",
+    "description": "Manages the vendor's team",
+    "parent_id": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+### Delete Role Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}` that deletes a role. Deleting a role removes it from every entity it was assigned to.
+
+```bash
+curl -X DELETE http://localhost:9000/rbac/roles/{id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.delete](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.delete) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response returns the deletion details:
+
+```json
+{
+  "id": "role_123",
+  "object": "rbac_role",
+  "deleted": true
+}
+```
+
+### List Role Policies Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/policies` that lists the policies a role grants directly. Policies inherited from a parent role aren't included.
+
+```bash
+curl http://localhost:9000/rbac/roles/{id}/policies \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.listPolicies](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `policies` array holding the policies directly granted to the role, along with pagination fields: `count`, `offset`, and `limit`:
+
+```json
+{
+  "policies": [
+    {
+      "id": "rolpol_123",
+      "role_id": "role_123",
+      "policy_id": "pol_123",
+      "policy": {
+        "id": "pol_123",
+        "key": "vendor:read",
+        "resource": "vendor",
+        "operation": "read"
+      }
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+### Add Role Policies Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/policies` that grants policies to a role.
+
+```bash
+curl -X POST \
+http://localhost:9000/rbac/roles/{id}/policies \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "policies": ["pol_123", "pol_456"]
+}'
+```
+
+In the JS SDK, use the [rbacRole.addPolicies](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "policies",
+      type: "`string[]`",
+      optional: false,
+      description: "The IDs of the policies to grant. It must have at least one ID."
+    }
+  ]}
+/>
+
+Use the [List Assignable Policies route](#list-assignable-policies-route) to find the policies the authenticated actor can grant.
+
+#### Response Fields
+
+The response body has a `policies` array holding the created links between the role and the policies:
+
+```json
+{
+  "policies": [
+    {
+      "id": "rolpol_123",
+      "role_id": "role_123",
+      "policy_id": "pol_123"
+    }
+  ]
+}
+```
+
+### Remove Role Policy Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/policies/{policy_id}` that removes a single policy from a role. The policy itself isn't deleted.
+
+```bash
+curl -X DELETE \
+http://localhost:9000/rbac/roles/{id}/policies/{policy_id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.removePolicy](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    },
+    {
+      name: "policy_id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the policy to remove."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body contains the details of the deleted role-policy link:
+
+```json
+{
+  "id": "rolpol_123",
+  "object": "rbac_role_policy",
+  "deleted": true
+}
+```
+
+---
+
+## Policy Routes
+
+These routes manage the policies that roles grant. Medusa syncs a policy for each of its own resources at startup, and you create the policies of your custom resources with a migration script, as explained in the [Define Custom Policies](../define-policies/page.mdx) guide. So you mostly read from these routes rather than write to them.
+
+### List Policies Route
+
+The Medusa application defines an API route at `/rbac/policies` that lists the policies in your application.
+
+```bash
+curl 'http://localhost:9000/rbac/policies?resource=product' \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacPolicy.list](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.list) method.
+
+#### Query Parameters
+
+Along with the pagination and field selection parameters common to list routes, this route accepts the following filters:
+
+<TypeList
+  types={[
+    {
+      name: "q",
+      type: "`string`",
+      optional: true,
+      description: "A search term to match a policy's searchable properties."
+    },
+    {
+      name: "id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the policies to retrieve."
+    },
+    {
+      name: "key",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The key, or keys, of the policies to retrieve, in the `resource:operation` format."
+    },
+    {
+      name: "resource",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The resource, or resources, whose policies to retrieve, such as `product`."
+    },
+    {
+      name: "operation",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The operation, or operations, whose policies to retrieve, such as `read`."
+    },
+    {
+      name: "created_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the policy was created. Accepts operators such as `$gt` and `$lt`."
+    },
+    {
+      name: "updated_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the policy was last updated. Accepts operators such as `$gt` and `$lt`."
+    },
+    {
+      name: "deleted_at",
+      type: "`object`",
+      optional: true,
+      description: "Filter by the date the policy was deleted. Accepts operators such as `$gt` and `$lt`."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `policies` array, along with the `count`, `offset`, and `limit` pagination fields:
+
+```json
+{
+  "policies": [
+    {
+      "id": "pol_123",
+      "key": "product:read",
+      "resource": "product",
+      "operation": "read",
+      "name": "Read products",
+      "description": null,
+      "metadata": null
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+### Create Policy Route
+
+The Medusa application defines an API route at `/rbac/policies` that creates a policy.
+
+```bash
+curl -X POST http://localhost:9000/rbac/policies \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "key": "vendor:read",
+  "resource": "vendor",
+  "operation": "read"
+}'
+```
+
+In the JS SDK, use the [rbacPolicy.create](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.create) method.
+
+<Note title="Tip">
+
+Prefer creating the policies of your custom resources with the `createRbacPoliciesWorkflow` in a migration script, as explained in the [Define Custom Policies](../define-policies/page.mdx) guide. The policies then reach every environment you deploy to, and their resource and operation names stay type-safe. Use this route for policies that only exist at runtime, such as ones an admin creates in your own dashboard.
+
+</Note>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "key",
+      type: "`string`",
+      optional: false,
+      description: "The policy's unique key, in the `resource:operation` format."
+    },
+    {
+      name: "resource",
+      type: "`string`",
+      optional: false,
+      description: "The resource the policy applies to, or the wildcard `*`."
+    },
+    {
+      name: "operation",
+      type: "`string`",
+      optional: false,
+      description: "The operation allowed on that resource, or the wildcard `*`."
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      description: "A label for the policy, shown in a user interface."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      description: "A description of what the policy allows."
+    },
+    {
+      name: "metadata",
+      type: "`object`",
+      optional: true,
+      description: "Custom key-value pairs to store with the policy."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the created policy object.
+
+```json
+{
+  "policy": {
+    "id": "pol_123",
+    "key": "vendor:read",
+    "resource": "vendor",
+    "operation": "read",
+    "name": "Read vendors",
+    "description": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+### Retrieve Policy Route
+
+The Medusa application defines an API route at `/rbac/policies/{id}` that retrieves a policy by its ID.
+
+```bash
+curl http://localhost:9000/rbac/policies/{id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacPolicy.retrieve](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The policy's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the retrieved policy object.
+
+```json
+{
+  "policy": {
+    "id": "pol_123",
+    "key": "vendor:read",
+    "resource": "vendor",
+    "operation": "read",
+    "name": "Read vendors",
+    "description": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+If the policy doesn't exist, the request fails with a `404` error.
+
+### Update Policy Route
+
+The Medusa application defines an API route at `/rbac/policies/{id}` that updates a policy.
+
+```bash
+curl -X POST http://localhost:9000/rbac/policies/{id} \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "description": "Allows viewing vendors"
+}'
+```
+
+In the JS SDK, use the [rbacPolicy.update](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.update) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The policy's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+All the properties are optional, so you only pass the ones you change.
+
+<TypeList
+  types={[
+    {
+      name: "key",
+      type: "`string`",
+      optional: true,
+      description: "The policy's unique key, in the `resource:operation` format."
+    },
+    {
+      name: "resource",
+      type: "`string`",
+      optional: true,
+      description: "The resource the policy applies to, or the wildcard `*`."
+    },
+    {
+      name: "operation",
+      type: "`string`",
+      optional: true,
+      description: "The operation allowed on that resource, or the wildcard `*`."
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      description: "A label for the policy, shown in a user interface."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      description: "A description of what the policy allows."
+    },
+    {
+      name: "metadata",
+      type: "`object`",
+      optional: true,
+      description: "Custom key-value pairs to store with the policy."
+    }
+  ]}
+/>
+
+Changing a policy's `resource` or `operation` changes what every role granting it allows, so prefer creating a new policy instead.
+
+#### Response Fields
+
+The response contains the updated policy object.
+
+```json
+{
+  "policy": {
+    "id": "pol_123",
+    "key": "vendor:read",
+    "resource": "vendor",
+    "operation": "read",
+    "name": "Read vendors",
+    "description": null,
+    "metadata": null,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+
+### Delete Policy Route
+
+The Medusa application defines an API route at `/rbac/policies/{id}` that deletes a policy. Deleting a policy removes it from every role granting it.
+
+```bash
+curl -X DELETE http://localhost:9000/rbac/policies/{id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacPolicy.delete](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.delete) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The policy's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the deletion details of the policy.
+
+```json
+{
+  "id": "pol_123",
+  "object": "rbac_policy",
+  "deleted": true
+}
+```
+
+Deleting one of Medusa's core policies has no lasting effect, since the next application start restores it. Learn more in the [RBAC Concepts](../concepts/page.mdx#core-policies) guide.
+
+### List Policy Roles Route
+
+The Medusa application defines an API route at `/rbac/policies/{id}/roles` that lists the roles granting a policy. Use it to find who a policy affects before you change or delete it.
+
+```bash
+curl http://localhost:9000/rbac/policies/{id}/roles \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacPolicy.listRoles](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listRoles) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The policy's ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `roles` array, along with the `count`, `offset`, and `limit` pagination fields:
+
+```json
+{
+  "roles": [
+    {
+      "id": "role_123",
+      "name": "Vendor Owner",
+      "description": "Manages the vendor's team"
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 10
+}
+```
+
+---
+
+## Role Assignment Routes
+
+A role assignment grants a role to an entity, identified by its type and ID rather than a link to a specific data model. This is what lets one set of routes grant roles to admin users, pending invites, and your own entities alike.
+
+Use these routes for an actor type of your own. The `/rbac/roles/{id}/users` routes, covered in the [Role User Routes](#role-user-routes) section, only accept admin users.
+
+### List Role Assignments Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/assignments` that lists the entities a role is granted to.
+
+```bash
+curl -G \
+http://localhost:9000/rbac/roles/{id}/assignments \
+-H 'Authorization: Bearer {token}' \
+-d reference=vendor_admin
+```
+
+In the JS SDK, use the `rbacRole.listAssignments` method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Query Parameters
+
+Along with the pagination and field selection parameters common to list routes, this route accepts the following filters:
+
+<TypeList
+  types={[
+    {
+      name: "reference",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The type, or types, of the entities whose assignments to retrieve, such as `vendor_admin`."
+    },
+    {
+      name: "reference_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of those entities."
+    },
+    {
+      name: "scope",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The type, or types, of the scope whose assignments to retrieve, such as `vendor`."
+    },
+    {
+      name: "scope_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the scope's records."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has an `assignments` array, along with the `count`, `offset`, and `limit` pagination fields:
+
+```json
+{
+  "assignments": [
+    {
+      "id": "rolasgn_123",
+      "role_id": "role_123",
+      "reference": "vendor_admin",
+      "reference_id": "vadm_123",
+      "scope": "vendor",
+      "scope_id": "ven_123"
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 50
+}
+```
+
+An assignment whose `scope` and `scope_id` are `null` is unscoped, so it grants the role on every request the entity makes.
+
+### Create Role Assignments Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/assignments` that grants a role to one or more entities.
+
+For example, to grant the "Vendor Owner" role to a vendor admin within their own vendor:
+
+```bash
+curl -X POST \
+http://localhost:9000/rbac/roles/{id}/assignments \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "reference": "vendor_admin",
+  "reference_ids": ["vadm_123"],
+  "scope": "vendor",
+  "scope_id": "ven_123"
+}'
+```
+
+In the JS SDK, use the `rbacRole.addAssignments` method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the role to grant."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "reference",
+      type: "`string`",
+      optional: false,
+      description: "The type of entity receiving the role. It must match the `entity` of a grantee you declared in the RBAC Module's [actors option](../module-options/page.mdx#actors), such as `vendor_admin`."
+    },
+    {
+      name: "reference_ids",
+      type: "`string[]`",
+      optional: false,
+      description: "The IDs of those entities. It must have at least one ID."
+    },
+    {
+      name: "scope",
+      type: "`string`",
+      optional: true,
+      description: "The type of the [scope](../scopes/page.mdx) restricting the role to a single entity instance, such as `vendor`. Pass it with `scope_id`, otherwise the request fails with a validation error."
+    },
+    {
+      name: "scope_id",
+      type: "`string`",
+      optional: true,
+      description: "The ID of the scope's record, such as `ven_123`. Pass it with `scope`, otherwise the request fails with a validation error."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has an `assignments` array holding the role's assignments for the given `reference`:
+
+```json
+{
+  "assignments": [
+    {
+      "id": "rolasgn_123",
+      "role_id": "role_123",
+      "reference": "vendor_admin",
+      "reference_id": "vadm_123",
+      "scope": "vendor",
+      "scope_id": "ven_123"
+    }
+  ]
+}
+```
+
+<Note>
+
+Medusa resolves the roles of the authenticated actor before it grants the assignment, and rejects the request if the actor doesn't hold every policy of the role. So a vendor owner can't grant a role that gives more access than they have. Learn more in the [RBAC Concepts](../concepts/page.mdx#granting-scope) guide.
+
+</Note>
+
+### Remove Role Assignments Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/assignments` that removes a role from one or more entities.
+
+```bash
+curl -X DELETE \
+http://localhost:9000/rbac/roles/{id}/assignments \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "reference": "vendor_admin",
+  "reference_ids": ["vadm_123"],
+  "scope": "vendor",
+  "scope_id": "ven_123"
+}'
+```
+
+In the JS SDK, use the `rbacRole.removeAssignments` method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the role to remove."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+This route accepts the same `reference`, `reference_ids`, `scope`, and `scope_id` parameters as the [Create Role Assignments route](#create-role-assignments-route).
+
+Pass the `scope` and `scope_id` of the assignment you're removing. Omitting them removes the unscoped assignment instead, leaving a scoped one in place.
+
+#### Response Fields
+
+The response contains the IDs of the removed role assignments and a deletion status.
+
+```json
+{
+  "ids": ["vadm_123"],
+  "object": "role_assignment",
+  "deleted": true
+}
+```
+
+---
+
+## Role User Routes
+
+These routes manage the admin users of a role. They're a shortcut for the [role assignment routes](#role-assignment-routes) whose `reference` is `user`, and they resolve the assigned IDs against the `user` entity so you receive full user records.
+
+### List Role Users Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/users` that lists the admin users assigned a role.
+
+```bash
+curl http://localhost:9000/rbac/roles/{id}/users \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.listUsers](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listUsers) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Query Parameters
+
+Along with the pagination and field selection parameters common to list routes, this route accepts the following filter:
+
+<TypeList
+  types={[
+    {
+      name: "user_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the admin users to retrieve."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body has a `users` array holding the admin users, along with the `count`, `offset`, and `limit` pagination fields:
+
+```json
+{
+  "users": [
+    {
+      "id": "user_123",
+      "email": "admin@medusajs.com",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "avatar_url": null
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 50
+}
+```
+
+### Add Role Users Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/users` that grants a role to one or more admin users.
+
+```bash
+curl -X POST http://localhost:9000/rbac/roles/{id}/users \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "users": ["user_123"]
+}'
+```
+
+In the JS SDK, use the [rbacRole.addUsers](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addUsers) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the role to grant."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "users",
+      type: "`string[]`",
+      optional: false,
+      description: "The IDs of the admin users to grant the role to. It must have at least one ID."
+    }
+  ]}
+/>
+
+The route scopes the new assignments to the scope of the request, if your application sets one in a middleware. To choose the scope explicitly, use the [Create Role Assignments route](#create-role-assignments-route) instead.
+
+#### Response Fields
+
+The response body has a `users` array holding every admin user assigned the role, not only the ones you added:
+
+```json
+{
+  "users": [
+    {
+      "id": "user_123",
+      "email": "admin@medusajs.com",
+      "first_name": "Ada",
+      "last_name": "Lovelace"
+    }
+  ]
+}
+```
+
+### Remove Role Users Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/users` that removes a role from one or more admin users.
+
+```bash
+curl -X DELETE http://localhost:9000/rbac/roles/{id}/users \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "users": ["user_123"]
+}'
+```
+
+In the JS SDK, use the [rbacRole.removeUsers](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeUsers) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the role to remove."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "users",
+      type: "`string[]`",
+      optional: false,
+      description: "The IDs of the admin users to remove the role from. It must have at least one ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the IDs of the admin users from whom the role was removed, along with a deletion status.
+
+```json
+{
+  "ids": ["user_123"],
+  "object": "role_user",
+  "deleted": true
+}
+```
+
+---
+
+## Introspection Routes
+
+These routes tell a client what the authenticated actor can do. They only require authentication, so any allowed actor type reaches them without holding an RBAC policy. Use them to build a dashboard that hides the actions an actor can't perform.
+
+### Introspect Within a Scope
+
+The [Authenticated Actor's Permissions](#authenticated-actors-permissions-route), [List Assignable Roles](#list-assignable-roles-route), and [List Assignable Policies](#list-assignable-policies-route) routes accept the optional `scope` and `scope_id` query parameters. Pass both to evaluate the actor's privileges within that scope instead of across all of their assignments.
+
+For example, a vendor owner switching between two vendors in your dashboard requests the permissions of the vendor they're viewing:
+
+```bash
+curl -G http://localhost:9000/rbac/me/permissions \
+-H 'Authorization: Bearer {token}' \
+-d scope=vendor \
+-d scope_id=ven_123
+```
+
+Passing only one of the two parameters has no effect, and Medusa falls back to the scope of the request, if your application sets one in a middleware.
+
+### Authenticated Actor's Permissions Route
+
+The Medusa application defines an API route at `/rbac/me/permissions` that returns the effective permissions of the authenticated actor, with wildcards expanded into literal `resource:operation` strings.
+
+```bash
+curl http://localhost:9000/rbac/me/permissions \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.mePermissions](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions) method.
+
+#### Query Parameters
+
+This route accepts the optional `scope` and `scope_id` parameters explained in the [Introspect Within a Scope](#introspect-within-a-scope) section.
+
+#### Response Fields
+
+<TypeList
+  types={[
+    {
+      name: "permissions",
+      type: "`string[]`",
+      optional: false,
+      description: "The permissions the actor's roles grant, each in the `resource:operation` format. Since Medusa expands wildcards, a client can check literal membership rather than matching patterns."
+    },
+    {
+      name: "roles",
+      type: "`object[]`",
+      optional: false,
+      description: "The roles assigned to the actor.",
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          optional: false,
+          description: "The role's ID."
+        },
+        {
+          name: "name",
+          type: "`string`",
+          optional: false,
+          description: "The role's name."
+        }
+      ]
+    },
+    {
+      name: "covered_roles",
+      type: "`string[]`",
+      optional: false,
+      description: "The names of the roles whose permissions are a subset of the actor's own. A Super Admin covers every role without holding any assignment, which makes this the useful check for role-based interface guards."
+    }
+  ]}
+/>
+
+For example:
+
+```json
+{
+  "permissions": ["product:read", "product:update"],
+  "roles": [
+    { "id": "role_123", "name": "Vendor Owner" }
+  ],
+  "covered_roles": ["Vendor Staff"]
+}
+```
+
+An actor without an entry in the RBAC Module's [actors option](../module-options/page.mdx#actors) receives empty arrays rather than an error.
+
+### List Assignable Roles Route
+
+The Medusa application defines an API route at `/rbac/roles/assignable` that returns the subset of roles the authenticated actor is allowed to grant to someone else. Use it to populate a role picker, so a vendor owner only sees the roles they can actually grant.
+
+```bash
+curl http://localhost:9000/rbac/roles/assignable \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacRole.listAssignable](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable) method.
+
+#### Query Parameters
+
+This route accepts the same filters and pagination parameters as the [List Roles route](#list-roles-route), along with the optional `scope` and `scope_id` parameters explained in the [Introspect Within a Scope](#introspect-within-a-scope) section.
+
+#### Response Fields
+
+The response body has a `roles` array and a `count` field. Unlike the [List Roles route](#list-roles-route), each item only holds an `id`, `name`, and `description`:
+
+```json
+{
+  "roles": [
+    {
+      "id": "role_123",
+      "name": "Vendor Owner",
+      "description": "Manages the vendor's team"
+    }
+  ],
+  "count": 1
+}
+```
+
+### List Assignable Policies Route
+
+The Medusa application defines an API route at `/rbac/policies/assignable` that returns the subset of policies the authenticated actor is allowed to grant to a role.
+
+```bash
+curl http://localhost:9000/rbac/policies/assignable \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [rbacPolicy.listAssignable](/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listAssignable) method.
+
+#### Query Parameters
+
+This route accepts the same filters and pagination parameters as the [List Policies route](#list-policies-route), along with the optional `scope` and `scope_id` parameters explained in the [Introspect Within a Scope](#introspect-within-a-scope) section.
+
+#### Response Fields
+
+The response body has a `policies` array and a `count` field. Unlike the [List Policies route](#list-policies-route), each item only holds an `id`, `key`, `resource`, `operation`, and `description`:
+
+```json
+{
+  "policies": [
+    {
+      "id": "pol_123",
+      "key": "vendor:read",
+      "resource": "vendor",
+      "operation": "read",
+      "description": null
+    }
+  ],
+  "count": 1
+}
+```
+
+### List Scope Types Route
+
+The Medusa application defines an API route at `/rbac/roles/scopes` that lists the [scope](../scopes/page.mdx) types a grantee supports. Use it, along with the next route, to build a scope picker in a custom dashboard.
+
+```bash
+curl -G http://localhost:9000/rbac/roles/scopes \
+-H 'Authorization: Bearer {token}' \
+-d actor_type=vendor_admin \
+-d grantee_type=vendor_admin
+```
+
+#### Query Parameters
+
+<TypeList
+  types={[
+    {
+      name: "actor_type",
+      type: "`string`",
+      optional: false,
+      description: "The actor type whose configuration to read, such as `vendor_admin`."
+    },
+    {
+      name: "grantee_type",
+      type: "`string`",
+      optional: false,
+      description: "The `entity` of the grantee declared for that actor type."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the list of scope types supported by the grantee for the specified actor type.
+
+```json
+{
+  "scopes": [
+    { "type": "vendor" }
+  ]
+}
+```
+
+The array is empty when the grantee has no `scope_configs`, so its roles can only be unscoped.
+
+### List Scope Options Route
+
+The Medusa application defines an API route at `/rbac/roles/scopes/{type}/options` that lists the values of one scope type that an actor can reach, such as the vendors a vendor admin belongs to.
+
+```bash
+curl -G \
+http://localhost:9000/rbac/roles/scopes/vendor/options \
+-H 'Authorization: Bearer {token}' \
+-d actor_type=vendor_admin \
+-d grantee_type=vendor_admin \
+-d actor_id=vadm_123
+```
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "type",
+      type: "`string`",
+      optional: false,
+      description: "The scope's type, matching the `type` of a scope configuration you declared."
+    }
+  ]}
+/>
+
+#### Query Parameters
+
+<TypeList
+  types={[
+    {
+      name: "actor_type",
+      type: "`string`",
+      optional: false,
+      description: "The actor type whose configuration to read."
+    },
+    {
+      name: "grantee_type",
+      type: "`string`",
+      optional: false,
+      description: "The `entity` of the grantee declared for that actor type."
+    },
+    {
+      name: "actor_id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the actor whose scope values to list."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response contains the list of options for the specified scope type that the actor can reach:
+
+```json
+{
+  "options": [
+    { "id": "ven_123", "label": "Acme" }
+  ]
+}
+```
+
+Medusa labels each option with the scope configuration's `display_field`, falling back to the entity's `name`, then its `title`, then its ID. If the scope type isn't declared for the given grantee, the request fails with a `404` error.
