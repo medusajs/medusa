@@ -210,6 +210,12 @@ export default Post
 
 The `enum` method accepts an array of possible string values.
 
+<Note title="Warning" type="warning">
+
+Enum values must be valid GraphQL names. Each value must match the pattern `[_A-Za-z][_0-9A-Za-z]*`: start with a letter or underscore, and contain only letters, digits, and underscores. Values must not be `true`, `false`, or `null`. For example, `"black"` and `"_301"` are valid, but `"301"`, `"a-b"`, and `"true"` are not. If you use invalid values, `medusa db:generate` fails with a GraphQL syntax error. Use `model.number()` and validate allowed values in your application logic if you need numeric-like identifiers.
+
+</Note>
+
 ### dateTime
 
 The `dateTime` method defines a timestamp property.
