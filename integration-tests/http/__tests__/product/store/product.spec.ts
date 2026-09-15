@@ -1400,6 +1400,56 @@ medusaIntegrationTestRunner({
           expect(response.data.products).toEqual(expectation)
         })
 
+        it("should list products with prices with a sale price list price when the rule is created with the legacy customer group attribute", async () => {
+          const priceList = (
+            await api.post(
+              `/admin/price-lists`,
+              {
+                title: "test price list",
+                description: "test",
+                status: PriceListStatus.ACTIVE,
+                type: PriceListType.SALE,
+                prices: [
+                  {
+                    amount: 350,
+                    currency_code: "usd",
+                    variant_id: product.variants[0].id,
+                  },
+                ],
+                rules: { customer_group_id: [customerGroup.id] },
+              },
+              adminHeaders
+            )
+          ).data.price_list
+
+          const response = await api.get(
+            `/store/products?fields=*variants.calculated_price&region_id=${region.id}`,
+            storeHeadersWithCustomer
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: product.id,
+                variants: [
+                  expect.objectContaining({
+                    calculated_price: expect.objectContaining({
+                      is_calculated_price_price_list: true,
+                      calculated_amount: 350,
+                      original_amount: 3000,
+                      calculated_price: expect.objectContaining({
+                        price_list_id: priceList.id,
+                        price_list_type: "sale",
+                      }),
+                    }),
+                  }),
+                ],
+              }),
+            ])
+          )
+        })
+
         it("should list products with prices with a default price when the price list price is higher and the price list is of type SALE", async () => {
           const priceList = (
             await api.post(
