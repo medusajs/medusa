@@ -195,6 +195,30 @@ function formatReturn(returnOrder) {
 // As the public responses have a different shape than the repository responses, this function is used to map the public properties to the internal db entities
 // e.g "items" is the relation between "line-item" and "order" + "version", The line item itself is in "items.item"
 // This helper maps to the correct repository to query the DB, and the function "formatOrder" remap the response to the public shape
+
+// Fields that only exist on the order_item join entity (publicly "items"), not
+// on the line item ("items.item"). When selected or filtered explicitly they
+// must resolve against the join entity.
+const ORDER_ITEM_ONLY_FIELDS = new Set([
+  "version",
+  "quantity",
+  "fulfilled_quantity",
+  "delivered_quantity",
+  "shipped_quantity",
+  "return_requested_quantity",
+  "return_received_quantity",
+  "return_dismissed_quantity",
+  "written_off_quantity",
+])
+
+// Price fields exist on both entities, but a filter on them semantically
+// targets the effective value recorded on the order_item join entity.
+const ORDER_ITEM_FILTER_FIELDS = new Set([
+  ...ORDER_ITEM_ONLY_FIELDS,
+  "unit_price",
+  "compare_at_unit_price",
+])
+
 export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
   if (isRelatedEntity) {
     return mapRepositoryToRelatedEntity(config)
@@ -243,23 +267,20 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       delete conf.where.items.detail
     }
 
+    // Fields that live on the order_item join entity must be filtered against
+    // it directly; leaving them under item targets the line item table, which
+    // has no such columns and fails metadata validation.
+    const reroutedOrderItemFilters: Record<string, unknown> = {}
+    for (const field of ORDER_ITEM_FILTER_FIELDS) {
+      if (field in original) {
+        reroutedOrderItemFilters[field] = original[field]
+        delete conf.where.items[field]
+      }
+    }
+
     conf.where.items = {
+      ...reroutedOrderItemFilters,
       item: conf.where?.items,
-    }
-
-    if (original.quantity) {
-      conf.where.items.quantity = original.quantity
-      delete conf.where.items.item.quantity
-    }
-
-    if (original.unit_price) {
-      conf.where.items.unit_price = original.unit_price
-      delete conf.where.items.item.unit_price
-    }
-
-    if (original.compare_at_unit_price) {
-      conf.where.items.compare_at_unit_price = original.compare_at_unit_price
-      delete conf.where.items.item.compare_at_unit_price
     }
 
     if (original.detail) {
