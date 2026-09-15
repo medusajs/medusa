@@ -95,6 +95,31 @@ To manage that database, such as changing its name or perform operations on it i
 
 ---
 
+## Seed Data Shared by Tests
+
+The test runner resets the database before each test, so data that you create in one test isn't available in the next one. To seed data that all tests need, pass a `seedBaseline` function:
+
+```ts title="integration-tests/http/test.spec.ts"
+medusaIntegrationTestRunner({
+  seedBaseline: async ({ api, getContainer }) => {
+    // create the data every test needs
+  },
+  testSuite: ({ api }) => {
+    // tests start from the seeded data
+  },
+})
+```
+
+The runner calls `seedBaseline` once after the Medusa application starts, then restores that state before every test.
+
+<Note>
+
+Data that you create in a nested `describe` block's `beforeAll` hook isn't part of the baseline, and the runner rolls it back before that block's tests run. Refer to [the Test Tooling Reference](!resources!/test-tools-reference/medusaIntegrationTestRunner#database-baseline) to learn how to give a nested block its own baseline.
+
+</Note>
+
+---
+
 ## Example Integration Tests
 
 The next chapters provide examples of writing integration tests for API routes and workflows.
