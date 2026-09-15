@@ -1,13 +1,10 @@
 import {
-  BigNumberInput,
   OrderChangeDTO,
   OrderDTO,
   OrderPreviewDTO,
 } from "@medusajs/framework/types"
 import {
-  ChangeActionType,
   deduplicate,
-  MathBN,
   OrderChangeStatus,
   OrderEditWorkflowEvents,
   ReservationItemWorkflowEvents,
@@ -34,6 +31,7 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
+import { computeReservationChangesForOrderEdit } from "./utils/compute-reservation-changes"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
 
 /**
@@ -200,67 +198,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
 
     const { variants, items, toRemoveReservationLineItemIds } = transform(
       { refreshedOrder, previousOrderItems: order.items, orderPreview },
-      ({ refreshedOrder, previousOrderItems, orderPreview }) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
-
-        const previousItemIds = (previousOrderItems || []).map(({ id }) => id)
-        const currentItemIds = refreshedOrder.items.map(({ id }) => id)
-
-        const removedItemIds = previousItemIds.filter(
-          (id) => !currentItemIds.includes(id)
-        )
-
-        const updatedItemIds: string[] = []
-
-        refreshedOrder.items.forEach((ordItem) => {
-          const itemAction = orderPreview.items?.find(
-            (item) =>
-              item.id === ordItem.id &&
-              item.actions?.find(
-                (a) =>
-                  a.action === ChangeActionType.ITEM_ADD ||
-                  a.action === ChangeActionType.ITEM_UPDATE
-              )
-          )
-
-          if (!itemAction) {
-            return
-          }
-
-          const updateAction = itemAction.actions!.find(
-            (a) => a.action === ChangeActionType.ITEM_UPDATE
-          )
-
-          if (updateAction) {
-            updatedItemIds.push(ordItem.id)
-          }
-
-          const newQuantity: BigNumberInput =
-            itemAction.raw_quantity ?? itemAction.quantity
-
-          const reservationQuantity = MathBN.sub(
-            newQuantity,
-            ordItem.raw_fulfilled_quantity
-          )
-
-          allItems.push({
-            id: ordItem.id,
-            variant_id: ordItem.variant_id,
-            quantity: reservationQuantity,
-          })
-          allVariants.push(ordItem.variant)
-        })
-
-        return {
-          variants: allVariants,
-          items: allItems,
-          toRemoveReservationLineItemIds: [
-            ...removedItemIds,
-            ...updatedItemIds,
-          ],
-        }
-      }
+      computeReservationChangesForOrderEdit
     )
 
     const formatedInventoryItems = transform(
