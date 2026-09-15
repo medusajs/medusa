@@ -793,6 +793,80 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.FAILED)
   })
 
+  it("Should not re-invoke a step that is still retrying a temporary failure once a sibling's permanent failure has moved the transaction to COMPENSATING", async () => {
+    class NoopRetryStorage extends BaseInMemoryDistributedTransactionStorage {
+      scheduleRetry() {
+        return Promise.resolve()
+      }
+      clearRetry() {
+        return Promise.resolve()
+      }
+    }
+    DistributedTransaction.setStorage(new NoopRetryStorage())
+
+    const flakyCalls: { flowState: TransactionState }[] = []
+
+    async function handler(
+      actionId: string,
+      functionHandlerType: TransactionHandlerType,
+      payload: TransactionPayload,
+      transaction: DistributedTransactionType
+    ) {
+      if (
+        actionId === "flaky" &&
+        functionHandlerType === TransactionHandlerType.INVOKE
+      ) {
+        flakyCalls.push({ flowState: transaction.getFlow().state })
+        throw new Error("flaky always fails with a temporary error")
+      }
+
+      if (
+        actionId === "boom" &&
+        functionHandlerType === TransactionHandlerType.INVOKE
+      ) {
+        throw new Error("boom always fails permanently")
+      }
+    }
+
+    // "flaky" retries on a 1s interval so there's a real window, after boom
+    // fails permanently on the very first pass, where the transaction sits
+    // in COMPENSATING while flaky is still due for another retry attempt.
+    const flow: TransactionStepsDefinition = {
+      next: [
+        {
+          action: "flaky",
+          maxRetries: 5,
+          retryInterval: 1,
+        },
+        {
+          action: "boom",
+          maxRetries: 0,
+        },
+      ],
+    }
+
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
+
+    const transaction = await strategy.beginTransaction({
+      transactionId: "transaction_id_123",
+      handler,
+    })
+
+    await strategy.resume(transaction)
+    expect(transaction.getFlow().state).toBe(TransactionState.COMPENSATING)
+
+    // Let flaky's retry interval elapse while the flow is already compensating.
+    await setTimeout(1200)
+    await strategy.resume(transaction)
+
+    for (const call of flakyCalls) {
+      expect(call.flowState).not.toBe(TransactionState.COMPENSATING)
+    }
+  })
+
   it("Should handle multiple types of errors", async () => {
     const errorTypes = [
       new Error("Regular error object"),
