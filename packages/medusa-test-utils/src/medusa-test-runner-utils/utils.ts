@@ -1,8 +1,24 @@
 import { isObject } from "@medusajs/framework/utils"
 
 export function applyEnvVarsToProcess(env?: Record<any, any>) {
+  const previousEnvVars = new Map<string, string | undefined>()
+
   if (isObject(env)) {
-    Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+    Object.entries(env).forEach(([k, v]) => {
+      previousEnvVars.set(k, process.env[k])
+      process.env[k] = v
+    })
+  }
+
+  return function restoreEnvVars() {
+    for (const [key, value] of previousEnvVars) {
+      if (value === undefined) {
+        delete process.env[key]
+      } else {
+        process.env[key] = value
+      }
+    }
+    previousEnvVars.clear()
   }
 }
 

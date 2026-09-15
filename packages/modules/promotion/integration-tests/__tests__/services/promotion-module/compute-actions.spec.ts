@@ -7226,19 +7226,19 @@ moduleIntegrationTestRunner({
               expect.arrayContaining([
                 {
                   action: "addItemAdjustment",
-                  item_id: "item_cotton_tshirt2",
+                  item_id: "item_cotton_tshirt",
                   amount: 1225,
                   code: "BUY50GET1000",
                 },
                 {
                   action: "addItemAdjustment",
-                  item_id: "item_cotton_tshirt",
+                  item_id: "item_cotton_tshirt2",
                   amount: 1275,
                   code: "BUY50GET1000",
                 },
                 {
                   action: "addItemAdjustment",
-                  item_id: "item_cotton_tshirt2",
+                  item_id: "item_cotton_tshirt",
                   amount: 10,
                   code: "BUY10GET200",
                 },
@@ -7669,13 +7669,13 @@ moduleIntegrationTestRunner({
             expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
-                item_id: "item_cotton_tshirt1",
+                item_id: "item_cotton_tshirt",
                 amount: 500,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addItemAdjustment",
-                item_id: "item_cotton_tshirt",
+                item_id: "item_cotton_tshirt1",
                 amount: 500,
                 code: "PROMOTION_TEST",
               },
@@ -7738,6 +7738,103 @@ moduleIntegrationTestRunner({
 
             const result = await service.computeActions(
               [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+        })
+
+        describe("when the target product is also part of the buy rules", () => {
+          const targetProduct = "prod_target"
+          const otherProduct1 = "prod_other_1"
+          const otherProduct2 = "prod_other_2"
+
+          let buyAnyTwoGetTargetPromotion
+
+          beforeEach(async () => {
+            buyAnyTwoGetTargetPromotion = await createDefaultPromotion(
+              service,
+              {
+                type: PromotionType.BUYGET,
+                application_method: {
+                  type: "percentage",
+                  target_type: "items",
+                  value: 100,
+                  allocation: "each",
+                  max_quantity: 1,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 2,
+                  target_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "eq",
+                      values: [targetProduct],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "in",
+                      values: [targetProduct, otherProduct1, otherProduct2],
+                    },
+                  ],
+                } as any,
+              }
+            )
+          })
+
+          const buildContext = (productOrder: string[]) => ({
+            currency_code: "usd",
+            items: productOrder.map((productId, index) => ({
+              id: `item_${index}`,
+              quantity: 1,
+              subtotal: 1000,
+              original_total: 1000,
+              is_discountable: true,
+              product: { id: productId },
+            })),
+          })
+
+          const productOrders = [
+            [targetProduct, otherProduct1, otherProduct2],
+            [targetProduct, otherProduct2, otherProduct1],
+            [otherProduct1, targetProduct, otherProduct2],
+            [otherProduct2, targetProduct, otherProduct1],
+            [otherProduct1, otherProduct2, targetProduct],
+            [otherProduct2, otherProduct1, targetProduct],
+          ]
+
+          it.each(productOrders)(
+            "should discount the target regardless of item order (%s, %s, %s)",
+            async (...productOrder) => {
+              const context = buildContext(productOrder as string[])
+
+              const result = await service.computeActions(
+                [buyAnyTwoGetTargetPromotion.code!],
+                context
+              )
+
+              const targetItemId = `item_${productOrder.indexOf(
+                targetProduct
+              )}`
+
+              expect(JSON.parse(JSON.stringify(result))).toEqual([
+                {
+                  action: "addItemAdjustment",
+                  item_id: targetItemId,
+                  amount: 1000,
+                  code: "PROMOTION_TEST",
+                },
+              ])
+            }
+          )
+
+          it("should not apply when there are not enough items to cover both the buy quantity and the target", async () => {
+            const context = buildContext([targetProduct, otherProduct1])
+
+            const result = await service.computeActions(
+              [buyAnyTwoGetTargetPromotion.code!],
               context
             )
 

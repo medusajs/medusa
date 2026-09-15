@@ -4,13 +4,15 @@ import type {
   AttributeSchemaConfig,
   ComputeAttributes,
   Filter,
+  FuzzyEditDistanceThreshold,
   HighlightFragment,
   Limit,
   IndexQuery,
   RankBy,
   Row,
+  TokenFilterOptions,
 } from "./api-types"
-import { toSearchFilter } from "./filters"
+import { mergeFilters, textMatchFilter, toSearchFilter } from "./filters"
 import type { MedusaSearchQueryOptions } from "./options"
 import { IndexPlan, isSearchable } from "./plan"
 
@@ -39,10 +41,10 @@ function providerOptions(
     {}) as MedusaSearchQueryOptions
 }
 
-function textRank(
+function searchableFields(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
-): RankBy {
+): string[] {
   const fields =
     input.search_options?.attributes_to_search_on ?? plan.searchable
 
@@ -52,16 +54,41 @@ function textRank(
     )
   }
 
-  const clauses = fields.map((path): unknown => {
+  for (const path of fields) {
     const field = plan.fields.get(path)
     if (!field || !isSearchable(field.field)) {
       fail(`Field "${path}" is not searchable`)
     }
+  }
 
-    const suffix =
-      input.search_options?.match_strategy === "last"
-        ? { last_as_prefix: true }
-        : undefined
+  return fields
+}
+
+/**
+ * The last word of the query is a prefix, not a whole token, when
+ * `match_strategy` is "last" (typeahead) — every BM25 clause built over
+ * `input.q` needs this so a prefix-only match (query "egg" against document
+ * "Eggs") is scored/highlighted consistently with how `textMatchFilter`
+ * decided the document matches in the first place.
+ */
+function matchStrategySuffix(
+  input: SearchTypes.ProviderSearchQuery
+): TokenFilterOptions | undefined {
+  return input.search_options?.match_strategy === "last"
+    ? { last_as_prefix: true }
+    : undefined
+}
+
+function textRank(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): RankBy {
+  const fields = searchableFields(input, plan)
+  const suffix = matchStrategySuffix(input)
+
+  const clauses = fields.map((path): unknown => {
+    const field = plan.fields.get(path)!
+
     const clause = suffix
       ? [path, "BM25", input.q!, suffix]
       : [path, "BM25", input.q!]
@@ -80,25 +107,10 @@ function textRank(
 
 const TYPO_TOLERANCE_RANK_WEIGHT = 0.01
 
-function boostWithTypoTolerance(
-  input: SearchTypes.ProviderSearchQuery,
-  plan: IndexPlan,
-  rankBy: RankBy
-): RankBy {
-  const fields =
-    input.search_options?.attributes_to_search_on ?? plan.searchable
-  const eligible = fields.filter((path) => {
-    const schema = plan.schema[path]
-    return typeof schema === "object" && (schema as AttributeSchemaConfig).fuzzy
-  })
-
-  if (!eligible.length) {
-    fail(
-      `Search index "${input.index.name}" has no fuzzy-enabled fields for typo tolerance — check settings.typo_tolerance`
-    )
-  }
-
-  const maxEditDistance = [
+function fuzzyMaxEditDistance(plan: IndexPlan): FuzzyEditDistanceThreshold[] {
+  // Both thresholds are validated against Cloud's floor when the index is
+  // planned, so they can be passed through as configured.
+  return [
     {
       min_query_chars: plan.typo_tolerance.min_word_size_for_one_typo,
       distance: 1,
@@ -108,10 +120,34 @@ function boostWithTypoTolerance(
       distance: 2,
     },
   ]
+}
 
-  const words = input.q!.trim().split(/\s+/).filter(Boolean)
+function fuzzyFields(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): string[] {
+  return searchableFields(input, plan).filter((path) => {
+    const schema = plan.schema[path]
+    return (
+      typeof schema === "object" && !!(schema as AttributeSchemaConfig).fuzzy
+    )
+  })
+}
+
+function fuzzyMatchFilter(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): Filter | undefined {
+  const fields = fuzzyFields(input, plan)
+  const words = (input.q ?? "").trim().split(/\s+/).filter(Boolean)
+
+  if (!fields.length || !words.length) {
+    return undefined
+  }
+
+  const maxEditDistance = fuzzyMaxEditDistance(plan)
   const wordClauses = words.map((word): Filter => {
-    const fieldClauses = eligible.map(
+    const fieldClauses = fields.map(
       (path): Filter => [
         path,
         "Fuzzy",
@@ -119,18 +155,49 @@ function boostWithTypoTolerance(
         { max_edit_distance: maxEditDistance, case_sensitive: false },
       ]
     )
-    return fieldClauses.length === 1 ? fieldClauses[0] : ["Or", fieldClauses]
+    return mergeFilters(fieldClauses, "Or")!
   })
 
   const combinator =
     input.search_options?.match_strategy === "any" ? "Or" : "And"
-  const fuzzyFilter: Filter =
-    wordClauses.length === 1 ? wordClauses[0] : [combinator, wordClauses]
+  return mergeFilters(wordClauses, combinator)
+}
+
+function boostWithTypoTolerance(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan,
+  rankBy: RankBy
+): RankBy {
+  const fuzzy = fuzzyMatchFilter(input, plan)
+  if (!fuzzy) {
+    return rankBy
+  }
 
   return [
     "Sum",
-    [rankBy, ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzyFilter]],
+    [rankBy, ["Product", TYPO_TOLERANCE_RANK_WEIGHT, fuzzy]],
   ] as RankBy
+}
+
+export function buildQueryFilters(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): Filter | undefined {
+  const semanticRatio = vectorSemanticRatio(input)
+  const includeTextMatch = !input.search_options?.vector || semanticRatio === 0
+  const text = includeTextMatch
+    ? textMatchFilter(
+        input.q,
+        input.q ? searchableFields(input, plan) : [],
+        input.search_options?.match_strategy
+      )
+    : undefined
+  const match =
+    includeTextMatch && applyTypoTolerance(input, plan)
+      ? mergeFilters([text, fuzzyMatchFilter(input, plan)], "Or")
+      : text
+
+  return mergeFilters([toSearchFilter(input.filters, plan), match])
 }
 
 const DEFAULT_HIGHLIGHT_PRE_TAG = "<mark>"
@@ -138,18 +205,52 @@ const DEFAULT_HIGHLIGHT_POST_TAG = "</mark>"
 const DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT = 1
 const SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT = 3
 
-function buildHighlightPlan(
+function hasTextQuery(input: SearchTypes.ProviderSearchQuery): boolean {
+  return !!input.q?.trim()
+}
+
+function applyTypoTolerance(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
-): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
-  const highlight = input.search_options!.highlight!
+): boolean {
+  return (
+    !!input.search_options?.typo_tolerance &&
+    hasTextQuery(input) &&
+    fuzzyFields(input, plan).length > 0
+  )
+}
 
+function resolveHighlightOptions(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): SearchTypes.SearchHighlightOptions | undefined {
+  const highlight = input.search_options?.highlight
+  if (!highlight || !hasTextQuery(input)) {
+    return undefined
+  }
+
+  if (highlight === true) {
+    return { fields: searchableFields(input, plan) }
+  }
+
+  return highlight
+}
+
+function buildHighlightPlan(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan,
+  highlight: SearchTypes.SearchHighlightOptions
+): { compute_attributes: ComputeAttributes; highlight: HighlightPlan } {
   if (!highlight.fields.length) {
     fail("Medusa search highlighting requires at least one field")
   }
 
   const snippet = !!highlight.snippet
   const computeAttributes: ComputeAttributes = {}
+  const suffix = matchStrategySuffix(input)
+  const rankFragmentsBy = suffix
+    ? ["$fragment", "BM25", input.q!, suffix]
+    : ["$fragment", "BM25", input.q!]
 
   const fields = highlight.fields.map((path, index) => {
     const field = plan.fields.get(path)
@@ -165,7 +266,7 @@ function buildHighlightPlan(
       path,
       {
         fragment_by: snippet ? "sentence" : "none",
-        rank_fragments_by: ["$fragment", "BM25", input.q!],
+        rank_fragments_by: rankFragmentsBy,
         fragment_limit: snippet
           ? SNIPPET_HIGHLIGHT_FRAGMENT_LIMIT
           : DEFAULT_HIGHLIGHT_FRAGMENT_LIMIT,
@@ -246,6 +347,84 @@ function attributeRank(
   return ranks.length === 1 ? ranks[0] : ranks
 }
 
+function vectorSemanticRatio(input: SearchTypes.ProviderSearchQuery): number {
+  const vector = input.search_options?.vector
+  if (!vector) {
+    return 0
+  }
+
+  if (vector.semantic_ratio !== undefined) {
+    return vector.semantic_ratio
+  }
+
+  return input.q ? 0.5 : 1
+}
+
+function resolveVectorField(
+  vector: NonNullable<SearchTypes.SearchOptions["vector"]>,
+  plan: IndexPlan,
+  indexName: string
+): string {
+  if (vector.field) {
+    const planned = plan.fields.get(vector.field)
+    if (!planned || planned.field.type !== "vector") {
+      fail(
+        `Vector search field "${vector.field}" is not a vector field on search index "${indexName}"`
+      )
+    }
+    return vector.field
+  }
+
+  if (plan.vectors.length === 1) {
+    return plan.vectors[0]
+  }
+
+  fail(
+    plan.vectors.length
+      ? `search_options.vector.field is required when the index has more than one vector field`
+      : `search_options.vector requires a vector field on search index "${indexName}"`
+  )
+}
+
+function vectorRank(
+  input: SearchTypes.ProviderSearchQuery,
+  plan: IndexPlan
+): RankBy {
+  const vector = input.search_options!.vector!
+  const field = resolveVectorField(vector, plan, input.index.name)
+  const planned = plan.fields.get(field)!
+
+  if (vector.value && vector.query) {
+    fail(
+      "search_options.vector.value and search_options.vector.query are mutually exclusive"
+    )
+  }
+
+  if (vector.value) {
+    if (planned.dimensions && vector.value.length !== planned.dimensions) {
+      fail(
+        `Vector value for "${field}" expected ${planned.dimensions} dimensions, got ${vector.value.length}`
+      )
+    }
+    return [field, "ANN", vector.value] as RankBy
+  }
+
+  const text = vector.query
+  if (!text) {
+    fail(
+      "Vector search requires search_options.vector.value or search_options.vector.query"
+    )
+  }
+
+  if (!planned.embed) {
+    fail(
+      `search_options.vector.query requires vector field "${field}" to declare "embed"`
+    )
+  }
+
+  return [field, "ANN", ["Embed", text]] as RankBy
+}
+
 export function buildQueryPlan(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
@@ -260,9 +439,6 @@ export function buildQueryPlan(
   if (skip + take > 10000) {
     fail("Medusa search can return at most 10,000 results per query")
   }
-  if ((options.typo_tolerance || options.highlight) && !input.q) {
-    fail("Medusa search typo tolerance and highlighting require a text query")
-  }
   if (options.locales?.length) {
     fail(
       "Configure Medusa search full-text language on index fields, not per query"
@@ -271,38 +447,43 @@ export function buildQueryPlan(
   if (options.min_score !== undefined) {
     fail("Medusa search min_score is not implemented by this provider yet")
   }
-  if (options.match_strategy === "all") {
-    fail(
-      'Medusa search cannot enforce match_strategy: "all" across multiple text fields'
-    )
-  }
-  if (options.vector?.query) {
-    fail(
-      "Text-to-vector embedding is not configured; pass search_options.vector.value"
-    )
-  }
-  if (input.q && options.vector) {
-    fail("Medusa search hybrid BM25/vector search is not implemented yet")
-  }
 
   const ordered = attributeRank(input)
   let rankBy: RankBy
 
   if (options.vector) {
-    if (!options.vector.value) {
-      fail("Vector search requires search_options.vector.value")
-    }
     if (ordered) {
       fail("Vector search cannot also order by an attribute")
     }
-    rankBy = [options.vector.field, "ANN", options.vector.value] as RankBy
-  } else if (input.q) {
-    if (ordered) {
-      fail("Text search cannot also order by an attribute")
+    rankBy = vectorRank(input, plan)
+    const semanticRatio = vectorSemanticRatio(input)
+    if (input.q && semanticRatio < 1) {
+      let text = textRank(input, plan)
+      if (applyTypoTolerance(input, plan)) {
+        text = boostWithTypoTolerance(input, plan, text)
+      }
+      rankBy =
+        semanticRatio === 0
+          ? text
+          : ([
+              "Sum",
+              [
+                ["Product", 1 - semanticRatio, text],
+                ["Product", semanticRatio, rankBy],
+              ],
+            ] as RankBy)
     }
-    rankBy = textRank(input, plan)
-    if (options.typo_tolerance) {
-      rankBy = boostWithTypoTolerance(input, plan, rankBy)
+  } else if (input.q) {
+    // Text matching is a filter (ContainsAllTokens). Attribute order is a
+    // hard sort over those matches. Soft BM25+attribute boosting exists in
+    // the engine but is not what pagination.order means.
+    if (ordered) {
+      rankBy = ordered
+    } else {
+      rankBy = textRank(input, plan)
+      if (applyTypoTolerance(input, plan)) {
+        rankBy = boostWithTypoTolerance(input, plan, rankBy)
+      }
     }
   } else {
     rankBy = ordered ?? (["id", "asc"] as RankBy)
@@ -317,14 +498,15 @@ export function buildQueryPlan(
     }
   }
 
-  const highlightPlan = options.highlight
-    ? buildHighlightPlan(input, plan)
+  const highlight = resolveHighlightOptions(input, plan)
+  const highlightPlan = highlight
+    ? buildHighlightPlan(input, plan, highlight)
     : undefined
 
   return {
     query: {
       rank_by: rankBy,
-      filters: toSearchFilter(input.filters, plan),
+      filters: buildQueryFilters(input, plan),
       include_attributes: input.attributes_to_retrieve,
       limit,
       compute_attributes: highlightPlan?.compute_attributes,

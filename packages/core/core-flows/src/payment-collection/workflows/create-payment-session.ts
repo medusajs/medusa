@@ -16,6 +16,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import {
   createPaymentAccountHolderStep,
   createPaymentSessionStep,
+  validatePaymentProviderInRegionStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
@@ -81,6 +82,11 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       variables: { id: input.payment_collection_id },
       list: false,
     }).config({ name: "get-payment-collection" })
+
+    validatePaymentProviderInRegionStep({
+      payment_collection_id: input.payment_collection_id,
+      provider_id: input.provider_id,
+    })
 
     const { paymentCustomer, accountHolder, existingAccountHolder } = when(
       "customer-id-exists",

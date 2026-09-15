@@ -729,7 +729,7 @@ export const ProductOptionValueWorkflowEvents = {
   /**
    * Emitted when product option values are updated.
    *
-   * @since 2.19.1
+   * @since 2.20.0
    *
    * @eventPayload
    * ```ts
@@ -742,7 +742,7 @@ export const ProductOptionValueWorkflowEvents = {
   /**
    * Emitted when product option values are deleted.
    *
-   * @since 2.19.1
+   * @since 2.20.0
    *
    * @eventPayload
    * ```ts

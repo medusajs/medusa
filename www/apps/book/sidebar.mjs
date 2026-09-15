@@ -452,6 +452,16 @@ export const sidebars = [
               },
               {
                 type: "link",
+                path: "/learn/fundamentals/api-routes/allowed-fields",
+                title: "Allowed Fields",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/api-routes/disallowed-fields",
+                title: "Disallowed Fields",
+              },
+              {
+                type: "link",
                 path: "/learn/fundamentals/api-routes/localization",
                 title: "Localization",
               },

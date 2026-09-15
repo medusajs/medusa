@@ -67,6 +67,14 @@ type SetCalculatedShippingPricingContextHook = Hook<
  * Shipping methods with a custom amount, and flat-rate methods, are left
  * untouched.
  *
+ * @example
+ * const { result } = await refreshPendingDraftOrderShippingMethodsWorkflow(container)
+ *   .run({
+ *     input: {
+ *       order_id: "order_123",
+ *     },
+ *   })
+ *
  * @summary
  *
  * Refresh pending calculated shipping method prices on a draft order edit.

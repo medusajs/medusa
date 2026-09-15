@@ -55,7 +55,8 @@
 			"location_levels": "The associated location levels.\n\n@expandable",
 			"reservation_items": "The associated reservation items.\n\n@expandable",
 			"reserved_quantity": "The reserved quantity of the inventory item",
-			"stocked_quantity": "The stocked quantity of the inventory item"
+			"stocked_quantity": "The stocked quantity of the inventory item",
+			"unit_of_measure": "The unit of measure of the inventory item"
 		},
 		"deprecated": {
 			"is_deprecated": false

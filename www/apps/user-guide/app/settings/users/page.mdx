@@ -78,6 +78,26 @@ To edit the user's metadata:
 
 ---
 
+## Copy Reset Password Link
+
+If a user authenticates with an email and password, you can generate and copy a reset password link for them. This is useful when you want to share the link directly without sending an email.
+
+<Note>
+
+This feature is available since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0). The option only appears for users that authenticate with an email and password. If you don't find the option to copy a reset password link, make sure to [update your Medusa application](!docs!/learn/update).
+
+</Note>
+
+To copy the reset password link for a user:
+
+1. Go to the user's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section's header.
+3. Choose "Copy reset password link" from the dropdown.
+
+The link is copied to your clipboard. The link expires shortly and invalidates any reset password link previously sent to this user.
+
+---
+
 ## Delete a User
 
 <Note>

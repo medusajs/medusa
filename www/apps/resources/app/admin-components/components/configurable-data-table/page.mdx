@@ -1,0 +1,196 @@
+---
+sidebar_label: "Configurable Data Table"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `ConfigurableDataTable - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+- This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+- This component requires the [view configuration feature](../../../commerce-modules/settings/view-configurations/page.mdx#enable-the-feature-flag) to be enabled.
+
+</Note>
+
+The `ConfigurableDataTable` component shows a [data table](!ui!/components/data-table) whose columns, filters, and saved views the user configures from the Medusa Admin. The Medusa Admin uses it on list pages that support view configurations, such as the products, customers, and regions lists.
+
+Use the `ConfigurableDataTable` component when you have the view configuration feature enabled and want to provide a customizable table experience for your users.
+
+```tsx
+import {
+  ConfigurableDataTable,
+} from "@medusajs/dashboard/components"
+```
+
+Unlike `DataTable`, you don't pass columns or data to `ConfigurableDataTable`. Instead, you pass an adapter that tells the component which entity to show and how to fetch its records. The component then resolves the columns and filters from the Medusa backend and applies the user's saved view.
+
+---
+
+## Example
+
+Create the adapter with the `createTableAdapter` utility, then pass it to the component:
+
+```tsx title="src/admin/routes/brands/page.tsx"
+import {
+  ConfigurableDataTable,
+} from "@medusajs/dashboard/components"
+import { createTableAdapter } from "@medusajs/dashboard/lib"
+import { useBrands } from "../../hooks/brands"
+
+const adapter = createTableAdapter<Brand>({
+  entity: "brands",
+  entityName: "Brands",
+  useData: (fields, params) => {
+    const { brands, count, isLoading, isError, error } =
+      useBrands({ fields, ...params })
+
+    return { data: brands, count, isLoading, isError, error }
+  },
+  getRowHref: (row) => `/brands/${row.id}`,
+})
+
+const BrandsPage = () => {
+  return (
+    <ConfigurableDataTable
+      adapter={adapter}
+      heading="Brands"
+      subHeading="Manage your brands"
+      actions={[{ label: "Create", to: "create" }]}
+    />
+  )
+}
+
+export default BrandsPage
+```
+
+---
+
+## Type Argument
+
+`ConfigurableDataTable` accepts one type argument, `TData`, which is the type of a single row in the table.
+
+You set it on the adapter rather than on the component. `createTableAdapter` infers `TData` from the `data` that your `useData` hook returns, and the component picks it up from the `adapter` prop:
+
+```tsx
+import { createTableAdapter } from "@medusajs/dashboard/lib"
+import { useProducts } from "@medusajs/dashboard/hooks"
+
+const adapter = createTableAdapter({
+  entity: "products",
+  useData: (fields, params) => {
+    const { products, count, isLoading, isError, error } =
+      useProducts({ fields, ...params })
+
+    return { data: products, count, isLoading, isError, error }
+  },
+})
+```
+
+`TData` is now `HttpTypes.AdminProduct`, so the adapter's other functions receive typed rows:
+
+```tsx
+const adapter = createTableAdapter({
+  entity: "products",
+  useData: (fields, params) => {
+    // ...
+  },
+  getRowId: (product) => product.id,
+  getRowHref: (product) => `/products/${product.id}`,
+})
+```
+
+To set the type argument explicitly, pass it to `createTableAdapter`. This is useful when your hook's return type is wider than the rows you show:
+
+```tsx
+const adapter = createTableAdapter<Brand>({
+  entity: "brands",
+  useData: (fields, params) => {
+    // ...
+  },
+})
+```
+
+---
+
+## Props
+
+The component accepts the `ConfigurableDataTableProps` type:
+
+<TypeList
+  types={[
+    {
+      name: "adapter",
+      type: "`TableAdapter`",
+      optional: false,
+      description: `The adapter that defines the table's entity, data fetching, and behavior. Create it with [createTableAdapter](../../utilities/table/page.mdx#createtableadapter), which also sets the [\`TData\` type argument](#type-argument). Refer to the [utility's documentation](../../utilities/table/page.mdx#createtableadapter) for the adapter's properties.`,
+    },
+    {
+      name: "heading",
+      type: "`string`",
+      optional: true,
+      description: "The table's heading. If you don't pass it, the component uses the adapter's `entityName`.",
+    },
+    {
+      name: "subHeading",
+      type: "`string`",
+      optional: true,
+      description: "A subheading shown under the heading.",
+    },
+    {
+      name: "pageSize",
+      type: "`number`",
+      optional: true,
+      description: "The number of records per page. If you don't pass it, the component uses the adapter's `pageSize`, which defaults to `20`.",
+    },
+    {
+      name: "queryPrefix",
+      type: "`string`",
+      optional: true,
+      description: "A prefix for the table's URL query parameters. If you don't pass it, the component uses the adapter's `queryPrefix`.",
+    },
+    {
+      name: "layout",
+      type: "`\"fill\"` \\| `\"auto\"`",
+      optional: true,
+      defaultValue: "fill",
+      description: "Whether the table fills the available height.",
+    },
+    {
+      name: "actions",
+      type: "`object[]`",
+      optional: true,
+      description: "The buttons shown next to the table's heading.",
+      children: [
+        {
+          name: "label",
+          type: "`string`",
+          optional: false,
+          description: "The button's label.",
+        },
+        {
+          name: "disabled",
+          type: "`boolean`",
+          optional: true,
+          description: "Whether the button is disabled.",
+        },
+        {
+          name: "to",
+          type: "`string`",
+          optional: true,
+          description: "The path to navigate to when the user clicks the button. Pass either `to` or `onClick`, not both.",
+        },
+        {
+          name: "onClick",
+          type: "`() => void`",
+          optional: true,
+          description: "A function that runs when the user clicks the button. Pass either `to` or `onClick`, not both.",
+        },
+      ],
+    },
+  ]}
+/>

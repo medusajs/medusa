@@ -101,15 +101,16 @@ export interface AdminSearchIndexListResponse {
 }
 
 /**
- * The result of triggering a search index reindex.
+ * The result of triggering a search index reindex. The reindex runs in the
+ * background - check the index's `status` to know when it's done.
  */
 export interface AdminSearchIndexReindexResponse {
   /**
-   * Identifier of the reindex job.
+   * Identifier of the triggered reindex job.
    */
   job_id: string
   /**
-   * Names of the indexes that were reindexed.
+   * Names of the indexes being reindexed.
    */
   indexes: string[]
 }

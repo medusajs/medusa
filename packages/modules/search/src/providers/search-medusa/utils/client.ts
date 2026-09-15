@@ -1,4 +1,5 @@
 import { MedusaError } from "@medusajs/framework/utils"
+import { parseRetryAfter } from "../../../utils/rate-limit"
 import type {
   IndexCreateParams,
   IndexMetadata,
@@ -22,13 +23,16 @@ export class CloudServiceError extends Error {
   data: any
   message: string
   status?: number
+  /** How long Cloud asked the caller to wait, in milliseconds. */
+  retry_after?: number
 
   constructor(
     type: string,
     originalType: string,
     data: any,
     message: string,
-    status?: number
+    status?: number,
+    retryAfter?: number
   ) {
     super(message)
     this.name = "CloudServiceError"
@@ -37,6 +41,7 @@ export class CloudServiceError extends Error {
     this.data = data
     this.message = message
     this.status = status
+    this.retry_after = retryAfter
   }
 
   get isNotFound(): boolean {
@@ -52,9 +57,14 @@ type RequestInitWithBody = Omit<RequestInit, "body"> & { body?: object }
  */
 export class MedusaSearchClient {
   protected readonly options_: MedusaSearchProviderOptions
+  protected readonly fetch_: typeof fetch
 
-  constructor(options: MedusaSearchProviderOptions) {
+  constructor(
+    options: MedusaSearchProviderOptions,
+    { fetchImpl }: { fetchImpl?: typeof fetch } = {}
+  ) {
     this.options_ = options
+    this.fetch_ = fetchImpl ?? ((input, init) => globalThis.fetch(input, init))
   }
 
   index(name: string): MedusaSearchIndex {
@@ -99,7 +109,7 @@ export class MedusaSearchClient {
       "x-medusa-environment-handle": this.options_.environment_handle,
     }
 
-    const response = await fetch(`${this.options_.endpoint}${path}`, {
+    const response = await this.fetch_(`${this.options_.endpoint}${path}`, {
       method,
       headers: {
         ...options.headers,
@@ -116,7 +126,8 @@ export class MedusaSearchClient {
         body.originalType,
         body.data,
         body.message,
-        response.status
+        response.status,
+        parseRetryAfter(response.headers.get("retry-after"))
       )
     }
 
@@ -167,25 +178,73 @@ export class MedusaSearchIndex {
   }
 }
 
-export function validateMedusaSearchOptions(
+export function resolveMedusaSearchOptions(
   options: MedusaSearchProviderOptions
-): void {
-  if (!options?.api_key) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_ARGUMENT,
-      'Medusa search requires an explicit "api_key" provider option'
-    )
-  }
-  if (!options.endpoint) {
+): MedusaSearchProviderOptions {
+  if (!options?.endpoint) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       'Medusa search requires an explicit "endpoint" provider option'
     )
   }
+
+  const endpoint = parseEndpoint(options.endpoint)
+
+  if (endpoint.api_key && options.api_key) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      'Medusa search received credentials both in the "endpoint" provider option and in the "api_key" provider option. Pass only one of them'
+    )
+  }
+
+  const apiKey = endpoint.api_key || options.api_key
+
+  if (!apiKey) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      'Medusa search requires an explicit "api_key" provider option, or basic auth credentials on the "endpoint" provider option'
+    )
+  }
+
   if (!options.environment_handle) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       'Medusa search requires an explicit "environment_handle" provider option'
     )
+  }
+
+  return { ...options, api_key: apiKey, endpoint: endpoint.endpoint }
+}
+
+function parseEndpoint(endpoint: string): {
+  endpoint: string
+  api_key?: string
+} {
+  let url: URL
+  try {
+    url = new URL(endpoint)
+  } catch {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Medusa search could not parse the "endpoint" provider option: ${endpoint}`
+    )
+  }
+
+  if (!url.username && !url.password) {
+    return { endpoint }
+  }
+
+  // Cloud hands out an endpoint with the key as basic auth credentials so a
+  // local setup only has to copy a single value.
+  const credentials = `${decodeURIComponent(url.username)}:${decodeURIComponent(
+    url.password
+  )}`
+
+  url.username = ""
+  url.password = ""
+
+  return {
+    api_key: Buffer.from(credentials).toString("base64"),
+    endpoint: url.toString().replace(/\/+$/, ""),
   }
 }

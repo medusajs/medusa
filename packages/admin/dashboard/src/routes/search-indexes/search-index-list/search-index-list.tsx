@@ -8,19 +8,15 @@ import {
   Heading,
   StatusBadge,
   Text,
-  toast,
   Tooltip,
-  usePrompt,
 } from "@medusajs/ui"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { LayoutComposer } from "../../../components/layout-composer"
-import {
-  useReindexSearchIndex,
-  useSearchIndexes,
-} from "../../../hooks/api/search-indexes"
+import { useSearchIndexes } from "../../../hooks/api/search-indexes"
+import { SearchIndexReindexModal } from "./components/search-index-reindex-modal"
 
 const statusColor = (
   status: HttpTypes.AdminSearchIndexStatus
@@ -49,40 +45,9 @@ const fieldTooltip = (field: HttpTypes.AdminSearchIndexField) => {
   return capabilities.join(" · ")
 }
 
-const SearchIndexCard = ({
-  index,
-}: {
-  index: HttpTypes.AdminSearchIndex
-}) => {
+const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
   const { t } = useTranslation()
-  const prompt = usePrompt()
-  const { mutateAsync, isPending } = useReindexSearchIndex()
-
-  const handleReindex = async () => {
-    const confirmed = await prompt({
-      title: t("searchIndexes.reindexConfirmationTitle", {
-        name: index.name,
-      }),
-      description: t("searchIndexes.reindexConfirmation", {
-        name: index.name,
-      }),
-      confirmText: t("searchIndexes.reindex"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!confirmed) {
-      return
-    }
-
-    await mutateAsync(index.name, {
-      onSuccess: () => {
-        toast.success(t("searchIndexes.reindexSuccess", { name: index.name }))
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
-  }
+  const [isReindexModalOpen, setIsReindexModalOpen] = useState(false)
 
   return (
     <Container className="divide-y p-0">
@@ -100,12 +65,17 @@ const SearchIndexCard = ({
           <Button
             size="small"
             variant="secondary"
-            onClick={handleReindex}
-            isLoading={isPending}
+            onClick={() => setIsReindexModalOpen(true)}
             disabled={index.status === "building"}
           >
             {t("searchIndexes.reindex")}
           </Button>
+          {isReindexModalOpen && (
+            <SearchIndexReindexModal
+              index={index}
+              onClose={() => setIsReindexModalOpen(false)}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-y-2 px-6 py-4">

@@ -478,6 +478,16 @@ export default class AuthModuleService
   ): Promise<AuthTypes.AuthMfaChallengeDTO> {
     const challenge = await this.retrieveMfaChallenge_(data.id)
 
+    if (
+      data.auth_identity_id &&
+      challenge.auth_identity_id !== data.auth_identity_id
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `MFA challenge with id "${data.id}" was not found`
+      )
+    }
+
     this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
     const valid = await this.authMfaProviderService_.verify(

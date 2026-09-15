@@ -926,7 +926,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { 
     data: venues,
@@ -2395,7 +2397,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: ticketProducts,
@@ -3517,13 +3521,18 @@ To consume the `validate` hook of the `addToCartWorkflow` that holds the add-to-
 
 ```ts title="src/workflows/hooks/add-to-cart-validation.ts"
 import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 // Hook for addToCartWorkflow to validate seat availability
 addToCartWorkflow.hooks.validate(
   async ({ input }, { container }) => {
     const items = input.items
-    const query = container.resolve("query")
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
 
     // Get the product variant to check if it's a ticket product variant
     const { data: productVariants } = await query.graph({
@@ -4101,11 +4110,16 @@ Create the file `src/api/store/ticket-products/[id]/availability/route.ts` with 
 
 ```ts title="src/api/store/ticket-products/[id]/availability/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [ticketProduct] } = await query.graph({
     entity: "ticket_product",
@@ -4222,7 +4236,10 @@ Create the file `src/api/store/ticket-products/[id]/seats/route.ts` with the fol
 
 ```ts title="src/api/store/ticket-products/[id]/seats/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 
 export const GetTicketProductSeatsSchema = z.object({
@@ -4232,7 +4249,9 @@ export const GetTicketProductSeatsSchema = z.object({
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
   const { date } = req.validatedQuery
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [ticketProduct] } = await query.graph({
     entity: "ticket_product",
@@ -4570,13 +4589,21 @@ To create a subscriber that sends a notification to the customer when an order i
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
 import { TICKET_BOOKING_MODULE } from "../modules/ticket-booking"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function handleOrderPlaced({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const query = container.resolve("query")
-  const notificationModuleService = container.resolve("notification")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
   const ticketBookingModuleService = container.resolve(TICKET_BOOKING_MODULE)
 
   const { data: [order] } = await query.graph({

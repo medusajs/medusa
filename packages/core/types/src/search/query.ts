@@ -1,3 +1,4 @@
+import { QueryContextType } from "../common"
 import { SearchFilters } from "./filters"
 
 /**
@@ -135,24 +136,28 @@ export interface SearchHighlightOptions {
  */
 export interface SearchVectorOptions {
   /**
-   * The dotted path of the `vector` field to search in.
+   * The dotted path of the `vector` field to search in. Optional when the
+   * index declares exactly one vector field.
    */
-  field: string
+  field?: string
 
   /**
    * A pre-computed embedding to search with. Mutually exclusive with `query`.
+   * Allowed whether documents store customer-supplied embeddings or the engine
+   * embeds them.
    */
   value?: number[]
 
   /**
-   * Text to embed with the index's configured embedder. Mutually exclusive with
-   * `value`.
+   * Text the engine embeds at query time. Requires the vector field to set
+   * `embed: true`. Mutually exclusive with `value`.
    */
   query?: string
 
   /**
    * How much the semantic score contributes relative to the keyword score, where
-   * `0` is keyword-only and `1` is semantic-only.
+   * `0` is keyword-only and `1` is semantic-only. Defaults to `1` when there is
+   * no free-text query, and `0.5` when both run together.
    */
   semantic_ratio?: number
 }
@@ -179,6 +184,8 @@ export interface SearchOptions {
 
   /**
    * Whether to match terms that are misspelled by a character or two.
+   * it is ignored unless the query includes a free-text `q` and the
+   * searched fields have typo tolerance enabled in the index's `settings.typo_tolerance`.
    */
   typo_tolerance?: boolean
 
@@ -191,14 +198,19 @@ export interface SearchOptions {
   /**
    * Compute each facet ignoring the filter on that same field, so a storefront
    * keeps showing sibling values of an active filter. Needs one query per facet
-   * on every engine reviewed, so the module fans out over `searchMany`.
+   * on every engine reviewed, so the module expands them and hands the set to
+   * `provider.searchMany`.
    */
   disjunctive_facets?: boolean
 
   /**
-   * How the matched terms are highlighted in the returned hits.
+   * How the matched terms are highlighted in the returned hits. Applied only
+   * when the query includes a free-text `q`; otherwise it is ignored.
+   *
+   * `true` highlights every field the query searches on. Pass an object to pick
+   * fields, tags, or snippet cropping.
    */
-  highlight?: SearchHighlightOptions
+  highlight?: boolean | SearchHighlightOptions
 
   /**
    * Return at most one hit per distinct value of this field.
@@ -218,8 +230,9 @@ export interface SearchOptions {
   /**
    * Query-time language hint, e.g. `["en"]`. Engines that analyze per language
    * (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot
-   * honour it rejects it rather than silently matching differently. Defaults to
-   * the index' `settings.locales`.
+   * honour it rejects it rather than silently matching differently. Neither
+   * first-party provider does: configure the analyzer language on the provider
+   * (postgres) or on the field (Medusa) instead.
    */
   locales?: string[]
 
@@ -302,4 +315,9 @@ export interface SearchQuery<TEntry extends string = string> {
    * The options changing how the query is matched, scored, and aggregated.
    */
   search_options?: SearchOptions
+
+  /**
+   * The context passed to the `query.graph` call during hydration.
+   */
+  context?: QueryContextType
 }
