@@ -13,6 +13,7 @@ import HomepageRecipesSection from "../components/Homepage/RecipesSection"
 import HomepageCommerceModulesSection from "../components/Homepage/CommerceModulesSection"
 import HomepageFooter from "../components/Homepage/Footer"
 import HomepageStartPrompt from "../components/Homepage/StartPrompt"
+import HomepageWhatsNewSection from "../components/Homepage/WhatsNewSection"
 
 const Homepage = () => {
   return (
@@ -55,6 +56,8 @@ const Homepage = () => {
               <HomepageStartPrompt />
               <HomepageSectionsSeparator />
               <HomepageBloom />
+              <HomepageSectionsSeparator />
+              <HomepageWhatsNewSection />
               <HomepageSectionsSeparator />
               <HomepageLinksSection />
               <HomepageSectionsSeparator />
