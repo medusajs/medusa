@@ -175,6 +175,10 @@ export class LocalFileService extends AbstractFileProviderService {
     return
   }
 
+  async deleteByUrl(url: string): Promise<void> {
+    await this.delete({ fileKey: this.getFileKeyFromUrl(url) })
+  }
+
   async getDownloadStream(
     file: FileTypes.ProviderGetFileDTO
   ): Promise<Readable> {
@@ -258,6 +262,35 @@ export class LocalFileService extends AbstractFileProviderService {
     const baseUrl = new URL(this.backendUrl_)
     baseUrl.pathname = path.join(baseUrl.pathname, fileKey)
     return baseUrl.href
+  }
+
+  private getFileKeyFromUrl = (url: string) => {
+    let fileUrl: URL
+    let baseUrl: URL
+
+    try {
+      baseUrl = new URL(this.backendUrl_)
+      fileUrl = new URL(url, this.backendUrl_)
+    } catch {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid file URL: ${url}`
+      )
+    }
+
+    const basePath = baseUrl.pathname.replace(/\/+$/, "")
+
+    if (
+      fileUrl.origin !== baseUrl.origin ||
+      !fileUrl.pathname.startsWith(`${basePath}/`)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `File ${url} is not managed by this file provider`
+      )
+    }
+
+    return decodeURIComponent(fileUrl.pathname.slice(basePath.length + 1))
   }
 
   private async ensureDirExists(baseDir: string, dirPath: string) {
