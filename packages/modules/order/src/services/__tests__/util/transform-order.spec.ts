@@ -1,4 +1,7 @@
-import { formatOrder } from "../../../utils/transform-order"
+import {
+  formatOrder,
+  mapRepositoryToOrderModel,
+} from "../../../utils/transform-order"
 
 // Minimal raw shape that comes back from the ORM before formatOrder transforms it:
 // order.items[] are OrderItem records, each with an `item` property (OrderLineItem).
@@ -104,5 +107,87 @@ describe("formatOrder: item metadata resolution", function () {
     expect(item.id).toBe("ordli_1") // top-level id is from OrderLineItem
     expect(item.detail.id).toBe("orditem_1") // detail id is from OrderItem
     expect(item.line_item_metadata).toBeNull()
+  })
+})
+
+describe("mapRepositoryToOrderModel: items field selection", function () {
+  function mapFields(fields: string[]) {
+    const config = {
+      options: { fields: [...fields], populate: [] as string[] },
+    }
+    const result = mapRepositoryToOrderModel(config)
+    return {
+      fields: result.options.fields,
+      populate: result.options.populate,
+    }
+  }
+
+  it("should keep join-entity-only item fields on the order_item relation", function () {
+    const { fields } = mapFields(["id", "items.quantity", "items.title"])
+
+    expect(fields).toContain("items.quantity")
+    expect(fields).not.toContain("items.item.quantity")
+    expect(fields).toContain("items.item.title")
+  })
+
+  it("should rewrite line-item-only item fields to the nested line item", function () {
+    const { fields } = mapFields([
+      "id",
+      "items.title",
+      "items.thumbnail",
+      "items.variant_id",
+      "items.tax_lines.code",
+    ])
+
+    expect(fields).toContain("items.item.title")
+    expect(fields).toContain("items.item.thumbnail")
+    expect(fields).toContain("items.item.variant_id")
+    expect(fields).toContain("items.item.tax_lines.code")
+  })
+
+  it("should keep every order_item quantity column selectable explicitly", function () {
+    const { fields } = mapFields([
+      "id",
+      "items.quantity",
+      "items.fulfilled_quantity",
+      "items.delivered_quantity",
+      "items.shipped_quantity",
+      "items.return_requested_quantity",
+      "items.return_received_quantity",
+      "items.return_dismissed_quantity",
+      "items.written_off_quantity",
+      "items.version",
+    ])
+
+    for (const field of [
+      "items.quantity",
+      "items.fulfilled_quantity",
+      "items.delivered_quantity",
+      "items.shipped_quantity",
+      "items.return_requested_quantity",
+      "items.return_received_quantity",
+      "items.return_dismissed_quantity",
+      "items.written_off_quantity",
+      "items.version",
+    ]) {
+      expect(fields).toContain(field)
+      expect(fields).not.toContain(field.replace("items.", "items.item."))
+    }
+  })
+
+  it("should still reverse-map items.detail to the join entity", function () {
+    const { fields } = mapFields(["id", "items.detail.quantity"])
+
+    expect(fields).toContain("items.quantity")
+    expect(fields).not.toContain("items.detail.quantity")
+  })
+
+  it("should not affect wildcard or bare relation handling", function () {
+    const { fields } = mapFields(["id", "items.*"])
+
+    expect(fields).toContain("items.item.*")
+
+    const bare = mapFields(["id", "items"])
+    expect(bare.fields).toContain("items.item")
   })
 })
