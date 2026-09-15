@@ -1,4 +1,5 @@
-import { Modules, ProductStatus } from "@medusajs/framework/utils"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+import { MedusaError, Modules, ProductStatus } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -243,6 +244,71 @@ medusaIntegrationTestRunner({
         expect(response.data.message).toEqual(
           "Gift card (does-not-exist) not found"
         )
+      })
+
+      describe("validate hook", () => {
+        let rejectGiftCards = false
+        const hookCallback = jest.fn()
+
+        // hook handlers cannot be deregistered, so the handler is registered
+        // once and gated on a flag each test resets
+        addGiftCardToCartWorkflow.hooks.validate((data) => {
+          hookCallback(data)
+
+          if (rejectGiftCards) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "Gift cards are not accepted on this cart"
+            )
+          }
+        })
+
+        afterEach(() => {
+          rejectGiftCards = false
+          hookCallback.mockClear()
+        })
+
+        it("should run the hook with the cart and gift cards", async () => {
+          await api.post(
+            `/store/carts/${cart.id}/gift-cards?fields=+credit_line_total`,
+            { code: giftCard.code },
+            storeHeaders
+          )
+
+          expect(hookCallback).toHaveBeenCalledWith(
+            expect.objectContaining({
+              input: { code: giftCard.code, cart_id: cart.id },
+              cart: expect.objectContaining({ id: cart.id }),
+              giftCards: [expect.objectContaining({ id: giftCard.id })],
+            })
+          )
+        })
+
+        it("should reject the gift card when the hook throws", async () => {
+          rejectGiftCards = true
+
+          const { response } = await api
+            .post(
+              `/store/carts/${cart.id}/gift-cards?fields=+credit_line_total`,
+              { code: giftCard.code },
+              storeHeaders
+            )
+            .catch((err) => err)
+
+          expect(response.data.message).toEqual(
+            "Gift cards are not accepted on this cart"
+          )
+
+          const {
+            data: { cart: cartAfterRejection },
+          } = await api.get(
+            `/store/carts/${cart.id}?fields=+credit_line_total,*gift_cards`,
+            storeHeaders
+          )
+
+          expect(cartAfterRejection.credit_lines).toHaveLength(0)
+          expect(cartAfterRejection.gift_cards).toHaveLength(0)
+        })
       })
     })
 

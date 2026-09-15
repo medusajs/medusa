@@ -89,6 +89,39 @@ describe("postgres search utils", () => {
         )
       ).not.toThrow()
     })
+
+    it("accepts the typo tolerance switch it can honour", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({ settings: { typo_tolerance: { enabled: false } } })
+        )
+      ).not.toThrow()
+    })
+
+    it("ignores edit-distance thresholds, which only tune matching", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: {
+              typo_tolerance: {
+                min_word_size_for_one_typo: 6,
+                min_word_size_for_two_typos: 9,
+              },
+            },
+          })
+        )
+      ).not.toThrow()
+    })
+
+    it("rejects per-attribute typo tolerance opt-outs", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: { typo_tolerance: { disabled_on_attributes: ["title"] } },
+          })
+        )
+      ).toThrow(/all searchable fields at once/)
+    })
   })
 
   describe("sameSchema", () => {
@@ -164,10 +197,7 @@ describe("postgres search utils", () => {
 
     it("reads the text an embedder should encode from the vector field", () => {
       expect(
-        sourceTextForEmbed(
-          { id: "prod_1", embedding: "Red shoe" },
-          "embedding"
-        )
+        sourceTextForEmbed({ id: "prod_1", embedding: "Red shoe" }, "embedding")
       ).toBe("Red shoe")
       expect(sourceTextForEmbed({ id: "prod_1" }, "embedding")).toBeUndefined()
       expect(() =>

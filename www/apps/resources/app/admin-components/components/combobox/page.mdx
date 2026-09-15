@@ -1,0 +1,191 @@
+---
+sidebar_label: "Combobox"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Combobox - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `Combobox` component is a select input with search, multi-select, pagination, and the option to create new values. The Medusa Admin uses it in forms where the user chooses records loaded from the Medusa backend, such as a product's collection or a region's payment providers.
+
+```tsx
+import { Combobox } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Pair `Combobox` with the [useComboboxData](../../hooks/use-combobox-data/page.mdx) hook to load the options from the Medusa backend and paginate them as the user scrolls:
+
+```tsx
+import { Combobox, Form } from "@medusajs/dashboard/components"
+import { useComboboxData } from "@medusajs/dashboard/hooks"
+import { sdk } from "../lib/sdk"
+
+const CollectionField = ({ control }) => {
+  const collections = useComboboxData({
+    queryKey: ["product_collections"],
+    queryFn: (params) =>
+      sdk.admin.productCollection.list(params),
+    getOptions: (data) =>
+      data.collections.map((collection) => ({
+        label: collection.title,
+        value: collection.id,
+      })),
+  })
+
+  return (
+    <Form.Field
+      control={control}
+      name="collection_id"
+      render={({ field }) => (
+        <Form.Item>
+          <Form.Label>Collection</Form.Label>
+          <Form.Control>
+            <Combobox
+              {...field}
+              options={collections.options}
+              searchValue={collections.searchValue}
+              onSearchValueChange={
+                collections.onSearchValueChange
+              }
+              fetchNextPage={collections.fetchNextPage}
+              disabled={collections.disabled}
+            />
+          </Form.Control>
+          <Form.ErrorMessage />
+        </Form.Item>
+      )}
+    />
+  )
+}
+```
+
+To let the user select multiple values, pass an array as the `value` prop. The `onChange` function then receives an array of the selected values.
+
+---
+
+## Props
+
+Aside from the HTML props of an `input` element, `Combobox` accepts the following props:
+
+<TypeList
+  types={[
+    {
+      name: "options",
+      type: "`object[]`",
+      optional: false,
+      description: `The options the user can select from. This is the only required prop.`,
+      children: [
+        {
+          name: "value",
+          type: "`string`",
+          optional: false,
+          description: `The option's value, which is set as the component's value when the user selects the option.`,
+        },
+        {
+          name: "label",
+          type: "`string`",
+          optional: false,
+          description: `The option's label, which is shown to the user in the options list.`,
+        },
+        {
+          name: "disabled",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether the user can't select the option.`,
+        },
+      ],
+    },
+    {
+      name: "value",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: `The selected value. Pass an array to allow selecting multiple values. If you don't pass this prop, the component manages the value internally.`,
+    },
+    {
+      name: "onChange",
+      type: "`(value?: string | string[]) => void`",
+      optional: true,
+      description: `The function to execute when the user selects or removes a value.`,
+    },
+    {
+      name: "searchValue",
+      type: "`string`",
+      optional: true,
+      description: `The search query. Pass it when you filter the options yourself, such as when you load them from the Medusa backend. Otherwise, the component filters and sorts the options for you.`,
+    },
+    {
+      name: "onSearchValueChange",
+      type: "`(value: string) => void`",
+      optional: true,
+      description: `The function to execute when the user changes the search query.`,
+    },
+    {
+      name: "fetchNextPage",
+      type: "`() => void`",
+      optional: true,
+      description: `The function to execute when the user scrolls to the end of the options list. Use it to load the next page of options.`,
+    },
+    {
+      name: "isFetchingNextPage",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether the next page of options is loading. The component shows a loading placeholder at the end of the list.`,
+    },
+    {
+      name: "onCreateOption",
+      type: "`(value: string) => void`",
+      optional: true,
+      description: `The function to execute when the user creates an option from the search query. Pass it to show a create option in the list.`,
+    },
+    {
+      name: "shouldAlwaysShowCreateOption",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether to show the create option even when the search query matches existing options.`,
+    },
+    {
+      name: "noResultsPlaceholder",
+      type: "`React.ReactNode`",
+      optional: true,
+      description: `The content to show when there are no options and the user hasn't typed a search query.`,
+    },
+    {
+      name: "allowClear",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether to show a button that clears the selected value.`,
+    },
+    {
+      name: "forceHideInput",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether to always hide the search input. Use it for selects whose options the user doesn't need to search.`,
+    },
+    {
+      name: "displayMode",
+      type: '`"count"` \\| `"chips"`',
+      optional: true,
+      defaultValue: "count",
+      description: `How to display multiple selected values. \`count\` shows the number of selected values, and \`chips\` shows a badge for each value.`,
+    },
+    {
+      name: "placeholder",
+      type: "`string`",
+      optional: true,
+      description: `The placeholder to show when the user hasn't selected a value.`,
+    },
+  ]}
+/>

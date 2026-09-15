@@ -304,6 +304,12 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Admin Components",
+        link: "/resources/admin-components",
+        sidebar_id: "admin-components",
+      },
+      {
+        type: "link",
         title: "Next.js Starter",
         link: "/resources/nextjs-starter",
         sidebar_id: "nextjs-starter",

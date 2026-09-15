@@ -1,5 +1,12 @@
 # @medusajs/ui
 
+## 4.2.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.21.0
+
 ## 4.2.3
 
 ### Patch Changes

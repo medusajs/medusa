@@ -2,16 +2,16 @@ import type {
   AttributeSchemaConfig,
   DistanceMetric,
   FullTextSearch,
-  ShardingConfig,
 } from "./api-types"
 
 export type MedusaSearchProviderOptions = {
   /**
-   * API key for authenticating with Medusa Cloud search.
+   * Used only when the endpoint is not a basic auth-protected URL.
    */
-  api_key: string
+  api_key?: string
   /**
-   * Medusa Cloud search proxy base URL.
+   * Medusa Cloud search proxy base URL. Typically a basic auth URL for local access
+   * And a standard HTTP URL in Cloud
    */
   endpoint: string
   /**
@@ -23,15 +23,11 @@ export type MedusaSearchProviderOptions = {
 
 export type MedusaSearchIndexOptions = {
   distance_metric?: DistanceMetric
-  sharding?: ShardingConfig
 }
 
 export type MedusaSearchFieldOptions = {
-  type?: string
   ann?: AttributeSchemaConfig["ann"]
-  filterable?: boolean
   full_text_search?: FullTextSearch
-  fuzzy?: boolean
   /**
    * Build a trigram index so `$prefix` / `$like` filters can glob-match
    * this string. Defaults to `true` for filterable, sortable, or

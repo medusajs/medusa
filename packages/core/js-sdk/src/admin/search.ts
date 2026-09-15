@@ -81,6 +81,7 @@ export class Search {
    * when it's done.
    *
    * @param {string} id - The name of the index to reindex.
+   * @param {HttpTypes.AdminReindexSearchIndex} body - Options to scope the reindex, such as `since` or `filters`.
    * @param {ClientHeaders} headers - Headers to pass in the request.
    * @returns {Promise<HttpTypes.AdminSearchIndexReindexResponse>} The triggered reindex job.
    *
@@ -92,12 +93,17 @@ export class Search {
    *
    * @tags search
    */
-  async reindex(id: string, headers?: ClientHeaders) {
+  async reindex(
+    id: string,
+    body?: HttpTypes.AdminReindexSearchIndex,
+    headers?: ClientHeaders
+  ) {
     return await this.client.fetch<HttpTypes.AdminSearchIndexReindexResponse>(
       `/admin/search-indexes/${id}/reindex`,
       {
         method: "POST",
         headers,
+        body,
       }
     )
   }

@@ -176,20 +176,23 @@ Refer to the [Loaders](!docs!/learn/fundamentals/modules/loaders) documentation 
 Loaders are created in a TypeScript or JavaScript file under the `loaders` directory of a module. So, create the file `src/modules/contentful/loader/create-content-models.ts` with the following content:
 
 export const loaderHighlights = [
-  ["8", "ModuleOptions", "The type of options that the module expects."],
-  ["17", "container", "The module's container, which is a\nregistry of resources available to the module."],
-  ["18", "options", "The options passed to the module."],
-  ["20", "if", "Validate that the module's options are valid."],
-  ["30", "resolve", "Resolve a resource from the module's container."],
-  ["33", "createClient", "Create a Contentful management client."],
-  ["43", "createDeliveryClient", "Create a Contentful delivery client."],
+  ["11", "ModuleOptions", "The type of options that the module expects."],
+  ["20", "container", "The module's container, which is a\nregistry of resources available to the module."],
+  ["21", "options", "The options passed to the module."],
+  ["23", "if", "Validate that the module's options are valid."],
+  ["33", "resolve", "Resolve a resource from the module's container."],
+  ["38", "createClient", "Create a Contentful management client."],
+  ["48", "createDeliveryClient", "Create a Contentful delivery client."],
 ]
 
 ```ts title="src/modules/contentful/loader/create-content-models.ts" highlights={loaderHighlights}
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "@medusajs/framework/awilix"
 import { createClient } from "contentful-management"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 const { createClient: createDeliveryClient } = require("contentful")
 
@@ -215,7 +218,9 @@ export default async function syncContentModelsLoader({
     )
   }
 
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   try {
     const managementClient = createClient({
@@ -1994,9 +1999,9 @@ An API route is created in a `route.ts` file under a sub-directory of the `src/a
 So, to create an API route at the path `/admin/contentful/sync`, create the file `src/api/admin/contentful/sync/route.ts` with the following content:
 
 export const syncProductsRouteHighlights = [
-  ["6", "POST", "The route handler function that exposes a POST API route."],
-  ["10", "eventService", "Resolve the Event Module's service from the Medusa container."],
-  ["12", "emit", "Emit the custom event."],
+  ["7", "POST", "The route handler function that exposes a POST API route."],
+  ["11", "eventService", "Resolve the Event Module's service from the Medusa container."],
+  ["13", "emit", "Emit the custom event."],
 ]
 
 ```ts title="src/api/admin/contentful/sync/route.ts" highlights={syncProductsRouteHighlights}
@@ -2004,12 +2009,13 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const eventService = req.scope.resolve("event_bus")
+  const eventService = req.scope.resolve(Modules.EVENT_BUS)
 
   await eventService.emit({
     name: "products.sync",
@@ -2052,7 +2058,7 @@ import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
   baseUrl: "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -2716,12 +2722,12 @@ You can create an API route that accepts path parameters by creating a directory
 So, create the file `src/api/store/products/[id]/[locale]/route.ts` with the following content:
 
 export const getProductLocaleDetailsRouteHighlights = [
-  ["11", "locale", "Retrieve the locale from the request's path parameters."],
-  ["11", "id", "Retrieve the product's ID from the request's path parameters."],
-  ["13", "query", "Resolve Query from the Medusa container."],
-  ["15", "data", "Retrieve the product's details from Contentful."],
-  ["19", `"contentful_product.*"`, "Retrieve the product's details from Contentful."],
-  ["24", "context", "Pass the locale code in the query's context."]
+  ["14", "locale", "Retrieve the locale from the request's path parameters."],
+  ["14", "id", "Retrieve the product's ID from the request's path parameters."],
+  ["16", "query", "Resolve Query from the Medusa container."],
+  ["20", "data", "Retrieve the product's details from Contentful."],
+  ["24", `"contentful_product.*"`, "Retrieve the product's details from Contentful."],
+  ["29", "context", "Pass the locale code in the query's context."]
 ]
 
 ```ts title="src/api/store/products/[id]/[locale]/route.ts" highlights={getProductLocaleDetailsRouteHighlights}
@@ -2729,7 +2735,10 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { QueryContext } from "@medusajs/framework/utils"
+import {
+  QueryContext,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
@@ -2737,7 +2746,9 @@ export const GET = async (
 ) => {
   const { locale, id } = req.params
   
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data } = await query.graph({
     entity: "product",

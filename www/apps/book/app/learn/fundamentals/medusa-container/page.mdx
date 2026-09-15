@@ -20,7 +20,7 @@ export const highlights = [
   ["8", "resolve", "A method that resolves resources from the container."],
   [
     "8",
-    `"query"`,
+    `query`,
     "Query's registration key in the container.",
   ],
 ]
@@ -33,7 +33,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: products } = await query.graph({
     entity: "product",

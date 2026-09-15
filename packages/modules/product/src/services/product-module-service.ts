@@ -66,7 +66,11 @@ import {
   UpdateTypeInput,
   VariantImageInputArray,
 } from "../types"
-import { computeOptionLinkChanges, eventBuilders } from "../utils"
+import {
+  applyPublishedProductsContext,
+  computeOptionLinkChanges,
+  eventBuilders,
+} from "../utils"
 import { joinerConfig } from "./../joiner-config"
 import { buildOptionValueFilterQuery } from "../utils/build-option-value-filter-query"
 import { resolveAllowedOptionValues } from "../utils/resolve-allowed-option-values"
@@ -266,6 +270,126 @@ export default class ProductModuleService
     }
 
     return serializedProduct
+  }
+
+  // @ts-ignore
+  async listProductTags(
+    filters?: ProductTypes.FilterableProductTagProps,
+    config?: FindConfig<ProductTypes.ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listProductTags(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listAndCountProductTags(
+    filters?: ProductTypes.FilterableProductTagProps,
+    config?: FindConfig<ProductTypes.ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductTagDTO[], number]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listAndCountProductTags(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listProductTypes(
+    filters?: ProductTypes.FilterableProductTypeProps,
+    config?: FindConfig<ProductTypes.ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listProductTypes(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listAndCountProductTypes(
+    filters?: ProductTypes.FilterableProductTypeProps,
+    config?: FindConfig<ProductTypes.ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductTypeDTO[], number]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listAndCountProductTypes(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listProductCollections(
+    filters?: ProductTypes.FilterableProductCollectionProps,
+    config?: FindConfig<ProductTypes.ProductCollectionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCollectionDTO[]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listProductCollections(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listAndCountProductCollections(
+    filters?: ProductTypes.FilterableProductCollectionProps,
+    config?: FindConfig<ProductTypes.ProductCollectionDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listAndCountProductCollections(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listProductCategories(
+    filters?: ProductTypes.FilterableProductCategoryProps,
+    config?: FindConfig<ProductTypes.ProductCategoryDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO[]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listProductCategories(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
+  }
+
+  // @ts-ignore
+  async listAndCountProductCategories(
+    filters?: ProductTypes.FilterableProductCategoryProps,
+    config?: FindConfig<ProductTypes.ProductCategoryDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCategoryDTO[], number]> {
+    const applied = applyPublishedProductsContext(filters, config)
+
+    return await super.listAndCountProductCategories(
+      applied.filters,
+      applied.config,
+      sharedContext
+    )
   }
 
   @InjectManager()
@@ -2789,7 +2913,10 @@ export default class ProductModuleService
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productIdHydratedData = new Map<string, (typeof hydratedData)[number]>()
+    const productIdHydratedData = new Map<
+      string,
+      (typeof hydratedData)[number]
+    >()
     const productsToCreate = normalizedProducts.map((product, index) => {
       const productId = generateEntityId(product.id, "prod")
       product.id = productId
@@ -3209,7 +3336,11 @@ export default class ProductModuleService
       if (duplicateOptionIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product "${productData.title}" has duplicate option assignments: [${duplicateOptionIds.join(", ")}]`
+          `Product "${
+            productData.title
+          }" has duplicate option assignments: [${duplicateOptionIds.join(
+            ", "
+          )}]`
         )
       }
     }
@@ -3431,8 +3562,7 @@ export default class ProductModuleService
         variant.options || {}
       ).length
 
-      const productsOptions =
-        optionsByProductId.get(variant.product_id) ?? []
+      const productsOptions = optionsByProductId.get(variant.product_id) ?? []
       const allowedValueIds = valueIdsByProductId?.get(variant.product_id)
 
       if (
