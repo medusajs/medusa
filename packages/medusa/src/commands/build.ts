@@ -1,5 +1,9 @@
 import { Compiler } from "@medusajs/framework/build-tools"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  LICENSE_CHECK_ERROR_CODE,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
 import { generateTypes } from "./utils/generate-types"
 import { runLintStep } from "./utils/lint-project"
@@ -30,7 +34,17 @@ export default async function build({
       logger,
     })
   } catch (error) {
-    logger.error("Error generating types", error)
+    // Modules resolve for the first time during type generation, which is
+    // where a license gated module refuses to load: fail the build on the
+    // license message itself rather than wrapping it as a type error.
+    if (
+      MedusaError.isMedusaError(error) &&
+      error.code === LICENSE_CHECK_ERROR_CODE
+    ) {
+      logger.error(error.message)
+    } else {
+      logger.error("Error generating types", error as Error)
+    }
     process.exit(1)
   }
 
