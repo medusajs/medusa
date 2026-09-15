@@ -714,6 +714,34 @@ medusaIntegrationTestRunner({
         ).data.order
       })
 
+      it.each(["shipping", "billing"])(
+        "should add a country code when the order has no %s address",
+        async (addressType) => {
+          const addressField = `${addressType}_address`
+
+          await dbConnection.raw(
+            `UPDATE "order" SET ${addressField}_id = NULL WHERE id = ?`,
+            [order.id]
+          )
+
+          const response = await api.post(
+            `/admin/orders/${order.id}`,
+            {
+              [addressField]: {
+                country_code: "pl",
+              },
+            },
+            adminHeaders
+          )
+
+          expect(response.data.order[addressField]).toEqual(
+            expect.objectContaining({
+              country_code: "pl",
+            })
+          )
+        }
+      )
+
       it("should update shipping address on an order (by creating a new Address record)", async () => {
         const addressBefore = order.shipping_address
 
