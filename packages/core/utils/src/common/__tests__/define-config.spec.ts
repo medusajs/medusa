@@ -1,5 +1,13 @@
+import path from "path"
 import { Modules } from "../../modules-sdk"
 import { defineConfig } from "../define-config"
+
+const FIXTURES_ROOT = path.resolve(__dirname, "../__fixtures__")
+
+expect.addSnapshotSerializer({
+  test: (val) => typeof val === "string" && val.startsWith(FIXTURES_ROOT),
+  serialize: (val: string) => `"<fixtures>${val.slice(FIXTURES_ROOT.length)}"`,
+})
 
 describe("defineConfig", function () {
   const CLOUD_ENV_VARS = [
@@ -609,7 +617,7 @@ describe("defineConfig", function () {
             "options": {
               "apiKey": "test",
             },
-            "resolve": "/Users/shahednasser/medusa/packages/core/utils/src/common/__fixtures__/define-config/github/index.ts",
+            "resolve": "<fixtures>/define-config/github/index.ts",
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",
@@ -819,7 +827,7 @@ describe("defineConfig", function () {
             "options": {
               "apiKey": "test",
             },
-            "resolve": "/Users/shahednasser/medusa/packages/core/utils/src/common/__fixtures__/define-config/github/index.ts",
+            "resolve": "<fixtures>/define-config/github/index.ts",
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",
