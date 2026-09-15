@@ -1,3 +1,4 @@
+import { buildSchema } from "graphql"
 import { model } from "../entity-builder"
 import { toGraphQLSchema } from "../helpers/create-graphql"
 
@@ -111,5 +112,38 @@ describe("GraphQL builder", () => {
       `
 
     expect(toGql.replace(/\s/g, "")).toEqual(expected.replace(/\s/g, ""))
+  })
+
+  test("should generate valid graphql enum value names for choices that aren't valid graphql names", () => {
+    const redirect = model.define("redirect", {
+      id: model.id(),
+      status: model.enum(["301", "302", "307", "308"]).default("301"),
+    })
+
+    const toGql = toGraphQLSchema([redirect])
+
+    expect(toGql).toContain(`enum RedirectStatusEnum {
+  _301 @enumValue(value: "301")
+  _302 @enumValue(value: "302")
+  _307 @enumValue(value: "307")
+  _308 @enumValue(value: "308")
+}`)
+    expect(() => buildSchema(toGql)).not.toThrow()
+  })
+
+  test("should deduplicate enum value names that collide after sanitization", () => {
+    const item = model.define("item", {
+      id: model.id(),
+      kind: model.enum(["a-b", "a_b", "a.b"]),
+    })
+
+    const toGql = toGraphQLSchema([item])
+
+    expect(toGql).toContain(`enum ItemKindEnum {
+  A_B @enumValue(value: "a-b")
+  A_B_1 @enumValue(value: "a_b")
+  A_B_2 @enumValue(value: "a.b")
+}`)
+    expect(() => buildSchema(toGql)).not.toThrow()
   })
 })
