@@ -29,18 +29,30 @@ Create the file `src/modules/my-event/service.ts` that holds the implementation 
 The Event Module's main service must extend the `AbstractEventBusModuleService` class from the Medusa Framework:
 
 ```ts title="src/modules/my-event/service.ts"
-import { AbstractEventBusModuleService } from "@medusajs/framework/utils"
-import { Message } from "@medusajs/types"
+import {
+  AbstractEventBusModuleService,
+  MedusaError,
+} from "@medusajs/framework/utils"
+import { Message } from "@medusajs/framework/types"
 
 class MyEventService extends AbstractEventBusModuleService {
   async emit<T>(data: Message<T> | Message<T>[], options: Record<string, unknown>): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   async releaseGroupedEvents(eventGroupId: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
   async clearGroupedEvents(eventGroupId: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Method not implemented."
+    )
   }
 }
 
@@ -228,7 +240,7 @@ Create the file `src/modules/my-event/index.ts` with the following content:
 import MyEventService from "./service"
 import { Module } from "@medusajs/framework/utils"
 
-export default Module("my-event", {
+export default Module("my_event", {
   service: MyEventService,
 })
 ```

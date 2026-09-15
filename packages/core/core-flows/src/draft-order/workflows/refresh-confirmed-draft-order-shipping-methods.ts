@@ -6,6 +6,8 @@ import {
 } from "@medusajs/framework/types"
 import { ShippingOptionPriceType } from "@medusajs/framework/utils"
 import {
+  Hook,
+  createHook,
   createWorkflow,
   transform,
   when,
@@ -23,6 +25,7 @@ import {
   ItemWithShippingProfile,
 } from "../../cart/utils/filter-items-by-shipping-profile"
 import { SHIPPING_OPTION_FIELDS_FOR_PRICE_CALCULATION } from "../utils/enrich-preview-line-items-for-shipping-price-calculation"
+import { calculatedShippingPricingContextResult } from "../../cart/utils/schemas"
 
 export const refreshConfirmedDraftOrderShippingMethodsWorkflowId =
   "refresh-confirmed-draft-order-shipping-methods"
@@ -37,6 +40,15 @@ export interface RefreshConfirmedDraftOrderShippingMethodsWorkflowInput {
    */
   order_id: string
 }
+
+/**
+ * The `setCalculatedShippingPricingContext` hook of {@link refreshConfirmedDraftOrderShippingMethodsWorkflow}.
+ */
+type SetCalculatedShippingPricingContextHook = Hook<
+  "setCalculatedShippingPricingContext",
+  { input: RefreshConfirmedDraftOrderShippingMethodsWorkflowInput },
+  Record<string, any> | undefined
+>
 
 /**
  * Refreshes the prices of *already-applied* calculated shipping methods on a
@@ -54,12 +66,18 @@ export interface RefreshConfirmedDraftOrderShippingMethodsWorkflowInput {
  * @summary
  *
  * Refresh applied calculated shipping method prices on a draft order.
+ *
+ * @property hooks.setCalculatedShippingPricingContext - This hook is executed before the
+ * calculated shipping methods' prices are refreshed. You can consume it to return
+ * any custom context that is merged into the `context` parameter of the
+ * fulfillment provider's `calculatePrice` method (framework-provided properties
+ * take precedence on a naming conflict).
  */
 export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
   refreshConfirmedDraftOrderShippingMethodsWorkflowId,
   function (
     input: WorkflowData<RefreshConfirmedDraftOrderShippingMethodsWorkflowInput>
-  ): WorkflowResponse<void> {
+  ): WorkflowResponse<void, [SetCalculatedShippingPricingContextHook]> {
     const { data: order } = useQueryGraphStep({
       entity: "order",
       fields: [
@@ -92,48 +110,60 @@ export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
       filters: { id: shippingOptionIds },
     }).config({ name: "refresh-confirmed-options-query" })
 
-    const plan = transform({ order, shippingOptions }, (data) => {
-      const order = data.order
-      const options = (data.shippingOptions ?? []) as ShippingOptionDTO[]
-      const optionsById = new Map(options.map((o) => [o.id, o]))
+    const setCalculatedShippingPricingContext = createHook(
+      "setCalculatedShippingPricingContext",
+      { input },
+      { resultValidator: calculatedShippingPricingContextResult }
+    )
+    const setCalculatedShippingPricingContextResult =
+      setCalculatedShippingPricingContext.getResult()
 
-      const calculateData: CalculateShippingOptionPriceDTO[] = []
-      const methodIds: string[] = []
+    const plan = transform(
+      { order, shippingOptions, setCalculatedShippingPricingContextResult },
+      (data) => {
+        const order = data.order
+        const options = (data.shippingOptions ?? []) as ShippingOptionDTO[]
+        const optionsById = new Map(options.map((o) => [o.id, o]))
 
-      for (const method of order.shipping_methods ?? []) {
-        if (method.is_custom_amount) {
-          continue
+        const calculateData: CalculateShippingOptionPriceDTO[] = []
+        const methodIds: string[] = []
+
+        for (const method of order.shipping_methods ?? []) {
+          if (method.is_custom_amount) {
+            continue
+          }
+
+          const option = optionsById.get(method.shipping_option_id ?? "")
+          if (option?.price_type !== ShippingOptionPriceType.CALCULATED) {
+            continue
+          }
+
+          calculateData.push({
+            id: option.id,
+            optionData: option.data,
+            context: {
+              ...data.setCalculatedShippingPricingContextResult,
+              id: order.id,
+              shipping_address: order.shipping_address,
+              // Only the items shipping under this option's profile.
+              items: filterCartItemsByShippingProfile(
+                (order.items ?? []) as ItemWithShippingProfile[],
+                option.shipping_profile_id
+              ),
+              from_location: (
+                option.service_zone.fulfillment_set as FulfillmentSetDTO & {
+                  location?: StockLocationDTO
+                }
+              ).location,
+            },
+            provider_id: option.provider_id,
+          } as CalculateShippingOptionPriceDTO)
+          methodIds.push(method.id)
         }
 
-        const option = optionsById.get(method.shipping_option_id ?? "")
-        if (option?.price_type !== ShippingOptionPriceType.CALCULATED) {
-          continue
-        }
-
-        calculateData.push({
-          id: option.id,
-          optionData: option.data,
-          context: {
-            id: order.id,
-            shipping_address: order.shipping_address,
-            // Only the items shipping under this option's profile.
-            items: filterCartItemsByShippingProfile(
-              (order.items ?? []) as ItemWithShippingProfile[],
-              option.shipping_profile_id
-            ),
-            from_location: (
-              option.service_zone.fulfillment_set as FulfillmentSetDTO & {
-                location?: StockLocationDTO
-              }
-            ).location,
-          },
-          provider_id: option.provider_id,
-        } as CalculateShippingOptionPriceDTO)
-        methodIds.push(method.id)
+        return { calculateData, methodIds }
       }
-
-      return { calculateData, methodIds }
-    })
+    )
 
     const hasCalculatedMethods = transform(
       plan,
@@ -164,6 +194,8 @@ export const refreshConfirmedDraftOrderShippingMethodsWorkflow = createWorkflow(
       })
     })
 
-    return new WorkflowResponse(void 0)
+    return new WorkflowResponse(void 0, {
+      hooks: [setCalculatedShippingPricingContext],
+    })
   }
 )

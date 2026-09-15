@@ -78,7 +78,9 @@ export class Migrator {
     }
   }
 
-  async getExecutedMigrations(): Promise<{ script_name: string }[]> {
+  async getExecutedMigrations(): Promise<
+    { script_name: string; finished_at?: Date | null }[]
+  > {
     try {
       const result = await this.pgConnection.raw(
         `SELECT * FROM ${this.migration_table_name}`

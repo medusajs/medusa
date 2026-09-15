@@ -7,8 +7,13 @@ import { z } from "@medusajs/framework/zod"
 import { Form } from "../../../../../../components/form"
 import { KeyboundForm } from "../../../../../../components/keybound-form"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
-import { useUpdateProduct } from "../../../../../../hooks/api/products"
+import {
+  useLinkProductOptions,
+  useUpdateProduct,
+} from "../../../../../../hooks/api/products"
 import { optionalFloat } from "../../../../../../utils/validations"
+
+const DENOMINATION_OPTION_TITLE = "denomination"
 
 type GiftCardProductEditDenominationsProps = {
   product: HttpTypes.AdminProduct
@@ -41,29 +46,56 @@ export const GiftCardProductEditDenominationsForm = ({
     resolver: zodResolver(EditProductSchema),
   })
 
+  const denominationOption = product.options?.find(
+    (option) => option.title === DENOMINATION_OPTION_TITLE
+  )
+
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
+  const { mutateAsync: linkOptions, isPending: isLinkingOptions } =
+    useLinkProductOptions(product.id)
 
   const handleSubmit = form.handleSubmit(async (data: any) => {
-    const optionValues = data.denominations.map(
+    const optionValues: string[] = data.denominations.map(
       (denomination) => denomination.value
     )
 
-    const options = [
-      {
-        title: "denomination",
-        values: optionValues,
-      },
-    ]
+    const existingValues =
+      denominationOption?.values?.map((value) => value.value) ?? []
+    const newValues = optionValues.filter(
+      (value) => !existingValues.includes(value)
+    )
+
+    if (newValues.length) {
+      if (!denominationOption) {
+        toast.error(
+          `The product has no "${DENOMINATION_OPTION_TITLE}" option to add denominations to.`
+        )
+        return
+      }
+
+      try {
+        await linkOptions({
+          update: [
+            {
+              product_option_id: denominationOption.id,
+              add: newValues.map((value) => ({ value })),
+            },
+          ],
+        })
+      } catch (e) {
+        toast.error((e as Error).message)
+        return
+      }
+    }
 
     await mutateAsync(
       {
-        options,
         variants: data.denominations.map((denomination) => ({
           id: denomination.id,
           title: denomination.value,
           manage_inventory: false,
           options: {
-            denomination: denomination.value,
+            [DENOMINATION_OPTION_TITLE]: denomination.value,
           },
         })),
       },
@@ -167,7 +199,11 @@ export const GiftCardProductEditDenominationsForm = ({
                 Cancel
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
+            <Button
+              size="small"
+              type="submit"
+              isLoading={isPending || isLinkingOptions}
+            >
               Save
             </Button>
           </div>

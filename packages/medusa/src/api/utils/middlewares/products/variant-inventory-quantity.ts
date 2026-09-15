@@ -7,11 +7,42 @@ import {
 import { MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
 import { transformAndValidateSalesChannelIds } from "./filter-by-valid-sales-channels"
 
+const inventoryQuantityRequiredFields = ["id", "manage_inventory"]
+
+export const prepareInventoryQuantityFields = (
+  fields: string[],
+  { relation }: { relation?: string } = {}
+): { fields: string[]; withInventoryQuantity: boolean } => {
+  const prefix = relation ? `${relation}.` : ""
+  const inventoryQuantityField = `${prefix}inventory_quantity`
+
+  const withInventoryQuantity = fields.some(
+    (field) => field === inventoryQuantityField
+  )
+
+  if (!withInventoryQuantity) {
+    return { fields, withInventoryQuantity }
+  }
+
+  const preparedFields = new Set(
+    fields.filter((field) => field !== inventoryQuantityField)
+  )
+
+  for (const requiredField of inventoryQuantityRequiredFields) {
+    preparedFields.add(`${prefix}${requiredField}`)
+  }
+
+  return { fields: Array.from(preparedFields), withInventoryQuantity }
+}
+
 export const wrapVariantsWithTotalInventoryQuantity = async (
   req: MedusaRequest,
   variants: VariantInput[]
 ) => {
-  const variantIds = (variants ?? []).map((variant) => variant.id).flat(1)
+  const variantsToWrap = (variants ?? []).filter(
+    (variant): variant is VariantInput => !!variant?.id
+  )
+  const variantIds = variantsToWrap.map((variant) => variant.id)
 
   if (!variantIds.length) {
     return
@@ -22,7 +53,7 @@ export const wrapVariantsWithTotalInventoryQuantity = async (
     variant_ids: variantIds,
   })
 
-  wrapVariants(variants, availability)
+  wrapVariants(variantsToWrap, availability)
 }
 
 export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
@@ -47,8 +78,10 @@ export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
     )
   }
 
-  variants ??= []
-  const variantIds = variants.map((variant) => variant.id).flat(1)
+  const variantsToWrap = (variants ?? []).filter(
+    (variant): variant is VariantInput => !!variant?.id
+  )
+  const variantIds = variantsToWrap.map((variant) => variant.id)
 
   if (!variantIds.length) {
     return
@@ -60,7 +93,7 @@ export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
     sales_channel_id: channelsToUse,
   })
 
-  wrapVariants(variants, availability)
+  wrapVariants(variantsToWrap, availability)
 }
 
 type VariantInput = {

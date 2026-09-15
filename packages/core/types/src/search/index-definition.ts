@@ -4,30 +4,72 @@ import { SearchDocument } from "./common"
 import { SearchFieldDefinition } from "./field"
 import { SearchFilters } from "./filters"
 
+/**
+ * The settings applied to a search index when it's created or migrated.
+ */
 export interface SearchIndexSettings {
-  synonyms?: Record<string, string[]>
-  stop_words?: string[]
+  /**
+   * How misspelled terms are matched.
+   */
   typo_tolerance?: {
+    /**
+     * Whether typo tolerance is enabled at all.
+     *
+     * @default true
+     */
     enabled?: boolean
+
+    /**
+     * The shortest term length that tolerates a single typo. A provider with a
+     * higher floor of its own rejects a shorter length from `upsertIndex`; one
+     * that doesn't match by edit distance at all ignores this.
+     */
     min_word_size_for_one_typo?: number
+
+    /**
+     * The shortest term length that tolerates two typos. Cannot be lower than
+     * `min_word_size_for_one_typo`. Ignored by a provider that doesn't match by
+     * edit distance.
+     */
     min_word_size_for_two_typos?: number
+
+    /**
+     * The dotted paths of the fields that must always match exactly, such as a
+     * SKU or a handle. A provider that can't exclude a single field rejects
+     * this rather than fuzzy-matching it anyway.
+     */
     disabled_on_attributes?: string[]
   }
-  faceting?: {
-    max_values_per_facet?: number
-    sort_by?: "count" | "alpha"
-  }
-  pagination?: {
-    max_total_hits?: number
-  }
+
+  /**
+   * The dotted path of a field that hits are deduplicated by, returning at most
+   * one hit per distinct value. Overridden per query by `search_options.distinct`.
+   */
   distinct_attribute?: string
-  locales?: string[]
-  // Keyed by provider identifier.
+
+  /**
+   * Index settings specific to a search engine, keyed by provider identifier.
+   */
   provider_options?: Record<string, Record<string, unknown>>
 }
 
+/**
+ * A change to apply to a search index, as returned by an index definition's
+ * `consume` or `seed` function.
+ */
 export type SearchMutation =
-  | { action: "upsert"; documents: SearchDocument[] }
+  | {
+      /**
+       * Adds the documents to the index, replacing any that already exist under
+       * the same ID.
+       */
+      action: "upsert"
+
+      /**
+       * The documents to write.
+       */
+      documents: SearchDocument[]
+    }
   /**
    * Removes every document matching `filters`. The common case is deleting by
    * id, which is a filter on the primary key — `{ id: ["prod_1"] }` — but any
@@ -41,19 +83,51 @@ export type SearchMutation =
  * We can expand in the future if needed, but query should suffice.
  */
 export interface SearchContainer {
+  /**
+   * Query, used to retrieve the data the documents are built from.
+   */
   query: RemoteQueryFunction
 }
 
+/**
+ * The context passed to an index definition's `consume` function.
+ */
 export interface SearchIngestionContext {
+  /**
+   * The resources available while turning an event into documents.
+   */
   container: SearchContainer
-  index: SearchIndexDefinition
+
+  index: ResolvedSearchIndexDefinition
 }
 
+/**
+ * The context passed to an index definition's `seed` function.
+ */
 export interface SearchSeedContext extends SearchIngestionContext {
-  // Restricts a partial reindex to a subset of the entity.
+  /**
+   * Restricts a partial reindex to a subset of the entity, as passed to the
+   * Search Module's `reindex` method.
+   */
   filters?: Record<string, unknown>
-  // The `last_key` of an interrupted run, when resuming one.
+
+  /**
+   * The `last_key` of an interrupted run, when resuming one.
+   */
   last_key?: string
+
+  /**
+   * Set for the catch-up pass that runs after a full seed, to pick up
+   * anything that changed while that seed was running.
+   */
+  catchup?: {
+    /**
+     * Only rows updated at or after this date matter to the catch-up pass.
+     * Query with `withDeleted: true` and yield a `delete` mutation for a row
+     * whose `deleted_at` is set, an `upsert` otherwise.
+     */
+    since: Date
+  }
 }
 
 /**
@@ -62,16 +136,39 @@ export interface SearchSeedContext extends SearchIngestionContext {
  * when `fields` or `settings` drift.
  */
 export interface SearchIndexDefinition {
-  // Unique. What `query.search({ entity })` resolves against.
+  /**
+   * The index's unique name, which is what `query.search({ entity })` resolves
+   * against.
+   */
   name: string
-  // The `query.graph` entrypoint used to hydrate non-indexed fields.
+
+  /**
+   * The `query.graph` entrypoint used to hydrate non-indexed fields.
+   */
   entity: string
-  // @default "id"
+
+  /**
+   * The field whose value keys the index's documents, which is what a hit's `id`
+   * holds.
+   *
+   * @default "id"
+   */
   primary_key?: string
-  // Defaults to the module's configured default provider.
+
+  /**
+   * The identifier of the provider backing this index. Defaults to the module's
+   * configured default provider.
+   */
   provider?: string
 
+  /**
+   * The fields the index holds, keyed by their path in the document.
+   */
   fields: Record<string, SearchFieldDefinition>
+
+  /**
+   * The settings applied to the index when it's created or migrated.
+   */
   settings?: SearchIndexSettings
 
   /**
@@ -87,17 +184,44 @@ export interface SearchIndexDefinition {
     context: SearchIngestionContext
   ) => Promise<SearchMutation[]>
 
-  // Ran when there is no data in the index or on reindex.
-  seed: (context: SearchSeedContext) => AsyncIterable<SearchDocument[]>
+  /**
+   * Yields mutations in batches — the same shape `consume` returns, so a
+   * seed can express a delete, not just an upsert. Ran when there is no data
+   * in the index, on reindex, and for the catch-up pass after a full seed.
+   */
+  seed: (context: SearchSeedContext) => AsyncIterable<SearchMutation[]>
 }
 
-// A definition with defaults applied and a provider resolved.
+/**
+ * An index definition with the module's defaults applied and a provider resolved.
+ */
 export interface ResolvedSearchIndexDefinition extends SearchIndexDefinition {
+  /**
+   * The field whose value keys the index's documents.
+   */
   primary_key: string
+
+  /**
+   * The identifier of the provider backing this index.
+   */
   provider: string
+
+  /**
+   * The settings applied to the index.
+   */
   settings: SearchIndexSettings
+
+  /**
+   * A hash of the definition, which the module compares to detect that an index
+   * drifted from its definition and must be migrated.
+   */
   definition_hash: string
-  // The concrete index the provider reads and writes. Differs from `name` under
-  // an index prefix, or while a `swap` builds into a replacement.
+
+  /**
+   * The root physical index name, derived from `name` and the module's
+   * `index_prefix`. Never queried directly: each version of this index gets its
+   * own physical index derived from this root, and the module resolves which
+   * one is currently active before reading or writing.
+   */
   physical_name: string
 }

@@ -478,6 +478,16 @@ export default class AuthModuleService
   ): Promise<AuthTypes.AuthMfaChallengeDTO> {
     const challenge = await this.retrieveMfaChallenge_(data.id)
 
+    if (
+      data.auth_identity_id &&
+      challenge.auth_identity_id !== data.auth_identity_id
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `MFA challenge with id "${data.id}" was not found`
+      )
+    }
+
     this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
     const valid = await this.authMfaProviderService_.verify(
@@ -1226,7 +1236,7 @@ export default class AuthModuleService
         }
 
         // 20 minutes default. Can be overridden per call, but this is a good default.
-        this.cache_.set(key, value, ttlSeconds ?? 1200)
+        await this.cache_.set(key, value, ttlSeconds ?? 1200)
       },
       getState: async (key: string) => {
         if (!this.cache_) {

@@ -2,9 +2,20 @@ name: Update Version in Docs
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      update_docs_version:
+        description: "Update the version in the docs config and open a PR"
+        type: boolean
+        default: true
+      create_cloud_announcement:
+        description: "Create the Cloud announcement for the latest release"
+        type: boolean
+        default: true
 
 jobs:
   update-docs-version:
+    if: github.event_name != 'workflow_dispatch' || inputs.update_docs_version
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
@@ -49,10 +60,11 @@ jobs:
           base: "develop"
           title: "chore(docs): Update version in documentation (automated)"
           labels: "type: chore"
-          add-paths: www/packages/docs-ui/src/global-config.ts
+          add-paths: www/packages/docs-utils/src/global-config.ts
           branch: "docs/update-config-version"
           branch-suffix: "timestamp"
   create-cloud-announcement:
+    if: github.event_name != 'workflow_dispatch' || inputs.create_cloud_announcement
     runs-on: ubuntu-latest
     env:
       ANNOUNCEMENTS_API_URL: ${{ secrets.ANNOUNCEMENTS_API_URL }}

@@ -29,14 +29,18 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       rank: "ASC",
     }
 
-    const fields = (findOptions_.options.fields ??= [])
+    // An empty `fields` array narrows the projection down to the primary key,
+    // so it is only set when the caller asked for specific fields. Otherwise it
+    // stays undefined and all scalar properties are selected.
+    const fields = (findOptions_.options.fields ?? []) as string[]
     const populate = (findOptions_.options.populate ??= [])
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
     if (
-      familyOptions.includeDescendantsTree ||
-      familyOptions.includeAncestorsTree
+      fields.length &&
+      (familyOptions.includeDescendantsTree ||
+        familyOptions.includeAncestorsTree)
     ) {
       fields.indexOf("mpath") === -1 && fields.push("mpath")
       fields.indexOf("parent_category_id") === -1 &&

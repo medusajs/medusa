@@ -4,8 +4,8 @@ import {
   MedusaResponse,
   Query,
 } from "@medusajs/framework"
-import { ApiLoader } from "@medusajs/framework/http"
-import { SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
+import { ApiLoader, getHttpResponseFromError } from "@medusajs/framework/http"
+import { Span, SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
 import type { NodeSDKConfiguration } from "@medusajs/framework/opentelemetry/sdk-node"
 import type { SpanExporter } from "@medusajs/framework/opentelemetry/sdk-trace-node"
 import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
@@ -20,6 +20,50 @@ function shouldExcludeResource(resource: string) {
   return EXCLUDED_RESOURCES.some((excludedResource) =>
     resource.includes(excludedResource)
   )
+}
+
+function setHttpStatusCode(span: Span, statusCode: number) {
+  span.setAttributes({
+    // "http.statusCode" is not a semantic convention, but it has been
+    // reported for a while. Keep it alongside the canonical attribute, which
+    // is what tracing backends use to classify the span.
+    "http.statusCode": statusCode,
+    "http.status_code": statusCode,
+  })
+}
+
+/**
+ * Errors thrown by a middleware or a route handler are converted into an HTTP
+ * response by the error handler, which only runs once the span has already
+ * been ended. Classifying the span from the status code the error maps to
+ * keeps handled client errors (eg. INVALID_DATA -> 400) from being reported
+ * as internal errors.
+ */
+function setSpanStatusFromError(span: Span, error: any) {
+  const { statusCode } = getHttpResponseFromError(error)
+  setHttpStatusCode(span, statusCode)
+
+  if (statusCode >= 500) {
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: error.message || "Failed",
+    })
+  }
+}
+
+/**
+ * Express hands back control before the response has been written, so the
+ * final status code is only known once the response is flushed.
+ */
+function onResponseFinished(res: any): Promise<void> | void {
+  if (res.writableEnded) {
+    return
+  }
+
+  return new Promise<void>((resolve) => {
+    res.once("finish", () => resolve())
+    res.once("close", () => resolve())
+  })
 }
 
 /**
@@ -51,6 +95,7 @@ export function instrumentHttpLayer() {
 
       try {
         await requestHandler()
+        await onResponseFinished(res)
       } finally {
         if (res.statusCode >= 500) {
           span.setStatus({
@@ -58,7 +103,7 @@ export function instrumentHttpLayer() {
             message: `Failed with ${res.statusMessage}`,
           })
         }
-        span.setAttributes({ "http.statusCode": res.statusCode })
+        setHttpStatusCode(span, res.statusCode)
         span.end()
       }
     })
@@ -81,10 +126,7 @@ export function instrumentHttpLayer() {
         try {
           await handler(req, res)
         } catch (error) {
-          span.setStatus({
-            code: SpanStatusCode.ERROR,
-            message: error.message || "Failed",
-          })
+          setSpanStatusFromError(span, error)
           throw error
         } finally {
           span.end()
@@ -115,10 +157,7 @@ export function instrumentHttpLayer() {
         try {
           await handler(req, res, next)
         } catch (error) {
-          span.setStatus({
-            code: SpanStatusCode.ERROR,
-            message: error.message || "Failed",
-          })
+          setSpanStatusFromError(span, error)
           throw error
         } finally {
           span.end()

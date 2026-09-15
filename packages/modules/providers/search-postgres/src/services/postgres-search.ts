@@ -2,6 +2,7 @@ import { Logger, SearchTypes } from "@medusajs/framework/types"
 import {
   AbstractSearchProviderService,
   MedusaError,
+  promiseAll,
 } from "@medusajs/framework/utils"
 import {
   assertIndexSupported,
@@ -10,11 +11,9 @@ import {
   buildFacetQuery,
   buildIndexPlan,
   CATALOG_TABLE,
-  createExtensionSql,
   extractPrimaryKeyFilter,
   IndexPlan,
   keywordTsQuerySql,
-  LAKEBASE_EXTENSIONS,
   mapFacetResult,
   normalizeFacetRequests,
   PostgresSearchEngine,
@@ -23,7 +22,9 @@ import {
   PostgresVectorDistance,
   projectDocument,
   projectIndexedDocument,
+  resolveVectorField,
   sameSchema,
+  sourceTextForEmbed,
   SqlFragment,
   tableNameForIndex,
   textSearchConfigName,
@@ -100,7 +101,7 @@ const UPSERT_CHUNK_SIZE = 200
  * PostgreSQL search provider with two engines:
  *
  * - `native` (default) — portable GIN + `ts_rank` + `pg_trgm`
- * - `lakebase` — Neon Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
+ * - `lakebase` — Lakebase Search (`lakebase_bm25` + `lakebase_ann`)
  *
  * Medusa Cloud uses `engine: "lakebase"`. Local / self-hosted stick to native.
  */
@@ -113,7 +114,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   protected readonly engine_: PostgresSearchEngine
   protected readonly embedder_?: PostgresSearchEmbedder
   protected readonly vectorDistance_: PostgresVectorDistance
-  protected lakebaseExtensionsReady_: Promise<void> | null = null
 
   constructor(
     { manager, logger }: InjectedDependencies,
@@ -159,42 +159,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
   protected get isLakebase_(): boolean {
     return this.engine_ === "lakebase"
-  }
-
-  /**
-   * Lakebase access methods (`lakebase_bm25`, `lakebase_ann`) come from
-   * extensions that need preloaded libraries, so they are created here rather
-   * than in the provider migration. Always uses the outer manager so this is
-   * not nested inside a transaction.
-   */
-  protected async ensureLakebaseExtensions(): Promise<void> {
-    if (!this.isLakebase_) {
-      return
-    }
-
-    this.lakebaseExtensionsReady_ ??= this.createLakebaseExtensions_()
-
-    try {
-      await this.lakebaseExtensionsReady_
-    } catch (error) {
-      this.lakebaseExtensionsReady_ = null
-      throw error
-    }
-  }
-
-  protected async createLakebaseExtensions_(): Promise<void> {
-    for (const extension of LAKEBASE_EXTENSIONS) {
-      try {
-        await this.manager_.execute(createExtensionSql(extension))
-      } catch (error) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          `The postgres search provider could not enable the "${extension}" extension required by engine: "lakebase". Lakebase Search is only available on Medusa Cloud. ${
-            (error as Error).message
-          }`
-        )
-      }
-    }
   }
 
   protected serializePlan(plan: IndexPlan): string {
@@ -366,33 +330,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     await manager.execute(`DROP TABLE IF EXISTS "${table}" CASCADE`)
   }
 
-  /**
-   * Renaming a table leaves its constraint and index names behind, and a later
-   * rebuild of the same shadow name would collide with them (or silently skip
-   * `CREATE INDEX IF NOT EXISTS`). Rename every table-derived artifact too.
-   */
-  protected async renameTableArtifacts(
-    from: string,
-    to: string,
-    plan: IndexPlan,
-    manager: DbManager
-  ) {
-    await manager.execute(
-      `ALTER TABLE "${to}" RENAME CONSTRAINT "${from}_pkey" TO "${to}_pkey"`
-    )
-
-    const suffixes = ["fts_idx", "trgm_idx", "indexed_idx", "bm25"]
-    for (const path of plan.vectors) {
-      suffixes.push(`${vectorColumnName(path)}_ann`)
-    }
-
-    for (const suffix of suffixes) {
-      await manager.execute(
-        `ALTER INDEX IF EXISTS "${from}_${suffix}" RENAME TO "${to}_${suffix}"`
-      )
-    }
-  }
-
   protected async adjustDocumentCount(
     name: string,
     delta: number,
@@ -437,8 +374,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     index: SearchTypes.ResolvedSearchIndexDefinition
   }): Promise<SearchTypes.SearchTask> {
     assertIndexSupported(index, this.engine_)
-    await this.ensureLakebaseExtensions()
     const plan = buildIndexPlan(index)
+    this.assertEmbedderForPlan(plan)
     const table = tableNameForIndex(index.physical_name)
     const existing = await this.getCatalog(index.physical_name)
     const rebuilt =
@@ -515,74 +452,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }))
   }
 
-  async swapIndex({
-    alias,
-    index,
-  }: {
-    alias: string
-    index: string
-  }): Promise<SearchTypes.SearchTask> {
-    await this.ensureLakebaseExtensions()
-    const shadow = await this.getCatalog(index)
-    if (!shadow) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The postgres search provider has no index "${index}" to swap from`
-      )
-    }
-
-    const live = await this.getCatalog(alias)
-    const aliasTable = tableNameForIndex(alias)
-
-    await this.withTransaction(async (manager) => {
-      if (live) {
-        await this.dropDocumentTable(live.table_name, manager)
-        await manager.execute(
-          `DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`,
-          [alias]
-        )
-      }
-
-      if (shadow.table_name !== aliasTable) {
-        await manager.execute(
-          `ALTER TABLE "${shadow.table_name}" RENAME TO "${aliasTable}"`
-        )
-        await this.renameTableArtifacts(
-          shadow.table_name,
-          aliasTable,
-          shadow.plan,
-          manager
-        )
-      }
-
-      await manager.execute(`DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`, [
-        index,
-      ])
-
-      await manager.execute(
-        `INSERT INTO "${CATALOG_TABLE}"
-          ("name", "table_name", "schema_hash", "plan", "document_count", "created_at", "updated_at")
-         VALUES (?, ?, ?, ?::jsonb, ?, ?, now())`,
-        [
-          alias,
-          aliasTable,
-          shadow.plan.schema_hash,
-          this.serializePlan(shadow.plan),
-          shadow.document_count,
-          shadow.created_at instanceof Date
-            ? shadow.created_at
-            : new Date(shadow.created_at),
-        ]
-      )
-
-      if (shadow.document_count > 0) {
-        await this.ensureBm25Index(aliasTable, manager)
-      }
-    })
-
-    return this.task(alias)
-  }
-
   protected buildSearchVectorSql(
     weightedParts: { text: string; weight: "A" | "B" | "C" | "D" }[],
     params: unknown[]
@@ -626,6 +495,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       const projection = projectIndexedDocument(document, catalog.plan)
       projections.set(projection.id, { document, projection })
     }
+
+    await this.applyEngineEmbeddings(projections, catalog.plan)
 
     const vectors = catalog.plan.vectors
     const entries = [...projections.values()]
@@ -704,7 +575,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     // Create the BM25 index once documents exist (corpus stats need rows).
     if (this.isLakebase_) {
-      await this.ensureLakebaseExtensions()
       await this.ensureBm25Index(catalog.table_name)
     }
 
@@ -761,11 +631,74 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     return this.task(index)
   }
 
+  protected engineEmbeddedPaths(plan: IndexPlan): string[] {
+    return plan.vectors.filter((path) => !!plan.fields.get(path)?.field.embed)
+  }
+
+  /**
+   * Engine-embedded vector fields are produced from the field's own text via
+   * the configured `embedder`. Without one the columns would stay null.
+   */
+  protected assertEmbedderForPlan(plan: IndexPlan): void {
+    const embedded = this.engineEmbeddedPaths(plan)
+    if (!embedded.length || this.embedder_) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Vector field "${embedded[0]}" declares "embed", which requires an "embedder" function on the postgres search provider options`
+    )
+  }
+
+  protected async applyEngineEmbeddings(
+    projections: Map<
+      string,
+      {
+        document: SearchTypes.SearchDocument
+        projection: ReturnType<typeof projectIndexedDocument>
+      }
+    >,
+    plan: IndexPlan
+  ): Promise<void> {
+    const embedded = this.engineEmbeddedPaths(plan)
+    if (!embedded.length) {
+      return
+    }
+
+    this.assertEmbedderForPlan(plan)
+    const embedder = this.embedder_!
+
+    const jobs: Promise<void>[] = []
+    for (const { document, projection } of projections.values()) {
+      for (const path of embedded) {
+        const planned = plan.fields.get(path)!
+        const text = sourceTextForEmbed(document, path)
+        if (!text) {
+          continue
+        }
+
+        jobs.push(
+          embedder(text).then((embedding) => {
+            if (planned.dimensions && embedding.length !== planned.dimensions) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Embedder returned ${embedding.length} dimensions for "${path}", expected ${planned.dimensions}`
+              )
+            }
+            projection.vectors[path] = embedding
+          })
+        )
+      }
+    }
+
+    await Promise.all(jobs)
+  }
+
   async search(
     input: SearchTypes.ProviderSearchQuery
   ): Promise<SearchTypes.SearchResult> {
     assertQuerySupported(input, this.engine_)
-    await this.ensureLakebaseExtensions()
 
     const catalog = await this.retrieve(input.index.physical_name)
     const plan = catalog.plan
@@ -783,8 +716,14 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
     }
 
+    // The index's `distinct_attribute` is the default for every query on it.
+    // Resolved once here and threaded down, so a code path that must not
+    // deduplicate (a hybrid arm) says so explicitly rather than relying on
+    // having cleared `search_options.distinct`.
+    const distinct = options.distinct ?? input.index.settings.distinct_attribute
+
     // Fails early on unknown / unsupported distinct fields.
-    this.resolveDistinct(options.distinct, plan, input.index.name)
+    this.resolveDistinct(distinct, plan, input.index.name)
 
     const q = input.q?.trim()
     const vectorOpts = options.vector
@@ -815,6 +754,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         catalog,
         queryEmbedding: queryEmbedding!,
         semanticRatio,
+        distinct,
         skip,
         take,
       }))
@@ -823,6 +763,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input,
         catalog,
         queryEmbedding: queryEmbedding!,
+        distinct,
         skip,
         take,
       }))
@@ -830,6 +771,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       ;({ hitRows, count } = await this.searchKeyword({
         input,
         catalog,
+        distinct,
         skip,
         take,
       }))
@@ -877,18 +819,14 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     vectorOpts: NonNullable<SearchTypes.SearchOptions["vector"]>,
     plan: IndexPlan
   ): Promise<number[]> {
-    const field = vectorOpts.field
-    const planned = plan.fields.get(field)
-
-    if (!planned || planned.kind !== "vector") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Vector search field "${field}" is not a vector field on this index`
-      )
-    }
+    const field = resolveVectorField(vectorOpts, plan)
+    const planned = plan.fields.get(field)!
 
     if (vectorOpts.value) {
-      if (vectorOpts.value.length !== planned.dimensions) {
+      if (
+        planned.dimensions &&
+        vectorOpts.value.length !== planned.dimensions
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Vector value for "${field}" expected ${planned.dimensions} dimensions, got ${vectorOpts.value.length}`
@@ -904,6 +842,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       )
     }
 
+    if (!planned.field.embed) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `search_options.vector.query requires vector field "${field}" to declare "embed"`
+      )
+    }
+
     if (!this.embedder_) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -912,7 +857,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     const embedding = await this.embedder_(vectorOpts.query)
-    if (embedding.length !== planned.dimensions) {
+    if (planned.dimensions && embedding.length !== planned.dimensions) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Embedder returned ${embedding.length} dimensions for "${field}", expected ${planned.dimensions}`
@@ -939,7 +884,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const q = query.q?.trim() || undefined
-    const typo = !!(q && options.typo_tolerance)
+    // `search_options.typo_tolerance` is a preference; an index that turned
+    // typo tolerance off in its settings serves exact matches instead.
+    const typo = !!(
+      q &&
+      options.typo_tolerance &&
+      (query.index.settings.typo_tolerance?.enabled ?? true)
+    )
     const matchLast = options.match_strategy === "last"
     const searchOn = options.attributes_to_search_on ?? plan.searchable
     const searchAllFields =
@@ -997,10 +948,11 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   protected async searchKeyword(input: {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, skip, take } = input
+    const { input: query, catalog, distinct, skip, take } = input
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const filterWhere = toWhereClause(query.filters, plan)
@@ -1041,11 +993,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       conditionsSql,
       orderSql: this.resolveOrderBy(query, plan, !!fragments.q),
       minScore: options.min_score,
-      distinctExpr: this.resolveDistinct(
-        options.distinct,
-        plan,
-        query.index.name
-      ),
+      distinctExpr: this.resolveDistinct(distinct, plan, query.index.name),
       count: options.count !== "none",
       take,
       skip,
@@ -1057,19 +1005,20 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
     queryEmbedding: number[]
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, queryEmbedding, skip, take } = input
+    const {
+      input: query,
+      catalog,
+      queryEmbedding,
+      distinct,
+      skip,
+      take,
+    } = input
     const options = query.search_options ?? {}
-    const field = options.vector?.field
-    if (!field) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `search_options.vector.field is required for vector search`
-      )
-    }
-
+    const field = resolveVectorField(options.vector!, catalog.plan)
     const col = vectorColumnName(field)
     const op = vectorDistanceOperator(this.vectorDistance_)
     const filterWhere = toWhereClause(query.filters, catalog.plan)
@@ -1108,7 +1057,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       fastOrderSql,
       minScore: options.min_score,
       distinctExpr: this.resolveDistinct(
-        options.distinct,
+        distinct,
         catalog.plan,
         query.index.name
       ),
@@ -1123,6 +1072,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     catalog: StoredIndex
     queryEmbedding: number[]
     semanticRatio: number
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
@@ -1131,6 +1081,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       catalog,
       queryEmbedding,
       semanticRatio,
+      distinct,
       skip,
       take,
     } = input
@@ -1149,7 +1100,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     // Arms are relevance-ranked candidate lists; page-level options (distinct,
-    // min_score, count, order) apply to the fused list instead.
+    // min_score, count, order) apply to the fused list instead. `distinct` is
+    // passed to each arm explicitly below.
     const candidateLimit = Math.max(take + skip, 40) * 2
     const armQuery: SearchTypes.ProviderSearchQuery = {
       ...query,
@@ -1157,7 +1109,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       search_options: {
         ...options,
         min_score: undefined,
-        distinct: undefined,
         count: "none",
       },
     }
@@ -1166,6 +1117,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       this.searchKeyword({
         input: armQuery,
         catalog,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1173,6 +1125,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input: armQuery,
         catalog,
         queryEmbedding,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1215,10 +1168,10 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     let ranked = [...scores.values()].sort((a, b) => b.score - a.score)
 
-    if (options.distinct) {
+    if (distinct) {
       const seen = new Set<string>()
       ranked = ranked.filter((row) => {
-        const key = this.readIndexedValue(row.indexed, options.distinct!)
+        const key = this.readIndexedValue(row.indexed, distinct)
         if (key === undefined) {
           return true
         }
@@ -1245,7 +1198,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     let count: number | null = null
     if (options.count !== "none") {
       const fragments = this.keywordFragments({ query, catalog })
-      const col = vectorColumnName(options.vector!.field)
+      const col = vectorColumnName(resolveVectorField(options.vector!, plan))
       const filterWhere = toWhereClause(query.filters, plan)
       const params: unknown[] = []
       const conditions = [
@@ -1257,7 +1210,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
 
       const distinctExpr = this.resolveDistinct(
-        options.distinct,
+        distinct,
         plan,
         query.index.name
       )
@@ -1374,7 +1327,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         await parts.prelude(manager)
       }
 
-      const hitRows = await manager.execute(hitsSql, hitsParams)
+      const hitRows =
+        take === 0 ? [] : await manager.execute(hitsSql, hitsParams)
       const count = countSql
         ? Number((await manager.execute(countSql, countParams))[0]?.count ?? 0)
         : null
@@ -1392,7 +1346,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   async searchMany(
     inputs: SearchTypes.ProviderSearchQuery[]
   ): Promise<SearchTypes.SearchResult[]> {
-    return await Promise.all(inputs.map((input) => this.search(input)))
+    // Postgres has no multi-query protocol; concurrent statements through the
+    // pool are the batch. Facet-only extras (`take: 0`) skip the hits query.
+    return await promiseAll(inputs.map((input) => this.search(input)))
   }
 
   /**
@@ -1413,7 +1369,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       ? this.keywordFragments({ query, catalog }).matchSql
       : undefined
     const vectorCond = useVector
-      ? `"${vectorColumnName(query.search_options!.vector!.field)}" IS NOT NULL`
+      ? `"${vectorColumnName(
+          resolveVectorField(query.search_options!.vector!, catalog.plan)
+        )}" IS NOT NULL`
       : undefined
 
     if (matchSql && vectorCond) {
@@ -1447,17 +1405,22 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     const result: Record<string, SearchTypes.SearchFacetResult> = {}
-
-    for (const request of requests) {
-      const query = buildFacetQuery({
-        table: input.table,
-        whereSql: input.scopeWhere?.sql,
-        whereParams: input.scopeWhere?.params ?? [],
-        request,
-        plan: input.plan,
+    const entries = await promiseAll(
+      requests.map(async (request) => {
+        const query = buildFacetQuery({
+          table: input.table,
+          whereSql: input.scopeWhere?.sql,
+          whereParams: input.scopeWhere?.params ?? [],
+          request,
+          plan: input.plan,
+        })
+        const rows = await this.manager_.execute(query.sql, query.params)
+        return [request.field, mapFacetResult(request, rows)] as const
       })
-      const rows = await this.manager_.execute(query.sql, query.params)
-      result[request.field] = mapFacetResult(request, rows)
+    )
+
+    for (const [field, facet] of entries) {
+      result[field] = facet
     }
 
     return result
@@ -1542,8 +1505,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }
 
   /**
-   * Validates `search_options.distinct` and returns the SQL expression to
-   * deduplicate on, or undefined when not requested.
+   * Validates the field to deduplicate by — `search_options.distinct` or the
+   * index's `settings.distinct_attribute` — and returns the SQL expression for
+   * it, or undefined when neither is set.
    */
   protected resolveDistinct(
     distinct: string | undefined,

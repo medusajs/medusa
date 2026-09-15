@@ -24,7 +24,10 @@ import { calculateShippingOptionsPricesStep } from "../../fulfillment"
 import { salesChannelStockLocationCacheTags } from "../../common/utils/fields"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../utils/fields"
 import { filterCartItemsByShippingProfile } from "../utils/filter-items-by-shipping-profile"
-import { shippingOptionsContextResult } from "../utils/schemas"
+import {
+  shippingOptionsContextResult,
+  calculatedShippingPricingContextResult,
+} from "../utils/schemas"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
 const COMMON_OPTIONS_FIELDS = [
@@ -139,6 +142,42 @@ export const listShippingOptionsForCartWithPricingWorkflowId =
  * You should also consume the `setShippingOptionsContext` hook in the {@link listShippingOptionsForCartWorkflow} workflow to ensure that the context is consistent when listing shipping options across workflows.
  *
  * :::
+ *
+ * @property hooks.setCalculatedShippingPricingContext - This hook is executed after the cart is retrieved and before the calculated shipping options' prices are calculated. You can consume this hook to return any
+ * custom context that is forwarded as-is to the fulfillment provider's `calculatePrice` method.
+ *
+ * For example, you can consume the hook to pass a negotiated carrier contract to the provider:
+ *
+ * ```ts
+ * import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
+ * import { StepResponse } from "@medusajs/workflows-sdk"
+ *
+ * listShippingOptionsForCartWithPricingWorkflow.hooks.setCalculatedShippingPricingContext(
+ *   async ({ input }, { container }) => {
+ *     const query = container.resolve("query")
+ *
+ *     const { data: [cart]} = await query.graph({
+ *       entity: "cart",
+ *       filters: { id: input.cart_id },
+ *       fields: ["customer_id"],
+ *     })
+ *
+ *     const { data: contracts } = await query.graph({
+ *       entity: "carrier_contract",
+ *       filters: { customer_id: cart.customer_id },
+ *       fields: ["account_number"],
+ *     })
+ *
+ *     return new StepResponse({
+ *       account_number: contracts[0]?.account_number,
+ *     })
+ *   }
+ * )
+ * ```
+ *
+ * The returned object is merged into the `context` parameter of the fulfillment provider's `calculatePrice` method, with framework-provided properties taking precedence on a naming conflict.
+ *
+ * This hook only affects calculated shipping options; flat-rate options are priced by the Pricing Module.
  */
 export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
   listShippingOptionsForCartWithPricingWorkflowId,
@@ -325,18 +364,28 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
       }).config({ name: "shipping-options-query-calculated" })
     )
 
+    const setCalculatedShippingPricingContext = createHook(
+      "setCalculatedShippingPricingContext",
+      { input },
+      { resultValidator: calculatedShippingPricingContextResult }
+    )
+    const setCalculatedShippingPricingContextResult =
+      setCalculatedShippingPricingContext.getResult()
+
     const calculateShippingOptionsPricesData = transform(
       {
         shippingOptionsCalculated,
         cart,
         input,
         fulfillmentSetLocationMap,
+        setCalculatedShippingPricingContextResult,
       },
       ({
         shippingOptionsCalculated,
         cart,
         input,
         fulfillmentSetLocationMap,
+        setCalculatedShippingPricingContextResult,
       }) => {
         const optionDataMap = new Map(
           (input.options ?? []).map(({ id, data }) => [id, data])
@@ -348,6 +397,7 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               id: so.id as string,
               optionData: so.data,
               context: {
+                ...setCalculatedShippingPricingContextResult,
                 ...cart,
                 items: filterCartItemsByShippingProfile(
                   cart.items,
@@ -417,7 +467,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(translatedShippingOptions as any[], {
-      hooks: [setShippingOptionsContext] as const,
+      hooks: [
+        setShippingOptionsContext,
+        setCalculatedShippingPricingContext,
+      ] as const,
     })
   }
 )

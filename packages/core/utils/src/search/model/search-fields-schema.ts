@@ -71,11 +71,11 @@ function metadataToFieldDefinition(
   if (metadata.retrievable !== undefined) {
     field.retrievable = metadata.retrievable
   }
-  if (metadata.correlated !== undefined) {
-    field.correlated = metadata.correlated
-  }
   if (metadata.dimensions !== undefined) {
     field.dimensions = metadata.dimensions
+  }
+  if (metadata.embed !== undefined) {
+    field.embed = metadata.embed
   }
   if (metadata.provider_options !== undefined) {
     field.provider_options = metadata.provider_options

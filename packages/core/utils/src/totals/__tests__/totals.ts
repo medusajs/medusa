@@ -916,6 +916,32 @@ describe("Total calculation", function () {
     })
   })
 
+  it("should calculate order with items + a net negative credit line", function () {
+    const cart = {
+      currency_code: "usd",
+      credit_lines: [
+        {
+          amount: -106,
+          reference: "order",
+          reference_id: "order_123",
+        },
+      ],
+      items: [
+        {
+          unit_price: 50,
+          quantity: 2,
+          tax_lines: [],
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+    expect(serialized.credit_line_total).toBe(-106)
+    expect(serialized.credit_line_subtotal).toBe(-106)
+    expect(serialized.total).toBe(206)
+  })
+
   it("should calculate carts with items + taxes + adjustments", function () {
     const cart = {
       items: [

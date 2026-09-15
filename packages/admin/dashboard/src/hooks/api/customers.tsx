@@ -246,9 +246,9 @@ export const useCustomerAddress = (
   id: string,
   addressId: string,
   options?: UseQueryOptions<
-    HttpTypes.AdminCustomerResponse,
+    HttpTypes.AdminCustomerAddressResponse,
     FetchError,
-    HttpTypes.AdminCustomerResponse,
+    HttpTypes.AdminCustomerAddressResponse,
     QueryKey
   >
 ) => {
