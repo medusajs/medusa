@@ -27,6 +27,7 @@ import {
   partitionArray,
 } from "@medusajs/framework/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import { joinerConfig } from "../joiner-config"
 import { applyEntityHooks } from "../utils/apply-decorators"
 import InventoryLevelService from "./inventory-level"
@@ -99,16 +100,88 @@ export default class InventoryModuleService
     return joinerConfig
   }
 
+  private async lockInventoryLevelsForUpdate_(
+    data: InventoryItemCheckLevel[],
+    context: Context
+  ): Promise<void> {
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = context.transactionManager as SqlEntityManager | undefined
+    const knex = manager?.getTransactionContext()
+
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Inventory level updates must run inside a transaction to serialize concurrent reservations."
+      )
+    }
+
+    const idFilters = data.filter((d) => !!d.id).map((d) => d.id!)
+    const pairFilters = data
+      .filter((d) => !d.id)
+      .map((d) => ({
+        inventory_item_id: d.inventory_item_id,
+        location_id: d.location_id,
+      }))
+
+    if (!idFilters.length && !pairFilters.length) {
+      return
+    }
+
+    // Bound the wait for these row locks so a contended mutation fails fast
+    // instead of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+
+    const rows = await knex("inventory_level")
+      .where((builder) => {
+        if (idFilters.length) {
+          builder.orWhereIn("id", idFilters)
+        }
+        for (const filter of pairFilters) {
+          builder.orWhere((sub) =>
+            sub
+              .where("inventory_item_id", filter.inventory_item_id)
+              .andWhere("location_id", filter.location_id)
+          )
+        }
+      })
+      .whereNull("deleted_at")
+      .select("id")
+
+    const ids = Array.from(new Set(rows.map((row) => row.id))).sort()
+
+    if (!ids.length) {
+      return
+    }
+
+    // Lock the rows in a stable id order to avoid deadlocks between
+    // concurrent multi-level mutations. The lock is acquired before this
+    // transaction touches any inventory_level entity, so the reads that
+    // follow already observe post-lock committed values and don't need to
+    // refresh the identity map.
+    await knex("inventory_level")
+      .whereIn("id", ids)
+      .orderBy("id")
+      .forUpdate()
+      .select("id")
+  }
+
   private async ensureInventoryLevels(
     data: InventoryItemCheckLevel[],
     options?: {
       validateQuantityAtLocation?: boolean
+      lockInventoryLevels?: boolean
     },
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]> {
     options ??= {}
     const validateQuantityAtLocation =
       options.validateQuantityAtLocation ?? false
+
+    if (options.lockInventoryLevels && data.length) {
+      await this.lockInventoryLevelsForUpdate_(data, context!)
+    }
 
     const data_ = data.map((dt: any) => ({
       location_id: dt.location_id,
@@ -270,6 +343,7 @@ export default class InventoryModuleService
       ),
       {
         validateQuantityAtLocation: true,
+        lockInventoryLevels: true,
       },
       context
     )
@@ -683,6 +757,7 @@ export default class InventoryModuleService
       availabilityData,
       {
         validateQuantityAtLocation: true,
+        lockInventoryLevels: true,
       },
       context
     )
@@ -972,6 +1047,15 @@ export default class InventoryModuleService
     adjustment: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<InferEntityType<typeof InventoryLevel>> {
+    // Serialize concurrent adjustments on the same level so the
+    // read-modify-write below cannot lose another caller's increment. The
+    // lock precedes the first read of the level in this transaction, so the
+    // snapshot below already reflects any committed adjustment.
+    await this.lockInventoryLevelsForUpdate_(
+      [{ inventory_item_id: inventoryItemId, location_id: locationId }],
+      context
+    )
+
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
       {},
@@ -1187,7 +1271,7 @@ export default class InventoryModuleService
         inventory_item_id: r.inventory_item_id,
         location_id: r.location_id,
       })),
-      undefined,
+      { lockInventoryLevels: true },
       context
     )
 
