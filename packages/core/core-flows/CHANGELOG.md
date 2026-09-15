@@ -1,5 +1,16 @@
 # @medusajs/core-flows
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16269](https://github.com/medusajs/medusa/pull/16269) [`f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c`](https://github.com/medusajs/medusa/commit/f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c) Thanks [@KallinikosMil](https://github.com/KallinikosMil)! - fix(core-flows): create an inventory item and link it when manage_inventory is enabled on an existing product variant
+
+- [#16436](https://github.com/medusajs/medusa/pull/16436) [`7ff721850c22a886af25f251685f6bca59434664`](https://github.com/medusajs/medusa/commit/7ff721850c22a886af25f251685f6bca59434664) Thanks [@thomassarazin](https://github.com/thomassarazin)! - fix(@medusajs/order, @medusajs/core-flows): set requested_at when a return is created from the storefront
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

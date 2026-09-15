@@ -1,5 +1,17 @@
 # @medusajs/dashboard
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16677](https://github.com/medusajs/medusa/pull/16677) [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d) Thanks [@MarcelRoblek](https://github.com/MarcelRoblek)! - fix(dashboard): include shipping_address in order list query so Country column renders
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes

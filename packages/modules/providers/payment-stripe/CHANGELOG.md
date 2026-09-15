@@ -1,5 +1,14 @@
 # @medusajs/payment-stripe
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16228](https://github.com/medusajs/medusa/pull/16228) [`8c224dc79070dd173a783aea0c6c76785f7ab71c`](https://github.com/medusajs/medusa/commit/8c224dc79070dd173a783aea0c6c76785f7ab71c) Thanks [@calebcgates](https://github.com/calebcgates)! - fix(payment-stripe): normalize errors thrown while constructing Stripe webhook events
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @medusajs/workflows-sdk
 
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies [[`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd), [`893d96850320f8f00c623c66f46e9fcde5ab1cdf`](https://github.com/medusajs/medusa/commit/893d96850320f8f00c623c66f46e9fcde5ab1cdf)]:
+  - @medusajs/utils@2.21.1
+  - @medusajs/modules-sdk@2.21.1
+  - @medusajs/orchestration@2.21.1
+  - @medusajs/deps@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

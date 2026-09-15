@@ -1,5 +1,12 @@
 # @medusajs/event-bus-redis
 
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes
