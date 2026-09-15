@@ -1708,9 +1708,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}} için Koşullu Fiyatlar",
-        "description": "Bu kargo seçeneği için koşullu fiyatları sepet ürün toplamına göre yönetin.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Sepet ürün toplamı"
+          "cartItemTotal": "Sepet ürün toplamı",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Eğer <0>{{attribute}}</0> <1>{{gte}}</1> ile <2>{{lte}}</2> arasındaysa",
@@ -1724,7 +1725,9 @@
         "rules": {
           "amount": "Kargo seçeneği fiyatı",
           "gte": "Minimum sepet ürün toplamı",
-          "lte": "Maksimum sepet ürün toplamı"
+          "lte": "Maksimum sepet ürün toplamı",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Özel kurallar",
@@ -1735,10 +1738,15 @@
         },
         "errors": {
           "amountRequired": "Kargo seçeneği fiyatı gereklidir",
-          "minOrMaxRequired": "Minimum veya maksimum sepet ürün toplamından en az biri sağlanmalıdır",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimum sepet ürün toplamı, maksimum sepet ürün toplamından küçük veya eşit olmalıdır",
           "duplicateAmount": "Kargo seçeneği fiyatı her koşul için benzersiz olmalıdır",
-          "overlappingConditions": "Koşullar tüm fiyat kuralları arasında benzersiz olmalıdır"
+          "overlappingConditions": "Koşullar tüm fiyat kuralları arasında benzersiz olmalıdır",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

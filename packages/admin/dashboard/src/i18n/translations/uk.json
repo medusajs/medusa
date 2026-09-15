@@ -1485,9 +1485,10 @@
       },
       "conditionalPrices": {
         "header": "Умовні ціни для {{name}}",
-        "description": "Керуйте умовними цінами для цього варіанту доставки на основі загальної вартості товарів у кошику.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Загальна сума товарів у кошику"
+          "cartItemTotal": "Загальна сума товарів у кошику",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Якщо <0>{{attribute}}</0> між <1>{{gte}}</1> та <2>{{lte}}</2>",
@@ -1501,7 +1502,9 @@
         "rules": {
           "amount": "Ціна варіанту доставки",
           "gte": "Мінімальна загальна сума товарів у кошику",
-          "lte": "Максимальна загальна сума товарів у кошику"
+          "lte": "Максимальна загальна сума товарів у кошику",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Користувацькі правила",
@@ -1512,10 +1515,15 @@
         },
         "errors": {
           "amountRequired": "Ціна варіанту доставки є обов'язковою",
-          "minOrMaxRequired": "Потрібно вказати хоча б мінімальну або максимальну загальну суму товарів у кошику",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Мінімальна сума товарів у кошику повинна бути меншою або рівною максимальній сумі товарів у кошику",
           "duplicateAmount": "Ціна варіанту доставки повинна бути унікальною для кожної умови",
-          "overlappingConditions": "Умови повинні бути унікальними для всіх правил цін"
+          "overlappingConditions": "Умови повинні бути унікальними для всіх правил цін",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2509,7 +2517,10 @@
         "placeholder": "неправильний_розмір",
         "tooltip": "Значення має бути унікальним ідентифікатором для причини повернення."
       },
-      "label": { "label": "Мітка", "placeholder": "Неправильний розмір" },
+      "label": {
+        "label": "Мітка",
+        "placeholder": "Неправильний розмір"
+      },
       "description": {
         "label": "Опис",
         "placeholder": "Клієнт отримав неправильний розмір"

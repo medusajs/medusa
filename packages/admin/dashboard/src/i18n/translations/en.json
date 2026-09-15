@@ -1846,9 +1846,10 @@
       },
       "conditionalPrices": {
         "header": "Conditional Prices for {{name}}",
-        "description": "Manage the conditional prices for this shipping option based on the cart item total.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Cart item total"
+          "cartItemTotal": "Cart item total",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "If <0>{{attribute}}</0> is between <1>{{gte}}</1> and <2>{{lte}}</2>",
@@ -1862,7 +1863,13 @@
         "rules": {
           "amount": "Shipping option price",
           "gte": "Minimum cart item total",
-          "lte": "Maximum cart item total"
+          "lte": "Maximum cart item total",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         },
         "customRules": {
           "label": "Custom rules",
@@ -1873,8 +1880,9 @@
         },
         "errors": {
           "amountRequired": "Shipping option price is required",
-          "minOrMaxRequired": "At least one of minimum or maximum cart item total must be provided",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimum cart item total must be less than or equal to maximum cart item total",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total",
           "duplicateAmount": "Shipping option price must be unique for each condition",
           "overlappingConditions": "Conditions must be unique across all price rules"
         }

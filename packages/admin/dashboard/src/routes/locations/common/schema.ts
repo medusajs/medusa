@@ -7,6 +7,8 @@ export const ConditionalPriceSchema = z
     amount: z.union([z.string(), z.number()]),
     gte: z.union([z.string(), z.number()]).nullish(),
     lte: z.union([z.string(), z.number()]).nullish(),
+    weight_total_gte: z.union([z.string(), z.number()]).nullish(),
+    weight_total_lte: z.union([z.string(), z.number()]).nullish(),
     lt: z.number().nullish(),
     gt: z.number().nullish(),
     eq: z.number().nullish(),
@@ -29,7 +31,11 @@ export const ConditionalPriceSchema = z
 
       return (
         (data.gte !== undefined && data.gte !== "") ||
-        (data.lte !== undefined && data.lte !== "")
+        (data.lte !== undefined && data.lte !== "") ||
+        (data.weight_total_gte !== undefined &&
+          data.weight_total_gte !== "") ||
+        (data.weight_total_lte !== undefined &&
+          data.weight_total_lte !== "")
       )
     },
     {
@@ -60,6 +66,27 @@ export const ConditionalPriceSchema = z
       path: ["gte"],
     }
   )
+  .refine(
+    (data) => {
+      if (
+        data.weight_total_gte != null &&
+        data.weight_total_gte !== "" &&
+        data.weight_total_lte != null &&
+        data.weight_total_lte !== ""
+      ) {
+        const gte = castNumber(data.weight_total_gte)
+        const lte = castNumber(data.weight_total_lte)
+        return gte <= lte
+      }
+      return true
+    },
+    {
+      message: t(
+        "stockLocations.shippingOptions.conditionalPrices.errors.weightMinGreaterThanMax"
+      ),
+      path: ["weight_total_gte"],
+    }
+  )
 
 export type ConditionalPrice = z.infer<typeof ConditionalPriceSchema>
 
@@ -77,6 +104,8 @@ type RefinablePrice = {
   amount: string | number
   gte?: string | number | null | undefined
   lte?: string | number | null | undefined
+  weight_total_gte?: string | number | null | undefined
+  weight_total_lte?: string | number | null | undefined
   lt?: number | null | undefined
   gt?: number | null | undefined
   eq?: number | null | undefined
@@ -97,7 +126,16 @@ const hasCustomOperators = (price: RefinablePrice) =>
 
 function refineDuplicates(
   data: {
-    prices: RefinablePrice[]
+    prices: {
+      amount: string | number
+      gte?: string | number | null | undefined
+      lte?: string | number | null | undefined
+      weight_total_gte?: string | number | null | undefined
+      weight_total_lte?: string | number | null | undefined
+      lt?: number | null | undefined
+      gt?: number | null | undefined
+      eq?: number | null | undefined
+    }[]
   },
   ctx: z.RefinementCtx
 ) {
@@ -117,28 +155,44 @@ function refineDuplicates(
       const lower2 = parseBound(price2.gte)
       const upper2 = parseBound(price2.lte)
 
-      // A rule without any bound is invalid on its own (handled by another
-      // refinement), so skip the overlap comparison for it.
+      const wlower1 = parseBound(price1.weight_total_gte)
+      const wupper1 = parseBound(price1.weight_total_lte)
+      const wlower2 = parseBound(price2.weight_total_gte)
+      const wupper2 = parseBound(price2.weight_total_lte)
+
       if (
-        (lower1 === undefined && upper1 === undefined) ||
-        (lower2 === undefined && upper2 === undefined)
+        (lower1 === undefined && upper1 === undefined &&
+         wlower1 === undefined && wupper1 === undefined) ||
+        (lower2 === undefined && upper2 === undefined &&
+         wlower2 === undefined && wupper2 === undefined)
       ) {
         continue
       }
 
-      const start1 = lower1 ?? Number.NEGATIVE_INFINITY
-      const end1 = upper1 ?? Number.POSITIVE_INFINITY
-      const start2 = lower2 ?? Number.NEGATIVE_INFINITY
-      const end2 = upper2 ?? Number.POSITIVE_INFINITY
+      // Check price range overlap (gte/lte)
+      if (lower1 !== undefined || upper1 !== undefined ||
+          lower2 !== undefined || upper2 !== undefined) {
+        const start1 = lower1 ?? -Infinity
+        const end1 = upper1 ?? Infinity
+        const start2 = lower2 ?? -Infinity
+        const end2 = upper2 ?? Infinity
 
-      // Two cart item total ranges conflict only when they share at least one
-      // value. The price amount is intentionally not part of this check: the
-      // same amount can legitimately apply to multiple non-overlapping
-      // conditions.
-      const overlaps = start1 <= end2 && start2 <= end1
+        if (start1 <= end2 && start2 <= end1) {
+          addOverlappingConditionError(ctx, j, "gte")
+        }
+      }
 
-      if (overlaps) {
-        addOverlappingConditionError(ctx, j)
+      // Check weight_total range overlap (weight_total_gte/weight_total_lte)
+      if (wlower1 !== undefined || wupper1 !== undefined ||
+          wlower2 !== undefined || wupper2 !== undefined) {
+        const wstart1 = wlower1 ?? -Infinity
+        const wend1 = wupper1 ?? Infinity
+        const wstart2 = wlower2 ?? -Infinity
+        const wend2 = wupper2 ?? Infinity
+
+        if (wstart1 <= wend2 && wstart2 <= wend1) {
+          addOverlappingConditionError(ctx, j, "weight_total_gte")
+        }
       }
     }
   }
@@ -164,12 +218,23 @@ export type UpdateConditionalPriceRuleSchemaType = z.infer<
   typeof UpdateConditionalPriceRuleSchema
 >
 
-const addOverlappingConditionError = (ctx: z.RefinementCtx, index: number) => {
+const addOverlappingConditionError = (
+  ctx: z.RefinementCtx,
+  index: number,
+  type:
+    | "gte"
+    | "lte"
+    | "weight_total_gte"
+    | "weight_total_lte"
+    | "eq"
+    | "lt"
+    | "gt"
+) => {
   ctx.addIssue({
     code: z.ZodIssueCode.custom,
     message: t(
       "stockLocations.shippingOptions.conditionalPrices.errors.overlappingConditions"
     ),
-    path: ["prices", index, "gte"],
+    path: ["prices", index, type],
   })
 }

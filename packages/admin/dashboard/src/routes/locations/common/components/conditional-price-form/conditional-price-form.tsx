@@ -3,6 +3,7 @@ import {
   Badge,
   CurrencyInput,
   Divider,
+  Input,
   Label,
   Text,
   Tooltip,
@@ -45,7 +46,7 @@ const ConditionContainer = ({ children }: { children: ReactNode }) => (
   </div>
 )
 
-const ConditionDisplay = ({
+const ItemTotalConditionDisplay = ({
   index,
   control,
   currency,
@@ -132,6 +133,100 @@ const ConditionDisplay = ({
             ),
             gte: getLocaleAmount(castGte, currency.code),
             lte: getLocaleAmount(castLte, currency.code),
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  return null
+}
+
+const WeightTotalConditionDisplay = ({
+  index,
+  control,
+}: {
+  index: number
+  control: Control<ConditionalPriceFormSchemaType>
+}) => {
+  const { t, i18n } = useTranslation()
+
+  const gte = useWatch({
+    control,
+    name: `prices.${index}.weight_total_gte`,
+  })
+
+  const lte = useWatch({
+    control,
+    name: `prices.${index}.weight_total_lte`,
+  })
+
+  const castGte = gte ? castNumber(gte) : undefined
+  const castLte = lte ? castNumber(lte) : undefined
+
+  if (!castGte && !castLte) {
+    return null
+  }
+
+  if (castGte && !castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.greaterThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="gte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartWeightTotal"
+            ),
+            gte: castGte,
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  if (!castGte && castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.lessThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="lte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartWeightTotal"
+            ),
+            lte: castLte,
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  if (castGte && castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.range"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="gte" />,
+            <Badge size="2xsmall" key="lte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartWeightTotal"
+            ),
+            gte: castGte,
+            lte: castLte,
           }}
         />
       </ConditionContainer>
@@ -251,6 +346,64 @@ const ConditionalConditionItem = ({
                 onValueChange={(_value, _name, values) =>
                   onChange(values?.value ? values?.value : "")
                 }
+                {...fieldProps}
+              />
+            )}
+          />
+        )}
+      />
+      <Divider variant="dashed" />
+      <Form.Field
+        control={control}
+        name={`prices.${index}.weight_total_gte`}
+        render={({ field }) => (
+          <TieredPriceInput
+            field={field}
+            label={t(
+              "stockLocations.shippingOptions.conditionalPrices.rules.weightGte"
+            )}
+            toggleValues={{ active: "", inactive: null }}
+            renderInput={({
+              field: { onChange, value: _fieldValue, ...fieldProps },
+              value,
+            }) => (
+              <Input
+                type="number"
+                className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
+                placeholder={t(
+                  "stockLocations.shippingOptions.conditionalPrices.placeholders.weightGte"
+                )}
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value)}
+                {...fieldProps}
+              />
+            )}
+          />
+        )}
+      />
+      <Divider variant="dashed" />
+      <Form.Field
+        control={control}
+        name={`prices.${index}.weight_total_lte`}
+        render={({ field }) => (
+          <TieredPriceInput
+            field={field}
+            label={t(
+              "stockLocations.shippingOptions.conditionalPrices.rules.weightLte"
+            )}
+            toggleValues={{ active: "", inactive: null }}
+            renderInput={({
+              field: { onChange, value: _fieldValue, ...fieldProps },
+              value,
+            }) => (
+              <Input
+                type="number"
+                className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
+                placeholder={t(
+                  "stockLocations.shippingOptions.conditionalPrices.placeholders.weightLte"
+                )}
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value)}
                 {...fieldProps}
               />
             )}
@@ -390,6 +543,8 @@ export const ConditionalPriceForm = ({
             amount: "",
             gte: "",
             lte: null,
+            weight_total_gte: "",
+            weight_total_lte: null,
           },
         ]
       }
@@ -412,6 +567,13 @@ export const ConditionalPriceForm = ({
       addPriceLabel={t(
         "stockLocations.shippingOptions.conditionalPrices.actions.addPrice"
       )}
+      defaultRow={{
+        amount: "",
+        gte: "",
+        lte: null,
+        weight_total_gte: "",
+        weight_total_lte: null,
+      }}
       fieldConfig={{
         min: "gte",
         max: "lte",
@@ -422,7 +584,15 @@ export const ConditionalPriceForm = ({
           "stockLocations.shippingOptions.conditionalPrices.rules.lte"
         ),
       }}
-      renderConditionTrigger={(props) => <ConditionDisplay {...props} />}
+      renderConditionTrigger={(props) => (
+        <div className="flex flex-col gap-y-1">
+          <ItemTotalConditionDisplay {...props} />
+          <WeightTotalConditionDisplay
+            index={props.index}
+            control={props.control}
+          />
+        </div>
+      )}
       renderConditionItem={(props) => <ConditionalConditionItem {...props} />}
     />
   )
