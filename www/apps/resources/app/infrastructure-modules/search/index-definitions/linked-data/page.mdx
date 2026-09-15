@@ -80,14 +80,14 @@ export const productIndex = defineSearchIndex({
 
 `query.graph` returns a linked brand as a nested object, so an indexed document has the following shape:
 
-```ts
+```json
 {
-  id: "1",
-  title: "Product Title",
-  status: "active",
-  brand: {
-    id: "10",
-    name: "Acme",
+  "id": "1",
+  "title": "Product Title",
+  "status": "active",
+  "brand": {
+    "id": "10",
+    "name": "Acme",
   },
 }
 ```

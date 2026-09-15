@@ -160,7 +160,7 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
   "app/learn/fundamentals/query/search/page.mdx": "2026-08-21T09:11:09.008Z",
   "app/learn/fundamentals/query/index-module/page.mdx": "2026-08-21T06:04:22.962Z",
-  "app/learn/fundamentals/query/page.mdx": "2026-08-21T06:04:22.958Z",
+  "app/learn/fundamentals/query/page.mdx": "2026-09-15T11:13:29.895Z",
   "app/learn/fundamentals/query/query-context/page.mdx": "2026-08-21T06:04:22.963Z",
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z"

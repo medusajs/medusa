@@ -767,8 +767,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/api-routes/allowed-fields",
                 "title": "Allowed Fields",
                 "children": [],
-                "chapterTitle": "4.6.12. Allowed Fields",
-                "number": "4.6.12."
+                "chapterTitle": "4.7.12. Allowed Fields",
+                "number": "4.7.12."
               },
               {
                 "loaded": true,
@@ -776,8 +776,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/api-routes/disallowed-fields",
                 "title": "Disallowed Fields",
                 "children": [],
-                "chapterTitle": "4.6.13. Disallowed Fields",
-                "number": "4.6.13."
+                "chapterTitle": "4.7.13. Disallowed Fields",
+                "number": "4.7.13."
               },
               {
                 "loaded": true,
@@ -785,8 +785,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/api-routes/localization",
                 "title": "Localization",
                 "children": [],
-                "chapterTitle": "4.6.14. Localization",
-                "number": "4.6.14."
+                "chapterTitle": "4.7.14. Localization",
+                "number": "4.7.14."
               },
               {
                 "loaded": true,
@@ -794,8 +794,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/api-routes/override",
                 "title": "Override API Routes",
                 "children": [],
-                "chapterTitle": "4.6.15. Override API Routes",
-                "number": "4.6.15."
+                "chapterTitle": "4.7.15. Override API Routes",
+                "number": "4.7.15."
               }
             ],
             "chapterTitle": "4.7. API Routes",
