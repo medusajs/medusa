@@ -26,24 +26,15 @@ const _OrderExchange = model
         foreignKey: true,
       })
       .nullable(),
-    additional_items: model.hasMany<() => typeof OrderExchangeItem>(
-      () => OrderExchangeItem,
-      {
-        mappedBy: "exchange",
-      }
-    ),
-    shipping_methods: model.hasMany<() => typeof OrderShipping>(
-      () => OrderShipping,
-      {
-        mappedBy: "exchange",
-      }
-    ),
-    transactions: model.hasMany<() => typeof OrderTransaction>(
-      () => OrderTransaction,
-      {
-        mappedBy: "exchange",
-      }
-    ),
+    additional_items: model.hasMany<any>(() => OrderExchangeItem, {
+      mappedBy: "exchange",
+    }),
+    shipping_methods: model.hasMany<any>(() => OrderShipping, {
+      mappedBy: "exchange",
+    }),
+    transactions: model.hasMany<any>(() => OrderTransaction, {
+      mappedBy: "exchange",
+    }),
   })
   .cascades({
     delete: ["additional_items", "transactions"],

@@ -26,30 +26,18 @@ const _OrderClaim = model
         foreignKey: true,
       })
       .nullable(),
-    additional_items: model.hasMany<() => typeof OrderClaimItem>(
-      () => OrderClaimItem,
-      {
-        mappedBy: "claim",
-      }
-    ),
-    claim_items: model.hasMany<() => typeof OrderClaimItem>(
-      () => OrderClaimItem,
-      {
-        mappedBy: "claim",
-      }
-    ),
-    shipping_methods: model.hasMany<() => typeof OrderShipping>(
-      () => OrderShipping,
-      {
-        mappedBy: "claim",
-      }
-    ),
-    transactions: model.hasMany<() => typeof OrderTransaction>(
-      () => OrderTransaction,
-      {
-        mappedBy: "claim",
-      }
-    ),
+    additional_items: model.hasMany<any>(() => OrderClaimItem, {
+      mappedBy: "claim",
+    }),
+    claim_items: model.hasMany<any>(() => OrderClaimItem, {
+      mappedBy: "claim",
+    }),
+    shipping_methods: model.hasMany<any>(() => OrderShipping, {
+      mappedBy: "claim",
+    }),
+    transactions: model.hasMany<any>(() => OrderTransaction, {
+      mappedBy: "claim",
+    }),
   })
   .cascades({
     delete: ["additional_items", "claim_items", "transactions"],

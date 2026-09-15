@@ -74,46 +74,13 @@ export class DmlRelationsResolver {
         }
 
         // try to find the reflection that this relation points to
-        const relatedReflectionType = property.type.typeArguments?.[0]
-        if (
-          relatedReflectionType?.type !== "reflection" ||
-          !relatedReflectionType.declaration.signatures?.length ||
-          !relatedReflectionType.declaration.signatures[0].type
-        ) {
-          return
-        }
-
-        const reflectionType =
-          relatedReflectionType.declaration.signatures[0].type.type ===
-          "unknown"
-            ? this.tryToParseUnknownType(
-                relatedReflectionType.declaration.signatures[0].type,
-                context.project
-              )?.type
-            : relatedReflectionType.declaration.signatures[0].type
-
-        if (
-          reflectionType?.type !== "reference" &&
-          (reflectionType?.type !== "query" ||
-            !(
-              reflectionType.queryType.reflection instanceof
-              DeclarationReflection
-            ) ||
-            reflectionType.queryType.reflection.type?.type !== "reference")
-        ) {
-          return
-        }
-
-        const relatedReflection = this.findReflectionMatchingProperties(
-          getDmlProperties(
-            reflectionType.type === "reference"
-              ? reflectionType
-              : ((reflectionType.queryType.reflection as DeclarationReflection)
-                  .type as ReferenceType)
-          )
+        const relatedReflection = this.findRelatedReflection(
+          property.type,
+          context.project
         )
 
         if (!relatedReflection) {
+          property.type.typeArguments = undefined
           return
         }
 
@@ -131,6 +98,53 @@ export class DmlRelationsResolver {
         })
       })
     })
+  }
+
+  /**
+   * Find the data model reflection that a relation's type argument points to,
+   * if any.
+   */
+  findRelatedReflection(
+    relationType: ReferenceType,
+    project: ProjectReflection
+  ): DeclarationReflection | undefined {
+    const relatedReflectionType = relationType.typeArguments?.[0]
+
+    if (
+      relatedReflectionType?.type !== "reflection" ||
+      !relatedReflectionType.declaration.signatures?.length ||
+      !relatedReflectionType.declaration.signatures[0].type
+    ) {
+      return
+    }
+
+    const reflectionType =
+      relatedReflectionType.declaration.signatures[0].type.type === "unknown"
+        ? this.tryToParseUnknownType(
+            relatedReflectionType.declaration.signatures[0].type,
+            project
+          )?.type
+        : relatedReflectionType.declaration.signatures[0].type
+
+    if (
+      reflectionType?.type !== "reference" &&
+      (reflectionType?.type !== "query" ||
+        !(
+          reflectionType.queryType.reflection instanceof DeclarationReflection
+        ) ||
+        reflectionType.queryType.reflection.type?.type !== "reference")
+    ) {
+      return
+    }
+
+    return this.findReflectionMatchingProperties(
+      getDmlProperties(
+        reflectionType.type === "reference"
+          ? reflectionType
+          : ((reflectionType.queryType.reflection as DeclarationReflection)
+              .type as ReferenceType)
+      )
+    )
   }
 
   findReflectionMatchingProperties(
