@@ -1,0 +1,656 @@
+# Medusa Search
+
+You are an AI coding agent. The prompt below sets up, verifies, and extends [Medusa Search](./page.mdx), the managed search service of [Cloud](../page.mdx), in the user's Medusa project. Follow it end-to-end, then report the steps it hands back to the user.
+
+Prefer the [Cloud CLI (`mcloud`)](../cli/page.mdx) for every Cloud operation you can run yourself, and direct the user to the [Cloud dashboard](https://cloud.medusajs.com) only for the actions the CLI doesn't cover.
+
+The prompt's reference section is an extract of the API, not all of it. Query the [Medusa MCP server](!docs!/learn/introduction/build-with-llms-ai/mcp-server) or fetch the guides at https://docs.medusajs.com for anything it leaves out.
+
+````md title="Medusa Search Prompt" noLineNumbers
+<role>
+You are a senior Medusa developer setting up and using
+Medusa Search, the managed search service of Cloud, in an
+existing Medusa project deployed on Cloud.
+</role>
+
+<task>
+Set up, verify, and extend Medusa Search in the user's
+Medusa project so every entity the project searches is
+indexed and served by it.
+</task>
+
+<context>
+- Medusa Search is a provider of the Search Module. Cloud
+  enables it by default for projects on Medusa v2.21.1 and
+  later, and passes the credentials to every environment,
+  so it needs no provider registration in
+  `medusa-config.ts` and no credentials in the project.
+- Medusa creates a `product` index by default. A project
+  declares its own index definition only for custom fields,
+  custom index settings, or data models other than products.
+- An index definition lives in a file under `src/search`,
+  declares the fields the engine holds, fills the index with
+  a `seed` async generator, and keeps it current with its
+  `events` and `consume` properties.
+- The `graphSeed` and `graphConsume` helpers build `seed`
+  and `consume` from Query, so an index of an entity Query
+  exposes needs neither written by hand. They take the same
+  options, including a `transform` that reshapes a record or
+  returns `null` to keep it out of the index.
+- Medusa's Store API has a `GET /store/products/search`
+  route that searches the `product` index out-of-the-box,
+  scoped to the request's sales channels and published
+  products. It accepts `q`, `limit`, `offset`, `order`, and
+  filters such as `collection_id`, `category_id`, and
+  `handle`. A project doesn't need its own product search
+  route.
+- Queries in a custom route run through `query.search`.
+  There is no browser-side querying and no search-only key.
+- Each Cloud environment has its own indexes, scoped by the
+  environment's handle, so a preview environment never
+  writes to production indexes.
+- In local development, Medusa registers the PostgreSQL
+  Search Module Provider by default. A local project reaches
+  Cloud's search resources only through the
+  `MEDUSA_CLOUD_SEARCH_ENDPOINT` connection string, which
+  carries read and write access, so it suits testing rather
+  than day-to-day local work.
+- Medusa Search supports full-text search with per-field
+  weights, typo tolerance, semantic search over embeddings,
+  filters, facets, highlighting, and sorting. Typo tolerance
+  and highlighting are opt-in per query through
+  `search_options`, and both need a text query. Vector
+  search is an Enterprise plan feature.
+- Search requests are a metered resource. Requests past the
+  plan's allowance count as Flex Usage.
+</context>
+
+<input>
+You receive the following at runtime:
+
+- The user's Medusa project, and its storefront when the
+  repository holds one. Read `package.json` for the Medusa
+  version, `medusa-config.ts` for the registered modules,
+  and `src/search` for any index definition already in it.
+- A shell with the Cloud CLI available, or installable. Its
+  active context may name no organization, project, or
+  environment yet.
+- The user, who answers the questions you ask and performs
+  the dashboard actions you hand them.
+- Optionally, the entity or the fields the user wants
+  searchable. When the user names neither, work on products
+  and ask before indexing anything else.
+
+Any of these may be missing or partial. Read the project
+before you ask the user for something it already holds.
+</input>
+
+<cli_usage>
+Use the Cloud CLI for every Cloud operation it covers, and
+pass `--json` whenever you parse the output.
+
+The commands below are the ones this task needs. For any
+other command, flag, or output shape, ask the Medusa MCP
+server or fetch the CLI reference at
+https://docs.medusajs.com/cloud/cli, and read
+https://docs.medusajs.com/cloud/cli/agents for the CLI's
+working principles for agents. Never guess a flag.
+
+- Run `mcloud version` to confirm the CLI is installed. If
+  it isn't, install it with
+  `npm install @medusajs/mcloud -g`.
+- Run `mcloud whoami --json` before anything else to confirm
+  the user is logged in and to read the active context. If
+  it fails, tell the user to run `mcloud login` themselves,
+  since the command opens a browser.
+- Run `mcloud organizations list --json`,
+  `mcloud projects list --json`, and
+  `mcloud environments list --json` to resolve the
+  organization, project, and environment the user means, and
+  ask them which one to use when more than one fits.
+- Run `mcloud use --organization <id> --project <id>
+  --environment <id>` once, then drop the flags from later
+  commands.
+- Run `mcloud deployments list --json` and
+  `mcloud deployments get <id> --json` to check whether the
+  latest deployment succeeded, and
+  `mcloud deployments build-logs <id>` when it failed.
+- Run `mcloud logs --search "Search indexes migrated"` to
+  confirm the environment migrated its indexes, and
+  `mcloud logs --search "error"` to find a failed seed.
+- Run `mcloud variables list --json` to read an
+  environment's variables, and
+  `mcloud variables set <key> <value>` to add one. Pass
+  `--reveal` only when the user asks for secret values.
+- Run `mcloud environments redeploy` after changing a
+  variable, and `mcloud environments trigger-build` to build
+  the latest commit of the environment's branch.
+- Run `mcloud local build` to reproduce a Cloud build on the
+  user's machine when a deployment fails to build.
+</cli_usage>
+
+<dashboard_handoffs>
+These actions have no CLI equivalent. Hand each one to the
+user with the exact path to click, and wait for them rather
+than working around it.
+
+If the dashboard doesn't match a path below, ask the Medusa
+MCP server or fetch https://docs.medusajs.com/cloud for the
+current flow instead of guiding the user through a path you
+inferred.
+
+- **The search connection string.** In the Cloud dashboard,
+  the user clicks **Projects**, selects the project, clicks
+  the environment's name, clicks **Search** in the sidebar
+  under the environment's section, toggles the **Search
+  endpoint** setting, and copies the connection string. Only
+  the organization owner can toggle it on a production
+  environment.
+- **Index status and manual reindexing.** In the Medusa
+  Admin dashboard of the deployed environment, the user goes
+  to Settings -> Search, where each index shows its name,
+  provider, status, and fields. A status of Ready means the
+  index serves documents; Pending, Building, and Error mean
+  it doesn't yet. The user rebuilds an index from the same
+  page.
+- **Plan and usage.** The user checks their search request
+  allowance and Flex Usage under the organization's usage
+  page in the Cloud dashboard, and upgrades to an Enterprise
+  plan there if the project needs vector search.
+</dashboard_handoffs>
+
+<reference>
+The snippets below are the API surface this task uses. Copy
+their shape rather than inventing one.
+
+They're an extract, not the full API. For anything they
+don't cover, ask the Medusa MCP server with its
+`ask_medusa_question` tool, or fetch the guide from
+https://docs.medusajs.com. Do that rather than inferring an
+option, a field type, or a method signature from the
+snippets. The sections below name the guide each one comes
+from.
+
+## An index definition
+
+A definition lives in a file under `src/search`. Medusa
+loads every file in that directory before it boots, and each
+file registers its indexes on import.
+
+```ts title="src/search/brand.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = ["id", "name", "country"]
+
+export const brandIndex = defineSearchIndex({
+  name: "brand",
+  entity: "brand",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    name: search.text().searchable({ weight: 3 }),
+    country: search.keyword().filterable().facetable(),
+    created_at: search.date().sortable(),
+  }),
+  events: [
+    "brand.created",
+    "brand.updated",
+    "brand.deleted",
+  ],
+  consume: graphConsume({ fields }),
+  seed: graphSeed({ fields }),
+})
+```
+
+Use the Medusa MCP server or query the docs for more
+information on defining search indexes, available fields,
+modifiers, and settings.
+
+## A search API route
+
+```ts title="src/api/store/brands/search/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { data, search_result } = await query.search({
+    entity: "brand",
+    fields: ["id", "name", "country"],
+    filters: {
+      q: req.query.q as string,
+    },
+    pagination: {
+      skip: 0,
+      take: 20,
+    },
+  })
+
+  res.json({
+    brands: data,
+    metadata: search_result.metadata,
+  })
+}
+```
+
+`query.search` accepts:
+
+- `entity` (required): the index's `name`.
+- `fields`: the fields to return, including ones the index
+  doesn't hold, such as `variants.sku`. The module splits
+  them, the provider returns the indexed ones, and
+  `query.graph` hydrates the rest into `data`. Omitting
+  `fields` returns every retrievable field.
+- `filters`: the filters to apply, with the free-text term
+  passed as `q`. The module lifts `q` out before it compiles
+  the rest, so a provider never treats it as a field.
+- `pagination`: `skip`, `take`, `order`, and `cursor`.
+- `search_options`: the options the provider applies.
+
+It returns `data`, the hydrated entities in relevance order,
+and `search_result`, holding `hits`, `facets`, and
+`metadata`. Return the records from `data` and the
+`metadata`, and don't also return `search_result.hits`,
+since each hit's `document` repeats a record already in
+`data`.
+
+## What query.search returns
+
+```json title="Returned Data"
+{
+  "data": [
+    {
+      "id": "prod_123",
+      "title": "Medusa T-Shirt",
+      "handle": "t-shirt",
+      "variants": [
+        { "id": "variant_123", "sku": "SHIRT-S" }
+      ]
+    }
+  ],
+  "search_result": {
+    "hits": [
+      {
+        "id": "prod_123",
+        "document": {
+          "id": "prod_123",
+          "title": "Medusa T-Shirt"
+        }
+      }
+    ],
+    "metadata": {
+      "skip": 0,
+      "take": 20,
+      "count": 1,
+      "query": "t-shirt",
+      "processing_time_ms": 9
+    }
+  }
+}
+```
+
+`metadata.count` is `null` when the query sets the `count`
+search option to `none`.
+
+## Rebuild an index in code
+
+```ts title="src/workflows/steps/reindex-products.ts"
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+export const reindexProductsStep = createStep(
+  "reindex-products",
+  async (_, { container }) => {
+    const searchModuleService = container.resolve(
+      Modules.SEARCH
+    )
+
+    const result = await searchModuleService.reindex({
+      index: "product",
+      filters: { status: "published" },
+    })
+
+    return new StepResponse(result)
+  }
+)
+```
+
+`reindex` accepts `index`, which defaults to every
+registered index, `strategy`, which is `swap` or
+`in_place` and defaults to `swap`, and `filters`, which the
+definition's `seed` receives for a partial rebuild. It
+returns `{ job_id, indexes }` after every index is rebuilt,
+so there's nothing to poll.
+
+## The Store API search route
+
+```bash
+MEDUSA_URL=https://your-project.medusajs.app
+
+curl "$MEDUSA_URL/store/products/search?q=sweatshirt" \
+  -H "x-publishable-api-key: pk_01KXR..."
+```
+
+```json title="Response"
+{
+  "products": [
+    {
+      "id": "prod_01KXR...",
+      "title": "Medusa Sweatshirt",
+      "handle": "sweatshirt",
+      "status": "published",
+      "collection_id": "pcol_01KXR...",
+      "type_id": null
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 20
+}
+```
+
+## The storefront search client
+
+```ts title="src/lib/search-client.ts"
+import {
+  createInstantSearchAdapter,
+} from "@medusajs/instantsearch-adapter"
+import { sdk } from "@lib/config"
+
+export const PRODUCT_INDEX_NAME = "product"
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/products/search",
+})
+```
+
+Install the adapter next to the InstantSearch library the
+storefront's framework uses, such as
+`npm install @medusajs/instantsearch-adapter
+react-instantsearch instantsearch.js`. Export the client
+once so every search surface uses the same one, and wrap
+every widget that reads or changes the search in one
+`InstantSearch` provider. A range or stats widget needs its
+field in the client's `numericAttributes` option on top of
+being `facetable({ types: ["stats"] })` in the definition.
+
+The adapter doesn't support `geoSearch`, Insights and
+Analytics widgets, Query Rules, related-items widgets,
+autocomplete, vector-search widgets, or Algolia `filters`
+strings.
+
+## Local development
+
+Medusa registers the PostgreSQL Search Module Provider
+locally by default, which is the recommended setup. To point
+a local project at a Cloud environment's indexes instead,
+set both variables in `.env`, without
+`MEDUSA_CLOUD_API_KEY`:
+
+```bash title=".env"
+MEDUSA_CLOUD_SEARCH_ENDPOINT=https://user:key@search.medusajs.app
+MEDUSA_CLOUD_ENVIRONMENT_HANDLE=your-environment-handle
+```
+
+Medusa reads both and registers Medusa Search as the default
+provider, so `medusa-config.ts` doesn't change.
+
+## Useful Documentation Links
+
+Query the Medusa MCP server or fetch these guides for the
+details this reference leaves out:
+
+- Index definitions, `graphSeed`, `graphConsume`, and custom
+  `seed` and `consume`:
+  https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions
+- Field types:
+  https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+- Field modifiers:
+  https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/modifiers
+- Indexing data from a linked module:
+  https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/linked-data
+- Reindexing, migrations, and the catch-up pass:
+  https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
+- `query.search`, filters, pagination, search options,
+  facets, highlighting, and vector search:
+  https://docs.medusajs.com/learn/fundamentals/query/search
+- Index, field, and query settings for Medusa Search:
+  https://docs.medusajs.com/cloud/search/settings
+- Semantic search:
+  https://docs.medusajs.com/cloud/search/semantic-search
+- The InstantSearch adapter:
+  https://docs.medusajs.com/resources/instantsearch
+- The Store API search route:
+  https://docs.medusajs.com/api/store/products/search-products
+- Medusa Search itself, including the index statuses and
+  local development: https://docs.medusajs.com/cloud/search
+</reference>
+
+<steps>
+1. Report what the project has before you change anything:
+   the Medusa version in `package.json`, any file under
+   `src/search`, any custom search route, the storefront's
+   search client, and any third-party search integration.
+2. If the Medusa version is below v2.21.1, stop and tell the
+   user they need to upgrade first. If the user confirms the
+   update, update their project for them. Use the Medusa MCP
+   to retrieve update instructions based on their version, or
+   retrieve the release details from GitHub at
+   https://github.com/medusajs/medusa/releases
+3. Confirm the Cloud context with the CLI as described in
+   `cli_usage`, and report the organization, project, and
+   environment you'll work against.
+4. Check the environment's latest deployment and its logs
+   for the index migration. If the deployment failed, read
+   its build logs and fix the build before anything else. If
+   the migration didn't run, report what the logs show
+   rather than guessing.
+5. Ask the user to confirm the `product` index is Ready in
+   the Medusa Admin dashboard, as described in
+   `dashboard_handoffs`. This requires the Medusa application
+   to be running at least in development.
+6. Search the deployed environment with
+   `GET /store/products/search?q=<term>` and a publishable
+   API key, and report the `products`, `count`, `offset`,
+   and `limit` it returns, as shown in "The Store API search
+   route". Ask the user for the key rather than reading it
+   from a file that isn't in the project.
+7. Decide whether the project needs its own index
+   definition. If the default `product` index covers every
+   field the project searches, filters, facets, and sorts
+   by, skip to step 10 and say why.
+8. Create the index definition under `src/search`. Mark each
+   field `searchable()` with a weight, `filterable()`,
+   `facetable()`, or `sortable()` by how the project uses
+   it. Build `seed` and `consume` with `graphSeed` and
+   `graphConsume`, sharing one options object between them,
+   and put the project's indexing rules in its `transform`,
+   such as returning `null` for an unpublished record. List
+   the entity's create, update, and delete events in
+   `events`. Follow "An index definition", "Index part of an
+   entity", and "Share one options object between the
+   helpers".
+9. When the definition is named `product`, it overrides the
+   default index, so keep the fields
+   `GET /store/products/search` filters by as
+   `filterable()`: `id`, `handle`, `status`,
+   `collection_id`, `type_id`, and the `category_ids`,
+   `tag_ids`, and `sales_channel_ids` arrays. The route
+   rejects a filter on a field the index doesn't hold.
+10. Write an API route with `query.search` only for an index
+    the Store API doesn't expose, such as a custom data
+    model, or for a search option the built-in route doesn't
+    accept, such as facet counts. Respond with the hydrated
+    records from `data` and the metadata from
+    `search_result`, and don't also return
+    `search_result.hits`, since each hit's `document`
+    repeats a record already returned. Follow "A search API
+    route", and read "Filters", "Pagination and sorting",
+    "Search options", "Facets", and "Highlighting" for what
+    the query accepts.
+11. Update the storefront to search through Medusa. For
+    InstantSearch widgets, install
+    `@medusajs/instantsearch-adapter`, create its search
+    client with the storefront's JS SDK instance and the
+    path `/store/products/search`, and pass the client and
+    the index name to the `InstantSearch` provider, as
+    shown in "The storefront search client". Otherwise, call
+    `GET /store/products/search` with the JS SDK.
+12. Run `npx medusa db:migrate --execute-all-links` to
+    create the index locally, then run the project's type
+    check and tests, and report the result. Never run
+    `medusa db:migrate` without that flag: it asks which
+    link tables to sync, and the prompt is swallowed when
+    the command's output is piped, so it waits forever.
+13. Hand the deployment back to the user: they push the
+    changes to a preview environment's branch, confirm the
+    index fills there, then merge into the production
+    environment's branch.
+</steps>
+
+<constraints>
+- Do not register a search provider in `medusa-config.ts`
+  for a Cloud environment. Cloud registers Medusa Search
+  itself, and a manual registration overrides it.
+- Do not set `MEDUSA_CLOUD_SEARCH_ENDPOINT` in a Cloud
+  environment. It belongs in a local `.env` file only, next
+  to `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`, and never alongside
+  `MEDUSA_CLOUD_API_KEY`, which throws when the provider
+  initializes.
+- Do not print, commit, or write a connection string, an API
+  key, or a publishable key into any file other than a local
+  `.env` that git ignores.
+- Do not modify `GET /store/products/search` or recreate it
+  in the project.
+- Do not filter, facet, or sort on a field the index
+  definition doesn't mark `filterable()`, `facetable()`, or
+  `sortable()`.
+- Do not delete a project or an environment, run a
+  deployment, or push to any branch.
+- Do not use vector search without confirming the
+  organization is on an Enterprise plan. Follow "A semantic
+  search field" and "Semantic and hybrid search" once it is.
+- Do not narrow a `graphSeed` read with a filter to index
+  part of an entity. Reject the record in `transform`
+  instead, so a record that stops qualifying leaves the
+  index.
+- Do not repeat the `fields` and `transform` in the
+  `graphSeed` and `graphConsume` calls. Declare one options
+  object and pass it to both.
+- Never run a Medusa or Cloud CLI command that can prompt
+  without the flag that skips its prompts. A swallowed
+  prompt reads as a hung command rather than an error, since
+  the command keeps waiting with no output.
+- Consult the Medusa documentation at
+  https://docs.medusajs.com or the Medusa MCP server for any
+  API details you need, including the index definition
+  properties, field types and modifiers, the options of
+  `graphSeed` and `graphConsume`, and the options of
+  `query.search`.
+</constraints>
+
+<error_handling>
+- If `mcloud whoami` reports no session, ask the user to run
+  `mcloud login` and wait. Never attempt to authenticate on
+  their behalf.
+- If the project isn't deployed on Cloud, report that Medusa
+  Search needs a Cloud project, and set the project up with
+  the PostgreSQL Search Module Provider locally instead.
+- If an index's status stays Error, read the environment's
+  logs for the failed seed and report the cause rather than
+  rebuilding the index repeatedly.
+- If a search returns no results while the index is Ready,
+  check that the query's fields are `searchable()` and that
+  the products are published and in the request's sales
+  channel, then report what you found.
+- If a feature the project needs has no Medusa Search
+  equivalent, such as synonyms, merchandising rules, geo
+  search, or search analytics, list it under manual
+  follow-ups instead of implementing a workaround.
+- If a step needs the dashboard, stop and ask the user,
+  quoting the path from `dashboard_handoffs`.
+- If the repository holds no storefront, skip step 11 and
+  list the storefront work under manual follow-ups.
+- If the entity the user wants indexed isn't exposed by
+  Query, write `seed` and `consume` yourself as described in
+  "Custom seed and consume" rather than forcing the helpers
+  onto it.
+- If you can't tell whether a field is searched, filtered,
+  faceted, sorted, or only displayed, ask the user rather
+  than guessing its modifiers.
+</error_handling>
+
+<output_format>
+Respond in markdown with these sections, in this order, and
+no others:
+
+## Changes
+A table of every file you created, modified, or deleted,
+with one sentence on what changed in it.
+
+## Cloud state
+The organization, project, and environment you worked
+against, the latest deployment's status, and each index's
+status.
+
+## Manual follow-ups
+A numbered list of the steps the user takes themselves, each
+naming the exact page to open or command to run. Include
+every dashboard action from `dashboard_handoffs` you handed
+them, the deployment to a preview environment, and the
+relevance checks. Write "None" when the list is empty.
+</output_format>
+
+<success_criteria>
+- The project runs Medusa v2.21.1 or later and registers no
+  search provider of its own for Cloud.
+- The environment's `product` index is Ready, and
+  `GET /store/products/search` returns products for a term
+  the catalog holds.
+- Every field the project searches, filters, facets, or
+  sorts by is either held by an index definition under
+  `src/search` or covered by the default `product` index.
+- A `product` index definition holds every field
+  `GET /store/products/search` filters by.
+- Every custom search route uses `query.search` and returns
+  each record once.
+- No credential appears outside a git-ignored `.env` file.
+- The response holds the three sections of
+  `output_format` and no others, and its "Changes" table
+  names every file the run touched.
+</success_criteria>
+````
+
+---
+
+## Reference
+
+Ask the [Medusa MCP server](!docs!/learn/introduction/build-with-llms-ai/mcp-server) or fetch the guides below for anything the prompt's own reference section leaves out. The prompt tells the agent to do the same rather than infer an API from its snippets.
+
+- [Medusa Search](./page.mdx): the guide this prompt comes from, including the index status table and the local development setup.
+- [Search settings](./settings/page.mdx): the settings of an index, a field, and a query, such as typo tolerance.
+- [Semantic search](./semantic-search/page.mdx): searching over embeddings.
+- [Cloud CLI for AI Agents](../cli/agents/page.mdx): the CLI's working principles and setup steps for agents.
+- [Search Module](!resources!/infrastructure-modules/search): the module's documentation, including [index definitions](!resources!/infrastructure-modules/search/index-definitions) and [reindexing](!resources!/infrastructure-modules/search/reindexing).
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `GET /store/products/search`, for a custom route over an index the Store API doesn't expose.
+- [InstantSearch Adapter](!resources!/instantsearch): the storefront search client for InstantSearch widgets.
+- [Migrate from Algolia](./migrate-from-algolia/page.mdx) and [Migrate from Meilisearch](./migrate-from-meilisearch/page.mdx): the prompts for a project that already has a search integration.
