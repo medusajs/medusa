@@ -28,7 +28,7 @@ export default async (
     cleanerQueueOptions,
     cleanerWorkerOptions,
     pubsub,
-  } = options?.redis as RedisWorkflowsOptions
+  } = (options?.redis ?? options ?? {}) as RedisWorkflowsOptions
 
   // Handle backward compatibility for deprecated options
   const resolvedUrl = redisUrl ?? url
