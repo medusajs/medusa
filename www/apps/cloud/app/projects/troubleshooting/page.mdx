@@ -1,0 +1,31 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Troubleshooting Cloud Projects`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find solutions to common issues that may arise when working with your projects on Cloud.
+
+<Note>
+
+If none of the issues in this guide match yours, [check the Cloud status page](../../status/page.mdx) for ongoing Cloud incidents. The bottom of the documentation's right sidebar also shows the current Cloud status.
+
+</Note>
+
+## 403 Error: Requested Fields Are Not Allowed
+
+When you send a request to a Store API route with a `fields` query parameter, you may receive a `403` response with the following error:
+
+```json
+{
+  "message": "One or more of the requested fields are not allowed on this endpoint."
+}
+```
+
+Cloud applies Web Application Firewall (WAF) rules to your project for security reasons. A WAF is a filter that inspects incoming requests and blocks the ones that match a rule before they reach your Medusa application.
+
+These rules apply globally to all `/store` API routes, including custom routes that you add to your project. So, you can't retrieve some relations in the `fields` query parameter, such as a customer's `orders`, since the request may return all the orders in your store.
+
+To resolve this error, remove the disallowed relations from your request's `fields` query parameter. If your use case requires these relations, contact support through the Cloud dashboard and explain your use case to have the rules unblocked for your project.

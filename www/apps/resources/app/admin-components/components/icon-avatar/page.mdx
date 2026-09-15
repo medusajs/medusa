@@ -1,0 +1,88 @@
+---
+sidebar_label: "Icon Avatar"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `IconAvatar - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `IconAvatar` component renders an icon inside an avatar-like container, which the [Avatar](!ui!/components/avatar) component from Medusa UI doesn't support. The Medusa Admin uses it in section headers and sidebar links, such as the location details page.
+
+```tsx
+import { IconAvatar } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Show an icon avatar at the top of a widget:
+
+```tsx
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { IconAvatar } from "@medusajs/dashboard/components"
+import { Buildings } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+
+const LocationWidget = () => {
+  return (
+    <Container className="flex items-center gap-x-3">
+      <IconAvatar size="large" variant="squared">
+        <Buildings />
+      </IconAvatar>
+      <Heading level="h2">Warehouse</Heading>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default LocationWidget
+```
+
+---
+
+## Props
+
+<TypeList
+  types={[
+    {
+      name: "children",
+      type: "`React.ReactNode`",
+      optional: false,
+      description: `The icon to show in the avatar. Use an icon from the [Medusa Icons package](!ui!/icons/overview).`,
+    },
+    {
+      name: "size",
+      type: "`\"small\"` \\| `\"large\"` \\| `\"xlarge\"`",
+      optional: true,
+      defaultValue: "small",
+      description: `The avatar's size.`,
+    },
+    {
+      name: "variant",
+      type: "`\"squared\"` \\| `\"rounded\"`",
+      optional: true,
+      defaultValue: "rounded",
+      description: `The avatar's shape.`,
+    },
+    {
+      name: "className",
+      type: "`string`",
+      optional: true,
+      description: `Additional CSS classes to apply to the avatar's container.`,
+    },
+  ]}
+/>

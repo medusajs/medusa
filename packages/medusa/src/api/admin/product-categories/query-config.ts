@@ -19,35 +19,14 @@ export const defaults = [
   "*category_children",
 ]
 
-export const allowed = [
-  "id",
-  "name",
-  "description",
-  "handle",
-  "is_active",
-  "is_internal",
-  "rank",
-  "external_id",
-  "parent_category_id",
-  "created_at",
-  "updated_at",
-  "metadata",
-  "category_children",
-  "parent_category",
-  "products",
-  "translations",
-]
-
 export const retrieveProductCategoryConfig = {
   defaults,
-  allowed,
   isList: false,
   entity: Entities.product_category,
 }
 
 export const listProductCategoryConfig = {
   defaults,
-  allowed,
   defaultLimit: 50,
   isList: true,
   entity: Entities.product_category,

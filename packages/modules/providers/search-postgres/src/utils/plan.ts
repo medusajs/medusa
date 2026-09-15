@@ -52,8 +52,9 @@ export type PostgresSearchProviderOptions = {
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for `search_options.vector.query`. Required on the lakebase
-   * engine when callers pass a query string instead of a pre-computed `value`.
+   * Embeds text for engine-embedded vector fields (`embed: true` on the field)
+   * at write time, and for `search_options.vector.query` at query time. Required
+   * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
   /**
@@ -103,6 +104,25 @@ function fieldKind(
 }
 
 /**
+ * Postgres matches typos with `pg_trgm` word similarity over the whole
+ * `search_text` column. It honours `enabled`, but it doesn't support fine-tuning.
+ *
+ * `disabled_on_attributes` states that a field must only ever
+ * match exactly, and ignoring it would fuzzy-match a SKU or a handle the index
+ * deliberately excluded. There is no per-attribute similarity to switch off
+ * here, so it is rejected instead.
+ */
+function assertTypoToleranceSupported(
+  settings: SearchTypes.SearchIndexSettings
+): void {
+  if (settings.typo_tolerance?.disabled_on_attributes?.length) {
+    fail(
+      "The postgres search provider matches typos across all searchable fields at once, so it does not support settings.typo_tolerance.disabled_on_attributes"
+    )
+  }
+}
+
+/**
  * Refuses a definition this engine cannot honour.
  */
 export function assertIndexSupported(
@@ -115,12 +135,6 @@ export function assertIndexSupported(
   ) => {
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
-
-      if (field.correlated) {
-        fail(
-          `The postgres search provider cannot correlate predicates per element, so "${path}" cannot set "correlated". Arrays of objects are collapsed to per-leaf arrays.`
-        )
-      }
 
       if (field.type === "vector") {
         if (engine !== "lakebase") {
@@ -151,6 +165,7 @@ export function assertIndexSupported(
   }
 
   walk(definition.fields, "")
+  assertTypoToleranceSupported(definition.settings)
 }
 
 /**
@@ -162,7 +177,7 @@ export function assertQuerySupported(
 ): void {
   const options = query.search_options ?? {}
 
-  if (options.highlight) {
+  if (options.highlight && query.q?.trim()) {
     fail("The postgres search provider does not support highlighting")
   }
 
@@ -269,6 +284,7 @@ export function buildIndexPlan(
       is_array: planned.is_array,
       is_date: planned.is_date,
       dimensions: planned.dimensions,
+      embed: planned.field.embed,
       searchable: isSearchable(planned.field),
       filterable: !!planned.field.filterable,
       sortable: !!planned.field.sortable,
@@ -337,6 +353,34 @@ export function tableNameForIndex(physicalName: string): string {
 /** BM25 index name for a document table (lakebase engine). */
 export function bm25IndexName(table: string): string {
   return `${table}_bm25`
+}
+
+/**
+ * Resolves which vector field a query targets. `vector.field` is optional when
+ * the index declares exactly one vector field.
+ */
+export function resolveVectorField(
+  vector: NonNullable<SearchTypes.SearchOptions["vector"]>,
+  plan: IndexPlan
+): string {
+  if (vector.field) {
+    if (!plan.vectors.includes(vector.field)) {
+      fail(
+        `Vector search field "${vector.field}" is not a vector field on this index`
+      )
+    }
+    return vector.field
+  }
+
+  if (plan.vectors.length === 1) {
+    return plan.vectors[0]
+  }
+
+  fail(
+    plan.vectors.length
+      ? `search_options.vector.field is required when the index has more than one vector field`
+      : `search_options.vector requires a vector field on this index`
+  )
 }
 
 /**

@@ -16,6 +16,8 @@ export type PlannedField = {
   is_array: boolean
   is_date: boolean
   field: SearchTypes.SearchFieldDefinition
+  dimensions?: number
+  embed?: boolean
 }
 
 export type TypoToleranceSettings = {
@@ -32,15 +34,25 @@ export type IndexPlan = {
   primary_key: string
   options: MedusaSearchIndexOptions
   typo_tolerance: TypoToleranceSettings
+  vectors: string[]
 }
 
 function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-// Inspired by Meilisearch's own typo-tolerance defaults.
-const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 5
-const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
+/**
+ * Cloud only matches a term fuzzily when the query is at least
+ * `3 * (distance + 1)` characters long, so the shortest word that can tolerate
+ * one typo is 6 characters and two typos is 9. Configuring anything lower is
+ * rejected at `upsertIndex` rather than silently raised.
+ */
+export function minWordSizeForTypos(distance: number): number {
+  return 3 * (distance + 1)
+}
+
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = minWordSizeForTypos(1)
+const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = minWordSizeForTypos(2)
 
 function resolveTypoTolerance(
   settings: SearchTypes.SearchIndexSettings
@@ -107,21 +119,59 @@ function fieldType(
   }
 }
 
+function assertTypoToleranceSupported(
+  settings: SearchTypes.SearchIndexSettings,
+  paths: Set<string>
+): void {
+  const typo = settings.typo_tolerance
+  if (!typo) {
+    return
+  }
+
+  const thresholds = [
+    ["min_word_size_for_one_typo", typo.min_word_size_for_one_typo, 1],
+    ["min_word_size_for_two_typos", typo.min_word_size_for_two_typos, 2],
+  ] as const
+
+  for (const [name, value, distance] of thresholds) {
+    const minimum = minWordSizeForTypos(distance)
+    if (value !== undefined && value < minimum) {
+      fail(
+        `Medusa search requires settings.typo_tolerance.${name} to be at least ${minimum} to tolerate ${distance} ${
+          distance === 1 ? "typo" : "typos"
+        }, got ${value}`
+      )
+    }
+  }
+
+  const one = typo.min_word_size_for_one_typo
+  const two = typo.min_word_size_for_two_typos
+  if (one !== undefined && two !== undefined && two < one) {
+    fail(
+      `settings.typo_tolerance.min_word_size_for_two_typos (${two}) cannot be lower than min_word_size_for_one_typo (${one})`
+    )
+  }
+
+  for (const path of typo.disabled_on_attributes ?? []) {
+    if (!paths.has(path)) {
+      fail(
+        `settings.typo_tolerance.disabled_on_attributes references "${path}", which is not a field on this index`
+      )
+    }
+  }
+}
+
 export function assertIndexSupported(
   definition: SearchTypes.ResolvedSearchIndexDefinition
 ): void {
+  const paths = new Set<string>()
+
   const walk = (
     group: Record<string, SearchTypes.SearchFieldDefinition>,
     prefix: string
   ) => {
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
-
-      if (field.correlated) {
-        fail(
-          `The Medusa search provider cannot correlate predicates per array element ("${path}")`
-        )
-      }
 
       if (field.type === "object") {
         if (field.fields) {
@@ -131,17 +181,12 @@ export function assertIndexSupported(
       }
 
       fieldType(field, !!field.array)
+      paths.add(path)
     }
   }
 
-  if (definition.settings.synonyms) {
-    fail("The Medusa search provider does not support synonyms")
-  }
-  if (definition.settings.stop_words?.length) {
-    fail("The Medusa search provider does not support custom stop-word lists")
-  }
-
   walk(definition.fields, "")
+  assertTypoToleranceSupported(definition.settings, paths)
 }
 
 export function buildIndexPlan(
@@ -171,7 +216,7 @@ export function buildIndexPlan(
       }
 
       const configured = providerOptions<MedusaSearchFieldOptions>(field)
-      const type = configured.type ?? fieldType(field, isArray)
+      const type = fieldType(field, isArray)
       const searchableField = isSearchable(field)
       const indexed =
         field.filterable ||
@@ -181,11 +226,16 @@ export function buildIndexPlan(
 
       const attribute: AttributeSchemaConfig = {
         type,
-        filterable: configured.filterable ?? !!indexed,
+        filterable: !!indexed,
       }
 
       if (field.type === "vector") {
         attribute.ann = configured.ann ?? true
+        if (field.embed) {
+          attribute.embed = {
+            ...(field.dimensions ? { dims: field.dimensions } : {}),
+          }
+        }
       }
 
       if (searchableField) {
@@ -216,22 +266,29 @@ export function buildIndexPlan(
       if (configured.regex !== undefined) {
         attribute.regex = configured.regex
       }
-      if (configured.fuzzy !== undefined) {
-        attribute.fuzzy = configured.fuzzy
-      }
 
-      schema[path] = attribute
       fields.set(path, {
         path,
         type,
         is_array: isArray,
         is_date: field.type === "date",
         field,
+        dimensions: field.dimensions,
+        embed: field.embed,
       })
+
+      schema[path] = attribute
     }
   }
 
   walk(definition.fields, "", false)
+
+  const vectors: string[] = []
+  for (const planned of fields.values()) {
+    if (planned.field.type === "vector") {
+      vectors.push(planned.path)
+    }
+  }
 
   return {
     fields,
@@ -240,6 +297,7 @@ export function buildIndexPlan(
     primary_key: definition.primary_key,
     options: providerOptions<MedusaSearchIndexOptions>(definition.settings),
     typo_tolerance: typoTolerance,
+    vectors,
   }
 }
 
@@ -253,6 +311,27 @@ function coerce(value: unknown, planned: PlannedField): unknown {
   return value
 }
 
+function coerceVector(value: unknown, planned: PlannedField): number[] {
+  if (!Array.isArray(value) || !value.length) {
+    fail(
+      `Vector field "${planned.path}" must be a numeric array of length ${planned.dimensions}`
+    )
+  }
+
+  const nums = value.map((entry) => Number(entry))
+  if (nums.some((n) => Number.isNaN(n))) {
+    fail(`Vector field "${planned.path}" contains non-numeric components`)
+  }
+
+  if (planned.dimensions && nums.length !== planned.dimensions) {
+    fail(
+      `Vector field "${planned.path}" expected ${planned.dimensions} dimensions, got ${nums.length}`
+    )
+  }
+
+  return nums
+}
+
 export function toSearchDocument(
   document: SearchTypes.SearchDocument,
   plan: IndexPlan
@@ -260,13 +339,47 @@ export function toSearchDocument(
   const target: Record<string, unknown> = {}
 
   for (const planned of plan.fields.values()) {
+    if (planned.field.type === "vector") {
+      // `readDocumentPath` flattens arrays; a vector is one value.
+      const raw = planned.path
+        .split(".")
+        .reduce<unknown>(
+          (value, segment) =>
+            value && typeof value === "object"
+              ? (value as Record<string, unknown>)[segment]
+              : undefined,
+          document
+        )
+      if (raw === undefined || raw === null) {
+        continue
+      }
+
+      // Engine-embedded fields accept the source text; the proxy embeds it
+      // into the `[N]f32` column before storage.
+      if (planned.embed) {
+        if (typeof raw !== "string") {
+          fail(`Vector field "${planned.path}" with embed must be a string`)
+        }
+        const text = raw.trim()
+        if (text) {
+          target[planned.path] = text
+        }
+        continue
+      }
+
+      target[planned.path] = coerceVector(raw, planned)
+      continue
+    }
+
     const values = readDocumentPath(document, planned.path.split("."))
       .map((value) => coerce(value, planned))
       .filter((value) => value !== undefined)
 
-    if (values.length) {
-      target[planned.path] = planned.is_array ? values : values[0]
+    if (!values.length) {
+      continue
     }
+
+    target[planned.path] = planned.is_array ? values : values[0]
   }
 
   const primaryKey = document[plan.primary_key]
@@ -299,21 +412,4 @@ export function fromSearchDocument(
   }
 
   return result
-}
-
-export function sameSchemaType(
-  current: Record<string, AttributeSchemaConfig>,
-  desired: Record<string, AttributeSchema>
-): boolean {
-  for (const [path, schema] of Object.entries(desired)) {
-    const desiredType =
-      typeof schema === "string"
-        ? schema
-        : (schema as AttributeSchemaConfig).type
-    if (current[path] && current[path].type !== desiredType) {
-      return false
-    }
-  }
-
-  return Object.keys(current).every((path) => path in desired)
 }

@@ -552,6 +552,11 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/promotions/common/edit-rules"),
                     },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/promotions/promotion-metadata"),
+                    },
                   ],
                 },
               ],

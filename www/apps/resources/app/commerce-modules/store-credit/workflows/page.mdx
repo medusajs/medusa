@@ -17,7 +17,7 @@ The Store Credit Module provides workflows and steps to manage store credit acco
 Create new store credit accounts for customers:
 
 ```ts
-import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin"
+import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await createStoreCreditAccountsWorkflow(container)
   .run({
@@ -34,7 +34,7 @@ const { result } = await createStoreCreditAccountsWorkflow(container)
 Claim a store credit account for a customer:
 
 ```ts
-import { claimStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin"
+import { claimStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await claimStoreCreditAccountWorkflow(container)
   .run({
@@ -52,7 +52,7 @@ const { result } = await claimStoreCreditAccountWorkflow(container)
 Add credits to a store credit account:
 
 ```ts
-import { creditStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin"
+import { creditStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await creditStoreCreditAccountWorkflow(container)
   .run({
@@ -71,7 +71,7 @@ const { result } = await creditStoreCreditAccountWorkflow(container)
 Credit multiple store credit accounts:
 
 ```ts
-import { creditAccountsWorkflow } from "@medusajs/loyalty-plugin"
+import { creditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await creditAccountsWorkflow(container)
   .run({
@@ -97,7 +97,7 @@ const { result } = await creditAccountsWorkflow(container)
 Debit multiple store credit accounts:
 
 ```ts
-import { debitAccountsWorkflow } from "@medusajs/loyalty-plugin"
+import { debitAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 const { result } = await debitAccountsWorkflow(container)
   .run({
@@ -119,7 +119,7 @@ const { result } = await debitAccountsWorkflow(container)
 Apply store credits to a cart as a credit line:
 
 ```ts
-import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin"
+import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 await addStoreCreditsToCartWorkflow(container)
   .run({

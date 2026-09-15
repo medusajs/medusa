@@ -176,8 +176,13 @@ export default class LinkModuleService implements ILinkModule {
     return [rows, count]
   }
 
-  @InjectTransactionManager()
+  // `EmitEvents` must sit outside `InjectTransactionManager` so the `ATTACHED`
+  // event is flushed after the transaction commits. Emitting from inside the
+  // transaction lets subscribers read before the rows are visible: the index
+  // module re-fetches the link by id, gets nothing, and silently skips it.
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async create(
     primaryKeyOrBulkData:
       | string
@@ -223,8 +228,9 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(links)) as unknown[]
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async dismiss(
     primaryKeyOrBulkData: string | string[] | [string | string[], string][],
     foreignKeyData?: string,
@@ -259,8 +265,9 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(links)) as unknown[]
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -281,8 +288,9 @@ export default class LinkModuleService implements ILinkModule {
     })
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async softDelete(
     data: any,
     { returnLinkableKeys }: SoftDeleteReturn = {},
@@ -339,8 +347,9 @@ export default class LinkModuleService implements ILinkModule {
     return await this.linkService_.softDelete(data, sharedContext)
   }
 
-  @InjectTransactionManager()
+  @InjectManager()
   @EmitEvents()
+  @InjectTransactionManager()
   async restore(
     data: any,
     { returnLinkableKeys }: RestoreReturn = {},

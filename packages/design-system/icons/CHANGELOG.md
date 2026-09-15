@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.21.0
+
+## 2.20.1
+
+## 2.20.0
+
 ## 2.19.0
 
 ### Patch Changes
