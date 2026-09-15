@@ -12,6 +12,7 @@ import {
 } from "@medusajs/ui"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Control, useForm, UseFormSetValue, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
 
@@ -63,6 +64,7 @@ import { ActionMenu } from "../../../../components/common/action-menu"
 const STACKED_FOCUS_MODAL_ID = "shipping-form"
 
 const Shipping = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
 
   const { order, isPending, isError, error } = useOrder(id!, {
@@ -100,12 +102,11 @@ const Shipping = () => {
             <div className="flex flex-1 flex-col items-center overflow-y-auto">
               <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
                 <RouteFocusModal.Title asChild>
-                  <Heading>Shipping</Heading>
+                  <Heading>{t("fields.shipping")}</Heading>
                 </RouteFocusModal.Title>
                 <RouteFocusModal.Description asChild>
                   <Text size="small" className="text-ui-fg-subtle">
-                    This draft order currently has no items. Add items to the
-                    order before adding shipping.
+                    {t("draftOrders.shipping.noItemsHint")}
                   </Text>
                 </RouteFocusModal.Description>
               </div>
@@ -114,7 +115,7 @@ const Shipping = () => {
           <RouteFocusModal.Footer>
             <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary" type="button">
-                Cancel
+                {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
           </RouteFocusModal.Footer>
@@ -124,12 +125,12 @@ const Shipping = () => {
       ) : (
         <div>
           <RouteFocusModal.Title asChild>
-            <span className="sr-only">Edit Shipping</span>
+            <span className="sr-only">
+              {t("draftOrders.shipping.editHeader")}
+            </span>
           </RouteFocusModal.Title>
           <RouteFocusModal.Description asChild>
-            <span className="sr-only">
-              Loading data for the draft order, please wait...
-            </span>
+            <span className="sr-only">{t("draftOrders.loading")}</span>
           </RouteFocusModal.Description>
         </div>
       )}
@@ -149,6 +150,7 @@ interface ShippingFormData {
 }
 
 const ShippingForm = ({ preview, order }: ShippingFormProps) => {
+  const { t } = useTranslation()
   const { setIsOpen } = useStackedModal()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [data, setData] = useState<ShippingFormData | null>(null)
@@ -255,12 +257,11 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
           <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
             <div>
               <RouteFocusModal.Title asChild>
-                <Heading>Shipping</Heading>
+                <Heading>{t("fields.shipping")}</Heading>
               </RouteFocusModal.Title>
               <RouteFocusModal.Description asChild>
                 <Text size="small" className="text-ui-fg-subtle">
-                  Choose which shipping method(s) to use for the items in the
-                  order.
+                  {t("draftOrders.shipping.editHint")}
                 </Text>
               </RouteFocusModal.Description>
             </div>
@@ -273,14 +274,14 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                     weight="plus"
                     className="text-ui-fg-muted"
                   >
-                    Shipping profile
+                    {t("fields.shippingProfile")}
                   </Text>
                   <Text
                     size="xsmall"
                     weight="plus"
                     className="text-ui-fg-muted"
                   >
-                    Action
+                    {t("draftOrders.shipping.actionColumn")}
                   </Text>
                 </div>
                 <div className="px-[5px] pb-[5px]">
@@ -418,7 +419,9 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                   actions: [
                                     hasItems
                                       ? {
-                                          label: "Edit shipping option",
+                                          label: t(
+                                            "draftOrders.shipping.editOptionAction"
+                                          ),
                                           icon: <Channels />,
                                           onClick: () => {
                                             setIsOpen(
@@ -434,7 +437,9 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                         }
                                       : undefined,
                                     {
-                                      label: "Remove shipping option",
+                                      label: t(
+                                        "draftOrders.shipping.removeOptionAction"
+                                      ),
                                       icon: <Trash />,
                                       onClick: () => {
                                         if (shippingMethod) {
@@ -461,7 +466,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                               shippingMethod={shippingMethod}
                               setData={setData}
                             >
-                              Add shipping option
+                              {t("draftOrders.shipping.addOptionAction")}
                             </StackedModalTrigger>
                           )}
                         </div>
@@ -546,7 +551,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
         <div className="flex justify-end gap-x-2">
           <RouteFocusModal.Close asChild>
             <Button size="small" variant="secondary" type="button">
-              Cancel
+              {t("actions.cancel")}
             </Button>
           </RouteFocusModal.Close>
           <Button
@@ -555,7 +560,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
             isLoading={isSubmitting}
             onClick={onSubmit}
           >
-            Save
+            {t("actions.save")}
           </Button>
         </div>
       </RouteFocusModal.Footer>
@@ -619,6 +624,7 @@ const ShippingProfileForm = ({
   order,
   preview,
 }: ShippingProfileFormProps) => {
+  const { t } = useTranslation()
   const { setIsOpen } = useStackedModal()
 
   const form = useForm<z.infer<typeof shippingMethodSchema>>({
@@ -697,13 +703,11 @@ const ShippingProfileForm = ({
               <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
                 <div>
                   <RouteFocusModal.Title asChild>
-                    <Heading>Shipping</Heading>
+                    <Heading>{t("fields.shipping")}</Heading>
                   </RouteFocusModal.Title>
                   <RouteFocusModal.Description asChild>
                     <Text size="small" className="text-ui-fg-subtle">
-                      Add a shipping method for the selected shipping profile.
-                      You can see the items that will be shipped using this
-                      method in the preview below.
+                      {t("draftOrders.shipping.addMethodHint")}
                     </Text>
                   </RouteFocusModal.Description>
                 </div>
@@ -735,7 +739,7 @@ const ShippingProfileForm = ({
             <div className="flex justify-end gap-x-2">
               <StackedFocusModal.Close asChild>
                 <Button size="small" variant="secondary" type="button">
-                  Cancel
+                  {t("actions.cancel")}
                 </Button>
               </StackedFocusModal.Close>
               <Button
@@ -743,7 +747,7 @@ const ShippingProfileForm = ({
                 type="submit"
                 isLoading={isPending || isUpdatingShippingMethod}
               >
-                {data.shippingMethod ? "Update" : "Add"}
+                {data.shippingMethod ? t("actions.update") : t("actions.add")}
               </Button>
             </div>
           </StackedFocusModal.Footer>
@@ -765,6 +769,7 @@ interface ItemsPreviewProps {
 }
 
 const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
+  const { t } = useTranslation()
   const matches = order.items.filter(
     (item) => item.variant?.product?.shipping_profile?.id === shippingProfileId
   )
@@ -774,10 +779,10 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
       <div className="grid grid-cols-2 items-center gap-3">
         <div className="flex flex-col">
           <Text size="small" weight="plus" leading="compact">
-            Items to ship
+            {t("draftOrders.shipping.itemsToShipLabel")}
           </Text>
           <Text size="small" className="text-ui-fg-subtle">
-            Items with the selected shipping profile.
+            {t("draftOrders.shipping.itemsToShipHint")}
           </Text>
         </div>
       </div>
@@ -785,12 +790,12 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
         <div className="text-ui-fg-muted grid grid-cols-2 gap-3 px-4 py-2">
           <div>
             <Text size="small" weight="plus">
-              Item
+              {t("fields.item")}
             </Text>
           </div>
           <div>
             <Text size="small" weight="plus">
-              Quantity
+              {t("fields.quantity")}
             </Text>
           </div>
         </div>
@@ -840,10 +845,10 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
           ) : (
             <div className="bg-ui-bg-base shadow-elevation-card-rest flex flex-col items-center justify-center gap-1 gap-x-3 rounded-lg p-4">
               <Text size="small" weight="plus" leading="compact">
-                No items found
+                {t("draftOrders.items.noResultsHeading")}
               </Text>
               <Text size="small" className="text-ui-fg-subtle">
-                No items found for "{query}".
+                {t("draftOrders.shipping.noItemsForProfile")}
               </Text>
             </div>
           )}
@@ -859,6 +864,7 @@ type LocationFieldProps = {
 }
 
 const LocationField = ({ control, setValue }: LocationFieldProps) => {
+  const { t } = useTranslation()
   const locations = useComboboxData({
     queryKey: ["locations"],
     queryFn: async (params) => {
@@ -881,9 +887,9 @@ const LocationField = ({ control, setValue }: LocationFieldProps) => {
           <Form.Item>
             <div className="grid grid-cols-2 gap-x-3">
               <div>
-                <Form.Label>Location</Form.Label>
+                <Form.Label>{t("fields.location")}</Form.Label>
                 <Form.Hint>
-                  Choose where you want to ship the items from.
+                  {t("draftOrders.shipping.chooseLocationHint")}
                 </Form.Hint>
               </div>
               <Form.Control>
@@ -893,7 +899,7 @@ const LocationField = ({ control, setValue }: LocationFieldProps) => {
                   isFetchingNextPage={locations.isFetchingNextPage}
                   searchValue={locations.searchValue}
                   onSearchValueChange={locations.onSearchValueChange}
-                  placeholder="Select location"
+                  placeholder={t("draftOrders.placeholders.selectLocation")}
                   onChange={(value) => {
                     setValue("shipping_option_id", "", {
                       shouldDirty: true,
@@ -923,6 +929,7 @@ const ShippingOptionField = ({
   preview,
   control,
 }: ShippingOptionFieldProps) => {
+  const { t } = useTranslation()
   const locationId = useWatch({ control, name: "location_id" })
 
   const shippingOptions = useComboboxData({
@@ -960,10 +967,10 @@ const ShippingOptionField = ({
 
   const tooltipContent =
     !locationId && !shippingProfileId
-      ? "Choose a location and shipping profile first."
+      ? t("draftOrders.shipping.chooseLocationAndProfileFirst")
       : !locationId
-      ? "Choose a location first."
-      : "Choose a shipping profile first."
+      ? t("draftOrders.shipping.chooseLocationFirst")
+      : t("draftOrders.shipping.chooseProfileFirst")
 
   return (
     <Form.Field
@@ -974,8 +981,12 @@ const ShippingOptionField = ({
           <Form.Item>
             <div className="grid grid-cols-2 gap-x-3">
               <div className="flex flex-col">
-                <Form.Label>Shipping option</Form.Label>
-                <Form.Hint>Choose the shipping option to use.</Form.Hint>
+                <Form.Label>
+                  {t("draftOrders.create.shippingOptionLabel")}
+                </Form.Label>
+                <Form.Hint>
+                  {t("draftOrders.create.shippingOptionHint")}
+                </Form.Hint>
               </div>
               <ConditionalTooltip
                 content={tooltipContent}
@@ -989,7 +1000,9 @@ const ShippingOptionField = ({
                       isFetchingNextPage={shippingOptions.isFetchingNextPage}
                       searchValue={shippingOptions.searchValue}
                       onSearchValueChange={shippingOptions.onSearchValueChange}
-                      placeholder="Select shipping option"
+                      placeholder={t(
+                        "draftOrders.placeholders.selectShippingOption"
+                      )}
                       {...field}
                       disabled={!locationId || !shippingProfileId}
                     />
@@ -1013,6 +1026,8 @@ const CustomAmountField = ({
   control,
   currencyCode,
 }: CustomAmountFieldProps) => {
+  const { t } = useTranslation()
+
   return (
     <Form.Field
       control={control}
@@ -1021,9 +1036,11 @@ const CustomAmountField = ({
         return (
           <div className="grid grid-cols-2 gap-x-3">
             <div className="flex flex-col">
-              <Form.Label optional>Custom amount</Form.Label>
+              <Form.Label optional>
+                {t("draftOrders.shipping.customAmountLabel")}
+              </Form.Label>
               <Form.Hint>
-                Set a custom amount for the shipping option.
+                {t("draftOrders.shipping.customAmountHint")}
               </Form.Hint>
             </div>
             <Form.Control>
