@@ -3758,7 +3758,7 @@ export default class OrderModuleService
   // comment at the applyOrderChanges_ call site for why a blanket ORM
   // refresh isn't safe to use for this instead.
   @InjectTransactionManager()
-  private async refreshStaleItemQuantities_(
+  protected async refreshStaleItemQuantities_(
     orders: any[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
