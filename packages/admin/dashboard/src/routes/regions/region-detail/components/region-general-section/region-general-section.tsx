@@ -8,6 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu/index.t
 import { ListSummary } from "../../../../../components/common/list-summary/index.ts"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
 import { currencies } from "../../../../../lib/data/currencies.ts"
+import { getCurrencyDisplayName } from "../../../../../lib/display-names"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
 import { SectionRow } from "../../../../../components/common/section/section-row.tsx"
 
@@ -40,7 +41,10 @@ export const RegionGeneralSection = ({
               {region.currency_code}
             </Badge>
             <Text size="small" leading="compact">
-              {currencies[region.currency_code.toUpperCase()]?.name}
+              {getCurrencyDisplayName(
+                region.currency_code,
+                currencies[region.currency_code.toUpperCase()]?.name
+              )}
             </Text>
           </div>
         }
