@@ -65,7 +65,7 @@ await createPaymentCollectionForCartWorkflow(container)
 const paymentCollection =
   await paymentModuleService.createPaymentCollections({
     currency_code: "usd",
-    amount: 5000,
+    amount: 50,
   })
 ```
 
@@ -82,7 +82,7 @@ In the Medusa application, you need to use [Query](!docs!/learn/fundamentals/mod
   <CodeTab label="Using Query" value="query">
 
 ```ts
-const query = container.resolve("query")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
 const { data: regionPaymentProviders } = await query.graph({
   entryPoint: "region_payment_provider",
@@ -152,7 +152,7 @@ const paymentSession =
     {
       provider_id: "pp_stripe_stripe",
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
       data: {
         // any necessary data for the
         // payment provider
@@ -310,7 +310,7 @@ await refundPaymentsWorkflow(container)
     input: [
       {
         payment_id: "pay_123",
-        amount: 1000, // refund amount
+        amount: 10, // refund amount
         note: "Customer requested refund", // optional note
         metadata: { // optional custom data
           reason: "damaged_goods",
@@ -327,7 +327,7 @@ await refundPaymentsWorkflow(container)
 ```ts
 const refund = await paymentModuleService.refundPayment({
   payment_id: "pay_123",
-  amount: 1000,
+  amount: 10,
   refund_reason_id: "rr_123",
   note: "Customer requested refund",
   metadata: {

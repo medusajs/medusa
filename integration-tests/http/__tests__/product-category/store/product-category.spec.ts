@@ -144,5 +144,98 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe("published products", () => {
+      const createProduct = async (title, status) =>
+        (
+          await api.post(
+            "/admin/products",
+            {
+              title,
+              status,
+              options: [{ title: "size", values: ["one"] }],
+              variants: [
+                {
+                  title: "one",
+                  options: { size: "one" },
+                  prices: [{ currency_code: "usd", amount: 10 }],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+      const titlesOf = (category) =>
+        (category?.products ?? []).map((product) => product.title).sort()
+
+      it("does not expand unpublished products on a category", async () => {
+        const draft = await createProduct("draft product", "draft")
+        const published = await createProduct("published product", "published")
+        const category = await createCategory(
+          { name: "published-products", is_internal: false, is_active: true },
+          [draft.id, published.id]
+        )
+
+        const response = await api.get(
+          `/store/product-categories/${category.id}?fields=id,products.title`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(titlesOf(response.data.product_category)).toEqual([
+          "published product",
+        ])
+      })
+
+      it("does not expand unpublished products through category_children", async () => {
+        const draft = await createProduct("draft product", "draft")
+        const published = await createProduct("published product", "published")
+        const parent = await createCategory(
+          { name: "parent", is_internal: false, is_active: true },
+          []
+        )
+        const child = await createCategory(
+          {
+            name: "child",
+            is_internal: false,
+            is_active: true,
+            parent_category_id: parent.id,
+          },
+          [draft.id, published.id]
+        )
+
+        const response = await api.get(
+          `/store/product-categories/${parent.id}?fields=id,category_children.id,category_children.products.title`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        const children = response.data.product_category.category_children
+        expect(children.find((c) => c.id === child.id)).toBeDefined()
+        expect(titlesOf(children.find((c) => c.id === child.id))).toEqual([
+          "published product",
+        ])
+      })
+
+      it("does not expand unpublished products when listing categories", async () => {
+        const draft = await createProduct("draft product", "draft")
+        const published = await createProduct("published product", "published")
+        const category = await createCategory(
+          { name: "listed", is_internal: false, is_active: true },
+          [draft.id, published.id]
+        )
+
+        const response = await api.get(
+          "/store/product-categories?fields=id,products.title",
+          storeHeaders
+        )
+
+        const listed = response.data.product_categories.find(
+          (c) => c.id === category.id
+        )
+        expect(titlesOf(listed)).toEqual(["published product"])
+      })
+    })
   },
 })

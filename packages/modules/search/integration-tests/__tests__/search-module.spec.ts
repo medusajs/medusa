@@ -59,6 +59,9 @@ const syncRecords = (service: SearchService, filters: any = {}) =>
 const updateVersionRecords = (service: SearchService, input: any) =>
   (service as any).context_.versionService.update(input) as Promise<any>
 
+const createSyncRecords = (service: SearchService, input: any[]) =>
+  (service as any).context_.syncService.create(input) as Promise<any[]>
+
 const softDeleteIndexRecords = (service: SearchService, ids: string[]) =>
   (service as any).context_.indexService.softDelete(ids) as Promise<any>
 
@@ -1260,6 +1263,79 @@ moduleIntegrationTestRunner<SearchService>({
             filters: { ids: ["prod_1"] },
           })
           expect(partial!.last_key).toBe("prod_1")
+        })
+
+        it("reindexes a subset in place using a since cursor, without swapping or catching up", async () => {
+          resetDataset()
+
+          const activeBefore = await activePhysicalName(service, "product")
+          const since = new Date()
+          touchProduct("prod_1", { title: "Scarlet trail shoe" })
+
+          const { job_id } = await service.reindex({ since })
+
+          // Only the document that changed since the cursor is updated...
+          const updated = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "scarlet" },
+          })
+          expect(ids(updated)).toEqual(["prod_1"])
+
+          // ...everything else survives, because a `since`-scoped run never
+          // swaps in a version that only holds that slice.
+          const all = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(all).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+          expect(await activePhysicalName(service, "product")).toBe(
+            activeBefore
+          )
+
+          // ...and it's already a caller-scoped run, so no catch-up pass
+          // follows it — one sync row, not two.
+          const syncs = await syncRecords(service, { job_id })
+          expect(syncs).toHaveLength(1)
+        })
+
+        it("leaves an interrupted full run's cursor for that run to resume", async () => {
+          resetDataset()
+
+          const version = await activeVersion(service, "product")
+
+          // Stands in for a full in-place rebuild that died mid-stream: the row
+          // is still processing, and its `last_key` is where it got to.
+          const [interrupted] = await createSyncRecords(service, [
+            {
+              search_index_version_id: version.id,
+              job_id: "job_interrupted",
+              status: "processing",
+              filters: null,
+              last_key: "prod_2",
+              started_at: new Date(),
+            },
+          ])
+
+          touchProduct("prod_1", { title: "Scarlet trail shoe" })
+
+          await service.reindex({ since: new Date(0) })
+
+          // A scoped run covers a different set of documents, so it neither
+          // resumes from that cursor (which would skip prod_1)...
+          const updated = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "scarlet" },
+          })
+          expect(ids(updated)).toEqual(["prod_1"])
+
+          // ...nor cancels the run that owns it.
+          const [after] = await syncRecords(service, { id: interrupted.id })
+          expect(after).toMatchObject({
+            status: "processing",
+            last_key: "prod_2",
+          })
         })
 
         it("closes definition drift, which is the only way a schema changes", async () => {

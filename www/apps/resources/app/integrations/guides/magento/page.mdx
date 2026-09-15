@@ -1211,11 +1211,16 @@ To create a scheduled job, in your plugin, create the file `src/jobs/migrate-mag
 ```ts title="src/jobs/migrate-magento.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { migrateProductsFromMagentoWorkflow } from "../workflows"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function migrateMagentoJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
     logger.info("Migrating products from Magento...")
     
     let currentPage = 0

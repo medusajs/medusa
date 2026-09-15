@@ -90,8 +90,8 @@ export type SearchIndexContext = {
   locking?: {
     execute<T>(
       keys: string | string[],
-      job: () => Promise<T>,
-      args?: { timeout?: number }
+      job: (signal?: AbortSignal) => Promise<T>,
+      args?: { timeout?: number; expire?: number }
     ): Promise<T>
   }
   // Resolves which physical index currently serves reads/writes for a
@@ -159,6 +159,8 @@ export type SearchIndexSyncRecord = {
   status: string
   filters: Record<string, unknown> | null
   last_key: string | null
+  /** Whether a later run may continue from `last_key`. */
+  resumable: boolean
   documents_synced: number
   started_at: Date | null
   completed_at: Date | null
