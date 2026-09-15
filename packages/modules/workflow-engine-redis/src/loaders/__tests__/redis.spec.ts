@@ -1,4 +1,4 @@
-import { Logger } from "@medusajs/framework/types"
+import type { Logger, ModuleOptions } from "@medusajs/framework/types"
 import redisLoader from "../redis"
 
 jest.mock("ioredis", () => {
@@ -26,6 +26,27 @@ describe("Redis Loader", () => {
     containerMock = {
       register: jest.fn(),
     }
+  })
+
+  describe("Configuration type", () => {
+    it("should type Redis options under the redis key for both entry points", () => {
+      const packageOptions: ModuleOptions["@medusajs/workflow-engine-redis"] = {
+        redis: {
+          redisUrl: "redis://localhost:6379",
+        },
+      }
+      const bundledOptions: ModuleOptions["@medusajs/medusa/workflow-engine-redis"] =
+        packageOptions
+      const invalidOptions: ModuleOptions["@medusajs/workflow-engine-redis"] = {
+        // @ts-expect-error - Redis options belong under the redis key
+        redisUrl: "redis://localhost:6379",
+      }
+
+      expect(bundledOptions.redis.redisUrl).toBe("redis://localhost:6379")
+      expect(invalidOptions).toEqual({
+        redisUrl: "redis://localhost:6379",
+      })
+    })
   })
 
   describe("Option merging", () => {
