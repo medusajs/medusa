@@ -1,6 +1,10 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
-import { SearchIndexes } from "@types"
+import {
+  SearchIndexContext,
+  SearchIndexes,
+  SearchIndexVersionRecord,
+} from "@types"
 import { createHash } from "crypto"
 
 export enum SearchIndexState {
@@ -604,12 +608,6 @@ function validateIndexDefinition({
   }
 
   for (const { path, field } of flattenFields(definition.fields)) {
-    if (field.correlated && !(field.type === "object" && field.array)) {
-      fail(
-        `field "${path}" sets "correlated", which only applies to an array of objects`
-      )
-    }
-
     if (field.type === "vector" && !field.dimensions) {
       fail(`vector field "${path}" must declare its "dimensions"`)
     }
@@ -651,6 +649,58 @@ function validateIndexDefinition({
         `field "${path}" is of type "${field.type}", which cannot be searched as free text`
       )
     }
+  }
+}
+
+/** Every version of every listed index, grouped by the index's id, newest first. */
+export async function listVersionsByIndexId(
+  context: Pick<SearchIndexContext, "versionService">,
+  indexIds: string[]
+): Promise<Map<string, SearchIndexVersionRecord[]>> {
+  const byId = new Map<string, SearchIndexVersionRecord[]>()
+
+  if (!indexIds.length) {
+    return byId
+  }
+
+  const versions = (await context.versionService.list(
+    { search_index_id: indexIds },
+    { order: { version: "DESC" }, take: null }
+  )) as SearchIndexVersionRecord[]
+
+  for (const version of versions) {
+    const list = byId.get(version.search_index_id) ?? []
+    list.push(version)
+    byId.set(version.search_index_id, list)
+  }
+
+  return byId
+}
+
+/**
+ * The definition merged with whichever physical index and provider currently
+ * serve reads/writes. Every *live* operation (a direct write, an event
+ * ingested, a query) must resolve through this rather than
+ * `definition.physical_name` directly — that field is only the root a
+ * version's name is derived from, and which version is active can change out
+ * from under this process.
+ */
+export async function resolveActiveDefinition(
+  context: Pick<SearchIndexContext, "indexes" | "activeVersionCache">,
+  name: string
+): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
+  const definition = retrieveIndexDefinition(context.indexes, name)
+
+  if (!context.activeVersionCache) {
+    return definition
+  }
+
+  const active = await context.activeVersionCache.get(name)
+
+  return {
+    ...definition,
+    physical_name: active.physical_name,
+    provider: active.provider,
   }
 }
 

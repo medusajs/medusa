@@ -63,7 +63,7 @@ describe("postgres search utils", () => {
       expect(plan.fields.get("tags")?.is_array).toBe(true)
     })
 
-    it("rejects vector and correlated fields on native", () => {
+    it("rejects vector fields on native", () => {
       expect(() =>
         assertIndexSupported(
           baseDefinition({
@@ -74,21 +74,6 @@ describe("postgres search utils", () => {
           "native"
         )
       ).toThrow(/lakebase/)
-
-      expect(() =>
-        assertIndexSupported(
-          baseDefinition({
-            fields: {
-              variants: {
-                type: "object",
-                array: true,
-                correlated: true,
-                fields: { color: { type: "keyword" } },
-              },
-            },
-          })
-        )
-      ).toThrow(/correlated/)
     })
 
     it("allows vector fields on lakebase when dimensions are set", () => {
@@ -103,6 +88,39 @@ describe("postgres search utils", () => {
           "lakebase"
         )
       ).not.toThrow()
+    })
+
+    it("accepts the typo tolerance switch it can honour", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({ settings: { typo_tolerance: { enabled: false } } })
+        )
+      ).not.toThrow()
+    })
+
+    it("ignores edit-distance thresholds, which only tune matching", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: {
+              typo_tolerance: {
+                min_word_size_for_one_typo: 6,
+                min_word_size_for_two_typos: 9,
+              },
+            },
+          })
+        )
+      ).not.toThrow()
+    })
+
+    it("rejects per-attribute typo tolerance opt-outs", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: { typo_tolerance: { disabled_on_attributes: ["title"] } },
+          })
+        )
+      ).toThrow(/all searchable fields at once/)
     })
   })
 
@@ -179,10 +197,7 @@ describe("postgres search utils", () => {
 
     it("reads the text an embedder should encode from the vector field", () => {
       expect(
-        sourceTextForEmbed(
-          { id: "prod_1", embedding: "Red shoe" },
-          "embedding"
-        )
+        sourceTextForEmbed({ id: "prod_1", embedding: "Red shoe" }, "embedding")
       ).toBe("Red shoe")
       expect(sourceTextForEmbed({ id: "prod_1" }, "embedding")).toBeUndefined()
       expect(() =>
@@ -369,10 +384,19 @@ describe("postgres search utils", () => {
       expect(() =>
         assertQuerySupported({
           index: baseDefinition(),
+          q: "red",
           attributes_to_retrieve: ["id"],
           search_options: { highlight: { fields: ["title"] } },
         })
       ).toThrow(/highlight/)
+
+      expect(() =>
+        assertQuerySupported({
+          index: baseDefinition(),
+          attributes_to_retrieve: ["id"],
+          search_options: { highlight: true, typo_tolerance: true },
+        })
+      ).not.toThrow()
 
       expect(() =>
         assertQuerySupported(

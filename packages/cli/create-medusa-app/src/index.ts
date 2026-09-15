@@ -34,7 +34,7 @@ program
   )
   .option(
     "--with-nextjs-starter",
-    "Install the Next.js starter along with the Medusa backend",
+    "Install the storefront along with the Medusa backend",
     false
   )
   .option(

@@ -13,7 +13,7 @@ export interface ProviderSearchQuery
   /**
    * The resolved definition of the index to query. Use its `physical_name` as
    * the index to query, since it differs from the index's name under an index
-   * prefix or while a swap builds a replacement.
+   * prefix or between versions.
    */
   index: ResolvedSearchIndexDefinition
 
@@ -48,11 +48,11 @@ export interface SearchDeleteDocumentsInput {
 }
 
 /**
- * Contract implemented by a search engine provider. Optional methods
- * (`swapIndex` and `waitForTask`) are omitted from the abstract class on
- * purpose — define only those your engine can back. `searchMany` has a default
- * that runs `search` concurrently; override it to pack queries into one
- * engine round-trip.
+ * Contract implemented by a search engine provider. The optional
+ * `waitForTask` method is omitted from the abstract class on purpose — define
+ * it only if your engine applies writes asynchronously. `searchMany` has a
+ * default that runs `search` concurrently; override it to pack queries into
+ * one engine round-trip.
  */
 export interface ISearchProvider {
   /**
@@ -81,9 +81,9 @@ export interface ISearchProvider {
    * keep serving reads, and never during a partial rebuild.
    *
    * Throw if the definition asks for something your engine can't hold, such as a
-   * `correlated` field or a facet type it doesn't support. Since migrations run
-   * before the application serves requests, the error surfaces at startup rather
-   * than as wrong results later.
+   * facet type it doesn't support. Since migrations run before the application
+   * serves requests, the error surfaces at startup rather than as wrong results
+   * later.
    *
    * @param {object} input - The index to create or update.
    * @param {ResolvedSearchIndexDefinition} input.index - The definition,
@@ -113,7 +113,7 @@ export interface ISearchProvider {
 
   /**
    * This method deletes an index and everything in it. The Search Module calls it
-   * to clean up an index it replaced, such as the index left behind by a swap.
+   * to clean up an old version of an index once a newer one has taken over.
    *
    * @param {object} input - The index to delete.
    * @param {string} input.index - The index's physical name.
@@ -157,47 +157,16 @@ export interface ISearchProvider {
   listIndexes(): Promise<SearchIndexInfo[]>
 
   /**
-   * This method points a logical index at a different physical index, which the
-   * Search Module uses to reindex without downtime: it seeds a shadow index, then
-   * swaps it in.
-   *
-   * Implementing this method is optional. When it's not implemented, the module
-   * reindexes in place instead, leaving the index incomplete while it's seeded.
-   *
-   * @param {object} input - The swap to perform.
-   * @param {string} input.alias - The logical index name that must serve reads.
-   * @param {string} input.index - The physical index it must point to.
-   * @returns {Promise<SearchTask>} The swap's task.
-   *
-   * @example
-   * class MySearchProviderService extends AbstractSearchProviderService {
-   *   // ...
-   *   async swapIndex({
-   *     alias,
-   *     index,
-   *   }: {
-   *     alias: string
-   *     index: string
-   *   }): Promise<SearchTypes.SearchTask> {
-   *     await this.client.updateAlias(alias, index)
-   *
-   *     return { index, status: "succeeded" }
-   *   }
-   * }
-   */
-  swapIndex?(input: { alias: string; index: string }): Promise<SearchTask>
-
-  /**
    * This method adds documents to an index, replacing any that already exist under the same
    * ID. The Search Module uses it both for direct writes and for seeding, where it's called
    * once per batch.
    *
    * If your engine applies writes later rather than inline, return a task with an `id` and
-   * implement `waitForTask`, so the module can wait before swapping a new index in.
+   * implement `waitForTask`, so the module can wait before making a new version active.
    *
    * Write to `input.index` but read schema information from `input.definition`:
-   * during a swap, `input.index` is the shadow index being seeded, whereas the
-   * definition is that of the logical index.
+   * while a new version is being seeded, `input.index` is that version's
+   * physical index, whereas the definition is that of the logical index.
    *
    * @param {object} input - The documents to write.
    * @param {string} input.index - The index's physical name. This is the index to
@@ -231,8 +200,9 @@ export interface ISearchProvider {
     index: string
     /**
      * The logical definition whose documents are being written. `index` can
-     * point at a shadow physical index during a swap, so providers must use
-     * this value for schema information and `index` for the destination.
+     * point at a version's physical index while it is being seeded, so
+     * providers must use this value for schema information and `index` for
+     * the destination.
      */
     definition: ResolvedSearchIndexDefinition
     documents: SearchDocument[]
@@ -298,7 +268,7 @@ export interface ISearchProvider {
    * Compile `input.filters` to your engine's filter syntax, and reject the
    * operators it can't express rather than approximating them. Also, use
    * `input.index.physical_name` as the index to query, not `input.index.name`,
-   * since the two differ under an index prefix or during a swap.
+   * since the two differ under an index prefix or between versions.
    *
    * @param {ProviderSearchQuery} input - The query, the resolved index
    * definition, and the attributes to return.
@@ -362,7 +332,7 @@ export interface ISearchProvider {
 
   /**
    * This method waits until a deferred write is applied. The Search Module uses it
-   * to wait for a seed to be applied before swapping the new index in.
+   * to wait for a seed to be applied before making the new version active.
    *
    * Implement it if your engine acknowledges writes and applies them later. When
    * it's not implemented, the module assumes a write is applied once

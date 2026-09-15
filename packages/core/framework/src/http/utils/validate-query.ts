@@ -1,11 +1,16 @@
 import { z } from "@medusajs/deps/zod"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
-import { MedusaError, removeUndefinedProperties } from "@medusajs/utils"
+import {
+  isDefined,
+  MedusaError,
+  removeUndefinedProperties,
+} from "@medusajs/utils"
 import { NextFunction } from "express"
 
 import { zodValidator } from "../../zod/zod-helpers"
 import { MedusaRequest, MedusaResponse } from "../types"
 import { prepareListQuery, prepareRetrieveQuery } from "./get-query-config"
+import { validateRelationsLimit } from "./relations-limit"
 
 /**
  * Normalize an input query, especially from array like query params to an array type
@@ -53,6 +58,8 @@ const getFilterableFields = <T extends RequestQueryFields>(obj: T): T => {
   return removeUndefinedProperties(result) as T
 }
 
+const consumedAllowedFields = new WeakMap<MedusaRequest, string[]>()
+
 export function validateAndTransformQuery<TEntity extends BaseEntity>(
   zodSchema: z.ZodObject<any, any> | z.ZodType<any, any, any>,
   queryConfig: QueryConfig<TEntity>
@@ -70,12 +77,23 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       const restricted = req.restrictedFields?.list()
       const allowed = [...(queryConfig.allowed ?? [])]
 
-      // If any custom allowed fields are set, we add them to the allowed list along side the one configured in the query config if any
-      if (req.allowed?.length) {
-        allowed.push(...req.allowed)
+      // `req.allowed` is reset below so it never reaches the route handler, so the
+      // consumed value is kept off-request for a second run on the same request.
+      const customAllowed = req.allowed.length
+        ? req.allowed
+        : consumedAllowedFields.get(req)
+
+      if (customAllowed?.length) {
+        allowed.push(...customAllowed)
+        consumedAllowedFields.set(req, customAllowed)
       }
 
-      delete req.allowed
+      req.allowed = []
+
+      const disallowed = req.disallowed ?? queryConfig.disallowed ?? []
+
+      delete req.disallowed
+
       const query = normalizeQuery(req) as Record<string, any>
 
       const validated = await zodValidator(zodSchema, query)
@@ -86,6 +104,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
             {
               ...queryConfig,
               allowed,
+              disallowed,
               restricted,
               isList: true,
             },
@@ -96,10 +115,21 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
             {
               ...queryConfig,
               allowed,
+              disallowed,
               restricted,
             },
             req
           )
+
+      // `req.storeRelationsLimit` is only set for routes under the `/store` prefix, so
+      // admin and custom routes are never affected by the limit, even if a query config
+      // sets `storeRelationsLimit`.
+      if (isDefined(req.storeRelationsLimit)) {
+        validateRelationsLimit(
+          cnf.remoteQueryConfig.fields,
+          queryConfig.storeRelationsLimit ?? req.storeRelationsLimit
+        )
+      }
 
       const { with_deleted, ...validatedQueryFilters } = validated
       req.validatedQuery = validatedQueryFilters

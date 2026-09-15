@@ -450,7 +450,8 @@
 			"canceled_at": "The date that the change was canceled",
 			"order": "The associated order that the change applies to.\n\n@expandable",
 			"actions": "The associated actions.\n\n@expandable",
-			"carry_over_promotions": "Whether the order change carries over promotions from the parent order.\n\n@since v2.12.0"
+			"carry_over_promotions": "Whether the order change carries over promotions from the parent order.\n\n@since v2.12.0",
+			"no_notification": "Whether customer should receive notifications for updates.\n\n@since 2.19.0"
 		},
 		"deprecated": {
 			"is_deprecated": false

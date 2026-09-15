@@ -7,6 +7,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/framework/utils"
+import { publishedProductsContext } from "../../utils/published-products-context"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
@@ -19,6 +20,7 @@ export const GET = async (
       entity: "product_collection",
       filters: { id: req.params.id },
       fields: req.queryConfig.fields,
+      context: publishedProductsContext(),
     },
     {
       locale: req.locale,

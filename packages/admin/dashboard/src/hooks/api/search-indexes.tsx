@@ -38,11 +38,11 @@ export const useReindexSearchIndex = (
   options?: UseMutationOptions<
     HttpTypes.AdminSearchIndexReindexResponse,
     FetchError,
-    string
+    { id: string; body?: HttpTypes.AdminReindexSearchIndex }
   >
 ) => {
   return useMutation({
-    mutationFn: (id: string) => sdk.admin.search.reindex(id),
+    mutationFn: ({ id, body }) => sdk.admin.search.reindex(id, body),
     ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({

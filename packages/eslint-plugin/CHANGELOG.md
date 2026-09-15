@@ -1,5 +1,23 @@
 # @medusajs/eslint-plugin
 
+## 2.21.0
+
+### Patch Changes
+
+- [#16778](https://github.com/medusajs/medusa/pull/16778) [`f6a417d40360d6946c54f1e522360869a5f8d520`](https://github.com/medusajs/medusa/commit/f6a417d40360d6946c54f1e522360869a5f8d520) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(eslint-plugin): add rules for req.allowed, allowFields, and req.disallowed
+
+## 2.20.1
+
+## 2.20.0
+
+### Patch Changes
+
+- [#16517](https://github.com/medusajs/medusa/pull/16517) [`4f657cfc0bed22f5a76344bf5f1acd45eb6fe564`](https://github.com/medusajs/medusa/commit/4f657cfc0bed22f5a76344bf5f1acd45eb6fe564) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(eslint-plugin): add throw in workflow definition eslint rule
+
+- [#16585](https://github.com/medusajs/medusa/pull/16585) [`c17f4d98b72075bef5c1ff83c3ce5ff1950681a9`](https://github.com/medusajs/medusa/commit/c17f4d98b72075bef5c1ff83c3ce5ff1950681a9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(eslint-plugin): add missing when name eslint rule
+
+- [#16520](https://github.com/medusajs/medusa/pull/16520) [`5bd3ca3092d593bf218da2e47a485a2b6f1844f6`](https://github.com/medusajs/medusa/commit/5bd3ca3092d593bf218da2e47a485a2b6f1844f6) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(eslint-plugin): no nested when then block eslint rule
+
 ## 2.19.0
 
 ### Patch Changes

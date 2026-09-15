@@ -1,0 +1,50 @@
+---
+sidebar_label: "Utilities"
+---
+
+import { CardList } from "docs-ui"
+
+export const metadata = {
+  title: `Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the utilities that the Medusa Admin uses to format data, validate forms, and register custom table and search behavior. Use them in your [admin extensions](!docs!/learn/fundamentals/admin) to handle values the same way the Medusa Admin does.
+
+```tsx
+import { getStylizedAmount } from "@medusajs/dashboard/lib"
+```
+
+---
+
+## Available Utilities
+
+<CardList items={[
+  {
+    title: "Money & Currency",
+    href: "/admin-components/utilities/money-and-currency",
+  },
+  {
+    title: "Addresses",
+    href: "/admin-components/utilities/addresses",
+  },
+  {
+    title: "Form Validation",
+    href: "/admin-components/utilities/form-validation",
+  },
+  {
+    title: "Table Utilities",
+    href: "/admin-components/utilities/table",
+  },
+  {
+    title: "Search Entities",
+    href: "/admin-components/utilities/search",
+  },
+]} />

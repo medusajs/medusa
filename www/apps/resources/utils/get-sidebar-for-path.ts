@@ -24,13 +24,7 @@ const sidebarMappings: {
       import("@/generated/generated-how-to-tutorials-sidebar.mjs") as Promise<{
         default: Sidebar.Sidebar
       }>,
-    paths: [
-      "/how-to-tutorials",
-      "/examples",
-      "/admin-components",
-      "/plugins/guides",
-      "/deployment",
-    ],
+    paths: ["/how-to-tutorials", "/examples", "/plugins/guides", "/deployment"],
   },
   {
     module: async () =>
@@ -59,6 +53,7 @@ const sidebarMappings: {
       "/nextjs-starter",
       "/references/js-sdk",
       "/lint",
+      "/admin-components",
     ],
   },
   {

@@ -20,7 +20,7 @@ The payment flow consists of the following steps:
     - This payment collection will hold all details related to the payment operations.
 - [Show Payment Providers](!api!/store/payment-providers/list-payment-providers): Show the customer the available payment providers to choose from.
     - You can integrate any [payment provider](../payment-provider/page.mdx), and you can enable them per region.
-- [Create and Initialize Payment Session](!api!/store/payment-collections/initialize-payment-session): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider.
+- [Create and Initialize Payment Session](!api!/store/payment-collections/initialize-payment-session): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider. Medusa validates that the chosen provider is enabled in the cart's region and throws an error if it is not.
 - [Complete Cart](!api!/store/carts/complete-cart): Once the customer places the order, complete the cart, which involves:
     - Authorizing the payment session with the third-party payment provider.
     - If the third-party payment provider requires performing additional actions, show them to the customer, then retry cart completion.

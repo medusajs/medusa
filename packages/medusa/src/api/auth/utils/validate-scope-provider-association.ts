@@ -10,14 +10,21 @@ import {
 } from "@medusajs/framework/utils"
 import { isAuthProviderAllowedForActor } from "./auth-methods-per-actor"
 
-// Middleware to validate that a scope is associated with a provider
-export const validateScopeProviderAssociation = () => {
+/**
+ * Middleware to validate that a scope is associated with a provider.
+ *
+ * `actorType` pins the actor type for routes that do not carry it as a path
+ * param (eg. `/auth/:auth_provider/user`, which always acts on the `user`
+ * actor).
+ */
+export const validateScopeProviderAssociation = (actorType?: string) => {
   return async (
     req: MedusaRequest,
     _: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    const { actor_type, auth_provider } = req.params
+    const { auth_provider } = req.params
+    const actor_type = actorType ?? req.params.actor_type
     const config: ConfigModule = req.scope.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
     )

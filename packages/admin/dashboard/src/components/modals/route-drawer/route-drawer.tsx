@@ -75,7 +75,17 @@ const Form = RouteModalForm
  *
  * Typically used for forms editing a resource.
  */
-export const RouteDrawer = Object.assign(Root, {
+type RouteDrawerComponent = typeof Root & {
+  Header: typeof Drawer.Header
+  Title: typeof Drawer.Title
+  Body: typeof Drawer.Body
+  Description: typeof Drawer.Description
+  Footer: typeof Drawer.Footer
+  Close: typeof Drawer.Close
+  Form: typeof RouteModalForm
+}
+
+export const RouteDrawer: RouteDrawerComponent = Object.assign(Root, {
   Header,
   Title,
   Body,

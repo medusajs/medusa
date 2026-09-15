@@ -29,7 +29,7 @@ import {
 
 const workflow = createWorkflow(
   "hello-world",
-  async (input) => {
+  (input) => {
     const products = createProductsWorkflow.runAsStep({
       input: {
         products: [
@@ -81,7 +81,7 @@ type WorkflowInput = {
 
 const workflow = createWorkflow(
   "hello-product",
-  async (input: WorkflowInput) => {
+  (input: WorkflowInput) => {
     const createProductsData = transform({
       input,
     }, (data) => [
@@ -141,7 +141,7 @@ type WorkflowInput = {
 
 const workflow = createWorkflow(
   "hello-product",
-  async (input: WorkflowInput) => {
+  (input: WorkflowInput) => {
     const product = when(input, ({ should_create }) => should_create)
       .then(() => {
         return createProductsWorkflow.runAsStep({

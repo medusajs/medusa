@@ -10,7 +10,7 @@ export async function askForNextjsStarter(): Promise<boolean> {
     {
       type: "confirm",
       name: "installNextjs",
-      message: `Would you like to install the Next.js Starter Storefront? You can also install it later.`,
+      message: `Would you like to install the storefront? You can also install it later.`,
       default: false,
     },
   ])
@@ -35,7 +35,7 @@ export async function installNextjsStarter({
 }: InstallOptions): Promise<void> {
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
-    title: "Setting up Next.js Starter Storefront...",
+    title: "Setting up storefront...",
   })
 
   const packageJsonPath = path.join(storefrontDirectory, "package.json")
@@ -61,7 +61,7 @@ export async function installNextjsStarter({
 
   displayFactBox({
     ...factBoxOptions,
-    message: `Next.js Starter Storefront is set up in the ${storefrontDirectory} directory.`,
+    message: `Storefront is set up in the ${storefrontDirectory} directory.`,
   })
 }
 

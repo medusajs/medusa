@@ -73,6 +73,7 @@ export interface BasePromotion {
   created_at: string
   updated_at: string
   deleted_at: string | null
+  metadata?: Record<string, unknown> | null
 }
 
 export interface BasePromotionRuleValue {
