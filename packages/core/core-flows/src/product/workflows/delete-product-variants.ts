@@ -68,7 +68,11 @@ export const deleteProductVariantsWorkflow = createWorkflow(
     })
 
     removeRemoteLinkStep({
-      [Modules.PRODUCT]: { variant_id: input.ids },
+      [Modules.PRODUCT]: {
+        // Native links use the legacy key; generated custom links use the model name.
+        variant_id: input.ids,
+        product_variant_id: input.ids,
+      },
     }).config({ name: "remove-variant-link-step" })
 
     const toDeleteInventoryItemIds = transform(
