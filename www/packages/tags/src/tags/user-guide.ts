@@ -272,6 +272,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/users"
   },
   {
+    "title": "Login Options",
+    "path": "https://docs.medusajs.com/user-guide/tips/login-options"
+  },
+  {
     "title": "Configure Layouts",
     "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations"
   },

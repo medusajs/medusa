@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-09-11T07:40:12.255Z",
-  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-08-11T19:51:11.728Z",
+  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-09-16T08:44:34.800Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
@@ -6599,8 +6599,8 @@ export const generatedEditDates = {
   "references/utils/utils.Translation/page.mdx": "2025-12-17T14:31:10.902Z",
   "references/utils/utils.TranslationsUtils/page.mdx": "2026-04-30T16:36:29.733Z",
   "references/js_sdk/admin/ShippingOptionType/properties/js_sdk.admin.ShippingOptionType.client/page.mdx": "2026-04-30T16:36:43.000Z",
-  "app/how-to-tutorials/how-to/admin/auth/page.mdx": "2026-02-02T07:29:06.067Z",
-  "app/integrations/guides/okta/page.mdx": "2026-01-12T12:02:36.772Z",
+  "app/how-to-tutorials/how-to/admin/auth/page.mdx": "2026-09-16T07:04:45.704Z",
+  "app/integrations/guides/okta/page.mdx": "2026-09-16T07:05:14.282Z",
   "app/nextjs-starter/guides/remove-country-code/page.mdx": "2025-12-30T10:28:10.072Z",
   "app/commerce-modules/translation/custom-data-models/page.mdx": "2026-01-20T09:37:49.038Z",
   "app/commerce-modules/order/custom-display-id/page.mdx": "2026-01-12T12:16:58.730Z",
@@ -7610,7 +7610,7 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-09-08T03:46:56.257Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
   "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
-  "app/enterprise/page.mdx": "2026-09-10T07:49:02.923Z",
+  "app/enterprise/page.mdx": "2026-09-16T06:46:08.097Z",
   "app/enterprise/rbac/concepts/page.mdx": "2026-09-11T11:48:44.515Z",
   "app/enterprise/rbac/define-policies/page.mdx": "2026-09-11T11:48:44.515Z",
   "app/enterprise/rbac/js-sdk/page.mdx": "2026-09-11T11:48:44.516Z",
@@ -7677,5 +7677,11 @@ export const generatedEditDates = {
   "app/admin-components/guides/header/page.mdx": "2026-09-11T07:48:56.253Z",
   "app/admin-components/guides/table/page.mdx": "2026-09-11T07:48:47.870Z",
   "app/admin-components/layouts/layout-composer/page.mdx": "2026-09-10T14:50:27.323Z",
-  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z"
+  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z",
+  "app/enterprise/sso/admin-login/page.mdx": "2026-09-16T08:28:52.319Z",
+  "app/enterprise/sso/custom-frontend/page.mdx": "2026-09-16T08:41:46.649Z",
+  "app/enterprise/sso/how-it-works/page.mdx": "2026-09-16T08:41:46.648Z",
+  "app/enterprise/sso/identity-providers/page.mdx": "2026-09-16T08:43:09.254Z",
+  "app/enterprise/sso/page.mdx": "2026-09-16T08:41:46.648Z",
+  "app/enterprise/sso/provider-options/page.mdx": "2026-09-16T08:41:46.648Z"
 }

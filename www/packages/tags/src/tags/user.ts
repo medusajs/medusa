@@ -28,6 +28,10 @@ export const user = [
     "path": "https://docs.medusajs.com/user-guide/settings/users"
   },
   {
+    "title": "Login Options",
+    "path": "https://docs.medusajs.com/user-guide/tips/login-options"
+  },
+  {
     "title": "How to Add Custom Authentication in Medusa Admin",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth"
   },

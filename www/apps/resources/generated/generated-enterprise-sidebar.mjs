@@ -525,6 +525,90 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
           ]
         }
       ]
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "loaded": true,
+      "type": "sidebar",
+      "sidebar_id": "sso",
+      "title": "SSO with OIDC",
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/enterprise/sso",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/enterprise/sso/provider-options",
+          "title": "Provider Options",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/sso/how-it-works",
+              "title": "How SSO Works",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Server Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/sso/identity-providers",
+              "title": "Identity Providers",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Admin Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/sso/admin-login",
+              "title": "Configure Admin SSO",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Storefront Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/sso/custom-frontend",
+              "title": "SSO in a Custom Frontend",
+              "children": []
+            }
+          ]
+        }
+      ]
     }
   ]
 }

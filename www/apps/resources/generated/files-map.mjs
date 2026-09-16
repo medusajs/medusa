@@ -1128,6 +1128,30 @@ export const filesMap = [
     "pathname": "/enterprise/rbac/workflows"
   },
   {
+    "filePath": "/www/apps/resources/app/enterprise/sso/admin-login/page.mdx",
+    "pathname": "/enterprise/sso/admin-login"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/custom-frontend/page.mdx",
+    "pathname": "/enterprise/sso/custom-frontend"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/how-it-works/page.mdx",
+    "pathname": "/enterprise/sso/how-it-works"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/identity-providers/page.mdx",
+    "pathname": "/enterprise/sso/identity-providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/page.mdx",
+    "pathname": "/enterprise/sso"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/provider-options/page.mdx",
+    "pathname": "/enterprise/sso/provider-options"
+  },
+  {
     "filePath": "/www/apps/resources/app/examples/guides/custom-item-price/page.mdx",
     "pathname": "/examples/guides/custom-item-price"
   },

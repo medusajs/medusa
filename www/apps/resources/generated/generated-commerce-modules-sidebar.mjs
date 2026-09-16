@@ -596,6 +596,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Authentication Types",
+              "path": "https://docs.medusajs.com/user-guide/tips/authentication-types",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
               "children": []
@@ -18082,6 +18089,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "Learn how to utilize and manage User features in the Medusa Admin dashboard.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Authentication Types",
+              "path": "https://docs.medusajs.com/user-guide/tips/authentication-types",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

@@ -18,6 +18,10 @@ An enterprise feature is a Medusa module, provider, or capability that requires 
       title: "RBAC Module",
       href: "/enterprise/rbac",
     },
+    {
+      title: "SSO with OIDC",
+      href: "/enterprise/sso",
+    },
   ]}
 />
 
@@ -59,7 +63,7 @@ Medusa provides both values with your license. Keep them in your environment con
 
 Some enterprise features are also behind a [feature flag](!docs!/learn/debugging-and-testing/feature-flags), which you enable in `medusa-config.ts` or with an environment variable. Refer to the documentation of the feature you're using for its configuration steps.
 
-For example, the [RBAC Module](./rbac/page.mdx) requires the `rbac` feature flag along with the license key.
+For example, the [RBAC Module](./rbac/page.mdx) requires the `rbac` feature flag along with the license key, whereas [SSO with OIDC](./sso/page.mdx) only requires the license key.
 
 ### 4. Run Migrations
 

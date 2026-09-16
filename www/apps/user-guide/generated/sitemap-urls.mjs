@@ -74,5 +74,6 @@ export const sitemapUrls = [
   "/tips/languages",
   "/tips/layout-configurations",
   "/tips/lists",
+  "/tips/login-options",
   "/tips/table-views"
 ]

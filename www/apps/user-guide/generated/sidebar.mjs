@@ -66,6 +66,14 @@ export const generatedSidebars = [
             "title": "Configure Table Views",
             "description": "",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/tips/login-options",
+            "title": "Login Options",
+            "description": "",
+            "children": []
           }
         ]
       },

@@ -1,4 +1,5 @@
 import { rbacSidebar } from "./rbac.mjs"
+import { ssoSidebar } from "./sso.mjs"
 
 /** @type {import('types').Sidebar.SidebarItem[]} */
 export const enterpriseSidebar = [
@@ -11,4 +12,8 @@ export const enterpriseSidebar = [
     type: "separator",
   },
   ...rbacSidebar,
+  {
+    type: "separator",
+  },
+  ...ssoSidebar,
 ]
