@@ -7405,7 +7405,13 @@ Refer to [the Test Tooling Reference](https://docs.medusajs.com/resources/test-t
 
 ## Database Used in Tests
 
-The `medusaIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+### Prerequisites
+
+
+
+The `medusaIntegrationTestRunner` function creates a database named `medusa-{random-id}-integration-{worker-id}`, where `{worker-id}` is the ID of the Jest worker running the test file. You can set a different name with the `dbName` property. Then, it drops that database after all the tests end.
+
+The tests connect to the PostgreSQL server using the `DB_HOST`, `DB_PORT`, `DB_USERNAME`, and `DB_PASSWORD` environment variables, which default to `localhost`, `5432`, `postgres`, and an empty password respectively.
 
 To manage that database, such as changing its name or perform operations on it in your tests, refer to [the Test Tooling Reference](https://docs.medusajs.com/resources/test-tools-reference/medusaIntegrationTestRunner/index.html.md).
 
@@ -8122,7 +8128,19 @@ Refer to [the Test Tooling Reference](https://docs.medusajs.com/resources/test-t
 
 ## Database Used in Tests
 
-The `moduleIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+### Prerequisites
+
+
+
+The `moduleIntegrationTestRunner` function creates a database named `medusa-{module-name}-integration-{worker-id}`, where `{module-name}` is the value of the `moduleName` property, and `{worker-id}` is the ID of the Jest worker running the test file. You can set a different name with the `dbName` property.
+
+The database is created from the module's data models before each test, and its tables are dropped after each test. Unlike `medusaIntegrationTestRunner`, the database itself isn't dropped when the tests end, so the next test run reuses it.
+
+The tests connect to the PostgreSQL server using the `DB_HOST`, `DB_PORT`, `DB_USERNAME`, and `DB_PASSWORD` environment variables, which default to `localhost`, `5432`, `postgres`, and an empty password respectively.
+
+The test runner only creates the database if the module has data models. If `moduleModels` is empty and the runner can't find data models in the module's directory, the database isn't created, and your tests either fail with an error like `database "medusa-blog-integration-1" does not exist` or time out while connecting to the database.
+
+If your module doesn't have data models, pass a dummy model as explained in the [Write Tests for Modules without Data Models](#write-tests-for-modules-without-data-models) section.
 
 To manage that database, such as changing its name or perform operations on it in your tests, refer to [the Test Tooling Reference](https://docs.medusajs.com/resources/test-tools-reference/moduleIntegrationTestRunner/index.html.md).
 
@@ -10946,7 +10964,7 @@ The `order` query parameter is the exception. If you sort by a field that isn't 
 
 ### Allowed Fields and the Relations Limit
 
-An allowed field must also comply with the [http.storeRelationsLimit](https://docs.medusajs.com/learn/fundamentals/configurations/medusa-config#httpstorerelationslimit/index.html.md) configuration, which caps how many relations a Store API route expands in one request. The two restrictions are separate:
+An allowed field must also comply with the [http.storeRelationsLimit](https://docs.medusajs.com/learn/configurations/medusa-config#httpstorerelationslimit/index.html.md) configuration, which caps how many relations a Store API route expands in one request. The two restrictions are separate:
 
 - `allowed` controls which paths a client can request.
 - `http.storeRelationsLimit` controls how deep those paths can go.
@@ -11180,10 +11198,12 @@ For example, if a custom API route blocks the `campaign` segment, a request to `
 
 Medusa's own API routes don't set disallowed fields. They restrict what a client can retrieve through their [allowed fields](https://docs.medusajs.com/learn/fundamentals/api-routes/allowed-fields/index.html.md) instead. A field that isn't in a route's `allowed` array never reaches the query, so the allowed list is the boundary that protects Medusa's routes.
 
+Before [Medusa v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0), Medusa's store routes applied a disallowed list that blocked any field path segment ending in `_link` (matched by `/_link$/`). This prevented clients from pivoting through custom link models on routes such as `/store/carts`, `/store/orders`, and `/store/customers/me`. Starting from v2.21.0, Medusa replaced this approach with strict allowed lists on all store routes, so custom link fields must now be explicitly added to a route's allowed list using [middleware](https://docs.medusajs.com/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes/index.html.md) to be accessible.
+
 Disallowed fields are different than [allowed fields](https://docs.medusajs.com/learn/fundamentals/api-routes/allowed-fields/index.html.md):
 
 - Allowed fields are an opt-in list of the fields a route can retrieve. Medusa applies them to its API routes to keep them performant and secure.
-- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly. Medusa doesn't apply them to its API routes, so you set them on the routes that need them.
+- Disallowed fields are a deny list that Medusa always enforces, even if the field is in the allowed list, and even if the client requests it explicitly. Since v2.21.0, Medusa doesn't apply them to its own API routes, so you set them on custom routes that need them.
 
 ***
 
@@ -11493,13 +11513,16 @@ Learn more about translation, how to manage translations, and how to translate c
 
 ## Routes with Localization Enabled by Default
 
-The Medusa application automatically supports retrieving localized content from all routes under the `/store` prefix, including both core and custom store API routes.
+The Medusa application automatically applies the `applyLocale` middleware to all routes under the `/store` prefix. This makes `req.locale` available in every store route handler, and it allows your custom store routes to read the locale without additional middleware configuration.
 
-For example, the following store routes have localization enabled by default:
+However, applying the locale middleware does not mean every route translates its response automatically. Translation only happens when the route handler (or an underlying helper) resolves the locale and retrieves the appropriate translations. In Medusa's built-in store routes, translation is applied to the following routes:
 
-- `/store/products` -> Get products with translated fields
-- `/store/collections` -> Get collections with translated fields
-- `/store/categories` -> Get categories with translated fields
+- `/store/products` and `/store/products/:id`: product fields such as `title` and `description`
+- `/store/product-variants` and `/store/product-variants/:id`: product variant fields
+
+Other built-in store routes (including `/store/carts/:id`, `/store/customers/me`, and `/store/orders/:id`) receive the locale header but do not retrieve the translated content. Fields on data models reached through those routes, including custom models linked to their records, are returned untranslated even when `x-medusa-locale` is set.
+
+If you need translated fields on a model that is fetched through a non-translating route (for example, a custom model linked to a cart or order), create a custom store route that queries the model directly and [applies the translations](https://docs.medusajs.com/resources/commerce-modules/translation/custom-data-models/index.html.md).
 
 Refer to the [Translation Module](https://docs.medusajs.com/resources/commerce-modules/translation#supported-module-translations/index.html.md) documentation for a list of supported core data models with localization support.
 
@@ -21160,7 +21183,7 @@ The `validateAndTransformQuery` accepts two parameters:
    2. `isList`: A boolean indicating whether a list of items is returned in the response.
    3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
    4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
-   5. `disallowed`: An array of strings or regular expressions. A string entry matches any field path segment of the same name. A regular expression is tested against each segment and also against the full dotted path, which lets you block a relation at a specific position (for example, `/\.orders(?:\.|$)/` blocks `orders` everywhere except at the root). Any matched field is removed before the query executes, making this a hard security boundary. Learn more in the [Disallowed Fields in API Routes](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/disallowed-fields/index.html.md) chapter.
+   5. `disallowed`: An array of strings or regular expressions. A string entry matches any field path segment of the same name. A regular expression is tested against each segment and also against the full dotted path, which lets you block a relation at a specific position (for example, `/\.orders(?:\.|$)/` blocks `orders` everywhere except at the root). Any matched field is removed before the query executes, making this a hard security boundary. Learn more in the [Disallowed Fields in API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/disallowed-fields/index.html.md) chapter.
    6. `storeRelationsLimit`: A number that overrides the application-wide `http.storeRelationsLimit` configuration for this specific route. It limits how many nested relations a caller can expand in a single request. Only applies to routes under the `/store` prefix. Available since [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
 
 List specific properties in `defaults` rather than `*` or `{relation}.*`. Every client request that doesn't pass a `fields` query parameter uses these defaults, so an expensive default applies to all of them. Refer to the [Select Specific Fields](#select-specific-fields) section for details.
@@ -32241,7 +32264,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.20.1. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.20.1).
+Medusa's current version is v2.21. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
 
 ## Medusa Versioning
 
@@ -82486,7 +82509,7 @@ return (
 
 You render the form and its fields. When the form is submitted, you execute the `handleSubmit` function to update the invoice configuration.
 
-Refer to the [Admin Components](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/admin-components/components/forms/index.html.md) documentation to learn more about creating forms in the Medusa Admin dashboard.
+Refer to the [Admin Components](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/admin-components/guides/forms/index.html.md) documentation to learn more about creating forms in the Medusa Admin dashboard.
 
 ### Test Update Invoice Configurations
 
