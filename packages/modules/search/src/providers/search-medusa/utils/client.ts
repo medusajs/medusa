@@ -12,7 +12,10 @@ import type {
   IndexWriteResponse,
   AttributeSchema,
 } from "./api-types"
-import type { MedusaSearchProviderOptions } from "./options"
+import type {
+  MedusaSearchProviderOptions,
+  ResolvedMedusaSearchProviderOptions,
+} from "./options"
 
 /**
  * Cloud proxy error envelope — same shape as Medusa payments.
@@ -56,11 +59,11 @@ type RequestInitWithBody = Omit<RequestInit, "body"> & { body?: object }
  * Medusa index names; Cloud maps them to upstream storage for the environment.
  */
 export class MedusaSearchClient {
-  protected readonly options_: MedusaSearchProviderOptions
+  protected readonly options_: ResolvedMedusaSearchProviderOptions
   protected readonly fetch_: typeof fetch
 
   constructor(
-    options: MedusaSearchProviderOptions,
+    options: ResolvedMedusaSearchProviderOptions,
     { fetchImpl }: { fetchImpl?: typeof fetch } = {}
   ) {
     this.options_ = options
@@ -180,7 +183,7 @@ export class MedusaSearchIndex {
 
 export function resolveMedusaSearchOptions(
   options: MedusaSearchProviderOptions
-): MedusaSearchProviderOptions {
+): ResolvedMedusaSearchProviderOptions {
   if (!options?.endpoint) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
@@ -190,14 +193,23 @@ export function resolveMedusaSearchOptions(
 
   const endpoint = parseEndpoint(options.endpoint)
 
-  if (endpoint.api_key && options.api_key) {
+  if (endpoint.credentials && options.api_key) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       'Medusa search received credentials both in the "endpoint" provider option and in the "api_key" provider option. Pass only one of them'
     )
   }
 
-  const apiKey = endpoint.api_key || options.api_key
+  if (endpoint.credentials && options.environment_handle) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      'Medusa search received an environment handle both in the "endpoint" provider option and in the "environment_handle" provider option. Pass only one of them'
+    )
+  }
+
+  const apiKey = endpoint.credentials?.api_key || options.api_key
+  const environmentHandle =
+    endpoint.credentials?.environment_handle || options.environment_handle
 
   if (!apiKey) {
     throw new MedusaError(
@@ -206,19 +218,46 @@ export function resolveMedusaSearchOptions(
     )
   }
 
-  if (!options.environment_handle) {
+  if (!environmentHandle) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
-      'Medusa search requires an explicit "environment_handle" provider option'
+      'Medusa search requires an explicit "environment_handle" provider option, or basic auth credentials on the "endpoint" provider option'
     )
   }
 
-  return { ...options, api_key: apiKey, endpoint: endpoint.endpoint }
+  return {
+    ...options,
+    api_key: apiKey,
+    environment_handle: environmentHandle,
+    endpoint: endpoint.endpoint,
+  }
+}
+
+/**
+ * Whether the options carry credentials at all, so the module can skip
+ * registering Cloud search for an app that is not configured for it.
+ */
+export function hasMedusaSearchCredentials(
+  options: Partial<MedusaSearchProviderOptions> = {}
+): boolean {
+  if (!options.endpoint) {
+    return false
+  }
+
+  if (options.api_key && options.environment_handle) {
+    return true
+  }
+
+  try {
+    return !!parseEndpoint(options.endpoint).credentials
+  } catch {
+    return false
+  }
 }
 
 function parseEndpoint(endpoint: string): {
   endpoint: string
-  api_key?: string
+  credentials?: { api_key: string; environment_handle: string }
 } {
   let url: URL
   try {
@@ -234,17 +273,29 @@ function parseEndpoint(endpoint: string): {
     return { endpoint }
   }
 
-  // Cloud hands out an endpoint with the key as basic auth credentials so a
-  // local setup only has to copy a single value.
-  const credentials = `${decodeURIComponent(url.username)}:${decodeURIComponent(
-    url.password
-  )}`
+  // Cloud hands out an endpoint carrying the environment handle as the basic
+  // auth user and the key as the password, so a local setup only has to copy
+  // a single value. Requests keep them apart: the key is the auth header, the
+  // handle its own header.
+  const environmentHandle = decodeURIComponent(url.username)
+  const token = decodeURIComponent(url.password)
+
+  if (!environmentHandle || !token) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      'Medusa search expects the "endpoint" provider option to carry both the environment handle and the token as basic auth credentials'
+    )
+  }
 
   url.username = ""
   url.password = ""
 
   return {
-    api_key: Buffer.from(credentials).toString("base64"),
+    credentials: {
+      api_key: token,
+      environment_handle: environmentHandle,
+    },
+    // The client appends paths that already start with a slash.
     endpoint: url.toString().replace(/\/+$/, ""),
   }
 }
