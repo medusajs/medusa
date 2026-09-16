@@ -1,3 +1,4 @@
+import build from "../build"
 import { runLintStep } from "../utils/lint-project"
 
 const logger = {
@@ -61,8 +62,6 @@ describe("build", () => {
   })
 
   it("runs the lint step with failOnError: false, so lint errors don't block the build", async () => {
-    const build = (await import("../build")).default
-
     await expect(
       build({
         directory: "/project",
