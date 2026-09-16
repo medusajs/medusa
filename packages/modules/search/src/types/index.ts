@@ -30,9 +30,11 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
    * and notification `cloud` email.
    */
   cloud?: {
-    api_key: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    api_key?: string
     endpoint: string
-    environment_handle: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    environment_handle?: string
   }
 
   // For definitions that name no provider. Defaults to the only registered one,
