@@ -6,7 +6,8 @@ import type {
 
 export type MedusaSearchProviderOptions = {
   /**
-   * Used only when the endpoint is not a basic auth-protected URL.
+   * Bearer token for authenticating with Medusa Cloud search. Used only when
+   * the endpoint is not a basic auth-protected URL.
    */
   api_key?: string
   /**
@@ -16,10 +17,18 @@ export type MedusaSearchProviderOptions = {
   endpoint: string
   /**
    * Cloud environment handle. Cloud scopes physical storage from this
-   * handle — the provider sends Medusa index names as-is.
+   * handle — the provider sends Medusa index names as-is. Used only when the
+   * endpoint is not a basic auth-protected URL, which carries the handle as
+   * the user.
    */
-  environment_handle: string
+  environment_handle?: string
 }
+
+export type ResolvedMedusaSearchProviderOptions =
+  MedusaSearchProviderOptions & {
+    api_key: string
+    environment_handle: string
+  }
 
 export type MedusaSearchIndexOptions = {
   distance_metric?: DistanceMetric

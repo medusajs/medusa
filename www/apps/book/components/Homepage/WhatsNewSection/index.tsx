@@ -41,6 +41,7 @@ const HomepageWhatsNewSection = () => {
           <HomepageWhatsNewRow
             key={index}
             item={item}
+            position={index}
             isLast={index === items.length - 1}
           />
         ))}

@@ -11,6 +11,7 @@ import {
   MedusaSearchClient,
   CloudServiceError,
   MedusaSearchProviderOptions,
+  ResolvedMedusaSearchProviderOptions,
   parseFacetResults,
   parseHighlights,
   toSearchDocument,
@@ -44,7 +45,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   static identifier = "search-medusa"
 
   protected readonly logger_?: Logger
-  protected readonly options_: MedusaSearchProviderOptions
+  protected readonly options_: ResolvedMedusaSearchProviderOptions
   protected readonly client_: MedusaSearchClient
 
   constructor(
