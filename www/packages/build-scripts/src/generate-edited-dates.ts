@@ -134,7 +134,7 @@ export const generateEditedDates = async () => {
     editDates = await getOsLastEditDates(files)
   }
 
-  if (!files.length) {
+  if (!files.length && !generatedFileExists) {
     return
   }
 
@@ -150,9 +150,11 @@ export const generateEditedDates = async () => {
 
     editDates = Object.assign(existingEditDates, editDates)
 
-    // delete items that don't exist anymore (their value is undefined)
+    // delete items that don't exist anymore. Entries are only ever refreshed for
+    // changed files, so anything else in the generated file survives forever
+    // unless it's pruned here.
     Object.keys(editDates)
-      .filter((key) => editDates[key] === undefined)
+      .filter((key) => !existsSync(path.join(projectBasePath, key)))
       .forEach((key) => delete editDates[key])
   }
 
