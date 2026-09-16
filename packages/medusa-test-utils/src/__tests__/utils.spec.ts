@@ -72,7 +72,9 @@ describe("formatError", () => {
   })
 
   it("includes the error cause", () => {
-    const error = new Error("outer", { cause: new Error("inner") })
+    const error = Object.assign(new Error("outer"), {
+      cause: new Error("inner"),
+    })
 
     expect(formatError(error)).toBe("outer\ncaused by: inner")
   })
