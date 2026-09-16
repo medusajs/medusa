@@ -128,6 +128,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Define Custom Policies",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Enforce Sales Channel Availability",
               "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
               "children": []
