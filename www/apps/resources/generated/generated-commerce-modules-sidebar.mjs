@@ -596,13 +596,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Login Options",
-              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
               "children": []
@@ -18067,20 +18060,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Common Roles",
-              "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
-              "title": "Login Options",
-              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
               "title": "Manage Invites",
               "path": "https://docs.medusajs.com/user-guide/settings/users/invites",
               "children": []
@@ -18095,13 +18074,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Manage Roles",
-              "path": "https://docs.medusajs.com/user-guide/settings/roles",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
               "title": "Manage Users",
               "path": "https://docs.medusajs.com/user-guide/settings/users",
               "children": []
@@ -18111,13 +18083,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
-              "title": "View Policies",
-              "path": "https://docs.medusajs.com/user-guide/settings/policies",
               "children": []
             }
           ]
