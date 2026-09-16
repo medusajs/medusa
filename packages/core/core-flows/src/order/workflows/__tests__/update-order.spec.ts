@@ -54,8 +54,11 @@ describe("updateOrderValidationStep", () => {
 
     await expect(
       runValidationStep(order, input)
-    ).rejects.toThrow(
-      new MedusaError(MedusaError.Types.INVALID_DATA, "Country code cannot be changed")
+    ).rejects.toEqual(
+      expect.objectContaining({
+        type: MedusaError.Types.INVALID_DATA,
+        message: "Country code cannot be changed",
+      })
     )
   })
 
