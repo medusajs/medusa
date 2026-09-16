@@ -50,6 +50,7 @@
       ],
       "vars": {
         "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+        "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
       },
     },
   },
@@ -65,5 +66,6 @@
   ],
   "vars": {
     "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+    "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
   },
 }
