@@ -2699,27 +2699,6 @@ export const apiRefPaths = {
           }
         }
       },
-      "search-indexes": {
-        "name": "Search Indexes",
-        "path": "/admin/search-indexes",
-        "schemaPath": "/admin/search-indexes/schema",
-        "operations": {
-          "GetSearchIndexes": {
-            "slug": "list-search-indexes",
-            "path": "/admin/search-indexes/list-search-indexes",
-            "oldHash": "search-indexes_getsearchindexes",
-            "title": "List Search Indexes",
-            "method": "get"
-          },
-          "PostSearchIndexesIdReindex": {
-            "slug": "add-reindex-to-search-index",
-            "path": "/admin/search-indexes/add-reindex-to-search-index",
-            "oldHash": "search-indexes_postsearchindexesidreindex",
-            "title": "Add Reindex to Search Index",
-            "method": "post"
-          }
-        }
-      },
       "shipping-option-types": {
         "name": "Shipping Option Types",
         "path": "/admin/shipping-option-types",
@@ -3971,13 +3950,6 @@ export const apiRefPaths = {
             "oldHash": "products_getproducts",
             "title": "List Products",
             "method": "get"
-          },
-          "GetProductsSearch": {
-            "slug": "list-products-2",
-            "path": "/store/products/list-products-2",
-            "oldHash": "products_getproductssearch",
-            "title": "List Products",
-            "method": "get"
           }
         }
       },
@@ -4511,10 +4483,6 @@ export const apiRefRedirects = {
     "sales-channels": "/admin/sales-channels",
     "search_getsearch": "/admin/search/list-search",
     "search": "/admin/search",
-    "search-indexes_getsearchindexes": "/admin/search-indexes/list-search-indexes",
-    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/add-reindex-to-search-index",
-    "search-indexes_searchindex_schema": "/admin/search-indexes/schema",
-    "search-indexes": "/admin/search-indexes",
     "shipping-option-types_getshippingoptiontypesid": "/admin/shipping-option-types/get-a-shipping-option-type",
     "shipping-option-types_getshippingoptiontypes": "/admin/shipping-option-types/list-shipping-option-types",
     "shipping-option-types_postshippingoptiontypes": "/admin/shipping-option-types/create-shipping-option-type",
@@ -4728,7 +4696,6 @@ export const apiRefRedirects = {
     "product-variants": "/store/product-variants",
     "products_getproductsid": "/store/products/get-a-product",
     "products_getproducts": "/store/products/list-products",
-    "products_getproductssearch": "/store/products/list-products-2",
     "products_product_schema": "/store/products/schema",
     "products": "/store/products",
     "regions_getregionsid": "/store/regions/get-a-region",
