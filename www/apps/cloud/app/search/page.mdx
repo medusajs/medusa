@@ -273,20 +273,15 @@ To get the connection string for your local Medusa instance:
 5. Toggle the "Search endpoint" setting. If the environment is Production, only the organization owner can toggle it.
 6. Copy the connection string that appears after toggling the "Search endpoint" setting.
 
-Set the connection string as the `MEDUSA_CLOUD_SEARCH_ENDPOINT` environment variable in your local project, along with the handle of the environment you took it from:
+Set the connection string as the `MEDUSA_CLOUD_SEARCH_ENDPOINT` environment variable in your local project:
 
 ```bash title=".env"
-MEDUSA_CLOUD_SEARCH_ENDPOINT=https://user:key@search.medusajs.app
-MEDUSA_CLOUD_ENVIRONMENT_HANDLE=your-environment-handle
+MEDUSA_CLOUD_SEARCH_ENDPOINT=https://env:key@search.medusajs.app
 ```
 
-Medusa reads both variables and registers Medusa Search as the default Search Module Provider, so you don't change `medusa-config.ts`. Your indexes then read from and write to your Cloud environment's search resources instead of your local PostgreSQL database.
+Medusa reads the variable and registers Medusa Search as the default Search Module Provider, so you don't need to change `medusa-config.ts` unless you've explicitely configured the Search Module yourself. Your indexes then read from and write to your Cloud environment's search resources instead of your local PostgreSQL database.
 
-<Note title="Warning" type="warning">
-
-Don't also set `MEDUSA_CLOUD_API_KEY` for this. The connection string already carries the credentials, and passing them in both places throws an error when the provider initializes.
-
-</Note>
+If you've explicitly configured the Search Module yourself, make sure to set the `default_provider` to `search-medusa` in your `medusa-config.ts` for Medusa Search to be used as the default provider.
 
 ### Search Custom Data Models
 
