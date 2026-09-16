@@ -41,7 +41,7 @@
       "r2_buckets": [
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
-          "bucket_name": "docs-references",
+          "bucket_name": "docs-incremental-cache",
         },
         {
           "binding": "SPECS_R2_BUCKET",
@@ -56,7 +56,7 @@
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "docs-references",
+      "bucket_name": "docs-incremental-cache",
     },
     {
       "binding": "SPECS_R2_BUCKET",
