@@ -31,13 +31,6 @@
   "vars": {
     "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/resources",
   },
-  "observability": {
-    "enabled": true,
-    "logs": {
-      "enabled": true,
-      "invocation_logs": true,
-    },
-  },
   "env": {
     "production": {
       "name": "medusa-docs-resources",
