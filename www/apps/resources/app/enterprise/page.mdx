@@ -79,7 +79,7 @@ npx medusa db:migrate
 
 Medusa checks the license key in two places:
 
-- At boot, when it loads an enterprise module or provider. This check runs locally, so it doesn't require a network connection.
+- At boot, when it loads an enterprise feature. This check runs locally, so it doesn't require a network connection.
 - After boot, when it asks Medusa's license service whether the license is still active. This check runs in the background, so it never delays startup.
 
 The following sections cover the errors each check can produce.
