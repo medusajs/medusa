@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx"
-import { useModal } from "docs-ui"
+import { DocsTrackingEvents, useAnalytics, useModal } from "docs-ui"
 import Link from "next/link"
 import HomepageNewsletterForm from "../../NewsletterForm"
 import { WhatsNewItem } from "../data"
@@ -29,11 +29,33 @@ const formatDate = (date: string) => {
 
 type HomepageWhatsNewRowProps = {
   item: WhatsNewItem
+  position: number
   isLast: boolean
 }
 
-const HomepageWhatsNewRow = ({ item, isLast }: HomepageWhatsNewRowProps) => {
+const HomepageWhatsNewRow = ({
+  item,
+  position,
+  isLast,
+}: HomepageWhatsNewRowProps) => {
   const { setModalProps } = useModal()
+  const { track } = useAnalytics()
+
+  const trackClick = () => {
+    track({
+      event: {
+        event: DocsTrackingEvents.WHATS_NEW_ITEM_CLICK,
+        options: {
+          item_title: item.title,
+          item_tag: item.tag,
+          item_link: item.link ?? null,
+          item_date: item.date ?? null,
+          item_coming_soon: !!item.comingSoon,
+          item_position: position,
+        },
+      },
+    })
+  }
 
   const className = clsx(
     "w-full text-left flex-1 flex flex-col gap-0.5 px-2 py-1.5",
@@ -85,7 +107,8 @@ const HomepageWhatsNewRow = ({ item, isLast }: HomepageWhatsNewRowProps) => {
       <button
         type="button"
         className={clsx(className, "appearance-none cursor-pointer")}
-        onClick={() =>
+        onClick={() => {
+          trackClick()
           setModalProps({
             title: `${item.title} is coming soon`,
             children: (
@@ -98,7 +121,7 @@ const HomepageWhatsNewRow = ({ item, isLast }: HomepageWhatsNewRowProps) => {
               </div>
             ),
           })
-        }
+        }}
       >
         {content}
       </button>
@@ -106,7 +129,7 @@ const HomepageWhatsNewRow = ({ item, isLast }: HomepageWhatsNewRowProps) => {
   }
 
   return (
-    <Link href={item.link} className={className}>
+    <Link href={item.link} className={className} onClick={trackClick}>
       {content}
     </Link>
   )
