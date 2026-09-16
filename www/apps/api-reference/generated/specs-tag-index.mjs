@@ -286,10 +286,6 @@ export const specsTagIndex = {
       "admin_sales-channels_{id}.yaml",
       "admin_sales-channels_{id}_products.yaml"
     ],
-    "search-indexes": [
-      "admin_search-indexes.yaml",
-      "admin_search-indexes_{id}_reindex.yaml"
-    ],
     "search": [
       "admin_search.yaml"
     ],
@@ -484,7 +480,6 @@ export const specsTagIndex = {
     ],
     "products": [
       "store_products.yaml",
-      "store_products_search.yaml",
       "store_products_{id}.yaml"
     ],
     "regions": [
