@@ -69,7 +69,7 @@ describe("query.search vector options", () => {
         embedding: {
           type: "vector",
           dimensions: 3,
-          embed: "title",
+          embed: true,
         },
       },
     }
@@ -95,7 +95,7 @@ describe("query.search vector options", () => {
         embedding: {
           type: "vector",
           dimensions: 3,
-          embed: "title",
+          embed: true,
         },
       },
     }
@@ -127,6 +127,35 @@ describe("query.search vector options", () => {
     )
   })
 
+  it("does not retrieve vector fields unless retrievable is true", () => {
+    const normalized = normalizeSearchQuery({
+      query: { entity: "product" },
+      index,
+    })
+
+    expect(normalized.attributes_to_retrieve).not.toContain("embedding")
+    expect(normalized.attributes_to_retrieve).toEqual(["id", "title"])
+
+    const optedIn: SearchTypes.ResolvedSearchIndexDefinition = {
+      ...index,
+      fields: {
+        ...index.fields,
+        embedding: {
+          type: "vector",
+          dimensions: 3,
+          retrievable: true,
+        },
+      },
+    }
+
+    const retrieved = normalizeSearchQuery({
+      query: { entity: "product" },
+      index: optedIn,
+    })
+
+    expect(retrieved.attributes_to_retrieve).toContain("embedding")
+  })
+
   it("does not retrieve engine-embedded vector fields", () => {
     const embedded: SearchTypes.ResolvedSearchIndexDefinition = {
       ...index,
@@ -135,7 +164,7 @@ describe("query.search vector options", () => {
         embedding: {
           type: "vector",
           dimensions: 3,
-          embed: "title",
+          embed: true,
         },
       },
     }

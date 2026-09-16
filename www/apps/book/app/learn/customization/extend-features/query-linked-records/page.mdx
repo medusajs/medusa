@@ -32,11 +32,11 @@ In this chapter, you'll learn how to retrieve a product's brand (and vice-versa)
 
 ## Approach 1: Retrieve Brands in Existing API Routes
 
-Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin/products/list-products), [Get Product](!api!/admin/products/get-a-product), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
+Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](!api!/admin/products/list-products), [Get Product](!api!/admin/products/get-a-product), or any product-related admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
 
 <Note>
 
-Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](../../../fundamentals/api-routes/retrieve-custom-links/page.mdx) chapter.
+Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](../../../fundamentals/api-routes/retrieve-custom-links/page.mdx) chapter. For store routes, you'll need to override the allowed fields and relations to retrieve your custom linked data models.
 
 </Note>
 
@@ -86,10 +86,10 @@ You can also retrieve linked records using [Query](../../../fundamentals/module-
 For example, you can create an API route that retrieves brands and their products. If you followed the [Create Brands API route chapter](../../custom-features/api-route/page.mdx), you'll have the file `src/api/admin/brands/route.ts` with a `POST` API route. Add a new `GET` function to the same file:
 
 export const highlights = [
-  ["11", "resolve", "Resolve Query from the Medusa container."],
-  ["13", "graph", "Run a query to retrieve brands with their linked products."],
-  ["14", "entity", "The name of the model to query."],
-  ["15", "fields", "The fields and relations to retrieve."]
+  ["14", "resolve", "Resolve Query from the Medusa container."],
+  ["18", "graph", "Run a query to retrieve brands with their linked products."],
+  ["19", "entity", "The name of the model to query."],
+  ["20", "fields", "The fields and relations to retrieve."]
 ]
 
 ```ts title="src/api/admin/brands/route.ts" highlights={highlights}
@@ -98,12 +98,17 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
   
   const { data: brands } = await query.graph({
     entity: "brand",

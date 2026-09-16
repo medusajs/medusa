@@ -5,80 +5,47 @@ import { SearchFieldDefinition } from "./field"
 import { SearchFilters } from "./filters"
 
 /**
- * The settings applied to a search index when it's created or migrated. A
- * provider that can't honour a setting rejects it from `upsertIndex`.
+ * The settings applied to a search index when it's created or migrated.
  */
 export interface SearchIndexSettings {
-  /**
-   * Terms treated as equivalent when matching, keyed by the term they expand to.
-   */
-  synonyms?: Record<string, string[]>
-
-  /**
-   * Terms ignored when matching, such as `the` or `a`.
-   */
-  stop_words?: string[]
-
   /**
    * How misspelled terms are matched.
    */
   typo_tolerance?: {
     /**
      * Whether typo tolerance is enabled at all.
+     *
+     * @default true
      */
     enabled?: boolean
 
     /**
-     * The shortest term length that tolerates a single typo.
+     * The shortest term length that tolerates a single typo. A provider with a
+     * higher floor of its own rejects a shorter length from `upsertIndex`; one
+     * that doesn't match by edit distance at all ignores this.
      */
     min_word_size_for_one_typo?: number
 
     /**
-     * The shortest term length that tolerates two typos.
+     * The shortest term length that tolerates two typos. Cannot be lower than
+     * `min_word_size_for_one_typo`. Ignored by a provider that doesn't match by
+     * edit distance.
      */
     min_word_size_for_two_typos?: number
 
     /**
-     * The dotted paths of the fields that must always match exactly.
+     * The dotted paths of the fields that must always match exactly, such as a
+     * SKU or a handle. A provider that can't exclude a single field rejects
+     * this rather than fuzzy-matching it anyway.
      */
     disabled_on_attributes?: string[]
   }
 
   /**
-   * The defaults applied to the facets computed on this index.
-   */
-  faceting?: {
-    /**
-     * The maximum number of values returned for a facet.
-     */
-    max_values_per_facet?: number
-
-    /**
-     * Whether facet values are ordered by their count or alphabetically.
-     */
-    sort_by?: "count" | "alpha"
-  }
-
-  /**
-   * The limits applied when paginating this index.
-   */
-  pagination?: {
-    /**
-     * The maximum number of hits a query can page through.
-     */
-    max_total_hits?: number
-  }
-
-  /**
    * The dotted path of a field that hits are deduplicated by, returning at most
-   * one hit per distinct value.
+   * one hit per distinct value. Overridden per query by `search_options.distinct`.
    */
   distinct_attribute?: string
-
-  /**
-   * The languages the index's text is analyzed for, such as `["en"]`.
-   */
-  locales?: string[]
 
   /**
    * Index settings specific to a search engine, keyed by provider identifier.
@@ -88,7 +55,7 @@ export interface SearchIndexSettings {
 
 /**
  * A change to apply to a search index, as returned by an index definition's
- * `consume` function.
+ * `consume` or `seed` function.
  */
 export type SearchMutation =
   | {
@@ -131,10 +98,7 @@ export interface SearchIngestionContext {
    */
   container: SearchContainer
 
-  /**
-   * The definition of the index the documents are written to.
-   */
-  index: SearchIndexDefinition
+  index: ResolvedSearchIndexDefinition
 }
 
 /**
@@ -151,6 +115,19 @@ export interface SearchSeedContext extends SearchIngestionContext {
    * The `last_key` of an interrupted run, when resuming one.
    */
   last_key?: string
+
+  /**
+   * Set for the catch-up pass that runs after a full seed, to pick up
+   * anything that changed while that seed was running.
+   */
+  catchup?: {
+    /**
+     * Only rows updated at or after this date matter to the catch-up pass.
+     * Query with `withDeleted: true` and yield a `delete` mutation for a row
+     * whose `deleted_at` is set, an `upsert` otherwise.
+     */
+    since: Date
+  }
 }
 
 /**
@@ -208,10 +185,11 @@ export interface SearchIndexDefinition {
   ) => Promise<SearchMutation[]>
 
   /**
-   * Yields the index's documents in batches. Ran when there is no data in the
-   * index or on reindex.
+   * Yields mutations in batches — the same shape `consume` returns, so a
+   * seed can express a delete, not just an upsert. Ran when there is no data
+   * in the index, on reindex, and for the catch-up pass after a full seed.
    */
-  seed: (context: SearchSeedContext) => AsyncIterable<SearchDocument[]>
+  seed: (context: SearchSeedContext) => AsyncIterable<SearchMutation[]>
 }
 
 /**
@@ -240,8 +218,10 @@ export interface ResolvedSearchIndexDefinition extends SearchIndexDefinition {
   definition_hash: string
 
   /**
-   * The concrete index the provider reads and writes. Differs from `name` under
-   * an index prefix, or while a `swap` builds into a replacement.
+   * The root physical index name, derived from `name` and the module's
+   * `index_prefix`. Never queried directly: each version of this index gets its
+   * own physical index derived from this root, and the module resolves which
+   * one is currently active before reading or writing.
    */
   physical_name: string
 }

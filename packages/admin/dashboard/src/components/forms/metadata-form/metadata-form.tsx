@@ -133,6 +133,14 @@ const InnerForm = <TRes,>({
     })
   }
 
+  function addRow() {
+    insert(fields.length, {
+      key: "",
+      value: "",
+      disabled: false,
+    })
+  }
+
   return (
     <RouteDrawer.Form form={form}>
       <KeyboundForm
@@ -271,20 +279,30 @@ const InnerForm = <TRes,>({
           )}
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteDrawer.Close asChild>
-              <Button
-                size="small"
-                variant="secondary"
-                type="button"
-                disabled={isMutating}
-              >
-                {t("actions.cancel")}
-              </Button>
-            </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isMutating}>
-              {t("actions.save")}
+          <div className="flex items-center justify-between">
+            <Button
+              size="small"
+              variant="secondary"
+              type="button"
+              onClick={addRow}
+            >
+              {t("metadata.edit.actions.addRow")}
             </Button>
+            <div className="flex items-center gap-x-2">
+              <RouteDrawer.Close asChild>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  type="button"
+                  disabled={isMutating}
+                >
+                  {t("actions.cancel")}
+                </Button>
+              </RouteDrawer.Close>
+              <Button size="small" type="submit" isLoading={isMutating}>
+                {t("actions.save")}
+              </Button>
+            </div>
           </div>
         </RouteDrawer.Footer>
       </KeyboundForm>

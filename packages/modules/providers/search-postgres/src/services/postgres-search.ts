@@ -330,33 +330,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     await manager.execute(`DROP TABLE IF EXISTS "${table}" CASCADE`)
   }
 
-  /**
-   * Renaming a table leaves its constraint and index names behind, and a later
-   * rebuild of the same shadow name would collide with them (or silently skip
-   * `CREATE INDEX IF NOT EXISTS`). Rename every table-derived artifact too.
-   */
-  protected async renameTableArtifacts(
-    from: string,
-    to: string,
-    plan: IndexPlan,
-    manager: DbManager
-  ) {
-    await manager.execute(
-      `ALTER TABLE "${to}" RENAME CONSTRAINT "${from}_pkey" TO "${to}_pkey"`
-    )
-
-    const suffixes = ["fts_idx", "trgm_idx", "indexed_idx", "bm25"]
-    for (const path of plan.vectors) {
-      suffixes.push(`${vectorColumnName(path)}_ann`)
-    }
-
-    for (const suffix of suffixes) {
-      await manager.execute(
-        `ALTER INDEX IF EXISTS "${from}_${suffix}" RENAME TO "${to}_${suffix}"`
-      )
-    }
-  }
-
   protected async adjustDocumentCount(
     name: string,
     delta: number,
@@ -477,73 +450,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
           ? row.updated_at
           : new Date(row.updated_at),
     }))
-  }
-
-  async swapIndex({
-    alias,
-    index,
-  }: {
-    alias: string
-    index: string
-  }): Promise<SearchTypes.SearchTask> {
-    const shadow = await this.getCatalog(index)
-    if (!shadow) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The postgres search provider has no index "${index}" to swap from`
-      )
-    }
-
-    const live = await this.getCatalog(alias)
-    const aliasTable = tableNameForIndex(alias)
-
-    await this.withTransaction(async (manager) => {
-      if (live) {
-        await this.dropDocumentTable(live.table_name, manager)
-        await manager.execute(
-          `DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`,
-          [alias]
-        )
-      }
-
-      if (shadow.table_name !== aliasTable) {
-        await manager.execute(
-          `ALTER TABLE "${shadow.table_name}" RENAME TO "${aliasTable}"`
-        )
-        await this.renameTableArtifacts(
-          shadow.table_name,
-          aliasTable,
-          shadow.plan,
-          manager
-        )
-      }
-
-      await manager.execute(`DELETE FROM "${CATALOG_TABLE}" WHERE "name" = ?`, [
-        index,
-      ])
-
-      await manager.execute(
-        `INSERT INTO "${CATALOG_TABLE}"
-          ("name", "table_name", "schema_hash", "plan", "document_count", "created_at", "updated_at")
-         VALUES (?, ?, ?, ?::jsonb, ?, ?, now())`,
-        [
-          alias,
-          aliasTable,
-          shadow.plan.schema_hash,
-          this.serializePlan(shadow.plan),
-          shadow.document_count,
-          shadow.created_at instanceof Date
-            ? shadow.created_at
-            : new Date(shadow.created_at),
-        ]
-      )
-
-      if (shadow.document_count > 0) {
-        await this.ensureBm25Index(aliasTable, manager)
-      }
-    })
-
-    return this.task(alias)
   }
 
   protected buildSearchVectorSql(
@@ -730,7 +636,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }
 
   /**
-   * Engine-embedded vector fields are produced from a source text field via
+   * Engine-embedded vector fields are produced from the field's own text via
    * the configured `embedder`. Without one the columns would stay null.
    */
   protected assertEmbedderForPlan(plan: IndexPlan): void {
@@ -767,7 +673,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     for (const { document, projection } of projections.values()) {
       for (const path of embedded) {
         const planned = plan.fields.get(path)!
-        const text = sourceTextForEmbed(document, planned.field.embed!)
+        const text = sourceTextForEmbed(document, path)
         if (!text) {
           continue
         }
@@ -810,8 +716,14 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
     }
 
+    // The index's `distinct_attribute` is the default for every query on it.
+    // Resolved once here and threaded down, so a code path that must not
+    // deduplicate (a hybrid arm) says so explicitly rather than relying on
+    // having cleared `search_options.distinct`.
+    const distinct = options.distinct ?? input.index.settings.distinct_attribute
+
     // Fails early on unknown / unsupported distinct fields.
-    this.resolveDistinct(options.distinct, plan, input.index.name)
+    this.resolveDistinct(distinct, plan, input.index.name)
 
     const q = input.q?.trim()
     const vectorOpts = options.vector
@@ -842,6 +754,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         catalog,
         queryEmbedding: queryEmbedding!,
         semanticRatio,
+        distinct,
         skip,
         take,
       }))
@@ -850,6 +763,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input,
         catalog,
         queryEmbedding: queryEmbedding!,
+        distinct,
         skip,
         take,
       }))
@@ -857,6 +771,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       ;({ hitRows, count } = await this.searchKeyword({
         input,
         catalog,
+        distinct,
         skip,
         take,
       }))
@@ -969,7 +884,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const q = query.q?.trim() || undefined
-    const typo = !!(q && options.typo_tolerance)
+    // `search_options.typo_tolerance` is a preference; an index that turned
+    // typo tolerance off in its settings serves exact matches instead.
+    const typo = !!(
+      q &&
+      options.typo_tolerance &&
+      (query.index.settings.typo_tolerance?.enabled ?? true)
+    )
     const matchLast = options.match_strategy === "last"
     const searchOn = options.attributes_to_search_on ?? plan.searchable
     const searchAllFields =
@@ -1027,10 +948,11 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   protected async searchKeyword(input: {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, skip, take } = input
+    const { input: query, catalog, distinct, skip, take } = input
     const plan = catalog.plan
     const options = query.search_options ?? {}
     const filterWhere = toWhereClause(query.filters, plan)
@@ -1071,11 +993,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       conditionsSql,
       orderSql: this.resolveOrderBy(query, plan, !!fragments.q),
       minScore: options.min_score,
-      distinctExpr: this.resolveDistinct(
-        options.distinct,
-        plan,
-        query.index.name
-      ),
+      distinctExpr: this.resolveDistinct(distinct, plan, query.index.name),
       count: options.count !== "none",
       take,
       skip,
@@ -1087,10 +1005,18 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     input: SearchTypes.ProviderSearchQuery
     catalog: StoredIndex
     queryEmbedding: number[]
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
-    const { input: query, catalog, queryEmbedding, skip, take } = input
+    const {
+      input: query,
+      catalog,
+      queryEmbedding,
+      distinct,
+      skip,
+      take,
+    } = input
     const options = query.search_options ?? {}
     const field = resolveVectorField(options.vector!, catalog.plan)
     const col = vectorColumnName(field)
@@ -1131,7 +1057,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       fastOrderSql,
       minScore: options.min_score,
       distinctExpr: this.resolveDistinct(
-        options.distinct,
+        distinct,
         catalog.plan,
         query.index.name
       ),
@@ -1146,6 +1072,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     catalog: StoredIndex
     queryEmbedding: number[]
     semanticRatio: number
+    distinct?: string
     skip: number
     take: number
   }): Promise<{ hitRows: any[]; count: number | null }> {
@@ -1154,6 +1081,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       catalog,
       queryEmbedding,
       semanticRatio,
+      distinct,
       skip,
       take,
     } = input
@@ -1172,7 +1100,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     }
 
     // Arms are relevance-ranked candidate lists; page-level options (distinct,
-    // min_score, count, order) apply to the fused list instead.
+    // min_score, count, order) apply to the fused list instead. `distinct` is
+    // passed to each arm explicitly below.
     const candidateLimit = Math.max(take + skip, 40) * 2
     const armQuery: SearchTypes.ProviderSearchQuery = {
       ...query,
@@ -1180,7 +1109,6 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       search_options: {
         ...options,
         min_score: undefined,
-        distinct: undefined,
         count: "none",
       },
     }
@@ -1189,6 +1117,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       this.searchKeyword({
         input: armQuery,
         catalog,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1196,6 +1125,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         input: armQuery,
         catalog,
         queryEmbedding,
+        distinct: undefined,
         skip: 0,
         take: candidateLimit,
       }),
@@ -1238,10 +1168,10 @@ export class PostgresSearchService extends AbstractSearchProviderService {
 
     let ranked = [...scores.values()].sort((a, b) => b.score - a.score)
 
-    if (options.distinct) {
+    if (distinct) {
       const seen = new Set<string>()
       ranked = ranked.filter((row) => {
-        const key = this.readIndexedValue(row.indexed, options.distinct!)
+        const key = this.readIndexedValue(row.indexed, distinct)
         if (key === undefined) {
           return true
         }
@@ -1280,7 +1210,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       }
 
       const distinctExpr = this.resolveDistinct(
-        options.distinct,
+        distinct,
         plan,
         query.index.name
       )
@@ -1575,8 +1505,9 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }
 
   /**
-   * Validates `search_options.distinct` and returns the SQL expression to
-   * deduplicate on, or undefined when not requested.
+   * Validates the field to deduplicate by — `search_options.distinct` or the
+   * index's `settings.distinct_attribute` — and returns the SQL expression for
+   * it, or undefined when neither is set.
    */
   protected resolveDistinct(
     distinct: string | undefined,

@@ -33,11 +33,14 @@ const createService = () =>
 describe("MedusaSearchService", () => {
   it("requires Cloud credentials from provider options", () => {
     expect(() => new MedusaSearchService({}, {} as any)).toThrow(
-      /explicit "api_key"/
+      /explicit "endpoint"/
     )
     expect(
-      () => new MedusaSearchService({}, { api_key: "medusa_test" } as any)
-    ).toThrow(/explicit "endpoint"/)
+      () =>
+        new MedusaSearchService({}, {
+          endpoint: "https://search.medusa.example",
+        } as any)
+    ).toThrow(/explicit "api_key"/)
     expect(
       () =>
         new MedusaSearchService({}, {
@@ -75,32 +78,33 @@ describe("MedusaSearchService", () => {
         title: expect.objectContaining({ full_text_search: true }),
       }),
       distance_metric: undefined,
-      sharding: undefined,
     })
   })
 
-  it("recreates indexes with incompatible schemas through the create endpoint", async () => {
+  it("updates the schema in place on a migration re-run against an already-created namespace", async () => {
+    // Every version gets its own namespace, so finding one that already
+    // exists only happens when a migration re-runs after a crash — against
+    // this same, unchanging schema.
     const service = createService()
     const metadata = jest.fn().mockResolvedValue({
       schema: {
         id: { type: "string" },
-        title: { type: "int" },
+        title: { type: "string" },
         status: { type: "string" },
       },
     })
-    const deleteAll = jest.fn().mockResolvedValue(undefined)
+    const updateSchema = jest.fn().mockResolvedValue(undefined)
     const createIndex = jest.fn().mockResolvedValue(undefined)
-    const index = jest.fn(() => ({ deleteAll, metadata }))
+    const index = jest.fn(() => ({ metadata, updateSchema }))
     ;(service as any).client_ = { createIndex, index }
 
     await service.upsertIndex({ index: definition })
 
-    expect(deleteAll).toHaveBeenCalledTimes(1)
-    expect(createIndex).toHaveBeenCalledWith(
+    expect(createIndex).not.toHaveBeenCalled()
+    expect(updateSchema).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: "product",
         schema: expect.objectContaining({
-          title: expect.objectContaining({ type: "string" }),
+          title: expect.objectContaining({ full_text_search: true }),
         }),
       })
     )

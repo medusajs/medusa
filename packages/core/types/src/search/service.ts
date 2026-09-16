@@ -11,13 +11,10 @@ import { SearchResult } from "./result"
 /**
  * The strategy used to rebuild a search index:
  *
- * - `swap` seeds a shadow index and aliases over on completion, keeping the live
- * index serving throughout.
- * - `in_place` upserts into the live index, which is cheaper but leaves stale
- * documents behind for anything the seed no longer produces.
- *
- * `swap` requires a provider that implements `swapIndex`. The module falls back
- * to `in_place` for providers that don't.
+ * - `swap` seeds a new version of the index and makes it active on completion,
+ * keeping the current version serving reads throughout.
+ * - `in_place` upserts into the active version directly, which is cheaper but
+ * leaves stale documents behind for anything the seed no longer produces.
  */
 export type SearchReindexStrategy = "swap" | "in_place"
 
@@ -43,6 +40,14 @@ export interface SearchReindexInput {
    * subset of the index's documents.
    */
   filters?: Record<string, unknown>
+
+  /**
+   * Rebuilds only documents that changed at or after this date, passed to the
+   * index definition's `seed` function. Like `filters`,
+   * this always runs in place — a version built from a subset was never
+   * meant to serve every read, so it never swaps in.
+   */
+  since?: Date
 }
 
 /**
@@ -265,8 +270,9 @@ export interface ISearchModuleService extends IModuleService {
 
   /**
    * This method retrieves an index's definition with the module's defaults
-   * applied: the provider it resolved to, the physical index behind it, and the
-   * `primary_key` its documents are keyed by, which is what a hit's `id` holds.
+   * applied: the provider it resolved to, the root physical index name its
+   * versions are derived from, and the `primary_key` its documents are keyed
+   * by, which is what a hit's `id` holds.
    *
    * @param {string} index - The name of the index.
    * @returns {ResolvedSearchIndexDefinition} The resolved index definition.

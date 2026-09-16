@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd, InlineIcon } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -29,13 +29,56 @@ Medusa automatically configures the database for your environments on Cloud. So,
 
 ## Cloud Database Backups
 
-Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state if needed.
+Medusa provides automatic backups for your environment databases on Cloud. The retention period depends on your plan:
 
-<Note>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Plan
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Retention Period
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Develop
+      </Table.Cell>
+      <Table.Cell>
+        Not supported
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Launch
+      </Table.Cell>
+      <Table.Cell>
+        7 days
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Scale
+      </Table.Cell>
+      <Table.Cell>
+        14 days
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Enterprise
+      </Table.Cell>
+      <Table.Cell>
+        14 days
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
 
-Database backups is available to the Launch, Scale, and Enterprise plans only. Learn how to upgrade in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
-
-</Note>
+You can upgrade your plan as explained in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
 
 To access the database backups of an environment:
 

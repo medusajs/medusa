@@ -356,8 +356,8 @@ export class Customer {
    *
    * @example
    * sdk.admin.customer.retrieveAddress("cus_123", "cus_addr_123")
-   * .then(({ customer }) => {
-   *   console.log(customer)
+   * .then(({ address }) => {
+   *   console.log(address)
    * })
    */
   async retrieveAddress(
@@ -365,7 +365,7 @@ export class Customer {
     addressId: string,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminCustomerResponse>(
+    return await this.client.fetch<HttpTypes.AdminCustomerAddressResponse>(
       `/admin/customers/${id}/addresses/${addressId}`,
       {
         headers,

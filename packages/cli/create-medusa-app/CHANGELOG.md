@@ -1,5 +1,33 @@
 # Change Log
 
+## 2.21.0
+
+### Patch Changes
+
+- [#16780](https://github.com/medusajs/medusa/pull/16780) [`f9d061686e1e013a2783b5350aab346e664e2103`](https://github.com/medusajs/medusa/commit/f9d061686e1e013a2783b5350aab346e664e2103) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app): remove unused node-fetch dependency
+
+- [#16712](https://github.com/medusajs/medusa/pull/16712) [`5ccbfec87f4a809fcd0568a2c0c7954c9335608a`](https://github.com/medusajs/medusa/commit/5ccbfec87f4a809fcd0568a2c0c7954c9335608a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(create-medusa-app): change Next.js starter wording
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.0
+  - @medusajs/telemetry@2.21.0
+
+## 2.20.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.20.1
+  - @medusajs/telemetry@2.20.1
+
+## 2.20.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.20.0
+  - @medusajs/telemetry@2.20.0
+
 ## 2.19.0
 
 ### Patch Changes

@@ -52,8 +52,8 @@ export type PostgresSearchProviderOptions = {
    */
   engine?: PostgresSearchEngine
   /**
-   * Embeds text for engine-embedded vector fields (`embed` on the field) at
-   * write time, and for `search_options.vector.query` at query time. Required
+   * Embeds text for engine-embedded vector fields (`embed: true` on the field)
+   * at write time, and for `search_options.vector.query` at query time. Required
    * on the lakebase engine when any vector field declares `embed`.
    */
   embedder?: PostgresSearchEmbedder
@@ -104,6 +104,25 @@ function fieldKind(
 }
 
 /**
+ * Postgres matches typos with `pg_trgm` word similarity over the whole
+ * `search_text` column. It honours `enabled`, but it doesn't support fine-tuning.
+ *
+ * `disabled_on_attributes` states that a field must only ever
+ * match exactly, and ignoring it would fuzzy-match a SKU or a handle the index
+ * deliberately excluded. There is no per-attribute similarity to switch off
+ * here, so it is rejected instead.
+ */
+function assertTypoToleranceSupported(
+  settings: SearchTypes.SearchIndexSettings
+): void {
+  if (settings.typo_tolerance?.disabled_on_attributes?.length) {
+    fail(
+      "The postgres search provider matches typos across all searchable fields at once, so it does not support settings.typo_tolerance.disabled_on_attributes"
+    )
+  }
+}
+
+/**
  * Refuses a definition this engine cannot honour.
  */
 export function assertIndexSupported(
@@ -116,12 +135,6 @@ export function assertIndexSupported(
   ) => {
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
-
-      if (field.correlated) {
-        fail(
-          `The postgres search provider cannot correlate predicates per element, so "${path}" cannot set "correlated". Arrays of objects are collapsed to per-leaf arrays.`
-        )
-      }
 
       if (field.type === "vector") {
         if (engine !== "lakebase") {
@@ -152,6 +165,7 @@ export function assertIndexSupported(
   }
 
   walk(definition.fields, "")
+  assertTypoToleranceSupported(definition.settings)
 }
 
 /**
@@ -163,7 +177,7 @@ export function assertQuerySupported(
 ): void {
   const options = query.search_options ?? {}
 
-  if (options.highlight) {
+  if (options.highlight && query.q?.trim()) {
     fail("The postgres search provider does not support highlighting")
   }
 

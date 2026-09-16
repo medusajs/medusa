@@ -17,7 +17,7 @@ export type PlannedField = {
   is_date: boolean
   field: SearchTypes.SearchFieldDefinition
   dimensions?: number
-  embed?: string
+  embed?: boolean
 }
 
 export type TypoToleranceSettings = {
@@ -41,9 +41,18 @@ function fail(message: string): never {
   throw new MedusaError(MedusaError.Types.NOT_ALLOWED, message)
 }
 
-// Cloud requires min_query_chars >= 3 * (distance + 1) for typos
-const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = 6
-const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = 9
+/**
+ * Cloud only matches a term fuzzily when the query is at least
+ * `3 * (distance + 1)` characters long, so the shortest word that can tolerate
+ * one typo is 6 characters and two typos is 9. Configuring anything lower is
+ * rejected at `upsertIndex` rather than silently raised.
+ */
+export function minWordSizeForTypos(distance: number): number {
+  return 3 * (distance + 1)
+}
+
+const DEFAULT_MIN_WORD_SIZE_FOR_ONE_TYPO = minWordSizeForTypos(1)
+const DEFAULT_MIN_WORD_SIZE_FOR_TWO_TYPOS = minWordSizeForTypos(2)
 
 function resolveTypoTolerance(
   settings: SearchTypes.SearchIndexSettings
@@ -110,21 +119,59 @@ function fieldType(
   }
 }
 
+function assertTypoToleranceSupported(
+  settings: SearchTypes.SearchIndexSettings,
+  paths: Set<string>
+): void {
+  const typo = settings.typo_tolerance
+  if (!typo) {
+    return
+  }
+
+  const thresholds = [
+    ["min_word_size_for_one_typo", typo.min_word_size_for_one_typo, 1],
+    ["min_word_size_for_two_typos", typo.min_word_size_for_two_typos, 2],
+  ] as const
+
+  for (const [name, value, distance] of thresholds) {
+    const minimum = minWordSizeForTypos(distance)
+    if (value !== undefined && value < minimum) {
+      fail(
+        `Medusa search requires settings.typo_tolerance.${name} to be at least ${minimum} to tolerate ${distance} ${
+          distance === 1 ? "typo" : "typos"
+        }, got ${value}`
+      )
+    }
+  }
+
+  const one = typo.min_word_size_for_one_typo
+  const two = typo.min_word_size_for_two_typos
+  if (one !== undefined && two !== undefined && two < one) {
+    fail(
+      `settings.typo_tolerance.min_word_size_for_two_typos (${two}) cannot be lower than min_word_size_for_one_typo (${one})`
+    )
+  }
+
+  for (const path of typo.disabled_on_attributes ?? []) {
+    if (!paths.has(path)) {
+      fail(
+        `settings.typo_tolerance.disabled_on_attributes references "${path}", which is not a field on this index`
+      )
+    }
+  }
+}
+
 export function assertIndexSupported(
   definition: SearchTypes.ResolvedSearchIndexDefinition
 ): void {
+  const paths = new Set<string>()
+
   const walk = (
     group: Record<string, SearchTypes.SearchFieldDefinition>,
     prefix: string
   ) => {
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
-
-      if (field.correlated) {
-        fail(
-          `The Medusa search provider cannot correlate predicates per array element ("${path}")`
-        )
-      }
 
       if (field.type === "object") {
         if (field.fields) {
@@ -134,17 +181,12 @@ export function assertIndexSupported(
       }
 
       fieldType(field, !!field.array)
+      paths.add(path)
     }
   }
 
-  if (definition.settings.synonyms) {
-    fail("The Medusa search provider does not support synonyms")
-  }
-  if (definition.settings.stop_words?.length) {
-    fail("The Medusa search provider does not support custom stop-word lists")
-  }
-
   walk(definition.fields, "")
+  assertTypoToleranceSupported(definition.settings, paths)
 }
 
 export function buildIndexPlan(
@@ -174,7 +216,7 @@ export function buildIndexPlan(
       }
 
       const configured = providerOptions<MedusaSearchFieldOptions>(field)
-      const type = configured.type ?? fieldType(field, isArray)
+      const type = fieldType(field, isArray)
       const searchableField = isSearchable(field)
       const indexed =
         field.filterable ||
@@ -184,11 +226,16 @@ export function buildIndexPlan(
 
       const attribute: AttributeSchemaConfig = {
         type,
-        filterable: configured.filterable ?? !!indexed,
+        filterable: !!indexed,
       }
 
       if (field.type === "vector") {
         attribute.ann = configured.ann ?? true
+        if (field.embed) {
+          attribute.embed = {
+            ...(field.dimensions ? { dims: field.dimensions } : {}),
+          }
+        }
       }
 
       if (searchableField) {
@@ -219,9 +266,6 @@ export function buildIndexPlan(
       if (configured.regex !== undefined) {
         attribute.regex = configured.regex
       }
-      if (configured.fuzzy !== undefined) {
-        attribute.fuzzy = configured.fuzzy
-      }
 
       fields.set(path, {
         path,
@@ -233,12 +277,6 @@ export function buildIndexPlan(
         embed: field.embed,
       })
 
-      // Engine-embedded vector fields are not stored as client-supplied
-      // `[N]f32` columns — the source text field carries `embed` instead.
-      if (field.type === "vector" && field.embed) {
-        continue
-      }
-
       schema[path] = attribute
     }
   }
@@ -247,25 +285,8 @@ export function buildIndexPlan(
 
   const vectors: string[] = []
   for (const planned of fields.values()) {
-    if (planned.field.type !== "vector") {
-      continue
-    }
-
-    vectors.push(planned.path)
-
-    if (!planned.embed) {
-      continue
-    }
-
-    const source = schema[planned.embed]
-    if (!source || typeof source === "string") {
-      fail(
-        `Vector field "${planned.path}" embeds source "${planned.embed}", which is not in the index schema`
-      )
-    }
-
-    source.embed = {
-      ...(planned.dimensions ? { dims: planned.dimensions } : {}),
+    if (planned.field.type === "vector") {
+      vectors.push(planned.path)
     }
   }
 
@@ -318,12 +339,6 @@ export function toSearchDocument(
   const target: Record<string, unknown> = {}
 
   for (const planned of plan.fields.values()) {
-    // Engine-embedded fields are produced from `embed` — never send a
-    // client-supplied vector for them.
-    if (planned.field.type === "vector" && planned.embed) {
-      continue
-    }
-
     if (planned.field.type === "vector") {
       // `readDocumentPath` flattens arrays; a vector is one value.
       const raw = planned.path
@@ -335,9 +350,24 @@ export function toSearchDocument(
               : undefined,
           document
         )
-      if (raw !== undefined && raw !== null) {
-        target[planned.path] = coerceVector(raw, planned)
+      if (raw === undefined || raw === null) {
+        continue
       }
+
+      // Engine-embedded fields accept the source text; the proxy embeds it
+      // into the `[N]f32` column before storage.
+      if (planned.embed) {
+        if (typeof raw !== "string") {
+          fail(`Vector field "${planned.path}" with embed must be a string`)
+        }
+        const text = raw.trim()
+        if (text) {
+          target[planned.path] = text
+        }
+        continue
+      }
+
+      target[planned.path] = coerceVector(raw, planned)
       continue
     }
 
@@ -382,21 +412,4 @@ export function fromSearchDocument(
   }
 
   return result
-}
-
-export function sameSchemaType(
-  current: Record<string, AttributeSchemaConfig>,
-  desired: Record<string, AttributeSchema>
-): boolean {
-  for (const [path, schema] of Object.entries(desired)) {
-    const desiredType =
-      typeof schema === "string"
-        ? schema
-        : (schema as AttributeSchemaConfig).type
-    if (current[path] && current[path].type !== desiredType) {
-      return false
-    }
-  }
-
-  return Object.keys(current).every((path) => path in desired)
 }

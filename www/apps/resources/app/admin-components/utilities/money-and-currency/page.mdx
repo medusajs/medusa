@@ -1,0 +1,321 @@
+---
+sidebar_label: "Money & Currency"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Money & Currency Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the utilities that the Medusa Admin uses to format amounts and look up currency data. Use them in your [admin extensions](!docs!/learn/fundamentals/admin) to display prices and totals the same way the Medusa Admin does.
+
+```tsx
+import {
+  castNumber,
+  currencies,
+  formatCurrency,
+  getCurrencyDecimalDigits,
+  getCurrencySymbol,
+  getDecimalDigits,
+  getLocaleAmount,
+  getNativeSymbol,
+  getStylizedAmount,
+} from "@medusajs/dashboard/lib"
+```
+
+---
+
+## getStylizedAmount
+
+Formats an amount in the Medusa Admin's style, placing the currency's native symbol before the amount and the uppercase currency code after it. The Medusa Admin uses it for totals.
+
+```tsx
+import { getStylizedAmount } from "@medusajs/dashboard/lib"
+
+getStylizedAmount(10, "usd") // "$ 10.00 USD"
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "amount",
+      type: "`number`",
+      optional: false,
+      description: "The amount to format.",
+    },
+    {
+      name: "currencyCode",
+      type: "`string`",
+      optional: false,
+      description: "The currency code, such as `usd`. The casing doesn't matter.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string` of the formatted amount. When the amount is smaller than the currency's rounding precision, the formatted amount shows an explicit sign.
+
+---
+
+## getLocaleAmount
+
+Formats an amount as a currency string using the browser's locale and the currency's narrow symbol.
+
+```tsx
+import { getLocaleAmount } from "@medusajs/dashboard/lib"
+
+getLocaleAmount(10, "usd") // "$10.00" in the en-US locale
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "amount",
+      type: "`number`",
+      optional: false,
+      description: "The amount to format.",
+    },
+    {
+      name: "currencyCode",
+      type: "`string`",
+      optional: false,
+      description: "The currency code to format the amount in.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string` of the amount formatted in the browser's locale.
+
+---
+
+## formatCurrency
+
+Formats an amount as a currency string using the browser's default locale and the currency's default symbol style.
+
+```tsx
+import { formatCurrency } from "@medusajs/dashboard/lib"
+
+formatCurrency(10, "usd") // "$10.00" in the en-US locale
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "amount",
+      type: "`number`",
+      optional: false,
+      description: "The amount to format.",
+    },
+    {
+      name: "currency",
+      type: "`string`",
+      optional: false,
+      description: "The currency code to format the amount in.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string` of the formatted amount.
+
+---
+
+## getNativeSymbol
+
+Returns the native symbol of a currency by formatting a zero amount and stripping the digits and separators.
+
+```tsx
+import { getNativeSymbol } from "@medusajs/dashboard/lib"
+
+getNativeSymbol("usd") // "$"
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "currencyCode",
+      type: "`string`",
+      optional: false,
+      description: "The currency code to get the symbol of.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string` of the currency's native symbol.
+
+---
+
+## getDecimalDigits
+
+Returns the number of decimal digits of a currency from the `currencies` object. Returns `0` when the currency isn't in the object.
+
+```tsx
+import { getDecimalDigits } from "@medusajs/dashboard/lib"
+
+getDecimalDigits("usd") // 2
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "currency",
+      type: "`string`",
+      optional: false,
+      description: "The currency code. The casing doesn't matter.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `number` of the currency's decimal digits, or `0` if the currency isn't supported.
+
+---
+
+## castNumber
+
+Converts a value entered in an input into a number, replacing a comma decimal separator with a period. Use it with a Zod schema that accepts both a string and a number.
+
+```tsx
+import { castNumber } from "@medusajs/dashboard/lib"
+
+castNumber("10,5") // 10.5
+castNumber(10.5) // 10.5
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "number",
+      type: "`number | string`",
+      optional: false,
+      description: "The value to convert into a number.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `number`.
+
+---
+
+## currencies
+
+An object of the currencies that the Medusa Admin supports, keyed by uppercase currency code. Each value is a `CurrencyInfo` object.
+
+```tsx
+import { currencies } from "@medusajs/dashboard/lib"
+
+currencies.USD.name // "US Dollar"
+```
+
+### CurrencyInfo Properties
+
+<TypeList
+  types={[
+    {
+      name: "code",
+      type: "`string`",
+      optional: false,
+      description: "The uppercase currency code, such as `USD`.",
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: false,
+      description: "The currency's display name, such as `US Dollar`.",
+    },
+    {
+      name: "symbol_native",
+      type: "`string`",
+      optional: false,
+      description: "The currency's native symbol, such as `$`.",
+    },
+    {
+      name: "decimal_digits",
+      type: "`number`",
+      optional: false,
+      description: "The number of decimal digits the currency uses.",
+    },
+  ]}
+/>
+
+---
+
+## getCurrencySymbol and getCurrencyDecimalDigits
+
+Read a currency's native symbol or number of decimal digits from the `currencies` object.
+
+<Note type="warning">
+
+Both functions throw an error when the currency code isn't in the `currencies` object. Use `getDecimalDigits` instead if you need a `0` fallback.
+
+</Note>
+
+```tsx
+import {
+  getCurrencyDecimalDigits,
+  getCurrencySymbol,
+} from "@medusajs/dashboard/lib"
+
+getCurrencySymbol("usd") // "$"
+getCurrencyDecimalDigits("usd") // 2
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "code",
+      type: "`string`",
+      optional: false,
+      description: "The currency code. The casing doesn't matter.",
+    },
+  ]}
+/>
+
+### Returns
+
+<TypeList
+  types={[
+    {
+      name: "getCurrencySymbol",
+      type: "`string`",
+      description: "The currency's native symbol.",
+    },
+    {
+      name: "getCurrencyDecimalDigits",
+      type: "`number`",
+      description: "The currency's number of decimal digits.",
+    },
+  ]}
+/>

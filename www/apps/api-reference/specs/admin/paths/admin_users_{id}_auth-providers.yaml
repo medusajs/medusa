@@ -1,0 +1,50 @@
+get:
+  operationId: GetUsersIdAuthProviders
+  summary: List Auth Providers of a User
+  x-sidebar-summary: List Auth Providers
+  description: >-
+    Retrieve a list of auth providers that a user can authenticate with. These
+    represent the auth providers that the user has previously used to log in or
+    register with the system.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The user's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_users_{id}_auth-providers/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_users_{id}_auth-providers/get.sh
+  tags:
+    - Users
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminUserAuthProvidersResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.20.0

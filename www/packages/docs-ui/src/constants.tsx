@@ -304,6 +304,12 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Admin Components",
+        link: "/resources/admin-components",
+        sidebar_id: "admin-components",
+      },
+      {
+        type: "link",
         title: "Next.js Starter",
         link: "/resources/nextjs-starter",
         sidebar_id: "nextjs-starter",
@@ -552,4 +558,5 @@ export enum DocsTrackingEvents {
   AI_ASSISTANT_CALLOUT_CLICK = "ai_assistant_callout_click",
   SEARCH_CALLOUT_CLICK = "search_callout_click",
   BLOOM_ACTION = "bloom_action",
+  WHATS_NEW_ITEM_CLICK = "whats_new_item_click",
 }
