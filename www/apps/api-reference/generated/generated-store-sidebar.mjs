@@ -1018,16 +1018,6 @@ const generatedgeneratedStoreSidebarSidebar = {
             "variant": "green",
             "text": "Get"
           }
-        },
-        {
-          "type": "link",
-          "path": "/store/products/list-products-2",
-          "title": "List Products",
-          "loaded": true,
-          "badge": {
-            "variant": "green",
-            "text": "Get"
-          }
         }
       ]
     },
