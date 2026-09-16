@@ -2,6 +2,7 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "medusa-docs-cloud",
   "main": ".open-next/worker.js",
+  "minify": true,
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -27,6 +28,7 @@
   "env": {
     "production": {
       "name": "medusa-docs-cloud",
+      "minify": true,
       "services": [
         {
           "binding": "WORKER_SELF_REFERENCE",
