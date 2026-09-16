@@ -38,21 +38,52 @@ describe("MedusaSearchClient", () => {
   })
 })
 
+describe("MedusaSearchClient authentication", () => {
+  it("should send only the key as the auth header, with the handle on its own", async () => {
+    const fetchImpl = jest.fn(async () => ({
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      json: async () => ({}),
+    }))
+
+    const client = new MedusaSearchClient(
+      resolveMedusaSearchOptions({
+        endpoint: "https://test-env:medusa_token@search.medusa.example",
+      }),
+      { fetchImpl: fetchImpl as unknown as typeof fetch }
+    )
+
+    await client.index("product").metadata()
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [
+      string,
+      RequestInit
+    ]
+    expect(url).toBe("https://search.medusa.example/indexes/product/metadata")
+    expect((init.headers as Record<string, string>).Authorization).toBe(
+      "Basic medusa_token"
+    )
+    expect(
+      (init.headers as Record<string, string>)["x-medusa-environment-handle"]
+    ).toBe("test-env")
+  })
+})
+
 describe("resolveMedusaSearchOptions", () => {
-  it("should move basic auth credentials off the endpoint and into the key", () => {
+  it("should read the environment handle and token off a basic auth endpoint", () => {
     const resolved = resolveMedusaSearchOptions({
-      endpoint: "https://medusa_test:secret@search.medusa.example",
-      environment_handle: "test-env",
+      endpoint: "https://test-env:medusa_token@search.medusa.example",
     })
 
     expect(resolved).toEqual({
-      api_key: Buffer.from("medusa_test:secret").toString("base64"),
+      api_key: "medusa_token",
       endpoint: "https://search.medusa.example",
       environment_handle: "test-env",
     })
   })
 
-  it("should keep using the api_key option for an endpoint without credentials", () => {
+  it("should keep using the explicit options for an endpoint without credentials", () => {
     const resolved = resolveMedusaSearchOptions({
       api_key: "medusa_test",
       endpoint: "https://search.medusa.example",
@@ -61,14 +92,21 @@ describe("resolveMedusaSearchOptions", () => {
 
     expect(resolved.api_key).toBe("medusa_test")
     expect(resolved.endpoint).toBe("https://search.medusa.example")
+    expect(resolved.environment_handle).toBe("test-env")
   })
 
-  it("should throw when the endpoint and the api_key option both carry credentials", () => {
+  it("should throw when the endpoint and the explicit options both carry credentials", () => {
     expect(() =>
       resolveMedusaSearchOptions({
-        api_key: "medusa_option",
-        endpoint: "https://medusa_endpoint:secret@search.medusa.example",
-        environment_handle: "test-env",
+        api_key: "medusa_test",
+        endpoint: "https://test-env:medusa_token@search.medusa.example",
+      })
+    ).toThrow(/Pass only one of them/)
+
+    expect(() =>
+      resolveMedusaSearchOptions({
+        endpoint: "https://test-env:medusa_token@search.medusa.example",
+        environment_handle: "other-env",
       })
     ).toThrow(/Pass only one of them/)
   })
