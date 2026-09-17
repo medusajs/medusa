@@ -3,7 +3,7 @@ import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { SearchIndex, SearchIndexSync, SearchIndexVersion } from "@models"
 import { SearchIndexSeedAction } from "@types"
-import { versionPhysicalName } from "../../src/utils/migrations"
+import { versionPhysicalName } from "../../src/utils/versions"
 import {
   baseProducts,
   consumedEvents,
@@ -1228,6 +1228,49 @@ moduleIntegrationTestRunner<SearchService>({
           expect(syncs).toHaveLength(6)
           expect(syncs.every((sync) => sync.status === "done")).toBe(true)
           expect(new Set(syncs.map((sync) => sync.job_id)).size).toBe(3)
+        })
+
+        it("drops the versions a rebuild takes out of rotation", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-postgres"
+          )
+          const physicalNames = async () =>
+            (await provider.listIndexes())
+              .map((info: SearchTypes.SearchIndexInfo) => info.name)
+              .sort()
+
+          expect(await physicalNames()).toEqual(["product_v1"])
+
+          await service.reindex()
+
+          // Version 1 served reads while version 2 was built, so it is still
+          // standing right after the swap — long enough for another instance's
+          // active-version cache to catch up.
+          expect(await physicalNames()).toEqual(["product_v1", "product_v2"])
+
+          await service.reindex()
+
+          // ...and goes as the next rebuild starts, so what is left is the
+          // version serving reads and the one it took over from, rather than a
+          // physical index per rebuild.
+          expect(await physicalNames()).toEqual(["product_v2", "product_v3"])
+
+          const [record] = await indexRecords(service, { name: "product" })
+          expect(record.active_version).toBe(3)
+
+          const versions = await versionRecords(service, {
+            search_index_id: record.id,
+          })
+          expect(versions.map((version: any) => version.version).sort()).toEqual(
+            [2, 3]
+          )
+
+          // Dropping the old versions leaves the index itself untouched.
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
         it("reindexes a subset in place and records the filters used", async () => {
