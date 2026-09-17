@@ -98,14 +98,6 @@ export interface BaseCustomer {
    */
   email: string
   /**
-   * The ID of the customer's default billing address.
-   */
-  default_billing_address_id: string | null
-  /**
-   * The ID of the customer's default shipping address.
-   */
-  default_shipping_address_id: string | null
-  /**
    * The customer's company name.
    */
   company_name: string | null
