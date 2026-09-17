@@ -41123,9 +41123,13 @@ When an item is added, an `OrderChangeAction` is created with the type `ITEM_ADD
 
 ## Update Items in an Order Edit
 
-A merchant can update an existing item's quantity or price.
+A merchant can update an existing item's quantity, price, or metadata.
 
 This change is recorded as an `OrderChangeAction` with the type `ITEM_UPDATE`. Its `details` property stores the item's ID, updated price, and updated quantity.
+
+Once the order edit is confirmed, the Order Module writes the updated `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` to the [OrderItem record](undefined/references/order/models/OrderItem) of the order's new version. The [OrderLineItem record](undefined/references/order/models/OrderLineItem) keeps the values it had when the item was added to the order.
+
+Retrieving the order after the edit returns the updated values in `items.unit_price` and `items.metadata`, since the Order Module merges the versioned record into each item. To read the versioned values directly, select `items.detail.unit_price` and `items.detail.metadata`. Refer to the [Order Versioning guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/order-versioning#retrieve-versioned-item-details) for details.
 
 ***
 
@@ -42348,6 +42352,46 @@ When the order is changed, such as when an item is exchanged, Medusa updates the
 2. Related order data that have a `version` property, such as `OrderItem`, are duplicated. The duplicated item has the new version, while the original item retains the previous version.
 
 When the order is retrieved, only the related data with the same version is returned.
+
+***
+
+## Retrieve Versioned Item Details
+
+An order's item is stored across two data models:
+
+- The [OrderLineItem data model](undefined/references/order/models/OrderLineItem) holds the item's original details, such as its title and the price at the time of purchase. This record is not versioned.
+- The [OrderItem data model](undefined/references/order/models/OrderItem) links the line item to an order version. It holds the versioned `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` of the item in that version.
+
+When an [order edit](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/edit), claim, exchange, or return changes an item's quantity, price, or metadata, the Order Module writes the new values to the `OrderItem` record of the new version. The `OrderLineItem` record keeps its original values.
+
+### Retrieved Item Shape
+
+When you retrieve an order, the Order Module merges both records into each item of the `items` property. The item's `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` hold the values of the order's current version, and the remaining properties come from the line item.
+
+The merged item also has the following properties:
+
+- `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
+- `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
+
+For example, retrieve an order's versioned item details using [Query](undefined/docs/learn/fundamentals/module-links/query):
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "items.unit_price",
+    "items.metadata",
+    "items.detail.unit_price",
+    "items.detail.metadata",
+    "items.line_item_metadata",
+  ],
+  filters: {
+    id: orderId,
+  },
+})
+```
+
+The `items.unit_price` and `items.metadata` fields already reflect the order's current version. Select `items.detail.*` when you want the versioned values without the merge, or `items.line_item_metadata` when you want the metadata set at purchase time.
 
 
 # Order Module
