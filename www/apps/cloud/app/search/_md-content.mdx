@@ -69,10 +69,11 @@ indexed and served by it.
   embeddings for the project.
 - Search requests are a metered resource. Requests past the
   plan's allowance count as Flex Usage. One `query.search`
-  call costs one request for the hits, one for the count
-  unless it passes `count: "none"`, one per value or range
-  facet, and up to four per stats facet, so a page with many
-  facets costs many requests.
+  call counts as one search request, however many facets it
+  computes and whether or not it returns a count, so a page
+  costs one request per search it runs. Writes count too, at
+  one request per record written to an index, so the first
+  seed of a large catalog costs one request per record.
 - A searchable field matches terms as written. Stemming is
   off until the field's `full_text_search` provider option
   sets `stemming: true` and a `language`, such as `dutch` or

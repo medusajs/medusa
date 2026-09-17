@@ -48,6 +48,12 @@ It receives a prompt version of this guide that walks it through confirming your
 
 Medusa Search is enabled by default on Cloud for projects using Medusa v2.21.1+ with zero configuration. Medusa provisions the search resources for every Cloud environment and passes the credentials to your application, so it registers the provider and uses it for your indexes.
 
+<Note title="Large catalogs">
+
+Writes count toward your search request usage, and every record written to an index counts as one request. So, the first seed of a large catalog can consume a noticeable part of your plan's allowance. Refer to [How Medusa Search Counts Search Requests](#how-medusa-search-counts-search-requests) for more details.
+
+</Note>
+
 ### 1. Upgrade Your Medusa Application
 
 To use Medusa Search, your Medusa application must be running v2.21.1 or later. If it isn't, upgrade it first, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
@@ -245,7 +251,7 @@ Medusa Search stores an environment's indexes in the same region as the environm
 
 Two choices affect that number the most:
 
-- The number of facets a query computes, as explained in [How Medusa Search Counts Search Requests](#how-medusa-search-counts-search-requests).
+- The number of facets a query computes. Facets don't add to your search request count, but they do add to a query's latency, as explained in [How Medusa Search Counts Search Requests](#how-medusa-search-counts-search-requests).
 - The `consistency` [query option](./settings/page.mdx#search-query-options). The default `strong` value waits for every write made before the query started, while `eventual` skips that check and returns faster.
 
 ---
@@ -332,63 +338,9 @@ Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organ
 
 ### How Medusa Search Counts Search Requests
 
-One `query.search` call doesn't always cost one search request. Medusa Search splits a search query into the following requests:
+Every `query.search` call counts as one search request, no matter how many [facets](!docs!/learn/fundamentals/query/search#facets) it computes, whether it returns a count, or how many hits it returns. Medusa Search runs the hits, the count, and every facet of a call as one search.
 
-- One request for the hits.
-- One request for the count, unless the query passes the [`count: "none"` search option](!docs!/learn/fundamentals/query/search#change-the-count-strategy).
-- One request per `value` or `range` [facet](!docs!/learn/fundamentals/query/search#facets).
-- Up to four requests per `stats` facet, since the minimum, maximum, count, and sum are each their own aggregate.
-
-Medusa Search sends those requests in batches of at most sixteen, and it adds more batches when a search needs more than that. Every request counts toward your plan's allowance, including the requests that share a batch.
-
-For example, a category page that shows four filter groups, a price slider, and two dimension sliders runs the following search:
-
-```ts
-const { data, search_result } = await query.search({
-  entity: "product",
-  fields: ["id", "title", "handle"],
-  filters: {
-    q: "jacket",
-    category_id: "pcat_01KXR3J9J610DT161E2E4ZS6P1",
-  },
-  search_options: {
-    facets: [
-      "brand",
-      "color",
-      "size",
-      "material",
-      {
-        field: "min_price",
-        type: "range",
-        ranges: [
-          { key: "cheap", to: 50 },
-          { key: "mid", from: 50, to: 200 },
-          { key: "expensive", from: 200 },
-        ],
-      },
-      { field: "min_price", type: "stats" },
-      { field: "width", type: "stats" },
-      { field: "height", type: "stats" },
-    ],
-  },
-})
-```
-
-That single call costs nineteen search requests:
-
-- **1** for the hits or search results.
-- **1** for the count.
-- **4** for the `brand`, `color`, `size`, and `material` value facets.
-- **1** for the `min_price` range facet.
-- **12** for the `min_price`, `width`, and `height` stats facets, at four aggregates each.
-
-Medusa Search sends those nineteen requests as two batches, and your plan's allowance drops by nineteen. The stats facets alone account for twelve of them, so each one you add or remove moves the total by four.
-
-To keep a search cheaper:
-
-- Pass `count: "none"` on a page that shows a "Load more" button rather than a total or page numbers.
-- Request a `stats` facet only for the fields whose range a shopper actually adjusts, such as price, and use a `range` facet with fixed buckets for the rest.
-- Request the facets a page renders on first load, and fetch the ones behind a collapsed filter group in a second search when the shopper opens it.
+Writes count toward the same allowance. Every record that Medusa Search writes to an index, whether it's created, updated, or deleted, counts as one search request. So, a seed that indexes 50,000 products costs 50,000 requests, and a [reindex](#reindex-on-medusa-search) costs another one per record.
 
 ---
 
