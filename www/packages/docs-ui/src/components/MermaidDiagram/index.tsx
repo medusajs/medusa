@@ -9,7 +9,6 @@ import React, {
   useState,
 } from "react"
 import { Loading } from "@/components/Loading"
-import mermaid from "mermaid"
 import type { RenderResult } from "mermaid"
 import { Controlled as ControlledZoom } from "react-medium-image-zoom"
 import "react-medium-image-zoom/dist/styles.css"
@@ -31,46 +30,77 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
   ).current!
 
   useEffect(() => {
-    mermaid.registerIconPacks([
-      {
-        name: icons.prefix,
-        loader: async () => icons,
-      },
-    ])
+    const renderDiagram = async () => {
+      const { default: mermaid } = await import("mermaid")
 
-    mermaid.initialize({
-      theme: "base",
-      themeVariables: {
-        primaryColor: "#FFF",
-        primaryBorderColor: "#D4D4D8",
-        secondaryColor: "#FFF",
-        tertiaryColor: "#FFF",
-        nodeBorder: "#D4D4D8",
-        mainBkg: "#FFF",
-        secondBkg: "#FFF",
-        tertiaryBkg: "#FFF",
-        lineColor: "#71717A",
-        primaryTextColor: "#18181B",
-        secondaryTextColor: "#18181B",
-        tertiaryTextColor: "#18181B",
-        edgeLabelBackground: "#FAFAFA",
-        textColor: "rgba(82, 82, 91, 1)",
-        fontFamily: "Inter, sans-serif",
-        fontSize: "14px",
-      },
-      sequence: {
-        mirrorActors: false,
-      },
-    })
+      mermaid.registerIconPacks([
+        {
+          name: icons.prefix,
+          loader: async () => icons,
+        },
+      ])
 
-    mermaid
-      .render(mermaidId, diagramContent)
-      .then(setResult)
-      .catch((e) =>
-        console.error(
-          `An error occurred while rendering Mermaid.js diagram. Content: \n ${diagramContent}\n Error: ${e}`
+      mermaid.initialize({
+        theme: "base",
+        themeVariables: {
+          primaryColor: "#FFF",
+          primaryBorderColor: "#D4D4D8",
+          secondaryColor: "#FFF",
+          tertiaryColor: "#FFF",
+          nodeBorder: "#D4D4D8",
+          mainBkg: "#FFF",
+          secondBkg: "#FFF",
+          tertiaryBkg: "#FFF",
+          lineColor: "#71717A",
+          primaryTextColor: "#18181B",
+          secondaryTextColor: "#18181B",
+          tertiaryTextColor: "#18181B",
+          edgeLabelBackground: "#FAFAFA",
+          textColor: "rgba(82, 82, 91, 1)",
+          fontFamily: "Inter, sans-serif",
+          fontSize: "14px",
+        },
+        sequence: {
+          mirrorActors: false,
+        },
+      })
+
+      mermaid.mermaidAPI.initialize({
+        theme: "base",
+        themeVariables: {
+          primaryColor: "#FFF",
+          primaryBorderColor: "#D4D4D8",
+          secondaryColor: "#FFF",
+          tertiaryColor: "#FFF",
+          nodeBorder: "#D4D4D8",
+          mainBkg: "#FFF",
+          secondBkg: "#FFF",
+          tertiaryBkg: "#FFF",
+          lineColor: "#71717A",
+          primaryTextColor: "#18181B",
+          secondaryTextColor: "#18181B",
+          tertiaryTextColor: "#18181B",
+          edgeLabelBackground: "#FAFAFA",
+          textColor: "rgba(82, 82, 91, 1)",
+          fontFamily: "Inter, sans-serif",
+          fontSize: "14px",
+        },
+        sequence: {
+          mirrorActors: false,
+        },
+      })
+
+      await mermaid
+        .render(mermaidId, diagramContent)
+        .then(setResult)
+        .catch((e) =>
+          console.error(
+            `An error occurred while rendering Mermaid.js diagram. Content: \n ${diagramContent}\n Error: ${e}`
+          )
         )
-      )
+    }
+
+    void renderDiagram()
   }, [mermaidId, diagramContent])
 
   const viewBox = useMemo(() => {
@@ -107,7 +137,9 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
           )}
         >
           <svg
-            dangerouslySetInnerHTML={result ? { __html: result.svg } : undefined}
+            dangerouslySetInnerHTML={
+              result ? { __html: result.svg } : undefined
+            }
             viewBox={viewBox?.value}
             preserveAspectRatio="xMidYMid meet"
             style={{ width: viewBox ? `${viewBox.width}px` : "100%" }}

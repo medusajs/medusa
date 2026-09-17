@@ -555,13 +555,6 @@ export const specsSitemapData = {
       ]
     },
     {
-      "tagSectionId": "search-indexes",
-      "operationSectionIds": [
-        "search-indexes_getsearchindexes",
-        "search-indexes_postsearchindexesidreindex"
-      ]
-    },
-    {
       "tagSectionId": "shipping-option-types",
       "operationSectionIds": [
         "shipping-option-types_getshippingoptiontypes",
@@ -861,7 +854,6 @@ export const specsSitemapData = {
       "tagSectionId": "products",
       "operationSectionIds": [
         "products_getproducts",
-        "products_getproductssearch",
         "products_getproductsid"
       ]
     },

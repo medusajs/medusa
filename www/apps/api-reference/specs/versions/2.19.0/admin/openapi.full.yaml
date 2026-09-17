@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.20.1
+  version: 2.19.0
   title: Medusa Admin API
   license:
     name: MIT
@@ -440,9 +440,6 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminSalesChannel'
   - name: Search
-  - name: Search Indexes
-    x-associatedSchema:
-      $ref: '#/components/schemas/AdminSearchIndex'
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: '#/components/schemas/AdminShippingOptionType'
@@ -39580,17 +39577,7 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateProductOptionValuesWorkflow
-      x-events:
-        - name: product-option-value.updated
-          payload: |-
-            ```ts
-            {
-              id, // The ID of the product option value
-            }
-            ```
-          description: Emitted when product option values are updated.
-          deprecated: false
-          since: 2.20.0
+      x-events: []
       x-since: 2.17.0
     delete:
       operationId: DeleteProductOptionsIdValuesValue_id
@@ -39659,17 +39646,7 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteProductOptionValuesWorkflow
-      x-events:
-        - name: product-option-value.deleted
-          payload: |-
-            ```ts
-            {
-              id, // The ID of the product option value
-            }
-            ```
-          description: Emitted when product option values are deleted.
-          deprecated: false
-          since: 2.20.0
+      x-events: []
       x-since: 2.17.0
   /admin/product-tags:
     get:
@@ -59437,124 +59414,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /admin/search-indexes:
-    get:
-      operationId: GetSearchIndexes
-      summary: List Search Indexes
-      description: Retrieve a list of search indexes. The search indexes can be filtered by fields such as `id`. The search indexes can also be sorted or paginated.
-      x-authenticated: true
-      parameters: []
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.search.listIndexes()
-            .then(({ search_indexes, enabled }) => {
-              console.log(search_indexes, enabled)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl '{backend_url}/admin/search-indexes' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Search Indexes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminSearchIndexListResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /admin/search-indexes/{id}/reindex:
-    post:
-      operationId: PostSearchIndexesIdReindex
-      summary: Add Reindex to Search Index
-      description: Add a Reindex to a search index
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The search index's ID.
-          required: true
-          schema:
-            type: string
-      security:
-        - api_token: []
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.search.reindex("product")
-            .then(({ job_id, indexes }) => {
-              console.log(job_id, indexes)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/admin/search-indexes/{id}/reindex' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Search Indexes
-      responses:
-        '202':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminSearchIndexReindexResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-workflow: reindexSearchIndexesWorkflow
-      x-events: []
   /admin/shipping-option-types:
     get:
       operationId: GetShippingOptionTypes
@@ -69538,144 +69397,6 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
-  /admin/users/{id}/auth-providers:
-    get:
-      operationId: GetUsersIdAuthProviders
-      summary: List Auth Providers
-      description: Retrieve a list of auth providers in a user. The auth providers can be filtered by fields like FILTER FIELDS. The auth providers can also be paginated.
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The user's ID.
-          required: true
-          schema:
-            type: string
-      security:
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.user.listAuthProviders("user_123")
-            .then(({ providers }) => {
-              console.log(providers)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl '{backend_url}/admin/users/{id}/auth-providers' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminUserAuthProvidersResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-since: 2.20.0
-  /admin/users/{id}/reset-password:
-    post:
-      operationId: PostUsersIdResetPassword
-      summary: Add Reset Password to User
-      description: Add a Reset Password to a user
-      x-authenticated: true
-      parameters:
-        - name: id
-          in: path
-          description: The user's ID.
-          required: true
-          schema:
-            type: string
-      security:
-        - cookie_auth: []
-        - jwt_token: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS SDK
-          source: |-
-            import Medusa from "@medusajs/js-sdk"
-
-            export const sdk = new Medusa({
-              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
-              debug: import.meta.env.DEV,
-              auth: {
-                type: "session",
-              },
-            })
-
-            sdk.admin.user.generateResetPasswordToken("user_123")
-            .then(({ token }) => {
-              console.log(token)
-            })
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/admin/users/{id}/reset-password' \
-            -H 'Authorization: Bearer {access_token}'
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminUserResetPasswordTokenResponse'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-workflow: generateResetPasswordTokenWorkflow
-      x-events:
-        - name: auth.password_reset
-          payload: |-
-            ```ts
-            {
-              entity_id, // The identifier of the user or customer. For example, an email address.
-              actor_type, // The type of actor. For example, "customer", "user", or custom.
-              token, // The generated token.
-              metadata, // Optional custom metadata passed from the request.
-            }
-            ```
-          description: |-
-            Emitted when a reset password token is generated. You can listen to this event
-            to send a reset password email to the user or customer, for example.
-          deprecated: false
-      x-since: 2.20.0
   /admin/views/entities:
     get:
       operationId: GetViewsEntities
@@ -75500,10 +75221,6 @@ components:
           description: The inventory item's location levels.
           items:
             $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
-        unit_of_measure:
-          type: string
-          title: unit_of_measure
-          description: The inventory item's unit of measure.
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -79714,10 +79431,6 @@ components:
           type: number
           title: reserved_quantity
           description: The inventory item's reserved quantity.
-        unit_of_measure:
-          type: string
-          title: unit_of_measure
-          description: The inventory's unit of measure.
     AdminInventoryItemResponse:
       type: object
       description: The inventory item's details.
@@ -85169,116 +84882,6 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
-    AdminSearchIndex:
-      type: object
-      description: A registered search index and the fields it stores.
-      x-schemaName: AdminSearchIndex
-      required:
-        - name
-        - entity
-        - provider
-        - status
-        - fields
-      properties:
-        name:
-          type: string
-          title: name
-          description: Unique index name, as used in `query.search({ entity })`.
-        entity:
-          type: string
-          title: entity
-          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
-        provider:
-          type: string
-          title: provider
-          description: Identifier of the provider backing this index.
-        status:
-          type: string
-          description: Lifecycle status of the index.
-          enum:
-            - error
-            - pending
-            - building
-            - ready
-        fields:
-          type: array
-          description: Leaf fields stored in the index.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndexField'
-    AdminSearchIndexField:
-      type: object
-      description: A leaf field stored in a search index, with the capabilities declared on it.
-      x-schemaName: AdminSearchIndexField
-      required:
-        - name
-        - type
-        - searchable
-        - filterable
-        - sortable
-        - facetable
-      properties:
-        name:
-          type: string
-          title: name
-          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
-        type:
-          type: string
-          title: type
-          description: The field's index type.
-        searchable:
-          type: boolean
-          title: searchable
-          description: Whether the field is used for free-text matching.
-        filterable:
-          type: boolean
-          title: filterable
-          description: Whether the field can be used in filters.
-        sortable:
-          type: boolean
-          title: sortable
-          description: Whether results can be sorted by this field.
-        facetable:
-          type: boolean
-          title: facetable
-          description: Whether the field can be faceted.
-    AdminSearchIndexListResponse:
-      type: object
-      description: The list of registered search indexes.
-      x-schemaName: AdminSearchIndexListResponse
-      required:
-        - search_indexes
-        - enabled
-      properties:
-        search_indexes:
-          type: array
-          description: The registered search indexes.
-          items:
-            $ref: '#/components/schemas/AdminSearchIndex'
-        enabled:
-          type: boolean
-          title: enabled
-          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
-    AdminSearchIndexReindexResponse:
-      type: object
-      description: |-
-        The result of triggering a search index reindex. The reindex runs in the
-        background - check the index's `status` to know when it's done.
-      x-schemaName: AdminSearchIndexReindexResponse
-      required:
-        - job_id
-        - indexes
-      properties:
-        job_id:
-          type: string
-          title: job_id
-          description: Identifier of the triggered reindex job.
-        indexes:
-          type: array
-          description: Names of the indexes being reindexed.
-          items:
-            type: string
-            title: indexes
-            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.
@@ -87497,10 +87100,6 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
-        unit_of_measure:
-          type: string
-          title: unit_of_measure
-          description: The inventory item's unit of measure.
       x-schemaName: AdminUpdateInventoryItem
     AdminUpdateInventoryLevel:
       type: object
@@ -88937,22 +88536,6 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
-    AdminUserAuthProvidersResponse:
-      type: object
-      description: SUMMARY
-      x-schemaName: AdminUserAuthProvidersResponse
-      required:
-        - providers
-      properties:
-        providers:
-          type: array
-          description: |-
-            The IDs of the auth providers the user can authenticate with, such as
-            `emailpass`.
-          items:
-            type: string
-            title: providers
-            description: The provider's providers.
     AdminUserDeleteResponse:
       type: object
       description: The details of the deleted user.
@@ -89007,23 +88590,6 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
-    AdminUserResetPasswordTokenResponse:
-      type: object
-      description: SUMMARY
-      x-schemaName: AdminUserResetPasswordTokenResponse
-      required:
-        - token
-      properties:
-        token:
-          type: string
-          title: token
-          description: |-
-            The generated reset password token. Append it to the admin's
-            `/reset-password` page as a `token` query parameter to build a link the
-            user can open to set a new password.
-
-            The token is short-lived, can only be used once, and generating it
-            invalidates any reset password token previously issued for the user.
     AdminUserResponse:
       type: object
       description: The user's details.
@@ -94768,7 +94334,6 @@ components:
         - name
         - amount
         - is_tax_inclusive
-        - is_custom_amount
         - created_at
         - updated_at
         - original_total
@@ -94871,10 +94436,6 @@ components:
           type: number
           title: discount_tax_total
           description: The total taxes of the discount amount.
-        is_custom_amount:
-          type: boolean
-          title: is_custom_amount
-          description: Whether the shipping method price is custom amount or not.
     OrderShippingMethodAdjustment:
       type: object
       description: The shipping method adjustment's details.
