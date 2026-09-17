@@ -925,7 +925,9 @@ export default class OrderModuleService
       sharedContext
     )
 
-    const lineItemIds = orderItems.map((orderItem) => orderItem.item_id)
+    const lineItemIds = orderItems
+      .map((orderItem) => orderItem.item_id)
+      .filter(Boolean)
 
     const orderShipping = await this.orderShippingService_.list(
       { order_id: ids },
@@ -933,9 +935,9 @@ export default class OrderModuleService
       sharedContext
     )
 
-    const orderShippingMethodIds = orderShipping.map(
-      (orderShipping) => orderShipping.shipping_method_id
-    )
+    const orderShippingMethodIds = orderShipping
+      .map((orderShipping) => orderShipping.shipping_method_id)
+      .filter(Boolean)
 
     const deletions: Promise<unknown>[] = []
 
@@ -958,13 +960,26 @@ export default class OrderModuleService
     // Delete order, order items, summary, shipping methods, transactions and credit lines
     await super.deleteOrders(ids, sharedContext)
 
-    await promiseAll([
-      this.orderLineItemService_.delete(lineItemIds, sharedContext),
-      this.orderShippingMethodService_.delete(
-        orderShippingMethodIds,
-        sharedContext
-      ),
-    ])
+    const postDeletions: Promise<unknown>[] = []
+
+    if (lineItemIds.length) {
+      postDeletions.push(
+        this.orderLineItemService_.delete(lineItemIds, sharedContext)
+      )
+    }
+
+    if (orderShippingMethodIds.length) {
+      postDeletions.push(
+        this.orderShippingMethodService_.delete(
+          orderShippingMethodIds,
+          sharedContext
+        )
+      )
+    }
+
+    if (postDeletions.length) {
+      await promiseAll(postDeletions)
+    }
   }
 
   // @ts-expect-error

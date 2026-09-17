@@ -172,6 +172,38 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(orders[0].id).toEqual(order.id)
       })
 
+      // CONTEXT: deleteOrders builds lineItemIds/orderShippingMethodIds from
+      // related rows and must not pass an empty/falsy-filled array into the
+      // underlying delete call in a way that could match unrelated rows.
+      it("should delete an order without items or shipping methods without affecting other orders' items and shipping methods", async function () {
+        const orderWithoutItemsOrShipping = await service.createOrders({
+          email: "foo@bar.com",
+          currency_code: "usd",
+          customer_id: "joe",
+        } as CreateOrderDTO)
+
+        const lineItemsBefore = await service.listOrderLineItems({})
+        const shippingMethodsBefore = await service.listOrderShippingMethods(
+          {},
+          {}
+        )
+
+        expect(lineItemsBefore.length).toEqual(1)
+        expect(shippingMethodsBefore.length).toEqual(1)
+
+        await service.deleteOrders(orderWithoutItemsOrShipping.id)
+
+        const lineItems = await service.listOrderLineItems({})
+        const shippingMethods = await service.listOrderShippingMethods({}, {})
+
+        expect(lineItems.length).toEqual(1)
+        expect(shippingMethods.length).toEqual(1)
+
+        const orders = await service.listOrders({})
+        expect(orders.length).toEqual(1)
+        expect(orders[0].id).toEqual(order.id)
+      })
+
       it("should delete an order address and set null on the order through the FK", async function () {
         const createdOrder = await service.retrieveOrder(order.id)
         expect(createdOrder).toEqual(
