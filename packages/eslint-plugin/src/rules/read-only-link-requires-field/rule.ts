@@ -1,11 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
 import { findProperty } from "../../util/ast"
+import {
+  hasLinkableInChain,
+  isDefineLinkCall,
+  trackDefineLinkImports,
+} from "../../util/link"
 
 type MessageIds = "missingField" | "missingPrimaryKey"
-
-const DEFINE_LINK = "defineLink"
 
 function isReadOnlyTrue(options: TSESTree.Node): boolean {
   if (options.type !== "ObjectExpression") {
@@ -27,18 +29,7 @@ function isLinkableIdSpread(node: TSESTree.Node): boolean {
   if (node.property.type !== "Identifier" || node.property.name !== "id") {
     return false
   }
-  let current: TSESTree.Node = node.object
-  while (current.type === "MemberExpression") {
-    if (
-      !current.computed &&
-      current.property.type === "Identifier" &&
-      current.property.name === "linkable"
-    ) {
-      return true
-    }
-    current = current.object
-  }
-  return false
+  return hasLinkableInChain(node.object)
 }
 
 function hasInverseLinkableSpread(obj: TSESTree.ObjectExpression): boolean {
@@ -72,28 +63,11 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
-          return
-        }
-        for (const specifier of node.specifiers) {
-          if (
-            specifier.type === "ImportSpecifier" &&
-            specifier.imported.type === "Identifier" &&
-            specifier.imported.name === DEFINE_LINK
-          ) {
-            defineLinkLocalNames.add(specifier.local.name)
-          }
-        }
+        trackDefineLinkImports(node, defineLinkLocalNames)
       },
 
       CallExpression(node) {
-        if (defineLinkLocalNames.size === 0) {
-          return
-        }
-        if (
-          node.callee.type !== "Identifier" ||
-          !defineLinkLocalNames.has(node.callee.name)
-        ) {
+        if (!isDefineLinkCall(node, defineLinkLocalNames)) {
           return
         }
 

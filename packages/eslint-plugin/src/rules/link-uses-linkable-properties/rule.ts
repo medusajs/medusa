@@ -1,30 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import {
+  hasLinkableInChain,
+  isDefineLinkCall,
+  isLinkableMemberChain,
+  trackDefineLinkImports,
+} from "../../util/link"
 
 type MessageIds = "notLinkableProperty"
-
-const DEFINE_LINK = "defineLink"
-
-function isLinkableMemberChain(node: TSESTree.Node): boolean {
-  // Match `<X>.linkable.<y>` (any depth on `<X>`, e.g. `ProductModule.linkable.product`
-  // or `foo.bar.linkable.product`). The outer node is a MemberExpression whose
-  // `object` is itself a non-computed MemberExpression with `property.name === "linkable"`.
-  if (node.type !== "MemberExpression" || node.computed) {
-    return false
-  }
-  const object = node.object
-  if (object.type !== "MemberExpression" || object.computed) {
-    return false
-  }
-  if (
-    object.property.type !== "Identifier" ||
-    object.property.name !== "linkable"
-  ) {
-    return false
-  }
-  return true
-}
 
 function isLinkableMemberChainOrId(node: TSESTree.Node): boolean {
   // Match `<X>.linkable.<y>` or `<X>.linkable.<y>.id`. The `.id` form is used
@@ -62,25 +45,6 @@ function hasOwnPropertyNamed(
     if (keyName === name) {
       return true
     }
-  }
-  return false
-}
-
-function hasLinkableInChain(node: TSESTree.Node): boolean {
-  // Walks any MemberExpression chain (e.g. `BlogModule.linkable.post.id`) and
-  // returns true if any segment is a non-computed `.linkable` access. Used to
-  // recognize spread arguments of the inverse read-only link form
-  // (`...BlogModule.linkable.post.id`).
-  let current: TSESTree.Node | undefined = node
-  while (current && current.type === "MemberExpression") {
-    if (
-      !current.computed &&
-      current.property.type === "Identifier" &&
-      current.property.name === "linkable"
-    ) {
-      return true
-    }
-    current = current.object
   }
   return false
 }
@@ -146,28 +110,11 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
-          return
-        }
-        for (const specifier of node.specifiers) {
-          if (
-            specifier.type === "ImportSpecifier" &&
-            specifier.imported.type === "Identifier" &&
-            specifier.imported.name === DEFINE_LINK
-          ) {
-            defineLinkLocalNames.add(specifier.local.name)
-          }
-        }
+        trackDefineLinkImports(node, defineLinkLocalNames)
       },
 
       CallExpression(node) {
-        if (defineLinkLocalNames.size === 0) {
-          return
-        }
-        if (
-          node.callee.type !== "Identifier" ||
-          !defineLinkLocalNames.has(node.callee.name)
-        ) {
+        if (!isDefineLinkCall(node, defineLinkLocalNames)) {
           return
         }
         // `defineLink(arg1, arg2, options?)` — only the first two args are
