@@ -4693,13 +4693,21 @@
                 },
                 "creditLineDescription": {
                   "type": "string"
+                },
+                "creditLineNoOutstandingAmountDescription": {
+                  "type": "string"
+                },
+                "creditLineGuestDescription": {
+                  "type": "string"
                 }
               },
               "required": [
                 "paymentMethod",
                 "paymentMethodDescription",
                 "creditLine",
-                "creditLineDescription"
+                "creditLineDescription",
+                "creditLineNoOutstandingAmountDescription",
+                "creditLineGuestDescription"
               ],
               "additionalProperties": false
             }
