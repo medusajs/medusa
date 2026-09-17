@@ -14,7 +14,7 @@ import {
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
-import { PluginCartDTO } from "../../../../src/types/cart";
+import { PluginCartDTO } from "../../../types/cart";
 import { ModuleStoreCreditAccount } from "../../../types/store-credit";
 
 /**

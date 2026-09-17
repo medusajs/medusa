@@ -43,6 +43,14 @@ export const AdminCreditStoreCreditAccountParams = z.object({
   note: z.string().optional(),
 });
 
+export type AdminDebitStoreCreditAccountParamsType = z.infer<
+  typeof AdminDebitStoreCreditAccountParams
+>;
+export const AdminDebitStoreCreditAccountParams = z.object({
+  amount: z.number(),
+  note: z.string().optional(),
+});
+
 export type AdminGetStoreCreditAccountTransactionsParamsType = z.infer<
   typeof AdminGetStoreCreditAccountTransactionsParams
 >;
