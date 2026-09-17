@@ -324,7 +324,9 @@ Refer to the [Create Custom Search Index](!resources!/infrastructure-modules/sea
 
 ## Medusa Search Usage
 
-Medusa Search is available on all Cloud plans, with the exception of vector search which is only available to Enterprise plans. The number of search requests your Medusa application makes is a metered resource. Every plan includes an allowance of search requests, and requests beyond it count as [Flex Usage](../usage/page.mdx#what-is-flex-usage).
+Medusa Search is available on all Cloud plans, with the exception of [vector search](./semantic-search/page.mdx), which is available on the Scale and Enterprise plans. The number of search requests your Medusa application makes is a metered resource. Every plan includes an allowance of search requests, and requests beyond it count as [Flex Usage](../usage/page.mdx#what-is-flex-usage).
+
+Medusa meters full-text and vector search requests separately, so each has its own allowance and price. A search that ranks hits with an embedding counts as a vector search request.
 
 Refer to the [Usage](../usage/page.mdx) guide to learn how to monitor your organization's usage, and to the [Plans & Pricing](../pricing/page.mdx) guide for the allowance your plan includes.
 

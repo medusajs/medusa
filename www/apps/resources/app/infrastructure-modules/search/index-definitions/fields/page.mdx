@@ -598,7 +598,7 @@ Filters on the sub-fields of an object array match across elements. So filtering
 
 <Note title="Tip">
 
-Vector searching with Medusa Search is available for the Enterprise plan only.
+Vector search with Medusa Search is available on the Scale and Enterprise plans. On the Scale plan, you compute the embeddings yourself, whereas the Enterprise plan can also [create them for you](#let-medusa-search-create-the-embedding).
 
 </Note>
 
@@ -622,6 +622,8 @@ export const productIndex = defineSearchIndex({
 ```
 
 In this example, `title_embedding` is a `vector` field with 1536 dimensions, matching the output of OpenAI's `text-embedding-3-small` model. Your `seed` and `consume` functions yield the embedding for the field, so you compute it yourself before you yield the document.
+
+With [Medusa Search](!cloud!/search), an embedding you compute yourself can have at most 1536 dimensions. Medusa Search rejects a query whose embedding is longer than that.
 
 <Note>
 

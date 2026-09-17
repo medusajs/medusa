@@ -63,7 +63,10 @@ indexed and served by it.
   filters, facets, highlighting, and sorting. Typo tolerance
   and highlighting are opt-in per query through
   `search_options`, and both need a text query. Vector
-  search is an Enterprise plan feature.
+  search is a Scale and Enterprise plan feature, and an
+  embedding the project computes itself can have at most
+  1536 dimensions. Only the Enterprise plan creates the
+  embeddings for the project.
 - Search requests are a metered resource. Requests past the
   plan's allowance count as Flex Usage. One `query.search`
   call costs one request for the hits, one for the count
@@ -170,8 +173,10 @@ inferred.
   page.
 - **Plan and usage.** The user checks their search request
   allowance and Flex Usage under the organization's usage
-  page in the Cloud dashboard, and upgrades to an Enterprise
-  plan there if the project needs vector search.
+  page in the Cloud dashboard, and upgrades to a Scale plan
+  there if the project needs vector search, or to an
+  Enterprise plan if Medusa Search should also create the
+  embeddings.
 </dashboard_handoffs>
 
 <reference>
@@ -562,8 +567,10 @@ details this reference leaves out:
 - Do not delete a project or an environment, run a
   deployment, or push to any branch.
 - Do not use vector search without confirming the
-  organization is on an Enterprise plan. Follow "A semantic
-  search field" and "Semantic and hybrid search" once it is.
+  organization is on a Scale or Enterprise plan, and do not
+  let Medusa Search create the embeddings unless the plan is
+  Enterprise. Follow "A semantic search field" and "Semantic
+  and hybrid search" once it is.
 - Do not narrow a `graphSeed` read with a filter to index
   part of an entity. Reject the record in `transform`
   instead, so a record that stops qualifying leaves the
