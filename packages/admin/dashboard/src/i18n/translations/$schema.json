@@ -4953,6 +4953,12 @@
             "totalPaidByCustomer": {
               "type": "string"
             },
+            "totalPending": {
+              "type": "string"
+            },
+            "storeCreditRefund": {
+              "type": "string"
+            },
             "totalStoreCreditRefunds": {
               "type": "string"
             },
@@ -4989,6 +4995,9 @@
                 "awaiting": {
                   "type": "string"
                 },
+                "pending": {
+                  "type": "string"
+                },
                 "captured": {
                   "type": "string"
                 },
@@ -5013,6 +5022,7 @@
                 "authorized",
                 "partiallyAuthorized",
                 "awaiting",
+                "pending",
                 "captured",
                 "partiallyRefunded",
                 "partiallyCaptured",
@@ -5069,6 +5079,8 @@
             "title",
             "isReadyToBeCaptured",
             "totalPaidByCustomer",
+            "totalPending",
+            "storeCreditRefund",
             "totalStoreCreditRefunds",
             "capture",
             "capture_short",
