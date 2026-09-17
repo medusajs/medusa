@@ -1,25 +1,23 @@
-import { ShoppingCart } from "@medusajs/icons";
-import { Container } from "@medusajs/ui";
-import { AdminGiftCard } from "../../../../../types";
-import { Header } from "../../../../components/header";
-import { SidebarLink } from "../../../../components/sidebar-link";
-import { useGiftCardOrders } from "../../../../hooks/api/gift-cards";
+import { ShoppingCart } from "@medusajs/icons"
+import { Container } from "@medusajs/ui"
+import { AdminGiftCard } from "../../../../../types"
+import { Header } from "../../../../components/header"
+import { useGiftCardOrders } from "../../../../hooks/api/gift-cards"
+import { SidebarLink } from "@medusajs/dashboard/components"
 
 const GiftCardOrderSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
-  const { orders, isLoading, isError, error } = useGiftCardOrders(
-    giftCard?.id!
-  );
+  const { orders, isLoading, isError, error } = useGiftCardOrders(giftCard?.id!)
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   if (isLoading || !orders) {
-    return null;
+    return null
   }
 
   if (orders && orders.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -35,7 +33,7 @@ const GiftCardOrderSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
         />
       ))}
     </Container>
-  );
-};
+  )
+}
 
-export default GiftCardOrderSection;
+export default GiftCardOrderSection

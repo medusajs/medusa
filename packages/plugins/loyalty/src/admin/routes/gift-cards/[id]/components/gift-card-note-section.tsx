@@ -1,11 +1,11 @@
-import { Container, Text } from "@medusajs/ui";
-import { Link } from "react-router-dom";
-import { AdminGiftCard } from "../../../../../types";
-import { Header } from "../../../../components/header";
+import { Container, Text } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+import { AdminGiftCard } from "../../../../../types"
+import { Header } from "../../../../components/header"
 
 const GiftCardNoteSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
   if (!giftCard) {
-    return;
+    return
   }
 
   return (
@@ -13,7 +13,7 @@ const GiftCardNoteSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
       <div className="flex items-center justify-between">
         <Header title="Note" />
 
-        <Link to="note" className="text-ui-fg-muted text-sm px-6">
+        <Link to="note" className="text-ui-fg-muted px-6 text-sm">
           Edit note
         </Link>
       </div>
@@ -36,7 +36,7 @@ const GiftCardNoteSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
         </div>
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default GiftCardNoteSection;
+export default GiftCardNoteSection

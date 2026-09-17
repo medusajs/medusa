@@ -1,7 +1,7 @@
 import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Avatar, IconButton, Skeleton, Text } from "@medusajs/ui"
-import { useCustomer } from "../../hooks/api/customers"
+import { useCustomer } from "@medusajs/dashboard/hooks"
 
 interface CustomerCardProps {
   customerId: string
@@ -18,7 +18,7 @@ export const CustomerCard = ({ customerId, onRemove }: CustomerCardProps) => {
   const isReady = !isPending && !!customer
 
   return (
-    <div className="px-3 py-2 rounded-lg bg-ui-bg-component shadow-elevation-card-rest flex items-center gap-4">
+    <div className="bg-ui-bg-component shadow-elevation-card-rest flex items-center gap-4 rounded-lg px-3 py-2">
       {!isReady ? <LoadingState /> : <CustomerInfo customer={customer} />}
       {onRemove && (
         <IconButton
@@ -38,10 +38,10 @@ export const CustomerCard = ({ customerId, onRemove }: CustomerCardProps) => {
 const LoadingState = () => {
   return (
     <div className="flex items-center gap-4">
-      <Skeleton className="w-7 h-7 rounded-full" />
+      <Skeleton className="h-7 w-7 rounded-full" />
       <div className="flex flex-col gap-y-1">
-        <Skeleton className="w-20 h-5" />
-        <Skeleton className="w-16 h-5" />
+        <Skeleton className="h-5 w-20" />
+        <Skeleton className="h-5 w-16" />
       </div>
     </div>
   )
@@ -54,9 +54,9 @@ const CustomerInfo = ({ customer }: { customer: HttpTypes.AdminCustomer }) => {
   const fallback = name ? name[0] : customer.email[0]
 
   return (
-    <div className="flex items-center gap-4 flex-1">
-      <Avatar size="small" fallback={fallback} className="w-6 h-6" />
-      <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="flex flex-1 items-center gap-4">
+      <Avatar size="small" fallback={fallback} className="h-6 w-6" />
+      <div className="flex flex-1 flex-col overflow-hidden">
         {name && (
           <Text
             leading="compact"

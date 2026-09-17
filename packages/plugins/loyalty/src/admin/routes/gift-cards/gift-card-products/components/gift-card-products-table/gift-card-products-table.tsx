@@ -1,20 +1,20 @@
-import { Container } from "@medusajs/ui";
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
+import { Container } from "@medusajs/ui"
+import { Fragment } from "react"
+import { Outlet } from "react-router-dom"
 
-import { AdminProduct } from "@medusajs/framework/types";
-import { DataTable } from "../../../../../components/data-table";
-import { useProducts } from "../../../../../hooks/api/products";
-import { useGiftCardProductsTableColumns } from "./columns";
-import { useGiftCardProductsFilters } from "./filters";
-import { useGiftCardProductsTableQuery } from "./query";
+import { AdminProduct } from "@medusajs/framework/types"
+import { useGiftCardProductsTableColumns } from "./columns"
+import { useGiftCardProductsFilters } from "./filters"
+import { useGiftCardProductsTableQuery } from "./query"
+import { DataTable } from "@medusajs/dashboard/components"
+import { useProducts } from "@medusajs/dashboard/hooks"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 export function GiftCardProductsTable() {
   const queryParams = useGiftCardProductsTableQuery({
     pageSize: PAGE_SIZE,
-  });
+  })
 
   const {
     products: giftCardProducts,
@@ -24,10 +24,10 @@ export function GiftCardProductsTable() {
     ...queryParams,
     is_giftcard: true,
     order: queryParams.order ?? "-created_at",
-  });
+  })
 
-  const columns = useGiftCardProductsTableColumns();
-  const filters = useGiftCardProductsFilters();
+  const columns = useGiftCardProductsTableColumns()
+  const filters = useGiftCardProductsFilters()
 
   return (
     <Fragment>
@@ -64,5 +64,5 @@ export function GiftCardProductsTable() {
 
       <Outlet />
     </Fragment>
-  );
+  )
 }
