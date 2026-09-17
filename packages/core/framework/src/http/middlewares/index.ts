@@ -1,4 +1,5 @@
 export * from "./allow-fields-middleware"
+export * from "./allow-search-indexes"
 export * from "./apply-default-filters"
 export * from "./apply-locale"
 export * from "./apply-params-as-filters"
