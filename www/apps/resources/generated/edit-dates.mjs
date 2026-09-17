@@ -489,5 +489,6 @@ export const generatedEditDates = {
   "app/admin-components/guides/header/page.mdx": "2026-09-11T07:48:56.253Z",
   "app/admin-components/guides/table/page.mdx": "2026-09-11T07:48:47.870Z",
   "app/admin-components/layouts/layout-composer/page.mdx": "2026-09-10T14:50:27.323Z",
-  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z"
+  "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z",
+  "app/commerce-modules/store-credit/workflows/page.mdx": "2026-09-17T11:14:06.912Z"
 }

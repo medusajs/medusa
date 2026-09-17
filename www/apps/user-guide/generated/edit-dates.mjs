@@ -65,7 +65,7 @@ export const generatedEditDates = {
   "app/loyalty/gift-cards/manage/page.mdx": "2026-04-20T10:36:09.994Z",
   "app/loyalty/gift-cards/page.mdx": "2026-04-20T08:45:05.777Z",
   "app/loyalty/page.mdx": "2026-04-20T08:43:37.383Z",
-  "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
+  "app/loyalty/store-credits/manage/page.mdx": "2026-09-17T11:14:19.609Z",
   "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
   "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z",
   "app/tips/layout-configurations/page.mdx": "2026-07-23T12:50:25.531Z",
