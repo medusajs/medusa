@@ -262,7 +262,7 @@ Two choices affect that number the most:
 
 In local development, Medusa registers the [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/search/providers/postgres) by default. This is the recommended approach for testing search functionality locally.
 
-You can also setup your local Medusa instance to connect to Medusa Search with a connection string.
+You can also set up your local Medusa instance to connect to Medusa Search with a connection string.
 
 <Note title="Warning" type="warning">
 
@@ -279,15 +279,45 @@ To get the connection string for your local Medusa instance:
 5. Toggle the "Search endpoint" setting. If the environment is Production, only the organization owner can toggle it.
 6. Copy the connection string that appears after toggling the "Search endpoint" setting.
 
-Set the connection string as the `MEDUSA_CLOUD_SEARCH_ENDPOINT` environment variable in your local project:
+Set the connection string as the `MEDUSA_SEARCH_ENDPOINT` environment variable in your local project:
 
 ```bash title=".env"
-MEDUSA_CLOUD_SEARCH_ENDPOINT=https://env:key@search.medusajs.app
+MEDUSA_SEARCH_ENDPOINT=https://env:key@search.medusajs.app
 ```
 
-Medusa reads the variable and registers Medusa Search as the default Search Module Provider, so you don't need to change `medusa-config.ts` unless you've explicitely configured the Search Module yourself. Your indexes then read from and write to your Cloud environment's search resources instead of your local PostgreSQL database.
+Then, register the Search Module in `medusa-config.ts` with Medusa Search as its default provider, but only in development:
 
-If you've explicitly configured the Search Module yourself, make sure to set the `default_provider` to `search-medusa` in your `medusa-config.ts` for Medusa Search to be used as the default provider.
+```ts title="medusa-config.ts" highlights={[["7", "isDevelopment", "Only register Medusa Search in development."]]}
+const isDevelopment = process.env.NODE_ENV === "development"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    ...(isDevelopment
+      ? [
+          {
+            resolve: "@medusajs/medusa/search",
+            options: {
+              default_provider: "search-medusa",
+              cloud: {
+                endpoint: process.env.MEDUSA_SEARCH_ENDPOINT,
+              },
+            },
+          },
+        ]
+      : []),
+  ],
+})
+```
+
+The endpoint carries the API key and the environment handle, so Medusa Search needs no other option. Your indexes then read from and write to your Cloud environment's search resources instead of your local PostgreSQL database.
+
+<Note type="warning">
+
+Keep the registration behind the development check. Cloud registers Medusa Search for you in deployed environments, and a registration that also runs there overrides Cloud's configuration.
+
+</Note>
 
 ### Search Custom Data Models
 

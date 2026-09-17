@@ -54,10 +54,11 @@ indexed and served by it.
   set.
 - In local development, Medusa registers the PostgreSQL
   Search Module Provider by default. A local project reaches
-  Cloud's search resources only through the
-  `MEDUSA_CLOUD_SEARCH_ENDPOINT` connection string, which
-  carries read and write access, so it suits testing rather
-  than day-to-day local work.
+  Cloud's search resources only through a connection string
+  set as `MEDUSA_SEARCH_ENDPOINT` and a development-only
+  Search Module registration in `medusa-config.ts`. The
+  string carries read and write access, so it suits testing
+  rather than day-to-day local work.
 - Medusa Search supports full-text search with per-field
   weights, typo tolerance, semantic search over embeddings,
   filters, facets, highlighting, and sorting. Typo tolerance
@@ -424,16 +425,43 @@ strings.
 Medusa registers the PostgreSQL Search Module Provider
 locally by default, which is the recommended setup. To point
 a local project at a Cloud environment's indexes instead,
-set both variables in `.env`, without
-`MEDUSA_CLOUD_API_KEY`:
+set the endpoint in `.env`, without `MEDUSA_CLOUD_API_KEY`:
 
 ```bash title=".env"
-MEDUSA_CLOUD_SEARCH_ENDPOINT=https://user:key@search.medusajs.app
-MEDUSA_CLOUD_ENVIRONMENT_HANDLE=your-environment-handle
+MEDUSA_SEARCH_ENDPOINT=https://user:key@search.medusajs.app
 ```
 
-Medusa reads both and registers Medusa Search as the default
-provider, so `medusa-config.ts` doesn't change.
+Then register the Search Module in `medusa-config.ts`,
+guarded so it only applies in development:
+
+```ts title="medusa-config.ts"
+const isDevelopment = process.env.NODE_ENV === "development"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    ...(isDevelopment
+      ? [
+          {
+            resolve: "@medusajs/medusa/search",
+            options: {
+              default_provider: "search-medusa",
+              cloud: {
+                endpoint: process.env.MEDUSA_SEARCH_ENDPOINT,
+              },
+            },
+          },
+        ]
+      : []),
+  ],
+})
+```
+
+The endpoint carries the API key and the environment
+handle, so no other option is needed. Cloud registers
+Medusa Search itself in deployed environments, so the
+registration must stay behind the development check.
 
 ## Useful Documentation Links
 
@@ -551,12 +579,12 @@ details this reference leaves out:
 <constraints>
 - Do not register a search provider in `medusa-config.ts`
   for a Cloud environment. Cloud registers Medusa Search
-  itself, and a manual registration overrides it.
-- Do not set `MEDUSA_CLOUD_SEARCH_ENDPOINT` in a Cloud
-  environment. It belongs in a local `.env` file only, next
-  to `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`, and never alongside
-  `MEDUSA_CLOUD_API_KEY`, which throws when the provider
-  initializes.
+  itself, and a manual registration overrides it. A local
+  registration must be guarded by a development check.
+- Do not set `MEDUSA_SEARCH_ENDPOINT` in a Cloud
+  environment. It belongs in a local `.env` file only, and
+  never alongside `MEDUSA_CLOUD_API_KEY`, which throws when
+  the provider initializes.
 - Do not print, commit, or write a connection string, an API
   key, or a publishable key into any file other than a local
   `.env` that git ignores.
