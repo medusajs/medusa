@@ -59,14 +59,13 @@ export const generatedEditDates = {
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
   "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
-  "app/webhooks/endpoints/page.mdx": "2026-09-16T16:29:59.969Z",
-  "app/webhooks/events/page.mdx": "2026-09-16T16:30:04.395Z",
+  "app/webhooks/endpoints/page.mdx": "2026-09-17T06:08:01.627Z",
+  "app/webhooks/events/page.mdx": "2026-09-17T06:07:59.627Z",
   "app/webhooks/changelog/page.mdx": "2026-08-11T12:40:39.598Z",
   "app/webhooks/reference/page.mdx": "2026-08-11T12:41:02.857Z",
   "app/changelog/page.mdx": "2026-08-17T06:19:52.836Z",
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z",
-  "app/search/page.mdx": "2026-09-16T16:29:44.296Z"
+  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z"
 }

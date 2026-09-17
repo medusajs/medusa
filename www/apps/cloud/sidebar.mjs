@@ -285,11 +285,6 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Search",
-            path: "/search",
-          },
-          {
-            type: "link",
             title: "Emails",
             path: "/emails",
             children: [
