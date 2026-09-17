@@ -39,6 +39,39 @@ Refer to the [Use pnpm with Medusa](!docs!/learn/configurations/pnpm) guide for 
 
 ---
 
+## Build approval errors before project creation
+
+If you run `pnpm dlx create-medusa-app` in a directory that doesn't have a project yet, `pnpm` might fail with a build approval error. For example:
+
+```bash
+Error: ERR_PNPM_IGNORED_BUILDS
+
+Ignored build scripts: @medusajs/telemetry, protobufjs
+Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
+```
+
+This happens while `pnpm` fetches `create-medusa-app` and its dependencies. At that point, no application `package.json` exists. Editing a future project's files doesn't fix this stage. `pnpm approve-builds` also needs a project, so it isn't available yet.
+
+### Why This Error Occurred
+
+`pnpm` stops the install when a dependency has a lifecycle script that isn't approved yet. `create-medusa-app` depends on packages such as `@medusajs/telemetry` that declare install scripts. The check runs during `pnpm dlx`, before the CLI clones the starter or writes a project.
+
+### How to Fix it
+
+Run this command in a Portable Operating System Interface (POSIX) shell, such as `bash` or `zsh`. This isn't a PowerShell command:
+
+```bash
+PNPM_CONFIG_STRICT_DEP_BUILDS=false pnpm dlx create-medusa-app@latest my-medusa-store
+```
+
+The `pnpm dlx` process inherits the variable. The parent shell doesn't keep the variable, and `pnpm` doesn't write it to global configuration.
+
+With this setting, `pnpm` no longer fails the bootstrap because of dependency builds that aren't reviewed yet. It still doesn't approve those scripts or run them. You'll see a notice about ignored build scripts, then the CLI starts.
+
+If you already have a Medusa project and see missing packages, a missing QueryClient, or a missing workspace `packages` field, use the hoisting and workspace steps in this guide. This bootstrap command doesn't apply to those errors.
+
+---
+
 ## "packages field missing or empty" Error in Monorepo
 
 If you get the following error when deploying a monorepo with `pnpm` workspaces:
