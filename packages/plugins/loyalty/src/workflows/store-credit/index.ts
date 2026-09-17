@@ -3,6 +3,7 @@ export * from "./workflows/create-store-credit-accounts";
 export * from "./workflows/credit-accounts";
 export * from "./workflows/credit-store-credit-account";
 export * from "./workflows/debit-accounts";
+export * from "./workflows/debit-store-credit-account";
 
 export * from "./steps/create-store-credit-accounts";
 export * from "./steps/credit-account";
