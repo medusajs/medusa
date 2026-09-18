@@ -1,27 +1,11 @@
 import { SearchTypes } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
-import {
-  SearchIndexRecord,
-  SearchIndexRegistry,
-  SearchIndexVersionRecord,
-} from "@types"
+import { SearchIndexRecord, SearchIndexRegistry } from "@types"
 import {
   listVersionsByIndexId,
   retrieveIndexDefinition,
   SearchIndexState,
 } from "./index"
-
-/**
- * The physical index a version is built under. Every version — including the
- * first — gets one, so `definition.physical_name` is never itself a physical
- * index: it is only the root every version's name is derived from.
- */
-export function versionPhysicalName(
-  definition: SearchTypes.ResolvedSearchIndexDefinition,
-  version: number
-): string {
-  return `${definition.physical_name}_v${version}`
-}
+import { cleanupStaleVersions, versionPhysicalName } from "./versions"
 
 export async function createIndexMigrationPlan(
   context: SearchIndexRegistry
@@ -180,50 +164,4 @@ async function getOrCreateIndexRecord(
   ])) as SearchIndexRecord[]
 
   return created
-}
-
-/**
- * Deletes every version older than the one currently serving reads. Runs on
- * every migration, not only when the provider changes — versions that lost
- * the swap on a previous migration accumulate otherwise.
- */
-async function cleanupStaleVersions(
-  context: SearchIndexRegistry,
-  record: SearchIndexRecord
-): Promise<void> {
-  if (record.active_version == null) {
-    return
-  }
-
-  const versions = ((await context.versionService.list({
-    search_index_id: record.id,
-  })) as SearchIndexVersionRecord[]).filter(
-    (version) => version.version < record.active_version!
-  )
-
-  for (const version of versions) {
-    let provider: SearchTypes.ISearchProvider
-
-    try {
-      provider = context.providers.retrieve(version.provider)
-    } catch (error) {
-      if (
-        error instanceof MedusaError &&
-        error.type === MedusaError.Types.NOT_FOUND
-      ) {
-        context.logger.warn(
-          `[Search] Cannot clean up search index version "${version.physical_name}": provider "${version.provider}" is no longer registered`
-        )
-        continue
-      }
-
-      throw error
-    }
-
-    await provider.deleteIndex({ index: version.physical_name })
-    // Soft delete: a hard delete would violate the foreign key from any
-    // `SearchIndexSync` row still pointing at this version's append-only
-    // history.
-    await context.versionService.softDelete([version.id])
-  }
 }
