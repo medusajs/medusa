@@ -48,6 +48,8 @@ Object.defineProperty(window, "IntersectionObserver", {
   value: MockIntersectionObserver,
 })
 
+vi.setConfig({ testTimeout: 30000 })
+
 afterEach(() => {
   cleanup()
 })

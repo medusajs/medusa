@@ -55,7 +55,7 @@ import {
   step1InvokeMock as step1InvokeMockManualRetry,
   step2InvokeMock as step2InvokeMockManualRetry,
 } from "../__fixtures__/workflow_1_manual_retry_step"
-import { TestDatabase } from "../utils"
+import { jobQueueName, queueName, TestDatabase } from "../utils"
 
 jest.setTimeout(30000)
 
@@ -86,22 +86,14 @@ function times(num) {
   }
 }
 
-// REF:https://stackoverflow.com/questions/78028715/jest-async-test-with-event-emitter-isnt-ending
-
-const testRunId = ulid()
-
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
   resolve: __dirname + "/../..",
   moduleOptions: {
     redis: {
       redisUrl: "localhost:6379",
-      queueName: `medusa-workflows-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
-      jobQueueName: `medusa-workflows-jobs-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
+      queueName,
+      jobQueueName,
     },
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {

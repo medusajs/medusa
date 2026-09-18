@@ -9,7 +9,6 @@
 import { IWorkflowEngineService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { ulid } from "ulid"
 import {
   retryIntervalStep1InvokeMock,
   retryIntervalStep2InvokeMock,
@@ -21,11 +20,9 @@ import {
   retryIntervalStep2InvokeMock as retryIntervalStep2InvokeMockSync,
   workflowRetryIntervalId as workflowRetryIntervalIdSync,
 } from "../__fixtures__/workflow_sync_retry_interval"
-import { TestDatabase } from "../utils"
+import { jobQueueName, queueName, TestDatabase } from "../utils"
 
 jest.setTimeout(60000) // Increase timeout for async retries
-
-const testRunId = ulid()
 
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
@@ -33,12 +30,8 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleOptions: {
     redis: {
       redisUrl: "localhost:6379",
-      queueName: `medusa-workflows-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
-      jobQueueName: `medusa-workflows-jobs-${
-        process.env.JEST_WORKER_ID ?? "1"
-      }-${testRunId}`,
+      queueName,
+      jobQueueName,
     },
   },
   testSuite: ({ service: workflowOrcModule }) => {
