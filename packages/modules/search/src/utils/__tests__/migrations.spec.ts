@@ -4,7 +4,6 @@ import { SearchIndexRegistry } from "@types"
 import {
   createIndexMigrationPlan,
   executeIndexMigrationPlan,
-  versionPhysicalName,
 } from "../migrations"
 
 const definition = (
@@ -138,13 +137,6 @@ const registry = ({
 describe("search index migrations", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-  })
-
-  describe("versionPhysicalName", () => {
-    it("appends the version number to the definition's physical name", () => {
-      expect(versionPhysicalName(definition(), 1)).toBe("product_v1")
-      expect(versionPhysicalName(definition(), 12)).toBe("product_v12")
-    })
   })
 
   describe("createIndexMigrationPlan", () => {
