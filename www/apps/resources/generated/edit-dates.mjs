@@ -173,7 +173,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/notification/page.mdx": "2025-06-25T10:48:23.838Z",
   "app/infrastructure-modules/event/create/page.mdx": "2025-03-27T14:53:13.309Z",
   "app/troubleshooting/medusa-admin/no-widget-route/page.mdx": "2026-07-28T05:43:12.313Z",
-  "app/medusa-cli/commands/db/page.mdx": "2026-09-11T07:40:12.217Z",
+  "app/medusa-cli/commands/db/page.mdx": "2026-09-18T14:11:35.333Z",
   "app/medusa-cli/commands/develop/page.mdx": "2026-09-11T07:40:12.214Z",
   "app/medusa-cli/commands/exec/page.mdx": "2026-09-11T07:40:12.216Z",
   "app/medusa-cli/commands/new/page.mdx": "2026-09-11T07:40:12.216Z",

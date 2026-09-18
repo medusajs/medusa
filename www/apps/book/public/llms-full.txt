@@ -58979,6 +58979,8 @@ Use this command if you're setting up a Medusa project or database manually.
 |\`--skip-links\`|Skip syncing links to the database.|No|Links are synced by default.|
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and execute all actions, including drops.|No|Prompts are shown for drop actions, by default.|
 |\`--no-interactive\`|Disable the command's prompts.|No|-|
 
 ***
@@ -59040,6 +59042,27 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and execute all actions, including drops.|No|Prompts are shown for drop actions, by default.|
+
+***
+
+## db:migrate:search
+
+Create and alter the search indexes declared under `search/`. Indexes that no definition declares any more are dropped after a confirmation prompt.
+
+```bash
+npx medusa db:migrate:search
+```
+
+`db:migrate` runs this command automatically when the Search Module is enabled. Use `db:migrate:search` directly when you want to manage search indexes independently.
+
+### Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|
+|\`--execute-safe-search\`|Skip prompts and execute only safe actions. Drop actions are skipped entirely.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts and execute all actions, including drops. Dropping an index permanently deletes all documents it holds.|No|Prompts are shown for drop actions, by default.|
 
 ***
 
@@ -59491,6 +59514,8 @@ Use this command if you're setting up a Medusa project or database manually.
 |\`--skip-links\`|Skip syncing links to the database.|No|Links are synced by default.|
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and execute all actions, including drops.|No|Prompts are shown for drop actions, by default.|
 |\`--no-interactive\`|Disable the command's prompts.|No|-|
 
 ***
@@ -59552,6 +59577,27 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and execute all actions, including drops.|No|Prompts are shown for drop actions, by default.|
+
+***
+
+## db:migrate:search
+
+Create and alter the search indexes declared under `search/`. Indexes that no definition declares any more are dropped after a confirmation prompt.
+
+```bash
+npx medusa db:migrate:search
+```
+
+`db:migrate` runs this command automatically when the Search Module is enabled. Use `db:migrate:search` directly when you want to manage search indexes independently.
+
+### Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|
+|\`--execute-safe-search\`|Skip prompts and execute only safe actions. Drop actions are skipped entirely.|No|Prompts are shown for drop actions, by default.|
+|\`--execute-all-search\`|Skip prompts and execute all actions, including drops. Dropping an index permanently deletes all documents it holds.|No|Prompts are shown for drop actions, by default.|
 
 ***
 
