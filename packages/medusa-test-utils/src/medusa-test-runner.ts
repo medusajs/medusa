@@ -43,8 +43,19 @@ export interface MedusaSuiteOptions {
   getMedusaApp: () => MedusaAppOutput
   utils: {
     waitWorkflowExecutions: () => Promise<void>
+    /**
+     * Captures the current state of the database as the baseline that is
+     * restored before every subsequent test. The test that runs right after
+     * this call keeps the state as-is, so it is safe to call from a `beforeAll`
+     * hook of a nested suite.
+     */
+    freezeDatabaseBaseline: () => Promise<void>
   }
 }
+
+export type SeedBaselineFunction = (
+  options: MedusaSuiteOptions
+) => Promise<void> | void
 
 interface TestRunnerConfig {
   moduleName?: string
@@ -57,10 +68,11 @@ interface TestRunnerConfig {
   hooks?: {
     beforeServerStart?: (container: MedusaContainer) => Promise<void>
   }
+  seedBaseline?: SeedBaselineFunction
   cwd?: string
 }
 
-class MedusaTestRunner {
+export class MedusaTestRunner {
   private dbName: string
   private dbTemplateName: string
   private schema: string
@@ -84,6 +96,7 @@ class MedusaTestRunner {
   private loadedApplication: any = null
   private shutdown: () => Promise<void> = async () => void 0
   private hooks: TestRunnerConfig["hooks"] = {}
+  private seedBaseline?: SeedBaselineFunction
   private databaseTemplateReady = false
   private skipNextRestore = false
   private restoreEnvVars: () => void = () => void 0
@@ -110,6 +123,7 @@ class MedusaTestRunner {
       debug: this.debug,
     }
     this.hooks = config.hooks ?? {}
+    this.seedBaseline = config.seedBaseline
 
     this.setupProcessHandlers()
   }
@@ -295,6 +309,14 @@ class MedusaTestRunner {
       await configLoaderOverride(this.cwd, this.dbConfig)
       this.restoreEnvVars = applyEnvVarsToProcess(this.env)
       await this.setupApplication()
+
+      if (this.seedBaseline) {
+        // The baseline is captured eagerly, before any user suite runs, so that
+        // every test starts from the exact same state. Without it, the template
+        // would be inferred from whichever nested suite happens to run first.
+        await this.seedBaseline(this.getOptions())
+        await this.captureBaseline()
+      }
     } catch (error) {
       await this.cleanup()
       throw error
@@ -307,6 +329,14 @@ class MedusaTestRunner {
       templateName: this.dbTemplateName,
     })
     this.databaseTemplateReady = true
+  }
+
+  private async captureBaseline(): Promise<void> {
+    if (this.globalContainer) {
+      await waitWorkflowExecutions(this.globalContainer)
+    }
+
+    await this.snapshotDatabase()
   }
 
   public async beforeEach(): Promise<void> {
@@ -380,6 +410,12 @@ class MedusaTestRunner {
       utils: {
         waitWorkflowExecutions: () =>
           waitWorkflowExecutions(this.globalContainer as MedusaContainer),
+        freezeDatabaseBaseline: async () => {
+          await this.captureBaseline()
+          // The captured state is already live in the database, so the test
+          // that follows this call does not need a restore.
+          this.skipNextRestore = true
+        },
       },
     }
   }
@@ -395,6 +431,7 @@ export function medusaIntegrationTestRunner({
   inApp = false,
   testSuite,
   hooks,
+  seedBaseline,
   cwd,
 }: {
   moduleName?: string
@@ -406,6 +443,16 @@ export function medusaIntegrationTestRunner({
   inApp?: boolean
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
+  /**
+   * Seeds the data shared by the whole file. It runs once, after the server
+   * starts and before any test, and the resulting database state becomes the
+   * baseline restored before every test.
+   *
+   * When provided, data created in a nested `beforeAll` is not part of the
+   * baseline and is rolled back before the suite's tests run. Use
+   * `utils.freezeDatabaseBaseline()` if a nested suite needs its own baseline.
+   */
+  seedBaseline?: SeedBaselineFunction
   cwd?: string
 }) {
   const runner = new MedusaTestRunner({
@@ -417,6 +464,7 @@ export function medusaIntegrationTestRunner({
     debug,
     inApp,
     hooks,
+    seedBaseline,
     cwd,
   })
 
