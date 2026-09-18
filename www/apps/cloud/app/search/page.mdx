@@ -309,6 +309,7 @@ Medusa Search provides the following features:
 - **[Sorting](!docs!/learn/fundamentals/query/search#sort-hits)** by any number of fields.
 - **[Isolated indexes per environment](#search-indexes-per-environment)**, so a preview environment never writes to your production indexes.
 - **[Settings of its own](./settings/page.mdx)** on an index, a field, and a query, such as the distance metric it compares embeddings with, or how current an index must be for a query.
+- **[Search analytics](./analytics/page.mdx)** that show what customers searched for, how often searches came back empty, and how fast Medusa Search responded.
 
 ---
 
@@ -475,6 +476,14 @@ export const brandIndex = defineSearchIndex({
 ```
 
 Refer to the [Search Other Entities](!resources!/infrastructure-modules/search#search-other-entities) guide for more details.
+
+---
+
+## Monitor Search Analytics
+
+An environment's **Search** page in the Cloud dashboard shows analytics for each of its indexes, including the searches that ran, the searches that returned no results, how fast Medusa Search responded, and the most searched terms.
+
+Refer to the [Medusa Search Analytics](./analytics/page.mdx) guide for more details.
 
 ---
 

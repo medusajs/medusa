@@ -67,7 +67,7 @@ export const generatedEditDates = {
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/search/page.mdx": "2026-09-18T07:49:46.435Z",
+  "app/search/page.mdx": "2026-09-18T12:55:41.152Z",
   "app/search/algolia/page.mdx": "2026-09-15T13:24:24.909Z",
   "app/search/meilisearch/page.mdx": "2026-09-15T13:24:24.909Z",
   "app/search/postgres/page.mdx": "2026-09-15T13:24:24.908Z",
@@ -77,5 +77,6 @@ export const generatedEditDates = {
   "app/search/comparison/page.mdx": "2026-09-15T07:53:53.177Z",
   "app/search/semantic-search/page.mdx": "2026-09-15T13:49:16.750Z",
   "app/search/settings/page.mdx": "2026-09-15T14:15:52.704Z",
-  "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z"
+  "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
+  "app/search/analytics/page.mdx": "2026-09-18T13:19:13.326Z"
 }

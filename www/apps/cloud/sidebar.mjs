@@ -222,6 +222,11 @@ export const sidebar = [
             path: "/search",
           },
           {
+            type: "link",
+            title: "Analytics",
+            path: "/search/analytics",
+          },
+          {
             type: "sub-category",
             title: "API",
             children: [
