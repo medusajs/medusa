@@ -302,6 +302,25 @@ describe("Redis Loader", () => {
     })
   })
 
+  describe("Top-level options support", () => {
+    it("should accept top-level redisUrl without nested redis key", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+            queueName: "top-level-queue",
+          },
+        } as any,
+        {} as any
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+      expect(registerCall.redisQueueName.resolve()).toEqual("top-level-queue")
+    })
+  })
+
   describe("Error handling", () => {
     it("should throw error when redisUrl is not provided", async () => {
       await expect(
