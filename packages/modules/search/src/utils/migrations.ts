@@ -5,21 +5,27 @@ import {
   retrieveIndexDefinition,
   SearchIndexState,
 } from "./index"
-import { cleanupStaleVersions, versionPhysicalName } from "./versions"
+import {
+  cleanupStaleVersions,
+  dropIndex,
+  versionPhysicalName,
+} from "./versions"
 
 export async function createIndexMigrationPlan(
   context: SearchIndexRegistry
 ): Promise<SearchTypes.SearchIndexMigrationAction[]> {
   const definitions = [...context.indexes.values()]
 
-  if (!definitions.length) {
-    return []
-  }
-
+  // Every record, not only the ones a definition names: an index nothing
+  // declares any more is exactly what a `drop` is planned from.
   const records = (await context.indexService.list(
-    { name: definitions.map((definition) => definition.name) },
+    {},
     { take: null }
   )) as SearchIndexRecord[]
+
+  if (!definitions.length && !records.length) {
+    return []
+  }
 
   const byName = new Map(records.map((record) => [record.name, record]))
   const versionsByIndexId = await listVersionsByIndexId(
@@ -27,84 +33,106 @@ export async function createIndexMigrationPlan(
     records.map((record) => record.id)
   )
 
-  return definitions.map((definition) => {
-    const record = byName.get(definition.name)
-    const shared = {
-      index: definition.name,
-      definition_hash: definition.definition_hash,
-    }
-
-    if (!record) {
-      return {
-        ...shared,
-        action: "create" as const,
-        physical_name: versionPhysicalName(definition, 1),
-        version: 1,
+  const actions: SearchTypes.SearchIndexMigrationAction[] = definitions.map(
+    (definition) => {
+      const record = byName.get(definition.name)
+      const shared = {
+        index: definition.name,
+        definition_hash: definition.definition_hash,
       }
-    }
 
-    const versions = versionsByIndexId.get(record.id) ?? []
-    const activeVersion =
-      record.active_version != null
-        ? versions.find((v) => v.version === record.active_version)
-        : undefined
-
-    if (
-      activeVersion &&
-      activeVersion.definition_hash === definition.definition_hash &&
-      activeVersion.provider === definition.provider
-    ) {
-      return {
-        ...shared,
-        action: "noop" as const,
-        physical_name: activeVersion.physical_name,
+      if (!record) {
+        return {
+          ...shared,
+          action: "create" as const,
+          physical_name: versionPhysicalName(definition, 1),
+          version: 1,
+        }
       }
-    }
 
-    // Already building or built, waiting to be seeded — nothing new to plan.
-    const pending = versions.find(
-      (v) =>
-        (record.active_version == null || v.version > record.active_version) &&
-        v.definition_hash === definition.definition_hash &&
-        v.provider === definition.provider
-    )
+      const versions = versionsByIndexId.get(record.id) ?? []
+      const activeVersion =
+        record.active_version != null
+          ? versions.find((v) => v.version === record.active_version)
+          : undefined
 
-    if (pending) {
-      return {
-        ...shared,
-        action: "noop" as const,
-        physical_name: pending.physical_name,
+      if (
+        activeVersion &&
+        activeVersion.definition_hash === definition.definition_hash &&
+        activeVersion.provider === definition.provider
+      ) {
+        return {
+          ...shared,
+          action: "noop" as const,
+          physical_name: activeVersion.physical_name,
+        }
       }
-    }
 
-    const highest = versions[0]?.version ?? 0
-    const version = highest + 1
-    const physicalName = versionPhysicalName(definition, version)
+      // Already building or built, waiting to be seeded — nothing new to plan.
+      const pending = versions.find(
+        (v) =>
+          (record.active_version == null ||
+            v.version > record.active_version) &&
+          v.definition_hash === definition.definition_hash &&
+          v.provider === definition.provider
+      )
 
-    if (!activeVersion) {
-      // A `SearchIndex` row exists — an earlier `create` ran — but nothing
-      // ever went live, so this is still a `create`, not a `migrate`.
+      if (pending) {
+        return {
+          ...shared,
+          action: "noop" as const,
+          physical_name: pending.physical_name,
+        }
+      }
+
+      const highest = versions[0]?.version ?? 0
+      const version = highest + 1
+      const physicalName = versionPhysicalName(definition, version)
+
+      if (!activeVersion) {
+        // A `SearchIndex` row exists — an earlier `create` ran — but nothing
+        // ever went live, so this is still a `create`, not a `migrate`.
+        return {
+          ...shared,
+          action: "create" as const,
+          physical_name: physicalName,
+          version,
+        }
+      }
+
       return {
         ...shared,
-        action: "create" as const,
+        action: "migrate" as const,
         physical_name: physicalName,
         version,
+        active_physical_name: activeVersion.physical_name,
+        active_definition_hash: activeVersion.definition_hash,
+        provider: definition.provider,
+        ...(activeVersion.provider !== definition.provider
+          ? { previous_provider: activeVersion.provider }
+          : {}),
       }
     }
+  )
 
-    return {
-      ...shared,
-      action: "migrate" as const,
-      physical_name: physicalName,
-      version,
-      active_physical_name: activeVersion.physical_name,
-      active_definition_hash: activeVersion.definition_hash,
-      provider: definition.provider,
-      ...(activeVersion.provider !== definition.provider
-        ? { previous_provider: activeVersion.provider }
-        : {}),
+  const declared = new Set(definitions.map((definition) => definition.name))
+
+  for (const record of records) {
+    if (declared.has(record.name)) {
+      continue
     }
-  })
+
+    actions.push({
+      action: "drop",
+      index: record.name,
+      // Newest version first, the order `listVersionsByIndexId` returns.
+      physical_names: (versionsByIndexId.get(record.id) ?? []).map(
+        (version) => version.physical_name
+      ),
+    })
+  }
+
+  return actions
 }
 
 // Note: Seeding data is done by the application start hook, migrations are reserved for schema changes.
@@ -113,6 +141,11 @@ export async function executeIndexMigrationPlan(
   actions: SearchTypes.SearchIndexMigrationAction[]
 ): Promise<void> {
   for (const action of actions) {
+    if (action.action === "drop") {
+      await dropIndex(context, action.index)
+      continue
+    }
+
     if (action.action === "noop") {
       // Nothing changed for this index, but a version below the active one —
       // left behind by an earlier migration's swap — still needs cleaning up.
