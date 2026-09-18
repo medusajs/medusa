@@ -1,5 +1,18 @@
 # @medusajs/utils
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16816](https://github.com/medusajs/medusa/pull/16816) [`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa, utils): apply default http.authMethodsPerActor and gate `/auth/:auth_provider/user` by config
+
+- [#16749](https://github.com/medusajs/medusa/pull/16749) [`3538aab7bc5fcff61591a83bb98e6643823cb947`](https://github.com/medusajs/medusa/commit/3538aab7bc5fcff61591a83bb98e6643823cb947) Thanks [@yfwmaniish](https://github.com/yfwmaniish)! - fix(utils): compare Date values by time in deepEqualObj
+
+- [#16467](https://github.com/medusajs/medusa/pull/16467) [`893d96850320f8f00c623c66f46e9fcde5ab1cdf`](https://github.com/medusajs/medusa/commit/893d96850320f8f00c623c66f46e9fcde5ab1cdf) Thanks [@tushardev-365](https://github.com/tushardev-365)! - fix(utils): make the migration skip flag actually skip migrations
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

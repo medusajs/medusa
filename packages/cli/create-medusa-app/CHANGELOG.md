@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16850](https://github.com/medusajs/medusa/pull/16850) [`2eed2802541493e99fc048d35a22c336daba833f`](https://github.com/medusajs/medusa/commit/2eed2802541493e99fc048d35a22c336daba833f) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app): clarify database connection problem before asking for DB credentials
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.1
+  - @medusajs/telemetry@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

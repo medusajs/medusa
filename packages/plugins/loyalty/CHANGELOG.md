@@ -1,5 +1,23 @@
 # @medusajs/loyalty-plugin
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16853](https://github.com/medusajs/medusa/pull/16853) [`17ecd1d329ea36f392cc0ec1e8846bb21da7a4ba`](https://github.com/medusajs/medusa/commit/17ecd1d329ea36f392cc0ec1e8846bb21da7a4ba) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(loyalty-plugin): add debit store credit account option
+
+- [#16854](https://github.com/medusajs/medusa/pull/16854) [`c7225d7191cafcd7e66bba714f203bcf5ce6923b`](https://github.com/medusajs/medusa/commit/c7225d7191cafcd7e66bba714f203bcf5ce6923b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(loyalty-plugin): show store credit widget with a create action when a customer has no account
+
+- Updated dependencies [[`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd), [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797), [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f), [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d), [`bb4c7cbafe45212f3df408a2a09d73253c3d0b40`](https://github.com/medusajs/medusa/commit/bb4c7cbafe45212f3df408a2a09d73253c3d0b40), [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d), [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e), [`83592f11c72fde11c2d23d9b160bc5a9f010ea26`](https://github.com/medusajs/medusa/commit/83592f11c72fde11c2d23d9b160bc5a9f010ea26)]:
+  - @medusajs/medusa@2.21.1
+  - @medusajs/dashboard@2.21.1
+  - @medusajs/framework@2.21.1
+  - @medusajs/test-utils@2.21.1
+  - @medusajs/cli@2.21.1
+  - @medusajs/admin-sdk@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes
