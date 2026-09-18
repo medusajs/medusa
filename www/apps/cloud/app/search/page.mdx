@@ -1,0 +1,87 @@
+export const metadata = {
+  title: `Search`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the managed Search service that Medusa provides as part of your project environments on Cloud, and how to view search analytics.
+
+<Note>
+
+The Search service is only available for organizations where the Search feature flag is enabled. Contact support to request access.
+
+</Note>
+
+## Search Analytics
+
+The **Analytics** section of the Search page lets you monitor how your search indexes are being used. You can track query volume, index size, and — on higher plans — advanced metrics like no-hit rate and latency percentiles.
+
+To view search analytics for an environment:
+
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database & Storage** > **Search** in the sidebar under the environment's section.
+
+The **Analytics** section is shown on the Search page.
+
+---
+
+## Select an Index and Time Range
+
+At the top of the Analytics section, use the **index selector** dropdown to choose which search index to view metrics for. Indexes that are currently being updated show an **Updating** badge next to their name.
+
+Use the **time range selector** to filter the analytics data by a time window, such as the last hour. Available time ranges depend on your organization's plan. Click the refresh button to reload the data with the latest values.
+
+---
+
+## Index Stats
+
+The **Stats** card is visible for all entitled users and shows per-index metrics for the selected index:
+
+- **Items**: the number of records currently in the index.
+- **Index size**: the total storage used by the index.
+
+On plans that include advanced search analytics, the Stats card also shows:
+
+- **Total searches**: the total number of queries run against the index in the selected time range.
+- **Vector searches**: the number of queries that used vector (semantic) search.
+- **No-hit rate**: the percentage of queries that returned no results.
+
+If your plan does not include advanced search analytics, a **Change plan** prompt is shown in place of the charts and advanced stats. You can upgrade your plan as explained in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
+
+---
+
+## Search Volume Chart
+
+The **Search volume** chart is an area chart showing how query traffic changed over the selected time range. It plots two series:
+
+- **Total searches**: all queries sent to the index.
+- **No-hit searches**: queries that returned no results.
+
+If the environment has no search indexes configured, a notice is displayed instead of the chart.
+
+---
+
+## Latency Cards
+
+Two latency cards show response time percentiles for different search modes:
+
+- **Freetext latency**: latency for keyword or full-text searches, broken down into p50, p95, p99, and average.
+- **Vector latency**: latency for vector (semantic) searches, broken down into p50, p95, p99, and average.
+
+---
+
+## Top Search Terms
+
+The **Top search terms** table lists the most-searched terms for the selected index, with columns for the term text and its search count. The table is paginated.
+
+If all searches on the index are vector-only (no text queries), the table shows an informational message instead of data.
+
+---
+
+## No-Hit Terms
+
+The **No-hit terms** table lists search terms that returned no results, with columns for the term text and its search count. The table is paginated.
+
+If all searches on the index are vector-only, this table also shows an informational message instead of data.
