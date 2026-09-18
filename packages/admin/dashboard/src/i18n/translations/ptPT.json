@@ -1668,9 +1668,10 @@
       },
       "conditionalPrices": {
         "header": "Preços condicionais para {{name}}",
-        "description": "Gere os preços condicionais desta opção de envio com base no total de itens do carrinho.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Total de itens do carrinho"
+          "cartItemTotal": "Total de itens do carrinho",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Se <0>{{attribute}}</0> estiver entre <1>{{gte}}</1> e <2>{{lte}}</2>",
@@ -1684,7 +1685,9 @@
         "rules": {
           "amount": "Preço da opção de envio",
           "gte": "Mínimo do total de itens do carrinho",
-          "lte": "Máximo do total de itens do carrinho"
+          "lte": "Máximo do total de itens do carrinho",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Regras personalizadas",
@@ -1695,10 +1698,15 @@
         },
         "errors": {
           "amountRequired": "O preço da opção de envio é obrigatório",
-          "minOrMaxRequired": "Pelo menos um dos valores mínimo ou máximo deve ser fornecido",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "O mínimo deve ser menor ou igual ao máximo",
           "duplicateAmount": "O preço da opção de envio deve ser único para cada condição",
-          "overlappingConditions": "As condições devem ser únicas entre todas as regras de preço"
+          "overlappingConditions": "As condições devem ser únicas entre todas as regras de preço",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

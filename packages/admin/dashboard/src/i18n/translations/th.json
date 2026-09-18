@@ -1708,9 +1708,10 @@
       },
       "conditionalPrices": {
         "header": "ราคาแบบมีเงื่อนไขสำหรับ {{name}}",
-        "description": "จัดการราคาแบบมีเงื่อนไขสำหรับตัวเลือกการจัดส่งนี้ ตามยอดรวมรายการในตะกร้า",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "ยอดรวมรายการในตะกร้า"
+          "cartItemTotal": "ยอดรวมรายการในตะกร้า",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "เมื่อ <0>{{attribute}}</0> อยู่ระหว่าง <1>{{gte}}</1> และ <2>{{lte}}</2>",
@@ -1724,7 +1725,9 @@
         "rules": {
           "amount": "ราคาตัวเลือกการจัดส่ง",
           "gte": "ยอดรวมรายการในตะกร้าขั้นต่ำ",
-          "lte": "ยอดรวมรายการในตะกร้าสูงสุด"
+          "lte": "ยอดรวมรายการในตะกร้าสูงสุด",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "กฎที่กำหนดเอง",
@@ -1735,10 +1738,15 @@
         },
         "errors": {
           "amountRequired": "ต้องระบุราคาตัวเลือกการจัดส่ง",
-          "minOrMaxRequired": "ต้องระบุยอดรวมรายการในตะกร้าขั้นต่ำหรือสูงสุดอย่างน้อยหนึ่งค่า",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "ยอดรวมรายการในตะกร้าขั้นต่ำต้องน้อยกว่าหรือเท่ากับยอดรวมรายการในตะกร้าสูงสุด",
           "duplicateAmount": "ราคาตัวเลือกการจัดส่งต้องไม่ซ้ำกันในแต่ละเงื่อนไข",
-          "overlappingConditions": "เงื่อนไขต้องไม่ซ้ำกันในกฎราคาทั้งหมด"
+          "overlappingConditions": "เงื่อนไขต้องไม่ซ้ำกันในกฎราคาทั้งหมด",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

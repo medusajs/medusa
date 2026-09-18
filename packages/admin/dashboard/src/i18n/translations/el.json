@@ -83,7 +83,6 @@
       "labels": {
         "key": "Κλειδί",
         "value": "Τιμή"
-        
       },
       "complexRow": {
         "label": "Ορισμένες γραμμές είναι απενεργοποιημένες",
@@ -1558,9 +1557,10 @@
       },
       "conditionalPrices": {
         "header": "Υπό Όρους Τιμές για {{name}}",
-        "description": "Διαχειριστείτε τις υπό όρους τιμές για αυτή την επιλογή αποστολής με βάση το συνολικό ποσό του καλαθιού.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Συνολικό ποσό καλαθιού"
+          "cartItemTotal": "Συνολικό ποσό καλαθιού",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Αν το <0>{{attribute}}</0> είναι μεταξύ <1>{{gte}}</1> και <2>{{lte}}</2>",
@@ -1574,7 +1574,9 @@
         "rules": {
           "amount": "Τιμή επιλογής αποστολής",
           "gte": "Ελάχιστο συνολικό ποσό καλαθιού",
-          "lte": "Μέγιστο συνολικό ποσό καλαθιού"
+          "lte": "Μέγιστο συνολικό ποσό καλαθιού",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Προσαρμοσμένοι κανόνες",
@@ -1585,10 +1587,15 @@
         },
         "errors": {
           "amountRequired": "Η τιμή επιλογής αποστολής είναι υποχρεωτική",
-          "minOrMaxRequired": "Πρέπει να παρέχεται τουλάχιστον ένα από τα ελάχιστο ή μέγιστο συνολικό ποσό καλαθιού",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Το ελάχιστο συνολικό ποσό καλαθιού πρέπει να είναι μικρότερο ή ίσο με το μέγιστο συνολικό ποσό καλαθιού",
           "duplicateAmount": "Η τιμή επιλογής αποστολής πρέπει να είναι μοναδική για κάθε συνθήκη",
-          "overlappingConditions": "Οι συνθήκες πρέπει να είναι μοναδικές σε όλους τους κανόνες τιμών"
+          "overlappingConditions": "Οι συνθήκες πρέπει να είναι μοναδικές σε όλους τους κανόνες τιμών",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

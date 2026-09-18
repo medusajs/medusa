@@ -44,6 +44,7 @@ interface PrepareItemLineItemInput {
 
   raw_compare_at_unit_price?: BigNumberInput
   compare_at_unit_price?: BigNumberInput
+  unit_weight?: BigNumberInput
   unit_price?: BigNumberInput
 
   tax_lines?: LineItemTaxLineDTO[]
@@ -167,6 +168,8 @@ export function prepareLineItemData(data: PrepareLineItemDataInput) {
     requires_shipping: requiresShipping,
 
     unit_price: unitPrice,
+    unit_weight:
+      item?.unit_weight ?? variant?.weight ?? variant?.product?.weight,
     compare_at_unit_price: compareAtUnitPrice,
     is_tax_inclusive: !!isTaxInclusive,
 

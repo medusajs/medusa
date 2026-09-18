@@ -252,6 +252,18 @@ const { result } = await createShippingOptionsWorkflow(container)
             },
           ],
         },
+        // price if cart weight is 5000 or more
+        {
+          currency_code: "usd",
+          amount: 15,
+          rules: [
+            {
+              attribute: "weight_total",
+              operator: "gte",
+              value: 5000,
+            },
+          ],
+        },
       ],
     }],
   })
@@ -281,6 +293,17 @@ const priceSet = await pricingModule.addPrices({
         },
       },
     },
+    // price if cart weight is 5000 or more
+    {
+      currency_code: "usd",
+      amount: 15,
+      rules: {
+        weight_total: {
+          operator: "gte",
+          value: 5000,
+        },
+      },
+    },
   ],
 })
 ```
@@ -288,7 +311,7 @@ const priceSet = await pricingModule.addPrices({
   </CodeTab>
 </CodeTabs>
 
-In this example, you create a shipping option whose default price is `$10`. When the total of the cart or order using this shipping option is greater than `$100`, the shipping option's price becomes free.
+In this example, you create a shipping option whose default price is `$10`. When the total of the cart or order using this shipping option is greater than `$100`, the shipping option's price becomes free. When the cart's `weight_total` is `5000` or more, the shipping option's price becomes `$15`.
 
 <Note title="Price rules apply to flat-rate options only">
 
@@ -320,6 +343,29 @@ The shipping option's price is applied when the cart's `item_total` is greater t
 <Note title="What item_total represents">
 
 The cart's `item_total` is the sum of its line-item totals after discounts and including taxes. It doesn't include shipping, so it can differ from the total shown to the customer at checkout. Set the rule's `value` based on the items' total, not the cart's grand total.
+
+</Note>
+
+A cart also has a `weight_total` property, which is the sum of the weights of its items. So, if a shipping option has the following price:
+
+```json
+{
+  "currency_code": "usd",
+  "amount": 15,
+  "rules": {
+    "weight_total": {
+      "operator": "gte",
+      "value": 5000
+    }
+  }
+}
+```
+
+The shipping option's price is applied when the cart's `weight_total` is greater than or equal to `5000`.
+
+<Note title="What weight_total represents">
+
+The cart's `weight_total` is the sum of its line items' weights, where each line item's weight is its `unit_weight` multiplied by its quantity. A line item's `unit_weight` is inherited from the `weight` property of its product variant. If no weight is set on the item or its variant, Medusa calculates the line item's weight as `0`.
 
 </Note>
 

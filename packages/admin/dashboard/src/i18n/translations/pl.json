@@ -2095,9 +2095,10 @@
       },
       "conditionalPrices": {
         "header": "Ceny warunkowe dla  {{name}}",
-        "description": "Zarządzaj cenami warunkowymi dla tej opcji dostawy w zależności od łącznej wartości przedmiotów w koszyku.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Łączna wartość przedmiotów w koszyku"
+          "cartItemTotal": "Łączna wartość przedmiotów w koszyku",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Jeśli <0>{{attribute}}</0> mieści się w przedziale <1>{{gte}}</1> - <2>{{lte}}</2>",
@@ -2111,7 +2112,9 @@
         "rules": {
           "amount": "Cena opcji dostawy",
           "gte": "Minimalna łączna wartość koszyka",
-          "lte": "Maksymalna łączna wartość koszyka"
+          "lte": "Maksymalna łączna wartość koszyka",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Niestandardowe reguły",
@@ -2122,10 +2125,15 @@
         },
         "errors": {
           "amountRequired": "Cena opcji dostawy jest wymagana",
-          "minOrMaxRequired": "Należy podać co najmniej minimalną lub maksymalną wartość koszyka",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimalna wartość koszyka musi być mniejsza lub równa maksymalnej wartości koszyka",
           "duplicateAmount": "Cena opcji dostawy musi być unikalna dla każdej warunkowej reguły",
-          "overlappingConditions": "Reguły cenowe nie mogą się powielać"
+          "overlappingConditions": "Reguły cenowe nie mogą się powielać",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

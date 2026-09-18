@@ -1597,9 +1597,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}}에 대한 조건부 가격",
-        "description": "장바구니 항목 합계에 따라 이 배송 옵션에 대한 조건부 가격을 관리합니다.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "장바구니 항목 합계"
+          "cartItemTotal": "장바구니 항목 합계",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "<0>{{attribute}}</0>이(가) <1>{{gte}}</1>에서 <2>{{lte}}</2> 사이인 경우",
@@ -1613,7 +1614,9 @@
         "rules": {
           "amount": "배송 옵션 가격",
           "gte": "최소 장바구니 항목 합계",
-          "lte": "최대 장바구니 항목 합계"
+          "lte": "최대 장바구니 항목 합계",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "사용자 정의 규칙",
@@ -1624,10 +1627,15 @@
         },
         "errors": {
           "amountRequired": "배송 옵션 가격은 필수입니다",
-          "minOrMaxRequired": "최소 또는 최대 장바구니 항목 합계 중 하나 이상은 제공되어야 합니다",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "최소 장바구니 항목 합계는 최대 장바구니 항목 합계보다 작거나 같아야 합니다",
           "duplicateAmount": "배송 옵션 가격은 각 조건에 대해 고유해야 합니다",
-          "overlappingConditions": "조건은 모든 가격 규칙에서 고유해야 합니다"
+          "overlappingConditions": "조건은 모든 가격 규칙에서 고유해야 합니다",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

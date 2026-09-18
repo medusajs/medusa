@@ -1592,9 +1592,10 @@
       },
       "conditionalPrices": {
         "header": "Voorwaardelijke prijzen voor {{name}}",
-        "description": "Beheer de voorwaardelijke prijzen voor deze verzendoptie op basis van het totaalbedrag van de winkelwagen.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Totaalbedrag winkelwagen"
+          "cartItemTotal": "Totaalbedrag winkelwagen",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Als <0>{{attribute}}</0> tussen <1>{{gte}}</1> en <2>{{lte}}</2> ligt",
@@ -1608,7 +1609,9 @@
         "rules": {
           "amount": "Verzendoptieprijs",
           "gte": "Minimaal totaalbedrag winkelwagen",
-          "lte": "Maximaal totaalbedrag winkelwagen"
+          "lte": "Maximaal totaalbedrag winkelwagen",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Aangepaste regels",
@@ -1619,10 +1622,15 @@
         },
         "errors": {
           "amountRequired": "Verzendoptieprijs is vereist",
-          "minOrMaxRequired": "Minstens één van minimaal of maximaal totaalbedrag winkelwagen moet worden opgegeven",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Minimaal totaalbedrag winkelwagen moet kleiner dan of gelijk zijn aan maximaal totaalbedrag winkelwagen",
           "duplicateAmount": "Verzendoptieprijs moet uniek zijn voor elke voorwaarde",
-          "overlappingConditions": "Voorwaarden moeten uniek zijn voor alle prijsregels"
+          "overlappingConditions": "Voorwaarden moeten uniek zijn voor alle prijsregels",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2654,7 +2662,10 @@
         "placeholder": "verkeerde_maat",
         "tooltip": "De waarde moet een unieke identificatie zijn voor de retourreden."
       },
-      "label": { "label": "Label", "placeholder": "Verkeerde maat" },
+      "label": {
+        "label": "Label",
+        "placeholder": "Verkeerde maat"
+      },
       "description": {
         "label": "Beschrijving",
         "placeholder": "Klant ontving de verkeerde maat"

@@ -1622,9 +1622,10 @@
       },
       "conditionalPrices": {
         "header": "Giá theo điều kiện cho {{name}}",
-        "description": "Quản lý giá theo điều kiện cho tùy chọn vận chuyển này dựa trên tổng giá trị mục hàng trong giỏ.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Tổng giá trị mục hàng trong giỏ"
+          "cartItemTotal": "Tổng giá trị mục hàng trong giỏ",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Nếu <0>{{attribute}}</0> nằm trong khoảng từ <1>{{gte}}</1> đến <2>{{lte}}</2>",
@@ -1638,7 +1639,9 @@
         "rules": {
           "amount": "Giá tùy chọn vận chuyển",
           "gte": "Tổng giá trị tối thiểu của giỏ hàng",
-          "lte": "Tổng giá trị tối đa của giỏ hàng"
+          "lte": "Tổng giá trị tối đa của giỏ hàng",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Quy tắc tùy chỉnh",
@@ -1649,10 +1652,15 @@
         },
         "errors": {
           "amountRequired": "Giá tùy chọn vận chuyển là bắt buộc",
-          "minOrMaxRequired": "Phải cung cấp ít nhất một trong hai giá trị: tổng tối thiểu hoặc tối đa của giỏ hàng",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Tổng giá trị tối thiểu của giỏ hàng phải nhỏ hơn hoặc bằng tổng giá trị tối đa",
           "duplicateAmount": "Giá tùy chọn vận chuyển phải duy nhất cho mỗi điều kiện",
-          "overlappingConditions": "Các điều kiện phải duy nhất trong tất cả quy tắc giá"
+          "overlappingConditions": "Các điều kiện phải duy nhất trong tất cả quy tắc giá",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2697,7 +2705,10 @@
         "placeholder": "wrong_size",
         "tooltip": "Giá trị nên là một định danh duy nhất cho lý do trả hàng."
       },
-      "label": { "label": "Nhãn", "placeholder": "Kích thước sai" },
+      "label": {
+        "label": "Nhãn",
+        "placeholder": "Kích thước sai"
+      },
       "description": {
         "label": "Mô tả",
         "placeholder": "Khách hàng nhận nhầm kích thước"

@@ -965,7 +965,7 @@
   "customerGroups": {
     "domain": "客户群组",
     "subtitle": "将客户组织成群组。群组可以有不同的促销和价格。",
-   "list": {
+    "list": {
       "empty": {
         "heading": "暂无客户组",
         "description": "当前没有可显示的客户组。"
@@ -1596,9 +1596,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}} 的条件价格",
-        "description": "根据购物车商品总额管理此配送选项的条件价格。",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "购物车商品总额"
+          "cartItemTotal": "购物车商品总额",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "如果 <0>{{attribute}}</0> 在 <1>{{gte}}</1> 和 <2>{{lte}}</2> 之间",
@@ -1612,7 +1613,9 @@
         "rules": {
           "amount": "配送选项价格",
           "gte": "最低购物车商品总额",
-          "lte": "最高购物车商品总额"
+          "lte": "最高购物车商品总额",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "自定义规则",
@@ -1623,10 +1626,15 @@
         },
         "errors": {
           "amountRequired": "配送选项价格为必填项",
-          "minOrMaxRequired": "必须提供最低或最高购物车商品总额中的至少一项",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "最低购物车商品总额必须小于或等于最高购物车商品总额",
           "duplicateAmount": "每个条件的配送选项价格必须唯一",
-          "overlappingConditions": "所有价格规则中的条件必须唯一"
+          "overlappingConditions": "所有价格规则中的条件必须唯一",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -1997,7 +2005,7 @@
     "toasts": {
       "promotionCreateSuccess": "促销活动 ({{code}}) 创建成功。"
     },
-    "create": { },
+    "create": {},
     "edit": {
       "title": "编辑促销详情",
       "rules": {
@@ -2666,7 +2674,10 @@
         "placeholder": "wrong_size",
         "tooltip": "值应该是退货原因的唯一标识符。"
       },
-      "label": { "label": "标签", "placeholder": "错误尺寸" },
+      "label": {
+        "label": "标签",
+        "placeholder": "错误尺寸"
+      },
       "description": {
         "label": "描述",
         "placeholder": "客户收到错误尺寸"

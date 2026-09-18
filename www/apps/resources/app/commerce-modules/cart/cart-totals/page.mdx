@@ -65,6 +65,7 @@ export const myWorkflow = createWorkflow(
         "original_item_total",
         "original_item_subtotal",
         "original_item_tax_total",
+        "weight_total",
         "shipping_total",
         "shipping_subtotal",
         "shipping_tax_total",
@@ -301,6 +302,7 @@ The cart will include the following total fields:
 - `original_item_total`: The sum of all line items' original totals before discounts, including taxes.
 - `original_item_subtotal`: The sum of all line items' original subtotals before discounts, excluding taxes.
 - `original_item_tax_total`: The sum of all line items' original tax totals before discounts.
+- `weight_total`: The sum of all line items' weights. Each line item's weight is its `unit_weight` multiplied by its quantity.
 - `shipping_total`: The sum of all shipping methods' totals after discounts, including taxes.
 - `shipping_subtotal`: The sum of all shipping methods' subtotals before discounts, excluding taxes.
 - `shipping_tax_total`: The sum of all shipping methods' tax totals after discounts.
@@ -318,6 +320,7 @@ The cart will include the following total fields:
 The `items` array in the `cart` object contains total fields for each line item:
 
 - `unit_price`: The price of a single unit of the line item. This field is not calculated and is stored in the database.
+- `unit_weight`: The weight of a single unit of the line item, inherited from the `weight` property of its product variant. This field is not calculated and is stored in the database.
 - `subtotal`: The line item's subtotal before discounts, excluding taxes.
 - `total`: The line item's total after discounts, including taxes.
 - `original_total`: The line item's original total before discounts, including taxes.
@@ -326,6 +329,7 @@ The `items` array in the `cart` object contains total fields for each line item:
 - `discount_tax_total`: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
 - `tax_total`: The line item's tax total after discounts.
 - `original_tax_total`: The line item's original tax total before discounts.
+- `weight_total`: The line item's weight, calculated as its `unit_weight` multiplied by its quantity.
 
 ### Cart Shipping Method Totals
 

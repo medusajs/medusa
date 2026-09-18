@@ -1594,9 +1594,10 @@
       },
       "conditionalPrices": {
         "header": "Sąlyginės {{name}} kainos",
-        "description": "Nustatykite sąlygines kainas šiam siuntimo būdui priklausomai nuo krepšelio sumos.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Krepšelio suma"
+          "cartItemTotal": "Krepšelio suma",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Jei <0>{{attribute}}</0> yra tarp <1>{{gte}}</1> ir <2>{{lte}}</2>",
@@ -1610,7 +1611,9 @@
         "rules": {
           "amount": "Siuntimo kaina",
           "gte": "Mažiausia krepšelio suma",
-          "lte": "Didžiausia krepšelio suma"
+          "lte": "Didžiausia krepšelio suma",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Inividualios taisyklės",
@@ -1621,10 +1624,15 @@
         },
         "errors": {
           "amountRequired": "Siuntimo kaina privaloma",
-          "minOrMaxRequired": "Turi būti pateikta bent viena iš mažiausios ar didžiausios krepšelio sumų",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Mažiausia krepšelio suma turi būti mažesnė arba lygi didžiausiai krepšelio sumai",
           "duplicateAmount": "Siuntimo kaina turi būti unikali kiekvienai sąlygai",
-          "overlappingConditions": "Sąlygos turi būti unikaios tarp visų kainų taisyklių"
+          "overlappingConditions": "Sąlygos turi būti unikaios tarp visų kainų taisyklių",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {
@@ -2656,7 +2664,10 @@
         "placeholder": "klaidingas_dydis",
         "tooltip": "Vertė turėtų būti unikalus grąžinimo priežasties identifikatorius."
       },
-      "label": { "label": "Antraštė", "placeholder": "Klaidingas dydis" },
+      "label": {
+        "label": "Antraštė",
+        "placeholder": "Klaidingas dydis"
+      },
       "description": {
         "label": "Aprašymas",
         "placeholder": "Klientas gavo netinkamą dydį"
