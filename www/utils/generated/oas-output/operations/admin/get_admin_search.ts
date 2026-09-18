@@ -1,29 +1,32 @@
 /**
  * @oas [get] /admin/search
  * operationId: GetSearch
- * summary: List Search
- * description: Retrieve a list of search. The search can be filtered by fields such as `id`. The search can also be sorted or paginated.
+ * summary: Search Admin
+ * description: Search entities that have a search index and are defined as search entities in the Medusa Admin.
+ * externalDocs:
+ *   description: Medusa Admin Search
+ *   url: "https://docs.medusajs.com/resources/infrastructure-modules/search/admin-search"
  * x-authenticated: true
  * parameters:
  *   - name: q
  *     in: query
- *     description: The search's q.
+ *     description: A query to run full-text search against the search index.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The search's q.
+ *       description: A query to run full-text search against the search index.
  *   - name: entity
  *     in: query
- *     description: The search's entity.
+ *     description: The entities to run the search against.
  *     required: false
  *     schema:
  *       type: array
- *       description: The search's entity.
+ *       description: The entities to run the search against.
  *       items:
  *         type: string
  *         title: entity
- *         description: The entity's details.
+ *         description: The name of the entity.
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -80,16 +83,16 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The search results for the requested entities.
  *           required:
  *             - results
  *           properties:
  *             results:
  *               type: array
- *               description: In the order the entities were requested.
+ *               description: The search results for each entity, in the order the entities were requested.
  *               items:
  *                 type: object
- *                 description: The result's results.
+ *                 description: The search result for a specific entity.
  *                 required:
  *                   - entity
  *                   - data
@@ -100,25 +103,25 @@
  *                   entity:
  *                     type: string
  *                     title: entity
- *                     description: The result's entity.
+ *                     description: The name of the entity the search result belongs to.
  *                   data:
  *                     type: array
  *                     description: The documents the index holds, in relevance order.
  *                     items:
  *                       type: object
- *                       description: The datum's data.
+ *                       description: The document returned by the search index.
  *                   count:
  *                     type: number
  *                     title: count
- *                     description: Treat as an estimate — most engines only approximate a total.
+ *                     description: An estimate of the total number of documents matching the search query.
  *                   offset:
  *                     type: number
  *                     title: offset
- *                     description: The result's offset.
+ *                     description: The number of documents to skip before returning results.
  *                   limit:
  *                     type: number
  *                     title: limit
- *                     description: The result's limit.
+ *                     description: The maximum number of documents to return in the result set.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,0 +1,475 @@
+import { Note, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Search API Settings`,
+  keywords: [
+    "search",
+    "medusa search",
+    "settings",
+    "typo tolerance",
+    "provider options",
+    "search options",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the settings and options that [Medusa Search](../page.mdx) supports on indexes, fields, and queries.
+
+Aside from the fields and settings that every [index definition](!resources!/infrastructure-modules/search/index-definitions) declares, Medusa Search supports settings and options of its own.
+
+## Index Settings
+
+Set the `settings` property of an index definition to configure how Medusa Search treats the whole index.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable(),
+    brand: search.keyword().filterable(),
+  }),
+  settings: {
+    distinct_attribute: "brand",
+    provider_options: {
+      "search-medusa": {
+        distance_metric: "cosine_distance",
+      },
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The example declares two settings for the `product` index to control result deduplication and provider-specific options.
+
+Medusa Search accepts the following index settings:
+
+<TypeList
+  types={[
+    {
+      name: "distinct_attribute",
+      type: "`string`",
+      optional: true,
+      description: `The dotted path of a field that Medusa Search deduplicates hits by, returning at most one hit per distinct value. A query that passes its own \`distinct\` search option overrides it.`,
+    },
+    {
+      name: "provider_options",
+      type: "`object`",
+      optional: true,
+      description: `The settings of a specific search engine, keyed by the provider's identifier. Medusa Search reads the \`search-medusa\` entry and ignores the rest.`,
+      children: [
+        {
+          name: "search-medusa",
+          type: "`object`",
+          optional: true,
+          description: `The settings that only Medusa Search understands.`,
+          children: [
+            {
+              name: "distance_metric",
+              type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+              optional: true,
+              description: `The metric that vector search uses to compare embeddings. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts. A [vector field](#field-options) can override it for itself.`,
+              defaultValue: "cosine_distance",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "typo_tolerance",
+      type: "`object`",
+      optional: true,
+      description: `The thresholds Medusa Search applies when it matches a misspelled term, and the fields it must never fuzzy-match. Refer to [Typo Tolerance](#typo-tolerance) for an example.`,
+      children: [
+        {
+          name: "enabled",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search builds a fuzzy index for the index's searchable fields. Set it to \`false\` to keep the index smaller when no query needs typo tolerance.`,
+          defaultValue: "true",
+        },
+        {
+          name: "min_word_size_for_one_typo",
+          type: "`number`",
+          optional: true,
+          description: `The shortest term length that tolerates a single typo.`,
+          defaultValue: "6",
+        },
+        {
+          name: "min_word_size_for_two_typos",
+          type: "`number`",
+          optional: true,
+          description: `The shortest term length that tolerates two typos. It can't be lower than \`min_word_size_for_one_typo\`.`,
+          defaultValue: "9",
+        },
+        {
+          name: "disabled_on_attributes",
+          type: "`string[]`",
+          optional: true,
+          description: `The dotted paths of the fields that must always match exactly, such as a SKU or a serial number where a single character changes the meaning.`,
+          defaultValue: "[]",
+        },
+      ],
+    },
+  ]}
+  sectionTitle="Index Settings"
+  openedLevel={1}
+/>
+
+The example above sets `distinct_attribute` and `provider_options`. The section below covers `typo_tolerance`, which has a few properties of its own.
+
+### Typo Tolerance
+
+Medusa Search matches misspelled terms with a fuzzy index that it builds on every searchable field by default, so an index tolerates typos without declaring any setting. A query is the opposite: it matches terms exactly until you opt in, as explained in [Opt a Query Into Typo Tolerance](#opt-a-query-into-typo-tolerance).
+
+Set the `typo_tolerance` index setting to change the thresholds Medusa Search applies, to exempt a field, or to turn the fuzzy index off:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    title: search.text().searchable(),
+    sku: search.keyword().searchable(),
+  }),
+  settings: {
+    typo_tolerance: {
+      min_word_size_for_one_typo: 6,
+      min_word_size_for_two_typos: 9,
+      disabled_on_attributes: ["sku"],
+    },
+  },
+  async *seed({ container }) {
+    // ...
+  },
+})
+```
+
+The example tolerates a typo on a term of six characters or more, two typos from nine characters, and never fuzzy-matches `sku`. Refer to [Index Settings](#index-settings) for every property the setting accepts.
+
+#### Opt a Query Into Typo Tolerance
+
+The setting only prepares the index. Every query matches terms exactly until you pass the [`typo_tolerance` search option](!docs!/learn/fundamentals/query/search#search-options):
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshrit" },
+  search_options: {
+    typo_tolerance: true,
+  },
+})
+```
+
+Medusa Search ranks a fuzzy match below every exact match, so enabling the option adds results rather than reordering the ones you already had.
+
+<Note>
+
+The option only widens a term match, so Medusa Search ignores it when the query passes no `q` filter, or when none of the fields it searches has a fuzzy index.
+
+</Note>
+
+---
+
+## Field Options
+
+Use a field's [`providerOptions()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#provideroptions) modifier to configure how Medusa Search indexes that field.
+
+For example:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  fields: search.define({
+    title: search.text().searchable().providerOptions({
+      "search-medusa": {
+        glob: true,
+      },
+    }),
+    // ...
+  }),
+  // ...
+})
+```
+
+Medusa Search reads the following field options:
+
+<TypeList
+  types={[
+    {
+      name: "full_text_search",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The full-text search configuration of a searchable field. Pass \`true\` to keep the defaults, or an object to change how Medusa Search tokenizes the field, such as its language. Refer to [Set a Field's Language](#set-a-fields-language) for an example.`,
+      defaultValue: "true for a searchable field, and unset otherwise",
+      children: [
+        {
+          name: "language",
+          type: "`string`",
+          optional: true,
+          description: `The language Medusa Search analyzes the field with, in lowercase. It decides the stemmer and the stop-word list the field uses, and it applies only when you also enable \`stemming\` or \`remove_stopwords\`. Refer to [Set a Field's Language](#set-a-fields-language) for the languages it accepts.`,
+          defaultValue: "english",
+        },
+        {
+          name: "stemming",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search reduces a term to its stem, so a query for \`banken\` also matches \`bank\`. It stems the field in the language that \`language\` names, so set both together.`,
+          defaultValue: "false",
+        },
+        {
+          name: "remove_stopwords",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search drops the language's common words, such as \`de\` in Dutch, from the field and from a query that searches it. Arabic, Greek, Romanian, Tamil, and Turkish have no stop-word list.`,
+          defaultValue: "false",
+        },
+        {
+          name: "ascii_folding",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search strips accents, so a query for \`muller\` matches \`müller\`. Enable it for a language written in Latin script with diacritics, such as French or Spanish.`,
+          defaultValue: "false",
+        },
+        {
+          name: "case_sensitive",
+          type: "`boolean`",
+          optional: true,
+          description: `Whether Medusa Search keeps the case of a term, so a query only matches a term written the same way.`,
+          defaultValue: "false",
+        },
+        {
+          name: "max_token_length",
+          type: "`number`",
+          optional: true,
+          description: `The longest term Medusa Search indexes from the field, in bytes, between \`1\` and \`254\`. It drops anything longer, which keeps a field of long identifiers from growing the index.`,
+          defaultValue: "39",
+        },
+      ],
+    },
+    {
+      name: "glob",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can wildcard-match the field's exact value, which the \`$prefix\` and \`$like\` filters need. Medusa Search always omits it on the \`id\` field.`,
+      defaultValue: "true for a filterable, sortable, or facetable keyword field, and false for a text field",
+    },
+    {
+      name: "regex",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether Medusa Search can match the field with a regular expression.`,
+      defaultValue: "false",
+    },
+    {
+      name: "ann",
+      type: "`boolean` \\| `object`",
+      optional: true,
+      description: `The approximate nearest neighbor configuration of a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector). Pass \`true\` to keep the defaults, or an object to override the index's metric for this field.`,
+      defaultValue: "true for a vector field, and unset otherwise",
+      children: [
+        {
+          name: "distance_metric",
+          type: "`\"cosine_distance\"` \\| `\"euclidean_squared\"`",
+          optional: true,
+          description: `The metric that vector search uses for this field. \`cosine_distance\` compares the direction of two embeddings while ignoring their magnitude, which suits normalized embeddings from a text model. \`euclidean_squared\` compares their straight-line distance, so magnitude counts.`,
+          defaultValue: "The index's `distance_metric` setting",
+        },
+      ],
+    },
+  ]}
+  sectionTitle="Field Options"
+/>
+
+### Set a Field's Language
+
+Medusa Search matches a searchable field term by term, and it doesn't stem those terms until you ask it to. Set the field's `language` along with `stemming` so a query matches the other forms of a word, which matters for a catalog whose titles and descriptions aren't in English.
+
+For example, to analyze a Dutch title and a German one:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_nl: search.text().searchable().providerOptions({
+      "search-medusa": {
+        full_text_search: {
+          language: "dutch",
+          stemming: true,
+          remove_stopwords: true,
+        },
+      },
+    }),
+    title_de: search.text().searchable().providerOptions({
+      "search-medusa": {
+        full_text_search: {
+          language: "german",
+          stemming: true,
+          remove_stopwords: true,
+        },
+      },
+    }),
+  }),
+  async *seed({ container, catchup, last_key: lastKey }) {
+    const batchSize = 200
+    let cursor = lastKey
+
+    while (true) {
+      const { data: products } = await container.query
+        .graph({
+          entity: "product",
+          fields: [
+            "id",
+            "title",
+            "updated_at",
+            "deleted_at",
+          ],
+          filters: {
+            ...(catchup
+              ? { updated_at: { $gte: catchup.since } }
+              : {}),
+            ...(cursor ? { id: { $gt: cursor } } : {}),
+          },
+          pagination: {
+            take: batchSize,
+            order: { id: "ASC" },
+          },
+          withDeleted: !!catchup,
+        })
+
+      if (!products.length) {
+        return
+      }
+
+      const live = products.filter((p) => !p.deleted_at)
+      const gone = products.filter((p) => !!p.deleted_at)
+      const ids = live.map((p) => p.id)
+
+      const [nlTitles, deTitles] = await Promise.all(
+        ["nl-NL", "de-DE"].map(async (locale) => {
+          const { data } = await container.query.graph({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { id: ids },
+          }, { locale })
+
+          return new Map(
+            data.map((p) => [p.id, p.title])
+          )
+        })
+      )
+
+      yield [
+        ...(live.length
+          ? [{
+              action: "upsert" as const,
+              documents: live.map((product) => ({
+                id: product.id,
+                title_nl:
+                  nlTitles.get(product.id) ?? product.title,
+                title_de:
+                  deTitles.get(product.id) ?? product.title,
+              })),
+            }]
+          : []),
+        ...(gone.length
+          ? [{
+              action: "delete" as const,
+              filters: { id: gone.map((p) => p.id) },
+            }]
+          : []),
+      ]
+
+      if (products.length < batchSize) {
+        return
+      }
+
+      cursor = products[products.length - 1].id
+    }
+  },
+})
+```
+
+The `seed` function reads each page of products once per locale with Query's `locale` option, then writes each locale's title to its own field. It falls back to the product's stored title when a locale has no translation. It also pages by ID so an interrupted run resumes, and yields a `delete` write for the products the [catch-up pass](!resources!/infrastructure-modules/search/index-definitions#handle-the-catch-up-pass) finds deleted.
+
+A Dutch query for `banken` now matches a product whose title holds `bank`, and a German query for `stühle` matches `Stuhl`.
+
+### Supported Languages in Medusa Search
+
+Medusa Search stems the following languages:
+
+- `arabic` (no stop-word list)
+- `danish`
+- `dutch`
+- `english`
+- `finnish`
+- `french`
+- `german`
+- `greek` (no stop-word list)
+- `hungarian`
+- `italian`
+- `norwegian`
+- `portuguese`
+- `romanian` (no stop-word list)
+- `russian`
+- `spanish`
+- `swedish`
+- `tamil` (no stop-word list)
+- `turkish` (no stop-word list)
+
+`remove_stopwords` has no effect on the languages marked above with `(no stop-word list)`. For a language written in Latin script with diacritics, such as French or Spanish, also set `ascii_folding` so a query without the accents still matches.
+
+A field holds one language, since it holds one string. To search a catalog in more than one market, declare a field per locale as explained in [Search Text in Multiple Locales](!resources!/infrastructure-modules/search/index-definitions/fields#search-text-in-multiple-locales), then pass the `attributes_to_search_on` search option to search the field of the shopper's locale.
+
+<Note>
+
+Configure the language on the index's fields rather than per query. Medusa Search rejects a query that passes the `locales` search option.
+
+</Note>
+
+---
+
+## Search Query Options
+
+Pass `provider_options` to [query.search options](!docs!/learn/fundamentals/query/search#search-options) to change how Medusa Search runs that query.
+
+For example:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: { q: "sweatshirt" },
+  search_options: {
+    provider_options: {
+      "search-medusa": {
+        consistency: "eventual",
+      },
+    },
+  },
+})
+```
+
+Medusa Search reads one query option, `consistency`, which accepts the following values:
+
+<TypeList
+  types={[
+    {
+      name: "consistency",
+      type: "`\"strong\"` \\| `\"eventual\"`",
+      optional: true,
+      description: `How current the index must be for this query. \`strong\` searches every write made before the query started, so the query reflects a write you made moments ago. \`eventual\` skips that check and can miss the latest writes, which makes the query faster.`,
+      defaultValue: "strong",
+    },
+  ]}
+  sectionTitle="Query Options"
+/>

@@ -1,0 +1,118 @@
+# InstantSearch Adapter
+
+You are an AI coding agent. The prompt below adds a product search experience to a Medusa storefront with the [`@medusajs/instantsearch-adapter`](https://www.npmjs.com/package/@medusajs/instantsearch-adapter) package. Follow it end-to-end in the user's storefront.
+
+The storefront needs the [Search Module](../infrastructure-modules/search/page.mdx) configured with a provider, and Medusa v2.21.1 or later. A storefront installed with Medusa v2.21.1 or later already has this search experience, so confirm with the user whether to customize what's there before you add a second one.
+
+```md title="Integration Prompt" noLineNumbers
+<role>
+You are a front-end engineer integrating search into an existing Medusa storefront. You work within the storefront's current framework, conventions, and styling rather than introducing new ones.
+</role>
+
+<task>
+Add a product search experience to this storefront using the `@medusajs/instantsearch-adapter` package.
+</task>
+
+<context>
+- Medusa's Search Module indexes data in a search engine and serves queries with filters, facets, sorting, and pagination.
+- Medusa exposes a `/store/search` API route that searches any index of the Medusa application, so you don't create a route for product search. An index is only reachable through it once the Medusa application allows it with the `allowSearchIndexes` middleware, and the route applies no scoping of its own: narrowing a query to a sales channel or to published documents is a middleware in the Medusa application, never the storefront.
+- `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/search`, and converts the results back.
+- InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
+- Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
+- A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
+- A range or stats widget needs the field listed in the search client's `numericAttributes` option, on top of being `facetable({ types: ["stats"] })` in the index definition. Without it, the adapter asks for value facets instead of stats, so the widget never receives `facets_stats` and renders no bounds.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+</context>
+
+<input>
+You have access to the storefront's codebase. Before writing code, determine from it:
+- The framework and package manager in use.
+- Whether a Medusa JS SDK instance already exists, and where.
+- The environment variables holding the Medusa backend URL and publishable API key.
+- The components the search will live in or next to, and the UI primitives the storefront already depends on.
+- The fields the `product` search index holds, from the Medusa application's index definition if it's available.
+</input>
+
+<steps>
+1. Ask the user where the search should live and how it should behave. Offer the common shapes and let them pick or describe their own:
+   - A control in the navbar that opens a panel, such as a drawer or a modal.
+   - A field in the navbar that shows results in a dropdown beneath it.
+   - A dedicated search page with the results as the page body.
+   Ask in the same message which parts of the search they want beyond the field and the results, such as filters, sorting, or pagination. Don't start writing code until they answer.
+2. Install `@medusajs/instantsearch-adapter` and the InstantSearch library matching the storefront's framework, using the storefront's package manager. Install `@medusajs/js-sdk` only if the storefront doesn't already have it.
+3. Create the search client in a shared module, such as `src/lib/search-client.ts`. Pass the existing JS SDK instance if there is one; otherwise create one from the storefront's backend URL and publishable API key environment variables. Set `path` to `/store/search`, and export the index name as a constant so the UI never repeats the string.
+4. Export the client from a shared module, so every search surface in the storefront uses the same one.
+5. Build the search UI in the shape the user chose, with one `InstantSearch` provider wrapping the field, the results, and any other search widgets.
+6. Render each result with the storefront's existing product card or link pattern, using only fields the index holds.
+7. Make the search feel responsive: debounce the query so a burst of typing sends one request rather than one per keystroke, and keep the results already on screen while the next search runs.
+8. Keep the previous results on screen, with one exception: results fetched for the empty query, once the customer has typed. The empty query matches every document, so those "previous results" are the entire index, and rendering them flashes the whole catalogue the moment the first real query goes out. Gate on that case alone, from the query the visible results were fetched for and whether there's input, such as `hasInput && !resultsQuery`. Don't treat every mismatch between the results' query and the query last sent as stale: after a debounce the two differ on nearly every keystroke, so an equality check blanks the list as the customer types, which is the flicker step 7 forbids. Leave a comment on the gate saying which case it covers, so nobody widens it later.
+9. Give every state its own treatment: no query yet, results, no results, and a failed search. An empty list must never stand in for any of the others. Add an in-flight treatment, such as a spinner or skeleton, only for the case where there's nothing valid to show: the first search of a session, or the empty-query results that step 8 gates out. While a search runs over results that are still valid, leave those results on screen; a loading state that replaces them is the flicker step 7 avoids, and it barely appears in practice.
+10. Place the finished component where the user asked for it.
+11. Report what you changed and how to test it.
+</steps>
+
+<constraints>
+- Never decide the search's placement or interaction yourself. That's the user's call in step 1.
+- Never render the empty query's hits once the customer has typed.
+- Never blank the results because the query moved on. Only the empty query's results are stale.
+- Never place a filter in the storefront that exists to protect data. Customers can change anything the client sends.
+- Never hardcode the publishable API key, the backend URL, or the index name. Read the first two from environment variables and the third from the exported constant.
+- Never invent index field names. Use only fields you confirmed in an index definition or in a search response.
+- Never add these widgets, as the adapter doesn't support them: `geoSearch`, Insights and Analytics widgets, Query Rules, related-items widgets, autocomplete, vector-search widgets, and Algolia `filters` strings.
+- Never add a CSS framework, component library, state-management library, or UI primitive that the storefront doesn't already use. Style the search with the storefront's existing approach.
+- Never create more than one search client or more than one `InstantSearch` provider for the same search.
+- Never modify the Medusa application's `/store/search` route.
+- Never create a custom API route for an index that `/store/search` already serves. Report to the user instead when an index isn't allowed on it, so they add it to the `allowSearchIndexes` middleware.
+</constraints>
+
+<error_handling>
+- If the user doesn't answer step 1, ask again rather than picking a placement. It's the decision the rest of the work depends on.
+- If you can't determine the storefront's framework, ask the user instead of guessing.
+- If the chosen shape needs a UI primitive the storefront doesn't have, ask the user before installing a library.
+- If no index definition is available, ask the user which fields the index holds. Don't infer field names from the storefront's product types.
+- If a search request answers with "No search index named \"product\"", the index isn't allowed on the route. Ask the user to add it to the `allowSearchIndexes` middleware in their Medusa application rather than working around it.
+- If the search request fails at runtime, surface the error in the UI and report the status code and response body. Don't fall back to an empty state that hides it.
+- If the storefront already has a search implementation, ask whether to replace it or add alongside it before changing any file.
+- If a range or stats widget renders no bounds, add the field to the search client's `numericAttributes` and report that the index definition needs `facetable({ types: ["stats"] })`. Don't remove the widget silently.
+- If the work needs migrations in the Medusa application, ask the user to run `npx medusa db:migrate` themselves. The command can end in an interactive prompt to sync module links, so it hangs when you run it unattended.
+</error_handling>
+
+<output_format>
+Report in this structure:
+
+## Approach
+The placement and behavior the user chose, in one or two sentences.
+
+## Changes
+A list of the files you created or modified, each with a one-line description.
+
+## Setup
+Any environment variables the user must set, and any command they must run.
+
+## How to Test
+Numbered steps that end in an observable result, including one that types a query from an empty search and confirms the full catalogue never flashes before the matches, and one that keeps typing and confirms the list never blanks between keystrokes.
+
+## Skipped
+Any widget or feature you left out, each with the reason. Write "None" if there are none.
+</output_format>
+
+<success_criteria>
+- The search is placed and behaves the way the user described in step 1.
+- Typing shows matching products, and the previous results stay on screen until the new ones arrive.
+- Typing the first query from an empty search never flashes results from the empty query.
+- Typing further characters never blanks the list. The previous matches stay until the new ones arrive.
+- A burst of typing sends one search request, not one per character.
+- Each of the four states in step 9 shows something distinct from the others, and the in-flight treatment only appears when no valid results are on screen.
+- A failed search shows an error message rather than an empty list.
+- Every field referenced in the code exists in a search index definition.
+- The storefront builds and type-checks with no new errors.
+</success_criteria>
+```
+
+---
+
+## Reference
+
+- [Filtering, Sorting, and Pagination](./examples/filtering-sorting-pagination/page.mdx): the prompt and guide for refining the results this search returns.
+- [Search Module](../infrastructure-modules/search/page.mdx): the module that indexes the data and serves the queries, including [index definitions](../infrastructure-modules/search/index-definitions/page.mdx) and the field modifiers a widget requires.
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind the `/store/search` route, for a custom route that reshapes a search result.

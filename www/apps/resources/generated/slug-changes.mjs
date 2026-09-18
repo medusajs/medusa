@@ -8130,6 +8130,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json"
   },
   {
+    "origSlug": "/references/search/interfaces/search.ISearchModuleService",
+    "newSlug": "/references/search/service",
+    "filePath": "/www/apps/resources/references/search/interfaces/search.ISearchModuleService/page.json"
+  },
+  {
+    "origSlug": "/references/search_provider/classes/search_provider.AbstractSearchProviderService",
+    "newSlug": "/references/search/provider",
+    "filePath": "/www/apps/resources/references/search_provider/classes/search_provider.AbstractSearchProviderService/page.json"
+  },
+  {
     "origSlug": "/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration",
     "newSlug": "/references/settings/clearActiveViewConfiguration",
     "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration/page.json"

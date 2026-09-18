@@ -1,0 +1,232 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Index Data from a Linked Module`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to include a linked module's data in a [search index definition](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+An index isn't limited to the fields of its own `entity`. [Query](!docs!/learn/fundamentals/query) resolves [module links](!docs!/learn/fundamentals/module-links), so `graphSeed` and `graphConsume` can select a linked module's fields with the same dotted paths that `query.graph` accepts.
+
+The examples in this section index products along with the brand each product is linked to, using the [custom Brand Module](!docs!/learn/customization/custom-features/module) and the [product-brand link](!docs!/learn/customization/extend-features/define-link) from the Medusa documentation.
+
+## Select and Declare the Linked Fields
+
+To hold a linked module's data in the index:
+
+1. Select the linked fields in `graphSeed` and `graphConsume`, the way you'd select them in `query.graph`. For example, `brand.name`.
+2. Declare them in the index's `fields` with `search.object`, mirroring the shape `query.graph` returns.
+
+For example, create the file `src/search/product.ts` with the following content:
+
+export const linkedHighlights = [
+  ["13", `"brand.name"`, "Select the linked brand's name through Query."],
+  ["23", "brand", "Declare the linked data as an object field."],
+  ["25", "name", "Each leaf carries its own modifiers."],
+]
+
+```ts title="src/search/product.ts" highlights={linkedHighlights}
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const fields = [
+  "id",
+  "title",
+  "status",
+  "brand.id",
+  "brand.name",
+]
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    status: search.keyword().filterable(),
+    brand: search.object({
+      id: search.keyword().filterable(),
+      name: search
+        .keyword()
+        .searchable()
+        .filterable()
+        .facetable(),
+    }),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume({ fields }),
+  seed: graphSeed({ fields }),
+})
+```
+
+`query.graph` returns a linked brand as a nested object, so an indexed document has the following shape:
+
+```json
+{
+  "id": "1",
+  "title": "Product Title",
+  "status": "active",
+  "brand": {
+    "id": "10",
+    "name": "Acme",
+  },
+}
+```
+
+Refer to [Search Index Fields](../fields/page.mdx) for every field type and modifier.
+
+The [Store Search API route](!api!/store/search/search-indexes) resolves the index by the `entity` a query names, so the fields you add to your `product` index become available to storefront searches. Refer to [Search Products](../../page.mdx#search-products) for how to query it.
+
+---
+
+## Reference Nested Fields by Their Full Path
+
+The search engine flattens an object field into its leaves, each keyed by its dotted path, such as `brand.name`. Filters, facets, and sorting take that path as a string key.
+
+For example, to filter and facet products by their linked brand's name:
+
+```ts
+const { data: products } = await query.search({
+  entity: "product",
+  fields: ["id", "title", "brand.name"],
+  filters: {
+    q: "shirt",
+    "brand.name": "Acme",
+  },
+  search_options: {
+    facets: ["brand.name"],
+  },
+})
+```
+
+Keep the following in mind when you filter, facet, or sort on nested fields:
+
+- The object itself isn't a field. Only the leaves are indexed, so `brand` is not something you can filter on. A filter on it throws `Unknown filter field "brand"`.
+- Put the full path in the filter's key, not in its value. `{ "brand.name": "Acme" }` works, whereas `{ brand: { name: "Acme" } }` throws the same error, since the provider reads a nested object as an operator map.
+- A leaf must be declared, and it must carry the modifier for what you're doing with it. Filtering on `brand.name` requires `filterable()` on that leaf, faceting requires `facetable()`, and sorting requires `sortable()`.
+
+---
+
+## Keep the Index Current When Linked Data Changes
+
+Changing a brand doesn't emit a product event, so a product's document keeps the brand name it was indexed with until something re-ingests that product. The same is true when a link is created or removed, which emits no event at all.
+
+You can ensure the index stays current when a brand is updated by:
+
+1. [Emit the brand update event in the workflow updating it](!docs!/learn/fundamentals/events-and-subscribers/emit-event#emit-event-in-a-workflow).
+2. Pass the brand update event to the product index's `events` array so it can trigger the `consume` function and re-ingest the affected products.
+3. Implement the `consume` function to handle the brand update event, resolve the affected products, and re-ingest them.
+
+For example, to pass the brand update event to the product index and handle it in the `consume` function:
+
+export const linkedConsumeHighlights = [
+  ["8", "consumeProducts", "The helper still handles product events."],
+  ["19", "startsWith", "Route a product event to the helper as-is."],
+  ["24", "graph", "Read the products linked to the changed brand."],
+  ["35", `"product.updated"`, "Re-ingest them as if each had changed."],
+]
+
+```ts title="src/search/product.ts" highlights={linkedConsumeHighlights}
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const consumeProducts = graphConsume({ fields })
+
+export const productIndex = defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "brand.updated",
+  ],
+  async consume(event, context) {
+    if (event.name.startsWith("product.")) {
+      return await consumeProducts(event, context)
+    }
+
+    const { data: brands } = await context.container
+      .query.graph({
+        entity: "brand",
+        fields: ["products.id"],
+        filters: { id: event.data.id },
+      })
+
+    const ids = brands[0]?.products?.map(
+      (product) => product.id
+    ) ?? []
+
+    return await consumeProducts(
+      { name: "product.updated", data: { id: ids } },
+      context
+    )
+  },
+  seed: graphSeed({ fields }),
+})
+```
+
+You use `graphConsume` to handle product events. For brand updates, you manually resolve the affected products and re-ingest them as `product.updated` events.
+
+### Re-Ingest a Product After a Link Change
+
+Creating or removing a link doesn't emit an event either, so nothing tells the index that a product's brand changed. To keep the index current, [emit your own event in the workflow that changes the link](!docs!/learn/fundamentals/events-and-subscribers/emit-event#emit-event-in-a-workflow), then handle it in `consume` as you do the brand update event.
+
+For example, , add the event to the index's `events` array and handle it in `consume`:
+
+export const linkConsumeHighlights = [
+  ["8", `"product-brand.linked"`, "Receive the event you emit in the workflow."],
+  ["17", "product_id", "Re-ingest the product the link changed for."],
+]
+
+```ts title="src/search/product.ts" highlights={linkConsumeHighlights}
+export const productIndex = defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "brand.updated",
+    "product-brand.linked",
+  ],
+  async consume(event, context) {
+    // ...
+
+    if (event.name === "product-brand.linked") {
+      return await consumeProducts(
+        {
+          name: "product.updated",
+          data: { id: event.data.product_id },
+        },
+        context
+      )
+    }
+
+    // ... handle brand.updated
+  },
+})
+```
+
+This example assumes the event carries the product's ID. You re-ingest it as a `product.updated` event, which rebuilds the document with the brand it's now linked to.

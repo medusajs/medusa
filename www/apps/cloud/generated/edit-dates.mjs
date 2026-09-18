@@ -1,5 +1,5 @@
 export const generatedEditDates = {
-  "app/page.mdx": "2026-08-18T10:56:03.216Z",
+  "app/page.mdx": "2026-08-24T08:32:30.163Z",
   "app/projects/page.mdx": "2026-08-21T15:14:45.744Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
@@ -11,7 +11,7 @@ export const generatedEditDates = {
   "app/logs/page.mdx": "2026-05-06T11:31:50.584Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
-  "app/environments/environment-variables/page.mdx": "2026-08-20T14:16:06.046Z",
+  "app/environments/environment-variables/page.mdx": "2026-08-24T08:30:03.756Z",
   "app/environments/long-lived/page.mdx": "2026-08-20T14:18:33.431Z",
   "app/environments/preview/page.mdx": "2026-08-20T14:19:55.598Z",
   "app/faq/page.mdx": "2026-08-19T07:25:11.579Z",
@@ -28,7 +28,7 @@ export const generatedEditDates = {
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
   "app/user/page.mdx": "2026-06-08T13:04:35.724Z",
   "app/deployments/access/page.mdx": "2026-04-08T16:20:22.886Z",
-  "app/projects/prerequisites/page.mdx": "2026-07-31T14:07:34.447Z",
+  "app/projects/prerequisites/page.mdx": "2026-09-15T06:43:04.034Z",
   "app/storefront/page.mdx": "2026-07-28T05:57:46.335Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
   "app/environments/custom-domains/page.mdx": "2026-08-20T14:17:04.024Z",
@@ -67,5 +67,16 @@ export const generatedEditDates = {
   "app/assistant/page.mdx": "2026-08-18T10:54:48.592Z",
   "app/projects/log-drains/page.mdx": "2026-08-21T12:38:31.597Z",
   "app/status/page.mdx": "2026-08-19T07:28:02.802Z",
-  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z"
+  "app/search/page.mdx": "2026-09-18T12:55:41.152Z",
+  "app/search/algolia/page.mdx": "2026-09-15T13:24:24.909Z",
+  "app/search/meilisearch/page.mdx": "2026-09-15T13:24:24.909Z",
+  "app/search/postgres/page.mdx": "2026-09-15T13:24:24.908Z",
+  "app/search/migrate-from-algolia/page.mdx": "2026-09-18T07:42:43.197Z",
+  "app/search/migrate-from-meilisearch/page.mdx": "2026-09-18T07:42:43.197Z",
+  "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z",
+  "app/search/comparison/page.mdx": "2026-09-15T07:53:53.177Z",
+  "app/search/semantic-search/page.mdx": "2026-09-15T13:49:16.750Z",
+  "app/search/settings/page.mdx": "2026-09-15T14:15:52.704Z",
+  "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
+  "app/search/analytics/page.mdx": "2026-09-18T13:19:13.326Z"
 }
