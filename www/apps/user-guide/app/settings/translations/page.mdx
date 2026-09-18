@@ -49,6 +49,8 @@ Alternatively, you can manage translations for individual resources directly fro
 
 ## Manage Translations in Bulk
 
+<PermissionsBadge permissions={["translation:create", "translation:update", "translation:delete"]} />
+
 In the Translations settings page, you can view and manage translations in bulk for various core and custom resources in your store, including products and variants.
 
 <Note>
@@ -68,9 +70,17 @@ For example, to manage product translations in bulk:
 
 Customers will then see the translated content in the storefront based on their selected locale.
 
+<Note>
+
+With only the `translation:read` policy, you can open the bulk editor in view mode, but the inputs are disabled and the save actions are hidden. To edit and save translations, you need the `translation:create`, `translation:update`, and `translation:delete` policies.
+
+</Note>
+
 ---
 
 ### Manage Translatable Resources
+
+<PermissionsBadge permissions={["translation_setting:create", "translation_setting:update", "translation_setting:delete"]} />
 
 <Prerequisites
   items={[
@@ -109,6 +119,8 @@ To manage translatable resources and their fields:
 ---
 
 ## View Translation Statistics
+
+<PermissionsBadge permissions={["translation:read"]} />
 
 Each resource row in the Translations settings page displays how many fields have been translated out of the total translatable fields for that resource.
 

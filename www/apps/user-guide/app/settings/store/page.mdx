@@ -25,6 +25,8 @@ In this guide, you’ll learn how to edit the store’s details and available cu
 
 ## View Store Details
 
+<PermissionsBadge permissions={["store:read"]} />
+
 To view your store's details, go to Settings → Store. There, you can view and manage the store's details and its available currencies.
 
 ![Store Details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739962494/User%20Guide/Screenshot_2025-02-19_at_12.54.00_PM_eozum8.png)
@@ -32,6 +34,8 @@ To view your store's details, go to Settings → Store. There, you can view and 
 ---
 
 ## Edit Store Details
+
+<PermissionsBadge permissions={["store:update"]} />
 
 To edit the store’s details:
 
@@ -51,6 +55,8 @@ Your store can support multiple currencies, allowing customers to view prices in
 
 ### Add Currencies
 
+<PermissionsBadge permissions={["store:update", "currency:read"]} />
+
 To add currencies to your store:
 
 1. Go to Settings → Store.
@@ -64,6 +70,8 @@ To add currencies to your store:
 
 ### Edit Tax-Inclusive Setting for Currency
 
+<PermissionsBadge permissions={["store:update"]} />
+
 In the store's settings, you can also manage a currency's tax-inclusive price setting. During checkout, after Medusa calculates the tax of a product or shipping, it will either:
 
 - Add the tax to the product's price (tax-exclusive pricing).
@@ -76,6 +84,8 @@ You can manage whether a currency uses tax-inclusive pricing when adding or edit
 3. Choose "Enable tax-inclusive pricing" or "Disable tax-inclusive pricing" from the dropdown, depending on the current setting.
 
 ### Remove Currencies
+
+<PermissionsBadge permissions={["store:update"]} />
 
 You can remove any currency from your store that isn't the default currency. You can add the currency again later if needed.
 
@@ -102,6 +112,8 @@ Locales define the languages that your store supports for displaying content to 
 
 ## Add Locales to Store
 
+<PermissionsBadge permissions={["store:update", "store_locale:read"]} />
+
 To add supported locales to your store:
 
 1. Go to Settings → Store.
@@ -114,6 +126,8 @@ You can now add translations for resources in the added locales on the [Translat
 
 ### Remove Locales from Store
 
+<PermissionsBadge permissions={["store:update"]} />
+
 To remove a locale from your store:
 
 1. Go to Settings → Store.
@@ -124,6 +138,8 @@ To remove a locale from your store:
 ---
 
 ## Manage Store Metadata
+
+<PermissionsBadge permissions={["store:update"]} />
 
 Metadata is custom data that can be associated with the store in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the store.
 

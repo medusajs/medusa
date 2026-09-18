@@ -1,0 +1,313 @@
+---
+sidebar_label: "Define Custom Policies"
+tags:
+  - rbac
+  - server
+  - how to
+---
+
+import { Prerequisites, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Define Custom Policies`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+
+In this guide, you'll learn how to define policies for your custom resources so they can be protected by role-based access control (RBAC).
+
+<Prerequisites
+  items={[
+    {
+      text: "RBAC feature flag enabled",
+      link: "../page.mdx#how-to-use-the-rbac-module"
+    }
+  ]}
+/>
+
+## How Custom Policies Work
+
+Medusa syncs the policies of its own resources, such as products and orders, every time the application starts. Those core policies live in the RBAC Module and you can't change them.
+
+Policies for your custom resources work differently. You create them yourself by running the `createRbacPoliciesWorkflow` workflow, which stores them in the database. Medusa doesn't scan your project for policy files, so a policy only exists after you create it.
+
+To keep the resource and operation names of your custom policies type-safe, you also register them in Medusa's type registries.
+
+---
+
+## 1. Register your Resources and Operations
+
+Medusa constrains the `resource` and `operation` of a policy to the values in two type registries. Add your custom resources and operations to those registries so that typos become compile errors.
+
+Create the file `src/types/rbac.d.ts` with the following content:
+
+export const highlights = [
+  ["2", "PolicyResourceRegistry", "Register your custom resources."],
+  ["6", "PolicyOperationRegistry", "Register your custom operations."],
+]
+
+```ts title="src/types/rbac.d.ts" highlights={highlights}
+declare module "@medusajs/types" {
+  interface PolicyResourceRegistry {
+    vendor: "vendor"
+  }
+
+  interface PolicyOperationRegistry {
+    approve: "approve"
+  }
+}
+
+export {}
+```
+
+You only need `PolicyOperationRegistry` if you use an operation other than `read`, `create`, `update`, and `delete`, which Medusa registers for you.
+
+After this, `"vendor"` and `"approve"` are valid everywhere Medusa expects a resource or operation: the `authorize` middleware, `buildPolicies`, the RBAC Module's service methods, and the admin dashboard's permission checks.
+
+<Note title="Tip">
+
+The Medusa application's `tsconfig.json` includes all the files in your project, so TypeScript picks up the augmentation file without any change. If you narrowed the `include` option, make sure it still matches `src/types/rbac.d.ts`. Also, keep the `export {}` line, as TypeScript only applies the augmentation if the file is a module.
+
+</Note>
+
+---
+
+## 2. Create the Policies
+
+To create the policies, build them with the `buildPolicies` function which generates a policy for every operation on a resource, then pass them to the `createRbacPoliciesWorkflow` to store them in the database.
+
+Create the policies in a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts), which the Medusa application runs once when you run migrations. This way, your policies reach every environment you deploy to.
+
+For example, create the file `src/migration-scripts/create-vendor-policies.ts` with the following content:
+
+export const createHighlights = [
+  ["15", "buildPolicies", "Build a policy for every vendor operation."],
+  ["19", "createRbacPoliciesWorkflow", "Store the policies in the database."],
+]
+
+```ts title="src/migration-scripts/create-vendor-policies.ts" highlights={createHighlights}
+import { ExecArgs } from "@medusajs/framework/types"
+import { 
+  buildPolicies,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import {
+  createRbacPoliciesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function ({ container }: ExecArgs) {
+  const logger = container.resolve(
+    ContainerRegistrationKeys.Logger
+  )
+
+  const policies = buildPolicies({
+    resource: ["vendor"],
+  })
+
+  const { result } = await createRbacPoliciesWorkflow(
+    container
+  ).run({
+    input: { policies },
+  })
+
+  logger.info(`Created ${result.length} policies.`)
+}
+```
+
+`buildPolicies` expands each resource you pass into one policy per operation. So, the above creates four policies for the `read`, `create`, `update`, and `delete` operations on vendors, with a `key`, `name`, and `description`:
+
+- key: `vendor:read`, name: `ReadVendor`, description: `Read Vendor`
+- key: `vendor:create`, name: `CreateVendor`, description: `Create Vendor`
+- key: `vendor:update`, name: `UpdateVendor`, description: `Update Vendor`
+- key: `vendor:delete`, name: `DeleteVendor`, description: `Delete Vendor`
+
+The RBAC Module also has the `updateRbacPoliciesWorkflow` and `deleteRbacPoliciesWorkflow` workflows to change or remove policies later.
+
+### Customize the Built Policies
+
+`buildPolicies` accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "resource",
+      type: "`string` \\| `string[]`",
+      optional: false,
+      description: "The resource, or resources, the policies apply to. Accepts the resources you registered in `PolicyResourceRegistry`, Medusa's core resources such as `product` and `order`, or the wildcard `*`."
+    },
+    {
+      name: "operation",
+      type: "`\"read\"` \\| `\"create\"` \\| `\"update\"` \\| `\"delete\"` \\| `\"*\"` \\| `string[]`",
+      optional: true,
+      defaultValue: "[\"read\", \"create\", \"update\", \"delete\"]",
+      description: "The operation, or operations, to build a policy for. Also accepts the operations you registered in `PolicyOperationRegistry`."
+    },
+    {
+      name: "key",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{resource}:{operation}",
+      description: "The policy's unique key."
+    },
+    {
+      name: "name",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{Operation}{Resource}",
+      description: "The policy's name."
+    },
+    {
+      name: "description",
+      type: "`string`",
+      optional: true,
+      defaultValue: "{Operation} {Resource}",
+      description: "The policy's description."
+    }
+  ]}
+/>
+
+For example, to build a policy for a custom operation with your own name and description:
+
+```ts
+const policies = buildPolicies({
+  resource: "vendor",
+  operation: "approve",
+  name: "ApproveVendor",
+  description: "Approve a vendor before it goes live",
+})
+```
+
+You can only pass `key`, `name`, or `description` when you build a single policy, since a key must be unique. Passing them alongside multiple resources or operations throws an error.
+
+To build a single policy that allows all operations on a resource, pass the wildcard `*` as the operation:
+
+```ts
+const policies = buildPolicies({
+  resource: "vendor",
+  operation: "*",
+})
+```
+
+Learn more about wildcard policies in the [RBAC Concepts](../concepts/page.mdx#wildcard-policies) guide.
+
+---
+
+## 3. Run the Migrations
+
+To run the migration script and create the policies, run the following command:
+
+```bash
+npx medusa db:migrate
+```
+
+Medusa tracks the scripts it ran, so this one doesn't run again on later migrations.
+
+<Note title="Tip">
+
+To add policies later, create another migration script rather than editing the one above. Medusa skips scripts it already ran, and creating a policy whose key already exists throws an error.
+
+</Note>
+
+---
+
+## 4. Guard your Routes
+
+A policy only restricts access once a route checks it. To guard an [API route](!docs!/learn/fundamentals/api-routes), use the `authorize` middleware imported from `@medusajs/framework/http`:
+
+export const authorizeHighlights = [
+  ["12", "authorize", "Guard the route with the policy."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={authorizeHighlights}
+import {
+  authorize,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/vendors",
+      methods: ["POST"],
+      middlewares: [
+        authorize({
+          resource: "vendor",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+Requests from admin users that don't have the `vendor:create` policy now receive a `403` error. When the RBAC feature flag is disabled, the middleware allows every request.
+
+---
+
+## 5. Assign the Policies to Roles
+
+After creating a policy, assign it to roles. Admin users assigned a role with the policy can then perform the policy's operation on its resource.
+
+You can manage roles and their policies:
+
+- In the [Medusa Admin dashboard](!user-guide!/settings/roles).
+- Or using the RBAC Module's workflows and service in your customizations.
+
+### Example: Create a Role with a Migration Script
+
+The following [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) uses the `createRbacRolesWorkflow` to create a "Vendor Manager" role that grants the vendor policies:
+
+```ts title="src/migration-scripts/create-vendor-role.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import { 
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import {
+  createRbacRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function ({ container }: ExecArgs) {
+  const rbacModuleService = container.resolve(Modules.RBAC)
+  const logger = container.resolve(
+    ContainerRegistrationKeys.Logger
+  )
+
+  const policies = await rbacModuleService.listRbacPolicies({
+    key: ["vendor:read", "vendor:create"],
+  })
+
+  const { result } = await createRbacRolesWorkflow(
+    container
+  ).run({
+    input: {
+      roles: [
+        {
+          name: "Vendor Manager",
+          description: "Manage vendors",
+          policy_ids: policies.map((policy) => policy.id),
+        },
+      ],
+    },
+  })
+
+  logger.info(`Created role: ${result[0].name}`)
+}
+```
+
+In the script, you:
+
+1. Resolve the RBAC Module's service to find the vendor policies by their keys.
+2. Run the `createRbacRolesWorkflow` to create the role with the policies' IDs.
+
+Then, run the migrations with the following command:
+
+```bash
+npx medusa db:migrate
+```
+
+This will create the "Vendor Manager" role in the database, which you can assign to admin users in the Medusa Admin dashboard.
+
+The RBAC Module also has workflows to update or delete roles, such as `updateRbacRolesWorkflow` and `deleteRbacRolesWorkflow`.

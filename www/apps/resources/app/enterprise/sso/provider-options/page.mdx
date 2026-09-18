@@ -1,0 +1,609 @@
+---
+sidebar_label: "Provider Options"
+---
+
+export const metadata = {
+  title: `OIDC Auth Module Provider Options`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureName="module provider" />
+
+In this guide, you'll learn about the options of the [OIDC Auth Module Provider](../page.mdx), which you pass in the provider's `options` property in `medusa-config.ts`.
+
+<Note title="Looking for social login?">
+
+SSO with OIDC is intended for the users of your organization, such as admin users authenticating with your company's identity provider.
+
+To let customers log in to your storefront with a social account, use the [Google](../../../commerce-modules/auth/auth-providers/google/page.mdx) or [GitHub](../../../commerce-modules/auth/auth-providers/github/page.mdx) Auth Module Providers instead. They don't require an enterprise license.
+
+</Note>
+
+## Required Options
+
+### issuer
+
+The identity provider's issuer URL. Medusa uses it for two purposes:
+
+- To resolve the discovery document at `{issuer}/.well-known/openid-configuration`, which holds the identity provider's endpoints.
+- To validate the `iss` claim of the returned ID tokens.
+
+The URL must use `https`. Medusa only allows `http` for `localhost`, and only outside of production.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              issuer: process.env.OIDC_ISSUER ||
+                "https://your-org.okta.com",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### client_id
+
+The OAuth 2.0 client ID of the application you registered with the identity provider.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              client_id: process.env.OIDC_CLIENT_ID,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### callback_url
+
+The default `redirect_uri` that the identity provider redirects to after a successful authentication. It must be one of the redirect URIs registered with the identity provider, and it must point to a page of your frontend that sends the callback request to Medusa.
+
+For the Medusa Admin dashboard, set it to the dashboard's login page with the provider's ID as a query parameter. The dashboard sends that URL with its request, so it's also the URL to register with your identity provider.
+
+For local development, use `http://localhost:9000/app/login?auth_provider=okta`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=okta`.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              callback_url: process.env.OIDC_CALLBACK_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+---
+
+## Optional Options
+
+### client_secret
+
+The OAuth 2.0 client secret of the application you registered with the identity provider.
+
+You can omit it if you registered a public client. In that case, Medusa authenticates with PKCE only, which is the recommended setup for a client that runs in the browser.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              client_secret: process.env.OIDC_CLIENT_SECRET,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### scopes
+
+The OAuth 2.0 and OIDC scopes to request, as an array of strings.
+
+Its default value is `["openid", "email", "profile"]`.
+
+<Note type="warning">
+
+The `openid` scope is required for the identity provider to return an ID token. Always keep it when you override this option, otherwise the authentication fails.
+
+</Note>
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              scopes: ["openid", "email", "profile"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### display_name
+
+The provider's display name, shown when Medusa lists the available auth providers. On the Medusa Admin dashboard, it's displayed on the login button for the provider.
+
+Its default value is `OpenID Connect`. Set it when you register the provider more than once, so each registration is distinguishable, such as `Okta` and `Microsoft Entra ID`.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              display_name: "Okta",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### claim_mappings
+
+The mapping between the auth identity's fields and the ID token's claims. The key is the field to set, and the value is the name of the claim to read it from.
+
+Its default value is:
+
+```json
+{
+  "entity_id": "sub",
+  "email": "email",
+  "name": "name"
+}
+```
+
+The `entity_id` field identifies the auth identity, so Medusa recognizes a returning user by it. It defaults to the `sub` claim, which identity providers guarantee to be stable. Avoid mapping it to the email claim, since a user's email can change or be reassigned to someone else.
+
+Every other field is stored in the auth identity's `user_metadata`, so you can add your own mappings for claims that your identity provider returns:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              claim_mappings: {
+                email: "email",
+                name: "name",
+                department: "custom_department",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Medusa only stores a field whose claim is present in the ID token.
+
+### require_verified_email
+
+Whether the identity provider must confirm that the user's email is verified, through the `email_verified` claim, before the authentication succeeds.
+
+Its default value is `true`.
+
+<Note title="Warning" type="warning">
+
+The `email_verified` claim is typically returned through the `email` scope. If your identity provider doesn't return the claim, every authentication attempt fails until you set this option to `false`.
+
+</Note>
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              require_verified_email: false,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### allowed_email_domains
+
+An array of email domains allowed to authenticate through this provider, such as `["example.com"]`. If you set it, only users whose email domain is in the list can authenticate.
+
+Use it when your identity provider hosts users outside your organization, such as guest users in your directory. Use it also when integrating Google Workspace as an identity provider to restrict authentication to your organization's domain.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              allowed_email_domains: ["example.com"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### allowed_callback_urls
+
+An exact-match allowlist of callback URLs that a request can use instead of `callback_url`. A frontend passes an alternative URL in the request body's `callback_url` field, and Medusa rejects any URL that isn't in the list.
+
+This check is opt-in and complements the identity provider's own redirect URI validation. If you don't set the option, Medusa accepts any callback URL and leaves the validation to the identity provider.
+
+Set it when more than one frontend authenticates through the same registration, such as an admin dashboard and a storefront:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              allowed_callback_urls: [
+                "https://example.com/app/login",
+                "https://storefront.example.com/callback",
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### state_ttl_seconds
+
+The time-to-live, in seconds, of the single-use `state` value that Medusa stores while the user authenticates with the identity provider.
+
+Its default value is `600`, which is ten minutes. If the user takes longer than that to authenticate, the callback fails with a `No state provided, or session expired` error.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              state_ttl_seconds: 900,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### clock_tolerance_seconds
+
+The allowed clock skew, in seconds, when Medusa validates the time-based claims of an ID token, which are `exp`, `iat`, and `nbf`.
+
+Its default value is `5`. Increase it only if the clocks of your server and your identity provider drift apart.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              clock_tolerance_seconds: 10,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+---
+
+## Endpoint Options
+
+Medusa resolves the identity provider's endpoints from its discovery document. Set the following options to configure an endpoint explicitly, which overrides the discovered value.
+
+Each of these URLs must use `https`, with the same `localhost` exception as the `issuer` option.
+
+<Note title="Tip">
+
+Medusa skips discovery entirely only when `authorization_endpoint`, `token_endpoint`, and `jwks_uri` are all set. Use this if your identity provider doesn't expose a discovery document.
+
+</Note>
+
+### authorization_endpoint
+
+The endpoint that Medusa redirects the user to in order to authenticate.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              authorization_endpoint:
+                process.env.OIDC_AUTHORIZATION_ENDPOINT ||
+                "https://idp.example.com/authorize",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### token_endpoint
+
+The endpoint that Medusa exchanges the authorization code at for tokens.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              token_endpoint:
+                process.env.OIDC_TOKEN_ENDPOINT ||
+                "https://idp.example.com/token",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### jwks_uri
+
+The endpoint holding the keys that Medusa verifies the ID token's signature with.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              jwks_uri: process.env.OIDC_JWKS_URI ||
+                "https://idp.example.com/jwks",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### end_session_endpoint
+
+The identity provider's end-session endpoint.
+
+<Note>
+
+Medusa stores this value for future support of provider-initiated logout. It has no effect on the authentication flow.
+
+</Note>
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              end_session_endpoint:
+                process.env.OIDC_END_SESSION_ENDPOINT ||
+                "https://idp.example.com/logout",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```

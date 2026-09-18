@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../../packages/modules/rbac/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/rbac/src"],
+  "exclude": [
+    "../../../../packages/modules/rbac/dist", 
+    "../../../../packages/modules/rbac/node_modules"
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/rbac/src"
+  }
+}

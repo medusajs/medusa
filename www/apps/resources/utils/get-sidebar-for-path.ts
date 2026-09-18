@@ -110,6 +110,13 @@ const sidebarMappings: {
   },
   {
     module: async () =>
+      import("@/generated/generated-enterprise-sidebar.mjs") as Promise<{
+        default: Sidebar.Sidebar
+      }>,
+    paths: ["/enterprise", "/references/rbac"],
+  },
+  {
+    module: async () =>
       import("@/generated/generated-references-sidebar.mjs") as Promise<{
         default: Sidebar.Sidebar
       }>,

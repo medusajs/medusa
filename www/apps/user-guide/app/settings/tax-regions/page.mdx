@@ -30,6 +30,8 @@ Each tax region has its own tax rate, and you can override the default tax rate 
 
 ## View Tax Regions
 
+<PermissionsBadge permissions={["tax_region:read"]} />
+
 To view tax regions in your store, go to Settings → Tax Regions. Here, you can see a list of all the tax regions you have set up in your store. You can also search, filter, and sort the tax regions to find the one you are looking for.
 
 ![Tax regions list](https://res.cloudinary.com/dza7lstvk/image/upload/v1739970754/User%20Guide/Screenshot_2025-02-19_at_3.12.16_PM_iy8kvy.png)
@@ -37,6 +39,8 @@ To view tax regions in your store, go to Settings → Tax Regions. Here, you can
 ---
 
 ## Create Tax Region
+
+<PermissionsBadge permissions={["tax_region:create"]} />
 
 To create a tax region:
 
@@ -53,18 +57,22 @@ To create a tax region:
 
 ## View Tax Region Details
 
+<PermissionsBadge permissions={["tax_region:read"]} />
+
 To view the details of a tax region:
 
 1. Go to Settings → Tax Regions.
 2. Click on a tax region from the list.
 
-This opens the tax region's details page, where you can also manage the tax region.
+This opens the tax region's details page, where you can also manage the tax region. To see the region's tax rates, including the default tax rate and overrides, you also need the `tax_rate:read` policy.
 
 ![Tax region details](https://res.cloudinary.com/dza7lstvk/image/upload/v1746796437/User%20Guide/Screenshot_2025-05-09_at_4.13.06_PM_m23ili.png)
 
 ---
 
 ## Edit Tax Region
+
+<PermissionsBadge permissions={["tax_region:update"]} />
 
 To edit a tax region:
 
@@ -79,6 +87,8 @@ To edit a tax region:
 ---
 
 ## Edit Default Tax Rate
+
+<PermissionsBadge permissions={["tax_region:update", "tax_rate:update"]} />
 
 To edit the default tax rate of a region:
 
@@ -103,6 +113,8 @@ You can override tax rates for tax regions and [sublevel tax regions](#sublevel-
 
 ### Create Tax Rate Override
 
+<PermissionsBadge permissions={["tax_region:update", "tax_rate:create"]} />
+
 To create a tax rate override for a product or product type in a tax region:
 
 1. Go to the region's details page.
@@ -119,6 +131,8 @@ To create a tax rate override for a product or product type in a tax region:
 
 ### Edit Tax Rate Override
 
+<PermissionsBadge permissions={["tax_region:update", "tax_rate:update"]} />
+
 To edit a tax rate override:
 
 1. Go to the region's details page.
@@ -130,6 +144,8 @@ To edit a tax rate override:
 ![Edit tax rate override form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739975201/User%20Guide/Screenshot_2025-02-19_at_4.26.22_PM_y4deom.png)
 
 ### Delete Tax Rate Override
+
+<PermissionsBadge permissions={["tax_region:delete"]} />
 
 <Note type="warning">
 
@@ -160,6 +176,8 @@ After enabling this setting, you'll find a "Sublevels" section in the tax region
 
 ### Create Sublevel Tax Region
 
+<PermissionsBadge permissions={["tax_region:create"]} />
+
 To create a sublevel tax region in a tax region:
 
 1. Go to the tax region's details page.
@@ -175,12 +193,14 @@ To create a sublevel tax region in a tax region:
 
 ### View Sublevel Tax Region Details
 
+<PermissionsBadge permissions={["tax_region:read"]} />
+
 To view the details of a sublevel tax region:
 
 1. Go to the tax region's details page.
 2. Under the "Sublevels" section or its equivalent, click on a sublevel tax region.
 
-This opens the sublevel tax region's details page, where you can also manage the sublevel tax region.
+This opens the sublevel tax region's details page, where you can also manage the sublevel tax region. To see its tax rates, you also need the `tax_rate:read` policy.
 
 ![Sublevel tax region details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1739974129/User%20Guide/Screenshot_2025-02-19_at_4.08.33_PM_i2v219.png)
 
@@ -189,6 +209,8 @@ This opens the sublevel tax region's details page, where you can also manage the
 You can manage the sublevel tax region's [default](#edit-default-tax-rate) and [override](#manage-tax-rate-overrides) rates the same way you manage the parent tax region's rates.
 
 ### Delete Sublevel Tax Region
+
+<PermissionsBadge permissions={["tax_region:delete"]} />
 
 <Note type="warning">
 
@@ -206,6 +228,8 @@ To delete a sublevel tax region:
 ---
 
 ## Delete Tax Region
+
+<PermissionsBadge permissions={["tax_region:delete"]} />
 
 <Note type="warning">
 

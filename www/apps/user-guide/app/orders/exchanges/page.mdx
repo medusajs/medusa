@@ -31,6 +31,8 @@ After items have been delivered to the customer, you can create an exchange wher
 
 ## Create an Order Exchange
 
+<PermissionsBadge permissions={["order_exchange:create", "order_exchange:update"]} />
+
 You can create an order exchange after the order's items have been [delivered](../fulfillments/page.mdx#mark-fulfillment-as-delivered).
 
 To create an order exchange:
@@ -89,6 +91,8 @@ As mentioned earlier, the outbound items of an exchange are added into the "Unfu
 ---
 
 ## Cancel an Exchange
+
+<PermissionsBadge permissions={["order_exchange:update", "order:update"]} />
 
 <Note type="warning">
 

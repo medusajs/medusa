@@ -21,12 +21,14 @@ In this guide, you’ll learn how to manage price lists and their related inform
 
 ## View Price List Details
 
+<PermissionsBadge permissions={["price_list:read"]} />
+
 To view a price list’s details:
 
 1. Go to the Price Lists page from the sidebar.
 2. Click on the price list you want to view.
 
-This will open the price list's details page.
+This will open the price list's details page. The "Configuration" section also shows the price list's customer availability, which requires the `customer_group:read` policy to view.
 
 ![Price List details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1739960115/User%20Guide/Screenshot_2025-02-19_at_12.15.02_PM_tdt8zl.png)
 
@@ -69,6 +71,8 @@ In the first section's header, you'll find the price list's status. It can be on
 
 ## Edit Price List Details
 
+<PermissionsBadge permissions={["price_list:update"]} />
+
 To edit a price list's details:
 
 <Note title="Tip">
@@ -90,7 +94,9 @@ To edit a price list's start and expiry dates, or customer availability, refer t
 
 ## Edit Price List Configurations
 
-A price list's configurations include the start and expiry dates, and customer availability.
+<PermissionsBadge permissions={["price_list:update", "customer_group:read"]} />
+
+A price list's configurations include the start and expiry dates, and customer availability. Browsing customer groups to set the customer availability requires the `customer_group:read` policy.
 
 1. Go to the price list's details page.
 2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Configuration" section's header.
@@ -109,6 +115,8 @@ From the price list's details page, you can manage the products in the price lis
 
 ### Add Products to Price List
 
+<PermissionsBadge permissions={["price_list:update", "product:read"]} />
+
 To add products to a price list:
 
 1. Go to the price list's details page.
@@ -120,6 +128,8 @@ To add products to a price list:
 7. Once you're done, click the Save button.
 
 ### Remove Products from Price List
+
+<PermissionsBadge permissions={["price_list:update"]} />
 
 To remove products from a price list:
 
@@ -133,6 +143,8 @@ To remove products from a price list:
 ---
 
 ## Edit Prices in Price List
+
+<PermissionsBadge permissions={["price_list:update", "product:read"]} />
 
 From the price list's details page, you can manage the price overrides of the products in the price list.
 
@@ -176,6 +188,8 @@ To set quantity-based prices for a variant:
 
 ## Manage Price List Metadata
 
+<PermissionsBadge permissions={["price_list:update"]} />
+
 <Note>
 
 The Metadata section is available since [Medusa v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0). If you don't see the Metadata section in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
@@ -200,6 +214,8 @@ To edit the price list's metadata:
 ---
 
 ## Delete Price List
+
+<PermissionsBadge permissions={["price_list:delete"]} />
 
 <Note type="warning">
 
