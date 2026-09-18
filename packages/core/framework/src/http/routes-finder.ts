@@ -43,7 +43,14 @@ export class RoutesFinder<
     if (route.matcher instanceof RegExp) {
       this.#routes.push({
         ...route,
-        matchRegex: route.matcher,
+        /**
+         * Matched on a copy rather than the caller's instance. `test()` writes
+         * to `lastIndex` on a global or sticky expression, and the matcher is
+         * owned by whoever registered the route — they may still be using it.
+         * `find()` resets `lastIndex` before every test, which would otherwise
+         * interfere with their own iteration over the same object.
+         */
+        matchRegex: new RegExp(route.matcher.source, route.matcher.flags),
       })
       return
     }
@@ -73,6 +80,20 @@ export class RoutesFinder<
 
     const result =
       this.#routes.find((route) => {
+        /**
+         * `test()` advances `lastIndex` when the expression carries the global
+         * or sticky flag, so the answer depends on whichever URL was tested
+         * before this one. Reset it so every lookup is evaluated the way the
+         * first one was.
+         *
+         * This matters more here than it looks: matchers live for the lifetime
+         * of the process, and the result below is memoised in
+         * `#existingMatches`. A single stale `lastIndex` therefore does not
+         * merely produce one wrong answer — it caches it, so a middleware stays
+         * silently skipped for that URL until the server restarts.
+         */
+        route.matchRegex.lastIndex = 0
+
         if ("methods" in route) {
           return route.methods.includes(method) && route.matchRegex.test(url)
         }
