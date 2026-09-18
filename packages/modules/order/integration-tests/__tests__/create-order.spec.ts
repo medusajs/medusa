@@ -456,6 +456,25 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(serializedOrder).toEqual(expectation)
       })
 
+      it("should return item quantity when selected explicitly alongside other line item fields", async function () {
+        const createdOrder = await service.createOrders(input)
+        const getOrder = await service.retrieveOrder(createdOrder.id, {
+          select: ["id", "items.quantity", "items.title"],
+          relations: ["items"],
+        })
+
+        const serializedOrder = JSON.parse(JSON.stringify(getOrder))
+
+        expect(serializedOrder.items.length).toBeGreaterThan(0)
+        for (const item of serializedOrder.items) {
+          expect(item.quantity).toBeDefined()
+        }
+        expect(serializedOrder.items[0].quantity).toEqual(
+          serializedOrder.items[0].detail.quantity
+        )
+        expect(serializedOrder.items[0].title).toEqual(input.items[0].title)
+      })
+
       it("should return order transactions", async function () {
         const createdOrder = await service.createOrders(input)
         const getOrder = await service.retrieveOrder(createdOrder.id, {

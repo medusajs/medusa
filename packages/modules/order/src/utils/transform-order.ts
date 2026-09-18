@@ -195,6 +195,23 @@ function formatReturn(returnOrder) {
 // As the public responses have a different shape than the repository responses, this function is used to map the public properties to the internal db entities
 // e.g "items" is the relation between "line-item" and "order" + "version", The line item itself is in "items.item"
 // This helper maps to the correct repository to query the DB, and the function "formatOrder" remap the response to the public shape
+
+// Fields that only exist on the order_item join entity (publicly "items"), not
+// on the line item ("items.item"). When selected explicitly they must be kept
+// as-is so they resolve against the join entity; rewriting them would target
+// non-existent columns and silently drop them from the result.
+const ORDER_ITEM_ONLY_FIELDS = new Set([
+  "version",
+  "quantity",
+  "fulfilled_quantity",
+  "delivered_quantity",
+  "shipped_quantity",
+  "return_requested_quantity",
+  "return_received_quantity",
+  "return_dismissed_quantity",
+  "written_off_quantity",
+])
+
 export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
   if (isRelatedEntity) {
     return mapRepositoryToRelatedEntity(config)
@@ -226,6 +243,12 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
           return rel.replace("items.detail", "items")
         } else if (rel == "items") {
           return "items.item"
+        } else if (
+          rel.includes("items.") &&
+          !rel.includes("items.item") &&
+          ORDER_ITEM_ONLY_FIELDS.has(rel.split(".")[1])
+        ) {
+          return rel
         } else if (rel.includes("items.") && !rel.includes("items.item")) {
           return rel.replace("items.", "items.item.")
         }
