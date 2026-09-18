@@ -3075,6 +3075,25 @@ export default class OrderModuleService
       sharedContext
     )
 
+    if (lastOrderChange?.id) {
+      const [change] = await this.orderChangeService_.list(
+        { id: lastOrderChange.id },
+        { select: ["id", "version"] },
+        sharedContext
+      )
+
+      // A change whose version is ahead of the order was confirmed without
+      // being applied (e.g. it had no actions), so there is no order version
+      // to roll back - only the change itself has to be reopened.
+      if (change && change.version > order.version) {
+        return await this.undoUnappliedChange_(
+          change.id,
+          lastOrderChange,
+          sharedContext
+        )
+      }
+    }
+
     if (order.version < 2) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -3083,6 +3102,24 @@ export default class OrderModuleService
     }
 
     return await this.undoLastChange_(order, lastOrderChange, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async undoUnappliedChange_(
+    orderChangeId: string,
+    lastOrderChange?: Partial<OrderChangeDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.orderChangeService_.update(
+      [
+        {
+          id: orderChangeId,
+          status: lastOrderChange?.status ?? OrderChangeStatus.PENDING,
+          confirmed_at: null,
+        },
+      ],
+      sharedContext
+    )
   }
 
   @InjectTransactionManager()
