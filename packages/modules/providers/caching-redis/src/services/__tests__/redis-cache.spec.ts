@@ -18,8 +18,13 @@ class FakePipeline {
     return this
   }
 
-  srem(key: string, member: string) {
-    this.commands.push(() => this.redis.sremSync(key, member))
+  exists(key: string) {
+    this.commands.push(() => this.redis.existsSync(key))
+    return this
+  }
+
+  srem(key: string, ...members: string[]) {
+    this.commands.push(() => this.redis.sremSync(key, ...members))
     return this
   }
 
@@ -29,6 +34,7 @@ class FakePipeline {
   }
 
   exec = jest.fn(async () => {
+    this.redis.pipelineSizes.push(this.commands.length)
     return this.commands.map((command) => [null, command()] as [null, unknown])
   })
 }
@@ -45,6 +51,9 @@ class FakeRedisClient {
 
   public readonly pipeline = jest.fn(() => new FakePipeline(this))
 
+  /** Number of commands in each pipeline that was executed. */
+  public readonly pipelineSizes: number[] = []
+
   public readonly smembers = jest.fn(async (key: string) => {
     return this.smembersSync(key)
   })
@@ -52,6 +61,37 @@ class FakeRedisClient {
   public readonly unlink = jest.fn(async (...keys: string[]) => {
     return this.unlinkSync(...keys)
   })
+
+  public readonly srem = jest.fn(async (key: string, ...members: string[]) => {
+    return this.sremSync(key, ...members)
+  })
+
+  /**
+   * Mirrors the guarantees the provider relies on: a cursor-driven walk that
+   * returns at most `COUNT` members per call, over a snapshot of the members
+   * taken when the walk started, so removals during the walk are safe.
+   */
+  public readonly sscan = jest.fn(
+    async (key: string, cursor: string, _countOpt: string, count: number) => {
+      const snapshot = this.scanSnapshots.get(key) ?? [
+        ...(this.sets.get(key) ?? []),
+      ]
+
+      const offset = Number(cursor)
+      const slice = snapshot.slice(offset, offset + count)
+      const nextOffset = offset + count
+
+      if (nextOffset >= snapshot.length) {
+        this.scanSnapshots.delete(key)
+        return ["0", slice] as [string, string[]]
+      }
+
+      this.scanSnapshots.set(key, snapshot)
+      return [String(nextOffset), slice] as [string, string[]]
+    }
+  )
+
+  private readonly scanSnapshots = new Map<string, string[]>()
 
   setHash(key: string, fields: Record<string, RedisHashValue>) {
     this.hashes.set(key, new Map(Object.entries(fields)))
@@ -69,19 +109,30 @@ class FakeRedisClient {
     return this.hashes.get(key)?.get(field) ?? null
   }
 
-  sremSync(key: string, member: string): number {
+  existsSync(key: string): number {
+    return this.hashes.has(key) || this.strings.has(key) || this.sets.has(key)
+      ? 1
+      : 0
+  }
+
+  sremSync(key: string, ...members: string[]): number {
     const set = this.sets.get(key)
-    if (!set?.has(member)) {
+    if (!set) {
       return 0
     }
 
-    set.delete(member)
+    let removed = 0
+    members.forEach((member) => {
+      if (set.delete(member)) {
+        removed += 1
+      }
+    })
 
     if (!set.size) {
       this.sets.delete(key)
     }
 
-    return 1
+    return removed
   }
 
   unlinkSync(...keys: string[]): number {
@@ -220,5 +271,107 @@ describe("RedisCachingProvider clear", () => {
     expect(sremIdx).toBeGreaterThanOrEqual(0)
     expect(reverseUnlinkIdx).toBeGreaterThan(sremIdx)
     expect(entryUnlinkIdx).toBeGreaterThan(reverseUnlinkIdx)
+  })
+
+  it("prunes members whose entry has already expired", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    // `mc:entry-live` is still cached. `mc:entry-expired` was dropped by Redis
+    // when its TTL ran out, and its reverse index went with it 60s later, so
+    // nothing has ever removed it from the forward tag set.
+    redisClient.setHash("mc:entry-live", {})
+    redisClient.setMembers("mc:tags:entry-live", ["hash:tag-a"])
+    redisClient.setMembers("mc:tag:hash:tag-a", [
+      "mc:entry-live",
+      "mc:entry-expired",
+    ])
+
+    await provider.clear({ tags: ["tag-a"], options: { autoInvalidate: true } })
+
+    // The set is emptied rather than left holding the expired member, which is
+    // what makes it grow without bound across TTL cycles.
+    expect(redisClient.sets.has("mc:tag:hash:tag-a")).toBe(false)
+    expect(redisClient.hashes.has("mc:entry-live")).toBe(false)
+  })
+
+  it("prunes expired members while leaving opted-out entries indexed", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    redisClient.setHash("mc:entry-keep", {
+      options: JSON.stringify({ autoInvalidate: false }),
+    })
+    redisClient.setMembers("mc:tags:entry-keep", ["hash:tag-a"])
+    redisClient.setMembers("mc:tag:hash:tag-a", [
+      "mc:entry-keep",
+      "mc:entry-expired",
+    ])
+
+    await provider.clear({ tags: ["tag-a"], options: { autoInvalidate: true } })
+
+    // An entry that opted out is still live and must stay reachable through the
+    // tag, so only the expired member is dropped.
+    expect(redisClient.hashes.has("mc:entry-keep")).toBe(true)
+    expect(redisClient.sets.get("mc:tag:hash:tag-a")).toEqual(
+      new Set(["mc:entry-keep"])
+    )
+  })
+
+  it("walks a large tag set in bounded chunks", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    const memberCount = 1200
+    const members = Array.from(
+      { length: memberCount },
+      (_, index) => `mc:entry-${index}`
+    )
+
+    members.forEach((member) => {
+      redisClient.setHash(member, {})
+      redisClient.setMembers(`mc:tags:entry-${member.split("-")[1]}`, [
+        "hash:tag-a",
+      ])
+    })
+    redisClient.setMembers("mc:tag:hash:tag-a", members)
+
+    await provider.clear({ tags: ["tag-a"] })
+
+    // The whole set is never materialised at once: SSCAN is driven to
+    // completion in fixed-size passes instead of one SMEMBERS.
+    expect(redisClient.sscan.mock.calls.length).toBeGreaterThan(1)
+    redisClient.sscan.mock.calls.forEach(([, , , count]) => {
+      expect(count).toBeLessThanOrEqual(500)
+    })
+
+    // The point of the walk: peak work per step is a function of the chunk
+    // size, not of how many members the tag has accumulated. The probe issues
+    // two commands per member, so 500 members is 1000 commands.
+    expect(redisClient.pipelineSizes.length).toBeGreaterThan(0)
+    expect(Math.max(...redisClient.pipelineSizes)).toBeLessThanOrEqual(1000)
+    expect(Math.max(...redisClient.pipelineSizes)).toBeLessThan(memberCount)
+
+    expect(redisClient.sets.has("mc:tag:hash:tag-a")).toBe(false)
+    members.forEach((member) => {
+      expect(redisClient.hashes.has(member)).toBe(false)
+    })
+  })
+
+  it("does not clear anything for an options object that is not an invalidation", async () => {
+    const redisClient = new FakeRedisClient()
+    const provider = createProvider(redisClient)
+
+    redisClient.setHash("mc:entry-1", {})
+    redisClient.setMembers("mc:tags:entry-1", ["hash:tag-a"])
+    redisClient.setMembers("mc:tag:hash:tag-a", ["mc:entry-1"])
+
+    await provider.clear({
+      tags: ["tag-a"],
+      options: { autoInvalidate: false },
+    })
+
+    expect(redisClient.sscan).not.toHaveBeenCalled()
+    expect(redisClient.hashes.has("mc:entry-1")).toBe(true)
   })
 })
