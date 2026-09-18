@@ -8,6 +8,9 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
+    // let the worker handle these so requests can be tracked in PostHog
+    // before the file is streamed back from the assets binding
+    "run_worker_first": ["/llms.txt", "/llms-full.txt"],
   },
   "services": [
     {

@@ -2,17 +2,17 @@ import { MathBN, MedusaError } from "@medusajs/framework/utils";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 import { createStep, createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
 
-import { ModuleCreditStoreCreditAccount } from "../../../types/store-credit";
-import { creditAccountStep } from "../steps/credit-account";
+import { ModuleDebitStoreCreditAccount } from "../../../types/store-credit";
+import { debitAccountStep } from "../steps/debit-account";
 
 /**
- * Input to credit a specific store credit account with an amount.
+ * Input to debit a specific store credit account by an amount.
  */
-export type CreditStoreCreditAccountWorkflowInput = ModuleCreditStoreCreditAccount
+export type DebitStoreCreditAccountWorkflowInput = ModuleDebitStoreCreditAccount
 
-const validateStoreCreditAccountInputStep = createStep(
-  "validate-store-credit-account-input",
-  async function (input: ModuleCreditStoreCreditAccount) {
+const validateDebitStoreCreditAccountInputStep = createStep(
+  "validate-debit-store-credit-account-input",
+  async function (input: ModuleDebitStoreCreditAccount) {
     if (input.amount <= 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -23,32 +23,33 @@ const validateStoreCreditAccountInputStep = createStep(
 );
 
 /**
- * This workflow credits a specific store credit account with an amount. It validates
- * that the amount is greater than zero and that the account exists before crediting.
+ * This workflow debits a specific store credit account by an amount. It validates
+ * that the amount is greater than zero and that the account exists before debiting.
+ * The debit is rejected if the account's balance doesn't cover the amount.
  *
  * You can use this workflow within your own customizations or custom workflows,
- * allowing you to wrap custom logic around crediting a store credit account.
+ * allowing you to wrap custom logic around debiting a store credit account.
  *
  * @example
- * await creditStoreCreditAccountWorkflow(container)
+ * await debitStoreCreditAccountWorkflow(container)
  *   .run({
  *     input: {
  *       account_id: "sca_123",
  *       amount: 100,
- *       note: "Loyalty reward",
- *       reference: "order",
- *       reference_id: "order_123",
+ *       note: "Credit issued by mistake",
+ *       reference: "user",
+ *       reference_id: "user_123",
  *     },
  *   })
  *
  * @summary
  *
- * Credit a store credit account.
+ * Debit a store credit account.
  */
-export const creditStoreCreditAccountWorkflow = createWorkflow(
-  "credit-store-credit-account",
-  function (input: CreditStoreCreditAccountWorkflowInput) {
-    validateStoreCreditAccountInputStep(input);
+export const debitStoreCreditAccountWorkflow = createWorkflow(
+  "debit-store-credit-account",
+  function (input: DebitStoreCreditAccountWorkflowInput) {
+    validateDebitStoreCreditAccountInputStep(input);
 
     const storeCreditAccountData = useQueryGraphStep({
       entity: "store_credit_account",
@@ -57,7 +58,7 @@ export const creditStoreCreditAccountWorkflow = createWorkflow(
       options: { throwIfKeyNotFound: true },
     });
 
-    const creditData = transform(
+    const debitData = transform(
       { storeCreditAccountData, input },
       ({ storeCreditAccountData, input }) => {
         return {
@@ -70,6 +71,6 @@ export const creditStoreCreditAccountWorkflow = createWorkflow(
       }
     );
 
-    creditAccountStep([creditData]);
+    debitAccountStep([debitData]);
   }
 );
