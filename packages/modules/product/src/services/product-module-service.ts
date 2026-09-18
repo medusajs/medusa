@@ -1425,6 +1425,69 @@ export default class ProductModuleService
         sharedContext
       )
 
+    // Values added to an existing option are created by upsertWithReplace,
+    // but they are not automatically linked to the products that use the
+    // option. Create the missing product_product_option_value rows here so
+    // newly added values are visible through the product graph and can be
+    // selected when creating variants.
+    const newValueIdsByOptionId = new Map<string, string[]>()
+
+    for (const productOption of productOptions) {
+      const existingValueIds = new Set(
+        (dbOptionsMap.get(productOption.id)?.values ?? []).map(
+          (value) => value.id
+        )
+      )
+
+      const newValueIds = (productOption.values ?? [])
+        .map((value) => value.id)
+        .filter((id) => !existingValueIds.has(id))
+
+      if (newValueIds.length) {
+        newValueIdsByOptionId.set(productOption.id, newValueIds)
+      }
+    }
+
+    if (newValueIdsByOptionId.size) {
+      const optionIds = [...newValueIdsByOptionId.keys()]
+
+      const productOptionsProducts =
+        await this.productProductOptionService_.list(
+          { product_option_id: optionIds },
+          {},
+          sharedContext
+        )
+
+      const ppovToCreate: Array<{
+        product_product_option_id: string
+        product_option_value_id: string
+      }> = []
+
+      for (const productOptionProduct of productOptionsProducts) {
+        const productOptionId = productOptionProduct.product_option_id
+
+        if (!productOptionId) {
+          continue
+        }
+
+        const newValueIds = newValueIdsByOptionId.get(productOptionId) ?? []
+
+        for (const valueId of newValueIds) {
+          ppovToCreate.push({
+            product_product_option_id: productOptionProduct.id,
+            product_option_value_id: valueId,
+          })
+        }
+      }
+
+      if (ppovToCreate.length) {
+        await this.productProductOptionValueService_.create(
+          ppovToCreate,
+          sharedContext
+        )
+      }
+    }
+
     return productOptions
   }
 
