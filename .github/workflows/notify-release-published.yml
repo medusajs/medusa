@@ -1,0 +1,113 @@
+name: Notify Release Published
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to announce as published (e.g. v2.21.1)"
+        required: true
+        type: string
+
+concurrency:
+  group: notify-release-published
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    name: Notify ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - medusa-mcp
+    steps:
+      - name: Resolve the release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${INPUT_TAG:-}" ]; then
+            gh release view "$INPUT_TAG" --repo "$REPO" \
+              --json tagName,url,publishedAt,isDraft > /tmp/release.json
+          else
+            jq -n \
+              --arg tagName "${{ github.event.release.tag_name }}" \
+              --arg url "${{ github.event.release.html_url }}" \
+              --arg publishedAt "${{ github.event.release.published_at }}" \
+              --argjson isDraft ${{ github.event.release.draft }} \
+              '{tagName: $tagName, url: $url, publishedAt: $publishedAt, isDraft: $isDraft}' \
+              > /tmp/release.json
+          fi
+
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+
+          const release = JSON.parse(readFileSync("/tmp/release.json", "utf8"))
+          const out = (key, value) =>
+            appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`)
+
+          // Snapshots (`preview`, `next`, `canary`, …) do not clear anything:
+          // the upcoming items are still upcoming. Neither do drafts — nothing
+          // is out until the release is actually published.
+          const version = release.tagName?.replace(/^v/, "") ?? ""
+          const isStable = /^\d+\.\d+\.\d+$/.test(version)
+
+          if (release.isDraft || !isStable) {
+            console.log(`Skipping ${release.tagName}: not a published stable release.`)
+            out("should_notify", "false")
+            process.exit(0)
+          }
+
+          out("should_notify", "true")
+          out("version", version)
+          out("tag", release.tagName)
+          out("url", release.url ?? "")
+          out("published_at", release.publishedAt ?? "")
+          console.log(`Announcing published release ${release.tagName}`)
+          EOF
+
+      - name: Generate GitHub App token
+        if: steps.release.outputs.should_notify == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ matrix.repo }}
+
+      - name: Send repository dispatch
+        if: steps.release.outputs.should_notify == 'true'
+        env:
+          # Needs the `Contents: write` repository permission.
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET_REPO: ${{ github.repository_owner }}/${{ matrix.repo }}
+        run: |
+          set -euo pipefail
+
+          jq -n \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg version "${{ steps.release.outputs.version }}" \
+            --arg tag "${{ steps.release.outputs.tag }}" \
+            --arg release_url "${{ steps.release.outputs.url }}" \
+            --arg published_at "${{ steps.release.outputs.published_at }}" \
+            '{
+              event_type: "medusa-release-published",
+              client_payload: {
+                repository: $repository,
+                version: $version,
+                tag: $tag,
+                release_url: $release_url,
+                published_at: $published_at
+              }
+            }' \
+            | gh api "repos/$TARGET_REPO/dispatches" --method POST --input -
+
+          echo "Dispatched medusa-release-published (${{ steps.release.outputs.tag }}) to $TARGET_REPO"
