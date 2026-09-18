@@ -5899,6 +5899,79 @@ moduleIntegrationTestRunner({
             },
           ])
         })
+
+        it("should ignore item and shipping adjustments that have no code", async () => {
+          await createDefaultPromotion(service, {
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 20,
+              max_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_cotton"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(["PROMOTION_TEST"], {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_cotton",
+                },
+                product: {
+                  id: "prod_tshirt",
+                },
+                adjustments: [
+                  {
+                    id: "custom-item-adjustment",
+                    code: null,
+                    amount: 15,
+                  },
+                ],
+              },
+            ],
+            shipping_methods: [
+              {
+                id: "shipping_method_express",
+                subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
+                shipping_option: {
+                  id: "express",
+                },
+                adjustments: [
+                  {
+                    id: "custom-shipping-adjustment",
+                    code: null,
+                    amount: 5,
+                  },
+                ],
+              },
+            ],
+          } as any)
+
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_cotton_tshirt",
+              amount: 20,
+              code: "PROMOTION_TEST",
+              is_tax_inclusive: false,
+            },
+          ])
+        })
       })
 
       describe("when promotion of type buyget", () => {
