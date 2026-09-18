@@ -492,13 +492,13 @@ export const generatedEditDates = {
   "app/infrastructure-modules/caching/providers/page.mdx": "2026-09-11T07:40:12.306Z",
   "app/infrastructure-modules/search/index-definitions/modifiers/page.mdx": "2026-09-14T07:09:00.266Z",
   "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-09-14T11:46:17.087Z",
-  "app/infrastructure-modules/search/page.mdx": "2026-09-14T10:32:27.892Z",
-  "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-14T13:08:22.428Z",
+  "app/infrastructure-modules/search/page.mdx": "2026-09-18T07:56:29.031Z",
+  "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-18T07:42:43.196Z",
   "app/infrastructure-modules/search/reindexing/page.mdx": "2026-09-14T11:59:49.575Z",
   "app/infrastructure-modules/search/admin-search/page.mdx": "2026-09-14T12:59:00.139Z",
-  "app/infrastructure-modules/search/index-definitions/linked-data/page.mdx": "2026-09-14T11:38:52.591Z",
+  "app/infrastructure-modules/search/index-definitions/linked-data/page.mdx": "2026-09-18T07:42:43.195Z",
   "app/infrastructure-modules/search/index-definitions/fields/page.mdx": "2026-09-14T10:46:03.481Z",
   "app/infrastructure-modules/search/providers/page.mdx": "2026-09-14T13:05:27.554Z",
-  "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-09-14T13:58:55.717Z",
-  "app/instantsearch/page.mdx": "2026-09-14T13:36:07.625Z"
+  "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-09-18T06:33:41.469Z",
+  "app/instantsearch/page.mdx": "2026-09-18T07:42:43.198Z"
 }

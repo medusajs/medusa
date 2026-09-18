@@ -59,9 +59,11 @@ storefront's search behavior intact.
   ships with Medusa v2.21.1 and later. Cloud registers and
   configures it for every environment, so it needs no
   credentials or configuration in the project.
-- Medusa creates a product index by default. A project only
-  declares its own index definition for custom fields,
-  custom index settings, or data models other than products.
+- Medusa declares no index by default, so a project
+  declares its own `product` index definition under
+  `src/search`. A project installed after v2.21.1 ships with
+  one at `src/search/product.ts`, and any other project may
+  or may not have it.
 - An index definition lives in a file under `src/search`,
   declares the fields the engine holds, fills the index with
   a `seed` async generator, and keeps it current with its
@@ -71,11 +73,17 @@ storefront's search behavior intact.
   exposes needs neither written by hand. They take the same
   options, including a `transform` that reshapes a record or
   returns `null` to keep it out of the index.
-- Medusa's Store API has a `GET /store/products/search`
-  route that searches the `product` index out-of-the-box,
-  scoped to the request's sales channels and published
-  products. A project doesn't need its own product search
-  route.
+- Medusa's Store API has a `POST /store/search` route that
+  searches any index of the application, so a project
+  doesn't need its own product search route. The body is a
+  search query naming the index in `entity`, or a batch of
+  them under `queries`.
+- An index is only reachable through `POST /store/search`
+  once a middleware allows it with `allowSearchIndexes`
+  from `@medusajs/framework/http`. The route applies no
+  scoping of its own, so narrowing a query to a sales
+  channel or to published documents is another middleware
+  on the route.
 - Queries run through `query.search` in an API route. There
   is no browser-side querying and no search-only key.
 - The `@medusajs/instantsearch-adapter` package is a search
@@ -101,9 +109,11 @@ storefront's search behavior intact.
 3. List the fields the project indexes in Algolia, taken
    from the sync workflow's `fields` array, and ask the user
    for the index settings from their Algolia dashboard.
-4. Decide whether the project needs its own index
-   definition. If every indexed field and setting is covered
-   by the default product index, skip to step 6 and say why.
+4. Check whether the project already declares a `product`
+   index, which ships at `src/search/product.ts`. If it
+   does and every indexed field and setting is covered by
+   it, skip to step 6 and say why. Otherwise, the project
+   needs an index definition of its own.
 5. Create the index definition under `src/search`. Map
    Algolia's searchable attributes to `searchable()` fields
    with a weight, faceting attributes to `facetable()` or
@@ -115,21 +125,20 @@ storefront's search behavior intact.
    returning `null` for a product that isn't published. List
    the entity's create, update, and delete events in
    `events`.
-6. When the definition is named `product`, it overrides the
-   default index, so keep the fields
-   `GET /store/products/search` filters by as `filterable()`:
-   `id`, `handle`, `status`, `collection_id`, `type_id`, and
-   the `category_ids`, `tag_ids`, and `sales_channel_ids`
-   arrays. The route rejects a filter on a field the index
-   doesn't hold.
+6. Allow every index the storefront searches on
+   `/store/search` with the `allowSearchIndexes` middleware
+   in `src/api/middlewares.ts`. An index the middleware
+   doesn't name answers exactly like one that doesn't exist.
+   The route applies no scoping of its own, so add a
+   middleware of the project's own for a constraint such as
+   a sales channel.
 7. Delete the project's product search API route and its
-   validation middleware, since `GET /store/products/search`
-   replaces it. Only write a route with `query.search` for
-   an index the Store API doesn't expose, such as a custom
-   data model, or for a search option the built-in route
-   doesn't accept, such as facet counts. In such a route,
-   respond with the hydrated records from `data` and the
-   metadata from `search_result`, and don't also return
+   validation middleware, since `POST /store/search`
+   replaces it. Only write a route with `query.search` for a
+   result the built-in route can't answer with, such as one
+   reshaped for the storefront. In such a route, respond
+   with the hydrated records from `data` and the metadata
+   from `search_result`, and don't also return
    `search_result.hits`, since each hit's `document` repeats
    a record already returned.
 8. Replace any manual sync trigger with a workflow step that
@@ -146,13 +155,11 @@ storefront's search behavior intact.
     uses InstantSearch widgets, install
     `@medusajs/instantsearch-adapter`, create its search
     client with the storefront's JS SDK instance and the
-    path `/store/products/search`, pass the client and the
-    index name to the existing `InstantSearch` provider, and
+    path `/store/search`, pass the client and the index
+    name to the existing `InstantSearch` provider, and
     change every component that reads a hit's `objectID` to
-    read `id`. Otherwise, call
-    `GET /store/products/search` with the JS SDK and read
-    the `products`, `count`, `offset`, and `limit` it
-    returns. Remove the Algolia packages, the Algolia search
+    read `id`. Otherwise, post to `/store/search` with the
+    JS SDK and read the `hits` and `metadata` it returns. Remove the Algolia packages, the Algolia search
     client, and the Algolia environment variables from the
     storefront.
 11. Run `npx medusa db:migrate --execute-all-links` to
@@ -169,8 +176,8 @@ storefront's search behavior intact.
   closest alternative instead of implementing it silently.
 - Do not delete the user's Algolia account, indexes, or
   credentials, and do not call the Algolia API.
-- Do not modify `GET /store/products/search` or recreate it
-  in the project.
+- Do not modify `POST /store/search` or recreate it in the
+  project.
 - Do not refine a widget or a filter on a field the index
   definition doesn't mark `searchable()`, `filterable()`,
   `facetable()`, or `sortable()`.
@@ -231,11 +238,10 @@ environment variables, validating relevance, and deploying.
 - Every field the project indexed in Algolia is either held
   by the new index definition, covered by the default
   product index, or listed as an intentional removal.
-- A `product` index definition holds every field
-  `GET /store/products/search` filters by.
+- Every index the storefront searches is named in an
+  `allowSearchIndexes` middleware on `/store/search`.
 - The storefront searches products through
-  `GET /store/products/search` and renders the records it
-  returns.
+  `POST /store/search` and renders the hits it returns.
 - Every remaining search route uses `query.search` and
   returns each record once.
 - Every unsupported Algolia behavior appears under
@@ -255,7 +261,7 @@ This guide assumes your project follows the [Integrate Algolia with Medusa](!res
 - A `syncProductsWorkflow` and its steps that index and delete products in Algolia.
 - Subscribers on product events and a custom `algolia.sync` event.
 - An admin UI route and API route that trigger a full sync.
-- A `/store/products/search` API route that the storefront calls.
+- A `/store/search` API route that the storefront calls.
 - A storefront search client that sends every query to that route.
 
 If your integration differs, the mapping in the [Map Your Integration to Medusa Search](#mapping-your-algolia-index-to-medusa-search) section still applies, since every Algolia integration owns the same responsibilities.
@@ -367,7 +373,7 @@ Medusa Search isn't a drop-in replacement for the Algolia client. It's a provide
       </Table.Cell>
       <Table.Cell>
 
-      Medusa provides the `/store/products/search` route out-of-the-box, and you can search as well with [`query.search`](!docs!/learn/fundamentals/query/search).
+      Medusa provides the `/store/search` route out-of-the-box, and you can search as well with [`query.search`](!docs!/learn/fundamentals/query/search).
 
       </Table.Cell>
     </Table.Row>
@@ -456,15 +462,17 @@ Once you upgrade, the Search Module is registered by default with the [PostgreSQ
 
 ## Step 2: Declare Your Index
 
-Medusa creates the product index by default, so products are searchable on Medusa Search without any index definition. You only declare one in the following cases:
+Medusa declares no index by default, so your application declares its own `product` index in a file under `src/search`. If you installed your Medusa application after v2.21.1, it already has that definition at `src/search/product.ts`. Otherwise, check whether the file is there, and declare the index if it isn't.
 
-- Your Algolia records hold custom fields that the default product index doesn't. You can then override the product index to include those fields.
-- You need index settings or field options that the default index doesn't apply, such as a different weight, a facetable field, or a [Medusa Search setting](../page.mdx#medusa-search-settings).
-- You indexed data models other than products in Algolia, such as product categories.
+If you already have the `product` index definition, you can customize it, or declare a new one in the following cases:
 
-Otherwise, skip to [Step 3](#step-3-replace-the-search-api-route) and query the default index.
+- Your Algolia records hold custom fields that your `product` index doesn't. You can then add those fields to the definition.
+- You need index settings or field options that your definition doesn't apply, such as a different weight, a facetable field, or a [Medusa Search setting](../page.mdx#medusa-search-settings).
+- You indexed data models other than products in Algolia, such as product categories. You then declare an index for each of them.
 
-An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code. Naming it `product` also [overrides Medusa's default product index](!resources!/infrastructure-modules/search#override-the-default-product-index), so your definition alone decides what the index holds.
+Otherwise, skip to [Step 3](#step-3-replace-the-search-api-route) and query the `product` index you already have.
+
+An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code. The definition alone decides what the index holds, so customize `src/search/product.ts` rather than adding a second definition named `product`.
 
 For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
 
@@ -660,42 +668,73 @@ Then start your application. The Search Module fills the index when the applicat
 
 ## Step 3: Replace the Search API Route
 
-Medusa's Store API has a [Search Products API route](!api!/store/products/search-products) that searches the `product` index out-of-the-box, whether it's the index Medusa declares by default or the definition you wrote in [Step 2](#step-2-declare-your-index).
+Medusa's Store API has a [`POST /store/search` API route](!api!/store/search/search-indexes) that searches any index of your application, including the `product` index you declared in [Step 2](#step-2-declare-your-index).
 
-So, you can delete the route you previously created for searching products, and use the built-in route instead:
+An index isn't searchable through the route until a middleware allows it, so add the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  allowSearchIndexes,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [allowSearchIndexes("product")],
+    },
+  ],
+})
+```
+
+Then, you can delete the route you previously created for searching products, and use the built-in route instead:
 
 ```bash
 MEDUSA_URL=https://your-project.medusajs.app
 
-curl "$MEDUSA_URL/store/products/search?q=sweatshirt&limit=20&offset=0" \
-  -H "x-publishable-api-key: {your_publishable_api_key}"
+curl -X POST "$MEDUSA_URL/store/search" \
+  -H "x-publishable-api-key: {your_publishable_api_key}" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "sweatshirt" },
+    "pagination": { "take": 20 }
+  }'
 ```
 
 The route returns a JSON response like the following:
 
 ```json
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa Sweatshirt",
-      "description": "A classic sweatshirt, reimagined.",
-      "handle": "sweatshirt",
-      "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
-      "status": "published",
-      "collection_id": "pcol_01KXR3J9J610DT161E2E4ZS6P2",
-      "type_id": null,
-      "created_at": "2026-08-24T10:12:04.918Z",
-      "updated_at": "2026-08-24T10:12:04.918Z"
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.42,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa Sweatshirt",
+            "description": "A classic sweatshirt, reimagined.",
+            "handle": "sweatshirt",
+            "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 12,
+        "query": "sweatshirt",
+        "processing_time_ms": 7
+      }
     }
-  ],
-  "count": 12,
-  "offset": 0,
-  "limit": 20
+  ]
 }
 ```
 
-Where Algolia returned a `results` array of `hits`, the route returns the hydrated products in `products`, ranked by relevance, along with the `count` of every product that matched and this page's `offset` and `limit`. [Step 4](#step-4-update-the-storefront) provides guidance on updating your storefront to read the new response shape.
+The route answers with one result per posted query, each holding the matching `hits` ranked by relevance and the query's `metadata`. It's close to the shape Algolia returned, with a hit's fields under `document` and its identifier in `id` rather than `objectID`. [Step 4](#step-4-update-the-storefront) provides guidance on updating your storefront to read the new response shape.
 
 ### Search a Custom Index
 
@@ -804,7 +843,7 @@ export const PRODUCT_INDEX_NAME = "product"
 
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/products/search",
+  path: "/store/search",
 })
 ```
 
@@ -992,7 +1031,7 @@ During the deployment, Cloud runs the search migrations, which create the physic
 
 Once your application is deployed, you can check the Medusa Admin dashboard for the status of the search index by going to Settings -> Search. Learn more in the [User Guide](!user-guide!/settings/search).
 
-If the index status is successful, it means the seeding has finished. You can test it out either by [sending a request to the Search Products API route](#step-3-replace-the-search-api-route), or by using the storefront search interface to confirm that products appear as expected.
+If the index status is successful, it means the seeding has finished. You can test it out either by [sending a request to the Store Search API route](#step-3-replace-the-search-api-route), or by using the storefront search interface to confirm that products appear as expected.
 
 ---
 

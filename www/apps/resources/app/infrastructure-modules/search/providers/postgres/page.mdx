@@ -116,7 +116,7 @@ npx medusa db:migrate
 
 ## Test the PostgreSQL Search Module Provider
 
-Medusa declares a `product` search index by default, and its Store API has a [Search Products API route](!api!/store/products/search-products) that searches it.
+To test the provider, make sure your application has a `product` index definition and that the index is allowed on the `/store/search` API route, as explained in the [Search Products guide](../../page.mdx#search-products).
 
 First, start your Medusa application:
 
@@ -124,43 +124,53 @@ First, start your Medusa application:
 npm run dev
 ```
 
-Then, send a request to the search endpoint:
+Then, send a request to the [Store Search API route](!api!/store/search/search-indexes):
 
 ```bash
-curl "http://localhost:9000/store/products/search?q=shirt" \
-  -H "x-publishable-api-key: pk_123"
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" }
+  }'
 ```
 
 Make sure to replace `pk_123` with a publishable API key, which you can find under Settings -> Publishable API Keys in the Medusa Admin dashboard.
 
-You'll receive the published products whose searchable fields match the query, ordered by relevance:
+You'll receive the products whose searchable fields match the query, ordered by relevance:
 
 ```json title="Example Response"
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa T-Shirt",
-      "handle": "t-shirt"
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.23,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa T-Shirt",
+            "handle": "t-shirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 1,
+        "query": "shirt"
+      }
     }
-  ],
-  "count": 1,
-  "offset": 0,
-  "limit": 20
+  ]
 }
 ```
-
-<Note title="Tip">
-
-Learn more about the endpoint and the fields the default `product` index holds in the [Search Products guide](../../page.mdx#search-products).
-
-</Note>
 
 ### Search Custom Data with the PostgreSQL Search Module Provider
 
 To search data other than products, such as a custom data model of your own module, declare a search index for it. The PostgreSQL Search Module Provider then creates the physical index, fills it, and serves searches on it the same way it does for products.
 
-Learn how to declare an index and search it in the [Create a Custom Search Index guide](../../page.mdx#create-a-custom-search-index), and learn about the properties you can set on an index in the [Search Index Definitions guide](../../index-definitions/page.mdx).
+Learn how to declare an index and search it in the [Search Other Entities guide](../../page.mdx#search-other-entities), and learn about the properties you can set on an index in the [Search Index Definitions guide](../../index-definitions/page.mdx).
 
 
 ---

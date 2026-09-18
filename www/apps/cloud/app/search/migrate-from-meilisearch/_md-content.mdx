@@ -20,9 +20,11 @@ search behavior intact.
   ships with Medusa v2.21.1 and later. Cloud registers and
   configures it for every environment, so it needs no
   credentials or configuration in the project.
-- Medusa creates a product index by default. A project only
-  declares its own index definition for custom fields,
-  custom index settings, or data models other than products.
+- Medusa declares no index by default, so a project
+  declares its own `product` index definition under
+  `src/search`. A project installed after v2.21.1 ships with
+  one at `src/search/product.ts`, and any other project may
+  or may not have it.
 - An index definition lives in a file under `src/search`,
   declares the fields the engine holds, fills the index with
   a `seed` async generator, and keeps it current with its
@@ -32,11 +34,17 @@ search behavior intact.
   exposes needs neither written by hand. They take the same
   options, including a `transform` that reshapes a record or
   returns `null` to keep it out of the index.
-- Medusa's Store API has a `GET /store/products/search`
-  route that searches the `product` index out-of-the-box,
-  scoped to the request's sales channels and published
-  products. A project doesn't need its own product search
-  route.
+- Medusa's Store API has a `POST /store/search` route that
+  searches any index of the application, so a project
+  doesn't need its own product search route. The body is a
+  search query naming the index in `entity`, or a batch of
+  them under `queries`.
+- An index is only reachable through `POST /store/search`
+  once a middleware allows it with `allowSearchIndexes`
+  from `@medusajs/framework/http`. The route applies no
+  scoping of its own, so narrowing a query to a sales
+  channel or to published documents is another middleware
+  on the route.
 - Queries run through `query.search` in an API route. Medusa
   Search has no browser-side querying and no search-only
   key, so the storefront searches through the Medusa backend
@@ -68,9 +76,11 @@ search behavior intact.
    the user for the index settings of their Meilisearch
    instance. They can read them from
    `GET /indexes/{index}/settings`.
-4. Decide whether the project needs its own index
-   definition. If every indexed field and setting is covered
-   by the default product index, skip to step 8 and say why.
+4. Check whether the project already declares a `product`
+   index, which ships at `src/search/product.ts`. If it
+   does and every indexed field and setting is covered by
+   it, skip to step 8 and say why. Otherwise, the project
+   needs an index definition of its own.
 5. Create the index definition under `src/search`. Map
    Meilisearch's `searchableAttributes` to `searchable()`
    fields with a weight, `filterableAttributes` to
@@ -83,19 +93,18 @@ search behavior intact.
    returning `null` for a product that isn't published. List
    the entity's create, update, and delete events in
    `events`.
-6. When the definition is named `product`, it overrides the
-   default index, so keep the fields
-   `GET /store/products/search` filters by as `filterable()`:
-   `id`, `handle`, `status`, `collection_id`, `type_id`, and
-   the `category_ids`, `tag_ids`, and `sales_channel_ids`
-   arrays. The route rejects a filter on a field the index
-   doesn't hold.
+6. Allow every index the storefront searches on
+   `/store/search` with the `allowSearchIndexes` middleware
+   in `src/api/middlewares.ts`. An index the middleware
+   doesn't name answers exactly like one that doesn't exist.
+   The route applies no scoping of its own, so add a
+   middleware of the project's own for a constraint such as
+   a sales channel.
 7. Don't create a product search route, since
-   `GET /store/products/search` serves the storefront. Only
-   write a route with `query.search` for an index the Store
-   API doesn't expose, such as a custom data model, or for a
-   search option the built-in route doesn't accept, such as
-   facet counts. In such a route, respond with the hydrated
+   `POST /store/search` serves the storefront. Only write a
+   route with `query.search` for a result the built-in route
+   can't answer with, such as one reshaped for the
+   storefront. In such a route, respond with the hydrated
    records from `data` and the metadata from `search_result`,
    and don't also return `search_result.hits`, since each
    hit's `document` repeats a record already returned.
@@ -113,13 +122,12 @@ search behavior intact.
     uses InstantSearch widgets, install
     `@medusajs/instantsearch-adapter`, create its search
     client with the storefront's JS SDK instance and the
-    path `/store/products/search`, pass the client and the
-    index name to the existing `InstantSearch` provider, and
+    path `/store/search`, pass the client and the index
+    name to the existing `InstantSearch` provider, and
     change every component that reads a hit's `_formatted`
-    fields to read its `highlights` instead. Otherwise, call
-    `GET /store/products/search` with the JS SDK and read
-    the `products`, `count`, `offset`, and `limit` it
-    returns. Remove the
+    fields to read its `highlights` instead. Otherwise, post
+    to `/store/search` with the JS SDK and read the `hits`
+    and `metadata` it returns. Remove the
     `@meilisearch/instant-meilisearch` package, the
     Meilisearch `searchClient` export, and the
     `NEXT_PUBLIC_MEILISEARCH_*` variables. Keep
@@ -140,8 +148,8 @@ search behavior intact.
   keys, and do not call the Meilisearch API.
 - Do not expose the search index to the browser. Every query
   goes through the Medusa backend.
-- Do not modify `GET /store/products/search` or recreate it
-  in the project.
+- Do not modify `POST /store/search` or recreate it in the
+  project.
 - Do not refine a widget or a filter on a field the index
   definition doesn't mark `searchable()`, `filterable()`,
   `facetable()`, or `sortable()`.
@@ -203,11 +211,11 @@ environment variables, validating relevance, and deploying.
 - Every field the project indexed in Meilisearch is either
   held by the new index definition, covered by the default
   product index, or listed as an intentional removal.
-- A `product` index definition holds every field
-  `GET /store/products/search` filters by.
+- Every index the storefront searches is named in an
+  `allowSearchIndexes` middleware on `/store/search`.
 - The storefront searches products through
-  `GET /store/products/search`, and no Meilisearch key
-  reaches the browser.
+  `POST /store/search`, and no Meilisearch key reaches the
+  browser.
 - Every remaining search route uses `query.search` and
   returns each record once.
 - Every unsupported Meilisearch behavior appears under
@@ -233,5 +241,5 @@ The steps below need the user's Cloud account and their judgment, so hand them o
 
 - [Medusa Search vs Meilisearch](../meilisearch/page.mdx): a feature-by-feature comparison, including the Meilisearch features that Medusa Search doesn't offer.
 - [Search Module](!resources!/infrastructure-modules/search): the module's documentation, including [index definitions](!resources!/infrastructure-modules/search/index-definitions) and [reindexing](!resources!/infrastructure-modules/search/reindexing).
-- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `GET /store/products/search`, for a custom route over an index the Store API doesn't expose.
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `POST /store/search`, for a custom route that reshapes a search result.
 - [InstantSearch Adapter](!resources!/instantsearch): the storefront search client for InstantSearch widgets.

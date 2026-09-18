@@ -25,9 +25,11 @@ indexed and served by it.
   later, and passes the credentials to every environment,
   so it needs no provider registration in
   `medusa-config.ts` and no credentials in the project.
-- Medusa creates a `product` index by default. A project
-  declares its own index definition only for custom fields,
-  custom index settings, or data models other than products.
+- Medusa declares no index by default, so a project
+  declares its own `product` index definition under
+  `src/search`. A project installed after v2.21.1 ships with
+  one at `src/search/product.ts`, and any other project may
+  or may not have it.
 - An index definition lives in a file under `src/search`,
   declares the fields the engine holds, fills the index with
   a `seed` async generator, and keeps it current with its
@@ -37,13 +39,19 @@ indexed and served by it.
   exposes needs neither written by hand. They take the same
   options, including a `transform` that reshapes a record or
   returns `null` to keep it out of the index.
-- Medusa's Store API has a `GET /store/products/search`
-  route that searches the `product` index out-of-the-box,
-  scoped to the request's sales channels and published
-  products. It accepts `q`, `limit`, `offset`, `order`, and
-  filters such as `collection_id`, `category_id`, and
-  `handle`. A project doesn't need its own product search
-  route.
+- Medusa's Store API has a `POST /store/search` route that
+  searches any index of the application, so a project
+  doesn't need its own product search route. The body is a
+  search query naming the index in `entity`, or a batch of
+  them under `queries`, and each accepts `fields`,
+  `filters` (including `q`), `pagination`, and
+  `search_options`.
+- An index is only reachable through `POST /store/search`
+  once a middleware allows it with `allowSearchIndexes`
+  from `@medusajs/framework/http`. The route applies no
+  scoping of its own, so narrowing a query to a sales
+  channel or to published documents is another middleware
+  on the route.
 - Queries in a custom route run through `query.search`.
   There is no browser-side querying and no search-only key.
 - Each Cloud environment has its own indexes, scoped by the
@@ -364,28 +372,58 @@ so there's nothing to poll.
 
 ## The Store API search route
 
+```ts title="src/api/middlewares.ts"
+import {
+  allowSearchIndexes,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [allowSearchIndexes("product")],
+    },
+  ],
+})
+```
+
 ```bash
 MEDUSA_URL=https://your-project.medusajs.app
 
-curl "$MEDUSA_URL/store/products/search?q=sweatshirt" \
-  -H "x-publishable-api-key: pk_01KXR..."
+curl -X POST "$MEDUSA_URL/store/search" \
+  -H "x-publishable-api-key: pk_01KXR..." \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "sweatshirt" },
+    "pagination": { "take": 20 }
+  }'
 ```
 
 ```json title="Response"
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR...",
-      "title": "Medusa Sweatshirt",
-      "handle": "sweatshirt",
-      "status": "published",
-      "collection_id": "pcol_01KXR...",
-      "type_id": null
+      "hits": [
+        {
+          "id": "prod_01KXR...",
+          "score": 1.42,
+          "document": {
+            "id": "prod_01KXR...",
+            "title": "Medusa Sweatshirt",
+            "handle": "sweatshirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 1,
+        "query": "sweatshirt"
+      }
     }
-  ],
-  "count": 1,
-  "offset": 0,
-  "limit": 20
+  ]
 }
 ```
 
@@ -401,7 +439,7 @@ export const PRODUCT_INDEX_NAME = "product"
 
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/products/search",
+  path: "/store/search",
 })
 ```
 
@@ -489,7 +527,7 @@ details this reference leaves out:
 - The InstantSearch adapter:
   https://docs.medusajs.com/resources/instantsearch
 - The Store API search route:
-  https://docs.medusajs.com/api/store/products/search-products
+  https://docs.medusajs.com/api/store/search/search-indexes
 - Medusa Search itself, including the index statuses and
   local development: https://docs.medusajs.com/cloud/search
 </reference>
@@ -517,17 +555,19 @@ details this reference leaves out:
    the Medusa Admin dashboard, as described in
    `dashboard_handoffs`. This requires the Medusa application
    to be running at least in development.
-6. Search the deployed environment with
-   `GET /store/products/search?q=<term>` and a publishable
-   API key, and report the `products`, `count`, `offset`,
-   and `limit` it returns, as shown in "The Store API search
-   route". Ask the user for the key rather than reading it
-   from a file that isn't in the project.
-7. Decide whether the project needs its own index
-   definition. If the default `product` index covers every
-   field the project searches, filters, facets, and sorts
-   by, skip to step 10 and say why.
-8. Create the index definition under `src/search`. Mark each
+6. Search the deployed environment by posting
+   `{"entity": "product", "filters": {"q": "<term>"}}` to
+   `/store/search` with a publishable API key, and report
+   the `hits` and `metadata` it returns, as shown in "The
+   Store API search route". Ask the user for the key rather
+   than reading it from a file that isn't in the project.
+7. Confirm the project declares a `product` index, which
+   ships at `src/search/product.ts`, and create it if the
+   file isn't there. Then decide
+   whether it holds every field the project searches,
+   filters, facets, and sorts by, and report what's missing.
+8. Create or customize the index definition under
+   `src/search`. Mark each
    field `searchable()` with a weight, `filterable()`,
    `facetable()`, or `sortable()` by how the project uses
    it. Build `seed` and `consume` with `graphSeed` and
@@ -538,17 +578,16 @@ details this reference leaves out:
    `events`. Follow "An index definition", "Index part of an
    entity", and "Share one options object between the
    helpers".
-9. When the definition is named `product`, it overrides the
-   default index, so keep the fields
-   `GET /store/products/search` filters by as
-   `filterable()`: `id`, `handle`, `status`,
-   `collection_id`, `type_id`, and the `category_ids`,
-   `tag_ids`, and `sales_channel_ids` arrays. The route
-   rejects a filter on a field the index doesn't hold.
-10. Write an API route with `query.search` only for an index
-    the Store API doesn't expose, such as a custom data
-    model, or for a search option the built-in route doesn't
-    accept, such as facet counts. Respond with the hydrated
+9. Allow every index the storefront searches on
+   `/store/search` with the `allowSearchIndexes` middleware
+   in `src/api/middlewares.ts`, as shown in "The Store API
+   search route". An index the middleware doesn't name
+   answers exactly like one that doesn't exist. The route
+   applies no scoping of its own, so add a middleware of the
+   project's own for a constraint such as a sales channel.
+10. Write an API route with `query.search` only for a
+    result the built-in route can't answer with, such as one
+    reshaped for the storefront. Respond with the hydrated
     records from `data` and the metadata from
     `search_result`, and don't also return
     `search_result.hits`, since each hit's `document`
@@ -560,10 +599,10 @@ details this reference leaves out:
     InstantSearch widgets, install
     `@medusajs/instantsearch-adapter`, create its search
     client with the storefront's JS SDK instance and the
-    path `/store/products/search`, and pass the client and
-    the index name to the `InstantSearch` provider, as
-    shown in "The storefront search client". Otherwise, call
-    `GET /store/products/search` with the JS SDK.
+    path `/store/search`, and pass the client and the index
+    name to the `InstantSearch` provider, as shown in "The
+    storefront search client". Otherwise, post to
+    `/store/search` with the JS SDK.
 12. Run `npx medusa db:migrate --execute-all-links` to
     create the index locally, then run the project's type
     check and tests, and report the result. Never run
@@ -588,8 +627,8 @@ details this reference leaves out:
 - Do not print, commit, or write a connection string, an API
   key, or a publishable key into any file other than a local
   `.env` that git ignores.
-- Do not modify `GET /store/products/search` or recreate it
-  in the project.
+- Do not modify `POST /store/search` or recreate it in the
+  project.
 - Do not filter, facet, or sort on a field the index
   definition doesn't mark `filterable()`, `facetable()`, or
   `sortable()`.
@@ -676,13 +715,13 @@ relevance checks. Write "None" when the list is empty.
 - The project runs Medusa v2.21.1 or later and registers no
   search provider of its own for Cloud.
 - The environment's `product` index is Ready, and
-  `GET /store/products/search` returns products for a term
-  the catalog holds.
+  `POST /store/search` returns hits for a term the catalog
+  holds.
 - Every field the project searches, filters, facets, or
-  sorts by is either held by an index definition under
-  `src/search` or covered by the default `product` index.
-- A `product` index definition holds every field
-  `GET /store/products/search` filters by.
+  sorts by is held by an index definition under
+  `src/search`.
+- Every index the storefront searches is named in an
+  `allowSearchIndexes` middleware on `/store/search`.
 - Every custom search route uses `query.search` and returns
   each record once.
 - No credential appears outside a git-ignored `.env` file.
@@ -703,6 +742,6 @@ Ask the [Medusa MCP server](!docs!/learn/introduction/build-with-llms-ai/mcp-ser
 - [Semantic search](./semantic-search/page.mdx): searching over embeddings.
 - [Cloud CLI for AI Agents](../cli/agents/page.mdx): the CLI's working principles and setup steps for agents.
 - [Search Module](!resources!/infrastructure-modules/search): the module's documentation, including [index definitions](!resources!/infrastructure-modules/search/index-definitions) and [reindexing](!resources!/infrastructure-modules/search/reindexing).
-- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `GET /store/products/search`, for a custom route over an index the Store API doesn't expose.
+- [`query.search`](!docs!/learn/fundamentals/query/search): the API behind `POST /store/search`, for a custom route that reshapes a search result.
 - [InstantSearch Adapter](!resources!/instantsearch): the storefront search client for InstantSearch widgets.
 - [Migrate from Algolia](./migrate-from-algolia/page.mdx) and [Migrate from Meilisearch](./migrate-from-meilisearch/page.mdx): the prompts for a project that already has a search integration.

@@ -58,7 +58,117 @@ Writes count toward your search request usage, and every record written to an in
 
 To use Medusa Search, your Medusa application must be running v2.21.1 or later. If it isn't, upgrade it first, then deploy it to Cloud. Refer to the [Update Medusa](../update-medusa/page.mdx) guide for the upgrade steps.
 
-### 2. Confirm Products as Indexed
+### 2. Define the Product Index
+
+Medusa doesn't declare any search index by default. If you installed your Medusa application after v2.21.1, it already has a `product` index definition. Otherwise, you need to define a `product` index in your Medusa application to make your products searchable.
+
+Create the file `src/search/product.ts` with the following content:
+
+{/* TODO: the fields of the default product index aren't final yet. Update this snippet once they are. */}
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+    "categories.id",
+    "categories.name",
+    "categories.handle",
+    "tags.id",
+    "tags.value",
+  ],
+  transform: ({ status, ...product }) => {
+    return status === "published" ? product : null
+  },
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable(),
+    handle: search.keyword().filterable(),
+    thumbnail: search.keyword(),
+    categories: search
+      .object({
+        id: search.keyword().filterable(),
+        name: search
+          .keyword()
+          .searchable()
+          .facetable(),
+        handle: search.keyword().filterable(),
+      })
+      .array(),
+    tags: search
+      .object({
+        id: search.keyword().filterable(),
+        value: search
+          .keyword()
+          .searchable()
+          .facetable(),
+      })
+      .array(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+The definition names the fields the engine holds, fills the index with [`graphSeed`](!resources!/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed), and keeps it current with [`graphConsume`](!resources!/infrastructure-modules/search/index-definitions#consume-events-from-query-with-graphconsume). Add to it any core or custom field that your storefront searches, filters, sorts, or facets on.
+
+### 3. Allow the Index on the Store Search Route
+
+Medusa exposes the [`POST /store/search` API route](!api!/store/search/search-indexes), which searches any index of your application. However, an index isn't searchable through it until a middleware allows it, so a storefront never reaches an index you didn't expose.
+
+To allow the `product` index, use the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  allowSearchIndexes,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [allowSearchIndexes("product")],
+    },
+  ],
+})
+```
+
+The route runs the queries as posted, so narrow them further, such as to a sales channel, with another middleware that changes `req.validatedBody`.
+
+### 4. Push and Deploy Your Changes
+
+The index definition and the middleware are part of your Medusa application's code, so Cloud picks them up on the next deployment.
+
+Commit both files and push them to the branch that your environment tracks.
+
+Cloud then [creates a deployment](../deployments/page.mdx#how-are-deployments-created) for the commit. Once it finishes, Medusa runs the index migrations, creates the physical `product` index, and fills it with your products.
+
+You can follow the deployment's progress in the Cloud dashboard, as explained in [Find Environment Deployments](../deployments/page.mdx#find-environment-deployments).
+
+### 5. Confirm Products as Indexed
 
 In your Medusa Admin dashboard, you can track the indexing of your products and other entities with the Search Module.
 
@@ -115,58 +225,68 @@ Find the `product` card and check its status, which is one of the following:
 
 Once the `product` index is Ready, your products are searchable.
 
-### 3. Search Products
+### 6. Search Products
 
-You can search your indexed products using the [Search Products API Route](!api!/store/products/search-products).
+You can search your indexed products by sending a `POST` request to the [Store Search API route](!api!/store/search/search-indexes) with the index to search in the `entity` field.
 
 For example, to search for products matching `sweatshirt`:
 
 ```bash
 MEDUSA_URL=https://your-project.medusajs.app
 
-curl "$MEDUSA_URL/store/products/search?q=sweatshirt" \
-  -H "x-publishable-api-key: pk_01KXR3J9J610DT161E2E4ZS6P1"
+curl -X POST "$MEDUSA_URL/store/search" \
+  -H "x-publishable-api-key: pk_01KXR3J9J610DT161E2E4ZS6P1" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "sweatshirt" },
+    "pagination": { "take": 20 }
+  }'
 ```
 
-The endpoint accepts the `q` free-text query, pagination parameters such as `limit` and `offset`, an `order` parameter, and filters like `collection_id`, `category_id`, or `handle`.
+The route accepts the `q` free-text query among the `filters`, along with pagination, sorting, facets, and the other options of a [search query](!docs!/learn/fundamentals/query/search).
 
 You'll receive a JSON response like the following:
 
 ```json
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa Sweatshirt",
-      "subtitle": null,
-      "description": "A classic sweatshirt, reimagined.",
-      "handle": "sweatshirt",
-      "status": "published",
-      "collection_id": "pcol_01KXR3J9J610DT161E2E4ZS6P2",
-      "type_id": null,
-      "created_at": "2026-08-24T10:12:04.918Z",
-      "updated_at": "2026-08-24T10:12:04.918Z"
-    },
-    {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P3",
-      "title": "Medusa Zip-Up Sweatshirt",
-      "subtitle": null,
-      "description": "A zip-up take on the classic sweatshirt.",
-      "handle": "zip-up-sweatshirt",
-      "status": "published",
-      "collection_id": "pcol_01KXR3J9J610DT161E2E4ZS6P2",
-      "type_id": null,
-      "created_at": "2026-08-24T10:12:05.114Z",
-      "updated_at": "2026-08-24T10:12:05.114Z"
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.42,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa Sweatshirt",
+            "description": "A classic sweatshirt, reimagined.",
+            "handle": "sweatshirt"
+          }
+        },
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P3",
+          "score": 1.18,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P3",
+            "title": "Medusa Zip-Up Sweatshirt",
+            "description": "A zip-up take on the classic sweatshirt.",
+            "handle": "zip-up-sweatshirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 2,
+        "query": "sweatshirt",
+        "processing_time_ms": 7
+      }
     }
-  ],
-  "count": 2,
-  "offset": 0,
-  "limit": 2
+  ]
 }
 ```
 
-The response holds the products the index matched, ranked by relevance, along with the `count` of every product that matched and the `offset` and `limit` of this page.
+The route answers with one result per posted query, each holding the matching `hits` ranked by relevance and the query's `metadata`. You can also post a batch of queries at once in a `queries` array.
 
 <Note title="Tip">
 
@@ -321,7 +441,7 @@ Keep the registration behind the development check. Cloud registers Medusa Searc
 
 ### Search Custom Data Models
 
-To search data other than products, including the custom data models of your own modules, you can declare an [index definition](!resources!/infrastructure-modules/search/index-definitions), then add an [API route](!docs!/learn/fundamentals/api-routes) that searches the index.
+To search data other than products, including the custom data models of your own modules, you can declare an [index definition](!resources!/infrastructure-modules/search/index-definitions), then either allow the index on the `/store/search` API route or add an [API route](!docs!/learn/fundamentals/api-routes) of your own that searches it.
 
 For example, to index a custom `brand` data model, create the file `src/search/brand.ts` with the following content:
 
@@ -354,7 +474,7 @@ export const brandIndex = defineSearchIndex({
 })
 ```
 
-Refer to the [Create Custom Search Index](!resources!/infrastructure-modules/search#create-a-custom-search-index) guide for more details.
+Refer to the [Search Other Entities](!resources!/infrastructure-modules/search#search-other-entities) guide for more details.
 
 ---
 

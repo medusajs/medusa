@@ -624,7 +624,7 @@ Then, in the storefront, list the field in the search client's `numericAttribute
 ```ts title="src/lib/search-client.ts" badgeLabel="Storefront" badgeColor="blue"
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/products/search",
+  path: "/store/search",
   numericAttributes: ["min_price"],
 })
 ```
@@ -1125,7 +1125,7 @@ To count exactly, set it in the search client's `additionalSearchParameters`:
 ```ts title="src/lib/search-client.ts"
 export const { searchClient } = createInstantSearchAdapter({
   sdk,
-  path: "/store/products/search",
+  path: "/store/search",
   additionalSearchParameters: {
     search_options: {
       count: "exact",

@@ -18459,1889 +18459,6 @@ npx medusa db:migrate
 ```
 
 
-# Query Context
-
-In this chapter, you'll learn how to pass context when retrieving data with [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md).
-
-## What is Query Context?
-
-Query context is additional information you pass to Query when retrieving data. You can use it to apply custom transformations to the returned data based on the current context.
-
-For example, consider a Blog Module with posts and authors. You can send the user's language as context to Query to retrieve posts in the user's language.
-
-Medusa also uses Query Context to [retrieve product variants' prices based on the customer's currency](https://docs.medusajs.com/resources/commerce-modules/product/guides/price/index.html.md).
-
-***
-
-## How to Pass Query Context
-
-The `query.graph` method accepts an optional `context` parameter. You can use this to pass additional context to the data model you're retrieving (for example, `post`) or its related and linked models (for example, `author`).
-
-You can initialize a context using `QueryContext` from the Modules SDK. It accepts an object of contexts as an argument.
-
-For example, to retrieve posts using Query while passing the user's language as context:
-
-```ts
-import { QueryContext } from "@medusajs/framework/utils"
-
-// ...
-
-const { data } = await query.graph({
-  entity: "post",
-  fields: ["*"],
-  context: QueryContext({
-    lang: "es",
-  }),
-})
-```
-
-In this example, you pass a `lang` property with the value `es` in the context. You create the context using `QueryContext`.
-
-### How to Handle Query Context
-
-To handle the Query context passed while retrieving records of your data models, override the [generated list method](https://docs.medusajs.com/resources/service-factory-reference/methods/list/index.html.md) of the associated module's service.
-
-For example, continuing the example above, you can override the `listPosts` method of the Blog Module's service to handle the Query context:
-
-```ts
-import { MedusaContext, MedusaService } from "@medusajs/framework/utils"
-import { Context, FindConfig } from "@medusajs/framework/types"
-import Post from "./models/post"
-import Author from "./models/author"
-
-class BlogModuleService extends MedusaService({
-  Post,
-  Author,
-}){
-  // @ts-ignore
-  async listPosts(
-    filters?: any, 
-    config?: FindConfig<any> | undefined, 
-    @MedusaContext() sharedContext?: Context | undefined
-  ) {
-    const context = filters.context ?? {}
-    delete filters.context
-
-    let posts = await super.listPosts(filters, config, sharedContext)
-
-    if (context.lang === "es") {
-      posts = posts.map((post) => {
-        return {
-          ...post,
-          title: post.title + " en español",
-        }
-      })
-    }
-
-    return posts
-  }
-}
-
-export default BlogModuleService
-```
-
-In the above example, you override the generated `listPosts` method. This method receives the filters passed to `query.graph` as its first parameter. The first parameter includes a `context` property that holds the Query context alsopassed to `query.graph`.
-
-You extract the context from `filters`, then retrieve the posts using the parent's `listPosts` method. If the language is set in the context, you transform the post titles.
-
-All posts returned will now have their titles appended with "en español".
-
-### Using Pagination with Query
-
-If you pass pagination fields to `query.graph`, you must also override the [generated listAndCount method](https://docs.medusajs.com/resources/service-factory-reference/methods/listAndCount/index.html.md) in the service.
-
-For example, following the previous example, you must override the `listAndCountPosts` method of the Blog Module's service:
-
-```ts
-import { MedusaContext, MedusaService } from "@medusajs/framework/utils"
-import { Context, FindConfig } from "@medusajs/framework/types"
-import Post from "./models/post"
-import Author from "./models/author"
-
-class BlogModuleService extends MedusaService({
-  Post,
-  Author,
-}){
-  // @ts-ignore
-  async listAndCountPosts(
-    filters?: any, 
-    config?: FindConfig<any> | undefined, 
-    @MedusaContext() sharedContext?: Context | undefined
-  ) {
-    const context = filters.context ?? {}
-    delete filters.context
-
-    const result = await super.listAndCountPosts(
-      filters, 
-      config, 
-      sharedContext
-    )
-
-    if (context.lang === "es") {
-      result[0] = result[0].map((post) => {
-        return {
-          ...post,
-          title: post.title + " en español",
-        }
-      })
-    }
-
-    return result
-  }
-}
-
-export default BlogModuleService
-```
-
-Now, the `listAndCountPosts` method will handle the context passed to `query.graph` when you pass pagination fields. You can also move the logic to transform the post titles to a separate method and call it from both `listPosts` and `listAndCountPosts`.
-
-***
-
-## Passing Query Context to Related Data Models
-
-If you're retrieving a data model and want to pass Query context to its associated model in the same module, pass them as part of `QueryContext`'s parameter. Then, you can handle them in the same `list` method.
-
-To pass Query context to linked data models, check out the [next section](#passing-query-context-to-linked-data-models).
-
-For example, to pass a context for the post's authors:
-
-```ts
-const { data } = await query.graph({
-  entity: "post",
-  fields: ["*"],
-  context: QueryContext({
-    lang: "es",
-    author: QueryContext({
-      lang: "es",
-    }),
-  }),
-})
-```
-
-Then, in the `listPosts` method, you can handle the context for the post's authors:
-
-```ts
-import { MedusaContext, MedusaService } from "@medusajs/framework/utils"
-import { Context, FindConfig } from "@medusajs/framework/types"
-import Post from "./models/post"
-import Author from "./models/author"
-
-class BlogModuleService extends MedusaService({
-  Post,
-  Author,
-}){
-  // @ts-ignore
-  async listPosts(
-    filters?: any, 
-    config?: FindConfig<any> | undefined, 
-    @MedusaContext() sharedContext?: Context | undefined
-  ) {
-    const context = filters.context ?? {}
-    delete filters.context
-
-    let posts = await super.listPosts(filters, config, sharedContext)
-
-    const isPostLangEs = context.lang === "es"
-    const isAuthorLangEs = context.author?.lang === "es"
-
-    if (isPostLangEs || isAuthorLangEs) {
-      posts = posts.map((post) => {
-        return {
-          ...post,
-          title: isPostLangEs ? post.title + " en español" : post.title,
-          author: {
-            ...post.author,
-            name: isAuthorLangEs ? post.author.name + " en español" : post.author.name,
-          },
-        }
-      })
-    }
-
-    return posts
-  }
-}
-
-export default BlogModuleService
-```
-
-The context in `filters` will also include the context for `author`, which you can use to transform the post's authors.
-
-***
-
-## Passing Query Context to Linked Data Models
-
-If you're retrieving a data model and want to pass Query context to a linked model in a different module, pass an object to the `context` property instead. The object's keys should be the linked model's name, and the values should be the Query context for that linked model.
-
-For example, consider the Product Module's `Product` data model is linked to the Blog Module's `Post` data model. You can pass context to the `Post` data model while retrieving products:
-
-```ts
-const { data } = await query.graph({
-  entity: "product",
-  fields: ["*", "post.*"],
-  context: {
-    post: QueryContext({
-      lang: "es",
-    }),
-  },
-})
-```
-
-In this example, you retrieve products and their associated posts. You also pass Query context for `post`, indicating the customer's language.
-
-To handle the context, override the generated `listPosts` method of the Blog Module as explained [previously](#how-to-handle-query-context).
-
-
-# Query
-
-In this chapter, you’ll learn about Query and how to use it to fetch data from modules.
-
-## What is Query?
-
-Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
-
-In all resources that can access the [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
-
-Prefer Query for read operations (list and retrieve) in API routes. It integrates with the [`validateAndTransformQuery` middleware](#request-query-configurations) and resolves cross-module links automatically.
-
-***
-
-## Query Example
-
-For example, create the route `src/api/query/route.ts` with the following content:
-
-```ts title="src/api/query/route.ts"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
-
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-
-  const { data: posts } = await query.graph({
-    entity: "post",
-    fields: ["id", "title"],
-  })
-
-  res.json({ posts })
-}
-```
-
-In the above example, you resolve Query from the Medusa container using the `ContainerRegistrationKeys.QUERY` (`query`) key.
-
-Then, you run a query using its `graph` method. This method accepts as a parameter an object with the following required properties:
-
-- `entity`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
-- `fields`: An array of the data model’s properties to retrieve in the result.
-
-The method returns an object that has a `data` property, which holds an array of the retrieved data. For example:
-
-```json title="Returned Data"
-{
-  "data": [
-    {
-      "id": "123",
-      "title": "My Post"
-    }
-  ]
-}
-```
-
-### Query Usage in Workflows
-
-To retrieve data with Query in a [workflow](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md), use the [useQueryGraphStep](https://docs.medusajs.com/resources/references/helper-steps/useQueryGraphStep/index.html.md).
-
-For example:
-
-```ts title="src/workflows/query.ts"
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-
-const myWorkflow = createWorkflow(
-  "my-workflow",
-  () => {
-    const { data: posts } = useQueryGraphStep({
-      entity: "post",
-      fields: ["id", "title"],
-    })
-
-    return new WorkflowResponse({
-      posts,
-    })
-  }
-)
-```
-
-You can learn more about this step in the [useQueryGraphStep](https://docs.medusajs.com/resources/references/helper-steps/useQueryGraphStep/index.html.md) reference.
-
-***
-
-## Querying the Graph
-
-When you use the `query.graph` method, you're running a query through an internal graph that the Medusa application creates.
-
-This graph collects data models of all modules in your application, including commerce and custom modules, and identifies relations and links between them.
-
-***
-
-## Select Specific Fields
-
-Always list in `fields` the properties you need, rather than passing `*` or `{relation}.*` to retrieve every property.
-
-Selecting specific fields keeps the query cheaper for the database, the response smaller, and the cached result easier to invalidate. Retrieving all properties also loads relations and computed properties that you may not use.
-
-For example, instead of retrieving all properties of a post and its author:
-
-### query.graph
-
-```ts title="Avoid"
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["*", "author.*"],
-})
-```
-
-### useQueryGraphStep
-
-```ts title="Avoid"
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["*", "author.*"],
-})
-```
-
-Retrieve only the properties you use:
-
-### query.graph
-
-```ts title="Prefer"
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: [
-    "id",
-    "title",
-    "author.id",
-    "author.name",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts title="Prefer"
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: [
-    "id",
-    "title",
-    "author.id",
-    "author.name",
-  ],
-})
-```
-
-### Avoid Retrieving All Fields of Carts and Orders
-
-Selecting specific fields matters most for the `cart` and `order` data models, along with their related data models, such as `return` and `order_change`.
-
-These data models have computed total properties, such as `total`, `subtotal`, and `tax_total`. Medusa calculates these totals in the application, not the database, and it only calculates them when you request at least one total property, or when you pass `*`.
-
-So, when you pass `*` in `fields`, Medusa:
-
-- Calculates all totals for every retrieved record.
-- Loads the relations required for that calculation, including `items`, `credit_lines`, `items.tax_lines`, `items.adjustments`, `shipping_methods`, `shipping_methods.tax_lines`, and `shipping_methods.adjustments`, even if you don't use them.
-
-For a list of orders, this turns a simple query into a much heavier one. So, request totals only when you display them:
-
-### query.graph
-
-```ts title="Prefer"
-const { data: orders } = await query.graph({
-  entity: "order",
-  fields: [
-    "id",
-    "display_id",
-    "status",
-    "currency_code",
-    // request totals only if you use them:
-    "total",
-    "items.id",
-    "items.title",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts title="Prefer"
-const { data: orders } = useQueryGraphStep({
-  entity: "order",
-  fields: [
-    "id",
-    "display_id",
-    "status",
-    "currency_code",
-    // request totals only if you use them:
-    "total",
-    "items.id",
-    "items.title",
-  ],
-})
-```
-
-***
-
-## Retrieve Linked Records
-
-Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with the `.{field}` notation, where `{field}` is the property of the linked data model you want to retrieve.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "product.id",
-    "product.title",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "product.id",
-    "product.title",
-  ],
-})
-```
-
-In the example above, you retrieve only the `id` and `title` properties of the `product` linked to a `post`.
-
-Alternatively, you can pass `.*` to retrieve all properties of the linked data model. Use this only when you need every property, as explained in the [Select Specific Fields](#select-specific-fields) section.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "product.*",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "product.*",
-  ],
-})
-```
-
-### Retrieve List Link Records
-
-If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.{field}`.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "products.id",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: [
-    "id", 
-    "title",
-    "products.id",
-  ],
-})
-```
-
-In the example above, you retrieve all products linked to a post.
-
-### Retrieve Nested Relations
-
-You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. There's no limit on how deep the chain can be, and a chain can traverse relations within the same module and links between different modules.
-
-For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](https://docs.medusajs.com/resources/commerce-modules/fulfillment/links-to-other-modules#stock-location-module/index.html.md) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
-
-### query.graph
-
-```ts
-const { data: shippingOptions } = await query.graph({
-  entity: "shipping_option",
-  fields: [
-    "id",
-    "service_zone.fulfillment_set.location.id",
-    "service_zone.fulfillment_set.location.name",
-  ],
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: shippingOptions } = useQueryGraphStep({
-  entity: "shipping_option",
-  fields: [
-    "id",
-    "service_zone.fulfillment_set.location.id",
-    "service_zone.fulfillment_set.location.name",
-  ],
-})
-```
-
-In the example above, each level in the `service_zone.fulfillment_set.location` path is a relation or link that Query resolves in order. Select the properties you need at the last level, as explained in the [Select Specific Fields](#select-specific-fields) section.
-
-The returned `data` nests each level under the previous one. For example:
-
-```json title="Example Result"
-[{
-  "id": "so_123",
-  "service_zone": {
-    "id": "serzo_123",
-    "fulfillment_set": {
-      "id": "fuset_123",
-      "location": {
-        "id": "sloc_123",
-        "name": "Warehouse"
-      }
-    }
-  }
-}]
-```
-
-Filtering by a linked data model's property isn't supported at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
-
-### Apply Filters and Pagination on Linked Records
-
-Consider that you want to apply filters or pagination configurations on the product(s) linked to a `post`. To do that, you must query the module link's table instead.
-
-As mentioned in the [Module Link](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md) documentation, Medusa creates a table for your module link. So, not only can you retrieve linked records, but you can also retrieve the records in a module link's table.
-
-A module link's definition, exported by a file under `src/links`, has a special `entryPoint` property. Use this property when specifying the `entity` property in Query's `graph` method.
-
-For example:
-
-```ts
-import ProductPostLink from "../../../links/product-post"
-
-// ...
-
-const { data: productCustoms } = await query.graph({
-  entity: ProductPostLink.entryPoint,
-  fields: [
-    "id",
-    "product_id",
-    "post_id",
-    "product.id",
-    "product.title",
-    "post.id",
-    "post.title",
-  ],
-  pagination: {
-    take: 5,
-    skip: 0,
-  },
-})
-```
-
-In the object passed to the `graph` method:
-
-- You pass the `entryPoint` property of the link definition as the value for `entity`. So, Query will retrieve records from the module link's table.
-- You pass in the `fields` property:
-  - The link table's columns, such as `id`, `product_id`, and `post_id`. You can also select [custom columns](https://docs.medusajs.com/learn/fundamentals/module-links/custom-columns/index.html.md) that you defined in the link table.
-  - `product.id` and `product.title` to retrieve those properties of a product record linked to a `Post` record.
-  - `post.id` and `post.title` to retrieve those properties of a `Post` record linked to a product record.
-
-You can then apply any [filters](#apply-filters) or [pagination configurations](#apply-pagination) on the module link's table. For example, you can apply filters on the `product_id`, `post_id`, and any other custom columns you defined in the link table.
-
-The returned `data` is similar to the following:
-
-```json title="Example Result"
-[{
-  "id": "123",
-  "product_id": "prod_123",
-  "post_id": "123",
-  "product": {
-    "id": "prod_123",
-    "title": "Shirt"
-  },
-  "post": {
-    "id": "123",
-    "title": "My Post"
-  }
-}]
-```
-
-***
-
-## Apply Filters
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: "post_123",
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: "post_123",
-  },
-})
-```
-
-The `query.graph` function accepts a `filters` property. You can use this property to filter retrieved records.
-
-In the example above, you filter the `post` records by the ID `post_123`.
-
-You can also filter by multiple values of a property. For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: [
-      "post_123",
-      "post_321",
-    ],
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: [
-      "post_123",
-      "post_321",
-    ],
-  },
-})
-```
-
-In the example above, you filter the `post` records by multiple IDs.
-
-Filters don't apply on fields of linked data models from other modules. Refer to the [Retrieve Linked Records](#retrieve-linked-records) section for an alternative solution.
-
-### Advanced Query Filters
-
-Under the hood, Query uses one of the following methods from the data model's module's service to retrieve records:
-
-- `listX` if you don't pass [pagination parameters](#apply-pagination). For example, `listPosts`.
-- `listAndCountX` if you pass pagination parameters. For example, `listAndCountPosts`.
-
-Both methods accept a filter object that can be used to filter records.
-
-Those filters don't just allow you to filter by exact values. You can also filter by properties that don't match a value, match multiple values, and other filter types.
-
-Refer to the [Service Factory Reference](https://docs.medusajs.com/resources/service-factory-reference/tips/filtering/index.html.md) for examples of advanced filters. The following sections provide some quick examples.
-
-#### Filter by Not Matching a Value
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $ne: null,
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $ne: null,
-    },
-  },
-})
-```
-
-In the example above, only posts that have a title are retrieved.
-
-#### Filter by Not Matching Multiple Values
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $nin: ["My Post", "Another Post"],
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $nin: ["My Post", "Another Post"],
-    },
-  },
-})
-```
-
-In the example above, only posts that don't have the title `My Post` or `Another Post` are retrieved.
-
-#### Filter by a Range
-
-### query.graph
-
-```ts
-const startToday = new Date()
-startToday.setHours(0, 0, 0, 0)
-
-const endToday = new Date()
-endToday.setHours(23, 59, 59, 59)
-
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    published_at: {
-      $gt: startToday,
-      $lt: endToday,
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const startToday = new Date()
-startToday.setHours(0, 0, 0, 0)
-
-const endToday = new Date()
-endToday.setHours(23, 59, 59, 59)
-
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    published_at: {
-      $gt: startToday,
-      $lt: endToday,
-    },
-  },
-})
-```
-
-In the example above, only posts that were published today are retrieved.
-
-#### Filter Text by Like Value
-
-This filter only applies to text-like properties, including `text`, `id`, and `enum` properties.
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $like: "%My%",
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    title: {
-      $like: "%My%",
-    },
-  },
-})
-```
-
-In the example above, only posts that have the word `My` in their title are retrieved.
-
-#### Filter a Relation's Property
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    author: {
-      name: "John",
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    author: {
-      name: "John",
-    },
-  },
-})
-```
-
-While it's not possible to filter by a linked data model's property, you can filter by a relation's property (that is, the property of a related data model that is defined in the same module).
-
-In the example above, only posts that have an author with the name `John` are retrieved.
-
-#### Filter by Relation Property Not Matching Value
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    author: {
-      $or: [
-        {
-          name: {
-            $eq: null,
-          },
-        },
-        {
-          name: {
-            $ne: "John",
-          },
-        },
-      ],
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    author: {
-      $or: [
-        {
-          name: {
-            $eq: null,
-          },
-        },
-        {
-          name: {
-            $ne: "John",
-          },
-        },
-      ],
-    },
-  },
-})
-```
-
-To filter by a relationship property whose value doesn't match a specific condition, use an `$or` operator that applies the following conditions:
-
-1. The relationship's property is not set. This is necessary to exclude posts that don't have an author.
-2. The relationship's property is not equal to the specific value.
-
-So, in the example above, the query retrieves posts that either don't have an author or have an author whose name is not "John".
-
-***
-
-## Apply Pagination
-
-### query.graph
-
-```ts
-const { 
-  data: posts,
-  metadata: { count, take, skip } = {},
-} = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  pagination: {
-    skip: 0,
-    take: 10,
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { 
-  data: posts,
-  metadata,
-} = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  pagination: {
-    skip: 0,
-    take: 10,
-  },
-})
-```
-
-The `graph` method's object parameter accepts a `pagination` property to configure the pagination of retrieved records.
-
-To paginate the returned records, pass the following properties to `pagination`:
-
-- `skip`: (required to apply pagination) The number of records to skip before fetching the results.
-- `take`: The number of records to fetch.
-
-The `metadata` property is only returned when `skip` is provided. Passing `take` without `skip` returns records but no `metadata`.
-
-When you provide the pagination fields, the `query.graph` method's returned object has a `metadata` property. Its value is an object having the following properties:
-
-- skip: (\`number\`) The number of records skipped.
-- take: (\`number\`) The number of records requested to fetch.
-- count: (\`number\`) The total number of records.
-
-### Retrieve Only the Count
-
-To retrieve only the total count of records without loading any rows, use `{ skip: 0, take: 0 }`. This is useful for building dashboards or checking set size before deciding how to fetch data.
-
-### query.graph
-
-```ts
-const {
-  metadata: { count } = {},
-} = await query.graph({
-  entity: "post",
-  fields: ["id"],
-  pagination: {
-    skip: 0,
-    take: 0,
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const {
-  metadata,
-} = useQueryGraphStep({
-  entity: "post",
-  fields: ["id"],
-  pagination: {
-    skip: 0,
-    take: 0,
-  },
-})
-```
-
-This emits a `SELECT COUNT(*)` query and returns `metadata.count` with the total record count. No rows are loaded, keeping memory usage low regardless of catalog size.
-
-***
-
-### Sort Records
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  pagination: {
-    order: {
-      name: "DESC",
-    },
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  pagination: {
-    order: {
-      name: "DESC",
-    },
-  },
-})
-```
-
-Sorting doesn't work on fields of linked data models from other modules.
-
-To sort returned records, pass an `order` property to `pagination`.
-
-The `order` property is an object whose keys are property names, and values are either:
-
-- `ASC` to sort records by that property in ascending order.
-- `DESC` to sort records by that property in descending order.
-
-The `order` object shown above applies when you call `query.graph` or `useQueryGraphStep` in your code. When clients sort through an API route that uses the [`validateAndTransformQuery` middleware](#request-query-configurations), they pass a top-level `order` query parameter instead. Its value is a string set to the field name to sort by, and the sort order is ascending by default. To sort in descending order, prefix the field name with `-`, as in `?order=-created_at`. Learn more in the [Request Query Configurations](#request-query-configurations) section.
-
-***
-
-## Retrieve Deleted Records
-
-By default, Query doesn't retrieve deleted records. To retrieve all records including deleted records, you can pass the `withDeleted` property to the `query.graph` method.
-
-The `withDeleted` property is available from [Medusa v2.8.5](https://github.com/medusajs/medusa/releases/tag/v2.8.5).
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  withDeleted: true,
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  withDeleted: true,
-})
-```
-
-In the example above, you retrieve all posts, including deleted ones.
-
-### Retrieve Only Deleted Records
-
-To retrieve only deleted records, you can add a `deleted_at` filter and set its value to not `null`. For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    deleted_at: {
-      $ne: null,
-    },
-  },
-  withDeleted: true,
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    deleted_at: {
-      $ne: null,
-    },
-  },
-  withDeleted: true,
-})
-```
-
-In the example above, you retrieve only deleted posts by enabling the `withDeleted` property and adding a filter to only retrieve records where the `deleted_at` property is not `null`.
-
-***
-
-## Retrieve Localized Data
-
-### Prerequisites
-
-- [Medusa v2.12.4 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.4)
-- [Translation Module Configured](https://docs.medusajs.com/resources/commerce-modules/translation#configure-translation-module/index.html.md)
-
-To retrieve localized data for data models that have translations, pass a `locale` property in the second parameter object of the `query.graph` method.
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph(
-  {
-    entity: "product",
-    fields: ["id", "title", "description"],
-  },
-  {
-    locale: "fr-FR",
-  }
-)
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title", "description"],
-  options: {
-    locale: "fr-FR",
-  },
-})
-```
-
-The `locale` property is a string representing the locale code following the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1).
-
-The returned products will have their `title` and `description` properties in French (`fr-FR`), if translations are available.
-
-Learn more in the [Translation Module](https://docs.medusajs.com/resources/commerce-modules/translation/index.html.md) documentation.
-
-***
-
-## Configure Query to Throw Error
-
-By default, if Query doesn't find records matching your query, it returns an empty array. You can configure Query to throw an error when no records are found.
-
-The `query.graph` method accepts as a second parameter an object that can have a `throwIfKeyNotFound` property. Its value is a boolean indicating whether to throw an error if no record is found when filtering by IDs. By default, it's `false`.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: "post_123",
-  },
-}, {
-  throwIfKeyNotFound: true,
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title"],
-  filters: {
-    id: "post_123",
-  },
-  options: {
-    throwIfKeyNotFound: true,
-  },
-})
-```
-
-In the example above, if no post is found with the ID `post_123`, Query throws an error. This is useful to stop execution when a record is expected to exist.
-
-### Throw Error on Related Data Model
-
-The `throwIfKeyNotFound` option can also be used to throw an error if the ID of a related data model's record (in the same module) is passed in the filters, and the related record doesn't exist.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "post",
-  fields: ["id", "title", "author.id"],
-  filters: {
-    id: "post_123",
-    author_id: "author_123",
-  },
-}, {
-  throwIfKeyNotFound: true,
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "post",
-  fields: ["id", "title", "author.id"],
-  filters: {
-    id: "post_123",
-    author_id: "author_123",
-  },
-  options: {
-    throwIfKeyNotFound: true,
-  },
-})
-```
-
-In the example above, Query throws an error either if no post is found with the ID `post_123` or if it's found but its author ID isn't `author_123`.
-
-In the above example, it's assumed that a post belongs to an author, so it has an `author_id` property. However, this also works in the opposite case, where an author has many posts.
-
-For example:
-
-### query.graph
-
-```ts
-const { data: posts } = await query.graph({
-  entity: "author",
-  fields: ["id", "name", "posts.id"],
-  filters: {
-    id: "author_123",
-    posts: {
-      id: "post_123",
-    },
-  },
-}, {
-  throwIfKeyNotFound: true,
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: posts } = useQueryGraphStep({
-  entity: "author",
-  fields: ["id", "name", "posts.id"],
-  filters: {
-    id: "author_123",
-    posts: {
-      id: "post_123",
-    },
-  },
-  options: {
-    throwIfKeyNotFound: true,
-  },
-})
-```
-
-In the example above, Query throws an error if no author is found with the ID `author_123` or if the author is found but doesn't have a post with the ID `post_123`.
-
-***
-
-## Cache Query Results
-
-### Prerequisites
-
-- [Caching Module installed with a provider.](https://docs.medusajs.com/resources/infrastructure-modules/caching#install-the-caching-module/index.html.md)
-
-Caching options are available from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0).
-
-You can cache Query results to improve performance and reduce database load. To do that, you can pass a `cache` property in the second parameter of the `query.graph` method.
-
-For example, to enable caching for a query:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-    },
-  },
-})
-```
-
-In this example, you enable caching of the query's results. The next time the same query is executed, the results are returned from the cache instead of querying the database.
-
-Refer to the [Caching Module documentation](https://docs.medusajs.com/resources/infrastructure-modules/caching/concepts#caching-best-practices/index.html.md) for best practices on caching.
-
-### Cache Properties
-
-`cache` is an object that accepts the following properties:
-
-- enable: (\`boolean\` | \`((args: any\[]) => boolean | undefined)\`) Whether to enable caching of query results. If a function is passed, it receives as a parameter the \`query.graph\` parameters, and returns a boolean indicating whether caching is enabled.
-- key: (\`string\` | \`((args: any\[], cachingModule: ICachingModuleService) => string | Promise\<string>)\`) The key to cache the query results with. If no key is provided, the Caching Module will generate the key from the \`query.graph\` parameters.
-
-  If a function is passed, it receives the following properties:
-
-  1\. The parameters passed to \`query.graph\`.
-
-  2\. The \[Caching Module's service]\(!resources!/references/caching-service), which you can use to perform caching operations.
-
-  The function must return a string indicating the cache key.
-- tags: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations. If tags are provided, they replace the automatically computed tags unless \`computeAutomaticTags\` is also set.
-
-  If a function is passed, it receives as a parameter the \`query.index\` parameters, and returns an array of strings indicating the cache tags.
-- computeAutomaticTags: (\`boolean\`) Whether the automatically computed tags should be applied alongside the ones given in \`tags\`, rather than \`tags\` replacing them. Pass custom tags for what the automatic computation cannot see, such as link table rows, relations selected without their \`id\`, or entities that affect the result without appearing in it, and enable this option to avoid restating every entity the result already exposes.
-
-  Has no effect when \`tags\` is omitted, since tags are computed automatically in that case.
-- ttl: (\`number\` | \`((args: any\[]) => number | undefined)\`) The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the \[configured TTL of the Caching Module]\(!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.
-
-  If a function is passed, it receives as a parameter the \`query.graph\` parameters, and returns a number indicating the TTL.
-- autoInvalidate: (\`boolean\` | \`((args: any\[]) => boolean | undefined)\`) Whether to automatically invalidate the cached data when it expires.
-
-  If a function is passed, it receives as a parameter the \`query.graph\` parameters, and returns a boolean indicating whether to automatically invalidate the cache.
-- providers: (\`string\[]\` | \`((args: any\[]) => string\[] | undefined)\`) The IDs of the providers to use for caching. If not provided, the \[default Caching Module Provider]\(!resources!/infrastructure-modules/caching/providers#default-caching-module-provider) is used. If multiple providers are passed, the cache is stored and retrieved in those providers in order.
-
-  If a function is passed, it receives as a parameter the \`query.graph\` parameters, and return an array of strings indicating the providers to use.
-
-### Set Cache Key
-
-By default, the Caching Module generates a cache key for a query based on the arguments passed to `query.graph`. The cache key is a unique key that the cached result is stored with.
-
-Alternatively, you can set a custom cache key for a query. This is useful if you want to manage invalidating the cache manually.
-
-To set the cache key of a query, pass the `cache.key` option:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    key: "products-123456",
-    // to disable auto invalidation:
-    // autoInvalidate: false,
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-      key: "products-123456",
-      // to disable auto invalidation:
-      // autoInvalidate: false,
-    },
-  },
-})
-```
-
-In the example above, you cache the query results with the `products-123456` key.
-
-You should generate cache keys with the Caching Module service's [computeKey method](https://docs.medusajs.com/resources/references/caching-service#computeKey/index.html.md) to ensure that the key is unique and follows best practices.
-
-You can also pass a function as the value of `cache.key`:
-
-Passing a function to `cache.key` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation/index.html.md). You can alternatively create a step that uses Query directly, and use it in the workflow.
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    key: async (args, cachingModuleService) => {
-      return await cachingModuleService.computeKey({
-        ...args,
-        prefix: "products",
-      })
-    },
-  },
-})
-```
-
-In the example above, you pass a function to `key`. It accepts two parameters:
-
-1. The arguments of `query.graph` passed as an array.
-2. The [Caching Module's service](https://docs.medusajs.com/resources/references/caching-service/index.html.md).
-
-You generate the key using the [computeKey method of the Caching Module's service](https://docs.medusajs.com/resources/references/caching-service#computeKey/index.html.md). The query results will be cached with that key.
-
-### Set Cache Tags
-
-By default, the Caching Module generates relevant tags for a query based on the entity and its retrieved relations. Cache tags are useful to group related items together, allowing you to [retrieve](https://docs.medusajs.com/resources/references/caching-service#get/index.html.md) or [invalidate](https://docs.medusajs.com/resources/references/caching-service#clear/index.html.md) items by common tags.
-
-Alternatively, you can set the cache tags of a query manually. This is useful if you want to manage invalidating the cache manually, or you want to group related cached items with custom tags.
-
-To set the cache tags of a query, pass the `cache.tags` option:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    tags: ["Product:list:*"],
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-      tags: ["Product:list:*"],
-      // to disable auto invalidation:
-      // autoInvalidate: false,
-    },
-  },
-})
-```
-
-In the example above, you cache the query results with the `Product:list:*` tag.
-
-When you set `cache.tags`, those tags replace the automatically computed ones. To keep the automatic tags and add your own on top, also set `computeAutomaticTags: true`. This is useful when you need to cover entities that automatic computation cannot see, such as link table rows, relations fetched without their `id`, or entities that affect the response without appearing in it.
-
-The cache tag must follow the [Caching Tags Convention](https://docs.medusajs.com/resources/infrastructure-modules/caching/concepts#caching-tags-convention/index.html.md) to be automatically invalidated.
-
-For example, to add extra tags without losing automatic ones:
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title", "variants.id"],
-  options: {
-    cache: {
-      tags: ["LinkProductVariantInventoryItem:list:*"],
-      computeAutomaticTags: true,
-    },
-  },
-})
-```
-
-You can also pass a function as the value of `cache.tags`:
-
-Passing a function to `cache.tags` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation/index.html.md). You can alternatively create a step that uses Query directly, and use it in the workflow.
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    tags: (args) => {
-      const collectionId = args[0].filter?.collection_id
-      return [
-        ...args,
-        collectionId ? `ProductCollection:${collectionId}` : undefined,
-      ]
-    },
-  },
-})
-```
-
-In the example above, you use a function to determine the cache tags. The function accepts the arguments passed to `query.graph` as an array.
-
-Then, you add the `ProductCollection:id` tag if `collection_id` is passed in the query filters.
-
-### Set TTL
-
-By default, the Caching Module will pass the [configured time-to-live (TTL)](https://docs.medusajs.com/resources/infrastructure-modules/caching#caching-module-options/index.html.md) to the Caching Module Provider when caching data. The Caching Module Provider may also have its own default TTL.  The cache isn't invalidated until the configured TTL passes.
-
-Alternatively, you can set a custom TTL for a query. This is useful if you want the cached data to be invalidated sooner or later than the default TTL.
-
-To set the TTL of the cached query results to a custom value, use the `cache.ttl` option:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    ttl: 100, // 100 seconds
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-      ttl: 100, // 100 seconds
-    },
-  },
-})
-```
-
-In the example above, you set the TTL of the cached query result to `100` seconds. It will be invalidated after that time.
-
-You can also pass a function as the value of `cache.ttl`:
-
-Passing a function to `cache.ttl` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation/index.html.md). You can alternatively create a step that uses Query directly, and use it in the workflow.
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-  filters: {
-    id: "prod_123",
-  },
-}, {
-  cache: {
-    enable: true,
-    ttl: (args) => {
-      return args[0].filters.id === "test" ? 10 : 100
-    },
-  },
-})
-```
-
-In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.graph` as an array.
-
-Then, you set the TTL based on the ID of the product passed in the filters.
-
-### Set Auto Invalidation
-
-By default, the Caching Module automatically invalidates cached query results when the data changes.
-
-Alternatively, you can disable auto invalidation of cached query results. This is useful if you want to manage invalidating the cache manually.
-
-To configure invalidation behavior, use the `cache.autoInvalidate` option:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    autoInvalidate: false,
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-      autoInvalidate: false,
-    },
-  },
-})
-```
-
-In this example, you disable auto invalidation of the query result. You must [invalidate](https://docs.medusajs.com/resources/references/caching-service#clear/index.html.md) the cached data manually.
-
-You can also pass a function as the value of `cache.autoInvalidate`:
-
-Passing a function to `cache.autoInvalidate` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation/index.html.md). You can alternatively create a step that uses Query directly, and use it in the workflow.
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    autoInvalidate: (args) => {
-      return !args[0].fields.includes("custom_field")
-    },
-  },
-})
-```
-
-In the example above, you use a function to determine whether to invalidate the cached query result automatically. The function accepts the arguments passed to `query.graph` as an array.
-
-Then, you enable auto-invalidation only if the `fields` passed to `query.graph` don't include `custom_fields`. If this disables auto-invalidation, you must [invalidate](https://docs.medusajs.com/resources/references/caching-service#clear/index.html.md) the cached data manually.
-
-Learn more about automatic invalidation in the [Caching Module documentation](https://docs.medusajs.com/resources/infrastructure-modules/caching/concepts#automatic-cache-invalidation/index.html.md).
-
-### Set Caching Provider
-
-By default, the Caching Module uses the [default Caching Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/caching/providers#default-caching-module-provider/index.html.md) to cache a query.
-
-Alternatively, you can set the caching provider to use for a query. This is useful if you have multiple caching providers configured, and you want to use a specific one for a query, or you want to specify a fallback provider.
-
-To configure the caching providers, use the `cache.providers` option:
-
-### query.graph
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-}, {
-  cache: {
-    enable: true,
-    providers: ["caching-redis", "caching-memcached"],
-  },
-})
-```
-
-### useQueryGraphStep
-
-```ts
-const { data: products } = useQueryGraphStep({
-  entity: "product",
-  fields: ["id", "title"],
-  options: {
-    cache: {
-      enable: true,
-      providers: ["caching-redis", "caching-memcached"],
-    },
-  },
-})
-```
-
-In the example above, you specify the providers with ID `caching-redis` and `caching-memcached` to cache the query results. These IDs must match the IDs of the providers in `medusa-config.ts`.
-
-When you pass multiple providers, the cache is stored and retrieved in those providers in order.
-
-You can also pass a function as the value of `cache.providers`:
-
-Passing a function to `cache.providers` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](https://docs.medusajs.com/learn/fundamentals/workflows/variable-manipulation/index.html.md). You can alternatively create a step that uses Query directly, and use it in the workflow.
-
-```ts
-const { data: products } = await query.graph({
-  entity: "product",
-  fields: ["id", "title"],
-  filters: {
-    id: "prod_123",
-  },
-}, {
-  cache: {
-    enable: true,
-    providers: (args) => {
-      return args[0].filters.id === "test" ? ["caching-redis"] : ["caching-memcached"]
-    },
-  },
-})
-```
-
-In the example above, you use a function to determine the caching providers. The function accepts the arguments passed to `query.graph` as an array.
-
-Then, you set the providers based on the ID of the product passed in the filters.
-
-***
-
-## Request Query Configurations
-
-For API routes that retrieve a single or list of resources, Medusa provides a `validateAndTransformQuery` middleware that:
-
-- Validates accepted query parameters, as explained in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/validation/index.html.md).
-- Parses configurations that are received as query parameters to be passed to Query.
-
-Using this middleware allows you to have default configurations for retrieved fields and relations or pagination, while allowing clients to customize them per request.
-
-### Step 1: Add Middleware
-
-The first step is to use the `validateAndTransformQuery` middleware on the `GET` route. You add the middleware in `src/api/middlewares.ts`:
-
-```ts title="src/api/middlewares.ts"
-import { 
-  validateAndTransformQuery,
-  defineMiddlewares,
-} from "@medusajs/framework/http"
-import { createFindParams } from "@medusajs/medusa/api/utils/validators"
-
-export const GetCustomSchema = createFindParams()
-
-export default defineMiddlewares({
-  routes: [
-    {
-      matcher: "/customs",
-      method: "GET",
-      middlewares: [
-        validateAndTransformQuery(
-          GetCustomSchema,
-          {
-            defaults: [
-              "id",
-              "title",
-              "products.id",
-              "products.title",
-            ],
-            isList: true,
-          }
-        ),
-      ],
-    },
-  ],
-})
-```
-
-The `validateAndTransformQuery` accepts two parameters:
-
-1. A Zod validation schema for the query parameters, which you can learn more about in the [API Route Validation documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/validation/index.html.md). Medusa has a `createFindParams` utility that generates a Zod schema that accepts four query parameters:
-   1. `fields`: The fields and relations to retrieve in the returned resources.
-   2. `offset`: The number of items to skip before retrieving the returned items.
-   3. `limit`: The maximum number of items to return.
-   4. `order`: The fields to order the returned items by in ascending or descending order.
-2. A Query configuration object. It accepts the following properties:
-   1. `defaults`: An array of default fields and relations to retrieve in each resource.
-   2. `isList`: A boolean indicating whether a list of items is returned in the response.
-   3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
-   4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
-   5. `disallowed`: An array of strings or regular expressions. A string entry matches any field path segment of the same name. A regular expression is tested against each segment and also against the full dotted path, which lets you block a relation at a specific position (for example, `/\.orders(?:\.|$)/` blocks `orders` everywhere except at the root). Any matched field is removed before the query executes, making this a hard security boundary. Learn more in the [Disallowed Fields in API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/disallowed-fields/index.html.md) chapter.
-   6. `storeRelationsLimit`: A number that overrides the application-wide `http.storeRelationsLimit` configuration for this specific route. It limits how many nested relations a caller can expand in a single request. Only applies to routes under the `/store` prefix. Available since [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
-
-List specific properties in `defaults` rather than `*` or `{relation}.*`. Every client request that doesn't pass a `fields` query parameter uses these defaults, so an expensive default applies to all of them. Refer to the [Select Specific Fields](#select-specific-fields) section for details.
-
-### Step 2: Use Configurations in API Route
-
-After applying this middleware, your API route now accepts the `fields`, `offset`, `limit`, and `order` query parameters mentioned above.
-
-The middleware transforms these parameters to configurations that you can pass to Query in your API route handler. These configurations are stored in the `queryConfig` parameter of the `MedusaRequest` object.
-
-As of [Medusa v2.2.0](https://github.com/medusajs/medusa/releases/tag/v2.2.0), `remoteQueryConfig` has been deprecated in favor of `queryConfig`. Their usage is still the same, only the property name has changed.
-
-For example, create the file `src/api/customs/route.ts` with the following content:
-
-```ts title="src/api/customs/route.ts"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
-import {
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
-
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-
-  const { data: posts } = await query.graph({
-    entity: "post",
-    ...req.queryConfig,
-  })
-
-  res.json({ posts: posts })
-}
-```
-
-This adds a `GET` API route at `/customs`, which is the API route you added the middleware for.
-
-In the API route, you pass `req.queryConfig` to `query.graph`. `queryConfig` has properties like `fields` and `pagination` to configure the query based on the default values you specified in the middleware, and the query parameters passed in the request.
-
-### Test it Out
-
-To test it out, start your Medusa application and send a `GET` request to the `/customs` API route. A list of records is retrieved with the specified fields in the middleware.
-
-```json title="Returned Data"
-{
-  "posts": [
-    {
-      "id": "123",
-      "title": "test"
-    }
-  ]
-}
-```
-
-Try passing one of the Query configuration parameters, like `fields` or `limit`, and you'll see its impact on the returned result.
-
-Learn more about [specifying fields and relations](https://docs.medusajs.com/api/store/select-fields-and-relations) and [pagination](https://docs.medusajs.com/api/store/pagination) in the API reference.
-
-
 # Read-Only Module Link
 
 In this chapter, you’ll learn what a read-only module link is and how to define one.
@@ -26441,7 +24558,7 @@ A search query runs against the [Search Module](https://docs.medusajs.com/resour
 
 Under the hood, the Search Module retrieves the results from the integrated [Search Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/search/providers/index.html.md), such as [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) or your custom third-party provider.
 
-For searching the `product` index, Medusa provides a [Search Products API route](https://docs.medusajs.com/api/store/products/search-products) that uses `query.search` under the hood. You can also use `query.search` in your custom API routes, such as to search other data models.
+For searching from a storefront, Medusa provides a [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes) that uses `query.search` under the hood. You can also use `query.search` in your custom API routes, such as to search data models that the route doesn't expose.
 
 Prefer `query.search` over `query.graph` when the request has a free-text term to rank by. `query.graph` filters records in the database without relevance ranking, whereas `query.search` delegates the ranking to a [Search Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/search/providers/index.html.md).
 
@@ -43714,9 +41831,13 @@ When an item is added, an `OrderChangeAction` is created with the type `ITEM_ADD
 
 ## Update Items in an Order Edit
 
-A merchant can update an existing item's quantity or price.
+A merchant can update an existing item's quantity, price, or metadata.
 
 This change is recorded as an `OrderChangeAction` with the type `ITEM_UPDATE`. Its `details` property stores the item's ID, updated price, and updated quantity.
+
+Once the order edit is confirmed, the Order Module writes the updated `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` to the [OrderItem record](https://docs.medusajs.com/references/order/models/OrderItem/index.html.md) of the order's new version. The [OrderLineItem record](https://docs.medusajs.com/references/order/models/OrderLineItem/index.html.md) keeps the values it had when the item was added to the order.
+
+Retrieving the order after the edit returns the updated values in `items.unit_price` and `items.metadata`, since the Order Module merges the versioned record into each item. To read the versioned values directly, select `items.detail.unit_price` and `items.detail.metadata`. Refer to the [Order Versioning guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-versioning#retrieve-versioned-item-details/index.html.md) for details.
 
 ***
 
@@ -44898,6 +43019,46 @@ When the order is changed, such as when an item is exchanged, Medusa updates the
 2. Related order data that have a `version` property, such as `OrderItem`, are duplicated. The duplicated item has the new version, while the original item retains the previous version.
 
 When the order is retrieved, only the related data with the same version is returned.
+
+***
+
+## Retrieve Versioned Item Details
+
+An order's item is stored across two data models:
+
+- The [OrderLineItem data model](https://docs.medusajs.com/references/order/models/OrderLineItem/index.html.md) holds the item's original details, such as its title and the price at the time of purchase. This record is not versioned.
+- The [OrderItem data model](https://docs.medusajs.com/references/order/models/OrderItem/index.html.md) links the line item to an order version. It holds the versioned `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` of the item in that version.
+
+When an [order edit](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/edit/index.html.md), claim, exchange, or return changes an item's quantity, price, or metadata, the Order Module writes the new values to the `OrderItem` record of the new version. The `OrderLineItem` record keeps its original values.
+
+### Retrieved Item Shape
+
+When you retrieve an order, the Order Module merges both records into each item of the `items` property. The item's `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` hold the values of the order's current version, and the remaining properties come from the line item.
+
+The merged item also has the following properties:
+
+- `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
+- `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
+
+For example, retrieve an order's versioned item details using [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "items.unit_price",
+    "items.metadata",
+    "items.detail.unit_price",
+    "items.detail.metadata",
+    "items.line_item_metadata",
+  ],
+  filters: {
+    id: orderId,
+  },
+})
+```
+
+The `items.unit_price` and `items.metadata` fields already reflect the order's current version. Select `items.detail.*` when you want the versioned values without the merge, or `items.line_item_metadata` when you want the metadata set at purchase time.
 
 
 # Order Module
@@ -61258,7 +59419,42 @@ A `text` field only participates in free-text matching once you add the [searcha
 
 ### Search Text in Multiple Locales
 
-A `text` field holds a single string, and no field type stores translations of a value. An index only holds what its `seed` and `consume` functions write to it, so to match a free-text query in more than one locale, declare a field for each locale:
+A `text` field holds a single string, and no field type stores translations of a value. An index only holds what its `seed` and `consume` functions write to it, so to match a free-text query in more than one locale, declare a field for each locale.
+
+How you declare those fields depends on the provider:
+
+### Medusa Search
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_en: search.text().searchable()
+      .providerOptions({
+        "search-medusa": {
+          full_text_search: {
+            language: "english",
+            stemming: true,
+          },
+        },
+      }),
+    title_fr: search.text().searchable()
+      .providerOptions({
+        "search-medusa": {
+          full_text_search: {
+            language: "french",
+            stemming: true,
+          },
+        },
+      }),
+  }),
+  // ...
+})
+```
+
+### Other Providers
 
 ```ts title="src/search/product.ts"
 export const productIndex = defineSearchIndex({
@@ -61269,39 +59465,105 @@ export const productIndex = defineSearchIndex({
     title_en: search.text().searchable(),
     title_fr: search.text().searchable(),
   }),
-  async *seed({ container }) {
-    const { data: products } = await container.query
-      .graph({
-        entity: "product",
-        fields: ["id", "title"],
-      })
-    const { data: frProducts } = await container.query
-      .graph({
-        entity: "product",
-        fields: ["id", "title"],
-      }, { locale: "fr-FR" })
+  // ...
+})
+```
 
-    const frTitles = new Map(
-      frProducts.map((product) => [
-        product.id,
-        product.title,
-      ])
-    )
+[Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) matches a searchable field term by term, and it stems those terms only when the field's `full_text_search` provider option asks for it. So its tab names a language per locale field and enables `stemming`, which gives each field the stemmer of its own language. Refer to [Set a Field's Language](https://docs.medusajs.com/cloud/search/settings#set-a-fields-language/index.html.md) for the languages and options it accepts.
 
-    yield [{
-      action: "upsert",
-      documents: products.map((product) => ({
-        id: product.id,
-        title_en: product.title,
-        title_fr:
-          frTitles.get(product.id) ?? product.title,
-      })),
-    }]
+Other providers set the language for the whole index rather than per field, such as the `language` option of the [PostgreSQL Search Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/providers/postgres#postgresql-search-module-provider-options/index.html.md), so a locale field needs no option of its own.
+
+Then, write each locale's value to its own field in the index's [`seed` function](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#custom-seed-implementation/index.html.md). If you use the [Translation Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/index.html.md), pass the `locale` option to Query to retrieve the translated values of a locale:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    // ...
+  }),
+  async *seed({ container, catchup, last_key: lastKey }) {
+    const batchSize = 200
+    let cursor = lastKey
+
+    while (true) {
+      const { data: products } = await container.query
+        .graph({
+          entity: "product",
+          fields: [
+            "id",
+            "title",
+            "updated_at",
+            "deleted_at",
+          ],
+          filters: {
+            ...(catchup
+              ? { updated_at: { $gte: catchup.since } }
+              : {}),
+            ...(cursor ? { id: { $gt: cursor } } : {}),
+          },
+          pagination: {
+            take: batchSize,
+            order: { id: "ASC" },
+          },
+          withDeleted: !!catchup,
+        })
+
+      if (!products.length) {
+        return
+      }
+
+      const live = products.filter((p) => !p.deleted_at)
+      const gone = products.filter((p) => !!p.deleted_at)
+
+      const { data: frProducts } = await container.query
+        .graph({
+          entity: "product",
+          fields: ["id", "title"],
+          filters: { id: live.map((p) => p.id) },
+        }, { locale: "fr-FR" })
+
+      const frTitles = new Map(
+        frProducts.map((product) => [
+          product.id,
+          product.title,
+        ])
+      )
+
+      yield [
+        ...(live.length
+          ? [{
+              action: "upsert" as const,
+              documents: live.map((product) => ({
+                id: product.id,
+                title_en: product.title,
+                title_fr:
+                  frTitles.get(product.id) ??
+                  product.title,
+              })),
+            }]
+          : []),
+        ...(gone.length
+          ? [{
+              action: "delete" as const,
+              filters: { id: gone.map((p) => p.id) },
+            }]
+          : []),
+      ]
+
+      if (products.length < batchSize) {
+        return
+      }
+
+      cursor = products[products.length - 1].id
+    }
   },
 })
 ```
 
-In this example, you store the English and French titles in separate fields. Then, you write each locale's value to its own field. If you use the [Translation Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/index.html.md), pass the `locale` option to Query to retrieve the translated values of a locale.
+The `seed` function pages the products by their ID, so an interrupted run resumes from the `last_key` it receives rather than starting over. It also runs as the [catch-up pass](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#handle-the-catch-up-pass/index.html.md) that follows a full run, which is why it reads `catchup`: the pass narrows the read to the products changed since the run started, includes the deleted ones, and yields a `delete` write for them so the index loses their documents.
+
+You can't build this `seed` with [`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed/index.html.md) and its `transform` option. `transform` is synchronous and receives the rows of a single `query.graph` call, while a translated value needs a second read with the `locale` option.
 
 Then, when running a search query, such as in an API route, pass the `search_options.attributes_to_search_on` option to specify which locale-specific fields to search on:
 
@@ -61309,7 +59571,9 @@ Then, when running a search query, such as in an API route, pass the `search_opt
 const { data } = await query.search({
   entity: "product",
   fields: ["id", "title_fr"],
-  q: "chaussures",
+  filters: {
+    q: "chaussures",
+  },
   search_options: {
     attributes_to_search_on: ["title_fr"],
   },
@@ -61543,7 +59807,7 @@ Filters on the sub-fields of an object array match across elements. So filtering
 
 ## search.vector()
 
-Vector searching with Medusa Search is available for the Enterprise plan only.
+Vector search with Medusa Search is available on the Scale and Enterprise plans. On the Scale plan, you compute the embeddings yourself, whereas the Enterprise plan can also [create them for you](#let-medusa-search-create-the-embedding).
 
 The `vector` identifier indicates an embedding, used for [vector search](https://docs.medusajs.com/docs/learn/fundamentals/query/search#vector-and-hybrid-search/index.html.md). Unlike other types, a `vector` field can't be filtered, sorted, faceted, or turned into an array, so those modifiers aren't available on it.
 
@@ -61565,6 +59829,8 @@ export const productIndex = defineSearchIndex({
 ```
 
 In this example, `title_embedding` is a `vector` field with 1536 dimensions, matching the output of OpenAI's `text-embedding-3-small` model. Your `seed` and `consume` functions yield the embedding for the field, so you compute it yourself before you yield the document.
+
+With [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md), an embedding you compute yourself can have at most 1536 dimensions. Medusa Search rejects a query whose embedding is longer than that.
 
 A `vector` field doesn't come back on a hit by default, since a list of 1536 numbers is rarely useful to the caller. Chain [retrievable()](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#retrievable/index.html.md) on it if you need the embedding in the result.
 
@@ -61722,21 +59988,21 @@ export const productIndex = defineSearchIndex({
 
 `query.graph` returns a linked brand as a nested object, so an indexed document has the following shape:
 
-```ts
+```json
 {
-  id: "1",
-  title: "Product Title",
-  status: "active",
-  brand: {
-    id: "10",
-    name: "Acme",
+  "id": "1",
+  "title": "Product Title",
+  "status": "active",
+  "brand": {
+    "id": "10",
+    "name": "Acme",
   },
 }
 ```
 
 Refer to [Search Index Fields](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/index.html.md) for every field type and modifier.
 
-The [Search Products API route](https://docs.medusajs.com/api/store/products/search-products) resolves the index named `product`, so the fields you add here become available to storefront searches. Refer to [Search Products](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-products/index.html.md) for how to query it.
+The [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes) resolves the index by the `entity` a query names, so the fields you add to your `product` index become available to storefront searches. Refer to [Search Products](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-products/index.html.md) for how to query it.
 
 ***
 
@@ -62707,7 +60973,7 @@ It also keeps a version per physical index it builds, so a definition change bui
 
 ## Configure the Search Module
 
-As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/providers/postgres/index.html.md), so you can start searching products or custom data models without extra configurations.
+As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/providers/postgres/index.html.md), so you only declare the indexes to search. The module itself needs no extra configuration.
 
 On Cloud, [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) is registered by default for all plans, unless you explicitly configure a different provider.
 
@@ -62769,51 +61035,177 @@ Providers don't back the same set of features, so the provider you pick decides 
 
 ## Search Products
 
-Medusa declares a `product` index by default, and its Store API has a [Search Products API route](https://docs.medusajs.com/api/store/products/search-products) that searches it. So, products are searchable out-of-the-box.
+Medusa doesn't declare any search index by default. If you installed your Medusa application after v2.21.1, it already has a `product` index definition. Otherwise, you need to define a `product` index in your Medusa application to make your products searchable. Then, you need to make it searchable on the [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes).
 
-The Search Products API route accepts a `q` parameter and the same pagination and field selection as the [List Products API route](https://docs.medusajs.com/api/store/products/list-products):
+### 1. Define the Product Index
+
+An index definition names the entity to index, the fields the engine holds, a `seed` that fills the index, and the events that keep it up-to-date.
+
+Define the product index in the file `src/search/product.ts`:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+    "categories.id",
+    "categories.name",
+    "categories.handle",
+    "tags.id",
+    "tags.value",
+  ],
+  transform: ({ status, ...product }) => {
+    return status === "published" ? product : null
+  },
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    description: search.text().searchable(),
+    handle: search.keyword().filterable(),
+    thumbnail: search.keyword(),
+    categories: search
+      .object({
+        id: search.keyword().filterable(),
+        name: search
+          .keyword()
+          .searchable()
+          .facetable(),
+        handle: search.keyword().filterable(),
+      })
+      .array(),
+    tags: search
+      .object({
+        id: search.keyword().filterable(),
+        value: search
+          .keyword()
+          .searchable()
+          .facetable(),
+      })
+      .array(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+`seed` fills the index in full when Medusa creates or rebuilds it, and Medusa routes each of the workflow events in `events` to `consume`, so the index reflects changes as they happen.
+
+[`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#graphseed-options/index.html.md) and [`graphConsume`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#graphconsume-options/index.html.md) are helpers that read the data with [Query](https://docs.medusajs.com/docs/learn/fundamentals/query/index.html.md). `graphSeed` reads the entity's records to fill the index for the first time, and `graphConsume` provides the index changes, such as creating or deleting records, as the events in `events` arrive.
+
+Add to the definition any core or custom field that your storefront searches, filters, sorts, or facets on. Learn more about the available field types and modifiers in the [Search Index Definitions guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/index.html.md).
+
+### 2. Run Migrations
+
+Next, run the migrations command to create the physical index:
 
 ```bash
-curl "http://localhost:9000/store/products/search?q=shirt" \
-  -H "x-publishable-api-key: pk_123"
+npx medusa db:migrate
+```
+
+Medusa then fills the index with your products. Learn more about index migrations in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing/index.html.md).
+
+### 3. Allow the Index on the Store Search Route
+
+Medusa exposes the [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes), which searches any index of your application. However, an index isn't searchable through it until a middleware allows it, so a storefront never reaches an index you didn't expose.
+
+To allow the `product` index, use the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  allowSearchIndexes,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [allowSearchIndexes("product")],
+    },
+  ],
+})
+```
+
+You can pass more than one index name to `allowSearchIndexes`, and you can add the middleware more than once, so a plugin exposes its own index without discarding what your application allowed.
+
+The route runs the queries as posted, so narrow them further, such as to a sales channel, with another middleware that changes `req.validatedBody`.
+
+### 4. Search Products
+
+Finally, send a `POST` request to `/store/search` with the index to search in the `entity` field:
+
+```bash
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" },
+    "pagination": { "take": 20 }
+  }'
 ```
 
 You'll receive a JSON response like the following:
 
 ```json
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa T-Shirt",
-      "handle": "t-shirt"
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.23,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa T-Shirt",
+            "handle": "t-shirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 1,
+        "query": "shirt",
+        "processing_time_ms": 9
+      }
     }
-  ],
-  "count": 1,
-  "offset": 0,
-  "limit": 20
+  ]
 }
 ```
 
-The API route narrows the search to published products in the request's sales channel, so it returns what a storefront can show as-is.
+The route answers with one result per posted query, each holding the matching `hits` ranked by relevance, any facets you asked for, and the query's `metadata`.
 
-To build the search experience in your storefront, use the [InstantSearch adapter](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/index.html.md). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into Medusa search queries.
+You can also post a batch of queries at once in a `queries` array, and each of them runs against the index it names in one round-trip to the search engine.
 
-### Override the Default Product Index
-
-An index definition named `product` replaces the one Medusa declares by default, so your definition alone decides the fields the engine holds, how they're filled, and the settings applied to them. You can override it as explained in the [Create a Custom Search Index](#create-a-custom-search-index) section.
-
-Override the index when it doesn't hold a core or custom field your storefront searches, filters, or facets on, or when you need index settings that aren't applied by default. Keep the fields that the [Search Products API route](https://docs.medusajs.com/api/store/products/search-products) filters by to maintain compatibility with the storefront search functionality.
+To build the search experience in your storefront, use the [InstantSearch adapter](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/index.html.md). It turns InstantSearch widgets, such as a search box, facet filters, and pagination, into requests to this route.
 
 ***
 
-## Create a Custom Search Index
+## Search Other Entities
 
-To search data other than products, such as the custom data models of your own modules, declare a search index for it.
-
-### 1. Define a Search Index
-
-Define a search index in a file under the `src/search` directory. An index definition names the entity to index, the fields the engine holds, a `seed` that fills the index, and the events that keep it up-to-date.
+To search data other than products, such as the custom data models of your own modules, declare an index definition for it in a file under the `src/search` directory, then run the migrations command.
 
 For example, to index a custom `brand` data model, create the file `src/search/brand.ts`:
 
@@ -62846,39 +61238,27 @@ export const brandIndex = defineSearchIndex({
 })
 ```
 
-`seed` fills the index in full when Medusa creates or rebuilds it, and Medusa routes each of the workflow events in `events` to `consume`, so the index reflects changes as they happen.
+Then, choose how to search it:
 
-[`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#graphseed-options/index.html.md) and [`graphConsume`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#graphconsume-options/index.html.md) are helpers that read the data with [Query](https://docs.medusajs.com/docs/learn/fundamentals/query/index.html.md). `graphSeed` reads the entity's records to fill the index for the first time, and `graphConsume` provides the index changes, such as creating or deleting records, as the events in `events` arrive.
+- To search it from your storefront, add `brand` to the `allowSearchIndexes` middleware, as explained in [Allow the Index on the Store Search Route](#3-allow-the-index-on-the-store-search-route), then post a query with `"entity": "brand"`.
+- To search it in your own [API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) or [workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md), use the [`search` method of Query](https://docs.medusajs.com/docs/learn/fundamentals/query/search/index.html.md).
 
-Learn more about creating search indexes in the [Search Index Definitions guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/index.html.md).
-
-### 2. Run Migrations
-
-Next, run the migrations command to create or update the physical index:
-
-```bash
-npx medusa db:migrate
-```
-
-Learn more about index migrations in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing/index.html.md).
-
-### 3. Search the Index
-
-Finally, run a search with the [`search` method of Query](https://docs.medusajs.com/docs/learn/fundamentals/query/search/index.html.md).
-
-For example, create the [API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) `src/api/store/brands/search/route.ts` with the following content:
+For example, to search brands in a custom API route, create the file `src/api/store/brands/search/route.ts` with the following content:
 
 ```ts title="src/api/store/brands/search/route.ts"
 import {
   MedusaRequest,
   MedusaResponse,
+  ContainerRegistrationKeys,
 } from "@medusajs/framework/http"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data, search_result } = await query.search({
     entity: "brand",
@@ -63109,7 +61489,7 @@ npx medusa db:migrate
 
 ## Test the PostgreSQL Search Module Provider
 
-Medusa declares a `product` search index by default, and its Store API has a [Search Products API route](https://docs.medusajs.com/api/store/products/search-products) that searches it.
+To test the provider, make sure your application has a `product` index definition and that the index is allowed on the `/store/search` API route, as explained in the [Search Products guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-products/index.html.md).
 
 First, start your Medusa application:
 
@@ -63117,39 +61497,53 @@ First, start your Medusa application:
 npm run dev
 ```
 
-Then, send a request to the search endpoint:
+Then, send a request to the [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes):
 
 ```bash
-curl "http://localhost:9000/store/products/search?q=shirt" \
-  -H "x-publishable-api-key: pk_123"
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" }
+  }'
 ```
 
 Make sure to replace `pk_123` with a publishable API key, which you can find under Settings -> Publishable API Keys in the Medusa Admin dashboard.
 
-You'll receive the published products whose searchable fields match the query, ordered by relevance:
+You'll receive the products whose searchable fields match the query, ordered by relevance:
 
 ```json title="Example Response"
 {
-  "products": [
+  "results": [
     {
-      "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
-      "title": "Medusa T-Shirt",
-      "handle": "t-shirt"
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.23,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa T-Shirt",
+            "handle": "t-shirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 1,
+        "query": "shirt"
+      }
     }
-  ],
-  "count": 1,
-  "offset": 0,
-  "limit": 20
+  ]
 }
 ```
-
-Learn more about the endpoint and the fields the default `product` index holds in the [Search Products guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-products/index.html.md).
 
 ### Search Custom Data with the PostgreSQL Search Module Provider
 
 To search data other than products, such as a custom data model of your own module, declare a search index for it. The PostgreSQL Search Module Provider then creates the physical index, fills it, and serves searches on it the same way it does for products.
 
-Learn how to declare an index and search it in the [Create a Custom Search Index guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#create-a-custom-search-index/index.html.md), and learn about the properties you can set on an index in the [Search Index Definitions guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/index.html.md).
+Learn how to declare an index and search it in the [Search Other Entities guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-other-entities/index.html.md), and learn about the properties you can set on an index in the [Search Index Definitions guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/index.html.md).
 
 ***
 
