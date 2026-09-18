@@ -1,5 +1,18 @@
 # @medusajs/search
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16834](https://github.com/medusajs/medusa/pull/16834) [`ad0e98df856f71872c2f1e7c3b5983cfa37d4d51`](https://github.com/medusajs/medusa/commit/ad0e98df856f71872c2f1e7c3b5983cfa37d4d51) Thanks [@sradevski](https://github.com/sradevski)! - Improve how a basic-auth URL is parsed for search
+
+- [#16801](https://github.com/medusajs/medusa/pull/16801) [`6498af41624810de111da30a8c9c90d1a7ef820e`](https://github.com/medusajs/medusa/commit/6498af41624810de111da30a8c9c90d1a7ef820e) Thanks [@sradevski](https://github.com/sradevski)! - feat(search): back off and retry when the search engine rate limits a seed
+
+- [#16796](https://github.com/medusajs/medusa/pull/16796) [`989e83d74d19bdbe4cde290c23aea5a0693ad9e8`](https://github.com/medusajs/medusa/commit/989e83d74d19bdbe4cde290c23aea5a0693ad9e8) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): resume a failed seed from where it stopped instead of rebuilding from scratch
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

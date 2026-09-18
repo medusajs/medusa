@@ -1,5 +1,14 @@
 # @medusajs/link-modules
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16810](https://github.com/medusajs/medusa/pull/16810) [`03dcfb5ff450478585a57b88743ce8f9efb5ea23`](https://github.com/medusajs/medusa/commit/03dcfb5ff450478585a57b88743ce8f9efb5ea23) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(link-modules): add order shipping method to shipping option readonly link
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

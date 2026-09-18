@@ -1,5 +1,23 @@
 # @medusajs/dashboard
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16820](https://github.com/medusajs/medusa/pull/16820) [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797) Thanks [@Markheris](https://github.com/Markheris)! - fix(dashboard): add the 306 Turkish translations missing from tr.json
+
+- [#16852](https://github.com/medusajs/medusa/pull/16852) [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): disable store credit option when there's no outstanding amount or the customer is a guest
+
+- [#16746](https://github.com/medusajs/medusa/pull/16746) [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d) Thanks [@SanteriMoilanen](https://github.com/SanteriMoilanen)! - Add Finnish (fi) admin translation
+
+- [#16677](https://github.com/medusajs/medusa/pull/16677) [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d) Thanks [@MarcelRoblek](https://github.com/MarcelRoblek)! - fix(dashboard): include shipping_address in order list query so Country column renders
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes
