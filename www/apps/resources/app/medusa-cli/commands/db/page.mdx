@@ -140,6 +140,50 @@ Use this command if you're setting up a Medusa project or database manually.
     <Table.Row>
       <Table.Cell>
       
+      `--execute-safe-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and execute all actions, including drops.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
       `--no-interactive`
       
       </Table.Cell>
@@ -417,6 +461,133 @@ Use this command if you've updated the Medusa packages, or you've created custom
       <Table.Cell>
 
       Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-safe-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and execute only safe actions. Drop actions are skipped.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and execute all actions, including drops.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## db\:migrate:search
+
+Create and alter the search indexes declared under `search/`. Indexes that no definition declares any more are dropped after a confirmation prompt.
+
+```bash npx2yarn
+npx medusa db:migrate:search
+```
+
+<Note title="Tip">
+
+`db:migrate` runs this command automatically when the Search Module is enabled. Use `db:migrate:search` directly when you want to manage search indexes independently.
+
+</Note>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-safe-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts and execute only safe actions. Drop actions are skipped entirely.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all-search`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts and execute all actions, including drops. Dropping an index permanently deletes all documents it holds.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for drop actions, by default.
 
       </Table.Cell>
     </Table.Row>
