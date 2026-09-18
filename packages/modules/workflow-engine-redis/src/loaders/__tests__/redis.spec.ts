@@ -296,9 +296,25 @@ describe("Redis Loader", () => {
       )
 
       const registerCall = containerMock.register.mock.calls[0][0]
-
       expect(registerCall.redisQueueName.resolve()).toEqual("custom-workflows")
       expect(registerCall.redisJobQueueName.resolve()).toEqual("custom-jobs")
+    })
+
+    it("should support top-level redisUrl option without nested redis key", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+            queueName: "toplevel-workflows",
+          },
+        } as any,
+        {} as any
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+      expect(registerCall.redisQueueName.resolve()).toEqual("toplevel-workflows")
     })
   })
 

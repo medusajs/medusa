@@ -1897,7 +1897,7 @@ export default class FulfillmentModuleService
       sharedContext
     )
 
-    FulfillmentModuleService.canCancelFulfillmentOrThrow(fulfillment)
+    ;(this.constructor as typeof FulfillmentModuleService).canCancelFulfillmentOrThrow(fulfillment)
 
     // Make this action idempotent
     if (!fulfillment.canceled_at) {
