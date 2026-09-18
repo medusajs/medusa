@@ -5,6 +5,30 @@ const DEFAULT_TTL = 30 // seconds
 
 type InjectedDependencies = {}
 
+const REGEXP_SPECIAL_CHARS = /[.*+?^${}()|[\]\\]/g
+
+/**
+ * Compile a wildcard cache key into an expression that matches whole keys.
+ *
+ * `*` is the only wildcard, matching what `invalidate` documents and what the
+ * `cache-redis` module supports through `SCAN ... MATCH`. Everything else is
+ * escaped and matched literally: a cache key is arbitrary application data, and
+ * `.`, `+`, `(` and `[` all turn up in real ones — `new RegExp(key)` would read
+ * those as syntax rather than as characters to match.
+ *
+ * Anchored, because a wildcard key describes the whole key. Unanchored, an
+ * expression matches anywhere in the string, so `ps:*` would also delete
+ * `tenant:ps:1` — which is neither what the docblock below promises ("all keys
+ * that start with ps:") nor what Redis does for the same call.
+ */
+const wildcardKeyToRegExp = (key: string): RegExp =>
+  new RegExp(
+    `^${key
+      .split("*")
+      .map((literal) => literal.replace(REGEXP_SPECIAL_CHARS, "\\$&"))
+      .join(".*")}$`
+  )
+
 /**
  * Class represents basic, in-memory, cache store.
  */
@@ -78,8 +102,8 @@ class InMemoryCacheService implements ICacheService {
     let keys = [key]
 
     if (key.includes("*")) {
-      const regExp = new RegExp(key.replace("*", ".*"))
-      keys = Array.from(this.store.keys()).filter((k) => k.match(regExp))
+      const regExp = wildcardKeyToRegExp(key)
+      keys = Array.from(this.store.keys()).filter((k) => regExp.test(k))
     }
 
     keys.forEach((key) => {
