@@ -441,6 +441,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "items.variant.height",
         "items.variant.width",
         "items.variant.material",
+        "items.variant.metadata",
         "items.variant_title",
         "items.variant.upc",
         "items.variant.sku",
