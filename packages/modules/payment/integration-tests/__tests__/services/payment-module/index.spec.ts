@@ -1441,6 +1441,10 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             jest
               .spyOn((service as any).paymentProviderService_, "refundPayment")
               .mockRejectedValueOnce(new Error("simulated provider timeout"))
+              // The later refund in this test must not fall through to the real
+              // provider: mock its success explicitly rather than relying on
+              // what the default implementation happens to return.
+              .mockResolvedValueOnce({ data: { refunded: true } })
 
             // A refund attempt fails at the provider and is abandoned (no
             // retry of the same logical refund follows).

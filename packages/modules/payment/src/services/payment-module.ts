@@ -1050,7 +1050,12 @@ export default class PaymentModuleService
       data.payment_id,
       {
         select: ["id"],
-        relations: ["captures.raw_amount", "refunds.raw_amount"],
+        // `refunds.metadata` is loaded explicitly because `isFailed` below reads
+        // the `__refund_status` marker off it. Without it in the selection a
+        // tightened relation load would leave `metadata` undefined, every failed
+        // refund would count toward the refunded total, and both the over-refund
+        // guard and the key-reuse path would silently change behaviour.
+        relations: ["captures.raw_amount", "refunds.raw_amount", "refunds.metadata"],
       },
       sharedContext
     )
