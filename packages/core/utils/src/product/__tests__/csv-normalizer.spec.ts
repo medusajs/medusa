@@ -1445,4 +1445,74 @@ describe("CSV processor", () => {
       )
     })
   })
+
+  describe("region prices", () => {
+    const regionsByName = new Map([
+      ["europe", { id: "reg_eu", currency_code: "eur" }],
+      ["united states", { id: "reg_us", currency_code: "usd" }],
+    ])
+
+    const preProcess = (rows: Record<string, any>[]) =>
+      rows.map((row, index) => CSVNormalizer.preProcess(row, index + 1))
+
+    it("resolves a region-scoped price column to a region_id rule", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price Europe [EUR]": 10,
+        },
+      ])
+
+      const result = new CSVNormalizer(rows, { regionsByName }).proccess()
+
+      expect(result.toCreate["shirt"].variants[0].prices).toEqual([
+        { amount: 10, currency_code: "eur", rules: { region_id: "reg_eu" } },
+      ])
+    })
+
+    it("round-trips the export format for region names with spaces", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price United States [USD]": 45,
+        },
+      ])
+
+      const result = new CSVNormalizer(rows, { regionsByName }).proccess()
+
+      expect(result.toCreate["shirt"].variants[0].prices).toEqual([
+        { amount: 45, currency_code: "usd", rules: { region_id: "reg_us" } },
+      ])
+    })
+
+    it("keeps store-wide prices (no brackets) currency-scoped", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price EUR": 10,
+          "Variant Price United States [USD]": 45,
+        },
+      ])
+
+      const result = new CSVNormalizer(rows, { regionsByName }).proccess()
+
+      expect(result.toCreate["shirt"].variants[0].prices).toEqual([
+        { currency_code: "eur", amount: 10 },
+        { amount: 45, currency_code: "usd", rules: { region_id: "reg_us" } },
+      ])
+    })
+
+    it("throws when a region price references an unknown region", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price Mars [MCR]": 9,
+        },
+      ])
+
+      expect(() =>
+        new CSVNormalizer(rows, { regionsByName }).proccess()
+      ).toThrow('Region with name "mars" not found')
+    })
+  })
 })

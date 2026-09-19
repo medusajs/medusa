@@ -2,6 +2,7 @@ import type { HttpTypes } from "@medusajs/framework/types"
 import { CSVNormalizer, productValidators } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { convertCsvToJson } from "../utils"
+import { getRegionsByNameForImport } from "../helpers/get-regions-by-name"
 
 /**
  * The CSV file content to parse.
@@ -18,11 +19,14 @@ export const normalizeCsvStepId = "normalize-product-csv"
  */
 export const normalizeCsvStep = createStep(
   normalizeCsvStepId,
-  async (fileContent: NormalizeProductCsvStepInput) => {
+  async (fileContent: NormalizeProductCsvStepInput, { container }) => {
+    const regionsByName = await getRegionsByNameForImport(container)
+
     const csvProducts =
       convertCsvToJson<Record<string, number | string | boolean>>(fileContent)
     const normalizer = new CSVNormalizer(
-      csvProducts.map((row, index) => CSVNormalizer.preProcess(row, index + 1))
+      csvProducts.map((row, index) => CSVNormalizer.preProcess(row, index + 1)),
+      { regionsByName }
     )
     const products = normalizer.proccess()
 
