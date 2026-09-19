@@ -155,9 +155,15 @@ x-publishable-api-key: pk_...
 
 InstantSearch sends one request per disjunctive facet in addition to the hits query. The route should run `searchMany` / `query.search` per item and return results in the same order.
 
-When `batch: false`, each `SearchQuery` is POSTed as the body and the response is a single `SearchResult`.
+When `batch: false`, each `SearchQuery` is POSTed as the body. The response may be a single `SearchResult`, or a `{ results }` wrapping exactly one — both are unwrapped.
 
 The route is responsible for storefront constraints (sales channel, region, which indexes are public). Pass extra filters through `additionalSearchParameters` if the client should send them itself.
+
+### The built-in route
+
+`POST /store/search` implements this contract over every registered index, so `indexName` is the index a query runs against. It hydrates the fields an index doesn't hold onto each hit's `document`, and otherwise runs the queries as posted.
+
+It applies no constraints of its own: scoping a storefront to a sales channel, to published documents, or to a subset of the indexes is the store's own, through a middleware on the route.
 
 ## Widget support
 

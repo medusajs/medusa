@@ -3,7 +3,7 @@ import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { SearchIndex, SearchIndexSync, SearchIndexVersion } from "@models"
 import { SearchIndexSeedAction } from "@types"
-import { versionPhysicalName } from "../../src/utils/migrations"
+import { versionPhysicalName } from "../../src/utils/versions"
 import {
   baseProducts,
   consumedEvents,
@@ -488,6 +488,115 @@ moduleIntegrationTestRunner<SearchService>({
 
           expect(previous.deleteIndex).toHaveBeenCalledWith({
             index: "product_v1",
+          })
+        })
+
+        describe("when a definition is removed", () => {
+          // The registry the module planned from is the live one, so taking a
+          // definition out of it is what removing its file amounts to.
+          const undeclare = (name: string) => {
+            const registered = definition(service, name)!
+            ;(service as any).indexes_.delete(name)
+            return registered
+          }
+
+          const physicalNames = async () => {
+            const provider = (service as any).searchProviderService_.retrieve(
+              "search-postgres"
+            )
+            return (await provider.listIndexes())
+              .map((info: SearchTypes.SearchIndexInfo) => info.name)
+              .sort()
+          }
+
+          it("plans a drop for it", async () => {
+            undeclare("product")
+
+            expect(await migrationPlan(service)).toEqual([
+              {
+                action: "drop",
+                index: "product",
+                physical_names: ["product_v1"],
+              },
+            ])
+          })
+
+          it("removes the index, its versions and its record", async () => {
+            undeclare("product")
+
+            await migrate(service, await migrationPlan(service))
+
+            expect(await physicalNames()).toEqual([])
+            expect(await indexRecords(service, {})).toEqual([])
+            expect(await versionRecords(service, {})).toEqual([])
+
+            // Nothing left to plan or seed, rather than a record that keeps
+            // coming back.
+            expect(await migrationPlan(service)).toEqual([])
+            expect(await seedPlan(service)).toEqual([])
+          })
+
+          it("takes every version, not just the one serving reads", async () => {
+            await service.reindex()
+            expect(await physicalNames()).toEqual(["product_v1", "product_v2"])
+
+            undeclare("product")
+            await migrate(service, await migrationPlan(service))
+
+            expect(await physicalNames()).toEqual([])
+          })
+
+          it("builds the index again when the definition comes back", async () => {
+            const registered = undeclare("product")
+
+            await migrate(service, await migrationPlan(service))
+
+            ;(service as any).indexes_.set("product", registered)
+
+            await migrate(service, await migrationPlan(service))
+            await boot(service)
+
+            // A fresh record and a fresh version 1 — the dropped ones are soft
+            // deleted, so neither name collides with what is being built.
+            const [record] = await indexRecords(service, { name: "product" })
+            expect(record.active_version).toBe(1)
+            expect(await physicalNames()).toEqual(["product_v1"])
+
+            const result = await service.search({
+              entity: "product",
+              fields: ["id"],
+            })
+            expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+          })
+
+          it("keeps the record when the provider that holds it is gone", async () => {
+            const warn = jest.spyOn((service as any).logger_, "warn")
+            const version = await activeVersion(service, "product")
+
+            await updateVersionRecords(service, {
+              selector: { id: version.id },
+              data: { provider: "search-gone" },
+            })
+            undeclare("product")
+
+            await migrate(service, await migrationPlan(service))
+
+            expect(warn).toHaveBeenCalledWith(
+              expect.stringContaining("search-gone")
+            )
+
+            // Left standing on purpose: dropping the record would strand the
+            // physical index with nothing pointing at it.
+            expect(await indexRecords(service, {})).toHaveLength(1)
+            expect(await migrationPlan(service)).toEqual([
+              {
+                action: "drop",
+                index: "product",
+                physical_names: ["product_v1"],
+              },
+            ])
+
+            warn.mockRestore()
           })
         })
 
@@ -1228,6 +1337,49 @@ moduleIntegrationTestRunner<SearchService>({
           expect(syncs).toHaveLength(6)
           expect(syncs.every((sync) => sync.status === "done")).toBe(true)
           expect(new Set(syncs.map((sync) => sync.job_id)).size).toBe(3)
+        })
+
+        it("drops the versions a rebuild takes out of rotation", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-postgres"
+          )
+          const physicalNames = async () =>
+            (await provider.listIndexes())
+              .map((info: SearchTypes.SearchIndexInfo) => info.name)
+              .sort()
+
+          expect(await physicalNames()).toEqual(["product_v1"])
+
+          await service.reindex()
+
+          // Version 1 served reads while version 2 was built, so it is still
+          // standing right after the swap — long enough for another instance's
+          // active-version cache to catch up.
+          expect(await physicalNames()).toEqual(["product_v1", "product_v2"])
+
+          await service.reindex()
+
+          // ...and goes as the next rebuild starts, so what is left is the
+          // version serving reads and the one it took over from, rather than a
+          // physical index per rebuild.
+          expect(await physicalNames()).toEqual(["product_v2", "product_v3"])
+
+          const [record] = await indexRecords(service, { name: "product" })
+          expect(record.active_version).toBe(3)
+
+          const versions = await versionRecords(service, {
+            search_index_id: record.id,
+          })
+          expect(versions.map((version: any) => version.version).sort()).toEqual(
+            [2, 3]
+          )
+
+          // Dropping the old versions leaves the index itself untouched.
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
         it("reindexes a subset in place and records the filters used", async () => {
