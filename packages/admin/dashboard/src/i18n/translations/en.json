@@ -1200,7 +1200,9 @@
         "paymentMethod": "Payment method",
         "paymentMethodDescription": "Refund amount to the payment method",
         "creditLine": "Store credit",
-        "creditLineDescription": "Refund amount as store credit"
+        "creditLineDescription": "Refund amount as store credit",
+        "creditLineNoOutstandingAmountDescription": "Only available when the order has an outstanding amount. Create a return or an order edit first.",
+        "creditLineGuestDescription": "Only available for customers with an account. This order was placed by a guest."
       }
     },
     "domain": "Orders",

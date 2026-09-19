@@ -43,6 +43,33 @@ ruleTester.run("link-create-keys-modules-enum", rule, {
         createRemoteLinkStep({ product: { id: "1" } })
       `,
     },
+    // Third-party SDK call whose option name collides with a module value.
+    {
+      code: `
+        await this.mailchimp.campaigns.create({
+          type: "regular",
+          settings: { subject_line: "New Products" },
+        })
+      `,
+    },
+    // Third-party SDK call with several colliding option names.
+    {
+      code: `
+        await stripe.customers.create({ user: 1, order: 2 })
+      `,
+    },
+    // Colliding method name on an unrelated receiver.
+    {
+      code: `
+        await queue.delete({ index: "x" })
+      `,
+    },
+    // Receiver is a computed member — not resolvable to a link.
+    {
+      code: `
+        await services["link"].create({ product: { id: "1" } })
+      `,
+    },
     // Array of objects, all enum-form.
     {
       code: `
@@ -119,6 +146,66 @@ await link.create({ [Modules.PRODUCT]: { product_id: "1" } })`,
       output: `
         import { Modules } from "@medusajs/framework/utils"
         await link.dismiss({ [Modules.SALES_CHANNEL]: { id: "x" } })
+      `,
+    },
+    // Receiver resolved from the container under an unrelated name.
+    {
+      code: `
+        import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+        const l = container.resolve(ContainerRegistrationKeys.LINK)
+        await l.create({ product: { id: "1" } })
+      `,
+      errors: [{ messageId: "preferEnumKey" }],
+      output: `
+        import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+        const l = container.resolve(ContainerRegistrationKeys.LINK)
+        await l.create({ [Modules.PRODUCT]: { id: "1" } })
+      `,
+    },
+    // Receiver typed as `Link`.
+    {
+      code: `
+        import { Modules } from "@medusajs/framework/utils"
+        const svc: Link = getIt()
+        await svc.create({ order: { id: "1" } })
+      `,
+      errors: [{ messageId: "preferEnumKey" }],
+      output: `
+        import { Modules } from "@medusajs/framework/utils"
+        const svc: Link = getIt()
+        await svc.create({ [Modules.ORDER]: { id: "1" } })
+      `,
+    },
+    // `remoteLink` receiver.
+    {
+      code: `
+        import { Modules } from "@medusajs/framework/utils"
+        await remoteLink.create({ product: { id: "1" } })
+      `,
+      errors: [{ messageId: "preferEnumKey" }],
+      output: `
+        import { Modules } from "@medusajs/framework/utils"
+        await remoteLink.create({ [Modules.PRODUCT]: { id: "1" } })
+      `,
+    },
+    // `this.link_` receiver inside a service.
+    {
+      code: `
+        import { Modules } from "@medusajs/framework/utils"
+        class Svc {
+          async run() {
+            await this.link_.create({ product: { id: "1" } })
+          }
+        }
+      `,
+      errors: [{ messageId: "preferEnumKey" }],
+      output: `
+        import { Modules } from "@medusajs/framework/utils"
+        class Svc {
+          async run() {
+            await this.link_.create({ [Modules.PRODUCT]: { id: "1" } })
+          }
+        }
       `,
     },
     // Workflow step: createRemoteLinkStep.

@@ -15,12 +15,6 @@ export type StoreProductListResponse = PaginatedResponse<{
   products: StoreProduct[]
 }>
 
-/**
- * The matching products, in relevance order. `count` is whatever the search
- * engine reported, which most engines only estimate.
- */
-export type StoreProductSearchResponse = StoreProductListResponse
-
 export interface StoreProductVariantResponse {
   /**
    * The product variant's details.

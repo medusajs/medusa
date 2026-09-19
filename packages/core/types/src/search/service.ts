@@ -332,7 +332,9 @@ export interface ISearchModuleService extends IModuleService {
    *
    * @returns {Promise<SearchIndexMigrationAction[]>} The actions required to
    * bring the physical indexes in line with the definitions. Indexes that are
-   * already up to date are returned as `noop` actions.
+   * already up to date are returned as `noop` actions, and indexes without a definition
+   * are returned as a `drop`, which will delete all data around them.
+   * {@link executeIndexMigrationPlan}.
    *
    * @example
    * const actions = await searchModuleService.createIndexMigrationPlan()
@@ -340,9 +342,9 @@ export interface ISearchModuleService extends IModuleService {
   createIndexMigrationPlan(): Promise<SearchIndexMigrationAction[]>
 
   /**
-   * This method executes a migration plan, creating and altering physical
-   * indexes. Every action is idempotent, so executing the same plan twice is a
-   * no-op.
+   * This method executes a migration plan, creating, altering and dropping
+   * physical indexes. Every action is idempotent, so executing the same plan
+   * twice is a no-op.
    *
    * The indexes this method creates are filled by the seed that runs at
    * application start, so an index it creates serves nothing until then.

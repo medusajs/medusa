@@ -332,6 +332,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui", "elkjs"],
+    webpackMemoryOptimizations: true,
   },
   rewrites: async () => {
     return {

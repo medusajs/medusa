@@ -19,7 +19,8 @@ import {
   SearchIndexState,
   SearchSyncStatus,
 } from "./index"
-import { versionPhysicalName } from "./migrations"
+import { cleanupStaleVersions, versionPhysicalName } from "./versions"
+import { retryOnRateLimit } from "./rate-limit"
 
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
 type SyncContext = Pick<SearchIndexContext, "syncService">
@@ -96,7 +97,23 @@ export async function createSeedPlan(
     }
 
     if (activeVersion.status === SearchIndexState.ERROR) {
-      actions.push(inPlace(definition, activeVersion, "last_run_failed"))
+      // A failed run leaves a cursor the next one picks up from — but only
+      // while the engine still holds what it wrote. An index that lost its
+      // data has to be rebuilt from the start, however far that run got.
+      const empty =
+        (await countDocuments(
+          context,
+          definition,
+          activeVersion.physical_name
+        )) === 0
+
+      actions.push(
+        inPlace(
+          definition,
+          activeVersion,
+          empty ? "index_empty" : "last_run_failed"
+        )
+      )
       continue
     }
 
@@ -160,7 +177,10 @@ async function runSeed(
   }
 ): Promise<void> {
   const target = action.target_version
-  const sync = await startSync(context, { versionId: target.id })
+  const sync = await startSync(context, {
+    versionId: target.id,
+    resume: action.reason !== "index_empty",
+  })
   const startedAt = Date.now()
   const assertLockHeld = lockGuard(definition.name, signal)
 
@@ -176,11 +196,12 @@ async function runSeed(
   })
 
   try {
-    const { documents_synced } = await streamSeed(context, {
+    const { documents_synced, written } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
       target_index: target.physical_name,
       last_key: sync.last_key ?? undefined,
+      synced_before: sync.documents_synced,
       assertLockHeld,
     })
 
@@ -219,8 +240,11 @@ async function runSeed(
 
     context.logger.info(
       `[Search] Seeded "${definition.name}": ${formatCount(
-        documents_synced
-      )} in ${formatElapsed(Date.now() - startedAt)}`
+        written
+      )} in ${formatElapsed(Date.now() - startedAt)}${formatTotal(
+        documents_synced,
+        written
+      )}`
     )
   } catch (error) {
     await failSync(context, {
@@ -253,8 +277,12 @@ async function catchUp(
     assertLockHeld: () => void
   }
 ): Promise<void> {
-  // Shares the bulk pass' `job_id` — same logical run, a second sync row.
-  const sync = await startSync(context, { versionId: target.id, jobId })
+  const sync = await startSync(context, {
+    versionId: target.id,
+    jobId,
+    resume: false,
+    resumable: false,
+  })
 
   try {
     const { documents_synced } = await streamSeed(context, {
@@ -327,8 +355,9 @@ async function reindexOne(
   const provider = context.providers.retrieve(definition.provider)
   const record = await retrieveIndexRecord(context, definition.name)
 
-  // Either input narrows the run to a slice of the index: `filters` selects
-  // source records, `since` only what changed at or after a cursor.
+  // We want to clean up stale versions before we start the reindex.
+  await cleanupStaleVersions(context, record)
+
   const scoped = !!input.filters || !!input.since
 
   // A partial rebuild must never swap: the replacement would only hold that
@@ -344,10 +373,9 @@ async function reindexOne(
     jobId,
     filters: input.filters,
     // A scoped run covers a different set of documents than the full run whose
-    // cursor it would otherwise inherit: resuming from that cursor would skip
-    // documents it was asked to rebuild, and cancelling that run would throw
-    // away its progress. It starts clean and leaves the other one alone.
+    // cursor it would otherwise inherit
     resume: !scoped,
+    resumable: !scoped,
   })
   const startedAt = Date.now()
   const assertLockHeld = lockGuard(definition.name, signal)
@@ -372,20 +400,29 @@ async function reindexOne(
     // entirely when resuming an interrupted run, since the target already
     // holds that run's progress.
     if (!useSwap && !sync.last_key && !scoped) {
-      const clearTask = await provider.clearIndex({
-        index: target.physical_name,
-      })
+      await retryOnRateLimit(
+        async () => {
+          const clearTask = await provider.clearIndex({
+            index: target.physical_name,
+          })
 
-      assertTaskAccepted(clearTask, definition.name)
-      await settle(context, definition, clearTask)
+          assertTaskAccepted(clearTask, definition.name)
+          await settle(context, definition, clearTask)
+        },
+        {
+          label: `clearing "${definition.name}"`,
+          logger: context.logger,
+        }
+      )
     }
 
-    const { documents_synced } = await streamSeed(context, {
+    const { documents_synced, written } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
       target_index: target.physical_name,
       filters: input.filters,
       last_key: sync.last_key ?? undefined,
+      synced_before: sync.documents_synced,
       // `since` is the same "only what changed at or after this" question the
       // catch-up pass asks, so it reaches `seed` the same way.
       catchup: input.since ? { since: input.since } : undefined,
@@ -432,8 +469,11 @@ async function reindexOne(
 
     context.logger.info(
       `[Search] Reindexed "${definition.name}": ${formatCount(
-        documents_synced
-      )} in ${formatElapsed(Date.now() - startedAt)}`
+        written
+      )} in ${formatElapsed(Date.now() - startedAt)}${formatTotal(
+        documents_synced,
+        written
+      )}`
     )
   } catch (error) {
     // Leave the new version behind on failure; the active one is untouched.
@@ -520,6 +560,7 @@ async function streamSeed(
     target_index,
     filters,
     last_key,
+    synced_before,
     catchup,
     assertLockHeld,
   }: {
@@ -528,16 +569,19 @@ async function streamSeed(
     target_index: string
     filters?: Record<string, unknown>
     last_key?: string
+    synced_before?: number
     catchup?: { since: Date }
     assertLockHeld: () => void
   }
-): Promise<{ documents_synced: number }> {
+): Promise<{ documents_synced: number; written: number }> {
   const provider = context.providers.retrieve(index.provider)
   const batchSize =
     context.options.reindex?.batch_size ?? DEFAULT_REINDEX_BATCH_SIZE
 
   let buffer: SearchTypes.SearchDocument[] = []
-  let synced = 0
+  // What this run wrote, without the previous runs' writes.
+  let written = 0
+  const total = () => (synced_before ?? 0) + written
   let lastKey: string | undefined
   const startedAt = Date.now()
   let lastLoggedAt = startedAt
@@ -547,7 +591,7 @@ async function streamSeed(
     const now = Date.now()
     if (
       !force &&
-      (synced === lastLoggedCount ||
+      (written === lastLoggedCount ||
         now - lastLoggedAt < PROGRESS_LOG_INTERVAL_MS)
     ) {
       return
@@ -555,16 +599,16 @@ async function streamSeed(
 
     const elapsedMs = now - startedAt
     const elapsedSec = Math.max(elapsedMs / 1000, 0.001)
-    const rate = Math.round(synced / elapsedSec)
+    const rate = Math.round(written / elapsedSec)
     const cursor = lastKey ? `, last key ${lastKey}` : ""
 
     context.logger.info(
       `[Search] "${index.name}": ${formatCount(
-        synced
+        written
       )} synced in ${formatElapsed(elapsedMs)} (${rate}/s)${cursor}`
     )
     lastLoggedAt = now
-    lastLoggedCount = synced
+    lastLoggedCount = written
   }
 
   const flushUpserts = async () => {
@@ -572,31 +616,35 @@ async function streamSeed(
       return
     }
 
-    // Before the write rather than after it: a run that has lost its lock
-    // stops adding to an index another instance may already be seeding.
-    assertLockHeld()
-
     const batch = buffer
     buffer = []
 
-    const task = await provider.upsertDocuments({
-      index: target_index,
-      definition: index,
-      documents: batch,
-    })
+    await retryOnRateLimit(
+      async () => {
+        assertLockHeld()
 
-    // Per batch rather than once at the end: it bounds how much can be in
-    // flight, and a swap that follows depends on all of it having landed.
-    assertTaskAccepted(task, index.name)
-    await settle(context, index, task)
+        const task = await provider.upsertDocuments({
+          index: target_index,
+          definition: index,
+          documents: batch,
+        })
 
-    synced += batch.length
+        assertTaskAccepted(task, index.name)
+        await settle(context, index, task)
+      },
+      {
+        label: `writing ${batch.length} document(s) to "${index.name}"`,
+        logger: context.logger,
+      }
+    )
+
+    written += batch.length
     lastKey = batch[batch.length - 1][index.primary_key] as string
 
     await context.syncService.update({
       selector: { id: sync_id },
       data: {
-        documents_synced: synced,
+        documents_synced: total(),
         last_key: lastKey,
       },
     })
@@ -607,15 +655,35 @@ async function streamSeed(
 
   const applyDelete = async (deleteFilters: SearchTypes.SearchFilters) => {
     await flushUpserts()
-    assertLockHeld()
 
-    const task = await provider.deleteDocuments({
-      index: target_index,
-      filters: deleteFilters,
-    })
+    try {
+      await retryOnRateLimit(
+        async () => {
+          assertLockHeld()
 
-    assertTaskAccepted(task, index.name)
-    await settle(context, index, task)
+          const task = await provider.deleteDocuments({
+            index: target_index,
+            filters: deleteFilters,
+          })
+
+          assertTaskAccepted(task, index.name)
+          await settle(context, index, task)
+        },
+        {
+          label: `deleting documents from "${index.name}"`,
+          logger: context.logger,
+        }
+      )
+    } catch (error) {
+      if (error instanceof SearchSeedLockLost) {
+        throw error
+      }
+
+      throw new SearchSeedProgressLost(
+        `Seed of "${index.name}" failed while deleting documents, so its progress cannot be resumed: ${error.message}`,
+        error
+      )
+    }
   }
 
   for await (const mutations of index.seed({
@@ -643,7 +711,12 @@ async function streamSeed(
 
   await flushUpserts()
 
-  return { documents_synced: synced }
+  await context.syncService.update({
+    selector: { id: sync_id },
+    data: { resumable: false },
+  })
+
+  return { documents_synced: total(), written }
 }
 
 // Blocks until a write lands. Not optional here: a swap puts the new version
@@ -663,6 +736,18 @@ async function settle(
 }
 
 /* -------------------------------- the lock -------------------------------- */
+
+/**
+ * A seed failed in a way that leaves the index inconsistent with the run's
+ * cursor, so the next run has to rebuild from the start rather than carry on
+ * from where this one stopped.
+ */
+export class SearchSeedProgressLost extends MedusaError {
+  constructor(message: string, readonly cause?: unknown) {
+    super(MedusaError.Types.UNEXPECTED_STATE, message)
+    this.name = "SearchSeedProgressLost"
+  }
+}
 
 export class SearchSeedLockLost extends MedusaError {
   constructor(message: string) {
@@ -686,9 +771,6 @@ function lockGuard(index: string, signal?: AbortSignal): () => void {
 
 /* ------------------------------ sync records ------------------------------ */
 
-// Opens a sync row, cancelling any earlier unfinished one and inheriting its
-// `last_key` so an interrupted run resumes. `resume: false` opts out of both,
-// for a run whose cursor means nothing to (and must not consume) the other's.
 async function startSync(
   context: SyncContext,
   {
@@ -696,23 +778,18 @@ async function startSync(
     jobId,
     filters,
     resume = true,
+    resumable = true,
   }: {
     versionId: string
     jobId?: string
     filters?: Record<string, unknown>
     resume?: boolean
+    resumable?: boolean
   }
 ): Promise<SearchIndexSyncRecord> {
-  const resumable = resume
+  const previous = resume
     ? await findResumableSync(context, versionId)
     : undefined
-
-  if (resumable) {
-    await context.syncService.update({
-      selector: { id: resumable.id },
-      data: { status: SearchSyncStatus.CANCELED },
-    })
-  }
 
   const [sync] = await context.syncService.create([
     {
@@ -720,10 +797,20 @@ async function startSync(
       job_id: jobId ?? randomUUID(),
       status: SearchSyncStatus.PROCESSING,
       filters: filters ?? null,
-      last_key: resumable?.last_key ?? null,
+      last_key: previous?.last_key ?? null,
+      // Carried along with the cursor, so a version filled over several runs reports the complete count.
+      documents_synced: previous?.documents_synced ?? 0,
+      resumable,
       started_at: new Date(),
     },
   ])
+
+  if (previous && isUnfinished(previous)) {
+    await context.syncService.update({
+      selector: { id: previous.id },
+      data: { status: SearchSyncStatus.CANCELED },
+    })
+  }
 
   return sync as SearchIndexSyncRecord
 }
@@ -762,6 +849,7 @@ async function failSync(
       status: SearchSyncStatus.FAILED,
       error: error.message,
       completed_at: new Date(),
+      ...(error instanceof SearchSeedProgressLost ? { resumable: false } : {}),
     },
   })
 
@@ -771,20 +859,29 @@ async function failSync(
   })
 }
 
-// The most recent unfinished run for a version, if any.
+function isUnfinished(sync: SearchIndexSyncRecord): boolean {
+  return (
+    sync.status === SearchSyncStatus.PENDING ||
+    sync.status === SearchSyncStatus.PROCESSING
+  )
+}
+
 async function findResumableSync(
   context: SyncContext,
   versionId: string
 ): Promise<SearchIndexSyncRecord | undefined> {
-  const [sync] = await context.syncService.list(
-    {
-      search_index_version_id: versionId,
-      status: [SearchSyncStatus.PENDING, SearchSyncStatus.PROCESSING],
-    },
+  const [latest] = (await context.syncService.list(
+    { search_index_version_id: versionId },
     { order: { created_at: "DESC" }, take: 1 }
-  )
+  )) as SearchIndexSyncRecord[]
 
-  return sync as SearchIndexSyncRecord | undefined
+  if (!latest?.resumable) {
+    return undefined
+  }
+
+  return isUnfinished(latest) || latest.status === SearchSyncStatus.FAILED
+    ? latest
+    : undefined
 }
 
 /* --------------------------------- helpers -------------------------------- */
@@ -812,6 +909,12 @@ function formatElapsed(ms: number): string {
 
 function formatResume(lastKey: string | null | undefined): string {
   return lastKey ? `, resuming after ${lastKey}` : ""
+}
+
+function formatTotal(documentsSynced: number, written: number): string {
+  return documentsSynced === written
+    ? ""
+    : `, ${formatCount(documentsSynced)} in total`
 }
 
 async function countDocuments(

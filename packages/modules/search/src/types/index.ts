@@ -30,9 +30,11 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
    * and notification `cloud` email.
    */
   cloud?: {
-    api_key: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    api_key?: string
     endpoint: string
-    environment_handle: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    environment_handle?: string
   }
 
   // For definitions that name no provider. Defaults to the only registered one,
@@ -159,6 +161,8 @@ export type SearchIndexSyncRecord = {
   status: string
   filters: Record<string, unknown> | null
   last_key: string | null
+  /** Whether a later run may continue from `last_key`. */
+  resumable: boolean
   documents_synced: number
   started_at: Date | null
   completed_at: Date | null

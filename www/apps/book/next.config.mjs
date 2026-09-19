@@ -120,6 +120,10 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/:file(llms\\.txt|llms-full\\.txt)",
+          destination: "/llms-content/:file",
+        },
+        {
           source: "/index.html.md",
           destination: "/md-content",
         },
