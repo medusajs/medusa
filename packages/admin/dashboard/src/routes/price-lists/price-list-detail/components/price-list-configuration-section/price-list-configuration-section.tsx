@@ -55,9 +55,18 @@ const CustomerGroupDisplay = ({
 }) => {
   const { t } = useTranslation()
 
-  const customerGroupIds = priceList.rules["customer.groups.id"] as
+  const customerGroupRule = priceList.rules["customer.groups.id"] as
     | string[]
+    | { operator: "in" | "nin"; value: string[] }
     | undefined
+
+  const customerGroupIds = Array.isArray(customerGroupRule)
+    ? customerGroupRule
+    : customerGroupRule?.value
+
+  const customerGroupOperator: "in" | "nin" = Array.isArray(customerGroupRule)
+    ? "in"
+    : customerGroupRule?.operator ?? "in"
 
   const { customer_groups, isPending, isError, error } = useCustomerGroups(
     {
@@ -85,6 +94,8 @@ const CustomerGroupDisplay = ({
       <span className="text-ui-fg-subtle">
         {t("priceLists.fields.customerAvailability.attribute")}
       </span>
+      <span>·</span>
+      <span>{t(`operators.${customerGroupOperator}`)}</span>
       <span>·</span>
       <ListSummary
         list={customer_groups.map((group) => group.name!)}
