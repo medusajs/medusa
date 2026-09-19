@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 
 try {
+  require("./dist/typescript-compatibility").assertTypeScriptCompatibility(
+    require("typescript")
+  )
   require("ts-node").register({})
   require("tsconfig-paths").register({})
 } catch (e) {
+  if (e?.code === "MEDUSA_UNSUPPORTED_TYPESCRIPT") {
+    throw e
+  }
   const isProduction = process.env.NODE_ENV === "production"
   if (!isProduction) {
     console.warn(
