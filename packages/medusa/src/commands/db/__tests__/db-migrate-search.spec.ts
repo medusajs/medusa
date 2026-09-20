@@ -197,4 +197,14 @@ describe("db:migrate:search – dropping undeclared indexes", () => {
 
     expect(executed(searchModule)).toEqual(["noop:product", "drop:blog"])
   })
+
+  it("still executes an all-noop plan, so a version an earlier swap left behind is cleaned up", async () => {
+    const { migrated, searchModule } = await run([noop("product")])
+
+    expect(migrated).toBe(true)
+    expect(executed(searchModule)).toEqual(["noop:product"])
+    expect(logger.info).toHaveBeenCalledWith(
+      "Search indexes already up-to-date"
+    )
+  })
 })

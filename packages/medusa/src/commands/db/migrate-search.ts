@@ -195,6 +195,7 @@ export async function migrateSearchIndexes({
     logger.info("Migrating search indexes...")
 
     const plan = await searchModule.createIndexMigrationPlan()
+    const toNoop = plan.filter((action) => action.action === "noop")
     const toCreate = plan.filter((action) => action.action === "create")
     const toMigrate = plan.filter((action) => action.action === "migrate")
     const toDrop = await selectIndexesToDrop({
@@ -208,13 +209,20 @@ export async function migrateSearchIndexes({
 
     if (!toCreate.length && !toMigrate.length && !toDrop.length) {
       logger.info("Search indexes already up-to-date")
+
+      // Nothing changed, but a noop still carries a version an earlier swap
+      // left behind — that cleanup cannot wait for the index to drift again.
+      if (toNoop.length) {
+        await searchModule.executeIndexMigrationPlan(toNoop)
+      }
+
       return true
     }
 
     // The noops go along too: they carry no schema change, but versions an
     // earlier swap left behind are cleaned up as they are executed.
     await searchModule.executeIndexMigrationPlan([
-      ...plan.filter((action) => action.action === "noop"),
+      ...toNoop,
       ...toCreate,
       ...toMigrate,
       ...toDrop,
