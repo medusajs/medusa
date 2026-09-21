@@ -31,8 +31,11 @@ type GeneratedOrganization = {
   id: string
   name: string
   status: string
+  metadata: Maybe<Record<string, unknown>>
+  app_metadata: Record<string, unknown>
   subscription: Maybe<GeneratedSubscription>
   subscriptions: Array<GeneratedSubscription>
+  optional_subscriptions: Maybe<Array<GeneratedSubscription>>
 }
 
 type EntryPoints = {
@@ -94,3 +97,40 @@ export const rejectsWrongNestedValueTypes: OrganizationFilters = {
     },
   },
 }
+
+/**
+ * Nullable `json` columns must stay filterable: the generator emits them as
+ * `Record<string, unknown> | null`, and a union with `null` does not extend
+ * `object`.
+ */
+export const nullableJsonFields: OrganizationFilters = {
+  metadata: { tier: "gold" },
+  app_metadata: { tier: "gold" },
+  subscription: {
+    plan: {
+      metadata: { legacy: true },
+    },
+  },
+}
+
+/**
+ * Nullable to-many relations resolve to a relation filter, not to the array's
+ * own members.
+ */
+export const nullableToManyRelations: OrganizationFilters = {
+  optional_subscriptions: {
+    is_active: true,
+    plan: {
+      handle: { $ne: "free" },
+    },
+  },
+}
+
+// eslint-disable-next-line max-len
+export const rejectsUnknownPropertiesOnNullableToManyRelations: OrganizationFilters =
+  {
+    optional_subscriptions: {
+      // @ts-expect-error - unknown property on the relation filter
+      unknown_property: true,
+    },
+  }
