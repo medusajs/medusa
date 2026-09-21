@@ -48,7 +48,7 @@ const { data: products } = await query.graph({
 
 Each variant in the retrieved products has a `prices` array property with the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](/references/pricing/models/Price).
 
-<Note title="Warning" type="warning">
+### Include Price-List Prices
 
 `variants.prices.*` only returns prices that are not part of a price list. Prices belonging to a price list have a non-null `price_list_id` and are excluded from this result.
 
@@ -74,8 +74,6 @@ const { data: priceListPrices } = await query.graph({
   },
 })
 ```
-
-</Note>
 
 ---
 
