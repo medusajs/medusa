@@ -1,5 +1,5 @@
 import { createHash } from "crypto"
-import { SearchTypes } from "@medusajs/framework/types"
+import { Logger, SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export type PostgresSearchEngine = "native" | "lakebase"
@@ -123,12 +123,18 @@ function assertTypoToleranceSupported(
 }
 
 /**
- * Refuses a definition this engine cannot honour.
+ * Refuses a definition this engine cannot honour. Vector fields are an
+ * exception: an engine without vector support reports them and ignores them,
+ * so the same index definition stays portable across providers.
  */
 export function assertIndexSupported(
   definition: SearchTypes.ResolvedSearchIndexDefinition,
-  engine: PostgresSearchEngine = "native"
+  engine: PostgresSearchEngine = "native",
+  logger?: Logger
 ): void {
+  const supportsVectors = engine === "lakebase"
+  const ignoredVectors: string[] = []
+
   const walk = (
     group: Record<string, SearchTypes.SearchFieldDefinition>,
     prefix: string
@@ -137,10 +143,9 @@ export function assertIndexSupported(
       const path = prefix ? `${prefix}.${name}` : name
 
       if (field.type === "vector") {
-        if (engine !== "lakebase") {
-          fail(
-            `Vector fields ("${path}") require engine: "lakebase". The native engine does not support vector search.`
-          )
+        if (!supportsVectors) {
+          ignoredVectors.push(path)
+          continue
         }
         if (!field.dimensions || field.dimensions < 1) {
           fail(
@@ -166,6 +171,16 @@ export function assertIndexSupported(
 
   walk(definition.fields, "")
   assertTypoToleranceSupported(definition.settings)
+
+  if (ignoredVectors.length) {
+    logger?.warn(
+      `The postgres search provider does not support vector search on the "${engine}" engine. Ignoring vector field(s) ${ignoredVectors
+        .map((path) => `"${path}"`)
+        .join(", ")} on search index "${
+        definition.name
+      }". Use Medusa Search to enable vector search.`
+    )
+  }
 }
 
 /**
@@ -229,11 +244,13 @@ export function keywordTsQuerySql(
  * stay portable across engines.
  */
 export function buildIndexPlan(
-  definition: SearchTypes.ResolvedSearchIndexDefinition
+  definition: SearchTypes.ResolvedSearchIndexDefinition,
+  engine: PostgresSearchEngine = "native"
 ): IndexPlan {
   const fields = new Map<string, PlannedField>()
   const searchable: string[] = []
   const vectors: string[] = []
+  const supportsVectors = engine === "lakebase"
 
   const walk = (
     group: Record<string, SearchTypes.SearchFieldDefinition>,
@@ -248,6 +265,10 @@ export function buildIndexPlan(
         if (field.fields) {
           walk(field.fields, path, isArray)
         }
+        continue
+      }
+
+      if (field.type === "vector" && !supportsVectors) {
         continue
       }
 
