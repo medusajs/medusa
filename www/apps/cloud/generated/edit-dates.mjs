@@ -75,7 +75,7 @@ export const generatedEditDates = {
   "app/search/migrate-from-meilisearch/page.mdx": "2026-09-18T07:42:43.197Z",
   "app/projects/troubleshooting/page.mdx": "2026-09-09T11:41:43.070Z",
   "app/search/comparison/page.mdx": "2026-09-15T07:53:53.177Z",
-  "app/search/semantic-search/page.mdx": "2026-09-15T13:49:16.750Z",
+  "app/search/semantic-search/page.mdx": "2026-09-21T09:29:55.350Z",
   "app/search/settings/page.mdx": "2026-09-15T14:15:52.704Z",
   "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
   "app/search/analytics/page.mdx": "2026-09-18T13:19:13.326Z"

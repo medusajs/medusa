@@ -157,6 +157,485 @@ Refer to [Let Medusa Search Create the Embedding](!resources!/infrastructure-mod
 
 ---
 
+## Best Practices for What to Embed
+
+An embedding only carries the meaning of the text you index on the vector field. So, the `transform` that builds that text decides how well semantic search ranks your results.
+
+The examples in the previous sections embed the product's title alone, which is the smallest useful starting point. Use the following practices to build richer text to embed. Each example shows the index definition that builds the text, then the text a product ends up with.
+
+### Put the Most Defining Information First
+
+An embedding weighs the start of the text more than its tail, so open with what identifies the entity, such as its name, type, category, and primary description. Leave supporting details, such as tags or materials, for the end, and leave out boilerplate that every product repeats.
+
+For example:
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: ["id", "title", "type.value", "description"],
+  transform: (product) => ({
+    id: product.id,
+    content_embedding: [
+      `Product: ${product.title}`,
+      `Type: ${product.type?.value}`,
+      `Description: ${product.description}`,
+    ].join("\n"),
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+In this example, the `transform` function constructs the `content_embedding` by concatenating the product's title, type, and description, ensuring that the most defining information appears first.
+
+A product then carries the following text on `content_embedding`, which Medusa Search embeds:
+
+```text
+Product: Aurora Lounge Chair
+Type: Lounge Chair
+Description: A low-slung lounge chair with a solid
+oak frame and wool upholstery.
+```
+
+Had the `transform` opened with a shipping notice that every product repeats, the identity of the product would compete with text that carries no meaning of its own.
+
+### Flatten Relevant Relations Into the Document
+
+A shopper searches for a brand, a collection, or a material as readily as for a title, but those live on related entities. So, request the relations in the source's `fields`, then join their values into the text you embed.
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: [
+    "id",
+    "title",
+    "collection.title",
+    "tags.value",
+    "variants.material",
+    // ...
+  ],
+  transform: (product) => ({
+    id: product.id,
+    content_embedding: [
+      `Product: ${product.title}`,
+      `Collection: ${product.collection?.title}`,
+      `Material: ${product.variants?.[0]?.material}`,
+      `Tags: ${product.tags
+        ?.map((tag) => tag.value)
+        .join(", ")}`,
+    ].join("\n"),
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+A product then carries the following text on `content_embedding`:
+
+```text
+Product: Aurora Lounge Chair
+Collection: Nordic Winter
+Material: solid oak
+Tags: mid-century, handmade
+```
+
+### Expand Terse Values Into Meaningful Context
+
+A bare value, such as `oak`, gives the model little to work with. Label it and keep the words around it that a shopper would use.
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: ["id", "title", "variants.material", "length"],
+  transform: (product) => ({
+    id: product.id,
+    content_embedding: [
+      `Product: ${product.title}`,
+      `Material: solid ${
+        product.variants?.[0]?.material
+      } frame with wool upholstery`,
+      `Dimensions: ${product.length} cm deep`,
+    ].join("\n"),
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+A product then carries the following text on `content_embedding`:
+
+```text
+Product: Aurora Lounge Chair
+Material: solid oak frame with wool upholstery
+Dimensions: 82 cm deep
+```
+
+Had the `transform` joined the raw values instead, the text would read `oak, 82`, which matches far fewer of the phrasings a shopper types.
+
+### Include Hierarchy
+
+A category on its own drops the context that a shopper's phrasing carries. Walk the category's parent chain and join the full path, so the embedding holds the broader terms too.
+
+```ts title="src/search/product.ts"
+const toCategoryPath = (category) => {
+  const names = []
+  let current = category
+
+  while (current) {
+    names.unshift(current.name)
+    current = current.parent_category
+  }
+
+  return names.join(" > ")
+}
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "categories.name",
+    "categories.parent_category.name",
+    // ...
+  ],
+  transform: (product) => ({
+    id: product.id,
+    content_embedding: [
+      `Product: ${product.title}`,
+      `Category: ${product.categories
+        ?.map(toCategoryPath)
+        .join(", ")}`,
+    ].join("\n"),
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+A product then carries the following text on `content_embedding`:
+
+```text
+Product: Aurora Lounge Chair
+Category: Furniture > Seating > Lounge Chairs
+```
+
+The path matches a shopper searching for seating, which the leaf category alone wouldn't.
+
+### Include User-Facing Attributes Only
+
+An ID, a timestamp, or an internal status carries no meaning that a shopper would ever search for, and it dilutes the rest of the text. So, keep those out of the `transform`'s embedded text, and index them as their own fields when you filter on them.
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: ["id", "title", "status", "collection.title"],
+  transform: (product) => ({
+    id: product.id,
+    status: product.status,
+    content_embedding: [
+      `Product: ${product.title}`,
+      `Collection: ${product.collection?.title}`,
+    ].join("\n"),
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    status: search.keyword().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+A product then carries the following text on `content_embedding`, while its ID and status stay on their own fields:
+
+```text
+Product: Aurora Lounge Chair
+Collection: Nordic Winter
+```
+
+### Keep Filters Outside the Embedding
+
+A price range, an inventory count, a region, a permission, or a category ID is an exact constraint, and an embedding can't enforce it. So, keep those as structured fields with the [`filterable`](!resources!/infrastructure-modules/search/index-definitions/modifiers#filterable) modifier, and leave them out of the embedded text.
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: [
+    "id",
+    "title",
+    "categories.id",
+    "variants.calculated_price.calculated_amount",
+    "variants.inventory_quantity",
+    // ...
+  ],
+  transform: (product) => ({
+    id: product.id,
+    price:
+      product.variants?.[0]?.calculated_price
+        ?.calculated_amount,
+    inventory_quantity:
+      product.variants?.[0]?.inventory_quantity,
+    category_ids: product.categories?.map(
+      (category) => category.id
+    ),
+    content_embedding: `Product: ${product.title}`,
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    price: search.integer().filterable().sortable(),
+    inventory_quantity: search.integer().filterable(),
+    category_ids: search.keyword().array().filterable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+Your query then narrows the candidates with the filters and ranks what remains by meaning:
+
+```ts
+const { data } = await query.search({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    category_ids: ["pcat_01J8Z"],
+    price: { $lte: 50000 },
+  },
+  search_options: {
+    vector: {
+      field: "content_embedding",
+      query: "cozy chair for a reading corner",
+      semantic_ratio: 0.7,
+    },
+  },
+})
+```
+
+### Keep Exact-Search Fields Alongside the Embedding
+
+A shopper who types a SKU, a barcode, a model number, or an exact brand name expects that one record, and a semantic ranking dilutes it. So, keep those fields [`searchable`](!resources!/infrastructure-modules/search/index-definitions/modifiers#searchable) next to the vector field, and keep `semantic_ratio` below `1` so the full-text score still counts.
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: [
+    "id",
+    "title",
+    "variants.sku",
+    "variants.barcode",
+    // ...
+  ],
+  transform: (product) => ({
+    id: product.id,
+    title: product.title,
+    sku: product.variants?.[0]?.sku,
+    barcode: product.variants?.[0]?.barcode,
+    content_embedding: `Product: ${product.title}`,
+    // ...
+  }),
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    sku: search.keyword().searchable(),
+    barcode: search.keyword().searchable(),
+    content_embedding: search.vector(1536).embed(),
+    // ...
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+A shopper who types `AUR-LC-OAK-01` then matches that variant's SKU through the full-text score, while the same index still answers "cozy chair for a reading corner" through the embedding.
+
+### Full Example of Semantic Search Best Practices
+
+The following index definition builds the embedded text from the relations it resolves, keeps the filters structured, and keeps the exact-search fields full-text:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const toCategoryPath = (category) => {
+  const names = []
+  let current = category
+
+  while (current) {
+    names.unshift(current.name)
+    current = current.parent_category
+  }
+
+  return names.join(" > ")
+}
+
+const buildEmbeddingText = (product) => {
+  const categories = product.categories?.map(toCategoryPath)
+  const materials = [
+    ...new Set(
+      product.variants
+        ?.map((variant) => variant.material)
+        .filter(Boolean)
+    ),
+  ]
+  const tags = product.tags?.map((tag) => tag.value)
+
+  return [
+    `Product: ${product.title}`,
+    product.type?.value && `Type: ${product.type.value}`,
+    categories?.length &&
+      `Category: ${categories.join(", ")}`,
+    product.collection?.title &&
+      `Collection: ${product.collection.title}`,
+    product.description &&
+      `Description: ${product.description}`,
+    materials.length &&
+      `Material: solid ${materials.join(", ")} frame`,
+    tags?.length && `Tags: ${tags.join(", ")}`,
+  ]
+    .filter(Boolean)
+    .join("\n")
+}
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "status",
+    "type.value",
+    "categories.id",
+    "categories.name",
+    "categories.parent_category.name",
+    "collection.title",
+    "tags.value",
+    "variants.sku",
+    "variants.barcode",
+    "variants.material",
+  ],
+  transform: (product) => {
+    if (product.status !== "published") {
+      return null
+    }
+
+    return {
+      id: product.id,
+      title: product.title,
+      sku: product.variants?.[0]?.sku,
+      barcode: product.variants?.[0]?.barcode,
+      category_ids: product.categories?.map(
+        (category) => category.id
+      ),
+      content_embedding: buildEmbeddingText(product),
+    }
+  },
+}
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    sku: search.keyword().searchable(),
+    barcode: search.keyword().searchable(),
+    category_ids: search.keyword().array().filterable(),
+    content_embedding: search.vector(1536).embed(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+A product then carries the following text on `content_embedding`:
+
+```text
+Product: Aurora Lounge Chair
+Type: Lounge Chair
+Category: Furniture > Seating > Lounge Chairs
+Collection: Nordic Winter
+Description: A low-slung lounge chair with a solid
+oak frame and wool upholstery.
+Material: solid oak frame
+Tags: mid-century, handmade
+```
+
+---
+
+
 ## Example: Build an AI Search Assistant
 
 A chat-style assistant that answers a shopper in natural language and shows the products it found is two layers, and Medusa Search is the second one:
