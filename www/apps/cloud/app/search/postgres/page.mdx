@@ -181,7 +181,7 @@ The [PostgreSQL Search Module Provider](!resources!/infrastructure-modules/searc
       </Table.Cell>
       <Table.Cell>
 
-      Not supported. The provider rejects a vector field and a vector query.
+      Not supported. The provider ignores a vector field in the index definition and rejects a vector query.
 
       </Table.Cell>
     </Table.Row>
@@ -330,6 +330,8 @@ Refer to [Usage](../../usage/page.mdx) on how to monitor these metrics.
 
 The Search Module provides the interface to define different types of fields in search indexes, but it's the responsibility of each provider to actually support them. The following table summarizes how each provider handles the different types of fields and settings.
 
+A field a provider can't store doesn't make the whole index fail. The PostgreSQL provider logs a warning and creates the index without the vector fields in your definition, so one definition works on both providers.
+
 <Table>
   <Table.Header>
     <Table.Row>
@@ -358,7 +360,7 @@ The Search Module provides the interface to define different types of fields in 
       </Table.Cell>
       <Table.Cell>
 
-      Fails at startup. The provider has nowhere to store an embedding.
+      Ignores the field and logs a warning, since the provider has nowhere to store an embedding. It creates the rest of the index, so the same definition stays usable on both providers.
 
       </Table.Cell>
     </Table.Row>

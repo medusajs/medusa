@@ -86,20 +86,59 @@ The command reports each action under one of the following:
     </Table.Row>
     <Table.Row>
       <Table.Cell>
+        `drop`
+      </Table.Cell>
+      <Table.Cell>
+        No definition declares the index any more, so the module removes every version it ever built for it, along with the record tracking them. This is the only destructive action, and the only one the command asks about first. Refer to [Dropping Removed Indexes](#dropping-removed-indexes).
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
         `noop`
       </Table.Cell>
       <Table.Cell>
-        The physical index already matches the definition.
+        The physical index already matches the definition. The module still removes the versions an earlier swap left behind, as explained in [How Index Changes Are Handled](#how-index-changes-are-handled).
       </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
 
+### Dropping Removed Indexes
+
+When you remove an index definition from your application, the index in the search engine stays behind. So, the command plans a `drop` for it, which deletes every document it holds and can't be undone. The only way back is to declare the definition again and let it seed.
+
+Since that's destructive, the command lists those indexes and asks which of them to drop before it touches any of them:
+
+```bash
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│   Select the search indexes to DROP. No                  │
+│   definition declares them any more, and                 │
+│   dropping one deletes every document it holds.          │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+? Select search indexes to drop
+❯ ◯ article (article_v2, article_v1)
+```
+
+Pass one of the following options to `db:migrate` or `db:migrate:search` to skip the prompt:
+
+- `--execute-all-search`: drop every index that no definition declares any more.
+- `--execute-safe-search`: leave those indexes in place.
+
+<Note>
+
+A command with no terminal to prompt in, such as in a CI pipeline, leaves those indexes in place unless you pass `--execute-all-search`. It never drops an index you didn't approve.
+
+</Note>
+
 ### How Index Changes Are Handled
 
-An index name, such as `product`, isn't one physical index. The Search Module keeps a version per physical index it has ever built for that name, and one of them is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
+An index name, such as `product`, isn't one physical index. The Search Module builds a version of the index per definition change, and one of those versions is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
 
 That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill stays behind without ever going live, so the active version keeps answering queries.
+
+The module keeps the active version and the one it's building. It removes every version below the active one at the start of the next migration or rebuild, so a swap that went live doesn't leave its old index in the engine.
 
 ```mermaid
 flowchart TD
@@ -108,7 +147,7 @@ flowchart TD
 
     subgraph phys["Physical indexes"]
         direction LR
-        V1["v1<br/>inactive"]
+        V1["v1<br/>removed"]
         V2["v2<br/>active"]
         V3["v3<br/>pending"]
     end
