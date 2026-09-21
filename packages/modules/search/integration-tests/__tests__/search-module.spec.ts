@@ -25,9 +25,7 @@ const boot = (service: SearchService) =>
   (service as any).onApplicationStart_() as Promise<void>
 
 const seedPlan = (service: SearchService) =>
-  (service as any).createSeedPlan_() as Promise<
-    SearchIndexSeedAction[]
-  >
+  (service as any).createSeedPlan_() as Promise<SearchIndexSeedAction[]>
 
 // Migrating is public — `db:migrate` plans and executes it — but reading the
 // registered definitions is not.
@@ -58,6 +56,9 @@ const syncRecords = (service: SearchService, filters: any = {}) =>
 
 const updateVersionRecords = (service: SearchService, input: any) =>
   (service as any).context_.versionService.update(input) as Promise<any>
+
+const updateIndexRecords = (service: SearchService, input: any) =>
+  (service as any).context_.indexService.update(input) as Promise<any>
 
 const createSyncRecords = (service: SearchService, input: any[]) =>
   (service as any).context_.syncService.create(input) as Promise<any[]>
@@ -297,7 +298,9 @@ moduleIntegrationTestRunner<SearchService>({
             }
 
             expect(errorSpy).toHaveBeenCalledWith(
-              expect.stringContaining("[Search] Failed to seed search indexes:"),
+              expect.stringContaining(
+                "[Search] Failed to seed search indexes:"
+              ),
               expect.any(Error)
             )
           } finally {
@@ -337,8 +340,7 @@ moduleIntegrationTestRunner<SearchService>({
               action: "noop",
               index: "product",
               physical_name: "product_v1",
-              definition_hash: definition(service, "product")!
-                .definition_hash,
+              definition_hash: definition(service, "product")!.definition_hash,
             },
           ])
 
@@ -550,7 +552,6 @@ moduleIntegrationTestRunner<SearchService>({
             const registered = undeclare("product")
 
             await migrate(service, await migrationPlan(service))
-
             ;(service as any).indexes_.set("product", registered)
 
             await migrate(service, await migrationPlan(service))
@@ -638,7 +639,9 @@ moduleIntegrationTestRunner<SearchService>({
           // Nothing creates the index on the way to seeding it, so the seed
           // fails against the engine rather than papering over a migration
           // that never ran.
-          await expect(boot(service)).rejects.toThrow(/has no index "product_v1"/)
+          await expect(boot(service)).rejects.toThrow(
+            /has no index "product_v1"/
+          )
           expect(await provider.listIndexes()).toEqual([])
         })
 
@@ -688,9 +691,7 @@ moduleIntegrationTestRunner<SearchService>({
           await boot(service)
 
           // Nothing needed doing, so no new sync runs were recorded.
-          expect(await syncRecords(service, {})).toHaveLength(
-            before.length
-          )
+          expect(await syncRecords(service, {})).toHaveLength(before.length)
         })
       })
 
@@ -1087,9 +1088,7 @@ moduleIntegrationTestRunner<SearchService>({
         it("overwrites an existing document", async () => {
           await service.upsertDocuments({
             index: "product",
-            documents: [
-              { ...baseProducts[0], title: "Crimson walking shoe" },
-            ],
+            documents: [{ ...baseProducts[0], title: "Crimson walking shoe" }],
           })
 
           const stale = await service.search({
@@ -1224,7 +1223,10 @@ moduleIntegrationTestRunner<SearchService>({
           ])
 
           // Replaced rather than added beside the old document.
-          const all = await service.search({ entity: "product", fields: ["id"] })
+          const all = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
           expect(all.metadata.count).toBe(3)
         })
 
@@ -1283,9 +1285,9 @@ moduleIntegrationTestRunner<SearchService>({
               error: { message: "engine unavailable" },
             })
 
-          await expect(
-            ingest("product.updated", "prod_1")
-          ).rejects.toThrow(/engine unavailable/)
+          await expect(ingest("product.updated", "prod_1")).rejects.toThrow(
+            /engine unavailable/
+          )
 
           upsert.mockRestore()
         })
@@ -1370,9 +1372,9 @@ moduleIntegrationTestRunner<SearchService>({
           const versions = await versionRecords(service, {
             search_index_id: record.id,
           })
-          expect(versions.map((version: any) => version.version).sort()).toEqual(
-            [2, 3]
-          )
+          expect(
+            versions.map((version: any) => version.version).sort()
+          ).toEqual([2, 3])
 
           // Dropping the old versions leaves the index itself untouched.
           const result = await service.search({
@@ -1542,7 +1544,10 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(refreshed)).toEqual(["prod_1"])
 
           // ...and anything the seed no longer produces is gone too.
-          const all = await service.search({ entity: "product", fields: ["id"] })
+          const all = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
           expect(ids(all).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
         })
 
@@ -1581,6 +1586,116 @@ moduleIntegrationTestRunner<SearchService>({
             fields: ["id"],
           })
           expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
+        })
+      })
+
+      describe("when another process swaps the active version", () => {
+        // Every process caches which version serves reads, and only the one
+        // that performed the swap updates its own copy.
+        const missTheSwap = async () => {
+          await service.search({ entity: "product", fields: ["id"] })
+
+          await service.reindex()
+          expect(await activePhysicalName(service, "product")).toBe(
+            "product_v2"
+          )
+          ;(service as any).activeVersionCache_.set("product", {
+            physical_name: "product_v1",
+            provider: "search-postgres",
+            version: 1,
+          })
+        }
+
+        // Reads are allowed to be briefly stale, so the checks below go to
+        // whichever version actually serves reads rather than the pinned one.
+        const searchTheLiveVersion = async (
+          filters?: Record<string, unknown>
+        ) => {
+          ;(service as any).activeVersionCache_.invalidate()
+          return await service.search({
+            entity: "product",
+            fields: ["id"],
+            ...(filters ? { filters } : {}),
+          })
+        }
+
+        it("writes into the version serving reads, not the cached one", async () => {
+          await missTheSwap()
+
+          await service.upsertDocuments({
+            index: "product",
+            documents: [
+              {
+                ...baseProducts[0],
+                id: "prod_written",
+                title: "Cobalt runner",
+              },
+            ],
+          })
+
+          // Landing in the retired version would make the document invisible,
+          // and lose it outright once that version is cleaned up.
+          expect(ids(await searchTheLiveVersion({ q: "cobalt" }))).toEqual([
+            "prod_written",
+          ])
+        })
+
+        it("deletes from the version serving reads, not the cached one", async () => {
+          await missTheSwap()
+
+          await service.deleteDocuments({
+            index: "product",
+            filters: { id: ["prod_1"] },
+          })
+
+          expect(ids(await searchTheLiveVersion()).sort()).toEqual([
+            "prod_2",
+            "prod_3",
+          ])
+        })
+
+        it("ingests an event into the version serving reads", async () => {
+          await missTheSwap()
+
+          touchProduct("prod_1", { title: "Cobalt runner" })
+          await service.ingest({
+            name: "product.updated",
+            data: { id: "prod_1" },
+          } as any)
+
+          expect(ids(await searchTheLiveVersion({ q: "cobalt" }))).toEqual([
+            "prod_1",
+          ])
+        })
+
+        it("recovers a read whose cached version has since been dropped", async () => {
+          await missTheSwap()
+
+          // What a cleanup on the process that owns the swap does next.
+          await (service as any).searchProviderService_
+            .retrieve("search-postgres")
+            .deleteIndex({ index: "product_v1" })
+
+          // The engine reporting no such index is the signal to resolve again
+          // rather than fail the search.
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+          expect(ids(result).sort()).toEqual(["prod_1", "prod_2", "prod_3"])
+        })
+
+        it("still reports an index that genuinely has no active version", async () => {
+          const [record] = await indexRecords(service, { name: "product" })
+          await updateIndexRecords(service, {
+            selector: { id: record.id },
+            data: { active_version: null },
+          })
+          ;(service as any).activeVersionCache_.invalidate()
+
+          await expect(
+            service.search({ entity: "product", fields: ["id"] })
+          ).rejects.toThrow(/has no active version yet/)
         })
       })
 
