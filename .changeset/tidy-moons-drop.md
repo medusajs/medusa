@@ -3,7 +3,6 @@
 "@medusajs/search": patch
 "@medusajs/types": patch
 "@medusajs/test-utils": patch
-"medusa-cli": patch
 ---
 
 feat(medusa,search,types): drop search indexes no definition declares any more
