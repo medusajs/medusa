@@ -2,7 +2,7 @@
 "@medusajs/medusa": patch
 "@medusajs/search": patch
 "@medusajs/types": patch
-"@medusajs/medusa-test-utils": patch
+"@medusajs/test-utils": patch
 "medusa-cli": patch
 ---
 
