@@ -24,10 +24,16 @@ So, it's essential to handle webhook events to ensure that your application is a
 
 ### Webhook Listener API Route
 
-The Medusa application has a `/hooks/payment/[identifier]_[provider]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
+The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
 
-- `[identifier]` is the `identifier` static property defined in the payment provider. For example, `stripe`.
-- `[provider]` is the ID of the provider. For example, `stripe`.
+- `[identifier]` is the `identifier` static property defined in the payment provider class. For example, `stripe`.
+- `[id]` is the `id` field set for the provider in `medusa-config.ts`. For example, `stripe`.
+
+<Note title="Tip">
+
+The route segment does not include the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`, not `/hooks/payment/pp_myprovider_myprovider`.
+
+</Note>
 
 For example, when integrating basic Stripe payments with the [Stripe Module Provider](../payment-provider/stripe/page.mdx), the webhook listener route is `/hooks/payment/stripe_stripe`.
 
