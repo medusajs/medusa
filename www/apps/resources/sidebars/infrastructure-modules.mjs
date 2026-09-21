@@ -418,6 +418,11 @@ export const infrastructureModulesSidebar = [
             children: [
               {
                 type: "ref",
+                path: "https://docs.medusajs.com/cloud/search/semantic-search#best-practices-for-what-to-embed",
+                title: "Semantic Search Best Practices",
+              },
+              {
+                type: "ref",
                 path: "https://docs.medusajs.com/cloud/search/comparison",
                 title: "Compare Search Providers",
               },
