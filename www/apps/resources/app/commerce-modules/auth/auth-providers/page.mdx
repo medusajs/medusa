@@ -47,16 +47,16 @@ Refer to the [Create Auth Module Provider](/references/auth/provider) guide to l
 
 ## Configure Allowed Auth Providers of Actor Types
 
-By default, users of all actor types can authenticate with all installed Auth Module Providers.
+By default, the `user` actor type is restricted to the `emailpass` provider. All other actor types (for example, `customer`) can authenticate with any installed Auth Module Provider unless you explicitly restrict them.
 
-To restrict the auth providers used for actor types, use the [authMethodsPerActor option](!docs!/learn/configurations/medusa-config#httpauthMethodsPerActor) in Medusa's configurations:
+To configure which auth providers are allowed for each actor type, use the [authMethodsPerActor option](!docs!/learn/configurations/medusa-config#httpauthMethodsPerActor) in Medusa's configurations:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
-        user: ["google"],
+        user: ["emailpass", "google"],
         customer: ["emailpass"],
       },
       // ...

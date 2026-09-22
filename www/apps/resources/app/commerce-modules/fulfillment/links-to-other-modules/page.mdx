@@ -54,6 +54,20 @@ The Fulfillment Module has the following links to other modules:
     </Table.Row>
     <Table.Row>
       <Table.Cell>
+        [OrderShippingMethod](/references/order/models/OrderShippingMethod) in [Order Module](../../order/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        [ShippingOption](/references/fulfillment/models/ShippingOption)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - has one
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#link-to-order-shipping-methods)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
         [Order](/references/order/models/Order) in [Order Module](../../order/page.mdx)
       </Table.Cell>
       <Table.Cell>
@@ -196,6 +210,8 @@ const { data: shippingMethods } = useQueryGraphStep({
 
 ## Order Module
 
+### Link to Orders and Returns
+
 The [Order Module](../../order/page.mdx) provides order-management functionalities.
 
 Medusa defines a link between the `Fulfillment` and `Order` data models. A fulfillment is created for an orders' items.
@@ -206,7 +222,7 @@ A fulfillment is also created for a return's items. So, Medusa defines a link be
 
 ![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399052/Medusa%20Resources/Social_Media_Graphics_2024_Order_Return_vetimk.jpg)
 
-### Retrieve with Query
+#### Retrieve with Query
 
 To retrieve the order of a fulfillment with [Query](!docs!/learn/fundamentals/query), pass `order.*` in `fields`:
 
@@ -251,7 +267,7 @@ const { data: fulfillments } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-### Manage with Link
+#### Manage with Link
 
 To manage the order of a cart, use [Link](!docs!/learn/fundamentals/module-links/link):
 
@@ -290,6 +306,57 @@ createRemoteLinkStep({
     fulfillment_id: "ful_123",
   },
 })
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### Link to Order Shipping Methods
+
+Medusa defines a read-only link between the `OrderShippingMethod` data model of the [Order Module](../../order/page.mdx) and the `ShippingOption` data model. This means you can retrieve the details of an order shipping method's shipping option, but you don't manage the links in a pivot table in the database. The shipping option of an order shipping method is determined by the `shipping_option_id` property of the `OrderShippingMethod` data model.
+
+This link allows you to retrieve the shipping option that an order's shipping method was created from.
+
+<Note>
+
+This link is available since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+</Note>
+
+#### Retrieve with Query
+
+To retrieve the shipping option of an order shipping method with [Query](!docs!/learn/fundamentals/query), pass `shipping_option.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: orderShippingMethods } = await query.graph({
+  entity: "order_shipping_method",
+  fields: [
+    "shipping_option.*",
+  ],
+})
+
+// orderShippingMethods[0].shipping_option
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: orderShippingMethods } = useQueryGraphStep({
+  entity: "order_shipping_method",
+  fields: [
+    "shipping_option.*",
+  ],
+})
+
+// orderShippingMethods[0].shipping_option
 ```
 
   </CodeTab>
