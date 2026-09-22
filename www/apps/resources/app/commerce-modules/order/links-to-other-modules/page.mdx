@@ -59,7 +59,7 @@ Read-only links are used to query data across modules, but the relations aren't 
         Read-only - has one
       </Table.Cell>
       <Table.Cell>
-        [Learn more](#fulfillment-module-shipping-option)
+        [Learn more](#link-to-shipping-option)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -221,51 +221,6 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 ---
 
-## Fulfillment Module - Shipping Option
-
-Medusa defines a read-only link between the `OrderShippingMethod` data model and the [Fulfillment Module](../../fulfillment/page.mdx)'s `ShippingOption` data model. This means you can retrieve the details of an order shipping method's shipping option, but you don't manage the links in a pivot table in the database. The shipping option of an order shipping method is determined by the `shipping_option_id` property of the `OrderShippingMethod` data model.
-
-### Retrieve with Query
-
-To retrieve the shipping option of an order shipping method with [Query](!docs!/learn/fundamentals/module-links/query), pass `shipping_option.*` in `fields`:
-
-<CodeTabs group="relation-query">
-  <CodeTab label="query.graph" value="method">
-
-```ts
-const { data: orderShippingMethods } = await query.graph({
-  entity: "order_shipping_method",
-  fields: [
-    "shipping_option.*",
-  ],
-})
-
-// orderShippingMethods[0].shipping_option
-```
-
-  </CodeTab>
-  <CodeTab label="useQueryGraphStep" value="step">
-
-```ts
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-
-// ...
-
-const { data: orderShippingMethods } = useQueryGraphStep({
-  entity: "order_shipping_method",
-  fields: [
-    "shipping_option.*",
-  ],
-})
-
-// orderShippingMethods[0].shipping_option
-```
-
-  </CodeTab>
-</CodeTabs>
-
----
-
 ## Customer Module
 
 Medusa defines a read-only link between the `Order` data model and the [Customer Module](../../customer/page.mdx)'s `Customer` data model. This means you can retrieve the details of an order's customer, but you don't manage the links in a pivot table in the database. The customer of an order is determined by the `customer_id` property of the `Order` data model.
@@ -406,6 +361,8 @@ createRemoteLinkStep({
 
 ## Fulfillment Module
 
+### Link to Fulfillment
+
 A fulfillment is created for an orders' items. Medusa defines a link between the `Fulfillment` and `Order` data models.
 
 ![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716549903/Medusa%20Resources/order-fulfillment_h0vlps.jpg)
@@ -414,7 +371,7 @@ A fulfillment is also created for a return's items. So, Medusa defines a link be
 
 ![A diagram showcasing an example of how data models from the Fulfillment and Order modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1728399052/Medusa%20Resources/Social_Media_Graphics_2024_Order_Return_vetimk.jpg)
 
-### Retrieve with Query
+#### Retrieve with Query
 
 To retrieve the fulfillments of an order with [Query](!docs!/learn/fundamentals/module-links/query), pass `fulfillments.*` in `fields`:
 
@@ -459,7 +416,7 @@ const { data: orders } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-### Manage with Link
+#### Manage with Link
 
 To manage the fulfillments of an order, use [Link](!docs!/learn/fundamentals/module-links/link):
 
@@ -498,6 +455,55 @@ createRemoteLinkStep({
     fulfillment_id: "ful_123",
   },
 })
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### Link to Shipping Option
+
+Medusa defines a read-only link between the `OrderShippingMethod` data model and the [Fulfillment Module](../../fulfillment/page.mdx)'s `ShippingOption` data model. This means you can retrieve the details of an order shipping method's shipping option, but you don't manage the links in a pivot table in the database. The shipping option of an order shipping method is determined by the `shipping_option_id` property of the `OrderShippingMethod` data model.
+
+<Note>
+
+This link is available since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+</Note>
+
+#### Retrieve with Query
+
+To retrieve the shipping option of an order shipping method with [Query](!docs!/learn/fundamentals/module-links/query), pass `shipping_option.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: orderShippingMethods } = await query.graph({
+  entity: "order_shipping_method",
+  fields: [
+    "shipping_option.*",
+  ],
+})
+
+// orderShippingMethods[0].shipping_option
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: orderShippingMethods } = useQueryGraphStep({
+  entity: "order_shipping_method",
+  fields: [
+    "shipping_option.*",
+  ],
+})
+
+// orderShippingMethods[0].shipping_option
 ```
 
   </CodeTab>
