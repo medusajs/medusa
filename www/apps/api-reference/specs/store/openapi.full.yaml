@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.21.0
+  version: 2.21.1
   title: Medusa Storefront API
   license:
     name: MIT
@@ -23901,6 +23901,21 @@ components:
       properties:
         customer:
           $ref: '#/components/schemas/AdminCustomer'
+    AdminDebitStoreCreditAccountParams:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminDebitStoreCreditAccountParams
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          title: amount
+          description: The store credit account's amount.
+        note:
+          type: string
+          title: note
+          description: The store credit account's note.
     AdminDeletePaymentCollectionResponse:
       type: object
       description: The result of deleting the payment collection.
@@ -30860,6 +30875,28 @@ components:
       properties:
         region:
           $ref: '#/components/schemas/AdminRegion'
+    AdminReindexSearchIndex:
+      type: object
+      description: |-
+        The details to reindex a search index. Everything is optional — an empty
+        body triggers a full rebuild, same as today.
+      x-schemaName: AdminReindexSearchIndex
+      properties:
+        since:
+          type: string
+          title: since
+          description: The search index's since.
+        filters:
+          type: object
+          description: The search index's filters.
+        strategy:
+          type: string
+          description: |-
+            How to rebuild. Ignored — always in place — when `filters` or `since`
+            is set.
+          enum:
+            - swap
+            - in_place
     AdminRemoveDraftOrderPromotions:
       type: object
       description: The promotion codes to remove from the draft order.
@@ -31387,6 +31424,146 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
+    AdminSearchIndex:
+      type: object
+      description: A registered search index and the fields it stores.
+      x-schemaName: AdminSearchIndex
+      required:
+        - name
+        - entity
+        - provider
+        - status
+        - fields
+      properties:
+        name:
+          type: string
+          title: name
+          description: Unique index name, as used in `query.search({ entity })`.
+        entity:
+          type: string
+          title: entity
+          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
+        provider:
+          type: string
+          title: provider
+          description: Identifier of the provider backing this index.
+        status:
+          type: string
+          description: Lifecycle status of the index.
+          enum:
+            - error
+            - pending
+            - building
+            - ready
+        fields:
+          type: array
+          description: Leaf fields stored in the index.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndexField'
+    AdminSearchIndexDeleteResponse:
+      type: object
+      description: |-
+        The result of deleting a search index. Every physical index built for it is
+        dropped, so the next migration rebuilds it from scratch at version 1.
+      x-schemaName: AdminSearchIndexDeleteResponse
+      required:
+        - id
+        - object
+        - deleted
+        - deleted_versions
+      properties:
+        id:
+          type: string
+          title: id
+          description: The name of the deleted index.
+        object:
+          type: string
+          title: object
+          description: The type of the item that was deleted.
+        deleted:
+          type: boolean
+          title: deleted
+          description: Whether the index was deleted successfully.
+        deleted_versions:
+          type: number
+          title: deleted_versions
+          description: |-
+            How many of the index's versions were dropped. `0` when the index is
+            registered but was never migrated.
+    AdminSearchIndexField:
+      type: object
+      description: A leaf field stored in a search index, with the capabilities declared on it.
+      x-schemaName: AdminSearchIndexField
+      required:
+        - name
+        - type
+        - searchable
+        - filterable
+        - sortable
+        - facetable
+      properties:
+        name:
+          type: string
+          title: name
+          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+        type:
+          type: string
+          title: type
+          description: The field's index type.
+        searchable:
+          type: boolean
+          title: searchable
+          description: Whether the field is used for free-text matching.
+        filterable:
+          type: boolean
+          title: filterable
+          description: Whether the field can be used in filters.
+        sortable:
+          type: boolean
+          title: sortable
+          description: Whether results can be sorted by this field.
+        facetable:
+          type: boolean
+          title: facetable
+          description: Whether the field can be faceted.
+    AdminSearchIndexListResponse:
+      type: object
+      description: The list of registered search indexes.
+      x-schemaName: AdminSearchIndexListResponse
+      required:
+        - search_indexes
+        - enabled
+      properties:
+        search_indexes:
+          type: array
+          description: The registered search indexes.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndex'
+        enabled:
+          type: boolean
+          title: enabled
+          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+    AdminSearchIndexReindexResponse:
+      type: object
+      description: |-
+        The result of triggering a search index reindex. The reindex runs in the
+        background - check the index's `status` to know when it's done.
+      x-schemaName: AdminSearchIndexReindexResponse
+      required:
+        - job_id
+        - indexes
+      properties:
+        job_id:
+          type: string
+          title: job_id
+          description: Identifier of the triggered reindex job.
+        indexes:
+          type: array
+          description: Names of the indexes being reindexed.
+          items:
+            type: string
+            title: indexes
+            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.

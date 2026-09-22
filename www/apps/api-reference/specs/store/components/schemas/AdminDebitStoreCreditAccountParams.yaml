@@ -1,0 +1,14 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminDebitStoreCreditAccountParams
+required:
+  - amount
+properties:
+  amount:
+    type: number
+    title: amount
+    description: The store credit account's amount.
+  note:
+    type: string
+    title: note
+    description: The store credit account's note.

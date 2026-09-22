@@ -1,0 +1,21 @@
+type: object
+description: |-
+  The details to reindex a search index. Everything is optional — an empty
+  body triggers a full rebuild, same as today.
+x-schemaName: AdminReindexSearchIndex
+properties:
+  since:
+    type: string
+    title: since
+    description: The search index's since.
+  filters:
+    type: object
+    description: The search index's filters.
+  strategy:
+    type: string
+    description: |-
+      How to rebuild. Ignored — always in place — when `filters` or `since`
+      is set.
+    enum:
+      - swap
+      - in_place

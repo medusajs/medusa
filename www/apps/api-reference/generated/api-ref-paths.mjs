@@ -2691,11 +2691,39 @@ export const apiRefPaths = {
         "schemaPath": null,
         "operations": {
           "GetSearch": {
-            "slug": "list-search",
-            "path": "/admin/search/list-search",
+            "slug": "search-admin",
+            "path": "/admin/search/search-admin",
             "oldHash": "search_getsearch",
-            "title": "List Search",
+            "title": "Search Admin",
             "method": "get"
+          }
+        }
+      },
+      "search-indexes": {
+        "name": "Search Indexes",
+        "path": "/admin/search-indexes",
+        "schemaPath": "/admin/search-indexes/schema",
+        "operations": {
+          "GetSearchIndexes": {
+            "slug": "list-search-indexes",
+            "path": "/admin/search-indexes/list-search-indexes",
+            "oldHash": "search-indexes_getsearchindexes",
+            "title": "List Search Indexes",
+            "method": "get"
+          },
+          "PostSearchIndexesIdReindex": {
+            "slug": "add-reindex-to-search-index",
+            "path": "/admin/search-indexes/add-reindex-to-search-index",
+            "oldHash": "search-indexes_postsearchindexesidreindex",
+            "title": "Add Reindex to Search Index",
+            "method": "post"
+          },
+          "DeleteSearchIndexesId": {
+            "slug": "delete-a-search-index",
+            "path": "/admin/search-indexes/delete-a-search-index",
+            "oldHash": "search-indexes_deletesearchindexesid",
+            "title": "Delete a Search Index",
+            "method": "delete"
           }
         }
       },
@@ -2926,6 +2954,13 @@ export const apiRefPaths = {
             "path": "/admin/store-credit-accounts/add-credit-to-store-credit-account",
             "oldHash": "store-credit-accounts_poststorecreditaccountsidcredit",
             "title": "Add Credit to Store Credit Account",
+            "method": "post"
+          },
+          "PostStoreCreditAccountsIdDebit": {
+            "slug": "add-debit-to-store-credit-account",
+            "path": "/admin/store-credit-accounts/add-debit-to-store-credit-account",
+            "oldHash": "store-credit-accounts_poststorecreditaccountsiddebit",
+            "title": "Add Debit to Store Credit Account",
             "method": "post"
           },
           "PostStoreCreditAccounts": {
@@ -4481,8 +4516,13 @@ export const apiRefRedirects = {
     "sales-channels_deletesaleschannelsid": "/admin/sales-channels/delete-a-sales-channel",
     "sales-channels_saleschannel_schema": "/admin/sales-channels/schema",
     "sales-channels": "/admin/sales-channels",
-    "search_getsearch": "/admin/search/list-search",
+    "search_getsearch": "/admin/search/search-admin",
     "search": "/admin/search",
+    "search-indexes_getsearchindexes": "/admin/search-indexes/list-search-indexes",
+    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/add-reindex-to-search-index",
+    "search-indexes_deletesearchindexesid": "/admin/search-indexes/delete-a-search-index",
+    "search-indexes_searchindex_schema": "/admin/search-indexes/schema",
+    "search-indexes": "/admin/search-indexes",
     "shipping-option-types_getshippingoptiontypesid": "/admin/shipping-option-types/get-a-shipping-option-type",
     "shipping-option-types_getshippingoptiontypes": "/admin/shipping-option-types/list-shipping-option-types",
     "shipping-option-types_postshippingoptiontypes": "/admin/shipping-option-types/create-shipping-option-type",
@@ -4519,6 +4559,7 @@ export const apiRefRedirects = {
     "store-credit-accounts_getstorecreditaccounts": "/admin/store-credit-accounts/list-store-credit-accounts",
     "store-credit-accounts_getstorecreditaccountsidtransactions": "/admin/store-credit-accounts/list-transactions",
     "store-credit-accounts_poststorecreditaccountsidcredit": "/admin/store-credit-accounts/add-credit-to-store-credit-account",
+    "store-credit-accounts_poststorecreditaccountsiddebit": "/admin/store-credit-accounts/add-debit-to-store-credit-account",
     "store-credit-accounts_poststorecreditaccounts": "/admin/store-credit-accounts/create-store-credit-account",
     "store-credit-accounts_storecreditaccount_schema": "/admin/store-credit-accounts/schema",
     "store-credit-accounts": "/admin/store-credit-accounts",

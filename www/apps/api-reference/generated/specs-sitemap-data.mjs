@@ -555,6 +555,14 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "search-indexes",
+      "operationSectionIds": [
+        "search-indexes_getsearchindexes",
+        "search-indexes_deletesearchindexesid",
+        "search-indexes_postsearchindexesidreindex"
+      ]
+    },
+    {
       "tagSectionId": "shipping-option-types",
       "operationSectionIds": [
         "shipping-option-types_getshippingoptiontypes",
@@ -605,6 +613,7 @@ export const specsSitemapData = {
         "store-credit-accounts_poststorecreditaccounts",
         "store-credit-accounts_getstorecreditaccountsid",
         "store-credit-accounts_poststorecreditaccountsidcredit",
+        "store-credit-accounts_poststorecreditaccountsiddebit",
         "store-credit-accounts_getstorecreditaccountsidtransactions"
       ]
     },

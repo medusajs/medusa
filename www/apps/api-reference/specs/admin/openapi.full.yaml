@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.21.0
+  version: 2.21.1
   title: Medusa Admin API
   license:
     name: MIT
@@ -440,6 +440,9 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminSalesChannel'
   - name: Search
+  - name: Search Indexes
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminSearchIndex'
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: '#/components/schemas/AdminShippingOptionType'
@@ -59304,29 +59307,32 @@ paths:
   /admin/search:
     get:
       operationId: GetSearch
-      summary: List Search
-      description: Retrieve a list of search. The search can be filtered by fields such as `id`. The search can also be sorted or paginated.
+      summary: Search Admin
+      description: Search entities that have a search index and are defined as search entities in the Medusa Admin.
+      externalDocs:
+        description: Medusa Admin Search
+        url: https://docs.medusajs.com/resources/infrastructure-modules/search/admin-search
       x-authenticated: true
       parameters:
         - name: q
           in: query
-          description: The search's q.
+          description: A query to run full-text search against the search index.
           required: false
           schema:
             type: string
             title: q
-            description: The search's q.
+            description: A query to run full-text search against the search index.
         - name: entity
           in: query
-          description: The search's entity.
+          description: The entities to run the search against.
           required: false
           schema:
             type: array
-            description: The search's entity.
+            description: The entities to run the search against.
             items:
               type: string
               title: entity
-              description: The entity's details.
+              description: The name of the entity.
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -59383,16 +59389,16 @@ paths:
             application/json:
               schema:
                 type: object
-                description: SUMMARY
+                description: The search results for the requested entities.
                 required:
                   - results
                 properties:
                   results:
                     type: array
-                    description: In the order the entities were requested.
+                    description: The search results for each entity, in the order the entities were requested.
                     items:
                       type: object
-                      description: The result's results.
+                      description: The search result for a specific entity.
                       required:
                         - entity
                         - data
@@ -59403,25 +59409,25 @@ paths:
                         entity:
                           type: string
                           title: entity
-                          description: The result's entity.
+                          description: The name of the entity the search result belongs to.
                         data:
                           type: array
                           description: The documents the index holds, in relevance order.
                           items:
                             type: object
-                            description: The datum's data.
+                            description: The document returned by the search index.
                         count:
                           type: number
                           title: count
-                          description: Treat as an estimate — most engines only approximate a total.
+                          description: An estimate of the total number of documents matching the search query.
                         offset:
                           type: number
                           title: offset
-                          description: The result's offset.
+                          description: The number of documents to skip before returning results.
                         limit:
                           type: number
                           title: limit
-                          description: The result's limit.
+                          description: The maximum number of documents to return in the result set.
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -59434,6 +59440,192 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /admin/search-indexes:
+    get:
+      operationId: GetSearchIndexes
+      summary: List Search Indexes
+      description: Retrieve a list of search indexes. The search indexes can be filtered by fields such as `id`. The search indexes can also be sorted or paginated.
+      x-authenticated: true
+      parameters: []
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.search.listIndexes()
+            .then(({ search_indexes, enabled }) => {
+              console.log(search_indexes, enabled)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/search-indexes' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Search Indexes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSearchIndexListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/search-indexes/{id}:
+    delete:
+      operationId: DeleteSearchIndexesId
+      summary: Delete a Search Index
+      description: Delete a search index.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The search index's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.search.deleteIndex("product")
+            .then(({ deleted, deleted_versions }) => {
+              console.log(deleted, deleted_versions)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/search-indexes/{id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Search Indexes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSearchIndexDeleteResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: deleteSearchIndexWorkflow
+      x-events: []
+  /admin/search-indexes/{id}/reindex:
+    post:
+      operationId: PostSearchIndexesIdReindex
+      summary: Add Reindex to Search Index
+      description: Add a Reindex to a search index
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The search index's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminReindexSearchIndex'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.search.reindex("product")
+            .then(({ job_id, indexes }) => {
+              console.log(job_id, indexes)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/search-indexes/{id}/reindex' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Search Indexes
+      responses:
+        '202':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSearchIndexReindexResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: reindexSearchIndexesWorkflow
+      x-events: []
   /admin/shipping-option-types:
     get:
       operationId: GetShippingOptionTypes
@@ -64263,6 +64455,59 @@ paths:
         - text: Loyalty Plugin
           description: |
             This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
+  /admin/store-credit-accounts/{id}/debit:
+    post:
+      operationId: PostStoreCreditAccountsIdDebit
+      summary: Add Debit to Store Credit Account
+      description: Add a Debit to a store credit account
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The store credit account's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminDebitStoreCreditAccountParams'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/store-credit-accounts/{id}/debit' \
+            -H 'Authorization: Bearer {access_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "amount": 24
+            }'
+      tags:
+        - Store Credit Accounts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminStoreCreditAccountResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/store-credit-accounts/{id}/transactions:
     get:
       operationId: GetStoreCreditAccountsIdTransactions
@@ -77569,6 +77814,21 @@ components:
       properties:
         customer:
           $ref: '#/components/schemas/AdminCustomer'
+    AdminDebitStoreCreditAccountParams:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminDebitStoreCreditAccountParams
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          title: amount
+          description: The store credit account's amount.
+        note:
+          type: string
+          title: note
+          description: The store credit account's note.
     AdminDeletePaymentCollectionResponse:
       type: object
       description: The result of deleting the payment collection.
@@ -84528,6 +84788,28 @@ components:
       properties:
         region:
           $ref: '#/components/schemas/AdminRegion'
+    AdminReindexSearchIndex:
+      type: object
+      description: |-
+        The details to reindex a search index. Everything is optional — an empty
+        body triggers a full rebuild, same as today.
+      x-schemaName: AdminReindexSearchIndex
+      properties:
+        since:
+          type: string
+          title: since
+          description: The search index's since.
+        filters:
+          type: object
+          description: The search index's filters.
+        strategy:
+          type: string
+          description: |-
+            How to rebuild. Ignored — always in place — when `filters` or `since`
+            is set.
+          enum:
+            - swap
+            - in_place
     AdminRemoveDraftOrderPromotions:
       type: object
       description: The promotion codes to remove from the draft order.
@@ -85055,6 +85337,146 @@ components:
       properties:
         sales_channel:
           $ref: '#/components/schemas/AdminSalesChannel'
+    AdminSearchIndex:
+      type: object
+      description: A registered search index and the fields it stores.
+      x-schemaName: AdminSearchIndex
+      required:
+        - name
+        - entity
+        - provider
+        - status
+        - fields
+      properties:
+        name:
+          type: string
+          title: name
+          description: Unique index name, as used in `query.search({ entity })`.
+        entity:
+          type: string
+          title: entity
+          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
+        provider:
+          type: string
+          title: provider
+          description: Identifier of the provider backing this index.
+        status:
+          type: string
+          description: Lifecycle status of the index.
+          enum:
+            - error
+            - pending
+            - building
+            - ready
+        fields:
+          type: array
+          description: Leaf fields stored in the index.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndexField'
+    AdminSearchIndexDeleteResponse:
+      type: object
+      description: |-
+        The result of deleting a search index. Every physical index built for it is
+        dropped, so the next migration rebuilds it from scratch at version 1.
+      x-schemaName: AdminSearchIndexDeleteResponse
+      required:
+        - id
+        - object
+        - deleted
+        - deleted_versions
+      properties:
+        id:
+          type: string
+          title: id
+          description: The name of the deleted index.
+        object:
+          type: string
+          title: object
+          description: The type of the item that was deleted.
+        deleted:
+          type: boolean
+          title: deleted
+          description: Whether the index was deleted successfully.
+        deleted_versions:
+          type: number
+          title: deleted_versions
+          description: |-
+            How many of the index's versions were dropped. `0` when the index is
+            registered but was never migrated.
+    AdminSearchIndexField:
+      type: object
+      description: A leaf field stored in a search index, with the capabilities declared on it.
+      x-schemaName: AdminSearchIndexField
+      required:
+        - name
+        - type
+        - searchable
+        - filterable
+        - sortable
+        - facetable
+      properties:
+        name:
+          type: string
+          title: name
+          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+        type:
+          type: string
+          title: type
+          description: The field's index type.
+        searchable:
+          type: boolean
+          title: searchable
+          description: Whether the field is used for free-text matching.
+        filterable:
+          type: boolean
+          title: filterable
+          description: Whether the field can be used in filters.
+        sortable:
+          type: boolean
+          title: sortable
+          description: Whether results can be sorted by this field.
+        facetable:
+          type: boolean
+          title: facetable
+          description: Whether the field can be faceted.
+    AdminSearchIndexListResponse:
+      type: object
+      description: The list of registered search indexes.
+      x-schemaName: AdminSearchIndexListResponse
+      required:
+        - search_indexes
+        - enabled
+      properties:
+        search_indexes:
+          type: array
+          description: The registered search indexes.
+          items:
+            $ref: '#/components/schemas/AdminSearchIndex'
+        enabled:
+          type: boolean
+          title: enabled
+          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+    AdminSearchIndexReindexResponse:
+      type: object
+      description: |-
+        The result of triggering a search index reindex. The reindex runs in the
+        background - check the index's `status` to know when it's done.
+      x-schemaName: AdminSearchIndexReindexResponse
+      required:
+        - job_id
+        - indexes
+      properties:
+        job_id:
+          type: string
+          title: job_id
+          description: Identifier of the triggered reindex job.
+        indexes:
+          type: array
+          description: Names of the indexes being reindexed.
+          items:
+            type: string
+            title: indexes
+            description: The index's indexes.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.

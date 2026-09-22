@@ -5,7 +5,7 @@
  * description: Search entities that have a search index and are defined as search entities in the Medusa Admin.
  * externalDocs:
  *   description: Medusa Admin Search
- *   url: "https://docs.medusajs.com/resources/infrastructure-modules/search/admin-search"
+ *   url: https://docs.medusajs.com/resources/infrastructure-modules/search/admin-search
  * x-authenticated: true
  * parameters:
  *   - name: q
