@@ -44827,13 +44827,15 @@ createRemoteLinkStep({
 
 The Product Module doesn't store or manage the prices of product variants.
 
-Medusa defines a link between the `ProductVariant` and the `PriceSet`. A product variant’s prices are stored as prices belonging to a price set.
+Medusa defines a link between the `ProductVariant` and the `PriceSet`. A product variant's prices are stored as prices belonging to a price set.
 
 ![A diagram showcasing an example of how data models from the Pricing and Product Module are linked. The PriceSet is linked to the ProductVariant of the Product Module.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709651039/Medusa%20Resources/pricing-product_m4xaut.jpg)
 
 So, when you want to add prices for a product variant, you create a price set and add the prices to it.
 
 You can then benefit from adding rules to prices or using the `calculatePrices` method to retrieve the price of a product variant within a specified context.
+
+When you retrieve variant prices through `variants.prices.*` using Query, only prices that are not part of a price list are returned. Prices belonging to a price list (those with a non-null `price_list_id`) are excluded. Refer to the [Get Variant Prices guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/guides/price) for how to retrieve price-list prices.
 
 ### Retrieve with Query
 
@@ -46678,7 +46680,34 @@ const { data: products } = await query.graph({
 })
 ```
 
-Each variant in the retrieved products has a `prices` array property with all the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](undefined/references/pricing/models/Price).
+Each variant in the retrieved products has a `prices` array property with the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](undefined/references/pricing/models/Price).
+
+### Include Price-List Prices
+
+`variants.prices.*` only returns prices that are not part of a price list. Prices belonging to a price list have a non-null `price_list_id` and are excluded from this result.
+
+To retrieve a variant's price-list prices, query the `price` entity directly using the variant's linked price set ID and the price list's ID:
+
+```ts
+// First retrieve the variant's price set ID
+const { data: variants } = await query.graph({
+  entity: "product_variant",
+  fields: ["id", "price_set.*"],
+  filters: { id: "variant_123" },
+})
+
+const priceSetId = variants[0].price_set.id
+
+// Then fetch prices for a specific price list
+const { data: priceListPrices } = await query.graph({
+  entity: "price",
+  fields: ["*"],
+  filters: {
+    price_set_id: priceSetId,
+    price_list_id: "pl_123",
+  },
+})
+```
 
 ***
 
