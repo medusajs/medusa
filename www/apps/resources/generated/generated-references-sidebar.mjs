@@ -4997,6 +4997,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
+                  "title": "createProductVariantsDefaultInventoryStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/createProductVariantsStep",
                   "title": "createProductVariantsStep",
                   "description": "",
@@ -5913,6 +5921,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/deleteSearchIndexWorkflow",
+                  "title": "deleteSearchIndexWorkflow",
+                  "description": "Delete a search index and everything built for it.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/reindexSearchIndexesWorkflow",
                   "title": "reindexSearchIndexesWorkflow",
                   "description": "Reindex one or more search indexes.",
@@ -5925,6 +5941,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "sub-category",
               "title": "Steps",
               "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/deleteSearchIndexStep",
+                  "title": "deleteSearchIndexStep",
+                  "description": "",
+                  "children": []
+                },
                 {
                   "loaded": true,
                   "type": "link",
@@ -6426,6 +6450,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "path": "/references/medusa-workflows/debitAccountsWorkflow",
                   "title": "debitAccountsWorkflow",
                   "description": "Debit one or more store credit accounts.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/debitStoreCreditAccountWorkflow",
+                  "title": "debitStoreCreditAccountWorkflow",
+                  "description": "Debit a store credit account.",
                   "children": []
                 }
               ]
