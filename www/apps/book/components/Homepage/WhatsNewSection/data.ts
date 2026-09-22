@@ -23,7 +23,8 @@ export const whatsNewItems: WhatsNewItem[] = [
   {
     title: "Medusa Search",
     tag: "Medusa Cloud",
-    comingSoon: true,
+    date: "2026-09-22",
+    link: "https://docs.medusajs.com/cloud/search",
   },
   {
     title: "Exported Admin Components",

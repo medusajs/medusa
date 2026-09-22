@@ -1280,6 +1280,50 @@ export const filesMap = [
     "pathname": "/infrastructure-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/admin-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/admin-search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/fields"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/linked-data/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/linked-data"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/modifiers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/page.mdx",
+    "pathname": "/infrastructure-modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/product-index-examples/page.mdx",
+    "pathname": "/infrastructure-modules/search/product-index-examples"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/postgres/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers/postgres"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/reindexing/page.mdx",
+    "pathname": "/infrastructure-modules/search/reindexing"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/store-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/store-search"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/how-to-use/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/how-to-use"
   },
@@ -1294,6 +1338,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/instantsearch/examples/filtering-sorting-pagination/page.mdx",
+    "pathname": "/instantsearch/examples/filtering-sorting-pagination"
+  },
+  {
+    "filePath": "/www/apps/resources/app/instantsearch/page.mdx",
+    "pathname": "/instantsearch"
   },
   {
     "filePath": "/www/apps/resources/app/integrations/guides/algolia/page.mdx",
@@ -17544,6 +17596,14 @@ export const filesMap = [
     "pathname": "/references/sales-channel/models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/search/page.json",
+    "pathname": "/references/modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/search_provider/page.json",
+    "pathname": "/references/modules/search_provider"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/settings/page.json",
     "pathname": "/references/modules/settings"
   },
@@ -21762,6 +21822,26 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json",
     "pathname": "/references/sales-channel/models/SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.ISearchModuleService/page.json",
+    "pathname": "/references/search/service"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexInput/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexResult/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexResult"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/types/search.SearchReindexStrategy/page.json",
+    "pathname": "/references/search/types/search.SearchReindexStrategy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search_provider/classes/search_provider.AbstractSearchProviderService/page.json",
+    "pathname": "/references/search/provider"
   },
   {
     "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages/page.json",
