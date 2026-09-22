@@ -66,6 +66,8 @@ The migration enables `pg_trgm` + `unaccent` and creates the catalog. On Medusa 
 
 ## Vector fields (lakebase only)
 
+On the native engine vector fields are not rejected: the provider logs a warning and drops them from the index, so one definition stays portable across providers. A query that asks for `search_options.vector` there is still rejected, since answering it with keyword results would be wrong.
+
 Supply embeddings yourself:
 
 ```ts
@@ -129,7 +131,7 @@ await query.search({
 | Facets           | value, range, stats — scoped to the query matches       | same                     |
 | `distinct`       | one hit per value, count follows                        | same                     |
 | `min_score`      | yes, keeps the requested sort                           | same                     |
-| Vector / hybrid  | —                                                       | ANN + RRF                |
+| Vector / hybrid  | fields ignored, queries rejected                        | ANN + RRF                |
 
 Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, query-time locales.
 

@@ -13,5 +13,7 @@ engine's own results — hits, scores, highlights and facets. It replaces
 could talk to.
 
 Nothing is searchable until a store opts an index in with the new
-`allowSearchIndexes` middleware, and within an allowed index the queries run as
-posted — narrowing further is applied by a middleware of the store's own.
+`configureStoreSearch` middleware, which is also where it narrows what a query
+may reach within an allowed index. A product index is narrowed to published
+products in the publishable key's sales channels automatically, wherever it
+declares those fields, as every other store product read is.

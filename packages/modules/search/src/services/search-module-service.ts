@@ -42,6 +42,7 @@ import {
   ActiveIndexVersion,
   ActiveIndexVersionCache,
 } from "../utils/active-version-cache"
+import { deleteIndexEntirely } from "../utils/deletion"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
 import {
   createIndexMigrationPlan,
@@ -137,7 +138,12 @@ export default class SearchModuleService
     )
 
     this.context_ = {
-      container,
+      container: {
+        get query() {
+          return container[ContainerRegistrationKeys.QUERY]
+        },
+        logger: this.logger_,
+      },
       logger: this.logger_,
       options: this.moduleOptions_,
       indexes: this.indexes_,
@@ -466,6 +472,12 @@ export default class SearchModuleService
     input: SearchTypes.SearchReindexInput = {}
   ): Promise<SearchTypes.SearchReindexResult> {
     return await reindexIndexes(this.context_, input)
+  }
+
+  async deleteIndex(
+    index: string
+  ): Promise<SearchTypes.SearchIndexDeleteResult> {
+    return await deleteIndexEntirely(this.context_, index)
   }
 
   /**
