@@ -1,8 +1,6 @@
 import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
-  transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -105,22 +103,12 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
       input: { order_id: input.order_id },
     })
 
-    const appliedPromoCodes: string[] = transform(
-      refetchedOrder,
-      (refetchedOrder) =>
-        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
+    // Always refresh the adjustments so that eligible automatic promotions are
+    // discovered even when no promotion is attached to the draft order yet.
+    computeDraftOrderAdjustmentsWorkflow.runAsStep({
+      input: {
+        order_id: input.order_id,
+      },
     })
 
     releaseLockStep({

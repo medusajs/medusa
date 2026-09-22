@@ -2,7 +2,6 @@ import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -17,7 +16,6 @@ import {
   previewOrderChangeStep,
   updateOrderChangeActionsStep,
 } from "../../order"
-import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-promotion-context"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderUpdateActionItemStep } from "../steps/validate-draft-order-update-action-item"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
@@ -126,26 +124,12 @@ export const updateDraftOrderActionItemWorkflow = createWorkflow(
       input: { order_id: input.order_id },
     })
 
-    const context = getDraftOrderPromotionContextStep({
-      order,
-    })
-
-    const appliedPromoCodes: string[] = transform(
-      context,
-      (context) =>
-        (context as any).promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
+    // Always refresh the adjustments so that eligible automatic promotions are
+    // discovered even when no promotion is attached to the draft order yet.
+    computeDraftOrderAdjustmentsWorkflow.runAsStep({
+      input: {
+        order_id: input.order_id,
+      },
     })
 
     releaseLockStep({
