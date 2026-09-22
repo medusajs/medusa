@@ -19,6 +19,8 @@ In this guide, you’ll learn how to manage product tags in the Medusa Admin.
 
 ## View Product Tags
 
+<PermissionsBadge permissions={["product_tag:read"]} />
+
 Product tags allow you to group products in your store by common tags. For example, you can create tags for "electronics" or "clothing" and assign them to products.
 
 To view product tags in your store, go to Settings → Product Tags. Here, you can see a list of all the product tags you have set up in your store. You can also search, filter, and sort the product tags to find the one you are looking for.
@@ -28,6 +30,8 @@ To view product tags in your store, go to Settings → Product Tags. Here, you c
 ---
 
 ## Create Product Tag
+
+<PermissionsBadge permissions={["product_tag:create"]} />
 
 To create a product tag:
 
@@ -42,18 +46,22 @@ To create a product tag:
 
 ## View Product Tag Details
 
+<PermissionsBadge permissions={["product_tag:read"]} />
+
 To view the details of a product tag:
 
 1. Go to Settings → Product Tags.
 2. Click on a product tag from the list.
 
-This opens the product tag's details page where you can also manage the product tag and its metadata.
+This opens the product tag's details page where you can also manage the product tag and its metadata. To see the products assigned to the tag, you also need the `product:read` policy.
 
 ![Product tag details](https://res.cloudinary.com/dza7lstvk/image/upload/v1756372959/User%20Guide/CleanShot_2025-08-28_at_12.21.57_2x_op9es5.png)
 
 ---
 
 ## Edit Product Tag Details
+
+<PermissionsBadge permissions={["product_tag:update"]} />
 
 To edit the details of a product tag:
 
@@ -74,6 +82,8 @@ To edit the details of a product tag:
 Locales are available from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3). If you don't see the translation management in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
 
 </Note>
+
+<PermissionsBadge permissions={["translation:update"]} />
 
 Product tags can be translated to locales (languages) [supported by your store](../store/page.mdx#manage-store-locales). You can either manage translations [in bulk](../translations/page.mdx), or manage translations for an individual product tag from its details page.
 
@@ -101,6 +111,8 @@ Management of product tag metadata was added in [Medusa v2.10.0](https://github.
 
 </Note>
 
+<PermissionsBadge permissions={["product_tag:update"]} />
+
 Metadata is custom data that can be associated with the product tag in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the product tag.
 
 To edit the product tag's metadata:
@@ -119,6 +131,8 @@ To edit the product tag's metadata:
 ---
 
 ## Delete Product Tag
+
+<PermissionsBadge permissions={["product_tag:delete"]} />
 
 <Note type="warning">
 

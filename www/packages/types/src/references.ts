@@ -69,6 +69,13 @@ export type DocBlock =
   | { kind: "codeTabs"; tabs: DocCodeTab[] }
   | { kind: "note"; variant?: string; html: string; title?: string }
   | { kind: "sourceCodeLink"; link: string; text?: string }
+  | {
+      kind: "enterpriseNotice"
+      featureName?: string
+      featureFlag?: string
+      featureFlagHref?: string
+      beta?: boolean
+    }
   | { kind: "table"; headers: string[]; rows: string[][] }
   | {
       kind: "linkList"

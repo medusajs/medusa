@@ -1,0 +1,295 @@
+---
+generate_toc: true
+sidebar_label: "Admin SSO"
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Configure the Medusa Admin for SSO`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureName="module provider" />
+
+In this guide, you'll learn how to configure the Medusa Admin dashboard's SSO login, using the [OIDC Auth Module Provider](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "OIDC Auth Module Provider registered.",
+      link: "../page.mdx#how-to-use-the-oidc-auth-module-provider"
+    },
+    {
+      text: "The provider allowed for the user actor type.",
+      link: "../page.mdx#4-allow-the-provider-for-the-actor-types-that-use-it"
+    }
+  ]}
+/>
+
+## Overview
+
+The Medusa Admin dashboard renders a login button for every authentication provider that admin users are allowed to use, so you don't need to build the button yourself.
+
+On the login page, the dashboard:
+
+1. Retrieves the providers allowed for the `user` actor type from the [List Auth Providers API route](!api!/admin/auth/list-providers).
+2. Renders a "Continue with" button for every provider that authenticates through a redirect, which is what the OIDC provider does. The button is labeled with the provider's `display_name` option.
+3. Handles the redirect back from the identity provider, creates or links the admin user of the authenticated identity, and logs the user in.
+
+So, the sections below cover the configurations that shape that login, not the flow itself. Refer to the [How SSO Works](../how-it-works/page.mdx#example-an-admin-user-authenticating-with-okta) guide for a walkthrough of every request in the flow.
+
+<Note title="Tip">
+
+To implement the same login in your own frontend, such as a storefront or a custom dashboard, refer to the [SSO in a Custom Frontend](../custom-frontend/page.mdx) guide.
+
+</Note>
+
+<Note title="Tip">
+
+If a login fails, refer to the [Troubleshoot SSO](../page.mdx#troubleshoot-sso) section for the errors that the OIDC provider can return.
+
+</Note>
+
+---
+
+## Set the Provider's Display Name
+
+The dashboard labels the button with the provider's `display_name` option, which defaults to `OpenID Connect`. Set it to the name of your identity provider so users recognize it:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              display_name: "Okta",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The dashboard then shows a "Continue with Okta" button on the login page.
+
+---
+
+## Register the Dashboard's Callback URL
+
+The dashboard sends its own callback URL when it starts the authentication, in the following format:
+
+```bash
+{admin_url}/app/login?auth_provider={provider_id}
+```
+
+For example, if you registered the provider with the ID `okta`, the callback URL of a Medusa application running locally is:
+
+```bash
+http://localhost:9000/app/login?auth_provider=okta
+```
+
+While in production, it uses your application's public URL instead:
+
+```bash
+https://example.com/app/login?auth_provider=okta
+```
+
+So, register the URL of every environment whose dashboard authenticates with the identity provider.
+
+Add that URL to the redirect URIs of the application you registered with your identity provider. Refer to the [Identity Providers](../identity-providers/page.mdx) guide for where to set it in common identity providers.
+
+<Note title="Warning" type="warning">
+
+Identity providers match redirect URIs exactly, including the query parameter and the URL's casing. So, register the URL as the dashboard sends it.
+
+Some identity providers also block entering a redirect URI with a query string in their admin interface. In that case, register the URL through the identity provider's API or application manifest instead.
+
+</Note>
+
+If you set the [allowed_callback_urls option](../provider-options/page.mdx#allowed_callback_urls), add the same URL to it. Otherwise, Medusa rejects the dashboard's login request.
+
+---
+
+## Make the Dashboard SSO-Only
+
+The dashboard only renders the email and password form when admin users are allowed to use the `emailpass` provider. So, to require SSO for every admin user, remove `emailpass` from the `user` actor type:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      // ...
+      authMethodsPerActor: {
+        user: ["okta"],
+        customer: ["emailpass"],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+The login page then shows the SSO button only. The "Forgot password?" link is tied to the same form, so it's hidden as well.
+
+<Note title="Warning" type="warning">
+
+Admin users can no longer log in with a password, and they can't reset one either. If your identity provider becomes unavailable, nobody can access the dashboard until you allow `emailpass` again. Keep a way back in, such as access to the environment variables of your deployment.
+
+</Note>
+
+<Note title="Warning" type="warning">
+
+An empty array locks every admin user out, since it allows no provider at all. The login page then shows a tip that no authentication provider is available, with no form and no button.
+
+</Note>
+
+---
+
+## Set the Created User's Name
+
+By default, when Medusa creates an admin user through SSO, the OIDC provider stores the following metadata from the authenticated identity:
+
+```json
+{
+  "entity_id": "sub",
+  "email": "email",
+  "name": "name"
+}
+```
+
+These fields are mapped from the claims in the ID token returned by the OIDC provider, such as Okta.
+
+Then, when Medusa creates the admin user, it reads the user's first and last name from the `given_name` and `family_name` fields of the authenticated identity's metadata in case they're stored, but the OIDC provider doesn't store them by default.
+
+To store the `given_name` and `family_name` fields from the integrated provider, use the [claim_mappings option](../provider-options/page.mdx#claim_mappings):
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              claim_mappings: {
+                given_name: "given_name",
+                family_name: "family_name",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+In this example, you map the `given_name` and `family_name` claims that Okta returns in the ID token to the corresponding fields in the identity's metadata. The OIDC provider will then store these fields, allowing Medusa to read the user's first and last name when creating the admin user.
+
+<Note title="Important">
+
+For users created before you added the mappings, change their name in the [dashboard's user settings](!user-guide!/settings/users#edit-a-users-details) or with the [Update User API route](!api!/admin/users/update-a-user).
+
+</Note>
+
+### Use Different Claim Names
+
+`given_name` and `family_name` are standard OIDC claims, so most identity providers return them under these same names. If the identity provider you're integrating returns the name under different claims, change the values instead:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "custom-provider",
+            options: {
+              // ...
+              claim_mappings: {
+                given_name: "first_name",
+                family_name: "last_name",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+---
+
+## Map Custom Claims
+
+`claim_mappings` isn't limited to the fields that Medusa reads. Any other field you add is stored in the authenticated identity's metadata, which your customizations can then read.
+
+For example, if your Okta users have a `department` attribute, add a claim for it in Okta, then map it in the provider's options:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // ...
+              claim_mappings: {
+                department: "department",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+In Okta, you add the claim to your authorization server, mapping the `user.department` profile attribute to a claim named `department` and including it in the ID token. Refer to [Okta's documentation](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/) for the steps.
+
+Medusa then stores the claim in the identity's metadata on every login, so you can read it in your [API routes](!docs!/learn/fundamentals/api-routes) and [middlewares](!docs!/learn/fundamentals/api-routes/middlewares):
+
+```ts
+const department = req.auth_context.user_metadata?.department
+```
+
+<Note title="Tip">
+
+Medusa refreshes the identity's metadata on every login, so a custom claim always holds the value from the user's last login. That makes it a good fit for data your identity provider owns, such as a department or a group.
+
+</Note>
