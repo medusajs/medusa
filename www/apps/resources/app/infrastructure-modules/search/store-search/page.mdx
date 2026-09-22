@@ -122,7 +122,6 @@ export const scopeHighlights = [
   ["8", "status", "Read by the route, never returned in a hit."],
   ["9", "sales_channel_ids", "Read by the route, never returned in a hit."],
   ["18", `"sales_channels.id"`, "Selected to fill `sales_channel_ids`."],
-  ["21", "status", "Index published products only."],
 ]
 
 ```ts title="src/search/product.ts" highlights={scopeHighlights}
@@ -145,16 +144,14 @@ const productFields = search.define({
 const source = {
   fields: ["id", "title", "status", "sales_channels.id"],
   transform: (products) => {
-    return products
-      .filter((p) => p.status === "published")
-      .map((product) => ({
-        id: product.id,
-        title: product.title,
-        status: product.status,
-        sales_channel_ids: product.sales_channels.map(
-          (salesChannel) => salesChannel.id
-        ),
-      }))
+    return products.map((product) => ({
+      id: product.id,
+      title: product.title,
+      status: product.status,
+      sales_channel_ids: product.sales_channels.map(
+        (salesChannel) => salesChannel.id
+      ),
+    }))
   },
 }
 
@@ -169,6 +166,8 @@ export default defineSearchIndex({
 ```
 
 The `status` and `sales_channel_ids` fields use [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable), so the route can filter on them without ever returning them in a hit.
+
+Since the route applies the `status` filter itself, index draft products as well, rather than leaving them out in the `transform`. A product then enters and leaves the storefront's results as its status changes, without waiting for a reindex.
 
 <Note title="Tip">
 

@@ -176,13 +176,13 @@ An index definition names the entity to index, the fields the engine holds, a `s
 Define the product index in the file `src/search/product.ts`:
 
 export const productIndexHighlights = [
-  ["22", "transform", "Index published products only."],
-  ["30", "name", "The index name that a search query resolves against."],
-  ["31", "entity", "The Query entity used to hydrate non-indexed fields."],
-  ["32", "fields", "The fields the search engine holds."],
-  ["58", "events", "The events that change the data the index holds."],
-  ["63", "consume", "Turns each of those events into document writes."],
-  ["64", "seed", "Fills the index with every product."],
+  ["25", "name", "The index name that a search query resolves against."],
+  ["26", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["27", "fields", "The fields the search engine holds."],
+  ["33", "status", "Lets the Store Search API route scope the index to published products."],
+  ["57", "events", "The events that change the data the index holds."],
+  ["62", "consume", "Turns each of those events into document writes."],
+  ["63", "seed", "Fills the index with every product."],
 ]
 
 {/* TODO: the fields of the default product index aren't final yet. Update this snippet once they are. */}
@@ -209,11 +209,6 @@ const source = {
     "tags.id",
     "tags.value",
   ],
-  transform: (products) => {
-    return products
-      .filter((p) => p.status === "published")
-      .map(({ status, ...product }) => product)
-  },
 }
 
 export const productIndex = defineSearchIndex({
@@ -225,6 +220,10 @@ export const productIndex = defineSearchIndex({
     description: search.text().searchable(),
     handle: search.keyword().filterable(),
     thumbnail: search.keyword(),
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
     categories: search
       .object({
         id: search.keyword().filterable(),
@@ -254,6 +253,12 @@ export const productIndex = defineSearchIndex({
   seed: graphSeed(source),
 })
 ```
+
+<Note>
+
+The [Store Search API route](!api!/store/search/search-indexes) returns published products only when the index declares a `status` field with the [`filterable` modifier](./index-definitions/modifiers/page.mdx#filterable), so you don't filter out draft products yourself. The field also uses [`retrievable(false)`](./index-definitions/modifiers/page.mdx#retrievable), so the route filters on it without returning it in a hit.
+
+</Note>
 
 `seed` fills the index in full when Medusa creates or rebuilds it, and Medusa routes each of the workflow events in `events` to `consume`, so the index reflects changes as they happen.
 
