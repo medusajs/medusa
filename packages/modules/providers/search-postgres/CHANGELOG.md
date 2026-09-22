@@ -1,5 +1,23 @@
 # @medusajs/search-postgres
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16891](https://github.com/medusajs/medusa/pull/16891) [`b18e369e76ece5a9079289a934425673100b9e58`](https://github.com/medusajs/medusa/commit/b18e369e76ece5a9079289a934425673100b9e58) Thanks [@sradevski](https://github.com/sradevski)! - feat(search-postgres): ignore vector fields instead of refusing the index
+
+  Vector search is only available on the lakebase engine, and a vector field in an
+  index definition used to make the native engine reject the whole index. That
+  made a definition that is valid on one provider unusable on another. The native
+  engine now logs which vector fields it is dropping and builds the index without
+  them.
+
+  Queries that explicitly ask for `search_options.vector` on the native engine are
+  still rejected, since answering them with keyword results would be wrong.
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

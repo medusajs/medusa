@@ -1,5 +1,33 @@
 # @medusajs/dashboard
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16820](https://github.com/medusajs/medusa/pull/16820) [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797) Thanks [@Markheris](https://github.com/Markheris)! - fix(dashboard): add the 306 Turkish translations missing from tr.json
+
+- [#16852](https://github.com/medusajs/medusa/pull/16852) [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): disable store credit option when there's no outstanding amount or the customer is a guest
+
+- [#16746](https://github.com/medusajs/medusa/pull/16746) [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d) Thanks [@SanteriMoilanen](https://github.com/SanteriMoilanen)! - Add Finnish (fi) admin translation
+
+- [#16677](https://github.com/medusajs/medusa/pull/16677) [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d) Thanks [@MarcelRoblek](https://github.com/MarcelRoblek)! - fix(dashboard): include shipping_address in order list query so Country column renders
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+- Updated dependencies [[`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes
