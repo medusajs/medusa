@@ -542,10 +542,10 @@ The example index below is simplified to show one feature at a time. For example
 For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
 
 export const definitionHighlights = [
-  ["32", "title", "Outweighs the description in relevance."],
-  ["35", "thumbnail", "Held by the index, but never searched or filtered."],
-  ["36", "categories", "An array of objects, so a filter matches any category."],
-  ["42", "facetable", "Powers the storefront's category filter counts."],
+  ["34", "title", "Outweighs the description in relevance."],
+  ["37", "thumbnail", "Held by the index, but never searched or filtered."],
+  ["38", "categories", "An array of objects, so a filter matches any category."],
+  ["44", "facetable", "Powers the storefront's category filter counts."],
 ]
 
 ```ts title="src/search/product.ts" highlights={definitionHighlights}
