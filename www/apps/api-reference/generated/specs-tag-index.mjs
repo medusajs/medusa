@@ -499,6 +499,9 @@ export const specsTagIndex = {
     "returns": [
       "store_returns.yaml"
     ],
+    "search": [
+      "store_search.yaml"
+    ],
     "shipping-options": [
       "store_shipping-options.yaml",
       "store_shipping-options_{id}_calculate.yaml"

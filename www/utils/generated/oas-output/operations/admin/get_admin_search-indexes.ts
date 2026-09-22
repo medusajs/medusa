@@ -2,9 +2,12 @@
  * @oas [get] /admin/search-indexes
  * operationId: GetSearchIndexes
  * summary: List Search Indexes
- * description: Retrieve a list of search indexes. The search indexes can be filtered by fields such as `id`. The search indexes can also be sorted or paginated.
+ * description: Retrieve the list of search indexes registered in your application, including each index's provider, lifecycle status, and the fields it stores. If the Search Module isn't installed in
+ *   your application, `enabled` is `false` and `search_indexes` is an empty array.
+ * externalDocs:
+ *   description: Learn about the Search Module
+ *   url: https://docs.medusajs.com/resources/infrastructure-modules/search
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

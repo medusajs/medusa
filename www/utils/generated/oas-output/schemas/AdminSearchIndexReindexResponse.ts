@@ -1,9 +1,7 @@
 /**
  * @schema AdminSearchIndexReindexResponse
  * type: object
- * description: |-
- *   The result of triggering a search index reindex. The reindex runs in the
- *   background - check the index's `status` to know when it's done.
+ * description: The details of the reindexing triggered on a search index. The reindexing runs in the background, so use the List Search Indexes API route to check the index's `status` and know when it's done.
  * x-schemaName: AdminSearchIndexReindexResponse
  * required:
  *   - job_id
@@ -12,14 +10,14 @@
  *   job_id:
  *     type: string
  *     title: job_id
- *     description: Identifier of the triggered reindex job.
+ *     description: The ID of the triggered reindexing job.
  *   indexes:
  *     type: array
- *     description: Names of the indexes being reindexed.
+ *     description: The names of the indexes being reindexed.
  *     items:
  *       type: string
  *       title: indexes
- *       description: The index's indexes.
+ *       description: The search index's name.
  * 
 */
 

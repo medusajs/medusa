@@ -3,6 +3,9 @@
  * type: object
  * description: A leaf field stored in a search index, with the capabilities declared on it.
  * x-schemaName: AdminSearchIndexField
+ * externalDocs:
+ *   url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+ *   description: Learn about search index field types and modifiers
  * required:
  *   - name
  *   - type
@@ -14,27 +17,27 @@
  *   name:
  *     type: string
  *     title: name
- *     description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+ *     description: The field's dotted path in the index, such as `title` or `variants.sku`.
  *   type:
  *     type: string
  *     title: type
- *     description: The field's index type.
+ *     description: The field's type in the index, such as `text`, `keyword`, `integer`, `float`, `date`, `boolean`, `geo`, `object`, or `vector`.
  *   searchable:
  *     type: boolean
  *     title: searchable
- *     description: Whether the field is used for free-text matching.
+ *     description: Whether the field is matched against a free-text search query.
  *   filterable:
  *     type: boolean
  *     title: filterable
- *     description: Whether the field can be used in filters.
+ *     description: Whether the field can be used in a search query's filters.
  *   sortable:
  *     type: boolean
  *     title: sortable
- *     description: Whether results can be sorted by this field.
+ *     description: Whether search results can be sorted by this field.
  *   facetable:
  *     type: boolean
  *     title: facetable
- *     description: Whether the field can be faceted.
+ *     description: Whether the field can be used to build facets of search results.
  * 
 */
 

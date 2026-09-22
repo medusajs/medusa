@@ -2,12 +2,16 @@
  * @oas [delete] /admin/search-indexes/{id}
  * operationId: DeleteSearchIndexesId
  * summary: Delete a Search Index
- * description: Delete a search index.
+ * description: Delete a search index and every physical index built for it in the search engine. The index's definition isn't removed, so the next time search index migrations run, the index is built
+ *   again from scratch at version 1.
+ * externalDocs:
+ *   description: Learn about reindexing and index migrations
+ *   url: https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The search index's ID.
+ *     description: The search index's name, such as `product`.
  *     required: true
  *     schema:
  *       type: string

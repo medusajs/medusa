@@ -1,5 +1,5 @@
 type: object
-description: A registered search index and the fields it stores.
+description: A search index registered in the application, and the fields it stores.
 x-schemaName: AdminSearchIndex
 required:
   - name
@@ -11,18 +11,32 @@ properties:
   name:
     type: string
     title: name
-    description: Unique index name, as used in `query.search({ entity })`.
+    description: >-
+      The index's unique name, which is the name you pass to `query.search({
+      entity })` to search the index.
   entity:
     type: string
     title: entity
-    description: The `query.graph` entrypoint used to hydrate non-indexed fields.
+    description: >-
+      The name of the data model that `query.graph` uses as an entry point to
+      retrieve fields that aren't stored in the index.
   provider:
     type: string
     title: provider
-    description: Identifier of the provider backing this index.
+    description: >-
+      The identifier of the Search Module Provider backing this index, such as
+      `pg-search`.
+    externalDocs:
+      url: >-
+        https://docs.medusajs.com/resources/infrastructure-modules/search/providers
+      description: Learn about Search Module Providers
   status:
     type: string
-    description: Lifecycle status of the index.
+    description: >-
+      The index's lifecycle status. `pending` means the index was created but
+      isn't filled yet, `building` means a seed or reindexing is in progress,
+      `ready` means the index is serving documents, and `error` means the last
+      seed or reindexing failed.
     enum:
       - error
       - pending
@@ -30,6 +44,12 @@ properties:
       - ready
   fields:
     type: array
-    description: Leaf fields stored in the index.
+    description: >-
+      The leaf fields stored in the index, each with the capabilities declared
+      on it.
+    externalDocs:
+      url: >-
+        https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+      description: Learn about search index field types and modifiers
     items:
       $ref: ./AdminSearchIndexField.yaml

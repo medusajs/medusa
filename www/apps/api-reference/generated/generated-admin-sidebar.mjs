@@ -4111,8 +4111,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/search-indexes/add-reindex-to-search-index",
-          "title": "Add Reindex to Search Index",
+          "path": "/admin/search-indexes/reindex-a-search-index",
+          "title": "Reindex a Search Index",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -4501,8 +4501,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/store-credit-accounts/add-debit-to-store-credit-account",
-          "title": "Add Debit to Store Credit Account",
+          "path": "/admin/store-credit-accounts/create-store-credit-account",
+          "title": "Create Store Credit Account",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -4511,8 +4511,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/store-credit-accounts/create-store-credit-account",
-          "title": "Create Store Credit Account",
+          "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+          "title": "Debit a Store Credit Account",
           "loaded": true,
           "badge": {
             "variant": "blue",

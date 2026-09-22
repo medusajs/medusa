@@ -236,6 +236,13 @@ tags:
       These API routes allows customers to create a return.
     x-associatedSchema:
       $ref: ./components/schemas/StoreReturn.yaml
+  - name: Search
+    description: >
+      Search the indexes that your application exposes to the storefront.
+
+
+      An index is only searchable through these API routes once it's allowed
+      with the `configureStoreSearch` middleware.
   - name: Shipping Options
     description: >
       A shipping option is a way of shipping an item to or from the customer.
@@ -394,6 +401,8 @@ paths:
     $ref: paths/store_return-reasons_{id}.yaml
   /store/returns:
     $ref: paths/store_returns.yaml
+  /store/search:
+    $ref: paths/store_search.yaml
   /store/shipping-options:
     $ref: paths/store_shipping-options.yaml
   /store/shipping-options/{id}/calculate:

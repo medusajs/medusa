@@ -1,13 +1,17 @@
 /**
  * @oas [post] /admin/search-indexes/{id}/reindex
  * operationId: PostSearchIndexesIdReindex
- * summary: Add Reindex to Search Index
- * description: Add a Reindex to a search index
+ * summary: Reindex a Search Index
+ * description: Rebuild a search index's documents using the `seed` function of its index definition. The rebuild runs in the background, so the response is returned immediately with the ID of the
+ *   triggered job. Use the List Search Indexes API route to check the index's `status` and know when the rebuild is done.
+ * externalDocs:
+ *   description: Learn about reindexing and index migrations
+ *   url: https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The search index's ID.
+ *     description: The search index's name, such as `product`.
  *     required: true
  *     schema:
  *       type: string

@@ -179,6 +179,11 @@ tags:
       These API routes allows customers to create a return.
     x-associatedSchema:
       $ref: '#/components/schemas/StoreReturn'
+  - name: Search
+    description: |
+      Search the indexes that your application exposes to the storefront.
+
+      An index is only searchable through these API routes once it's allowed with the `configureStoreSearch` middleware.
   - name: Shipping Options
     description: |
       A shipping option is a way of shipping an item to or from the customer.
@@ -17913,6 +17918,405 @@ paths:
         - created_by
         - canceled_at
         - requested_at
+  /store/search:
+    post:
+      operationId: PostSearch
+      summary: Search Indexes
+      description: Search the indexes that your application exposes to the storefront. An index is only searchable through this route once it's allowed with the `configureStoreSearch` middleware, and a query for any other index is answered with a `404` error. Pass a single query, or a `queries` array to run a batch of queries in one round-trip to the search engine. For an index whose entity is `product`, Medusa also restricts the results to published products in the sales channels of the request's publishable API key.
+      externalDocs:
+        description: Learn about the Store Search API route
+        url: https://docs.medusajs.com/resources/infrastructure-modules/search/store-search
+      x-authenticated: false
+      parameters:
+        - name: x-publishable-api-key
+          in: header
+          description: Publishable API Key created in the Medusa Admin.
+          required: true
+          schema:
+            type: string
+            externalDocs:
+              url: https://docs.medusajs.com/api/store/publishable-api-key
+        - name: x-medusa-locale
+          in: header
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: locale
+          in: query
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  description: A batch of queries to run in one round-trip to the search engine.
+                  required:
+                    - queries
+                  properties:
+                    queries:
+                      type: array
+                      description: The queries to run, in the order their results are returned in.
+                      items:
+                        allOf:
+                          - type: object
+                            description: A single query to run against one of the store's search indexes.
+                            required:
+                              - entity
+                            properties:
+                              entity:
+                                type: string
+                                title: entity
+                                description: |-
+                                  The name of the index to query, which defaults to the index whose name
+                                  equals the entity.
+                              fields:
+                                type: array
+                                description: The dotted paths of the fields the search engine returns. Only fields stored in the search index can be passed here.
+                                items:
+                                  type: string
+                                  title: fields
+                                  description: A field's dotted path.
+                              filters:
+                                allOf:
+                                  - type: object
+                                    description: The filters to apply, including the free-text query as `q`.
+                                    properties:
+                                      $and:
+                                        type: array
+                                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                        items:
+                                          type: object
+                                        title: $and
+                                      $or:
+                                        type: array
+                                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                        items:
+                                          type: object
+                                        title: $or
+                                      $not:
+                                        allOf:
+                                          - type: object
+                                            description: Filter by values not matching the conditions in this parameter.
+                                            properties:
+                                              $and:
+                                                type: array
+                                                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                items:
+                                                  type: object
+                                                title: $and
+                                              $or:
+                                                type: array
+                                                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                items:
+                                                  type: object
+                                                title: $or
+                                              $not:
+                                                allOf:
+                                                  - type: object
+                                                    description: Filter by values not matching the conditions in this parameter.
+                                                    properties:
+                                                      $and:
+                                                        type: array
+                                                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                        items:
+                                                          type: object
+                                                        title: $and
+                                                      $or:
+                                                        type: array
+                                                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                        items:
+                                                          type: object
+                                                        title: $or
+                                                      $not:
+                                                        allOf:
+                                                          - type: object
+                                                            description: Filter by values not matching the conditions in this parameter.
+                                                            properties:
+                                                              $and:
+                                                                type: array
+                                                                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                                items:
+                                                                  type: object
+                                                                title: $and
+                                                              $or:
+                                                                type: array
+                                                                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                                items:
+                                                                  type: object
+                                                                title: $or
+                                                              $not:
+                                                                allOf:
+                                                                  - type: object
+                                                                    description: Filter by values not matching the conditions in this parameter.
+                                                                  - type: object
+                                                                    description: Filter by values not matching the conditions in this parameter.
+                                                              q:
+                                                                type: string
+                                                                title: q
+                                                                description: The free-text query to match the documents against.
+                                                          - type: object
+                                                            description: Filter by values not matching the conditions in this parameter.
+                                                      q:
+                                                        type: string
+                                                        title: q
+                                                        description: The free-text query to match the documents against.
+                                                  - type: object
+                                                    description: Filter by values not matching the conditions in this parameter.
+                                              q:
+                                                type: string
+                                                title: q
+                                                description: The free-text query to match the documents against.
+                                          - type: object
+                                            description: Filter by values not matching the conditions in this parameter.
+                                      q:
+                                        type: string
+                                        title: q
+                                        description: The free-text query to match the documents against.
+                                  - type: object
+                                    description: The filters to apply, including the free-text query as `q`.
+                              pagination:
+                                $ref: '#/components/schemas/SearchPagination'
+                          - type: object
+                            description: The options changing how the query is matched, scored, and aggregated.
+                            properties:
+                              search_options:
+                                $ref: '#/components/schemas/SearchOptions'
+                - allOf:
+                    - type: object
+                      description: A single query to run against one of the store's search indexes.
+                      required:
+                        - entity
+                      properties:
+                        entity:
+                          type: string
+                          title: entity
+                          description: |-
+                            The name of the index to query, which defaults to the index whose name
+                            equals the entity.
+                        fields:
+                          type: array
+                          description: The dotted paths of the fields the search engine returns. Only fields stored in the search index can be passed here.
+                          items:
+                            type: string
+                            title: fields
+                            description: A field's dotted path.
+                        filters:
+                          allOf:
+                            - type: object
+                              description: The filters to apply, including the free-text query as `q`.
+                              properties:
+                                $and:
+                                  type: array
+                                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                  items:
+                                    type: object
+                                  title: $and
+                                $or:
+                                  type: array
+                                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                  items:
+                                    type: object
+                                  title: $or
+                                $not:
+                                  allOf:
+                                    - type: object
+                                      description: Filter by values not matching the conditions in this parameter.
+                                      properties:
+                                        $and:
+                                          type: array
+                                          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                          items:
+                                            type: object
+                                          title: $and
+                                        $or:
+                                          type: array
+                                          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                          items:
+                                            type: object
+                                          title: $or
+                                        $not:
+                                          allOf:
+                                            - type: object
+                                              description: Filter by values not matching the conditions in this parameter.
+                                              properties:
+                                                $and:
+                                                  type: array
+                                                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                  items:
+                                                    type: object
+                                                  title: $and
+                                                $or:
+                                                  type: array
+                                                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                  items:
+                                                    type: object
+                                                  title: $or
+                                                $not:
+                                                  allOf:
+                                                    - type: object
+                                                      description: Filter by values not matching the conditions in this parameter.
+                                                      properties:
+                                                        $and:
+                                                          type: array
+                                                          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                          items:
+                                                            type: object
+                                                          title: $and
+                                                        $or:
+                                                          type: array
+                                                          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                          items:
+                                                            type: object
+                                                          title: $or
+                                                        $not:
+                                                          allOf:
+                                                            - type: object
+                                                              description: Filter by values not matching the conditions in this parameter.
+                                                              properties:
+                                                                $and:
+                                                                  type: array
+                                                                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                                                                  items:
+                                                                    type: object
+                                                                  title: $and
+                                                                $or:
+                                                                  type: array
+                                                                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                                                                  items:
+                                                                    type: object
+                                                                  title: $or
+                                                                $not:
+                                                                  allOf:
+                                                                    - type: object
+                                                                      description: Filter by values not matching the conditions in this parameter.
+                                                                    - type: object
+                                                                      description: Filter by values not matching the conditions in this parameter.
+                                                                q:
+                                                                  type: string
+                                                                  title: q
+                                                                  description: The free-text query to match the documents against.
+                                                            - type: object
+                                                              description: Filter by values not matching the conditions in this parameter.
+                                                        q:
+                                                          type: string
+                                                          title: q
+                                                          description: The free-text query to match the documents against.
+                                                    - type: object
+                                                      description: Filter by values not matching the conditions in this parameter.
+                                                q:
+                                                  type: string
+                                                  title: q
+                                                  description: The free-text query to match the documents against.
+                                            - type: object
+                                              description: Filter by values not matching the conditions in this parameter.
+                                        q:
+                                          type: string
+                                          title: q
+                                          description: The free-text query to match the documents against.
+                                    - type: object
+                                      description: Filter by values not matching the conditions in this parameter.
+                                q:
+                                  type: string
+                                  title: q
+                                  description: The free-text query to match the documents against.
+                            - type: object
+                              description: The filters to apply, including the free-text query as `q`.
+                        pagination:
+                          $ref: '#/components/schemas/SearchPagination'
+                    - type: object
+                      description: The options changing how the query is matched, scored, and aggregated.
+                      properties:
+                        search_options:
+                          $ref: '#/components/schemas/SearchOptions'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/store/search' \
+            -H 'x-publishable-api-key: {your_publishable_api_key}'
+      tags:
+        - Search
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The results of the search queries.
+                required:
+                  - results
+                properties:
+                  results:
+                    type: array
+                    description: The results of the posted queries, in the order they were sent in.
+                    items:
+                      type: object
+                      description: The results of one of the posted queries.
+                      required:
+                        - hits
+                        - metadata
+                      properties:
+                        hits:
+                          type: array
+                          description: The documents matching the query, ordered by the query's sort or by relevance.
+                          items:
+                            type: object
+                            description: A document matching the query.
+                            required:
+                              - id
+                              - document
+                            properties:
+                              id:
+                                type: string
+                                title: id
+                                description: |-
+                                  The value of the index's primary key for this document. `query.search` uses
+                                  it to hydrate the rest of the entity through `query.graph`.
+                              score:
+                                type: number
+                                title: score
+                                description: The hit's relevance score. It's only returned when the query enables `include_score`.
+                              document:
+                                type: object
+                                description: The retrievable fields the search engine returned for this document.
+                              highlights:
+                                type: object
+                                description: The highlighted fragments of the matched fields, keyed by each field's dotted path. They're only returned when the query enables `highlight`.
+                        facets:
+                          type: object
+                          description: The computed facets, keyed by the field they were requested on.
+                        metadata:
+                          $ref: '#/components/schemas/SearchResultMetadata'
+                        provider_metadata:
+                          type: object
+                          description: Extra details the search provider returned, passed through as-is.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.21.1
   /store/shipping-options:
     get:
       operationId: GetShippingOptions
@@ -23903,7 +24307,7 @@ components:
           $ref: '#/components/schemas/AdminCustomer'
     AdminDebitStoreCreditAccountParams:
       type: object
-      description: SUMMARY
+      description: The details of debiting a store credit account.
       x-schemaName: AdminDebitStoreCreditAccountParams
       required:
         - amount
@@ -23911,11 +24315,11 @@ components:
         amount:
           type: number
           title: amount
-          description: The store credit account's amount.
+          description: The amount to debit from the store credit account, in the major currency unit. It's deducted from the customer's store credit balance.
         note:
           type: string
           title: note
-          description: The store credit account's note.
+          description: An additional note to add to the store credit transaction.
     AdminDeletePaymentCollectionResponse:
       type: object
       description: The result of deleting the payment collection.
@@ -30877,23 +31281,24 @@ components:
           $ref: '#/components/schemas/AdminRegion'
     AdminReindexSearchIndex:
       type: object
-      description: |-
-        The details to reindex a search index. Everything is optional — an empty
-        body triggers a full rebuild, same as today.
+      description: The details of the reindexing to trigger on a search index. All properties are optional, so sending an empty request body rebuilds the entire index.
       x-schemaName: AdminReindexSearchIndex
       properties:
         since:
           type: string
+          format: date-time
           title: since
-          description: The search index's since.
+          description: Rebuild only the documents that changed at or after this date, as an ISO 8601 date-time string. Like `filters`, this always rebuilds the index in place, as a version built from a subset of documents is never swapped in.
         filters:
           type: object
-          description: The search index's filters.
+          description: 'Filters passed to the `seed` function of the index definition to rebuild only a subset of the index''s documents. The accepted shape is defined by the index, such as `{ ids: ["prod_123"] }` if the index supports it.'
+          externalDocs:
+            url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions
+            description: Learn about search index definitions and their seed function
         strategy:
           type: string
-          description: |-
-            How to rebuild. Ignored — always in place — when `filters` or `since`
-            is set.
+          description: How to rebuild the index. `swap` builds a new version of the index and swaps it in once it's ready, whereas `in_place` rewrites the version that's currently serving documents. This property is ignored, and the rebuild always runs in place, when `filters` or `since` is set.
+          default: swap
           enum:
             - swap
             - in_place
@@ -31426,7 +31831,7 @@ components:
           $ref: '#/components/schemas/AdminSalesChannel'
     AdminSearchIndex:
       type: object
-      description: A registered search index and the fields it stores.
+      description: A search index registered in the application, and the fields it stores.
       x-schemaName: AdminSearchIndex
       required:
         - name
@@ -31438,18 +31843,21 @@ components:
         name:
           type: string
           title: name
-          description: Unique index name, as used in `query.search({ entity })`.
+          description: The index's unique name, which is the name you pass to `query.search({ entity })` to search the index.
         entity:
           type: string
           title: entity
-          description: The `query.graph` entrypoint used to hydrate non-indexed fields.
+          description: The name of the data model that `query.graph` uses as an entry point to retrieve fields that aren't stored in the index.
         provider:
           type: string
           title: provider
-          description: Identifier of the provider backing this index.
+          description: The identifier of the Search Module Provider backing this index, such as `pg-search`.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/infrastructure-modules/search/providers
+            description: Learn about Search Module Providers
         status:
           type: string
-          description: Lifecycle status of the index.
+          description: The index's lifecycle status. `pending` means the index was created but isn't filled yet, `building` means a seed or reindexing is in progress, `ready` means the index is serving documents, and `error` means the last seed or reindexing failed.
           enum:
             - error
             - pending
@@ -31457,14 +31865,15 @@ components:
             - ready
         fields:
           type: array
-          description: Leaf fields stored in the index.
+          description: The leaf fields stored in the index, each with the capabilities declared on it.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+            description: Learn about search index field types and modifiers
           items:
             $ref: '#/components/schemas/AdminSearchIndexField'
     AdminSearchIndexDeleteResponse:
       type: object
-      description: |-
-        The result of deleting a search index. Every physical index built for it is
-        dropped, so the next migration rebuilds it from scratch at version 1.
+      description: The details of deleting a search index. Every physical index built for it is dropped, so the next time search index migrations run, the index is built again from scratch at version 1.
       x-schemaName: AdminSearchIndexDeleteResponse
       required:
         - id
@@ -31475,25 +31884,27 @@ components:
         id:
           type: string
           title: id
-          description: The name of the deleted index.
+          description: The name of the deleted search index.
         object:
           type: string
           title: object
-          description: The type of the item that was deleted.
+          description: The name of the deleted object.
+          default: search_index
         deleted:
           type: boolean
           title: deleted
-          description: Whether the index was deleted successfully.
+          description: Whether the search index was deleted successfully.
         deleted_versions:
           type: number
           title: deleted_versions
-          description: |-
-            How many of the index's versions were dropped. `0` when the index is
-            registered but was never migrated.
+          description: The number of the index's versions that were dropped. It's `0` when the index is registered but was never migrated.
     AdminSearchIndexField:
       type: object
       description: A leaf field stored in a search index, with the capabilities declared on it.
       x-schemaName: AdminSearchIndexField
+      externalDocs:
+        url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+        description: Learn about search index field types and modifiers
       required:
         - name
         - type
@@ -31505,30 +31916,30 @@ components:
         name:
           type: string
           title: name
-          description: Dotted path of the field in the index, e.g. `title` or `variants.sku`.
+          description: The field's dotted path in the index, such as `title` or `variants.sku`.
         type:
           type: string
           title: type
-          description: The field's index type.
+          description: The field's type in the index, such as `text`, `keyword`, `integer`, `float`, `date`, `boolean`, `geo`, `object`, or `vector`.
         searchable:
           type: boolean
           title: searchable
-          description: Whether the field is used for free-text matching.
+          description: Whether the field is matched against a free-text search query.
         filterable:
           type: boolean
           title: filterable
-          description: Whether the field can be used in filters.
+          description: Whether the field can be used in a search query's filters.
         sortable:
           type: boolean
           title: sortable
-          description: Whether results can be sorted by this field.
+          description: Whether search results can be sorted by this field.
         facetable:
           type: boolean
           title: facetable
-          description: Whether the field can be faceted.
+          description: Whether the field can be used to build facets of search results.
     AdminSearchIndexListResponse:
       type: object
-      description: The list of registered search indexes.
+      description: The list of search indexes registered in the application.
       x-schemaName: AdminSearchIndexListResponse
       required:
         - search_indexes
@@ -31542,12 +31953,10 @@ components:
         enabled:
           type: boolean
           title: enabled
-          description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+          description: Whether the Search Module is installed in the application. When `false`, `search_indexes` is an empty array.
     AdminSearchIndexReindexResponse:
       type: object
-      description: |-
-        The result of triggering a search index reindex. The reindex runs in the
-        background - check the index's `status` to know when it's done.
+      description: The details of the reindexing triggered on a search index. The reindexing runs in the background, so use the List Search Indexes API route to check the index's `status` and know when it's done.
       x-schemaName: AdminSearchIndexReindexResponse
       required:
         - job_id
@@ -31556,14 +31965,14 @@ components:
         job_id:
           type: string
           title: job_id
-          description: Identifier of the triggered reindex job.
+          description: The ID of the triggered reindexing job.
         indexes:
           type: array
-          description: Names of the indexes being reindexed.
+          description: The names of the indexes being reindexed.
           items:
             type: string
             title: indexes
-            description: The index's indexes.
+            description: The search index's name.
     AdminServiceZone:
       type: object
       description: The shipping option's service zone.
@@ -41558,6 +41967,283 @@ components:
           title: received_at
           description: The date the return was received.
           format: date-time
+    SearchHighlightOptions:
+      type: object
+      description: How the matched terms are highlighted in a search result's hits.
+      x-schemaName: SearchHighlightOptions
+      required:
+        - fields
+      properties:
+        fields:
+          type: array
+          description: The dotted paths of the fields to highlight.
+          items:
+            type: string
+            title: fields
+            description: A field's dotted path.
+        pre_tag:
+          type: string
+          title: pre_tag
+          description: The tag inserted before a matched term. Defaults to `<mark>`.
+        post_tag:
+          type: string
+          title: post_tag
+          description: The tag inserted after a matched term. Defaults to `</mark>`.
+        snippet:
+          oneOf:
+            - type: boolean
+              title: snippet
+              description: Whether to crop a fragment around the match rather than returning the whole field, optionally specifying the fragment's length.
+            - type: object
+              description: Whether to crop a fragment around the match rather than returning the whole field, optionally specifying the fragment's length.
+              required:
+                - length
+              properties:
+                length:
+                  type: number
+                  title: length
+                  description: The length of the cropped fragment.
+    SearchOptions:
+      type: object
+      description: The options changing how a search query is matched, scored, and aggregated.
+      x-schemaName: SearchOptions
+      properties:
+        attributes_to_search_on:
+          type: array
+          description: The dotted paths of the fields to match the free-text query against. It defaults to every field marked `searchable` on the index.
+          items:
+            type: string
+            title: attributes_to_search_on
+            description: A field's dotted path.
+        match_strategy:
+          type: string
+          description: |-
+            How query terms combine.
+
+            - `"all"` (default): every term must appear as a complete token.
+            - `"any"`: at least one term must match.
+            - `"last"`: typeahead. Completed terms must match in full; the last term
+              is a prefix, so `"my sear"` matches `"My search results"`.
+          enum:
+            - any
+            - all
+            - last
+        typo_tolerance:
+          type: boolean
+          title: typo_tolerance
+          description: Whether to match terms that are misspelled by a character or two. It's ignored unless the query includes a free-text `q` and the searched fields have typo tolerance enabled in the index's settings.
+        facets:
+          type: array
+          description: The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+          items:
+            oneOf:
+              - type: string
+                title: facets
+                description: A facet to compute alongside the hits.
+              - type: object
+                description: A facet to compute alongside the hits.
+                required:
+                  - field
+                properties:
+                  field:
+                    type: string
+                    title: field
+                    description: The dotted path of the field to facet on.
+                  type:
+                    type: string
+                    description: |-
+                      Count the documents per distinct value of the field. This is the default
+                      facet type.
+                    enum:
+                      - value
+                  limit:
+                    type: number
+                    title: limit
+                    description: The maximum number of facet values to return.
+                  sort:
+                    type: string
+                    description: Whether to order the returned values by their count or alphabetically.
+                    enum:
+                      - count
+                      - alpha
+                  query:
+                    type: string
+                    title: query
+                    description: Restrict the returned facet values to those matching this string.
+              - type: object
+                description: A facet to compute alongside the hits.
+                required:
+                  - field
+                  - type
+                properties:
+                  field:
+                    type: string
+                    title: field
+                    description: The dotted path of the field to facet on.
+                  type:
+                    type: string
+                    title: type
+                    description: Count the documents falling in each of the requested `ranges`.
+                  ranges:
+                    type: array
+                    description: The ranges to count the documents of.
+                    items:
+                      type: object
+                      description: A range to count the documents of.
+                      properties:
+                        key:
+                          type: string
+                          title: key
+                          description: A key identifying the range in the result.
+                        from:
+                          oneOf:
+                            - type: string
+                              title: from
+                              description: The range's inclusive lower bound.
+                            - type: number
+                              title: from
+                              description: The range's inclusive lower bound.
+                        to:
+                          oneOf:
+                            - type: string
+                              title: to
+                              description: The range's exclusive upper bound.
+                            - type: number
+                              title: to
+                              description: The range's exclusive upper bound.
+              - type: object
+                description: A facet to compute alongside the hits.
+                required:
+                  - field
+                  - type
+                properties:
+                  field:
+                    type: string
+                    title: field
+                    description: The dotted path of the field to facet on.
+                  type:
+                    type: string
+                    title: type
+                    description: |-
+                      Aggregate the field's values, such as its minimum and maximum, over the
+                      matching documents.
+        disjunctive_facets:
+          type: boolean
+          title: disjunctive_facets
+          description: Whether to compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter.
+        highlight:
+          oneOf:
+            - type: boolean
+              title: highlight
+              description: Whether to highlight the matched terms in every field the query searches on. It's applied only when the query includes a free-text `q`.
+            - $ref: '#/components/schemas/SearchHighlightOptions'
+        distinct:
+          type: string
+          title: distinct
+          description: Return at most one hit per distinct value of this field.
+        min_score:
+          type: number
+          title: min_score
+          description: Discard the hits scoring below this threshold.
+        include_score:
+          type: boolean
+          title: include_score
+          description: Whether to return each hit's relevance score.
+        locales:
+          type: array
+          description: A query-time language hint, such as `["en"]`, for engines that analyze per language. A provider that can't honor it rejects the query rather than silently matching differently.
+          items:
+            type: string
+            title: locales
+            description: A locale in BCP 47 format.
+        vector:
+          $ref: '#/components/schemas/SearchVectorOptions'
+        count:
+          type: string
+          description: |-
+            How the total number of matching documents is computed. `"exact"` may be
+            rejected or slow depending on the provider.
+          enum:
+            - estimated
+            - exact
+            - none
+    SearchPagination:
+      type: object
+      description: How a search query's results are paginated and sorted.
+      x-schemaName: SearchPagination
+      properties:
+        skip:
+          type: number
+          title: skip
+          description: The number of documents to skip before the returned hits. It's mutually exclusive with `cursor`.
+        take:
+          type: number
+          title: take
+          description: The maximum number of hits to return.
+        order:
+          type: object
+          description: The fields to sort the hits by, keyed by each field's dotted path. The reserved `_score` key sorts by relevance.
+        cursor:
+          type: string
+          title: cursor
+          description: An opaque provider cursor, as returned in a previous result's `metadata.next_cursor`. It's mutually exclusive with `skip`.
+    SearchResultMetadata:
+      type: object
+      description: The pagination and timing details of a search result.
+      x-schemaName: SearchResultMetadata
+      required:
+        - skip
+        - take
+        - count
+      properties:
+        skip:
+          type: number
+          title: skip
+          description: The number of documents skipped before the returned hits.
+        take:
+          type: number
+          title: take
+          description: The maximum number of hits returned.
+        count:
+          type: number
+          title: count
+          description: The total number of matching documents. Most providers only estimate it, and it's `null` when the query sets its `count` strategy to `none`.
+        next_cursor:
+          type: string
+          title: next_cursor
+          description: The cursor to pass in the next query's pagination to retrieve the next page, on providers that paginate with cursors.
+        query:
+          type: string
+          title: query
+          description: The free-text query that the result was computed for.
+        processing_time_ms:
+          type: number
+          title: processing_time_ms
+          description: How long the search engine took to run the query, in milliseconds.
+    SearchVectorOptions:
+      type: object
+      description: The options of a vector, or semantic, search.
+      x-schemaName: SearchVectorOptions
+      properties:
+        field:
+          type: string
+          title: field
+          description: The dotted path of the `vector` field to search in. It's optional when the index declares exactly one vector field.
+        value:
+          type: array
+          description: A pre-computed embedding to search with. It's mutually exclusive with `query`.
+          items:
+            type: number
+            title: value
+            description: A component of the embedding.
+        query:
+          type: string
+          title: query
+          description: The text that the search engine embeds at query time. It requires the vector field to enable `embed`, and it's mutually exclusive with `value`.
+        semantic_ratio:
+          type: number
+          title: semantic_ratio
+          description: How much the semantic score contributes relative to the keyword score, where `0` is keyword-only and `1` is semantic-only. It defaults to `1` when there's no free-text query, and `0.5` when both run together.
     StoreAcceptOrderTransfer:
       type: object
       description: The details of accepting the order transfer.

@@ -887,6 +887,12 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "search",
+      "operationSectionIds": [
+        "search_postsearch"
+      ]
+    },
+    {
       "tagSectionId": "shipping-options",
       "operationSectionIds": [
         "shipping-options_getshippingoptions",

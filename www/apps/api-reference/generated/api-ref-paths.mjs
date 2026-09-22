@@ -2712,10 +2712,10 @@ export const apiRefPaths = {
             "method": "get"
           },
           "PostSearchIndexesIdReindex": {
-            "slug": "add-reindex-to-search-index",
-            "path": "/admin/search-indexes/add-reindex-to-search-index",
+            "slug": "reindex-a-search-index",
+            "path": "/admin/search-indexes/reindex-a-search-index",
             "oldHash": "search-indexes_postsearchindexesidreindex",
-            "title": "Add Reindex to Search Index",
+            "title": "Reindex a Search Index",
             "method": "post"
           },
           "DeleteSearchIndexesId": {
@@ -2956,18 +2956,18 @@ export const apiRefPaths = {
             "title": "Add Credit to Store Credit Account",
             "method": "post"
           },
-          "PostStoreCreditAccountsIdDebit": {
-            "slug": "add-debit-to-store-credit-account",
-            "path": "/admin/store-credit-accounts/add-debit-to-store-credit-account",
-            "oldHash": "store-credit-accounts_poststorecreditaccountsiddebit",
-            "title": "Add Debit to Store Credit Account",
-            "method": "post"
-          },
           "PostStoreCreditAccounts": {
             "slug": "create-store-credit-account",
             "path": "/admin/store-credit-accounts/create-store-credit-account",
             "oldHash": "store-credit-accounts_poststorecreditaccounts",
             "title": "Create Store Credit Account",
+            "method": "post"
+          },
+          "PostStoreCreditAccountsIdDebit": {
+            "slug": "debit-a-store-credit-account",
+            "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+            "oldHash": "store-credit-accounts_poststorecreditaccountsiddebit",
+            "title": "Debit a Store Credit Account",
             "method": "post"
           }
         }
@@ -4044,6 +4044,20 @@ export const apiRefPaths = {
           }
         }
       },
+      "search": {
+        "name": "Search",
+        "path": "/store/search",
+        "schemaPath": null,
+        "operations": {
+          "PostSearch": {
+            "slug": "search-indexes",
+            "path": "/store/search/search-indexes",
+            "oldHash": "search_postsearch",
+            "title": "Search Indexes",
+            "method": "post"
+          }
+        }
+      },
       "shipping-options": {
         "name": "Shipping Options",
         "path": "/store/shipping-options",
@@ -4519,7 +4533,7 @@ export const apiRefRedirects = {
     "search_getsearch": "/admin/search/search-admin",
     "search": "/admin/search",
     "search-indexes_getsearchindexes": "/admin/search-indexes/list-search-indexes",
-    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/add-reindex-to-search-index",
+    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/reindex-a-search-index",
     "search-indexes_deletesearchindexesid": "/admin/search-indexes/delete-a-search-index",
     "search-indexes_searchindex_schema": "/admin/search-indexes/schema",
     "search-indexes": "/admin/search-indexes",
@@ -4559,8 +4573,8 @@ export const apiRefRedirects = {
     "store-credit-accounts_getstorecreditaccounts": "/admin/store-credit-accounts/list-store-credit-accounts",
     "store-credit-accounts_getstorecreditaccountsidtransactions": "/admin/store-credit-accounts/list-transactions",
     "store-credit-accounts_poststorecreditaccountsidcredit": "/admin/store-credit-accounts/add-credit-to-store-credit-account",
-    "store-credit-accounts_poststorecreditaccountsiddebit": "/admin/store-credit-accounts/add-debit-to-store-credit-account",
     "store-credit-accounts_poststorecreditaccounts": "/admin/store-credit-accounts/create-store-credit-account",
+    "store-credit-accounts_poststorecreditaccountsiddebit": "/admin/store-credit-accounts/debit-a-store-credit-account",
     "store-credit-accounts_storecreditaccount_schema": "/admin/store-credit-accounts/schema",
     "store-credit-accounts": "/admin/store-credit-accounts",
     "stores_getstoresid": "/admin/stores/get-a-store",
@@ -4750,6 +4764,8 @@ export const apiRefRedirects = {
     "returns_postreturns": "/store/returns/create-return",
     "returns_return_schema": "/store/returns/schema",
     "returns": "/store/returns",
+    "search_postsearch": "/store/search/search-indexes",
+    "search": "/store/search",
     "shipping-options_getshippingoptions": "/store/shipping-options/list-shipping-options-for-cart",
     "shipping-options_postshippingoptionsidcalculate": "/store/shipping-options/calculate-shipping-option-price",
     "shipping-options_shippingoption_schema": "/store/shipping-options/schema",

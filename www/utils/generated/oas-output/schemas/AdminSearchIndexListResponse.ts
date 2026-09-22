@@ -1,7 +1,7 @@
 /**
  * @schema AdminSearchIndexListResponse
  * type: object
- * description: The list of registered search indexes.
+ * description: The list of search indexes registered in the application.
  * x-schemaName: AdminSearchIndexListResponse
  * required:
  *   - search_indexes
@@ -15,7 +15,7 @@
  *   enabled:
  *     type: boolean
  *     title: enabled
- *     description: Whether the Search Module is enabled. When `false`, `search_indexes` is empty.
+ *     description: Whether the Search Module is installed in the application. When `false`, `search_indexes` is an empty array.
  * 
 */
 

@@ -588,7 +588,16 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminSalesChannel.yaml
   - name: Search
+    description: >
+      Search the entities that have a search index and are registered as search
+      entities in the Medusa Admin dashboard.
   - name: Search Indexes
+    description: >
+      A search index stores the documents of an entity so they can be searched.
+
+
+      These API routes allow admin users to list the registered search indexes,
+      rebuild them, and delete them.
     x-associatedSchema:
       $ref: ./components/schemas/AdminSearchIndex.yaml
   - name: Shipping Option Types
