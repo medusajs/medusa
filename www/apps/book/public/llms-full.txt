@@ -24923,6 +24923,68 @@ createBlogPostWorkflow.hooks.validate(
 Learn more about the hook handler in the [Workflow Hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks/index.html.md) chapter.
 
 
+# Cancel a Workflow Execution
+
+In this chapter, you'll learn how to cancel a workflow execution and revert its steps.
+
+## How to Cancel a Workflow Execution?
+
+Every workflow you create with `createWorkflow` has a `cancel` method. When you cancel a workflow execution, Medusa runs the [compensation function](https://docs.medusajs.com/learn/fundamentals/workflows/compensation-function/index.html.md) of every step that ran, in reverse order, then sets the execution's state to `reverted`.
+
+You can cancel a workflow execution while it's still running, such as a [Long-Running Workflow](https://docs.medusajs.com/learn/fundamentals/workflows/long-running-workflow/index.html.md), or after it finished.
+
+To cancel a workflow execution, pass its transaction to the `cancel` method:
+
+```ts
+import { helloWorkflow } from "../workflows/hello"
+
+const { transaction } = await helloWorkflow(container).run({
+  input: {},
+})
+
+await helloWorkflow(container).cancel({
+  transaction,
+})
+```
+
+Medusa compensates the steps that ran in `helloWorkflow`, then marks the execution as `reverted`.
+
+The `cancel` method throws an error if the execution already failed, reverted, or is compensating.
+
+***
+
+## Cancel by Transaction ID
+
+Instead of the transaction, you can pass the ID of the execution's transaction to the `cancel` method. This is useful when you cancel the execution in a different request or process than the one that ran the workflow:
+
+```ts
+await helloWorkflow(container).cancel({
+  transactionId: "123",
+})
+```
+
+Medusa loads the execution from the database, so this only works if the workflow [stores its executions](https://docs.medusajs.com/learn/fundamentals/workflows/store-executions/index.html.md). Otherwise, Medusa removes the execution once it's done, and the `cancel` method throws a `Transaction {id} could not be found` error.
+
+To cancel a completed execution by its transaction ID, set the `store` and `retentionTime` options when you create the workflow:
+
+```ts
+export const helloWorkflow = createWorkflow(
+  {
+    name: "hello-workflow",
+    retentionTime: 3600,
+    store: true,
+  },
+  () => {
+    step1()
+  }
+)
+```
+
+Medusa enables the `store` option by default for long-running workflows, workflows with a [timeout](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-timeout/index.html.md), and idempotent workflows. Even then, you still need the `retentionTime` option to cancel an execution after it's done.
+
+If you don't want to store the workflow's executions, keep a reference to the `transaction` that the `run` method returns and pass it to the `cancel` method instead.
+
+
 # Compensation Function
 
 In this chapter, you'll learn what a compensation function is and how to add it to a step.
@@ -27395,6 +27457,8 @@ export const helloWorkflow = createWorkflow(
 ```
 
 Whenever you execute the `helloWorkflow` now, its execution details will be stored in the database.
+
+Storing a workflow's executions also allows you to [cancel an execution](https://docs.medusajs.com/learn/fundamentals/workflows/cancel-workflow/index.html.md) by its transaction ID after it's done.
 
 ***
 
@@ -41078,9 +41142,13 @@ When an item is added, an `OrderChangeAction` is created with the type `ITEM_ADD
 
 ## Update Items in an Order Edit
 
-A merchant can update an existing item's quantity or price.
+A merchant can update an existing item's quantity, price, or metadata.
 
 This change is recorded as an `OrderChangeAction` with the type `ITEM_UPDATE`. Its `details` property stores the item's ID, updated price, and updated quantity.
+
+Once the order edit is confirmed, the Order Module writes the updated `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` to the [OrderItem record](https://docs.medusajs.com/references/order/models/OrderItem/index.html.md) of the order's new version. The [OrderLineItem record](https://docs.medusajs.com/references/order/models/OrderLineItem/index.html.md) keeps the values it had when the item was added to the order.
+
+Retrieving the order after the edit returns the updated values in `items.unit_price` and `items.metadata`, since the Order Module merges the versioned record into each item. To read the versioned values directly, select `items.detail.unit_price` and `items.detail.metadata`. Refer to the [Order Versioning guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-versioning#retrieve-versioned-item-details/index.html.md) for details.
 
 ***
 
@@ -42262,6 +42330,46 @@ When the order is changed, such as when an item is exchanged, Medusa updates the
 2. Related order data that have a `version` property, such as `OrderItem`, are duplicated. The duplicated item has the new version, while the original item retains the previous version.
 
 When the order is retrieved, only the related data with the same version is returned.
+
+***
+
+## Retrieve Versioned Item Details
+
+An order's item is stored across two data models:
+
+- The [OrderLineItem data model](https://docs.medusajs.com/references/order/models/OrderLineItem/index.html.md) holds the item's original details, such as its title and the price at the time of purchase. This record is not versioned.
+- The [OrderItem data model](https://docs.medusajs.com/references/order/models/OrderItem/index.html.md) links the line item to an order version. It holds the versioned `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` of the item in that version.
+
+When an [order edit](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/edit/index.html.md), claim, exchange, or return changes an item's quantity, price, or metadata, the Order Module writes the new values to the `OrderItem` record of the new version. The `OrderLineItem` record keeps its original values.
+
+### Retrieved Item Shape
+
+When you retrieve an order, the Order Module merges both records into each item of the `items` property. The item's `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` hold the values of the order's current version, and the remaining properties come from the line item.
+
+The merged item also has the following properties:
+
+- `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
+- `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
+
+For example, retrieve an order's versioned item details using [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "items.unit_price",
+    "items.metadata",
+    "items.detail.unit_price",
+    "items.detail.metadata",
+    "items.line_item_metadata",
+  ],
+  filters: {
+    id: orderId,
+  },
+})
+```
+
+The `items.unit_price` and `items.metadata` fields already reflect the order's current version. Select `items.detail.*` when you want the versioned values without the merge, or `items.line_item_metadata` when you want the metadata set at purchase time.
 
 
 # Order Module
@@ -44474,10 +44582,12 @@ So, it's essential to handle webhook events to ensure that your application is a
 
 ### Webhook Listener API Route
 
-The Medusa application has a `/hooks/payment/[identifier]_[provider]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
+The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
 
-- `[identifier]` is the `identifier` static property defined in the payment provider. For example, `stripe`.
-- `[provider]` is the ID of the provider. For example, `stripe`.
+- `[identifier]` is the `identifier` static property defined in the payment provider class. For example, `stripe`.
+- `[id]` is the `id` field set for the provider in `medusa-config.ts`. For example, `stripe`.
+
+The route segment does not include the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`, not `/hooks/payment/pp_myprovider_myprovider`.
 
 For example, when integrating basic Stripe payments with the [Stripe Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe/index.html.md), the webhook listener route is `/hooks/payment/stripe_stripe`.
 
