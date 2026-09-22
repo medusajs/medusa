@@ -388,6 +388,11 @@ export const infrastructureModulesSidebar = [
       },
       {
         type: "link",
+        path: "/infrastructure-modules/search/product-index-examples",
+        title: "Product Index Examples",
+      },
+      {
+        type: "link",
         path: "/infrastructure-modules/search/store-search",
         title: "Store Search API Route",
       },

@@ -64,8 +64,6 @@ Medusa doesn't declare any search index by default. If you installed your Medusa
 
 Create the file `src/search/product.ts` with the following content:
 
-{/* TODO: the fields of the default product index aren't final yet. Update this snippet once they are. */}
-
 ```ts title="src/search/product.ts"
 import {
   defineSearchIndex,
@@ -135,6 +133,12 @@ export const productIndex = defineSearchIndex({
 ```
 
 The definition names the fields the engine holds, fills the index with [`graphSeed`](!resources!/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed), and keeps it current with [`graphConsume`](!resources!/infrastructure-modules/search/index-definitions#consume-events-from-query-with-graphconsume). Add to it any core or custom field that your storefront searches, filters, sorts, or facets on.
+
+<Note title="Tip">
+
+The index in this snippet is simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](!resources!/infrastructure-modules/search/product-index-examples).
+
+</Note>
 
 ### 3. Allow the Index on the Store Search Route
 

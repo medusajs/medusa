@@ -170,6 +170,12 @@ export default defineSearchIndex({
 
 The `status` and `sales_channel_ids` fields use [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable), so the route can filter on them without ever returning them in a hit.
 
+<Note title="Tip">
+
+The index in this snippet is simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](../product-index-examples/page.mdx).
+
+</Note>
+
 If the index is missing either field, Medusa logs a warning once for that index and skips that filter. Then, either add the missing field to the definition, or scope the index yourself as explained in the next section.
 
 ---

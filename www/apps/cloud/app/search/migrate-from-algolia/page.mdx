@@ -479,6 +479,12 @@ Otherwise, skip to [Step 3](#step-3-replace-the-search-api-route) and query the 
 
 An [index definition](!resources!/infrastructure-modules/search/index-definitions) replaces your Algolia index's configuration, holding the schema, the initial fill, and the event handling in one file that deploys with your code. The definition alone decides what the index holds, so customize `src/search/product.ts` rather than adding a second definition named `product`.
 
+<Note title="Tip">
+
+The example index below is simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](!resources!/infrastructure-modules/search/product-index-examples).
+
+</Note>
+
 For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
 
 export const definitionHighlights = [

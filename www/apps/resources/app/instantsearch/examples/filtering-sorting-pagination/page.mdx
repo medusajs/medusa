@@ -14,6 +14,12 @@ If you installed your Medusa application after v2.21.1, its storefront already h
 
 </Note>
 
+<Note title="Tip">
+
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](../../../infrastructure-modules/search/product-index-examples/page.mdx).
+
+</Note>
+
 <Prerequisites
   items={[
     {
@@ -47,6 +53,7 @@ Let customers narrow a list of search results by a field's values, change the or
 - The adapter reads `facetFilters` and `numericFilters`. It ignores an Algolia `filters` string silently, so a filter passed that way never reaches the search query.
 - The adapter is a search client, not UI components, and the supported widgets each need configuration on it:
   - A range or stats widget needs the field in the client's `numericAttributes`, or the adapter requests value facets instead of stats and the widget never receives `facets_stats`.
+  - A product index often holds a price field per currency, such as `min_price_usd` and `min_price_eur`. Build each price widget's attribute from the region's currency code, and list every currency's range fields in `numericAttributes`. An `on_sale_{currency}` boolean, when the index holds one, is a toggle refinement rather than a range.
   - A sort option's index name is `{index}/sort/{field}:{direction}`, such as `product/sort/created_at:desc`. The adapter parses the `/sort/` suffix off the name before it queries. A custom route that serves an index must parse it off too, or it looks up an entity named `product/sort/created_at:desc` and fails.
   - `transformQuery` receives the adapted query and the original InstantSearch request and returns the query to send. It's the escape hatch when a widget-level option can't express the filter you need.
 - `Configure`'s `facetFilters` doesn't sit beside the array the refinement widgets build; InstantSearch merges the two. A pinned filter can end up inside the same inner array as a customer's ticked value, which makes it an `OR` group and silently stops it from scoping the results. Verify a pinned filter still narrows the list once a refinement is ticked, and if it doesn't, apply it in `transformQuery` instead, where nothing merges into it.
@@ -641,75 +648,152 @@ import { RangeInput } from "react-instantsearch"
 
 The adapter turns the selected range into `$gte` and `$lte` operators on the field.
 
+### Price Fields per Currency
+
+A search engine can't calculate a price at query time, so a product index holds a set of price fields per currency, such as `min_price_usd` and `min_price_eur`. Refer to the [Product Search Index Examples guide](../../../infrastructure-modules/search/product-index-examples/page.mdx#index-prices-for-multiple-currencies) for the index side of that.
+
+A widget then points at the field of the currency the customer is browsing in. So, export a helper that builds the attribute name, and list every currency's fields in `numericAttributes`:
+
+export const priceAttributeHighlights = [
+  ["1", "SEARCH_PRICE_CURRENCIES", "Keep in sync with the index definition."],
+  ["12", "indexedCurrency", "Fall back to the first currency the index holds."],
+  ["20", "priceAttribute", "Build a price field's name for a currency."],
+  ["28", "numericAttributes", "Every currency's range fields, not one of them."],
+]
+
+```ts title="src/lib/search-client.ts" highlights={priceAttributeHighlights} badgeLabel="Storefront" badgeColor="blue"
+export const SEARCH_PRICE_CURRENCIES = ["usd", "eur"]
+
+export type PriceField =
+  | "min_price"
+  | "max_price"
+  | "original_price"
+  | "on_sale"
+
+// A region whose currency the index doesn't hold
+// falls back to the first one, so the listing still
+// shows a price rather than none.
+export const indexedCurrency = (currencyCode: string) => {
+  const code = currencyCode.toLowerCase()
+
+  return SEARCH_PRICE_CURRENCIES.includes(code)
+    ? code
+    : SEARCH_PRICE_CURRENCIES[0]
+}
+
+export const priceAttribute = (
+  field: PriceField,
+  currencyCode: string
+) => `${field}_${indexedCurrency(currencyCode)}`
+
+export const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+  numericAttributes: SEARCH_PRICE_CURRENCIES.flatMap(
+    (currency) => [
+      `min_price_${currency}`,
+      `max_price_${currency}`,
+    ]
+  ),
+})
+```
+
+Every price widget then receives the region's currency code and resolves its own attribute:
+
+```tsx title="src/components/filters.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { RangeInput } from "react-instantsearch"
+
+import { priceAttribute } from "../lib/search-client"
+
+// ...
+
+<RangeInput
+  attribute={priceAttribute("min_price", currencyCode)}
+/>
+```
+
+`numericAttributes` must list the fields of every currency the index holds, since the customer's region decides which one a request asks for. A missing field renders the widget without bounds.
+
 ### Example: Build a Price Slider with useRange
 
 `react-instantsearch` doesn't ship a slider. You can build one on the `useRange` hook. It returns the field's bounds from the stats facet, the current selection, and a `refine` function that sets a new one.
 
-For example, the following component renders a single slider for the maximum price, and searches once per drag:
+For example, the following component renders a two-thumb slider, such as [Radix's](https://www.radix-ui.com/primitives/docs/components/slider), over the price field of the region's currency:
 
 export const rangeHighlights = [
-  ["6", "attribute", "The field with the stats facet."],
-  ["10", "draft", "The dragged value, before it reaches the search."],
-  ["14", "canRefine", "Render nothing until the bounds arrive."],
+  ["13", "attribute", "The price field of the region's currency."],
+  ["16", "range", "The field's bounds, from the stats facet."],
   ["18", "start", "Unrefined bounds are `-Infinity` and `Infinity`."],
-  ["28", "refine", "Set the new range, `undefined` for an open bound."],
-  ["43", "onPointerUp", "Search on release, not on every drag."],
+  ["27", "useEffect", "Follow a refinement that changed elsewhere."],
+  ["32", "canRefine", "Render nothing until the bounds differ."],
+  ["42", "onValueChange", "Move the thumbs without searching."],
+  ["43", "onValueCommit", "Refine on release, not on every pixel."],
 ]
 
 ```tsx title="src/components/price-slider.tsx" highlights={rangeHighlights}
-import { useState } from "react"
+import * as Slider from "@radix-ui/react-slider"
+import { useEffect, useState } from "react"
 import { useRange } from "react-instantsearch"
 
-const PriceSlider = () => {
+import { priceAttribute } from "../lib/search-client"
+
+const PriceSlider = ({
+  currencyCode,
+}: {
+  currencyCode: string
+}) => {
   const { range, start, refine, canRefine } = useRange({
-    attribute: "min_price",
+    attribute: priceAttribute("min_price", currencyCode),
   })
 
-  // `null` while the customer isn't dragging.
-  const [draft, setDraft] = useState<number | null>(null)
-
-  const { min, max } = range
-
-  if (!canRefine || min == null || max == null) {
-    return null
-  }
-
-  const selectedMax = Number.isFinite(start[1])
+  const min = Math.floor(range.min ?? 0)
+  const max = Math.ceil(range.max ?? 0)
+  const from = Number.isFinite(start[0])
+    ? (start[0] as number)
+    : min
+  const to = Number.isFinite(start[1])
     ? (start[1] as number)
     : max
 
-  const value = draft ?? selectedMax
+  const [value, setValue] = useState([from, to])
 
-  const commit = () => {
-    setDraft(null)
+  useEffect(() => {
+    setValue([from, to])
+  }, [from, to])
 
-    if (value !== selectedMax) {
-      refine([undefined, value])
-    }
+  // No stats yet, or every product costs the same.
+  if (!canRefine || min >= max) {
+    return null
   }
 
   return (
-    <label>
-      <span>Max price: {value}</span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(e) =>
-          setDraft(Number(e.target.value))
-        }
-        onPointerUp={commit}
-        onKeyUp={commit}
-      />
-    </label>
+    <Slider.Root
+      value={value}
+      min={min}
+      max={max}
+      step={1}
+      onValueChange={setValue}
+      onValueCommit={(committed) =>
+        refine([committed[0], committed[1]])
+      }
+      aria-label="Price range"
+    >
+      <Slider.Track>
+        <Slider.Range />
+      </Slider.Track>
+      {value.map((_, index) => (
+        <Slider.Thumb key={index} />
+      ))}
+    </Slider.Root>
   )
 }
 
 export default PriceSlider
 ```
 
-The slider renders `draft` while the customer drags it, so it moves without searching. `commit` clears `draft` and calls `refine` only if the value changed, and the slider follows the refinement again from the next response. `onKeyUp` covers the customer who moves the slider with the arrow keys.
+`onValueChange` moves the thumbs in local state, so dragging doesn't send a search per pixel, and `onValueCommit` refines once the customer releases a thumb. The `useEffect` keeps the thumbs in step with a refinement that changed elsewhere, such as clearing all filters or a bound arriving from the URL on load.
+
+The slider reads the attribute of the region's currency, so a customer browsing in another currency filters on that currency's prices without the component changing.
 
 `useRange` returns an object with the following properties:
 
@@ -826,6 +910,60 @@ Any instantsearch.js connector still works in React through the `useConnector` h
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
+
+## Filter Products on Sale
+
+An index that holds an `on_sale` field per currency, as the [Product Search Index Examples guide](../../../infrastructure-modules/search/product-index-examples/page.mdx#index-prices-for-multiple-currencies) shows, can filter down to the discounted products with a single checkbox.
+
+Use the `useToggleRefinement` hook, which filters on one value of a field and reports how many documents carry it:
+
+export const onSaleHighlights = [
+  ["11", "attribute", "The `on_sale` field of the region's currency."],
+  ["12", "on", "The value to filter on when the box is ticked."],
+  ["15", "canRefine", "Hide the toggle when nothing is discounted."],
+  ["27", "value.count", "The number of products the toggle would leave."],
+]
+
+```tsx title="src/components/on-sale-toggle.tsx" highlights={onSaleHighlights}
+import { useToggleRefinement } from "react-instantsearch"
+
+import { priceAttribute } from "../lib/search-client"
+
+const OnSaleToggle = ({
+  currencyCode,
+}: {
+  currencyCode: string
+}) => {
+  const { value, refine, canRefine } = useToggleRefinement({
+    attribute: priceAttribute("on_sale", currencyCode),
+    on: true,
+  })
+
+  if (!canRefine) {
+    return null
+  }
+
+  return (
+    <label>
+      <input
+        type="checkbox"
+        checked={value.isRefined}
+        onChange={() => refine(value)}
+      />
+      <span>On sale only</span>
+      {typeof value.count === "number" && (
+        <span>({value.count})</span>
+      )}
+    </label>
+  )
+}
+
+export default OnSaleToggle
+```
+
+The field must be `filterable()` and `facetable()` in the index definition, since the count comes from a facet. Until a promotion or a price list reduces a price, no product carries `true`, `canRefine` is `false`, and the toggle hides itself rather than rendering a filter that empties the list.
 
 ---
 
@@ -958,6 +1096,36 @@ const SORT_OPTIONS = [
   },
 ]
 ```
+
+If the index holds a price field per currency, build the sort values with the same `priceAttribute` helper, so the sort follows the region the customer is browsing in:
+
+```tsx title="src/components/sort-products.tsx"
+import {
+  PRODUCT_INDEX_NAME,
+  priceAttribute,
+} from "../lib/search-client"
+
+const getSortOptions = (currencyCode: string) => {
+  const minPrice = priceAttribute(
+    "min_price",
+    currencyCode
+  )
+
+  return [
+    { value: PRODUCT_INDEX_NAME, label: "Relevance" },
+    {
+      value: `${PRODUCT_INDEX_NAME}/sort/${minPrice}:asc`,
+      label: "Price: Low to High",
+    },
+    {
+      value: `${PRODUCT_INDEX_NAME}/sort/${minPrice}:desc`,
+      label: "Price: High to Low",
+    },
+  ]
+}
+```
+
+Pass the options to `useSortBy` the same way, and a product without a price in that currency drops out of the price sorts, since the index holds no value to sort it by.
 
 The chosen sort appears in the URL alongside the filters, and it stays applied as the customer moves through pages.
 

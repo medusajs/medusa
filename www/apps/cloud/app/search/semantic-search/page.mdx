@@ -37,6 +37,12 @@ Refer to the [Plans & Pricing](../../pricing/page.mdx) guide for what your plan 
 
 To use semantic search, add a [vector field](!resources!/infrastructure-modules/search/index-definitions/fields#searchvector) to your index definition and chain the [`embed()`](!resources!/infrastructure-modules/search/index-definitions/modifiers#embed) modifier on it:
 
+<Note title="Tip">
+
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](!resources!/infrastructure-modules/search/product-index-examples).
+
+</Note>
+
 ```ts title="src/search/product.ts"
 export const productIndex = defineSearchIndex({
   fields: search.define({

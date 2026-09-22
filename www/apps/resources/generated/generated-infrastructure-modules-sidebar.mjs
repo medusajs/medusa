@@ -548,6 +548,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "link",
+          "path": "/infrastructure-modules/search/product-index-examples",
+          "title": "Product Index Examples",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
           "path": "/infrastructure-modules/search/store-search",
           "title": "Store Search API Route",
           "children": []

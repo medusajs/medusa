@@ -21,6 +21,12 @@ In this guide, you'll learn how to declare a search index and control what the s
 
 A search index definition declares one index: the entity it indexes, the fields the search engine holds, and how to fill it. The [Search Module](../page.mdx) owns everything around it, including creating the physical index, batching writes, and rebuilding the index when the definition changes.
 
+<Note title="Tip">
+
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](../product-index-examples/page.mdx).
+
+</Note>
+
 Define an index with `defineSearchIndex` in a file under the `src/search` directory of your Medusa application or plugin. Medusa loads every file in that directory before the application boots, and each file registers its indexes on import.
 
 For example, create the file `src/search/brand.ts` with the following content:

@@ -43040,7 +43040,7 @@ The merged item also has the following properties:
 - `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
 - `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
 
-For example, retrieve an order's versioned item details using [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+For example, retrieve an order's versioned item details using [Query](https://docs.medusajs.com/docs/learn/fundamentals/query/index.html.md):
 
 ```ts
 const { data: orders } = await query.graph({
@@ -45271,10 +45271,12 @@ So, it's essential to handle webhook events to ensure that your application is a
 
 ### Webhook Listener API Route
 
-The Medusa application has a `/hooks/payment/[identifier]_[provider]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
+The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of-the-box that allows you to listen to webhook events from third-party payment providers, where:
 
-- `[identifier]` is the `identifier` static property defined in the payment provider. For example, `stripe`.
-- `[provider]` is the ID of the provider. For example, `stripe`.
+- `[identifier]` is the `identifier` static property defined in the payment provider class. For example, `stripe`.
+- `[id]` is the `id` field set for the provider in `medusa-config.ts`. For example, `stripe`.
+
+The route segment does not include the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`, not `/hooks/payment/pp_myprovider_myprovider`.
 
 For example, when integrating basic Stripe payments with the [Stripe Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe/index.html.md), the webhook listener route is `/hooks/payment/stripe_stripe`.
 
@@ -45492,13 +45494,15 @@ createRemoteLinkStep({
 
 The Product Module doesn't store or manage the prices of product variants.
 
-Medusa defines a link between the `ProductVariant` and the `PriceSet`. A product variant’s prices are stored as prices belonging to a price set.
+Medusa defines a link between the `ProductVariant` and the `PriceSet`. A product variant's prices are stored as prices belonging to a price set.
 
 ![A diagram showcasing an example of how data models from the Pricing and Product Module are linked. The PriceSet is linked to the ProductVariant of the Product Module.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709651039/Medusa%20Resources/pricing-product_m4xaut.jpg)
 
 So, when you want to add prices for a product variant, you create a price set and add the prices to it.
 
 You can then benefit from adding rules to prices or using the `calculatePrices` method to retrieve the price of a product variant within a specified context.
+
+When you retrieve variant prices through `variants.prices.*` using Query, only prices that are not part of a price list are returned. Prices belonging to a price list (those with a non-null `price_list_id`) are excluded. Refer to the [Get Variant Prices guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/guides/price/index.html.md) for how to retrieve price-list prices.
 
 ### Retrieve with Query
 
@@ -47343,7 +47347,34 @@ const { data: products } = await query.graph({
 })
 ```
 
-Each variant in the retrieved products has a `prices` array property with all the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](https://docs.medusajs.com/references/pricing/models/Price/index.html.md).
+Each variant in the retrieved products has a `prices` array property with the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](https://docs.medusajs.com/references/pricing/models/Price/index.html.md).
+
+### Include Price-List Prices
+
+`variants.prices.*` only returns prices that are not part of a price list. Prices belonging to a price list have a non-null `price_list_id` and are excluded from this result.
+
+To retrieve a variant's price-list prices, query the `price` entity directly using the variant's linked price set ID and the price list's ID:
+
+```ts
+// First retrieve the variant's price set ID
+const { data: variants } = await query.graph({
+  entity: "product_variant",
+  fields: ["id", "price_set.*"],
+  filters: { id: "variant_123" },
+})
+
+const priceSetId = variants[0].price_set.id
+
+// Then fetch prices for a specific price list
+const { data: priceListPrices } = await query.graph({
+  entity: "price",
+  fields: ["*"],
+  filters: {
+    price_set_id: priceSetId,
+    price_list_id: "pl_123",
+  },
+})
+```
 
 ***
 
@@ -59328,6 +59359,8 @@ In this guide, you'll learn about the field types and modifiers you can use in a
 
 Refer to the [Search Index Field Modifiers guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers/index.html.md) for details on what each modifier does and which types it applies to.
 
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
+
 ## Define Index Fields
 
 A search index definition's `fields` property declares what the search engine holds. Use `search.define` to create a schema of field types and modifiers.
@@ -59563,7 +59596,7 @@ export const productIndex = defineSearchIndex({
 
 The `seed` function pages the products by their ID, so an interrupted run resumes from the `last_key` it receives rather than starting over. It also runs as the [catch-up pass](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#handle-the-catch-up-pass/index.html.md) that follows a full run, which is why it reads `catchup`: the pass narrows the read to the products changed since the run started, includes the deleted ones, and yields a `delete` write for them so the index loses their documents.
 
-You can't build this `seed` with [`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed/index.html.md) and its `transform` option. `transform` is synchronous and receives the rows of a single `query.graph` call, while a translated value needs a second read with the `locale` option.
+You can also build this `seed` with [`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed/index.html.md) and its `transform` option, which is asynchronous and receives a whole page of rows. Refer to [Read More Data in transform](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#read-more-data-in-transform/index.html.md) for an example that reads the same page again with the `locale` option.
 
 Then, when running a search query, such as in an API route, pass the `search_options.attributes_to_search_on` option to specify which locale-specific fields to search on:
 
@@ -59935,6 +59968,8 @@ An index isn't limited to the fields of its own `entity`. [Query](https://docs.m
 
 The examples in this section index products along with the brand each product is linked to, using the [custom Brand Module](https://docs.medusajs.com/docs/learn/customization/custom-features/module/index.html.md) and the [product-brand link](https://docs.medusajs.com/docs/learn/customization/extend-features/define-link/index.html.md) from the Medusa documentation.
 
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
+
 ## Select and Declare the Linked Fields
 
 To hold a linked module's data in the index:
@@ -60137,6 +60172,8 @@ In this guide, you'll learn about the modifiers you can chain on a field in a [s
 - [Medusa v2.21.1+](https://github.com/medusajs/medusa/releases/tag/v2.21.1)
 
 To learn about the types a field can hold, refer to the [Search Index Fields guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/index.html.md).
+
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
 
 ## What is a Field Modifier?
 
@@ -60471,6 +60508,8 @@ In this guide, you'll learn how to declare a search index and control what the s
 
 A search index definition declares one index: the entity it indexes, the fields the search engine holds, and how to fill it. The [Search Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index.html.md) owns everything around it, including creating the physical index, batching writes, and rebuilding the index when the definition changes.
 
+The product indexes in this guide's snippets are simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
+
 Define an index with `defineSearchIndex` in a file under the `src/search` directory of your Medusa application or plugin. Medusa loads every file in that directory before the application boots, and each file registers its indexes on import.
 
 For example, create the file `src/search/brand.ts` with the following content:
@@ -60574,7 +60613,7 @@ export const brandIndex = defineSearchIndex({
 
 #### Index Part of an Entity
 
-To index a subset of an entity's records, pass a `transform` that returns `null` for a record the index must not hold, rather than narrowing the read with a filter.
+`transform` receives a page of records and returns the documents to index. To index a subset of an entity's records, leave the records the index must not hold out of the array you return, rather than narrowing the read with a filter.
 
 For example, to index published products only:
 
@@ -60583,16 +60622,18 @@ export const productIndex = defineSearchIndex({
   // ...
   seed: graphSeed({
     fields: ["id", "title", "status"],
-    transform: (product) => {
-      return product.status === "published"
-        ? product
-        : null
+    transform: (products) => {
+      return products.filter(
+        (product) => product.status === "published"
+      )
     },
   }),
 })
 ```
 
-`graphSeed` deletes a rejected record's document on the catch-up pass, so a product that stops qualifying leaves the index instead of going stale in it. A filtered read can't do that, since it never sees the record again.
+`graphSeed` deletes the document of a record you leave out on the catch-up pass, so a product that stops qualifying leaves the index instead of going stale in it. A filtered read can't do that, since it never sees the record again.
+
+Every document you return must carry the record's primary key value as its `id`, since that's how `graphSeed` matches a document back to the record it came from. The helper throws if a document has no `id`.
 
 Use `transform` too when the document differs from the record, such as when you flatten a relation into an array of IDs.
 
@@ -60608,12 +60649,109 @@ export const productIndex = defineSearchIndex({
   }),
   seed: graphSeed({
     fields: ["id", "title", "categories.id"],
-    transform: (product) => ({
+    transform: (products) => products.map((product) => ({
       id: product.id,
       title: product.title,
       category_ids: product.categories.map(
         (category) => category.id
       ),
+    })),
+  }),
+})
+```
+
+#### Read More Data in transform
+
+`transform` is asynchronous and receives a whole page of records at a time, so a document that needs data beyond what one `query.graph` call returns costs a fixed number of extra queries per page, rather than one per record.
+
+For example, to index a French title alongside the English one, read the page again with the `locale` option:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_en: search.text().searchable(),
+    title_fr: search.text().searchable(),
+  }),
+  seed: graphSeed({
+    fields: ["id", "title"],
+    transform: async (products, { container }) => {
+      const { query } = container
+      const ids = products.map((product) => product.id)
+
+      const { data: translated } = await query.graph({
+        entity: "product",
+        fields: ["id", "title"],
+        filters: { id: ids },
+      }, { locale: "fr-FR" })
+
+      const frTitles = new Map(
+        translated.map((product) => [
+          product.id,
+          product.title,
+        ])
+      )
+
+      return products.map((product) => ({
+        id: product.id,
+        title_en: product.title,
+        title_fr:
+          frTitles.get(product.id) ?? product.title,
+      }))
+    },
+  }),
+})
+```
+
+#### Pass a Query Context
+
+Some fields only resolve when `query.graph` receives a [query context](https://docs.medusajs.com/docs/learn/fundamentals/query/query-context/index.html.md), such as `variants.calculated_price`, which needs a currency or a region to calculate a price for. Pass that context to `graphSeed` with the `context` option:
+
+```ts title="src/search/product.ts"
+import { QueryContext } from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    // ...
+  }),
+  seed: graphSeed({
+    fields: [
+      "id",
+      "title",
+      "variants.calculated_price.*",
+    ],
+    context: {
+      variants: {
+        calculated_price: QueryContext({
+          currency_code: "usd",
+        }),
+      },
+    },
+  }),
+})
+```
+
+`graphSeed` applies the context to the full run and to the [catch-up pass](#catch-up-on-changes-during-a-run) alike. `graphConsume` accepts the same option, so pass it to both helpers to write the same document from an event.
+
+You can also pass a function, which receives the same context `seed` receives. Use it when the query context depends on the index being filled:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  seed: graphSeed({
+    // ...
+    context: ({ index }) => ({
+      variants: {
+        calculated_price: QueryContext({
+          currency_code: index.name.endsWith("_eur")
+            ? "eur"
+            : "usd",
+        }),
+      },
     }),
   }),
 })
@@ -60623,7 +60761,8 @@ export const productIndex = defineSearchIndex({
 
 - fields: (\`string\[]\`) The fields to select from \`query.graph\`. The helper adds the index's \`primary\_key\`, and \`deleted\_at\` on the catch-up pass.
 - entity: (\`string\`) The \`query.graph\` entry point to read from.
-- transform: (\`function\`) Maps a record to the document to index. Receives the record and the same context \`seed\` receives. Return \`null\` or \`undefined\` to keep the record out of the index.
+- transform: (\`function\`) Maps a page of records to the documents to index. Receives the records and the same context \`seed\` receives, and can be asynchronous. Every document must carry the record's primary key value as its \`id\`. Leave a record out of the returned array to keep it out of the index.
+- context: (\`object\` \\| \`function\`) The \[query context]\(!docs!/learn/fundamentals/query/query-context) that \`query.graph\` reads the records with, such as the pricing context that \`variants.calculated\_price\` needs. Pass a function to build it from the context \`seed\` receives. Applied to the full run, the catch-up pass, and \`consume\` alike.
 - batch\_size: (\`number\`) The number of records to read from \`query.graph\` per page.
 
 ### Catch Up on Changes During a Run
@@ -60678,7 +60817,7 @@ export const brandIndex = defineSearchIndex({
 
 `graphConsume` reads the records the event affects through `query.graph` and writes them to the index.
 
-It deletes a record's document instead when the event's name ends in `.deleted`, when the read doesn't return the record, or when a `transform` rejects it.
+It deletes a record's document instead when the event's name ends in `.deleted`, when the read doesn't return the record, or when a `transform` leaves it out of the documents it returns.
 
 #### Share the Options with `graphSeed`
 
@@ -60689,10 +60828,10 @@ For example, this is the [published-products index](#index-part-of-an-entity) wi
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "status"],
-  transform: (product) => {
-    return product.status === "published"
-      ? product
-      : null
+  transform: (products) => {
+    return products.filter(
+      (product) => product.status === "published"
+    )
   },
 }
 
@@ -60708,20 +60847,20 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
-`graphConsume` deletes the document of a product the `transform` rejects, so unpublishing a product removes it from the index as soon as its `product.updated` event arrives, rather than waiting for the next seed.
+`graphConsume` deletes the document of a product the `transform` leaves out, so unpublishing a product removes it from the index as soon as its `product.updated` event arrives, rather than waiting for the next seed.
 
 The same holds for a `transform` that reshapes the record. For example, this is the [category IDs index](#index-part-of-an-entity) kept current by its events:
 
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "categories.id"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     title: product.title,
     category_ids: product.categories.map(
       (category) => category.id
     ),
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -60740,7 +60879,8 @@ export const productIndex = defineSearchIndex({
 
 - fields: (\`string\[]\`) The fields to select from \`query.graph\`. The helper adds the index's \`primary\_key\`.
 - entity: (\`string\`) The \`query.graph\` entry point to read from.
-- transform: (\`function\`) Maps a record to the document to index. Receives the record and the same context \`consume\` receives. Return \`null\` or \`undefined\` to delete the record's document instead.
+- transform: (\`function\`) Maps a page of records to the documents to index. Receives the records and the same context \`consume\` receives, and can be asynchronous. Every document must carry the record's primary key value as its \`id\`. Leave a record out of the returned array to delete its document instead.
+- context: (\`object\` \\| \`function\`) The \[query context]\(!docs!/learn/fundamentals/query/query-context) that \`query.graph\` reads the records with, such as the pricing context that \`variants.calculated\_price\` needs. Pass a function to build it from the context \`consume\` receives.
 - resolve\_ids: (\`function\`) Returns the IDs of the documents the event affects, as a string or an array of strings. Set it for an event whose payload names the affected documents under another property, such as a variant event that carries its product's ID.
 - is\_delete: (\`function\`) Returns whether the event removes its documents from the index rather than updating them. The helper deletes them by ID without reading them back.
 
@@ -60759,7 +60899,7 @@ Both return the same writes, which are one of the following:
 
 The examples in this section index an `article` entity whose content lives in a headless CMS rather than in your Medusa application, so they call a `cms` client instead of Query.
 
-The `container` that `seed` and `consume` receive isn't the Medusa container. It only exposes `query`, so you can't resolve a module or another registration from it. Import the client you need into the file instead, as the examples do.
+The `container` that `seed` and `consume` receive isn't the Medusa container. It only exposes `query`, to read data with Query, and `logger`, to report what an ingestion run is doing. You can't resolve a module or another registration from it, so import the client you need into the file instead, as the examples do.
 
 ### Custom `seed` Implementation
 
@@ -60802,9 +60942,29 @@ export const articleIndex = defineSearchIndex({
 })
 ```
 
+#### Log an Ingestion Run
+
+A full run can take a while, so use the `logger` of the `container` to report what it's doing. Its messages show in your application's logs alongside the messages that the Search Module logs itself.
+
+```ts title="src/search/article.ts"
+export const articleIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, index }) {
+    const { logger } = container
+
+    // ...
+
+    logger.info(
+      `Seeding ${index.name} with ` +
+        `${articles.length} articles`
+    )
+  },
+})
+```
+
 `seed` receives an object parameter with the following properties:
 
-- container: (\`object\`) A limited Medusa container exposing \`query\`, so you can read data with \[Query]\(!docs!/learn/fundamentals/query).
+- container: (\`object\`) A limited Medusa container exposing \`query\`, so you can read data with \[Query]\(!docs!/learn/fundamentals/query), and \`logger\`, so you can log what the run is doing.
 - index: (\`object\`) The definition of the index being filled, as you passed it to \`defineSearchIndex\`. Refer to \[Index Definition Properties]\(#index-definition-properties) for more details on each property.
 
   - name: (\`string\`) The index's unique name, which is the \`entity\` that \`query.search\` resolves against.
@@ -60914,7 +61074,7 @@ export const articleIndex = defineSearchIndex({
   - data: (\`object\`) The event's payload. Refer to the \[Events Reference]\(/references/events) for the payload of each event Medusa emits.
 - context: (\`object\`) The context the Search Module runs the function in.
 
-  - container: (\`object\`) A limited Medusa container exposing \`query\`, so you can read data with \[Query]\(!docs!/learn/fundamentals/query).
+  - container: (\`object\`) A limited Medusa container exposing \`query\`, so you can read data with \[Query]\(!docs!/learn/fundamentals/query), and \`logger\`, so you can log what the run is doing.
 
   - index: (\`object\`) The index definition the event is applied to.
 
@@ -61065,8 +61225,10 @@ const source = {
     "tags.id",
     "tags.value",
   ],
-  transform: ({ status, ...product }) => {
-    return status === "published" ? product : null
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map(({ status, ...product }) => product)
   },
 }
 
@@ -61115,6 +61277,8 @@ export const productIndex = defineSearchIndex({
 
 Add to the definition any core or custom field that your storefront searches, filters, sorts, or facets on. Learn more about the available field types and modifiers in the [Search Index Definitions guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/index.html.md).
 
+The index in this snippet is simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
+
 ### 2. Run Migrations
 
 Next, run the migrations command to create the physical index:
@@ -61129,11 +61293,11 @@ Medusa then fills the index with your products. Learn more about index migration
 
 Medusa exposes the [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes), which searches any index of your application. However, an index isn't searchable through it until a middleware allows it, so a storefront never reaches an index you didn't expose.
 
-To allow the `product` index, use the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+To allow the `product` index, use the `configureStoreSearch` middleware in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
 import {
-  allowSearchIndexes,
+  configureStoreSearch,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
@@ -61141,15 +61305,21 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/search",
-      middlewares: [allowSearchIndexes("product")],
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+          },
+        }),
+      ],
     },
   ],
 })
 ```
 
-You can pass more than one index name to `allowSearchIndexes`, and you can add the middleware more than once, so a plugin exposes its own index without discarding what your application allowed.
+You can allow more than one index, and you can add the middleware more than once, so a plugin exposes its own index without discarding what your application allowed.
 
-The route runs the queries as posted, so narrow them further, such as to a sales channel, with another middleware that changes `req.validatedBody`.
+The route also narrows a product index to the products a storefront may see, and you can narrow any index further with a filter of your own. Learn more in the [Store Search Route guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/store-search/index.html.md).
 
 ### 4. Search Products
 
@@ -61240,7 +61410,7 @@ export const brandIndex = defineSearchIndex({
 
 Then, choose how to search it:
 
-- To search it from your storefront, add `brand` to the `allowSearchIndexes` middleware, as explained in [Allow the Index on the Store Search Route](#3-allow-the-index-on-the-store-search-route), then post a query with `"entity": "brand"`.
+- To search it from your storefront, add `brand` to the `configureStoreSearch` middleware, as explained in [Allow the Index on the Store Search Route](#3-allow-the-index-on-the-store-search-route), then post a query with `"entity": "brand"`.
 - To search it in your own [API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) or [workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md), use the [`search` method of Query](https://docs.medusajs.com/docs/learn/fundamentals/query/search/index.html.md).
 
 For example, to search brands in a custom API route, create the file `src/api/store/brands/search/route.ts` with the following content:
@@ -61305,6 +61475,791 @@ You'll receive a JSON response like the following:
 ```
 
 Learn about filters, facets, highlighting, and vector search in the [Search Queries guide](https://docs.medusajs.com/docs/learn/fundamentals/query/search/index.html.md).
+
+
+# Product Search Index Examples
+
+In this guide, you'll find examples of indexing product data that a storefront's search and browsing experience needs, such as prices in multiple currencies, option values, and categories.
+
+### Prerequisites
+
+- [Medusa v2.21.1+](https://github.com/medusajs/medusa/releases/tag/v2.21.1)
+
+## Simple Product Index
+
+The following index definition holds a product's basic details, and it's the starting point that the rest of this guide's sections extend.
+
+Create the file `src/search/product.ts` with the following content:
+
+```ts title="src/search/product.ts"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+  ],
+  transform: (products) => {
+    return products.filter(
+      (product) => product.status === "published"
+    )
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable().retrievable(),
+    title: search
+      .text()
+      .searchable({ weight: 3 })
+      .sortable()
+      .retrievable(),
+    description: search.text().searchable(),
+    handle: search.keyword().retrievable(),
+    thumbnail: search.keyword().retrievable(),
+    created_at: search.date().sortable().retrievable(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+`source` holds the options that [`graphSeed`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#fill-the-index-from-query-with-graphseed/index.html.md) and [`graphConsume`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#consume-events-from-query-with-graphconsume/index.html.md) share, so a document written by an event matches the one the seed writes.
+
+Since the `transform` returns no document for a product that isn't published, unpublishing a product removes it from the index as soon as its `product.updated` event arrives.
+
+***
+
+## Scope the Index to Published Products and Sales Channels
+
+A storefront must never find a draft product, or a product that isn't in the request's sales channel. So, declare a `status` and a `sales_channel_ids` field with the [`filterable` modifier](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#filterable/index.html.md), and the [Store Search API route](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/store-search/index.html.md) narrows every query to the products a storefront may see.
+
+`sales_channel_ids` isn't a field of the product itself, so select the product's `sales_channels.id` and flatten them onto the document in the `transform`:
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: [
+    // ...
+    "status",
+    "sales_channels.id",
+  ],
+  transform: (products) => {
+    return products
+      .filter(
+        (product) => product.status === "published"
+      )
+      .map((product) => ({
+        // ...
+        status: product.status,
+        sales_channel_ids: (
+          product.sales_channels ?? []
+        ).map((salesChannel) => salesChannel.id),
+      }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
+    sales_channel_ids: search
+      .keyword()
+      .array()
+      .filterable()
+      .retrievable(false),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+Both fields use [`retrievable(false)`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#retrievable/index.html.md), so the route filters on them without returning them in a hit.
+
+Refer to the [Store Search API Route guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/store-search#how-medusa-narrows-a-product-index/index.html.md) for the filters that the route applies, and for how to narrow an index further with filters of your own.
+
+***
+
+## Index Prices for Multiple Currencies
+
+The Pricing Module calculates a price for one currency per query, and a search engine can't calculate a price at query time. So, the index holds a set of price fields per currency, and each currency's fields are filterable, sortable, and facetable on their own.
+
+### 1. Declare the Price Fields
+
+Declare the currencies the index holds prices in, build a set of fields for each of them, then spread the fields into the index:
+
+```ts title="src/search/product.ts"
+const PRICE_CURRENCIES = ["usd", "eur"] as const
+
+type PriceCurrency = (typeof PRICE_CURRENCIES)[number]
+
+const priceFields = Object.fromEntries(
+  PRICE_CURRENCIES.flatMap((currency) => [
+    [
+      `min_price_${currency}`,
+      search
+        .float()
+        .filterable()
+        .sortable()
+        .facetable({ types: ["stats"] })
+        .retrievable(),
+    ],
+    [
+      `max_price_${currency}`,
+      search
+        .float()
+        .filterable()
+        .sortable()
+        .facetable({ types: ["stats"] })
+        .retrievable(),
+    ],
+    [
+      `original_price_${currency}`,
+      search.float().retrievable(),
+    ],
+    [
+      `on_sale_${currency}`,
+      search
+        .boolean()
+        .filterable()
+        .facetable()
+        .retrievable(),
+    ],
+  ])
+)
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    ...priceFields,
+  }),
+})
+```
+
+The `min_price` and `max_price` fields use the [`stats` facet type](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#facet-types/index.html.md), which returns the lowest and highest price among the matching products. A storefront uses that to render a price-range slider whose bounds follow the current filters.
+
+Adding a currency changes the index's fields, which the Search Module treats as a schema change. It builds a new index version and only serves reads from it once it's filled, as explained in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing/index.html.md).
+
+### 2. Read the Prices
+
+`variants.calculated_price` only resolves when `query.graph` receives a [query context](https://docs.medusajs.com/docs/learn/fundamentals/query/query-context/index.html.md) with a currency. So, add a function that reads the products once per currency:
+
+```ts title="src/search/product.ts"
+import { QueryContext } from "@medusajs/framework/utils"
+import type { SearchTypes } from "@medusajs/framework/types"
+
+// ...
+
+type PricedVariant = {
+  calculated_price?: {
+    calculated_amount?: number | null
+    original_amount?: number | null
+  } | null
+}
+
+type ProductPricingRows = Partial<
+  Record<PriceCurrency, PricedVariant[] | null>
+>
+
+async function loadPricing(
+  ids: string[],
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  const pricing = new Map<string, ProductPricingRows>()
+
+  if (!ids.length) {
+    return pricing
+  }
+
+  await Promise.all(
+    PRICE_CURRENCIES.map(async (currency) => {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: [
+          "id",
+          "variants.calculated_price.calculated_amount",
+          "variants.calculated_price.original_amount",
+        ],
+        filters: { id: ids },
+        context: {
+          variants: {
+            calculated_price: QueryContext({
+              currency_code: currency,
+            }),
+          },
+        },
+      })
+
+      for (const product of data) {
+        const rows = pricing.get(product.id) ?? {}
+        rows[currency] = product.variants
+        pricing.set(product.id, rows)
+      }
+    })
+  )
+
+  return pricing
+}
+```
+
+`loadPricing` receives the IDs of the products being indexed, then reads each of them once per currency with the currency's pricing context. It returns a map of a product's ID to its priced variants per currency, which the next step turns into the document's price fields.
+
+`transform` receives a whole page of products at a time, so this costs one extra read per currency for the page, rather than one per product.
+
+### 3. Build the Price Fields of a Document
+
+Next, turn a product's variants into the price fields of its document. The cheapest variant provides the calculated and original price as a pair, so the discount a storefront renders describes one real variant instead of mixing two variants' amounts:
+
+```ts title="src/search/product.ts"
+function toPricing(
+  currency: PriceCurrency,
+  variants: PricedVariant[] | null | undefined
+) {
+  let cheapest:
+    | { calculated: number; original: number }
+    | undefined
+  let maxPrice: number | undefined
+
+  for (const variant of variants ?? []) {
+    const price = variant?.calculated_price
+    const calculated = price?.calculated_amount
+
+    if (typeof calculated !== "number") {
+      continue
+    }
+
+    const original =
+      typeof price?.original_amount === "number"
+        ? price.original_amount
+        : calculated
+
+    if (maxPrice === undefined || calculated > maxPrice) {
+      maxPrice = calculated
+    }
+
+    if (!cheapest || calculated < cheapest.calculated) {
+      cheapest = { calculated, original }
+    }
+  }
+
+  if (!cheapest) {
+    return {}
+  }
+
+  return {
+    [`min_price_${currency}`]: cheapest.calculated,
+    [`max_price_${currency}`]: maxPrice,
+    [`original_price_${currency}`]: cheapest.original,
+    [`on_sale_${currency}`]:
+      cheapest.original > cheapest.calculated,
+  }
+}
+
+function toProductPricing(
+  rows: ProductPricingRows | undefined
+) {
+  return Object.assign(
+    {},
+    ...PRICE_CURRENCIES.map((currency) =>
+      toPricing(currency, rows?.[currency])
+    )
+  )
+}
+```
+
+`toPricing` scans one currency's variants for the cheapest and the most expensive calculated price, then returns that currency's four fields.
+
+`toProductPricing` calls `toPricing` for every currency and merges the results into the fields of one document.
+
+A product without a price in a currency writes none of that currency's fields, so it drops out of that currency's price filter and sort rather than showing up with a price of `0`.
+
+### 4. Write the Prices to the Documents
+
+Finally, call both functions in an asynchronous `transform`:
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: ["id", "title", "status"],
+  transform: async (products, context) => {
+    // ...
+    const pricing = await loadPricing(
+      published.map((product) => product.id),
+      context
+    )
+
+    return published.map((product) => ({
+      id: product.id,
+      title: product.title,
+      // ...
+      ...toProductPricing(pricing.get(product.id)),
+    }))
+  },
+}
+```
+
+A storefront then filters on `min_price_usd`, sorts by it, and shows an "On sale" toggle backed by the `on_sale_usd` facet.
+
+***
+
+## Index Option Values as a Facet
+
+To let a storefront filter products by option values, such as a size or a color, flatten a product's options into one array field of `"{option title}:{value}"` entries. One field keeps the index simple, and the storefront splits each entry on the first `:` to group the facet by option title.
+
+```ts title="src/search/product.ts"
+// ...
+
+function toOptionValues(
+  options:
+    | ({
+        title?: string | null
+        values?: ({ value?: string | null } | null)[]
+      } | null)[]
+    | null
+    | undefined
+) {
+  const values = (options ?? []).flatMap((option) => {
+    const title = option?.title?.trim()
+
+    if (!title) {
+      return []
+    }
+
+    return (option?.values ?? [])
+      .map((optionValue) => optionValue?.value?.trim())
+      .filter((value): value is string => Boolean(value))
+      .map((value) => `${title}:${value}`)
+  })
+
+  // A value shared by two options is otherwise
+  // counted twice in the facet.
+  return Array.from(new Set(values))
+}
+
+const source = {
+  fields: [
+    // ...
+    "options.title",
+    "options.values.value",
+  ],
+  transform: (products) => {
+    return products.map((product) => ({
+      // ...
+      option_values: toOptionValues(product.options),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    option_values: search
+      .keyword()
+      .array()
+      .searchable({ weight: 2 })
+      .filterable()
+      .facetable()
+      .retrievable(),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+`toOptionValues` walks a product's options, pairs each option's title with each of its values, and drops duplicates. A product with a Size and a Color option yields entries such as `["Size:S", "Size:M", "Color:Red"]`, which the `transform` writes to the document's `option_values` field.
+
+Since the field is searchable, a customer searching for "red" also matches a product whose color option has a `Red` value.
+
+***
+
+## Index Categories and Tags as Facets
+
+`query.graph` returns a product's categories and tags as arrays of objects, whereas a facet needs a flat array of values. So, select the field to show from each relation and flatten it in the `transform`:
+
+```ts title="src/search/product.ts"
+const source = {
+  fields: [
+    // ...
+    "categories.name",
+    "tags.value",
+  ],
+  transform: (products) => {
+    return products.map((product) => ({
+      // ...
+      category: (product.categories ?? []).map(
+        (category) => category.name
+      ),
+      labels: (product.tags ?? []).map(
+        (tag) => tag.value
+      ),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    category: search
+      .keyword()
+      .array()
+      .filterable()
+      .facetable()
+      .retrievable(),
+    labels: search
+      .keyword()
+      .array()
+      .filterable()
+      .facetable()
+      .retrievable(),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+To index a product's data from a linked module instead, such as a brand you created in a custom module, refer to the [Index Data from a Linked Module guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/linked-data/index.html.md).
+
+***
+
+## Re-Index a Product When Related Data Changes
+
+A product's document holds data from its variants, options, tags, categories, and sales channels. So, subscribe to the events of all of them, then map each event back to the products it affects with the [`resolve_ids` option](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#graphconsume-options/index.html.md) of `graphConsume`.
+
+Add the following functions to the file:
+
+```ts title="src/search/product.ts"
+import type {
+  RemoteQueryFunction,
+} from "@medusajs/framework/types"
+
+// ...
+
+function payloadIds(data: unknown): string[] {
+  return (Array.isArray(data) ? data : [data])
+    .map((entry) => (entry as { id?: string })?.id)
+    .filter((id): id is string => Boolean(id))
+}
+
+async function relatedProductIds(
+  query: RemoteQueryFunction,
+  entity: string,
+  fields: string[],
+  ids: string[],
+  pick: (row: any) => (string | null | undefined)[],
+  withDeleted: boolean
+) {
+  const { data } = await query.graph({
+    entity,
+    fields,
+    filters: { id: ids },
+    withDeleted,
+  })
+
+  return data
+    .flatMap(pick)
+    .filter((id): id is string => Boolean(id))
+}
+
+async function resolveProductIds(
+  event: { name: string; data: unknown },
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  const ids = payloadIds(event.data)
+  const [entity] = event.name.split(".")
+  const deleted = event.name.endsWith(".deleted")
+
+  if (!ids.length) {
+    return []
+  }
+
+  switch (entity) {
+    case "product":
+      return ids
+    case "product-variant":
+      return relatedProductIds(
+        container.query,
+        "product_variant",
+        ["product_id"],
+        ids,
+        (row) => [row.product_id],
+        deleted
+      )
+    case "product-tag":
+      return relatedProductIds(
+        container.query,
+        "product_tag",
+        ["products.id"],
+        ids,
+        (row) => (row.products ?? []).map((p) => p?.id),
+        deleted
+      )
+    case "product-category":
+      return relatedProductIds(
+        container.query,
+        "product_category",
+        ["products.id"],
+        ids,
+        (row) => (row.products ?? []).map((p) => p?.id),
+        deleted
+      )
+    default:
+      return []
+  }
+}
+```
+
+`resolveProductIds` is the function you pass as `resolve_ids` in the next snippet, and `graphConsume` calls it for every event the index subscribes to. It reads the IDs from the event's payload, then decides what they point to based on the entity in the event's name: a product event names the products directly, while any other event's IDs are passed to `relatedProductIds`, which reads the products behind those records through `query.graph`.
+
+Medusa soft-deletes records, so a deleted variant or category is still readable with `withDeleted`, which is how it still leads back to the products to re-index.
+
+Then, add the related entities' events to the index, pass the function to `graphConsume`, and tell it that only `product.deleted` removes documents. Every other event means the product must be read again:
+
+```ts title="src/search/product.ts"
+export default defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "product-variant.created",
+    "product-variant.updated",
+    "product-variant.deleted",
+    "product-option.updated",
+    "product-option-value.updated",
+    "product-tag.updated",
+    "product-tag.deleted",
+    "product-category.updated",
+    "product-category.deleted",
+  ],
+  consume: graphConsume({
+    ...source,
+    resolve_ids: resolveProductIds,
+    is_delete: (event) =>
+      event.name === "product.deleted",
+  }),
+  seed: graphSeed(source),
+})
+```
+
+### Deleting a Sales Channel
+
+Deleting a sales channel removes its product links, so `query.graph` no longer finds the products that were in it. The index still holds the channel's ID on each document, so search the index itself to find the products to re-index:
+
+```ts title="src/search/product.ts"
+async function productIdsInSalesChannels(
+  query: RemoteQueryFunction,
+  salesChannelIds: string[]
+) {
+  const { search_result } = await query.search({
+    entity: "product",
+    fields: ["id"],
+    filters: { sales_channel_ids: salesChannelIds },
+    pagination: { take: 200 },
+  })
+
+  return search_result.hits.map((hit) => hit.id)
+}
+```
+
+Then, call it from a `sales-channel` case in `resolveProductIds`, and add the `sales-channel.deleted` event to the definition's `events`:
+
+```ts title="src/search/product.ts"
+async function resolveProductIds(
+  event: { name: string; data: unknown },
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  // ...
+
+  switch (entity) {
+    // ...
+    case "sales-channel":
+      return productIdsInSalesChannels(
+        container.query,
+        ids
+      )
+    default:
+      return []
+  }
+}
+```
+
+If your store has more than 200 products in a channel, page through the results with the `skip` pagination option.
+
+Some changes to a product's prices don't emit an event, such as creating a price list or a price list becoming active. For those, reindex the product index on a schedule, or after the change, as explained in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing#seeding-on-demand/index.html.md).
+
+***
+
+## Complete Index Definition
+
+The following file combines the examples of this guide. The pricing and event functions are left out, since they're unchanged from the sections above:
+
+```ts title="src/search/product.ts"
+import type { SearchTypes } from "@medusajs/framework/types"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+// The functions and price fields of the
+// previous sections...
+
+const productFields = search.define({
+  id: search.keyword().filterable().retrievable(),
+  status: search
+    .keyword()
+    .filterable()
+    .retrievable(false),
+  sales_channel_ids: search
+    .keyword()
+    .array()
+    .filterable()
+    .retrievable(false),
+  title: search
+    .text()
+    .searchable({ weight: 3 })
+    .sortable()
+    .retrievable(),
+  description: search.text().searchable({ weight: 1 }),
+  handle: search.keyword().retrievable(),
+  thumbnail: search.keyword().retrievable(),
+  created_at: search.date().sortable().retrievable(),
+  category: search
+    .keyword()
+    .array()
+    .filterable()
+    .facetable()
+    .retrievable(),
+  labels: search
+    .keyword()
+    .array()
+    .filterable()
+    .facetable()
+    .retrievable(),
+  option_values: search
+    .keyword()
+    .array()
+    .searchable({ weight: 2 })
+    .filterable()
+    .facetable()
+    .retrievable(),
+  ...priceFields,
+})
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+    "created_at",
+    "sales_channels.id",
+    "categories.name",
+    "tags.value",
+    "options.title",
+    "options.values.value",
+  ],
+  transform: async (
+    products,
+    context: SearchTypes.SearchIngestionContext
+  ) => {
+    const published = products.filter(
+      (product) => product.status === "published"
+    )
+    const pricing = await loadPricing(
+      published.map((product) => product.id),
+      context
+    )
+
+    return published.map((product) => ({
+      id: product.id,
+      status: product.status,
+      sales_channel_ids: (
+        product.sales_channels ?? []
+      ).map((salesChannel) => salesChannel.id),
+      title: product.title,
+      description: product.description,
+      handle: product.handle,
+      thumbnail: product.thumbnail,
+      created_at: product.created_at,
+      category: (product.categories ?? []).map(
+        (category) => category.name
+      ),
+      labels: (product.tags ?? []).map(
+        (tag) => tag.value
+      ),
+      option_values: toOptionValues(product.options),
+      ...toProductPricing(pricing.get(product.id)),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  primary_key: "id",
+  fields: productFields,
+  settings: {
+    typo_tolerance: { enabled: true },
+  },
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "product-variant.created",
+    "product-variant.updated",
+    "product-variant.deleted",
+    "product-option.updated",
+    "product-option-value.updated",
+    "product-tag.updated",
+    "product-tag.deleted",
+    "product-category.updated",
+    "product-category.deleted",
+    "sales-channel.deleted",
+  ],
+  consume: graphConsume({
+    ...source,
+    resolve_ids: resolveProductIds,
+    is_delete: (event) =>
+      event.name === "product.deleted",
+  }),
+  seed: graphSeed(source),
+})
+```
+
+After changing the definition, run the migrations command to build the new index version:
+
+```bash
+npx medusa db:migrate
+```
+
+Then, allow the index on the [Store Search API route](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/store-search/index.html.md) to search it from your storefront.
+
+To build the search and browsing experience around this index, use the [InstantSearch adapter](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/index.html.md). Refer to the [Filtering, Sorting, and Pagination example](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/examples/filtering-sorting-pagination/index.html.md) for the widgets that back the facets in this guide.
 
 
 # Search Module Providers
@@ -61655,13 +62610,41 @@ The command reports each action under one of the following:
 |---|---|
 |\`create\`|No version of the index has ever gone live, so the module builds its first version. Nothing serves the index until a seed fills that version.|
 |\`migrate\`|The definition's |
-|\`noop\`|The physical index already matches the definition.|
+|\`drop\`|No definition declares the index any more, so the module removes every version it ever built for it, along with the record tracking them. This is the only destructive action, and the only one the command asks about first. Refer to |
+|\`noop\`|The physical index already matches the definition. The module still removes the versions an earlier swap left behind, as explained in |
+
+### Dropping Removed Indexes
+
+When you remove an index definition from your application, the index in the search engine stays behind. So, the command plans a `drop` for it, which deletes every document it holds and can't be undone. The only way back is to declare the definition again and let it seed.
+
+Since that's destructive, the command lists those indexes and asks which of them to drop before it touches any of them:
+
+```bash
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│   Select the search indexes to DROP. No                  │
+│   definition declares them any more, and                 │
+│   dropping one deletes every document it holds.          │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+? Select search indexes to drop
+❯ ◯ article (article_v2, article_v1)
+```
+
+Pass one of the following options to `db:migrate` or `db:migrate:search` to skip the prompt:
+
+- `--execute-all-search`: drop every index that no definition declares any more.
+- `--execute-safe-search`: leave those indexes in place.
+
+A command with no terminal to prompt in, such as in a CI pipeline, leaves those indexes in place unless you pass `--execute-all-search`. It never drops an index you didn't approve.
 
 ### How Index Changes Are Handled
 
-An index name, such as `product`, isn't one physical index. The Search Module keeps a version per physical index it has ever built for that name, and one of them is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
+An index name, such as `product`, isn't one physical index. The Search Module builds a version of the index per definition change, and one of those versions is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
 
 That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill stays behind without ever going live, so the active version keeps answering queries.
+
+The module keeps the active version and the one it's building. It removes every version below the active one at the start of the next migration or rebuild, so a swap that went live doesn't leave its old index in the engine.
 
 ```mermaid
 flowchart TD
@@ -61670,7 +62653,7 @@ flowchart TD
 
     subgraph phys["Physical indexes"]
         direction LR
-        V1["v1<br/>inactive"]
+        V1["v1<br/>removed"]
         V2["v2<br/>active"]
         V3["v3<br/>pending"]
     end
@@ -61816,6 +62799,174 @@ Two details matter when you reindex to recover:
 - Omit `filters` for a full repair. Both strategies then rebuild every document from the seed, and either one drops what the seed no longer produces. Keep the default `swap` if the index must keep answering queries while it rebuilds.
 
 Query the `search_index_sync` entity to find out whether a run succeeded, how many documents it wrote, and the error it failed with.
+
+
+# Store Search API Route
+
+In this guide, you'll learn how to expose your search indexes to a storefront through the [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes), and how to control what a storefront can find in them.
+
+### Prerequisites
+
+- [Medusa v2.21.1+](https://github.com/medusajs/medusa/releases/tag/v2.21.1)
+
+## What is the Store Search API Route?
+
+Medusa exposes a single `POST /store/search` route that searches any index of your application, so you don't create an API route per index. It answers with the search engine's own results, which is the contract the [InstantSearch adapter](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/index.html.md) is built on.
+
+The route exposes nothing by default. An index is only searchable through it once the `configureStoreSearch` middleware allows it, and a request for any other index is answered as if the index didn't exist. That way, the route never tells a storefront what your application holds.
+
+***
+
+## Allow Indexes on the Route
+
+To allow an index to be searched through the route, apply the `configureStoreSearch` middleware to `/store/search` in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  configureStoreSearch,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            product_category: true,
+          },
+        }),
+      ],
+    },
+  ],
+})
+```
+
+A storefront can now post a query with `"entity": "product"` or `"entity": "product_category"`. Every other index still answers with a `404` error, and Medusa logs why for whoever configured the route.
+
+You can apply the middleware more than once. Each one merges its `allowed_indexes` into the ones before it, so a plugin exposes its own index without discarding what your application allowed.
+
+Only allow indexes whose documents are public. An index holding internal data, such as one you built for [Medusa Admin's search](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/admin-search/index.html.md), stays unreachable from a storefront as long as you don't allow it.
+
+***
+
+## How Medusa Narrows a Product Index
+
+A storefront must never find a draft product, or a product that isn't in the request's sales channel. So, for an index whose `entity` is `product`, Medusa adds the following filters to every query:
+
+|Filter|Applied when|
+|---|---|
+|\`status\`|The index declares a |
+|\`sales\_channel\_ids\`|The index declares a |
+
+So, to have Medusa scope your product index for you, declare both fields in the index definition. `sales_channel_ids` isn't a field of the product itself, so select the product's `sales_channels.id` and flatten them onto the document with a [`transform`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions#index-part-of-an-entity/index.html.md):
+
+```ts title="src/search/product.ts"
+const productFields = search.define({
+  id: search.keyword().filterable().retrievable(),
+  title: search
+    .text()
+    .searchable({ weight: 3 })
+    .retrievable(),
+  // Read by `/store/search` to scope the index.
+  status: search.keyword().filterable().retrievable(false),
+  sales_channel_ids: search
+    .keyword()
+    .array()
+    .filterable()
+    .retrievable(false),
+  // ...
+})
+
+const source = {
+  fields: ["id", "title", "status", "sales_channels.id"],
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map((product) => ({
+        id: product.id,
+        title: product.title,
+        status: product.status,
+        sales_channel_ids: product.sales_channels.map(
+          (salesChannel) => salesChannel.id
+        ),
+      }))
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: productFields,
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+The `status` and `sales_channel_ids` fields use [`retrievable(false)`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#retrievable/index.html.md), so the route can filter on them without ever returning them in a hit.
+
+The index in this snippet is simplified to show one feature at a time. For examples of indexing prices in multiple currencies, option values, categories, and other product data, refer to the [Product Index Examples guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/product-index-examples/index.html.md).
+
+If the index is missing either field, Medusa logs a warning once for that index and skips that filter. Then, either add the missing field to the definition, or scope the index yourself as explained in the next section.
+
+***
+
+## Filter an Index for Your Storefront
+
+To constrain an index beyond what Medusa applies, pass a `filters` function for it instead of `true`. The function receives the request, so a constraint can depend on who is asking, and it can be asynchronous.
+
+For example, to only find active product categories:
+
+```ts title="src/api/middlewares.ts"
+import {
+  configureStoreSearch,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            product_category: {
+              filters: (req) => ({ is_active: true }),
+            },
+          },
+        }),
+      ],
+    },
+    // ...
+  ],
+})
+```
+
+Medusa combines your filters with the ones it applies itself and the ones the storefront posts using an `$and` operator. So, a storefront can narrow its own results but never widen them past what you allowed.
+
+***
+
+## Search Documents in the Storefront
+
+Once an index is allowed, send a `POST` request to `/store/search` with the index's name in `entity`:
+
+```bash
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" }
+  }'
+```
+
+Learn more about the accepted request body and the response in the [Store Search API reference](https://docs.medusajs.com/api/store/search/search-indexes).
+
+To build a full search experience with facets, pagination, and sorting in your storefront, use the [InstantSearch adapter](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/instantsearch/index.html.md), which posts to this route for you.
 
 
 # How to Use the Workflow Engine Module
@@ -62323,6 +63474,12 @@ Use this command if you're setting up a Medusa project or database manually.
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--no-interactive\`|Disable the command's prompts.|No|-|
+|\`--skip-search\`|Skip creating, altering, and dropping search indexes. This option is added starting from
+|No|The command migrates search indexes by default if your application registers the |
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
 
 ***
 
@@ -62383,6 +63540,33 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--skip-search\`|Skip creating, altering, and dropping search indexes. This option is added starting from
+|No|The command migrates search indexes by default if your application registers the |
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+
+***
+
+## db:migrate:search
+
+Create, alter, and drop the physical search indexes that match the search index definitions in your application. The `db:migrate` command runs this command for you if your application registers the [Search Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index.html.md), which is the default since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). So, run it on its own to migrate the search indexes without touching the database.
+
+```bash
+npx medusa db:migrate:search
+```
+
+This command is available since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). Learn more about index migrations in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing/index.html.md).
+
+The command prompts you to select which indexes to drop when no definition declares them any more. Pass one of the options below to skip the prompt, which you must do when you run the command in a CI pipeline or another environment without a terminal. Otherwise, the command leaves those indexes in place.
+
+### Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|
+|\`--execute-safe-search\`|Skip prompts and leave every index that no definition declares any more in place.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts and drop every index that no definition declares any more.|No|Prompts are shown for unsafe actions, by default.|
 
 ***
 
@@ -62835,6 +64019,12 @@ Use this command if you're setting up a Medusa project or database manually.
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--no-interactive\`|Disable the command's prompts.|No|-|
+|\`--skip-search\`|Skip creating, altering, and dropping search indexes. This option is added starting from
+|No|The command migrates search indexes by default if your application registers the |
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
 
 ***
 
@@ -62895,6 +64085,33 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
+|\`--skip-search\`|Skip creating, altering, and dropping search indexes. This option is added starting from
+|No|The command migrates search indexes by default if your application registers the |
+|\`--execute-safe-search\`|Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+|No|Prompts are shown for unsafe actions, by default.|
+
+***
+
+## db:migrate:search
+
+Create, alter, and drop the physical search indexes that match the search index definitions in your application. The `db:migrate` command runs this command for you if your application registers the [Search Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index.html.md), which is the default since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). So, run it on its own to migrate the search indexes without touching the database.
+
+```bash
+npx medusa db:migrate:search
+```
+
+This command is available since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). Learn more about index migrations in the [Reindexing and Migrations guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/reindexing/index.html.md).
+
+The command prompts you to select which indexes to drop when no definition declares them any more. Pass one of the options below to skip the prompt, which you must do when you run the command in a CI pipeline or another environment without a terminal. Otherwise, the command leaves those indexes in place.
+
+### Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|
+|\`--execute-safe-search\`|Skip prompts and leave every index that no definition declares any more in place.|No|Prompts are shown for unsafe actions, by default.|
+|\`--execute-all-search\`|Skip prompts and drop every index that no definition declares any more.|No|Prompts are shown for unsafe actions, by default.|
 
 ***
 

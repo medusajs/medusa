@@ -1304,6 +1304,10 @@ export const filesMap = [
     "pathname": "/infrastructure-modules/search"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/product-index-examples/page.mdx",
+    "pathname": "/infrastructure-modules/search/product-index-examples"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/page.mdx",
     "pathname": "/infrastructure-modules/search/providers"
   },

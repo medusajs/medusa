@@ -823,7 +823,7 @@ To test the search integration:
         `numericAttributes`
       </Table.Cell>
       <Table.Cell>
-        The fields that range widgets use. The adapter requests them as `stats` facets. The index must also mark them as `facetable({ types: ["stats"] })`.
+        The fields that range widgets use. The adapter requests them as `stats` facets. The index must also mark them as `facetable({ types: ["stats"] })`. If the index holds a price field per currency, list every currency's fields, as explained in [Price Fields per Currency](./examples/filtering-sorting-pagination/page.mdx#price-fields-per-currency).
       </Table.Cell>
       <Table.Cell>
         \-
