@@ -32,19 +32,22 @@ search behavior intact.
 - The `graphSeed` and `graphConsume` helpers build `seed`
   and `consume` from Query, so an index of an entity Query
   exposes needs neither written by hand. They take the same
-  options, including a `transform` that reshapes a record or
-  returns `null` to keep it out of the index.
+  options, including a `transform` that maps a page of
+  records to the documents to index. Every document must
+  carry the record's primary key as `id`, and a record you
+  leave out of the returned array stays out of the index.
 - Medusa's Store API has a `POST /store/search` route that
   searches any index of the application, so a project
   doesn't need its own product search route. The body is a
   search query naming the index in `entity`, or a batch of
   them under `queries`.
 - An index is only reachable through `POST /store/search`
-  once a middleware allows it with `allowSearchIndexes`
-  from `@medusajs/framework/http`. The route applies no
-  scoping of its own, so narrowing a query to a sales
-  channel or to published documents is another middleware
-  on the route.
+  once a middleware allows it with `configureStoreSearch`
+  from `@medusajs/framework/http`, which takes an
+  `allowed_indexes` object. The route narrows a product
+  index to published products in the publishable API key's
+  sales channels, and any further constraint is that
+  middleware's `filters` option.
 - Queries run through `query.search` in an API route. Medusa
   Search has no browser-side querying and no search-only
   key, so the storefront searches through the Medusa backend
@@ -90,16 +93,18 @@ search behavior intact.
    `seed` and `consume` with `graphSeed` and `graphConsume`,
    sharing one options object between them, and reproduce
    the project's indexing rules in its `transform`, such as
-   returning `null` for a product that isn't published. List
+   leaving a product that isn't published out of the
+   documents it returns. List
    the entity's create, update, and delete events in
    `events`.
 6. Allow every index the storefront searches on
-   `/store/search` with the `allowSearchIndexes` middleware
-   in `src/api/middlewares.ts`. An index the middleware
-   doesn't name answers exactly like one that doesn't exist.
-   The route applies no scoping of its own, so add a
-   middleware of the project's own for a constraint such as
-   a sales channel.
+   `/store/search` with the `configureStoreSearch`
+   middleware in `src/api/middlewares.ts`. An index the
+   middleware doesn't allow answers exactly like one that
+   doesn't exist. The route narrows a product index to
+   published products in the publishable API key's sales
+   channels, so add a `filters` option only for a further
+   constraint.
 7. Don't create a product search route, since
    `POST /store/search` serves the storefront. Only write a
    route with `query.search` for a result the built-in route
@@ -212,7 +217,7 @@ environment variables, validating relevance, and deploying.
   held by the new index definition, covered by the default
   product index, or listed as an intentional removal.
 - Every index the storefront searches is named in an
-  `allowSearchIndexes` middleware on `/store/search`.
+  `configureStoreSearch` middleware on `/store/search`.
 - The storefront searches products through
   `POST /store/search`, and no Meilisearch key reaches the
   browser.

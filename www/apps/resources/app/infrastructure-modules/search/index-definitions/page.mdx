@@ -242,7 +242,7 @@ export const brandIndex = defineSearchIndex({
 
 #### Index Part of an Entity
 
-To index a subset of an entity's records, pass a `transform` that returns `null` for a record the index must not hold, rather than narrowing the read with a filter.
+`transform` receives a page of records and returns the documents to index. To index a subset of an entity's records, leave the records the index must not hold out of the array you return, rather than narrowing the read with a filter.
 
 For example, to index published products only:
 
@@ -251,16 +251,22 @@ export const productIndex = defineSearchIndex({
   // ...
   seed: graphSeed({
     fields: ["id", "title", "status"],
-    transform: (product) => {
-      return product.status === "published"
-        ? product
-        : null
+    transform: (products) => {
+      return products.filter(
+        (product) => product.status === "published"
+      )
     },
   }),
 })
 ```
 
-`graphSeed` deletes a rejected record's document on the catch-up pass, so a product that stops qualifying leaves the index instead of going stale in it. A filtered read can't do that, since it never sees the record again.
+`graphSeed` deletes the document of a record you leave out on the catch-up pass, so a product that stops qualifying leaves the index instead of going stale in it. A filtered read can't do that, since it never sees the record again.
+
+<Note title="Important">
+
+Every document you return must carry the record's primary key value as its `id`, since that's how `graphSeed` matches a document back to the record it came from. The helper throws if a document has no `id`.
+
+</Note>
 
 Use `transform` too when the document differs from the record, such as when you flatten a relation into an array of IDs.
 
@@ -276,12 +282,115 @@ export const productIndex = defineSearchIndex({
   }),
   seed: graphSeed({
     fields: ["id", "title", "categories.id"],
-    transform: (product) => ({
+    transform: (products) => products.map((product) => ({
       id: product.id,
       title: product.title,
       category_ids: product.categories.map(
         (category) => category.id
       ),
+    })),
+  }),
+})
+```
+
+#### Read More Data in transform
+
+`transform` is asynchronous and receives a whole page of records at a time, so a document that needs data beyond what one `query.graph` call returns costs a fixed number of extra queries per page, rather than one per record.
+
+For example, to index a French title alongside the English one, read the page again with the `locale` option:
+
+export const transformAsyncHighlights = [
+  ["11", "async", "The function can await other reads."],
+  ["12", "container", "Resolve Query from the context's container."],
+  ["15", "query.graph", "One extra read for the whole page."],
+]
+
+```ts title="src/search/product.ts" highlights={transformAsyncHighlights}
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title_en: search.text().searchable(),
+    title_fr: search.text().searchable(),
+  }),
+  seed: graphSeed({
+    fields: ["id", "title"],
+    transform: async (products, { container }) => {
+      const { query } = container
+      const ids = products.map((product) => product.id)
+
+      const { data: translated } = await query.graph({
+        entity: "product",
+        fields: ["id", "title"],
+        filters: { id: ids },
+      }, { locale: "fr-FR" })
+
+      const frTitles = new Map(
+        translated.map((product) => [
+          product.id,
+          product.title,
+        ])
+      )
+
+      return products.map((product) => ({
+        id: product.id,
+        title_en: product.title,
+        title_fr:
+          frTitles.get(product.id) ?? product.title,
+      }))
+    },
+  }),
+})
+```
+
+#### Pass a Query Context
+
+Some fields only resolve when `query.graph` receives a [query context](!docs!/learn/fundamentals/query/query-context), such as `variants.calculated_price`, which needs a currency or a region to calculate a price for. Pass that context to `graphSeed` with the `context` option:
+
+```ts title="src/search/product.ts"
+import { QueryContext } from "@medusajs/framework/utils"
+
+export const productIndex = defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    // ...
+  }),
+  seed: graphSeed({
+    fields: [
+      "id",
+      "title",
+      "variants.calculated_price.*",
+    ],
+    context: {
+      variants: {
+        calculated_price: QueryContext({
+          currency_code: "usd",
+        }),
+      },
+    },
+  }),
+})
+```
+
+`graphSeed` applies the context to the full run and to the [catch-up pass](#catch-up-on-changes-during-a-run) alike. `graphConsume` accepts the same option, so pass it to both helpers to write the same document from an event.
+
+You can also pass a function, which receives the same context `seed` receives. Use it when the query context depends on the index being filled:
+
+```ts title="src/search/product.ts"
+export const productIndex = defineSearchIndex({
+  // ...
+  seed: graphSeed({
+    // ...
+    context: ({ index }) => ({
+      variants: {
+        calculated_price: QueryContext({
+          currency_code: index.name.endsWith("_eur")
+            ? "eur"
+            : "usd",
+        }),
+      },
     }),
   }),
 })
@@ -308,8 +417,14 @@ export const productIndex = defineSearchIndex({
       name: "transform",
       type: "`function`",
       optional: true,
-      description: "Maps a record to the document to index. Receives the record and the same context `seed` receives. Return `null` or `undefined` to keep the record out of the index.",
-      defaultValue: "Indexes the record as-is"
+      description: "Maps a page of records to the documents to index. Receives the records and the same context `seed` receives, and can be asynchronous. Every document must carry the record's primary key value as its `id`. Leave a record out of the returned array to keep it out of the index.",
+      defaultValue: "Indexes the records as-is"
+    },
+    {
+      name: "context",
+      type: "`object` \\| `function`",
+      optional: true,
+      description: "The [query context](!docs!/learn/fundamentals/query/query-context) that `query.graph` reads the records with, such as the pricing context that `variants.calculated_price` needs. Pass a function to build it from the context `seed` receives. Applied to the full run, the catch-up pass, and `consume` alike."
     },
     {
       name: "batch_size",
@@ -378,7 +493,7 @@ export const brandIndex = defineSearchIndex({
 
 `graphConsume` reads the records the event affects through `query.graph` and writes them to the index.
 
-It deletes a record's document instead when the event's name ends in `.deleted`, when the read doesn't return the record, or when a `transform` rejects it.
+It deletes a record's document instead when the event's name ends in `.deleted`, when the read doesn't return the record, or when a `transform` leaves it out of the documents it returns.
 
 #### Share the Options with `graphSeed`
 
@@ -389,10 +504,10 @@ For example, this is the [published-products index](#index-part-of-an-entity) wi
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "status"],
-  transform: (product) => {
-    return product.status === "published"
-      ? product
-      : null
+  transform: (products) => {
+    return products.filter(
+      (product) => product.status === "published"
+    )
   },
 }
 
@@ -408,20 +523,20 @@ export const productIndex = defineSearchIndex({
 })
 ```
 
-`graphConsume` deletes the document of a product the `transform` rejects, so unpublishing a product removes it from the index as soon as its `product.updated` event arrives, rather than waiting for the next seed.
+`graphConsume` deletes the document of a product the `transform` leaves out, so unpublishing a product removes it from the index as soon as its `product.updated` event arrives, rather than waiting for the next seed.
 
 The same holds for a `transform` that reshapes the record. For example, this is the [category IDs index](#index-part-of-an-entity) kept current by its events:
 
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "categories.id"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     title: product.title,
     category_ids: product.categories.map(
       (category) => category.id
     ),
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -457,8 +572,14 @@ export const productIndex = defineSearchIndex({
       name: "transform",
       type: "`function`",
       optional: true,
-      description: "Maps a record to the document to index. Receives the record and the same context `consume` receives. Return `null` or `undefined` to delete the record's document instead.",
-      defaultValue: "Indexes the record as-is"
+      description: "Maps a page of records to the documents to index. Receives the records and the same context `consume` receives, and can be asynchronous. Every document must carry the record's primary key value as its `id`. Leave a record out of the returned array to delete its document instead.",
+      defaultValue: "Indexes the records as-is"
+    },
+    {
+      name: "context",
+      type: "`object` \\| `function`",
+      optional: true,
+      description: "The [query context](!docs!/learn/fundamentals/query/query-context) that `query.graph` reads the records with, such as the pricing context that `variants.calculated_price` needs. Pass a function to build it from the context `consume` receives."
     },
     {
       name: "resolve_ids",
@@ -499,7 +620,7 @@ The examples in this section index an `article` entity whose content lives in a 
 
 <Note title="Warning" type="warning">
 
-The `container` that `seed` and `consume` receive isn't the Medusa container. It only exposes `query`, so you can't resolve a module or another registration from it. Import the client you need into the file instead, as the examples do.
+The `container` that `seed` and `consume` receive isn't the Medusa container. It only exposes `query`, to read data with Query, and `logger`, to report what an ingestion run is doing. You can't resolve a module or another registration from it, so import the client you need into the file instead, as the examples do.
 
 </Note>
 
@@ -549,6 +670,26 @@ export const articleIndex = defineSearchIndex({
 })
 ```
 
+#### Log an Ingestion Run
+
+A full run can take a while, so use the `logger` of the `container` to report what it's doing. Its messages show in your application's logs alongside the messages that the Search Module logs itself.
+
+```ts title="src/search/article.ts"
+export const articleIndex = defineSearchIndex({
+  // ...
+  async *seed({ container, index }) {
+    const { logger } = container
+
+    // ...
+
+    logger.info(
+      `Seeding ${index.name} with ` +
+        `${articles.length} articles`
+    )
+  },
+})
+```
+
 `seed` receives an object parameter with the following properties:
 
 <TypeList
@@ -557,7 +698,7 @@ export const articleIndex = defineSearchIndex({
       name: "container",
       type: "`object`",
       optional: false,
-      description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query)."
+      description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query), and `logger`, so you can log what the run is doing."
     },
     {
       name: "index",
@@ -765,7 +906,7 @@ export const articleIndex = defineSearchIndex({
           name: "container",
           type: "`object`",
           optional: false,
-          description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query)."
+          description: "A limited Medusa container exposing `query`, so you can read data with [Query](!docs!/learn/fundamentals/query), and `logger`, so you can log what the run is doing."
         },
         {
           name: "index",

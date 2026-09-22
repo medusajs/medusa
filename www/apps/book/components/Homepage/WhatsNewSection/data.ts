@@ -23,7 +23,7 @@ export const whatsNewItems: WhatsNewItem[] = [
   {
     title: "Medusa Search",
     tag: "Medusa Cloud",
-    date: "2026-09-17",
+    date: "2026-09-22",
     link: "https://docs.medusajs.com/cloud/search",
   },
   {

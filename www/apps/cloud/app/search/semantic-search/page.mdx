@@ -66,11 +66,11 @@ import {
 
 const source = {
   fields: ["id", "title"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     title: product.title,
     title_embedding: product.title,
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -172,7 +172,7 @@ For example:
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "type.value", "description"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     content_embedding: [
       `Product: ${product.title}`,
@@ -180,7 +180,7 @@ const source = {
       `Description: ${product.description}`,
     ].join("\n"),
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -224,7 +224,7 @@ const source = {
     "variants.material",
     // ...
   ],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     content_embedding: [
       `Product: ${product.title}`,
@@ -235,7 +235,7 @@ const source = {
         .join(", ")}`,
     ].join("\n"),
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -268,7 +268,7 @@ A bare value, such as `oak`, gives the model little to work with. Label it and k
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "variants.material", "length"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     content_embedding: [
       `Product: ${product.title}`,
@@ -278,7 +278,7 @@ const source = {
       `Dimensions: ${product.length} cm deep`,
     ].join("\n"),
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -330,7 +330,7 @@ const source = {
     "categories.parent_category.name",
     // ...
   ],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     content_embedding: [
       `Product: ${product.title}`,
@@ -339,7 +339,7 @@ const source = {
         .join(", ")}`,
     ].join("\n"),
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -372,7 +372,7 @@ An ID, a timestamp, or an internal status carries no meaning that a shopper woul
 ```ts title="src/search/product.ts"
 const source = {
   fields: ["id", "title", "status", "collection.title"],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     status: product.status,
     content_embedding: [
@@ -380,7 +380,7 @@ const source = {
       `Collection: ${product.collection?.title}`,
     ].join("\n"),
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -419,7 +419,7 @@ const source = {
     "variants.inventory_quantity",
     // ...
   ],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     price:
       product.variants?.[0]?.calculated_price
@@ -431,7 +431,7 @@ const source = {
     ),
     content_embedding: `Product: ${product.title}`,
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -484,14 +484,14 @@ const source = {
     "variants.barcode",
     // ...
   ],
-  transform: (product) => ({
+  transform: (products) => products.map((product) => ({
     id: product.id,
     title: product.title,
     sku: product.variants?.[0]?.sku,
     barcode: product.variants?.[0]?.barcode,
     content_embedding: `Product: ${product.title}`,
     // ...
-  }),
+  })),
 }
 
 export const productIndex = defineSearchIndex({
@@ -581,21 +581,20 @@ const source = {
     "variants.barcode",
     "variants.material",
   ],
-  transform: (product) => {
-    if (product.status !== "published") {
-      return null
-    }
-
-    return {
-      id: product.id,
-      title: product.title,
-      sku: product.variants?.[0]?.sku,
-      barcode: product.variants?.[0]?.barcode,
-      category_ids: product.categories?.map(
-        (category) => category.id
-      ),
-      content_embedding: buildEmbeddingText(product),
-    }
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map((product) => ({
+        id: product.id,
+        title: product.title,
+        sku: product.variants?.[0]?.sku,
+        barcode: product.variants?.[0]?.barcode,
+        category_ids: product.categories?.map(
+          (category) => category.id
+        ),
+        content_embedding:
+          buildEmbeddingText(product),
+      }))
   },
 }
 

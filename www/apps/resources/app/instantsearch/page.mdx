@@ -52,7 +52,7 @@ Add a product search experience to this storefront using the `@medusajs/instants
 
 <context>
 - Medusa's Search Module indexes data in a search engine and serves queries with filters, facets, sorting, and pagination.
-- Medusa exposes a `/store/search` API route that searches any index of the Medusa application, so you don't create a route for product search. An index is only reachable through it once the Medusa application allows it with the `allowSearchIndexes` middleware, and the route applies no scoping of its own: narrowing a query to a sales channel or to published documents is a middleware in the Medusa application, never the storefront.
+- Medusa exposes a `/store/search` API route that searches any index of the Medusa application, so you don't create a route for product search. An index is only reachable through it once the Medusa application allows it with the `configureStoreSearch` middleware. The route narrows a product index to published products in the publishable API key's sales channels on its own, and any further scoping is that middleware's `filters` in the Medusa application, never the storefront.
 - `@medusajs/instantsearch-adapter` provides a search client, not UI components. It converts InstantSearch requests into Medusa search queries, sends them to `/store/search`, and converts the results back.
 - InstantSearch is a family of UI widget libraries: `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`, and `instantsearch.js` for storefronts without a framework.
 - Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
@@ -99,7 +99,7 @@ You have access to the storefront's codebase. Before writing code, determine fro
 - Never add a CSS framework, component library, state-management library, or UI primitive that the storefront doesn't already use. Style the search with the storefront's existing approach.
 - Never create more than one search client or more than one `InstantSearch` provider for the same search.
 - Never modify the Medusa application's `/store/search` route.
-- Never create a custom API route for an index that `/store/search` already serves. Report to the user instead when an index isn't allowed on it, so they add it to the `allowSearchIndexes` middleware.
+- Never create a custom API route for an index that `/store/search` already serves. Report to the user instead when an index isn't allowed on it, so they add it to the `configureStoreSearch` middleware.
 </constraints>
 
 <error_handling>
@@ -107,7 +107,7 @@ You have access to the storefront's codebase. Before writing code, determine fro
 - If you can't determine the storefront's framework, ask the user instead of guessing.
 - If the chosen shape needs a UI primitive the storefront doesn't have, ask the user before installing a library.
 - If no index definition is available, ask the user which fields the index holds. Don't infer field names from the storefront's product types.
-- If a search request answers with "No search index named \"product\"", the index isn't allowed on the route. Ask the user to add it to the `allowSearchIndexes` middleware in their Medusa application rather than working around it.
+- If a search request answers with "No search index named \"product\"", the index isn't allowed on the route. Ask the user to add it to the `configureStoreSearch` middleware in their Medusa application rather than working around it.
 - If the search request fails at runtime, surface the error in the UI and report the status code and response body. Don't fall back to an empty state that hides it.
 - If the storefront already has a search implementation, ask whether to replace it or add alongside it before changing any file.
 - If a range or stats widget renders no bounds, add the field to the search client's `numericAttributes` and report that the index definition needs `facetable({ types: ["stats"] })`. Don't remove the widget silently.
@@ -937,7 +937,7 @@ Every query then uses the `last` match strategy and typo tolerance, and the prod
 
 <Note title="Warning" type="warning">
 
-Filters you set in the storefront's client are visible to customers, who can change them, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data. Scoping a search to what a customer may see, such as a sales channel or published products, is a middleware on the `/store/search` route in your Medusa application.
+Filters you set in the storefront's client are visible to customers, who can change them, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data. Scoping a search to what a customer may see is the `/store/search` route's own responsibility in your Medusa application, which narrows a product index to published products in the publishable API key's sales channels.
 
 </Note>
 
@@ -945,11 +945,11 @@ Filters you set in the storefront's client are visible to customers, who can cha
 
 ## Search Another Index
 
-The `/store/search` route searches any index that a middleware allowed in your Medusa application, so an index you defined yourself needs no route of its own. Add its name to the `allowSearchIndexes` middleware:
+The `/store/search` route searches any index that a middleware allowed in your Medusa application, so an index you defined yourself needs no route of its own. Add its name to the `configureStoreSearch` middleware:
 
 ```ts title="src/api/middlewares.ts"
 import {
-  allowSearchIndexes,
+  configureStoreSearch,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
@@ -958,7 +958,12 @@ export default defineMiddlewares({
     {
       matcher: "/store/search",
       middlewares: [
-        allowSearchIndexes("product", "article"),
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            article: true,
+          },
+        }),
       ],
     },
   ],

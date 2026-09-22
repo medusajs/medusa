@@ -548,6 +548,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "link",
+          "path": "/infrastructure-modules/search/store-search",
+          "title": "Store Search API Route",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
           "path": "/infrastructure-modules/search/reindexing",
           "title": "Reindexing and Migrations",
           "children": []
@@ -585,6 +592,13 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
               "path": "https://docs.medusajs.com/cloud/search",
               "title": "Medusa Search",
               "children": [
+                {
+                  "loaded": true,
+                  "type": "ref",
+                  "path": "https://docs.medusajs.com/cloud/search/semantic-search#best-practices-for-what-to-embed",
+                  "title": "Semantic Search Best Practices",
+                  "children": []
+                },
                 {
                   "loaded": true,
                   "type": "ref",

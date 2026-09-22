@@ -37,8 +37,10 @@ indexed and served by it.
 - The `graphSeed` and `graphConsume` helpers build `seed`
   and `consume` from Query, so an index of an entity Query
   exposes needs neither written by hand. They take the same
-  options, including a `transform` that reshapes a record or
-  returns `null` to keep it out of the index.
+  options, including a `transform` that maps a page of
+  records to the documents to index. Every document must
+  carry the record's primary key as `id`, and a record you
+  leave out of the returned array stays out of the index.
 - Medusa's Store API has a `POST /store/search` route that
   searches any index of the application, so a project
   doesn't need its own product search route. The body is a
@@ -47,11 +49,12 @@ indexed and served by it.
   `filters` (including `q`), `pagination`, and
   `search_options`.
 - An index is only reachable through `POST /store/search`
-  once a middleware allows it with `allowSearchIndexes`
-  from `@medusajs/framework/http`. The route applies no
-  scoping of its own, so narrowing a query to a sales
-  channel or to published documents is another middleware
-  on the route.
+  once a middleware allows it with `configureStoreSearch`
+  from `@medusajs/framework/http`, which takes an
+  `allowed_indexes` object. The route narrows a product
+  index to published products in the publishable API key's
+  sales channels, and any further constraint is that
+  middleware's `filters` option.
 - Queries in a custom route run through `query.search`.
   There is no browser-side querying and no search-only key.
 - Each Cloud environment has its own indexes, scoped by the
@@ -374,7 +377,7 @@ so there's nothing to poll.
 
 ```ts title="src/api/middlewares.ts"
 import {
-  allowSearchIndexes,
+  configureStoreSearch,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
@@ -382,7 +385,13 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/search",
-      middlewares: [allowSearchIndexes("product")],
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+          },
+        }),
+      ],
     },
   ],
 })
@@ -573,18 +582,20 @@ details this reference leaves out:
    it. Build `seed` and `consume` with `graphSeed` and
    `graphConsume`, sharing one options object between them,
    and put the project's indexing rules in its `transform`,
-   such as returning `null` for an unpublished record. List
+   such as leaving an unpublished record out of the
+   documents it returns. List
    the entity's create, update, and delete events in
    `events`. Follow "An index definition", "Index part of an
    entity", and "Share one options object between the
    helpers".
 9. Allow every index the storefront searches on
-   `/store/search` with the `allowSearchIndexes` middleware
-   in `src/api/middlewares.ts`, as shown in "The Store API
-   search route". An index the middleware doesn't name
-   answers exactly like one that doesn't exist. The route
-   applies no scoping of its own, so add a middleware of the
-   project's own for a constraint such as a sales channel.
+   `/store/search` with the `configureStoreSearch`
+   middleware in `src/api/middlewares.ts`, as shown in "The
+   Store API search route". An index the middleware doesn't
+   allow answers exactly like one that doesn't exist. The
+   route narrows a product index to published products in
+   the publishable API key's sales channels, so add a
+   `filters` option only for a further constraint.
 10. Write an API route with `query.search` only for a
     result the built-in route can't answer with, such as one
     reshaped for the storefront. Respond with the hydrated
@@ -640,9 +651,9 @@ details this reference leaves out:
   Enterprise. Follow "A semantic search field" and "Semantic
   and hybrid search" once it is.
 - Do not narrow a `graphSeed` read with a filter to index
-  part of an entity. Reject the record in `transform`
-  instead, so a record that stops qualifying leaves the
-  index.
+  part of an entity. Leave the record out of the documents
+  `transform` returns instead, so a record that stops
+  qualifying leaves the index.
 - Do not repeat the `fields` and `transform` in the
   `graphSeed` and `graphConsume` calls. Declare one options
   object and pass it to both.
@@ -721,7 +732,7 @@ relevance checks. Write "None" when the list is empty.
   sorts by is held by an index definition under
   `src/search`.
 - Every index the storefront searches is named in an
-  `allowSearchIndexes` middleware on `/store/search`.
+  `configureStoreSearch` middleware on `/store/search`.
 - Every custom search route uses `query.search` and returns
   each record once.
 - No credential appears outside a git-ignored `.env` file.

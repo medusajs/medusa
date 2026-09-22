@@ -328,6 +328,7 @@ export const sitemapUrls = [
   "/infrastructure-modules/search/providers",
   "/infrastructure-modules/search/providers/postgres",
   "/infrastructure-modules/search/reindexing",
+  "/infrastructure-modules/search/store-search",
   "/infrastructure-modules/workflow-engine/how-to-use",
   "/infrastructure-modules/workflow-engine/in-memory",
   "/infrastructure-modules/workflow-engine",

@@ -388,6 +388,11 @@ export const infrastructureModulesSidebar = [
       },
       {
         type: "link",
+        path: "/infrastructure-modules/search/store-search",
+        title: "Store Search API Route",
+      },
+      {
+        type: "link",
         path: "/infrastructure-modules/search/reindexing",
         title: "Reindexing and Migrations",
       },

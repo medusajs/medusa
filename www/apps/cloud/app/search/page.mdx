@@ -88,8 +88,10 @@ const source = {
     "tags.id",
     "tags.value",
   ],
-  transform: ({ status, ...product }) => {
-    return status === "published" ? product : null
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map(({ status, ...product }) => product)
   },
 }
 
@@ -138,11 +140,11 @@ The definition names the fields the engine holds, fills the index with [`graphSe
 
 Medusa exposes the [`POST /store/search` API route](!api!/store/search/search-indexes), which searches any index of your application. However, an index isn't searchable through it until a middleware allows it, so a storefront never reaches an index you didn't expose.
 
-To allow the `product` index, use the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+To allow the `product` index, use the `configureStoreSearch` middleware in `src/api/middlewares.ts`:
 
 ```ts title="src/api/middlewares.ts"
 import {
-  allowSearchIndexes,
+  configureStoreSearch,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
@@ -150,13 +152,19 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/search",
-      middlewares: [allowSearchIndexes("product")],
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+          },
+        }),
+      ],
     },
   ],
 })
 ```
 
-The route runs the queries as posted, so narrow them further, such as to a sales channel, with another middleware that changes `req.validatedBody`.
+The route narrows a product index to published products in the publishable API key's sales channels, and you can narrow any index further with the middleware's `filters` option. Learn more in the [Store Search API Route guide](!resources!/infrastructure-modules/search/store-search).
 
 ### 4. Push and Deploy Your Changes
 

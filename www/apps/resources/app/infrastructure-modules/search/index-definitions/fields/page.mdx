@@ -340,9 +340,9 @@ export const productIndex = defineSearchIndex({
 
 The `seed` function pages the products by their ID, so an interrupted run resumes from the `last_key` it receives rather than starting over. It also runs as the [catch-up pass](../page.mdx#handle-the-catch-up-pass) that follows a full run, which is why it reads `catchup`: the pass narrows the read to the products changed since the run started, includes the deleted ones, and yields a `delete` write for them so the index loses their documents.
 
-<Note>
+<Note title="Tip">
 
-You can't build this `seed` with [`graphSeed`](../page.mdx#fill-the-index-from-query-with-graphseed) and its `transform` option. `transform` is synchronous and receives the rows of a single `query.graph` call, while a translated value needs a second read with the `locale` option.
+You can also build this `seed` with [`graphSeed`](../page.mdx#fill-the-index-from-query-with-graphseed) and its `transform` option, which is asynchronous and receives a whole page of rows. Refer to [Read More Data in transform](../page.mdx#read-more-data-in-transform) for an example that reads the same page again with the `locale` option.
 
 </Note>
 

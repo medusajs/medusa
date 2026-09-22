@@ -177,12 +177,12 @@ Define the product index in the file `src/search/product.ts`:
 
 export const productIndexHighlights = [
   ["22", "transform", "Index published products only."],
-  ["28", "name", "The index name that a search query resolves against."],
-  ["29", "entity", "The Query entity used to hydrate non-indexed fields."],
-  ["30", "fields", "The fields the search engine holds."],
-  ["56", "events", "The events that change the data the index holds."],
-  ["61", "consume", "Turns each of those events into document writes."],
-  ["62", "seed", "Fills the index with every product."],
+  ["30", "name", "The index name that a search query resolves against."],
+  ["31", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["32", "fields", "The fields the search engine holds."],
+  ["58", "events", "The events that change the data the index holds."],
+  ["63", "consume", "Turns each of those events into document writes."],
+  ["64", "seed", "Fills the index with every product."],
 ]
 
 {/* TODO: the fields of the default product index aren't final yet. Update this snippet once they are. */}
@@ -209,8 +209,10 @@ const source = {
     "tags.id",
     "tags.value",
   ],
-  transform: ({ status, ...product }) => {
-    return status === "published" ? product : null
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map(({ status, ...product }) => product)
   },
 }
 
@@ -273,16 +275,16 @@ Medusa then fills the index with your products. Learn more about index migration
 
 Medusa exposes the [Store Search API route](!api!/store/search/search-indexes), which searches any index of your application. However, an index isn't searchable through it until a middleware allows it, so a storefront never reaches an index you didn't expose.
 
-To allow the `product` index, use the `allowSearchIndexes` middleware in `src/api/middlewares.ts`:
+To allow the `product` index, use the `configureStoreSearch` middleware in `src/api/middlewares.ts`:
 
 export const middlewareHighlights = [
   ["9", "matcher", "Apply the middleware to the Store Search API route."],
-  ["10", "allowSearchIndexes", "Allow the `product` index only."],
+  ["12", "allowed_indexes", "Allow the `product` index only."],
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
 import {
-  allowSearchIndexes,
+  configureStoreSearch,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
@@ -290,19 +292,21 @@ export default defineMiddlewares({
   routes: [
     {
       matcher: "/store/search",
-      middlewares: [allowSearchIndexes("product")],
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+          },
+        }),
+      ],
     },
   ],
 })
 ```
 
-You can pass more than one index name to `allowSearchIndexes`, and you can add the middleware more than once, so a plugin exposes its own index without discarding what your application allowed.
+You can allow more than one index, and you can add the middleware more than once, so a plugin exposes its own index without discarding what your application allowed.
 
-<Note title="Tip">
-
-The route runs the queries as posted, so narrow them further, such as to a sales channel, with another middleware that changes `req.validatedBody`.
-
-</Note>
+The route also narrows a product index to the products a storefront may see, and you can narrow any index further with a filter of your own. Learn more in the [Store Search Route guide](./store-search/page.mdx).
 
 ### 4. Search Products
 
@@ -406,7 +410,7 @@ export const brandIndex = defineSearchIndex({
 
 Then, choose how to search it:
 
-- To search it from your storefront, add `brand` to the `allowSearchIndexes` middleware, as explained in [Allow the Index on the Store Search Route](#3-allow-the-index-on-the-store-search-route), then post a query with `"entity": "brand"`.
+- To search it from your storefront, add `brand` to the `configureStoreSearch` middleware, as explained in [Allow the Index on the Store Search Route](#3-allow-the-index-on-the-store-search-route), then post a query with `"entity": "brand"`.
 - To search it in your own [API route](!docs!/learn/fundamentals/api-routes) or [workflow](!docs!/learn/fundamentals/workflows), use the [`search` method of Query](!docs!/learn/fundamentals/query/search).
 
 For example, to search brands in a custom API route, create the file `src/api/store/brands/search/route.ts` with the following content:

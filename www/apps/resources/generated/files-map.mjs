@@ -1316,6 +1316,10 @@ export const filesMap = [
     "pathname": "/infrastructure-modules/search/reindexing"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/store-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/store-search"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/how-to-use/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/how-to-use"
   },

@@ -1,0 +1,237 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Store Search API Route`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to expose your search indexes to a storefront through the [Store Search API route](!api!/store/search/search-indexes), and how to control what a storefront can find in them.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+## What is the Store Search API Route?
+
+Medusa exposes a single `POST /store/search` route that searches any index of your application, so you don't create an API route per index. It answers with the search engine's own results, which is the contract the [InstantSearch adapter](../../../instantsearch/page.mdx) is built on.
+
+The route exposes nothing by default. An index is only searchable through it once the `configureStoreSearch` middleware allows it, and a request for any other index is answered as if the index didn't exist. That way, the route never tells a storefront what your application holds.
+
+---
+
+## Allow Indexes on the Route
+
+To allow an index to be searched through the route, apply the `configureStoreSearch` middleware to `/store/search` in `src/api/middlewares.ts`:
+
+export const allowHighlights = [
+  ["9", "matcher", "Apply the middleware to the Store Search API route."],
+  ["12", "allowed_indexes", "The indexes a storefront can search."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={allowHighlights}
+import {
+  configureStoreSearch,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            product_category: true,
+          },
+        }),
+      ],
+    },
+  ],
+})
+```
+
+A storefront can now post a query with `"entity": "product"` or `"entity": "product_category"`. Every other index still answers with a `404` error, and Medusa logs why for whoever configured the route.
+
+You can apply the middleware more than once. Each one merges its `allowed_indexes` into the ones before it, so a plugin exposes its own index without discarding what your application allowed.
+
+<Note title="Tip">
+
+Only allow indexes whose documents are public. An index holding internal data, such as one you built for [Medusa Admin's search](../admin-search/page.mdx), stays unreachable from a storefront as long as you don't allow it.
+
+</Note>
+
+---
+
+## How Medusa Narrows a Product Index
+
+A storefront must never find a draft product, or a product that isn't in the request's sales channel. So, for an index whose `entity` is `product`, Medusa adds the following filters to every query:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Filter
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Applied when
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `status` is `published`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index declares a `status` field with the [`filterable` modifier](../index-definitions/modifiers/page.mdx#filterable).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `sales_channel_ids` is one of the publishable API key's sales channels.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The index declares a `sales_channel_ids` field with the [`filterable` modifier](../index-definitions/modifiers/page.mdx#filterable).
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+So, to have Medusa scope your product index for you, declare both fields in the index definition. `sales_channel_ids` isn't a field of the product itself, so select the product's `sales_channels.id` and flatten them onto the document with a [`transform`](../index-definitions/page.mdx#index-part-of-an-entity):
+
+export const scopeHighlights = [
+  ["8", "status", "Read by the route, never returned in a hit."],
+  ["9", "sales_channel_ids", "Read by the route, never returned in a hit."],
+  ["18", `"sales_channels.id"`, "Selected to fill `sales_channel_ids`."],
+  ["21", "status", "Index published products only."],
+]
+
+```ts title="src/search/product.ts" highlights={scopeHighlights}
+const productFields = search.define({
+  id: search.keyword().filterable().retrievable(),
+  title: search
+    .text()
+    .searchable({ weight: 3 })
+    .retrievable(),
+  // Read by `/store/search` to scope the index.
+  status: search.keyword().filterable().retrievable(false),
+  sales_channel_ids: search
+    .keyword()
+    .array()
+    .filterable()
+    .retrievable(false),
+  // ...
+})
+
+const source = {
+  fields: ["id", "title", "status", "sales_channels.id"],
+  transform: (products) => {
+    return products
+      .filter((p) => p.status === "published")
+      .map((product) => ({
+        id: product.id,
+        title: product.title,
+        status: product.status,
+        sales_channel_ids: product.sales_channels.map(
+          (salesChannel) => salesChannel.id
+        ),
+      }))
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: productFields,
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+  // ...
+})
+```
+
+The `status` and `sales_channel_ids` fields use [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable), so the route can filter on them without ever returning them in a hit.
+
+If the index is missing either field, Medusa logs a warning once for that index and skips that filter. Then, either add the missing field to the definition, or scope the index yourself as explained in the next section.
+
+---
+
+## Filter an Index for Your Storefront
+
+To constrain an index beyond what Medusa applies, pass a `filters` function for it instead of `true`. The function receives the request, so a constraint can depend on who is asking, and it can be asynchronous.
+
+For example, to only find active product categories:
+
+export const filtersHighlights = [
+  ["15", "filters", "Applied to every query on this index."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={filtersHighlights}
+import {
+  configureStoreSearch,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            product_category: {
+              filters: (req) => ({ is_active: true }),
+            },
+          },
+        }),
+      ],
+    },
+    // ...
+  ],
+})
+```
+
+Medusa combines your filters with the ones it applies itself and the ones the storefront posts using an `$and` operator. So, a storefront can narrow its own results but never widen them past what you allowed.
+
+---
+
+## Search Documents in the Storefront
+
+Once an index is allowed, send a `POST` request to `/store/search` with the index's name in `entity`:
+
+```bash
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" }
+  }'
+```
+
+Learn more about the accepted request body and the response in the [Store Search API reference](!api!/store/search/search-indexes).
+
+<Note title="Tip">
+
+To build a full search experience with facets, pagination, and sorting in your storefront, use the [InstantSearch adapter](../../../instantsearch/page.mdx), which posts to this route for you.
+
+</Note>
