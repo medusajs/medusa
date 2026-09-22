@@ -208,6 +208,40 @@ describe("graphSeed", () => {
     ])
   })
 
+  it("reads the rows with the query context", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+    const context = { variants: { calculated_price: { currency_code: "eur" } } }
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"], context })
+    await collect(seed(createContext(graph)))
+
+    expect(graph.mock.calls[0][0].context).toBe(context)
+  })
+
+  it("resolves a query context function per read", async () => {
+    const since = new Date("2026-01-01")
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+    const context = jest.fn(() => ({ locale: "de" }))
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"], context })
+    const ingestion = createContext(graph, { catchup: { since } })
+    await collect(seed(ingestion))
+
+    expect(context).toHaveBeenCalledWith(ingestion)
+    expect(graph.mock.calls[0][0]).toEqual(
+      expect.objectContaining({ withDeleted: true, context: { locale: "de" } })
+    )
+  })
+
+  it("passes no context key when none is configured", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
+    await collect(seed(createContext(graph)))
+
+    expect("context" in graph.mock.calls[0][0]).toBe(false)
+  })
+
   it("yields nothing for an empty page", async () => {
     const graph = jest.fn().mockResolvedValue({ data: [] })
 
@@ -282,6 +316,29 @@ describe("graphConsume", () => {
       // prod_2 was rejected by the transform, prod_3 was never returned.
       { action: "delete", filters: { id: ["prod_2", "prod_3"] } },
     ])
+  })
+
+  it("reads the event's ids back with the query context", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValue({ data: [{ id: "prod_1", title: "One" }] })
+    const context = { variants: { calculated_price: { currency_code: "eur" } } }
+
+    const consume = graphConsume<typeof fields>({
+      fields: ["id", "title"],
+      context: () => context,
+    })
+    await consume(
+      { name: "product.updated", data: { id: "prod_1" } } as any,
+      createContext(graph)
+    )
+
+    expect(graph).toHaveBeenCalledWith({
+      entity: "product",
+      fields: ["id", "title"],
+      filters: { id: ["prod_1"] },
+      context,
+    })
   })
 
   it("ignores an event carrying no id", async () => {

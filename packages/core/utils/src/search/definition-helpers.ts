@@ -1,4 +1,4 @@
-import { SearchTypes } from "@medusajs/types"
+import { QueryContextType, SearchTypes } from "@medusajs/types"
 
 /**
  * `seed` and `consume` implementations backed by `query.graph`.
@@ -18,6 +18,10 @@ export type SearchConsumeEvent = Parameters<
   NonNullable<SearchTypes.SearchIndexDefinition["consume"]>
 >[0]
 
+export type SearchGraphQueryContext =
+  | QueryContextType
+  | ((context: SearchTypes.SearchIngestionContext) => QueryContextType)
+
 export interface SearchGraphSourceOptions<
   Fields extends SearchTypes.SearchIndexFieldsInput,
   TRow extends GraphRow = GraphRow
@@ -33,6 +37,13 @@ export interface SearchGraphSourceOptions<
    * indexed as-is, so this should then select exactly what the index declares.
    */
   fields: string[]
+
+  /**
+   * The query context `query.graph` reads the rows with, e.g. the pricing
+   * context `variants.calculated_price` needs. Applied to seed, catch-up and
+   * `consume` alike.
+   */
+  context?: SearchGraphQueryContext
 
   /**
    * Maps a row to the document to index. Returning `null` or `undefined`
@@ -121,6 +132,14 @@ function withFields(fields: string[], ...extra: string[]): string[] {
   return missing.length ? [...fields, ...missing] : fields
 }
 
+function queryContext(
+  option: SearchGraphQueryContext | undefined,
+  context: SearchTypes.SearchIngestionContext
+): { context: QueryContextType } | {} {
+  const resolved = typeof option === "function" ? option(context) : option
+  return resolved ? { context: resolved } : {}
+}
+
 /**
  * Builds an index definition's `seed` from a `query.graph` query.
  *
@@ -177,6 +196,7 @@ export function graphSeed<
         ]),
         pagination: { take: batchSize, order: { [primaryKey]: "ASC" } },
         withDeleted: !!catchup,
+        ...queryContext(options.context, context),
       })) as { data: TRow[] }
 
       if (!data.length) {
@@ -281,6 +301,7 @@ export function graphConsume<
       entity,
       fields: withFields(fields, primaryKey),
       filters: { [primaryKey]: ids },
+      ...queryContext(options.context, context),
     })) as { data: TRow[] }
 
     const documents: SearchTypes.InferSearchDocumentType<Fields>[] = []
