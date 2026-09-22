@@ -295,6 +295,11 @@ export const sidebar = [
               },
             ],
           },
+          {
+            type: "link",
+            title: "Search Analytics",
+            path: "/search-analytics",
+          },
         ],
       },
       {

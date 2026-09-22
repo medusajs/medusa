@@ -1,0 +1,53 @@
+export const metadata = {
+  title: `Search Analytics`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the Search Analytics section available for your environment's search integration.
+
+## Overview
+
+The Search Analytics section gives you visibility into how search is being used in your environment. It is accessible from an environment's storage and search area in the Cloud dashboard.
+
+The section includes:
+
+- A **Search Volume** chart showing search activity over time.
+- A **Top Search Terms** panel listing the most frequently queried text terms.
+- A **No-Hit Terms** panel listing text terms that returned no results.
+- A **Vector Terms** panel listing the top terms associated with vector-based searches.
+
+---
+
+## Search Volume Chart
+
+The Search Volume chart displays the number of searches performed over a selected time period. The chart shows two separate series:
+
+- **Freetext searches** (blue): text-based queries entered by users.
+- **Vector searches** (green): semantic or embedding-based queries.
+
+Both series are stacked on the same chart, so you can compare the volume of each search type and understand the overall search activity in your environment.
+
+---
+
+## Top Search Terms
+
+The **Top Search Terms** panel lists the text terms that appear most frequently in freetext searches. Use this panel to understand what your users are searching for most often.
+
+If there are no freetext terms to display — for example, when all searches in the selected period were vector-based — the panel shows an empty-state message.
+
+---
+
+## No-Hit Terms
+
+The **No-Hit Terms** panel lists text terms that were searched but returned no results. Use this panel to identify gaps in your catalog or search configuration.
+
+If there are no no-hit terms to display, the panel shows an empty-state message.
+
+---
+
+## Vector Terms
+
+The **Vector Terms** panel lists the top search terms associated with vector-based searches in your environment. Use this panel to understand which queries are driving vector search activity.
+
+If there are no vector terms to display, the panel shows an empty-state message.

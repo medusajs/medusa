@@ -395,6 +395,13 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Search Analytics",
+            "path": "/search-analytics",
+            "children": []
           }
         ]
       },
