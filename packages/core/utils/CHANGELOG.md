@@ -1,5 +1,20 @@
 # @medusajs/utils
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16816](https://github.com/medusajs/medusa/pull/16816) [`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa, utils): apply default http.authMethodsPerActor and gate `/auth/:auth_provider/user` by config
+
+- [#16749](https://github.com/medusajs/medusa/pull/16749) [`3538aab7bc5fcff61591a83bb98e6643823cb947`](https://github.com/medusajs/medusa/commit/3538aab7bc5fcff61591a83bb98e6643823cb947) Thanks [@yfwmaniish](https://github.com/yfwmaniish)! - fix(utils): compare Date values by time in deepEqualObj
+
+- [#16467](https://github.com/medusajs/medusa/pull/16467) [`893d96850320f8f00c623c66f46e9fcde5ab1cdf`](https://github.com/medusajs/medusa/commit/893d96850320f8f00c623c66f46e9fcde5ab1cdf) Thanks [@tushardev-365](https://github.com/tushardev-365)! - fix(utils): make the migration skip flag actually skip migrations
+
+- [#16903](https://github.com/medusajs/medusa/pull/16903) [`75f3d03b84b1404cc05b9f5f15c6be4a2c2f1d18`](https://github.com/medusajs/medusa/commit/75f3d03b84b1404cc05b9f5f15c6be4a2c2f1d18) Thanks [@sradevski](https://github.com/sradevski)! - feat(utils): extend the `graphSeed` and `graphConsume` search helpers so an index whose documents need more than one `query.graph` read can use them instead of a hand-written `seed` and `consume`: a `context` option forwarded to every read including the catch-up pass (e.g. the pricing context `variants.calculated_price` needs), and a `transform` that receives the whole page, may be async, and marks a row as leaving the index by returning no document for it — so enrichment such as prices in several currencies costs a fixed number of reads per page, and an awaited `resolve_ids` that receives the ingestion context, so an event about a related entity can be mapped to the documents it affects
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes
