@@ -3265,6 +3265,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductTypesStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsDefaultInventoryStep",
+    "newSlug": "/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsDefaultInventoryStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsStep",
     "newSlug": "/references/medusa-workflows/steps/createProductVariantsStep",
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsStep/page.json"
@@ -3910,6 +3915,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Sales_Channel/Workflows_Sales_Channel/functions/core_flows.Sales_Channel.Workflows_Sales_Channel.updateSalesChannelsWorkflow/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.deleteSearchIndexStep",
+    "newSlug": "/references/medusa-workflows/steps/deleteSearchIndexStep",
+    "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.deleteSearchIndexStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.reindexSearchIndexesStep",
     "newSlug": "/references/medusa-workflows/steps/reindexSearchIndexesStep",
     "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.reindexSearchIndexesStep/page.json"
@@ -3918,6 +3928,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.validateSearchIndexesExistStep",
     "newSlug": "/references/medusa-workflows/steps/validateSearchIndexesExistStep",
     "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.validateSearchIndexesExistStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Search/Workflows_Search/functions/core_flows.Search.Workflows_Search.deleteSearchIndexWorkflow",
+    "newSlug": "/references/medusa-workflows/deleteSearchIndexWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Search/Workflows_Search/functions/core_flows.Search.Workflows_Search.deleteSearchIndexWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Search/Workflows_Search/functions/core_flows.Search.Workflows_Search.reindexSearchIndexesWorkflow",
@@ -4168,6 +4183,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitAccountsWorkflow",
     "newSlug": "/references/medusa-workflows/debitAccountsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitAccountsWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitStoreCreditAccountWorkflow",
+    "newSlug": "/references/medusa-workflows/debitStoreCreditAccountWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitStoreCreditAccountWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep",

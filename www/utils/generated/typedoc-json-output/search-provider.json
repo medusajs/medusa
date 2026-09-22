@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 66210,
 	"name": "search-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 66211,
 			"name": "AbstractSearchProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -45,7 +45,7 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 66212,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -90,9 +90,9 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 91,
+							"line": 92,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L91"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L92"
 						}
 					],
 					"type": {
@@ -101,21 +101,21 @@
 					}
 				},
 				{
-					"id": 3,
+					"id": 66213,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4,
+							"id": 66214,
 							"name": "AbstractSearchProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1,
+								"target": 66211,
 								"name": "AbstractSearchProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -123,77 +123,7 @@
 					]
 				},
 				{
-					"id": 5,
-					"name": "migrate_on_startup",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Whether the Search Module should migrate your indexes when the application\nstarts, instead of relying on "
-							},
-							{
-								"kind": "code",
-								"text": "`db:migrate`"
-							},
-							{
-								"kind": "text",
-								"text": ".\n\nSet this to "
-							},
-							{
-								"kind": "code",
-								"text": "`true`"
-							},
-							{
-								"kind": "text",
-								"text": " if your indexes don't outlive the process that created\nthem, such as the case for an in-memory engine: "
-							},
-							{
-								"kind": "code",
-								"text": "`db:migrate`"
-							},
-							{
-								"kind": "text",
-								"text": " runs in its own\nprocess, so anything it created is gone once it exits. The module then\nmigrates your indexes right before it seeds them, in the process that serves\nsearches.\n\nLeave it out if your engine holds indexes outside the Medusa process."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "code",
-										"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  static identifier = \"my-search\"\n  readonly migrate_on_startup = true\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"sources": [
-						{
-							"fileName": "abstract-search-provider.ts",
-							"line": 112,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L112"
-						}
-					],
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "SearchTypes.ISearchProvider.migrate_on_startup"
-					}
-				},
-				{
-					"id": 10,
+					"id": 66219,
 					"name": "search",
 					"variant": "declaration",
 					"kind": 2048,
@@ -201,14 +131,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 166,
+							"line": 146,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L166"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L146"
 						}
 					],
 					"signatures": [
 						{
-							"id": 11,
+							"id": 66220,
 							"name": "search",
 							"variant": "signature",
 							"kind": 4096,
@@ -281,7 +211,7 @@
 									},
 									{
 										"kind": "text",
-										"text": ",\nsince the two differ under an index prefix or during a swap."
+										"text": ",\nsince the two differ under an index prefix or between versions."
 									}
 								],
 								"blockTags": [
@@ -308,14 +238,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 166,
+									"line": 146,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L166"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L146"
 								}
 							],
 							"parameters": [
 								{
-									"id": 12,
+									"id": 66221,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -394,7 +324,166 @@
 					}
 				},
 				{
-					"id": 13,
+					"id": 66222,
+					"name": "searchMany",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-search-provider.ts",
+							"line": 181,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L181"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66223,
+							"name": "searchMany",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method runs multiple queries in a single request to the search engine.\nThe Search Module uses it for its "
+									},
+									{
+										"kind": "code",
+										"text": "`searchMany`"
+									},
+									{
+										"kind": "text",
+										"text": " method, including the extra\nqueries produced by disjunctive faceting.\n\nThe default runs "
+									},
+									{
+										"kind": "code",
+										"text": "`search`"
+									},
+									{
+										"kind": "text",
+										"text": " concurrently. Override it to pack the queries into\none engine round-trip."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A result for each query, in\nthe same order as the queries."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchProviderService extends AbstractSearchProviderService {\n  // ...\n  async searchMany(\n    inputs: SearchTypes.ProviderSearchQuery[]\n  ): Promise<SearchTypes.SearchResult[]> {\n    const { results } = await this.client.multiSearch(\n      inputs.map((input) => ({\n        indexUid: input.index.physical_name,\n        query: input.q,\n      }))\n    )\n\n    return results.map((result, i) => this.buildResult(result, inputs[i]))\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-search-provider.ts",
+									"line": 181,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L181"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66224,
+									"name": "inputs",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The queries to run."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/provider.ts",
+												"qualifiedName": "ProviderSearchQuery"
+											},
+											"name": "ProviderSearchQuery",
+											"package": "@medusajs/types"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/result.ts",
+												"qualifiedName": "SearchResult"
+											},
+											"typeArguments": [
+												{
+													"type": "reference",
+													"target": {
+														"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+														"qualifiedName": "Record"
+													},
+													"typeArguments": [
+														{
+															"type": "intrinsic",
+															"name": "string"
+														},
+														{
+															"type": "intrinsic",
+															"name": "unknown"
+														}
+													],
+													"name": "Record",
+													"package": "typescript"
+												}
+											],
+											"name": "SearchResult",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchProvider.searchMany"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchProvider.searchMany"
+					}
+				},
+				{
+					"id": 66225,
 					"name": "upsertIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -402,14 +491,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 207,
+							"line": 222,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L222"
 						}
 					],
 					"signatures": [
 						{
-							"id": 14,
+							"id": 66226,
 							"name": "upsertIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -418,15 +507,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method brings an index in line with its definition, creating it if it doesn't\nexist. The Search Module calls it for every definition when migrations run.\n\nYou may recreate the index if your engine can't alter a schema in place. That's safe:\nthe module only points this at an index it's about to seed, never at one that has to\nkeep serving reads, and never during a partial rebuild.\n\nThrow if the definition asks for something your engine can't hold, such as a\n"
-									},
-									{
-										"kind": "code",
-										"text": "`correlated`"
-									},
-									{
-										"kind": "text",
-										"text": " field or a facet type it doesn't support. Since migrations run\nbefore the application serves requests, the error surfaces at startup rather\nthan as wrong results later."
+										"text": "This method brings an index in line with its definition, creating it if it doesn't\nexist. The Search Module calls it for every definition when migrations run.\n\nYou may recreate the index if your engine can't alter a schema in place. That's safe:\nthe module only points this at an index it's about to seed, never at one that has to\nkeep serving reads, and never during a partial rebuild.\n\nThrow if the definition asks for something your engine can't hold, such as a\nfacet type it doesn't support. Since migrations run before the application\nserves requests, the error surfaces at startup rather than as wrong results\nlater."
 									}
 								],
 								"blockTags": [
@@ -453,14 +534,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 207,
+									"line": 222,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L222"
 								}
 							],
 							"parameters": [
 								{
-									"id": 15,
+									"id": 66227,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -476,14 +557,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 16,
+											"id": 66228,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 17,
+													"id": 66229,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -531,9 +612,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 208,
+															"line": 223,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L208"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L223"
 														}
 													],
 													"type": {
@@ -551,16 +632,16 @@
 												{
 													"title": "Properties",
 													"children": [
-														17
+														66229
 													]
 												}
 											],
 											"sources": [
 												{
 													"fileName": "abstract-search-provider.ts",
-													"line": 207,
+													"line": 222,
 													"character": 28,
-													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L207"
+													"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L222"
 												}
 											]
 										}
@@ -601,7 +682,7 @@
 					}
 				},
 				{
-					"id": 18,
+					"id": 66230,
 					"name": "deleteIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -609,14 +690,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 234,
+							"line": 249,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L249"
 						}
 					],
 					"signatures": [
 						{
-							"id": 19,
+							"id": 66231,
 							"name": "deleteIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -625,7 +706,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method deletes an index and everything in it. The Search Module calls it\nto clean up an index it replaced, such as the index left behind by a swap."
+										"text": "This method deletes an index and everything in it. The Search Module calls it\nto clean up an old version of an index once a newer one has taken over."
 									}
 								],
 								"blockTags": [
@@ -652,14 +733,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 234,
+									"line": 249,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L249"
 								}
 							],
 							"parameters": [
 								{
-									"id": 20,
+									"id": 66232,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -675,14 +756,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 21,
+											"id": 66233,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 22,
+													"id": 66234,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -698,9 +779,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 235,
+															"line": 250,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L235"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L250"
 														}
 													],
 													"type": {
@@ -713,16 +794,16 @@
 												{
 													"title": "Properties",
 													"children": [
-														22
+														66234
 													]
 												}
 											],
 											"sources": [
 												{
 													"fileName": "abstract-search-provider.ts",
-													"line": 234,
+													"line": 249,
 													"character": 28,
-													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L234"
+													"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L249"
 												}
 											]
 										}
@@ -763,7 +844,7 @@
 					}
 				},
 				{
-					"id": 23,
+					"id": 66235,
 					"name": "listIndexes",
 					"variant": "declaration",
 					"kind": 2048,
@@ -771,14 +852,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 260,
+							"line": 275,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L260"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L275"
 						}
 					],
 					"signatures": [
 						{
-							"id": 24,
+							"id": 66236,
 							"name": "listIndexes",
 							"variant": "signature",
 							"kind": 4096,
@@ -814,9 +895,9 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 260,
+									"line": 275,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L260"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L275"
 								}
 							],
 							"type": {
@@ -856,7 +937,7 @@
 					}
 				},
 				{
-					"id": 25,
+					"id": 66237,
 					"name": "upsertDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -864,14 +945,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 304,
+							"line": 319,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L319"
 						}
 					],
 					"signatures": [
 						{
-							"id": 26,
+							"id": 66238,
 							"name": "upsertDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -896,7 +977,7 @@
 									},
 									{
 										"kind": "text",
-										"text": ", so the module can wait before swapping a new index in.\n\nWrite to "
+										"text": ", so the module can wait before making a new version active.\n\nWrite to "
 									},
 									{
 										"kind": "code",
@@ -912,7 +993,7 @@
 									},
 									{
 										"kind": "text",
-										"text": ":\nduring a swap, "
+										"text": ":\nwhile a new version is being seeded, "
 									},
 									{
 										"kind": "code",
@@ -920,7 +1001,7 @@
 									},
 									{
 										"kind": "text",
-										"text": " is the shadow index being seeded, whereas the\ndefinition is that of the logical index."
+										"text": " is that version's\nphysical index, whereas the definition is that of the logical index."
 									}
 								],
 								"blockTags": [
@@ -947,14 +1028,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 304,
+									"line": 319,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L319"
 								}
 							],
 							"parameters": [
 								{
-									"id": 27,
+									"id": 66239,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -970,14 +1051,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 28,
+											"id": 66240,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 29,
+													"id": 66241,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -993,9 +1074,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 305,
+															"line": 320,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L305"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L320"
 														}
 													],
 													"type": {
@@ -1004,7 +1085,7 @@
 													}
 												},
 												{
-													"id": 30,
+													"id": 66242,
 													"name": "definition",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1036,9 +1117,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 306,
+															"line": 321,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L306"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L321"
 														}
 													],
 													"type": {
@@ -1052,7 +1133,7 @@
 													}
 												},
 												{
-													"id": 31,
+													"id": 66243,
 													"name": "documents",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1076,9 +1157,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 307,
+															"line": 322,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L307"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L322"
 														}
 													],
 													"type": {
@@ -1099,18 +1180,18 @@
 												{
 													"title": "Properties",
 													"children": [
-														29,
-														30,
-														31
+														66241,
+														66242,
+														66243
 													]
 												}
 											],
 											"sources": [
 												{
 													"fileName": "abstract-search-provider.ts",
-													"line": 304,
+													"line": 319,
 													"character": 32,
-													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L304"
+													"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L319"
 												}
 											]
 										}
@@ -1151,7 +1232,7 @@
 					}
 				},
 				{
-					"id": 32,
+					"id": 66244,
 					"name": "deleteDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1159,14 +1240,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 336,
+							"line": 351,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L336"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L351"
 						}
 					],
 					"signatures": [
 						{
-							"id": 33,
+							"id": 66245,
 							"name": "deleteDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1210,14 +1291,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 336,
+									"line": 351,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L336"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L351"
 								}
 							],
 							"parameters": [
 								{
-									"id": 34,
+									"id": 66246,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -1275,7 +1356,7 @@
 					}
 				},
 				{
-					"id": 35,
+					"id": 66247,
 					"name": "clearIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1283,14 +1364,14 @@
 					"sources": [
 						{
 							"fileName": "abstract-search-provider.ts",
-							"line": 363,
+							"line": 378,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+							"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L378"
 						}
 					],
 					"signatures": [
 						{
-							"id": 36,
+							"id": 66248,
 							"name": "clearIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -1326,14 +1407,14 @@
 							"sources": [
 								{
 									"fileName": "abstract-search-provider.ts",
-									"line": 363,
+									"line": 378,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+									"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L378"
 								}
 							],
 							"parameters": [
 								{
-									"id": 37,
+									"id": 66249,
 									"name": "_input",
 									"variant": "param",
 									"kind": 32768,
@@ -1349,14 +1430,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 38,
+											"id": 66250,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 39,
+													"id": 66251,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1372,9 +1453,9 @@
 													"sources": [
 														{
 															"fileName": "abstract-search-provider.ts",
-															"line": 363,
+															"line": 378,
 															"character": 29,
-															"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+															"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L378"
 														}
 													],
 													"type": {
@@ -1387,16 +1468,16 @@
 												{
 													"title": "Properties",
 													"children": [
-														39
+														66251
 													]
 												}
 											],
 											"sources": [
 												{
 													"fileName": "abstract-search-provider.ts",
-													"line": 363,
+													"line": 378,
 													"character": 27,
-													"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L363"
+													"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L378"
 												}
 											]
 										}
@@ -1441,35 +1522,35 @@
 				{
 					"title": "Constructors",
 					"children": [
-						3
+						66213
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						2,
-						5
+						66212
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						10,
-						13,
-						18,
-						23,
-						25,
-						32,
-						35
+						66219,
+						66222,
+						66225,
+						66230,
+						66235,
+						66237,
+						66244,
+						66247
 					]
 				}
 			],
 			"sources": [
 				{
 					"fileName": "abstract-search-provider.ts",
-					"line": 76,
+					"line": 77,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/6594e685eae905120752180f91fa9dc77f44ab77/packages/core/utils/src/search/abstract-search-provider.ts#L76"
+					"url": "https://github.com/medusajs/medusa/blob/02a5cc46936519c3400cb9443fafa52332e494eb/packages/core/utils/src/search/abstract-search-provider.ts#L77"
 				}
 			],
 			"implementedTypes": [
@@ -1489,145 +1570,153 @@
 		{
 			"title": "Classes",
 			"children": [
-				1
+				66211
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"0": {
+		"66210": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"66211": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService"
 		},
-		"2": {
+		"66212": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.identifier"
 		},
-		"5": {
-			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
-			"qualifiedName": "AbstractSearchProviderService.migrate_on_startup"
-		},
-		"10": {
+		"66219": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.search"
 		},
-		"11": {
+		"66220": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.search"
 		},
-		"12": {
+		"66221": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"13": {
+		"66222": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.searchMany"
+		},
+		"66223": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "AbstractSearchProviderService.searchMany"
+		},
+		"66224": {
+			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
+			"qualifiedName": "inputs"
+		},
+		"66225": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.upsertIndex"
 		},
-		"14": {
+		"66226": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.upsertIndex"
 		},
-		"15": {
+		"66227": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"16": {
+		"66228": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"17": {
+		"66229": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.index"
 		},
-		"18": {
+		"66230": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.deleteIndex"
 		},
-		"19": {
+		"66231": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.deleteIndex"
 		},
-		"20": {
+		"66232": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"21": {
+		"66233": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"22": {
+		"66234": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.index"
 		},
-		"23": {
+		"66235": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.listIndexes"
 		},
-		"24": {
+		"66236": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.listIndexes"
 		},
-		"25": {
+		"66237": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.upsertDocuments"
 		},
-		"26": {
+		"66238": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.upsertDocuments"
 		},
-		"27": {
+		"66239": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"28": {
+		"66240": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"29": {
+		"66241": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.index"
 		},
-		"30": {
+		"66242": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.definition"
 		},
-		"31": {
+		"66243": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.documents"
 		},
-		"32": {
+		"66244": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.deleteDocuments"
 		},
-		"33": {
+		"66245": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.deleteDocuments"
 		},
-		"34": {
+		"66246": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"35": {
+		"66247": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.clearIndex"
 		},
-		"36": {
+		"66248": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "AbstractSearchProviderService.clearIndex"
 		},
-		"37": {
+		"66249": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "_input"
 		},
-		"38": {
+		"66250": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"39": {
+		"66251": {
 			"sourceFileName": "../../../../packages/core/utils/src/search/abstract-search-provider.ts",
 			"qualifiedName": "__type.index"
 		}
@@ -1637,7 +1726,7 @@
 			"1": "../../../../packages/core/utils/src/search/abstract-search-provider.ts"
 		},
 		"reflections": {
-			"1": 0
+			"1": 66210
 		}
 	}
 }
