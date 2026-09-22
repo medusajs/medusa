@@ -32,6 +32,7 @@ import {
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
   resolveActiveDefinition,
+  withActiveIndexRetry,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   SearchIndexState,
@@ -41,6 +42,7 @@ import {
   ActiveIndexVersion,
   ActiveIndexVersionCache,
 } from "../utils/active-version-cache"
+import { deleteIndexEntirely } from "../utils/deletion"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
 import {
   createIndexMigrationPlan,
@@ -196,9 +198,10 @@ export default class SearchModuleService
   // Shared with the ingestion path (`resolveActiveDefinition` in `@utils`) so
   // the two can't drift apart.
   protected async resolveActiveDefinition_(
-    name: string
+    name: string,
+    options: { fresh?: boolean } = {}
   ): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
-    return await resolveActiveDefinition(this.context_, name)
+    return await resolveActiveDefinition(this.context_, name, options)
   }
 
   // Declared so that `Module()` does not derive one by scanning `src/models`,
@@ -234,6 +237,17 @@ export default class SearchModuleService
       return []
     }
 
+    // Reads take the cached version, so this one can be pointed at a version
+    // that has since been dropped. That surfaces as a `NOT_FOUND` from the
+    // engine, and the retry resolves it again rather than failing the search.
+    return await withActiveIndexRetry(this.context_, () =>
+      this.searchMany_(queries)
+    )
+  }
+
+  protected async searchMany_(
+    queries: SearchTypes.SearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
     const prepared = await promiseAll(
       queries.map(async (query) => {
         const index = await this.resolveActiveDefinition_(query.entity)
@@ -346,16 +360,20 @@ export default class SearchModuleService
       return { index, status: "succeeded" }
     }
 
-    const definition = await this.resolveActiveDefinition_(index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    return await withActiveIndexRetry(this.context_, async () => {
+      const definition = await this.resolveActiveDefinition_(index, {
+        fresh: true,
+      })
+      const provider = this.searchProviderService_.retrieve(definition.provider)
 
-    const task = await provider.upsertDocuments({
-      index: definition.physical_name,
-      definition,
-      documents,
+      const task = await provider.upsertDocuments({
+        index: definition.physical_name,
+        definition,
+        documents,
+      })
+
+      return assertTaskAccepted(task, index)
     })
-
-    return assertTaskAccepted(task, index)
   }
 
   async deleteDocuments({
@@ -372,15 +390,19 @@ export default class SearchModuleService
       )
     }
 
-    const definition = await this.resolveActiveDefinition_(index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    return await withActiveIndexRetry(this.context_, async () => {
+      const definition = await this.resolveActiveDefinition_(index, {
+        fresh: true,
+      })
+      const provider = this.searchProviderService_.retrieve(definition.provider)
 
-    const task = await provider.deleteDocuments({
-      index: definition.physical_name,
-      filters,
+      const task = await provider.deleteDocuments({
+        index: definition.physical_name,
+        filters,
+      })
+
+      return assertTaskAccepted(task, index)
     })
-
-    return assertTaskAccepted(task, index)
   }
 
   // Waits for its writes, so awaiting this acknowledges the event.
@@ -445,6 +467,12 @@ export default class SearchModuleService
     input: SearchTypes.SearchReindexInput = {}
   ): Promise<SearchTypes.SearchReindexResult> {
     return await reindexIndexes(this.context_, input)
+  }
+
+  async deleteIndex(
+    index: string
+  ): Promise<SearchTypes.SearchIndexDeleteResult> {
+    return await deleteIndexEntirely(this.context_, index)
   }
 
   /**

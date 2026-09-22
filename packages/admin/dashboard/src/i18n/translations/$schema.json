@@ -13127,6 +13127,15 @@
         "reindexEntityIdsHint": {
           "type": "string"
         },
+        "delete": {
+          "type": "string"
+        },
+        "deleteWarning": {
+          "type": "string"
+        },
+        "deleteSuccess": {
+          "type": "string"
+        },
         "noFields": {
           "type": "string"
         },
@@ -13173,6 +13182,9 @@
         "reindexSinceHint",
         "reindexEntityIdsLabel",
         "reindexEntityIdsHint",
+        "delete",
+        "deleteWarning",
+        "deleteSuccess",
         "noFields",
         "list",
         "status"
