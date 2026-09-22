@@ -1,4 +1,8 @@
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import {
+  ChangeActionType,
+  OrderChangeStatus,
+  PromotionActions,
+} from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -20,6 +24,7 @@ import { promotionContextResult } from "../../cart/utils/schemas"
 import { createOrderChangeActionsWorkflow } from "../../order/workflows/create-order-change-actions"
 import { previewOrderChangeStep } from "../../order/steps/preview-order-change"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
+import { updateDraftOrderPromotionsStep } from "../steps/update-draft-order-promotions"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { useRemoteQueryStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
@@ -150,7 +155,7 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       additional_promotion_context: setPromotionContextResult,
     })
 
-    const { lineItemAdjustmentsToCreate } =
+    const { lineItemAdjustmentsToCreate, computedPromotionCodes } =
       prepareAdjustmentsFromPromotionActionsStep({ actions })
 
     const orderChangeActionAdjustmentsInput = transform(
@@ -188,6 +193,15 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
     createOrderChangeActionsWorkflow
       .runAsStep({ input: orderChangeActionAdjustmentsInput })
       .config({ name: "order-change-action-adjustments-input" })
+
+    // Reconcile the draft order's promotions with the computation result, so
+    // newly eligible automatic promotions are attached to the draft order and
+    // promotions that are no longer eligible are detached.
+    updateDraftOrderPromotionsStep({
+      id: input.order_id,
+      promo_codes: computedPromotionCodes,
+      action: PromotionActions.REPLACE,
+    })
 
     releaseLockStep({
       key: input.order_id,
