@@ -138,12 +138,13 @@ The **Overview** card under the **Search analytics** section shows the headline 
 
 ## Searches Over Time
 
-The **Searches over time** chart plots two series over the selected time range:
+The **Searches over time** chart plots the searches that ran against the index over the selected time range, split into three series:
 
-- **Searches**: every search that ran against the index.
-- **No results**: the searches that returned zero hits.
+- **Free-text searches**: keyword searches.
+- **Vector searches**: searches that rank hits with an embedding. Refer to the [Semantic Search](../semantic-search/page.mdx) guide for more details.
+- **No results**: searches that returned zero hits.
 
-Use it to tie a spike in empty searches to the moment it started, such as a deployment that changed an index definition or a campaign that sent customers looking for a product you don't carry.
+Use it to compare how much traffic each search type serves, and to tie a spike to the moment it started, such as a deployment that changed an index definition or a campaign that sent customers looking for a product you don't carry.
 
 Click the <InlineIcon Icon={ArrowsPointingOutMini} alt="expand" /> button on the card to view the chart in a larger dialog.
 
@@ -184,6 +185,14 @@ Each of these terms is a customer who found nothing. Depending on the term, you 
 
 <Note>
 
-Both term tables only cover keyword searches. If every search on the index was a vector search, the tables show a message instead of terms.
+The **Most searched terms** and **Searches with no results** tables only cover keyword searches. If the index served no keyword searches in the selected time range, each table shows an empty state instead of terms.
 
 </Note>
+
+---
+
+## Most Common Vector Terms
+
+The **Most common vector terms** table lists the terms that customers searched for the most with [semantic search](../semantic-search/page.mdx) in the selected time range, with the number of searches for each term.
+
+Use it to see the natural-language phrases that keyword search can't match, and to decide which of them deserve their own fields or synonyms in the [index definition](!resources!/infrastructure-modules/search/index-definitions).
