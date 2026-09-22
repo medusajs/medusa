@@ -1273,7 +1273,7 @@ You create a workflow using `createWorkflow` from the Workflows SDK. It accepts 
 
 It accepts as a second parameter a constructor function, which is the workflow's implementation. The workflow has the following steps:
 
-1. `useQueryGraphStep`, which is a step implemented by Medusa that uses [Query](!docs!/learn/fundamentals/module-links/query), a tool that allows you to retrieve data across modules. You use it to retrieve the order's details.
+1. `useQueryGraphStep`, which is a step implemented by Medusa that uses [Query](!docs!/learn/fundamentals/query), a tool that allows you to retrieve data across modules. You use it to retrieve the order's details.
 2. Ensure that the order has an email address by using `when-then`. If so, you send the notification using the `sendNotificationStep` you implemented earlier. You pass it an object with the following properties:
     - `to`: The address to send the email to. You pass the customer's email that is stored in the order.
     - `channel`: The channel to send the notification through, which is `email`. Since you specified `email` in the Resend Module Provider's `channel` option, the Notification Module will delegate the sending to the Resend Module Provider's service.

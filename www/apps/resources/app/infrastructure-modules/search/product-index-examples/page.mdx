@@ -1,0 +1,877 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Product Search Index Examples`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find examples of indexing product data that a storefront's search and browsing experience needs, such as prices in multiple currencies, option values, and categories.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+## Simple Product Index
+
+The following index definition holds a product's basic details, and it's the starting point that the rest of this guide's sections extend.
+
+Create the file `src/search/product.ts` with the following content:
+
+export const simpleHighlights = [
+  ["17", "transform", "Index published products only."],
+  ["25", "name", "The index name that a search query resolves against."],
+  ["26", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["39", "events", "The events that change the data the index holds."],
+  ["44", "consume", "Turn each of those events into document writes."],
+  ["45", "seed", "Fill the index with every product."],
+]
+
+```ts title="src/search/product.ts" highlights={simpleHighlights}
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+  ],
+  transform: (products) => {
+    return products.filter(
+      (product) => product.status === "published"
+    )
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  fields: search.define({
+    id: search.keyword().filterable().retrievable(),
+    title: search
+      .text()
+      .searchable({ weight: 3 })
+      .sortable()
+      .retrievable(),
+    description: search.text().searchable(),
+    handle: search.keyword().retrievable(),
+    thumbnail: search.keyword().retrievable(),
+    created_at: search.date().sortable().retrievable(),
+  }),
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+  ],
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+`source` holds the options that [`graphSeed`](../index-definitions/page.mdx#fill-the-index-from-query-with-graphseed) and [`graphConsume`](../index-definitions/page.mdx#consume-events-from-query-with-graphconsume) share, so a document written by an event matches the one the seed writes.
+
+Since the `transform` returns no document for a product that isn't published, unpublishing a product removes it from the index as soon as its `product.updated` event arrives.
+
+---
+
+## Scope the Index to Published Products and Sales Channels
+
+A storefront must never find a draft product, or a product that isn't in the request's sales channel. So, declare a `status` and a `sales_channel_ids` field with the [`filterable` modifier](../index-definitions/modifiers/page.mdx#filterable), and the [Store Search API route](../store-search/page.mdx) narrows every query to the products a storefront may see.
+
+`sales_channel_ids` isn't a field of the product itself, so select the product's `sales_channels.id` and flatten them onto the document in the `transform`:
+
+export const scopeHighlights = [
+  ["5", `"sales_channels.id"`, "Selected to fill `sales_channel_ids`."],
+  ["26", "status", "Read by `/store/search`, never returned in a hit."],
+  ["30", "sales_channel_ids", "Read by `/store/search`, never returned in a hit."],
+]
+
+```ts title="src/search/product.ts" highlights={scopeHighlights}
+const source = {
+  fields: [
+    // ...
+    "status",
+    "sales_channels.id",
+  ],
+  transform: (products) => {
+    return products
+      .filter(
+        (product) => product.status === "published"
+      )
+      .map((product) => ({
+        // ...
+        status: product.status,
+        sales_channel_ids: (
+          product.sales_channels ?? []
+        ).map((salesChannel) => salesChannel.id),
+      }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
+    sales_channel_ids: search
+      .keyword()
+      .array()
+      .filterable()
+      .retrievable(false),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+Both fields use [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable), so the route filters on them without returning them in a hit.
+
+Refer to the [Store Search API Route guide](../store-search/page.mdx#how-medusa-narrows-a-product-index) for the filters that the route applies, and for how to narrow an index further with filters of your own.
+
+---
+
+## Index Prices for Multiple Currencies
+
+The Pricing Module calculates a price for one currency per query, and a search engine can't calculate a price at query time. So, the index holds a set of price fields per currency, and each currency's fields are filterable, sortable, and facetable on their own.
+
+### 1. Declare the Price Fields
+
+Declare the currencies the index holds prices in, build a set of fields for each of them, then spread the fields into the index:
+
+export const priceFieldHighlights = [
+  ["1", "PRICE_CURRENCIES", "The currencies the index holds prices in."],
+  ["8", "min_price", "The cheapest variant's calculated price."],
+  ["17", "max_price", "The most expensive variant's calculated price."],
+  ["26", "original_price", "The price before a promotion applies."],
+  ["30", "on_sale", "Whether the product has a reduced price."],
+]
+
+```ts title="src/search/product.ts" highlights={priceFieldHighlights}
+const PRICE_CURRENCIES = ["usd", "eur"] as const
+
+type PriceCurrency = (typeof PRICE_CURRENCIES)[number]
+
+const priceFields = Object.fromEntries(
+  PRICE_CURRENCIES.flatMap((currency) => [
+    [
+      `min_price_${currency}`,
+      search
+        .float()
+        .filterable()
+        .sortable()
+        .facetable({ types: ["stats"] })
+        .retrievable(),
+    ],
+    [
+      `max_price_${currency}`,
+      search
+        .float()
+        .filterable()
+        .sortable()
+        .facetable({ types: ["stats"] })
+        .retrievable(),
+    ],
+    [
+      `original_price_${currency}`,
+      search.float().retrievable(),
+    ],
+    [
+      `on_sale_${currency}`,
+      search
+        .boolean()
+        .filterable()
+        .facetable()
+        .retrievable(),
+    ],
+  ])
+)
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    ...priceFields,
+  }),
+})
+```
+
+The `min_price` and `max_price` fields use the [`stats` facet type](../index-definitions/modifiers/page.mdx#facet-types), which returns the lowest and highest price among the matching products. A storefront uses that to render a price-range slider whose bounds follow the current filters.
+
+<Note>
+
+Adding a currency changes the index's fields, which the Search Module treats as a schema change. It builds a new index version and only serves reads from it once it's filled, as explained in the [Reindexing and Migrations guide](../reindexing/page.mdx).
+
+</Note>
+
+### 2. Read the Prices
+
+`variants.calculated_price` only resolves when `query.graph` receives a [query context](!docs!/learn/fundamentals/query/query-context) with a currency. So, add a function that reads the products once per currency:
+
+export const loadPricingHighlights = [
+  ["19", "SearchIngestionContext", "The context that `seed` and `consume` receive."],
+  ["27", "Promise.all", "One read per currency, however many products there are."],
+  ["37", "context", "Calculate the prices in this currency."],
+]
+
+```ts title="src/search/product.ts" highlights={loadPricingHighlights}
+import { QueryContext } from "@medusajs/framework/utils"
+import type { SearchTypes } from "@medusajs/framework/types"
+
+// ...
+
+type PricedVariant = {
+  calculated_price?: {
+    calculated_amount?: number | null
+    original_amount?: number | null
+  } | null
+}
+
+type ProductPricingRows = Partial<
+  Record<PriceCurrency, PricedVariant[] | null>
+>
+
+async function loadPricing(
+  ids: string[],
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  const pricing = new Map<string, ProductPricingRows>()
+
+  if (!ids.length) {
+    return pricing
+  }
+
+  await Promise.all(
+    PRICE_CURRENCIES.map(async (currency) => {
+      const { data } = await container.query.graph({
+        entity: "product",
+        fields: [
+          "id",
+          "variants.calculated_price.calculated_amount",
+          "variants.calculated_price.original_amount",
+        ],
+        filters: { id: ids },
+        context: {
+          variants: {
+            calculated_price: QueryContext({
+              currency_code: currency,
+            }),
+          },
+        },
+      })
+
+      for (const product of data) {
+        const rows = pricing.get(product.id) ?? {}
+        rows[currency] = product.variants
+        pricing.set(product.id, rows)
+      }
+    })
+  )
+
+  return pricing
+}
+```
+
+`loadPricing` receives the IDs of the products being indexed, then reads each of them once per currency with the currency's pricing context. It returns a map of a product's ID to its priced variants per currency, which the next step turns into the document's price fields.
+
+`transform` receives a whole page of products at a time, so this costs one extra read per currency for the page, rather than one per product.
+
+### 3. Build the Price Fields of a Document
+
+Next, turn a product's variants into the price fields of its document. The cheapest variant provides the calculated and original price as a pair, so the discount a storefront renders describes one real variant instead of mixing two variants' amounts:
+
+export const toPricingHighlights = [
+  ["37", "min_price", "The cheapest variant's calculated price."],
+  ["39", "original_price", "The same variant's price before a promotion."],
+  ["40", "on_sale", "Written even when `false`, so the facet has both buckets."],
+]
+
+```ts title="src/search/product.ts" highlights={toPricingHighlights}
+function toPricing(
+  currency: PriceCurrency,
+  variants: PricedVariant[] | null | undefined
+) {
+  let cheapest:
+    | { calculated: number; original: number }
+    | undefined
+  let maxPrice: number | undefined
+
+  for (const variant of variants ?? []) {
+    const price = variant?.calculated_price
+    const calculated = price?.calculated_amount
+
+    if (typeof calculated !== "number") {
+      continue
+    }
+
+    const original =
+      typeof price?.original_amount === "number"
+        ? price.original_amount
+        : calculated
+
+    if (maxPrice === undefined || calculated > maxPrice) {
+      maxPrice = calculated
+    }
+
+    if (!cheapest || calculated < cheapest.calculated) {
+      cheapest = { calculated, original }
+    }
+  }
+
+  if (!cheapest) {
+    return {}
+  }
+
+  return {
+    [`min_price_${currency}`]: cheapest.calculated,
+    [`max_price_${currency}`]: maxPrice,
+    [`original_price_${currency}`]: cheapest.original,
+    [`on_sale_${currency}`]:
+      cheapest.original > cheapest.calculated,
+  }
+}
+
+function toProductPricing(
+  rows: ProductPricingRows | undefined
+) {
+  return Object.assign(
+    {},
+    ...PRICE_CURRENCIES.map((currency) =>
+      toPricing(currency, rows?.[currency])
+    )
+  )
+}
+```
+
+`toPricing` scans one currency's variants for the cheapest and the most expensive calculated price, then returns that currency's four fields.
+
+`toProductPricing` calls `toPricing` for every currency and merges the results into the fields of one document.
+
+A product without a price in a currency writes none of that currency's fields, so it drops out of that currency's price filter and sort rather than showing up with a price of `0`.
+
+### 4. Write the Prices to the Documents
+
+Finally, call both functions in an asynchronous `transform`:
+
+export const priceIndexHighlights = [
+  ["3", "async", "The function can await other reads."],
+  ["5", "loadPricing", "Read the prices of the whole page at once."],
+  ["14", "toProductPricing", "Add the product's price fields to its document."],
+]
+
+```ts title="src/search/product.ts" highlights={priceIndexHighlights}
+const source = {
+  fields: ["id", "title", "status"],
+  transform: async (products, context) => {
+    // ...
+    const pricing = await loadPricing(
+      published.map((product) => product.id),
+      context
+    )
+
+    return published.map((product) => ({
+      id: product.id,
+      title: product.title,
+      // ...
+      ...toProductPricing(pricing.get(product.id)),
+    }))
+  },
+}
+```
+
+A storefront then filters on `min_price_usd`, sorts by it, and shows an "On sale" toggle backed by the `on_sale_usd` facet.
+
+---
+
+## Index Option Values as a Facet
+
+To let a storefront filter products by option values, such as a size or a color, flatten a product's options into one array field of `"{option title}:{value}"` entries. One field keeps the index simple, and the storefront splits each entry on the first `:` to group the facet by option title.
+
+export const optionHighlights = [
+  ["3", "toOptionValues", "Flatten a product's options into one array."],
+  ["33", `"options.title"`, "Selected to fill `option_values`."],
+  ["51", "searchable", "A query matching an option value matches the product."],
+]
+
+```ts title="src/search/product.ts" highlights={optionHighlights}
+// ...
+
+function toOptionValues(
+  options:
+    | ({
+        title?: string | null
+        values?: ({ value?: string | null } | null)[]
+      } | null)[]
+    | null
+    | undefined
+) {
+  const values = (options ?? []).flatMap((option) => {
+    const title = option?.title?.trim()
+
+    if (!title) {
+      return []
+    }
+
+    return (option?.values ?? [])
+      .map((optionValue) => optionValue?.value?.trim())
+      .filter((value): value is string => Boolean(value))
+      .map((value) => `${title}:${value}`)
+  })
+
+  // A value shared by two options is otherwise
+  // counted twice in the facet.
+  return Array.from(new Set(values))
+}
+
+const source = {
+  fields: [
+    // ...
+    "options.title",
+    "options.values.value",
+  ],
+  transform: (products) => {
+    return products.map((product) => ({
+      // ...
+      option_values: toOptionValues(product.options),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    option_values: search
+      .keyword()
+      .array()
+      .searchable({ weight: 2 })
+      .filterable()
+      .facetable()
+      .retrievable(),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+`toOptionValues` walks a product's options, pairs each option's title with each of its values, and drops duplicates. A product with a Size and a Color option yields entries such as `["Size:S", "Size:M", "Color:Red"]`, which the `transform` writes to the document's `option_values` field.
+
+Since the field is searchable, a customer searching for "red" also matches a product whose color option has a `Red` value.
+
+---
+
+## Index Categories and Tags as Facets
+
+`query.graph` returns a product's categories and tags as arrays of objects, whereas a facet needs a flat array of values. So, select the field to show from each relation and flatten it in the `transform`:
+
+export const categoryHighlights = [
+  ["4", `"categories.name"`, "Select one field from each relation."],
+  ["10", "category", "Flatten the categories into an array of names."],
+  ["13", "labels", "Flatten the tags into an array of values."],
+]
+
+```ts title="src/search/product.ts" highlights={categoryHighlights}
+const source = {
+  fields: [
+    // ...
+    "categories.name",
+    "tags.value",
+  ],
+  transform: (products) => {
+    return products.map((product) => ({
+      // ...
+      category: (product.categories ?? []).map(
+        (category) => category.name
+      ),
+      labels: (product.tags ?? []).map(
+        (tag) => tag.value
+      ),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  // ...
+  fields: search.define({
+    // ...
+    category: search
+      .keyword()
+      .array()
+      .filterable()
+      .facetable()
+      .retrievable(),
+    labels: search
+      .keyword()
+      .array()
+      .filterable()
+      .facetable()
+      .retrievable(),
+  }),
+  consume: graphConsume(source),
+  seed: graphSeed(source),
+})
+```
+
+To index a product's data from a linked module instead, such as a brand you created in a custom module, refer to the [Index Data from a Linked Module guide](../index-definitions/linked-data/page.mdx).
+
+---
+
+## Re-Index a Product When Related Data Changes
+
+A product's document holds data from its variants, options, tags, categories, and sales channels. So, subscribe to the events of all of them, then map each event back to the products it affects with the [`resolve_ids` option](../index-definitions/page.mdx#graphconsume-options) of `graphConsume`.
+
+Add the following functions to the file:
+
+export const resolveIdsHighlights = [
+  ["25", "withDeleted", "A deleted row still leads back to its products."],
+  ["38", "entity", "The entity the event's name starts with."],
+  ["46", "product", "A product event names the products directly."],
+  ["48", "product-variant", "Read the products behind the event's records."],
+]
+
+```ts title="src/search/product.ts" highlights={resolveIdsHighlights}
+import type {
+  RemoteQueryFunction,
+} from "@medusajs/framework/types"
+
+// ...
+
+function payloadIds(data: unknown): string[] {
+  return (Array.isArray(data) ? data : [data])
+    .map((entry) => (entry as { id?: string })?.id)
+    .filter((id): id is string => Boolean(id))
+}
+
+async function relatedProductIds(
+  query: RemoteQueryFunction,
+  entity: string,
+  fields: string[],
+  ids: string[],
+  pick: (row: any) => (string | null | undefined)[],
+  withDeleted: boolean
+) {
+  const { data } = await query.graph({
+    entity,
+    fields,
+    filters: { id: ids },
+    withDeleted,
+  })
+
+  return data
+    .flatMap(pick)
+    .filter((id): id is string => Boolean(id))
+}
+
+async function resolveProductIds(
+  event: { name: string; data: unknown },
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  const ids = payloadIds(event.data)
+  const [entity] = event.name.split(".")
+  const deleted = event.name.endsWith(".deleted")
+
+  if (!ids.length) {
+    return []
+  }
+
+  switch (entity) {
+    case "product":
+      return ids
+    case "product-variant":
+      return relatedProductIds(
+        container.query,
+        "product_variant",
+        ["product_id"],
+        ids,
+        (row) => [row.product_id],
+        deleted
+      )
+    case "product-tag":
+      return relatedProductIds(
+        container.query,
+        "product_tag",
+        ["products.id"],
+        ids,
+        (row) => (row.products ?? []).map((p) => p?.id),
+        deleted
+      )
+    case "product-category":
+      return relatedProductIds(
+        container.query,
+        "product_category",
+        ["products.id"],
+        ids,
+        (row) => (row.products ?? []).map((p) => p?.id),
+        deleted
+      )
+    default:
+      return []
+  }
+}
+```
+
+`resolveProductIds` is the function you pass as `resolve_ids` in the next snippet, and `graphConsume` calls it for every event the index subscribes to. It reads the IDs from the event's payload, then decides what they point to based on the entity in the event's name: a product event names the products directly, while any other event's IDs are passed to `relatedProductIds`, which reads the products behind those records through `query.graph`.
+
+Medusa soft-deletes records, so a deleted variant or category is still readable with `withDeleted`, which is how it still leads back to the products to re-index.
+
+Then, add the related entities' events to the index, pass the function to `graphConsume`, and tell it that only `product.deleted` removes documents. Every other event means the product must be read again:
+
+export const consumeHighlights = [
+  ["19", "resolve_ids", "Map each event to the products it affects."],
+  ["20", "is_delete", "Only a deleted product leaves the index."],
+]
+
+```ts title="src/search/product.ts" highlights={consumeHighlights}
+export default defineSearchIndex({
+  // ...
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "product-variant.created",
+    "product-variant.updated",
+    "product-variant.deleted",
+    "product-option.updated",
+    "product-option-value.updated",
+    "product-tag.updated",
+    "product-tag.deleted",
+    "product-category.updated",
+    "product-category.deleted",
+  ],
+  consume: graphConsume({
+    ...source,
+    resolve_ids: resolveProductIds,
+    is_delete: (event) =>
+      event.name === "product.deleted",
+  }),
+  seed: graphSeed(source),
+})
+```
+
+### Deleting a Sales Channel
+
+Deleting a sales channel removes its product links, so `query.graph` no longer finds the products that were in it. The index still holds the channel's ID on each document, so search the index itself to find the products to re-index:
+
+```ts title="src/search/product.ts"
+async function productIdsInSalesChannels(
+  query: RemoteQueryFunction,
+  salesChannelIds: string[]
+) {
+  const { search_result } = await query.search({
+    entity: "product",
+    fields: ["id"],
+    filters: { sales_channel_ids: salesChannelIds },
+    pagination: { take: 200 },
+  })
+
+  return search_result.hits.map((hit) => hit.id)
+}
+```
+
+Then, call it from a `sales-channel` case in `resolveProductIds`, and add the `sales-channel.deleted` event to the definition's `events`:
+
+```ts title="src/search/product.ts"
+async function resolveProductIds(
+  event: { name: string; data: unknown },
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  // ...
+
+  switch (entity) {
+    // ...
+    case "sales-channel":
+      return productIdsInSalesChannels(
+        container.query,
+        ids
+      )
+    default:
+      return []
+  }
+}
+```
+
+If your store has more than 200 products in a channel, page through the results with the `skip` pagination option.
+
+<Note title="Note">
+
+Some changes to a product's prices don't emit an event, such as creating a price list or a price list becoming active. For those, reindex the product index on a schedule, or after the change, as explained in the [Reindexing and Migrations guide](../reindexing/page.mdx#seeding-on-demand).
+
+</Note>
+
+---
+
+## Complete Index Definition
+
+The following file combines the examples of this guide. The pricing and event functions are left out, since they're unchanged from the sections above:
+
+export const completeHighlights = [
+  ["69", "transform", "Index published products only."],
+  ["109", "settings", "Engine settings, supported by Medusa Search only."],
+  ["127", "consume", "Turn each event into document writes."],
+]
+
+```ts title="src/search/product.ts" highlights={completeHighlights}
+import type { SearchTypes } from "@medusajs/framework/types"
+import {
+  defineSearchIndex,
+  graphConsume,
+  graphSeed,
+  search,
+} from "@medusajs/framework/utils"
+
+// The functions and price fields of the
+// previous sections...
+
+const productFields = search.define({
+  id: search.keyword().filterable().retrievable(),
+  status: search
+    .keyword()
+    .filterable()
+    .retrievable(false),
+  sales_channel_ids: search
+    .keyword()
+    .array()
+    .filterable()
+    .retrievable(false),
+  title: search
+    .text()
+    .searchable({ weight: 3 })
+    .sortable()
+    .retrievable(),
+  description: search.text().searchable({ weight: 1 }),
+  handle: search.keyword().retrievable(),
+  thumbnail: search.keyword().retrievable(),
+  created_at: search.date().sortable().retrievable(),
+  category: search
+    .keyword()
+    .array()
+    .filterable()
+    .facetable()
+    .retrievable(),
+  labels: search
+    .keyword()
+    .array()
+    .filterable()
+    .facetable()
+    .retrievable(),
+  option_values: search
+    .keyword()
+    .array()
+    .searchable({ weight: 2 })
+    .filterable()
+    .facetable()
+    .retrievable(),
+  ...priceFields,
+})
+
+const source = {
+  fields: [
+    "id",
+    "title",
+    "description",
+    "handle",
+    "thumbnail",
+    "status",
+    "created_at",
+    "sales_channels.id",
+    "categories.name",
+    "tags.value",
+    "options.title",
+    "options.values.value",
+  ],
+  transform: async (
+    products,
+    context: SearchTypes.SearchIngestionContext
+  ) => {
+    const published = products.filter(
+      (product) => product.status === "published"
+    )
+    const pricing = await loadPricing(
+      published.map((product) => product.id),
+      context
+    )
+
+    return published.map((product) => ({
+      id: product.id,
+      status: product.status,
+      sales_channel_ids: (
+        product.sales_channels ?? []
+      ).map((salesChannel) => salesChannel.id),
+      title: product.title,
+      description: product.description,
+      handle: product.handle,
+      thumbnail: product.thumbnail,
+      created_at: product.created_at,
+      category: (product.categories ?? []).map(
+        (category) => category.name
+      ),
+      labels: (product.tags ?? []).map(
+        (tag) => tag.value
+      ),
+      option_values: toOptionValues(product.options),
+      ...toProductPricing(pricing.get(product.id)),
+    }))
+  },
+}
+
+export default defineSearchIndex({
+  name: "product",
+  entity: "product",
+  primary_key: "id",
+  fields: productFields,
+  settings: {
+    typo_tolerance: { enabled: true },
+  },
+  events: [
+    "product.created",
+    "product.updated",
+    "product.deleted",
+    "product-variant.created",
+    "product-variant.updated",
+    "product-variant.deleted",
+    "product-option.updated",
+    "product-option-value.updated",
+    "product-tag.updated",
+    "product-tag.deleted",
+    "product-category.updated",
+    "product-category.deleted",
+    "sales-channel.deleted",
+  ],
+  consume: graphConsume({
+    ...source,
+    resolve_ids: resolveProductIds,
+    is_delete: (event) =>
+      event.name === "product.deleted",
+  }),
+  seed: graphSeed(source),
+})
+```
+
+After changing the definition, run the migrations command to build the new index version:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Then, allow the index on the [Store Search API route](../store-search/page.mdx) to search it from your storefront.
+
+<Note title="Tip">
+
+To build the search and browsing experience around this index, use the [InstantSearch adapter](../../../instantsearch/page.mdx). Refer to the [Filtering, Sorting, and Pagination example](../../../instantsearch/examples/filtering-sorting-pagination/page.mdx) for the widgets that back the facets in this guide.
+
+</Note>

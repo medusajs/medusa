@@ -5,7 +5,7 @@ export const generatedEditDates = {
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
   "app/page.mdx": "2025-02-26T14:18:27.755Z",
-  "app/settings/page.mdx": "2025-10-09T07:25:58.554Z",
+  "app/settings/page.mdx": "2026-08-26T09:35:07.035Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
   "app/settings/return-reasons/page.mdx": "2025-05-30T13:31:05.596Z",
   "app/settings/regions/page.mdx": "2025-05-30T13:30:59.228Z",
@@ -17,7 +17,6 @@ export const generatedEditDates = {
   "app/products/import/page.mdx": "2025-12-18T11:43:29.688Z",
   "app/products/categories/page.mdx": "2026-04-10T10:20:02.394Z",
   "app/inventory/reservations/page.mdx": "2026-08-13T15:59:40.229Z",
-  "app/discounts/manage/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/products/page.mdx": "2025-12-12T08:57:46.224Z",
   "app/inventory/inventory/page.mdx": "2026-08-20T21:20:57.450Z",
   "app/customers/groups/page.mdx": "2025-05-30T13:26:56.820Z",
@@ -30,9 +29,7 @@ export const generatedEditDates = {
   "app/orders/edit/page.mdx": "2025-05-30T13:27:51.495Z",
   "app/products/collections/page.mdx": "2025-12-16T13:02:30.067Z",
   "app/customers/manage/page.mdx": "2026-04-20T08:55:15.023Z",
-  "app/discounts/create/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/orders/payments/page.mdx": "2026-04-20T10:33:51.360Z",
-  "app/discounts/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/orders/exchanges/page.mdx": "2025-12-01T09:27:18.971Z",
   "app/products/create/page.mdx": "2026-01-21T07:54:24.381Z",
   "app/products/edit/page.mdx": "2026-06-04T06:35:04.744Z",
@@ -74,5 +71,6 @@ export const generatedEditDates = {
   "app/tips/layout-configurations/page.mdx": "2026-07-23T12:50:25.531Z",
   "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
   "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
-  "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z"
+  "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
+  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z"
 }
