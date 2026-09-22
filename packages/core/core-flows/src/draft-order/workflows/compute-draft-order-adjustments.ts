@@ -130,90 +130,64 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
 
     const previewedOrder = previewOrderChangeStep(input.order_id)
 
-    when(
-      { order },
-      ({ order }) => Array.isArray(order.promotions) && !order.promotions.length
-    ).then(() => {
-      const orderChangeActionAdjustmentsInput = transform(
-        { order, previewedOrder, orderChange },
-        ({ order, previewedOrder, orderChange }) => {
-          return previewedOrder.items.map((item) => {
-            return {
-              order_id: order.id,
-              order_change_id: orderChange.id,
-              version: orderChange.version,
-              action: ChangeActionType.ITEM_ADJUSTMENTS_REPLACE,
-              details: {
-                reference_id: item.id,
-                adjustments: [],
-              },
-            }
-          })
-        }
-      )
-
-      createOrderChangeActionsWorkflow
-        .runAsStep({ input: orderChangeActionAdjustmentsInput })
-        .config({ name: "order-change-action-adjustments-input-remove" })
+    // Always compute actions, even when the order has no promotions applied
+    // yet: promotionCodesToApply may be empty, but computeActions still
+    // discovers automatic promotions that have newly become eligible.
+    const orderPromotions = transform({ order }, ({ order }) => {
+      return (order.promotions ?? [])
+        .map((p) => p.code)
+        .filter((p) => p !== undefined)
     })
 
-    when({ order }, ({ order }) => !!order.promotions?.length).then(() => {
-      const orderPromotions = transform({ order }, ({ order }) => {
-        return order.promotions
-          .map((p) => p.code)
-          .filter((p) => p !== undefined)
-      })
+    const actionsToComputeItemsInput = prepareOrderComputeActionContextStep({
+      order,
+      previewedOrder,
+    })
 
-      const actionsToComputeItemsInput = prepareOrderComputeActionContextStep({
+    const actions = getActionsToComputeFromPromotionsStep({
+      computeActionContext: actionsToComputeItemsInput,
+      promotionCodesToApply: orderPromotions,
+      additional_promotion_context: setPromotionContextResult,
+    })
+
+    const { lineItemAdjustmentsToCreate } =
+      prepareAdjustmentsFromPromotionActionsStep({ actions })
+
+    const orderChangeActionAdjustmentsInput = transform(
+      {
         order,
         previewedOrder,
-      })
+        orderChange,
+        lineItemAdjustmentsToCreate,
+      },
+      ({
+        order,
+        previewedOrder,
+        orderChange,
+        lineItemAdjustmentsToCreate,
+      }) => {
+        return previewedOrder.items.map((item) => {
+          const itemAdjustments = lineItemAdjustmentsToCreate.filter(
+            (adjustment) => adjustment.item_id === item.id
+          )
 
-      const actions = getActionsToComputeFromPromotionsStep({
-        computeActionContext: actionsToComputeItemsInput,
-        promotionCodesToApply: orderPromotions,
-        additional_promotion_context: setPromotionContextResult,
-      })
+          return {
+            order_change_id: orderChange.id,
+            order_id: order.id,
+            version: orderChange.version,
+            action: ChangeActionType.ITEM_ADJUSTMENTS_REPLACE,
+            details: {
+              reference_id: item.id,
+              adjustments: itemAdjustments,
+            },
+          }
+        })
+      }
+    )
 
-      const { lineItemAdjustmentsToCreate } =
-        prepareAdjustmentsFromPromotionActionsStep({ actions })
-
-      const orderChangeActionAdjustmentsInput = transform(
-        {
-          order,
-          previewedOrder,
-          orderChange,
-          lineItemAdjustmentsToCreate,
-        },
-        ({
-          order,
-          previewedOrder,
-          orderChange,
-          lineItemAdjustmentsToCreate,
-        }) => {
-          return previewedOrder.items.map((item) => {
-            const itemAdjustments = lineItemAdjustmentsToCreate.filter(
-              (adjustment) => adjustment.item_id === item.id
-            )
-
-            return {
-              order_change_id: orderChange.id,
-              order_id: order.id,
-              version: orderChange.version,
-              action: ChangeActionType.ITEM_ADJUSTMENTS_REPLACE,
-              details: {
-                reference_id: item.id,
-                adjustments: itemAdjustments,
-              },
-            }
-          })
-        }
-      )
-
-      createOrderChangeActionsWorkflow
-        .runAsStep({ input: orderChangeActionAdjustmentsInput })
-        .config({ name: "order-change-action-adjustments-input" })
-    })
+    createOrderChangeActionsWorkflow
+      .runAsStep({ input: orderChangeActionAdjustmentsInput })
+      .config({ name: "order-change-action-adjustments-input" })
 
     releaseLockStep({
       key: input.order_id,
