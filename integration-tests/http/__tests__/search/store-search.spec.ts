@@ -11,11 +11,9 @@ import {
 jest.setTimeout(120000)
 
 /**
- * Covers POST /store/search, which runs the `SearchQuery` batch InstantSearch's
- * adapter posts against the indexes a middleware opted in, and only falls back
- * to `query.graph` for fields an index doesn't hold.
- *
- * The app under test opts in `product` only — see its `src/api/middlewares.ts`.
+ * Covers POST /store/search. The app under test opts in `product` only — see its
+ * `src/api/middlewares.ts`. Narrowing to published products in the key's sales
+ * channels is the endpoint's own, since the index declares both fields.
  */
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -186,7 +184,6 @@ medusaIntegrationTestRunner({
       })
 
       it("404s on a registered index the store hasn't opted in", async () => {
-        // The index is real and holds the customer, as the admin search shows.
         const listed = await api.get(
           "/admin/search?q=wilhelmina&entity=customer",
           adminHeaders
@@ -195,8 +192,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: customer.id }),
         ])
 
-        // Only `product` is passed to `allowSearchIndexes`, and an index the
-        // store hasn't exposed is answered like one that doesn't exist.
         const error = await search({
           queries: [{ entity: "customer" }],
         }).catch((e) => e)
@@ -218,18 +213,44 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("applies no filters of its own", async () => {
+      it("narrows products to published ones the key can see", async () => {
         const response = await search({
           queries: [{ entity: "product", filters: { q: "zephyr" } }],
         })
 
         expect(response.status).toEqual(200)
-        // The draft and the product living in another sales channel both come
-        // back: narrowing what a storefront may reach is the store's to add,
-        // through a middleware on the route.
-        expect(
-          response.data.results[0].hits.map((hit) => hit.id).sort()
-        ).toEqual([shirt.id, draft.id, hidden.id].sort())
+        // "Zephyr Draft" is out on status, "Zephyr Elsewhere" on sales channel.
+        expect(response.data.results[0].hits).toEqual([
+          expect.objectContaining({ id: shirt.id }),
+        ])
+      })
+
+      it("scopes products to the key's sales channels", async () => {
+        const response = await search({
+          queries: [
+            { entity: "product", filters: { handle: "zephyr-elsewhere" } },
+          ],
+        })
+
+        expect(response.status).toEqual(200)
+        // Published, so only the sales channel it lives in excludes it.
+        expect(response.data.results[0].hits).toEqual([])
+      })
+
+      it("can't widen past the endpoint's product filters", async () => {
+        const response = await search({
+          queries: [
+            { entity: "product", filters: { status: "draft" } },
+            {
+              entity: "product",
+              filters: { sales_channel_ids: otherSalesChannel.id },
+            },
+          ],
+        })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.results[0].hits).toEqual([])
+        expect(response.data.results[1].hits).toEqual([])
       })
 
       it("hydrates fields the index doesn't hold", async () => {
@@ -299,7 +320,7 @@ medusaIntegrationTestRunner({
 
         expect(second.data.results[0].hits).toEqual([
           expect.objectContaining({
-            document: expect.objectContaining({ title: "Zephyr Draft" }),
+            document: expect.objectContaining({ title: "Zephyr Shirt" }),
           }),
         ])
         expect(second.data.results[0].metadata.skip).toEqual(1)
@@ -318,10 +339,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.results[0].facets.status).toEqual({
           type: "value",
-          values: expect.arrayContaining([
-            { value: "published", count: 3 },
-            { value: "draft", count: 1 },
-          ]),
+          values: [{ value: "published", count: 2 }],
         })
       })
 
