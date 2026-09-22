@@ -6,6 +6,7 @@ import { SearchIndexSeedAction } from "@types"
 import { versionPhysicalName } from "../../src/utils/versions"
 import {
   baseProducts,
+  consumedContainers,
   consumedEvents,
   dataset,
   productIndex,
@@ -1199,6 +1200,13 @@ moduleIntegrationTestRunner<SearchService>({
           expect(consumedEvents).toEqual([
             { event: "product.updated", index: "product" },
           ])
+        })
+
+        it("hands consume the logger", async () => {
+          await ingest("product.updated", "prod_1")
+
+          expect(consumedContainers).toHaveLength(1)
+          expect(consumedContainers[0].logger).toBe((service as any).logger_)
         })
 
         it("reindexes the document an update points at, in place", async () => {
