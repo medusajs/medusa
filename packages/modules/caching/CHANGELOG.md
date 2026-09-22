@@ -1,5 +1,14 @@
 # @medusajs/caching
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16607](https://github.com/medusajs/medusa/pull/16607) [`2b34b80cb9e88cc5a71dfe04cc09bf38872b88c8`](https://github.com/medusajs/medusa/commit/2b34b80cb9e88cc5a71dfe04cc09bf38872b88c8) Thanks [@ebrahim2355](https://github.com/ebrahim2355)! - fix(caching): reset the in-memory size accounting when the cache is cleared with the wildcard tag, so the provider does not keep reporting itself as full
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/auth-emailpass
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16890](https://github.com/medusajs/medusa/pull/16890) [`e607b4f7f9fc5388e545ce00e5a2765f7a3a1fee`](https://github.com/medusajs/medusa/commit/e607b4f7f9fc5388e545ce00e5a2765f7a3a1fee) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(auth-emailpass): require an actor-less identity to use the same password when re-registering
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes
