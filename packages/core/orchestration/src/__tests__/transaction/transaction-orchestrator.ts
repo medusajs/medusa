@@ -2315,7 +2315,7 @@ describe("Transaction Orchestrator", () => {
         deleteOrders: jest.fn().mockImplementation(() => undefined),
         fastStep: jest.fn().mockImplementation(() => "fast"),
         compensateFastStep: jest.fn().mockImplementation(() => undefined),
-        reserveInventory: jest.fn(async () => {
+        reserveInventory: jest.fn(async (_payload: TransactionPayload) => {
           await setTimeout(50)
           throw new PermanentStepFailureError("out of stock")
         }),
