@@ -10,6 +10,7 @@ import {
 import {
   AdminCreateStoreCreditAccount,
   AdminCreditStoreCreditAccount,
+  AdminDebitStoreCreditAccount,
   AdminGetStoreCreditAccountsParams,
   AdminStoreCreditAccountResponse,
   AdminStoreCreditAccountsResponse,
@@ -137,6 +138,35 @@ export const useCreditStoreCreditAccount = (
       queryClient.invalidateQueries({
         queryKey: transactionQueryKey.list({ sca_id: id }),
       })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDebitStoreCreditAccount = (
+  id: string,
+  options?: UseMutationOptions<
+    AdminStoreCreditAccountResponse,
+    FetchError,
+    AdminDebitStoreCreditAccount
+  >
+) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.client.fetch<AdminStoreCreditAccountResponse>(
+        `/admin/store-credit-accounts/${id}/debit`,
+        { body: payload, method: "POST" }
+      ),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: storeCreditAccountQueryKey.detail(id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: transactionQueryKey.list({ sca_id: id }),
+      });
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

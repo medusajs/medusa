@@ -1,0 +1,2432 @@
+{
+	"id": 66142,
+	"name": "search",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 66143,
+			"name": "SearchReindexStrategy",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The strategy used to rebuild a search index:\n\n- "
+					},
+					{
+						"kind": "code",
+						"text": "`swap`"
+					},
+					{
+						"kind": "text",
+						"text": " seeds a new version of the index and makes it active on completion,\nkeeping the current version serving reads throughout.\n- "
+					},
+					{
+						"kind": "code",
+						"text": "`in_place`"
+					},
+					{
+						"kind": "text",
+						"text": " upserts into the active version directly, which is cheaper but\nleaves stale documents behind for anything the seed no longer produces."
+					}
+				]
+			},
+			"sources": [
+				{
+					"fileName": "search/service.ts",
+					"line": 19,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L19"
+				}
+			],
+			"type": {
+				"type": "union",
+				"types": [
+					{
+						"type": "literal",
+						"value": "swap"
+					},
+					{
+						"type": "literal",
+						"value": "in_place"
+					}
+				]
+			}
+		},
+		{
+			"id": 66144,
+			"name": "SearchReindexInput",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The input for reindexing one or more search indexes."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 66145,
+					"name": "index",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the index, or the names of the indexes, to rebuild. If not\nprovided, every registered index is rebuilt."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 29,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L29"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 66146,
+					"name": "strategy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The strategy to rebuild the index with."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@default",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\n\"swap\"\n```"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 36,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L36"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": 66143,
+						"name": "SearchReindexStrategy",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 66147,
+					"name": "filters",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filters passed to the index definition's "
+							},
+							{
+								"kind": "code",
+								"text": "`seed`"
+							},
+							{
+								"kind": "text",
+								"text": " function to rebuild only a\nsubset of the index's documents."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 42,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L42"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 66148,
+					"name": "since",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Rebuilds only documents that changed at or after this date, passed to the\nindex definition's "
+							},
+							{
+								"kind": "code",
+								"text": "`seed`"
+							},
+							{
+								"kind": "text",
+								"text": " function. Like "
+							},
+							{
+								"kind": "code",
+								"text": "`filters`"
+							},
+							{
+								"kind": "text",
+								"text": ",\nthis always runs in place — a version built from a subset was never\nmeant to serve every read, so it never swaps in."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 50,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L50"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						66145,
+						66146,
+						66147,
+						66148
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "search/service.ts",
+					"line": 24,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L24"
+				}
+			]
+		},
+		{
+			"id": 66149,
+			"name": "SearchReindexResult",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The result returned after a reindex operation is initiated."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 66150,
+					"name": "job_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the background job performing the reindex."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 60,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L60"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 66151,
+					"name": "indexes",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The names of the indexes being rebuilt."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 65,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L65"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						66150,
+						66151
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "search/service.ts",
+					"line": 56,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L56"
+				}
+			]
+		},
+		{
+			"id": 66152,
+			"name": "SearchIndexDeleteResult",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The result returned after an index is deleted."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 66153,
+					"name": "index",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the index that was deleted."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 75,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L75"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 66154,
+					"name": "deleted_versions",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "How many of the index's versions were dropped. "
+							},
+							{
+								"kind": "code",
+								"text": "`0`"
+							},
+							{
+								"kind": "text",
+								"text": " when the index is\nregistered but was never migrated, so nothing was ever built for it."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 81,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L81"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						66153,
+						66154
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "search/service.ts",
+					"line": 71,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L71"
+				}
+			]
+		},
+		{
+			"id": 66155,
+			"name": "ISearchModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 66156,
+					"name": "search",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 129,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L129"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66157,
+							"name": "search",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method searches an index for documents matching the given query. The\nSearch Module resolves the index's provider and delegates the query to it.\n\nThe free-text query is passed as "
+									},
+									{
+										"kind": "code",
+										"text": "`q`"
+									},
+									{
+										"kind": "text",
+										"text": " among the "
+									},
+									{
+										"kind": "code",
+										"text": "`filters`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The matching hits, any requested facets,\nand the result's metadata."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A simple example that searches an index for a free-text query:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst result = await searchModuleService.search({\n  entity: \"product\",\n  filters: {\n    q: \"shirt\",\n  },\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo filter, paginate, sort, and retrieve facets:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst result = await searchModuleService.search({\n  entity: \"product\",\n  fields: [\"id\", \"title\", \"variants.sku\"],\n  filters: {\n    q: \"shirt\",\n    status: \"published\",\n    \"variants.price\": { $lte: 5000 },\n  },\n  pagination: {\n    skip: 0,\n    take: 20,\n    order: { _score: \"DESC\" },\n  },\n  search_options: {\n    facets: [\"type_id\"],\n  },\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 129,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L129"
+								}
+							],
+							"typeParameters": [
+								{
+									"id": 66158,
+									"name": "T",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"default": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 66159,
+									"name": "query",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The query to run against the search index."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/query.ts",
+											"qualifiedName": "SearchQuery"
+										},
+										"name": "SearchQuery",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/result.ts",
+											"qualifiedName": "SearchResult"
+										},
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 66158,
+												"name": "T",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										],
+										"name": "SearchResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66160,
+					"name": "searchMany",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 159,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L159"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66161,
+							"name": "searchMany",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method runs multiple search queries in a single call. Use it to run\nqueries against different indexes, or the same index with different filters,\nwithout paying for a round trip per query.\n\nDisjunctive facets are expanded here, then every query targeting the same\nprovider is handed to that provider's "
+									},
+									{
+										"kind": "code",
+										"text": "`searchMany`"
+									},
+									{
+										"kind": "text",
+										"text": " so the engine can pack\nthem into one request. Prefer "
+									},
+									{
+										"kind": "code",
+										"text": "`query.search`"
+									},
+									{
+										"kind": "text",
+										"text": " from application code, which\nhydrates the hits through graph."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of search results, in the same\norder as the queries."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst results = await searchModuleService.searchMany([\n  {\n    entity: \"product\",\n    filters: { q: \"shirt\" },\n  },\n  {\n    entity: \"product\",\n    filters: { q: \"pants\" },\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 159,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L159"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66162,
+									"name": "queries",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The queries to run against search indexes."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/query.ts",
+												"qualifiedName": "SearchQuery"
+											},
+											"typeArguments": [
+												{
+													"type": "intrinsic",
+													"name": "string"
+												}
+											],
+											"name": "SearchQuery",
+											"package": "@medusajs/types"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/result.ts",
+												"qualifiedName": "SearchResult"
+											},
+											"typeArguments": [
+												{
+													"type": "reference",
+													"target": {
+														"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+														"qualifiedName": "Record"
+													},
+													"typeArguments": [
+														{
+															"type": "intrinsic",
+															"name": "string"
+														},
+														{
+															"type": "intrinsic",
+															"name": "unknown"
+														}
+													],
+													"name": "Record",
+													"package": "typescript"
+												}
+											],
+											"name": "SearchResult",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66163,
+					"name": "upsertDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 190,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L190"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66164,
+							"name": "upsertDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method adds documents to an index, replacing any document that already\nexists under the same ID.\n\nPrefer keeping an index up to date through its definition's "
+									},
+									{
+										"kind": "code",
+										"text": "`events`"
+									},
+									{
+										"kind": "text",
+										"text": " and\n"
+									},
+									{
+										"kind": "code",
+										"text": "`consume`"
+									},
+									{
+										"kind": "text",
+										"text": " functions. Use this method for documents that no event describes,\nsuch as data coming from a third-party system.\n\nThe returned task isn't waited on. A provider that applies writes lazily\nleaves the task's status as "
+									},
+									{
+										"kind": "code",
+										"text": "`enqueued`"
+									},
+									{
+										"kind": "text",
+										"text": ", and it's the caller's choice whether\nreading its own write back matters enough to wait for the task."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst task = await searchModuleService.upsertDocuments({\n  index: \"product\",\n  documents: [\n    {\n      id: \"prod_123\",\n      title: \"Shirt\",\n    },\n  ],\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 190,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L190"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66165,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The documents to write."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 66166,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 66167,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The name of the index to write to."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "search/service.ts",
+															"line": 191,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L191"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 66168,
+													"name": "documents",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The documents to write. Each\ndocument must have an "
+															},
+															{
+																"kind": "code",
+																"text": "`id`"
+															},
+															{
+																"kind": "text",
+																"text": " property holding the index's primary key."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "search/service.ts",
+															"line": 192,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L192"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+																"qualifiedName": "SearchDocument"
+															},
+															"name": "SearchDocument",
+															"package": "@medusajs/types"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														66167,
+														66168
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "search/service.ts",
+													"line": 190,
+													"character": 25,
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L190"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66169,
+					"name": "deleteDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 230,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L230"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66170,
+							"name": "deleteDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method removes every document in an index matching the specified filters.\n\nDeleting by ID isn't a special case: it's a filter on the index's primary\nkey, such as "
+									},
+									{
+										"kind": "code",
+										"text": "`{ id: [\"prod_1\"] }`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The write's task."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To delete documents by ID:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst task = await searchModuleService.deleteDocuments({\n  index: \"product\",\n  filters: {\n    id: [\"prod_123\", \"prod_456\"],\n  },\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo delete every document matching a filter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst task = await searchModuleService.deleteDocuments({\n  index: \"product\",\n  filters: {\n    status: \"draft\",\n  },\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 230,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L230"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66171,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The documents to remove."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 66172,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 66173,
+													"name": "index",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The name of the index to delete from."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "search/service.ts",
+															"line": 231,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L231"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 66174,
+													"name": "filters",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The filters selecting the documents to\nremove. At least one filter is required."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "search/service.ts",
+															"line": 232,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L232"
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/types/src/search/filters.ts",
+															"qualifiedName": "SearchFilters"
+														},
+														"name": "SearchFilters",
+														"package": "@medusajs/types"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														66173,
+														66174
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "search/service.ts",
+													"line": 230,
+													"character": 25,
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L230"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+											"qualifiedName": "SearchTask"
+										},
+										"name": "SearchTask",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66175,
+					"name": "ingest",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 259,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L259"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66176,
+							"name": "ingest",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method applies an event to every index that declared it in its\ndefinition's "
+									},
+									{
+										"kind": "code",
+										"text": "`events`"
+									},
+									{
+										"kind": "text",
+										"text": ", using each index's "
+									},
+									{
+										"kind": "code",
+										"text": "`consume`"
+									},
+									{
+										"kind": "text",
+										"text": " function to turn the\nevent into document writes or deletions.\n\nThe Search Module subscribes to the declared events and calls this method for\nyou. You only need to call it directly to replay an event, or to ingest an\nevent that wasn't emitted through the Event Bus Module.\n\nThe returned promise resolves once the search engine has accepted the\nwrites. Failures are thrown, leaving redelivery to the event bus."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "One task per write. An event that no index\ndeclared resolves to an empty array."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst tasks = await searchModuleService.ingest({\n  name: \"product.updated\",\n  data: {\n    id: \"prod_123\",\n  },\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 259,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L259"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66177,
+									"name": "event",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The event to apply."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"qualifiedName": "Event"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "any"
+											}
+										],
+										"name": "Event",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/common.ts",
+												"qualifiedName": "SearchTask"
+											},
+											"name": "SearchTask",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66178,
+					"name": "listIndexes",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 271,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L271"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66179,
+							"name": "listIndexes",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves the registered indexes, their status, and the leaf\nfields each of them stores. Definitions that haven't been migrated yet are\nincluded with a "
+									},
+									{
+										"kind": "code",
+										"text": "`pending`"
+									},
+									{
+										"kind": "text",
+										"text": " status."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The registered indexes."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst indexes = await searchModuleService.listIndexes()\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 271,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L271"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/index-info.ts",
+												"qualifiedName": "SearchIndexDetails"
+											},
+											"name": "SearchIndexDetails",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66180,
+					"name": "listRetrievableFields",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 285,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L285"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66181,
+							"name": "listRetrievableFields",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves the field paths an index can return. "
+									},
+									{
+										"kind": "code",
+										"text": "`query.search`"
+									},
+									{
+										"kind": "text",
+										"text": "\nuses it to split the fields a caller asked for between the search engine and\n"
+									},
+									{
+										"kind": "code",
+										"text": "`query.graph`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrievable field paths, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`title`"
+											},
+											{
+												"kind": "text",
+												"text": " or\n"
+											},
+											{
+												"kind": "code",
+												"text": "`variants.sku`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst fields = searchModuleService.listRetrievableFields(\"product\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 285,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L285"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66182,
+									"name": "index",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": 66183,
+					"name": "getIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 299,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L299"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66184,
+							"name": "getIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves an index's definition with the module's defaults\napplied: the provider it resolved to, the root physical index name its\nversions are derived from, and the "
+									},
+									{
+										"kind": "code",
+										"text": "`primary_key`"
+									},
+									{
+										"kind": "text",
+										"text": " its documents are keyed\nby, which is what a hit's "
+									},
+									{
+										"kind": "code",
+										"text": "`id`"
+									},
+									{
+										"kind": "text",
+										"text": " holds."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The resolved index definition."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst definition = searchModuleService.getIndex(\"product\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 299,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L299"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66185,
+									"name": "index",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/types/src/search/index-definition.ts",
+									"qualifiedName": "ResolvedSearchIndexDefinition"
+								},
+								"name": "ResolvedSearchIndexDefinition",
+								"package": "@medusajs/types"
+							}
+						}
+					]
+				},
+				{
+					"id": 66186,
+					"name": "reindex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 339,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L339"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66187,
+							"name": "reindex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method triggers a background job that rebuilds one or more indexes from\ntheir definitions' "
+									},
+									{
+										"kind": "code",
+										"text": "`seed`"
+									},
+									{
+										"kind": "text",
+										"text": " functions. Medusa handles reindexing automatically, as explained\nin the [Reindexing and Migrations Guide](https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing).\nThis method is useful to trigger the reindex manually after changing what a "
+									},
+									{
+										"kind": "code",
+										"text": "`seed`"
+									},
+									{
+										"kind": "text",
+										"text": "\nproduces, or to recover an index whose documents drifted from their source\nof truth.\n\nThe job is started, not awaited: the returned result only tells you which\nindexes are being rebuilt."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The ID of the job performing the\nreindex, and the indexes it rebuilds."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To rebuild a single index:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst { job_id } = await searchModuleService.reindex({\n  index: \"product\",\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo rebuild part of an index in place:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst { job_id } = await searchModuleService.reindex({\n  index: \"product\",\n  strategy: \"in_place\",\n  filters: {\n    collection_id: \"pcol_123\",\n  },\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 339,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L339"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66188,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The reindex options, such as which\nindexes to rebuild and what strategy to use. If not provided, every index is\nrebuilt with the "
+											},
+											{
+												"kind": "code",
+												"text": "`swap`"
+											},
+											{
+												"kind": "text",
+												"text": " strategy."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 66144,
+										"name": "SearchReindexInput",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 66149,
+										"name": "SearchReindexResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66189,
+					"name": "deleteIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 359,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L359"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66190,
+							"name": "deleteIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes an index: every physical index ever built for it is dropped\nfrom its search engine, along with the versions and sync history behind them.\n\nNothing is left for the next migration to find, so it rebuilds the index from\nscratch starting at version 1. Use it to recover from an index whose physical\nstate has drifted past what a reindex can repair.\n\nThe index definition itself is untouched — it lives in your code, not in the\ndatabase."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The deleted index and how many of\nits versions were dropped."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst { deleted_versions } = await searchModuleService.deleteIndex(\"product\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 359,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L359"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66191,
+									"name": "index",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index to delete."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 66152,
+										"name": "SearchIndexDeleteResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66192,
+					"name": "createIndexMigrationPlan",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 378,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L378"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66193,
+							"name": "createIndexMigrationPlan",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method plans what it would take to bring the physical indexes in line\nwith the loaded index definitions. Planning is separate from executing it. It's\nuseful for printing the actions, or executing them later with "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "executeIndexMigrationPlan",
+										"target": 66194
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The actions required to\nbring the physical indexes in line with the definitions. Indexes that are\nalready up to date are returned as "
+											},
+											{
+												"kind": "code",
+												"text": "`noop`"
+											},
+											{
+												"kind": "text",
+												"text": " actions, and indexes without a definition\nare returned as a "
+											},
+											{
+												"kind": "code",
+												"text": "`drop`"
+											},
+											{
+												"kind": "text",
+												"text": ", which will delete all data around them.\n"
+											},
+											{
+												"kind": "inline-tag",
+												"tag": "@link",
+												"text": "executeIndexMigrationPlan",
+												"target": 66194
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst actions = await searchModuleService.createIndexMigrationPlan()\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 378,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L378"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/migration.ts",
+												"qualifiedName": "SearchIndexMigrationAction"
+											},
+											"name": "SearchIndexMigrationAction",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 66194,
+					"name": "executeIndexMigrationPlan",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "search/service.ts",
+							"line": 397,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L397"
+						}
+					],
+					"signatures": [
+						{
+							"id": 66195,
+							"name": "executeIndexMigrationPlan",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method executes a migration plan, creating, altering and dropping\nphysical indexes. Every action is idempotent, so executing the same plan\ntwice is a no-op.\n\nThe indexes this method creates are filled by the seed that runs at\napplication start, so an index it creates serves nothing until then."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the physical indexes are created and\naltered."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst actions = await searchModuleService.createIndexMigrationPlan()\nawait searchModuleService.executeIndexMigrationPlan(actions)\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "search/service.ts",
+									"line": 397,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L397"
+								}
+							],
+							"parameters": [
+								{
+									"id": 66196,
+									"name": "actions",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The actions to execute, as\nreturned by "
+											},
+											{
+												"kind": "inline-tag",
+												"tag": "@link",
+												"text": "createIndexMigrationPlan",
+												"target": 66192
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../../packages/core/types/src/search/migration.ts",
+												"qualifiedName": "SearchIndexMigrationAction"
+											},
+											"name": "SearchIndexMigrationAction",
+											"package": "@medusajs/types"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						66156,
+						66160,
+						66163,
+						66169,
+						66175,
+						66178,
+						66180,
+						66183,
+						66186,
+						66189,
+						66192,
+						66194
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "search/service.ts",
+					"line": 84,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/search/service.ts#L84"
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+						"qualifiedName": "IModuleService"
+					},
+					"name": "IModuleService",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				66144,
+				66149,
+				66152,
+				66155
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				66143
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"66142": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": ""
+		},
+		"66143": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexStrategy"
+		},
+		"66144": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexInput"
+		},
+		"66145": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexInput.index"
+		},
+		"66146": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexInput.strategy"
+		},
+		"66147": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexInput.filters"
+		},
+		"66148": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexInput.since"
+		},
+		"66149": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexResult"
+		},
+		"66150": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexResult.job_id"
+		},
+		"66151": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchReindexResult.indexes"
+		},
+		"66152": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchIndexDeleteResult"
+		},
+		"66153": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchIndexDeleteResult.index"
+		},
+		"66154": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "SearchIndexDeleteResult.deleted_versions"
+		},
+		"66155": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService"
+		},
+		"66156": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.search"
+		},
+		"66157": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.search"
+		},
+		"66158": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "T"
+		},
+		"66159": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "query"
+		},
+		"66160": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.searchMany"
+		},
+		"66161": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.searchMany"
+		},
+		"66162": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "queries"
+		},
+		"66163": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.upsertDocuments"
+		},
+		"66164": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.upsertDocuments"
+		},
+		"66165": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "input"
+		},
+		"66166": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type"
+		},
+		"66167": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type.index"
+		},
+		"66168": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type.documents"
+		},
+		"66169": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteDocuments"
+		},
+		"66170": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteDocuments"
+		},
+		"66171": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "input"
+		},
+		"66172": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type"
+		},
+		"66173": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type.index"
+		},
+		"66174": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "__type.filters"
+		},
+		"66175": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.ingest"
+		},
+		"66176": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.ingest"
+		},
+		"66177": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "event"
+		},
+		"66178": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.listIndexes"
+		},
+		"66179": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.listIndexes"
+		},
+		"66180": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.listRetrievableFields"
+		},
+		"66181": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.listRetrievableFields"
+		},
+		"66182": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "index"
+		},
+		"66183": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.getIndex"
+		},
+		"66184": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.getIndex"
+		},
+		"66185": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "index"
+		},
+		"66186": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.reindex"
+		},
+		"66187": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.reindex"
+		},
+		"66188": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "input"
+		},
+		"66189": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteIndex"
+		},
+		"66190": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteIndex"
+		},
+		"66191": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "index"
+		},
+		"66192": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+		},
+		"66193": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+		},
+		"66194": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+		},
+		"66195": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+		},
+		"66196": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "actions"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/types/src/search/service.ts"
+		},
+		"reflections": {
+			"1": 66142
+		}
+	}
+}

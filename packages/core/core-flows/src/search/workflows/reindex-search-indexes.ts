@@ -17,9 +17,19 @@ export type ReindexSearchIndexesWorkflowInput = {
   index?: string | string[]
   /**
    * How to rebuild. `swap` fills a new version and makes it active on
-   * completion; `in_place` writes into the active version directly.
+   * completion; `in_place` writes into the active version directly. Ignored
+   * — always in place — when `filters` or `since` is set.
    */
   strategy?: "swap" | "in_place"
+  /**
+   * Filters passed to the index definition's `seed` function to rebuild only
+   * a subset of the index's documents. The shape is index-defined.
+   */
+  filters?: Record<string, unknown>
+  /**
+   * Rebuilds only documents that changed at or after this date (ISO 8601).
+   */
+  since?: string
 }
 
 export const reindexSearchIndexesWorkflowId = "reindex-search-indexes"

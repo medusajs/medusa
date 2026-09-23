@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useSearchParams } from "react-router-dom"
 import { z } from "@medusajs/framework/zod"
 import { useCreateStoreCreditAccount } from "../../../../../hooks/api/store-credit-accounts"
 import { sdk } from "../../../../../lib/sdk"
@@ -21,10 +22,12 @@ export const formSchema = z.object({
 
 export const StoreCreditAccountCreateForm = () => {
   const { handleSuccess } = useRouteModal()
+  const [searchParams] = useSearchParams()
+  const prefilledCustomerId = searchParams.get("prefill_customer_id") ?? ""
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       currency_code: "",
-      customer_id: "",
+      customer_id: prefilledCustomerId,
     },
     resolver: zodResolver(formSchema),
   })
@@ -76,6 +79,7 @@ export const StoreCreditAccountCreateForm = () => {
     isLoading,
   } = useComboboxData({
     queryKey: customersQueryKeys.list(),
+    defaultValue: prefilledCustomerId || undefined,
     queryFn: async (params) => {
       return sdk.admin.customer.list(params)
     },

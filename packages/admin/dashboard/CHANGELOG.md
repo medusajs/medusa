@@ -1,5 +1,78 @@
 # @medusajs/dashboard
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16820](https://github.com/medusajs/medusa/pull/16820) [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797) Thanks [@Markheris](https://github.com/Markheris)! - fix(dashboard): add the 306 Turkish translations missing from tr.json
+
+- [#16852](https://github.com/medusajs/medusa/pull/16852) [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): disable store credit option when there's no outstanding amount or the customer is a guest
+
+- [#16746](https://github.com/medusajs/medusa/pull/16746) [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d) Thanks [@SanteriMoilanen](https://github.com/SanteriMoilanen)! - Add Finnish (fi) admin translation
+
+- [#16677](https://github.com/medusajs/medusa/pull/16677) [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d) Thanks [@MarcelRoblek](https://github.com/MarcelRoblek)! - fix(dashboard): include shipping_address in order list query so Country column renders
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+- Updated dependencies [[`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16587](https://github.com/medusajs/medusa/pull/16587) [`c511dbb072270b01cddc52a0b77040701ffe34ff`](https://github.com/medusajs/medusa/commit/c511dbb072270b01cddc52a0b77040701ffe34ff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(dashboard,medusa): name admin search entities after their graph entity
+
+- [#16366](https://github.com/medusajs/medusa/pull/16366) [`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a) Thanks [@sansynx](https://github.com/sansynx)! - fix(dashboard): inventory kit inputs written to wrong variant when earlier variants are filtered out
+
+- [#16719](https://github.com/medusajs/medusa/pull/16719) [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard, types, medusa): add support for metadata management for promotions
+
+- [#16763](https://github.com/medusajs/medusa/pull/16763) [`b16a37bd23e13bee8f4f6a332e30e8f6da1bd704`](https://github.com/medusajs/medusa/commit/b16a37bd23e13bee8f4f6a332e30e8f6da1bd704) Thanks [@owlcode](https://github.com/owlcode)! - fix(dashboard): add missing Polish translations
+
+  The Polish (`pl`) translation file covered 2105 of the 2438 keys in
+  `en.json`, so 441 keys fell through to the English fallback inside an
+  otherwise Polish dashboard. The gaps included very common labels such as
+  `actions.saveChanges`, `actions.manage`, `general.selectAll` and the whole
+  `layout.customize*` group, as well as entire newer domains: `roles`,
+  `policies`, `permissions`, `translations`, `searchIndexes`,
+  `propertyLabels`, `views`, `productOptions`, `priceLists.quantityPricing`
+  and two-factor auth in both `profile.mfa` and `login.mfa`.
+
+  - Add the 441 missing keys. Polish plural groups are expanded to all four
+    categories its `plural-config.json` declares (`one`, `few`, `many`,
+    `other`), so the 441 English keys become 451 Polish entries.
+  - Remove 15 stale `app.search.groups.*` keys (`customerGroup`,
+    `productVariant`, `category`, ...). These were renamed to snake_case
+    (`customer_group`, `product_variant`, `product_category`, ...), so the
+    camelCase names were dead code i18next could never reach and the
+    translation schema rejects them.
+
+  No pre-existing Polish value is modified or dropped. `yarn i18n:validate
+pl.json` failed before this change and now passes.
+
+- [#16288](https://github.com/medusajs/medusa/pull/16288) [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): add global add-row action to metadata editor
+
+- [#16393](https://github.com/medusajs/medusa/pull/16393) [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc) Thanks [@lazerg](https://github.com/lazerg)! - fix(dashboard): strip the table query prefix in the product tag list loader
+
+- [#16506](https://github.com/medusajs/medusa/pull/16506) [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(dashboard,js-sdk): export common components, hooks
+
+- Updated dependencies [[`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a)]:
+  - @medusajs/js-sdk@2.21.0
+  - @medusajs/admin-shared@2.21.0
+  - @medusajs/icons@2.21.0
+  - @medusajs/ui@4.2.4
+
 ## 2.20.1
 
 ### Patch Changes

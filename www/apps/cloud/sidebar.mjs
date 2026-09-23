@@ -86,6 +86,11 @@ export const sidebar = [
                 title: "Log Drains",
                 path: "/projects/log-drains",
               },
+              {
+                type: "link",
+                title: "Troubleshooting",
+                path: "/projects/troubleshooting",
+              },
             ],
           },
           {
@@ -161,8 +166,126 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "CLI",
+        title: "Resources",
         initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Storefront",
+            path: "/storefront",
+          },
+          {
+            type: "link",
+            title: "Database",
+            path: "/database",
+          },
+          {
+            type: "link",
+            title: "Redis",
+            path: "/redis",
+          },
+          {
+            type: "link",
+            title: "S3",
+            path: "/s3",
+          },
+          {
+            type: "link",
+            title: "Cache",
+            path: "/cache",
+          },
+          {
+            type: "link",
+            title: "Emails",
+            path: "/emails",
+            children: [
+              {
+                type: "link",
+                title: "React Email Templates",
+                path: "/emails/react-email",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Search",
+        badge: {
+          variant: "green",
+          text: "New",
+        },
+        children: [
+          {
+            type: "link",
+            title: "Overview",
+            path: "/search",
+          },
+          {
+            type: "link",
+            title: "Analytics",
+            path: "/search/analytics",
+          },
+          {
+            type: "sub-category",
+            title: "API",
+            children: [
+              {
+                type: "link",
+                title: "Index Settings",
+                path: "/search/settings",
+              },
+              {
+                type: "link",
+                title: "Semantic Search",
+                path: "/search/semantic-search",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Comparison",
+            path: "/search/comparison",
+            children: [
+              {
+                type: "link",
+                title: "Compare to Algolia",
+                path: "/search/algolia",
+              },
+              {
+                type: "link",
+                title: "Compare to Meilisearch",
+                path: "/search/meilisearch",
+              },
+              {
+                type: "link",
+                title: "Compare to PostgreSQL",
+                path: "/search/postgres",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Migration",
+            children: [
+              {
+                type: "link",
+                title: "Migrate from Algolia",
+                path: "/search/migrate-from-algolia",
+              },
+              {
+                type: "link",
+                title: "Migrate from Meilisearch",
+                path: "/search/migrate-from-meilisearch",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "CLI",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -245,75 +368,6 @@ export const sidebar = [
             type: "link",
             title: "logout",
             path: "/cli/commands/logout",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Resources",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Storefront",
-            path: "/storefront",
-          },
-          {
-            type: "link",
-            title: "Database",
-            path: "/database",
-          },
-          {
-            type: "link",
-            title: "Redis",
-            path: "/redis",
-          },
-          {
-            type: "link",
-            title: "S3",
-            path: "/s3",
-          },
-          {
-            type: "link",
-            title: "Cache",
-            path: "/cache",
-          },
-          {
-            type: "link",
-            title: "Emails",
-            path: "/emails",
-            children: [
-              {
-                type: "link",
-                title: "React Email Templates",
-                path: "/emails/react-email",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Plugins",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Loyalty",
-            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
-            badge: {
-              text: "Published",
-              variant: "blue",
-            },
-          },
-          {
-            type: "link",
-            title: "Draft Orders",
-            path: "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
-            badge: {
-              text: "Published",
-              variant: "blue",
-            },
           },
         ],
       },

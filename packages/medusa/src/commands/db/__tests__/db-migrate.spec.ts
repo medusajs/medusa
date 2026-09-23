@@ -44,6 +44,14 @@ jest.mock("../sync-links", () => ({
   syncLinks: jest.fn().mockResolvedValue(undefined),
 }))
 
+jest.mock("../../../loaders/search", () => ({
+  isSearchModuleEnabled: jest.fn().mockReturnValue(true),
+}))
+
+jest.mock("child_process", () => ({
+  fork: jest.fn(),
+}))
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function buildContainer(
@@ -70,9 +78,30 @@ const defaultArgs = {
   skipSearch: true,
   executeAllLinks: false,
   executeSafeLinks: false,
+  executeAllSearch: false,
+  executeSafeSearch: false,
   concurrency: undefined,
   allOrNothing: false,
 }
+
+/** Stands in for the forked CLI child, exiting with the given code. */
+function mockFork(exitCode = 0) {
+  const { fork } = require("child_process")
+
+  ;(fork as jest.Mock).mockImplementation(() => ({
+    on: (event: string, handler: (code?: number) => void) => {
+      if (event === "close") {
+        setImmediate(() => handler(exitCode))
+      }
+    },
+  }))
+
+  return fork as jest.Mock
+}
+
+/** The arguments the child was forked with, minus the CLI path. */
+const forkedWith = (fork: jest.Mock) =>
+  fork.mock.calls.map(([, args]) => args)
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
@@ -121,6 +150,58 @@ describe("db:migrate – main", () => {
       await main(defaultArgs)
 
       expect(consoleSpy).toHaveBeenCalledWith(err)
+    })
+  })
+
+  describe("search index flags", () => {
+    beforeEach(() => {
+      ;(initializeContainer as jest.Mock).mockResolvedValue(buildContainer())
+    })
+
+    it("forwards --execute-all-search to the search command", async () => {
+      const fork = mockFork()
+
+      await main({
+        ...defaultArgs,
+        skipSearch: false,
+        executeAllSearch: true,
+      })
+
+      expect(forkedWith(fork)).toContainEqual([
+        "db:migrate:search",
+        "--execute-all-search",
+      ])
+    })
+
+    it("forwards --execute-safe-search to the search command", async () => {
+      const fork = mockFork()
+
+      await main({
+        ...defaultArgs,
+        skipSearch: false,
+        executeSafeSearch: true,
+      })
+
+      expect(forkedWith(fork)).toContainEqual([
+        "db:migrate:search",
+        "--execute-safe-search",
+      ])
+    })
+
+    it("passes no flag when neither was given, so the command prompts", async () => {
+      const fork = mockFork()
+
+      await main({ ...defaultArgs, skipSearch: false })
+
+      expect(forkedWith(fork)).toContainEqual(["db:migrate:search"])
+    })
+
+    it("fails the migration when the search command exits non-zero", async () => {
+      mockFork(1)
+
+      await main({ ...defaultArgs, skipSearch: false })
+
+      expect(process.exit).toHaveBeenCalledWith(1)
     })
   })
 
