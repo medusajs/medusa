@@ -909,6 +909,15 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "path": "/learn/fundamentals/workflows/cancel-workflow",
+                "title": "Cancel Workflow Execution",
+                "children": [],
+                "chapterTitle": "4.7.12. Cancel Workflow Execution",
+                "number": "4.7.12."
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "path": "/learn/fundamentals/workflows/long-running-workflow",
                 "title": "Long-Running Workflow",
                 "children": [],

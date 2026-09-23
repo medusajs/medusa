@@ -25678,6 +25678,68 @@ createBlogPostWorkflow.hooks.validate(
 Learn more about the hook handler in the [Workflow Hooks](undefined/learn/fundamentals/workflows/workflow-hooks) chapter.
 
 
+# Cancel a Workflow Execution
+
+In this chapter, you'll learn how to cancel a workflow execution and revert its steps.
+
+## How to Cancel a Workflow Execution?
+
+Every workflow you create with `createWorkflow` has a `cancel` method. When you cancel a workflow execution, Medusa runs the [compensation function](https://docs.medusajs.com/learn/fundamentals/workflows/compensation-function/index.html.md) of every step that ran, in reverse order, then sets the execution's state to `reverted`.
+
+You can cancel a workflow execution while it's still running, such as a [Long-Running Workflow](https://docs.medusajs.com/learn/fundamentals/workflows/long-running-workflow/index.html.md), or after it finished.
+
+To cancel a workflow execution, pass its transaction to the `cancel` method:
+
+```ts
+import { helloWorkflow } from "../workflows/hello"
+
+const { transaction } = await helloWorkflow(container).run({
+  input: {},
+})
+
+await helloWorkflow(container).cancel({
+  transaction,
+})
+```
+
+Medusa compensates the steps that ran in `helloWorkflow`, then marks the execution as `reverted`.
+
+The `cancel` method throws an error if the execution already failed, reverted, or is compensating.
+
+***
+
+## Cancel by Transaction ID
+
+Instead of the transaction, you can pass the ID of the execution's transaction to the `cancel` method. This is useful when you cancel the execution in a different request or process than the one that ran the workflow:
+
+```ts
+await helloWorkflow(container).cancel({
+  transactionId: "123",
+})
+```
+
+Medusa loads the execution from the database, so this only works if the workflow [stores its executions](https://docs.medusajs.com/learn/fundamentals/workflows/store-executions/index.html.md). Otherwise, Medusa removes the execution once it's done, and the `cancel` method throws a `Transaction {id} could not be found` error.
+
+To cancel a completed execution by its transaction ID, set the `store` and `retentionTime` options when you create the workflow:
+
+```ts
+export const helloWorkflow = createWorkflow(
+  {
+    name: "hello-workflow",
+    retentionTime: 3600,
+    store: true,
+  },
+  () => {
+    step1()
+  }
+)
+```
+
+Medusa enables the `store` option by default for long-running workflows, workflows with a [timeout](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-timeout/index.html.md), and idempotent workflows. Even then, you still need the `retentionTime` option to cancel an execution after it's done.
+
+If you don't want to store the workflow's executions, keep a reference to the `transaction` that the `run` method returns and pass it to the `cancel` method instead.
+
+
 # Compensation Function
 
 In this chapter, you'll learn what a compensation function is and how to add it to a step.
@@ -28150,6 +28212,8 @@ export const helloWorkflow = createWorkflow(
 ```
 
 Whenever you execute the `helloWorkflow` now, its execution details will be stored in the database.
+
+Storing a workflow's executions also allows you to [cancel an execution](https://docs.medusajs.com/learn/fundamentals/workflows/cancel-workflow/index.html.md) by its transaction ID after it's done.
 
 ***
 
