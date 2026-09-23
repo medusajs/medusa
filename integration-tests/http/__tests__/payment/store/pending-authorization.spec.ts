@@ -1,6 +1,6 @@
 import { processPaymentWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules, PaymentActions, ProductStatus } from "@medusajs/utils"
+import { Modules, PaymentActions, PaymentEvents, ProductStatus } from "@medusajs/utils"
 import { setTimeout } from "timers/promises"
 import {
   createAdminUser,
@@ -412,6 +412,80 @@ medusaIntegrationTestRunner({
         ).data.order
 
         expect(orderAfter.payment_status).toBe("awaiting")
+      })
+
+      it("should emit payment.captured when the provider returns CAPTURED on authorize", async () => {
+        // 1. Complete cart with pending_authorization
+        const paymentCollection = (
+          await api.post(
+            "/store/payment-collections",
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: pendingAuthProviderId },
+          storeHeaders
+        )
+
+        const completedCart = (
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+        ).data
+
+        expect(completedCart.type).toBe("order")
+        const orderId = completedCart.order.id
+
+        // 2. Get the payment session ID
+        const orderBefore = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=*payment_collections,*payment_collections.payment_sessions`,
+            adminHeaders
+          )
+        ).data.order
+
+        const sessionId =
+          orderBefore.payment_collections[0].payment_sessions[0].id
+
+        // 3. Subscribe to payment.captured before triggering authorize
+        const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+        const capturedSpy = jest.fn()
+        eventBus.subscribe(PaymentEvents.CAPTURED, capturedSpy, {})
+
+        // 4. Make the provider return CAPTURED on the next authorize
+        const paymentModule = appContainer.resolve(Modules.PAYMENT)
+        await paymentModule.updatePaymentSession({
+          id: sessionId,
+          currency_code: "usd",
+          amount: orderBefore.payment_collections[0].amount,
+          data: { payment_captured: true },
+        })
+
+        // 5. Trigger admin check-status
+        const authResult = (
+          await api.post(
+            `/admin/orders/${orderId}/payment-sessions/authorize?fields=+payment_status`,
+            { payment_session_id: sessionId },
+            adminHeaders
+          )
+        ).data
+
+        expect(authResult.is_authorized).toBe(true)
+
+        // 6. Order should be captured
+        const orderAfter = (
+          await api.get(
+            `/admin/orders/${orderId}?fields=+payment_status,*payment_collections.payments`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(orderAfter.payment_status).toBe("captured")
+
+        // 7. payment.captured should have fired at least once
+        await setTimeout(500)
+        expect(capturedSpy).toHaveBeenCalled()
       })
     })
 
