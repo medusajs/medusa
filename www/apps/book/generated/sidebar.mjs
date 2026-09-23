@@ -912,8 +912,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/workflows/cancel-workflow",
                 "title": "Cancel Workflow Execution",
                 "children": [],
-                "chapterTitle": "4.7.12. Cancel Workflow Execution",
-                "number": "4.7.12."
+                "chapterTitle": "4.8.12. Cancel Workflow Execution",
+                "number": "4.8.12."
               },
               {
                 "loaded": true,
@@ -921,8 +921,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/workflows/long-running-workflow",
                 "title": "Long-Running Workflow",
                 "children": [],
-                "chapterTitle": "4.8.12. Long-Running Workflow",
-                "number": "4.8.12."
+                "chapterTitle": "4.8.13. Long-Running Workflow",
+                "number": "4.8.13."
               },
               {
                 "loaded": true,
@@ -930,8 +930,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/workflows/execute-another-workflow",
                 "title": "Nested Workflows",
                 "children": [],
-                "chapterTitle": "4.8.13. Nested Workflows",
-                "number": "4.8.13."
+                "chapterTitle": "4.8.14. Nested Workflows",
+                "number": "4.8.14."
               },
               {
                 "loaded": true,
@@ -939,8 +939,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/workflows/multiple-step-usage",
                 "title": "Multiple Step Usage",
                 "children": [],
-                "chapterTitle": "4.8.14. Multiple Step Usage",
-                "number": "4.8.14."
+                "chapterTitle": "4.8.15. Multiple Step Usage",
+                "number": "4.8.15."
               },
               {
                 "loaded": true,
@@ -948,8 +948,8 @@ export const generatedSidebars = [
                 "path": "/learn/fundamentals/workflows/locks",
                 "title": "Using Locks",
                 "children": [],
-                "chapterTitle": "4.8.15. Using Locks",
-                "number": "4.8.15."
+                "chapterTitle": "4.8.16. Using Locks",
+                "number": "4.8.16."
               },
               {
                 "loaded": true,
@@ -957,8 +957,8 @@ export const generatedSidebars = [
                 "path": "/learn/debugging-and-testing/debug-workflows",
                 "title": "Debug Workflows",
                 "children": [],
-                "chapterTitle": "4.8.16. Debug Workflows",
-                "number": "4.8.16."
+                "chapterTitle": "4.8.17. Debug Workflows",
+                "number": "4.8.17."
               }
             ],
             "chapterTitle": "4.8. Workflows",

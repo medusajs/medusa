@@ -1152,6 +1152,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateSalesChannelsWorkflow"
   },
   {
+    "title": "deleteSearchIndexWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteSearchIndexWorkflow"
+  },
+  {
     "title": "reindexSearchIndexesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/reindexSearchIndexesWorkflow"
   },
@@ -1254,6 +1258,10 @@ export const workflow = [
   {
     "title": "debitAccountsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow"
+  },
+  {
+    "title": "debitStoreCreditAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   },
   {
     "title": "createTaxRateRulesWorkflow",
