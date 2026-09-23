@@ -110,6 +110,7 @@ export const sitemapUrls = [
   "/learn/fundamentals/scheduled-jobs/interval",
   "/learn/fundamentals/scheduled-jobs",
   "/learn/fundamentals/workflows/add-workflow-hook",
+  "/learn/fundamentals/workflows/cancel-workflow",
   "/learn/fundamentals/workflows/compensation-function",
   "/learn/fundamentals/workflows/conditions",
   "/learn/fundamentals/workflows/constructor-constraints",
