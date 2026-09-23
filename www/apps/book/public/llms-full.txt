@@ -25684,9 +25684,9 @@ In this chapter, you'll learn how to cancel a workflow execution and revert its 
 
 ## How to Cancel a Workflow Execution?
 
-Every workflow you create with `createWorkflow` has a `cancel` method. When you cancel a workflow execution, Medusa runs the [compensation function](https://docs.medusajs.com/learn/fundamentals/workflows/compensation-function/index.html.md) of every step that ran, in reverse order, then sets the execution's state to `reverted`.
+Every workflow you create with `createWorkflow` has a `cancel` method. When you cancel a workflow execution, Medusa runs the [compensation function](undefined/learn/fundamentals/workflows/compensation-function) of every step that ran, in reverse order, then sets the execution's state to `reverted`.
 
-You can cancel a workflow execution while it's still running, such as a [Long-Running Workflow](https://docs.medusajs.com/learn/fundamentals/workflows/long-running-workflow/index.html.md), or after it finished.
+You can cancel a workflow execution while it's still running, such as a [Long-Running Workflow](undefined/learn/fundamentals/workflows/long-running-workflow), or after it finished.
 
 To cancel a workflow execution, pass its transaction to the `cancel` method:
 
@@ -25718,7 +25718,7 @@ await helloWorkflow(container).cancel({
 })
 ```
 
-Medusa loads the execution from the database, so this only works if the workflow [stores its executions](https://docs.medusajs.com/learn/fundamentals/workflows/store-executions/index.html.md). Otherwise, Medusa removes the execution once it's done, and the `cancel` method throws a `Transaction {id} could not be found` error.
+Medusa loads the execution from the database, so this only works if the workflow [stores its executions](undefined/learn/fundamentals/workflows/store-executions). Otherwise, Medusa removes the execution once it's done, and the `cancel` method throws a `Transaction {id} could not be found` error.
 
 To cancel a completed execution by its transaction ID, set the `store` and `retentionTime` options when you create the workflow:
 
@@ -25735,7 +25735,7 @@ export const helloWorkflow = createWorkflow(
 )
 ```
 
-Medusa enables the `store` option by default for long-running workflows, workflows with a [timeout](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-timeout/index.html.md), and idempotent workflows. Even then, you still need the `retentionTime` option to cancel an execution after it's done.
+Medusa enables the `store` option by default for long-running workflows, workflows with a [timeout](undefined/learn/fundamentals/workflows/workflow-timeout), and idempotent workflows. Even then, you still need the `retentionTime` option to cancel an execution after it's done.
 
 If you don't want to store the workflow's executions, keep a reference to the `transaction` that the `run` method returns and pass it to the `cancel` method instead.
 
@@ -28213,7 +28213,7 @@ export const helloWorkflow = createWorkflow(
 
 Whenever you execute the `helloWorkflow` now, its execution details will be stored in the database.
 
-Storing a workflow's executions also allows you to [cancel an execution](https://docs.medusajs.com/learn/fundamentals/workflows/cancel-workflow/index.html.md) by its transaction ID after it's done.
+Storing a workflow's executions also allows you to [cancel an execution](undefined/learn/fundamentals/workflows/cancel-workflow) by its transaction ID after it's done.
 
 ***
 
@@ -151209,7 +151209,7 @@ export default function AlertWarning() {
 import { Alert } from "@medusajs/ui"
 
 export default function AlertError() {
-  return <Alert variant="error">An error occured while updating data.</Alert>
+  return <Alert variant="error">An error occurred while updating data.</Alert>
 }
 
 ```
