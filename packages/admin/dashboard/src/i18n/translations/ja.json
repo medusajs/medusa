@@ -2300,7 +2300,6 @@
     "toasts": {
       "promotionCreateSuccess": "プロモーション「{{code}}」が正常に作成されました。"
     },
-    "create": {},
     "edit": {
       "title": "プロモーションの詳細を編集",
       "rules": {
