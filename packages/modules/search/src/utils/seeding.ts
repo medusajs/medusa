@@ -19,7 +19,7 @@ import {
   SearchIndexState,
   SearchSyncStatus,
 } from "./index"
-import { versionPhysicalName } from "./migrations"
+import { cleanupStaleVersions, versionPhysicalName } from "./versions"
 import { retryOnRateLimit } from "./rate-limit"
 
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
@@ -355,8 +355,9 @@ async function reindexOne(
   const provider = context.providers.retrieve(definition.provider)
   const record = await retrieveIndexRecord(context, definition.name)
 
-  // Either input narrows the run to a slice of the index: `filters` selects
-  // source records, `since` only what changed at or after a cursor.
+  // We want to clean up stale versions before we start the reindex.
+  await cleanupStaleVersions(context, record)
+
   const scoped = !!input.filters || !!input.since
 
   // A partial rebuild must never swap: the replacement would only hold that
@@ -372,9 +373,7 @@ async function reindexOne(
     jobId,
     filters: input.filters,
     // A scoped run covers a different set of documents than the full run whose
-    // cursor it would otherwise inherit: resuming from that cursor would skip
-    // documents it was asked to rebuild, and cancelling that run would throw
-    // away its progress. It starts clean and leaves the other one alone.
+    // cursor it would otherwise inherit
     resume: !scoped,
     resumable: !scoped,
   })

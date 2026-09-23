@@ -286,6 +286,11 @@ export const specsTagIndex = {
       "admin_sales-channels_{id}.yaml",
       "admin_sales-channels_{id}_products.yaml"
     ],
+    "search-indexes": [
+      "admin_search-indexes.yaml",
+      "admin_search-indexes_{id}.yaml",
+      "admin_search-indexes_{id}_reindex.yaml"
+    ],
     "search": [
       "admin_search.yaml"
     ],
@@ -313,6 +318,7 @@ export const specsTagIndex = {
       "admin_store-credit-accounts.yaml",
       "admin_store-credit-accounts_{id}.yaml",
       "admin_store-credit-accounts_{id}_credit.yaml",
+      "admin_store-credit-accounts_{id}_debit.yaml",
       "admin_store-credit-accounts_{id}_transactions.yaml"
     ],
     "stores": [
@@ -492,6 +498,9 @@ export const specsTagIndex = {
     ],
     "returns": [
       "store_returns.yaml"
+    ],
+    "search": [
+      "store_search.yaml"
     ],
     "shipping-options": [
       "store_shipping-options.yaml",

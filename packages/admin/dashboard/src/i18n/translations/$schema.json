@@ -4693,13 +4693,21 @@
                 },
                 "creditLineDescription": {
                   "type": "string"
+                },
+                "creditLineNoOutstandingAmountDescription": {
+                  "type": "string"
+                },
+                "creditLineGuestDescription": {
+                  "type": "string"
                 }
               },
               "required": [
                 "paymentMethod",
                 "paymentMethodDescription",
                 "creditLine",
-                "creditLineDescription"
+                "creditLineDescription",
+                "creditLineNoOutstandingAmountDescription",
+                "creditLineGuestDescription"
               ],
               "additionalProperties": false
             }
@@ -13119,6 +13127,15 @@
         "reindexEntityIdsHint": {
           "type": "string"
         },
+        "delete": {
+          "type": "string"
+        },
+        "deleteWarning": {
+          "type": "string"
+        },
+        "deleteSuccess": {
+          "type": "string"
+        },
         "noFields": {
           "type": "string"
         },
@@ -13165,6 +13182,9 @@
         "reindexSinceHint",
         "reindexEntityIdsLabel",
         "reindexEntityIdsHint",
+        "delete",
+        "deleteWarning",
+        "deleteSuccess",
         "noFields",
         "list",
         "status"

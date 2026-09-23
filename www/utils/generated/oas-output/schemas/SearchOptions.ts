@@ -1,0 +1,168 @@
+/**
+ * @schema SearchOptions
+ * type: object
+ * description: The options changing how a search query is matched, scored, and aggregated.
+ * x-schemaName: SearchOptions
+ * properties:
+ *   attributes_to_search_on:
+ *     type: array
+ *     description: The dotted paths of the fields to match the free-text query against. It defaults to every field marked `searchable` on the index.
+ *     items:
+ *       type: string
+ *       title: attributes_to_search_on
+ *       description: A field's dotted path.
+ *   match_strategy:
+ *     type: string
+ *     description: |-
+ *       How query terms combine.
+ * 
+ *       - `"all"` (default): every term must appear as a complete token.
+ *       - `"any"`: at least one term must match.
+ *       - `"last"`: typeahead. Completed terms must match in full; the last term
+ *         is a prefix, so `"my sear"` matches `"My search results"`.
+ *     enum:
+ *       - any
+ *       - all
+ *       - last
+ *   typo_tolerance:
+ *     type: boolean
+ *     title: typo_tolerance
+ *     description: Whether to match terms that are misspelled by a character or two. It's ignored unless the query includes a free-text `q` and the searched fields have typo tolerance enabled in the index's settings.
+ *   facets:
+ *     type: array
+ *     description: The facets to compute alongside the hits. A string is shorthand for a `value` facet on that field.
+ *     items:
+ *       oneOf:
+ *         - type: string
+ *           title: facets
+ *           description: A facet to compute alongside the hits.
+ *         - type: object
+ *           description: A facet to compute alongside the hits.
+ *           required:
+ *             - field
+ *           properties:
+ *             field:
+ *               type: string
+ *               title: field
+ *               description: The dotted path of the field to facet on.
+ *             type:
+ *               type: string
+ *               description: |-
+ *                 Count the documents per distinct value of the field. This is the default
+ *                 facet type.
+ *               enum:
+ *                 - value
+ *             limit:
+ *               type: number
+ *               title: limit
+ *               description: The maximum number of facet values to return.
+ *             sort:
+ *               type: string
+ *               description: Whether to order the returned values by their count or alphabetically.
+ *               enum:
+ *                 - count
+ *                 - alpha
+ *             query:
+ *               type: string
+ *               title: query
+ *               description: Restrict the returned facet values to those matching this string.
+ *         - type: object
+ *           description: A facet to compute alongside the hits.
+ *           required:
+ *             - field
+ *             - type
+ *           properties:
+ *             field:
+ *               type: string
+ *               title: field
+ *               description: The dotted path of the field to facet on.
+ *             type:
+ *               type: string
+ *               title: type
+ *               description: Count the documents falling in each of the requested `ranges`.
+ *             ranges:
+ *               type: array
+ *               description: The ranges to count the documents of.
+ *               items:
+ *                 type: object
+ *                 description: A range to count the documents of.
+ *                 properties:
+ *                   key:
+ *                     type: string
+ *                     title: key
+ *                     description: A key identifying the range in the result.
+ *                   from:
+ *                     oneOf:
+ *                       - type: string
+ *                         title: from
+ *                         description: The range's inclusive lower bound.
+ *                       - type: number
+ *                         title: from
+ *                         description: The range's inclusive lower bound.
+ *                   to:
+ *                     oneOf:
+ *                       - type: string
+ *                         title: to
+ *                         description: The range's exclusive upper bound.
+ *                       - type: number
+ *                         title: to
+ *                         description: The range's exclusive upper bound.
+ *         - type: object
+ *           description: A facet to compute alongside the hits.
+ *           required:
+ *             - field
+ *             - type
+ *           properties:
+ *             field:
+ *               type: string
+ *               title: field
+ *               description: The dotted path of the field to facet on.
+ *             type:
+ *               type: string
+ *               title: type
+ *               description: |-
+ *                 Aggregate the field's values, such as its minimum and maximum, over the
+ *                 matching documents.
+ *   disjunctive_facets:
+ *     type: boolean
+ *     title: disjunctive_facets
+ *     description: Whether to compute each facet ignoring the filter on that same field, so a storefront keeps showing sibling values of an active filter.
+ *   highlight:
+ *     oneOf:
+ *       - type: boolean
+ *         title: highlight
+ *         description: Whether to highlight the matched terms in every field the query searches on. It's applied only when the query includes a free-text `q`.
+ *       - $ref: "#/components/schemas/SearchHighlightOptions"
+ *   distinct:
+ *     type: string
+ *     title: distinct
+ *     description: Return at most one hit per distinct value of this field.
+ *   min_score:
+ *     type: number
+ *     title: min_score
+ *     description: Discard the hits scoring below this threshold.
+ *   include_score:
+ *     type: boolean
+ *     title: include_score
+ *     description: Whether to return each hit's relevance score.
+ *   locales:
+ *     type: array
+ *     description: A query-time language hint, such as `["en"]`, for engines that analyze per language. A provider that can't honor it rejects the query rather than silently matching differently.
+ *     items:
+ *       type: string
+ *       title: locales
+ *       description: A locale in BCP 47 format.
+ *   vector:
+ *     $ref: "#/components/schemas/SearchVectorOptions"
+ *   count:
+ *     type: string
+ *     description: |-
+ *       How the total number of matching documents is computed. `"exact"` may be
+ *       rejected or slow depending on the provider.
+ *     enum:
+ *       - estimated
+ *       - exact
+ *       - none
+ * 
+*/
+
