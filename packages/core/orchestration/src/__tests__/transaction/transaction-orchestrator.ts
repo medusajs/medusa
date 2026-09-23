@@ -2314,10 +2314,12 @@ describe("Transaction Orchestrator", () => {
         createOrder: jest.fn().mockImplementation(() => "order_123"),
         deleteOrders: jest.fn().mockImplementation(() => undefined),
         fastStep: jest.fn().mockImplementation(() => "fast"),
+        compensateFastStep: jest.fn().mockImplementation(() => undefined),
         reserveInventory: jest.fn(async () => {
           await setTimeout(50)
           throw new PermanentStepFailureError("out of stock")
         }),
+        compensateReserveInventory: jest.fn().mockImplementation(() => undefined),
       }
 
       async function handler(
@@ -2333,10 +2335,14 @@ describe("Transaction Orchestrator", () => {
           },
           fastStep: {
             [TransactionHandlerType.INVOKE]: () => mocks.fastStep(payload),
+            [TransactionHandlerType.COMPENSATE]: () =>
+              mocks.compensateFastStep(payload),
           },
           reserveInventory: {
             [TransactionHandlerType.INVOKE]: () =>
               mocks.reserveInventory(payload),
+            [TransactionHandlerType.COMPENSATE]: () =>
+              mocks.compensateReserveInventory(payload),
           },
         }
         return command[actionId][functionHandlerType](payload)
