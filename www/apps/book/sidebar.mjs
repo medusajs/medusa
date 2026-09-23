@@ -313,16 +313,6 @@ export const sidebars = [
               },
               {
                 type: "link",
-                path: "/learn/fundamentals/module-links/query",
-                title: "Query",
-              },
-              {
-                type: "link",
-                path: "/learn/fundamentals/module-links/index-module",
-                title: "Index Module",
-              },
-              {
-                type: "link",
                 path: "/learn/fundamentals/module-links/custom-columns",
                 title: "Add Custom Columns",
               },
@@ -331,9 +321,26 @@ export const sidebars = [
                 path: "/learn/fundamentals/module-links/read-only",
                 title: "Read-Only Links",
               },
+            ],
+          },
+          {
+            type: "link",
+            path: "/learn/fundamentals/query",
+            title: "Query",
+            children: [
               {
                 type: "link",
-                path: "/learn/fundamentals/module-links/query-context",
+                path: "/learn/fundamentals/query/index-module",
+                title: "Index Module",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/query/search",
+                title: "Search Queries",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/query/query-context",
                 title: "Query Context",
               },
             ],

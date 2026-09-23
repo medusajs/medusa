@@ -221,8 +221,162 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "CLI",
+        "title": "Resources",
         "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Storefront",
+            "path": "/storefront",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Database",
+            "path": "/database",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Redis",
+            "path": "/redis",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "S3",
+            "path": "/s3",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cache",
+            "path": "/cache",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Emails",
+            "path": "/emails",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "React Email Templates",
+                "path": "/emails/react-email",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Search",
+        "badge": {
+          "variant": "green",
+          "text": "New"
+        },
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Overview",
+            "path": "/search",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Analytics",
+            "path": "/search/analytics",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "API",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Index Settings",
+                "path": "/search/settings",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Semantic Search",
+                "path": "/search/semantic-search",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Comparison",
+            "path": "/search/comparison",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Algolia",
+                "path": "/search/algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Meilisearch",
+                "path": "/search/meilisearch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to PostgreSQL",
+                "path": "/search/postgres",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "Migration",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Algolia",
+                "path": "/search/migrate-from-algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Meilisearch",
+                "path": "/search/migrate-from-meilisearch",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "CLI",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -336,94 +490,6 @@ export const generatedSidebars = [
             "type": "link",
             "title": "logout",
             "path": "/cli/commands/logout",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Resources",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Storefront",
-            "path": "/storefront",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Database",
-            "path": "/database",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Redis",
-            "path": "/redis",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "S3",
-            "path": "/s3",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Cache",
-            "path": "/cache",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Emails",
-            "path": "/emails",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "React Email Templates",
-                "path": "/emails/react-email",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Plugins",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Loyalty",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Draft Orders",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
             "children": []
           }
         ]

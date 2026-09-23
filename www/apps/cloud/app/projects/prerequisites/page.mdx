@@ -58,11 +58,11 @@ Medusa will satisfy this version by the following priority:
 
 ```mermaid
 flowchart LR
-    A[Start] --> B{engines field\nspecified?}
-    B -- Yes --> C{"Found minimum secure\nversion matching range?"}
-    C -- Yes --> D[Use minimum secure\nversion matching the range]
-    C -- No --> E[Use minimum version\nsatisfying the range]
-    B -- No --> F["Use default\nNode.js version (20.x)"]
+    A[Start] --> B{"engines field<br/>specified?"}
+    B -- Yes --> C{"Found minimum secure<br/>version matching range?"}
+    C -- Yes --> D["Use minimum secure<br/>version matching the range"]
+    C -- No --> E["Use minimum version<br/>satisfying the range"]
+    B -- No --> F["Use default<br/>Node.js version (20.x)"]
 ```
 
 1. Find the minimum secure version that matches the range specified in the `engines` field. For example, if your `package.json` specifies `>=21.0.0`, Medusa will use Node.js v22.x since v21.x is no longer supported.

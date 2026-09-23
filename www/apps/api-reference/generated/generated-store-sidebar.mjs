@@ -1127,6 +1127,24 @@ const generatedgeneratedStoreSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Search",
+      "path": "/store/search",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/store/search/search-indexes",
+          "title": "Search Indexes",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
       "title": "Shipping Options",
       "path": "/store/shipping-options",
       "loaded": true,

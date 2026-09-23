@@ -138,7 +138,12 @@ export default class SearchModuleService
     )
 
     this.context_ = {
-      container,
+      container: {
+        get query() {
+          return container[ContainerRegistrationKeys.QUERY]
+        },
+        logger: this.logger_,
+      },
       logger: this.logger_,
       options: this.moduleOptions_,
       indexes: this.indexes_,

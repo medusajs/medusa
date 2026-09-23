@@ -1438,6 +1438,22 @@ const generatedgeneratedToolsSidebarSidebar = {
         },
         {
           "loaded": true,
+          "type": "link",
+          "title": "InstantSearch Adapter",
+          "childSidebarTitle": "InstantSearch Adapter",
+          "path": "/instantsearch",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/instantsearch/examples/filtering-sorting-pagination",
+              "title": "Filtering, Sorting, and Pagination",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
           "type": "sidebar",
           "sidebar_id": "admin-components",
           "title": "Medusa Admin Components",
