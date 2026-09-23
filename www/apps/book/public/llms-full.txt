@@ -150955,6 +150955,9 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/sales-channels/](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsid)
 - [DELETE /admin/sales-channels/](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelsid)
 - [POST /admin/sales-channels//products](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproducts)
+- [GET /admin/search-indexes](https://docs.medusajs.com/api/admin#search-indexes_getsearchindexes)
+- [DELETE /admin/search-indexes/](https://docs.medusajs.com/api/admin#search-indexes_deletesearchindexesid)
+- [POST /admin/search-indexes//reindex](https://docs.medusajs.com/api/admin#search-indexes_postsearchindexesidreindex)
 - [GET /admin/search](https://docs.medusajs.com/api/admin#search_getsearch)
 - [GET /admin/shipping-option-types](https://docs.medusajs.com/api/admin#shipping-option-types_getshippingoptiontypes)
 - [POST /admin/shipping-option-types](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypes)
@@ -150984,6 +150987,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/store-credit-accounts](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccounts)
 - [GET /admin/store-credit-accounts/](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsid)
 - [POST /admin/store-credit-accounts//credit](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccountsidcredit)
+- [POST /admin/store-credit-accounts//debit](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccountsiddebit)
 - [GET /admin/store-credit-accounts//transactions](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsidtransactions)
 - [GET /admin/stores](https://docs.medusajs.com/api/admin#stores_getstores)
 - [GET /admin/stores/](https://docs.medusajs.com/api/admin#stores_getstoresid)
@@ -151127,6 +151131,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /store/return-reasons](https://docs.medusajs.com/api/store#return-reasons_getreturnreasons)
 - [GET /store/return-reasons/](https://docs.medusajs.com/api/store#return-reasons_getreturnreasonsid)
 - [POST /store/returns](https://docs.medusajs.com/api/store#returns_postreturns)
+- [POST /store/search](https://docs.medusajs.com/api/store#search_postsearch)
 - [GET /store/shipping-options](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions)
 - [POST /store/shipping-options//calculate](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate)
 - [GET /store/store-credit-accounts](https://docs.medusajs.com/api/store#store-credit-accounts_getstorecreditaccounts)
@@ -151204,7 +151209,7 @@ export default function AlertWarning() {
 import { Alert } from "@medusajs/ui"
 
 export default function AlertError() {
-  return <Alert variant="error">An error occured while updating data.</Alert>
+  return <Alert variant="error">An error occurred while updating data.</Alert>
 }
 
 ```
