@@ -91,7 +91,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 
 The **Database Backups** section shows a table of available backups with the following columns:
 
@@ -160,7 +160,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 5. In the **Database read-only connection string** section, toggle read access on if it is not already enabled.
 6. Copy the read-only connection string from the code block.
   
@@ -172,9 +172,14 @@ psql "postgresql://..."
 
 After connecting to the database, you can run SQL queries to interact with your data.
 
-### Rotate Read Credentials
+### Rotate Read Password
 
-You can rotate the credentials for the read-only connection string from the **Database read-only connection string** section. Click the **Rotate credentials** button, confirm the action in the dialog that opens, and Medusa generates a new read-only connection string. Update any tools or scripts that use the old connection string after rotating.
+You can rotate the password for the read-only connection string from the **Database read-only connection string** section. To do that:
+
+1. Click the **Rotate password** button.
+2. Confirm the action in the dialog that opens by clicking **Rotate**.
+ 
+Medusa generates a new read-only connection string. Update any tools or scripts that use the old connection string after rotating.
 
 ### Get Write Connection String
 
@@ -199,7 +204,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 5. In the **Database write-access connection string** section, toggle the switch to enable write access.
 6. Once enabled, copy the write connection string from the code block that appears.
 
@@ -215,9 +220,14 @@ Then, you can connect to your database using a PostgreSQL client with the write 
 psql "postgresql://..."
 ```
 
-### Rotate Write Credentials
+### Rotate Write Password
 
-Organization owners can rotate the credentials for the write connection string from the **Database write-access connection string** section. Click the **Rotate credentials** button, confirm the action in the dialog that opens, and Medusa generates a new write connection string. Update any tools or scripts that use the old connection string after rotating.
+Organization owners can rotate the password for the write connection string from the **Database write-access connection string** section. To do that:
+
+1. Click the **Rotate password** button.
+2. Confirm the action in the dialog that opens by clicking **Rotate**.
+
+Medusa generates a new write connection string. Update any tools or scripts that use the old connection string after rotating.
 
 ---
 
@@ -236,7 +246,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 
 In the "Database dump" section, you can either:
 
