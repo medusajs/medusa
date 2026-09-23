@@ -7,6 +7,7 @@ import { setTimeout } from "timers/promises"
 import {
   DistributedTransaction,
   DistributedTransactionType,
+  PermanentStepFailureError,
   TransactionHandlerType,
   TransactionOrchestrator,
   TransactionPayload,
@@ -2239,6 +2240,133 @@ describe("Transaction Orchestrator", () => {
       ).toBe(true)
       expect(transaction.getErrors()[1].action).toBe("action3")
 
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
+  })
+
+  describe("issue #16825 - concurrent failure marking of an already-OK step", () => {
+    it("should skip the failure transition for an already-OK step instead of throwing, letting failure handling continue to compensations", async () => {
+      const mocks = {
+        createOrder: jest.fn().mockImplementation(() => "order_123"),
+        deleteOrders: jest.fn().mockImplementation(() => undefined),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          createOrder: {
+            [TransactionHandlerType.INVOKE]: () => mocks.createOrder(payload),
+            [TransactionHandlerType.COMPENSATE]: () =>
+              mocks.deleteOrders(payload),
+          },
+        }
+        return command[actionId][functionHandlerType](payload)
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "createOrder",
+        },
+      }
+
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name-16825",
+        definition: flow,
+      })
+
+      const transaction = await strategy.beginTransaction({
+        transactionId: "transaction_id_16825",
+        handler,
+      })
+
+      await strategy.resume(transaction)
+
+      const step = transaction.getFlow().steps["_root.createOrder"]
+      expect(step.invoke.status).toBe(TransactionStepStatus.OK)
+
+      // Simulate the engine's failure-marking pass racing a sibling step that
+      // already reached OK (medusajs/medusa#16825). Before the fix this threw
+      // `Updating Status from "ok" to "temp_failure" is not allowed.`
+      await expect(
+        (TransactionOrchestrator as any).setStepFailure(
+          transaction,
+          step,
+          new Error("concurrent failure"),
+          3
+        )
+      ).resolves.toBeDefined()
+
+      expect(step.getStates().status).toBe(TransactionStepStatus.OK)
+
+      // Failure handling continues: the earlier step can still be compensated
+      // (e.g. deleteOrders), so no orphaned order is left behind.
+      await strategy.cancelTransaction(transaction)
+
+      expect(mocks.deleteOrders).toHaveBeenCalledTimes(1)
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
+
+    it("should still compensate earlier steps when a parallelize batch fails after a sibling already reached OK", async () => {
+      const mocks = {
+        createOrder: jest.fn().mockImplementation(() => "order_123"),
+        deleteOrders: jest.fn().mockImplementation(() => undefined),
+        fastStep: jest.fn().mockImplementation(() => "fast"),
+        reserveInventory: jest.fn(async () => {
+          await setTimeout(50)
+          throw new PermanentStepFailureError("out of stock")
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          createOrder: {
+            [TransactionHandlerType.INVOKE]: () => mocks.createOrder(payload),
+            [TransactionHandlerType.COMPENSATE]: () =>
+              mocks.deleteOrders(payload),
+          },
+          fastStep: {
+            [TransactionHandlerType.INVOKE]: () => mocks.fastStep(payload),
+          },
+          reserveInventory: {
+            [TransactionHandlerType.INVOKE]: () =>
+              mocks.reserveInventory(payload),
+          },
+        }
+        return command[actionId][functionHandlerType](payload)
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "createOrder",
+          next: [{ action: "fastStep" }, { action: "reserveInventory" }],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name-16825-batch",
+        definition: flow,
+      })
+
+      const transaction = await strategy.beginTransaction({
+        transactionId: "transaction_id_16825_batch",
+        handler,
+      })
+
+      await strategy.resume(transaction)
+
+      expect(mocks.fastStep).toHaveBeenCalledTimes(1)
+      expect(
+        transaction.getFlow().steps["_root.createOrder.fastStep"].invoke.status
+      ).toBe(TransactionStepStatus.OK)
+      // The earlier sequential step is compensated (no orphaned order)
+      expect(mocks.deleteOrders).toHaveBeenCalledTimes(1)
       expect(transaction.getState()).toBe(TransactionState.REVERTED)
     })
   })
