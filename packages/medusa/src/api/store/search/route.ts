@@ -24,6 +24,8 @@ const unscopedProductIndexes = new Set<string>()
  * Answers with the engine's own results — hits, scores, highlights, facets —
  * which is the contract InstantSearch's search client is built on. Nothing is
  * searchable until `configureStoreSearch` opts an index in.
+ *
+ * @since 2.21.1
  */
 export const POST = async (
   req: MedusaStoreRequest<HttpTypes.StoreSearch> & ConfiguredStoreSearch,

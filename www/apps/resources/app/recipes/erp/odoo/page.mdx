@@ -653,7 +653,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 - Call the `getProductsFromErp` step to fetch products from Odoo.
 - Use the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) to fetch the Medusa store configurations, sales channels, and shipping profiles. You'll use this data when creating the products in a later step.
-    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/module-links/query), which is a tool that retrieves data across modules.
+    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/query), which is a tool that retrieves data across modules.
 - To figure out which products need to be updated, you retrieve products filtered by their `external_id` field, which you'll set to the Odoo product's ID when you create the products next.
     - Notice that you use `transform` from the Workflows SDK to create the external IDs filters. That's because data manipulation is not allowed in a workflow. You can learn more about this and other restrictions in [this documentation](!docs!/learn/fundamentals/workflows/constructor-constraints).
 

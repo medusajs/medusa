@@ -232,10 +232,11 @@ class OasKindGenerator extends FunctionKindGenerator {
 
   /**
    * Resolve the request's type reference node from a function's first parameter type.
-   * This supports both a direct type reference, such as `MedusaRequest<T>`, and a union
-   * of request types, such as `MedusaRequest<T> | AuthenticatedMedusaRequest<T>`. In the
-   * union case, the first member matching {@link REQUEST_TYPE_NAMES} is returned, as the
-   * union members share the same type arguments.
+   * This supports a direct type reference, such as `MedusaRequest<T>`, a union of request
+   * types, such as `MedusaRequest<T> | AuthenticatedMedusaRequest<T>`, and an intersection
+   * with additional request properties, such as `MedusaStoreRequest<T> & ConfiguredStoreSearch`.
+   * In both composite cases, the first member matching {@link REQUEST_TYPE_NAMES} is returned,
+   * as union members share the same type arguments and intersection members are mixins.
    *
    * @param typeNode - The first parameter's type node.
    * @returns The matching request type reference node, if any.
@@ -247,9 +248,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       return undefined
     }
 
-    const candidateNodes: ts.TypeNode[] = ts.isUnionTypeNode(typeNode)
-      ? [...typeNode.types]
-      : [typeNode]
+    const candidateNodes: ts.TypeNode[] =
+      ts.isUnionTypeNode(typeNode) || ts.isIntersectionTypeNode(typeNode)
+        ? [...typeNode.types]
+        : [typeNode]
 
     return candidateNodes.find(
       (candidate): candidate is ts.TypeReferenceNode =>

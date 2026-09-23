@@ -46,20 +46,22 @@ export interface SearchGraphSourceOptions<
   context?: SearchGraphQueryContext
 
   /**
-   * Maps a row to the document to index. Returning `null` or `undefined`
-   * excludes the row, and is how an index that only holds part of an entity
-   * says so — narrowing the read with a filter instead would hide a row that
-   * stops qualifying, leaving its document behind.
+   * Maps a page of rows to the documents to index, e.g. `rows.map(toDocument)`.
+   * Async, and handed the whole page, so reads `query.graph` cannot make in
+   * one pass — prices in several currencies, say — cost a fixed number of
+   * queries per page. Every document must carry the row's primary key value
+   * as `id`; a row with no document is excluded, which `consume` and the
+   * catch-up pass turn into a delete so it leaves the index rather than
+   * going stale in it.
    *
-   * `consume` and the catch-up pass turn a rejection into a delete, so an
-   * excluded row leaves the index rather than going stale in it.
-   *
-   * Defaults to indexing the row as-is.
+   * Defaults to indexing the rows as-is.
    */
   transform?: (
-    row: TRow,
+    rows: TRow[],
     context: SearchTypes.SearchIngestionContext
-  ) => SearchTypes.InferSearchDocumentType<Fields> | null | undefined
+  ) =>
+    | SearchTypes.InferSearchDocumentType<Fields>[]
+    | Promise<SearchTypes.InferSearchDocumentType<Fields>[]>
 }
 
 export interface SearchGraphSeedOptions<
@@ -80,11 +82,15 @@ export interface SearchGraphConsumeOptions<
 > extends SearchGraphSourceOptions<Fields, TRow> {
   /**
    * The IDs of the documents the event affects, which are read back through
-   * `query.graph` and written to the index.
+   * `query.graph` and written to the index. May be async, e.g. to map an
+   * event about a variant or a category to the products it belongs to.
    *
    * Defaults to `event.data.id`, as a single ID or an array of them.
    */
-  resolve_ids?: (event: SearchConsumeEvent) => string[] | string | undefined
+  resolve_ids?: (
+    event: SearchConsumeEvent,
+    context: SearchTypes.SearchIngestionContext
+  ) => string[] | string | undefined | Promise<string[] | string | undefined>
 
   /**
    * Whether the event removes its documents from the index rather than
@@ -132,6 +138,47 @@ function withFields(fields: string[], ...extra: string[]): string[] {
   return missing.length ? [...fields, ...missing] : fields
 }
 
+/**
+ * The documents for a page of rows, and the keys they were produced for. A
+ * key with no document is what the callers delete.
+ */
+async function toDocuments<
+  Fields extends SearchTypes.SearchIndexFieldsInput,
+  TRow extends GraphRow
+>(
+  rows: TRow[],
+  options: SearchGraphSourceOptions<Fields, TRow>,
+  context: SearchTypes.SearchIngestionContext
+): Promise<{
+  documents: SearchTypes.InferSearchDocumentType<Fields>[]
+  produced: Set<string>
+}> {
+  if (!options.transform) {
+    const documents =
+      rows as unknown as SearchTypes.InferSearchDocumentType<Fields>[]
+    return {
+      documents,
+      produced: new Set(
+        rows.map((row) => String(row[context.index.primary_key]))
+      ),
+    }
+  }
+
+  const documents = await options.transform(rows, context)
+  const produced = new Set<string>()
+
+  for (const document of documents) {
+    if (document.id === undefined || document.id === null) {
+      throw new Error(
+        `Search index "${context.index.name}": transform returned a document without an "id"`
+      )
+    }
+    produced.add(String(document.id))
+  }
+
+  return { documents, produced }
+}
+
 function queryContext(
   option: SearchGraphQueryContext | undefined,
   context: SearchTypes.SearchIngestionContext
@@ -169,7 +216,7 @@ export function graphSeed<
 >(
   options: SearchGraphSeedOptions<Fields, TRow>
 ): NonNullable<SearchTypes.SearchIndexDefinitionInput<Fields>["seed"]> {
-  const { fields, transform, batch_size: batchSize = 200 } = options
+  const { fields, batch_size: batchSize = 200 } = options
 
   return async function* graphSeedGenerator(context) {
     const { container, index, catchup, last_key: lastKey } = context
@@ -203,28 +250,15 @@ export function graphSeed<
         return
       }
 
-      const documents: SearchTypes.InferSearchDocumentType<Fields>[] = []
-      const deletedIds: string[] = []
-
-      for (const row of data) {
-        // Only the catch-up pass can observe a row leaving the index — a full
-        // seed builds the index from nothing, so absence is enough there.
-        const removed = catchup && !!row[DELETED_AT_FIELD]
-        const document = removed
-          ? undefined
-          : transform
-          ? transform(row, context)
-          : (row as unknown as SearchTypes.InferSearchDocumentType<Fields>)
-
-        if (document) {
-          documents.push(document)
-          continue
-        }
-
-        if (catchup) {
-          deletedIds.push(String(row[primaryKey]))
-        }
-      }
+      // Only the catch-up pass can observe a row leaving the index — a full
+      // seed builds the index from nothing, so absence is enough there.
+      const rows = catchup ? data.filter((row) => !row[DELETED_AT_FIELD]) : data
+      const { documents, produced } = await toDocuments(rows, options, context)
+      const deletedIds = catchup
+        ? data
+            .map((row) => String(row[primaryKey]))
+            .filter((id) => !produced.has(id))
+        : []
 
       const mutations: SearchTypes.SearchIndexSeedMutation<Fields>[] = []
       if (documents.length) {
@@ -277,7 +311,6 @@ export function graphConsume<
 ): NonNullable<SearchTypes.SearchIndexDefinitionInput<Fields>["consume"]> {
   const {
     fields,
-    transform,
     resolve_ids: resolveIds = (event) => (event.data as any)?.id,
     is_delete: isDelete = (event) => event.name.endsWith(".deleted"),
   } = options
@@ -287,7 +320,7 @@ export function graphConsume<
 
     const entity = options.entity ?? index.entity
     const primaryKey = index.primary_key
-    const ids = toArray(resolveIds(event))
+    const ids = toArray(await resolveIds(event, context))
 
     if (!ids.length) {
       return []
@@ -304,21 +337,7 @@ export function graphConsume<
       ...queryContext(options.context, context),
     })) as { data: TRow[] }
 
-    const documents: SearchTypes.InferSearchDocumentType<Fields>[] = []
-    const seen = new Set<string>()
-
-    for (const row of data) {
-      const document = transform
-        ? transform(row, context)
-        : (row as unknown as SearchTypes.InferSearchDocumentType<Fields>)
-
-      if (!document) {
-        continue
-      }
-
-      seen.add(String(row[primaryKey]))
-      documents.push(document)
-    }
+    const { documents, produced } = await toDocuments(data, options, context)
 
     const mutations: SearchTypes.SearchIndexSeedMutation<Fields>[] = []
 
@@ -328,7 +347,7 @@ export function graphConsume<
 
     // Gone, or rejected by the transform — either way it has no business being
     // in the index anymore.
-    const removedIds = ids.filter((id) => !seen.has(id))
+    const removedIds = ids.filter((id) => !produced.has(id))
     if (removedIds.length) {
       mutations.push({
         action: "delete",
