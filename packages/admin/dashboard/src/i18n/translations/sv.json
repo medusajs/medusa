@@ -1199,7 +1199,9 @@
         "paymentMethod": "Betalningsmetod",
         "paymentMethodDescription": "Återbetala beloppet till betalningsmetoden",
         "creditLine": "Butikskredit",
-        "creditLineDescription": "Återbetala beloppet som butikskredit"
+        "creditLineDescription": "Återbetala beloppet som butikskredit",
+        "creditLineGuestDescription": "Endast tillgängligt för kunder med ett konto. Den här beställningen gjordes av en gäst.",
+        "creditLineNoOutstandingAmountDescription": "Endast tillgängligt när beställningen har ett utestående belopp. Skapa en retur eller en beställningsredigering först."
       }
     },
     "domain": "Beställningar",
@@ -3425,7 +3427,10 @@
       "building": "Byggs",
       "ready": "Klar",
       "error": "Fel"
-    }
+    },
+    "delete": "Ta bort index",
+    "deleteSuccess": "Index {{name}} har tagits bort",
+    "deleteWarning": "Detta tar bort indexet \"{{name}}\" och varje version som någonsin byggts för det, inklusive dess data i sökmotorn. Inget är sökbart på det här indexet förrän nästa migrering bygger om det från grunden. Detta kan inte ångras."
   },
   "shippingOptionTypes": {
     "domain": "Typer av fraktalternativ",
