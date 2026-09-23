@@ -541,6 +541,11 @@ export const sidebars = [
               },
               {
                 type: "link",
+                path: "/learn/fundamentals/workflows/cancel-workflow",
+                title: "Cancel Workflow Execution",
+              },
+              {
+                type: "link",
                 path: "/learn/fundamentals/workflows/long-running-workflow",
                 title: "Long-Running Workflow",
               },

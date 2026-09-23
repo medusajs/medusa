@@ -1112,12 +1112,12 @@ export interface FilterableCartProps
 }
 
 /**
- * The filters to apply on the retrieved addresss.
+ * The filters to apply on the retrieved address.
  */
 export interface FilterableAddressProps
   extends BaseFilterable<FilterableAddressProps> {
   /**
-   * The IDs to filter the addresss by.
+   * The IDs to filter the address by.
    */
   id?: string | string[]
 }

@@ -88,7 +88,7 @@ export const generatedEditDates = {
   "app/learn/installation/page.mdx": "2026-08-12T11:55:04.360Z",
   "app/learn/fundamentals/data-models/check-constraints/page.mdx": "2025-07-25T13:50:21.065Z",
   "app/learn/fundamentals/module-links/link/page.mdx": "2025-12-09T13:27:05.446Z",
-  "app/learn/fundamentals/workflows/store-executions/page.mdx": "2025-04-17T08:29:10.166Z",
+  "app/learn/fundamentals/workflows/store-executions/page.mdx": "2026-09-22T05:54:39.142Z",
   "app/learn/fundamentals/plugins/create/page.mdx": "2025-04-17T08:29:09.910Z",
   "app/learn/fundamentals/plugins/page.mdx": "2025-01-22T10:14:10.433Z",
   "app/learn/customization/reuse-customizations/page.mdx": "2025-09-04T15:45:52.047Z",
@@ -148,5 +148,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/query/page.mdx": "2026-09-15T11:13:29.895Z",
   "app/learn/fundamentals/query/query-context/page.mdx": "2026-08-21T06:04:22.963Z",
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
-  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z"
+  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
+  "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z"
 }
