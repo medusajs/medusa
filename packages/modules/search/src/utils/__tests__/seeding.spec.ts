@@ -6,7 +6,7 @@ import {
   SearchIndexVersionRecord,
 } from "@types"
 import { SearchIndexState, SearchSyncStatus } from "../index"
-import { executeSeedPlan, reindexIndexes } from "../seeding"
+import { createSeedPlan, executeSeedPlan, reindexIndexes } from "../seeding"
 
 type Mutation =
   | { action: "upsert"; documents: Record<string, unknown>[] }
@@ -41,12 +41,24 @@ const buildContext = ({
   indexes,
   locking,
   upsertDocuments,
+  deleteDocuments,
+  documentCounts,
 }: {
   indexes: SearchTypes.ResolvedSearchIndexDefinition[]
   locking?: {
     execute: jest.Mock
   }
   upsertDocuments?: jest.Mock
+  deleteDocuments?: jest.Mock
+  rateLimit?: {
+    max_retries?: number
+    initial_delay?: number
+    max_delay?: number
+  }
+  // What the engine reports it holds, keyed by physical index name. Only the
+  // planner asks, and only to tell an index that lost its data apart from one
+  // that merely failed part-way through.
+  documentCounts?: Record<string, number>
 }) => {
   const records = indexes.map((index, position) => ({
     id: `idx_${position + 1}`,
@@ -108,15 +120,42 @@ const buildContext = ({
     }),
   }
 
+  let versionSequence = versions.length
+
   const versionService = {
-    list: jest.fn(async (filter: any = {}) =>
-      versions.filter((version) => matches(version as any, filter))
-    ),
-    create: jest.fn(),
+    list: jest.fn(async (filter: any = {}, config: any = {}) => {
+      const found = versions.filter((version) =>
+        matches(version as any, filter)
+      )
+
+      if (config.order?.version === "DESC") {
+        found.sort((a, b) => b.version - a.version)
+      }
+
+      return config.take ? found.slice(0, config.take) : found
+    }),
+    create: jest.fn(async (data: Partial<SearchIndexVersionRecord>[]) => {
+      const created = data.map((values) => ({
+        id: `ver_${++versionSequence}`,
+        ...values,
+      })) as SearchIndexVersionRecord[]
+
+      versions.push(...created)
+      return created
+    }),
     update: jest.fn(async ({ selector, data }: any) => {
       versions
         .filter((version) => matches(version as any, selector))
         .forEach((version) => Object.assign(version, data))
+    }),
+    softDelete: jest.fn(async (ids: string[]) => {
+      for (const id of ids) {
+        const position = versions.findIndex((version) => version.id === id)
+
+        if (position >= 0) {
+          versions.splice(position, 1)
+        }
+      }
     }),
   }
 
@@ -124,7 +163,11 @@ const buildContext = ({
     list: jest.fn(async (filter: any = {}) =>
       records.filter((record) => matches(record as any, filter))
     ),
-    update: jest.fn(),
+    update: jest.fn(async ({ selector, data }: any) => {
+      records
+        .filter((record) => matches(record as any, selector))
+        .forEach((record) => Object.assign(record, data))
+    }),
   }
 
   const provider = {
@@ -132,14 +175,22 @@ const buildContext = ({
     upsertDocuments:
       upsertDocuments ??
       jest.fn().mockResolvedValue({ index: "x", status: "succeeded" }),
-    deleteDocuments: jest
-      .fn()
-      .mockResolvedValue({ index: "x", status: "succeeded" }),
+    deleteDocuments:
+      deleteDocuments ??
+      jest.fn().mockResolvedValue({ index: "x", status: "succeeded" }),
     clearIndex: jest
       .fn()
       .mockResolvedValue({ index: "x", status: "succeeded" }),
     upsertIndex: jest.fn().mockResolvedValue(undefined),
-    listIndexes: jest.fn().mockResolvedValue([]),
+    deleteIndex: jest
+      .fn()
+      .mockResolvedValue({ index: "x", status: "succeeded" }),
+    listIndexes: jest.fn().mockResolvedValue(
+      Object.entries(documentCounts ?? {}).map(([name, document_count]) => ({
+        name,
+        document_count,
+      }))
+    ),
   }
 
   const logger = {
@@ -201,6 +252,22 @@ const lockingThatAborts = (
 const passthroughLocking = (): { execute: jest.Mock } => ({
   execute: jest.fn(async (_keys, job) => await job(undefined)),
 })
+
+const streamOfFour = (cursors: (string | undefined)[]) =>
+  definition("product", async function* ({ catchup, last_key }: any) {
+    if (catchup) {
+      return
+    }
+
+    cursors.push(last_key)
+
+    for (const id of ["1", "2", "3", "4"]) {
+      if (last_key && id <= last_key) {
+        continue
+      }
+      yield [{ action: "upsert", documents: [{ id }] }]
+    }
+  })
 
 describe("search index seeding", () => {
   beforeEach(() => {
@@ -287,6 +354,122 @@ describe("search index seeding", () => {
         "search:seed:product",
         expect.any(Function)
       )
+    })
+  })
+
+  describe("versions a reindex leaves behind", () => {
+    const productIndex = () =>
+      definition("product", async function* ({ catchup }: any) {
+        if (catchup) {
+          return
+        }
+
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+      })
+
+    const deletedIndexes = (context: ReturnType<typeof buildContext>) =>
+      context.provider.deleteIndex.mock.calls.map(([call]) => call.index)
+
+    const liveVersions = (context: ReturnType<typeof buildContext>) =>
+      context.versions.map((version) => version.version).sort((a, b) => a - b)
+
+    const staleVersion = (version: number): SearchIndexVersionRecord => ({
+      id: `ver_old_${version}`,
+      search_index_id: "idx_1",
+      version,
+      provider: "test",
+      physical_name: `product_v${version}`,
+      definition_hash: "abcdef0123456789abcdef0123456789",
+      status: SearchIndexState.READY,
+    })
+
+    // v1..v3 with v3 serving reads, the way earlier rebuilds leave it.
+    const withHistory = () => {
+      const context = buildContext({
+        indexes: [productIndex()],
+        locking: passthroughLocking(),
+      })
+
+      context.versions.push(staleVersion(2), staleVersion(3))
+      context.records[0].active_version = 3
+
+      return context
+    }
+
+    it("should drop everything below the active version before building the next one", async () => {
+      const context = withHistory()
+
+      await reindexIndexes(context as any, { index: "product" })
+
+      // Version 3 served reads throughout the rebuild, so only what sat under
+      // it goes; version 4 is what the rebuild swapped in.
+      expect(deletedIndexes(context)).toEqual(["product_v1", "product_v2"])
+      expect(liveVersions(context)).toEqual([3, 4])
+      expect(context.records[0].active_version).toBe(4)
+    })
+
+    it("should never let more than the active version and its predecessor pile up", async () => {
+      const context = withHistory()
+
+      await reindexIndexes(context as any, { index: "product" })
+      await reindexIndexes(context as any, { index: "product" })
+      await reindexIndexes(context as any, { index: "product" })
+
+      // Three rebuilds, and what is left is the version serving reads plus the
+      // one it took over from — not one version per run.
+      expect(deletedIndexes(context)).toEqual([
+        "product_v1",
+        "product_v2",
+        "product_v3",
+        "product_v4",
+      ])
+      expect(liveVersions(context)).toEqual([5, 6])
+      expect(context.records[0].active_version).toBe(6)
+    })
+
+    it("should leave a version built above the active one alone", async () => {
+      const context = withHistory()
+
+      // A rebuild that failed before it could swap: it sits above the active
+      // version, so it is not out of rotation and cleanup must not take it.
+      context.versions.push({
+        ...staleVersion(4),
+        status: SearchIndexState.ERROR,
+      })
+
+      await reindexIndexes(context as any, { index: "product" })
+
+      expect(deletedIndexes(context)).toEqual(["product_v1", "product_v2"])
+      expect(liveVersions(context)).toEqual([3, 4, 5])
+    })
+
+    it("should clean up on an in-place reindex, which builds no new version", async () => {
+      const context = withHistory()
+
+      await reindexIndexes(context as any, {
+        index: "product",
+        strategy: "in_place",
+      })
+
+      expect(deletedIndexes(context)).toEqual(["product_v1", "product_v2"])
+      expect(liveVersions(context)).toEqual([3])
+      expect(context.records[0].active_version).toBe(3)
+    })
+
+    it("should rebuild even when an out-of-rotation version cannot be dropped", async () => {
+      const context = withHistory()
+      context.provider.deleteIndex.mockRejectedValueOnce(
+        new Error("connection reset")
+      )
+
+      await reindexIndexes(context as any, { index: "product" })
+
+      expect(context.logger_.warn).toHaveBeenCalledWith(
+        expect.stringContaining("connection reset")
+      )
+      // Version 1 kept its record, so the next reindex tries it again.
+      expect(liveVersions(context)).toEqual([1, 3, 4])
+      expect(context.records[0].active_version).toBe(4)
     })
   })
 
@@ -416,6 +599,523 @@ describe("search index seeding", () => {
       })
       expect(context.logger_.error).not.toHaveBeenCalled()
       expect(context.logger_.warn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("picking up where a failed run stopped", () => {
+    const ok = { index: "x", status: "succeeded" }
+
+    const writtenIds = (upsertDocuments: jest.Mock) =>
+      upsertDocuments.mock.calls.map(([call]) => call.documents[0].id)
+
+    it("should resume from the cursor after a document the engine rejected", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(
+          new Error('document IDs cannot exceed 64 bytes ("3")')
+        )
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "2",
+        resumable: true,
+      })
+      expect(writtenIds(upsertDocuments)).toEqual(["1", "2", "3"])
+
+      await executeSeedPlan(context as any, [action])
+
+      // The second run is handed the cursor and writes only what is left.
+      expect(cursors).toEqual([undefined, "2"])
+      expect(writtenIds(upsertDocuments)).toEqual(["1", "2", "3", "3", "4"])
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should count what the version took in across both runs", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(new Error("engine rejected the batch"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0].documents_synced).toBe(2)
+
+      await executeSeedPlan(context as any, [action])
+
+      // Two documents from the first run, two from the second — not the two
+      // this run happened to write.
+      expect(context.syncs[1]).toMatchObject({
+        status: SearchSyncStatus.DONE,
+        documents_synced: 4,
+      })
+      expect(context.logger_.info).toHaveBeenCalledWith(
+        expect.stringContaining("4 documents in total")
+      )
+    })
+
+    it("should report only its own count when it started from nothing", async () => {
+      const context = buildContext({
+        indexes: [streamOfFour([])],
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(context.syncs[0].documents_synced).toBe(4)
+      expect(context.logger_.info).not.toHaveBeenCalledWith(
+        expect.stringContaining("in total")
+      )
+    })
+
+    it("should carry the cursor onto the run that picks it up", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce(ok)
+        .mockRejectedValueOnce(new Error("engine rejected the batch"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+      await executeSeedPlan(context as any, [action])
+
+      // The row the second run opened starts at the cursor the first one
+      // reached, rather than at nothing.
+      const [opened] = context.syncService.create.mock.calls[1][0]
+      expect(opened).toMatchObject({ last_key: "1", resumable: true })
+    })
+
+    it("should resume a run that was interrupted rather than failed", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest.fn().mockResolvedValue(ok)
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+
+      // A killed process leaves its row open, the way a lost lock does.
+      context.syncs.push({
+        id: "sync_interrupted",
+        search_index_version_id: context.versions[0].id,
+        status: SearchSyncStatus.PROCESSING,
+        last_key: "3",
+        resumable: true,
+        documents_synced: 3,
+        sequence: 99,
+      } as any)
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(cursors).toEqual(["3"])
+      expect(writtenIds(upsertDocuments)).toEqual(["4"])
+      expect(
+        context.syncs.find((sync) => sync.id === "sync_interrupted")!.status
+      ).toBe(SearchSyncStatus.CANCELED)
+    })
+
+    it("should start over when the failure was a delete the cursor cannot describe", async () => {
+      const cursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            return
+          }
+
+          cursors.push(last_key)
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "delete", filters: { id: ["9"] } }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const deleteDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(new Error("engine refused the delete"))
+        .mockResolvedValue(ok)
+
+      const context = buildContext({
+        indexes: [index],
+        deleteDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "1",
+        resumable: false,
+      })
+      expect(context.syncs[0].error).toContain("cannot be resumed")
+
+      await executeSeedPlan(context as any, [action])
+
+      // A resumed stream would carry on past the delete and never apply it.
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should start over when the stream finished and the run failed after it", async () => {
+      const cursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            throw new Error("the catch-up query failed")
+          }
+
+          cursors.push(last_key)
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const context = buildContext({
+        indexes: [index],
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      // The bulk stream ran out, so its cursor has nothing left to hand over —
+      // and a fresh catch-up would only cover what changed since the new run
+      // started, missing everything the failed one was meant to catch.
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        resumable: false,
+      })
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should not hand the bulk pass's cursor to the catch-up pass", async () => {
+      const catchupCursors: (string | undefined)[] = []
+      const index = definition(
+        "product",
+        async function* ({ catchup, last_key }: any) {
+          if (catchup) {
+            catchupCursors.push(last_key)
+            return
+          }
+
+          yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          yield [{ action: "upsert", documents: [{ id: "2" }] }]
+        }
+      )
+
+      const context = buildContext({
+        indexes: [index],
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      const [bulk, catchUp] = context.syncs
+
+      expect(catchupCursors).toEqual([undefined])
+      // The catch-up walks its own stream, so it neither takes the bulk
+      // pass's cursor nor supersedes its row.
+      expect(catchUp).toMatchObject({ last_key: null, resumable: false })
+      expect(bulk.status).toBe(SearchSyncStatus.DONE)
+      expect(context.syncService.update).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            status: SearchSyncStatus.CANCELED,
+          }),
+        })
+      )
+    })
+
+    it("should hand nothing over once a run has completed", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+
+    it("should leave no cursor behind after a scoped reindex", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+      })
+
+      await reindexIndexes(context as any, {
+        index: "product",
+        filters: { status: "published" },
+        strategy: "in_place",
+      })
+
+      expect(context.syncs[0]).toMatchObject({
+        filters: { status: "published" },
+        resumable: false,
+      })
+
+      // A slice of the index is not a position in the full stream, so a seed
+      // after it rebuilds rather than continuing from where it stopped.
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(cursors).toEqual([undefined, undefined])
+    })
+  })
+
+  describe("planning a rebuild after a failure", () => {
+    const index = () =>
+      definition("product", async function* () {
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+      })
+
+    const planFor = async (documentCounts: Record<string, number>) => {
+      const context = buildContext({ indexes: [index()], documentCounts })
+      context.versions[0].status = SearchIndexState.ERROR
+
+      return { context, plan: await createSeedPlan(context as any) }
+    }
+
+    it("should continue an index that still holds what the failed run wrote", async () => {
+      const { plan } = await planFor({ product_v1: 1000 })
+
+      expect(plan).toEqual([
+        expect.objectContaining({
+          index: "product",
+          reason: "last_run_failed",
+        }),
+      ])
+    })
+
+    it("should rebuild an index that lost its data", async () => {
+      const { plan } = await planFor({ product_v1: 0 })
+
+      expect(plan).toEqual([
+        expect.objectContaining({ index: "product", reason: "index_empty" }),
+      ])
+    })
+
+    it("should not resume into an index that lost its data", async () => {
+      const cursors: (string | undefined)[] = []
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        locking: passthroughLocking(),
+        documentCounts: { product_v1: 0 },
+      })
+
+      context.syncs.push({
+        id: "sync_failed",
+        search_index_version_id: context.versions[0].id,
+        status: SearchSyncStatus.FAILED,
+        last_key: "3",
+        resumable: true,
+        documents_synced: 3,
+        sequence: 99,
+      } as any)
+
+      await executeSeedPlan(context as any, [
+        {
+          ...seedAction("product", context.versions[0]),
+          reason: "index_empty",
+        },
+      ])
+
+      expect(cursors).toEqual([undefined])
+    })
+  })
+
+  describe("when the engine rate limits the writes", () => {
+    // Cloud sends a `Retry-After` with its 429s, and the seed honours it — a
+    // zero wait is what keeps these tests from sitting through the backoff.
+    const rateLimited = () =>
+      Object.assign(new Error("Too many requests"), {
+        status: 429,
+        type: "embedding_rate_limit",
+        retry_after: 0,
+      })
+
+    const twoDocuments = () =>
+      definition("product", async function* ({ catchup }) {
+        if (catchup) {
+          return
+        }
+
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+        yield [{ action: "upsert", documents: [{ id: "2" }] }]
+      })
+
+    it("should wait out the rate limit and finish the seed", async () => {
+      const upsertDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [twoDocuments()],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      expect(upsertDocuments).toHaveBeenCalledTimes(4)
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+
+      const [bulk] = context.syncs
+      expect(bulk.status).toBe(SearchSyncStatus.DONE)
+      expect(bulk.documents_synced).toBe(2)
+      expect(context.logger_.warn).toHaveBeenCalledWith(
+        expect.stringContaining("Rate limited")
+      )
+    })
+
+    it("should wait out a rate-limited delete before calling the run unresumable", async () => {
+      const index = definition("product", async function* ({ catchup }: any) {
+        if (catchup) {
+          return
+        }
+
+        yield [{ action: "upsert", documents: [{ id: "1" }] }]
+        yield [{ action: "delete", filters: { id: ["9"] } }]
+      })
+
+      const deleteDocuments = jest
+        .fn()
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [index],
+        deleteDocuments,
+        locking: passthroughLocking(),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      // A delete that cannot be resumed past is exactly the one worth waiting
+      // for, so the rate limit is ridden out before the run gives up on it.
+      expect(deleteDocuments).toHaveBeenCalledTimes(3)
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.DONE,
+        resumable: false,
+      })
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should leave a run that gave up waiting resumable", async () => {
+      const cursors: (string | undefined)[] = []
+      const upsertDocuments = jest
+        .fn()
+        .mockResolvedValueOnce({ index: "x", status: "succeeded" })
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockRejectedValueOnce(rateLimited())
+        .mockResolvedValue({ index: "x", status: "succeeded" })
+
+      const context = buildContext({
+        indexes: [streamOfFour(cursors)],
+        upsertDocuments,
+        locking: passthroughLocking(),
+      })
+      const action = seedAction("product", context.versions[0])
+
+      await executeSeedPlan(context as any, [action])
+
+      // Spending the retries is not the kind of failure that invalidates what
+      // was already written, so the cursor still stands.
+      expect(context.syncs[0]).toMatchObject({
+        status: SearchSyncStatus.FAILED,
+        last_key: "1",
+        resumable: true,
+      })
+
+      await executeSeedPlan(context as any, [action])
+
+      expect(cursors).toEqual([undefined, "1"])
+      expect(context.versions[0].status).toBe(SearchIndexState.READY)
+    })
+
+    it("should stop retrying when it no longer holds the lock", async () => {
+      let abort: () => void
+      const upsertDocuments = jest.fn(async () => {
+        // The lock goes to another instance while this batch is being
+        // rate limited.
+        abort!()
+        throw rateLimited()
+      })
+
+      const context = buildContext({
+        indexes: [twoDocuments()],
+        upsertDocuments,
+        locking: lockingThatAborts((abortFn) => {
+          abort = abortFn
+        }),
+      })
+
+      await executeSeedPlan(context as any, [
+        seedAction("product", context.versions[0]),
+      ])
+
+      // Retried once, where the lock check that guards every attempt stopped
+      // it before it could write again.
+      expect(upsertDocuments).toHaveBeenCalledTimes(1)
+      // A run that lost its lock owns neither the version nor its syncs.
+      expect(context.versions[0].status).toBe(SearchIndexState.BUILDING)
+      expect(context.syncs[0].status).toBe(SearchSyncStatus.PROCESSING)
     })
   })
 })

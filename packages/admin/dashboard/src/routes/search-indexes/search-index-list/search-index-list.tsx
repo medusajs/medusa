@@ -9,13 +9,18 @@ import {
   StatusBadge,
   Text,
   Tooltip,
+  toast,
+  usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { LayoutComposer } from "../../../components/layout-composer"
-import { useSearchIndexes } from "../../../hooks/api/search-indexes"
+import {
+  useDeleteSearchIndex,
+  useSearchIndexes,
+} from "../../../hooks/api/search-indexes"
 import { SearchIndexReindexModal } from "./components/search-index-reindex-modal"
 
 const statusColor = (
@@ -47,7 +52,32 @@ const fieldTooltip = (field: HttpTypes.AdminSearchIndexField) => {
 
 const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
   const [isReindexModalOpen, setIsReindexModalOpen] = useState(false)
+  const { mutateAsync: deleteIndex, isPending: isDeleting } =
+    useDeleteSearchIndex()
+
+  const handleDelete = async () => {
+    const confirmed = await prompt({
+      title: t("general.areYouSure"),
+      description: t("searchIndexes.deleteWarning", { name: index.name }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!confirmed) {
+      return
+    }
+
+    await deleteIndex(index.name, {
+      onSuccess: () => {
+        toast.success(t("searchIndexes.deleteSuccess", { name: index.name }))
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
+  }
 
   return (
     <Container className="divide-y p-0">
@@ -69,6 +99,15 @@ const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
             disabled={index.status === "building"}
           >
             {t("searchIndexes.reindex")}
+          </Button>
+          <Button
+            size="small"
+            variant="danger"
+            onClick={handleDelete}
+            isLoading={isDeleting}
+            disabled={index.status === "building"}
+          >
+            {t("searchIndexes.delete")}
           </Button>
           {isReindexModalOpen && (
             <SearchIndexReindexModal

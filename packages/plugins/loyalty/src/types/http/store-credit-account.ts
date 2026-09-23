@@ -43,6 +43,11 @@ export interface AdminCreditStoreCreditAccount {
   note?: string;
 }
 
+export interface AdminDebitStoreCreditAccount {
+  amount: number;
+  note?: string;
+}
+
 export interface StoreAddStoreCreditsToCart {
   amount: number;
 }
@@ -82,5 +87,14 @@ export interface AdminCreditStoreCreditAccountParams {
 }
 
 export interface AdminCreditStoreCreditAccountResponse {
+  store_credit_account: AdminStoreCreditAccount;
+}
+
+export interface AdminDebitStoreCreditAccountParams {
+  amount: number;
+  note?: string;
+}
+
+export interface AdminDebitStoreCreditAccountResponse {
   store_credit_account: AdminStoreCreditAccount;
 }

@@ -7,7 +7,7 @@ export type ActiveIndexVersion = {
 }
 
 const SOFT_TTL_MS = 30_000
-const HARD_TTL_MS = 10 * 60_000
+const HARD_TTL_MS = 2 * 60_000
 
 /**
  * Caches which physical index currently serves reads for every logical index,
@@ -33,13 +33,16 @@ export class ActiveIndexVersionCache {
     protected readonly fetchAll_: () => Promise<Map<string, ActiveIndexVersion>>
   ) {}
 
-  async get(name: string): Promise<ActiveIndexVersion> {
+  async get(
+    name: string,
+    { fresh = false }: { fresh?: boolean } = {}
+  ): Promise<ActiveIndexVersion> {
     const age = Date.now() - this.fetchedAt_
 
-    if (!this.fetchedAt_ || age >= HARD_TTL_MS) {
+    if (fresh || !this.fetchedAt_ || age >= HARD_TTL_MS) {
       await this.refresh()
-    } else if (age >= SOFT_TTL_MS && !this.refreshing_) {
-      this.refreshing_ = this.refresh().catch(() => {
+    } else if (age >= SOFT_TTL_MS) {
+      void this.refresh().catch(() => {
         // Left stale on purpose — `fetchedAt_` is untouched, so `HARD_TTL_MS`
         // keeps counting from the last success, not this failure.
       })
@@ -57,10 +60,17 @@ export class ActiveIndexVersionCache {
     return value
   }
 
-  protected async refresh(): Promise<void> {
-    this.values_ = await this.fetchAll_()
-    this.fetchedAt_ = Date.now()
-    this.refreshing_ = undefined
+  protected refresh(): Promise<void> {
+    this.refreshing_ ??= this.fetchAll_()
+      .then((values) => {
+        this.values_ = values
+        this.fetchedAt_ = Date.now()
+      })
+      .finally(() => {
+        this.refreshing_ = undefined
+      })
+
+    return this.refreshing_
   }
 
   /** Sets one value directly, e.g. right after this process itself flips it. */

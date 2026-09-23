@@ -30,9 +30,11 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
    * and notification `cloud` email.
    */
   cloud?: {
-    api_key: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    api_key?: string
     endpoint: string
-    environment_handle: string
+    /** Not needed when the endpoint carries basic auth credentials. */
+    environment_handle?: string
   }
 
   // For definitions that name no provider. Defaults to the only registered one,
@@ -97,16 +99,19 @@ export type SearchIndexContext = {
   // Resolves which physical index currently serves reads/writes for a
   // logical index. Every live operation goes through this rather than
   // `definition.physical_name` directly, since the active version can change
-  // out from under this process. `set` is used to reflect this process' own
-  // flip immediately, rather than waiting out the soft TTL.
+  // out from under this process. `set` reflects this process' own flip
+  // immediately, rather than waiting out the soft TTL; `invalidate` drops what
+  // was cached once the engine says the version behind it is gone.
   activeVersionCache?: {
     get(
-      name: string
+      name: string,
+      options?: { fresh?: boolean }
     ): Promise<{ physical_name: string; provider: string; version: number }>
     set(
       name: string,
       value: { physical_name: string; provider: string; version: number }
     ): void
+    invalidate(): void
   }
 }
 
@@ -159,6 +164,8 @@ export type SearchIndexSyncRecord = {
   status: string
   filters: Record<string, unknown> | null
   last_key: string | null
+  /** Whether a later run may continue from `last_key`. */
+  resumable: boolean
   documents_synced: number
   started_at: Date | null
   completed_at: Date | null

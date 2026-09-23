@@ -2567,17 +2567,7 @@ import { Button, Input, RadioGroup } from "@medusajs/ui"
 
 Then, replace the last `TODO` in the `Payment` component with the following:
 
-export const paymentHighlights5 = [
-  ["1", "getProviderTitle", "Get the title to display to the customer for each provider."],
-  ["18", "", "Show the items in the cart."],
-  ["61", "", "Show the cart's total."],
-  ["68", "", "Show the cart's shipping address."],
-  ["77", "RadioGroup", "Show the payment methods to choose from as a radio group."],
-  ["91", "paymentUi", "Show additional UI based on the selected payment provider."],
-  ["93", "Button", "Show a button to complete the cart and place the order."],
-]
-
-```tsx title="components/Payment/index.tsx" highlights={paymentHighlights5}
+```tsx title="components/Payment/index.tsx"
 const getProviderTitle = (providerId: string) => {
   switch(true) {
     case providerId.startsWith("pp_system_default"):

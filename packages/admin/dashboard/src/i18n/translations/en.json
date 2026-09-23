@@ -1199,7 +1199,9 @@
         "paymentMethod": "Payment method",
         "paymentMethodDescription": "Refund amount to the payment method",
         "creditLine": "Store credit",
-        "creditLineDescription": "Refund amount as store credit"
+        "creditLineDescription": "Refund amount as store credit",
+        "creditLineNoOutstandingAmountDescription": "Only available when the order has an outstanding amount. Create a return or an order edit first.",
+        "creditLineGuestDescription": "Only available for customers with an account. This order was placed by a guest."
       }
     },
     "domain": "Orders",
@@ -3416,6 +3418,9 @@
     "reindexSinceHint": "Only rebuild documents that changed at or after this date. Leave empty to rebuild everything.",
     "reindexEntityIdsLabel": "Entity IDs",
     "reindexEntityIdsHint": "Comma or newline separated IDs to rebuild only those documents. Support depends on this index's own definition.",
+    "delete": "Delete index",
+    "deleteWarning": "This drops the \"{{name}}\" index and every version ever built for it, including its data in the search engine. Nothing is searchable on this index until the next migration rebuilds it from scratch. This can't be undone.",
+    "deleteSuccess": "Index {{name}} deleted",
     "noFields": "No fields are indexed.",
     "list": {
       "noRecordsMessage": "No search indexes are registered."

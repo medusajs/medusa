@@ -53,3 +53,23 @@ export const useReindexSearchIndex = (
     },
   })
 }
+
+export const useDeleteSearchIndex = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminSearchIndexDeleteResponse,
+    FetchError,
+    string
+  >
+) => {
+  return useMutation({
+    mutationFn: (id) => sdk.admin.search.deleteIndex(id),
+    ...options,
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: searchIndexesQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+  })
+}
