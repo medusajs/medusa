@@ -1151,7 +1151,9 @@
         "paymentMethod": "Način plaćanja",
         "paymentMethodDescription": "Vrati iznos na odabrani način plaćanja",
         "creditLine": "Kredit trgovine",
-        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine"
+        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine",
+        "creditLineGuestDescription": "Dostupno samo kupcima s računom. Ovu narudžbu izvršio je gost.",
+        "creditLineNoOutstandingAmountDescription": "Dostupno samo kada narudžba ima nepodmireni iznos. Prvo kreirajte povrat ili uređivanje narudžbe."
       }
     },
     "domain": "Narudžbe",
@@ -3790,7 +3792,10 @@
       "building": "Izrada",
       "ready": "Spremno",
       "error": "Greška"
-    }
+    },
+    "delete": "Izbriši indeks",
+    "deleteSuccess": "Indeks {{name}} izbrisan",
+    "deleteWarning": "Ovo uklanja indeks \"{{name}}\" i svaku verziju ikada izgrađenu za njega, uključujući njegove podatke u tražilici. Ništa na ovom indeksu nije moguće pretraživati dok ga sljedeća migracija ne izgradi ispočetka. Ovo se ne može poništiti."
   },
   "propertyLabels": {
     "domain": "Nazivi svojstava",
