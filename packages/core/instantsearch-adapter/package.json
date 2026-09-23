@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/instantsearch-adapter",
-  "version": "2.21.0",
+  "version": "2.21.1",
   "description": "Algolia InstantSearch adapter for Medusa Search",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -39,7 +39,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Index Module",
-            link: "/learn/fundamentals/module-links/index-module",
+            link: "/learn/fundamentals/query/index-module",
           },
           {
             type: "link",
@@ -64,7 +64,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Query",
-            link: "/learn/fundamentals/module-links/query",
+            link: "/learn/fundamentals/query",
           },
           {
             type: "link",
@@ -238,6 +238,11 @@ export const navDropdownItems: NavigationItem[] = [
           },
           {
             type: "link",
+            title: "Search",
+            link: "/resources/infrastructure-modules/search",
+          },
+          {
+            type: "link",
             title: "Workflow Engine",
             link: "/resources/infrastructure-modules/workflow-engine",
           },
@@ -294,7 +299,17 @@ export const navDropdownItems: NavigationItem[] = [
             title: "Medusa CLI",
             link: "/resources/medusa-cli",
           },
+          {
+            type: "link",
+            title: "Medusa Cloud CLI",
+            link: "/cloud/cli",
+          },
         ],
+      },
+      {
+        type: "link",
+        title: "InstantSearch Adapter",
+        link: "/resources/instantsearch",
       },
       {
         type: "link",

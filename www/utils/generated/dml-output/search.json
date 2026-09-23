@@ -11,7 +11,8 @@
 			"started_at": "The started at of the search index sync",
 			"completed_at": "The completed at of the search index sync",
 			"error": "The error of the search index sync",
-			"search_index_version": "The associated search index version.\n\n@expandable"
+			"search_index_version": "The associated search index version.\n\n@expandable",
+			"resumable": "Whether the search index sync resumable."
 		},
 		"deprecated": {
 			"is_deprecated": false

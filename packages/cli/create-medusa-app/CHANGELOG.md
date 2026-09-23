@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.21.1
+
+### Patch Changes
+
+- [`2eed2802541493e99fc048d35a22c336daba833f`](undefined) - chore(create-medusa-app): clarify database connection problem before asking for DB credentials
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.1
+  - @medusajs/telemetry@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes
