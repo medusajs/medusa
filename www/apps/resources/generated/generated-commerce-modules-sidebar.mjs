@@ -5408,6 +5408,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "updateProductsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateProductVariantsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductVariantsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "updateReservationsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReservationsWorkflow",
                       "children": []
@@ -5448,6 +5462,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "createInventoryLevelsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createInventoryLevelsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createProductVariantsDefaultInventoryStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
                       "children": []
                     },
                     {
@@ -11980,6 +12001,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "createProductVariantsDefaultInventoryStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "createProductVariantsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsStep",
                       "children": []
@@ -16432,6 +16460,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "debitAccountsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "debitStoreCreditAccountWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow",
                       "children": []
                     },
                     {
