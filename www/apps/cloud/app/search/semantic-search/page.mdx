@@ -506,6 +506,10 @@ export const productIndex = defineSearchIndex({
   fields: search.define({
     id: search.keyword().filterable(),
     title: search.text().searchable({ weight: 3 }),
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
     sku: search.keyword().searchable(),
     barcode: search.keyword().searchable(),
     content_embedding: search.vector(1536).embed(),
@@ -588,19 +592,17 @@ const source = {
     "variants.material",
   ],
   transform: (products) => {
-    return products
-      .filter((p) => p.status === "published")
-      .map((product) => ({
-        id: product.id,
-        title: product.title,
-        sku: product.variants?.[0]?.sku,
-        barcode: product.variants?.[0]?.barcode,
-        category_ids: product.categories?.map(
-          (category) => category.id
-        ),
-        content_embedding:
-          buildEmbeddingText(product),
-      }))
+    return products.map((product) => ({
+      id: product.id,
+      title: product.title,
+      status: product.status,
+      sku: product.variants?.[0]?.sku,
+      barcode: product.variants?.[0]?.barcode,
+      category_ids: product.categories?.map(
+        (category) => category.id
+      ),
+      content_embedding: buildEmbeddingText(product),
+    }))
   },
 }
 
@@ -610,6 +612,10 @@ export const productIndex = defineSearchIndex({
   fields: search.define({
     id: search.keyword().filterable(),
     title: search.text().searchable({ weight: 3 }),
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
     sku: search.keyword().searchable(),
     barcode: search.keyword().searchable(),
     category_ids: search.keyword().array().filterable(),
