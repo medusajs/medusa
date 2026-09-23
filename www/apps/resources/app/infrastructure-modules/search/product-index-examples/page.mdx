@@ -24,12 +24,12 @@ The following index definition holds a product's basic details, and it's the sta
 Create the file `src/search/product.ts` with the following content:
 
 export const simpleHighlights = [
-  ["17", "transform", "Index published products only."],
-  ["25", "name", "The index name that a search query resolves against."],
-  ["26", "entity", "The Query entity used to hydrate non-indexed fields."],
-  ["39", "events", "The events that change the data the index holds."],
-  ["44", "consume", "Turn each of those events into document writes."],
-  ["45", "seed", "Fill the index with every product."],
+  ["20", "name", "The index name that a search query resolves against."],
+  ["21", "entity", "The Query entity used to hydrate non-indexed fields."],
+  ["24", "status", "Lets the Store Search API route scope the index to published products."],
+  ["38", "events", "The events that change the data the index holds."],
+  ["43", "consume", "Turn each of those events into document writes."],
+  ["44", "seed", "Fill the index with every product."],
 ]
 
 ```ts title="src/search/product.ts" highlights={simpleHighlights}
@@ -49,11 +49,6 @@ const source = {
     "thumbnail",
     "status",
   ],
-  transform: (products) => {
-    return products.filter(
-      (product) => product.status === "published"
-    )
-  },
 }
 
 export default defineSearchIndex({
@@ -61,6 +56,10 @@ export default defineSearchIndex({
   entity: "product",
   fields: search.define({
     id: search.keyword().filterable().retrievable(),
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
     title: search
       .text()
       .searchable({ weight: 3 })
@@ -83,7 +82,7 @@ export default defineSearchIndex({
 
 `source` holds the options that [`graphSeed`](../index-definitions/page.mdx#fill-the-index-from-query-with-graphseed) and [`graphConsume`](../index-definitions/page.mdx#consume-events-from-query-with-graphconsume) share, so a document written by an event matches the one the seed writes.
 
-Since the `transform` returns no document for a product that isn't published, unpublishing a product removes it from the index as soon as its `product.updated` event arrives.
+The index holds draft products too, but the [Store Search API route](../store-search/page.mdx) returns published products only, as long as the index declares a `status` field with the [`filterable` modifier](../index-definitions/modifiers/page.mdx#filterable). The field uses [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable), so the route filters on it without returning it in a hit. Unpublishing a product then drops it from the storefront's results as soon as its `product.updated` event arrives.
 
 ---
 
@@ -95,8 +94,8 @@ A storefront must never find a draft product, or a product that isn't in the req
 
 export const scopeHighlights = [
   ["5", `"sales_channels.id"`, "Selected to fill `sales_channel_ids`."],
-  ["26", "status", "Read by `/store/search`, never returned in a hit."],
-  ["30", "sales_channel_ids", "Read by `/store/search`, never returned in a hit."],
+  ["22", "status", "Read by `/store/search`, never returned in a hit."],
+  ["26", "sales_channel_ids", "Read by `/store/search`, never returned in a hit."],
 ]
 
 ```ts title="src/search/product.ts" highlights={scopeHighlights}
@@ -107,17 +106,13 @@ const source = {
     "sales_channels.id",
   ],
   transform: (products) => {
-    return products
-      .filter(
-        (product) => product.status === "published"
-      )
-      .map((product) => ({
-        // ...
-        status: product.status,
-        sales_channel_ids: (
-          product.sales_channels ?? []
-        ).map((salesChannel) => salesChannel.id),
-      }))
+    return products.map((product) => ({
+      // ...
+      status: product.status,
+      sales_channel_ids: (
+        product.sales_channels ?? []
+      ).map((salesChannel) => salesChannel.id),
+    }))
   },
 }
 
@@ -380,11 +375,11 @@ const source = {
   transform: async (products, context) => {
     // ...
     const pricing = await loadPricing(
-      published.map((product) => product.id),
+      products.map((product) => product.id),
       context
     )
 
-    return published.map((product) => ({
+    return products.map((product) => ({
       id: product.id,
       title: product.title,
       // ...
@@ -720,9 +715,10 @@ Some changes to a product's prices don't emit an event, such as creating a price
 The following file combines the examples of this guide. The pricing and event functions are left out, since they're unchanged from the sections above:
 
 export const completeHighlights = [
-  ["69", "transform", "Index published products only."],
-  ["109", "settings", "Engine settings, supported by Medusa Search only."],
-  ["127", "consume", "Turn each event into document writes."],
+  ["14", "status", "Lets the Store Search API route scope the index to published products."],
+  ["69", "transform", "Reshape each product into the document to index."],
+  ["106", "settings", "Engine settings, supported by Medusa Search only."],
+  ["124", "consume", "Turn each event into document writes."],
 ]
 
 ```ts title="src/search/product.ts" highlights={completeHighlights}
@@ -798,15 +794,12 @@ const source = {
     products,
     context: SearchTypes.SearchIngestionContext
   ) => {
-    const published = products.filter(
-      (product) => product.status === "published"
-    )
     const pricing = await loadPricing(
-      published.map((product) => product.id),
+      products.map((product) => product.id),
       context
     )
 
-    return published.map((product) => ({
+    return products.map((product) => ({
       id: product.id,
       status: product.status,
       sales_channel_ids: (
