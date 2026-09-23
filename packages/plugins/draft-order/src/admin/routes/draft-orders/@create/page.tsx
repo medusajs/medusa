@@ -296,7 +296,7 @@ const CustomerField = ({ control, setValue }: CustomerFieldProps) => {
     },
     queryKey: ["customers"],
     getOptions: (data) => {
-      return data.customers.map((customer) => {
+      return data.customers.filter(Boolean).map((customer) => {
         const name = [customer.first_name, customer.last_name]
           .filter(Boolean)
           .join(" ")
