@@ -1,3 +1,4 @@
+---
 "@medusajs/js-sdk": patch
 ---
 
