@@ -2,4 +2,4 @@
 "@medusajs/core-flows": patch
 ---
 
-Emit `payment.captured` on the admin check-status authorization path.
+fix(core-flows): emit `payment.captured` on the admin check-status authorization path.

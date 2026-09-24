@@ -64,8 +64,6 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
     return { data: { ...input.data }, status: PaymentSessionStatus.PENDING_AUTHORIZATION }
   }
 
-
-
   async capturePayment(
     input: CapturePaymentInput
   ): Promise<CapturePaymentOutput> {
@@ -91,14 +89,14 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
   }
 
   async getPaymentStatus(input: GetPaymentStatusInput): Promise<GetPaymentStatusOutput> {
-      if (input.data?.payment_captured) {
-        return { status: PaymentSessionStatus.CAPTURED }
-      }
-      if (input.data?.authorized) {
-        return { status: PaymentSessionStatus.AUTHORIZED }
-      }
-      return { status: PaymentSessionStatus.PENDING_AUTHORIZATION }
+    if (input.data?.payment_captured) {
+      return { status: PaymentSessionStatus.CAPTURED }
     }
+    if (input.data?.authorized) {
+      return { status: PaymentSessionStatus.AUTHORIZED }
+    }
+    return { status: PaymentSessionStatus.PENDING_AUTHORIZATION }
+  }
 
   async retrievePayment(
     input: RetrievePaymentInput
