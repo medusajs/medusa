@@ -71,12 +71,6 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
-      await api.post(
-        `/admin/orders/${draftOrderResposne.data.draft_order.id}/complete`,
-        {},
-        adminHeaders
-      )
-
       draftOrder = draftOrderResposne.data.draft_order
 
       await dbUtils.snapshot()
@@ -159,8 +153,7 @@ medusaIntegrationTestRunner({
         expect(response.data.order.shipping_address).toBeTruthy()
       })
 
-      // TODO: This should have thrown an error, but doesn't seem to.
-      it.skip("should throw an error when fetching draft order", async () => {
+      it("should throw an error when fetching draft order", async () => {
         const response = await api
           .get(
             `/store/orders/${draftOrder.id}?fields=+is_draft_order`,
