@@ -283,7 +283,7 @@ export const UpdateProduct = z
     title: z.string().optional(),
     discountable: booleanString().optional(),
     is_giftcard: booleanString().optional(),
-    options: z.any().superRefine((val, ctx) => {
+    options: z.any().optional().superRefine((val, ctx) => {
       if (val !== undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
