@@ -110,8 +110,8 @@ export type SearchIndexContext = {
     set(
       name: string,
       value: { physical_name: string; provider: string; version: number }
-    ): void
-    invalidate(): void
+    ): Promise<void>
+    invalidate(): Promise<void>
   }
 }
 

@@ -229,7 +229,7 @@ async function runSeed(
         selector: { name: definition.name },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
@@ -458,7 +458,7 @@ async function reindexOne(
         selector: { id: record.id },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
