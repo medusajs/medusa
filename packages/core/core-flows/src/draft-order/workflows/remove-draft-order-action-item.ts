@@ -17,7 +17,6 @@ import {
 } from "../../order"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderRemoveActionItemStep } from "../steps/validate-draft-order-remove-action-item"
-import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
@@ -88,14 +87,6 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
     })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
-
-    const refetchedOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: draftOrderFieldsForRefreshSteps,
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "refetched-order-query" })
 
     // Calculated shipping prices can depend on the order's items, so refresh
     // them after the item is removed.
