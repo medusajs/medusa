@@ -13,7 +13,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 // HTTP-level coverage for the integer-quantity validation on store cart
 // line items: fractional quantities must be rejected with a 400 before they
-// can be coerced on store (https://github.com/medusajs/medusa/issues/16802).
+// can be coerced on store.
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
