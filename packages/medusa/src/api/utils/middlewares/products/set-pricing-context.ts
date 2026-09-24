@@ -64,9 +64,16 @@ export function setPricingContext(options: PricingContextOptions = {}) {
       })
 
       pricingContext.customer = { groups: [] }
-      customerGroups.map((cg) =>
+      // Expose the group ids under the `customer_group_id` attribute as well,
+      // which is the attribute price list rules use (see the admin dashboard
+      // price list forms). The pricing repository matches rule attributes
+      // verbatim against the flattened context, so without this key
+      // customer-group price lists never apply.
+      pricingContext.customer_group_id = []
+      customerGroups.map((cg) => {
         pricingContext.customer?.groups?.push({ id: cg.id })
-      )
+        pricingContext.customer_group_id?.push(cg.id)
+      })
     }
 
     req.pricingContext = pricingContext
