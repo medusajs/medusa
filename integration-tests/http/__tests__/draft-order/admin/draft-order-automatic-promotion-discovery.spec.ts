@@ -14,8 +14,7 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
 jest.setTimeout(300000)
 
-// Regression test for https://github.com/medusajs/medusa/issues/16895:
-// an eligible automatic promotion must be discovered when a draft order
+// An eligible automatic promotion must be discovered when a draft order
 // edit makes the order eligible for the first time, without the customer
 // having to enter the promotion code.
 medusaIntegrationTestRunner({
