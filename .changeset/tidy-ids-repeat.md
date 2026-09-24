@@ -2,5 +2,5 @@
 "@medusajs/utils": patch
 ---
 
-Ignore non-string ids in applyTranslations
+fix(utils): ignore non-string ids in applyTranslations
 
