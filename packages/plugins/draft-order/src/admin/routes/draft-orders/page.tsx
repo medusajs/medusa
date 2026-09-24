@@ -185,7 +185,7 @@ const useFilters = (): DataTableFilter[] => {
         id: "customer_id",
         label: "Customer",
         options:
-          customers?.filter(Boolean).map((customer) => ({
+          customers?.map((customer) => ({
             label: customer.email,
             value: customer.id,
           })) ?? [],

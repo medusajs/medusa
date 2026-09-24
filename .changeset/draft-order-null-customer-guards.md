@@ -2,4 +2,4 @@
 "@medusajs/draft-order": patch
 ---
 
-fix(draft-order): guard against null customers in the draft orders admin UI
+fix(draft-order): fix admin crash when selecting a customer without an email
