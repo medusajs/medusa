@@ -76,6 +76,7 @@ export const baseProducts: TestProduct[] = [
 export function resetDataset(products: TestProduct[] = baseProducts): void {
   dataset.products = products.map((product) => ({ ...product }))
   consumedEvents.length = 0
+  consumedContainers.length = 0
   onBulkSeedStart = undefined
 }
 
@@ -99,6 +100,8 @@ export function removeProduct(id: string): void {
 
 // What `consume` was handed, so the tests can assert how the module routed.
 export const consumedEvents: { event: string; index: string }[] = []
+
+export const consumedContainers: SearchTypes.SearchContainer[] = []
 
 // Test seam: called once a bulk (unscoped) seed has taken its snapshot of
 // `dataset.products` but before it's done writing, so a test can simulate a
@@ -141,8 +144,9 @@ export const productIndex: SearchTypes.SearchIndexDefinition =
     events: ["product.created", "product.updated", "product.deleted"],
     // Reads the document out of the dataset rather than off the event, the way a
     // real definition reads through `query.graph`: an event carries an id.
-    async consume(event, { index }) {
+    async consume(event, { index, container }) {
       consumedEvents.push({ event: event.name, index: index.name })
+      consumedContainers.push(container)
 
       const id = (event.data as { id: string }).id
 

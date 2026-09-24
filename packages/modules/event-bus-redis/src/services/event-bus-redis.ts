@@ -267,36 +267,33 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         continue
       }
 
-      // Set a TTL for the key of the list that is scoped to a group
-      // This will be helpful in preventing stale data from staying in redis for too long
-      // in the event the module fails to cleanup events. For long running workflows, setting a much higher
-      // TTL or even skipping the TTL would be required
-      void this.setExpire(groupId, groupedEventsTTL)
-
       const eventsData = this.buildEvents(events, options)
 
-      promises.push(this.groupEvents(groupId, eventsData))
+      promises.push(this.groupEvents(groupId, eventsData, groupedEventsTTL))
     }
 
     await promiseAll(promises)
   }
 
-  private async setExpire(eventGroupId: string, ttl: number) {
-    if (!eventGroupId) {
-      return
-    }
-
-    await this.eventBusRedisConnection_.expire(`staging:${eventGroupId}`, ttl)
-  }
-
   private async groupEvents<T = unknown>(
     eventGroupId: string,
-    events: IORedisEventType<T>[]
+    events: IORedisEventType<T>[],
+    ttl: number
   ) {
-    await this.eventBusRedisConnection_.rpush(
-      `staging:${eventGroupId}`,
-      ...events.map((event) => JSON.stringify(event))
-    )
+    const key = `staging:${eventGroupId}`
+    const pipeline = this.eventBusRedisConnection_.pipeline()
+
+    pipeline.rpush(key, ...events.map((event) => JSON.stringify(event)))
+
+    // Set a TTL for the key of the list that is scoped to a group.
+    // This will be helpful in preventing stale data from staying in redis for too long
+    // in the event the module fails to cleanup events. For long running workflows, setting a much higher
+    // TTL or even skipping the TTL would be required.
+    // NOTE: expire must run in the same pipeline AFTER rpush, since EXPIRE on a
+    // non-existent key is a no-op and rpush is what creates the key.
+    pipeline.expire(key, ttl)
+
+    await pipeline.exec()
   }
 
   private async getGroupedEvents(
@@ -381,11 +378,15 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       // Empty the current list
       pipeline.del(`staging:${eventGroupId}`)
 
-      // Add the remaining events to the list
-      pipeline.rpush(
-        `staging:${eventGroupId}`,
-        ...eventsToKeep.map((event) => JSON.stringify(event))
-      )
+      // Add the remaining events to the list, if any.
+      // RPUSH with no members is a Redis argument error, so only issue it
+      // when there is at least one event left to keep.
+      if (eventsToKeep.length > 0) {
+        pipeline.rpush(
+          `staging:${eventGroupId}`,
+          ...eventsToKeep.map((event) => JSON.stringify(event))
+        )
+      }
 
       await pipeline.exec()
 

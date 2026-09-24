@@ -224,6 +224,10 @@ After adding a sender domain, you can view its verification status on the domain
 
 The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
+### Provisioning Failure
+
+If the domain's status is **Provisioning failed**, the domain detail page replaces the DNS configuration instructions with an alert explaining the failure. The **Check records** and **Restart verification** buttons are not available when provisioning has failed. Contact support if you encounter this state.
+
 ### Verify DNS Records Manually
 
 You can trigger an immediate DNS check at any time instead of waiting for the next automatic check by clicking the **Check records** button at the top right of the domain detail page.

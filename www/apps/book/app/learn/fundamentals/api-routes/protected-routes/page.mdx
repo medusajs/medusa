@@ -244,14 +244,14 @@ If you opt-out of authentication in a route as mentioned in the [Opt-Out section
 
 ### Retrieve Logged-In Customer's Details
 
-You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../module-links/query/page.mdx) to retrieve the customer details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
+You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../query/page.mdx) to retrieve the customer details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
 
 For example:
 
 export const customerHighlights = [
-  ["10", "customerId", "Retrieve the logged-in customer's ID."],
-  ["13", "query", "Retrieve the customer details."],
-  ["20", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
+  ["13", "customerId", "Retrieve the logged-in customer's ID."],
+  ["18", "query", "Retrieve the customer details."],
+  ["25", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={customerHighlights}
@@ -259,13 +259,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [customer] } = await query.graph({
     entity: "customer",
@@ -289,14 +294,14 @@ After that, you can use the customer's details in your API route.
 
 ### Retrieve Logged-In Admin User's Details
 
-You can access the logged-in admin user’s ID in all API routes starting with `/admin` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../module-links/query/page.mdx) to retrieve the user details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
+You can access the logged-in admin user’s ID in all API routes starting with `/admin` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../query/page.mdx) to retrieve the user details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
 
 For example:
 
 export const adminHighlights = [
-  ["10", "userId", "Retrieve the logged-in admin user's ID."],
-  ["13", "query", "Retrieve the user details."],
-  ["20", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
+  ["13", "userId", "Retrieve the logged-in admin user's ID."],
+  ["18", "query", "Retrieve the user details."],
+  ["25", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/admin/custom/route.ts" highlights={adminHighlights}
@@ -304,13 +309,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const userId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [user] } = await query.graph({
     entity: "user",

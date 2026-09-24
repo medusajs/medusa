@@ -11,11 +11,12 @@ import {
   MedusaSearchClient,
   CloudServiceError,
   MedusaSearchProviderOptions,
+  ResolvedMedusaSearchProviderOptions,
   parseFacetResults,
   parseHighlights,
   toSearchDocument,
   toSearchFilter,
-  validateMedusaSearchOptions,
+  resolveMedusaSearchOptions,
   type FacetQuery,
   type IndexQuery,
   type IndexMultiQueryResponse,
@@ -44,7 +45,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   static identifier = "search-medusa"
 
   protected readonly logger_?: Logger
-  protected readonly options_: MedusaSearchProviderOptions
+  protected readonly options_: ResolvedMedusaSearchProviderOptions
   protected readonly client_: MedusaSearchClient
 
   constructor(
@@ -53,11 +54,11 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   ) {
     super()
 
-    validateMedusaSearchOptions(options)
+    const resolvedOptions = resolveMedusaSearchOptions(options)
 
     this.logger_ = logger
-    this.options_ = options
-    this.client_ = new MedusaSearchClient(options)
+    this.options_ = resolvedOptions
+    this.client_ = new MedusaSearchClient(resolvedOptions)
   }
 
   /**
@@ -96,7 +97,6 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         name: index.physical_name,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
-        sharding: plan.options.sharding,
       })
       return this.task(index.physical_name)
     }

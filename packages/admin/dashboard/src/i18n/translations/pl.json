@@ -1,6 +1,7 @@
 {
   "$schema": "./$schema.json",
   "general": {
+    "fullList": "Wszystko",
     "ascending": "Rosnąco",
     "descending": "Malejąco",
     "add": "Dodaj",
@@ -11,6 +12,7 @@
     "apply": "Zastosuj",
     "range": "Zakres",
     "search": "Szukaj",
+    "original": "Oryginał",
     "of": "z",
     "results": "wyników",
     "pages": "strony",
@@ -23,6 +25,8 @@
     "tip": "Wskazówka",
     "error": "Błąd",
     "select": "Wybierz",
+    "selectAll": "Zaznacz wszystko",
+    "unselectAll": "Odznacz wszystko",
     "selected": "Wybrany",
     "enabled": "Włączony",
     "disabled": "Wyłączony",
@@ -33,13 +37,17 @@
     "modified": "Zmodyfikowany",
     "added": "Dodano",
     "removed": "Usunięto",
+    "remaining": "Pozostało",
     "admin": "Administrator",
     "store": "Sklep",
+    "rank": "Pozycja",
     "details": "Szczegóły",
     "items_one": "{{count}} przedmiot",
     "items_few": "{{count}} przemioty",
     "items_many": "{{count}} przemiotów",
     "items_other": "{{count}} przedmiotów",
+    "values_one": "{{count}} wartość",
+    "values_other": "{{count}} wartości",
     "countSelected": "{{count}} wybranych",
     "countOfTotalSelected": "{{count}} z {{total}} wybranych",
     "plusCount": "+ {{count}}",
@@ -54,11 +62,17 @@
     "noSearchResultsFor": "Brak wyników dla <0>'{{query}}'</0>",
     "noRecordsTitle": "Brak rekordów",
     "noRecordsMessage": "Brak rekordów do wyświetlenia",
+    "noRecordsMessageFiltered": "Brak rekordów spełniających kryteria filtrów",
     "unsavedChangesTitle": "Czy na pewno chcesz opuścić ten formularz?",
     "unsavedChangesDescription": "Masz niezapisane zmiany, które zostaną utracone po wyjściu.",
     "includesTaxTooltip": "Ceny w tej kolumnie zawierają podatek.",
     "excludesTaxTooltip": "Ceny w tej kolumnie są bez podatku.",
-    "noMoreData": "Brak dodatkowych danych"
+    "noMoreData": "Brak dodatkowych danych",
+    "values_few": "{{count}} wartości",
+    "values_many": "{{count}} wartości",
+    "quantityPrice": "Cena ilościowa",
+    "exclusive": "Tylko dla produktu",
+    "global": "Globalna"
   },
   "json": {
     "header": "JSON",
@@ -87,7 +101,8 @@
       "actions": {
         "insertRowAbove": "Wstaw wiersz powyżej",
         "insertRowBelow": "Wstaw wiersz poniżej",
-        "deleteRow": "Usuń wiersz"
+        "deleteRow": "Usuń wiersz",
+        "addRow": "Dodaj wiersz"
       },
       "labels": {
         "key": "Klucz",
@@ -106,7 +121,9 @@
   },
   "actions": {
     "save": "Zapisz",
+    "saveChanges": "Zapisz zmiany",
     "saveAsDraft": "Zapisz jako wersję roboczą",
+    "saveAndClose": "Zapisz i zamknij",
     "copy": "Kopiuj",
     "copied": "Skopiowano",
     "duplicate": "Duplikuj",
@@ -129,6 +146,8 @@
     "continue": "Kontynuuj",
     "continueWithEmail": "Kontynuuj przez Email",
     "idCopiedToClipboard": "ID skopiowane do schowka",
+    "editVariantImages": "Edytuj zdjęcia wariantu",
+    "editImages": "Edytuj zdjęcia",
     "addReason": "Dodaj Powód",
     "addNote": "Dodaj Notatkę",
     "reset": "Resetuj",
@@ -144,9 +163,12 @@
     "browse": "Przeglądaj",
     "logout": "Wyloguj się",
     "hide": "Ukryj",
+    "show": "Pokaż",
     "export": "Eksportuj",
     "import": "Importuj",
-    "cannotUndo": "Tego działania nie można cofnąć"
+    "cannotUndo": "Tego działania nie można cofnąć",
+    "manage": "Zarządzaj",
+    "goToProductOption": "Przejdź do opcji produktu"
   },
   "operators": {
     "in": "W"
@@ -169,28 +191,28 @@
       "groups": {
         "all": "Wszystkie obszary",
         "customer": "Klienci",
-        "customerGroup": "Grupy Klientów",
+        "customer_group": "Grupy klientów",
         "product": "Produkty",
-        "productVariant": "Warianty Produktów",
-        "inventory": "Zapas",
+        "product_variant": "Warianty produktów",
+        "inventory_item": "Magazyn",
         "reservation": "Rezerwacje",
-        "category": "Kategorie",
-        "collection": "Kolekcje",
+        "product_category": "Kategorie",
+        "product_collection": "Kolekcje",
         "order": "Zamówienia",
         "promotion": "Promocje",
         "campaign": "Kampanie",
-        "priceList": "Cenniki",
+        "price_list": "Cenniki",
         "user": "Użytkownicy",
         "region": "Regiony",
-        "taxRegion": "Regiony Podatkowe",
-        "returnReason": "Powody Zwrotów",
-        "salesChannel": "Kanały Sprzedaży",
-        "productType": "Typy Produktów",
-        "productTag": "Tagi Produktów",
-        "location": "Lokalizacje",
-        "shippingProfile": "Profile Wysyłki",
-        "publishableApiKey": "Publiczne Klucze API",
-        "secretApiKey": "Tajne Klucze API",
+        "tax_region": "Regiony podatkowe",
+        "return_reason": "Powody zwrotu",
+        "sales_channel": "Kanały sprzedaży",
+        "product_type": "Typy produktów",
+        "product_tag": "Tagi produktów",
+        "stock_location": "Lokalizacje",
+        "shipping_profile": "Profile wysyłki",
+        "publishable_api_key": "Publiczne klucze API",
+        "secret_api_key": "Tajne klucze API",
         "command": "Polecenia",
         "navigation": "Nawigacja"
       }
@@ -270,6 +292,24 @@
       }
     }
   },
+  "layout": {
+    "customizeTopbar": "Dostosuj górny pasek",
+    "customizeSidebar": "Dostosuj pasek boczny",
+    "customizeSettingsSidebar": "Dostosuj pasek boczny ustawień",
+    "customizePage": "Dostosuj stronę",
+    "customizeLayout": "Dostosuj układ",
+    "viewingPersonalLayout": "Wyświetlasz układ osobisty",
+    "viewingSystemLayout": "Wyświetlasz układ systemowy",
+    "personalView": "Osobisty",
+    "defaultView": "Domyślny",
+    "empty": "Pusty",
+    "dropToSectionEnd": "Upuść tutaj, aby przenieść na koniec",
+    "dragToReorder": "Przeciągnij, aby zmienić kolejność",
+    "saveForEveryone": "Zapisz dla wszystkich",
+    "saveForEveryoneTitle": "Zapisz układ dla wszystkich",
+    "saveForEveryoneDescription": "Spowoduje to aktualizację domyślnego układu tej strony dla wszystkich użytkowników, którzy sami go nie dostosowali. Czy na pewno chcesz kontynuować?",
+    "saveSuccess": "Układ został zapisany"
+  },
   "dataGrid": {
     "columns": {
       "view": "Widok",
@@ -310,6 +350,10 @@
   },
   "filters": {
     "sortLabel": "Sortuj",
+    "columnsLabel": "Kolumny",
+    "collapse": {
+      "all": "Zwiń wszystko"
+    },
     "filterLabel": "Filtruj",
     "searchLabel": "Szukaj",
     "date": {
@@ -455,7 +499,8 @@
         "productOptions": {
           "label": "Opcje produktu",
           "hint": "Określ opcje dla produktu, np. kolor, rozmiar, itp."
-        }
+        },
+        "selectValuesHint": "Wybierz, które wartości mają zostać użyte dla każdej opcji"
       },
       "successToast": "Produkt {{title}} został pomyślnie utworzony."
     },
@@ -515,10 +560,12 @@
     "media": {
       "label": "Media",
       "editHint": "Dodaj media do produktu, aby zaprezentować go w swoim sklepie.",
+      "manageImageVariants": "Zarządzaj powiązanymi wariantami",
       "makeThumbnail": "Ustaw jako miniaturę",
       "uploadImagesLabel": "Prześlij obrazy",
       "uploadImagesHint": "Przeciągnij i upuść obrazy tutaj lub kliknij, aby przesłać.",
       "invalidFileType": "'{{name}}' nie jest obsługiwanym typem pliku. Obsługiwane typy plików to: {{types}}.",
+      "fileTooLarge": "Co najmniej jeden plik przekracza maksymalny rozmiar {{size}}: {{name}}",
       "failedToUpload": "Nie udało się przesłać dodanych mediów. Spróbuj ponownie.",
       "deleteWarning_one": "Zamierzasz usunąć {{count}} obraz. Ta akcja nie może zostać cofnięta.",
       "deleteWarning_few": "Zamierzasz usunąć {{count}} obrazy. Ta akcja nie może zostać cofnięta.",
@@ -537,7 +584,24 @@
         "description": "Dodaj media do produktu, aby zaprezentować go w swoim sklepie.",
         "action": "Dodaj media"
       },
-      "successToast": "Media zostały pomyślnie zaktualizowane."
+      "successToast": "Media zostały pomyślnie zaktualizowane.",
+      "variantImages": "Zdjęcia wariantu",
+      "showAvailableImages": "Pokaż dostępne zdjęcia",
+      "availableImages": "Wybierz zdjęcia",
+      "selectToAdd": "Dodaj zdjęcia produktu do wariantu. Aby dodać nowe zdjęcia, najpierw dodaj je do produktu.",
+      "removeSelected": "Usuń zaznaczone"
+    },
+    "variantMedia": {
+      "label": "Media wariantu",
+      "manageVariants": "Zarządzaj wariantami",
+      "addToMultipleVariants": "Dodaj do wielu wariantów",
+      "manageVariantsDescription": "Zarządzaj wariantami powiązanymi ze zdjęciem",
+      "successToast": "Warianty zdjęcia zostały pomyślnie zaktualizowane.",
+      "emptyState": {
+        "header": "Brak mediów",
+        "description": "Dodaj media do wariantu, aby zaprezentować go w swoim sklepie.",
+        "action": "Dodaj media"
+      }
     },
     "discountableHint": "Jeśli odznaczone, rabaty nie będą stosowane do tego produktu.",
     "noSalesChannels": "Niedostępny w żadnych kanałach sprzedaży",
@@ -551,6 +615,18 @@
       "published": "Opublikowany",
       "proposed": "Proponowany",
       "rejected": "Odrzucony"
+    },
+    "columns": {
+      "product_display": "Produkt",
+      "variants_count": "Warianty",
+      "sales_channels_display": "Kanały sprzedaży",
+      "collection": "Kolekcja",
+      "status": "Status",
+      "thumbnail": "Miniatura",
+      "title": "Tytuł",
+      "handle": "Uchwyt",
+      "created_at": "Utworzono",
+      "updated_at": "Zaktualizowano"
     },
     "fields": {
       "title": {
@@ -689,6 +765,16 @@
         "header": "Utwórz opcję",
         "successToast": "Opcja {{title}} została pomyślnie utworzona."
       },
+      "manage": {
+        "header": "Zarządzaj opcjami produktu",
+        "description": "Powiąż opcje produktu z tym produktem lub usuń te powiązania.",
+        "label": "Opcje produktu",
+        "hint": "Wybierz, które opcje mają być powiązane z tym produktem.",
+        "placeholder": "Wybierz opcje",
+        "error": {
+          "noValues": "Wybierz co najmniej jedną wartość dla dodanych opcji."
+        }
+      },
       "deleteWarning": "Zamierzasz usunąć opcję produktu: {{title}}. Tej akcji nie można cofnąć."
     },
     "organization": {
@@ -738,6 +824,16 @@
   "collections": {
     "domain": "Kolekcje",
     "subtitle": "Organizuj produkty w kolekcje.",
+    "list": {
+      "empty": {
+        "heading": "Brak kolekcji",
+        "description": "Nie ma kolekcji do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadna kolekcja nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
     "createCollection": "Utwórz kolekcję",
     "createCollectionHint": "Utwórz nową kolekcję, aby uporządkować swoje produkty.",
     "createSuccess": "Kolekcja została pomyślnie utworzona.",
@@ -837,9 +933,71 @@
       }
     }
   },
+  "productOptions": {
+    "domain": "Opcje",
+    "subtitle": "Zarządzaj opcjami produktów i przypisanymi do nich wartościami.",
+    "values": {
+      "header": "Wartości",
+      "list": {
+        "noRecords": "Ta opcja nie ma wartości."
+      },
+      "delete": {
+        "confirmation": "Zamierzasz usunąć wartość opcji „{{value}}”. Tej akcji nie można cofnąć.",
+        "successToast": "Wartość opcji została pomyślnie usunięta."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "Nie ma produktów z tą opcją."
+      }
+    },
+    "create": {
+      "header": "Utwórz opcję produktu",
+      "hint": "Utwórz nową opcję produktu i zarządzaj jej wartościami.",
+      "successToast": "Opcja produktu „{{title}}” została pomyślnie utworzona.",
+      "tabs": {
+        "details": "Szczegóły",
+        "organize": "Uporządkuj kolejność"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Opcja przypisana tylko do produktu"
+    },
+    "edit": {
+      "header": "Edytuj opcję produktu",
+      "description": "Edytuj opcję produktu, aby zaktualizować jej szczegóły i powiązane wartości.",
+      "successToast": "Opcja produktu „{{title}}” została pomyślnie zaktualizowana."
+    },
+    "delete": {
+      "confirmation": "Zamierzasz usunąć opcję produktu „{{title}}”. Tej akcji nie można cofnąć.",
+      "successToast": "Opcja produktu została pomyślnie usunięta."
+    },
+    "fields": {
+      "title": {
+        "label": "Tytuł",
+        "placeholder": "Rozmiar"
+      },
+      "values": {
+        "label": "Wartości",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
   "inventory": {
     "domain": "Magazyn",
     "subtitle": "Zarządzaj elementami magazynowymi",
+    "export": {
+      "header": "Eksportuj listę magazynową",
+      "description": "Wyeksportuj listę magazynową do pliku CSV.",
+      "success": {
+        "title": "Przetwarzamy Twój eksport",
+        "description": "Eksportowanie danych może potrwać kilka minut. Powiadomimy Cię, gdy będzie gotowe."
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Zastosuj filtry w widoku tabeli, aby dostosować ten widok"
+      }
+    },
     "reserved": "Zarezerwowane",
     "available": "Dostępne",
     "locationLevels": "Lokalizacje",
@@ -849,6 +1007,9 @@
     "deleteWarning": "Zamierzasz usunąć element magazynowy. Tej akcji nie można cofnąć.",
     "editItemDetails": "Edytuj szczegóły elementu",
     "quantityAcrossLocations": "{{quantity}} w {{locations}} lokalizacjach",
+    "unitOfMeasurePlaceholder": "kg",
+    "unitOfMeasureHint": "Jednostka, w której przechowywany i liczony jest stan magazynowy. Wyświetlana obok ilości w panelu administracyjnym.",
+    "levelDeleted": "Poziom zapasów został pomyślnie usunięty.",
     "create": {
       "title": "Utwórz element magazynowy",
       "details": "Szczegóły",
@@ -926,6 +1087,14 @@
   "customers": {
     "domain": "Klienci",
     "list": {
+      "empty": {
+        "heading": "Brak klientów",
+        "description": "Nie ma klientów do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żaden klient nie spełnia bieżących kryteriów filtrowania."
+      },
       "noRecordsMessage": "Twoi klienci pojawią się tutaj."
     },
     "create": {
@@ -1047,6 +1216,172 @@
       }
     }
   },
+  "roles": {
+    "domain": "Role",
+    "subtitle": "Zarządzaj rolami dostępu i uprawnieniami.",
+    "create": {
+      "header": "Utwórz rolę",
+      "hint": "Utwórz rolę, aby zarządzać dostępem w panelu administracyjnym.",
+      "successToast": "Rola {{name}} została utworzona",
+      "tabs": {
+        "details": "Szczegóły",
+        "permissions": "Uprawnienia"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "Brak uprawnień",
+          "description": "Nie ma uprawnień do wyboru."
+        },
+        "filtered": {
+          "heading": "Brak wyników",
+          "description": "Żadne uprawnienie nie spełnia bieżących kryteriów filtrowania."
+        }
+      }
+    },
+    "edit": {
+      "header": "Edytuj rolę",
+      "successToast": "Rola {{name}} została zaktualizowana"
+    },
+    "delete": {
+      "title": "Usuń rolę",
+      "description": "Zamierzasz usunąć rolę {{name}}. Tej akcji nie można cofnąć.",
+      "successToast": "Rola {{name}} została usunięta"
+    },
+    "fields": {
+      "permissions": "Uprawnienia"
+    },
+    "actions": {
+      "managePermissions": "Zarządzaj uprawnieniami"
+    },
+    "users": {
+      "alreadyAddedTooltip": "Użytkownik ma już tę rolę.",
+      "unassignableRoleTooltip": "Nie możesz przypisać tej roli — Twoje uprawnienia nie obejmują wszystkich jej polityk.",
+      "add": {
+        "successToast_one": "Użytkownik został pomyślnie dodany do roli.",
+        "successToast_few": "Użytkownicy zostali pomyślnie dodani do roli.",
+        "successToast_many": "Użytkownicy zostali pomyślnie dodani do roli.",
+        "successToast_other": "Użytkownicy zostali pomyślnie dodani do roli.",
+        "list": {
+          "noRecordsMessage": "Najpierw utwórz użytkownika."
+        }
+      },
+      "remove": {
+        "title_one": "Usuń użytkownika",
+        "title_few": "Usuń użytkowników",
+        "title_many": "Usuń użytkowników",
+        "title_other": "Usuń użytkowników",
+        "description_one": "Zamierzasz usunąć {{count}} użytkownika z tej roli. Tej akcji nie można cofnąć.",
+        "description_few": "Zamierzasz usunąć {{count}} użytkowników z tej roli. Tej akcji nie można cofnąć.",
+        "description_many": "Zamierzasz usunąć {{count}} użytkowników z tej roli. Tej akcji nie można cofnąć.",
+        "description_other": "Zamierzasz usunąć {{count}} użytkowników z tej roli. Tej akcji nie można cofnąć."
+      },
+      "list": {
+        "noRecordsMessage": "Ta rola nie ma użytkowników."
+      }
+    },
+    "permissions": {
+      "header": "Zarządzaj uprawnieniami",
+      "hint": "Wybierz uprawnienia, które ma obejmować ta rola.",
+      "empty": {
+        "heading": "Brak uprawnień",
+        "description": "Nie ma uprawnień do wyboru."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadne uprawnienie nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Nie znaleziono ról",
+        "description": "Utwórz role, aby zarządzać dostępem w panelu administracyjnym."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadna rola nie spełnia bieżących kryteriów filtrowania."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Polityki",
+    "subtitle": "Zdefiniuj uprawnienia, które mogą nadawać role.",
+    "create": {
+      "header": "Utwórz politykę",
+      "hint": "Zdefiniuj nowe uprawnienie, które można przypisać do ról.",
+      "successToast": "Polityka {{key}} została utworzona"
+    },
+    "edit": {
+      "header": "Edytuj politykę",
+      "successToast": "Polityka {{key}} została zaktualizowana"
+    },
+    "delete": {
+      "title": "Usuń politykę",
+      "description": "Zamierzasz usunąć politykę {{key}}. Tej akcji nie można cofnąć.",
+      "successToast": "Polityka {{key}} została usunięta"
+    },
+    "fields": {
+      "roles": "Role",
+      "users": "Użytkownicy"
+    },
+    "list": {
+      "empty": {
+        "heading": "Nie znaleziono polityk",
+        "description": "Utwórz polityki, aby zarządzać uprawnieniami nadawanymi przez role."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadna polityka nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "Żadna rola nie zawiera jeszcze tej polityki."
+      },
+      "empty": {
+        "heading": "Brak ról",
+        "description": "Żadna rola nie zawiera jeszcze tej polityki."
+      }
+    }
+  },
+  "translations": {
+    "domain": "Tłumaczenia",
+    "settings": {
+      "header": "Zarządzaj tłumaczonymi encjami",
+      "successToast": "Ustawienia zostały pomyślnie zaktualizowane"
+    },
+    "actions": {
+      "manage": "Zarządzaj tłumaczeniami",
+      "manageEntities": "Zarządzaj encjami",
+      "manageLocales": "Zarządzaj językami"
+    },
+    "subtitle": "Zarządzaj tłumaczeniami swoich danych w Medusie",
+    "list": {
+      "metrics": "{{translated}} z {{total}} tłumaczeń"
+    },
+    "edit": {
+      "successToast": "Tłumaczenia zostały pomyślnie zaktualizowane",
+      "unsavedChanges": {
+        "title": "Niezapisane tłumaczenia",
+        "description": "Nie utrać swojej pracy. Masz zmiany, które nie zostały jeszcze zapisane"
+      }
+    },
+    "bulk": {
+      "header": "Zbiorczy edytor tłumaczeń",
+      "mainColumn": "Język"
+    },
+    "activeLocales": {
+      "heading": "Języki",
+      "subtitle": "Aktywne tłumaczenia",
+      "noLocalesTip": "Skonfiguruj co najmniej jeden język, aby rozpocząć tłumaczenie swoich danych",
+      "noLocalesTipConfigureAction": "Konfiguruj"
+    },
+    "completion": {
+      "heading": "Przetłumaczone pola",
+      "translated": "Przetłumaczone",
+      "toTranslate": "Brakujące",
+      "footer": "Języki"
+    }
+  },
   "refundReasons": {
     "domain": "Powody zwrotu pieniędzy",
     "subtitle": "Zarządzaj powodami zwrotu pieniędzy.",
@@ -1118,6 +1453,18 @@
     "list": {
       "noRecordsMessage": "Twoje zamówienia pojawią się tutaj."
     },
+    "export": {
+      "header": "Eksportuj listę zamówień",
+      "description": "Wyeksportuj listę zamówień do pliku CSV.",
+      "success": {
+        "title": "Eksport rozpoczęty",
+        "description": "Powiadomimy Cię, gdy eksport będzie gotowy."
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Do eksportu zostaną zastosowane następujące filtry."
+      }
+    },
     "status": {
       "not_paid": "Nieopłacone",
       "pending": "Oczekujące",
@@ -1146,10 +1493,18 @@
     "transfer": {
       "title": "Przekaż własność",
       "requestSuccess": "Wniosek o przekazanie zamówienia do: {{email}}.",
+      "guestSuccess": "Zamówienie zostało przeniesione do klienta niezarejestrowanego: {{email}}.",
+      "ownerType": "Typ konta",
+      "registered": "Zarejestrowany",
+      "registeredDescription": "Przenieś do zarejestrowanego klienta, który musi zaakceptować prośbę.",
+      "guest": "Niezarejestrowany",
+      "guestDescription": "Przenieś do klienta niezarejestrowanego na podstawie adresu e-mail. Zmiana następuje natychmiast.",
       "currentOwner": "Obecny właściciel",
       "newOwner": "Nowy właściciel",
+      "newGuestOwner": "E-mail nowego właściciela",
       "currentOwnerDescription": "Klient obecnie związany z tym zamówieniem.",
-      "newOwnerDescription": "Klient, do którego chcesz przekazać to zamówienie."
+      "newOwnerDescription": "Klient, do którego chcesz przekazać to zamówienie.",
+      "newGuestOwnerDescription": "Adres e-mail klienta niezarejestrowanego, do którego ma zostać przeniesione to zamówienie. Jeśli taki klient nie istnieje, zostanie utworzony."
     },
     "payment": {
       "title": "Płatności",
@@ -1178,6 +1533,10 @@
       "capturePaymentSuccess": "Płatność w wysokości {{amount}} została pomyślnie zrealizowana",
       "markAsPaidPayment": "Płatność w wysokości {{amount}} zostanie oznaczona jako opłacona.",
       "markAsPaidPaymentSuccess": "Płatność w wysokości {{amount}} została pomyślnie oznaczona jako opłacona",
+      "pendingAuthorization": "Płatność oczekuje na autoryzację przez dostawcę płatności.",
+      "checkStatus": "Sprawdź status",
+      "checkStatusSuccess": "Płatność została pomyślnie autoryzowana.",
+      "stillPending": "Płatność nadal oczekuje na autoryzację.",
       "createRefund": "Utwórz zwrot",
       "refundPaymentSuccess": "Zwrot kwoty {{amount}} zakończony pomyślnie",
       "createRefundWrongQuantity": "Ilość powinna być liczbą od 1 do {{number}}",
@@ -1200,6 +1559,8 @@
       "create": "Edytuj zamówienie",
       "currentTotal": "Aktualna suma",
       "noteHint": "Dodaj wewnętrzną notatkę do edycji",
+      "sendNotification": "Wyślij powiadomienie",
+      "sendNotificationHint": "Powiadom klienta o tej zmianie zamówienia.",
       "cancelSuccessToast": "Edycja zamówienia anulowana",
       "createSuccessToast": "Złożono wniosek o edycję zamówienia",
       "activeChangeError": "Na zamówieniu jest już aktywna zmiana (zwrot, reklamacja, wymiana itp.). Zakończ lub anuluj zmianę przed edytowaniem zamówienia.",
@@ -1310,6 +1671,9 @@
       "outboundShipping": "Wysyłka wychodząca",
       "outboundShippingHint": "Wybierz metodę, której chcesz użyć.",
       "refundAmount": "Oszacowana różnica",
+      "carryOverPromotion": "Przenieś promocje",
+      "carryOverPromotionHint": "Zastosuj promocje z zamówienia do pozycji reklamacji",
+      "carryOverPromotionTooltip": "Do wychodzących pozycji reklamacji można przenieść wyłącznie promocje kwotowe z alokacją EACH oraz promocje procentowe z alokacją EACH lub ACROSS.",
       "activeChangeError": "Na tym zamówieniu jest aktywna zmiana. Zakończ lub anuluj poprzednią zmianę.",
       "actions": {
         "cancelClaim": {
@@ -1343,6 +1707,9 @@
       "outboundShipping": "Wysyłka wychodząca",
       "outboundShippingHint": "Wybierz metodę, której chcesz użyć.",
       "refundAmount": "Oszacowana różnica",
+      "carryOverPromotion": "Przenieś promocje",
+      "carryOverPromotionHint": "Zastosuj promocje z zamówienia do pozycji wymiany",
+      "carryOverPromotionTooltip": "Do wychodzących pozycji wymiany można przenieść wyłącznie promocje kwotowe z alokacją EACH oraz promocje procentowe z alokacją EACH lub ACROSS.",
       "activeChangeError": "Na tym zamówieniu jest aktywna zmiana. Zakończ lub anuluj poprzednią zmianę.",
       "actions": {
         "cancelExchange": {
@@ -1389,6 +1756,8 @@
     "shipment": {
       "title": "Oznacz realizację jako wysłaną",
       "trackingNumber": "Numer do śledzenia przesyłki",
+      "trackingUrl": "Adres URL śledzenia",
+      "labelUrl": "Adres URL etykiety",
       "addTracking": "Dodaj numer do śledzenia przesyłki",
       "sendNotification": "Wyślij powiadomienie",
       "sendNotificationHint": "Powiadom klienta o tej wysyłce.",
@@ -1415,6 +1784,7 @@
       "markAsDelivered": "Oznacz jako dostarczoną",
       "itemsToFulfillDesc": "Wybierz produkty i ilości do realizacji",
       "locationDescription": "Wybierz lokalizację, z której chcesz zrealizować produkty.",
+      "locationUnavailable": "Lokalizacja usunięta/niedostępna",
       "sendNotificationHint": "Powiadom klientów o utworzonej realizacji.",
       "methodDescription": "Wybierz inną metodę wysyłki niż wybrana przez klienta",
       "error": {
@@ -1438,7 +1808,10 @@
         "partiallyReturned": "Częściowo zwrócone",
         "returned": "Zwrócone",
         "canceled": "Anulowane",
-        "requiresAction": "Wymaga działania"
+        "requiresAction": "Wymaga działania",
+        "awaitingPickup": "Oczekuje na odbiór",
+        "awaitingShipping": "Oczekuje na wysyłkę",
+        "awaitingDelivery": "Oczekuje na dostawę"
       },
       "toast": {
         "created": "Realizacja została pomyślnie utworzona",
@@ -1595,6 +1968,14 @@
       "sendNotificationLabel": "Wyślij powiadomienie",
       "sendNotificationHint": "Wyślij powiadomienie do klienta po utworzeniu wstępnego zamówienia."
     },
+    "list": {
+      "noRecordsMessage": "Nie znaleziono wstępnych zamówień",
+      "description": "Utwórz nowe wstępne zamówienie, aby rozpocząć.",
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadne wstępne zamówienie nie spełnia Twoich kryteriów filtrowania."
+      }
+    },
     "validation": {
       "requiredEmailOrCustomer": "Wymagany jest adres e-mail lub klient.",
       "requiredItems": "Wymagany jest co najmniej jeden produkt.",
@@ -1604,7 +1985,10 @@
   "stockLocations": {
     "domain": "Lokalizacje i wysyłka",
     "list": {
-      "description": "Zarządzaj lokalizacjami magazynowymi i opcjami wysyłki swojego sklepu."
+      "description": "Zarządzaj lokalizacjami magazynowymi i opcjami wysyłki swojego sklepu.",
+      "noRecordsMessage": "Brak rekordów",
+      "noRecordsMessageEmpty": "Nie znaleziono lokalizacji",
+      "noRecordsMessageFiltered": "Nie znaleziono lokalizacji spełniających kryteria filtrów"
     },
     "create": {
       "header": "Utwórz lokalizację magazynową",
@@ -1617,7 +2001,8 @@
       "successToast": "Lokalizacja {{name}} została pomyślnie zaktualizowana."
     },
     "delete": {
-      "confirmation": "Masz zamiar usunąć lokalizację magazynową {{name}}. Tej akcji nie można cofnąć."
+      "confirmation": "Masz zamiar usunąć lokalizację magazynową {{name}}. Tej akcji nie można cofnąć.",
+      "successToast": "Lokalizacja „{{name}}” została pomyślnie usunięta."
     },
     "fulfillmentProviders": {
       "header": "Dostawcy realizacji",
@@ -2082,6 +2467,16 @@
   },
   "promotions": {
     "domain": "Promocje",
+    "list": {
+      "empty": {
+        "heading": "Brak promocji",
+        "description": "Nie ma promocji do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadna promocja nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
     "sections": {
       "details": "Szczegóły promocji"
     },
@@ -2097,9 +2492,12 @@
       "campaign": "Kampania",
       "method": "Metoda",
       "allocation": "Przydział",
+      "allocationTooltip": "„Każdy” egzekwuje limit ilości dla każdej pozycji, natomiast „Jednorazowo” egzekwuje limit ilości w całym koszyku",
       "addCondition": "Dodaj warunek",
       "clearAll": "Wyczyść wszystko",
       "taxInclusive": "Zawiera podatek",
+      "usageLimit": "Limit użycia",
+      "usage": "Użycie",
       "amount": {
         "tooltip": "Wybierz kod waluty, aby umożliwić ustawienie kwoty"
       },
@@ -2238,6 +2636,10 @@
         "across": {
           "title": "Przez",
           "description": "Stosuje wartość do wszystkich elementów"
+        },
+        "once": {
+          "title": "Jednorazowo",
+          "description": "Stosuje wartość do ograniczonej liczby elementów"
         }
       },
       "code": {
@@ -2257,6 +2659,36 @@
           "title": "Wartość procentowa",
           "description": "Procent rabatu od kwoty. np. 8%"
         }
+      },
+      "limit": {
+        "title": "Limit użycia",
+        "description": "Maksymalna liczba użyć tej promocji we wszystkich zamówieniach. Pozostaw puste, aby nie ograniczać liczby użyć."
+      }
+    },
+    "templates": {
+      "amount_off_products": {
+        "title": "Kwota zniżki na produkty",
+        "description": "Zniżka na wybrane produkty lub kolekcję produktów"
+      },
+      "amount_off_order": {
+        "title": "Kwota zniżki na zamówienie",
+        "description": "Obniża łączną kwotę zamówienia"
+      },
+      "percentage_off_product": {
+        "title": "Procent zniżki na produkt",
+        "description": "Obniża cenę wybranych produktów o określony procent"
+      },
+      "percentage_off_order": {
+        "title": "Procent zniżki na zamówienie",
+        "description": "Obniża łączną kwotę zamówienia o określony procent"
+      },
+      "buy_get": {
+        "title": "Kup X, otrzymaj Y",
+        "description": "Kup produkt(y) X, otrzymaj produkt(y) Y"
+      },
+      "shipping_discount": {
+        "title": "Darmowa wysyłka",
+        "description": "Stosuje 100% zniżki na koszty wysyłki"
       }
     },
     "deleteWarning": "Zamierzasz usunąć promocję {{code}}. Tej akcji nie można cofnąć.",
@@ -2271,6 +2703,16 @@
   },
   "campaigns": {
     "domain": "Kampanie",
+    "list": {
+      "empty": {
+        "heading": "Brak kampanii",
+        "description": "Nie ma kampanii do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żadna kampania nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
     "details": "Szczegóły kampanii",
     "status": {
       "active": "Aktywny",
@@ -2309,12 +2751,17 @@
       "end_date": "Data końcowa",
       "total_spend": "Budżet wydany",
       "total_used": "Wykorzystany budżet",
+      "totalUsedByAttribute": "Łącznie wykorzystano",
       "budget_limit": "Limit budżetu",
       "campaign_id": {
         "hint": "Na tej liście wyświetlane są tylko kampanie z tym samym kodem waluty co promocja."
       }
     },
     "budget": {
+      "attribute": {
+        "customer_id": "klient",
+        "customer_email": "e-mail"
+      },
       "create": {
         "hint": "Utwórz budżet kampanii.",
         "header": "Budżet kampanii"
@@ -2324,7 +2771,12 @@
         "type": "Typ",
         "currency": "Waluta",
         "limit": "Limit",
-        "used": "Używany"
+        "used": "Używany",
+        "budgetAttribute": "Ogranicz użycie na",
+        "budgetAttributeTooltip": "Określ, ile razy promocja może zostać wykorzystana przez każdego klienta lub adres e-mail.",
+        "totalUsedByAttribute": "Limit budżetu na: {{attribute}}",
+        "totalUsedByAttributeCustomerId": "Limit budżetu na klienta",
+        "totalUsedByAttributeEmail": "Limit budżetu na adres e-mail"
       },
       "type": {
         "spend": {
@@ -2334,6 +2786,12 @@
         "usage": {
           "title": "Stosowanie",
           "description": "Ustaw limit ile razy można skorzystać z promocji."
+        },
+        "useByAttribute": {
+          "title": "Użycie według atrybutu (identyfikator klienta, e-mail itp.)",
+          "titleCustomerId": "Użycie na klienta",
+          "titleEmail": "Użycie na adres e-mail",
+          "description": "Ustaw limit, ile razy promocja może zostać wykorzystana dla określonej wartości atrybutu."
         }
       },
       "edit": {
@@ -2366,6 +2824,16 @@
   "priceLists": {
     "domain": "Cenniki",
     "subtitle": "Twórz wyprzedaże lub zastępuj ceny dla określonych warunków.",
+    "list": {
+      "empty": {
+        "heading": "Brak cenników",
+        "description": "Nie ma cenników do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żaden cennik nie spełnia bieżących kryteriów filtrowania."
+      }
+    },
     "delete": {
       "confirmation": "Zamierzasz usunąć cennik {{title}}. Tej akcji nie można cofnąć.",
       "successToast": "Cennik {{title}} został pomyślnie usunięty."
@@ -2420,6 +2888,34 @@
         "successToast": "Ceny zostały pomyślnie zaktualizowane."
       }
     },
+    "quantityPricing": {
+      "header": "Ceny warunkowe dla {{name}}",
+      "description": "Zarządzaj cenami warunkowymi tego wariantu produktu w zależności od ilości w koszyku.",
+      "actions": {
+        "addPrice": "Dodaj cenę"
+      },
+      "rules": {
+        "amount": "Cena wariantu produktu",
+        "minQuantity": "Minimalna ilość w koszyku",
+        "maxQuantity": "Maksymalna ilość w koszyku",
+        "qty": "SZT.",
+        "allQuantities": "Wszystkie ilości",
+        "min": "Min",
+        "max": "Maks"
+      },
+      "attributes": {
+        "quantity": "Ilość w koszyku"
+      },
+      "summaries": {
+        "range": "Jeśli <0>{{attribute}}</0> mieści się między <1>{{min}}</1> a <2>{{max}}</2>",
+        "greaterThan": "Jeśli <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "Jeśli <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minimalna ilość nie może być większa niż maksymalna",
+        "mustBePositive": "Ilość musi wynosić co najmniej 1"
+      }
+    },
     "fields": {
       "priceOverrides": {
         "label": "Zmienione ceny",
@@ -2472,6 +2968,31 @@
       "languageLabel": "Język",
       "usageInsightsLabel": "Informacje o użytkowaniu"
     },
+    "mfa": {
+      "title": "Uwierzytelnianie dwuskładnikowe",
+      "description": "Wymagaj aplikacji uwierzytelniającej podczas logowania.",
+      "status": "Status",
+      "method": "Metoda",
+      "enabled": "Włączone",
+      "disabled": "Wyłączone",
+      "pending": "Oczekuje na konfigurację",
+      "authenticatorApp": "Aplikacja uwierzytelniająca",
+      "noMethod": "Nie włączono żadnej metody uwierzytelniania",
+      "setupTitle": "Skonfiguruj aplikację uwierzytelniającą",
+      "setupAuthenticatorApp": "Skonfiguruj aplikację uwierzytelniającą",
+      "setupDescription": "Zeskanuj kod QR w aplikacji uwierzytelniającej, a następnie wprowadź 6-cyfrowy kod, aby zakończyć konfigurację.",
+      "setupError": "Nie udało się skonfigurować aplikacji uwierzytelniającej.",
+      "verifyError": "Nie udało się potwierdzić kodu weryfikacyjnego.",
+      "qrError": "Nie udało się wygenerować kodu QR.",
+      "recoveryCodesTitle": "Kody odzyskiwania",
+      "recoveryCodesDescription": "Skopiuj i zachowaj te kody odzyskiwania na wypadek utraty dostępu do aplikacji uwierzytelniającej.",
+      "recoveryCodesError": "Nie udało się wygenerować kodów odzyskiwania.",
+      "disableTitle": "Wyłącz uwierzytelnianie dwuskładnikowe",
+      "disableDescription": "Zamierzasz wyłączyć uwierzytelnianie dwuskładnikowe dla swojego konta.",
+      "disableChallengeDescription": "Wprowadź 6-cyfrowy kod z aplikacji uwierzytelniającej, aby wyłączyć uwierzytelnianie dwuskładnikowe.",
+      "disableError": "Nie udało się wyłączyć uwierzytelniania dwuskładnikowego.",
+      "disableSuccess": "Uwierzytelnianie dwuskładnikowe zostało wyłączone"
+    },
     "edit": {
       "header": "Edytuj profil",
       "languageHint": "Język, którego chcesz używać w panelu administracyjnym. Nie zmienia to języka Twojego sklepu.",
@@ -2487,11 +3008,15 @@
     "editUser": "Edytuj użytkownika",
     "inviteUser": "Zaproś użytkownika",
     "inviteUserHint": "Zaproś nowego użytkownika do swojego sklepu.",
+    "inviteRolesTooltip": "Jeśli nie wybierzesz żadnej roli, użytkownik zostanie zaproszony z rolą superużytkownika.",
     "sendInvite": "Wyślij zaproszenie",
     "pendingInvites": "Oczekujące zaproszenia",
     "deleteInviteWarning": "Zamierzasz usunąć zaproszenie dla użytkownika {{email}}. Tej akcji nie można cofnąć.",
     "resendInvite": "Wyślij zaproszenie ponownie",
     "copyInviteLink": "Skopiuj link z zaproszeniem",
+    "copyResetPasswordLink": "Kopiuj link do resetowania hasła",
+    "copyResetPasswordLinkSuccess": "Link do resetowania hasła został skopiowany do schowka",
+    "copyResetPasswordLinkHint": "Link wygasa po krótkim czasie i unieważnia wszystkie wcześniej wysłane do tego użytkownika linki do resetowania hasła.",
     "expiredOnDate": "Wygasło w dniu {{date}}",
     "validFromUntil": "Obowiązuje od <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Zaakceptowano w dniu {{date}}",
@@ -2524,12 +3049,14 @@
     "manageYourStoresDetails": "Zarządzaj szczegółami swojego sklepu",
     "editStore": "Edytuj sklep",
     "defaultCurrency": "Domyślna waluta",
+    "defaultLocale": "Domyślny język",
     "defaultRegion": "Domyślny region",
     "defaultSalesChannel": "Domyślny kanał sprzedaży",
     "defaultLocation": "Domyślna lokalizacja",
     "swapLinkTemplate": "Zamień szablon łącza",
     "paymentLinkTemplate": "Szablon łącza do płatności",
     "inviteLinkTemplate": "Szablon linku zaproszenia",
+    "locales": "Języki",
     "currencies": "Waluty",
     "addCurrencies": "Dodaj waluty",
     "enableTaxInclusivePricing": "Włącz ceny zawierające podatek",
@@ -2538,16 +3065,23 @@
     "removeCurrencyWarning_few": "Zamierzasz usunąć {{count}} waluty ze swojego sklepu. Upewnij się, że usunąłeś wszystkie ceny w wybranych walutach.",
     "removeCurrencyWarning_many": "Zamierzasz usunąć {{count}} walut ze swojego sklepu. Upewnij się, że usunąłeś wszystkie ceny w wybranych walutach.",
     "removeCurrencyWarning_other": "Zamierzasz usunąć {{count}} walut ze swojego sklepu. Upewnij się, że usunąłeś wszystkie ceny w wybranych walutach.",
+    "removeLocaleWarning_one": "Zamierzasz usunąć {{count}} język ze swojego sklepu. Wszystkie tłumaczenia korzystające z tego języka zostaną usunięte.",
+    "removeLocaleWarning_other": "Zamierzasz usunąć {{count}} języków ze swojego sklepu. Wszystkie tłumaczenia korzystające z tych języków zostaną usunięte.",
     "currencyAlreadyAdded": "Waluta została już dodana do Twojego sklepu.",
+    "localeAlreadyAdded": "Ten język został już dodany do sklepu.",
     "edit": {
       "header": "Edytuj sklep"
     },
     "toast": {
       "update": "Sklep pomyślnie zaktualizowany",
       "currenciesUpdated": "Waluty zostały pomyślnie zaktualizowane",
+      "localesUpdated": "Języki zostały pomyślnie zaktualizowane",
       "currenciesRemoved": "Pomyślnie usunięto waluty ze sklepu",
+      "localesRemoved": "Języki zostały pomyślnie usunięte ze sklepu",
       "updatedTaxInclusivitySuccessfully": "Ceny zawierające podatek zostały pomyślnie zaktualizowane"
-    }
+    },
+    "removeLocaleWarning_few": "Zamierzasz usunąć {{count}} języki ze swojego sklepu. Wszystkie tłumaczenia korzystające z tych języków zostaną usunięte.",
+    "removeLocaleWarning_many": "Zamierzasz usunąć {{count}} języków ze swojego sklepu. Wszystkie tłumaczenia korzystające z tych języków zostaną usunięte."
   },
   "regions": {
     "domain": "Regiony",
@@ -2574,7 +3108,15 @@
     "flatRate": "Jednolita stawka",
     "calculated": "Obliczony",
     "list": {
-      "noRecordsMessage": "Utwórz region dla obszarów, w których prowadzisz sprzedaż."
+      "noRecordsMessage": "Utwórz region dla obszarów, w których prowadzisz sprzedaż.",
+      "empty": {
+        "heading": "Brak regionów",
+        "description": "Nie ma regionów do wyświetlenia."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żaden region nie spełnia bieżących kryteriów filtrowania."
+      }
     },
     "toast": {
       "delete": "Region został pomyślnie usunięty",
@@ -2843,7 +3385,21 @@
   "login": {
     "forgotPassword": "Zapomniałeś hasła? - <0>Resetuj</0>",
     "title": "Witamy w Meduzie",
-    "hint": "Zaloguj się, aby uzyskać dostęp do obszaru konta"
+    "hint": "Zaloguj się, aby uzyskać dostęp do obszaru konta",
+    "mfa": {
+      "title": "Uwierzytelnianie dwuskładnikowe",
+      "description": "Wprowadź 6-cyfrowy kod z aplikacji uwierzytelniającej.",
+      "recoveryDescription": "Wprowadź jeden ze swoich kodów odzyskiwania.",
+      "recoveryCodePlaceholder": "Kod odzyskiwania",
+      "verify": "Zweryfikuj",
+      "verifyError": "Nie udało się potwierdzić kodu weryfikacyjnego.",
+      "completeError": "Nie udało się dokończyć uwierzytelniania.",
+      "backToLogin": "Powrót do logowania",
+      "useRecoveryCodePrompt": "Nie masz dostępu do aplikacji uwierzytelniającej?",
+      "useRecoveryCode": "Użyj kodu odzyskiwania",
+      "useAuthenticatorPrompt": "Masz dostęp do aplikacji uwierzytelniającej?",
+      "useAuthenticator": "Użyj kodu z aplikacji uwierzytelniającej"
+    }
   },
   "invite": {
     "title": "Witamy w Meduzie",
@@ -2891,6 +3447,7 @@
     "subtitle": "Przeglądaj i śledź wykonania przepływu pracy w aplikacji Medusa.",
     "transactionIdLabel": "Identyfikator transakcji",
     "workflowIdLabel": "Identyfikator przepływu pracy",
+    "stateLabel": "Stan",
     "progressLabel": "Postęp",
     "stepsCompletedLabel_one": "{{completed}} z {{count}} kroku",
     "stepsCompletedLabel_few": "{{completed}} z {{count}} kroków",
@@ -2932,6 +3489,30 @@
         "dormant": "Uśpiony",
         "timeout": "Limit czasu"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Wyszukiwanie",
+    "subtitle": "Przeglądaj zarejestrowane indeksy wyszukiwania i przebudowuj je na podstawie danych źródłowych.",
+    "fieldsLabel": "Indeksowane pola",
+    "providerLabel": "Dostawca",
+    "reindex": "Przebuduj indeks",
+    "reindexConfirmationTitle": "Przebudować indeks {{name}}?",
+    "reindexConfirmation": "Spowoduje to przebudowanie indeksu „{{name}}” na podstawie jego danych źródłowych. Do czasu zakończenia przebudowy wyniki wyszukiwania dla tego indeksu mogą być niepełne.",
+    "reindexSuccess": "Rozpoczęto przebudowę indeksu {{name}}",
+    "reindexSinceLabel": "Od",
+    "reindexSinceHint": "Przebuduj tylko dokumenty zmienione w tym dniu lub później. Pozostaw puste, aby przebudować wszystko.",
+    "reindexEntityIdsLabel": "Identyfikatory encji",
+    "reindexEntityIdsHint": "Identyfikatory oddzielone przecinkami lub nowymi wierszami, aby przebudować tylko te dokumenty. Obsługa zależy od definicji danego indeksu.",
+    "noFields": "Żadne pola nie są indeksowane.",
+    "list": {
+      "noRecordsMessage": "Nie zarejestrowano żadnych indeksów wyszukiwania."
+    },
+    "status": {
+      "pending": "Oczekuje",
+      "building": "Budowanie",
+      "ready": "Gotowy",
+      "error": "Błąd"
     }
   },
   "shippingOptionTypes": {
@@ -2996,6 +3577,17 @@
       "value": "Wartość"
     }
   },
+  "propertyLabels": {
+    "domain": "Etykiety właściwości",
+    "title": "Etykiety właściwości",
+    "subtitle": "Zarządzaj niestandardowymi etykietami właściwości dla konfigurowalnych tabel Twoich encji.",
+    "fields": {
+      "module": "Moduł",
+      "model": "Model",
+      "propertyCount": "Liczba właściwości",
+      "hasOverrides": "Ma nadpisania"
+    }
+  },
   "notifications": {
     "domain": "Powiadomienia",
     "emptyState": {
@@ -3034,6 +3626,7 @@
     "selectValues": "Wybierz wartości"
   },
   "fields": {
+    "actions": "Akcje",
     "amount": "Kwota",
     "reference": "Referencja",
     "reference_id": "ID referencji",
@@ -3065,6 +3658,7 @@
     "category": "Kategoria",
     "collection": "Kolekcja",
     "discountable": "Zniżka",
+    "promotionCode": "Kod promocyjny",
     "handle": "Uchwyt",
     "subtitle": "Podtytuł",
     "by": "Przez",
@@ -3146,11 +3740,13 @@
     "region": "Region",
     "discount": "Rabat",
     "role": "Rola",
+    "resource": "Zasób",
     "sent": "Wysłano",
     "salesChannels": "Kanały sprzedaży",
     "product": "Produkt",
     "createdAt": "Stworzony",
     "updatedAt": "Zaktualizowany",
+    "operation": "Operacja",
     "revokedAt": "Odwołane o godz",
     "true": "Prawda",
     "false": "Fałsz",
@@ -3173,6 +3769,7 @@
     "barcode": "Kod kreskowy",
     "countryOfOrigin": "Kraj pochodzenia",
     "material": "Tworzywo",
+    "unitOfMeasure": "Jednostka miary",
     "thumbnail": "Zwięzły",
     "sku": "SKU",
     "managedInventory": "Zarządzane zasoby",
@@ -3226,5 +3823,86 @@
     "seconds_few": "Sekundy",
     "seconds_many": "Sekund",
     "seconds_other": "Sekund"
+  },
+  "views": {
+    "save": "Zapisz",
+    "saveAsNew": "Zapisz jako nowy widok",
+    "updateDefaultForEveryone": "Zaktualizuj domyślny dla wszystkich",
+    "updateViewName": "Zaktualizuj widok",
+    "prompts": {
+      "updateDefault": {
+        "title": "Zaktualizuj domyślny widok",
+        "description": "Spowoduje to aktualizację domyślnego widoku dla wszystkich użytkowników. Czy na pewno chcesz kontynuować?",
+        "confirmText": "Zaktualizuj dla wszystkich",
+        "cancelText": "Anuluj"
+      },
+      "updateView": {
+        "title": "Zaktualizuj widok",
+        "description": "Czy na pewno chcesz zaktualizować „{{name}}”?",
+        "confirmText": "Zaktualizuj",
+        "cancelText": "Anuluj"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "noProviders": "Zarejestruj dostawcę uwierzytelniania w konfiguracji Medusy, aby móc się zalogować",
+      "authenticationFailed": "Uwierzytelnianie nie powiodło się",
+      "cloud": "Zaloguj się przez Medusa Cloud",
+      "continueWithProvider": "Kontynuuj z {{provider}}",
+      "or": "lub",
+      "provisioningFailed": "Nie udało się dokończyć logowania. Skontaktuj się z administratorem."
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Odmowa dostępu",
+      "description": "Nie masz uprawnień dostępu do tej strony.",
+      "requiredPermission": "Wymagane uprawnienie: {{permission}}",
+      "action": "Nie masz uprawnień do wykonania tej akcji."
+    },
+    "requiredPermissions": {
+      "title": "Wymagane uprawnienia",
+      "none": "W tym widoku nie zadeklarowano żadnych uprawnień.",
+      "anyOf": "Dowolne z",
+      "allOf": "Wszystkie z",
+      "source": "Źródło: {{source}}"
+    },
+    "resources": {
+      "customer": "Klient",
+      "customer_group": "Grupa klientów",
+      "order": "Zamówienie",
+      "product": "Produkt",
+      "product_category": "Kategoria produktów",
+      "product_collection": "Kolekcja produktów",
+      "product_tag": "Tag produktu",
+      "product_type": "Typ produktu",
+      "inventory": "Magazyn",
+      "reservation": "Rezerwacja",
+      "promotion": "Promocja",
+      "campaign": "Kampania",
+      "price_list": "Cennik",
+      "region": "Region",
+      "store": "Sklep",
+      "user": "Użytkownik",
+      "role": "Rola",
+      "permission": "Uprawnienie",
+      "sales_channel": "Kanał sprzedaży",
+      "stock_location": "Lokalizacja magazynowa",
+      "shipping_profile": "Profil wysyłki",
+      "shipping_option": "Opcja wysyłki",
+      "tax_region": "Region podatkowy",
+      "api_key": "Klucz API",
+      "return_reason": "Powód zwrotu",
+      "refund_reason": "Powód zwrotu środków",
+      "workflow": "Przepływ pracy",
+      "translation": "Tłumaczenie"
+    },
+    "actions": {
+      "read": "Wyświetlanie",
+      "create": "Tworzenie",
+      "update": "Edycja",
+      "delete": "Usuwanie"
+    }
   }
 }

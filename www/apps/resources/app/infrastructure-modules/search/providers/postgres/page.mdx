@@ -1,0 +1,273 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `PostgreSQL Search Module Provider`,
+}
+
+# {metadata.title}
+
+The PostgreSQL Search Module Provider indexes and searches documents in your Medusa application's PostgreSQL database, using PostgreSQL's built-in full-text search. It can be used for development and in production.
+
+<Note title="Easier setup with Cloud">
+
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](!cloud!/search) documentation.
+
+</Note>
+
+Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+---
+
+## Register the PostgreSQL Search Module Provider
+
+Medusa registers the PostgreSQL Search Module Provider locally by default, so you don't need to configure anything to use it. Its identifier is `search-postgres`.
+
+### Change the Provider's Options
+
+To change the PostgreSQL Search Module Provider's default options, or to use the provider in all environments, register the [Search Module](../../page.mdx) with the provider in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+// To register only for development. This is necessary to use Medusa Search in Cloud
+const isDev = process.env.NODE_ENV !== "production"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    isDev && {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        // Only needed with more than one provider.
+        // default_provider: "search-postgres",
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+            options: {
+              // requires a medusa_search_german text search configuration
+              language: "german",
+            },
+          },
+          // ...
+        ],
+      },
+    },
+  ].filter(Boolean),
+})
+```
+
+### Run Migrations
+
+If you're registering the provider for the first time, such as in an existing Medusa application, run the following command to create the necessary database tables for the provider:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+### PostgreSQL Search Module Provider Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `language`
+      </Table.Cell>
+      <Table.Cell>
+        The text search configuration language used to analyze text, such as `english` or `german`. Refer to [Custom Languages](#support-custom-languages).
+      </Table.Cell>
+      <Table.Cell>
+        `english`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `engine`
+      </Table.Cell>
+      <Table.Cell>
+        The search backend to use, which can be `native`.
+      </Table.Cell>
+      <Table.Cell>
+        `native`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Test the PostgreSQL Search Module Provider
+
+To test the provider, make sure your application has a `product` index definition and that the index is allowed on the `/store/search` API route, as explained in the [Search Products guide](../../page.mdx#search-products).
+
+First, start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, send a request to the [Store Search API route](!api!/store/search/search-indexes):
+
+```bash
+curl -X POST "http://localhost:9000/store/search" \
+  -H "x-publishable-api-key: pk_123" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "entity": "product",
+    "filters": { "q": "shirt" }
+  }'
+```
+
+Make sure to replace `pk_123` with a publishable API key, which you can find under Settings -> Publishable API Keys in the Medusa Admin dashboard.
+
+You'll receive the products whose searchable fields match the query, ordered by relevance:
+
+```json title="Example Response"
+{
+  "results": [
+    {
+      "hits": [
+        {
+          "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+          "score": 1.23,
+          "document": {
+            "id": "prod_01KXR3J9J610DT161E2E4ZS6P1",
+            "title": "Medusa T-Shirt",
+            "handle": "t-shirt"
+          }
+        }
+      ],
+      "metadata": {
+        "skip": 0,
+        "take": 20,
+        "count": 1,
+        "query": "shirt"
+      }
+    }
+  ]
+}
+```
+
+### Search Custom Data with the PostgreSQL Search Module Provider
+
+To search data other than products, such as a custom data model of your own module, declare a search index for it. The PostgreSQL Search Module Provider then creates the physical index, fills it, and serves searches on it the same way it does for products.
+
+Learn how to declare an index and search it in the [Search Other Entities guide](../../page.mdx#search-other-entities), and learn about the properties you can set on an index in the [Search Index Definitions guide](../../index-definitions/page.mdx).
+
+
+---
+
+## Database Requirements in the PostgreSQL Search Module Provider
+
+### What the Migration Creates
+
+Running `db:migrate` creates everything the `native` engine needs:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Object
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What it's For
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `pg_trgm` extension
+      </Table.Cell>
+      <Table.Cell>
+        Typo tolerance, which the provider applies with trigram word similarity.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `unaccent` extension
+      </Table.Cell>
+      <Table.Cell>
+        Accent-insensitive matching, so a search for `cafe` matches `café`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `medusa_search_english` text search configuration
+      </Table.Cell>
+      <Table.Cell>
+        The configuration the provider analyzes text with. It copies PostgreSQL's `english` configuration and adds `unaccent`.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note title="Tip">
+
+Creating an extension needs privileges that your application's database role may not have on managed PostgreSQL. The migration doesn't fail in that case, so check its output. If it reports that it couldn't enable an extension, create it yourself with a privileged role before you search.
+
+</Note>
+
+### Support Custom Languages
+
+The migration only creates the `medusa_search_english` configuration. If you set the `language` option to something else, create a matching `medusa_search_<language>` text search configuration.
+
+To do that, add a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory. For example, create the file `src/migration-scripts/create-german-search-config.ts` for German:
+
+```ts title="src/migration-scripts/create-german-search-config.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export default async function createGermanSearchConfig({
+  container,
+}: ExecArgs) {
+  const knex = container.resolve(
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
+
+  await knex.raw(`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_ts_config
+        WHERE cfgname = 'medusa_search_german'
+      ) THEN
+        CREATE TEXT SEARCH CONFIGURATION
+          medusa_search_german (COPY = german);
+        ALTER TEXT SEARCH CONFIGURATION medusa_search_german
+          ALTER MAPPING FOR hword, hword_part, word
+          WITH unaccent, german_stem;
+      END IF;
+    END
+    $$;
+  `)
+}
+```
+
+Then, run the migrations:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+`db:migrate` runs migration scripts after it creates the search indexes, and the provider only reads the text search configuration when it writes documents. So the configuration exists by the time your application indexes anything.
