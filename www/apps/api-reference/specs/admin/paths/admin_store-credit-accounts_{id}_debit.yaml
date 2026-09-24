@@ -1,0 +1,53 @@
+post:
+  operationId: PostStoreCreditAccountsIdDebit
+  summary: Debit a Store Credit Account
+  description: >-
+    Debit an amount from a store credit account, deducting it from the
+    customer's store credit balance. The debit is recorded as a `debit`
+    transaction on the account that references the authenticated admin user.
+  externalDocs:
+    description: Learn about store credit accounts and transactions
+    url: https://docs.medusajs.com/resources/commerce-modules/store-credit/concepts
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The store credit account's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminDebitStoreCreditAccountParams.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_store-credit-accounts_{id}_debit/post.sh
+  tags:
+    - Store Credit Accounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminStoreCreditAccountResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

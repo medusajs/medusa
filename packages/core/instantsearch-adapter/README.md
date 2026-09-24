@@ -58,7 +58,10 @@ import {
 import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
 import { sdk } from "./sdk"
 
-const { searchClient } = createInstantSearchAdapter({ sdk, path: "/store/search" })
+const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+})
 
 export function ProductSearch() {
   return (
@@ -155,9 +158,24 @@ x-publishable-api-key: pk_...
 
 InstantSearch sends one request per disjunctive facet in addition to the hits query. The route should run `searchMany` / `query.search` per item and return results in the same order.
 
-When `batch: false`, each `SearchQuery` is POSTed as the body and the response is a single `SearchResult`.
+When `batch: false`, each `SearchQuery` is POSTed as the body. The response may be a single `SearchResult`, or a `{ results }` wrapping exactly one — both are unwrapped.
 
 The route is responsible for storefront constraints (sales channel, region, which indexes are public). Pass extra filters through `additionalSearchParameters` if the client should send them itself.
+
+### The built-in route
+
+`POST /store/search` implements this contract over every registered index, so `indexName` is the index a query runs against. It hydrates the fields an index doesn't hold onto each hit's `document`, and otherwise runs the queries as posted.
+
+It exposes nothing by default, and narrows a product index to published products in the publishable key's sales channels by. A `configureStoreSearch` middleware applied on the route can specify which indexes are searchable and it can apply
+default filtesr to each index.
+
+```ts
+configureStoreSearch({
+  allowed_indexes: {
+    product_category: { filters: (req) => ({ is_active: true }) },
+  },
+})
+```
 
 ## Widget support
 

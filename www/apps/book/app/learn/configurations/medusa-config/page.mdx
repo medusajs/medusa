@@ -811,6 +811,8 @@ Learn more about actor types in the [Auth Identity and Actor Type documentation]
 
 </Note>
 
+By default, the `user` actor type is restricted to the `emailpass` provider. All other actor types (for example, `customer`) can authenticate with any installed auth provider unless you explicitly restrict them with this configuration.
+
 For example:
 
 ```ts title="medusa-config.ts"
@@ -832,7 +834,7 @@ The above configurations allow admin users to login using email/password, and cu
 
 #### http.restrictedFields
 
-The `projectConfig.http.restrictedFields` configuration specifies the fields that can't be selected in API routes (using the `fields` query parameter) unless they're allowed in the [request's Query configurations](../../fundamentals/module-links/query/page.mdx#request-query-configurations). This is useful to restrict sensitive fields from being exposed in the API.
+The `projectConfig.http.restrictedFields` configuration specifies the fields that can't be selected in API routes (using the `fields` query parameter) unless they're allowed in the [request's Query configurations](../../fundamentals/query/page.mdx#request-query-configurations). This is useful to restrict sensitive fields from being exposed in the API.
 
 For example, you can restrict selecting customers in store API routes:
 
@@ -864,9 +866,35 @@ The `restrictedFields` configuration accepts the following properties:
   sectionTitle="http.restrictedFields Properties"
 />
 
+#### http.storeRelationsLimit
+
+<Note>
+
+This configuration is available since Medusa [v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0).
+
+</Note>
+
+The `projectConfig.http.storeRelationsLimit` configuration sets the maximum number of relations a caller can expand in a single request to a Store API route. For example, requesting `variants.options.values` expands three relations.
+
+The default value is `3`. Individual routes can override this limit through their query configuration's `storeRelationsLimit` property.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      storeRelationsLimit: 4,
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+---
+
 ### redisOptions
 
-The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
+The `projectConfig.redisOptions` configuration defines options to pass to `ioredis`, which creates the Redis connection used to store the Medusa server session. Refer to [ioredis's RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
 for the list of available options.
 
 #### Example

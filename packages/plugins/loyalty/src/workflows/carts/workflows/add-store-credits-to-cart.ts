@@ -14,7 +14,7 @@ import {
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
-import { PluginCartDTO } from "../../../../src/types/cart";
+import { PluginCartDTO } from "../../../types/cart";
 import { ModuleStoreCreditAccount } from "../../../types/store-credit";
 
 /**
@@ -163,7 +163,7 @@ export const computeCreditLineActionsStep = createStep(
       .filter((creditLine) => creditLine.reference === "store-credit")
       .map((creditLine) => creditLine.id);
 
-    let amount = input.amount
+    let amount = isDefined(input.amount)
       ? MathBN.convert(input.amount)
       : MathBN.convert(storeCreditAccount.balance);
 

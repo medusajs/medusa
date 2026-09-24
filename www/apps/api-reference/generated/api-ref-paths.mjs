@@ -142,6 +142,13 @@ export const apiRefPaths = {
         "path": "/admin/auth",
         "schemaPath": null,
         "operations": {
+          "GetUserProviders": {
+            "slug": "list-providers",
+            "path": "/admin/auth/list-providers",
+            "oldHash": "auth_getuserproviders",
+            "title": "List Providers",
+            "method": "get"
+          },
           "PostActor_typeAuth_provider": {
             "slug": "authenticate-user",
             "path": "/admin/auth/authenticate-user",
@@ -1101,18 +1108,18 @@ export const apiRefPaths = {
             "title": "Create Inventory Item",
             "method": "post"
           },
-          "PostInventoryItemsExport": {
-            "slug": "create-inventory-item-2",
-            "path": "/admin/inventory-items/create-inventory-item-2",
-            "oldHash": "inventory-items_postinventoryitemsexport",
-            "title": "Create Inventory Item",
-            "method": "post"
-          },
           "PostInventoryItemsIdLocationLevels": {
             "slug": "create-inventory-level",
             "path": "/admin/inventory-items/create-inventory-level",
             "oldHash": "inventory-items_postinventoryitemsidlocationlevels",
             "title": "Create Inventory Level",
+            "method": "post"
+          },
+          "PostInventoryItemsExport": {
+            "slug": "export-inventory-items",
+            "path": "/admin/inventory-items/export-inventory-items",
+            "oldHash": "inventory-items_postinventoryitemsexport",
+            "title": "Export Inventory Items",
             "method": "post"
           },
           "PostInventoryItemsLocationLevelsBatch": {
@@ -2684,11 +2691,39 @@ export const apiRefPaths = {
         "schemaPath": null,
         "operations": {
           "GetSearch": {
-            "slug": "list-search",
-            "path": "/admin/search/list-search",
+            "slug": "search-admin",
+            "path": "/admin/search/search-admin",
             "oldHash": "search_getsearch",
-            "title": "List Search",
+            "title": "Search Admin",
             "method": "get"
+          }
+        }
+      },
+      "search-indexes": {
+        "name": "Search Indexes",
+        "path": "/admin/search-indexes",
+        "schemaPath": "/admin/search-indexes/schema",
+        "operations": {
+          "GetSearchIndexes": {
+            "slug": "list-search-indexes",
+            "path": "/admin/search-indexes/list-search-indexes",
+            "oldHash": "search-indexes_getsearchindexes",
+            "title": "List Search Indexes",
+            "method": "get"
+          },
+          "PostSearchIndexesIdReindex": {
+            "slug": "reindex-a-search-index",
+            "path": "/admin/search-indexes/reindex-a-search-index",
+            "oldHash": "search-indexes_postsearchindexesidreindex",
+            "title": "Reindex a Search Index",
+            "method": "post"
+          },
+          "DeleteSearchIndexesId": {
+            "slug": "delete-a-search-index",
+            "path": "/admin/search-indexes/delete-a-search-index",
+            "oldHash": "search-indexes_deletesearchindexesid",
+            "title": "Delete a Search Index",
+            "method": "delete"
           }
         }
       },
@@ -2926,6 +2961,13 @@ export const apiRefPaths = {
             "path": "/admin/store-credit-accounts/create-store-credit-account",
             "oldHash": "store-credit-accounts_poststorecreditaccounts",
             "title": "Create Store Credit Account",
+            "method": "post"
+          },
+          "PostStoreCreditAccountsIdDebit": {
+            "slug": "debit-a-store-credit-account",
+            "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+            "oldHash": "store-credit-accounts_poststorecreditaccountsiddebit",
+            "title": "Debit a Store Credit Account",
             "method": "post"
           }
         }
@@ -3173,12 +3215,26 @@ export const apiRefPaths = {
             "title": "Get Logged-In User",
             "method": "get"
           },
+          "GetUsersIdAuthProviders": {
+            "slug": "list-auth-providers",
+            "path": "/admin/users/list-auth-providers",
+            "oldHash": "users_getusersidauthproviders",
+            "title": "List Auth Providers",
+            "method": "get"
+          },
           "GetUsers": {
             "slug": "list-users",
             "path": "/admin/users/list-users",
             "oldHash": "users_getusers",
             "title": "List Users",
             "method": "get"
+          },
+          "PostUsersIdResetPassword": {
+            "slug": "generate-reset-password-token",
+            "path": "/admin/users/generate-reset-password-token",
+            "oldHash": "users_postusersidresetpassword",
+            "title": "Generate Reset Password Token",
+            "method": "post"
           },
           "PostUsersId": {
             "slug": "update-a-user",
@@ -3349,6 +3405,13 @@ export const apiRefPaths = {
         "path": "/store/auth",
         "schemaPath": null,
         "operations": {
+          "GetCustomerProviders": {
+            "slug": "list-providers",
+            "path": "/store/auth/list-providers",
+            "oldHash": "auth_getcustomerproviders",
+            "title": "List Providers",
+            "method": "get"
+          },
           "PostActor_typeAuth_provider": {
             "slug": "authenticate-customer",
             "path": "/store/auth/authenticate-customer",
@@ -3981,6 +4044,20 @@ export const apiRefPaths = {
           }
         }
       },
+      "search": {
+        "name": "Search",
+        "path": "/store/search",
+        "schemaPath": null,
+        "operations": {
+          "PostSearch": {
+            "slug": "search-indexes",
+            "path": "/store/search/search-indexes",
+            "oldHash": "search_postsearch",
+            "title": "Search Indexes",
+            "method": "post"
+          }
+        }
+      },
       "shipping-options": {
         "name": "Shipping Options",
         "path": "/store/shipping-options",
@@ -4052,6 +4129,7 @@ export const apiRefRedirects = {
     "api-keys_deleteapikeysid": "/admin/api-keys/delete-an-api-key",
     "api-keys_apikey_schema": "/admin/api-keys/schema",
     "api-keys": "/admin/api-keys",
+    "auth_getuserproviders": "/admin/auth/list-providers",
     "auth_postactor_typeauth_provider": "/admin/auth/authenticate-user",
     "auth_postactor_typeauth_providerresetpassword": "/admin/auth/generate-reset-password-token",
     "auth_postadminauthtokenrefresh": "/admin/auth/refresh-authentication-token",
@@ -4201,8 +4279,8 @@ export const apiRefRedirects = {
     "inventory-items_getinventoryitems": "/admin/inventory-items/list-inventory-items",
     "inventory-items_getinventoryitemsidlocationlevels": "/admin/inventory-items/list-inventory-levels",
     "inventory-items_postinventoryitems": "/admin/inventory-items/create-inventory-item",
-    "inventory-items_postinventoryitemsexport": "/admin/inventory-items/create-inventory-item-2",
     "inventory-items_postinventoryitemsidlocationlevels": "/admin/inventory-items/create-inventory-level",
+    "inventory-items_postinventoryitemsexport": "/admin/inventory-items/export-inventory-items",
     "inventory-items_postinventoryitemslocationlevelsbatch": "/admin/inventory-items/manage-inventory-levels",
     "inventory-items_postinventoryitemsidlocationlevelsbatch": "/admin/inventory-items/manage-inventory-levels-2",
     "inventory-items_postinventoryitemsid": "/admin/inventory-items/update-an-inventory-item",
@@ -4452,8 +4530,13 @@ export const apiRefRedirects = {
     "sales-channels_deletesaleschannelsid": "/admin/sales-channels/delete-a-sales-channel",
     "sales-channels_saleschannel_schema": "/admin/sales-channels/schema",
     "sales-channels": "/admin/sales-channels",
-    "search_getsearch": "/admin/search/list-search",
+    "search_getsearch": "/admin/search/search-admin",
     "search": "/admin/search",
+    "search-indexes_getsearchindexes": "/admin/search-indexes/list-search-indexes",
+    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/reindex-a-search-index",
+    "search-indexes_deletesearchindexesid": "/admin/search-indexes/delete-a-search-index",
+    "search-indexes_searchindex_schema": "/admin/search-indexes/schema",
+    "search-indexes": "/admin/search-indexes",
     "shipping-option-types_getshippingoptiontypesid": "/admin/shipping-option-types/get-a-shipping-option-type",
     "shipping-option-types_getshippingoptiontypes": "/admin/shipping-option-types/list-shipping-option-types",
     "shipping-option-types_postshippingoptiontypes": "/admin/shipping-option-types/create-shipping-option-type",
@@ -4491,6 +4574,7 @@ export const apiRefRedirects = {
     "store-credit-accounts_getstorecreditaccountsidtransactions": "/admin/store-credit-accounts/list-transactions",
     "store-credit-accounts_poststorecreditaccountsidcredit": "/admin/store-credit-accounts/add-credit-to-store-credit-account",
     "store-credit-accounts_poststorecreditaccounts": "/admin/store-credit-accounts/create-store-credit-account",
+    "store-credit-accounts_poststorecreditaccountsiddebit": "/admin/store-credit-accounts/debit-a-store-credit-account",
     "store-credit-accounts_storecreditaccount_schema": "/admin/store-credit-accounts/schema",
     "store-credit-accounts": "/admin/store-credit-accounts",
     "stores_getstoresid": "/admin/stores/get-a-store",
@@ -4532,7 +4616,9 @@ export const apiRefRedirects = {
     "uploads": "/admin/uploads",
     "users_getusersid": "/admin/users/get-a-user",
     "users_getusersme": "/admin/users/get-logged-in-user",
+    "users_getusersidauthproviders": "/admin/users/list-auth-providers",
     "users_getusers": "/admin/users/list-users",
+    "users_postusersidresetpassword": "/admin/users/generate-reset-password-token",
     "users_postusersid": "/admin/users/update-a-user",
     "users_deleteusersid": "/admin/users/delete-a-user",
     "users_user_schema": "/admin/users/schema",
@@ -4568,6 +4654,7 @@ export const apiRefRedirects = {
     "pagination": "/store/pagination",
     "workflows": "/store/workflows",
     "localization": "/store/localization",
+    "auth_getcustomerproviders": "/store/auth/list-providers",
     "auth_postactor_typeauth_provider": "/store/auth/authenticate-customer",
     "auth_postverificationconfirm": "/store/auth/confirm-verification",
     "auth_postactor_typeauth_providerresetpassword": "/store/auth/generate-reset-password-token",
@@ -4677,6 +4764,8 @@ export const apiRefRedirects = {
     "returns_postreturns": "/store/returns/create-return",
     "returns_return_schema": "/store/returns/schema",
     "returns": "/store/returns",
+    "search_postsearch": "/store/search/search-indexes",
+    "search": "/store/search",
     "shipping-options_getshippingoptions": "/store/shipping-options/list-shipping-options-for-cart",
     "shipping-options_postshippingoptionsidcalculate": "/store/shipping-options/calculate-shipping-option-price",
     "shipping-options_shippingoption_schema": "/store/shipping-options/schema",

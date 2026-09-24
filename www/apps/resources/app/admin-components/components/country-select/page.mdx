@@ -1,0 +1,100 @@
+---
+sidebar_label: "Country Select"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `CountrySelect - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `CountrySelect` component is a [Combobox](../combobox/page.mdx) pre-populated with countries, where the value of a country is its lowercased ISO 2 code. The Medusa Admin uses it in address and shipping forms.
+
+```tsx
+import { CountrySelect } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Use `CountrySelect` as the control of a `Form` field, as shown in the [Forms guide](../../guides/forms/page.mdx):
+
+```tsx
+import {
+  CountrySelect,
+  Form,
+} from "@medusajs/dashboard/components"
+
+const CountryField = ({ control }) => {
+  return (
+    <Form.Field
+      control={control}
+      name="country_code"
+      render={({ field }) => (
+        <Form.Item>
+          <Form.Label>Country</Form.Label>
+          <Form.Control>
+            <CountrySelect
+              autoComplete="country_code"
+              {...field}
+            />
+          </Form.Control>
+          <Form.ErrorMessage />
+        </Form.Item>
+      )}
+    />
+  )
+}
+```
+
+The field's value is the country's ISO 2 code in lowercase, such as `us`, which is the format that the Medusa backend expects.
+
+---
+
+## Props
+
+`CountrySelect` accepts the same props as [Combobox](../combobox/page.mdx), except for `options`, since it populates the countries itself. It also accepts the following props:
+
+<TypeList
+  types={[
+    {
+      name: "value",
+      type: "`string`",
+      optional: true,
+      description: `The selected country's ISO 2 code in lowercase.`,
+    },
+    {
+      name: "onChange",
+      type: "`(value: string | undefined) => void`",
+      optional: true,
+      description: `The function to execute when the user selects a country. It receives the country's ISO 2 code in lowercase.`,
+    },
+    {
+      name: "defaultValue",
+      type: "`string`",
+      optional: true,
+      description: `The ISO 2 code of the country to select by default.`,
+    },
+    {
+      name: "placeholder",
+      type: "`string`",
+      optional: true,
+      description: `The placeholder to show when the user hasn't selected a country. Defaults to a localized "Select country" text.`,
+    },
+    {
+      name: "allowClear",
+      type: "`boolean`",
+      optional: true,
+      description: `Whether to show a button that clears the selected country.`,
+    },
+  ]}
+/>

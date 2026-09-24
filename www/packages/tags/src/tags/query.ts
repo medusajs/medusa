@@ -44,6 +44,10 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
   },
   {
+    "title": "refundPaymentAndRecreatePaymentSessionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refundPaymentAndRecreatePaymentSessionWorkflow"
+  },
+  {
     "title": "removeGiftCardFromCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow"
   },
@@ -192,6 +196,10 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportOrdersWorkflow"
   },
   {
+    "title": "markPaymentCollectionAsPaid",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/markPaymentCollectionAsPaid"
+  },
+  {
     "title": "onCarryPromotionsFlagSet",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/onCarryPromotionsFlagSet"
   },
@@ -252,6 +260,18 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderWorkflow"
   },
   {
+    "title": "validatePaymentProviderInRegionStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validatePaymentProviderInRegionStep"
+  },
+  {
+    "title": "createPaymentSessionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPaymentSessionsWorkflow"
+  },
+  {
+    "title": "createProductVariantsDefaultInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
+  },
+  {
     "title": "dismissProductVariantsInventoryStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/dismissProductVariantsInventoryStep"
   },
@@ -290,5 +310,9 @@ export const query = [
   {
     "title": "creditStoreCreditAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/creditStoreCreditAccountWorkflow"
+  },
+  {
+    "title": "debitStoreCreditAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   }
 ]

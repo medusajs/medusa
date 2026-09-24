@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Insert row above",
         "insertRowBelow": "Insert row below",
-        "deleteRow": "Delete row"
+        "deleteRow": "Delete row",
+        "addRow": "Add row"
       },
       "labels": {
         "key": "Key",
@@ -180,28 +181,28 @@
       "groups": {
         "all": "All areas",
         "customer": "Customers",
-        "customerGroup": "Customer Groups",
+        "customer_group": "Customer Groups",
         "product": "Products",
-        "productVariant": "Product Variants",
-        "inventory": "Inventory",
+        "product_variant": "Product Variants",
+        "inventory_item": "Inventory",
         "reservation": "Reservations",
-        "category": "Categories",
-        "collection": "Collections",
+        "product_category": "Categories",
+        "product_collection": "Collections",
         "order": "Orders",
         "promotion": "Promotions",
         "campaign": "Campaigns",
-        "priceList": "Price Lists",
+        "price_list": "Price Lists",
         "user": "Users",
         "region": "Regions",
-        "taxRegion": "Tax Regions",
-        "returnReason": "Return Reasons",
-        "salesChannel": "Sales Channels",
-        "productType": "Product Types",
-        "productTag": "Product Tags",
-        "location": "Locations",
-        "shippingProfile": "Shipping Profiles",
-        "publishableApiKey": "Publishable API Keys",
-        "secretApiKey": "Secret API Keys",
+        "tax_region": "Tax Regions",
+        "return_reason": "Return Reasons",
+        "sales_channel": "Sales Channels",
+        "product_type": "Product Types",
+        "product_tag": "Product Tags",
+        "stock_location": "Locations",
+        "shipping_profile": "Shipping Profiles",
+        "publishable_api_key": "Publishable API Keys",
+        "secret_api_key": "Secret API Keys",
         "command": "Commands",
         "navigation": "Navigation"
       }
@@ -1198,7 +1199,9 @@
         "paymentMethod": "Payment method",
         "paymentMethodDescription": "Refund amount to the payment method",
         "creditLine": "Store credit",
-        "creditLineDescription": "Refund amount as store credit"
+        "creditLineDescription": "Refund amount as store credit",
+        "creditLineNoOutstandingAmountDescription": "Only available when the order has an outstanding amount. Create a return or an order edit first.",
+        "creditLineGuestDescription": "Only available for customers with an account. This order was placed by a guest."
       }
     },
     "domain": "Orders",
@@ -3411,6 +3414,13 @@
     "reindexConfirmationTitle": "Reindex {{name}}?",
     "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
     "reindexSuccess": "Reindexing {{name}} started",
+    "reindexSinceLabel": "Since",
+    "reindexSinceHint": "Only rebuild documents that changed at or after this date. Leave empty to rebuild everything.",
+    "reindexEntityIdsLabel": "Entity IDs",
+    "reindexEntityIdsHint": "Comma or newline separated IDs to rebuild only those documents. Support depends on this index's own definition.",
+    "delete": "Delete index",
+    "deleteWarning": "This drops the \"{{name}}\" index and every version ever built for it, including its data in the search engine. Nothing is searchable on this index until the next migration rebuilds it from scratch. This can't be undone.",
+    "deleteSuccess": "Index {{name}} deleted",
     "noFields": "No fields are indexed.",
     "list": {
       "noRecordsMessage": "No search indexes are registered."

@@ -1322,7 +1322,6 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                currency_code: "usd",
                 email: "tony@stark-industries.com",
               },
               throwOnError: false,
@@ -1361,7 +1360,6 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                currency_code: "usd",
                 customer_id: customer.id,
               },
               throwOnError: false,

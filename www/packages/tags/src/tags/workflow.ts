@@ -244,6 +244,18 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteDraftOrdersWorkflow"
   },
   {
+    "title": "fetchShippingOptionForDraftOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/fetchShippingOptionForDraftOrderWorkflow"
+  },
+  {
+    "title": "refreshConfirmedDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshConfirmedDraftOrderShippingMethodsWorkflow"
+  },
+  {
+    "title": "refreshPendingDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPendingDraftOrderShippingMethodsWorkflow"
+  },
+  {
     "title": "removeDraftOrderActionItemWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow"
   },
@@ -1140,6 +1152,14 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateSalesChannelsWorkflow"
   },
   {
+    "title": "deleteSearchIndexWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteSearchIndexWorkflow"
+  },
+  {
+    "title": "reindexSearchIndexesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/reindexSearchIndexesWorkflow"
+  },
+  {
     "title": "batchPropertyLabelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchPropertyLabelsWorkflow"
   },
@@ -1238,6 +1258,10 @@ export const workflow = [
   {
     "title": "debitAccountsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow"
+  },
+  {
+    "title": "debitStoreCreditAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   },
   {
     "title": "createTaxRateRulesWorkflow",

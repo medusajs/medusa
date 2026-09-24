@@ -66,27 +66,29 @@ The migration enables `pg_trgm` + `unaccent` and creates the catalog. On Medusa 
 
 ## Vector fields (lakebase only)
 
+On the native engine vector fields are not rejected: the provider logs a warning and drops them from the index, so one definition stays portable across providers. A query that asks for `search_options.vector` there is still rejected, since answering it with keyword results would be wrong.
+
 Supply embeddings yourself:
 
 ```ts
 defineSearchIndex({
   name: "product",
   entity: "product",
-  fields: {
-    id: { type: "keyword", filterable: true },
-    title: { type: "text", searchable: { weight: 3 } },
-    embedding: { type: "vector", dimensions: 1536 },
-  },
+  fields: search.define({
+    id: search.keyword().filterable(),
+    title: search.text().searchable({ weight: 3 }),
+    embedding: search.vector(1536),
+  }),
   // ...
 })
 ```
 
 Documents must include the embedding array on upsert. Query with `search_options.vector.value`.
 
-Or let the provider embed a string on the same field (`embed: true` requires `embedder`):
+Or let the provider embed a string on the same field (`.embed()` requires `embedder`):
 
 ```ts
-embedding: { type: "vector", dimensions: 1536, embed: true }
+embedding: search.vector(1536).embed()
 
 // documents: { embedding: "title and description to encode" }
 
@@ -129,10 +131,9 @@ await query.search({
 | Facets           | value, range, stats — scoped to the query matches       | same                     |
 | `distinct`       | one hit per value, count follows                        | same                     |
 | `min_score`      | yes, keeps the requested sort                           | same                     |
-| Vector / hybrid  | —                                                       | ANN + RRF                |
-| `swapIndex`      | yes                                                     | yes                      |
+| Vector / hybrid  | fields ignored, queries rejected                        | ANN + RRF                |
 
-Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, correlated nested predicates, query-time locales.
+Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, query-time locales.
 
 `"last"` is typeahead: completed terms must match in full and the last term is a prefix, so `"dtc sta"` matches `"Dtc starter"`.
 

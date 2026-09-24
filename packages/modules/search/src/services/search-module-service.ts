@@ -19,6 +19,7 @@ import {
   SearchEventRoutes,
   SearchIndexContext,
   SearchIndexes,
+  SearchIndexRecord,
   SearchIndexSeedAction,
   SearchModuleOptions,
 } from "@types"
@@ -27,13 +28,21 @@ import {
   buildDisjunctiveFacetQueries,
   listIndexedFields,
   listRetrievablePaths,
+  listVersionsByIndexId,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
+  resolveActiveDefinition,
+  withActiveIndexRetry,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   SearchIndexState,
   validateFieldUsage,
 } from "@utils"
+import {
+  ActiveIndexVersion,
+  ActiveIndexVersionCache,
+} from "../utils/active-version-cache"
+import { deleteIndexEntirely } from "../utils/deletion"
 import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
 import {
   createIndexMigrationPlan,
@@ -53,6 +62,7 @@ type InjectedDependencies = {
   [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   searchProviderService: SearchProviderService
   searchIndexService: ModulesSdkTypes.IMedusaInternalService<any>
+  searchIndexVersionService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
@@ -74,6 +84,12 @@ export default class SearchModuleService
   // an index at runtime, which is what lets a `definition_hash` change count as a
   // migration rather than a race.
   protected readonly indexes_: SearchIndexes
+
+  // Which physical index currently serves reads for each logical index. A
+  // cache rather than a value resolved once, because — unlike `indexes_` — it
+  // can change out from under this process when another replica finishes
+  // seeding and flips it.
+  protected readonly activeVersionCache_: ActiveIndexVersionCache
 
   // Passed down for migrations and seeding, among other things.
   protected readonly context_: SearchIndexContext
@@ -117,16 +133,80 @@ export default class SearchModuleService
 
     this.eventRoutes_ = buildEventRoutes(this.indexes_)
 
+    this.activeVersionCache_ = new ActiveIndexVersionCache(() =>
+      this.fetchActiveVersions_(container)
+    )
+
     this.context_ = {
-      container,
+      container: {
+        get query() {
+          return container[ContainerRegistrationKeys.QUERY]
+        },
+        logger: this.logger_,
+      },
       logger: this.logger_,
       options: this.moduleOptions_,
       indexes: this.indexes_,
       providers: container.searchProviderService,
       indexService: container.searchIndexService,
+      versionService: container.searchIndexVersionService,
       syncService: container.searchIndexSyncService,
       locking: resolveLocking(container),
+      activeVersionCache: this.activeVersionCache_,
     }
+  }
+
+  // Reads the DB directly, for every index at once — there are never many
+  // search indexes in an app, so listing them all is cheap, and it lets one
+  // refresh (triggered by any index) serve every index. Called by
+  // `activeVersionCache_` on a cache miss or refresh — never on the request
+  // path itself.
+  protected async fetchActiveVersions_(
+    container: InjectedDependencies
+  ): Promise<Map<string, ActiveIndexVersion>> {
+    const records = (await container.searchIndexService.list(
+      {},
+      { take: null }
+    )) as SearchIndexRecord[]
+
+    const versionsByIndexId = await listVersionsByIndexId(
+      { versionService: container.searchIndexVersionService },
+      records.map((record) => record.id)
+    )
+
+    const values = new Map<string, ActiveIndexVersion>()
+
+    for (const record of records) {
+      if (record.active_version == null) {
+        continue
+      }
+
+      const version = versionsByIndexId
+        .get(record.id)
+        ?.find((candidate) => candidate.version === record.active_version)
+
+      if (version) {
+        values.set(record.name, {
+          physical_name: version.physical_name,
+          provider: version.provider,
+          version: version.version,
+        })
+      }
+    }
+
+    return values
+  }
+
+  // Merges in the physical index and provider currently serving reads. Every
+  // *live* read or write goes through this rather than `definition.physical_name`
+  // directly, since the active version can change out from under this process.
+  // Shared with the ingestion path (`resolveActiveDefinition` in `@utils`) so
+  // the two can't drift apart.
+  protected async resolveActiveDefinition_(
+    name: string,
+    options: { fresh?: boolean } = {}
+  ): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
+    return await resolveActiveDefinition(this.context_, name, options)
   }
 
   // Declared so that `Module()` does not derive one by scanning `src/models`,
@@ -162,18 +242,31 @@ export default class SearchModuleService
       return []
     }
 
-    const prepared = queries.map((query) => {
-      const index = retrieveIndexDefinition(this.indexes_, query.entity)
-      const normalized = normalizeSearchQuery({ query, index })
-      const provider = this.searchProviderService_.retrieve(index.provider)
+    // Reads take the cached version, so this one can be pointed at a version
+    // that has since been dropped. That surfaces as a `NOT_FOUND` from the
+    // engine, and the retry resolves it again rather than failing the search.
+    return await withActiveIndexRetry(this.context_, () =>
+      this.searchMany_(queries)
+    )
+  }
 
-      // Whether the *provider* can serve the query is the provider's call, made
-      // while it translates. This only checks the query against the definition,
-      // which is provider-independent.
-      validateFieldUsage({ index, query: normalized })
+  protected async searchMany_(
+    queries: SearchTypes.SearchQuery[]
+  ): Promise<SearchTypes.SearchResult[]> {
+    const prepared = await promiseAll(
+      queries.map(async (query) => {
+        const index = await this.resolveActiveDefinition_(query.entity)
+        const normalized = normalizeSearchQuery({ query, index })
+        const provider = this.searchProviderService_.retrieve(index.provider)
 
-      return { normalized, provider }
-    })
+        // Whether the *provider* can serve the query is the provider's call, made
+        // while it translates. This only checks the query against the definition,
+        // which is provider-independent.
+        validateFieldUsage({ index, query: normalized })
+
+        return { normalized, provider }
+      })
+    )
 
     // Expand disjunctive facets into extra queries, then send the whole set to
     // `provider.searchMany` so the engine can pack them into one round-trip.
@@ -272,16 +365,20 @@ export default class SearchModuleService
       return { index, status: "succeeded" }
     }
 
-    const definition = retrieveIndexDefinition(this.indexes_, index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    return await withActiveIndexRetry(this.context_, async () => {
+      const definition = await this.resolveActiveDefinition_(index, {
+        fresh: true,
+      })
+      const provider = this.searchProviderService_.retrieve(definition.provider)
 
-    const task = await provider.upsertDocuments({
-      index: definition.physical_name,
-      definition,
-      documents,
+      const task = await provider.upsertDocuments({
+        index: definition.physical_name,
+        definition,
+        documents,
+      })
+
+      return assertTaskAccepted(task, index)
     })
-
-    return assertTaskAccepted(task, index)
   }
 
   async deleteDocuments({
@@ -298,15 +395,19 @@ export default class SearchModuleService
       )
     }
 
-    const definition = retrieveIndexDefinition(this.indexes_, index)
-    const provider = this.searchProviderService_.retrieve(definition.provider)
+    return await withActiveIndexRetry(this.context_, async () => {
+      const definition = await this.resolveActiveDefinition_(index, {
+        fresh: true,
+      })
+      const provider = this.searchProviderService_.retrieve(definition.provider)
 
-    const task = await provider.deleteDocuments({
-      index: definition.physical_name,
-      filters,
+      const task = await provider.deleteDocuments({
+        index: definition.physical_name,
+        filters,
+      })
+
+      return assertTaskAccepted(task, index)
     })
-
-    return assertTaskAccepted(task, index)
   }
 
   // Waits for its writes, so awaiting this acknowledges the event.
@@ -326,20 +427,32 @@ export default class SearchModuleService
       return []
     }
 
-    const records = await this.context_.indexService.list(
+    const records = (await this.context_.indexService.list(
       { name: definitions.map((definition) => definition.name) },
       { take: null }
-    )
+    )) as SearchIndexRecord[]
     const byName = new Map(records.map((record) => [record.name, record]))
+    const versionsByIndexId = await listVersionsByIndexId(
+      this.context_,
+      records.map((record) => record.id)
+    )
 
     return definitions.map((definition) => {
       const record = byName.get(definition.name)
+      const versions = record ? versionsByIndexId.get(record.id) ?? [] : []
+      const activeVersion =
+        record?.active_version != null
+          ? versions.find(
+              (version) => version.version === record.active_version
+            )
+          : undefined
 
       return {
         name: definition.name,
         entity: definition.entity,
-        provider: definition.provider,
-        status: record?.status ?? SearchIndexState.PENDING,
+        provider: activeVersion?.provider ?? definition.provider,
+        status: (activeVersion?.status ??
+          SearchIndexState.PENDING) as SearchTypes.SearchIndexStatus,
         fields: listIndexedFields(definition.fields),
       }
     })
@@ -359,6 +472,12 @@ export default class SearchModuleService
     input: SearchTypes.SearchReindexInput = {}
   ): Promise<SearchTypes.SearchReindexResult> {
     return await reindexIndexes(this.context_, input)
+  }
+
+  async deleteIndex(
+    index: string
+  ): Promise<SearchTypes.SearchIndexDeleteResult> {
+    return await deleteIndexEntirely(this.context_, index)
   }
 
   /**

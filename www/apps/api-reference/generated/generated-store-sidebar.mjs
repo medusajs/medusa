@@ -73,6 +73,16 @@ const generatedgeneratedStoreSidebarSidebar = {
       "children": [
         {
           "type": "link",
+          "path": "/store/auth/list-providers",
+          "title": "List Providers",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
           "path": "/store/auth/authenticate-customer",
           "title": "Authenticate Customer",
           "loaded": true,
@@ -1107,6 +1117,24 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "/store/returns/create-return",
           "title": "Create Return",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search",
+      "path": "/store/search",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/store/search/search-indexes",
+          "title": "Search Indexes",
           "loaded": true,
           "badge": {
             "variant": "blue",

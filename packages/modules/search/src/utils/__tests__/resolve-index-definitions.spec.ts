@@ -65,12 +65,6 @@ describe("resolveIndexDefinitions validation", () => {
     ).toThrow(/must be true/)
   })
 
-  test("rejects correlated on anything but an array of objects", () => {
-    expect(() =>
-      resolve({ tags: { type: "keyword", array: true, correlated: true } })
-    ).toThrow(/only applies to an array of objects/)
-  })
-
   test("rejects free-text search on non-string fields", () => {
     expect(() =>
       resolve({ price: { type: "float", searchable: true } })

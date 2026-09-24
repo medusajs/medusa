@@ -139,7 +139,8 @@ export default class NotificationModuleService
         const channels = notificationsToProcess.map((not) => not.channel)
         const providers =
           await this.notificationProviderService_.getProviderForChannels(
-            channels
+            channels,
+            context
           )
 
         // Create the notifications to be sent to prevent concurrent actions listing the same notifications

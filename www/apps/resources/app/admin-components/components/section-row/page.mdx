@@ -5,65 +5,53 @@ sidebar_label: "Section Row"
 import { TypeList } from "docs-ui"
 
 export const metadata = {
-  title: `Section Row - Admin Components`,
+  title: `SectionRow - Admin Components`,
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how to create a section row component that matches the Medusa Admin's design conventions.
+<Note>
 
-The Medusa Admin often shows information in rows of label-values, such as when showing a product's details.
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
 
-![Example of a section row in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1728292781/Medusa%20Resources/section-row_kknbnw.png)
+</Note>
 
-To create a component that shows information in the same structure, create the file `src/admin/components/section-row.tsx` with the following content:
+The `SectionRow` component shows a title and its value side by side in a row. The Medusa Admin uses it in the detail sections of its pages, such as a product's general section.
 
-```tsx title="src/admin/components/section-row.tsx"
-import { Text, clx } from "@medusajs/ui"
+```tsx
+import { SectionRow } from "@medusajs/dashboard/components"
+```
 
-export type SectionRowProps = {
-  title: string
-  value?: React.ReactNode | string | null
-  actions?: React.ReactNode
-}
+---
 
-export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
-  const isValueString = typeof value === "string" || !value
+## Example
 
+Use `SectionRow` inside a container in a [widget](!docs!/learn/fundamentals/admin/widgets) or [UI route](!docs!/learn/fundamentals/admin/ui-routes):
+
+```tsx
+import { SectionRow } from "@medusajs/dashboard/components"
+import { Container, Heading } from "@medusajs/ui"
+
+const BrandGeneralSection = ({ brand }) => {
   return (
-    <div
-      className={clx(
-        `text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4`,
-        {
-          "grid-cols-[1fr_1fr_28px]": !!actions,
-        }
-      )}
-    >
-      <Text size="small" weight="plus" leading="compact">
-        {title}
-      </Text>
-
-      {isValueString ? (
-        <Text
-          size="small"
-          leading="compact"
-          className="whitespace-pre-line text-pretty"
-        >
-          {value ?? "-"}
-        </Text>
-      ) : (
-        <div className="flex flex-wrap gap-1">{value}</div>
-      )}
-
-      {actions && <div>{actions}</div>}
-    </div>
+    <Container className="divide-y p-0">
+      <div className="px-6 py-4">
+        <Heading level="h2">Brand</Heading>
+      </div>
+      <SectionRow title="Name" value={brand.name} />
+      <SectionRow title="Handle" value={brand.handle} />
+    </Container>
   )
 }
 ```
 
-The `SectionRow` component shows a title and a value in the same row.
+Medusa shows a dash when you pass an empty `value`.
 
-It accepts the following props:
+---
+
+## Props
+
+The component accepts the `SectionRowProps` type:
 
 <TypeList
   types={[
@@ -71,51 +59,19 @@ It accepts the following props:
       name: "title",
       type: "`string`",
       optional: false,
-      description: "The title to show on the left side."
+      description: `The row's title, shown in the first column.`,
     },
     {
       name: "value",
       type: "`React.ReactNode` \\| `string` \\| `null`",
       optional: true,
-      description: "The value to show on the right side."
+      description: `The row's value. Medusa shows a dash when the value is empty. When you pass a React node instead of a string, Medusa wraps it in a flex container that wraps its items, which is useful for badges or lists.`,
     },
     {
       name: "actions",
       type: "`React.ReactNode`",
       optional: true,
-      description: "The actions to show at the end of the row."
-    }
+      description: `Content to show at the end of the row, such as an [ActionMenu](../action-menu/page.mdx). When you pass it, Medusa adds a third column for the content.`,
+    },
   ]}
 />
-
----
-
-## Example
-
-Use the `SectionRow` component in any widget or UI route.
-
-For example, create the widget `src/admin/widgets/product-widget.tsx` with the following content:
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Container } from "../components/container"
-import { Header } from "../components/header"
-import { SectionRow } from "../components/section-row"
-
-const ProductWidget = () => {
-  return (
-    <Container>
-      <Header title="Product Widget" />
-      <SectionRow title="Name" value="John" />
-    </Container>
-  )
-}
-
-export const config = defineWidgetConfig({
-  zone: "product.details",
-})
-
-export default ProductWidget
-```
-
-This widget also uses the [Container](../container/page.mdx) and [Header](../header/page.mdx) custom component.
