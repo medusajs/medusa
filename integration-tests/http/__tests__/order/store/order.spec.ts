@@ -154,7 +154,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw an error when fetching draft order", async () => {
-        const response = await api
+        const { response } = await api
           .get(
             `/store/orders/${draftOrder.id}?fields=+is_draft_order`,
             storeHeaders
