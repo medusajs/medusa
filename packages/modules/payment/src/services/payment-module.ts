@@ -162,6 +162,29 @@ export default class PaymentModuleService
     amount: BigNumberInput,
     currencyCode: string
   ): BigNumberInput {
+    if (amount == null) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Amount must be defined.`
+      )
+    }
+
+    const numeric = Number(MathBN.convert(amount).toString())
+
+    if (!Number.isFinite(numeric)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Amount must be a finite number.`
+      )
+    }
+
+    if (MathBN.lt(amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Amount must be greater than or equal to 0.`
+      )
+    }
+
     let precision: number | undefined = undefined
     try {
       const formatted = Intl.NumberFormat(undefined, {
