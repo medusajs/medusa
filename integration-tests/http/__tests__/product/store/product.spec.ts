@@ -1400,6 +1400,64 @@ medusaIntegrationTestRunner({
           expect(response.data.products).toEqual(expectation)
         })
 
+        it("should apply a price list whose rules use the customer_group_id attribute for an authenticated customer in the group", async () => {
+          // Use a dedicated product so other price lists created in this
+          // file cannot interfere with the assertions below.
+          const [groupProduct, [groupVariant]] = await createProducts({
+            title: "customer group price list product",
+            status: ProductStatus.PUBLISHED,
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "group test variant",
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+            ],
+          })
+
+          const priceList = (
+            await api.post(
+              `/admin/price-lists`,
+              {
+                title: "test price list",
+                description: "test",
+                status: PriceListStatus.ACTIVE,
+                type: PriceListType.SALE,
+                prices: [
+                  {
+                    amount: 350,
+                    currency_code: "usd",
+                    variant_id: groupVariant.id,
+                  },
+                ],
+                rules: { customer_group_id: [customerGroup.id] },
+              },
+              adminHeaders
+            )
+          ).data.price_list
+
+          const response = await api.get(
+            `/store/products/${groupProduct.id}?fields=*variants.calculated_price&region_id=${region.id}`,
+            storeHeadersWithCustomer
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product.variants).toEqual([
+            expect.objectContaining({
+              id: groupVariant.id,
+              calculated_price: expect.objectContaining({
+                is_calculated_price_price_list: true,
+                calculated_amount: 350,
+                currency_code: "usd",
+                calculated_price: expect.objectContaining({
+                  price_list_id: priceList.id,
+                  price_list_type: "sale",
+                }),
+              }),
+            }),
+          ])
+        })
+
         it("should list products with prices with a default price when the price list price is higher and the price list is of type SALE", async () => {
           const priceList = (
             await api.post(
