@@ -32,27 +32,29 @@ describe("PaymentModuleService.getWebhookActionAndData", () => {
 
   it("passes an already-prefixed provider id through untouched", async () => {
     const service = buildService()
+    const payload = { data: { id: "evt_1" }, rawData: "{}", headers: {} }
 
     await service.getWebhookActionAndData({
       provider: "pp_stripe",
-      payload: { id: "evt_1" },
+      payload,
     })
 
     expect(
       (service as any).paymentProviderService_.getWebhookActionAndData
-    ).toHaveBeenCalledWith("pp_stripe", { id: "evt_1" })
+    ).toHaveBeenCalledWith("pp_stripe", payload)
   })
 
   it("prefixes a bare provider id with pp_", async () => {
     const service = buildService()
+    const payload = { data: { id: "evt_1" }, rawData: "{}", headers: {} }
 
     await service.getWebhookActionAndData({
       provider: "stripe",
-      payload: { id: "evt_1" },
+      payload,
     })
 
     expect(
       (service as any).paymentProviderService_.getWebhookActionAndData
-    ).toHaveBeenCalledWith("pp_stripe", { id: "evt_1" })
+    ).toHaveBeenCalledWith("pp_stripe", payload)
   })
 })
