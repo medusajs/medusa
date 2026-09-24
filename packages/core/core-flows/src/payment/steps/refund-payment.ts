@@ -21,6 +21,23 @@ export type RefundPaymentStepInput = {
    * The amount to refund. If not provided, the full refundable amount is refunded.
    */
   amount?: BigNumberInput
+  /**
+   * The note to attach to the refund.
+   */
+  note?: string
+  /**
+   * The ID of the refund reason to attach to the refund.
+   */
+  refund_reason_id?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+  /**
+   * A caller-supplied key that makes the refund idempotent at the payment
+   * provider. Retrying with the same key never moves funds twice.
+   */
+  idempotency_key?: string
 }
 
 export const refundPaymentStepId = "refund-payment-step"
