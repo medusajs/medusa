@@ -1400,7 +1400,7 @@
     },
     "delete": {
       "confirmation": "Zamierzasz usunąć powód zwrotu pieniędzy {{label}}. Tej akcji nie można cofnąć.",
-      "successToast": "Powód zwrotu pieniędzy {{label}} został pomyślnie usunięty."
+      "successToast": "Powód zwrotu pieniędzy został pomyślnie usunięty."
     },
     "fields": {
       "label": {
