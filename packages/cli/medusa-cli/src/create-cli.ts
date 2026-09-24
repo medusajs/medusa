@@ -189,6 +189,16 @@ function buildLocalCommands(cli, isLocalProject) {
           describe:
             "Skip prompts and execute only safe actions from sync links",
         })
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
       },
       handler: handlerP(
         getCommandHandler("db/setup", (args, cmd) => {
@@ -245,6 +255,16 @@ function buildLocalCommands(cli, isLocalProject) {
           describe:
             "Skip prompts and execute only safe actions from sync links",
         })
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
         builder.option("concurrency", {
           type: "number",
           describe: "Number of concurrent migrations to run",
@@ -276,6 +296,18 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: "db:migrate:search",
       desc: "Create and alter the search indexes declared under search/",
+      builder: (builder) => {
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
+      },
       handler: handlerP(
         getCommandHandler("db/migrate-search", (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

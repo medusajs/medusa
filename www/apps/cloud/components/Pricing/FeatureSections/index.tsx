@@ -16,7 +16,10 @@ import {
   Shopping,
   Users,
   Window,
-  WIP,
+  Microchip,
+  Robot,
+  Bolt,
+  MagnifyingGlass,
 } from "@medusajs/icons"
 import { config } from "../../../config"
 
@@ -44,7 +47,7 @@ const featureLinks: Record<string, string> = {
   s3: "/cloud/s3",
   "environment variables": "/cloud/environments/environment-variables",
   "data import/export": "/cloud/database#importexport-database-dumps",
-  logs: "/cloud/logs",
+  "advanced logs": "/cloud/logs",
   "unlimited long-lived environments": "/cloud/environments/long-lived",
   "long-lived environments (lle)": "/cloud/environments/long-lived",
   "preview environments (pe)": "/cloud/environments/preview",
@@ -66,17 +69,44 @@ const featureLinks: Record<string, string> = {
   "hosting of monorepos": "/cloud/projects/prerequisites#monorepo-setup",
   "custom domains": "/cloud/storefront#storefront-custom-domain",
   "storefront previews": "/cloud/environments/preview",
+  "mcp server": "/learn/introduction/build-with-llms-ai/mcp-server",
+  "development agent": "/cloud/assistant",
+  "medusa cloud cli": "/cloud/cli",
+  "webhook events": "/cloud/webhooks/events",
+  "log drains": "/cloud/projects/log-drains",
+  "use with starters": "/cloud/projects#1-create-project-from-a-starter",
+  "custom backend domain": "/cloud/environments/custom-domains",
+  "pre configured caching": "/cloud/cache",
+  "integrated querying": "/learn/fundamentals/query#cache-query-results",
+  "auto invalidation":
+    "/resources/infrastructure-modules/caching/concepts#automatic-cache-invalidation",
+  "full-text search": "/resources/infrastructure-modules/search",
+  "typo-tolerant": "/cloud/search/settings#typo-tolerance",
+  "faceting and filtering":
+    "/resources/infrastructure-modules/search/index-definitions/modifiers",
+  "auto index sync": "/resources/infrastructure-modules/search/reindexing",
+  "instantsearch-compatible": "/resources/instantsearch",
+  "search analytics": "/cloud/search/analytics",
+  "semantic and hybrid search": "/cloud/search/semantic-search",
+  "managed embeddings": "/cloud/search/semantic-search#index-the-text-to-embed",
+  "built-in emails": "/cloud/emails",
+  "delivery insights": "/cloud/emails#monitor-email-sending-activity-on-cloud",
+  "open tracking": "/cloud/emails#monitor-email-sending-activity-on-cloud",
+  "bounce details": "/cloud/emails#monitor-email-sending-activity-on-cloud",
 }
 
 const featureIcons: Record<string, React.FC> = {
   "Commerce features": Shopping,
-  "Development Platform": CodePullRequest,
-  "Build & Deploy": ServerStack,
-  "Compute & Resources": WIP,
-  "Organization & Billing": CurrencyDollar,
-  "Enterprise Support": Users,
-  "Medusa Emails": EnvelopeContent,
+  Agents: Robot,
+  Infrastructure: CodePullRequest,
   Storefronts: Window,
+  "High Reliability": ServerStack,
+  "Enterprise License": Users,
+  "Medusa Cache": Bolt,
+  Search: MagnifyingGlass,
+  "Medusa Emails": EnvelopeContent,
+  "Compute & Resources": Microchip,
+  "Organization & Billing": CurrencyDollar,
 }
 
 // Helper function to render Block content (Sanity rich text)

@@ -190,12 +190,18 @@ import type {
 } from "@medusajs/framework"
 import { render, pretty } from "@react-email/render"
 import getInviteTemplate from "../emails/invite-user"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function inviteCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: [store],
@@ -214,13 +220,17 @@ export default async function inviteCreatedHandler({
     },
   })
 
-  const config = container.resolve("configModule")
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const adminPath = config.admin.path
 
   const inviteUrl = `/${adminPath}/invite?token=${invite.token}`
 
-  const notificationModule = container.resolve("notification")
+  const notificationModule = container.resolve(
+    Modules.NOTIFICATION
+  )
 
   const html = await pretty(
     await render(getInviteTemplate({
@@ -506,18 +516,18 @@ export default function getOrderPlacedTemplate(props?: OrderPlacedEmailProps) {
     display_id: 1234,
     created_at: new Date().toISOString(),
     currency_code: "usd",
-    item_total: 5999,
-    shipping_total: 500,
+    item_total: 59.99,
+    shipping_total: 5,
     discount_total: 0,
-    tax_total: 840,
-    total: 6499,
+    tax_total: 8.4,
+    total: 64.99,
     items: [
       {
         id: "item_01",
         product_title: "Premium Wireless Headphones",
         variant_title: "Black / Standard",
         thumbnail: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb",
-        unit_price: 2999,
+        unit_price: 29.99,
         quantity: 2,
       },
     ],
@@ -551,12 +561,18 @@ import type {
 } from "@medusajs/framework"
 import { render, pretty } from "@react-email/render"
 import getOrderPlacedTemplate from "../emails/order-placed"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: [store],
@@ -612,7 +628,9 @@ export default async function orderPlacedHandler({
     return
   }
 
-  const notificationModule = container.resolve("notification")
+  const notificationModule = container.resolve(
+    Modules.NOTIFICATION
+  )
 
   const html = await pretty(
     await render(getOrderPlacedTemplate({
@@ -725,7 +743,10 @@ Then, to send the Reset Password email when a password reset is requested, creat
 
 ```ts title="src/subscribers/reset-password.ts"
 import { SubscriberArgs } from "@medusajs/medusa"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { render, pretty } from "@react-email/render"
 import getResetPasswordTemplate from "../emails/reset-password"
 
@@ -740,8 +761,12 @@ export default async function resetPasswordTokenHandler({
   const notificationModuleService = container.resolve(
     Modules.NOTIFICATION
   )
-  const config = container.resolve("configModule")
-  const query = container.resolve("query")
+  const config = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const {
     data: [store],

@@ -80,7 +80,7 @@ describe("rendering", () => {
     expect(getByTestId("modal")).toHaveAttribute("data-open", "true")
   })
 
-  test("renders overlay when modal is open", () => {
+  test("does not render its own overlay — the modal's dialog is the overlay", () => {
     const { getByTestId, container } = render(
       <ModalProvider>
         <TestComponent />
@@ -89,8 +89,7 @@ describe("rendering", () => {
 
     fireEvent.click(getByTestId("open-modal"))
 
-    const overlay = container.querySelector(".bg-medusa-bg-overlay")
-    expect(overlay).toBeInTheDocument()
+    expect(container.querySelector(".bg-medusa-bg-overlay")).toBeNull()
   })
 })
 

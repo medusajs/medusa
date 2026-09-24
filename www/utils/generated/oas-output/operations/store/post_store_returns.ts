@@ -108,6 +108,19 @@
  *     description: Emitted when a return is marked as received.
  *     deprecated: false
  * x-since: 2.8.0
+ * x-allowed:
+ *   - id
+ *   - order_id
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
+ *   - metadata
+ *   - display_id
+ *   - items
+ *   - received_at
+ *   - created_by
+ *   - canceled_at
+ *   - requested_at
  * 
 */
 

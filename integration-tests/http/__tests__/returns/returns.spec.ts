@@ -1400,6 +1400,7 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             order_id: order.id,
             status: ReturnStatus.REQUESTED,
+            requested_at: expect.any(String),
             items: expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
@@ -1423,6 +1424,12 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
+
+        // Regression: storefront-created returns used to have a null
+        // requested_at, rendered as 01/01/1970 in the admin.
+        expect(
+          new Date(createdReturn.requested_at).getTime()
+        ).toBeGreaterThan(0)
       })
     })
   },

@@ -90,7 +90,12 @@ medusaIntegrationTestRunner({
       region = (
         await api.post(
           "/admin/regions",
-          { name: "United States", currency_code: "usd", countries: ["us"] },
+          {
+            payment_providers: ["pp_system_default", "pp_account-holder_test"],
+            name: "United States",
+            currency_code: "usd",
+            countries: ["us"],
+          },
           adminHeaders
         )
       ).data.region

@@ -1,9 +1,9 @@
-import { disallowedStoreFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
 
 export const defaultAdminPaymentProviderFields = ["id", "is_enabled"]
 
 export const listTransformPaymentProvidersQueryConfig = {
   defaults: defaultAdminPaymentProviderFields,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaultAdminPaymentProviderFields),
   isList: true,
 }

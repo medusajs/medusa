@@ -1,0 +1,3806 @@
+{
+  "$schema": "./$schema.json",
+  "general": {
+    "fullList": "Alla",
+    "ascending": "Stigande",
+    "descending": "Fallande",
+    "add": "Lägg till",
+    "start": "Start",
+    "end": "Slut",
+    "open": "Öppen",
+    "close": "Stäng",
+    "apply": "Tillämpa",
+    "range": "Intervall",
+    "search": "Sök",
+    "original": "Original",
+    "of": "av",
+    "results": "resultat",
+    "pages": "sidor",
+    "next": "Nästa",
+    "prev": "Föregående",
+    "is": "är",
+    "timeline": "Tidslinje",
+    "success": "Lyckades",
+    "warning": "Varning",
+    "tip": "Tips",
+    "error": "Fel",
+    "select": "Välj",
+    "selectAll": "Välj alla",
+    "unselectAll": "Avmarkera alla",
+    "selected": "Valda",
+    "enabled": "Aktiverad",
+    "disabled": "Inaktiverad",
+    "expired": "Utgången",
+    "active": "Aktiv",
+    "revoked": "Återkallad",
+    "new": "Ny",
+    "modified": "Ändrad",
+    "added": "Tillagd",
+    "removed": "Borttagen",
+    "remaining": "Kvar",
+    "admin": "Admin",
+    "store": "Butik",
+    "rank": "Ordning",
+    "details": "Detaljer",
+    "items_one": "{{count}} artikel",
+    "items_other": "{{count}} artiklar",
+    "values_one": "{{count}} värde",
+    "values_other": "{{count}} värden",
+    "countSelected": "{{count}} valda",
+    "countOfTotalSelected": "{{count}} av {{total}} valda",
+    "plusCount": "+ {{count}}",
+    "plusCountMore": "+ {{count}} till",
+    "areYouSure": "Är du säker?",
+    "areYouSureDescription": "Du håller på att ta bort {{entity}} {{title}}. Den här åtgärden kan inte ångras.",
+    "noRecordsFound": "Inga poster hittades",
+    "typeToConfirm": "Skriv {val} för att bekräfta:",
+    "noResultsTitle": "Inga resultat",
+    "noResultsMessage": "Prova att ändra filtren eller sökningen",
+    "noSearchResults": "Inga sökresultat",
+    "noSearchResultsFor": "Inga sökresultat för <0>'{{query}}'</0>",
+    "noRecordsTitle": "Inga poster",
+    "noRecordsMessage": "Det finns inga poster att visa",
+    "noRecordsMessageFiltered": "Det finns inga poster som matchar filtren.",
+    "unsavedChangesTitle": "Är du säker på att du vill lämna formuläret?",
+    "unsavedChangesDescription": "Du har osparade ändringar som går förlorade om du lämnar formuläret.",
+    "includesTaxTooltip": "Priserna i den här kolumnen är inklusive moms.",
+    "excludesTaxTooltip": "Priserna i den här kolumnen är exklusive moms.",
+    "noMoreData": "Ingen mer data",
+    "quantityPrice": "Antal Pris",
+    "exclusive": "Produkt-specific",
+    "global": "Global"
+  },
+  "json": {
+    "header": "JSON",
+    "numberOfKeys_one": "{{count}} nyckel",
+    "numberOfKeys_other": "{{count}} nycklar",
+    "drawer": {
+      "header_one": "JSON <0>· {{count}} nyckel</0>",
+      "header_other": "JSON <0>· {{count}} nycklar</0>",
+      "description": "Visa JSON-data för det här objektet."
+    }
+  },
+  "metadata": {
+    "header": "Metadata",
+    "numberOfKeys_one": "{{count}} nyckel",
+    "numberOfKeys_other": "{{count}} nycklar",
+    "edit": {
+      "header": "Redigera Metadata",
+      "description": "Redigera metadata för det här objektet.",
+      "successToast": "Metadata har uppdaterats.",
+      "actions": {
+        "insertRowAbove": "Infoga rad ovanför",
+        "insertRowBelow": "Infoga rad nedanför",
+        "deleteRow": "Ta bort rad",
+        "addRow": "Lägg till rad"
+      },
+      "labels": {
+        "key": "Nyckel",
+        "value": "Värde"
+      },
+      "complexRow": {
+        "label": "Vissa rader är inaktiverade",
+        "description": "Det här objektet innehåller icke-primitiv metadata, till exempel arrayer eller objekt, som inte kan redigeras här. Använd API:t direkt för att redigera de inaktiverade raderna.",
+        "tooltip": "Den här raden är inaktiverad eftersom den innehåller icke-primitiva data."
+      }
+    }
+  },
+  "validation": {
+    "mustBeInt": "Värdet måste vara ett heltal.",
+    "mustBePositive": "Värdet måste vara ett positivt tal."
+  },
+  "actions": {
+    "save": "Spara",
+    "saveChanges": "Spara ändringar",
+    "saveAsDraft": "Spara som utkast",
+    "saveAndClose": "Spara och stäng",
+    "copy": "Kopiera",
+    "copied": "Kopierat",
+    "duplicate": "Duplicera",
+    "publish": "Publicera",
+    "create": "Skapa",
+    "delete": "Ta bort",
+    "remove": "Ta bort",
+    "revoke": "Återkalla",
+    "cancel": "Avbryt",
+    "forceConfirm": "Tvinga bekräftelse",
+    "continueEdit": "Fortsätt redigera",
+    "enable": "Aktivera",
+    "disable": "Inaktivera",
+    "undo": "Ångra",
+    "complete": "Slutför",
+    "viewDetails": "Visa detaljer",
+    "back": "Tillbaka",
+    "close": "Stäng",
+    "showMore": "Visa mer",
+    "continue": "Fortsätt",
+    "continueWithEmail": "Fortsätt med e-post",
+    "idCopiedToClipboard": "ID har kopierats till urklipp",
+    "editVariantImages": "Redigera variantbilder",
+    "editImages": "Redigera bilder",
+    "addReason": "Lägg till orsak",
+    "addNote": "Lägg till anteckning",
+    "reset": "Återställ",
+    "confirm": "Bekräfta",
+    "edit": "Redigera",
+    "addItems": "Lägg till artiklar",
+    "download": "Ladda ner",
+    "clear": "Rensa",
+    "clearAll": "Rensa alla",
+    "apply": "Tillämpa",
+    "add": "Lägg till",
+    "select": "Välj",
+    "browse": "Bläddra",
+    "logout": "Logga ut",
+    "hide": "Dölj",
+    "show": "Visa",
+    "export": "Exportera",
+    "import": "Importera",
+    "cannotUndo": "Den här åtgärden kan inte ångras.",
+    "manage": "Hantera",
+    "goToProductOption": "Gå till produktalternativ"
+  },
+  "operators": {
+    "in": "I"
+  },
+  "app": {
+    "search": {
+      "label": "Sök",
+      "title": "Sök",
+      "description": "Sök din hela butiken, inklusive beställningar, produkter, kunder och mer.",
+      "allAreas": "Alla områden",
+      "navigation": "Navigering",
+      "openResult": "Öppna resultat",
+      "showMore": "Visa mer",
+      "placeholder": "Hoppa till eller sök efter vad som helst...",
+      "noResultsTitle": "Inga resultat hittades",
+      "noResultsMessage": "Vi kunde inte hitta något som matchade din sökning.",
+      "emptySearchTitle": "Skriv för att söka",
+      "emptySearchMessage": "Ange ett sökord eller en fras för att söka.",
+      "loadMore": "Ladda {{count}} till",
+      "groups": {
+        "all": "Alla områden",
+        "customer": "Kunder",
+        "customer_group": "Kundgrupper",
+        "product": "Produkter",
+        "product_variant": "Produktvarianter",
+        "inventory_item": "Lager",
+        "reservation": "Reservationer",
+        "product_category": "Kategorier",
+        "product_collection": "Kollektioner",
+        "order": "Beställningar",
+        "promotion": "Kampanjer",
+        "campaign": "Kampanjer",
+        "price_list": "Prislistor",
+        "user": "Användare",
+        "region": "Regioner",
+        "tax_region": "Skatteregioner",
+        "return_reason": "Returorsaker",
+        "sales_channel": "Försäljningskanaler",
+        "product_type": "Produkttyper",
+        "product_tag": "Produkttaggar",
+        "stock_location": "Platser",
+        "shipping_profile": "Fraktprofiler",
+        "publishable_api_key": "Publika API-nycklar",
+        "secret_api_key": "Hemliga API-nycklar",
+        "command": "Kommandon",
+        "navigation": "Navigering"
+      }
+    },
+    "keyboardShortcuts": {
+      "pageShortcut": "Gå till",
+      "settingShortcut": "Inställningar",
+      "commandShortcut": "Kommandon",
+      "then": "sedan",
+      "navigation": {
+        "goToOrders": "Beställningar",
+        "goToProducts": "Produkter",
+        "goToCollections": "Kollektioner",
+        "goToCategories": "Kategorier",
+        "goToCustomers": "Kunder",
+        "goToCustomerGroups": "Kundgrupper",
+        "goToInventory": "Lager",
+        "goToReservations": "Reservationer",
+        "goToPriceLists": "Prislistor",
+        "goToPromotions": "Kampanjer",
+        "goToCampaigns": "Kampanjer"
+      },
+      "settings": {
+        "goToSettings": "Inställningar",
+        "goToStore": "Butik",
+        "goToUsers": "Användare",
+        "goToRegions": "Regioner",
+        "goToTaxRegions": "Skatteregioner",
+        "goToSalesChannels": "Försäljningskanaler",
+        "goToProductTypes": "Produkttyper",
+        "goToLocations": "Platser",
+        "goToPublishableApiKeys": "Publika API-nycklar",
+        "goToSecretApiKeys": "Hemliga API-nycklar",
+        "goToWorkflows": "Arbetsflöden",
+        "goToProfile": "Profil",
+        "goToReturnReasons": "Returorsaker"
+      }
+    },
+    "menus": {
+      "user": {
+        "documentation": "Dokumentation",
+        "changelog": "Ändringslogg",
+        "shortcuts": "Genvägar",
+        "profileSettings": "Profilinställningar",
+        "theme": {
+          "label": "Tema",
+          "dark": "Mörkt",
+          "light": "Ljust",
+          "system": "System"
+        }
+      },
+      "store": {
+        "label": "Butik",
+        "storeSettings": "Butiksinställningar"
+      },
+      "actions": {
+        "logout": "Logga ut"
+      }
+    },
+    "nav": {
+      "accessibility": {
+        "title": "Navigering",
+        "description": "Navigeringsmeny för adminpanelen."
+      },
+      "common": {
+        "extensions": "Tillägg"
+      },
+      "main": {
+        "store": "Butik",
+        "storeSettings": "Butiksinställningar"
+      },
+      "settings": {
+        "header": "Inställningar",
+        "general": "Allmänt",
+        "developer": "Utvecklare",
+        "myAccount": "Mitt konto"
+      }
+    }
+  },
+  "layout": {
+    "customizeTopbar": "Anpassa topprad",
+    "customizeSidebar": "Anpassa sidomeny",
+    "customizeSettingsSidebar": "Anpassa inställningsmeny",
+    "customizePage": "Anpassa sida",
+    "customizeLayout": "Anpassa layout",
+    "viewingPersonalLayout": "Du visar en personlig layout",
+    "viewingSystemLayout": "Du visar en systemlayout",
+    "personalView": "Personlig",
+    "defaultView": "Standard",
+    "empty": "Tom",
+    "dropToSectionEnd": "Släpp här för att flytta till slutet",
+    "dragToReorder": "Dra för att ändra ordning",
+    "saveForEveryone": "Spara för alla",
+    "saveForEveryoneTitle": "Spara layout för alla",
+    "saveForEveryoneDescription": "Detta uppdaterar standardlayouten för den här sidan för alla användare som inte har anpassat den själva. Är du säker?",
+    "saveSuccess": "Layout sparad"
+  },
+  "dataGrid": {
+    "columns": {
+      "view": "Visa",
+      "resetToDefault": "Återställ till standard",
+      "disabled": "Det går inte att ändra vilka kolumner som visas."
+    },
+    "shortcuts": {
+      "label": "Genvägar",
+      "commands": {
+        "undo": "Ångra",
+        "redo": "Gör om",
+        "copy": "Kopiera",
+        "paste": "Klistra in",
+        "edit": "Redigera",
+        "delete": "Ta bort",
+        "clear": "Rensa",
+        "moveUp": "Flytta upp",
+        "moveDown": "Flytta ned",
+        "moveLeft": "Flytta åt vänster",
+        "moveRight": "Flytta åt höger",
+        "moveTop": "Flytta längst upp",
+        "moveBottom": "Flytta längst ned",
+        "selectDown": "Markera nedåt",
+        "selectUp": "Välj up",
+        "selectColumnDown": "Markera kolumn nedåt",
+        "selectColumnUp": "Markera kolumn uppåt",
+        "focusToolbar": "Fokusera verktygsfält",
+        "focusCancel": "Fokusera avbryt"
+      }
+    },
+    "errors": {
+      "fixError": "Åtgärda fel",
+      "count_one": "{{count}} fel",
+      "count_other": "{{count}} fel"
+    }
+  },
+  "filters": {
+    "sortLabel": "Sortera",
+    "columnsLabel": "Kolumner",
+    "collapse": {
+      "all": "Fäll ihop alla"
+    },
+    "filterLabel": "Filtrera",
+    "searchLabel": "Sök",
+    "date": {
+      "today": "Idag",
+      "lastSevenDays": "Senaste 7 dagarna",
+      "lastThirtyDays": "Senaste 30 dagarna",
+      "lastNinetyDays": "Senaste 90 dagarna",
+      "lastTwelveMonths": "Senaste 12 månaderna",
+      "custom": "Anpassad",
+      "from": "Från",
+      "to": "Till",
+      "starting": "Startar",
+      "ending": "Slutar"
+    },
+    "compare": {
+      "lessThan": "Mindre än",
+      "greaterThan": "Större än",
+      "exact": "Exakt",
+      "range": "Intervall",
+      "lessThanLabel": "mindre än {{value}}",
+      "greaterThanLabel": "större än {{value}}",
+      "andLabel": "och"
+    },
+    "sorting": {
+      "alphabeticallyAsc": "A till Ö",
+      "alphabeticallyDesc": "Ö till A",
+      "dateAsc": "Nyaste först",
+      "dateDesc": "Äldsta först"
+    },
+    "radio": {
+      "yes": "Ja",
+      "no": "Nej",
+      "true": "Sant",
+      "false": "Falskt"
+    },
+    "addFilter": "Lägg till filter"
+  },
+  "errorBoundary": {
+    "badRequestTitle": "400 – Felaktig begäran",
+    "badRequestMessage": "Begäran kunde inte tolkas av servern på grund av felaktig syntax.",
+    "notFoundTitle": "404 – Sidan kunde inte hittas på den här adressen",
+    "notFoundMessage": "Kontrollera webbadressen och försök igen, eller använd sökfältet för att hitta det du söker.",
+    "internalServerErrorTitle": "500 – Internt serverfel",
+    "internalServerErrorMessage": "Ett oväntat fel inträffade på servern. Försök igen senare.",
+    "defaultTitle": "Ett fel inträffade",
+    "defaultMessage": "Ett oväntat fel inträffade när sidan skulle visas.",
+    "noMatchMessage": "Sidan du söker finns inte.",
+    "backToDashboard": "Tillbaka till adminpanelen"
+  },
+  "addresses": {
+    "title": "Adresser",
+    "shippingAddress": {
+      "header": "Leveransadress",
+      "editHeader": "Redigera leveransadress",
+      "editLabel": "Leveransadress",
+      "label": "Leveransadress"
+    },
+    "billingAddress": {
+      "header": "Faktureringsadress",
+      "editHeader": "Redigera faktureringsadress",
+      "editLabel": "Faktureringsadress",
+      "label": "Faktureringsadress",
+      "sameAsShipping": "Samma som leveransadressen"
+    },
+    "contactHeading": "Kontakt",
+    "locationHeading": "Plats"
+  },
+  "email": {
+    "editHeader": "Redigera e-post",
+    "editLabel": "E-post",
+    "label": "E-post"
+  },
+  "transferOwnership": {
+    "header": "Överför ägarskap",
+    "label": "Överför ägarskap",
+    "details": {
+      "order": "Beställningsdetaljer",
+      "draft": "Utkastsdetaljer"
+    },
+    "currentOwner": {
+      "label": "Nuvarande ägare",
+      "hint": "Beställningens nuvarande ägare."
+    },
+    "newOwner": {
+      "label": "Ny ägare",
+      "hint": "Den nya ägaren som beställningen ska överföras till."
+    },
+    "validation": {
+      "mustBeDifferent": "Den nya ägaren måste vara en annan än den nuvarande ägaren.",
+      "required": "Ny ägare krävs."
+    }
+  },
+  "sales_channels": {
+    "availableIn": "Tillgänglig i <0>{{x}}</0> av <1>{{y}}</1> försäljningskanaler"
+  },
+  "products": {
+    "domain": "Produkter",
+    "list": {
+      "noRecordsMessage": "Skapa din första produkt för att börja sälja."
+    },
+    "edit": {
+      "header": "Redigera produkt",
+      "description": "Redigera produktens uppgifter.",
+      "successToast": "Produkt {{title}} har uppdaterats."
+    },
+    "create": {
+      "title": "Skapa produkt",
+      "description": "Skapa en ny produkt.",
+      "header": "Allmänt",
+      "tabs": {
+        "details": "Detaljer",
+        "organize": "Organisera",
+        "variants": "Varianter",
+        "inventory": "Lagerpaket"
+      },
+      "errors": {
+        "variants": "Välj minst en variant.",
+        "options": "Skapa minst ett alternativ.",
+        "uniqueSku": "SKU måste vara unikt."
+      },
+      "inventory": {
+        "heading": "Lagerpaket",
+        "label": "Lägg till lagerartiklar i variantens lagerpaket.",
+        "itemPlaceholder": "Välj lagerartikel",
+        "quantityPlaceholder": "Hur många av dessa behövs för paketet?"
+      },
+      "variants": {
+        "header": "Varianter",
+        "subHeadingTitle": "Ja, den här produkten har varianter",
+        "subHeadingDescription": "Om detta inte är markerat skapar vi en standardvariant åt dig.",
+        "optionTitle": {
+          "placeholder": "Storlek"
+        },
+        "optionValues": {
+          "placeholder": "Liten, Mellan, Stor"
+        },
+        "productVariants": {
+          "label": "Produktvarianter",
+          "hint": "Den här ordningen påverkar hur varianterna visas i din butik.",
+          "alert": "Lägg till alternativ för att skapa varianter.",
+          "tip": "Varianter som inte markeras skapas inte. Du kan alltid skapa och redigera varianter i efterhand."
+        },
+        "productOptions": {
+          "label": "Produktalternativ",
+          "hint": "Definiera alternativ för produkten, till exempel färg och storlek."
+        },
+        "selectValuesHint": "Välj vilka värden som ska användas för varje alternativ"
+      },
+      "successToast": "Produkt {{title}} har skapats."
+    },
+    "export": {
+      "header": "Exportera produktlista",
+      "description": "Exportera produktlistan till en CSV-fil.",
+      "success": {
+        "title": "Vi bearbetar din export",
+        "description": "Exporten kan ta några minuter. Du får en avisering när den är klar."
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Tillämpa filtren i tabellöversikten för att anpassa den här vyn."
+      },
+      "columns": {
+        "title": "Kolumner",
+        "description": "Anpassa exporterade data efter dina behov."
+      }
+    },
+    "import": {
+      "header": "Importera produktlista",
+      "uploadLabel": "Importera produkter",
+      "uploadHint": "Dra och släpp en CSV-fil eller klicka för att ladda upp",
+      "description": "Importera produkter genom att använda en CSV-fil i ett fördefinierat format.",
+      "template": {
+        "title": "Osäker på hur listan ska struktureras?",
+        "description": "Ladda ner mallen nedan för att säkerställa att du använder rätt format."
+      },
+      "upload": {
+        "title": "Ladda upp en CSV-fil",
+        "description": "Med import kan du lägga till eller uppdatera produkter. För att uppdatera befintliga produkter måste du använda befintligt URL-segment och ID. För att uppdatera befintliga varianter måste du använda befintligt variant-ID.",
+        "preprocessing": "Förbehandlar...",
+        "productsToCreate": "Produkter som kommer att skapas",
+        "productsToUpdate": "Produkter som kommer att uppdateras"
+      },
+      "success": {
+        "title": "Vi bearbetar din import",
+        "description": "Importen kan ta en stund. Du får en avisering när den är klar."
+      }
+    },
+    "deleteWarning": "Du håller på att ta bort produkt {{title}}. Den här åtgärden kan inte ångras.",
+    "variants": {
+      "header": "Varianter",
+      "empty": {
+        "heading": "Inga varianter",
+        "description": "Det finns inga varianter att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga varianter matchar de aktuella filterkriterierna."
+      }
+    },
+    "attributes": "Attribut",
+    "editAttributes": "Redigera attribut",
+    "editOptions": "Redigera alternativ",
+    "editPrices": "Redigera priser",
+    "media": {
+      "label": "Media",
+      "editHint": "Lägg till media på produkten för att visa den i butiken.",
+      "manageImageVariants": "Hantera kopplade varianter",
+      "makeThumbnail": "Använd som miniatyrbild",
+      "uploadImagesLabel": "Ladda upp bilder",
+      "uploadImagesHint": "Dra och släpp bilder här eller klicka för att ladda upp.",
+      "invalidFileType": "'{{name}}' är inte en filtyp som stöds. Filtyper som stöds är: {{types}}.",
+      "fileTooLarge": "En eller flera filer överskrider den maximala filstorleken {{size}}: {{name}}",
+      "failedToUpload": "Det gick inte att ladda upp tillagd media. Försök igen.",
+      "deleteWarning_one": "Du håller på att ta bort {{count}} bild. Den här åtgärden kan inte ångras.",
+      "deleteWarning_other": "Du håller på att ta bort {{count}} bilder. Den här åtgärden kan inte ångras.",
+      "deleteWarningWithThumbnail_one": "Du håller på att ta bort {{count}} bild, inklusive miniatyrbilden. Den här åtgärden kan inte ångras.",
+      "deleteWarningWithThumbnail_other": "Du håller på att ta bort {{count}} bilder, inklusive miniatyrbilden. Den här åtgärden kan inte ångras.",
+      "thumbnailTooltip": "Miniatyrbild",
+      "galleryLabel": "Galleri",
+      "downloadImageLabel": "Ladda ner aktuell bild",
+      "deleteImageLabel": "Ta bort aktuell bild",
+      "emptyState": {
+        "header": "Ingen media ännu",
+        "description": "Lägg till media för att visa produkten i butiken.",
+        "action": "Lägg till media"
+      },
+      "successToast": "Media har uppdaterats.",
+      "variantImages": "Variantbilder",
+      "showAvailableImages": "Visa tillgängliga bilder",
+      "availableImages": "Välj bilder",
+      "selectToAdd": "Lägg till produktbilder till varianten. Lägg först till nya bilder på produkten.",
+      "removeSelected": "Ta bort Valda"
+    },
+    "variantMedia": {
+      "label": "Variantmedia",
+      "manageVariants": "Hantera varianter",
+      "addToMultipleVariants": "Lägg till i flera varianter",
+      "manageVariantsDescription": "Hantera kopplade varianter för bild",
+      "successToast": "Bildens variantkopplingar har uppdaterats.",
+      "emptyState": {
+        "header": "Ingen media ännu",
+        "description": "Lägg till media på varianten för att visa den i butiken.",
+        "action": "Lägg till media"
+      }
+    },
+    "discountableHint": "Om detta är avmarkerat tillämpas inga rabatter på produkten.",
+    "noSalesChannels": "Inte tillgänglig i några försäljningskanaler",
+    "variantCount_one": "{{count}} variant",
+    "variantCount_other": "{{count}} varianter",
+    "deleteVariantWarning": "Du håller på att ta bort varianten {{title}}. Den här åtgärden kan inte ångras.",
+    "productStatus": {
+      "draft": "Utkast",
+      "published": "Publicerad",
+      "proposed": "Föreslagen",
+      "rejected": "Avvisad"
+    },
+    "columns": {
+      "product_display": "Produkt",
+      "variants_count": "Varianter",
+      "sales_channels_display": "Försäljningskanaler",
+      "collection": "Kollektion",
+      "status": "Status",
+      "thumbnail": "Miniatyrbild",
+      "title": "Titel",
+      "handle": "URL-segment",
+      "created_at": "Skapad",
+      "updated_at": "Uppdaterad"
+    },
+    "fields": {
+      "title": {
+        "label": "Titel",
+        "hint": "Ge produkten en kort och tydlig titel.<0/>50–60 tecken är rekommenderad längd för sökmotorer.",
+        "placeholder": "Vinterjacka"
+      },
+      "subtitle": {
+        "label": "Underrubrik",
+        "placeholder": "Varm och mysig"
+      },
+      "handle": {
+        "label": "URL-segment",
+        "tooltip": "URL-segmentet används för att referera till produkten i butiken. Om inget anges genereras det från produktens titel.",
+        "placeholder": "vinterjacka"
+      },
+      "description": {
+        "label": "Beskrivning",
+        "hint": "Ge produkten en kort och tydlig beskrivning.<0/>120–160 tecken är rekommenderad längd för sökmotorer.",
+        "placeholder": "En varm och bekväm jacka"
+      },
+      "discountable": {
+        "label": "Rabatterbar",
+        "hint": "Om detta är avmarkerat tillämpas inga rabatter på produkten."
+      },
+      "shipping_profile": {
+        "label": "Fraktprofil",
+        "hint": "Koppla produkten till en fraktprofil"
+      },
+      "type": {
+        "label": "Typ"
+      },
+      "collection": {
+        "label": "Kollektion"
+      },
+      "categories": {
+        "label": "Kategorier"
+      },
+      "tags": {
+        "label": "Taggar"
+      },
+      "sales_channels": {
+        "label": "Försäljningskanaler",
+        "hint": "Produkten blir endast tillgänglig i standardförsäljningskanalen om du inte gör några ändringar."
+      },
+      "countryOrigin": {
+        "label": "Ursprungsland"
+      },
+      "material": {
+        "label": "Material"
+      },
+      "width": {
+        "label": "Bredd"
+      },
+      "length": {
+        "label": "Längd"
+      },
+      "height": {
+        "label": "Höjd"
+      },
+      "weight": {
+        "label": "Vikt"
+      },
+      "options": {
+        "label": "Produktalternativ",
+        "hint": "Alternativ används för att definiera exempelvis färg och storlek på produkten.",
+        "add": "Lägg till alternativ",
+        "optionTitle": "Alternativets titel",
+        "optionTitlePlaceholder": "Färg",
+        "variations": "Variationer (kommaseparerade)",
+        "variantionsPlaceholder": "Röd, Blå, Grön"
+      },
+      "variants": {
+        "label": "Produktvarianter",
+        "hint": "Varianter som inte markeras skapas inte. Ordningen påverkar hur varianterna visas i butiken."
+      },
+      "mid_code": {
+        "label": "MID-kod"
+      },
+      "hs_code": {
+        "label": "HS-kod"
+      }
+    },
+    "variant": {
+      "edit": {
+        "header": "Redigera variant",
+        "success": "Produktvarianten har redigerats"
+      },
+      "create": {
+        "header": "Variantdetaljer"
+      },
+      "deleteWarning": "Är du säker på att du vill ta bort den här varianten?",
+      "pricesPagination": "1 - {{current}} av {{total}} priser",
+      "tableItemAvailable": "{{availableCount}} tillgänglig",
+      "tableItem_one": "{{availableCount}} tillgänglig på {{locationCount}} plats",
+      "tableItem_other": "{{availableCount}} tillgänglig på {{locationCount}} platser",
+      "inventory": {
+        "notManaged": "Hanteras inte",
+        "manageItems": "Hantera lagerartiklar",
+        "notManagedDesc": "Lager hanteras inte för den här varianten. Aktivera ”Hantera lager” för att spåra variantens lagersaldo.",
+        "manageKit": "Hantera lagerpaket",
+        "navigateToItem": "Gå till lagerartikel",
+        "actions": {
+          "inventoryItems": "Gå till lagerartikel",
+          "inventoryKit": "Visa lagerartiklar"
+        },
+        "inventoryKit": "Lagerpaket",
+        "inventoryKitHint": "Består den här varianten av flera lagerartiklar?",
+        "validation": {
+          "itemId": "Välj en lagerartikel.",
+          "quantity": "Antal krävs. Ange ett positivt tal."
+        },
+        "header": "Lager",
+        "editItemDetails": "Redigera lagerartikel",
+        "manageInventoryLabel": "Hantera lager",
+        "manageInventoryHint": "När lagerhantering är aktiverad justeras lagersaldot automatiskt när beställningar och returer skapas.",
+        "allowBackordersLabel": "Tillåt restorder",
+        "allowBackordersHint": "När detta är aktiverat kan kunder köpa varianten även om inget lager finns tillgängligt.",
+        "toast": {
+          "levelsBatch": "Lagernivåerna har uppdaterats.",
+          "update": "Lagerartikeln har uppdaterats.",
+          "updateLevel": "Lagernivån har uppdaterats.",
+          "itemsManageSuccess": "Lagerartiklarna har uppdaterats."
+        }
+      }
+    },
+    "options": {
+      "header": "Alternativ",
+      "edit": {
+        "header": "Redigera alternativ",
+        "successToast": "alternativ {{title}} har uppdaterats."
+      },
+      "create": {
+        "header": "Skapa alternativ",
+        "successToast": "alternativ {{title}} har skapats."
+      },
+      "manage": {
+        "header": "Hantera Produkt alternativ",
+        "description": "Koppla eller koppla bort produktalternativ från den här produkten.",
+        "label": "Produkt alternativ",
+        "hint": "Välj vilka alternativ som ska kopplas till den här produkten.",
+        "placeholder": "Välj alternativ",
+        "error": {
+          "noValues": "Välj minst ett värde för de tillagda alternativen."
+        }
+      },
+      "deleteWarning": "Du håller på att ta bort produktalternativ: {{title}}. Den här åtgärden kan inte ångras."
+    },
+    "organization": {
+      "header": "Organisera",
+      "edit": {
+        "header": "Redigera organisering",
+        "toasts": {
+          "success": "Organiseringen av {{title}} har uppdaterats."
+        }
+      }
+    },
+    "stock": {
+      "heading": "Hantera produktens lagernivåer och platser",
+      "description": "Uppdatera lagersaldon för alla produktens varianter.",
+      "loading": "Det här kan ta en liten stund...",
+      "tooltips": {
+        "alreadyManaged": "Den här lagerartikeln kan redan redigeras under {{title}}.",
+        "alreadyManagedWithSku": "Den här lagerartikeln kan redan redigeras under {{title}} ({{sku}})."
+      }
+    },
+    "shippingProfile": {
+      "header": "Fraktkonfiguration",
+      "edit": {
+        "header": "Fraktkonfiguration",
+        "toasts": {
+          "success": "Fraktprofilen för {{title}} har uppdaterats."
+        }
+      },
+      "create": {
+        "errors": {
+          "required": "Fraktprofil krävs"
+        }
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Produkten har tagits bort",
+          "description": "{{title}} har tagits bort."
+        },
+        "error": {
+          "header": "Det gick inte att ta bort produkten"
+        }
+      }
+    }
+  },
+  "collections": {
+    "domain": "Kollektioner",
+    "subtitle": "Organisera produkter i kollektioner.",
+    "list": {
+      "empty": {
+        "heading": "Inga kollektioner",
+        "description": "Det finns inga kollektioner att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga kollektioner matchar de aktuella filtren."
+      }
+    },
+    "createCollection": "Skapa kollektion",
+    "createCollectionHint": "Skapa en ny kollektion för att organisera dina produkter.",
+    "createSuccess": "Kollektionen har skapats.",
+    "editCollection": "Redigera kollektion",
+    "handleTooltip": "Handtaget används för att referera till kollektionen i butiken. Om inget anges genereras det från kollektionens titel.",
+    "deleteWarning": "Du håller på att ta bort kollektion {{title}}. Den här åtgärden kan inte ångras.",
+    "removeSingleProductWarning": "Du håller på att ta bort produkt {{title}} från kollektion. Den här åtgärden kan inte ångras.",
+    "removeProductsWarning_one": "Du håller på att ta bort {{count}} produkt från kollektion. Den här åtgärden kan inte ångras.",
+    "removeProductsWarning_other": "Du håller på att ta bort {{count}} produkter från kollektion. Den här åtgärden kan inte ångras.",
+    "products": {
+      "list": {
+        "noRecordsMessage": "Det finns inga produkter i kollektionen."
+      },
+      "add": {
+        "successToast_one": "Produkten har lagts till i kollektionen.",
+        "successToast_other": "Produkterna har lagts till i kollektionen."
+      },
+      "remove": {
+        "successToast_one": "Produkt har tagits bort från kollektion.",
+        "successToast_other": "Produkter har tagits bort från kollektion."
+      }
+    }
+  },
+  "categories": {
+    "domain": "Kategorier",
+    "subtitle": "Organisera produkter i kategorier och hantera kategoriernas ordning och hierarki.",
+    "create": {
+      "header": "Skapa kategori",
+      "hint": "Skapa en ny kategori för att organisera dina produkter.",
+      "tabs": {
+        "details": "Detaljer",
+        "organize": "Organisera ordning"
+      },
+      "successToast": "Kategorin {{name}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera kategori",
+      "description": "Redigera kategorin för att uppdatera dess uppgifter.",
+      "successToast": "Kategorin har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort kategorin {{name}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Kategorin {{name}} har tagits bort."
+    },
+    "products": {
+      "add": {
+        "disabledTooltip": "Produkten finns redan i den här kategorin.",
+        "successToast_one": "{{count}} produkt har lagts till i kategorin.",
+        "successToast_other": "{{count}} produkter har lagts till i kategorin."
+      },
+      "remove": {
+        "confirmation_one": "Du håller på att ta bort {{count}} produkt från kategorin. Den här åtgärden kan inte ångras.",
+        "confirmation_other": "Du håller på att ta bort {{count}} produkter från kategorin. Den här åtgärden kan inte ångras.",
+        "successToast_one": "{{count}} produkt har tagits bort från kategorin.",
+        "successToast_other": "{{count}} produkter har tagits bort från kategorin."
+      },
+      "list": {
+        "noRecordsMessage": "Det finns inga produkter i kategorin."
+      }
+    },
+    "organize": {
+      "header": "Organisera",
+      "action": "Redigera ordning"
+    },
+    "fields": {
+      "visibility": {
+        "label": "Synlighet",
+        "internal": "Intern",
+        "public": "Publik"
+      },
+      "status": {
+        "label": "Status",
+        "active": "Aktiv",
+        "inactive": "Inaktiv"
+      },
+      "path": {
+        "label": "Sökväg",
+        "tooltip": "Visa kategorins fullständiga sökväg."
+      },
+      "children": {
+        "label": "Underkategorier"
+      },
+      "new": {
+        "label": "Ny"
+      }
+    }
+  },
+  "productOptions": {
+    "domain": "Alternativ",
+    "subtitle": "Hantera produktalternativ och tillhörande värden.",
+    "values": {
+      "header": "Värden",
+      "list": {
+        "noRecords": "Det finns inga värden för det här alternativet."
+      },
+      "delete": {
+        "confirmation": "Du håller på att ta bort alternativvärdet \"{{value}}\". Den här åtgärden kan inte ångras.",
+        "successToast": "Alternativvärdet har tagits bort."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "Det finns inga produkter med det här alternativet."
+      }
+    },
+    "create": {
+      "header": "Skapa Produkt alternativ",
+      "hint": "Skapa ett nytt produktalternativ och hantera dess värden.",
+      "successToast": "Produkt alternativ \"{{title}}\" har skapats.",
+      "tabs": {
+        "details": "Detaljer",
+        "organize": "Organisera ordning"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Produktspecifikt alternativ"
+    },
+    "edit": {
+      "header": "Redigera Produkt alternativ",
+      "description": "Redigera produktalternativet och dess tillhörande värden.",
+      "successToast": "Produkt alternativ \"{{title}}\" har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort produktalternativ \"{{title}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Produkt alternativ har tagits bort."
+    },
+    "fields": {
+      "title": {
+        "label": "Titel",
+        "placeholder": "Storlek"
+      },
+      "values": {
+        "label": "Värden",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
+  "inventory": {
+    "domain": "Lager",
+    "subtitle": "Hantera dina lagerartiklar",
+    "export": {
+      "header": "Exportera lagerlista",
+      "description": "Exportera lagerlistan till en CSV-fil.",
+      "success": {
+        "title": "Vi bearbetar din export",
+        "description": "Exporten kan ta några minuter. Du får en avisering när den är klar."
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Tillämpa filtren i tabellöversikten för att anpassa den här vyn."
+      }
+    },
+    "reserved": "Reserverad",
+    "available": "Tillgänglig",
+    "locationLevels": "Platser",
+    "associatedVariants": "Kopplade varianter",
+    "manageLocations": "Hantera platser",
+    "manageLocationQuantity": "Hantera antal per plats",
+    "deleteWarning": "Du håller på att ta bort en lagerartikel. Den här åtgärden kan inte ångras.",
+    "editItemDetails": "Redigera lagerartikel",
+    "quantityAcrossLocations": "{{quantity}} på {{locations}} platser",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "Enheten som lagret hålls och räknas i. Visas bredvid antal i hela adminpanelen.",
+    "levelDeleted": "Lagernivån har tagits bort.",
+    "create": {
+      "title": "Skapa lagerartikel",
+      "details": "Detaljer",
+      "availability": "Tillgänglighet",
+      "locations": "Platser",
+      "attributes": "Attribut",
+      "requiresShipping": "Kräver frakt",
+      "requiresShippingHint": "Kräver lagerartikeln frakt?",
+      "successToast": "Lagerartikeln har skapats."
+    },
+    "reservation": {
+      "header": "Reservation av {{itemName}}",
+      "editItemDetails": "Redigera reservation",
+      "lineItemId": "Orderrads-ID",
+      "orderID": "Beställnings-ID",
+      "description": "Beskrivning",
+      "location": "Plats",
+      "inStockAtLocation": "I lager på den här platsen",
+      "availableAtLocation": "Tillgänglig på den här platsen",
+      "reservedAtLocation": "Reserverad på den här platsen",
+      "reservedAmount": "Reservera antal",
+      "create": "Skapa reservation",
+      "itemToReserve": "Artikel att reservera",
+      "quantityPlaceholder": "Hur mycket vill du reservera?",
+      "descriptionPlaceholder": "Vilken typ av reservation är detta?",
+      "successToast": "Reservation har skapats.",
+      "updateSuccessToast": "Reservation har uppdaterats.",
+      "deleteSuccessToast": "Reservation har tagits bort.",
+      "errors": {
+        "noAvaliableQuantity": "Lagerplatsen har inte tillräckligt tillgängligt antal.",
+        "quantityOutOfRange": "Minsta antal är 1 och högsta antal är {{max}}"
+      }
+    },
+    "adjustInventory": {
+      "errors": {
+        "stockedQuantity": "Lagrat antal kan inte sättas lägre än det reserverade antalet {{quantity}}."
+      }
+    },
+    "toast": {
+      "updateLocations": "Platserna uppdaterades.",
+      "updateLevel": "Lagernivån har uppdaterats.",
+      "updateItem": "Lagerartikeln har uppdaterats."
+    },
+    "stock": {
+      "title": "Uppdatera lagernivåer",
+      "description": "Uppdatera lagersaldon för valda lagerartiklar.",
+      "action": "Redigera lagernivåer",
+      "placeholder": "Inte aktiverad",
+      "disablePrompt_one": "Du håller på att inaktivera {{count}} lagernivå. Den här åtgärden kan inte ångras.",
+      "disablePrompt_other": "Du håller på att inaktivera {{count}} lagernivåer. Den här åtgärden kan inte ångras.",
+      "disabledToggleTooltip": "Kan inte inaktiveras: rensa inkommande och/eller reserverat antal först.",
+      "successToast": "Lagernivåerna har uppdaterats."
+    }
+  },
+  "giftCards": {
+    "domain": "Presentkort",
+    "editGiftCard": "Redigera presentkort",
+    "createGiftCard": "Skapa presentkort",
+    "createGiftCardHint": "Skapa ett presentkort manuellt som kan användas som betalningsmetod i butiken.",
+    "selectRegionFirst": "Välj först en region",
+    "deleteGiftCardWarning": "Du håller på att ta bort presentkortet {{code}}. Den här åtgärden kan inte ångras.",
+    "balanceHigherThanValue": "Saldot kan inte vara högre än det ursprungliga beloppet.",
+    "balanceLowerThanZero": "Saldot kan inte vara negativt.",
+    "expiryDateHint": "Olika länder har olika regler för presentkorts giltighetstid. Kontrollera lokala regler innan du anger ett utgångsdatum.",
+    "regionHint": "Om du ändrar presentkortets region ändras även dess valuta, vilket kan påverka värdet.",
+    "enabledHint": "Ange om presentkortet är aktiverat eller inaktiverat.",
+    "balance": "Saldo",
+    "currentBalance": "Aktuellt saldo",
+    "initialBalance": "Initialt saldo",
+    "personalMessage": "Personligt meddelande",
+    "recipient": "Mottagare"
+  },
+  "customers": {
+    "domain": "Kunder",
+    "list": {
+      "empty": {
+        "heading": "Inga kunder",
+        "description": "Det finns inga kunder att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga kunder matchar de aktuella filtren."
+      },
+      "noRecordsMessage": "Dina kunder kommer att visas här."
+    },
+    "create": {
+      "header": "Skapa kund",
+      "hint": "Skapa en ny kund och hantera kundens uppgifter.",
+      "successToast": "Kund {{email}} har skapats."
+    },
+    "groups": {
+      "label": "Kundgrupper",
+      "remove": "Är du säker på att du vill ta bort kund från \"{{name}}\" kundgrupp?",
+      "removeMany": "Är du säker på att du vill ta bort kunden från följande kundgrupper: {{groups}}?",
+      "alreadyAddedTooltip": "Kunden finns redan i den här kundgruppen.",
+      "list": {
+        "noRecordsMessage": "Kunden tillhör ingen grupp."
+      },
+      "add": {
+        "success": "Kunden har lagts till i: {{groups}}.",
+        "list": {
+          "noRecordsMessage": "Skapa först en kundgrupp."
+        }
+      },
+      "removed": {
+        "success": "Kunden har tagits bort från: {{groups}}.",
+        "list": {
+          "noRecordsMessage": "Skapa först en kundgrupp."
+        }
+      }
+    },
+    "edit": {
+      "header": "Redigera kund",
+      "emailDisabledTooltip": "E-postadressen kan inte ändras för registrerade kunder.",
+      "successToast": "Kund {{email}} har uppdaterats."
+    },
+    "delete": {
+      "title": "Ta bort Kund",
+      "description": "Du håller på att ta bort kund {{email}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Kund {{email}} har tagits bort."
+    },
+    "fields": {
+      "guest": "Gäst",
+      "registered": "Registrerad",
+      "groups": "Grupper"
+    },
+    "registered": "Registrerad",
+    "guest": "Gäst",
+    "hasAccount": "Har konto",
+    "addresses": {
+      "title": "Adresser",
+      "fields": {
+        "addressName": "Adressnamn",
+        "address1": "Adress 1",
+        "address2": "Adress 2",
+        "city": "Ort",
+        "province": "Län/region",
+        "postalCode": "Postnummer",
+        "country": "Land",
+        "phone": "Telefon",
+        "company": "Företag",
+        "countryCode": "Landskod",
+        "provinceCode": "Regionskod"
+      },
+      "create": {
+        "header": "Skapa adress",
+        "hint": "Skapa en ny adress för kunden.",
+        "successToast": "Adressen har skapats."
+      }
+    }
+  },
+  "customerGroups": {
+    "domain": "Kundgrupper",
+    "subtitle": "Organisera kunder i grupper. Grupper kan ha olika kampanjer och priser.",
+    "list": {
+      "empty": {
+        "heading": "Inga kundgrupper",
+        "description": "Det finns inga kundgrupper att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga kundgrupper matchar de aktuella filterkriterierna."
+      }
+    },
+    "create": {
+      "header": "Skapa kundgrupp",
+      "hint": "Skapa en ny kundgrupp för att segmentera dina kunder.",
+      "successToast": "Kundgruppen {{name}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera kundgrupp",
+      "successToast": "Kundgruppen {{name}} har uppdaterats."
+    },
+    "delete": {
+      "title": "Ta bort kundgrupp",
+      "description": "Du håller på att ta bort kundgrupp {{name}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Kundgruppen {{name}} har tagits bort."
+    },
+    "customers": {
+      "alreadyAddedTooltip": "Kunden har redan lagts till i gruppen.",
+      "add": {
+        "successToast_one": "Kunden har lagts till i gruppen.",
+        "successToast_other": "Kunderna har lagts till i gruppen.",
+        "list": {
+          "noRecordsMessage": "Skapa först en kund."
+        }
+      },
+      "remove": {
+        "title_one": "Ta bort kund",
+        "title_other": "Ta bort kunder",
+        "description_one": "Du håller på att ta bort {{count}} kund från kundgrupp. Den här åtgärden kan inte ångras.",
+        "description_other": "Du håller på att ta bort {{count}} kunder från kundgrupp. Den här åtgärden kan inte ångras."
+      },
+      "list": {
+        "noRecordsMessage": "Den här gruppen har inga kunder."
+      }
+    }
+  },
+  "orders": {
+    "giftCardsStoreCreditLines": "Presentkort och krediter",
+    "creditLines": {
+      "title": "Krediter",
+      "total": "Summa av alla krediter",
+      "creditOrDebit": "Kredit / debet",
+      "createCreditLine": "Skapa kredit",
+      "createCreditLineSuccess": "Krediten har skapats",
+      "createCreditLineError": "Det gick inte att skapa krediten",
+      "createCreditLineDescription": "Skapa en kredit på {{amount}}",
+      "operation": "Åtgärd",
+      "credit": "Kredit",
+      "creditDescription": "Lägger till ett positivt belopp på beställningen",
+      "debit": "Debet",
+      "debitDescription": "Drar av ett belopp från beställningen"
+    },
+    "balanceSettlement": {
+      "title": "Saldoavräkning",
+      "settlementType": "Avräkningstyp",
+      "settlementTypes": {
+        "paymentMethod": "Betalningsmetod",
+        "paymentMethodDescription": "Återbetala beloppet till betalningsmetoden",
+        "creditLine": "Butikskredit",
+        "creditLineDescription": "Återbetala beloppet som butikskredit"
+      }
+    },
+    "domain": "Beställningar",
+    "claim": "Reklamation",
+    "exchange": "Byte",
+    "return": "Retur",
+    "cancelWarning": "Du håller på att avbryta beställningen {{id}}. Den här åtgärden kan inte ångras.",
+    "orderCanceled": "Beställningen har avbrutits",
+    "onDateFromSalesChannel": "{{date}} från {{salesChannel}}",
+    "list": {
+      "noRecordsMessage": "Dina beställningar kommer att visas här."
+    },
+    "export": {
+      "header": "Exportera beställningslista",
+      "description": "Exportera beställningslistan till en CSV-fil.",
+      "success": {
+        "title": "Exporten har startat",
+        "description": "Du får en avisering när exporten är klar."
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Följande filter kommer att tillämpas på exporten."
+      }
+    },
+    "status": {
+      "not_paid": "Inte betald",
+      "pending": "Väntande",
+      "completed": "Slutförd",
+      "draft": "Utkast",
+      "archived": "Arkiverad",
+      "canceled": "Avbruten",
+      "requires_action": "Kräver åtgärd"
+    },
+    "summary": {
+      "requestReturn": "Begär retur",
+      "allocateItems": "Tilldela artiklar",
+      "editOrder": "Redigera beställning",
+      "editOrderContinue": "Fortsätt redigera beställningen",
+      "inventoryKit": "Består av {{count}}× lagerartiklar",
+      "itemTotal": "Totalt för artiklar",
+      "shippingTotal": "Total frakt",
+      "discountTotal": "Total rabatt",
+      "taxTotalIncl": "Total moms (inkluderad)",
+      "itemSubtotal": "Artikeldelsumma",
+      "shippingSubtotal": "Fraktdelsumma",
+      "discountSubtotal": "Rabatt, delsumma",
+      "taxTotal": "Total moms",
+      "totalAfterDiscount": "Totalt efter rabatt"
+    },
+    "transfer": {
+      "title": "Överför ägarskap",
+      "requestSuccess": "Begäran om att överföra beställningen har skickats till: {{email}}.",
+      "guestSuccess": "Beställningen har överförts till gästkunden {{email}}.",
+      "ownerType": "Kontotyp",
+      "registered": "Registrerad",
+      "registeredDescription": "Överför till en registrerad kund som måste godkänna begäran.",
+      "guest": "Gäst",
+      "guestDescription": "Överför direkt till en gästkund via e-post.",
+      "currentOwner": "Nuvarande ägare",
+      "newOwner": "Ny ägare",
+      "newGuestOwner": "Ny ägares e-postadress",
+      "currentOwnerDescription": "Kunden som för närvarande är kopplad till den här beställningen.",
+      "newOwnerDescription": "Kunden som beställningen ska överföras till.",
+      "newGuestOwnerDescription": "E-postadressen till gästkunden som beställningen ska överföras till. En gästkund skapas om ingen redan finns."
+    },
+    "payment": {
+      "title": "Betalningar",
+      "isReadyToBeCaptured": "Betalning <0/> är redo att debiteras.",
+      "totalPaidByCustomer": "Totalt betalt av kunden",
+      "totalStoreCreditRefunds": "Totala återbetalningar som butikskredit",
+      "capture": "Debitera betalning",
+      "capture_short": "Debitera",
+      "refund": "Återbetalning",
+      "markAsPaid": "Markera som betald",
+      "statusLabel": "Betalningsstatus",
+      "statusTitle": "Betalningsstatus",
+      "status": {
+        "notPaid": "Inte betald",
+        "authorized": "Auktoriserad",
+        "partiallyAuthorized": "Delvis auktoriserad",
+        "awaiting": "Väntar",
+        "captured": "Debiterad",
+        "partiallyRefunded": "Delvis återbetald",
+        "partiallyCaptured": "Delvis debiterad",
+        "refunded": "Återbetald",
+        "canceled": "Avbruten",
+        "requiresAction": "Kräver åtgärd"
+      },
+      "capturePayment": "Betalningen på {{amount}} kommer att debiteras.",
+      "capturePaymentSuccess": "Betalningen på {{amount}} har debiterats",
+      "markAsPaidPayment": "Betalningen på {{amount}} kommer att markeras som betald.",
+      "markAsPaidPaymentSuccess": "Betalningen på {{amount}} har markerats som betald",
+      "pendingAuthorization": "Betalningen väntar på auktorisering från betalningsleverantören.",
+      "checkStatus": "Kontrollera status",
+      "checkStatusSuccess": "Betalningen har auktoriserats.",
+      "stillPending": "Betalningen väntar fortfarande på auktorisering.",
+      "createRefund": "Skapa återbetalning",
+      "refundPaymentSuccess": "Återbetalning av {{amount}} genomfördes",
+      "createRefundWrongQuantity": "Antalet måste vara mellan 1 och {{number}}",
+      "refundAmount": "Återbetala {{ amount }}",
+      "paymentLink": "Kopiera betalningslänk för {{ amount }}",
+      "selectPaymentToRefund": "Välj betalning att återbetala"
+    },
+    "edits": {
+      "title": "Redigera beställning",
+      "confirm": "Bekräfta ändring",
+      "confirmText": "Du håller på att bekräfta en beställningsändring. Den här åtgärden kan inte ångras.",
+      "cancel": "Avbryt Redigera",
+      "currentItems": "Nuvarande artiklar",
+      "currentItemsDescription": "Justera artikelantal eller ta bort artiklar.",
+      "addItemsDescription": "Du kan lägga till nya artiklar i beställningen.",
+      "addItems": "Lägg till artiklar",
+      "amountPaid": "Betalt belopp",
+      "newTotal": "Ny total",
+      "differenceDue": "Skillnad att betala",
+      "create": "Redigera beställning",
+      "currentTotal": "Aktuell total",
+      "noteHint": "Lägg till en intern anteckning för ändringen",
+      "sendNotification": "Skicka avisering",
+      "sendNotificationHint": "Meddela kunden om den här beställningsändringen.",
+      "cancelSuccessToast": "Beställningsändringen har avbrutits",
+      "createSuccessToast": "Begäran om beställningsändring har skapats",
+      "activeChangeError": "Det finns redan en aktiv ändring på beställningen, till exempel retur, reklamation eller byte. Slutför eller avbryt ändringen innan du redigerar beställningen.",
+      "panel": {
+        "title": "Beställningsändring begärd",
+        "titlePending": "Beställningsändring väntar"
+      },
+      "toast": {
+        "canceledSuccessfully": "Beställningsändringen har avbrutits",
+        "confirmedSuccessfully": "Beställningsändringen har bekräftats"
+      },
+      "validation": {
+        "quantityLowerThanFulfillment": "Antalet måste vara större än det antal som redan har skickats."
+      }
+    },
+    "edit": {
+      "email": {
+        "title": "Redigera e-postadress",
+        "requestSuccess": "Beställningens e-postadress har uppdaterats till {{email}}."
+      },
+      "shippingAddress": {
+        "title": "Redigera leveransadressen",
+        "requestSuccess": "Beställning leveransadressen uppdaterade."
+      },
+      "billingAddress": {
+        "title": "Redigera faktureringsadressen",
+        "requestSuccess": "Beställning faktureringsadressen uppdaterade."
+      }
+    },
+    "returns": {
+      "create": "Skapa retur",
+      "confirm": "Bekräfta retur",
+      "confirmText": "Du håller på att bekräfta en retur. Den här åtgärden kan inte ångras.",
+      "inbound": "Inkommande",
+      "outbound": "Utgående",
+      "sendNotification": "Skicka avisering",
+      "sendNotificationHint": "Meddela kunden om returen.",
+      "returnTotal": "Totalt för retur",
+      "inboundTotal": "Totalt inkommande",
+      "estDifference": "Beräknad skillnad",
+      "outstandingAmount": "Utestående belopp",
+      "reason": "Orsak",
+      "reasonHint": "Välj varför kunden vill returnera artiklarna.",
+      "note": "Anteckning",
+      "noInventoryLevel": "Ingen lagernivå",
+      "noInventoryLevelDesc": "Den valda lagerplatsen saknar lagernivå för de valda artiklarna. Returen kan begäras men kan inte tas emot förrän en lagernivå har skapats för lagerplatsen.",
+      "noteHint": "Du kan skriva fritt om du vill ange ytterligare information.",
+      "location": "Plats",
+      "locationHint": "Välj vilken lagerplats artiklarna ska returneras till.",
+      "inboundShipping": "Returfrakt",
+      "inboundShippingHint": "Välj vilken metod du vill använda.",
+      "returnableQuantityLabel": "Returnerbart antal",
+      "refundableAmountLabel": "Återbetalningsbart belopp",
+      "returnRequestedInfo": "Retur begärd för {{requestedItemsCount}} artiklar",
+      "returnReceivedInfo": "Retur mottagen för {{requestedItemsCount}} artiklar",
+      "itemReceived": "Artiklar mottagna",
+      "returnRequested": "Retur begärd",
+      "damagedItemReceived": "Skadade artiklar mottagna",
+      "damagedItemsReturned": "{{quantity}} skadade artiklar returnerade",
+      "activeChangeError": "Det finns en aktiv beställningsändring på den här beställningen. Slutför eller avbryt ändringen först.",
+      "cancel": {
+        "title": "Avbryt retur",
+        "description": "Är du säker på att du vill avbryta returförfrågan?"
+      },
+      "placeholders": {
+        "noReturnShippingOptions": {
+          "title": "Inga alternativ för returfrakt hittades",
+          "hint": "Inga alternativ för returfrakt har skapats för lagerplatsen. Du kan skapa ett under <LinkComponent>Plats och frakt</LinkComponent>."
+        },
+        "outboundShippingOptions": {
+          "title": "Inga utgående fraktalternativ hittades",
+          "hint": "Inga utgående fraktalternativ har skapats för platsen. Du kan skapa ett under <LinkComponent>Platser och frakt</LinkComponent>."
+        }
+      },
+      "receive": {
+        "action": "Ta emot artiklar",
+        "receiveItems": "{{ returnType }} {{ id }}",
+        "restockAll": "Lägg tillbaka alla artiklar i lager",
+        "itemsLabel": "Artiklar mottagna",
+        "title": "Ta emot artiklar för #{{returnId}}",
+        "sendNotificationHint": "Meddela kunden om den mottagna returen.",
+        "inventoryWarning": "Observera att lagernivåerna justeras automatiskt utifrån dina uppgifter ovan.",
+        "writeOffInputLabel": "Hur många av artiklarna är skadade?",
+        "toast": {
+          "success": "Returen har tagits emot.",
+          "errorLargeValue": "Antalet är större än det begärda antalet artiklar.",
+          "errorNegativeValue": "Antalet kan inte vara negativt.",
+          "errorLargeDamagedValue": "Antalet skadade artiklar plus mottagna oskadade artiklar överstiger det totala antalet artiklar i returen. Minska antalet oskadade artiklar."
+        }
+      },
+      "toast": {
+        "canceledSuccessfully": "Returen har avbrutits",
+        "confirmedSuccessfully": "Returen har bekräftats"
+      },
+      "panel": {
+        "title": "Retur påbörjad",
+        "description": "Det finns en öppen returförfrågan som behöver slutföras"
+      }
+    },
+    "claims": {
+      "create": "Skapa reklamation",
+      "confirm": "Bekräfta reklamation",
+      "confirmText": "Du håller på att bekräfta en reklamation. Den här åtgärden kan inte ångras.",
+      "manage": "Hantera reklamation",
+      "outbound": "Utgående",
+      "outboundItemAdded": "{{itemsCount}} tillagda via reklamation",
+      "outboundTotal": "Totalt utgående",
+      "outboundShipping": "Utgående frakt",
+      "outboundShippingHint": "Välj vilken metod du vill använda.",
+      "refundAmount": "Beräknad skillnad",
+      "carryOverPromotion": "För över kampanjer",
+      "carryOverPromotionHint": "Tillämpa beställningens kampanjer på reklamationsartiklarna",
+      "carryOverPromotionTooltip": "Endast kampanjer med fast belopp och fördelningen ”Varje” samt procentkampanjer med fördelningen ”Varje” eller ”Över flera” kan föras över till utgående reklamationsartiklar.",
+      "activeChangeError": "Det finns en aktiv beställningsändring på den här beställningen. Slutför eller avbryt den föregående ändringen.",
+      "actions": {
+        "cancelClaim": {
+          "successToast": "Reklamationen har avbrutits."
+        }
+      },
+      "cancel": {
+        "title": "Avbryt reklamation",
+        "description": "Är du säker på att du vill avbryta reklamationen?"
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "Listan innehåller endast alternativ för returfrakt."
+      },
+      "toast": {
+        "canceledSuccessfully": "Reklamationen har avbrutits",
+        "confirmedSuccessfully": "Reklamationen har bekräftats"
+      },
+      "panel": {
+        "title": "Reklamation påbörjad",
+        "description": "Det finns en öppen reklamation som behöver slutföras"
+      }
+    },
+    "exchanges": {
+      "create": "Skapa byte",
+      "manage": "Hantera byte",
+      "confirm": "Bekräfta byte",
+      "confirmText": "Du håller på att bekräfta ett byte. Den här åtgärden kan inte ångras.",
+      "outbound": "Utgående",
+      "outboundItemAdded": "{{itemsCount}} tillagda via byte",
+      "outboundTotal": "Totalt utgående",
+      "outboundShipping": "Utgående frakt",
+      "outboundShippingHint": "Välj vilken metod du vill använda.",
+      "refundAmount": "Beräknad skillnad",
+      "carryOverPromotion": "För över kampanjer",
+      "carryOverPromotionHint": "Tillämpa beställningens kampanjer på bytesartiklarna",
+      "carryOverPromotionTooltip": "Endast kampanjer med fast belopp och fördelningen ”Varje” samt procentkampanjer med fördelningen ”Varje” eller ”Över flera” kan föras över till utgående bytesartiklar.",
+      "activeChangeError": "Det finns en aktiv beställningsändring på den här beställningen. Slutför eller avbryt den föregående ändringen.",
+      "actions": {
+        "cancelExchange": {
+          "successToast": "Bytet har avbrutits."
+        }
+      },
+      "cancel": {
+        "title": "Avbryt byte",
+        "description": "Är du säker på att du vill avbryta bytet?"
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "Listan innehåller endast alternativ för returfrakt."
+      },
+      "toast": {
+        "canceledSuccessfully": "Bytet har avbrutits",
+        "confirmedSuccessfully": "Bytet har bekräftats"
+      },
+      "panel": {
+        "title": "Byte påbörjat",
+        "description": "Det finns ett öppet byte som behöver slutföras"
+      }
+    },
+    "reservations": {
+      "allocatedLabel": "Tilldelad",
+      "notAllocatedLabel": "Inte tilldelad"
+    },
+    "allocateItems": {
+      "action": "Tilldela artiklar",
+      "title": "Tilldela beställningsartiklar",
+      "locationDescription": "Välj vilken plats artiklarna ska tilldelas från.",
+      "itemsToAllocate": "Artiklar att tilldela",
+      "itemsToAllocateDesc": "Välj antal artiklar som ska tilldelas",
+      "search": "Sök artiklar",
+      "consistsOf": "Består av {{num}}× lagerartiklar",
+      "requires": "Kräver {{num}} per variant",
+      "toast": {
+        "created": "Artiklarna har tilldelats",
+        "error": "Följande artiklar kunde inte tilldelas: {{items}}"
+      },
+      "error": {
+        "quantityNotAllocated": "Det finns artiklar som inte har tilldelats."
+      }
+    },
+    "shipment": {
+      "title": "Markera leverans som skickad",
+      "trackingNumber": "Spårningsnummer",
+      "trackingUrl": "Spårnings-URL",
+      "labelUrl": "Etikett URL",
+      "addTracking": "Lägg till spårningsnummer",
+      "sendNotification": "Skicka avisering",
+      "sendNotificationHint": "Meddela kunden om den här försändelsen.",
+      "toastCreated": "Försändelsen har skapats."
+    },
+    "fulfillment": {
+      "cancelWarning": "Du håller på att avbryta en leverans. Den här åtgärden kan inte ångras.",
+      "markAsDeliveredWarning": "Du håller på att markera leveransen som levererad. Den här åtgärden kan inte ångras.",
+      "differentOptionSelected": "Det valda fraktalternativet skiljer sig från det som kunden valde.",
+      "disabledItemTooltip": "Det valda fraktalternativet tillåter inte leverans av den här artikeln",
+      "unfulfilledItems": "Ej levererade artiklar",
+      "statusLabel": "Leveransstatus",
+      "statusTitle": "Leveransstatus",
+      "fulfillItems": "Skicka artiklar",
+      "awaitingFulfillmentBadge": "Väntar på leverans",
+      "requiresShipping": "Kräver frakt",
+      "number": "Leverans #{{number}}",
+      "itemsToFulfill": "Artiklar att leverera",
+      "create": "Skapa leverans",
+      "available": "Tillgänglig",
+      "inStock": "I lager",
+      "markAsShipped": "Markera som skickad",
+      "markAsPickedUp": "Markera som upphämtad",
+      "markAsDelivered": "Markera som levererad",
+      "itemsToFulfillDesc": "Välj artiklar och antal som ska levereras",
+      "locationDescription": "Välj vilken lagerplats artiklarna ska levereras från.",
+      "locationUnavailable": "Platsen har tagits bort eller är otillgänglig",
+      "sendNotificationHint": "Meddela kunder om den skapade leveransen.",
+      "methodDescription": "Välj en annan fraktmetod än den kunden valde",
+      "error": {
+        "wrongQuantity": "Endast en artikel är tillgänglig för leverans.",
+        "wrongQuantity_one": "Endast en artikel är tillgänglig för leverans.",
+        "wrongQuantity_other": "Antalet måste vara mellan 1 och {{number}}",
+        "noItems": "Inga artiklar att leverera.",
+        "noShippingOption": "Fraktalternativ krävs",
+        "noLocation": "Plats krävs"
+      },
+      "status": {
+        "notFulfilled": "Inte skickad",
+        "partiallyFulfilled": "Delvis skickad",
+        "fulfilled": "Skickad",
+        "partiallyShipped": "Delvis skickad",
+        "shipped": "Skickad",
+        "delivered": "Levererad",
+        "partiallyDelivered": "Delvis levererad",
+        "partiallyReturned": "Delvis returnerad",
+        "returned": "Returnerad",
+        "canceled": "Avbruten",
+        "requiresAction": "Kräver åtgärd",
+        "awaitingPickup": "Väntar på upphämtning",
+        "awaitingShipping": "Väntar på frakt",
+        "awaitingDelivery": "Väntar på leverans"
+      },
+      "toast": {
+        "created": "Leveransen har skapats",
+        "canceled": "Leveransen har avbrutits",
+        "fulfillmentShipped": "En redan skickad leverans kan inte avbrytas.",
+        "fulfillmentDelivered": "Leveransen har markerats som levererad",
+        "fulfillmentPickedUp": "Leveransen har markerats som upphämtad"
+      },
+      "trackingLabel": "Spårning",
+      "shippingFromLabel": "Frakt från",
+      "itemsLabel": "Artiklar"
+    },
+    "refund": {
+      "title": "Skapa återbetalning",
+      "sendNotificationHint": "Meddela kunder om den skapade återbetalningen.",
+      "systemPayment": "Systembetalning",
+      "systemPaymentDesc": "En eller flera betalningar är systembetalningar. Observera att debiteringar och återbetalningar för sådana betalningar inte hanteras av Medusa.",
+      "error": {
+        "amountToLarge": "Du kan inte återbetala mer än det ursprungliga beställningsbeloppet.",
+        "amountNegative": "Återbetalningsbeloppet måste vara ett positivt tal.",
+        "reasonRequired": "Välj en orsak till återbetalningen."
+      }
+    },
+    "customer": {
+      "contactLabel": "Kontakt",
+      "editEmail": "Redigera e-postadress",
+      "transferOwnership": "Överför ägarskap",
+      "editBillingAddress": "Redigera faktureringsadressen",
+      "editShippingAddress": "Redigera leveransadressen"
+    },
+    "activity": {
+      "header": "Aktivitet",
+      "showMoreActivities_one": "Visa {{count}} aktivitet till",
+      "showMoreActivities_other": "Visa {{count}} aktiviteter till",
+      "comment": {
+        "label": "Kommentar",
+        "placeholder": "Skriv en kommentar",
+        "addButtonText": "Lägg till kommentar",
+        "deleteButtonText": "Ta bort kommentar"
+      },
+      "from": "från",
+      "to": "Till",
+      "events": {
+        "common": {
+          "toReturn": "Att returnera",
+          "toSend": "Att skicka"
+        },
+        "placed": {
+          "title": "Beställning lagd",
+          "fromSalesChannel": "från {{salesChannel}}"
+        },
+        "canceled": {
+          "title": "Beställningen har avbrutits"
+        },
+        "payment": {
+          "awaiting": "Väntar på betalning",
+          "captured": "Betalningen har debiterats",
+          "canceled": "Betalningen har avbrutits",
+          "refunded": "Betalningen har återbetalats"
+        },
+        "fulfillment": {
+          "created": "Artiklar skickade",
+          "canceled": "Leverans avbruten",
+          "shipped": "Artiklar skickade",
+          "delivered": "Artiklar levererade",
+          "items_one": "{{count}} artikel",
+          "items_other": "{{count}} artiklar"
+        },
+        "return": {
+          "created": "Retur #{{returnId}} begärd",
+          "canceled": "Retur #{{returnId}} avbruten",
+          "received": "Retur #{{returnId}} mottagen",
+          "items_one": "{{count}} artikel returnerad",
+          "items_other": "{{count}} artiklar returnerade"
+        },
+        "note": {
+          "comment": "Kommentar",
+          "byLine": "av {{author}}"
+        },
+        "claim": {
+          "created": "Reklamation #{{claimId}} begärd",
+          "canceled": "Reklamation #{{claimId}} avbruten",
+          "itemsInbound": "{{count}} artikel att returnera",
+          "itemsOutbound": "{{count}} artikel att skicka"
+        },
+        "exchange": {
+          "created": "Byte #{{exchangeId}} begärt",
+          "canceled": "Byte #{{exchangeId}} avbrutet",
+          "itemsInbound": "{{count}} artikel att returnera",
+          "itemsOutbound": "{{count}} artikel att skicka"
+        },
+        "edit": {
+          "requested": "Beställningsändring #{{editId}} begärd",
+          "confirmed": "Beställningsändring #{{editId}} bekräftad"
+        },
+        "transfer": {
+          "requested": "Överföring av beställning #{{transferId}} begärd",
+          "confirmed": "Överföring av beställning #{{transferId}} bekräftad",
+          "declined": "Överföring av beställning #{{transferId}} nekad"
+        },
+        "update_order": {
+          "shipping_address": "Leveransadress uppdaterad",
+          "billing_address": "Faktureringsadress uppdaterad",
+          "email": "E-postadress uppdaterad"
+        }
+      }
+    },
+    "fields": {
+      "displayId": "Visnings-ID",
+      "refundableAmount": "Återbetalningsbart belopp",
+      "returnableQuantity": "Returnerbart antal"
+    }
+  },
+  "draftOrders": {
+    "domain": "Orderutkast",
+    "deleteWarning": "Du håller på att ta bort orderutkastet {{id}}. Den här åtgärden kan inte ångras.",
+    "paymentLinkLabel": "Betalningslänk",
+    "cartIdLabel": "Varukorgs-ID",
+    "markAsPaid": {
+      "label": "Markera som betald",
+      "warningTitle": "Markera som betald",
+      "warningDescription": "Du håller på att markera orderutkastet som betalt. Den här åtgärden kan inte ångras och det går inte att ta emot betalning senare."
+    },
+    "status": {
+      "open": "Öppen",
+      "completed": "Slutförd"
+    },
+    "create": {
+      "createDraftOrder": "Skapa orderutkast",
+      "createDraftOrderHint": "Skapa ett nytt orderutkast för att hantera beställningens uppgifter innan den läggs.",
+      "chooseRegionHint": "Välj region",
+      "existingItemsLabel": "Befintliga artiklar",
+      "existingItemsHint": "Lägg till befintliga produkter i orderutkastet.",
+      "customItemsLabel": "Anpassade artiklar",
+      "customItemsHint": "Lägg till anpassade artiklar i orderutkastet.",
+      "addExistingItemsAction": "Lägg till befintliga artiklar",
+      "addCustomItemAction": "Lägg till anpassad artikel",
+      "noCustomItemsAddedLabel": "Inga anpassade artiklar har lagts till ännu",
+      "noExistingItemsAddedLabel": "Inga befintliga artiklar har lagts till ännu",
+      "chooseRegionTooltip": "Välj först en region",
+      "useExistingCustomerLabel": "Använd befintlig kund",
+      "addShippingMethodsAction": "Lägg till fraktmetoder",
+      "unitPriceOverrideLabel": "Åsidosätt enhetspris",
+      "shippingOptionLabel": "Fraktalternativ",
+      "shippingOptionHint": "Välj fraktalternativ för orderutkastet.",
+      "shippingPriceOverrideLabel": "Åsidosätt fraktpris",
+      "shippingPriceOverrideHint": "Åsidosätt fraktpriset för orderutkastet.",
+      "sendNotificationLabel": "Skicka avisering",
+      "sendNotificationHint": "Skicka en avisering till kunden när orderutkastet skapas."
+    },
+    "list": {
+      "noRecordsMessage": "Inga orderutkast hittades",
+      "description": "Skapa ett nytt orderutkast för att komma igång.",
+      "filtered": {
+        "heading": "Inga resultat hittades",
+        "description": "Inga orderutkast matchar dina filter."
+      }
+    },
+    "validation": {
+      "requiredEmailOrCustomer": "E-postadress eller kund krävs.",
+      "requiredItems": "Minst en artikel krävs.",
+      "invalidEmail": "E-postadressen måste vara giltig."
+    }
+  },
+  "stockLocations": {
+    "domain": "Platser och frakt",
+    "list": {
+      "description": "Hantera butikens lagerplatser och fraktalternativ.",
+      "noRecordsMessage": "Inga poster",
+      "noRecordsMessageEmpty": "Inga platser hittades",
+      "noRecordsMessageFiltered": "Inga platser matchar filtren"
+    },
+    "create": {
+      "header": "Skapa lagerplats",
+      "hint": "En lagerplats är en fysisk plats där produkter lagras och skickas från.",
+      "successToast": "Lagerplatsen {{name}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera lagerplats",
+      "viewInventory": "Visa lager",
+      "successToast": "Lagerplatsen {{name}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort lagerplats \"{{name}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Lagerplatsen \"{{name}}\" har tagits bort."
+    },
+    "fulfillmentProviders": {
+      "header": "Leveransleverantörer",
+      "shippingOptionsTooltip": "Den här listan innehåller endast leveransleverantörer som är aktiverade för lagerplatsen. Lägg till dem på lagerplatsen om listan är inaktiverad.",
+      "label": "Anslutna leveransleverantörer",
+      "connectedTo": "Ansluten till {{count}} av {{total}} leveransleverantörer",
+      "noProviders": "Den här lagerplatsen är inte ansluten till några leveransleverantörer.",
+      "action": "Anslut leverantörer",
+      "successToast": "Leveransleverantörerna för lagerplatsen har uppdaterats."
+    },
+    "fulfillmentSets": {
+      "pickup": {
+        "header": "Upphämtning"
+      },
+      "shipping": {
+        "header": "Frakt"
+      },
+      "disable": {
+        "confirmation": "Är du säker på att du vill inaktivera \"{{name}}\"? Alla tillhörande servicezoner och fraktalternativ tas bort. Åtgärden kan inte ångras.",
+        "pickup": "Upphämtning har inaktiverats.",
+        "shipping": "Frakt har inaktiverad."
+      },
+      "enable": {
+        "pickup": "Upphämtning har aktiverats.",
+        "shipping": "Frakt har aktiverad."
+      }
+    },
+    "sidebar": {
+      "header": "Fraktkonfiguration",
+      "shippingProfiles": {
+        "label": "Fraktprofiler",
+        "description": "Gruppera produkter efter fraktkrav"
+      },
+      "shippingOptionTypes": {
+        "label": "Typer av fraktalternativ",
+        "description": "Gruppera fraktalternativ efter typ"
+      }
+    },
+    "salesChannels": {
+      "header": "Försäljningskanaler",
+      "hint": "Hantera försäljningskanaler som är anslutna till den här platsen.",
+      "label": "Anslutna försäljningskanaler",
+      "connectedTo": "Ansluten till {{count}} av {{total}} försäljningskanaler",
+      "noChannels": "Lagerplatsen är inte ansluten till några försäljningskanaler.",
+      "action": "Anslut försäljningskanaler",
+      "successToast": "Försäljningskanalerna har uppdaterats."
+    },
+    "pickupOptions": {
+      "edit": {
+        "header": "Redigera upphämtningsalternativ"
+      }
+    },
+    "shippingOptions": {
+      "create": {
+        "shipping": {
+          "header": "Skapa fraktalternativ för {{zone}}",
+          "hint": "Skapa ett nytt fraktalternativ för att ange hur produkter skickas från den här lagerplatsen.",
+          "label": "Fraktalternativ",
+          "successToast": "Fraktalternativet {{name}} har skapats."
+        },
+        "pickup": {
+          "header": "Skapa upphämtningsalternativ för {{zone}}",
+          "hint": "Skapa ett nytt upphämtningsalternativ för att ange hur produkter hämtas från den här lagerplatsen.",
+          "label": "Upphämtningsalternativ",
+          "successToast": "Upphämtningsalternativet {{name}} har skapats."
+        },
+        "returns": {
+          "header": "Skapa returalternativ för {{zone}}",
+          "hint": "Skapa ett nytt returalternativ för att ange hur produkter returneras till den här lagerplatsen.",
+          "label": "Returalternativ",
+          "successToast": "Returalternativet {{name}} har skapats."
+        },
+        "tabs": {
+          "details": "Detaljer",
+          "prices": "Priser"
+        },
+        "action": "Skapa alternativ"
+      },
+      "delete": {
+        "confirmation": "Du håller på att ta bort fraktalternativ \"{{name}}\". Den här åtgärden kan inte ångras.",
+        "successToast": "Fraktalternativet {{name}} har tagits bort."
+      },
+      "edit": {
+        "header": "Redigera fraktalternativ",
+        "action": "Redigera alternativ",
+        "successToast": "Fraktalternativet {{name}} har uppdaterats."
+      },
+      "pricing": {
+        "action": "Redigera priser"
+      },
+      "conditionalPrices": {
+        "header": "Villkorade priser för {{name}}",
+        "description": "Hantera villkorsstyrda priser för det här fraktalternativet baserat på varukorgens artikelvärde.",
+        "attributes": {
+          "cartItemTotal": "Artikelvärde i varukorgen"
+        },
+        "summaries": {
+          "range": "Om <0>{{attribute}}</0> är mellan <1>{{gte}}</1> och <2>{{lte}}</2>",
+          "greaterThan": "Om <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Om <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+        },
+        "actions": {
+          "addPrice": "Lägg till pris",
+          "manageConditionalPrices": "Hantera villkorsstyrda priser"
+        },
+        "rules": {
+          "amount": "Pris för fraktalternativ",
+          "gte": "Minsta artikelvärde i varukorgen",
+          "lte": "Högsta artikelvärde i varukorgen"
+        },
+        "customRules": {
+          "label": "Anpassade regler",
+          "tooltip": "Det här villkorsstyrda priset har regler som inte kan hanteras i adminpanelen.",
+          "eq": "Varukorgens artikelvärde måste vara lika med",
+          "gt": "Varukorgens artikelvärde måste vara större än",
+          "lt": "Varukorgens artikelvärde måste vara mindre än"
+        },
+        "errors": {
+          "amountRequired": "Pris för fraktalternativ krävs",
+          "minOrMaxRequired": "Minst ett minsta eller högsta artikelvärde för varukorgen måste anges",
+          "minGreaterThanMax": "Minsta artikelvärde får inte vara större än högsta artikelvärde",
+          "duplicateAmount": "Priset för fraktalternativet måste vara unikt för varje villkor",
+          "overlappingConditions": "Villkoren måste vara unika för alla prisregler"
+        }
+      },
+      "fields": {
+        "count": {
+          "shipping_one": "{{count}} fraktalternativ",
+          "shipping_other": "{{count}} fraktalternativ",
+          "pickup_one": "{{count}} upphämtningsalternativ",
+          "pickup_other": "{{count}} upphämtningsalternativ",
+          "returns_one": "{{count}} returalternativ",
+          "returns_other": "{{count}} returalternativ"
+        },
+        "priceType": {
+          "label": "Pristyp",
+          "options": {
+            "fixed": {
+              "label": "Fast",
+              "hint": "Fraktalternativets pris är fast och ändras inte beroende på beställningens innehåll."
+            },
+            "calculated": {
+              "label": "Beräknat",
+              "hint": "Fraktalternativets pris beräknas av leveransleverantören i kassan."
+            }
+          }
+        },
+        "enableInStore": {
+          "label": "Aktivera i butik",
+          "hint": "Anger om kunder kan använda det här alternativet i kassan."
+        },
+        "provider": "Leveransleverantör",
+        "profile": "Fraktprofil",
+        "type": "Typ av fraktalternativ",
+        "fulfillmentOption": "Leveransalternativ"
+      }
+    },
+    "serviceZones": {
+      "create": {
+        "headerPickup": "Skapa servicezon för upphämtning från {{location}}",
+        "headerShipping": "Skapa servicezon för frakt från {{location}}",
+        "action": "Skapa servicezon",
+        "successToast": "Servicezonen {{name}} har skapats."
+      },
+      "edit": {
+        "header": "Redigera servicezon",
+        "successToast": "Servicezonen {{name}} har uppdaterats."
+      },
+      "delete": {
+        "confirmation": "Du håller på att ta bort servicezonen \"{{name}}\". Den här åtgärden kan inte ångras.",
+        "successToast": "Servicezonen {{name}} har tagits bort."
+      },
+      "manageAreas": {
+        "header": "Hantera områden för {{name}}",
+        "action": "Hantera områden",
+        "label": "Områden",
+        "hint": "Välj vilka geografiska områden servicezonen omfattar.",
+        "successToast": "Områdena för {{name}} har uppdaterats."
+      },
+      "fields": {
+        "noRecords": "Det finns inga servicezoner att lägga till fraktalternativ i.",
+        "tip": "En servicezon är en samling geografiska zoner eller områden. Den används för att begränsa tillgängliga fraktalternativ till ett definierat område."
+      }
+    }
+  },
+  "shippingProfile": {
+    "domain": "Fraktprofiler",
+    "subtitle": "Gruppera produkter med liknande fraktkrav i profiler.",
+    "create": {
+      "header": "Skapa fraktprofil",
+      "hint": "Skapa en ny fraktprofil för att gruppera produkter med liknande fraktkrav.",
+      "successToast": "Fraktprofilen {{name}} har skapats."
+    },
+    "delete": {
+      "title": "Ta bort fraktprofil",
+      "description": "Du håller på att ta bort fraktprofilen {{name}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Fraktprofilen {{name}} har tagits bort."
+    },
+    "tooltip": {
+      "type": "Ange typ av fraktprofil, till exempel tungt, skrymmande eller endast godsfrakt."
+    }
+  },
+  "taxRegions": {
+    "domain": "Skatteregioner",
+    "list": {
+      "hint": "Hantera vilken moms du tar ut av kunder när de handlar från olika länder och regioner."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort en skatteregion. Den här åtgärden kan inte ångras.",
+      "successToast": "Skatteregionen har tagits bort."
+    },
+    "create": {
+      "header": "Skapa skatteregion",
+      "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst land.",
+      "errors": {
+        "missingProvider": "Leverantör krävs när du skapar en skatteregion.",
+        "missingCountry": "Land krävs när du skapar en skatteregion."
+      },
+      "successToast": "Skatteregionen har skapats."
+    },
+    "edit": {
+      "header": "Redigera skatteregion",
+      "hint": "Redigera skatteregionens uppgifter.",
+      "successToast": "Skatteregionen har uppdaterats."
+    },
+    "province": {
+      "header": "Provinser",
+      "create": {
+        "header": "Skapa skatteregion för provins",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss provins."
+      }
+    },
+    "provider": {
+      "header": "Momsleverantör"
+    },
+    "state": {
+      "header": "Delstater",
+      "create": {
+        "header": "Skapa skatteregion för delstat",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss delstat."
+      }
+    },
+    "stateOrTerritory": {
+      "header": "Delstater eller territorier",
+      "create": {
+        "header": "Skapa skatteregion för delstat/territorium",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss delstat eller ett visst territorium."
+      }
+    },
+    "county": {
+      "header": "Kommuner",
+      "create": {
+        "header": "Skapa skatteregion för län",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst län."
+      }
+    },
+    "region": {
+      "header": "Regioner",
+      "create": {
+        "header": "Skapa skatteregion",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss region."
+      }
+    },
+    "department": {
+      "header": "Departement",
+      "create": {
+        "header": "Skapa skatteregion för departement",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst departement."
+      }
+    },
+    "territory": {
+      "header": "Territorier",
+      "create": {
+        "header": "Skapa skatteregion för territorium",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst territorium."
+      }
+    },
+    "prefecture": {
+      "header": "Prefekturer",
+      "create": {
+        "header": "Skapa skatteregion för prefektur",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss prefektur."
+      }
+    },
+    "district": {
+      "header": "Distrikt",
+      "create": {
+        "header": "Skapa skatteregion för distrikt",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst distrikt."
+      }
+    },
+    "governorate": {
+      "header": "Guvernement",
+      "create": {
+        "header": "Skapa skatteregion för guvernement",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst guvernement."
+      }
+    },
+    "canton": {
+      "header": "Kantoner",
+      "create": {
+        "header": "Skapa skatteregion för kanton",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss kanton."
+      }
+    },
+    "emirate": {
+      "header": "Emirat",
+      "create": {
+        "header": "Skapa skatteregion för emirat",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för ett visst emirat."
+      }
+    },
+    "sublevel": {
+      "header": "Underregioner",
+      "create": {
+        "header": "Skapa skatteregion för underregion",
+        "hint": "Skapa en ny skatteregion för att definiera momssatser för en viss underregion."
+      }
+    },
+    "taxOverrides": {
+      "header": "Åsidosättningar",
+      "create": {
+        "header": "Skapa åsidosättning",
+        "hint": "Skapa en momssats som åsidosätter standardmomssatser för valda villkor."
+      },
+      "edit": {
+        "header": "Redigera åsidosättning",
+        "hint": "Redigera en momssats som åsidosätter standardmomssatser för valda villkor."
+      }
+    },
+    "taxRates": {
+      "create": {
+        "header": "Skapa momssats",
+        "hint": "Skapa en ny momssats för en region.",
+        "successToast": "Momssatsen har skapats."
+      },
+      "edit": {
+        "header": "Redigera momssats",
+        "hint": "Redigera momssatsen för regionen.",
+        "successToast": "Momssatsen har uppdaterats."
+      },
+      "delete": {
+        "confirmation": "Du håller på att ta bort momssats \"{{name}}\". Den här åtgärden kan inte ångras.",
+        "successToast": "Momssatsen har tagits bort."
+      }
+    },
+    "fields": {
+      "isCombinable": {
+        "label": "Kombinerbar",
+        "hint": "Anger om den här momssatsen kan kombineras med skatteregionens standardsats.",
+        "true": "Kombinerbar",
+        "false": "Kan inte kombineras"
+      },
+      "defaultTaxRate": {
+        "label": "Standard momssats",
+        "tooltip": "Standardmomssatsen för den här regionen, till exempel ett lands ordinarie momssats.",
+        "action": "Skapa standardmomssats"
+      },
+      "taxRate": "Momssats",
+      "taxCode": "Momskod",
+      "taxProvider": "Momsleverantör",
+      "targets": {
+        "label": "Mål",
+        "hint": "Välj vad den här momssatsen ska gälla för.",
+        "options": {
+          "product": "Produkter",
+          "productCollection": "Produktkollektioner",
+          "productTag": "Produkttaggar",
+          "productType": "Produkttyper",
+          "customerGroup": "Kundgrupper",
+          "shippingOption": "Fraktalternativ"
+        },
+        "operators": {
+          "in": "i",
+          "on": "på",
+          "and": "och"
+        },
+        "placeholders": {
+          "product": "Sök efter produkter",
+          "productCollection": "Sök efter produktkollektioner",
+          "productTag": "Sök efter produkttaggar",
+          "productType": "Sök efter produkttyper",
+          "customerGroup": "Sök efter kundgrupper",
+          "shippingOption": "Sök efter fraktalternativ"
+        },
+        "tags": {
+          "product": "Produkt",
+          "productCollection": "Produktkollektion",
+          "productTag": "Produkttagg",
+          "productType": "Produkttyp",
+          "customerGroup": "Kundgrupp",
+          "shippingOption": "Fraktalternativ"
+        },
+        "modal": {
+          "header": "Lägg till mål"
+        },
+        "values_one": "{{count}} värde",
+        "values_other": "{{count}} värden",
+        "numberOfTargets_one": "{{count}} mål",
+        "numberOfTargets_other": "{{count}} mål",
+        "additionalValues_one": "och {{count}} värde till",
+        "additionalValues_other": "och {{count}} värden till",
+        "action": "Lägg till mål"
+      },
+      "sublevels": {
+        "labels": {
+          "province": "Län/region",
+          "state": "Delstat",
+          "region": "Region",
+          "stateOrTerritory": "Delstat/territorium",
+          "department": "Departement",
+          "county": "Kommun",
+          "territory": "Territorium",
+          "prefecture": "Prefektur",
+          "district": "Distrikt",
+          "governorate": "Guvernement",
+          "emirate": "Emirat",
+          "canton": "Kanton",
+          "sublevel": "Kod för underregion"
+        },
+        "placeholders": {
+          "province": "Välj provins",
+          "state": "Välj delstat",
+          "region": "Välj region",
+          "stateOrTerritory": "Välj delstat/territorium",
+          "department": "Välj departement",
+          "county": "Välj län",
+          "territory": "Välj territorium",
+          "prefecture": "Välj prefektur",
+          "district": "Välj distrikt",
+          "governorate": "Välj guvernement",
+          "emirate": "Välj emirat",
+          "canton": "Välj kanton"
+        },
+        "tooltips": {
+          "sublevel": "Ange ISO 3166-2-kod för underregionens skatteregion.",
+          "notPartOfCountry": "{{province}} verkar inte tillhöra {{country}}. Kontrollera att detta stämmer."
+        },
+        "alert": {
+          "header": "Underregioner är inaktiverade för den här skatteregionen",
+          "description": "Underregioner är inaktiverade som standard för den här regionen. Du kan aktivera dem för att skapa underregioner som län, delstater eller territorier.",
+          "action": "Aktivera underregioner"
+        }
+      },
+      "noDefaultRate": {
+        "label": "Ingen standardsats",
+        "tooltip": "Den här skatteregionen saknar en standardmomssats. Om det finns en ordinarie sats, till exempel ett lands moms, lägger du till den här."
+      }
+    }
+  },
+  "promotions": {
+    "domain": "Kampanjer",
+    "list": {
+      "empty": {
+        "heading": "Inga kampanjer",
+        "description": "Det finns inga kampanjer att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga kampanjer matchar de aktuella filtren."
+      }
+    },
+    "sections": {
+      "details": "Kampanjdetaljer"
+    },
+    "tabs": {
+      "template": "Typ",
+      "details": "Detaljer",
+      "campaign": "Kampanj"
+    },
+    "fields": {
+      "type": "Typ",
+      "value_type": "Värde Typ",
+      "value": "Värde",
+      "campaign": "Kampanj",
+      "method": "Metod",
+      "allocation": "Fördelning",
+      "allocationTooltip": "”Varje” tillämpar antalsgränsen per artikel, medan ”En gång” tillämpar antalsgränsen på hela varukorgen.",
+      "addCondition": "Lägg till villkor",
+      "clearAll": "Rensa alla",
+      "taxInclusive": "Inklusive moms",
+      "usageLimit": "Användningsgräns",
+      "usage": "Användning",
+      "amount": {
+        "tooltip": "Välj valutakod för att kunna ange belopp"
+      },
+      "conditions": {
+        "rules": {
+          "title": "Vem kan använda den här koden?",
+          "description": "Ange vilka kunder som får använda kampanjkoden. Om du inte gör några ändringar kan alla kunder använda den."
+        },
+        "target-rules": {
+          "order": {
+            "title": "Vilka artiklar ska kampanjen gälla för?",
+            "description": "Kampanjen tillämpas på artiklar som matchar följande villkor."
+          },
+          "shipping_methods": {
+            "title": "Vilka fraktmetoder ska kampanjen gälla för?",
+            "description": "Kampanjen tillämpas på fraktmetoder som matchar följande villkor."
+          },
+          "items": {
+            "title": "Vilka artiklar ska kampanjen gälla för?",
+            "description": "Kampanjen tillämpas på artiklar som matchar följande villkor."
+          }
+        },
+        "buy-rules": {
+          "title": "Vad måste finnas i varukorgen för att aktivera kampanjen?",
+          "description": "Om de här villkoren uppfylls aktiveras kampanjen för målartiklarna."
+        }
+      }
+    },
+    "tooltips": {
+      "campaignType": "Valutakoden måste väljas i kampanjen för att kunna ange en utgiftsbudget."
+    },
+    "errors": {
+      "requiredField": "Obligatoriskt fält",
+      "promotionTabError": "Åtgärda felen på kampanjfliken innan du fortsätter"
+    },
+    "toasts": {
+      "promotionCreateSuccess": "Kampanjen ({{code}}) har skapats."
+    },
+    "create": {},
+    "edit": {
+      "title": "Redigera kampanjdetaljer",
+      "rules": {
+        "title": "Redigera användningsvillkor"
+      },
+      "target-rules": {
+        "title": "Redigera artikelvillkor"
+      },
+      "buy-rules": {
+        "title": "Redigera köpvillkor"
+      }
+    },
+    "campaign": {
+      "header": "Kampanj",
+      "edit": {
+        "header": "Redigera kampanjgrupp",
+        "successToast": "Kampanjgruppen för kampanjen har uppdaterats."
+      },
+      "actions": {
+        "goToCampaign": "Gå till kampanjgrupp"
+      }
+    },
+    "campaign_currency": {
+      "tooltip": "Det här är kampanjens valuta. Ändra den på fliken Detaljer."
+    },
+    "form": {
+      "required": "Obligatorisk",
+      "and": "OCH",
+      "selectAttribute": "Välj attribut",
+      "campaign": {
+        "existing": {
+          "title": "Befintlig kampanjgrupp",
+          "description": "Lägg till kampanjen i en befintlig kampanjgrupp.",
+          "placeholder": {
+            "title": "Inga befintliga kampanjgrupper",
+            "desc": "Du kan skapa en kampanjgrupp för att samla flera kampanjer och ange budgetgränser."
+          }
+        },
+        "new": {
+          "title": "Ny kampanjgrupp",
+          "description": "Skapa en ny kampanjgrupp för den här kampanjen."
+        },
+        "none": {
+          "title": "Utan kampanjgrupp",
+          "description": "Fortsätt utan att koppla kampanjen till en kampanjgrupp"
+        }
+      },
+      "taxInclusive": {
+        "title": "Inkluderar kampanjen moms?",
+        "description": "Aktivera detta för att tillämpa kampanjen efter moms."
+      },
+      "status": {
+        "label": "Status",
+        "draft": {
+          "title": "Utkast",
+          "description": "Kunder kan inte använda koden ännu"
+        },
+        "active": {
+          "title": "Aktiv",
+          "description": "Kunder kan använda koden"
+        },
+        "inactive": {
+          "title": "Inaktiv",
+          "description": "Kunder kan inte längre använda koden"
+        }
+      },
+      "method": {
+        "label": "Metod",
+        "code": {
+          "title": "Kampanjkod",
+          "description": "Kunder måste ange den här koden i kassan"
+        },
+        "automatic": {
+          "title": "Automatisk",
+          "description": "Kunder kommer att se den här kampanjen i kassan"
+        }
+      },
+      "max_quantity": {
+        "title": "Högsta antal",
+        "description": "Högsta antal artiklar som kampanjen gäller för."
+      },
+      "type": {
+        "standard": {
+          "title": "Standard",
+          "description": "En standardkampanj"
+        },
+        "buyget": {
+          "title": "Köp/få",
+          "description": "Köp X, få Y-kampanj"
+        }
+      },
+      "allocation": {
+        "each": {
+          "title": "Varje",
+          "description": "Tillämpar värdet på varje artikel"
+        },
+        "across": {
+          "title": "Över flera",
+          "description": "Fördelar värdet över artiklar"
+        },
+        "once": {
+          "title": "En gång",
+          "description": "Tillämpar värdet på ett begränsat antal artiklar."
+        }
+      },
+      "code": {
+        "title": "Kod",
+        "description": "Koden som kunderna anger i kassan."
+      },
+      "value": {
+        "title": "Kampanjvärde",
+        "invalid": "Ogiltigt kampanjvärde"
+      },
+      "value_type": {
+        "fixed": {
+          "title": "Fast belopp",
+          "description": "Beloppet som ska dras av, t.ex. 100."
+        },
+        "percentage": {
+          "title": "Procent",
+          "description": "Procentsatsen som ska dras av från beloppet, t.ex. 8 %."
+        }
+      },
+      "limit": {
+        "title": "Användningsgräns",
+        "description": "Maximalt antal gånger kampanjen kan användas för alla beställningar. Lämna tomt för obegränsad användning."
+      }
+    },
+    "templates": {
+      "amount_off_products": {
+        "title": "Beloppsrabatt på produkter",
+        "description": "Rabattera specifika produkter eller en produktkollektion"
+      },
+      "amount_off_order": {
+        "title": "Beloppsrabatt på beställning",
+        "description": "Rabatterar beställningens totalbelopp"
+      },
+      "percentage_off_product": {
+        "title": "Procentrabatt på produkt",
+        "description": "Ge en procentuell rabatt på valda produkter"
+      },
+      "percentage_off_order": {
+        "title": "Procentrabatt på beställning",
+        "description": "Ger en procentuell rabatt på beställningens totalbelopp."
+      },
+      "buy_get": {
+        "title": "Köp X, få Y",
+        "description": "Köp X produkt(er), få Y produkt(er)"
+      },
+      "shipping_discount": {
+        "title": "Fri frakt",
+        "description": "Ger 100 % rabatt på fraktavgiften."
+      }
+    },
+    "deleteWarning": "Du håller på att ta bort kampanjen {{code}}. Den här åtgärden kan inte ångras.",
+    "createPromotionTitle": "Skapa kampanj",
+    "type": "Kampanjtyp",
+    "conditions": {
+      "add": "Lägg till villkor",
+      "list": {
+        "noRecordsMessage": "Lägg till ett villkor för att begränsa vilka artiklar kampanjen gäller för."
+      }
+    }
+  },
+  "campaigns": {
+    "domain": "Kampanjer",
+    "list": {
+      "empty": {
+        "heading": "Inga kampanjgrupper",
+        "description": "Det finns inga kampanjer att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga kampanjgrupper matchar de aktuella filtren."
+      }
+    },
+    "details": "Kampanjdetaljer",
+    "status": {
+      "active": "Aktiv",
+      "expired": "Utgången",
+      "scheduled": "Schemalagd"
+    },
+    "delete": {
+      "title": "Är du säker?",
+      "description": "Du håller på att ta bort kampanjgruppen '{{name}}'. Den här åtgärden kan inte ångras.",
+      "successToast": "Kampanjgruppen '{{name}}' har tagits bort."
+    },
+    "edit": {
+      "header": "Redigera kampanjgrupp",
+      "description": "Redigera kampanjgruppens uppgifter.",
+      "successToast": "Kampanjgruppen '{{name}}' har uppdaterats."
+    },
+    "configuration": {
+      "header": "Konfiguration",
+      "edit": {
+        "header": "Redigera kampanjgruppens konfiguration",
+        "description": "Redigera kampanjgruppens konfiguration.",
+        "successToast": "Kampanjgruppens konfiguration har uppdaterats."
+      }
+    },
+    "create": {
+      "title": "Skapa kampanjgrupp",
+      "description": "Skapa en kampanj.",
+      "hint": "Skapa en kampanj.",
+      "header": "Skapa kampanjgrupp",
+      "successToast": "Kampanjgruppen '{{name}}' har skapats."
+    },
+    "fields": {
+      "name": "Namn",
+      "identifier": "Identifierare",
+      "start_date": "Startdatum",
+      "end_date": "Slutdatum",
+      "total_spend": "Förbrukad budget",
+      "total_used": "Använd budget",
+      "totalUsedByAttribute": "Totalt använt",
+      "budget_limit": "Budgetgräns",
+      "campaign_id": {
+        "hint": "Inaktiverade kampanjer har en budget i en annan valuta än kampanjen."
+      }
+    },
+    "budget": {
+      "attribute": {
+        "customer_id": "kund",
+        "customer_email": "e-post"
+      },
+      "create": {
+        "hint": "Skapa en budget för kampanjen.",
+        "header": "Kampanjbudget"
+      },
+      "details": "Kampanjbudget",
+      "fields": {
+        "type": "Typ",
+        "currency": "Valuta",
+        "limit": "Gräns",
+        "used": "Använt",
+        "budgetAttribute": "Begränsa användning per",
+        "budgetAttributeTooltip": "Ange hur många gånger kampanjen får användas per kund eller e-postadress.",
+        "totalUsedByAttribute": "Budgetgräns per: {{attribute}}",
+        "totalUsedByAttributeCustomerId": "Budgetgräns per kund",
+        "totalUsedByAttributeEmail": "Budgetgräns per e-postadress"
+      },
+      "type": {
+        "spend": {
+          "title": "Utgift",
+          "description": "Ange en gräns för det totala rabattbeloppet för alla användningar av kampanjen."
+        },
+        "usage": {
+          "title": "Användning",
+          "description": "Ange en gräns för hur många gånger kampanjen får användas."
+        },
+        "useByAttribute": {
+          "title": "Användning per attribut (kund-ID, e-post osv.)",
+          "titleCustomerId": "Användning per kund",
+          "titleEmail": "Användning per e-postadress",
+          "description": "Ange en gräns för hur många gånger kampanjen får användas av ett specifikt attributvärde."
+        }
+      },
+      "edit": {
+        "header": "Redigera kampanjbudget"
+      }
+    },
+    "promotions": {
+      "remove": {
+        "title": "Ta bort kampanj från kampanjgrupp",
+        "description": "Du håller på att ta bort {{count}} kampanj(er) från kampanjgruppen. Den här åtgärden kan inte ångras."
+      },
+      "alreadyAdded": "Den här kampanjen har redan lagts till.",
+      "alreadyAddedDiffCampaign": "Den här kampanjen har redan lagts till i en annan kampanj ({{name}}).",
+      "currencyMismatch": "Kampanjens och kampanjgruppens valutor matchar inte",
+      "toast": {
+        "success": "{{count}} kampanj(er) har lagts till"
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Skapa först en kampanj."
+        }
+      },
+      "list": {
+        "noRecordsMessage": "Det finns inga kampanjer i kampanjgruppen."
+      }
+    },
+    "deleteCampaignWarning": "Du håller på att ta bort kampanjgruppen {{name}}. Den här åtgärden kan inte ångras.",
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
+  },
+  "priceLists": {
+    "domain": "Prislistor",
+    "subtitle": "Skapa reapriser eller åsidosätt priser för specifika villkor.",
+    "list": {
+      "empty": {
+        "heading": "Inga prislistor",
+        "description": "Det finns inga prislistor att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga prislistor matchar de aktuella filterkriterierna."
+      }
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort prislista \"{{title}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Prislistan \"{{title}}\" har tagits bort."
+    },
+    "create": {
+      "header": "Skapa prislista",
+      "subheader": "Skapa en ny prislista för att hantera priserna på dina produkter.",
+      "tabs": {
+        "details": "Detaljer",
+        "products": "Produkter",
+        "prices": "Priser"
+      },
+      "successToast": "Prislistan {{title}} har skapats.",
+      "products": {
+        "list": {
+          "noRecordsMessage": "Skapa först en produkt."
+        }
+      }
+    },
+    "edit": {
+      "header": "Redigera prislista",
+      "successToast": "Prislistan {{title}} har uppdaterats."
+    },
+    "configuration": {
+      "header": "Konfiguration",
+      "edit": {
+        "header": "Redigera prislistans konfiguration",
+        "description": "Redigera prislistans konfiguration.",
+        "successToast": "Prislistans konfiguration har uppdaterats."
+      }
+    },
+    "products": {
+      "header": "Produkter",
+      "actions": {
+        "addProducts": "Lägg till produkter",
+        "editPrices": "Redigera priser"
+      },
+      "delete": {
+        "confirmation_one": "Du håller på att ta bort priser för {{count}} produkt i prislista. Den här åtgärden kan inte ångras.",
+        "confirmation_other": "Du håller på att ta bort priser för {{count}} produkter i prislistan. Den här åtgärden kan inte ångras.",
+        "successToast_one": "borttagen priser för {{count}} produkt.",
+        "successToast_other": "borttagen priser för {{count}} produkter."
+      },
+      "add": {
+        "successToast": "Priser har lagts till i prislistan."
+      },
+      "edit": {
+        "successToast": "Priser har uppdaterats."
+      }
+    },
+    "quantityPricing": {
+      "header": "Villkorade priser för {{name}}",
+      "description": "Hantera villkorsstyrda priser för den här produktvarianten baserat på antal i varukorgen.",
+      "actions": {
+        "addPrice": "Lägg till pris"
+      },
+      "rules": {
+        "amount": "Pris för produktvariant",
+        "minQuantity": "Minsta antal i varukorgen",
+        "maxQuantity": "Högsta antal i varukorgen",
+        "qty": "ANTAL",
+        "allQuantities": "Alla antal",
+        "min": "Min",
+        "max": "Max"
+      },
+      "attributes": {
+        "quantity": "Antal i varukorgen"
+      },
+      "summaries": {
+        "range": "Om <0>{{attribute}}</0> är mellan <1>{{min}}</1> och <2>{{max}}</2>",
+        "greaterThan": "Om <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "Om <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minsta antal får inte vara större än högsta antal.",
+        "mustBePositive": "Antalet måste vara minst 1."
+      }
+    },
+    "fields": {
+      "priceOverrides": {
+        "label": "Prisåsidosättningar",
+        "header": "Prisåsidosättningar"
+      },
+      "status": {
+        "label": "Status",
+        "options": {
+          "active": "Aktiv",
+          "draft": "Utkast",
+          "expired": "Utgången",
+          "scheduled": "Schemalagd"
+        }
+      },
+      "type": {
+        "label": "Typ",
+        "hint": "Välj vilken typ av prislista du vill skapa.",
+        "options": {
+          "sale": {
+            "label": "Rea",
+            "description": "Reapriser är tillfälliga prisändringar för produkter."
+          },
+          "override": {
+            "label": "Åsidosättning",
+            "description": "Åsidosättningar används vanligtvis för att skapa kundspecifika priser."
+          }
+        }
+      },
+      "startsAt": {
+        "label": "Har prislistan ett startdatum?",
+        "hint": "Schemalägg när prislistan ska aktiveras."
+      },
+      "endsAt": {
+        "label": "Har prislistan ett slutdatum?",
+        "hint": "Schemalägg när prislistan ska inaktiveras."
+      },
+      "customerAvailability": {
+        "header": "Välj kundgrupper",
+        "label": "Kundtillgänglighet",
+        "hint": "Välj vilka kundgrupper prislistan ska gälla för.",
+        "placeholder": "Sök efter kundgrupper",
+        "attribute": "Kundgrupper"
+      }
+    }
+  },
+  "profile": {
+    "domain": "Profil",
+    "manageYourProfileDetails": "Hantera dina profiluppgifter.",
+    "fields": {
+      "languageLabel": "Språk",
+      "usageInsightsLabel": "Användningsdata"
+    },
+    "mfa": {
+      "title": "Tvåfaktorsautentisering",
+      "description": "Kräv en autentiseringsapp vid inloggning.",
+      "status": "Status",
+      "method": "Metod",
+      "enabled": "Aktiverad",
+      "disabled": "Inaktiverad",
+      "pending": "Väntar på konfiguration",
+      "authenticatorApp": "Autentiseringsapp",
+      "noMethod": "Ingen autentiseringsmetod är aktiverad",
+      "setupTitle": "Konfigurera autentiseringsapp",
+      "setupAuthenticatorApp": "Konfigurera autentiseringsapp",
+      "setupDescription": "Skanna QR-koden med din autentiseringsapp och ange sedan den sexsiffriga koden för att slutföra konfigurationen.",
+      "setupError": "Autentiseringsappen kunde inte konfigureras.",
+      "verifyError": "Verifieringskoden kunde inte bekräftas.",
+      "qrError": "QR-koden kunde inte genereras.",
+      "recoveryCodesTitle": "Återställningskoder",
+      "recoveryCodesDescription": "Kopiera och spara de här återställningskoderna ifall du förlorar åtkomsten till autentiseringsappen.",
+      "recoveryCodesError": "Återställningskoder kunde inte genereras.",
+      "disableTitle": "Inaktivera tvåfaktorsautentisering",
+      "disableDescription": "Du håller på att inaktivera tvåfaktorsautentisering för ditt konto.",
+      "disableChallengeDescription": "Ange den sexsiffriga koden från din autentiseringsapp för att inaktivera tvåfaktorsautentisering.",
+      "disableError": "Tvåfaktorsautentisering kunde inte inaktiveras.",
+      "disableSuccess": "Tvåfaktorsautentisering har inaktiverats"
+    },
+    "edit": {
+      "header": "Redigera profil",
+      "languageHint": "Språket som ska användas i adminpanelen. Detta ändrar inte språket i din butik.",
+      "languagePlaceholder": "Välj språk",
+      "usageInsightsHint": "Dela användningsdata och hjälp oss förbättra Medusa. Du kan läsa mer om vad vi samlar in och hur vi använder informationen i vår <0>dokumentation</0>."
+    },
+    "toast": {
+      "edit": "Profiländringarna har sparats"
+    }
+  },
+  "users": {
+    "domain": "Användare",
+    "editUser": "Redigera användare",
+    "inviteUser": "Bjud in användare",
+    "inviteUserHint": "Bjud in en ny användare till butiken.",
+    "inviteRolesTooltip": "Om ingen roll väljs bjuds användaren in med en superanvändarroll.",
+    "sendInvite": "Skicka inbjudan",
+    "pendingInvites": "Väntande inbjudningar",
+    "deleteInviteWarning": "Du håller på att ta bort inbjudan för {{email}}. Den här åtgärden kan inte ångras.",
+    "resendInvite": "Skicka inbjudan igen",
+    "copyInviteLink": "Kopiera inbjudningslänk",
+    "copyResetPasswordLink": "Kopiera länk för lösenordsåterställning",
+    "copyResetPasswordLinkSuccess": "Länken för lösenordsåterställning har kopierats till urklipp.",
+    "copyResetPasswordLinkHint": "Länken upphör snart att gälla och ogiltigförklarar tidigare länkar för återställning av lösenord som skickats till användaren.",
+    "expiredOnDate": "Utgången {{date}}",
+    "validFromUntil": "Giltig från <0>{{from}}</0> till <1>{{until}}</1>",
+    "acceptedOnDate": "Godkänd {{date}}",
+    "inviteStatus": {
+      "accepted": "Godkänd",
+      "pending": "Väntande",
+      "expired": "Utgången"
+    },
+    "roles": {
+      "admin": "Admin",
+      "developer": "Utvecklare",
+      "member": "Medlem"
+    },
+    "list": {
+      "empty": {
+        "heading": "Inga användare hittades",
+        "description": "När en användare har bjudits in visas den här."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga användare matchar de aktuella filtren."
+      }
+    },
+    "deleteUserWarning": "Du håller på att ta bort användaren {{name}}. Den här åtgärden kan inte ångras.",
+    "deleteUserSuccess": "Användare {{name}} togs bort",
+    "invite": "Bjud in"
+  },
+  "roles": {
+    "domain": "Roller",
+    "subtitle": "Hantera roller och behörigheter.",
+    "create": {
+      "header": "Skapa roll",
+      "hint": "Skapa en roll för att hantera åtkomst i adminpanelen.",
+      "successToast": "Rollen {{name}} har skapats",
+      "tabs": {
+        "details": "Detaljer",
+        "permissions": "Behörigheter"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "Inga behörigheter",
+          "description": "Det finns inga behörigheter att välja."
+        },
+        "filtered": {
+          "heading": "Inga resultat",
+          "description": "Inga behörigheter matchar de aktuella filtren."
+        }
+      }
+    },
+    "edit": {
+      "header": "Redigera roll",
+      "successToast": "Rollen {{name}} har uppdaterats"
+    },
+    "delete": {
+      "title": "Ta bort roll",
+      "description": "Du håller på att ta bort rollen {{name}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Rollen {{name}} har tagits bort"
+    },
+    "fields": {
+      "permissions": "Behörigheter"
+    },
+    "actions": {
+      "managePermissions": "Hantera behörigheter"
+    },
+    "users": {
+      "alreadyAddedTooltip": "Användaren har redan den här rollen.",
+      "unassignableRoleTooltip": "Du har inte behörighet att tilldela den här rollen – dina behörigheter omfattar inte alla dess policyer.",
+      "add": {
+        "successToast_one": "Användaren har lagts till i rollen.",
+        "successToast_other": "Användarna har lagts till i rollen.",
+        "list": {
+          "noRecordsMessage": "Skapa först en användare."
+        }
+      },
+      "remove": {
+        "title_one": "Ta bort användare",
+        "title_other": "Ta bort användare",
+        "description_one": "Du håller på att ta bort {{count}} användare från rollen. Den här åtgärden kan inte ångras.",
+        "description_other": "Du håller på att ta bort {{count}} användare från rollen. Den här åtgärden kan inte ångras."
+      },
+      "list": {
+        "noRecordsMessage": "Den här rollen har inga användare."
+      }
+    },
+    "permissions": {
+      "header": "Hantera behörigheter",
+      "hint": "Välj vilka behörigheter den här rollen ska innehålla.",
+      "empty": {
+        "heading": "Inga behörigheter",
+        "description": "Det finns inga behörigheter att välja."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga behörigheter matchar de aktuella filtren."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Inga roller hittades",
+        "description": "Skapa roller för att hantera åtkomst i adminpanelen."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga roller matchar de aktuella filtren."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Policyer",
+    "subtitle": "Definiera behörigheter som roller kan ge.",
+    "create": {
+      "header": "Skapa policy",
+      "hint": "Definiera en ny behörighet som kan kopplas till roller.",
+      "successToast": "Policyn {{key}} har skapats"
+    },
+    "edit": {
+      "header": "Redigera policy",
+      "successToast": "Policyn {{key}} har uppdaterats"
+    },
+    "delete": {
+      "title": "Ta bort policy",
+      "description": "Du håller på att ta bort policyn {{key}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Policyn {{key}} har tagits bort"
+    },
+    "fields": {
+      "roles": "Roller",
+      "users": "Användare"
+    },
+    "list": {
+      "empty": {
+        "heading": "Inga policyer hittades",
+        "description": "Skapa policyer för att hantera vilka behörigheter roller kan ge."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga policyer matchar de aktuella filtren."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "Inga roller innehåller den här policyn ännu."
+      },
+      "empty": {
+        "heading": "Inga roller",
+        "description": "Inga roller innehåller den här policyn ännu."
+      }
+    }
+  },
+  "translations": {
+    "domain": "Översättningar",
+    "settings": {
+      "header": "Hantera översättningsbara entiteter",
+      "successToast": "Inställningar uppdaterades"
+    },
+    "actions": {
+      "manage": "Hantera översättningar",
+      "manageEntities": "Hantera entiteter",
+      "manageLocales": "Hantera språkinställningar"
+    },
+    "subtitle": "Hantera översättningar av dina data i Medusa",
+    "list": {
+      "metrics": "{{translated}} av {{total}} översättningar"
+    },
+    "edit": {
+      "successToast": "Översättningarna har uppdaterats",
+      "unsavedChanges": {
+        "title": "Osparade översättningar",
+        "description": "Förlora inte ditt arbete. Du har ändringar som ännu inte har sparats."
+      }
+    },
+    "bulk": {
+      "header": "Massredigering av översättningar",
+      "mainColumn": "Språkinställning"
+    },
+    "activeLocales": {
+      "heading": "Språk",
+      "subtitle": "Aktiverade översättningar",
+      "noLocalesTip": "Konfigurera minst ett språk för att börja översätta dina data",
+      "noLocalesTipConfigureAction": "Konfigurera"
+    },
+    "completion": {
+      "heading": "Översatta fält",
+      "translated": "Översatt",
+      "toTranslate": "Saknas",
+      "footer": "Språk"
+    }
+  },
+  "store": {
+    "domain": "Butik",
+    "manageYourStoresDetails": "Hantera butikens uppgifter",
+    "editStore": "Redigera butik",
+    "defaultCurrency": "Standardvaluta",
+    "defaultLocale": "Standardspråk",
+    "defaultRegion": "Standardregion",
+    "defaultSalesChannel": "Standardförsäljningskanal",
+    "defaultLocation": "Standardplats",
+    "swapLinkTemplate": "Mall för byteslänk",
+    "paymentLinkTemplate": "Mall för betalningslänk",
+    "inviteLinkTemplate": "Mall för inbjudningslänk",
+    "locales": "Språkinställningar",
+    "currencies": "Valutor",
+    "addCurrencies": "Lägg till valutor",
+    "enableTaxInclusivePricing": "Aktivera priser inklusive moms",
+    "disableTaxInclusivePricing": "Inaktivera priser inklusive moms",
+    "removeCurrencyWarning_one": "Du håller på att ta bort {{count}} valuta från butiken. Kontrollera att du har tagit bort alla priser som använder valutan innan du fortsätter.",
+    "removeCurrencyWarning_other": "Du håller på att ta bort {{count}} valutor från butiken. Kontrollera att du har tagit bort alla priser som använder valutorna innan du fortsätter.",
+    "removeLocaleWarning_one": "Du håller på att ta bort {{count}} språkinställning från butiken. Alla översättningar som använder den tas bort.",
+    "removeLocaleWarning_other": "Du håller på att ta bort {{count}} språkinställningar från butiken. Alla översättningar som använder dem tas bort.",
+    "currencyAlreadyAdded": "Valutan har redan lagts till i butiken.",
+    "localeAlreadyAdded": "Språkinställningen har redan lagts till i butiken.",
+    "edit": {
+      "header": "Redigera Butik"
+    },
+    "toast": {
+      "update": "Butik har uppdaterats",
+      "currenciesUpdated": "Valutor uppdaterades",
+      "localesUpdated": "Språkinställningarna har uppdaterats",
+      "currenciesRemoved": "Valutorna har tagits bort från butiken",
+      "localesRemoved": "Språkinställningarna har tagits bort från butiken",
+      "updatedTaxInclusivitySuccessfully": "Priser inklusive moms uppdaterades"
+    }
+  },
+  "regions": {
+    "domain": "Regioner",
+    "subtitle": "En region är ett område där du säljer produkter. Den kan omfatta flera länder och ha olika momssatser, leverantörer och valutor.",
+    "createRegion": "Skapa region",
+    "createRegionHint": "Hantera momssatser och leverantörer för en uppsättning länder.",
+    "addCountries": "Lägg till länder",
+    "editRegion": "Redigera region",
+    "countriesHint": "Lägg till länder som ska ingå i den här regionen.",
+    "deleteRegionWarning": "Du håller på att ta bort regionen {{name}}. Den här åtgärden kan inte ångras.",
+    "removeCountriesWarning_one": "Du håller på att ta bort {{count}} land från regionen. Den här åtgärden kan inte ångras.",
+    "removeCountriesWarning_other": "Du håller på att ta bort {{count}} länder från regionen. Den här åtgärden kan inte ångras.",
+    "removeCountryWarning": "Du håller på att ta bort landet {{name}} från regionen. Den här åtgärden kan inte ångras.",
+    "automaticTaxesHint": "När detta är aktiverat beräknas moms automatiskt i kassan utifrån leveransadressen.",
+    "taxInclusiveHint": "När detta är aktiverat visas priser i regionen inklusive moms.",
+    "providersHint": "Lägg till betalningsleverantörer som ska vara tillgängliga i den här regionen.",
+    "shippingOptions": "Fraktalternativ",
+    "deleteShippingOptionWarning": "Du håller på att ta bort fraktalternativ {{name}}. Den här åtgärden kan inte ångras.",
+    "return": "Retur",
+    "outbound": "Utgående",
+    "priceType": "Pristyp",
+    "flatRate": "Fast pris",
+    "calculated": "Beräknat",
+    "list": {
+      "noRecordsMessage": "Skapa en region för de områden där du säljer.",
+      "empty": {
+        "heading": "Inga regioner",
+        "description": "Det finns inga regioner att visa."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga regioner matchar de aktuella filterkriterierna."
+      }
+    },
+    "toast": {
+      "delete": "Regionen har tagits bort",
+      "edit": "Regionändringarna har sparats",
+      "create": "Regionen har skapats",
+      "countries": "Regionens länder har uppdaterats"
+    },
+    "shippingOption": {
+      "createShippingOption": "Skapa fraktalternativ",
+      "createShippingOptionHint": "Skapa ett nytt fraktalternativ för regionen.",
+      "editShippingOption": "Redigera fraktalternativ",
+      "fulfillmentMethod": "Leveransmetod",
+      "type": {
+        "outbound": "Utgående",
+        "outboundHint": "Använd detta när du skapar ett fraktalternativ för att skicka produkter till kunden.",
+        "return": "Retur",
+        "returnHint": "Använd detta när du skapar ett fraktalternativ för produkter som kunden ska returnera till dig."
+      },
+      "priceType": {
+        "label": "Pristyp",
+        "flatRate": "Fast pris",
+        "calculated": "Beräknat"
+      },
+      "availability": {
+        "adminOnly": "Endast admin",
+        "adminOnlyHint": "När detta är aktiverat är fraktalternativet endast tillgängligt i adminpanelen och inte i butiken."
+      },
+      "taxInclusiveHint": "När detta är aktiverat är priset för fraktalternativet inklusive moms.",
+      "requirements": {
+        "label": "Krav",
+        "hint": "Ange kraven för fraktalternativet."
+      }
+    }
+  },
+  "taxes": {
+    "domain": "Skatteregioner",
+    "domainDescription": "Hantera dina skatteregion",
+    "countries": {
+      "taxCountriesHint": "Momsinställningarna gäller för de angivna länderna."
+    },
+    "settings": {
+      "editTaxSettings": "Redigera Moms Inställningar",
+      "taxProviderLabel": "Momsleverantör",
+      "systemTaxProviderLabel": "Systemets momsleverantör",
+      "calculateTaxesAutomaticallyLabel": "Beräkna moms automatiskt",
+      "calculateTaxesAutomaticallyHint": "När detta är aktiverat beräknas momssatser automatiskt och tillämpas på varukorgar. När det är inaktiverat måste moms beräknas manuellt i kassan. Manuell moms rekommenderas vid användning av externa skatteleverantörer.",
+      "applyTaxesOnGiftCardsLabel": "Tillämpa moms på presentkort",
+      "applyTaxesOnGiftCardsHint": "När detta är aktiverat tillämpas moms på presentkort i kassan. I vissa länder kräver skatteregler att moms tas ut på presentkort vid köp.",
+      "defaultTaxRateLabel": "Standard momssats",
+      "defaultTaxCodeLabel": "Standardmomskod"
+    },
+    "defaultRate": {
+      "sectionTitle": "Standardmomssats"
+    },
+    "taxRate": {
+      "sectionTitle": "Momssatser",
+      "createTaxRate": "Skapa momssats",
+      "createTaxRateHint": "Skapa en ny momssats för regionen.",
+      "deleteRateDescription": "Du håller på att ta bort momssats {{name}}. Den här åtgärden kan inte ångras.",
+      "editRateAction": "Redigera momssats",
+      "editOverridesAction": "Redigera åsidosättningar",
+      "editOverridesTitle": "Redigera momsåsidosättningar",
+      "editOverridesHint": "Ange åsidosättningar för momssatsen.",
+      "deleteTaxRateWarning": "Du håller på att ta bort momssats {{name}}. Den här åtgärden kan inte ångras.",
+      "productOverridesLabel": "Produktåsidosättningar",
+      "productOverridesHint": "Ange produktåsidosättningar för momssatsen.",
+      "addProductOverridesAction": "Lägg till produktåsidosättningar",
+      "productTypeOverridesLabel": "Åsidosättningar för produkttyper",
+      "productTypeOverridesHint": "Ange åsidosättningar för produkttyper i momssatsen.",
+      "addProductTypeOverridesAction": "Lägg till åsidosättningar för produkttyper",
+      "shippingOptionOverridesLabel": "Åsidosättningar för fraktalternativ",
+      "shippingOptionOverridesHint": "Ange åsidosättningar för fraktalternativ i momssatsen.",
+      "addShippingOptionOverridesAction": "Lägg till åsidosättningar för fraktalternativ",
+      "productOverridesHeader": "Produkter",
+      "productTypeOverridesHeader": "Produkttyper",
+      "shippingOptionOverridesHeader": "Fraktalternativ"
+    }
+  },
+  "locations": {
+    "domain": "Platser",
+    "editLocation": "Redigera plats",
+    "addSalesChannels": "Lägg till försäljningskanaler",
+    "noLocationsFound": "Inga platser hittades",
+    "selectLocations": "Välj platser som håller förvaring.",
+    "deleteLocationWarning": "Du håller på att ta bort platsen {{name}}. Den här åtgärden kan inte ångras.",
+    "removeSalesChannelsWarning_one": "Du håller på att ta bort {{count}} försäljningskanal från plats.",
+    "removeSalesChannelsWarning_other": "Du håller på att ta bort {{count}} försäljningskanaler från plats.",
+    "toast": {
+      "create": "Platsen skapades",
+      "update": "Platsen uppdaterades",
+      "removeChannel": "Försäljningskanalen har tagits bort"
+    }
+  },
+  "reservations": {
+    "domain": "Reservationer",
+    "subtitle": "Hantera reserverat antal av lagerartiklar.",
+    "deleteWarning": "Du håller på att ta bort en reservation. Den här åtgärden kan inte ångras."
+  },
+  "salesChannels": {
+    "domain": "Försäljningskanaler",
+    "subtitle": "Hantera online- och offlinekanaler som du säljer produkter genom.",
+    "list": {
+      "empty": {
+        "heading": "Inga försäljningskanaler hittades",
+        "description": "När en försäljningskanal har skapats visas den här."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga försäljningskanaler matchar de aktuella filterkriterierna."
+      }
+    },
+    "createSalesChannel": "Skapa försäljningskanal",
+    "createSalesChannelHint": "Skapa en ny försäljningskanal att sälja dina produkter genom.",
+    "enabledHint": "Ange om försäljningskanalen är aktiverad.",
+    "removeProductsWarning_one": "Du håller på att ta bort {{count}} produkt från {{sales_channel}}.",
+    "removeProductsWarning_other": "Du håller på att ta bort {{count}} produkter från {{sales_channel}}.",
+    "addProducts": "Lägg till Produkter",
+    "editSalesChannel": "Redigera försäljningskanal",
+    "productAlreadyAdded": "Produkten har redan lagts till i försäljningskanalen.",
+    "deleteSalesChannelWarning": "Du håller på att ta bort försäljningskanal {{name}}. Den här åtgärden kan inte ångras.",
+    "toast": {
+      "create": "Försäljningskanalen har skapats",
+      "update": "Försäljningskanalen har uppdaterats",
+      "delete": "Försäljningskanalen har tagits bort"
+    },
+    "tooltip": {
+      "cannotDeleteDefault": "Standardförsäljningskanalen kan inte tas bort"
+    },
+    "products": {
+      "list": {
+        "noRecordsMessage": "Det finns inga produkter i försäljningskanalen."
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Skapa först en produkt."
+        }
+      }
+    }
+  },
+  "apiKeyManagement": {
+    "domain": {
+      "publishable": "Publika API-nycklar",
+      "secret": "Hemliga API-nycklar"
+    },
+    "subtitle": {
+      "publishable": "Hantera API-nycklar som används i butiken för att begränsa förfrågningar till specifika försäljningskanaler.",
+      "secret": "Hantera API-nycklar som används för att autentisera adminanvändare i adminapplikationer."
+    },
+    "status": {
+      "active": "Aktiv",
+      "revoked": "Återkallad"
+    },
+    "type": {
+      "publishable": "Publik",
+      "secret": "Hemlig"
+    },
+    "create": {
+      "createPublishableHeader": "Skapa publik API-nyckel",
+      "createPublishableHint": "Skapa en ny publik API-nyckel för att begränsa förfrågningar till specifika försäljningskanaler.",
+      "createSecretHeader": "Skapa hemlig API-nyckel",
+      "createSecretHint": "Skapa en ny hemlig API-nyckel för åtkomst till Medusa API som autentiserad adminanvändare.",
+      "secretKeyCreatedHeader": "Hemlig nyckel skapad",
+      "secretKeyCreatedHint": "Din nya hemliga nyckel har genererats. Kopiera och spara den säkert nu. Det här är enda gången den visas.",
+      "copySecretTokenSuccess": "Den hemliga nyckeln har kopierats till urklipp.",
+      "copySecretTokenFailure": "Det gick inte att kopiera den hemliga nyckeln till urklipp.",
+      "successToast": "API-nyckeln har skapats."
+    },
+    "edit": {
+      "header": "Redigera API-nyckel",
+      "description": "Redigera API-nyckelns titel.",
+      "successToast": "API-nyckeln {{title}} har uppdaterats."
+    },
+    "salesChannels": {
+      "title": "Lägg till försäljningskanaler",
+      "description": "Lägg till de försäljningskanaler som API-nyckeln ska begränsas till.",
+      "successToast_one": "{{count}} försäljningskanal har lagts till i API-nyckeln.",
+      "successToast_other": "{{count}} försäljningskanaler har lagts till i API-nyckeln.",
+      "alreadyAddedTooltip": "Försäljningskanalen har redan lagts till i API-nyckeln.",
+      "list": {
+        "noRecordsMessage": "Det finns inga försäljningskanaler i den publika API-nyckelns omfattning."
+      }
+    },
+    "delete": {
+      "warning": "Du håller på att ta bort API-nyckeln {{title}}. Den här åtgärden kan inte ångras.",
+      "successToast": "API-nyckeln {{title}} har tagits bort."
+    },
+    "revoke": {
+      "warning": "Du håller på att återkalla API-nyckeln {{title}}. Den här åtgärden kan inte ångras.",
+      "successToast": "API-nyckeln {{title}} har återkallats."
+    },
+    "addSalesChannels": {
+      "list": {
+        "noRecordsMessage": "Skapa först en försäljningskanal."
+      }
+    },
+    "removeSalesChannel": {
+      "warning": "Du håller på att ta bort försäljningskanalen {{name}} från API-nyckeln. Den här åtgärden kan inte ångras.",
+      "warningBatch_one": "Du håller på att ta bort {{count}} försäljningskanal från API-nyckeln. Den här åtgärden kan inte ångras.",
+      "warningBatch_other": "Du håller på att ta bort {{count}} försäljningskanaler från API-nyckeln. Den här åtgärden kan inte ångras.",
+      "successToast": "Försäljningskanalen har tagits bort från API-nyckeln.",
+      "successToastBatch_one": "{{count}} försäljningskanal har tagits bort från API-nyckeln.",
+      "successToastBatch_other": "{{count}} försäljningskanaler har tagits bort från API-nyckeln."
+    },
+    "actions": {
+      "revoke": "Återkalla API-nyckel",
+      "copy": "Kopiera API-nyckel",
+      "copySuccessToast": "API-nyckeln har kopierats till urklipp."
+    },
+    "table": {
+      "lastUsedAtHeader": "Senast använd",
+      "createdAtHeader": "Återkallad"
+    },
+    "fields": {
+      "lastUsedAtLabel": "Senast använd",
+      "revokedByLabel": "Återkallad av",
+      "revokedAtLabel": "Återkallad",
+      "createdByLabel": "Skapad av"
+    }
+  },
+  "returnReasons": {
+    "domain": "Returorsaker",
+    "subtitle": "Hantera orsaker till returnerade artiklar.",
+    "calloutHint": "Hantera orsaker för att kategorisera returer.",
+    "editReason": "Redigera returorsak",
+    "create": {
+      "header": "Lägg till returorsak",
+      "subtitle": "Ange de vanligaste orsakerna till returer.",
+      "hint": "Skapa en ny returorsak för att kategorisera returer.",
+      "successToast": "Returorsaken {{label}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera returorsak",
+      "subtitle": "Redigera returorsakens värde.",
+      "successToast": "Returorsaken {{label}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort returorsaken \"{{label}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Returorsaken \"{{label}}\" har tagits bort."
+    },
+    "fields": {
+      "value": {
+        "label": "Värde",
+        "placeholder": "wrong_size",
+        "tooltip": "Värdet bör vara en unik identifierare för returorsaken."
+      },
+      "label": {
+        "label": "Etikett",
+        "placeholder": "Fel storlek"
+      },
+      "description": {
+        "label": "Beskrivning",
+        "placeholder": "Kunden fick fel storlek"
+      }
+    }
+  },
+  "refundReasons": {
+    "domain": "Återbetalningsorsaker",
+    "subtitle": "Hantera orsaker till återbetalningar.",
+    "calloutHint": "Hantera orsaker för att kategorisera återbetalningar.",
+    "editReason": "Redigera återbetalningsorsak",
+    "create": {
+      "header": "Lägg till återbetalningsorsak",
+      "subtitle": "Ange de vanligaste orsakerna till återbetalningar.",
+      "hint": "Skapa en ny återbetalningsorsak för att kategorisera återbetalningar.",
+      "successToast": "Återbetalningsorsaken {{label}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera återbetalningsorsak",
+      "subtitle": "Redigera återbetalningsorsakens värde.",
+      "successToast": "Återbetalningsorsaken {{label}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort återbetalningsorsaken \"{{label}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Återbetalningsorsaken har tagits bort."
+    },
+    "fields": {
+      "label": {
+        "label": "Etikett",
+        "placeholder": "Goodwill"
+      },
+      "code": {
+        "label": "Kod",
+        "placeholder": "gesture_of_goodwill"
+      },
+      "description": {
+        "label": "Beskrivning",
+        "placeholder": "Kunden hade en dålig köpupplevelse"
+      }
+    }
+  },
+  "login": {
+    "forgotPassword": "Glömt lösenordet? – <0>Återställ</0>",
+    "title": "Välkommen till Medusa",
+    "hint": "Logga in för att komma åt kontot",
+    "mfa": {
+      "title": "Tvåfaktorsautentisering",
+      "description": "Ange den sexsiffriga koden från din autentiseringsapp.",
+      "recoveryDescription": "Ange en av dina återställningskoder.",
+      "recoveryCodePlaceholder": "Återställningskod",
+      "verify": "Verifiera",
+      "verifyError": "Verifieringskoden kunde inte bekräftas.",
+      "completeError": "Autentiseringen kunde inte slutföras.",
+      "backToLogin": "Tillbaka till inloggningen",
+      "useRecoveryCodePrompt": "Har du förlorat åtkomsten till din autentiseringsapp?",
+      "useRecoveryCode": "Använd en återställningskod",
+      "useAuthenticatorPrompt": "Har du tillgång till autentiseringsappen?",
+      "useAuthenticator": "Använd en autentiseringskod"
+    }
+  },
+  "invite": {
+    "title": "Välkommen till Medusa",
+    "hint": "Skapa ditt konto nedan",
+    "backToLogin": "Tillbaka till inloggningen",
+    "createAccount": "Skapa konto",
+    "alreadyHaveAccount": "Har du redan ett konto? – <0>Logga in</0>",
+    "emailTooltip": "Din e-postadress kan inte ändras. Om du vill använda en annan e-postadress måste en ny inbjudan skickas.",
+    "invalidInvite": "Inbjudan är ogiltig eller har löpt ut.",
+    "successTitle": "Ditt konto har registrerats",
+    "successHint": "Kom igång med Medusa Admin direkt.",
+    "successAction": "Starta Medusa Admin",
+    "invalidTokenTitle": "Din inbjudningskod är ogiltig",
+    "invalidTokenHint": "Begär en ny inbjudningslänk.",
+    "passwordMismatch": "Lösenorden matchar inte",
+    "toast": {
+      "accepted": "Inbjudan har godkänts"
+    }
+  },
+  "resetPassword": {
+    "title": "Återställ lösenord",
+    "hint": "Ange din e-postadress nedan så skickar vi instruktioner för hur du återställer ditt lösenord.",
+    "email": "E-post",
+    "sendResetInstructions": "Skicka återställningsinstruktioner",
+    "backToLogin": "<0>Tillbaka till inloggningen</0>",
+    "newPasswordHint": "Välj ett nytt lösenord nedan.",
+    "invalidTokenTitle": "Din återställningskod är ogiltig",
+    "invalidTokenHint": "Begär en ny återställningslänk.",
+    "expiredTokenTitle": "Din återställningskod har löpt ut",
+    "goToResetPassword": "Gå till lösenordsåterställning",
+    "resetPassword": "Återställ lösenord",
+    "newPassword": "Nytt lösenord",
+    "repeatNewPassword": "Upprepa nytt lösenord",
+    "tokenExpiresIn": "Koden upphör att gälla om <0>{{time}}</0> minuter",
+    "successfulRequestTitle": "E-postmeddelandet har skickats",
+    "successfulRequest": "Vi har skickat ett e-postmeddelande som du kan använda för att återställa lösenordet. Kontrollera skräpposten om du inte har fått det efter några minuter.",
+    "successfulResetTitle": "Lösenordet har återställts",
+    "successfulReset": "Logga in på inloggningssidan.",
+    "passwordMismatch": "Lösenorden matchar inte",
+    "invalidLinkTitle": "Din återställningslänk är ogiltig",
+    "invalidLinkHint": "Försök återställa lösenordet igen."
+  },
+  "workflowExecutions": {
+    "domain": "Arbetsflöden",
+    "subtitle": "Visa och följ arbetsflödeskörningar i din Medusa-applikation.",
+    "transactionIdLabel": "Transaktions-ID",
+    "workflowIdLabel": "Arbetsflödes-ID",
+    "stateLabel": "Delstat",
+    "progressLabel": "Förlopp",
+    "stepsCompletedLabel_one": "{{completed}} av {{count}} steg",
+    "stepsCompletedLabel_other": "{{completed}} av {{count}} steg",
+    "list": {
+      "noRecordsMessage": "Inga arbetsflöden har körts ännu."
+    },
+    "history": {
+      "sectionTitle": "Historik",
+      "runningState": "Kör...",
+      "awaitingState": "Väntar",
+      "failedState": "Misslyckad",
+      "skippedState": "Överhoppad",
+      "skippedFailureState": "Överhoppad (fel)",
+      "definitionLabel": "Definition",
+      "outputLabel": "Utdata",
+      "compensateInputLabel": "Kompensationsindata",
+      "revertedLabel": "Återställd",
+      "errorLabel": "Fel"
+    },
+    "state": {
+      "done": "Klar",
+      "failed": "Misslyckad",
+      "reverted": "Återställd",
+      "invoking": "Anropar",
+      "compensating": "Kompenserar",
+      "notStarted": "Inte startad"
+    },
+    "transaction": {
+      "state": {
+        "waitingToCompensate": "Väntar på kompensation"
+      }
+    },
+    "step": {
+      "state": {
+        "skipped": "Överhoppad",
+        "skippedFailure": "Överhoppad (fel)",
+        "dormant": "Vilande",
+        "timeout": "Tidsgräns"
+      }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Sök",
+    "subtitle": "Visa registrerade sökindex och bygg om dem från källdata.",
+    "fieldsLabel": "Indexerade fält",
+    "providerLabel": "Leverantör",
+    "reindex": "Indexera om",
+    "reindexConfirmationTitle": "Indexera om {{name}}?",
+    "reindexConfirmation": "Detta bygger om indexet \"{{name}}\" från dess källdata. Sökresultaten för indexet kan vara ofullständiga tills ombyggnaden är klar.",
+    "reindexSuccess": "Omindexering av {{name}} har startat",
+    "reindexSinceLabel": "Sedan",
+    "reindexSinceHint": "Bygg endast om dokument som ändrades på eller efter detta datum. Lämna tomt för att bygga om allt.",
+    "reindexEntityIdsLabel": "Entitets-ID:n",
+    "reindexEntityIdsHint": "Kommaseparerade eller radseparerade ID:n för att endast bygga om dessa dokument. Stödet beror på indexets definition.",
+    "noFields": "Inga fält är indexerade.",
+    "list": {
+      "noRecordsMessage": "Inga sökindex är registrerade."
+    },
+    "status": {
+      "pending": "Väntande",
+      "building": "Byggs",
+      "ready": "Klar",
+      "error": "Fel"
+    }
+  },
+  "shippingOptionTypes": {
+    "domain": "Typer av fraktalternativ",
+    "subtitle": "Organisera dina fraktalternativ i typer.",
+    "create": {
+      "header": "Skapa typ av fraktalternativ",
+      "hint": "Skapa en ny typ av fraktalternativ för att kategorisera dina fraktalternativ.",
+      "successToast": "Typen av fraktalternativ {{label}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera typ av fraktalternativ",
+      "successToast": "Typen av fraktalternativ {{label}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort typen av fraktalternativ \"{{label}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Typen av fraktalternativ \"{{label}}\" har tagits bort."
+    },
+    "fields": {
+      "label": "Etikett",
+      "code": "Kod",
+      "description": "Beskrivning"
+    }
+  },
+  "productTypes": {
+    "domain": "Produkttyper",
+    "subtitle": "Organisera dina produkter i typer.",
+    "create": {
+      "header": "Skapa produkttyp",
+      "hint": "Skapa en ny produkttyp för att kategorisera dina produkter.",
+      "successToast": "Produkttypen {{value}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera produkttyp",
+      "successToast": "Produkttypen {{value}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort produkttypen \"{{value}}\". Den här åtgärden kan inte ångras.",
+      "successToast": "Produkttypen \"{{value}}\" har tagits bort."
+    },
+    "fields": {
+      "value": "Värde"
+    }
+  },
+  "productTags": {
+    "domain": "Produkttaggar",
+    "create": {
+      "header": "Skapa produkttagg",
+      "subtitle": "Skapa en ny produkttagg för att kategorisera dina produkter.",
+      "successToast": "Produkttaggen {{value}} har skapats."
+    },
+    "edit": {
+      "header": "Redigera produkttagg",
+      "subtitle": "Redigera produkt-taggens värde.",
+      "successToast": "Produkttaggen {{value}} har uppdaterats."
+    },
+    "delete": {
+      "confirmation": "Du håller på att ta bort produkttaggen {{value}}. Den här åtgärden kan inte ångras.",
+      "successToast": "Produkttaggen {{value}} har tagits bort."
+    },
+    "fields": {
+      "value": "Värde"
+    }
+  },
+  "propertyLabels": {
+    "domain": "Egenskapsetiketter",
+    "title": "Egenskapsetiketter",
+    "subtitle": "Hantera anpassade egenskapsetiketter för konfigurerbara tabeller för dina entiteter.",
+    "fields": {
+      "module": "Modul",
+      "model": "Modell",
+      "propertyCount": "Antal egenskaper",
+      "hasOverrides": "Har åsidosättningar"
+    }
+  },
+  "notifications": {
+    "domain": "Aviseringar",
+    "emptyState": {
+      "title": "Inga aviseringar",
+      "description": "Du har inga aviseringar just nu. När du får några visas de här."
+    },
+    "accessibility": {
+      "description": "Aviseringar om aktiviteter i Medusa visas här."
+    }
+  },
+  "errors": {
+    "serverError": "Serverfel – försök igen senare.",
+    "invalidCredentials": "Fel e-postadress eller lösenord"
+  },
+  "statuses": {
+    "scheduled": "Schemalagd",
+    "expired": "Utgången",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "draft": "Utkast",
+    "enabled": "Aktiverad",
+    "disabled": "Inaktiverad"
+  },
+  "labels": {
+    "productVariant": "Produktvariant",
+    "prices": "Priser",
+    "available": "Tillgänglig",
+    "inStock": "I lager",
+    "added": "Tillagd",
+    "removed": "Borttagen",
+    "from": "från",
+    "to": "Till",
+    "beaware": "Observera",
+    "loading": "Laddar",
+    "selectValue": "Välj värde",
+    "selectValues": "Välj värden"
+  },
+  "fields": {
+    "actions": "Åtgärder",
+    "amount": "Belopp",
+    "reference": "Referens",
+    "reference_id": "Referens-ID",
+    "refundAmount": "Återbetalningsbelopp",
+    "name": "Namn",
+    "default": "Standard",
+    "lastName": "Efternamn",
+    "firstName": "Förnamn",
+    "title": "Titel",
+    "customTitle": "Anpassad titel",
+    "manageInventory": "Hantera lager",
+    "inventoryKit": "Har lagerpaket",
+    "inventoryItems": "Lagerartiklar",
+    "inventoryItem": "Lagerartikel",
+    "requiredQuantity": "Obligatoriskt antal",
+    "description": "Beskrivning",
+    "email": "E-post",
+    "password": "Lösenord",
+    "repeatPassword": "Upprepa lösenord",
+    "confirmPassword": "Bekräfta lösenord",
+    "newPassword": "Nytt lösenord",
+    "repeatNewPassword": "Upprepa nytt lösenord",
+    "categories": "Kategorier",
+    "shippingMethod": "Fraktmetod",
+    "configurations": "Konfigurationer",
+    "enabledInStore": "Aktiverad i butik",
+    "isReturn": "Är retur",
+    "conditions": "Villkor",
+    "category": "Kategori",
+    "collection": "Kollektion",
+    "discountable": "Rabatterbar",
+    "promotionCode": "Kampanjkod",
+    "handle": "URL-segment",
+    "subtitle": "Underrubrik",
+    "by": "Av",
+    "item": "Artikel",
+    "qty": "antal",
+    "limit": "Gräns",
+    "tags": "Taggar",
+    "type": "Typ",
+    "reason": "Orsak",
+    "none": "ingen",
+    "all": "alla",
+    "search": "Sök",
+    "percentage": "Procent",
+    "sales_channels": "Försäljningskanaler",
+    "customer_groups": "Kundgrupper",
+    "product_tags": "Produkttaggar",
+    "product_types": "Produkttyper",
+    "product_collections": "Produktkollektioner",
+    "status": "Status",
+    "code": "Kod",
+    "value": "Värde",
+    "disabled": "Inaktiverad",
+    "dynamic": "Dynamisk",
+    "normal": "Normal",
+    "years": "År",
+    "months": "Månader",
+    "days": "Dagar",
+    "hours": "Timmar",
+    "minutes": "Minuter",
+    "totalRedemptions": "Totalt antal inlösningar",
+    "countries": "Länder",
+    "serviceZone": "Servicezon",
+    "paymentProviders": "Betalningsleverantörer",
+    "refundReason": "Återbetalningsorsak",
+    "fulfillmentProviders": "Leveransleverantörer",
+    "fulfillmentProvider": "Leveransleverantör",
+    "providers": "Leverantörer",
+    "availability": "Tillgänglighet",
+    "inventory": "Lager",
+    "optional": "Valfri",
+    "note": "Anteckning",
+    "automaticTaxes": "Automatisk momsberäkning",
+    "taxInclusivePricing": "Priser inklusive moms",
+    "currency": "Valuta",
+    "address": "Adress",
+    "address2": "Lägenhet, svit osv.",
+    "city": "Ort",
+    "postalCode": "Postnummer",
+    "country": "Land",
+    "state": "Delstat",
+    "province": "Län/region",
+    "company": "Företag",
+    "phone": "Telefon",
+    "metadata": "Metadata",
+    "selectCountry": "Välj land",
+    "products": "Produkter",
+    "variants": "Varianter",
+    "orders": "Beställningar",
+    "account": "Konto",
+    "total": "Beställning Total",
+    "paidTotal": "Totalt betalt",
+    "creditTotal": "Totala krediter",
+    "totalExclTax": "Totalt exkl. moms",
+    "subtotal": "Delsumma",
+    "shipping": "Frakt",
+    "outboundShipping": "Utgående frakt",
+    "returnShipping": "Returfrakt",
+    "tax": "Moms",
+    "created": "Skapad",
+    "key": "Nyckel",
+    "customer": "Kund",
+    "date": "Datum",
+    "order": "Beställning",
+    "fulfillment": "Leverans",
+    "provider": "Leverantör",
+    "payment": "Betalning",
+    "items": "Artiklar",
+    "salesChannel": "Försäljningskanal",
+    "region": "Region",
+    "discount": "Rabatt",
+    "role": "Roll",
+    "resource": "Resurs",
+    "sent": "Skickad",
+    "salesChannels": "Försäljningskanaler",
+    "product": "Produkt",
+    "createdAt": "Skapad",
+    "updatedAt": "Uppdaterad",
+    "operation": "Åtgärd",
+    "revokedAt": "Återkallad",
+    "true": "Sant",
+    "false": "Falskt",
+    "giftCard": "Presentkort",
+    "tag": "Tagg",
+    "dateIssued": "Utfärdandedatum",
+    "issuedDate": "Utfärdandedatum",
+    "expiryDate": "Utgångsdatum",
+    "price": "Pris",
+    "priceTemplate": "Pris {{regionOrCurrency}}",
+    "height": "Höjd",
+    "width": "Bredd",
+    "length": "Längd",
+    "weight": "Vikt",
+    "midCode": "MID-kod",
+    "hsCode": "HS-kod",
+    "ean": "EAN",
+    "upc": "UPC",
+    "inventoryQuantity": "Lagerantal",
+    "barcode": "Streckkod",
+    "countryOfOrigin": "Ursprungsland",
+    "material": "Material",
+    "unitOfMeasure": "Måttenhet",
+    "thumbnail": "Miniatyrbild",
+    "sku": "SKU",
+    "managedInventory": "Lagerhantering",
+    "allowBackorder": "Tillåt restorder",
+    "inStock": "I lager",
+    "location": "Plats",
+    "quantity": "Antal",
+    "variant": "Variant",
+    "id": "ID",
+    "parent": "Överordnad",
+    "minSubtotal": "Min. delsumma",
+    "maxSubtotal": "Max. delsumma",
+    "shippingProfile": "Fraktprofil",
+    "summary": "Sammanfattning",
+    "details": "Detaljer",
+    "label": "Etikett",
+    "rate": "Sats",
+    "requiresShipping": "Kräver frakt",
+    "unitPrice": "Enhetspris",
+    "startDate": "Startdatum",
+    "endDate": "Slutdatum",
+    "draft": "Utkast",
+    "values": "Värden"
+  },
+  "dateTime": {
+    "years_one": "År",
+    "years_other": "År",
+    "months_one": "Månad",
+    "months_other": "Månader",
+    "weeks_one": "Vecka",
+    "weeks_other": "Veckor",
+    "days_one": "Dag",
+    "days_other": "Dagar",
+    "hours_one": "Timme",
+    "hours_other": "Timmar",
+    "minutes_one": "Minut",
+    "minutes_other": "Minuter",
+    "seconds_one": "Sekund",
+    "seconds_other": "Sekunder"
+  },
+  "views": {
+    "save": "Spara",
+    "saveAsNew": "Spara som ny vy",
+    "updateDefaultForEveryone": "Uppdatera standard för alla",
+    "updateViewName": "Uppdatera vy",
+    "prompts": {
+      "updateDefault": {
+        "title": "Uppdatera standardvy",
+        "description": "Detta uppdaterar standardvyn för alla användare. Är du säker?",
+        "confirmText": "Uppdatera för alla",
+        "cancelText": "Avbryt"
+      },
+      "updateView": {
+        "title": "Uppdatera vy",
+        "description": "Är du säker på att du vill uppdatera \"{{name}}\"?",
+        "confirmText": "Uppdatera",
+        "cancelText": "Avbryt"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "noProviders": "Registrera en autentiseringsleverantör i din Medusa-konfiguration för att kunna logga in.",
+      "authenticationFailed": "Autentiseringen misslyckades",
+      "cloud": "Logga in med Medusa Cloud",
+      "continueWithProvider": "Fortsätt med {{provider}}",
+      "or": "eller",
+      "provisioningFailed": "Vi kunde inte slutföra inloggningen. Kontakta en administratör."
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Åtkomst nekad",
+      "description": "Du har inte behörighet att komma åt den här sidan.",
+      "requiredPermission": "Obligatorisk behörighet: {{permission}}",
+      "action": "Du har inte behörighet att utföra den här åtgärden."
+    },
+    "requiredPermissions": {
+      "title": "Obligatoriska behörigheter",
+      "none": "Inga behörigheter har angetts för den här vyn.",
+      "anyOf": "Någon av",
+      "allOf": "Alla",
+      "source": "Källa: {{source}}"
+    },
+    "resources": {
+      "customer": "Kund",
+      "customer_group": "Kundgrupp",
+      "order": "Beställning",
+      "product": "Produkt",
+      "product_category": "Produktkategori",
+      "product_collection": "Produktkollektion",
+      "product_tag": "Produkttagg",
+      "product_type": "Produkttyp",
+      "inventory": "Lager",
+      "reservation": "Reservation",
+      "promotion": "Kampanj",
+      "campaign": "Kampanj",
+      "price_list": "Prislista",
+      "region": "Region",
+      "store": "Butik",
+      "user": "Användare",
+      "role": "Roll",
+      "permission": "Behörighet",
+      "sales_channel": "Försäljningskanal",
+      "stock_location": "Lagerplats",
+      "shipping_profile": "Fraktprofil",
+      "shipping_option": "Fraktalternativ",
+      "tax_region": "Skatteregion",
+      "api_key": "API-nyckel",
+      "return_reason": "Returorsak",
+      "refund_reason": "Återbetalningsorsak",
+      "workflow": "Arbetsflöde",
+      "translation": "Översättning"
+    },
+    "actions": {
+      "read": "Visa",
+      "create": "Skapa",
+      "update": "Redigera",
+      "delete": "Ta bort"
+    }
+  }
+}

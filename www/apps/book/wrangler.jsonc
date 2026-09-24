@@ -2,11 +2,15 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "medusa-docs-book",
   "main": ".open-next/worker.js",
+  "minify": true,
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
+    // let the worker handle these so requests can be tracked in PostHog
+    // before the file is streamed back from the assets binding
+    "run_worker_first": ["/llms.txt", "/llms-full.txt"],
   },
   "services": [
     {
@@ -27,6 +31,7 @@
   "env": {
     "production": {
       "name": "medusa-docs-book",
+      "minify": true,
       "services": [
         {
           "binding": "WORKER_SELF_REFERENCE",
@@ -46,7 +51,7 @@
       "r2_buckets": [
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
-          "bucket_name": "docs-references",
+          "bucket_name": "docs-incremental-cache",
         },
       ],
       "vars": {
@@ -57,7 +62,7 @@
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "docs-references",
+      "bucket_name": "docs-incremental-cache",
     },
   ],
   "vars": {

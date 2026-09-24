@@ -87,16 +87,6 @@ export interface SearchFieldDefinition {
   fields?: Record<string, SearchFieldDefinition>
 
   /**
-   * Only meaningful on an array of objects. When `true`, filters on the object's
-   * sub-fields must all match within a *single* element — `variants.color = "red"
-   * AND variants.size = "XL"` matches a product with a red XL variant, not one
-   * with a red S and a blue XL. Off by default because most engines flatten
-   * arrays and cannot express it; a provider that cannot rejects it from
-   * `upsertIndex`, so this fails at boot rather than over-matching later.
-   */
-  correlated?: boolean
-
-  /**
    * The dimensionality of the embedding stored in a `type: "vector"` field.
    * Required for vector fields; meaningless on any other type. When `embed` is
    * omitted, every vector written to the field must have exactly this many

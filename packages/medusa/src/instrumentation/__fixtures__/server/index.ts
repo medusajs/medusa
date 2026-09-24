@@ -89,7 +89,8 @@ export const createServer = async (rootDir) => {
   await moduleLoader({ container, moduleResolutions, logger: defaultLogger })
 
   app.use((req, res, next) => {
-    ;(req as MedusaRequest).scope = container.createScope() as MedusaContainer
+    ;(req as unknown as MedusaRequest).scope =
+      container.createScope() as MedusaContainer
     next()
   })
 

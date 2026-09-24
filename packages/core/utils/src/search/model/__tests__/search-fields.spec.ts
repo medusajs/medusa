@@ -144,24 +144,21 @@ describe("search fields DSL", () => {
     })
   })
 
-  test("defineSearchIndex still accepts plain JSON fields", () => {
-    const definition = defineSearchIndex({
-      name: "product",
-      entity: "product",
-      fields: {
-        id: { type: "keyword", filterable: true },
-        title: { type: "text", searchable: true },
-      },
-      async *seed() {},
-    })
-
-    expect(definition.fields).toEqual({
-      id: { type: "keyword", filterable: true },
-      title: { type: "text", searchable: true },
-    })
+  test("defineSearchIndex rejects plain JSON fields", () => {
+    expect(() =>
+      defineSearchIndex({
+        name: "product",
+        entity: "product",
+        fields: {
+          // @ts-expect-error — fields must come from `search.define({ ... })`.
+          id: { type: "keyword", filterable: true },
+        },
+        async *seed() {},
+      })
+    ).toThrow("`defineSearchIndex` fields must come from `search.define({ ... })`")
   })
 
-  test("provider options and correlated object arrays", () => {
+  test("provider options on object arrays", () => {
     const definition = defineSearchIndex({
       name: "product",
       entity: "product",
@@ -172,7 +169,6 @@ describe("search fields DSL", () => {
             sku: search.keyword(),
           })
           .array()
-          .correlated()
           .providerOptions({ meilisearch: { foo: "bar" } }),
       }),
       async *seed() {},
@@ -181,7 +177,6 @@ describe("search fields DSL", () => {
     expect(definition.fields.variants).toEqual({
       type: "object",
       array: true,
-      correlated: true,
       provider_options: { meilisearch: { foo: "bar" } },
       fields: {
         sku: { type: "keyword" },
@@ -203,23 +198,31 @@ describe("search fields DSL", () => {
       async *seed() {
         yield [
           {
-            id: "prod_1",
-            title: "Shirt",
-            min_price: 10,
-            tags: ["a", "b"],
-            variants: [{ sku: "SHIRT-S" }],
-            // Extra fields are allowed: seeds commonly spread whole entities.
-            not_indexed: "ok",
+            action: "upsert",
+            documents: [
+              {
+                id: "prod_1",
+                title: "Shirt",
+                min_price: 10,
+                tags: ["a", "b"],
+                variants: [{ sku: "SHIRT-S" }],
+                // Extra fields are allowed: seeds commonly spread whole entities.
+                not_indexed: "ok",
+              },
+            ],
           },
         ]
       },
     })
 
-    const batches: SearchTypes.SearchDocument[][] = []
+    const batches: SearchTypes.SearchMutation[][] = []
     for await (const batch of definition.seed({} as any)) {
       batches.push(batch)
     }
-    expect(batches[0][0].id).toEqual("prod_1")
+    expect(batches[0][0]).toMatchObject({
+      action: "upsert",
+      documents: [{ id: "prod_1" }],
+    })
   })
 
   test("the type surface rejects what boot validation would", () => {
@@ -228,9 +231,6 @@ describe("search fields DSL", () => {
 
     // @ts-expect-error — vectors cannot hold arrays.
     void search.vector(3).array
-
-    // @ts-expect-error — correlated requires .array() first.
-    void search.object({ sku: search.keyword() }).correlated()
 
     // @ts-expect-error — range facets only exist on numeric/date fields.
     void search.keyword().facetable({ types: ["range"] })

@@ -45,6 +45,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { linkRegionPaymentProviders } from "../../../../helpers/link-region-payment-providers"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
@@ -168,6 +169,8 @@ medusaIntegrationTestRunner({
             name: "US",
             currency_code: "usd",
           })
+
+          await linkRegionPaymentProviders(appContainer, region.id)
 
           let cart = await cartModuleService.createCarts({
             currency_code: "usd",
@@ -1090,6 +1093,8 @@ medusaIntegrationTestRunner({
             name: "US",
             currency_code: "usd",
           })
+
+          await linkRegionPaymentProviders(appContainer, region.id)
 
           let cart = await cartModuleService.createCarts({
             currency_code: "usd",

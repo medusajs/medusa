@@ -15,6 +15,12 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
+      # Only ever cancels runs that are older AND share this run's head branch
+      # AND head repository AND have a *different* head SHA. That last guard is
+      # what makes the `!cancelled()` gates below safe: auto-cancellation can
+      # never strand the current head SHA with skipped (== passing, for a
+      # required check) gates, because a run on this exact SHA is never a
+      # cancellation target. Only a manual cancel can do that.
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -177,7 +183,7 @@ jobs:
         run: yarn test -- --shard=${{ matrix.shard_index }}/4 --maxWorkers=${{ steps.cpu-cores.outputs.count }} --passWithNoTests
 
   unit-tests:
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     needs: unit-tests-matrix
     steps:
@@ -256,7 +262,7 @@ jobs:
           DB_USERNAME: postgres
 
   integration-tests-packages:
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     needs: integration-tests-packages-matrix
     steps:
@@ -335,7 +341,7 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-http:
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     needs: integration-tests-http-matrix
     steps:
@@ -415,7 +421,7 @@ jobs:
           CHUNKS: ${{ needs.setup.outputs.module-chunks }}
 
   integration-tests-modules:
-    if: ${{ always() }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     needs: integration-tests-modules-matrix
     steps:

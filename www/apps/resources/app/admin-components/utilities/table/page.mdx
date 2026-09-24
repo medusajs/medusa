@@ -1,0 +1,314 @@
+---
+sidebar_label: "Table Utilities"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Table Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the utilities that back the Medusa Admin's configurable tables. Use them to define which data a [ConfigurableDataTable](../../components/configurable-data-table/page.mdx) shows, and how it renders each cell.
+
+```tsx
+import {
+  createTableAdapter,
+  defineCellRenderer,
+} from "@medusajs/dashboard/lib"
+```
+
+<Note title="Tip">
+
+Refer to the [View Configurations guide](../../../commerce-modules/settings/configure-view-configurations/page.mdx) for full examples of both utilities.
+
+</Note>
+
+---
+
+## createTableAdapter
+
+Creates a type-safe table adapter that tells a `ConfigurableDataTable` which entity to render, how to fetch its data, and how each row behaves. The utility applies defaults for `getRowId`, `pageSize`, and `queryPrefix`, then merges your adapter on top of them.
+
+```tsx
+import { createTableAdapter } from "@medusajs/dashboard/lib"
+import { sdk } from "../lib/sdk"
+import { useQuery } from "@tanstack/react-query"
+
+export const brandTableAdapter = createTableAdapter({
+  entity: "brand",
+  entityName: "Brands",
+  useData: (fields, params) => {
+    const { data, isLoading, isError, error } = useQuery({
+      queryKey: ["brands", fields, params],
+      queryFn: () => sdk.client.fetch("/admin/brands", {
+        query: { ...params, fields },
+      }),
+    })
+
+    return {
+      data: data?.brands,
+      count: data?.count,
+      isLoading,
+      isError,
+      error,
+    }
+  },
+  getRowHref: (brand) => `/brands/${brand.id}`,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "adapter",
+      type: "`object`",
+      optional: false,
+      description: `The adapter's configuration. \`TData\` is the [row type](../../components/configurable-data-table/page.mdx#type-argument), which \`createTableAdapter\` infers from the \`data\` that \`useData\` returns.`,
+      children: [
+        {
+          name: "entity",
+          type: "`string`",
+          optional: false,
+          description: "The entity type whose columns the table requests from the Medusa backend, such as `orders`.",
+        },
+        {
+          name: "useData",
+          type: "`(fields: string, params: any) => object`",
+          optional: false,
+          description: "A hook that the table calls with the fields that the visible columns require and the current search parameters. It must return the following object.",
+          children: [
+            {
+              name: "data",
+              type: "`TData[]` \\| `undefined`",
+              optional: false,
+              description: "The records to show in the table.",
+            },
+            {
+              name: "count",
+              type: "`number` \\| `undefined`",
+              optional: false,
+              description: "The total number of records across all pages, used for pagination.",
+            },
+            {
+              name: "isLoading",
+              type: "`boolean`",
+              optional: false,
+              description: "Whether the records are loading. The table shows its loading skeleton while this is `true`.",
+            },
+            {
+              name: "isError",
+              type: "`boolean`",
+              optional: false,
+              description: "Whether fetching the records failed.",
+            },
+            {
+              name: "error",
+              type: "`any`",
+              optional: false,
+              description: "The error thrown while fetching the records, if any. The table throws it so that the closest error boundary handles it.",
+            },
+          ],
+        },
+        {
+          name: "getRowId",
+          type: "`(row: TData) => string`",
+          optional: true,
+          description: "Returns a row's unique ID. Defaults to the row's `id` property.",
+        },
+        {
+          name: "getRowHref",
+          type: "`(row: TData) => string` \\| `undefined`",
+          optional: true,
+          description: "Returns the URL a row links to. Return `undefined` to make the row non-clickable.",
+        },
+        {
+          name: "filters",
+          type: "`DataTableFilter[]`",
+          optional: true,
+          description: `The table's filters. When you omit it, the table resolves the filters from the entity's columns. Refer to [Medusa UI](!ui!/components/data-table) for the type's details.`,
+        },
+        {
+          name: "transformColumns",
+          type: "`(columns: AdminColumn[]) => AdminColumn[]`",
+          optional: true,
+          description: "Transforms the columns that the Medusa backend returns, such as to disable sorting or filtering on a column.",
+        },
+        {
+          name: "getColumns",
+          type: "`(apiColumns: any[]) => DataTableColumnDef<TData, any>[]`",
+          optional: true,
+          description: "Builds the table's columns yourself instead of using the default column generation.",
+        },
+        {
+          name: "getColumnAlignment",
+          type: "`(column: AdminColumn) => DataTableColumnAlignment` \\| `undefined`",
+          optional: true,
+          description: "Overrides a column's alignment. Return `undefined` to use the render mode's alignment.",
+        },
+        {
+          name: "emptyState",
+          type: "`DataTableEmptyStateProps`",
+          optional: true,
+          description: `The content the table shows when there are no rows. Refer to [Medusa UI](!ui!/components/data-table) for the type's details.`,
+        },
+        {
+          name: "pageSize",
+          type: "`number`",
+          optional: true,
+          defaultValue: "20",
+          description: "The number of rows per page.",
+        },
+        {
+          name: "queryPrefix",
+          type: "`string`",
+          optional: true,
+          defaultValue: "\"\"",
+          description: "A prefix for the table's query parameters. Set it when a page renders more than one table.",
+        },
+        {
+          name: "viewConfigurationKey",
+          type: "`string`",
+          optional: true,
+          description: "The key that saved view configurations are stored under. Set it when more than one table renders the same entity. Defaults to `entity`.",
+        },
+        {
+          name: "entityName",
+          type: "`string`",
+          optional: true,
+          description: "The entity's display name, used in the table's headings.",
+        },
+        {
+          name: "renderRowActions",
+          type: "`(row: TData) => ReactNode`",
+          optional: true,
+          description: "Renders a row's actions. When you pass it, the table adds a trailing actions column.",
+        },
+        {
+          name: "defaultFilters",
+          type: "`Record<string, any>`",
+          optional: true,
+          description: "Filters applied when no saved view configuration is active. An active view's filters take precedence.",
+        },
+        {
+          name: "filterParamMap",
+          type: "`Record<string, string>`",
+          optional: true,
+          description: "Maps a filter's ID to the query parameter key that the list route accepts, such as `sales_channels.id` to `sales_channel_id`.",
+        },
+        {
+          name: "enableRowSelection",
+          type: "`boolean`",
+          optional: true,
+          description: "Whether to add a leading checkbox column. Required to use `commands`.",
+        },
+        {
+          name: "commands",
+          type: "`DataTableCommand[]`",
+          optional: true,
+          description: `The bulk actions that operate on the selected rows. Refer to [Medusa UI](!ui!/components/data-table) for the type's details.`,
+        },
+      ],
+    },
+  ]}
+/>
+
+### Returns
+
+Returns the same `TableAdapter<TData>` object with the default `getRowId`, `pageSize`, and `queryPrefix` applied. Pass it to a [ConfigurableDataTable](../../components/configurable-data-table/page.mdx).
+
+---
+
+## defineCellRenderer
+
+Registers a cell renderer for a render mode in the global registry. A column opts into the renderer through its render mode. Registering an existing render mode replaces it, which lets you override a built-in renderer.
+
+Call it once when your [admin extension](!docs!/learn/fundamentals/admin) loads.
+
+```tsx
+import { defineCellRenderer } from "@medusajs/dashboard/lib"
+import { Badge } from "@medusajs/ui"
+
+defineCellRenderer("brand_tier", {
+  render: (value, row, column, t) => (
+    <Badge size="xsmall">{value ?? "-"}</Badge>
+  ),
+  align: "center",
+  truncateTooltip: false,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "type",
+      type: "`RenderMode`",
+      optional: false,
+      description: "The render mode to register the renderer for. Pass a `BuiltInRenderMode` to replace a built-in renderer, or any other string for a custom mode.",
+    },
+    {
+      name: "def",
+      type: "`object`",
+      optional: false,
+      description: "The renderer's definition.",
+      children: [
+        {
+          name: "render",
+          type: "`(value, row, column, t) => React.ReactNode`",
+          optional: false,
+          description: "The function that renders the cell's content.",
+          children: [
+            {
+              name: "value",
+              type: "`any`",
+              optional: false,
+              description: "The value of the row's field that the column points to.",
+            },
+            {
+              name: "row",
+              type: "`TData`",
+              optional: false,
+              description: "The full row that the cell belongs to.",
+            },
+            {
+              name: "column",
+              type: "`AdminColumn`",
+              optional: false,
+              description: "The column's definition, including its `metadata` property.",
+            },
+            {
+              name: "t",
+              type: "`TFunction`",
+              optional: false,
+              description: "The i18next translation function.",
+            },
+          ],
+        },
+        {
+          name: "align",
+          type: "`\"left\"` \\| `\"center\"` \\| `\"right\"`",
+          optional: true,
+          description: "The alignment the renderer reads best at. The adapter's `getColumnAlignment` overrides it.",
+        },
+        {
+          name: "truncateTooltip",
+          type: "`boolean`",
+          optional: true,
+          defaultValue: "true",
+          description: "Whether the table shows a tooltip with the full value when the cell's content is truncated. Set it to `false` when the renderer handles its own overflow.",
+        },
+      ],
+    },
+  ]}
+/>

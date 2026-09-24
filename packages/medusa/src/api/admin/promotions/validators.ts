@@ -176,6 +176,7 @@ export const CreatePromotion = z
     application_method: AdminCreateApplicationMethod,
     rules: z.array(AdminCreatePromotionRule).optional(),
     limit: z.number().int().min(1).nullable().optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -218,6 +219,7 @@ export const UpdatePromotion = z
     campaign_id: z.string().nullish(),
     application_method: AdminUpdateApplicationMethod.optional(),
     limit: z.number().int().min(1).nullable().optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -229,23 +231,22 @@ export const AdminUpdatePromotion = WithAdditionalData(
     // `/admin/promotions/:id/buy-rules/batch`), so the create-time buyget
     // refinement is intentionally not applied here. Buyget consistency is
     // still validated by the promotion module against the persisted values.
-    return schema
-      .refine(
-        (data) => {
-          // Automatic promotions cannot have a limit
-          if (
-            data.is_automatic &&
-            data.limit !== null &&
-            data.limit !== undefined
-          ) {
-            return false
-          }
-          return true
-        },
-        {
-          message: "Automatic promotions cannot have a usage limit",
-          path: ["limit"],
+    return schema.refine(
+      (data) => {
+        // Automatic promotions cannot have a limit
+        if (
+          data.is_automatic &&
+          data.limit !== null &&
+          data.limit !== undefined
+        ) {
+          return false
         }
-      )
+        return true
+      },
+      {
+        message: "Automatic promotions cannot have a usage limit",
+        path: ["limit"],
+      }
+    )
   }
 )

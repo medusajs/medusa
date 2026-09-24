@@ -240,6 +240,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/sales-channels"
   },
   {
+    "title": "Manage Search Indexes",
+    "path": "https://docs.medusajs.com/user-guide/settings/search"
+  },
+  {
     "title": "Manage Store",
     "path": "https://docs.medusajs.com/user-guide/settings/store"
   },

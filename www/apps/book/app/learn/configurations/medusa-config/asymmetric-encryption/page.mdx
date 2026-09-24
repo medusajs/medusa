@@ -281,12 +281,17 @@ import type {
   MedusaResponse, 
 } from "@medusajs/framework/http"
 import crypto from "crypto"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const configModule = req.scope.resolve("configModule")
+  const configModule = req.scope.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const { projectConfig } = configModule
 
   // If JWKS_CONTENT is set, use it
@@ -345,6 +350,7 @@ import {
 } from "@medusajs/framework/http"
 import jwt from "jsonwebtoken"
 import { JwksClient } from "jwks-rsa"
+import { MedusaError } from "@medusajs/framework/utils"
 
 const MEDUSA_BACKEND_URL = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
 
@@ -365,7 +371,10 @@ async function getKey(header: any) {
 
     return key.getPublicKey()
   } catch (err: any) {
-    throw new Error(`Failed to get signing key: ${err.message}`)
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      `Failed to get signing key: ${err.message}`
+    )
   }
 }
 

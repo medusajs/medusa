@@ -24,7 +24,7 @@ export class MathBN {
       num_ = new BigNumberJS(num as BigNumberJS | number)
     }
 
-    if (decimalPlaces) {
+    if (decimalPlaces != null) {
       num_ = (num_ as BigNumberJS).decimalPlaces(decimalPlaces)
     }
 

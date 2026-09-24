@@ -124,6 +124,29 @@ if (apiKey && endpoint && environmentHandle) {
             "<mark>running</mark>"
           )
         })
+
+        it("highlights searchable fields when highlight is true", async () => {
+          const result = await service.search({
+            entity: productIndex.name,
+            filters: { q: "running" },
+            search_options: { highlight: true },
+          })
+
+          const hit = result.hits.find((h) => h.id === "prod_medusa_1")
+          expect(hit?.highlights?.title?.[0].toLowerCase()).toContain(
+            "<mark>running</mark>"
+          )
+        })
+
+        it("ignores highlighting and typo tolerance when there is no text query", async () => {
+          const result = await service.search({
+            entity: productIndex.name,
+            search_options: { highlight: true, typo_tolerance: true },
+          })
+
+          expect(result.hits.length).toBeGreaterThan(0)
+          expect(result.hits.every((hit) => !hit.highlights)).toBe(true)
+        })
       }),
   })
 } else {

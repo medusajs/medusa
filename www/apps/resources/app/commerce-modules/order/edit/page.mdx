@@ -36,9 +36,17 @@ When an item is added, an `OrderChangeAction` is created with the type `ITEM_ADD
 
 ## Update Items in an Order Edit
 
-A merchant can update an existing item's quantity or price.
+A merchant can update an existing item's quantity, price, or metadata.
 
 This change is recorded as an `OrderChangeAction` with the type `ITEM_UPDATE`. Its `details` property stores the item's ID, updated price, and updated quantity.
+
+Once the order edit is confirmed, the Order Module writes the updated `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` to the [OrderItem record](/references/order/models/OrderItem) of the order's new version. The [OrderLineItem record](/references/order/models/OrderLineItem) keeps the values it had when the item was added to the order.
+
+<Note>
+
+Retrieving the order after the edit returns the updated values in `items.unit_price` and `items.metadata`, since the Order Module merges the versioned record into each item. To read the versioned values directly, select `items.detail.unit_price` and `items.detail.metadata`. Refer to the [Order Versioning guide](../order-versioning/page.mdx#retrieve-versioned-item-details) for details.
+
+</Note>
 
 ---
 

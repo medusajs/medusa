@@ -2,24 +2,28 @@ import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   SearchIndexContext,
+  SearchIndexRecord,
   SearchIndexRegistry,
   SearchIndexSeedAction,
   SearchIndexSeedReason,
   SearchIndexSyncRecord,
+  SearchIndexVersionRecord,
   SearchSeedRuntime,
 } from "@types"
 import { randomUUID } from "crypto"
 import {
   assertTaskAccepted,
   DEFAULT_REINDEX_BATCH_SIZE,
+  listVersionsByIndexId,
   retrieveIndexDefinition,
   SearchIndexState,
   SearchSyncStatus,
 } from "./index"
-import { shadowIndexName } from "./migrations"
+import { cleanupStaleVersions, versionPhysicalName } from "./versions"
+import { retryOnRateLimit } from "./rate-limit"
 
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
-type SyncContext = Pick<SearchIndexContext, "indexService" | "syncService">
+type SyncContext = Pick<SearchIndexContext, "syncService">
 
 /** How often a long seed reports how many documents it has written. */
 const PROGRESS_LOG_INTERVAL_MS = 10_000
@@ -27,10 +31,12 @@ const PROGRESS_LOG_INTERVAL_MS = 10_000
 /* -------------------------------- planning -------------------------------- */
 
 /**
- * Which indexes need data, and where it goes. A drifted definition is filled into
- * its replacement and swapped in; otherwise an index needs seeding if it was never
- * filled, its last attempt failed, or it holds nothing — the last catching an
- * engine that lost its data while the record still says ready.
+ * Which indexes need data, and which version it goes into. The highest version
+ * above the active one is what a migration built for a schema or provider
+ * change; it needs filling and then becoming active. Otherwise an index needs
+ * seeding in place if its active version was never filled, its last attempt
+ * failed, or it holds nothing — the last catching an engine that lost its data
+ * while the record still says ready.
  */
 export async function createSeedPlan(
   context: SearchIndexRegistry
@@ -41,12 +47,16 @@ export async function createSeedPlan(
     return []
   }
 
-  const records = await context.indexService.list(
+  const records = (await context.indexService.list(
     { name: definitions.map((definition) => definition.name) },
     { take: null }
-  )
+  )) as SearchIndexRecord[]
 
   const byName = new Map(records.map((record) => [record.name, record]))
+  const versionsByIndexId = await listVersionsByIndexId(
+    context,
+    records.map((record) => record.id)
+  )
   const actions: SearchIndexSeedAction[] = []
 
   for (const definition of definitions) {
@@ -58,36 +68,68 @@ export async function createSeedPlan(
       continue
     }
 
-    if (
-      record.definition_hash !== definition.definition_hash ||
-      record.provider !== definition.provider
-    ) {
-      const swap = !!context.providers.retrieve(definition.provider).swapIndex
+    const versions = versionsByIndexId.get(record.id) ?? []
 
+    const pending = versions
+      .filter(
+        (version) =>
+          record.active_version == null ||
+          version.version > record.active_version
+      )
+      .sort((a, b) => b.version - a.version)[0]
+
+    if (pending) {
       actions.push({
         index: definition.name,
-        target_physical_name: swap
-          ? shadowIndexName(definition)
-          : definition.physical_name,
-        swap,
+        target_version: pending,
+        swap: true,
         reason: "schema_changed",
       })
-
       continue
     }
 
-    if (record.status === SearchIndexState.ERROR) {
-      actions.push(inPlace(definition, "last_run_failed"))
+    const activeVersion = versions.find(
+      (version) => version.version === record.active_version
+    )
+
+    if (!activeVersion) {
       continue
     }
 
-    if (record.status !== SearchIndexState.READY) {
-      actions.push(inPlace(definition, "index_created"))
+    if (activeVersion.status === SearchIndexState.ERROR) {
+      // A failed run leaves a cursor the next one picks up from — but only
+      // while the engine still holds what it wrote. An index that lost its
+      // data has to be rebuilt from the start, however far that run got.
+      const empty =
+        (await countDocuments(
+          context,
+          definition,
+          activeVersion.physical_name
+        )) === 0
+
+      actions.push(
+        inPlace(
+          definition,
+          activeVersion,
+          empty ? "index_empty" : "last_run_failed"
+        )
+      )
       continue
     }
 
-    if ((await countDocuments(context, definition)) === 0) {
-      actions.push(inPlace(definition, "index_empty"))
+    if (activeVersion.status !== SearchIndexState.READY) {
+      actions.push(inPlace(definition, activeVersion, "index_created"))
+      continue
+    }
+
+    if (
+      (await countDocuments(
+        context,
+        definition,
+        activeVersion.physical_name
+      )) === 0
+    ) {
+      actions.push(inPlace(definition, activeVersion, "index_empty"))
     }
   }
 
@@ -96,11 +138,12 @@ export async function createSeedPlan(
 
 function inPlace(
   definition: SearchTypes.ResolvedSearchIndexDefinition,
+  version: SearchIndexVersionRecord,
   reason: SearchIndexSeedReason
 ): SearchIndexSeedAction {
   return {
     index: definition.name,
-    target_physical_name: definition.physical_name,
+    target_version: version,
     swap: false,
     reason,
   }
@@ -115,8 +158,8 @@ export async function executeSeedPlan(
 
     // One instance per index. Without this every replica in a rolling deploy
     // would seed the same index at the same time.
-    await withIndexLock(context, definition.name, async () => {
-      await runSeed(context, { definition, action })
+    await withIndexLock(context, definition.name, async (signal) => {
+      await runSeed(context, { definition, action, signal })
     })
   }
 }
@@ -126,72 +169,139 @@ async function runSeed(
   {
     definition,
     action,
+    signal,
   }: {
     definition: SearchTypes.ResolvedSearchIndexDefinition
     action: SearchIndexSeedAction
+    signal?: AbortSignal
   }
 ): Promise<void> {
-  const provider = context.providers.retrieve(definition.provider)
-  const record = await retrieveRecord(context, definition.name)
-  const sync = await startSync(context, { record })
+  const target = action.target_version
+  const sync = await startSync(context, {
+    versionId: target.id,
+    resume: action.reason !== "index_empty",
+  })
   const startedAt = Date.now()
+  const assertLockHeld = lockGuard(definition.name, signal)
 
   context.logger.info(
     `[Search] Seeding "${definition.name}" (${action.reason}) into "${
-      action.target_physical_name
+      target.physical_name
     }"${formatResume(sync.last_key)}`
   )
 
-  await context.indexService.update({
-    selector: { id: record.id },
+  await context.versionService.update({
+    selector: { id: target.id },
     data: { status: SearchIndexState.BUILDING },
   })
 
   try {
-    // Seeding writes into an index a migration already created — only a `swap`
-    // needs its replacement built here. If the target is missing, the provider
-    // says so on the first write.
-    const { documents_synced } = await streamSeed(context, {
+    const { documents_synced, written } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
-      target_index: action.target_physical_name,
+      target_index: target.physical_name,
       last_key: sync.last_key ?? undefined,
+      synced_before: sync.documents_synced,
+      assertLockHeld,
+    })
+
+    await catchUp(context, {
+      definition,
+      target,
+      since: sync.started_at!,
+      jobId: sync.job_id!,
+      assertLockHeld,
+    })
+
+    // Ensure it is this instance that holds the lock before marking anything as ready.
+    assertLockHeld()
+
+    await context.versionService.update({
+      selector: { id: target.id },
+      data: { status: SearchIndexState.READY },
     })
 
     if (action.swap) {
       context.logger.info(
-        `[Search] Swapping "${definition.name}" onto "${definition.physical_name}"`
+        `[Search] Making "${definition.name}" version ${target.version} active`
       )
-      await provider.swapIndex!({
-        alias: definition.physical_name,
-        index: action.target_physical_name,
+      await context.indexService.update({
+        selector: { name: definition.name },
+        data: { active_version: target.version },
+      })
+      context.activeVersionCache?.set(definition.name, {
+        physical_name: target.physical_name,
+        provider: target.provider,
+        version: target.version,
       })
     }
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
 
-    await context.indexService.update({
-      selector: { id: record.id },
-      data: {
-        status: SearchIndexState.READY,
-        definition_hash: definition.definition_hash,
-        // A migration may have moved the index to another provider; the record
-        // follows once the seed has landed there.
-        provider: definition.provider,
-      },
-    })
-
     context.logger.info(
       `[Search] Seeded "${definition.name}": ${formatCount(
-        documents_synced
-      )} in ${formatElapsed(Date.now() - startedAt)}`
+        written
+      )} in ${formatElapsed(Date.now() - startedAt)}${formatTotal(
+        documents_synced,
+        written
+      )}`
     )
   } catch (error) {
     await failSync(context, {
       sync_id: sync.id,
-      record_id: record.id,
+      version_id: target.id,
       error,
     })
+    throw error
+  }
+}
+
+// A second seed pass, filtered to what changed since the first one started —
+// catches a live write the bulk pass's own snapshot could otherwise miss or
+// revert, including a delete (`streamSeed` applies whatever mutations `seed`
+// yields, in order). Runs once, into the same target, right before the
+// version is considered ready. Race-conditions are still possible, but unlikely.
+async function catchUp(
+  context: SearchSeedRuntime,
+  {
+    definition,
+    target,
+    since,
+    jobId,
+    assertLockHeld,
+  }: {
+    definition: SearchTypes.ResolvedSearchIndexDefinition
+    target: SearchIndexVersionRecord
+    since: Date
+    jobId: string
+    assertLockHeld: () => void
+  }
+): Promise<void> {
+  const sync = await startSync(context, {
+    versionId: target.id,
+    jobId,
+    resume: false,
+    resumable: false,
+  })
+
+  try {
+    const { documents_synced } = await streamSeed(context, {
+      index: definition,
+      sync_id: sync.id,
+      target_index: target.physical_name,
+      catchup: { since },
+      assertLockHeld,
+    })
+
+    await completeSync(context, { sync_id: sync.id, documents_synced })
+
+    context.logger.info(
+      `[Search] Caught up "${definition.name}": ${formatCount(
+        documents_synced
+      )} synced since ${since.toISOString()}`
+    )
+  } catch (error) {
+    await failSync(context, { sync_id: sync.id, version_id: target.id, error })
     throw error
   }
 }
@@ -216,8 +326,9 @@ export async function reindexIndexes(
     // (or another reindex) on the same index. Unlike boot, an explicit reindex
     // must not quietly skip — the caller asked for work to happen.
     if (context.locking) {
-      await context.locking.execute(`search:seed:${definition.name}`, () =>
-        reindexOne(context, { definition, jobId, input })
+      await context.locking.execute(
+        `search:seed:${definition.name}`,
+        (signal) => reindexOne(context, { definition, jobId, input, signal })
       )
     } else {
       await reindexOne(context, { definition, jobId, input })
@@ -233,109 +344,214 @@ async function reindexOne(
     definition,
     jobId,
     input,
+    signal,
   }: {
     definition: SearchTypes.ResolvedSearchIndexDefinition
     jobId: string
     input: SearchTypes.SearchReindexInput
+    signal?: AbortSignal
   }
 ): Promise<void> {
   const provider = context.providers.retrieve(definition.provider)
-  const record = await retrieveRecord(context, definition.name)
-  const sync = await startSync(context, {
-    record,
-    jobId,
-    filters: input.filters,
-  })
-  const startedAt = Date.now()
+  const record = await retrieveIndexRecord(context, definition.name)
 
-  // A partial rebuild must never swap: the replacement would only hold the
-  // filtered slice, so aliasing over would delete everything else.
-  const useSwap =
-    (input.strategy ?? "swap") === "swap" &&
-    !!provider.swapIndex &&
-    !input.filters
+  // We want to clean up stale versions before we start the reindex.
+  await cleanupStaleVersions(context, record)
+
+  const scoped = !!input.filters || !!input.since
+
+  // A partial rebuild must never swap: the replacement would only hold that
+  // slice, so making it active would drop everything else.
+  const useSwap = (input.strategy ?? "swap") === "swap" && !scoped
 
   const target = useSwap
-    ? shadowIndexName(definition)
-    : definition.physical_name
+    ? await createPendingVersion(context, { definition, record, provider })
+    : await retrieveActiveVersion(context, { definition, record })
+
+  const sync = await startSync(context, {
+    versionId: target.id,
+    jobId,
+    filters: input.filters,
+    // A scoped run covers a different set of documents than the full run whose
+    // cursor it would otherwise inherit
+    resume: !scoped,
+    resumable: !scoped,
+  })
+  const startedAt = Date.now()
+  const assertLockHeld = lockGuard(definition.name, signal)
 
   context.logger.info(
-    `[Search] Reindexing "${definition.name}" into "${target}"${formatResume(
-      sync.last_key
-    )}`
+    `[Search] Reindexing "${definition.name}" into "${
+      target.physical_name
+    }"${formatResume(sync.last_key)}`
   )
 
-  await context.indexService.update({
-    selector: { id: record.id },
+  await context.versionService.update({
+    selector: { id: target.id },
     data: { status: SearchIndexState.BUILDING },
   })
 
   try {
-    // Only the replacement is new; rebuilding in place writes into the index a
-    // migration already created, whatever its current schema.
-    if (useSwap) {
-      await provider.upsertIndex({
-        index: { ...definition, physical_name: target },
-      })
-    } else if (!sync.last_key && !input.filters) {
-      // In place has no shadow to discard, so anything the new seed stream
-      // doesn't re-emit (a deleted record, say) would otherwise survive as
-      // stale data. Clear first - but only for a full rebuild: `input.filters`
-      // selects source records for the seed, not search-engine filter syntax,
-      // so it can't be reused to delete a matching subset here. And skip this
-      // entirely when resuming an interrupted run, since the target already
-      // holds that run's progress.
-      const clearTask = await provider.clearIndex({ index: target })
+    // A fresh version has nothing to discard. Rebuilding in place does, so a
+    // record the new seed stream doesn't re-emit (a deleted row, say) doesn't
+    // survive as stale data — but only for a full rebuild: a scoped run
+    // selects source records for the seed, not search-engine filter syntax,
+    // so it can't be reused to delete a matching subset here. And skip this
+    // entirely when resuming an interrupted run, since the target already
+    // holds that run's progress.
+    if (!useSwap && !sync.last_key && !scoped) {
+      await retryOnRateLimit(
+        async () => {
+          const clearTask = await provider.clearIndex({
+            index: target.physical_name,
+          })
 
-      assertTaskAccepted(clearTask, definition.name)
-      await settle(context, definition, clearTask)
+          assertTaskAccepted(clearTask, definition.name)
+          await settle(context, definition, clearTask)
+        },
+        {
+          label: `clearing "${definition.name}"`,
+          logger: context.logger,
+        }
+      )
     }
 
-    const { documents_synced } = await streamSeed(context, {
+    const { documents_synced, written } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
-      target_index: target,
+      target_index: target.physical_name,
       filters: input.filters,
       last_key: sync.last_key ?? undefined,
+      synced_before: sync.documents_synced,
+      // `since` is the same "only what changed at or after this" question the
+      // catch-up pass asks, so it reaches `seed` the same way.
+      catchup: input.since ? { since: input.since } : undefined,
+      assertLockHeld,
+    })
+
+    // Skipped for a scoped reindex: it's already a narrow, caller-scoped
+    // rebuild, and catching up on everything changed since would silently
+    // do more than asked.
+    if (!scoped) {
+      await catchUp(context, {
+        definition,
+        target,
+        since: sync.started_at!,
+        jobId,
+        assertLockHeld,
+      })
+    }
+
+    // Ensure it is this instance that holds the lock before marking anything as ready.
+    assertLockHeld()
+
+    await context.versionService.update({
+      selector: { id: target.id },
+      data: { status: SearchIndexState.READY },
     })
 
     if (useSwap) {
       context.logger.info(
-        `[Search] Swapping "${definition.name}" onto "${definition.physical_name}"`
+        `[Search] Making "${definition.name}" version ${target.version} active`
       )
-      await provider.swapIndex!({
-        alias: definition.physical_name,
-        index: target,
+      await context.indexService.update({
+        selector: { id: record.id },
+        data: { active_version: target.version },
+      })
+      context.activeVersionCache?.set(definition.name, {
+        physical_name: target.physical_name,
+        provider: target.provider,
+        version: target.version,
       })
     }
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
 
-    await context.indexService.update({
-      selector: { id: record.id },
-      data: {
-        status: SearchIndexState.READY,
-        definition_hash: definition.definition_hash,
-        provider: definition.provider,
-      },
-    })
-
     context.logger.info(
       `[Search] Reindexed "${definition.name}": ${formatCount(
-        documents_synced
-      )} in ${formatElapsed(Date.now() - startedAt)}`
+        written
+      )} in ${formatElapsed(Date.now() - startedAt)}${formatTotal(
+        documents_synced,
+        written
+      )}`
     )
   } catch (error) {
-    // Leave the replacement behind on failure; the live one is untouched.
-    await failSync(context, { sync_id: sync.id, record_id: record.id, error })
+    // Leave the new version behind on failure; the active one is untouched.
+    await failSync(context, { sync_id: sync.id, version_id: target.id, error })
     throw error
   }
+}
+
+/** Builds a brand-new version, whether or not the definition actually drifted. */
+async function createPendingVersion(
+  context: Pick<SearchIndexContext, "versionService">,
+  {
+    definition,
+    record,
+    provider,
+  }: {
+    definition: SearchTypes.ResolvedSearchIndexDefinition
+    record: SearchIndexRecord
+    provider: SearchTypes.ISearchProvider
+  }
+): Promise<SearchIndexVersionRecord> {
+  const versions = (await context.versionService.list(
+    { search_index_id: record.id },
+    { order: { version: "DESC" }, take: 1 }
+  )) as SearchIndexVersionRecord[]
+
+  const version = (versions[0]?.version ?? record.active_version ?? 0) + 1
+  const physicalName = versionPhysicalName(definition, version)
+
+  await provider.upsertIndex({
+    index: { ...definition, physical_name: physicalName },
+  })
+
+  const [created] = (await context.versionService.create([
+    {
+      search_index_id: record.id,
+      version,
+      provider: definition.provider,
+      physical_name: physicalName,
+      definition_hash: definition.definition_hash,
+      status: SearchIndexState.PENDING,
+    },
+  ])) as SearchIndexVersionRecord[]
+
+  return created
+}
+
+async function retrieveActiveVersion(
+  context: Pick<SearchIndexContext, "versionService">,
+  {
+    definition,
+    record,
+  }: {
+    definition: SearchTypes.ResolvedSearchIndexDefinition
+    record: SearchIndexRecord
+  }
+): Promise<SearchIndexVersionRecord> {
+  if (record.active_version == null) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      `Search index "${definition.name}" has no active version to reindex in place`
+    )
+  }
+
+  const [active] = (await context.versionService.list({
+    search_index_id: record.id,
+    version: record.active_version,
+  })) as SearchIndexVersionRecord[]
+
+  return active
 }
 
 /* -------------------------------- streaming ------------------------------- */
 
 // Streams one index' `seed` in, advancing the sync row's `last_key` per batch so
-// an interrupted run resumes rather than restarting.
+// an interrupted run resumes rather than restarting. `seed` yields mutations
+// (not bare documents), so a delete is applied directly, in order — flushing
+// any buffered upserts first so it isn't reordered ahead of them.
 async function streamSeed(
   context: SearchSeedRuntime,
   {
@@ -344,20 +560,28 @@ async function streamSeed(
     target_index,
     filters,
     last_key,
+    synced_before,
+    catchup,
+    assertLockHeld,
   }: {
     index: SearchTypes.ResolvedSearchIndexDefinition
     sync_id: string
     target_index: string
     filters?: Record<string, unknown>
     last_key?: string
+    synced_before?: number
+    catchup?: { since: Date }
+    assertLockHeld: () => void
   }
-): Promise<{ documents_synced: number }> {
+): Promise<{ documents_synced: number; written: number }> {
   const provider = context.providers.retrieve(index.provider)
   const batchSize =
     context.options.reindex?.batch_size ?? DEFAULT_REINDEX_BATCH_SIZE
 
   let buffer: SearchTypes.SearchDocument[] = []
-  let synced = 0
+  // What this run wrote, without the previous runs' writes.
+  let written = 0
+  const total = () => (synced_before ?? 0) + written
   let lastKey: string | undefined
   const startedAt = Date.now()
   let lastLoggedAt = startedAt
@@ -367,7 +591,7 @@ async function streamSeed(
     const now = Date.now()
     if (
       !force &&
-      (synced === lastLoggedCount ||
+      (written === lastLoggedCount ||
         now - lastLoggedAt < PROGRESS_LOG_INTERVAL_MS)
     ) {
       return
@@ -375,19 +599,19 @@ async function streamSeed(
 
     const elapsedMs = now - startedAt
     const elapsedSec = Math.max(elapsedMs / 1000, 0.001)
-    const rate = Math.round(synced / elapsedSec)
+    const rate = Math.round(written / elapsedSec)
     const cursor = lastKey ? `, last key ${lastKey}` : ""
 
     context.logger.info(
-      `[Search] "${index.name}": ${formatCount(synced)} synced in ${formatElapsed(
-        elapsedMs
-      )} (${rate}/s)${cursor}`
+      `[Search] "${index.name}": ${formatCount(
+        written
+      )} synced in ${formatElapsed(elapsedMs)} (${rate}/s)${cursor}`
     )
     lastLoggedAt = now
-    lastLoggedCount = synced
+    lastLoggedCount = written
   }
 
-  const flush = async () => {
+  const flushUpserts = async () => {
     if (!buffer.length) {
       return
     }
@@ -395,24 +619,32 @@ async function streamSeed(
     const batch = buffer
     buffer = []
 
-    const task = await provider.upsertDocuments({
-      index: target_index,
-      definition: index,
-      documents: batch,
-    })
+    await retryOnRateLimit(
+      async () => {
+        assertLockHeld()
 
-    // Per batch rather than once at the end: it bounds how much can be in
-    // flight, and the swap that follows depends on all of it having landed.
-    assertTaskAccepted(task, index.name)
-    await settle(context, index, task)
+        const task = await provider.upsertDocuments({
+          index: target_index,
+          definition: index,
+          documents: batch,
+        })
 
-    synced += batch.length
+        assertTaskAccepted(task, index.name)
+        await settle(context, index, task)
+      },
+      {
+        label: `writing ${batch.length} document(s) to "${index.name}"`,
+        logger: context.logger,
+      }
+    )
+
+    written += batch.length
     lastKey = batch[batch.length - 1][index.primary_key] as string
 
     await context.syncService.update({
       selector: { id: sync_id },
       data: {
-        documents_synced: synced,
+        documents_synced: total(),
         last_key: lastKey,
       },
     })
@@ -421,28 +653,74 @@ async function streamSeed(
     reportProgress(lastLoggedCount === 0)
   }
 
-  for await (const documents of index.seed({
+  const applyDelete = async (deleteFilters: SearchTypes.SearchFilters) => {
+    await flushUpserts()
+
+    try {
+      await retryOnRateLimit(
+        async () => {
+          assertLockHeld()
+
+          const task = await provider.deleteDocuments({
+            index: target_index,
+            filters: deleteFilters,
+          })
+
+          assertTaskAccepted(task, index.name)
+          await settle(context, index, task)
+        },
+        {
+          label: `deleting documents from "${index.name}"`,
+          logger: context.logger,
+        }
+      )
+    } catch (error) {
+      if (error instanceof SearchSeedLockLost) {
+        throw error
+      }
+
+      throw new SearchSeedProgressLost(
+        `Seed of "${index.name}" failed while deleting documents, so its progress cannot be resumed: ${error.message}`,
+        error
+      )
+    }
+  }
+
+  for await (const mutations of index.seed({
     container: context.container,
     index,
     filters,
     last_key,
+    catchup,
   })) {
-    for (const document of documents) {
-      buffer.push(document)
+    for (const mutation of mutations) {
+      if (mutation.action === "delete") {
+        await applyDelete(mutation.filters)
+        continue
+      }
 
-      if (buffer.length >= batchSize) {
-        await flush()
+      for (const document of mutation.documents) {
+        buffer.push(document)
+
+        if (buffer.length >= batchSize) {
+          await flushUpserts()
+        }
       }
     }
   }
 
-  await flush()
+  await flushUpserts()
 
-  return { documents_synced: synced }
+  await context.syncService.update({
+    selector: { id: sync_id },
+    data: { resumable: false },
+  })
+
+  return { documents_synced: total(), written }
 }
 
-// Blocks until a write lands. Not optional here: a `swap` puts the new index in
-// front of reads, so its documents have to be in it first.
+// Blocks until a write lands. Not optional here: a swap puts the new version
+// in front of reads, so its documents have to be in it first.
 async function settle(
   context: Pick<SearchIndexContext, "providers">,
   definition: SearchTypes.ResolvedSearchIndexDefinition,
@@ -457,41 +735,82 @@ async function settle(
   assertTaskAccepted(await provider.waitForTask(task), definition.name)
 }
 
+/* -------------------------------- the lock -------------------------------- */
+
+/**
+ * A seed failed in a way that leaves the index inconsistent with the run's
+ * cursor, so the next run has to rebuild from the start rather than carry on
+ * from where this one stopped.
+ */
+export class SearchSeedProgressLost extends MedusaError {
+  constructor(message: string, readonly cause?: unknown) {
+    super(MedusaError.Types.UNEXPECTED_STATE, message)
+    this.name = "SearchSeedProgressLost"
+  }
+}
+
+export class SearchSeedLockLost extends MedusaError {
+  constructor(message: string) {
+    super(MedusaError.Types.CONFLICT, message)
+    this.name = "SearchSeedLockLost"
+  }
+}
+
+/**
+ * If the lock got aborted we want to throw, as the lock may be held by another instance now.
+ */
+function lockGuard(index: string, signal?: AbortSignal): () => void {
+  return () => {
+    if (signal?.aborted) {
+      throw new SearchSeedLockLost(
+        `Seed of "${index}" lost its lock while running, so another instance may already be seeding it`
+      )
+    }
+  }
+}
+
 /* ------------------------------ sync records ------------------------------ */
 
-// Opens a sync row, cancelling any earlier unfinished one and inheriting its
-// `last_key` so an interrupted run resumes.
 async function startSync(
   context: SyncContext,
   {
-    record,
+    versionId,
     jobId,
     filters,
+    resume = true,
+    resumable = true,
   }: {
-    record: { id: string; name: string }
+    versionId: string
     jobId?: string
     filters?: Record<string, unknown>
+    resume?: boolean
+    resumable?: boolean
   }
 ): Promise<SearchIndexSyncRecord> {
-  const resumable = await findResumableSync(context, record.name)
-
-  if (resumable) {
-    await context.syncService.update({
-      selector: { id: resumable.id },
-      data: { status: SearchSyncStatus.CANCELED },
-    })
-  }
+  const previous = resume
+    ? await findResumableSync(context, versionId)
+    : undefined
 
   const [sync] = await context.syncService.create([
     {
-      search_index_id: record.id,
+      search_index_version_id: versionId,
       job_id: jobId ?? randomUUID(),
       status: SearchSyncStatus.PROCESSING,
       filters: filters ?? null,
-      last_key: resumable?.last_key ?? null,
+      last_key: previous?.last_key ?? null,
+      // Carried along with the cursor, so a version filled over several runs reports the complete count.
+      documents_synced: previous?.documents_synced ?? 0,
+      resumable,
       started_at: new Date(),
     },
   ])
+
+  if (previous && isUnfinished(previous)) {
+    await context.syncService.update({
+      selector: { id: previous.id },
+      data: { status: SearchSyncStatus.CANCELED },
+    })
+  }
 
   return sync as SearchIndexSyncRecord
 }
@@ -511,48 +830,58 @@ async function completeSync(
 }
 
 async function failSync(
-  context: SyncContext,
+  context: Pick<SearchIndexContext, "versionService" | "syncService">,
   {
     sync_id,
-    record_id,
+    version_id,
     error,
-  }: { sync_id: string; record_id: string; error: Error }
+  }: { sync_id: string; version_id: string; error: Error }
 ): Promise<void> {
+  // A run that lost its lock doesn't own the version or its syncs any more, so
+  // it must not mark either as failed.
+  if (error instanceof SearchSeedLockLost) {
+    return
+  }
+
   await context.syncService.update({
     selector: { id: sync_id },
     data: {
       status: SearchSyncStatus.FAILED,
       error: error.message,
       completed_at: new Date(),
+      ...(error instanceof SearchSeedProgressLost ? { resumable: false } : {}),
     },
   })
 
-  await context.indexService.update({
-    selector: { id: record_id },
+  await context.versionService.update({
+    selector: { id: version_id },
     data: { status: SearchIndexState.ERROR },
   })
 }
 
-// The most recent unfinished run for an index, if any.
+function isUnfinished(sync: SearchIndexSyncRecord): boolean {
+  return (
+    sync.status === SearchSyncStatus.PENDING ||
+    sync.status === SearchSyncStatus.PROCESSING
+  )
+}
+
 async function findResumableSync(
   context: SyncContext,
-  indexName: string
+  versionId: string
 ): Promise<SearchIndexSyncRecord | undefined> {
-  const [record] = await context.indexService.list({ name: indexName })
+  const [latest] = (await context.syncService.list(
+    { search_index_version_id: versionId },
+    { order: { created_at: "DESC" }, take: 1 }
+  )) as SearchIndexSyncRecord[]
 
-  if (!record) {
+  if (!latest?.resumable) {
     return undefined
   }
 
-  const [sync] = await context.syncService.list(
-    {
-      search_index_id: record.id,
-      status: [SearchSyncStatus.PENDING, SearchSyncStatus.PROCESSING],
-    },
-    { order: { created_at: "DESC" }, take: 1 }
-  )
-
-  return sync as SearchIndexSyncRecord | undefined
+  return isUnfinished(latest) || latest.status === SearchSyncStatus.FAILED
+    ? latest
+    : undefined
 }
 
 /* --------------------------------- helpers -------------------------------- */
@@ -582,43 +911,69 @@ function formatResume(lastKey: string | null | undefined): string {
   return lastKey ? `, resuming after ${lastKey}` : ""
 }
 
+function formatTotal(documentsSynced: number, written: number): string {
+  return documentsSynced === written
+    ? ""
+    : `, ${formatCount(documentsSynced)} in total`
+}
+
 async function countDocuments(
   context: Pick<SearchIndexContext, "providers">,
-  definition: SearchTypes.ResolvedSearchIndexDefinition
+  definition: SearchTypes.ResolvedSearchIndexDefinition,
+  physicalName: string
 ): Promise<number> {
   const indexes = await context.providers
     .retrieve(definition.provider)
     .listIndexes()
 
-  return (
-    indexes.find((info) => info.name === definition.physical_name)
-      ?.document_count ?? 0
-  )
+  return indexes.find((info) => info.name === physicalName)?.document_count ?? 0
 }
 
 async function withIndexLock<T>(
   context: LockContext,
   name: string,
-  job: () => Promise<T>
+  job: (signal?: AbortSignal) => Promise<T>
 ): Promise<T | undefined> {
   if (!context.locking) {
     return await job()
   }
 
+  let started = false
+
   try {
-    return await context.locking.execute(`search:seed:${name}`, job)
+    return await context.locking.execute(`search:seed:${name}`, (signal) => {
+      started = true
+      return job(signal)
+    })
   } catch (error) {
-    // Another instance holds the lock and is doing the work.
-    context.logger.info(`[Search] Skipping seed of "${name}": ${error.message}`)
+    // Happens when a lock could not be acquired.
+    if (!started) {
+      context.logger.info(
+        `[Search] Skipping seed of "${name}": ${error.message}`
+      )
+      return undefined
+    }
+
+    if (error instanceof SearchSeedLockLost) {
+      context.logger.warn(`[Search] ${error.message}`)
+      return undefined
+    }
+
+    context.logger.error(
+      `[Search] Failed to seed "${name}": ${error.message}`,
+      error
+    )
     return undefined
   }
 }
 
-async function retrieveRecord(
+async function retrieveIndexRecord(
   context: Pick<SearchIndexContext, "indexService">,
   name: string
-): Promise<any> {
-  const [record] = await context.indexService.list({ name })
+): Promise<SearchIndexRecord> {
+  const [record] = (await context.indexService.list({
+    name,
+  })) as SearchIndexRecord[]
 
   if (!record) {
     throw new MedusaError(

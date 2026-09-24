@@ -1060,6 +1060,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateDeletedPaymentSessionsStep"
   },
   {
+    "title": "validatePaymentProviderInRegionStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validatePaymentProviderInRegionStep"
+  },
+  {
     "title": "createPriceListPricesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPriceListPricesStep"
   },
@@ -1150,6 +1154,10 @@ export const step = [
   {
     "title": "createProductTypesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTypesStep"
+  },
+  {
+    "title": "createProductVariantsDefaultInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
   },
   {
     "title": "createProductVariantsStep",
@@ -1402,6 +1410,18 @@ export const step = [
   {
     "title": "updateSalesChannelsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateSalesChannelsStep"
+  },
+  {
+    "title": "deleteSearchIndexStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteSearchIndexStep"
+  },
+  {
+    "title": "reindexSearchIndexesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/reindexSearchIndexesStep"
+  },
+  {
+    "title": "validateSearchIndexesExistStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateSearchIndexesExistStep"
   },
   {
     "title": "clearLayoutConfigurationStep",

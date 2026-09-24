@@ -1,0 +1,147 @@
+---
+sidebar_label: "Addresses"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Address Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the utilities that the Medusa Admin uses to display and compare addresses. Use them in your [admin extensions](!docs!/learn/fundamentals/admin) to show an order's or customer's address the same way the Medusa Admin does.
+
+```tsx
+import {
+  getFormattedAddress,
+  getFormattedCountry,
+  isSameAddress,
+} from "@medusajs/dashboard/lib"
+```
+
+---
+
+## getFormattedAddress
+
+Returns an address as an array of lines, ordered the way the Medusa Admin displays them: the full name, the company, the two address lines, a combined city, province, and postal code line, and the country's display name. Render each item of the array on its own line.
+
+```tsx
+import { getFormattedAddress } from "@medusajs/dashboard/lib"
+
+const ShippingAddress = ({ order }) => {
+  const lines = getFormattedAddress({
+    address: order.shipping_address,
+  })
+
+  return (
+    <div>
+      {lines.map((line, index) => (
+        <span key={index}>{line}</span>
+      ))}
+    </div>
+  )
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "input",
+      type: "`object`",
+      optional: false,
+      description: "An object holding the address to format.",
+    },
+    {
+      name: "input.address",
+      type: "`AdminOrderAddress | null | undefined`",
+      optional: false,
+      description: "The address to format. Pass an address of an order, customer, or any other resource that has the same shape.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string[]` of the address's lines. The array is empty when you don't pass an address.
+
+<Note>
+
+When the address has no `country` object, the utility resolves the country's display name from the `country_code`. If the code isn't a supported country, it falls back to the uppercase code.
+
+</Note>
+
+---
+
+## getFormattedCountry
+
+Returns a country's display name from its ISO 2 code.
+
+```tsx
+import { getFormattedCountry } from "@medusajs/dashboard/lib"
+
+getFormattedCountry("us") // "United States"
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "countryCode",
+      type: "`string | null | undefined`",
+      optional: false,
+      description: "The country's lowercase ISO 2 code.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `string` of the country's display name. It returns the passed code when the country isn't supported, and an empty string when you don't pass a code.
+
+---
+
+## isSameAddress
+
+Returns whether two addresses hold the same values. It compares the first name, last name, both address lines, city, postal code, province, and country code. It ignores the company and phone.
+
+```tsx
+import { isSameAddress } from "@medusajs/dashboard/lib"
+
+const isSame = isSameAddress(
+  order.shipping_address,
+  order.billing_address
+)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "a",
+      type: "`AdminOrderAddress | null | undefined`",
+      optional: false,
+      description: "The first address to compare.",
+    },
+    {
+      name: "b",
+      type: "`AdminOrderAddress | null | undefined`",
+      optional: false,
+      description: "The second address to compare.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `boolean` that is `true` when the compared fields match. It returns `false` when either address is missing.

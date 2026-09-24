@@ -1,0 +1,90 @@
+---
+sidebar_label: "useQueryParams"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `useQueryParams - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This hook is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `useQueryParams` hook reads a set of query parameters from the current URL, with optional support for a prefix. The Medusa Admin uses it to build the list request of a [data table](!ui!/components/data-table) from the table's pagination, search, sorting, and filter state.
+
+```tsx
+import { useQueryParams } from "@medusajs/dashboard/hooks"
+```
+
+---
+
+## Example
+
+Pass the query parameters that you want to read, then use them in a request to the Medusa backend:
+
+```tsx
+import { useQueryParams } from "@medusajs/dashboard/hooks"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+
+const PAGE_SIZE = 20
+
+const ProductList = () => {
+  const { offset, q, order } = useQueryParams([
+    "offset",
+    "q",
+    "order",
+  ])
+
+  const searchParams = {
+    limit: PAGE_SIZE,
+    offset: offset ? Number(offset) : 0,
+    q,
+    order,
+  }
+
+  const { data } = useQuery({
+    queryKey: ["products", searchParams],
+    queryFn: () => sdk.admin.product.list(searchParams),
+  })
+
+  // ...
+}
+```
+
+If two tables are on the same page, pass a prefix as a second parameter so that each table reads its own query parameters. For example, `useQueryParams(["offset"], "sc")` reads the `sc_offset` query parameter and returns it as `offset`.
+
+Since every returned value is a string, convert the values that aren't strings. For example, use `Number(offset)` for numbers and `JSON.parse(created_at)` for filters whose values are objects.
+
+---
+
+## Parameters
+
+<TypeList
+  types={[
+    {
+      name: "keys",
+      type: "`string[]`",
+      optional: false,
+      description: "Required. The names of the query parameters to read. They're also the keys of the returned object.",
+    },
+    {
+      name: "prefix",
+      type: "`string`",
+      optional: false,
+      description: "A prefix to prepend to every key when reading the URL, separated by an underscore. The returned object still uses the unprefixed keys.",
+    },
+  ]}
+/>
+
+---
+
+## Returns
+
+Returns a `Record<string, string | undefined>` whose keys are the passed `keys`. Each value is the query parameter's value in the current URL, or `undefined` if the URL doesn't have it.

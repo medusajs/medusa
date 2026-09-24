@@ -169,7 +169,7 @@ The Caching Module and its providers are available starting [Medusa v2.11.0](htt
 
 :::tip
 
-You should use the Caching Module's service when you're caching computed data or data from external APIs. To cache database query results, enable caching in [Query](!docs!/learn/fundamentals/module-links/query#cache) or [Index Module](!docs!/learn/fundamentals/module-links/index-module#cache) instead.
+You should use the Caching Module's service when you're caching computed data or data from external APIs. To cache database query results, enable caching in [Query](!docs!/learn/fundamentals/query#cache) or [Index Module](!docs!/learn/fundamentals/query/index-module#cache) instead.
 
 :::
 `,

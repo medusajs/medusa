@@ -8,8 +8,8 @@ import { ApiKeyType } from "@medusajs/framework/utils"
  */
 export type AdminSearchEntityConfig = {
   name: string
-  /** `query.graph` / remote-query entry point. */
-  graphEntity: string
+  /** `query.graph` / remote-query entry point. Defaults to `name` when omitted. */
+  graphEntity?: string
   fields: string[]
   /** Always applied (e.g. exclude draft orders, api-key type). */
   filters?: Record<string, unknown>
@@ -24,7 +24,6 @@ export type AdminSearchEntityConfig = {
 export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
   {
     name: "order",
-    graphEntity: "order",
     fields: ["id", "display_id", "email"],
     filters: { is_draft_order: false },
     // Display shows `#${display_id}`; users often type the leading `#`.
@@ -32,107 +31,90 @@ export const ADMIN_SEARCH_ENTITIES: AdminSearchEntityConfig[] = [
   },
   {
     name: "product",
-    graphEntity: "product",
     fields: ["id", "title", "thumbnail"],
   },
   {
-    name: "productVariant",
-    graphEntity: "variant",
+    name: "product_variant",
     fields: ["id", "title", "sku", "product_id"],
   },
   {
-    name: "category",
-    graphEntity: "product_category",
+    name: "product_category",
     fields: ["id", "name"],
   },
   {
-    name: "collection",
-    graphEntity: "product_collection",
+    name: "product_collection",
     fields: ["id", "title"],
   },
   {
     name: "customer",
-    graphEntity: "customer",
     fields: ["id", "email", "first_name", "last_name"],
   },
   {
-    name: "customerGroup",
-    graphEntity: "customer_group",
+    name: "customer_group",
     fields: ["id", "name"],
   },
   {
-    name: "inventory",
-    graphEntity: "inventory_item",
+    name: "inventory_item",
     fields: ["id", "title", "sku"],
   },
   {
     name: "promotion",
-    graphEntity: "promotion",
     fields: ["id", "code", "status"],
   },
   {
     name: "campaign",
-    graphEntity: "campaign",
     fields: ["id", "name"],
   },
   {
-    name: "priceList",
-    graphEntity: "price_list",
+    name: "price_list",
     fields: ["id", "title"],
   },
   {
     name: "user",
-    graphEntity: "user",
     fields: ["id", "email", "first_name", "last_name"],
   },
   {
     name: "region",
-    graphEntity: "region",
     fields: ["id", "name"],
   },
   {
-    name: "taxRegion",
-    graphEntity: "tax_region",
+    name: "tax_region",
     fields: ["id", "country_code", "province_code"],
   },
   {
-    name: "returnReason",
-    graphEntity: "return_reason",
+    name: "return_reason",
     fields: ["id", "label", "value"],
   },
   {
-    name: "salesChannel",
-    graphEntity: "sales_channel",
+    name: "sales_channel",
     fields: ["id", "name"],
   },
   {
-    name: "productType",
-    graphEntity: "product_type",
+    name: "product_type",
     fields: ["id", "value"],
   },
   {
-    name: "productTag",
-    graphEntity: "product_tag",
+    name: "product_tag",
     fields: ["id", "value"],
   },
   {
-    name: "location",
-    graphEntity: "stock_location",
+    name: "stock_location",
     fields: ["id", "name"],
   },
   {
-    name: "shippingProfile",
-    graphEntity: "shipping_profile",
+    name: "shipping_profile",
     fields: ["id", "name"],
   },
   {
-    name: "publishableApiKey",
+    // graphEntity is shared with secret_api_key below; disambiguated by name
+    // since ADMIN_SEARCH_ENTITY_MAP and `entity=` both key on it.
+    name: "publishable_api_key",
     graphEntity: "api_key",
     fields: ["id", "title", "redacted"],
     filters: { type: ApiKeyType.PUBLISHABLE },
   },
   {
-    name: "secretApiKey",
+    name: "secret_api_key",
     graphEntity: "api_key",
     fields: ["id", "title", "redacted"],
     filters: { type: ApiKeyType.SECRET },

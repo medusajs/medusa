@@ -69,9 +69,11 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     {
       files: ["**/middleware.{ts,js}", "**/middlewares.{ts,js}"],
       rules: {
+        [ruleId("allow-fields-must-be-global-middleware")]: "error",
         [ruleId("middleware-must-call-next")]: "warn",
         [ruleId("middlewares-file-location-and-name")]: "error",
         [ruleId("no-trailing-slash-in-route-matcher")]: "warn",
+        [ruleId("prefer-allow-fields-middleware")]: "warn",
       },
     },
     {

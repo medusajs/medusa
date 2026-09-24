@@ -63,46 +63,124 @@ describe("postgres search utils", () => {
       expect(plan.fields.get("tags")?.is_array).toBe(true)
     })
 
-    it("rejects vector and correlated fields on native", () => {
-      expect(() =>
-        assertIndexSupported(
-          baseDefinition({
-            fields: {
-              embedding: { type: "vector", dimensions: 3 },
-            },
-          }),
-          "native"
-        )
-      ).toThrow(/lakebase/)
+    it("reports and ignores vector fields on native", () => {
+      const logger = { warn: jest.fn() } as any
+      const definition = baseDefinition({
+        fields: {
+          id: { type: "keyword", filterable: true },
+          title: { type: "text", searchable: true },
+          embedding: { type: "vector", dimensions: 3 },
+          meta: {
+            type: "object",
+            fields: { image: { type: "vector", dimensions: 3 } },
+          },
+        },
+      })
 
       expect(() =>
-        assertIndexSupported(
-          baseDefinition({
-            fields: {
-              variants: {
-                type: "object",
-                array: true,
-                correlated: true,
-                fields: { color: { type: "keyword" } },
-              },
-            },
-          })
-        )
-      ).toThrow(/correlated/)
+        assertIndexSupported(definition, "native", logger)
+      ).not.toThrow()
+
+      expect(logger.warn).toHaveBeenCalledTimes(1)
+      expect(logger.warn.mock.calls[0][0]).toContain(
+        '"embedding", "meta.image"'
+      )
+
+      const plan = buildIndexPlan(definition, "native")
+      expect(plan.vectors).toEqual([])
+      expect(plan.fields.has("embedding")).toBe(false)
+      expect(plan.fields.has("meta.image")).toBe(false)
+      expect(plan.fields.has("title")).toBe(true)
     })
 
-    it("allows vector fields on lakebase when dimensions are set", () => {
+    it("does not fingerprint ignored vector fields into the schema", () => {
+      const withVector = buildIndexPlan(
+        baseDefinition({
+          fields: {
+            id: { type: "keyword", filterable: true },
+            title: { type: "text", searchable: true },
+            embedding: { type: "vector", dimensions: 3 },
+          },
+        }),
+        "native"
+      )
+      const withoutVector = buildIndexPlan(
+        baseDefinition({
+          fields: {
+            id: { type: "keyword", filterable: true },
+            title: { type: "text", searchable: true },
+          },
+        }),
+        "native"
+      )
+
+      expect(sameSchema(withVector, withoutVector)).toBe(true)
+    })
+
+    it("still rejects vector fields on lakebase without dimensions", () => {
       expect(() =>
         assertIndexSupported(
           baseDefinition({
             fields: {
               id: { type: "keyword", filterable: true },
-              embedding: { type: "vector", dimensions: 1536 },
+              embedding: { type: "vector" },
             },
           }),
           "lakebase"
         )
+      ).toThrow(/positive "dimensions"/)
+    })
+
+    it("allows vector fields on lakebase when dimensions are set", () => {
+      const logger = { warn: jest.fn() } as any
+      const definition = baseDefinition({
+        fields: {
+          id: { type: "keyword", filterable: true },
+          embedding: { type: "vector", dimensions: 1536 },
+        },
+      })
+
+      expect(() =>
+        assertIndexSupported(definition, "lakebase", logger)
       ).not.toThrow()
+
+      expect(logger.warn).not.toHaveBeenCalled()
+      expect(buildIndexPlan(definition, "lakebase").vectors).toEqual([
+        "embedding",
+      ])
+    })
+
+    it("accepts the typo tolerance switch it can honour", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({ settings: { typo_tolerance: { enabled: false } } })
+        )
+      ).not.toThrow()
+    })
+
+    it("ignores edit-distance thresholds, which only tune matching", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: {
+              typo_tolerance: {
+                min_word_size_for_one_typo: 6,
+                min_word_size_for_two_typos: 9,
+              },
+            },
+          })
+        )
+      ).not.toThrow()
+    })
+
+    it("rejects per-attribute typo tolerance opt-outs", () => {
+      expect(() =>
+        assertIndexSupported(
+          baseDefinition({
+            settings: { typo_tolerance: { disabled_on_attributes: ["title"] } },
+          })
+        )
+      ).toThrow(/all searchable fields at once/)
     })
   })
 
@@ -162,7 +240,8 @@ describe("postgres search utils", () => {
               embed: true,
             },
           },
-        })
+        }),
+        "lakebase"
       )
 
       const projected = projectIndexedDocument(
@@ -179,10 +258,7 @@ describe("postgres search utils", () => {
 
     it("reads the text an embedder should encode from the vector field", () => {
       expect(
-        sourceTextForEmbed(
-          { id: "prod_1", embedding: "Red shoe" },
-          "embedding"
-        )
+        sourceTextForEmbed({ id: "prod_1", embedding: "Red shoe" }, "embedding")
       ).toBe("Red shoe")
       expect(sourceTextForEmbed({ id: "prod_1" }, "embedding")).toBeUndefined()
       expect(() =>
@@ -329,7 +405,8 @@ describe("postgres search utils", () => {
           id: { type: "keyword", filterable: true },
           embedding: { type: "vector", dimensions: 3 },
         },
-      })
+      }),
+      "lakebase"
     )
 
     it("infers the field when the index has a single vector field", () => {
@@ -346,7 +423,8 @@ describe("postgres search utils", () => {
             embedding: { type: "vector", dimensions: 3 },
             image: { type: "vector", dimensions: 3 },
           },
-        })
+        }),
+        "lakebase"
       )
 
       expect(() =>
@@ -369,10 +447,19 @@ describe("postgres search utils", () => {
       expect(() =>
         assertQuerySupported({
           index: baseDefinition(),
+          q: "red",
           attributes_to_retrieve: ["id"],
           search_options: { highlight: { fields: ["title"] } },
         })
       ).toThrow(/highlight/)
+
+      expect(() =>
+        assertQuerySupported({
+          index: baseDefinition(),
+          attributes_to_retrieve: ["id"],
+          search_options: { highlight: true, typo_tolerance: true },
+        })
+      ).not.toThrow()
 
       expect(() =>
         assertQuerySupported(

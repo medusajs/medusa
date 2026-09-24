@@ -286,6 +286,11 @@ export const specsTagIndex = {
       "admin_sales-channels_{id}.yaml",
       "admin_sales-channels_{id}_products.yaml"
     ],
+    "search-indexes": [
+      "admin_search-indexes.yaml",
+      "admin_search-indexes_{id}.yaml",
+      "admin_search-indexes_{id}_reindex.yaml"
+    ],
     "search": [
       "admin_search.yaml"
     ],
@@ -313,6 +318,7 @@ export const specsTagIndex = {
       "admin_store-credit-accounts.yaml",
       "admin_store-credit-accounts_{id}.yaml",
       "admin_store-credit-accounts_{id}_credit.yaml",
+      "admin_store-credit-accounts_{id}_debit.yaml",
       "admin_store-credit-accounts_{id}_transactions.yaml"
     ],
     "stores": [
@@ -348,7 +354,9 @@ export const specsTagIndex = {
     "users": [
       "admin_users.yaml",
       "admin_users_me.yaml",
-      "admin_users_{id}.yaml"
+      "admin_users_{id}.yaml",
+      "admin_users_{id}_auth-providers.yaml",
+      "admin_users_{id}_reset-password.yaml"
     ],
     "views": [
       "admin_views_entities.yaml",
@@ -377,16 +385,21 @@ export const specsTagIndex = {
       "auth_mfa_factors_{id}.yaml",
       "auth_session.yaml",
       "auth_token_refresh.yaml",
+      "auth_user_providers.yaml",
       "auth_user_{auth_provider}.yaml",
       "auth_user_{auth_provider}_callback.yaml",
       "auth_user_{auth_provider}_register.yaml",
       "auth_user_{auth_provider}_reset-password.yaml",
       "auth_user_{auth_provider}_update.yaml"
+    ],
+    "auth_provider": [
+      "auth_{auth_provider}_user.yaml"
     ]
   },
   "store": {
     "auth": [
       "auth_customer_emailpass_verification_confirm.yaml",
+      "auth_customer_providers.yaml",
       "auth_customer_{auth_provider}.yaml",
       "auth_customer_{auth_provider}_callback.yaml",
       "auth_customer_{auth_provider}_register.yaml",
@@ -485,6 +498,9 @@ export const specsTagIndex = {
     ],
     "returns": [
       "store_returns.yaml"
+    ],
+    "search": [
+      "store_search.yaml"
     ],
     "shipping-options": [
       "store_shipping-options.yaml",

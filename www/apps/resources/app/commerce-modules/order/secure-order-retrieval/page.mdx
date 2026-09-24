@@ -120,7 +120,7 @@ export async function ensureOrderOwner(
 }
 ```
 
-The middleware retrieves the order's `customer_id` with [Query](!docs!/learn/fundamentals/module-links/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+The middleware retrieves the order's `customer_id` with [Query](!docs!/learn/fundamentals/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
 
 Then, apply the middleware after the `authenticate` middleware:
 

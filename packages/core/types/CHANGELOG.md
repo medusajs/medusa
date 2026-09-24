@@ -1,5 +1,85 @@
 # @medusajs/types
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16858](https://github.com/medusajs/medusa/pull/16858) [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,types,framework): add a generic, InstantSearch-compatible store search endpoint
+
+  `POST /store/search` takes the `SearchQuery` batch `@medusajs/instantsearch-adapter`
+  sends, runs each query against the index it names, and answers with the search
+  engine's own results — hits, scores, highlights and facets. It replaces
+  `/store/products/search`, whose `GET` shape neither InstantSearch nor the adapter
+  could talk to.
+
+  Nothing is searchable until a store opts an index in with the new
+  `configureStoreSearch` middleware, which is also where it narrows what a query
+  may reach within an allowed index. A product index is narrowed to published
+  products in the publishable key's sales channels automatically, wherever it
+  declares those fields, as every other store product read is.
+
+- [#16868](https://github.com/medusajs/medusa/pull/16868) [`7a0cb956645aef3ed13a20c18fc3faf8961ca535`](https://github.com/medusajs/medusa/commit/7a0cb956645aef3ed13a20c18fc3faf8961ca535) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,types): drop search indexes no definition declares any more
+
+  `db:migrate` now plans a `drop` for every search index left without a definition,
+  the way it already plans deletions for removed links. It asks which ones to drop
+  before touching them; `--execute-all-search` drops them all without prompting and
+  `--execute-safe-search` leaves them alone, mirroring the link flags. Unattended
+  runs with neither flag skip the drops rather than hang on a prompt.
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16762](https://github.com/medusajs/medusa/pull/16762) [`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34) Thanks [@sradevski](https://github.com/sradevski)! - Add search helpers for better DX
+
+- [#16719](https://github.com/medusajs/medusa/pull/16719) [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard, types, medusa): add support for metadata management for promotions
+
+## 2.20.1
+
+### Patch Changes
+
+- [#16703](https://github.com/medusajs/medusa/pull/16703) [`75c26e85f3bebc0c921064e9aa37987a76cc24ae`](https://github.com/medusajs/medusa/commit/75c26e85f3bebc0c921064e9aa37987a76cc24ae) Thanks [@sradevski](https://github.com/sradevski)! - Remove correlated flag on search until supported
+
+## 2.20.0
+
+### Minor Changes
+
+- [#16688](https://github.com/medusajs/medusa/pull/16688) [`6a2fce501f3bcd459c21a67f586c7a15b905ff0f`](https://github.com/medusajs/medusa/commit/6a2fce501f3bcd459c21a67f586c7a15b905ff0f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework, types, medusa): set relations limit for store routes for optimal performance
+
+### Patch Changes
+
+- [#16545](https://github.com/medusajs/medusa/pull/16545) [`4857d15bdcaf5a0648e7adc5b0b40312e23b5c02`](https://github.com/medusajs/medusa/commit/4857d15bdcaf5a0648e7adc5b0b40312e23b5c02) Thanks [@sradevski](https://github.com/sradevski)! - Match admin search prefixes on the last query term so "dtc sta" still finds "Dtc starter".
+
+- [#16545](https://github.com/medusajs/medusa/pull/16545) [`4857d15bdcaf5a0648e7adc5b0b40312e23b5c02`](https://github.com/medusajs/medusa/commit/4857d15bdcaf5a0648e7adc5b0b40312e23b5c02) Thanks [@sradevski](https://github.com/sradevski)! - Remove the in-memory local search provider. Indexes are created only by `db:migrate`, never at application start.
+
+- [#16508](https://github.com/medusajs/medusa/pull/16508) [`c660642e0dcba2a581086b5176ab8fbc06127ed8`](https://github.com/medusajs/medusa/commit/c660642e0dcba2a581086b5176ab8fbc06127ed8) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(search, query, types): return fields and relations not in the search index
+
+- [#15857](https://github.com/medusajs/medusa/pull/15857) [`90841150c76acbd31d8e94bd2edd585ccdff1db7`](https://github.com/medusajs/medusa/commit/90841150c76acbd31d8e94bd2edd585ccdff1db7) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,types): support calculated shipping options in draft orders
+
+- [#16457](https://github.com/medusajs/medusa/pull/16457) [`693310310610cf439fabb73230187028f2755696`](https://github.com/medusajs/medusa/commit/693310310610cf439fabb73230187028f2755696) Thanks [@sradevski](https://github.com/sradevski)! - Implement Medusa Cloud as a built-in search provider
+
+- [#16610](https://github.com/medusajs/medusa/pull/16610) [`706ce874672c9cd1d8fc0c5429fc0dd24e6910a9`](https://github.com/medusajs/medusa/commit/706ce874672c9cd1d8fc0c5429fc0dd24e6910a9) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework,medusa,auth,types): require a completed MFA challenge on MFA routes
+
+- [#16541](https://github.com/medusajs/medusa/pull/16541) [`c1e5a8f63988698df7f92b8f1e75f63ab8fdee64`](https://github.com/medusajs/medusa/commit/c1e5a8f63988698df7f92b8f1e75f63ab8fdee64) Thanks [@sradevski](https://github.com/sradevski)! - Drop the previous search provider's indexes when `db:migrate` switches engines.
+
+  Log seed/reindex progress (count, rate, last key) so large catalogs can be followed.
+
+- [#16461](https://github.com/medusajs/medusa/pull/16461) [`f3b3bd838ed53b6b2e1adead27d6b1006ea6e6e4`](https://github.com/medusajs/medusa/commit/f3b3bd838ed53b6b2e1adead27d6b1006ea6e6e4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(inventory,link-modules,medusa,types,core-flows): support fractional inventory quantities and unit of measure
+
+- [#16415](https://github.com/medusajs/medusa/pull/16415) [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,js-sdk,types): request and copy reset password link from dashboard
+
+- [#16643](https://github.com/medusajs/medusa/pull/16643) [`e01b039f256cb8224dd70a99662a49d0e8cf65d1`](https://github.com/medusajs/medusa/commit/e01b039f256cb8224dd70a99662a49d0e8cf65d1) Thanks [@sradevski](https://github.com/sradevski)! - Add multiple query support in query.search, move searchMany to provider
+
 ## 2.19.0
 
 ### Patch Changes

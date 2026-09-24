@@ -118,6 +118,30 @@ describe("Query.search", () => {
     )
   })
 
+  it("passes the query's context to the hydration, not to the engine", async () => {
+    const searchModule = createSearchModule([
+      { id: "prod_1", document: { id: "prod_1", title: "Red shoe" } },
+    ])
+    const { query, graph } = createQueryInstance(searchModule)
+
+    const context = { variants: { calculated_price: { region_id: "reg_1" } } }
+
+    await query.search({
+      entity: "product",
+      fields: ["id", "title", "variants.calculated_price"],
+      context,
+    })
+
+    // A pricing context means nothing to a search engine.
+    expect(searchModule.searchMany).toHaveBeenCalledWith([
+      expect.not.objectContaining({ context: expect.anything() }),
+    ])
+    expect(graph).toHaveBeenCalledWith(
+      expect.objectContaining({ context }),
+      expect.anything()
+    )
+  })
+
   it("hydrates on the index' own primary key", async () => {
     // An index keyed by handle identifies its hits by handle, so that is what
     // the hydration has to filter and select.

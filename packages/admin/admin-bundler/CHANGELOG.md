@@ -1,5 +1,47 @@
 # @medusajs/admin-bundler
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16620](https://github.com/medusajs/medusa/pull/16620) [`d3d5c7729a324732725b27f443693901c8e2b72c`](https://github.com/medusajs/medusa/commit/d3d5c7729a324732725b27f443693901c8e2b72c) Thanks [@bohetangQAQ](https://github.com/bohetangQAQ)! - fix(admin-bundler): dedupe react and react-dom in the admin Vite config, so a second React copy reachable in the workspace (e.g. a React 19 storefront hoisted to the root of the same monorepo) is never pre-bundled alongside the dashboard's React — previously this crashed every admin page in `medusa develop` with "Objects are not valid as a React child"
+
+- Updated dependencies [[`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797), [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f), [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d), [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d), [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/dashboard@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/admin-vite-plugin@2.21.1
+
+## 2.21.0
+
+### Patch Changes
+
+- Updated dependencies [[`c511dbb072270b01cddc52a0b77040701ffe34ff`](https://github.com/medusajs/medusa/commit/c511dbb072270b01cddc52a0b77040701ffe34ff), [`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a), [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b), [`b16a37bd23e13bee8f4f6a332e30e8f6da1bd704`](https://github.com/medusajs/medusa/commit/b16a37bd23e13bee8f4f6a332e30e8f6da1bd704), [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be), [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc), [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a)]:
+  - @medusajs/dashboard@2.21.0
+  - @medusajs/admin-shared@2.21.0
+  - @medusajs/admin-vite-plugin@2.21.0
+
+## 2.20.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.20.1
+  - @medusajs/admin-shared@2.20.1
+  - @medusajs/admin-vite-plugin@2.20.1
+
+## 2.20.0
+
+### Patch Changes
+
+- [#16449](https://github.com/medusajs/medusa/pull/16449) [`2101adb7eac34bdb90fa9606e875995105cf7f7c`](https://github.com/medusajs/medusa/commit/2101adb7eac34bdb90fa9606e875995105cf7f7c) Thanks [@lazerg](https://github.com/lazerg)! - fix(admin-bundler): allow zooming in the generated admin HTML
+
+  The viewport meta tag written to `.medusa/client/index.html` set `user-scalable=no`, which blocked pinch-to-zoom and browser zoom in the admin dashboard and failed WCAG 1.4.4.
+
+- Updated dependencies [[`b33f14a334769e9265b2c7ff1b120db183bc1e07`](https://github.com/medusajs/medusa/commit/b33f14a334769e9265b2c7ff1b120db183bc1e07), [`a1a784b66ac872b1a863ae23180630ebf2bf839a`](https://github.com/medusajs/medusa/commit/a1a784b66ac872b1a863ae23180630ebf2bf839a), [`1a9fe477d265e8861ca68ef9a445b40d006b28ca`](https://github.com/medusajs/medusa/commit/1a9fe477d265e8861ca68ef9a445b40d006b28ca), [`e528fc5bd2cbcd9995694953580a20e525eafb9c`](https://github.com/medusajs/medusa/commit/e528fc5bd2cbcd9995694953580a20e525eafb9c), [`5796a0c00f35eba2533847f6697fae8d7c282ae7`](https://github.com/medusajs/medusa/commit/5796a0c00f35eba2533847f6697fae8d7c282ae7), [`01e23d60538bd97b1bde471ddd3e5196a5b56094`](https://github.com/medusajs/medusa/commit/01e23d60538bd97b1bde471ddd3e5196a5b56094), [`a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4`](https://github.com/medusajs/medusa/commit/a6fff7ec920f3fa15b2f35429e186ebd76d0f1d4), [`9dd56bf579747aa1f191c4990c90e91a168b634e`](https://github.com/medusajs/medusa/commit/9dd56bf579747aa1f191c4990c90e91a168b634e), [`7e421e0f0c60abf64bcfeccea93071202ec78d55`](https://github.com/medusajs/medusa/commit/7e421e0f0c60abf64bcfeccea93071202ec78d55), [`321efe20e56d1d11b88974d80cd713e928763e80`](https://github.com/medusajs/medusa/commit/321efe20e56d1d11b88974d80cd713e928763e80), [`c5d55adb2375d19b8ae3be750e9aca52cf22e964`](https://github.com/medusajs/medusa/commit/c5d55adb2375d19b8ae3be750e9aca52cf22e964), [`3914a322c5257742c977468d9aa5bf088953b511`](https://github.com/medusajs/medusa/commit/3914a322c5257742c977468d9aa5bf088953b511)]:
+  - @medusajs/dashboard@2.20.0
+  - @medusajs/admin-shared@2.20.0
+  - @medusajs/admin-vite-plugin@2.20.0
+
 ## 2.19.0
 
 ### Minor Changes
