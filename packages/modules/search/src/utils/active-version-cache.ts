@@ -28,6 +28,12 @@ export class ActiveIndexVersionCache {
   protected values_ = new Map<string, ActiveIndexVersion>()
   protected fetchedAt_ = 0
   protected refreshing_?: Promise<void>
+  /**
+   * Writes from `set()` that land while a `refresh()` fetch is in flight.
+   * They are newer than the read, so the refresh re-applies them after
+   * replacing the map instead of discarding them.
+   */
+  protected inFlightWrites_?: Map<string, ActiveIndexVersion>
 
   constructor(
     protected readonly fetchAll_: () => Promise<Map<string, ActiveIndexVersion>>
@@ -61,14 +67,24 @@ export class ActiveIndexVersionCache {
   }
 
   protected refresh(): Promise<void> {
-    this.refreshing_ ??= this.fetchAll_()
-      .then((values) => {
+    this.refreshing_ ??= (async () => {
+      // Collected synchronously before the fetch starts, so every `set()`
+      // that lands while the read below is in flight is recorded here.
+      this.inFlightWrites_ = new Map<string, ActiveIndexVersion>()
+      try {
+        const values = await this.fetchAll_()
         this.values_ = values
+        // The read may predate these writes (e.g. another replica activated
+        // an index after the read started) — they win over the stale read.
+        for (const [name, value] of this.inFlightWrites_) {
+          this.values_.set(name, value)
+        }
         this.fetchedAt_ = Date.now()
-      })
-      .finally(() => {
+      } finally {
+        this.inFlightWrites_ = undefined
         this.refreshing_ = undefined
-      })
+      }
+    })()
 
     return this.refreshing_
   }
@@ -76,6 +92,7 @@ export class ActiveIndexVersionCache {
   /** Sets one value directly, e.g. right after this process itself flips it. */
   set(name: string, value: ActiveIndexVersion): void {
     this.values_.set(name, value)
+    this.inFlightWrites_?.set(name, value)
   }
 
   invalidate(): void {

@@ -1,7 +1,10 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { SearchIndexContext } from "@types"
 import { MedusaError } from "@medusajs/framework/utils"
-import { ActiveIndexVersionCache } from "../active-version-cache"
+import {
+  ActiveIndexVersion,
+  ActiveIndexVersionCache,
+} from "../active-version-cache"
 import { resolveActiveDefinition, withActiveIndexRetry } from "../index"
 
 const SOFT_TTL_MS = 30_000
@@ -183,6 +186,33 @@ describe("ActiveIndexVersionCache", () => {
     breakFetch(true)
 
     await expect(cache.get("product")).rejects.toThrow("db unreachable")
+  })
+
+  it("does not let a stale refresh discard a set() that landed while it was in flight", async () => {
+    jest.spyOn(Date, "now").mockImplementation(() => 1_000_000)
+
+    let release!: () => void
+    const gate = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    // The database read started before the index was activated, so it lands
+    // with the pre-activation (empty) result.
+    const fetchAll = jest.fn((): Promise<Map<string, ActiveIndexVersion>> =>
+      gate.then(() => new Map<string, ActiveIndexVersion>())
+    )
+
+    const cache = new ActiveIndexVersionCache(fetchAll)
+
+    const pending = cache.get("product")
+    // Let the cold read start its fetch before the activation lands.
+    await new Promise((resolve) => setImmediate(resolve))
+
+    cache.set("product", version(1))
+    release()
+
+    await expect(pending).resolves.toMatchObject({ version: 1 })
+    await expect(cache.get("product")).resolves.toMatchObject({ version: 1 })
+    expect(fetchAll).toHaveBeenCalledTimes(1)
   })
 })
 
