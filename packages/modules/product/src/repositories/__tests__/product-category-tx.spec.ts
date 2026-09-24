@@ -48,7 +48,9 @@ describe("ProductCategoryRepository.create", () => {
 
     const repo = Object.create(
       ProductCategoryRepository.prototype
-    ) as ProductCategoryRepository
+    ) as ProductCategoryRepository & {
+      rerankSiblingsAfterCreation: jest.Mock
+    }
     repo.rerankSiblingsAfterCreation = jest.fn()
 
     return {
