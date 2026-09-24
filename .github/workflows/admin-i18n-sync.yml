@@ -1,0 +1,224 @@
+name: Admin i18n Sync
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Every day at 06:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: admin-i18n-sync
+  cancel-in-progress: false
+
+env:
+  BRANCH: chore/admin-i18n-sync-translations
+  SYNC_SCRIPT: packages/admin/dashboard/scripts/i18n/sync-translations.js
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      locales: ${{ steps.missing.outputs.locales }}
+    steps:
+      - name: Check for an open sync PR
+        id: open-pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO%%/*}:$BRANCH&state=open" --jq '.[0].number // ""')
+          if [ -n "$PR_NUMBER" ]; then
+            echo "PR #$PR_NUMBER is still open, skipping until it's merged or closed."
+          fi
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository
+        if: steps.open-pr.outputs.number == ''
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Set up Node.js
+        if: steps.open-pr.outputs.number == ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Find missing translations
+        id: missing
+        if: steps.open-pr.outputs.number == ''
+        run: |
+          node "$SYNC_SCRIPT" missing --output /tmp/missing.json
+          echo "locales=$(jq -c 'keys' /tmp/missing.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload missing translations report
+        if: steps.open-pr.outputs.number == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-missing
+          path: /tmp/missing.json
+
+  translate:
+    needs: detect
+    if: needs.detect.outputs.locales != '' && needs.detect.outputs.locales != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        locale: ${{ fromJSON(needs.detect.outputs.locales) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Download missing translations report
+        uses: actions/download-artifact@v4
+        with:
+          name: i18n-missing
+          path: /tmp/report
+
+      - name: Extract missing keys for ${{ matrix.locale }}
+        env:
+          LOCALE: ${{ matrix.locale }}
+        run: |
+          mkdir -p /tmp/i18n/translations
+          jq --arg locale "$LOCALE" '.[$locale]' /tmp/report/missing.json > /tmp/i18n/missing.json
+          echo "Missing keys: $(jq '.count' /tmp/i18n/missing.json)"
+
+      - name: Translate with Claude
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          allowed_tools: "Read,Write,Grep"
+          max_turns: 60
+          model: claude-sonnet-4-6
+          prompt: |
+            You are translating missing UI strings for the Medusa admin dashboard into the "${{ matrix.locale }}" locale.
+
+            ## Input
+
+            Read /tmp/i18n/missing.json. It has:
+            - `count`: the number of missing strings.
+            - `pluralForms`: the i18next plural forms this locale uses.
+            - `missing`: a nested object mirroring en.json that contains only the missing keys, with the English source text as each value. Plural keys (ending in `_zero`, `_one`, `_two`, `_few`, `_many`, `_other`) are already expanded to this locale's plural forms; forms that English doesn't have use the English `_other` text as the source.
+
+            The existing translations for this locale are in packages/admin/dashboard/src/i18n/translations/${{ matrix.locale }}.json. Use the Grep tool on that file to look up how related terms are already translated (e.g. "order", "product", "sales channel", "refund") and stay consistent with that terminology and tone. Do not read the whole file.
+
+            ## Rules
+
+            - Translate every value in `missing`. Keep every key and the nesting exactly as given; never rename, add, or drop keys.
+            - Keep i18next placeholders like `{{count}}` or `{{name}}` exactly as written, untranslated. The only exception: plural forms may add or drop `{{count}}` when the grammar of the locale needs it.
+            - Keep Trans component tags like `<0>`, `</0>`, and `<0/>` exactly, wrapping the equivalent words in the translation.
+            - Keep product names, code identifiers, and units (e.g. "Medusa", "API", "JSON", "lb") as-is unless the locale's existing translations already localize them.
+            - Match the register and style of the existing translations (formal vs. informal address, capitalization of titles and buttons).
+            - Write each plural form grammatically correct for its category in this locale.
+
+            ## Output
+
+            Write the translations with the Write tool as JSON files in /tmp/i18n/translations/, using the same nested shape as `missing`.
+            - Split the output into parts of at most 150 strings each, named ${{ matrix.locale }}.part-1.json, ${{ matrix.locale }}.part-2.json, and so on. Each part holds a disjoint subset of the keys, nested the same way as `missing`.
+            - Each file must be valid JSON containing only string values and nested objects.
+            - Do not modify any file in the repository.
+
+      - name: Upload translations
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-translations-${{ matrix.locale }}
+          path: /tmp/i18n/translations/
+          if-no-files-found: warn
+
+  open-pr:
+    needs: translate
+    if: always() && needs.translate.result != 'skipped' && needs.translate.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          # Use a PAT so the created PR triggers other workflows
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download translations
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i18n-translations-*
+          path: /tmp/i18n/translations
+          merge-multiple: true
+
+      - name: Apply translations
+        id: apply
+        run: |
+          node "$SYNC_SCRIPT" missing > /tmp/before.txt
+          node "$SYNC_SCRIPT" apply --input /tmp/i18n/translations 2>&1 | tee /tmp/apply.log
+          node "$SYNC_SCRIPT" missing > /tmp/after.txt
+
+          if git diff --quiet -- packages/admin/dashboard/src/i18n/translations; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No translation changes to commit."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.apply.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add packages/admin/dashboard/src/i18n/translations
+          git commit -m "chore(dashboard): add missing translations"
+          git push --force origin "$BRANCH"
+
+      - name: Create Pull Request
+        if: steps.apply.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY_FILE=$(mktemp)
+          {
+            echo "## Add missing admin dashboard translations"
+            echo ""
+            echo "Translates strings in \`en.json\` that are missing from the other locale files. Translations were generated by Claude."
+            echo ""
+            echo "### Missing translations"
+            echo ""
+            echo "| Before | After |"
+            echo "| --- | --- |"
+            echo "| $(tail -n 1 /tmp/before.txt) | $(tail -n 1 /tmp/after.txt) |"
+            if grep -q "^Skipped keys\|^Skipping" /tmp/apply.log; then
+              echo ""
+              echo "<details><summary>Rejected translations (retried on the next run)</summary>"
+              echo ""
+              echo '```'
+              grep -A1000 "^Skipped keys\|^Skipping" /tmp/apply.log | grep -v "^Updated " | head -n 200
+              echo '```'
+              echo "</details>"
+            fi
+            echo ""
+            echo "> Review carefully before merging, ideally with a native speaker for each locale."
+          } > "$BODY_FILE"
+
+          PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+            --method POST \
+            --field title="chore(dashboard): add missing translations [automated]" \
+            --field body="$(cat "$BODY_FILE")" \
+            --field base="develop" \
+            --field head="$BRANCH" \
+            --jq '.number')
+          echo "Created PR #$PR_NUMBER"
