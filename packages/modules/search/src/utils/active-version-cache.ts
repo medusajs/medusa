@@ -28,6 +28,7 @@ export class ActiveIndexVersionCache {
   protected values_ = new Map<string, ActiveIndexVersion>()
   protected fetchedAt_ = 0
   protected refreshing_?: Promise<void>
+  protected pendingWrites_?: Map<string, ActiveIndexVersion>
 
   constructor(
     protected readonly fetchAll_: () => Promise<Map<string, ActiveIndexVersion>>
@@ -61,14 +62,23 @@ export class ActiveIndexVersionCache {
   }
 
   protected refresh(): Promise<void> {
-    this.refreshing_ ??= this.fetchAll_()
-      .then((values) => {
-        this.values_ = values
-        this.fetchedAt_ = Date.now()
-      })
-      .finally(() => {
-        this.refreshing_ = undefined
-      })
+    if (!this.refreshing_) {
+      const pendingWrites = new Map<string, ActiveIndexVersion>()
+      this.pendingWrites_ = pendingWrites
+      this.refreshing_ = this.fetchAll_()
+        .then((values) => {
+          // Local activations made during this fetch are newer than its snapshot.
+          for (const [name, value] of pendingWrites) {
+            values.set(name, value)
+          }
+          this.values_ = values
+          this.fetchedAt_ = Date.now()
+        })
+        .finally(() => {
+          this.refreshing_ = undefined
+          this.pendingWrites_ = undefined
+        })
+    }
 
     return this.refreshing_
   }
@@ -76,10 +86,12 @@ export class ActiveIndexVersionCache {
   /** Sets one value directly, e.g. right after this process itself flips it. */
   set(name: string, value: ActiveIndexVersion): void {
     this.values_.set(name, value)
+    this.pendingWrites_?.set(name, value)
   }
 
   invalidate(): void {
     this.fetchedAt_ = 0
     this.values_.clear()
+    this.pendingWrites_?.clear()
   }
 }
