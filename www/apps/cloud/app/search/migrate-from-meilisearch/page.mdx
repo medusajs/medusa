@@ -542,10 +542,11 @@ The example index below is simplified to show one feature at a time. For example
 For example, the integration guide indexes each product's `id`, `title`, `description`, `handle`, `thumbnail`, `categories`, and `tags`, and it indexes published products only. To reproduce that, create the file `src/search/product.ts` with the following content:
 
 export const definitionHighlights = [
-  ["34", "title", "Outweighs the description in relevance."],
-  ["37", "thumbnail", "Held by the index, but never searched or filtered."],
-  ["38", "categories", "An array of objects, so a filter matches any category."],
-  ["44", "facetable", "Powers the storefront's category filter counts."],
+  ["29", "title", "Outweighs the description in relevance."],
+  ["32", "thumbnail", "Held by the index, but never searched or filtered."],
+  ["33", "status", "Lets the Store Search API route scope the index to published products."],
+  ["37", "categories", "An array of objects, so a filter matches any category."],
+  ["43", "facetable", "Powers the storefront's category filter counts."],
 ]
 
 ```ts title="src/search/product.ts" highlights={definitionHighlights}
@@ -570,11 +571,6 @@ const source = {
     "tags.id",
     "tags.value",
   ],
-  transform: (products) => {
-    return products
-      .filter((p) => p.status === "published")
-      .map(({ status, ...product }) => product)
-  },
 }
 
 export const productIndex = defineSearchIndex({
@@ -586,6 +582,10 @@ export const productIndex = defineSearchIndex({
     description: search.text().searchable(),
     handle: search.keyword().filterable(),
     thumbnail: search.keyword(),
+    status: search
+      .keyword()
+      .filterable()
+      .retrievable(false),
     categories: search
       .object({
         id: search.keyword().filterable(),

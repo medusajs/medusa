@@ -1146,7 +1146,9 @@
         "paymentMethod": "Ödeme yöntemi",
         "paymentMethodDescription": "Tutarı ödeme yöntemine iade et",
         "creditLine": "Mağaza kredisi",
-        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et"
+        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et",
+        "creditLineGuestDescription": "Yalnızca hesabı olan müşteriler için kullanılabilir. Bu sipariş bir misafir tarafından verildi.",
+        "creditLineNoOutstandingAmountDescription": "Yalnızca siparişin ödenmemiş bir tutarı olduğunda kullanılabilir. Önce bir iade veya sipariş düzenlemesi oluşturun."
       }
     },
     "domain": "Siparişler",
@@ -3759,7 +3761,10 @@
       "building": "Oluşturuluyor",
       "ready": "Hazır",
       "error": "Hata"
-    }
+    },
+    "delete": "Dizini sil",
+    "deleteSuccess": "{{name}} dizini silindi",
+    "deleteWarning": "Bu işlem, \"{{name}}\" dizinini ve onun için oluşturulmuş her sürümü, arama motorundaki verileri de dahil olmak üzere siler. Sonraki geçiş onu sıfırdan yeniden oluşturana kadar bu dizinde hiçbir şey aranamaz. Bu işlem geri alınamaz."
   },
   "propertyLabels": {
     "domain": "Özellik Etiketleri",
