@@ -11,7 +11,7 @@ describe("assertTypeScriptCompatibility", () => {
     expect(() =>
       assertTypeScriptCompatibility({ version: "7.0.2", versionMajorMinor: "7.0" })
     ).toThrow(
-      "TypeScript 7.0.2 is not supported by Medusa's runtime config loader. Use TypeScript 5.x until the loader no longer depends on ts-node."
+      "TypeScript 7.0.2 is not supported by Medusa's runtime config loader. Use TypeScript 5.x instead."
     )
   })
 })
