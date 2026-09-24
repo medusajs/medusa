@@ -20,7 +20,7 @@ function gatherIds(object: Record<string, any>, gatheredIds: Set<string>) {
     return
   }
 
-  if (object.id) {
+  if (object.id && typeof object.id === "string") {
     gatheredIds.add(object.id)
   }
 
