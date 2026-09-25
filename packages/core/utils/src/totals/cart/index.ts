@@ -126,7 +126,10 @@ export function decorateCartTotals(
 
     itemsTotal = MathBN.add(itemsTotal, itemTotal)
     itemsOriginalTotal = MathBN.add(itemsOriginalTotal, itemOriginalTotal)
-    itemsOriginalSubtotal = MathBN.add(itemsOriginalSubtotal, itemSubtotal)
+    itemsOriginalSubtotal = MathBN.add(
+      itemsOriginalSubtotal,
+      itemTotals.original_subtotal
+    )
     itemsSubtotal = MathBN.add(itemsSubtotal, itemSubtotal)
     itemsTaxTotal = MathBN.add(itemsTaxTotal, itemTaxTotal)
     itemsOriginalTaxTotal = MathBN.add(
@@ -177,7 +180,7 @@ export function decorateCartTotals(
     )
     shippingOriginalSubtotal = MathBN.add(
       shippingOriginalSubtotal,
-      shippingMethodTotals.subtotal
+      shippingMethodTotals.original_subtotal
     )
     shippingTaxTotal = MathBN.add(
       shippingTaxTotal,
