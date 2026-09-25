@@ -92,17 +92,15 @@ const extractPricesFromVariants = (
     if (priceType === "region") {
       rules.region_id = id
     }
-    if (price.min_quantity) {
-      rules.min_quantity = price.min_quantity.toString()
-    }
-    if (price.max_quantity) {
-      rules.max_quantity = price.max_quantity.toString()
-    }
 
     return {
       amount: castNumber(price.amount!),
       currency_code: currencyCode,
       variant_id: variantId,
+      // Quantity tiers are native columns on the price, not generic rules: pricing resolves
+      // `quantity` against `min_quantity`/`max_quantity` and never against the rule context.
+      min_quantity: price.min_quantity ? castNumber(price.min_quantity) : null,
+      max_quantity: price.max_quantity ? castNumber(price.max_quantity) : null,
       rules: Object.keys(rules).length > 0 ? rules : undefined,
     }
   }
@@ -161,7 +159,12 @@ export function initRecord(
 
     const isRegionPrice = !!price.rules?.region_id
 
-    const isTiered = !!(price.rules?.min_quantity || price.rules?.max_quantity)
+    // Price lists written before quantity tiers moved to native columns still carry them as
+    // generic rules, so fall back to those to keep an existing list's tiers visible.
+    const minQuantity = price.min_quantity ?? price.rules?.min_quantity
+    const maxQuantity = price.max_quantity ?? price.rules?.max_quantity
+
+    const isTiered = !!(minQuantity || maxQuantity)
 
     if (isRegionPrice) {
       const regionId = price.rules.region_id as string
@@ -171,8 +174,8 @@ export function initRecord(
         {
           amount: price.amount.toString(),
           id: price.id,
-          min_quantity: price.rules?.min_quantity?.toString(),
-          max_quantity: price.rules?.max_quantity?.toString(),
+          min_quantity: minQuantity?.toString(),
+          max_quantity: maxQuantity?.toString(),
         },
       ]
     } else {
@@ -184,8 +187,8 @@ export function initRecord(
         {
           amount: price.amount.toString(),
           id: price.id,
-          min_quantity: price.rules?.min_quantity?.toString(),
-          max_quantity: price.rules?.max_quantity?.toString(),
+          min_quantity: minQuantity?.toString(),
+          max_quantity: maxQuantity?.toString(),
         },
       ]
     }
@@ -332,12 +335,6 @@ function createMapKey(obj: PriceObject) {
 function buildPriceRules(price: PriceObject): Record<string, string> {
   return {
     ...(price.regionId ? { region_id: price.regionId } : {}),
-    ...(price.minQuantity
-      ? { min_quantity: price.minQuantity.toString() }
-      : {}),
-    ...(price.maxQuantity
-      ? { max_quantity: price.maxQuantity.toString() }
-      : {}),
   }
 }
 
@@ -384,6 +381,8 @@ export function comparePrices(
             variant_id: newPrice.variantId,
             currency_code: newPrice.currencyCode,
             amount: newPrice.amount,
+            min_quantity: newPrice.minQuantity ?? null,
+            max_quantity: newPrice.maxQuantity ?? null,
             rules: Object.keys(rules).length > 0 ? rules : undefined,
           })
         }
@@ -397,6 +396,8 @@ export function comparePrices(
         variant_id: newPrice.variantId,
         currency_code: newPrice.currencyCode,
         amount: newPrice.amount,
+        min_quantity: newPrice.minQuantity ?? null,
+        max_quantity: newPrice.maxQuantity ?? null,
         rules: Object.keys(rules).length > 0 ? rules : undefined,
       })
     }
