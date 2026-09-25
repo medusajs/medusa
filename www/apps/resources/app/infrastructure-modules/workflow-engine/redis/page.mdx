@@ -50,6 +50,12 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
+<Note title="Option shapes">
+
+The options can also be passed at the top level of the module options (for example, `redisUrl` directly under `options`), matching the options table below and the other Redis infrastructure modules. If both shapes are provided, the nested `redis` object takes precedence.
+
+</Note>
+
 Make sure to add the following environment variables:
 
 ```bash
