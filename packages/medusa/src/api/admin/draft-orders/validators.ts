@@ -40,6 +40,26 @@ enum Status {
   completed = "completed",
 }
 
+const isNonNegativeBigNumberInput = (value: z.infer<typeof BigNumberInput>) => {
+  const rawValue =
+    typeof value === "object" && value !== null ? value.value : value
+  const numericValue =
+    typeof rawValue === "number" ? rawValue : Number(rawValue)
+
+  return Number.isNaN(numericValue) || numericValue >= 0
+}
+
+const NonNegativeBigNumberInput = BigNumberInput.refine(
+  isNonNegativeBigNumberInput,
+  {
+    message: "Unit price must be greater than or equal to 0",
+  }
+)
+
+const NonNegativeUnitPrice = z
+  .number()
+  .min(0, "Unit price must be greater than or equal to 0")
+
 const ShippingMethod = z.object({
   shipping_method_id: z.string().nullish(),
   name: z.string(),
@@ -63,7 +83,7 @@ const Item = z.object({
    */
   barcode: z.string().nullish(),
   variant_id: z.string().nullish(),
-  unit_price: BigNumberInput.nullish(),
+  unit_price: NonNegativeBigNumberInput.nullish(),
   quantity: z.number(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
@@ -120,7 +140,7 @@ export type AdminUpdateDraftOrderItemType = z.infer<
 >
 export const AdminUpdateDraftOrderItem = z.object({
   quantity: z.number(),
-  unit_price: z.number().nullish(),
+  unit_price: NonNegativeUnitPrice.nullish(),
   compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
@@ -131,7 +151,7 @@ export type AdminUpdateDraftOrderActionItemType = z.infer<
 >
 export const AdminUpdateDraftOrderActionItem = z.object({
   quantity: z.number(),
-  unit_price: z.number().nullish(),
+  unit_price: NonNegativeUnitPrice.nullish(),
   compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().optional(),
 })
@@ -143,7 +163,7 @@ export const AdminAddDraftOrderItems = z.object({
         variant_id: z.string().optional(),
         title: z.string().optional(),
         quantity: z.number(),
-        unit_price: z.number().nullish(),
+        unit_price: NonNegativeUnitPrice.nullish(),
         compare_at_unit_price: z.number().nullish(),
         internal_note: z.string().nullish(),
         allow_backorder: z.boolean().optional(),
