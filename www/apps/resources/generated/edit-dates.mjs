@@ -9,7 +9,7 @@ export const generatedEditDates = {
   "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-16T10:51:03.732Z",
   "app/commerce-modules/cart/page.mdx": "2025-04-17T08:48:27.822Z",
   "app/commerce-modules/currency/page.mdx": "2025-04-17T08:48:30.550Z",
-  "app/commerce-modules/customer/customer-accounts/page.mdx": "2025-07-25T12:03:05.017Z",
+  "app/commerce-modules/customer/customer-accounts/page.mdx": "2026-09-25T06:45:28.903Z",
   "app/commerce-modules/customer/page.mdx": "2025-04-17T08:48:31.918Z",
   "app/commerce-modules/fulfillment/concepts/page.mdx": "2025-04-24T09:21:37.616Z",
   "app/commerce-modules/fulfillment/fulfillment-provider/page.mdx": "2025-05-20T07:51:40.707Z",
