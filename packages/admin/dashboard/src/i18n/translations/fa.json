@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "یک ردیف در بالا اضافه کنید",
         "insertRowBelow": "یک ردیف در پایین اضافه کنید",
-        "deleteRow": "ردیف را حذف کنید"
+        "deleteRow": "ردیف را حذف کنید",
+        "addRow": "افزودن ردیف"
       },
       "labels": {
         "key": "کلید",
@@ -180,19 +181,34 @@
       "groups": {
         "all": "تمام بخش‌ها",
         "customer": "مشتریان",
+        "customer_group": "گروه‌های مشتری",
         "customerGroup": "گروه‌های مشتریان",
         "product": "محصولات",
+        "product_variant": "تنوع‌های محصول",
+        "inventory_item": "موجودی",
         "productVariant": "تنوع محصولات",
         "inventory": "موجودی",
         "reservation": "رزروها",
+        "product_category": "دسته‌بندی‌ها",
+        "product_collection": "مجموعه‌ها",
         "category": "دسته‌بندی‌ها",
         "collection": "مجموعه‌ها",
         "order": "سفارش‌ها",
         "promotion": "تخفیف‌ها",
         "campaign": "کمپین‌ها",
+        "price_list": "لیست‌های قیمت",
         "priceList": "لیست قیمت‌ها",
         "user": "کاربران",
         "region": "مناطق",
+        "tax_region": "مناطق مالیاتی",
+        "return_reason": "دلایل مرجوعی",
+        "sales_channel": "کانال‌های فروش",
+        "product_type": "انواع محصول",
+        "product_tag": "برچسب‌های محصول",
+        "stock_location": "مکان‌ها",
+        "shipping_profile": "پروفایل‌های ارسال",
+        "publishable_api_key": "کلیدهای API عمومی",
+        "secret_api_key": "کلیدهای API مخفی",
         "taxRegion": "مناطق مالیاتی",
         "returnReason": "دلایل بازگشت",
         "salesChannel": "کانال‌های فروش",
@@ -803,6 +819,16 @@
   "collections": {
     "domain": "مجموعه‌ها",
     "subtitle": "محصولات را در مجموعه‌ها سازماندهی کنید.",
+    "list": {
+      "empty": {
+        "heading": "مجموعه‌ای وجود ندارد",
+        "description": "هیچ مجموعه‌ای برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ مجموعه‌ای با معیارهای فیلتر فعلی مطابقت ندارد."
+      }
+    },
     "createCollection": "ایجاد مجموعه",
     "createCollectionHint": "یک مجموعه جدید ایجاد کنید تا محصولات خود را سازماندهی کنید.",
     "createSuccess": "مجموعه با موفقیت ایجاد شد.",
@@ -943,6 +969,18 @@
   "inventory": {
     "domain": "موجودی",
     "subtitle": "اقلام موجودی خود را مدیریت کنید",
+    "export": {
+      "header": "خروجی گرفتن از لیست موجودی",
+      "description": "خروجی گرفتن از لیست موجودی در یک فایل CSV.",
+      "success": {
+        "title": "در حال پردازش خروجی شما هستیم",
+        "description": "خروجی گرفتن از داده‌ها ممکن است چند دقیقه طول بکشد. زمانی که کار تمام شد به شما اطلاع خواهیم داد."
+      },
+      "filters": {
+        "title": "فیلترها",
+        "description": "فیلترها را در نمای جدول اعمال کنید تا این نما را تنظیم کنید"
+      }
+    },
     "reserved": "رزرو شده",
     "available": "موجود",
     "locationLevels": "مکان‌ها",
@@ -952,6 +990,8 @@
     "deleteWarning": "شما در حال حذف یک آیتم موجودی هستید. این عمل غیرقابل بازگشت است.",
     "editItemDetails": "ویرایش جزئیات آیتم",
     "quantityAcrossLocations": "{{quantity}} در {{locations}} مکان",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "واحدی که موجودی در آن نگهداری و شمارش می‌شود. در کنار مقادیر در سراسر پنل مدیریت نمایش داده می‌شود.",
     "levelDeleted": "سطح موجودی با موفقیت حذف شد.",
     "create": {
       "title": "ایجاد آیتم موجودی",
@@ -1028,6 +1068,14 @@
   "customers": {
     "domain": "مشتریان",
     "list": {
+      "empty": {
+        "heading": "مشتری‌ای وجود ندارد",
+        "description": "هیچ مشتری‌ای برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ مشتری‌ای با معیارهای فیلتر فعلی مطابقت ندارد."
+      },
       "noRecordsMessage": "مشتریان شما اینجا نمایش داده خواهند شد."
     },
     "create": {
@@ -1166,7 +1214,9 @@
         "paymentMethod": "روش پرداخت",
         "paymentMethodDescription": "بازپرداخت مبلغ به روش پرداخت",
         "creditLine": "اعتبار فروشگاه",
-        "creditLineDescription": "بازپرداخت مبلغ به عنوان اعتبار فروشگاه"
+        "creditLineDescription": "بازپرداخت مبلغ به عنوان اعتبار فروشگاه",
+        "creditLineNoOutstandingAmountDescription": "فقط زمانی در دسترس است که سفارش مبلغ معوق داشته باشد. ابتدا یک مرجوعی یا ویرایش سفارش ایجاد کنید.",
+        "creditLineGuestDescription": "فقط برای مشتریانی که حساب کاربری دارند در دسترس است. این سفارش توسط یک مهمان ثبت شده است."
       }
     },
     "domain": "سفارشات",
@@ -1236,6 +1286,8 @@
       "title": "پرداخت‌ها",
       "isReadyToBeCaptured": "پرداخت <0/> آماده برای ثبت است.",
       "totalPaidByCustomer": "مجموع پرداختی توسط مشتری",
+      "totalPending": "مجموع در انتظار",
+      "storeCreditRefund": "استرداد اعتبار فروشگاه",
       "totalStoreCreditRefunds": "کل بازپرداخت‌های اعتبار فروشگاه",
       "capture": "ثبت پرداخت",
       "capture_short": "ثبت",
@@ -1248,6 +1300,7 @@
         "authorized": "موجودی کافی",
         "partiallyAuthorized": "موجودی ناکافی",
         "awaiting": "در انتظار",
+        "pending": "در انتظار",
         "captured": "پرداخت شده",
         "partiallyRefunded": "بخشی از مبلغ مسترد شده",
         "partiallyCaptured": "بخشی از مبلغ پرداخت شده",
@@ -1285,6 +1338,8 @@
       "create": "ویرایش سفارش",
       "currentTotal": "مجموع فعلی",
       "noteHint": "یادداشت داخلی برای ویرایش اضافه کنید",
+      "sendNotification": "ارسال اطلاع‌رسانی",
+      "sendNotificationHint": "به مشتری درباره این ویرایش سفارش اطلاع دهید.",
       "cancelSuccessToast": "ویرایش سفارش لغو شد",
       "createSuccessToast": "درخواست ویرایش سفارش ایجاد شد",
       "activeChangeError": "در حال حاضر تغییری فعال روی سفارش (بازگشت، ادعا، تعویض و غیره) وجود دارد. لطفاً تغییرات را تکمیل یا لغو کنید قبل از اینکه سفارش را ویرایش کنید.",
@@ -1508,6 +1563,7 @@
       "markAsDelivered": "علامت‌گذاری به عنوان تحویل داده شده",
       "itemsToFulfillDesc": "آیتم‌ها و تعداد آن‌ها را برای پردازش انتخاب کنید",
       "locationDescription": "مکانی که می‌خواهید پردازش را انجام دهد انتخاب کنید.",
+      "locationUnavailable": "مکان حذف شده/در دسترس نیست",
       "sendNotificationHint": "به مشتریان درباره پردازش ایجاد شده اطلاع دهید.",
       "methodDescription": "یک روش حمل و نقل متفاوت از روش انتخاب شده توسط مشتری انتخاب کنید",
       "error": {
@@ -1716,7 +1772,8 @@
       "successToast": "مکان {{name}} با موفقیت به‌روزرسانی شد."
     },
     "delete": {
-      "confirmation": "شما در حال حذف مکان موجودی {{name}} هستید. این عمل قابل بازگشت نیست."
+      "confirmation": "شما در حال حذف مکان موجودی {{name}} هستید. این عمل قابل بازگشت نیست.",
+      "successToast": "مکان \"{{name}}\" با موفقیت حذف شد."
     },
     "fulfillmentProviders": {
       "header": "ارائه‌ دهندگان پردازش",
@@ -2171,6 +2228,16 @@
   },
   "promotions": {
     "domain": "تبلیغات",
+    "list": {
+      "empty": {
+        "heading": "تبلیغاتی وجود ندارد",
+        "description": "هیچ تبلیغاتی برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ تبلیغاتی با معیارهای فیلتر فعلی مطابقت ندارد."
+      }
+    },
     "sections": {
       "details": "جزئیات تبلیغات"
     },
@@ -2397,6 +2464,16 @@
   },
   "campaigns": {
     "domain": "کمپین‌ها",
+    "list": {
+      "empty": {
+        "heading": "کمپینی وجود ندارد",
+        "description": "هیچ کمپینی برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ کمپینی با معیارهای فیلتر فعلی مطابقت ندارد."
+      }
+    },
     "details": "جزئیات کمپین",
     "status": {
       "active": "فعال",
@@ -2508,6 +2585,16 @@
   "priceLists": {
     "domain": "لیست‌های قیمت",
     "subtitle": "قیمت‌های فروش یا تغییر قیمت‌ها را برای شرایط خاص ایجاد کنید.",
+    "list": {
+      "empty": {
+        "heading": "لیست قیمتی وجود ندارد",
+        "description": "هیچ لیست قیمتی برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ لیست قیمتی با معیارهای فیلتر فعلی مطابقت ندارد."
+      }
+    },
     "delete": {
       "confirmation": "شما در حال حذف لیست قیمت {{title}} هستید. این عمل قابل بازگشت نیست.",
       "successToast": "لیست قیمت {{title}} با موفقیت حذف شد."
@@ -2684,6 +2771,9 @@
     "deleteInviteWarning": "شما در حال حذف دعوت برای {{email}} هستید. این عمل قابل بازگشت نیست.",
     "resendInvite": "ارسال مجدد دعوت",
     "copyInviteLink": "کپی لینک دعوت",
+    "copyResetPasswordLink": "کپی لینک بازنشانی رمز عبور",
+    "copyResetPasswordLinkSuccess": "لینک بازنشانی رمز عبور در کلیپ‌بورد کپی شد",
+    "copyResetPasswordLinkHint": "این لینک به زودی منقضی می‌شود و هر لینک بازنشانی رمز عبور قبلاً ارسال شده به این کاربر را باطل می‌کند.",
     "expiredOnDate": "منقضی شده در {{date}}",
     "validFromUntil": "معتبر از <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "پذیرفته شده در {{date}}",
@@ -2929,7 +3019,15 @@
     "flatRate": "نرخ ثابت",
     "calculated": "محاسبه‌شده",
     "list": {
-      "noRecordsMessage": "برای مناطقی که در آن‌ها فروش دارید، یک منطقه ایجاد کنید."
+      "noRecordsMessage": "برای مناطقی که در آن‌ها فروش دارید، یک منطقه ایجاد کنید.",
+      "empty": {
+        "heading": "منطقه‌ای وجود ندارد",
+        "description": "هیچ منطقه‌ای برای نمایش وجود ندارد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ منطقه‌ای با معیارهای فیلتر فعلی مطابقت ندارد."
+      }
     },
     "toast": {
       "delete": "منطقه با موفقیت حذف شد",
@@ -3286,6 +3384,7 @@
     "subtitle": "مشاهده و پیگیری اجرای گردش‌های کاری در اپلیکیشن مدوسا شما.",
     "transactionIdLabel": "شناسه تراکنش",
     "workflowIdLabel": "شناسه گردش کاری",
+    "stateLabel": "وضعیت",
     "progressLabel": "پیشرفت",
     "stepsCompletedLabel_one": "{{completed}} از {{count}} مرحله",
     "stepsCompletedLabel_other": "{{completed}} از {{count}} مرحله",
@@ -3325,6 +3424,33 @@
         "dormant": "غیرفعال",
         "timeout": "زمان‌سنج"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "جستجو",
+    "subtitle": "ایندکس‌های جستجوی ثبت شده را مشاهده کنید و آن‌ها را از داده‌های منبع بازسازی کنید.",
+    "fieldsLabel": "فیلدهای ایندکس شده",
+    "providerLabel": "ارائه‌دهنده",
+    "reindex": "ایندکس مجدد",
+    "reindexConfirmationTitle": "ایندکس مجدد {{name}}؟",
+    "reindexConfirmation": "این عمل ایندکس \"{{name}}\" را از داده‌های منبع آن بازسازی می‌کند. نتایج جستجو برای این ایندکس ممکن است تا پایان بازسازی ناقص باشند.",
+    "reindexSuccess": "ایندکس مجدد {{name}} آغاز شد",
+    "reindexSinceLabel": "از تاریخ",
+    "reindexSinceHint": "فقط اسنادی که در این تاریخ یا بعد از آن تغییر کرده‌اند را بازسازی کنید. برای بازسازی همه چیز خالی بگذارید.",
+    "reindexEntityIdsLabel": "شناسه‌های موجودیت",
+    "reindexEntityIdsHint": "شناسه‌های جداشده با کاما یا خط جدید برای بازسازی فقط آن اسناد. پشتیبانی به تعریف خود این ایندکس بستگی دارد.",
+    "delete": "حذف ایندکس",
+    "deleteWarning": "این عمل ایندکس \"{{name}}\" و تمام نسخه‌های ساخته شده برای آن، از جمله داده‌های آن در موتور جستجو را حذف می‌کند. تا زمانی که مهاجرت بعدی آن را از ابتدا بازسازی کند، هیچ چیزی در این ایندکس قابل جستجو نخواهد بود. این عمل قابل بازگشت نیست.",
+    "deleteSuccess": "ایندکس {{name}} حذف شد",
+    "noFields": "هیچ فیلدی ایندکس نشده است.",
+    "list": {
+      "noRecordsMessage": "هیچ ایندکس جستجویی ثبت نشده است."
+    },
+    "status": {
+      "pending": "در انتظار",
+      "building": "در حال ساخت",
+      "ready": "آماده",
+      "error": "خطا"
     }
   },
   "shippingOptionTypes": {
@@ -3438,6 +3564,7 @@
     "selectValues": "انتخاب مقادیر"
   },
   "fields": {
+    "actions": "اقدامات",
     "amount": "مبلغ",
     "reference": "مرجع",
     "reference_id": "شناسه مرجع",
@@ -3580,6 +3707,7 @@
     "barcode": "بارکد",
     "countryOfOrigin": "کشور مبدأ",
     "material": "جنس",
+    "unitOfMeasure": "واحد اندازه‌گیری",
     "thumbnail": "تصویر کوچک",
     "sku": "SKU",
     "managedInventory": "موجودی مدیریت شده",
@@ -3642,8 +3770,12 @@
   },
   "auth": {
     "login": {
+      "noProviders": "برای ورود، یک ارائه‌دهنده احراز هویت در تنظیمات Medusa خود ثبت کنید",
       "authenticationFailed": "احراز هویت ناموفق بود",
-      "cloud": "ورود با Medusa Cloud"
+      "cloud": "ورود با Medusa Cloud",
+      "continueWithProvider": "ادامه با {{provider}}",
+      "or": "یا",
+      "provisioningFailed": "ورود شما امکان‌پذیر نشد. لطفاً با مدیر سیستم تماس بگیرید."
     }
   },
   "permissions": {

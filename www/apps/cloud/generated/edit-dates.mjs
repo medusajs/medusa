@@ -18,7 +18,7 @@ export const generatedEditDates = {
   "app/billing/page.mdx": "2026-07-24T15:42:16.652Z",
   "app/usage/page.mdx": "2026-09-16T16:30:18.233Z",
   "app/billing/manage/page.mdx": "2026-05-27T00:37:24.600Z",
-  "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
+  "app/pricing/page.mdx": "2026-09-25T08:17:41.958Z",
   "app/sign-up/page.mdx": "2026-06-08T13:05:06.313Z",
   "app/comparison/page.mdx": "2026-08-18T10:36:02.526Z",
   "app/billing/plans/page.mdx": "2026-07-22T14:09:33.877Z",
