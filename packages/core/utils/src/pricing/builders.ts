@@ -8,12 +8,18 @@ import {
 
 export function buildPriceListRules(
   priceListRules?: PriceListRuleDTO[]
-): Record<string, string[]> | undefined {
+):
+  | Record<string, string[] | { operator: "in" | "nin"; value: string[] }>
+  | undefined {
   return priceListRules?.reduce((acc, curr) => {
     const ruleAttribute = curr.attribute
-    const ruleValues = curr.value || []
+    const ruleValues = (curr.value || []) as string[]
 
-    acc[ruleAttribute] = ruleValues
+    acc[ruleAttribute] =
+      curr.operator === "nin"
+        ? { operator: "nin", value: ruleValues }
+        : ruleValues
+
     return acc
   }, {})
 }
