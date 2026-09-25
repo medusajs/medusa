@@ -469,6 +469,19 @@ export type ProjectConfigOptions = {
        */
       ssl?: boolean | ConnectionOptions
     }
+    /**
+     * A function returning the password (or token) to use for each new database
+     * connection. Useful when the database requires short-lived credentials, such
+     * as AWS RDS IAM authentication. When provided, the database URL must not
+     * include a password.
+     */
+    dynamicPassword?: (() => string) | (() => Promise<string>)
+    /**
+     * A function that returns `true` when the credentials of the current connection
+     * have expired. When it returns `true`, a new connection is created and
+     * `dynamicPassword` is invoked again to obtain fresh credentials.
+     */
+    expirationChecker?: () => boolean
   }
 
   /**

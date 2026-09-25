@@ -95,6 +95,24 @@ export async function mikroOrmCreateConnection(
     clientUrl =
       database.connection.context?.client?.config?.connection?.connectionString
     schema = database.connection.context?.client?.config?.searchPath
+  } else {
+    // MikroORM resolves a password function for every new pool connection, but
+    // only when it lives at driverOptions.connection.password (see AbstractSqlConnection
+    // getKnexOptions). Promote Medusa's dynamicPassword / expirationChecker options
+    // to that location without mutating the caller's driverOptions object.
+    const { dynamicPassword, expirationChecker, ...restDriverOptions } =
+      database.driverOptions ?? {}
+
+    if (dynamicPassword || expirationChecker) {
+      driverOptions = {
+        ...restDriverOptions,
+        connection: {
+          ...((restDriverOptions.connection as Record<string, unknown>) ?? {}),
+          ...(dynamicPassword ? { password: dynamicPassword } : {}),
+          ...(expirationChecker ? { expirationChecker } : {}),
+        },
+      }
+    }
   }
 
   const { MikroORM, defineConfig } = await import(
