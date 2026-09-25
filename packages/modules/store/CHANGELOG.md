@@ -1,5 +1,12 @@
 # @medusajs/store
 
+## 2.21.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

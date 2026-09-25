@@ -1,5 +1,13 @@
 # @medusajs/query
 
+## 2.21.2
+
+### Patch Changes
+
+- Updated dependencies [[`1ba69082ceb941d47cfe390212f400e39a7166dd`](https://github.com/medusajs/medusa/commit/1ba69082ceb941d47cfe390212f400e39a7166dd), [`989880a6c51f3659453473b2a5b068e83ce4fc78`](https://github.com/medusajs/medusa/commit/989880a6c51f3659453473b2a5b068e83ce4fc78)]:
+  - @medusajs/utils@2.21.2
+  - @medusajs/deps@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

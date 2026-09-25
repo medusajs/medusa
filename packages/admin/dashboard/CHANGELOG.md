@@ -1,5 +1,27 @@
 # @medusajs/dashboard
 
+## 2.21.2
+
+### Patch Changes
+
+- [#17007](https://github.com/medusajs/medusa/pull/17007) [`c6d976019f3396d53f6d0b5f8c9911b3710ea559`](https://github.com/medusajs/medusa/commit/c6d976019f3396d53f6d0b5f8c9911b3710ea559) Thanks [@theluckystrike](https://github.com/theluckystrike)! - add missing hungarian translations in admin dashboard
+
+- [#16846](https://github.com/medusajs/medusa/pull/16846) [`61d82cb5e3cb0948044af4e5e33b37151b4b66f3`](https://github.com/medusajs/medusa/commit/61d82cb5e3cb0948044af4e5e33b37151b4b66f3) Thanks [@luxapan](https://github.com/luxapan)! - fix(dashboard): internationalize order payment status and labels in Admin
+
+- [#16720](https://github.com/medusajs/medusa/pull/16720) [`f50015bcc7d67dab84a2c23994b1204925426453`](https://github.com/medusajs/medusa/commit/f50015bcc7d67dab84a2c23994b1204925426453) Thanks [@NikhilDhillon](https://github.com/NikhilDhillon)! - fix(dashboard): add readable validation messages to create region form
+
+- [#16742](https://github.com/medusajs/medusa/pull/16742) [`a345cc91c7c79c3ef1746576f87e4c96459a3268`](https://github.com/medusajs/medusa/commit/a345cc91c7c79c3ef1746576f87e4c96459a3268) Thanks [@Minhal128](https://github.com/Minhal128)! - fix(dashboard): point refund and return reason row links at their edit routes
+
+- [#16728](https://github.com/medusajs/medusa/pull/16728) [`4e1b6fb5732083a323e499d4403739932eb4c122`](https://github.com/medusajs/medusa/commit/4e1b6fb5732083a323e499d4403739932eb4c122) Thanks [@Asgabani](https://github.com/Asgabani)! - fix(dashboard): correct shipping profile row link path
+
+  The configurable shipping profile list table's `getRowHref` built `/settings/shipping-profiles/:id`, which 404s, instead of `/settings/locations/shipping-profiles/:id`, where the route is actually registered. Clicking a row in the shipping profiles list now navigates correctly.
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.21.2
+  - @medusajs/js-sdk@2.21.2
+  - @medusajs/icons@2.21.2
+  - @medusajs/ui@4.2.6
+
 ## 2.21.1
 
 ### Patch Changes
