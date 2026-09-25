@@ -106,7 +106,7 @@ Finally, customize the Order view in Medusa Admin to display the `custom_display
 
 The `display_id` and `custom_display_id` properties are searchable fields of the `Order` data model. So, you can search orders by either display ID without any customizations.
 
-The Order Module also defines database indexes on both properties, so you don't need to add indexes yourself. The index on `custom_display_id` is unique, so each custom display ID must be unique among orders that aren't deleted.
+The Order Module also defines database indexes on both properties. The index on `custom_display_id` is unique, so each custom display ID must be unique among orders that aren't deleted.
 
 ### Search in Medusa Admin
 
