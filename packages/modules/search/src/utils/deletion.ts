@@ -83,7 +83,7 @@ async function deleteOne(
 
   await context.indexService.delete([record.id])
 
-  context.activeVersionCache?.invalidate()
+  await context.activeVersionCache?.invalidate()
 
   return { index: name, deleted_versions: versions.length }
 }
