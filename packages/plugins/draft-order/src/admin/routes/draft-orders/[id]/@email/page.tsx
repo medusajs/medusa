@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Heading, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
 import { Form } from "../../../../components/common/form"
@@ -11,6 +12,7 @@ import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
 import { useOrder } from "../../../../hooks/api/orders"
 
 const Email = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
   const { order, isPending, isError, error } = useOrder(id!, {
     fields: "+email",
@@ -26,10 +28,10 @@ const Email = () => {
     <RouteDrawer>
       <RouteDrawer.Header>
         <RouteDrawer.Title asChild>
-          <Heading>Edit Email</Heading>
+          <Heading>{t("email.editHeader")}</Heading>
         </RouteDrawer.Title>
         <RouteDrawer.Description asChild>
-          <span className="sr-only">Edit the email for the draft order</span>
+          <span className="sr-only">{t("draftOrders.email.editHint")}</span>
         </RouteDrawer.Description>
       </RouteDrawer.Header>
       {isReady && <EmailForm order={order} />}
@@ -42,6 +44,7 @@ interface EmailFormProps {
 }
 
 const EmailForm = ({ order }: EmailFormProps) => {
+  const { t } = useTranslation()
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: {
       email: order.email ?? "",
@@ -78,7 +81,7 @@ const EmailForm = ({ order }: EmailFormProps) => {
             name="email"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t("fields.email")}</Form.Label>
                 <Form.Control>
                   <Input {...field} />
                 </Form.Control>
@@ -91,11 +94,11 @@ const EmailForm = ({ order }: EmailFormProps) => {
           <div className="flex justify-end gap-2">
             <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                Cancel
+                {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isPending}>
-              Save
+              {t("actions.save")}
             </Button>
           </div>
         </RouteDrawer.Footer>

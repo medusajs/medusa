@@ -8,8 +8,10 @@ import {
   Text,
   Tooltip,
 } from "@medusajs/ui"
+import type { TFunction } from "i18next"
 import { Collapsible } from "radix-ui"
 import { ReactNode, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/api/users"
 import { getFullDate, getRelativeDate } from "../../lib/utils/date-utils"
@@ -20,15 +22,16 @@ interface ActivitySectionProps {
 }
 
 export const ActivitySection = ({ order, changes }: ActivitySectionProps) => {
+  const { t } = useTranslation()
   const activityItems = useMemo(
-    () => getActivityItems(order, changes),
-    [order, changes]
+    () => getActivityItems(order, changes, t),
+    [order, changes, t]
   )
 
   return (
     <Container className="overflow-hidden p-0">
       <div className="px-6 py-4">
-        <Heading>Activity</Heading>
+        <Heading>{t("orders.activity.header")}</Heading>
       </div>
       <ActivityItemList items={activityItems} />
     </Container>
@@ -202,8 +205,33 @@ function renderContent(content: ReactNode) {
   return content
 }
 
+const ACTIVITY_COUNT_KEYS = {
+  items: "general.items",
+  shipping: "draftOrders.activity.shippingMethodCount",
+  promotions: "draftOrders.activity.promotionCount",
+} as const
+
+const ACTIVITY_LABEL_KEYS = {
+  items: {
+    added: "draftOrders.activity.labels.itemsAdded",
+    removed: "draftOrders.activity.labels.itemsRemoved",
+    updated: "draftOrders.activity.labels.itemsUpdated",
+  },
+  shipping: {
+    added: "draftOrders.activity.labels.shippingAdded",
+    removed: "draftOrders.activity.labels.shippingRemoved",
+    updated: "draftOrders.activity.labels.shippingUpdated",
+  },
+  promotions: {
+    added: "draftOrders.activity.labels.promotionsAdded",
+    removed: "draftOrders.activity.labels.promotionsRemoved",
+    updated: "draftOrders.activity.labels.promotionsUpdated",
+  },
+} as const
+
 function getEditActivityItems(
-  change: HttpTypes.AdminOrderChange
+  change: HttpTypes.AdminOrderChange,
+  t: TFunction
 ): ActivityItem[] {
   const activityItems: ActivityItem[] = []
   const counts = {
@@ -266,67 +294,26 @@ function getEditActivityItems(
   ) => {
     if (added === 0 && removed === 0) return
 
-    const getText = (count: number, singular: string, plural: string) =>
-      count === 1 ? `${count} ${singular}` : `${count} ${plural}`
+    const countKey = ACTIVITY_COUNT_KEYS[type]
 
-    const addedText = getText(
-      added,
-      type === "items"
-        ? "item"
-        : type === "shipping"
-        ? "shipping method"
-        : "promotion",
-      type === "items"
-        ? "items"
-        : type === "shipping"
-        ? "shipping methods"
-        : "promotions"
-    )
-    const removedText = getText(
-      Math.abs(removed),
-      type === "items"
-        ? "item"
-        : type === "shipping"
-        ? "shipping method"
-        : "promotion",
-      type === "items"
-        ? "items"
-        : type === "shipping"
-        ? "shipping methods"
-        : "promotions"
-    )
+    const addedText = t(countKey, { count: added })
+    const removedText = t(countKey, { count: Math.abs(removed) })
 
     const content =
       added && removed
-        ? `Added ${addedText}, removed ${removedText}`
+        ? t("draftOrders.activity.addedAndRemoved", {
+            added: addedText,
+            removed: removedText,
+          })
         : added
-        ? `Added ${addedText}`
-        : `Removed ${removedText}`
+        ? t("draftOrders.activity.added", { added: addedText })
+        : t("draftOrders.activity.removed", { removed: removedText })
 
-    const label =
-      added && removed
-        ? `${
-            type === "items"
-              ? "Items"
-              : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
-          } updated`
-        : added
-        ? `${
-            type === "items"
-              ? "Items"
-              : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
-          } added`
-        : `${
-            type === "items"
-              ? "Items"
-              : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
-          } removed`
+    const label = t(
+      ACTIVITY_LABEL_KEYS[type][
+        added && removed ? "updated" : added ? "added" : "removed"
+      ]
+    )
 
     activityItems.push({
       label,
@@ -351,15 +338,21 @@ function getEditActivityItems(
   return activityItems
 }
 
-function getTransferActivityItem(change: HttpTypes.AdminOrderChange) {
+function getTransferActivityItem(
+  change: HttpTypes.AdminOrderChange,
+  t: TFunction
+) {
   return {
-    label: "Transferred",
-    content: "Draft order transferred",
+    label: t("draftOrders.activity.transferredLabel"),
+    content: t("draftOrders.activity.transferredContent"),
     timestamp: new Date(change.created_at).toISOString(),
   }
 }
 
-function getUpdateOrderActivityItem(change: HttpTypes.AdminOrderChange) {
+function getUpdateOrderActivityItem(
+  change: HttpTypes.AdminOrderChange,
+  t: TFunction
+) {
   const { details } = change.actions?.[0] || {}
 
   if (!details) {
@@ -369,31 +362,31 @@ function getUpdateOrderActivityItem(change: HttpTypes.AdminOrderChange) {
   switch (details.type) {
     case "customer_id":
       return {
-        label: "Customer updated",
+        label: t("orders.activity.events.update_order.customer_id"),
         timestamp: new Date(change.created_at).toISOString(),
         userId: change.confirmed_by,
       }
     case "sales_channel_id":
       return {
-        label: "Sales channel updated",
+        label: t("orders.activity.events.update_order.sales_channel_id"),
         timestamp: new Date(change.created_at).toISOString(),
         userId: change.confirmed_by,
       }
     case "billing_address":
       return {
-        label: "Billing address updated",
+        label: t("orders.activity.events.update_order.billing_address"),
         timestamp: new Date(change.created_at).toISOString(),
         userId: change.confirmed_by,
       }
     case "shipping_address":
       return {
-        label: "Shipping address updated",
+        label: t("orders.activity.events.update_order.shipping_address"),
         timestamp: new Date(change.created_at).toISOString(),
         userId: change.confirmed_by,
       }
     case "email":
       return {
-        label: "Email updated",
+        label: t("orders.activity.events.update_order.email"),
         timestamp: new Date(change.created_at).toISOString(),
         userId: change.confirmed_by,
       }
@@ -405,14 +398,15 @@ function getUpdateOrderActivityItem(change: HttpTypes.AdminOrderChange) {
 
 function getActivityItems(
   order: HttpTypes.AdminOrder,
-  changes: HttpTypes.AdminOrderChange[]
+  changes: HttpTypes.AdminOrderChange[],
+  t: TFunction
 ) {
   const items: ActivityItem[] = []
 
   if (order.created_at) {
     items.push({
-      label: "Created",
-      content: "Draft order created",
+      label: t("fields.created"),
+      content: t("draftOrders.activity.createdContent"),
       timestamp: new Date(order.created_at).toISOString(),
     })
   }
@@ -424,14 +418,14 @@ function getActivityItems(
 
     switch (change.change_type) {
       case "edit": {
-        items.push(...getEditActivityItems(change))
+        items.push(...getEditActivityItems(change, t))
         break
       }
       case "transfer":
-        items.push(getTransferActivityItem(change))
+        items.push(getTransferActivityItem(change, t))
         break
       case "update_order": {
-        const item = getUpdateOrderActivityItem(change)
+        const item = getUpdateOrderActivityItem(change, t)
 
         if (item) {
           items.push(item)

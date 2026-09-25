@@ -31,6 +31,7 @@ import {
   useState,
   useTransition,
 } from "react"
+import { useTranslation } from "react-i18next"
 import { genericForwardRef } from "../utilities/generic-forward-ref"
 
 type ComboboxOption = {
@@ -74,6 +75,7 @@ const ComboboxImpl = <T extends Value = string>(
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
@@ -264,7 +266,7 @@ const ComboboxImpl = <T extends Value = string>(
               )}
             >
               <Text size="small" leading="compact">
-                Selected
+                {t("general.selected")}
               </Text>
             </div>
           )}
@@ -370,7 +372,7 @@ const ComboboxImpl = <T extends Value = string>(
                 leading="compact"
                 className="text-ui-fg-subtle"
               >
-                No results found
+                {t("general.noResultsTitle")}
               </Text>
             </div>
           ))}
