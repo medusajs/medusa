@@ -28,6 +28,7 @@ import {
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
 import { createProductVariantsDefaultInventoryStep } from "../steps/create-product-variants-default-inventory"
+import { deleteProductImageFilesStep } from "../steps/delete-product-image-files"
 import { dismissProductVariantsInventoryStep } from "../steps/dismiss-product-variants-inventory"
 
 /**
@@ -443,6 +444,35 @@ export const updateProductsWorkflow = createWorkflow(
       }
     )
 
+    const imagesSelector = transform({ input }, (data) => {
+      if ("products" in data.input) {
+        return {
+          filters: {
+            id: data.input.products.filter((p) => !!p.images).map((p) => p.id),
+          },
+        }
+      }
+
+      return {
+        filters: data.input.update?.images ? data.input.selector : { id: [] },
+      }
+    })
+
+    const previousProductsWithImages = useRemoteQueryStep({
+      entry_point: "product",
+      fields: ["images.url"],
+      variables: imagesSelector,
+    }).config({ name: "get-previous-products-images-step" })
+
+    const previousImageUrls = transform(
+      { previousProductsWithImages },
+      (data) => {
+        return data.previousProductsWithImages.flatMap(
+          (p) => p.images?.map((i) => i.url) ?? []
+        )
+      }
+    )
+
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
 
@@ -572,6 +602,22 @@ export const updateProductsWorkflow = createWorkflow(
         data: productIdEvents,
       })
     )
+
+    const remainingImages = useRemoteQueryStep({
+      entry_point: "product_image",
+      fields: ["url"],
+      variables: { filters: { url: previousImageUrls } },
+    }).config({ name: "get-remaining-product-images-step" })
+
+    const removedImageUrls = transform(
+      { previousImageUrls, remainingImages },
+      (data) => {
+        const remaining = new Set(data.remainingImages.map((i) => i.url))
+        return data.previousImageUrls.filter((url) => !remaining.has(url))
+      }
+    )
+
+    deleteProductImageFilesStep({ urls: removedImageUrls })
 
     const productsUpdated = createHook("productsUpdated", {
       products: updatedProducts,
