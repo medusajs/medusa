@@ -1,0 +1,362 @@
+---
+sidebar_label: "Manage Products with Admin API"
+tags:
+  - product
+  - admin
+  - how to
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Products with the Admin API and JS SDK`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage products from a client application, such as a script or an external admin, using the [JS SDK](../../../../js-sdk/page.mdx) and the Admin API routes.
+
+<Note title="Looking for no-code docs?">
+
+Refer to the [Medusa Admin User Guide](!user-guide!/products) to learn how to manage products using the dashboard.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "JS SDK installed and configured",
+      link: "/js-sdk",
+    },
+  ]}
+/>
+
+## Authenticate Admin Requests
+
+All Admin API routes require an authenticated admin user. You can authenticate the JS SDK with a session, a JWT token, or a secret API key.
+
+For server-side scripts, a [secret API key](../../../api-key/page.mdx) is usually the simplest option:
+
+```ts
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  apiKey: process.env.MEDUSA_SECRET_API_KEY,
+})
+```
+
+Learn more about the authentication options in the [JS SDK Authentication](../../../../js-sdk/auth/overview/page.mdx) guide.
+
+The rest of this guide uses the JS SDK methods and mentions the Admin API route that each method sends a request to.
+
+---
+
+## Step 1: Upload Product Images
+
+Product images are stored as URLs. So, before you create or update a product with new images, upload the image files using the `sdk.admin.upload.create` method. It sends a `POST` request to `/admin/uploads` as `multipart/form-data`.
+
+For example:
+
+```ts
+const { files } = await sdk.admin.upload.create({
+  files: [
+    new File([imageBuffer], "shirt-front.png", {
+      type: "image/png",
+    }),
+  ],
+})
+
+// each uploaded file has an `id` and a `url`
+const imageUrls = files.map((file) => file.url)
+```
+
+The [File Module Provider](../../../../infrastructure-modules/file/page.mdx) configured in your Medusa application stores the files and returns their URLs. You then pass these URLs in the product's `images` and `thumbnail` fields.
+
+---
+
+## Step 2: Create a Product
+
+To create a product, use the `sdk.admin.product.create` method. It sends a `POST` request to `/admin/products`.
+
+For example, to create a draft product with one option, one variant, images, and associations to existing records:
+
+```ts
+const { product } = await sdk.admin.product.create({
+  title: "Medusa T-Shirt",
+  handle: "medusa-t-shirt",
+  description: "A comfortable cotton t-shirt.",
+  status: "draft",
+  images: imageUrls.map((url) => ({ url })),
+  thumbnail: imageUrls[0],
+  collection_id: "pcol_123",
+  type_id: "ptyp_123",
+  categories: [{ id: "pcat_123" }, { id: "pcat_456" }],
+  tags: [{ id: "ptag_123" }],
+  sales_channels: [{ id: "sc_123" }, { id: "sc_456" }],
+  shipping_profile_id: "sp_123",
+  options: [
+    {
+      title: "Size",
+      values: ["S", "M"],
+    },
+  ],
+  variants: [
+    {
+      title: "Small",
+      sku: "SHIRT-S",
+      ean: "1234567890123",
+      manage_inventory: true,
+      allow_backorder: false,
+      options: {
+        Size: "S",
+      },
+      prices: [
+        {
+          currency_code: "usd",
+          amount: 20,
+        },
+        {
+          currency_code: "eur",
+          amount: 18,
+        },
+      ],
+    },
+  ],
+  metadata: {
+    source: "erp",
+  },
+})
+```
+
+Keep in mind the following about the request body:
+
+- `title` is the only required field.
+- `status` defaults to `draft`. Other statuses are `proposed`, `published`, and `rejected`.
+- `categories`, `tags`, and `sales_channels` are arrays of objects with an `id` property. There's no `category_ids` field.
+- `collection_id` and `type_id` are single IDs, since a product belongs to at most one collection and one type. A product can belong to many categories.
+- `images` is an array of objects with a `url` property. Medusa stores the images in the order of the array.
+- If you don't pass a `thumbnail`, Medusa uses the URL of the first image as the thumbnail.
+- If you don't pass a `handle`, Medusa generates it from the `title`.
+- Each variant requires a `title` and a `prices` array. The keys of a variant's `options` object are option titles, and the values are one of that option's `values`.
+- Amounts in `prices` are the actual amounts, such as `20` for $20. Learn more in the [Pricing Module's documentation](../../../pricing/page.mdx).
+- `manage_inventory` defaults to `true`. Learn more in the [Product Variant Inventory](../../variant-inventory/page.mdx) guide.
+
+Refer to the [Create Product API reference](!api!/admin/products/create-product) for all accepted fields.
+
+<Note title="Tip">
+
+Create products as drafts, then publish them after you verify their details. Draft products aren't returned by the Store API routes.
+
+</Note>
+
+---
+
+## Step 3: Retrieve a Product with Its Relations
+
+To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a `GET` request to `/admin/products/:id`.
+
+Use the `fields` query parameter to select the relations to retrieve. A `*` prefix retrieves all fields of a relation, and a `+` prefix adds a field to the default fields:
+
+```ts
+const { product } = await sdk.admin.product.retrieve(
+  "prod_123",
+  {
+    fields: "*categories,*images,*variants.prices,+metadata",
+  }
+)
+```
+
+The same `fields` syntax works with `sdk.admin.product.list`, which sends a `GET` request to `/admin/products`. For example, to retrieve each product's category IDs so you can find products without categories:
+
+```ts
+const { products } = await sdk.admin.product.list({
+  fields: "id,title,categories.id",
+})
+
+const uncategorized = products.filter(
+  (product) => !product.categories?.length
+)
+```
+
+Learn more about the `fields` query parameter in the [API reference](!api!/admin/select-fields-and-relations).
+
+---
+
+## Step 4: Update a Product
+
+To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to `/admin/products/:id`. Only the fields that you pass are updated.
+
+For example, to update a product's details, images, and thumbnail:
+
+```ts
+const { product } = await sdk.admin.product.update(
+  "prod_123",
+  {
+    title: "Medusa T-Shirt",
+    description: "A soft cotton t-shirt.",
+    thumbnail: "https://example.com/new-front.png",
+    images: [
+      { id: "img_123", url: "https://example.com/front.png" },
+      { url: "https://example.com/new-back.png" },
+    ],
+    categories: [{ id: "pcat_123" }],
+    tags: [{ id: "ptag_123" }],
+    metadata: {
+      color: "black",
+    },
+  }
+)
+```
+
+Keep in mind the following about updates:
+
+- Array fields such as `images`, `categories`, `tags`, and `sales_channels` replace the product's existing values. For example, to add an image, pass the existing images along with the new one.
+- The order of the `images` array sets the order of the product's images. Pass an existing image's `id` along with its `url` to keep that image.
+- Updating `images` doesn't change the `thumbnail`. Pass `thumbnail` to change it.
+- `metadata` is merged with the product's existing metadata.
+- In the same request, you can update the product's `collection_id`, `type_id`, `shipping_profile_id`, `status`, and other scalar fields.
+
+To manage the product's variants and options, use the dedicated methods explained in the next sections.
+
+<Note>
+
+Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a `POST` request to `/admin/products/:id/options/batch`.
+
+</Note>
+
+---
+
+## Step 5: Manage Variants and Prices
+
+To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a `POST` request to `/admin/products/:id/variants/batch`.
+
+For example:
+
+```ts
+const { created, updated, deleted } =
+  await sdk.admin.product.batchVariants("prod_123", {
+    create: [
+      {
+        title: "Medium",
+        sku: "SHIRT-M",
+        options: { Size: "M" },
+        prices: [{ currency_code: "usd", amount: 20 }],
+      },
+    ],
+    update: [
+      {
+        id: "variant_123",
+        sku: "SHIRT-S-NEW",
+        options: { Size: "S" },
+        prices: [
+          { id: "price_123", amount: 22 },
+          { currency_code: "eur", amount: 19 },
+        ],
+      },
+    ],
+    delete: ["variant_456"],
+  })
+```
+
+Each item in `update` requires the variant's `id`. The other fields are optional.
+
+When you pass `prices` for a variant, they replace the variant's existing prices:
+
+- Pass the `id` of an existing price to update it.
+- Pass a price without an `id` to add it.
+- Existing prices that you don't pass are removed.
+
+To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a `POST` request to `/admin/products/:id/variants/:variant_id`.
+
+<Note title="Tip">
+
+To set sale prices, create a [price list](../../../pricing/concepts/page.mdx#price-list) instead of changing the variant's base prices.
+
+</Note>
+
+---
+
+## Step 6: Assign Products to Collections and Categories in Bulk
+
+To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a `POST` request to `/admin/collections/:id/products`:
+
+```ts
+const { collection } =
+  await sdk.admin.productCollection.updateProducts(
+    "pcol_123",
+    {
+      add: ["prod_123", "prod_456"],
+      remove: ["prod_789"],
+    }
+  )
+```
+
+Since a product belongs to at most one collection, adding a product to a collection sets its `collection_id` to that collection.
+
+To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a `POST` request to `/admin/product-categories/:id/products`:
+
+```ts
+const { product_category } =
+  await sdk.admin.productCategory.updateProducts(
+    "pcat_123",
+    {
+      add: ["prod_123", "prod_456"],
+      remove: ["prod_789"],
+    }
+  )
+```
+
+Adding a product to a category doesn't remove it from its other categories.
+
+---
+
+## Step 7: Publish a Product
+
+To publish a draft product, update its `status` to `published`:
+
+```ts
+await sdk.admin.product.update("prod_123", {
+  status: "published",
+})
+```
+
+Customers can view and purchase a published product in the sales channels that the product is available in.
+
+---
+
+## Create, Update, or Delete Products in Bulk
+
+To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a `POST` request to `/admin/products/batch`:
+
+```ts
+const { created, updated, deleted } =
+  await sdk.admin.product.batch({
+    create: [
+      {
+        title: "Medusa Hoodie",
+        options: [{ title: "Size", values: ["M"] }],
+        variants: [
+          {
+            title: "Medium",
+            options: { Size: "M" },
+            prices: [{ currency_code: "usd", amount: 40 }],
+          },
+        ],
+      },
+    ],
+    update: [
+      {
+        id: "prod_123",
+        status: "published",
+        collection_id: "pcol_123",
+        categories: [{ id: "pcat_123" }],
+      },
+    ],
+    delete: ["prod_456"],
+  })
+```
+
+Items in `create` accept the same fields as the create request in [Step 2](#step-2-create-a-product). Items in `update` accept the same fields as the update request in [Step 4](#step-4-update-a-product), along with the product's `id`.
+
+To import many products from a CSV file, refer to the [Import Products](!user-guide!/products/import) user guide instead.
