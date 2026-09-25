@@ -1,28 +1,28 @@
-import { HttpTypes } from "@medusajs/types";
-import { ProductCreateSchemaType } from "../routes/gift-cards/gift-card-products/components/gift-card-product-create-form/types";
-import { castNumber } from "./validations";
+import { HttpTypes } from "@medusajs/types"
+import { ProductCreateSchemaType } from "../routes/gift-cards/gift-card-products/components/gift-card-product-create-form/types"
+import { castNumber } from "@medusajs/dashboard/lib"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & {
-    status: HttpTypes.AdminProductStatus;
-    regionsCurrencyMap: Record<string, string>;
+    status: HttpTypes.AdminProductStatus
+    regionsCurrencyMap: Record<string, string>
   }
 ): HttpTypes.AdminCreateProduct => {
-  const thumbnail = values.media?.find((media) => media.isThumbnail)?.url;
+  const thumbnail = values.media?.find((media) => media.isThumbnail)?.url
   const images = values.media
     ?.filter((media) => !media.isThumbnail)
-    .map((media) => ({ url: media.url }));
+    .map((media) => ({ url: media.url }))
 
   const optionValues = values.denominations.map(
     (denomination) => denomination.value
-  );
+  )
 
   const options = [
     {
       title: "denomination",
       values: optionValues,
     },
-  ];
+  ]
 
   const variants = values.denominations.map((denomination) => ({
     title: denomination.value,
@@ -30,7 +30,7 @@ export const normalizeProductFormValues = (
       denomination: denomination.value,
     },
     prices: denomination.prices,
-  }));
+  }))
 
   return {
     status: values.status,
@@ -62,8 +62,8 @@ export const normalizeProductFormValues = (
     weight: values.weight ? parseFloat(values.weight) : undefined,
     options,
     variants: normalizeVariants(variants, values.regionsCurrencyMap),
-  };
-};
+  }
+}
 
 export const normalizeVariants = (
   variants: ProductCreateSchemaType["variants"],
@@ -78,7 +78,7 @@ export const normalizeVariants = (
     prices: Object.entries(variant.prices || {})
       .map(([key, value]: any) => {
         if (value === "" || value === undefined) {
-          return undefined;
+          return undefined
         }
 
         if (key.startsWith("reg_")) {
@@ -86,17 +86,17 @@ export const normalizeVariants = (
             currency_code: regionsCurrencyMap[key],
             amount: castNumber(value),
             rules: { region_id: key },
-          };
+          }
         } else {
           return {
             currency_code: key,
             amount: castNumber(value),
-          };
+          }
         }
       })
       .filter((v) => !!v),
-  }));
-};
+  }))
+}
 
 export const decorateVariantsWithDefaultValues = (
   variants: ProductCreateSchemaType["variants"]
@@ -107,5 +107,5 @@ export const decorateVariantsWithDefaultValues = (
     manage_inventory: variant.manage_inventory || false,
     allow_backorder: variant.allow_backorder || false,
     inventory_kit: variant.inventory_kit || false,
-  }));
-};
+  }))
+}

@@ -1,17 +1,17 @@
-import { Container, Text } from "@medusajs/ui";
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { formatAmount } from "../../../../utils/format-amount";
+import { Container, Text } from "@medusajs/ui"
+import { AdminStoreCreditAccount } from "../../../../../types"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
 const StoreCreditAccountBalanceSection = ({
   storeCreditAccount,
 }: {
-  storeCreditAccount: AdminStoreCreditAccount;
+  storeCreditAccount: AdminStoreCreditAccount
 }) => {
   if (
     !storeCreditAccount ||
     typeof storeCreditAccount.balance === "undefined"
   ) {
-    return;
+    return
   }
 
   return (
@@ -27,9 +27,9 @@ const StoreCreditAccountBalanceSection = ({
           <Text
             weight="plus"
             size="xlarge"
-            className="tabular-nums text-ui-fg-base"
+            className="text-ui-fg-base tabular-nums"
           >
-            {formatAmount(
+            {formatCurrency(
               storeCreditAccount.balance as number,
               storeCreditAccount.currency_code
             )}
@@ -37,7 +37,7 @@ const StoreCreditAccountBalanceSection = ({
         </div>
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default StoreCreditAccountBalanceSection;
+export default StoreCreditAccountBalanceSection

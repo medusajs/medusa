@@ -60,7 +60,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     return (
       <div
         className={clx(
-          "inline-flex rounded-md bg-ui-bg-field shadow-borders-base overflow-hidden divide-x transition-fg",
+          "bg-ui-bg-field shadow-borders-base transition-fg inline-flex divide-x overflow-hidden rounded-md",
           "[&:has(input:focus)]:shadow-borders-interactive-with-active",
           {
             "h-7": size === "small",
@@ -78,16 +78,16 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           max={max}
           step={step}
           className={clx(
-            "flex-1 px-2 py-1 bg-transparent txt-compact-small text-ui-fg-base outline-none [appearance:textfield]",
-            "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+            "txt-compact-small text-ui-fg-base flex-1 bg-transparent px-2 py-1 outline-none [appearance:textfield]",
+            "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             "placeholder:text-ui-fg-muted"
           )}
           {...props}
         />
         <button
           className={clx(
-            "flex items-center justify-center outline-none transition-fg",
-            "disabled:cursor-not-allowed disabled:text-ui-fg-muted",
+            "transition-fg flex items-center justify-center outline-none",
+            "disabled:text-ui-fg-muted disabled:cursor-not-allowed",
             "focus:bg-ui-bg-field-component-hover",
             "hover:bg-ui-bg-field-component-hover",
             {
@@ -104,8 +104,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         </button>
         <button
           className={clx(
-            "flex items-center justify-center outline-none transition-fg",
-            "disabled:cursor-not-allowed disabled:text-ui-fg-muted",
+            "transition-fg flex items-center justify-center outline-none",
+            "disabled:text-ui-fg-muted disabled:cursor-not-allowed",
             "focus:bg-ui-bg-field-hover",
             "hover:bg-ui-bg-field-hover",
             {

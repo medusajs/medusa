@@ -1,4 +1,4 @@
-import { ClientHeaders, FetchError } from "@medusajs/js-sdk";
+import { ClientHeaders, FetchError } from "@medusajs/js-sdk"
 import {
   QueryKey,
   useMutation,
@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryClient,
   UseQueryOptions,
-} from "@tanstack/react-query";
+} from "@tanstack/react-query"
 import {
   AdminCreateStoreCreditAccount,
   AdminCreditStoreCreditAccount,
@@ -14,14 +14,14 @@ import {
   AdminGetStoreCreditAccountsParams,
   AdminStoreCreditAccountResponse,
   AdminStoreCreditAccountsResponse,
-} from "../../../types";
-import { queryKeysFactory } from "../../lib/query-key";
-import { sdk } from "../../lib/sdk";
-import { transactionQueryKey } from "./transactions";
+} from "../../../types"
+import { queryKeysFactory } from "../../lib/query-key"
+import { sdk } from "../../lib/sdk"
+import { transactionQueryKey } from "./transactions"
 
 export const storeCreditAccountQueryKey = queryKeysFactory(
   "store-credit-account"
-);
+)
 
 export const useStoreCreditAccounts = (
   query?: AdminGetStoreCreditAccountsParams,
@@ -45,16 +45,16 @@ export const useStoreCreditAccounts = (
         query,
         headers,
       }
-    );
+    )
 
   const { data, ...rest } = useQuery({
     queryFn: () => fetchStoreCreditAccounts(query),
     queryKey: storeCreditAccountQueryKey.list(query),
     ...options,
-  });
+  })
 
-  return { ...data, ...rest };
-};
+  return { ...data, ...rest }
+}
 
 export const useStoreCreditAccount = (
   id: string,
@@ -79,16 +79,16 @@ export const useStoreCreditAccount = (
         query,
         headers,
       }
-    );
+    )
 
   const { data, ...rest } = useQuery({
     queryFn: () => fetchStoreCreditAccount(query),
     queryKey: storeCreditAccountQueryKey.detail(id),
     ...options,
-  });
+  })
 
-  return { ...data, ...rest };
-};
+  return { ...data, ...rest }
+}
 
 export const useCreateStoreCreditAccount = (
   options?: UseMutationOptions<
@@ -97,7 +97,7 @@ export const useCreateStoreCreditAccount = (
     AdminCreateStoreCreditAccount
   >
 ) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (payload) =>
@@ -108,12 +108,12 @@ export const useCreateStoreCreditAccount = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: storeCreditAccountQueryKey.lists(),
-      });
-      options?.onSuccess?.(data, variables, context);
+      })
+      options?.onSuccess?.(data, variables, context)
     },
     ...options,
-  });
-};
+  })
+}
 
 export const useCreditStoreCreditAccount = (
   id: string,
@@ -123,7 +123,7 @@ export const useCreditStoreCreditAccount = (
     AdminCreditStoreCreditAccount
   >
 ) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (payload) =>
@@ -134,15 +134,15 @@ export const useCreditStoreCreditAccount = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: storeCreditAccountQueryKey.detail(id),
-      });
+      })
       queryClient.invalidateQueries({
         queryKey: transactionQueryKey.list({ sca_id: id }),
-      });
-      options?.onSuccess?.(data, variables, context);
+      })
+      options?.onSuccess?.(data, variables, context)
     },
     ...options,
-  });
-};
+  })
+}
 
 export const useDebitStoreCreditAccount = (
   id: string,
@@ -152,7 +152,7 @@ export const useDebitStoreCreditAccount = (
     AdminDebitStoreCreditAccount
   >
 ) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (payload) =>
@@ -167,8 +167,8 @@ export const useDebitStoreCreditAccount = (
       queryClient.invalidateQueries({
         queryKey: transactionQueryKey.list({ sca_id: id }),
       });
-      options?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context)
     },
     ...options,
-  });
-};
+  })
+}
