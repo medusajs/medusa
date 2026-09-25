@@ -777,6 +777,11 @@ export function getRouteMap({
                         },
                       ],
                     },
+                    {
+                      path: "export",
+                      lazy: () =>
+                        import("../../routes/customers/customer-export"),
+                    },
                   ],
                 },
                 {
