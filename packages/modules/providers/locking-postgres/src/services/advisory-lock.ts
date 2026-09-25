@@ -123,8 +123,6 @@ export class PostgresAdvisoryLockProvider
       const errMessage = `Failed to acquire lock for key "${key}"`
 
       if (row.expiration && row.expiration <= row.now) {
-        // The expiration condition is re-checked by the update so that only one
-        // caller can take over an expired lock when acquiring concurrently.
         const takenOver = await this.getManager().execute(
           `UPDATE locking SET owner_id = ?, expiration = ${expireSql} WHERE id = ? AND expiration IS NOT NULL AND expiration <= NOW() RETURNING id`,
           [ownerId ?? null, key]
