@@ -4,6 +4,7 @@ import {
   SearchIndexRegistry,
   SearchIndexVersionRecord,
 } from "@types"
+import { SearchIndexState } from "./index"
 
 /**
  * The physical index a version is built under. Every version — including the
@@ -47,6 +48,78 @@ export async function cleanupStaleVersions(
     context,
     versions.filter((version) => version.version < activeVersion)
   )
+}
+
+/**
+ * Drops every version above the active one that a run already started filling
+ * and never swapped in. Runs once a reindex has created the version it builds,
+ * which the startup seed then prefers, so nothing would ever resume these.
+ *
+ * Callers must hold the index's seed lock: it is what guarantees no other
+ * process is still filling one of them. A version nothing started filling yet
+ * is left alone, since it may be a migration's, waiting for its first seed.
+ */
+export async function cleanupAbandonedVersions(
+  context: Pick<SearchIndexRegistry, "providers" | "versionService" | "logger">,
+  record: SearchIndexRecord
+): Promise<void> {
+  const activeVersion = record.active_version ?? 0
+
+  const versions = (await context.versionService.list(
+    { search_index_id: record.id },
+    { take: null }
+  )) as SearchIndexVersionRecord[]
+
+  await deleteVersions(
+    context,
+    versions.filter(
+      (version) =>
+        version.version > activeVersion &&
+        (version.status === SearchIndexState.BUILDING ||
+          version.status === SearchIndexState.ERROR)
+    )
+  )
+}
+
+/**
+ * Drops what a swap to `activeVersion` left behind: every version below it
+ * except `previousVersion`, which other processes may still read from until
+ * their active-version cache catches up. Nothing ever makes a version below
+ * the active one active again, so without this they wait for the next build.
+ *
+ * Callers must hold the index's seed lock. Never throws: the swap it follows
+ * has already happened, and failing to drop a stale index must not undo it.
+ */
+export async function cleanupAfterSwap(
+  context: Pick<SearchIndexRegistry, "providers" | "versionService" | "logger">,
+  {
+    record_id,
+    active_version: activeVersion,
+    previous_version: previousVersion,
+  }: {
+    record_id: string
+    active_version: number
+    previous_version: number | null
+  }
+): Promise<void> {
+  try {
+    const versions = (await context.versionService.list(
+      { search_index_id: record_id },
+      { take: null }
+    )) as SearchIndexVersionRecord[]
+
+    await deleteVersions(
+      context,
+      versions.filter(
+        (version) =>
+          version.version < activeVersion && version.version !== previousVersion
+      )
+    )
+  } catch (error) {
+    context.logger.warn(
+      `[Search] Cannot clean up after swapping in version ${activeVersion}: ${error.message}`
+    )
+  }
 }
 
 /**
