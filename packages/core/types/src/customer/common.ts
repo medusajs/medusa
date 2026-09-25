@@ -316,16 +316,6 @@ export interface FilterableCustomerProps
   groups?: FilterableCustomerGroupProps | string | string[]
 
   /**
-   * Filter by the associated default billing address's ID.
-   */
-  default_billing_address_id?: string | string[] | null
-
-  /**
-   * Filter by the associated default shipping address's ID.
-   */
-  default_shipping_address_id?: string | string[] | null
-
-  /**
    * Filter by company name.
    */
   company_name?: string | string[] | OperatorMap<string> | null
@@ -468,16 +458,6 @@ export interface CustomerDTO {
    * A flag indicating if customer has an account or not.
    */
   has_account: boolean
-
-  /**
-   * The associated default billing address's ID.
-   */
-  default_billing_address_id: string | null
-
-  /**
-   * The associated default shipping address's ID.
-   */
-  default_shipping_address_id: string | null
 
   /**
    * The company name of the customer.
