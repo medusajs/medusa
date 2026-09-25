@@ -1,6 +1,7 @@
 import React from "react"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { HeroPricingFields } from "../../../utils/types"
+import { getPricingButtonUrl } from "../../../utils/pricing"
 import { H3, Button } from "docs-ui"
 import clsx from "clsx"
 import slugify from "slugify"
@@ -141,12 +142,7 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
               {option.buttons.map((button) => (
                 <Link
                   key={button._key}
-                  href={
-                    button.link.url ||
-                    (button.link.path?.startsWith("https://")
-                      ? button.link.path
-                      : `https://medusajs.com${button.link.path}`)
-                  }
+                  href={getPricingButtonUrl(button.link)}
                   target="_blank"
                   rel="noreferrer"
                 >
