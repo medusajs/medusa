@@ -4,6 +4,7 @@ export const medusaTshirtProduct = {
   title: "Medusa T-Shirt",
   handle: "t-shirt",
   status: ProductStatus.PUBLISHED,
+  weight: 100,
   options: [
     {
       title: "Size",

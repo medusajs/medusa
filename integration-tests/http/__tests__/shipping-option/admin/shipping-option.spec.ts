@@ -677,6 +677,113 @@ medusaIntegrationTestRunner({
           expect(error.response.status).toEqual(400)
         })
 
+        it("should create a shipping option with a weight_total conditional price", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              { currency_code: "usd", amount: 1000 },
+              {
+                currency_code: "usd",
+                amount: 500,
+                rules: [
+                  {
+                    attribute: "weight_total",
+                    operator: "gte",
+                    value: 100,
+                  },
+                  {
+                    attribute: "weight_total",
+                    operator: "lte",
+                    value: 200,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const response = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.shipping_option).toEqual(
+            expect.objectContaining({
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 1000,
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 500,
+                  rules_count: 2,
+                  price_rules: expect.arrayContaining([
+                    expect.objectContaining({
+                      attribute: "weight_total",
+                      operator: "gte",
+                      value: "100",
+                    }),
+                    expect.objectContaining({
+                      attribute: "weight_total",
+                      operator: "lte",
+                      value: "200",
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should throw error when creating a price rule with the removed price_total attribute", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 500,
+                rules: [
+                  {
+                    attribute: "price_total",
+                    operator: "gte",
+                    value: 100,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const error = await api
+            .post(
+              `/admin/shipping-options`,
+              shippingOptionPayload,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+        })
+
         it("should throw error when provider does not exist on a location", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",

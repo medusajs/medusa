@@ -1778,9 +1778,10 @@
       },
       "conditionalPrices": {
         "header": "{{name}}の条件付き価格",
-        "description": "カート内アイテム合計に基づいて、この配送オプションの条件付き価格を管理します。",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "カート内アイテム合計"
+          "cartItemTotal": "カート内アイテム合計",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "<0>{{attribute}}</0>が<1>{{gte}}</1>以上<2>{{lte}}</2>以下の場合",
@@ -1794,7 +1795,9 @@
         "rules": {
           "amount": "配送オプション価格",
           "gte": "カート内アイテム合計の最小値",
-          "lte": "カート内アイテム合計の最大値"
+          "lte": "カート内アイテム合計の最大値",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "カスタムルール",
@@ -1805,10 +1808,15 @@
         },
         "errors": {
           "amountRequired": "配送オプション価格は必須です",
-          "minOrMaxRequired": "カート内アイテム合計の最小値または最大値の少なくとも一方を指定する必要があります",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "カート内アイテム合計の最小値は、最大値以下である必要があります",
           "duplicateAmount": "配送オプション価格は、条件ごとに一意である必要があります",
-          "overlappingConditions": "条件は、すべての価格ルールにわたって一意である必要があります"
+          "overlappingConditions": "条件は、すべての価格ルールにわたって一意である必要があります",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

@@ -20,7 +20,10 @@ import {
   FulfillmentSetType,
   ShippingOptionPriceType,
 } from "../../../common/constants"
-import { buildShippingOptionPriceRules } from "../../../common/utils/price-rule-helpers"
+import {
+  buildShippingOptionPriceRules,
+  buildWeightTotalPriceRules,
+} from "../../../common/utils/price-rule-helpers"
 import { CreateShippingOptionDetailsForm } from "./create-shipping-option-details-form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
 import {
@@ -119,8 +122,14 @@ export function CreateShippingOptionsForm({
         value?.map((rule) => ({
           region_id: region_id,
           amount: castNumber(rule.amount),
-          rules: buildShippingOptionPriceRules(rule),
-        })) || [] as AdminCreateShippingOptionPriceWithRegion[]
+          rules: [
+            ...buildShippingOptionPriceRules(rule),
+            ...buildWeightTotalPriceRules({
+              weight_total_gte: rule.weight_total_gte,
+              weight_total_lte: rule.weight_total_lte,
+            }),
+          ],
+        })) || ([] as AdminCreateShippingOptionPriceWithRegion[])
 
       return prices?.filter(Boolean)
     })
@@ -132,8 +141,14 @@ export function CreateShippingOptionsForm({
         value?.map((rule) => ({
           currency_code,
           amount: castNumber(rule.amount),
-          rules: buildShippingOptionPriceRules(rule),
-        })) || [] as AdminCreateShippingOptionPriceWithCurrency[]
+          rules: [
+            ...buildShippingOptionPriceRules(rule),
+            ...buildWeightTotalPriceRules({
+              weight_total_gte: rule.weight_total_gte,
+              weight_total_lte: rule.weight_total_lte,
+            }),
+          ],
+        })) || ([] as AdminCreateShippingOptionPriceWithCurrency[])
 
       return prices?.filter(Boolean)
     })

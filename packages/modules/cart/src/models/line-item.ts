@@ -32,6 +32,7 @@ const LineItem = model
       is_custom_price: model.boolean().default(false),
       compare_at_unit_price: model.bigNumber().nullable(),
       unit_price: model.bigNumber(),
+      unit_weight: model.number().nullable(),
       metadata: model.json().nullable(),
       original_total: model.bigNumber().computed(),
       original_subtotal: model.bigNumber().computed(),

@@ -23,6 +23,7 @@ interface PartialUpsertLineItemDTO {
   is_tax_inclusive?: boolean
 
   compare_at_unit_price?: BigNumberInput
+  unit_weight?: number
 }
 
 export interface CreateLineItemDTO extends PartialUpsertLineItemDTO {

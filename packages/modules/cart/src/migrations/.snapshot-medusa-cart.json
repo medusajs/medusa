@@ -814,6 +814,15 @@
           "nullable": false,
           "mappedType": "decimal"
         },
+        "unit_weight": {
+          "name": "unit_weight",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",

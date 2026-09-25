@@ -1571,9 +1571,10 @@
       },
       "conditionalPrices": {
         "header": "Условни Цени за {{name}}",
-        "description": "Управлявайте условните цени за тази опция за доставка въз основа на общата стойност на артикули в количката.",
+        "description": "Manage the conditional prices for this shipping option based on the cart item total and weight total.",
         "attributes": {
-          "cartItemTotal": "Общо артикули в количката"
+          "cartItemTotal": "Общо артикули в количката",
+          "cartWeightTotal": "Cart weight total"
         },
         "summaries": {
           "range": "Ако <0>{{attribute}}</0> е между <1>{{gte}}</1> и <2>{{lte}}</2>",
@@ -1587,7 +1588,9 @@
         "rules": {
           "amount": "Цена на опцията за доставка",
           "gte": "Минимална стойност на количката",
-          "lte": "Максимална стойност на количката"
+          "lte": "Максимална стойност на количката",
+          "weightGte": "Minimum cart weight total",
+          "weightLte": "Maximum cart weight total"
         },
         "customRules": {
           "label": "Персонализирани правила",
@@ -1598,10 +1601,15 @@
         },
         "errors": {
           "amountRequired": "Изисква се цена за опцията за доставка",
-          "minOrMaxRequired": "Трябва да се предостави поне една от минимална или максимална стойност на количката",
+          "minOrMaxRequired": "At least one minimum or maximum value must be provided",
           "minGreaterThanMax": "Минималната стойност на количката трябва да е по-малка или равна на максималната стойност",
           "duplicateAmount": "Цената за опцията за доставка трябва да е уникална за всяко условие",
-          "overlappingConditions": "Условията трябва да са уникални за всички правила за ценообразуване"
+          "overlappingConditions": "Условията трябва да са уникални за всички правила за ценообразуване",
+          "weightMinGreaterThanMax": "Minimum cart weight total must be less than or equal to maximum cart weight total"
+        },
+        "placeholders": {
+          "weightGte": "Minimum weight",
+          "weightLte": "Maximum weight"
         }
       },
       "fields": {

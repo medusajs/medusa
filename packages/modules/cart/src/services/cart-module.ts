@@ -17,8 +17,10 @@ import {
   generateEntityId,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   isObject,
   isString,
+  MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -151,6 +153,7 @@ export default class CartModuleService
       "original_item_total",
       "original_item_subtotal",
       "original_item_tax_total",
+      "weight_total",
       "shipping_total",
       "shipping_subtotal",
       "shipping_tax_total",
@@ -514,7 +517,14 @@ export default class CartModuleService
     data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof LineItem>[]> {
-    return await this.lineItemService_.create(data, sharedContext)
+    const toCreate = data.map((item) => ({
+      ...item,
+      unit_weight: isDefined(item.unit_weight)
+        ? Math.round(MathBN.convert(item.unit_weight).toNumber())
+        : item.unit_weight,
+    }))
+
+    return await this.lineItemService_.create(toCreate, sharedContext)
   }
 
   // @ts-ignore
