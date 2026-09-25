@@ -1,4 +1,4 @@
-import PaymentModuleService from "./payment-module"
+import PaymentModuleService from "../payment-module"
 
 class TestPaymentModuleService extends PaymentModuleService {
   public testRoundToCurrencyPrecision(amount: any, currencyCode: string) {
