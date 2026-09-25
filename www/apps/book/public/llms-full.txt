@@ -12693,8 +12693,8 @@ The `authenticate` middleware function accepts three parameters:
 2. An array of types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
 3. An optional object of configurations accepting the following properties:
    - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. Learn more about how the middleware handles invalid credentials in the [next section](#invalid-credentials-in-unauthenticated-routes).
-   - `allowUnregistered` (default: `false`): A boolean indicating whether users can access this route with a registration token, instead of an authentication token. This is useful if you have a custom actor type, such as `manager`, and you're creating an API route that allows these users to register themselves. Learn more in the [Custom Actor-Type Guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type/index.html.md).
-   - `requireMfa` (default: `true` for authenticated routes, since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0)): A boolean or an object `{ maxAgeSeconds: number }` indicating whether a completed MFA challenge is required to access this route. When set to `true`, any request from an identity with MFA enabled must have completed an MFA challenge. When set to `{ maxAgeSeconds: number }`, the challenge must also have been completed within the specified number of seconds. Set to `false` to allow access regardless of MFA status (for example, on the MFA challenge verification route itself). Learn more in the [Multi-Factor Authentication guide](https://docs.medusajs.com/resources/commerce-modules/auth/mfa/index.html.md).
+   - `allowUnregistered` (default: `false`): A boolean indicating whether users can access this route with a registration token, instead of an authentication token. This is useful if you have a custom actor type, such as `manager`, and you're creating an API route that allows these users to register themselves. Learn more in the [Custom Actor-Type Guide](undefined/resources/commerce-modules/auth/create-actor-type).
+   - `requireMfa` (default: `true` for authenticated routes, since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0)): A boolean or an object `{ maxAgeSeconds: number }` indicating whether a completed MFA challenge is required to access this route. When set to `true`, any request from an identity with MFA enabled must have completed an MFA challenge. When set to `{ maxAgeSeconds: number }`, the challenge must also have been completed within the specified number of seconds. Set to `false` to allow access regardless of MFA status (for example, on the MFA challenge verification route itself). Learn more in the [Multi-Factor Authentication guide](undefined/resources/commerce-modules/auth/mfa).
 
 ### Example: Custom Actor Type
 
@@ -14539,8 +14539,9 @@ The merge behavior explained in this chapter also applies to the `metadata` prop
 
 - Module service methods, such as the Product Module's `updateProducts`, the Order Module's `updateOrders` and `updateOrderLineItems`, and the Cart Module's `updateCarts` and `updateLineItems`.
 - Workflows and steps that use these methods, such as `updateProductsWorkflow`, `updateOrderWorkflow`, `updateCartWorkflow`, and `updateCartsStep`.
+- All API routes that are built on top of these workflows.
 
-So, when you pass `metadata` to these methods, workflows, or steps:
+So, when you pass `metadata` to these API routes, methods, workflows, or steps:
 
 - Medusa merges the top-level properties you pass with the existing `metadata`. Properties you don't pass remain unchanged.
 - Medusa replaces nested objects entirely, as explained in the [Caveat: Updating Nested Objects](#caveat-updating-nested-objects) section. To change a single nested property, retrieve the record first, then pass the entire nested object with your changes.
@@ -38790,7 +38791,7 @@ So, there can only be one guest customer (having `has_account=false`) and one re
 
 ## Change a Guest Customer to a Registered Customer
 
-You can only set the `has_account` property when you create a customer. The [updateCustomersWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCustomersWorkflow/index.html.md) and the Customer Module's `updateCustomers` method don't accept it. So, you can't change an existing guest customer to a registered customer.
+You can only set the `has_account` property when you create a customer. The [updateCustomersWorkflow](undefined/references/medusa-workflows/updateCustomersWorkflow) and the Customer Module's `updateCustomers` method don't accept it. So, you can't change an existing guest customer to a registered customer.
 
 This affects flows that link a new auth identity to an existing guest customer. For example, a custom auth provider that sets the `customer_id` in the auth identity's app metadata to the guest customer's ID. The customer can log in, but the Medusa Admin still shows them as a guest.
 
@@ -38802,9 +38803,9 @@ If you're migrating customers from another platform, set `has_account` to `true`
 
 #### Auth Identity Exists
 
-If you create the customer's auth identity before importing the customer, use the [createCustomerAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/createCustomerAccountWorkflow/index.html.md). It creates the customer with `has_account` set to `true` and sets the customer's ID in the auth identity's app metadata.
+If you create the customer's auth identity before importing the customer, use the [createCustomerAccountWorkflow](undefined/references/medusa-workflows/createCustomerAccountWorkflow). It creates the customer with `has_account` set to `true` and sets the customer's ID in the auth identity's app metadata.
 
-For example, in a [custom CLI script](https://docs.medusajs.com/docs/learn/fundamentals/custom-cli-scripts/index.html.md):
+For example, in a [custom CLI script](undefined/docs/learn/fundamentals/custom-cli-scripts):
 
 ```ts title="src/scripts/import-customers.ts"
 import { ExecArgs } from "@medusajs/framework/types"
@@ -38830,7 +38831,7 @@ The workflow creates one customer per run, so run it for each customer you impor
 
 #### Auth Identity Is Created on First Login
 
-Some auth providers, such as passwordless providers, create the auth identity when the customer first logs in. In that case, create the customers with `has_account` set to `true` using the [createCustomersWorkflow](https://docs.medusajs.com/references/medusa-workflows/createCustomersWorkflow/index.html.md). It accepts multiple customers in one run:
+Some auth providers, such as passwordless providers, create the auth identity when the customer first logs in. In that case, create the customers with `has_account` set to `true` using the [createCustomersWorkflow](undefined/references/medusa-workflows/createCustomersWorkflow). It accepts multiple customers in one run:
 
 ```ts title="src/scripts/import-customers.ts"
 import { ExecArgs } from "@medusajs/framework/types"
@@ -38854,7 +38855,7 @@ export default async function importCustomers({
 }
 ```
 
-Then, when the customer first logs in, link the new auth identity to the existing customer. Create a workflow that uses the [setAuthAppMetadataStep](https://docs.medusajs.com/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md) to set the customer's ID in the auth identity's app metadata:
+Then, when the customer first logs in, link the new auth identity to the existing customer. Create a workflow that uses the [setAuthAppMetadataStep](undefined/references/medusa-workflows/steps/setAuthAppMetadataStep) to set the customer's ID in the auth identity's app metadata:
 
 ```ts title="src/workflows/link-customer-auth-identity.ts"
 import {
@@ -38888,9 +38889,9 @@ Execute the workflow in your login flow after the auth provider creates the auth
 
 ### Register a New Customer Account
 
-When a guest customer registers, use the [createCustomerAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/createCustomerAccountWorkflow/index.html.md) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
+When a guest customer registers, use the [createCustomerAccountWorkflow](undefined/references/medusa-workflows/createCustomerAccountWorkflow) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
 
-The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](https://docs.medusajs.com/api/store#orders_postordersidtransferrequest).
+The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](undefined/api/store#orders_postordersidtransferrequest).
 
 ***
 
@@ -42015,6 +42016,50 @@ npm run dev
 
 Finally, customize the Order view in Medusa Admin to display the `custom_display_id` property.
 
+***
+
+## Search Orders by Display ID
+
+The `display_id` and `custom_display_id` properties are searchable fields of the `Order` data model. So, you can search orders by either display ID without any customizations.
+
+The Order Module also defines database indexes on both properties. The index on `custom_display_id` is unique, so each custom display ID must be unique among orders that aren't deleted.
+
+### Search in Medusa Admin
+
+The search box on the Orders page of Medusa Admin searches the order's searchable fields, including `display_id` and `custom_display_id`. So, you can enter an order's display ID or custom display ID in the search box to find it.
+
+### Search with the Admin API
+
+To search orders by display ID with the [List Orders API route](undefined/api/admin/orders/list-orders), pass the display ID or custom display ID in the `q` query parameter.
+
+For example, using the [JS SDK](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/js-sdk):
+
+```ts
+const { orders } = await sdk.admin.order.list({
+  q: "ORD-1234",
+})
+```
+
+The `q` parameter performs a case-insensitive partial match on the order's searchable fields, which also include the email and the shipping and billing addresses. For example, searching for `12` returns orders whose display ID is `12`, `120`, or `1234`.
+
+The List Orders API route doesn't accept `display_id` or `custom_display_id` as dedicated filter parameters. Use the `q` parameter instead.
+
+### Filter with Query in Customizations
+
+To retrieve an order by its exact display ID or custom display ID in your customizations, such as an API route or workflow step, use [Query](undefined/docs/learn/fundamentals/query) and pass the property in `filters`.
+
+For example:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["id", "display_id", "custom_display_id"],
+  filters: {
+    custom_display_id: "ORD-1234",
+  },
+})
+```
+
 
 # Draft Orders Plugin
 
@@ -43958,7 +44003,7 @@ With this option, the `authenticate` middleware only sets the request's `auth_co
 
 Update the middleware to handle a request that has no `auth_context`, since the version shown earlier reads `req.auth_context.actor_id` and throws for guest requests. For example, reject the request unless it also carries a separate proof of ownership, such as the order's email.
 
-`allowAuthenticated` only attaches the customer of the provided credentials to the request. It doesn't fail if the request doesn't include any credentials, or if the credentials are invalid. Learn more in the [Protected Routes](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) guide.
+`allowAuthenticated` only attaches the customer of the provided credentials to the request. It doesn't fail if the request doesn't include any credentials, or if the credentials are invalid. Learn more in the [Protected Routes](undefined/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) guide.
 
 
 # Restrict Return Creation
@@ -44127,7 +44172,7 @@ With this option, the `authenticate` middleware only sets the request's `auth_co
 
 Update the middleware to handle a request that has no `auth_context`, since the version shown earlier reads `req.auth_context.actor_id` and throws for guest requests. For example, reject the request unless it also carries a separate proof of ownership, such as the order's email.
 
-`allowAuthenticated` only attaches the customer of the provided credentials to the request. It doesn't fail if the request doesn't include any credentials, or if the credentials are invalid. Learn more in the [Protected Routes](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) guide.
+`allowAuthenticated` only attaches the customer of the provided credentials to the request. It doesn't fail if the request doesn't include any credentials, or if the credentials are invalid. Learn more in the [Protected Routes](undefined/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) guide.
 
 ***
 
@@ -45750,7 +45795,7 @@ The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of
 
 The route segment doesn't need the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`.
 
-Starting from Medusa v2.21.2, the route also accepts the full provider ID with the `pp_` prefix, such as `/hooks/payment/pp_myprovider_myprovider`. In earlier versions, the prefixed route fails to resolve the provider.
+Starting from Medusa v2.21.2, the route also accepts the full provider ID with the `pp_` prefix, such as `/hooks/payment/pp_myprovider_myprovider`, and removes the `pp_` prefix internally. In earlier versions, the prefixed route fails to resolve the provider.
 
 For example, when integrating basic Stripe payments with the [Stripe Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe), the webhook listener route is `/hooks/payment/stripe_stripe`.
 
@@ -47608,19 +47653,19 @@ In this example, only products that belong to either the `cat_123` or `cat_456` 
 
 # Manage Products with the Admin API and JS SDK
 
-In this guide, you'll learn how to create and manage products from a client application, such as a script or an external admin, using the [JS SDK](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/index.html.md) and the Admin API routes.
+In this guide, you'll learn how to create and manage products from a client application, such as a script or an external admin, using the [JS SDK](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/js-sdk) and the Admin API routes.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
+Refer to the [Medusa Admin User Guide](undefined/user-guide/products) to learn how to manage products using the dashboard.
 
 ### Prerequisites
 
-- [JS SDK installed and configured](https://docs.medusajs.com/js-sdk/index.html.md)
+- [JS SDK installed and configured](undefined/js-sdk)
 
 ## Authenticate Admin Requests
 
 All Admin API routes require an authenticated admin user. You can authenticate the JS SDK with a session, a JWT token, or a secret API key.
 
-For server-side scripts, a [secret API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/api-key/index.html.md) is usually the simplest option:
+For server-side scripts, a [secret API key](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/api-key) is usually the simplest option:
 
 ```ts
 import Medusa from "@medusajs/js-sdk"
@@ -47631,13 +47676,13 @@ export const sdk = new Medusa({
 })
 ```
 
-Learn more about the authentication options in the [JS SDK Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/auth/overview/index.html.md) guide.
+Learn more about the authentication options in the [JS SDK Authentication](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/js-sdk/auth/overview) guide.
 
 The rest of this guide uses the JS SDK methods and mentions the Admin API route that each method sends a request to.
 
 ***
 
-## Step 1: Upload Product Images
+## Upload Product Images
 
 Product images are stored as URLs. So, before you create or update a product with new images, upload the image files using the `sdk.admin.upload.create` method. It sends a `POST` request to `/admin/uploads` as `multipart/form-data`.
 
@@ -47656,11 +47701,13 @@ const { files } = await sdk.admin.upload.create({
 const imageUrls = files.map((file) => file.url)
 ```
 
-The [File Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/index.html.md) configured in your Medusa application stores the files and returns their URLs. You then pass these URLs in the product's `images` and `thumbnail` fields.
+The [File Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/file) configured in your Medusa application stores the files and returns their URLs. You then pass these URLs in the product's `images` and `thumbnail` fields.
 
 ***
 
-## Step 2: Create a Product
+## Create a Product
+
+Before creating a product with images, make sure to [upload the images](#upload-product-images) first.
 
 To create a product, use the `sdk.admin.product.create` method. It sends a `POST` request to `/admin/products`.
 
@@ -47714,7 +47761,7 @@ const { product } = await sdk.admin.product.create({
 })
 ```
 
-Keep in mind the following about the request body:
+Where:
 
 - `title` is the only required field.
 - `status` defaults to `draft`. Other statuses are `proposed`, `published`, and `rejected`.
@@ -47724,18 +47771,18 @@ Keep in mind the following about the request body:
 - If you don't pass a `thumbnail`, Medusa uses the URL of the first image as the thumbnail.
 - If you don't pass a `handle`, Medusa generates it from the `title`.
 - Each variant requires a `title` and a `prices` array. The keys of a variant's `options` object are option titles, and the values are one of that option's `values`.
-- Amounts in `prices` are the actual amounts, such as `20` for $20. Learn more in the [Pricing Module's documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/index.html.md).
-- `manage_inventory` defaults to `true`. Learn more in the [Product Variant Inventory](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/variant-inventory/index.html.md) guide.
+- Amounts in `prices` are the actual amounts, such as `20` for $20. Learn more in the [Pricing Module's documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/pricing).
+- `manage_inventory` defaults to `true`. Learn more in the [Product Variant Inventory](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/variant-inventory) guide.
 
-Refer to the [Create Product API reference](https://docs.medusajs.com/api/admin/products/create-product) for all accepted fields.
+Refer to the [Create Product API reference](undefined/api/admin/products/create-product) for all accepted fields.
 
 Create products as drafts, then publish them after you verify their details. Draft products aren't returned by the Store API routes.
 
 ***
 
-## Step 3: Retrieve a Product with Its Relations
+## Retrieve a Product with Its Relations
 
-To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a `GET` request to `/admin/products/:id`.
+To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a request to the [Get Product API route](undefined/api/admin/products/get-a-product).
 
 Use the `fields` query parameter to select the relations to retrieve. A `*` prefix retrieves all fields of a relation, and a `+` prefix adds a field to the default fields:
 
@@ -47748,7 +47795,7 @@ const { product } = await sdk.admin.product.retrieve(
 )
 ```
 
-The same `fields` syntax works with `sdk.admin.product.list`, which sends a `GET` request to `/admin/products`. For example, to retrieve each product's category IDs so you can find products without categories:
+The same `fields` syntax works with `sdk.admin.product.list`, which sends a request to the [List Products API route](undefined/api/admin/products/list-products). For example, to retrieve each product's category IDs so you can find products without categories:
 
 ```ts
 const { products } = await sdk.admin.product.list({
@@ -47760,13 +47807,13 @@ const uncategorized = products.filter(
 )
 ```
 
-Learn more about the `fields` query parameter in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
+Learn more about the `fields` query parameter in the [API reference](undefined/api/admin/select-fields-and-relations).
 
 ***
 
-## Step 4: Update a Product
+## Update a Product
 
-To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to `/admin/products/:id`. Only the fields that you pass are updated.
+To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to the [Update Product API route](undefined/api/admin/products/update-a-product). Only the fields that you pass are updated.
 
 For example, to update a product's details, images, and thumbnail:
 
@@ -47800,13 +47847,13 @@ Keep in mind the following about updates:
 
 To manage the product's variants and options, use the dedicated methods explained in the next sections.
 
-Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a `POST` request to `/admin/products/:id/options/batch`.
+Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a request to the [Add Options to Product API route](undefined/api/admin/products/add-options-to-product).
 
 ***
 
-## Step 5: Manage Variants and Prices
+## Manage Variants and Prices
 
-To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a `POST` request to `/admin/products/:id/variants/batch`.
+To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a request to the [Manage Variants API Route](undefined/api/admin/products/manage-variants-in-a-product).
 
 For example:
 
@@ -47844,15 +47891,15 @@ When you pass `prices` for a variant, they replace the variant's existing prices
 - Pass a price without an `id` to add it.
 - Existing prices that you don't pass are removed.
 
-To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a `POST` request to `/admin/products/:id/variants/:variant_id`.
+To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a request to the [Update Variant API route](undefined/api/admin/products/update-variant).
 
-To set sale prices, create a [price list](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/concepts#price-list/index.html.md) instead of changing the variant's base prices.
+To set sale prices, create a [price list](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/pricing/concepts#price-list) instead of changing the variant's base prices.
 
 ***
 
-## Step 6: Assign Products to Collections and Categories in Bulk
+## Assign Products to Collections and Categories in Bulk
 
-To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a `POST` request to `/admin/collections/:id/products`:
+To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a request to the [Manage Products of a Collection API route](undefined/api/admin/collections/manage-products):
 
 ```ts
 const { collection } =
@@ -47867,7 +47914,7 @@ const { collection } =
 
 Since a product belongs to at most one collection, adding a product to a collection sets its `collection_id` to that collection.
 
-To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a `POST` request to `/admin/product-categories/:id/products`:
+To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a request to the [Manage Products of a Category API route](undefined/api/admin/product-categories/manage-products):
 
 ```ts
 const { product_category } =
@@ -47884,9 +47931,9 @@ Adding a product to a category doesn't remove it from its other categories.
 
 ***
 
-## Step 7: Publish a Product
+## Publish a Product
 
-To publish a draft product, update its `status` to `published`:
+To publish a draft product, update its `status` to `published` using the [Update Product API route](undefined/api/admin/products/update).
 
 ```ts
 await sdk.admin.product.update("prod_123", {
@@ -47900,7 +47947,7 @@ Customers can view and purchase a published product in the sales channels that t
 
 ## Create, Update, or Delete Products in Bulk
 
-To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a `POST` request to `/admin/products/batch`:
+To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a request to the [Manage Products API route](undefined/api/admin/products/manage-products):
 
 ```ts
 const { created, updated, deleted } =
@@ -47930,9 +47977,9 @@ const { created, updated, deleted } =
   })
 ```
 
-Items in `create` accept the same fields as the create request in [Step 2](#step-2-create-a-product). Items in `update` accept the same fields as the update request in [Step 4](#step-4-update-a-product), along with the product's `id`.
+Items in `create` accept the same fields as the [create request](#create-a-product). Items in `update` accept the same fields as the [update request](#update-a-product), along with the product's `id`.
 
-To import many products from a CSV file, refer to the [Import Products](https://docs.medusajs.com/user-guide/products/import/index.html.md) user guide instead.
+To import many products from a CSV file, refer to the [Import Products](undefined/user-guide/products/import) user guide instead.
 
 
 # Calculate Product Variant Price with Taxes
@@ -64133,6 +64180,8 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 ### Redis Workflow Engine Module Options
+
+All options below are set within the `redis` property of the module's options object, as shown in the example above.
 
 |Option|Description|Required|
 |---|---|---|
@@ -151291,501 +151340,501 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 
 ## Admin API Reference
 
-- [GET /admin/api-keys](https://docs.medusajs.com/api/admin#api-keys_getapikeys)
-- [POST /admin/api-keys](https://docs.medusajs.com/api/admin#api-keys_postapikeys)
-- [GET /admin/api-keys/](https://docs.medusajs.com/api/admin#api-keys_getapikeysid)
-- [POST /admin/api-keys/](https://docs.medusajs.com/api/admin#api-keys_postapikeysid)
-- [DELETE /admin/api-keys/](https://docs.medusajs.com/api/admin#api-keys_deleteapikeysid)
-- [POST /admin/api-keys//revoke](https://docs.medusajs.com/api/admin#api-keys_postapikeysidrevoke)
-- [POST /admin/api-keys//sales-channels](https://docs.medusajs.com/api/admin#api-keys_postapikeysidsaleschannels)
-- [GET /admin/campaigns](https://docs.medusajs.com/api/admin#campaigns_getcampaigns)
-- [POST /admin/campaigns](https://docs.medusajs.com/api/admin#campaigns_postcampaigns)
-- [GET /admin/campaigns/](https://docs.medusajs.com/api/admin#campaigns_getcampaignsid)
-- [POST /admin/campaigns/](https://docs.medusajs.com/api/admin#campaigns_postcampaignsid)
-- [DELETE /admin/campaigns/](https://docs.medusajs.com/api/admin#campaigns_deletecampaignsid)
-- [POST /admin/campaigns//promotions](https://docs.medusajs.com/api/admin#campaigns_postcampaignsidpromotions)
-- [GET /admin/claims](https://docs.medusajs.com/api/admin#claims_getclaims)
-- [POST /admin/claims](https://docs.medusajs.com/api/admin#claims_postclaims)
-- [GET /admin/claims/](https://docs.medusajs.com/api/admin#claims_getclaimsid)
-- [POST /admin/claims//cancel](https://docs.medusajs.com/api/admin#claims_postclaimsidcancel)
-- [POST /admin/claims//claim-items](https://docs.medusajs.com/api/admin#claims_postclaimsidclaimitems)
-- [POST /admin/claims//claim-items/](https://docs.medusajs.com/api/admin#claims_postclaimsidclaimitemsaction_id)
-- [DELETE /admin/claims//claim-items/](https://docs.medusajs.com/api/admin#claims_deleteclaimsidclaimitemsaction_id)
-- [POST /admin/claims//inbound/items](https://docs.medusajs.com/api/admin#claims_postclaimsidinbounditems)
-- [POST /admin/claims//inbound/items/](https://docs.medusajs.com/api/admin#claims_postclaimsidinbounditemsaction_id)
-- [DELETE /admin/claims//inbound/items/](https://docs.medusajs.com/api/admin#claims_deleteclaimsidinbounditemsaction_id)
-- [POST /admin/claims//inbound/shipping-method](https://docs.medusajs.com/api/admin#claims_postclaimsidinboundshippingmethod)
-- [POST /admin/claims//inbound/shipping-method/](https://docs.medusajs.com/api/admin#claims_postclaimsidinboundshippingmethodaction_id)
-- [DELETE /admin/claims//inbound/shipping-method/](https://docs.medusajs.com/api/admin#claims_deleteclaimsidinboundshippingmethodaction_id)
-- [POST /admin/claims//outbound/items](https://docs.medusajs.com/api/admin#claims_postclaimsidoutbounditems)
-- [POST /admin/claims//outbound/items/](https://docs.medusajs.com/api/admin#claims_postclaimsidoutbounditemsaction_id)
-- [DELETE /admin/claims//outbound/items/](https://docs.medusajs.com/api/admin#claims_deleteclaimsidoutbounditemsaction_id)
-- [POST /admin/claims//outbound/shipping-method](https://docs.medusajs.com/api/admin#claims_postclaimsidoutboundshippingmethod)
-- [POST /admin/claims//outbound/shipping-method/](https://docs.medusajs.com/api/admin#claims_postclaimsidoutboundshippingmethodaction_id)
-- [DELETE /admin/claims//outbound/shipping-method/](https://docs.medusajs.com/api/admin#claims_deleteclaimsidoutboundshippingmethodaction_id)
-- [POST /admin/claims//request](https://docs.medusajs.com/api/admin#claims_postclaimsidrequest)
-- [DELETE /admin/claims//request](https://docs.medusajs.com/api/admin#claims_deleteclaimsidrequest)
-- [GET /admin/collections](https://docs.medusajs.com/api/admin#collections_getcollections)
-- [POST /admin/collections](https://docs.medusajs.com/api/admin#collections_postcollections)
-- [GET /admin/collections/](https://docs.medusajs.com/api/admin#collections_getcollectionsid)
-- [POST /admin/collections/](https://docs.medusajs.com/api/admin#collections_postcollectionsid)
-- [DELETE /admin/collections/](https://docs.medusajs.com/api/admin#collections_deletecollectionsid)
-- [POST /admin/collections//products](https://docs.medusajs.com/api/admin#collections_postcollectionsidproducts)
-- [GET /admin/currencies](https://docs.medusajs.com/api/admin#currencies_getcurrencies)
-- [GET /admin/currencies/](https://docs.medusajs.com/api/admin#currencies_getcurrenciescode)
-- [GET /admin/customer-groups](https://docs.medusajs.com/api/admin#customer-groups_getcustomergroups)
-- [POST /admin/customer-groups](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroups)
-- [GET /admin/customer-groups/](https://docs.medusajs.com/api/admin#customer-groups_getcustomergroupsid)
-- [POST /admin/customer-groups/](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsid)
-- [DELETE /admin/customer-groups/](https://docs.medusajs.com/api/admin#customer-groups_deletecustomergroupsid)
-- [POST /admin/customer-groups//customers](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsidcustomers)
-- [GET /admin/customers](https://docs.medusajs.com/api/admin#customers_getcustomers)
-- [POST /admin/customers](https://docs.medusajs.com/api/admin#customers_postcustomers)
-- [GET /admin/customers/](https://docs.medusajs.com/api/admin#customers_getcustomersid)
-- [POST /admin/customers/](https://docs.medusajs.com/api/admin#customers_postcustomersid)
-- [DELETE /admin/customers/](https://docs.medusajs.com/api/admin#customers_deletecustomersid)
-- [GET /admin/customers//addresses](https://docs.medusajs.com/api/admin#customers_getcustomersidaddresses)
-- [POST /admin/customers//addresses](https://docs.medusajs.com/api/admin#customers_postcustomersidaddresses)
-- [GET /admin/customers//addresses/](https://docs.medusajs.com/api/admin#customers_getcustomersidaddressesaddress_id)
-- [POST /admin/customers//addresses/](https://docs.medusajs.com/api/admin#customers_postcustomersidaddressesaddress_id)
-- [DELETE /admin/customers//addresses/](https://docs.medusajs.com/api/admin#customers_deletecustomersidaddressesaddress_id)
-- [POST /admin/customers//customer-groups](https://docs.medusajs.com/api/admin#customers_postcustomersidcustomergroups)
-- [GET /admin/draft-orders](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders)
-- [POST /admin/draft-orders](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders)
-- [GET /admin/draft-orders/](https://docs.medusajs.com/api/admin#draft-orders_getdraftordersid)
-- [POST /admin/draft-orders/](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersid)
-- [DELETE /admin/draft-orders/](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersid)
-- [POST /admin/draft-orders//convert-to-order](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidconverttoorder)
-- [POST /admin/draft-orders//edit](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedit)
-- [DELETE /admin/draft-orders//edit](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedit)
-- [POST /admin/draft-orders//edit/confirm](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditconfirm)
-- [POST /admin/draft-orders//edit/items](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedititems)
-- [POST /admin/draft-orders//edit/items/item/](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedititemsitemitem_id)
-- [POST /admin/draft-orders//edit/items/](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedititemsaction_id)
-- [DELETE /admin/draft-orders//edit/items/](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedititemsaction_id)
-- [POST /admin/draft-orders//edit/promotions](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditpromotions)
-- [DELETE /admin/draft-orders//edit/promotions](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditpromotions)
-- [POST /admin/draft-orders//edit/request](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditrequest)
-- [POST /admin/draft-orders//edit/shipping-methods](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethods)
-- [POST /admin/draft-orders//edit/shipping-methods/method/](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethodsmethodmethod_id)
-- [DELETE /admin/draft-orders//edit/shipping-methods/method/](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditshippingmethodsmethodmethod_id)
-- [POST /admin/draft-orders//edit/shipping-methods/](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethodsaction_id)
-- [DELETE /admin/draft-orders//edit/shipping-methods/](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditshippingmethodsaction_id)
-- [GET /admin/exchanges](https://docs.medusajs.com/api/admin#exchanges_getexchanges)
-- [POST /admin/exchanges](https://docs.medusajs.com/api/admin#exchanges_postexchanges)
-- [GET /admin/exchanges/](https://docs.medusajs.com/api/admin#exchanges_getexchangesid)
-- [POST /admin/exchanges//cancel](https://docs.medusajs.com/api/admin#exchanges_postexchangesidcancel)
-- [POST /admin/exchanges//inbound/items](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinbounditems)
-- [POST /admin/exchanges//inbound/items/](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinbounditemsaction_id)
-- [DELETE /admin/exchanges//inbound/items/](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidinbounditemsaction_id)
-- [POST /admin/exchanges//inbound/shipping-method](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethod)
-- [POST /admin/exchanges//inbound/shipping-method/](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinboundshippingmethodaction_id)
-- [DELETE /admin/exchanges//inbound/shipping-method/](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidinboundshippingmethodaction_id)
-- [POST /admin/exchanges//outbound/items](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutbounditems)
-- [POST /admin/exchanges//outbound/items/](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutbounditemsaction_id)
-- [DELETE /admin/exchanges//outbound/items/](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutbounditemsaction_id)
-- [POST /admin/exchanges//outbound/shipping-method](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethod)
-- [POST /admin/exchanges//outbound/shipping-method/](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutboundshippingmethodaction_id)
-- [DELETE /admin/exchanges//outbound/shipping-method/](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidoutboundshippingmethodaction_id)
-- [POST /admin/exchanges//request](https://docs.medusajs.com/api/admin#exchanges_postexchangesidrequest)
-- [DELETE /admin/exchanges//request](https://docs.medusajs.com/api/admin#exchanges_deleteexchangesidrequest)
-- [GET /admin/feature-flags](https://docs.medusajs.com/api/admin#feature-flags_getfeatureflags)
-- [GET /admin/fulfillment-providers](https://docs.medusajs.com/api/admin#fulfillment-providers_getfulfillmentproviders)
-- [GET /admin/fulfillment-providers//options](https://docs.medusajs.com/api/admin#fulfillment-providers_getfulfillmentprovidersidoptions)
-- [DELETE /admin/fulfillment-sets/](https://docs.medusajs.com/api/admin#fulfillment-sets_deletefulfillmentsetsid)
-- [POST /admin/fulfillment-sets//service-zones](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezones)
-- [GET /admin/fulfillment-sets//service-zones/](https://docs.medusajs.com/api/admin#fulfillment-sets_getfulfillmentsetsidservicezoneszone_id)
-- [POST /admin/fulfillment-sets//service-zones/](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezoneszone_id)
-- [DELETE /admin/fulfillment-sets//service-zones/](https://docs.medusajs.com/api/admin#fulfillment-sets_deletefulfillmentsetsidservicezoneszone_id)
-- [POST /admin/fulfillments](https://docs.medusajs.com/api/admin#fulfillments_postfulfillments)
-- [POST /admin/fulfillments//cancel](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidcancel)
-- [POST /admin/fulfillments//shipment](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidshipment)
-- [GET /admin/gift-cards](https://docs.medusajs.com/api/admin#gift-cards_getgiftcards)
-- [POST /admin/gift-cards](https://docs.medusajs.com/api/admin#gift-cards_postgiftcards)
-- [GET /admin/gift-cards/](https://docs.medusajs.com/api/admin#gift-cards_getgiftcardsid)
-- [POST /admin/gift-cards/](https://docs.medusajs.com/api/admin#gift-cards_postgiftcardsid)
-- [GET /admin/gift-cards//orders](https://docs.medusajs.com/api/admin#gift-cards_getgiftcardsidorders)
-- [GET /admin/index/details](https://docs.medusajs.com/api/admin#index_getindexdetails)
-- [POST /admin/index/sync](https://docs.medusajs.com/api/admin#index_postindexsync)
-- [GET /admin/inventory-items](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems)
-- [POST /admin/inventory-items](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems)
-- [POST /admin/inventory-items/export](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsexport)
-- [POST /admin/inventory-items/location-levels/batch](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemslocationlevelsbatch)
-- [GET /admin/inventory-items/](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsid)
-- [POST /admin/inventory-items/](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsid)
-- [DELETE /admin/inventory-items/](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsid)
-- [GET /admin/inventory-items//location-levels](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsidlocationlevels)
-- [POST /admin/inventory-items//location-levels](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevels)
-- [POST /admin/inventory-items//location-levels/batch](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelsbatch)
-- [POST /admin/inventory-items//location-levels/](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelslocation_id)
-- [DELETE /admin/inventory-items//location-levels/](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id)
-- [GET /admin/invites](https://docs.medusajs.com/api/admin#invites_getinvites)
-- [POST /admin/invites](https://docs.medusajs.com/api/admin#invites_postinvites)
-- [POST /admin/invites/accept](https://docs.medusajs.com/api/admin#invites_postinvitesaccept)
-- [GET /admin/invites/](https://docs.medusajs.com/api/admin#invites_getinvitesid)
-- [DELETE /admin/invites/](https://docs.medusajs.com/api/admin#invites_deleteinvitesid)
-- [POST /admin/invites//resend](https://docs.medusajs.com/api/admin#invites_postinvitesidresend)
-- [GET /admin/layouts/configurations](https://docs.medusajs.com/api/admin#layouts_getlayoutsconfigurations)
-- [GET /admin/layouts//configuration](https://docs.medusajs.com/api/admin#layouts_getlayoutszoneconfiguration)
-- [POST /admin/layouts//configuration](https://docs.medusajs.com/api/admin#layouts_postlayoutszoneconfiguration)
-- [DELETE /admin/layouts//configuration](https://docs.medusajs.com/api/admin#layouts_deletelayoutszoneconfiguration)
-- [GET /admin/locales](https://docs.medusajs.com/api/admin#locales_getlocales)
-- [GET /admin/locales/](https://docs.medusajs.com/api/admin#locales_getlocalescode)
-- [GET /admin/notifications](https://docs.medusajs.com/api/admin#notifications_getnotifications)
-- [GET /admin/notifications/](https://docs.medusajs.com/api/admin#notifications_getnotificationsid)
-- [POST /admin/order-changes/](https://docs.medusajs.com/api/admin#order-changes_postorderchangesid)
-- [POST /admin/order-edits](https://docs.medusajs.com/api/admin#order-edits_postorderedits)
-- [DELETE /admin/order-edits/](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsid)
-- [POST /admin/order-edits//confirm](https://docs.medusajs.com/api/admin#order-edits_postordereditsidconfirm)
-- [POST /admin/order-edits//items](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditems)
-- [POST /admin/order-edits//items/item/](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsitemitem_id)
-- [POST /admin/order-edits//items/](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsaction_id)
-- [DELETE /admin/order-edits//items/](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsiditemsaction_id)
-- [POST /admin/order-edits//request](https://docs.medusajs.com/api/admin#order-edits_postordereditsidrequest)
-- [POST /admin/order-edits//shipping-method](https://docs.medusajs.com/api/admin#order-edits_postordereditsidshippingmethod)
-- [POST /admin/order-edits//shipping-method/](https://docs.medusajs.com/api/admin#order-edits_postordereditsidshippingmethodaction_id)
-- [DELETE /admin/order-edits//shipping-method/](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsidshippingmethodaction_id)
-- [GET /admin/orders](https://docs.medusajs.com/api/admin#orders_getorders)
-- [POST /admin/orders/export](https://docs.medusajs.com/api/admin#orders_postordersexport)
-- [GET /admin/orders/](https://docs.medusajs.com/api/admin#orders_getordersid)
-- [POST /admin/orders/](https://docs.medusajs.com/api/admin#orders_postordersid)
-- [POST /admin/orders//archive](https://docs.medusajs.com/api/admin#orders_postordersidarchive)
-- [POST /admin/orders//cancel](https://docs.medusajs.com/api/admin#orders_postordersidcancel)
-- [GET /admin/orders//changes](https://docs.medusajs.com/api/admin#orders_getordersidchanges)
-- [POST /admin/orders//complete](https://docs.medusajs.com/api/admin#orders_postordersidcomplete)
-- [POST /admin/orders//credit-lines](https://docs.medusajs.com/api/admin#orders_postordersidcreditlines)
-- [POST /admin/orders//fulfillments](https://docs.medusajs.com/api/admin#orders_postordersidfulfillments)
-- [POST /admin/orders//fulfillments//cancel](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
-- [POST /admin/orders//fulfillments//mark-as-delivered](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idmarkasdelivered)
-- [POST /admin/orders//fulfillments//shipments](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
-- [GET /admin/orders//line-items](https://docs.medusajs.com/api/admin#orders_getordersidlineitems)
-- [POST /admin/orders//payment-sessions/authorize](https://docs.medusajs.com/api/admin#orders_postordersidpaymentsessionsauthorize)
-- [GET /admin/orders//preview](https://docs.medusajs.com/api/admin#orders_getordersidpreview)
-- [GET /admin/orders//shipping-options](https://docs.medusajs.com/api/admin#orders_getordersidshippingoptions)
-- [POST /admin/orders//transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer)
-- [POST /admin/orders//transfer/cancel](https://docs.medusajs.com/api/admin#orders_postordersidtransfercancel)
-- [POST /admin/orders//transfer/guest](https://docs.medusajs.com/api/admin#orders_postordersidtransferguest)
-- [POST /admin/payment-collections](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollections)
-- [DELETE /admin/payment-collections/](https://docs.medusajs.com/api/admin#payment-collections_deletepaymentcollectionsid)
-- [POST /admin/payment-collections//mark-as-paid](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
-- [POST /admin/payment-collections//payment-sessions](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidpaymentsessions)
-- [GET /admin/payments](https://docs.medusajs.com/api/admin#payments_getpayments)
-- [GET /admin/payments/payment-providers](https://docs.medusajs.com/api/admin#payments_getpaymentspaymentproviders)
-- [GET /admin/payments/](https://docs.medusajs.com/api/admin#payments_getpaymentsid)
-- [POST /admin/payments//capture](https://docs.medusajs.com/api/admin#payments_postpaymentsidcapture)
-- [POST /admin/payments//refund](https://docs.medusajs.com/api/admin#payments_postpaymentsidrefund)
-- [GET /admin/plugins](https://docs.medusajs.com/api/admin#plugins_getplugins)
-- [GET /admin/price-lists](https://docs.medusajs.com/api/admin#price-lists_getpricelists)
-- [POST /admin/price-lists](https://docs.medusajs.com/api/admin#price-lists_postpricelists)
-- [GET /admin/price-lists/](https://docs.medusajs.com/api/admin#price-lists_getpricelistsid)
-- [POST /admin/price-lists/](https://docs.medusajs.com/api/admin#price-lists_postpricelistsid)
-- [DELETE /admin/price-lists/](https://docs.medusajs.com/api/admin#price-lists_deletepricelistsid)
-- [GET /admin/price-lists//prices](https://docs.medusajs.com/api/admin#price-lists_getpricelistsidprices)
-- [POST /admin/price-lists//prices/batch](https://docs.medusajs.com/api/admin#price-lists_postpricelistsidpricesbatch)
-- [POST /admin/price-lists//products](https://docs.medusajs.com/api/admin#price-lists_postpricelistsidproducts)
-- [GET /admin/price-preferences](https://docs.medusajs.com/api/admin#price-preferences_getpricepreferences)
-- [POST /admin/price-preferences](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferences)
-- [GET /admin/price-preferences/](https://docs.medusajs.com/api/admin#price-preferences_getpricepreferencesid)
-- [POST /admin/price-preferences/](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferencesid)
-- [DELETE /admin/price-preferences/](https://docs.medusajs.com/api/admin#price-preferences_deletepricepreferencesid)
-- [GET /admin/product-categories](https://docs.medusajs.com/api/admin#product-categories_getproductcategories)
-- [POST /admin/product-categories](https://docs.medusajs.com/api/admin#product-categories_postproductcategories)
-- [GET /admin/product-categories/](https://docs.medusajs.com/api/admin#product-categories_getproductcategoriesid)
-- [POST /admin/product-categories/](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriesid)
-- [DELETE /admin/product-categories/](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriesid)
-- [POST /admin/product-categories//products](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriesidproducts)
-- [GET /admin/product-options](https://docs.medusajs.com/api/admin#product-options_getproductoptions)
-- [POST /admin/product-options](https://docs.medusajs.com/api/admin#product-options_postproductoptions)
-- [GET /admin/product-options/](https://docs.medusajs.com/api/admin#product-options_getproductoptionsid)
-- [POST /admin/product-options/](https://docs.medusajs.com/api/admin#product-options_postproductoptionsid)
-- [DELETE /admin/product-options/](https://docs.medusajs.com/api/admin#product-options_deleteproductoptionsid)
-- [GET /admin/product-options//values](https://docs.medusajs.com/api/admin#product-options_getproductoptionsidvalues)
-- [GET /admin/product-options//values/](https://docs.medusajs.com/api/admin#product-options_getproductoptionsidvaluesvalue_id)
-- [POST /admin/product-options//values/](https://docs.medusajs.com/api/admin#product-options_postproductoptionsidvaluesvalue_id)
-- [DELETE /admin/product-options//values/](https://docs.medusajs.com/api/admin#product-options_deleteproductoptionsidvaluesvalue_id)
-- [GET /admin/product-tags](https://docs.medusajs.com/api/admin#product-tags_getproducttags)
-- [POST /admin/product-tags](https://docs.medusajs.com/api/admin#product-tags_postproducttags)
-- [GET /admin/product-tags/](https://docs.medusajs.com/api/admin#product-tags_getproducttagsid)
-- [POST /admin/product-tags/](https://docs.medusajs.com/api/admin#product-tags_postproducttagsid)
-- [DELETE /admin/product-tags/](https://docs.medusajs.com/api/admin#product-tags_deleteproducttagsid)
-- [GET /admin/product-types](https://docs.medusajs.com/api/admin#product-types_getproducttypes)
-- [POST /admin/product-types](https://docs.medusajs.com/api/admin#product-types_postproducttypes)
-- [GET /admin/product-types/](https://docs.medusajs.com/api/admin#product-types_getproducttypesid)
-- [POST /admin/product-types/](https://docs.medusajs.com/api/admin#product-types_postproducttypesid)
-- [DELETE /admin/product-types/](https://docs.medusajs.com/api/admin#product-types_deleteproducttypesid)
-- [GET /admin/product-variants](https://docs.medusajs.com/api/admin#product-variants_getproductvariants)
-- [GET /admin/products](https://docs.medusajs.com/api/admin#products_getproducts)
-- [POST /admin/products](https://docs.medusajs.com/api/admin#products_postproducts)
-- [POST /admin/products/batch](https://docs.medusajs.com/api/admin#products_postproductsbatch)
-- [POST /admin/products/export](https://docs.medusajs.com/api/admin#products_postproductsexport)
-- [POST /admin/products/import](https://docs.medusajs.com/api/admin#products_postproductsimport)
-- [POST /admin/products/import//confirm](https://docs.medusajs.com/api/admin#products_postproductsimporttransaction_idconfirm)
-- [POST /admin/products/imports](https://docs.medusajs.com/api/admin#products_postproductsimports)
-- [POST /admin/products/imports//confirm](https://docs.medusajs.com/api/admin#products_postproductsimportstransaction_idconfirm)
-- [GET /admin/products/](https://docs.medusajs.com/api/admin#products_getproductsid)
-- [POST /admin/products/](https://docs.medusajs.com/api/admin#products_postproductsid)
-- [DELETE /admin/products/](https://docs.medusajs.com/api/admin#products_deleteproductsid)
-- [POST /admin/products//images//variants/batch](https://docs.medusajs.com/api/admin#products_postproductsidimagesimage_idvariantsbatch)
-- [GET /admin/products//options](https://docs.medusajs.com/api/admin#products_getproductsidoptions)
-- [POST /admin/products//options/batch](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
-- [GET /admin/products//variants](https://docs.medusajs.com/api/admin#products_getproductsidvariants)
-- [POST /admin/products//variants](https://docs.medusajs.com/api/admin#products_postproductsidvariants)
-- [POST /admin/products//variants/batch](https://docs.medusajs.com/api/admin#products_postproductsidvariantsbatch)
-- [POST /admin/products//variants/inventory-items/batch](https://docs.medusajs.com/api/admin#products_postproductsidvariantsinventoryitemsbatch)
-- [GET /admin/products//variants/](https://docs.medusajs.com/api/admin#products_getproductsidvariantsvariant_id)
-- [POST /admin/products//variants/](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_id)
-- [DELETE /admin/products//variants/](https://docs.medusajs.com/api/admin#products_deleteproductsidvariantsvariant_id)
-- [POST /admin/products//variants//images/batch](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idimagesbatch)
-- [POST /admin/products//variants//inventory-items](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idinventoryitems)
-- [POST /admin/products//variants//inventory-items/](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idinventoryitemsinventory_item_id)
-- [DELETE /admin/products//variants//inventory-items/](https://docs.medusajs.com/api/admin#products_deleteproductsidvariantsvariant_idinventoryitemsinventory_item_id)
-- [GET /admin/promotions](https://docs.medusajs.com/api/admin#promotions_getpromotions)
-- [POST /admin/promotions](https://docs.medusajs.com/api/admin#promotions_postpromotions)
-- [GET /admin/promotions/rule-attribute-options/](https://docs.medusajs.com/api/admin#promotions_getpromotionsruleattributeoptionsrule_type)
-- [GET /admin/promotions/rule-value-options//](https://docs.medusajs.com/api/admin#promotions_getpromotionsrulevalueoptionsrule_typerule_attribute_id)
-- [GET /admin/promotions/](https://docs.medusajs.com/api/admin#promotions_getpromotionsid)
-- [POST /admin/promotions/](https://docs.medusajs.com/api/admin#promotions_postpromotionsid)
-- [DELETE /admin/promotions/](https://docs.medusajs.com/api/admin#promotions_deletepromotionsid)
-- [POST /admin/promotions//buy-rules/batch](https://docs.medusajs.com/api/admin#promotions_postpromotionsidbuyrulesbatch)
-- [POST /admin/promotions//rules/batch](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch)
-- [POST /admin/promotions//target-rules/batch](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch)
-- [GET /admin/promotions//](https://docs.medusajs.com/api/admin#promotions_getpromotionsidrule_type)
-- [GET /admin/property-labels](https://docs.medusajs.com/api/admin#property-labels_getpropertylabels)
-- [POST /admin/property-labels](https://docs.medusajs.com/api/admin#property-labels_postpropertylabels)
-- [POST /admin/property-labels/batch](https://docs.medusajs.com/api/admin#property-labels_postpropertylabelsbatch)
-- [GET /admin/property-labels/](https://docs.medusajs.com/api/admin#property-labels_getpropertylabelsid)
-- [POST /admin/property-labels/](https://docs.medusajs.com/api/admin#property-labels_postpropertylabelsid)
-- [DELETE /admin/property-labels/](https://docs.medusajs.com/api/admin#property-labels_deletepropertylabelsid)
-- [GET /admin/refund-reasons](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasons)
-- [POST /admin/refund-reasons](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasons)
-- [GET /admin/refund-reasons/](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasonsid)
-- [POST /admin/refund-reasons/](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasonsid)
-- [DELETE /admin/refund-reasons/](https://docs.medusajs.com/api/admin#refund-reasons_deleterefundreasonsid)
-- [GET /admin/regions](https://docs.medusajs.com/api/admin#regions_getregions)
-- [POST /admin/regions](https://docs.medusajs.com/api/admin#regions_postregions)
-- [GET /admin/regions/](https://docs.medusajs.com/api/admin#regions_getregionsid)
-- [POST /admin/regions/](https://docs.medusajs.com/api/admin#regions_postregionsid)
-- [DELETE /admin/regions/](https://docs.medusajs.com/api/admin#regions_deleteregionsid)
-- [GET /admin/reservations](https://docs.medusajs.com/api/admin#reservations_getreservations)
-- [POST /admin/reservations](https://docs.medusajs.com/api/admin#reservations_postreservations)
-- [GET /admin/reservations/](https://docs.medusajs.com/api/admin#reservations_getreservationsid)
-- [POST /admin/reservations/](https://docs.medusajs.com/api/admin#reservations_postreservationsid)
-- [DELETE /admin/reservations/](https://docs.medusajs.com/api/admin#reservations_deletereservationsid)
-- [GET /admin/return-reasons](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons)
-- [POST /admin/return-reasons](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons)
-- [GET /admin/return-reasons/](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasonsid)
-- [POST /admin/return-reasons/](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsid)
-- [DELETE /admin/return-reasons/](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreasonsid)
-- [GET /admin/returns](https://docs.medusajs.com/api/admin#returns_getreturns)
-- [POST /admin/returns](https://docs.medusajs.com/api/admin#returns_postreturns)
-- [GET /admin/returns/](https://docs.medusajs.com/api/admin#returns_getreturnsid)
-- [POST /admin/returns/](https://docs.medusajs.com/api/admin#returns_postreturnsid)
-- [POST /admin/returns//cancel](https://docs.medusajs.com/api/admin#returns_postreturnsidcancel)
-- [POST /admin/returns//dismiss-items](https://docs.medusajs.com/api/admin#returns_postreturnsiddismissitems)
-- [POST /admin/returns//dismiss-items/](https://docs.medusajs.com/api/admin#returns_postreturnsiddismissitemsaction_id)
-- [DELETE /admin/returns//dismiss-items/](https://docs.medusajs.com/api/admin#returns_deletereturnsiddismissitemsaction_id)
-- [POST /admin/returns//receive-items](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitems)
-- [POST /admin/returns//receive-items/](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveitemsaction_id)
-- [DELETE /admin/returns//receive-items/](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceiveitemsaction_id)
-- [POST /admin/returns//receive](https://docs.medusajs.com/api/admin#returns_postreturnsidreceive)
-- [DELETE /admin/returns//receive](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceive)
-- [POST /admin/returns//receive/confirm](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveconfirm)
-- [POST /admin/returns//request-items](https://docs.medusajs.com/api/admin#returns_postreturnsidrequestitems)
-- [POST /admin/returns//request-items/](https://docs.medusajs.com/api/admin#returns_postreturnsidrequestitemsaction_id)
-- [DELETE /admin/returns//request-items/](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequestitemsaction_id)
-- [POST /admin/returns//request](https://docs.medusajs.com/api/admin#returns_postreturnsidrequest)
-- [DELETE /admin/returns//request](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequest)
-- [POST /admin/returns//shipping-method](https://docs.medusajs.com/api/admin#returns_postreturnsidshippingmethod)
-- [POST /admin/returns//shipping-method/](https://docs.medusajs.com/api/admin#returns_postreturnsidshippingmethodaction_id)
-- [DELETE /admin/returns//shipping-method/](https://docs.medusajs.com/api/admin#returns_deletereturnsidshippingmethodaction_id)
-- [GET /admin/sales-channels](https://docs.medusajs.com/api/admin#sales-channels_getsaleschannels)
-- [POST /admin/sales-channels](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannels)
-- [GET /admin/sales-channels/](https://docs.medusajs.com/api/admin#sales-channels_getsaleschannelsid)
-- [POST /admin/sales-channels/](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsid)
-- [DELETE /admin/sales-channels/](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelsid)
-- [POST /admin/sales-channels//products](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproducts)
-- [GET /admin/search-indexes](https://docs.medusajs.com/api/admin#search-indexes_getsearchindexes)
-- [DELETE /admin/search-indexes/](https://docs.medusajs.com/api/admin#search-indexes_deletesearchindexesid)
-- [POST /admin/search-indexes//reindex](https://docs.medusajs.com/api/admin#search-indexes_postsearchindexesidreindex)
-- [GET /admin/search](https://docs.medusajs.com/api/admin#search_getsearch)
-- [GET /admin/shipping-option-types](https://docs.medusajs.com/api/admin#shipping-option-types_getshippingoptiontypes)
-- [POST /admin/shipping-option-types](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypes)
-- [GET /admin/shipping-option-types/](https://docs.medusajs.com/api/admin#shipping-option-types_getshippingoptiontypesid)
-- [POST /admin/shipping-option-types/](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypesid)
-- [DELETE /admin/shipping-option-types/](https://docs.medusajs.com/api/admin#shipping-option-types_deleteshippingoptiontypesid)
-- [GET /admin/shipping-options](https://docs.medusajs.com/api/admin#shipping-options_getshippingoptions)
-- [POST /admin/shipping-options](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions)
-- [GET /admin/shipping-options/](https://docs.medusajs.com/api/admin#shipping-options_getshippingoptionsid)
-- [POST /admin/shipping-options/](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptionsid)
-- [DELETE /admin/shipping-options/](https://docs.medusajs.com/api/admin#shipping-options_deleteshippingoptionsid)
-- [POST /admin/shipping-options//rules/batch](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptionsidrulesbatch)
-- [GET /admin/shipping-profiles](https://docs.medusajs.com/api/admin#shipping-profiles_getshippingprofiles)
-- [POST /admin/shipping-profiles](https://docs.medusajs.com/api/admin#shipping-profiles_postshippingprofiles)
-- [GET /admin/shipping-profiles/](https://docs.medusajs.com/api/admin#shipping-profiles_getshippingprofilesid)
-- [POST /admin/shipping-profiles/](https://docs.medusajs.com/api/admin#shipping-profiles_postshippingprofilesid)
-- [DELETE /admin/shipping-profiles/](https://docs.medusajs.com/api/admin#shipping-profiles_deleteshippingprofilesid)
-- [GET /admin/stock-locations](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations)
-- [POST /admin/stock-locations](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations)
-- [GET /admin/stock-locations/](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsid)
-- [POST /admin/stock-locations/](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsid)
-- [DELETE /admin/stock-locations/](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsid)
-- [POST /admin/stock-locations//fulfillment-providers](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidfulfillmentproviders)
-- [POST /admin/stock-locations//fulfillment-sets](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidfulfillmentsets)
-- [POST /admin/stock-locations//sales-channels](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsidsaleschannels)
-- [GET /admin/store-credit-accounts](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccounts)
-- [POST /admin/store-credit-accounts](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccounts)
-- [GET /admin/store-credit-accounts/](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsid)
-- [POST /admin/store-credit-accounts//credit](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccountsidcredit)
-- [POST /admin/store-credit-accounts//debit](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccountsiddebit)
-- [GET /admin/store-credit-accounts//transactions](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsidtransactions)
-- [GET /admin/stores](https://docs.medusajs.com/api/admin#stores_getstores)
-- [GET /admin/stores/](https://docs.medusajs.com/api/admin#stores_getstoresid)
-- [POST /admin/stores/](https://docs.medusajs.com/api/admin#stores_poststoresid)
-- [GET /admin/tax-providers](https://docs.medusajs.com/api/admin#tax-providers_gettaxproviders)
-- [GET /admin/tax-rates](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates)
-- [POST /admin/tax-rates](https://docs.medusajs.com/api/admin#tax-rates_posttaxrates)
-- [GET /admin/tax-rates/](https://docs.medusajs.com/api/admin#tax-rates_gettaxratesid)
-- [POST /admin/tax-rates/](https://docs.medusajs.com/api/admin#tax-rates_posttaxratesid)
-- [DELETE /admin/tax-rates/](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratesid)
-- [POST /admin/tax-rates//rules](https://docs.medusajs.com/api/admin#tax-rates_posttaxratesidrules)
-- [DELETE /admin/tax-rates//rules/](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratesidrulesrule_id)
-- [GET /admin/tax-regions](https://docs.medusajs.com/api/admin#tax-regions_gettaxregions)
-- [POST /admin/tax-regions](https://docs.medusajs.com/api/admin#tax-regions_posttaxregions)
-- [GET /admin/tax-regions/](https://docs.medusajs.com/api/admin#tax-regions_gettaxregionsid)
-- [POST /admin/tax-regions/](https://docs.medusajs.com/api/admin#tax-regions_posttaxregionsid)
-- [DELETE /admin/tax-regions/](https://docs.medusajs.com/api/admin#tax-regions_deletetaxregionsid)
-- [GET /admin/translations](https://docs.medusajs.com/api/admin#translations_gettranslations)
-- [POST /admin/translations/batch](https://docs.medusajs.com/api/admin#translations_posttranslationsbatch)
-- [GET /admin/translations/entities](https://docs.medusajs.com/api/admin#translations_gettranslationsentities)
-- [GET /admin/translations/settings](https://docs.medusajs.com/api/admin#translations_gettranslationssettings)
-- [POST /admin/translations/settings/batch](https://docs.medusajs.com/api/admin#translations_posttranslationssettingsbatch)
-- [GET /admin/translations/statistics](https://docs.medusajs.com/api/admin#translations_gettranslationsstatistics)
-- [POST /admin/uploads](https://docs.medusajs.com/api/admin#uploads_postuploads)
-- [POST /admin/uploads/presigned-urls](https://docs.medusajs.com/api/admin#uploads_postuploadspresignedurls)
-- [GET /admin/uploads/](https://docs.medusajs.com/api/admin#uploads_getuploadsid)
-- [DELETE /admin/uploads/](https://docs.medusajs.com/api/admin#uploads_deleteuploadsid)
-- [GET /admin/users](https://docs.medusajs.com/api/admin#users_getusers)
-- [GET /admin/users/me](https://docs.medusajs.com/api/admin#users_getusersme)
-- [GET /admin/users/](https://docs.medusajs.com/api/admin#users_getusersid)
-- [POST /admin/users/](https://docs.medusajs.com/api/admin#users_postusersid)
-- [DELETE /admin/users/](https://docs.medusajs.com/api/admin#users_deleteusersid)
-- [GET /admin/users//auth-providers](https://docs.medusajs.com/api/admin#users_getusersidauthproviders)
-- [POST /admin/users//reset-password](https://docs.medusajs.com/api/admin#users_postusersidresetpassword)
-- [GET /admin/views/entities](https://docs.medusajs.com/api/admin#views_getviewsentities)
-- [GET /admin/views//columns](https://docs.medusajs.com/api/admin#views_getviewsentitycolumns)
-- [GET /admin/views//configurations](https://docs.medusajs.com/api/admin#views_getviewsentityconfigurations)
-- [POST /admin/views//configurations](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurations)
-- [GET /admin/views//configurations/active](https://docs.medusajs.com/api/admin#views_getviewsentityconfigurationsactive)
-- [POST /admin/views//configurations/active](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurationsactive)
-- [GET /admin/views//configurations/](https://docs.medusajs.com/api/admin#views_getviewsentityconfigurationsid)
-- [POST /admin/views//configurations/](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurationsid)
-- [DELETE /admin/views//configurations/](https://docs.medusajs.com/api/admin#views_deleteviewsentityconfigurationsid)
-- [GET /admin/workflows-executions](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutions)
-- [GET /admin/workflows-executions/](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsid)
-- [POST /admin/workflows-executions//run](https://docs.medusajs.com/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idrun)
-- [POST /admin/workflows-executions//steps/failure](https://docs.medusajs.com/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepsfailure)
-- [POST /admin/workflows-executions//steps/success](https://docs.medusajs.com/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess)
-- [GET /admin/workflows-executions//subscribe](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idsubscribe)
-- [GET /admin/workflows-executions//](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id)
-- [GET /admin/workflows-executions///subscribe](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe)
-- [POST /auth/mfa/challenges//verify](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfachallengesidverify)
-- [GET /auth/mfa/factors](https://docs.medusajs.com/api/admin#multi-factor-authentication_getmfafactors)
-- [POST /auth/mfa/factors](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfafactors)
-- [DELETE /auth/mfa/factors/](https://docs.medusajs.com/api/admin#auth_deletemfafactorsid)
-- [POST /auth/mfa/factors//verify](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfafactorsidverify)
-- [POST /auth/mfa/recovery-codes](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfarecoverycodes)
-- [POST /auth/session](https://docs.medusajs.com/api/admin#auth_postsession)
-- [DELETE /auth/session](https://docs.medusajs.com/api/admin#auth_deletesession)
-- [POST /auth/token/refresh](https://docs.medusajs.com/api/admin#auth_postadminauthtokenrefresh)
-- [GET /auth/user/providers](https://docs.medusajs.com/api/admin#auth_getuserproviders)
-- [POST /auth/user/](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider)
-- [POST /auth/user//callback](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providercallback)
-- [POST /auth/user//register](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider_register)
-- [POST /auth/user//reset-password](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword)
-- [POST /auth/user//update](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerupdate)
-- [POST /auth//user](https://docs.medusajs.com/api/admin#auth_provider_postauth_provideruser)
+- [GET /admin/api-keys](undefined/api/admin#api-keys_getapikeys)
+- [POST /admin/api-keys](undefined/api/admin#api-keys_postapikeys)
+- [GET /admin/api-keys/](undefined/api/admin#api-keys_getapikeysid)
+- [POST /admin/api-keys/](undefined/api/admin#api-keys_postapikeysid)
+- [DELETE /admin/api-keys/](undefined/api/admin#api-keys_deleteapikeysid)
+- [POST /admin/api-keys//revoke](undefined/api/admin#api-keys_postapikeysidrevoke)
+- [POST /admin/api-keys//sales-channels](undefined/api/admin#api-keys_postapikeysidsaleschannels)
+- [GET /admin/campaigns](undefined/api/admin#campaigns_getcampaigns)
+- [POST /admin/campaigns](undefined/api/admin#campaigns_postcampaigns)
+- [GET /admin/campaigns/](undefined/api/admin#campaigns_getcampaignsid)
+- [POST /admin/campaigns/](undefined/api/admin#campaigns_postcampaignsid)
+- [DELETE /admin/campaigns/](undefined/api/admin#campaigns_deletecampaignsid)
+- [POST /admin/campaigns//promotions](undefined/api/admin#campaigns_postcampaignsidpromotions)
+- [GET /admin/claims](undefined/api/admin#claims_getclaims)
+- [POST /admin/claims](undefined/api/admin#claims_postclaims)
+- [GET /admin/claims/](undefined/api/admin#claims_getclaimsid)
+- [POST /admin/claims//cancel](undefined/api/admin#claims_postclaimsidcancel)
+- [POST /admin/claims//claim-items](undefined/api/admin#claims_postclaimsidclaimitems)
+- [POST /admin/claims//claim-items/](undefined/api/admin#claims_postclaimsidclaimitemsaction_id)
+- [DELETE /admin/claims//claim-items/](undefined/api/admin#claims_deleteclaimsidclaimitemsaction_id)
+- [POST /admin/claims//inbound/items](undefined/api/admin#claims_postclaimsidinbounditems)
+- [POST /admin/claims//inbound/items/](undefined/api/admin#claims_postclaimsidinbounditemsaction_id)
+- [DELETE /admin/claims//inbound/items/](undefined/api/admin#claims_deleteclaimsidinbounditemsaction_id)
+- [POST /admin/claims//inbound/shipping-method](undefined/api/admin#claims_postclaimsidinboundshippingmethod)
+- [POST /admin/claims//inbound/shipping-method/](undefined/api/admin#claims_postclaimsidinboundshippingmethodaction_id)
+- [DELETE /admin/claims//inbound/shipping-method/](undefined/api/admin#claims_deleteclaimsidinboundshippingmethodaction_id)
+- [POST /admin/claims//outbound/items](undefined/api/admin#claims_postclaimsidoutbounditems)
+- [POST /admin/claims//outbound/items/](undefined/api/admin#claims_postclaimsidoutbounditemsaction_id)
+- [DELETE /admin/claims//outbound/items/](undefined/api/admin#claims_deleteclaimsidoutbounditemsaction_id)
+- [POST /admin/claims//outbound/shipping-method](undefined/api/admin#claims_postclaimsidoutboundshippingmethod)
+- [POST /admin/claims//outbound/shipping-method/](undefined/api/admin#claims_postclaimsidoutboundshippingmethodaction_id)
+- [DELETE /admin/claims//outbound/shipping-method/](undefined/api/admin#claims_deleteclaimsidoutboundshippingmethodaction_id)
+- [POST /admin/claims//request](undefined/api/admin#claims_postclaimsidrequest)
+- [DELETE /admin/claims//request](undefined/api/admin#claims_deleteclaimsidrequest)
+- [GET /admin/collections](undefined/api/admin#collections_getcollections)
+- [POST /admin/collections](undefined/api/admin#collections_postcollections)
+- [GET /admin/collections/](undefined/api/admin#collections_getcollectionsid)
+- [POST /admin/collections/](undefined/api/admin#collections_postcollectionsid)
+- [DELETE /admin/collections/](undefined/api/admin#collections_deletecollectionsid)
+- [POST /admin/collections//products](undefined/api/admin#collections_postcollectionsidproducts)
+- [GET /admin/currencies](undefined/api/admin#currencies_getcurrencies)
+- [GET /admin/currencies/](undefined/api/admin#currencies_getcurrenciescode)
+- [GET /admin/customer-groups](undefined/api/admin#customer-groups_getcustomergroups)
+- [POST /admin/customer-groups](undefined/api/admin#customer-groups_postcustomergroups)
+- [GET /admin/customer-groups/](undefined/api/admin#customer-groups_getcustomergroupsid)
+- [POST /admin/customer-groups/](undefined/api/admin#customer-groups_postcustomergroupsid)
+- [DELETE /admin/customer-groups/](undefined/api/admin#customer-groups_deletecustomergroupsid)
+- [POST /admin/customer-groups//customers](undefined/api/admin#customer-groups_postcustomergroupsidcustomers)
+- [GET /admin/customers](undefined/api/admin#customers_getcustomers)
+- [POST /admin/customers](undefined/api/admin#customers_postcustomers)
+- [GET /admin/customers/](undefined/api/admin#customers_getcustomersid)
+- [POST /admin/customers/](undefined/api/admin#customers_postcustomersid)
+- [DELETE /admin/customers/](undefined/api/admin#customers_deletecustomersid)
+- [GET /admin/customers//addresses](undefined/api/admin#customers_getcustomersidaddresses)
+- [POST /admin/customers//addresses](undefined/api/admin#customers_postcustomersidaddresses)
+- [GET /admin/customers//addresses/](undefined/api/admin#customers_getcustomersidaddressesaddress_id)
+- [POST /admin/customers//addresses/](undefined/api/admin#customers_postcustomersidaddressesaddress_id)
+- [DELETE /admin/customers//addresses/](undefined/api/admin#customers_deletecustomersidaddressesaddress_id)
+- [POST /admin/customers//customer-groups](undefined/api/admin#customers_postcustomersidcustomergroups)
+- [GET /admin/draft-orders](undefined/api/admin#draft-orders_getdraftorders)
+- [POST /admin/draft-orders](undefined/api/admin#draft-orders_postdraftorders)
+- [GET /admin/draft-orders/](undefined/api/admin#draft-orders_getdraftordersid)
+- [POST /admin/draft-orders/](undefined/api/admin#draft-orders_postdraftordersid)
+- [DELETE /admin/draft-orders/](undefined/api/admin#draft-orders_deletedraftordersid)
+- [POST /admin/draft-orders//convert-to-order](undefined/api/admin#draft-orders_postdraftordersidconverttoorder)
+- [POST /admin/draft-orders//edit](undefined/api/admin#draft-orders_postdraftordersidedit)
+- [DELETE /admin/draft-orders//edit](undefined/api/admin#draft-orders_deletedraftordersidedit)
+- [POST /admin/draft-orders//edit/confirm](undefined/api/admin#draft-orders_postdraftordersideditconfirm)
+- [POST /admin/draft-orders//edit/items](undefined/api/admin#draft-orders_postdraftordersidedititems)
+- [POST /admin/draft-orders//edit/items/item/](undefined/api/admin#draft-orders_postdraftordersidedititemsitemitem_id)
+- [POST /admin/draft-orders//edit/items/](undefined/api/admin#draft-orders_postdraftordersidedititemsaction_id)
+- [DELETE /admin/draft-orders//edit/items/](undefined/api/admin#draft-orders_deletedraftordersidedititemsaction_id)
+- [POST /admin/draft-orders//edit/promotions](undefined/api/admin#draft-orders_postdraftordersideditpromotions)
+- [DELETE /admin/draft-orders//edit/promotions](undefined/api/admin#draft-orders_deletedraftordersideditpromotions)
+- [POST /admin/draft-orders//edit/request](undefined/api/admin#draft-orders_postdraftordersideditrequest)
+- [POST /admin/draft-orders//edit/shipping-methods](undefined/api/admin#draft-orders_postdraftordersideditshippingmethods)
+- [POST /admin/draft-orders//edit/shipping-methods/method/](undefined/api/admin#draft-orders_postdraftordersideditshippingmethodsmethodmethod_id)
+- [DELETE /admin/draft-orders//edit/shipping-methods/method/](undefined/api/admin#draft-orders_deletedraftordersideditshippingmethodsmethodmethod_id)
+- [POST /admin/draft-orders//edit/shipping-methods/](undefined/api/admin#draft-orders_postdraftordersideditshippingmethodsaction_id)
+- [DELETE /admin/draft-orders//edit/shipping-methods/](undefined/api/admin#draft-orders_deletedraftordersideditshippingmethodsaction_id)
+- [GET /admin/exchanges](undefined/api/admin#exchanges_getexchanges)
+- [POST /admin/exchanges](undefined/api/admin#exchanges_postexchanges)
+- [GET /admin/exchanges/](undefined/api/admin#exchanges_getexchangesid)
+- [POST /admin/exchanges//cancel](undefined/api/admin#exchanges_postexchangesidcancel)
+- [POST /admin/exchanges//inbound/items](undefined/api/admin#exchanges_postexchangesidinbounditems)
+- [POST /admin/exchanges//inbound/items/](undefined/api/admin#exchanges_postexchangesidinbounditemsaction_id)
+- [DELETE /admin/exchanges//inbound/items/](undefined/api/admin#exchanges_deleteexchangesidinbounditemsaction_id)
+- [POST /admin/exchanges//inbound/shipping-method](undefined/api/admin#exchanges_postexchangesidinboundshippingmethod)
+- [POST /admin/exchanges//inbound/shipping-method/](undefined/api/admin#exchanges_postexchangesidinboundshippingmethodaction_id)
+- [DELETE /admin/exchanges//inbound/shipping-method/](undefined/api/admin#exchanges_deleteexchangesidinboundshippingmethodaction_id)
+- [POST /admin/exchanges//outbound/items](undefined/api/admin#exchanges_postexchangesidoutbounditems)
+- [POST /admin/exchanges//outbound/items/](undefined/api/admin#exchanges_postexchangesidoutbounditemsaction_id)
+- [DELETE /admin/exchanges//outbound/items/](undefined/api/admin#exchanges_deleteexchangesidoutbounditemsaction_id)
+- [POST /admin/exchanges//outbound/shipping-method](undefined/api/admin#exchanges_postexchangesidoutboundshippingmethod)
+- [POST /admin/exchanges//outbound/shipping-method/](undefined/api/admin#exchanges_postexchangesidoutboundshippingmethodaction_id)
+- [DELETE /admin/exchanges//outbound/shipping-method/](undefined/api/admin#exchanges_deleteexchangesidoutboundshippingmethodaction_id)
+- [POST /admin/exchanges//request](undefined/api/admin#exchanges_postexchangesidrequest)
+- [DELETE /admin/exchanges//request](undefined/api/admin#exchanges_deleteexchangesidrequest)
+- [GET /admin/feature-flags](undefined/api/admin#feature-flags_getfeatureflags)
+- [GET /admin/fulfillment-providers](undefined/api/admin#fulfillment-providers_getfulfillmentproviders)
+- [GET /admin/fulfillment-providers//options](undefined/api/admin#fulfillment-providers_getfulfillmentprovidersidoptions)
+- [DELETE /admin/fulfillment-sets/](undefined/api/admin#fulfillment-sets_deletefulfillmentsetsid)
+- [POST /admin/fulfillment-sets//service-zones](undefined/api/admin#fulfillment-sets_postfulfillmentsetsidservicezones)
+- [GET /admin/fulfillment-sets//service-zones/](undefined/api/admin#fulfillment-sets_getfulfillmentsetsidservicezoneszone_id)
+- [POST /admin/fulfillment-sets//service-zones/](undefined/api/admin#fulfillment-sets_postfulfillmentsetsidservicezoneszone_id)
+- [DELETE /admin/fulfillment-sets//service-zones/](undefined/api/admin#fulfillment-sets_deletefulfillmentsetsidservicezoneszone_id)
+- [POST /admin/fulfillments](undefined/api/admin#fulfillments_postfulfillments)
+- [POST /admin/fulfillments//cancel](undefined/api/admin#fulfillments_postfulfillmentsidcancel)
+- [POST /admin/fulfillments//shipment](undefined/api/admin#fulfillments_postfulfillmentsidshipment)
+- [GET /admin/gift-cards](undefined/api/admin#gift-cards_getgiftcards)
+- [POST /admin/gift-cards](undefined/api/admin#gift-cards_postgiftcards)
+- [GET /admin/gift-cards/](undefined/api/admin#gift-cards_getgiftcardsid)
+- [POST /admin/gift-cards/](undefined/api/admin#gift-cards_postgiftcardsid)
+- [GET /admin/gift-cards//orders](undefined/api/admin#gift-cards_getgiftcardsidorders)
+- [GET /admin/index/details](undefined/api/admin#index_getindexdetails)
+- [POST /admin/index/sync](undefined/api/admin#index_postindexsync)
+- [GET /admin/inventory-items](undefined/api/admin#inventory-items_getinventoryitems)
+- [POST /admin/inventory-items](undefined/api/admin#inventory-items_postinventoryitems)
+- [POST /admin/inventory-items/export](undefined/api/admin#inventory-items_postinventoryitemsexport)
+- [POST /admin/inventory-items/location-levels/batch](undefined/api/admin#inventory-items_postinventoryitemslocationlevelsbatch)
+- [GET /admin/inventory-items/](undefined/api/admin#inventory-items_getinventoryitemsid)
+- [POST /admin/inventory-items/](undefined/api/admin#inventory-items_postinventoryitemsid)
+- [DELETE /admin/inventory-items/](undefined/api/admin#inventory-items_deleteinventoryitemsid)
+- [GET /admin/inventory-items//location-levels](undefined/api/admin#inventory-items_getinventoryitemsidlocationlevels)
+- [POST /admin/inventory-items//location-levels](undefined/api/admin#inventory-items_postinventoryitemsidlocationlevels)
+- [POST /admin/inventory-items//location-levels/batch](undefined/api/admin#inventory-items_postinventoryitemsidlocationlevelsbatch)
+- [POST /admin/inventory-items//location-levels/](undefined/api/admin#inventory-items_postinventoryitemsidlocationlevelslocation_id)
+- [DELETE /admin/inventory-items//location-levels/](undefined/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id)
+- [GET /admin/invites](undefined/api/admin#invites_getinvites)
+- [POST /admin/invites](undefined/api/admin#invites_postinvites)
+- [POST /admin/invites/accept](undefined/api/admin#invites_postinvitesaccept)
+- [GET /admin/invites/](undefined/api/admin#invites_getinvitesid)
+- [DELETE /admin/invites/](undefined/api/admin#invites_deleteinvitesid)
+- [POST /admin/invites//resend](undefined/api/admin#invites_postinvitesidresend)
+- [GET /admin/layouts/configurations](undefined/api/admin#layouts_getlayoutsconfigurations)
+- [GET /admin/layouts//configuration](undefined/api/admin#layouts_getlayoutszoneconfiguration)
+- [POST /admin/layouts//configuration](undefined/api/admin#layouts_postlayoutszoneconfiguration)
+- [DELETE /admin/layouts//configuration](undefined/api/admin#layouts_deletelayoutszoneconfiguration)
+- [GET /admin/locales](undefined/api/admin#locales_getlocales)
+- [GET /admin/locales/](undefined/api/admin#locales_getlocalescode)
+- [GET /admin/notifications](undefined/api/admin#notifications_getnotifications)
+- [GET /admin/notifications/](undefined/api/admin#notifications_getnotificationsid)
+- [POST /admin/order-changes/](undefined/api/admin#order-changes_postorderchangesid)
+- [POST /admin/order-edits](undefined/api/admin#order-edits_postorderedits)
+- [DELETE /admin/order-edits/](undefined/api/admin#order-edits_deleteordereditsid)
+- [POST /admin/order-edits//confirm](undefined/api/admin#order-edits_postordereditsidconfirm)
+- [POST /admin/order-edits//items](undefined/api/admin#order-edits_postordereditsiditems)
+- [POST /admin/order-edits//items/item/](undefined/api/admin#order-edits_postordereditsiditemsitemitem_id)
+- [POST /admin/order-edits//items/](undefined/api/admin#order-edits_postordereditsiditemsaction_id)
+- [DELETE /admin/order-edits//items/](undefined/api/admin#order-edits_deleteordereditsiditemsaction_id)
+- [POST /admin/order-edits//request](undefined/api/admin#order-edits_postordereditsidrequest)
+- [POST /admin/order-edits//shipping-method](undefined/api/admin#order-edits_postordereditsidshippingmethod)
+- [POST /admin/order-edits//shipping-method/](undefined/api/admin#order-edits_postordereditsidshippingmethodaction_id)
+- [DELETE /admin/order-edits//shipping-method/](undefined/api/admin#order-edits_deleteordereditsidshippingmethodaction_id)
+- [GET /admin/orders](undefined/api/admin#orders_getorders)
+- [POST /admin/orders/export](undefined/api/admin#orders_postordersexport)
+- [GET /admin/orders/](undefined/api/admin#orders_getordersid)
+- [POST /admin/orders/](undefined/api/admin#orders_postordersid)
+- [POST /admin/orders//archive](undefined/api/admin#orders_postordersidarchive)
+- [POST /admin/orders//cancel](undefined/api/admin#orders_postordersidcancel)
+- [GET /admin/orders//changes](undefined/api/admin#orders_getordersidchanges)
+- [POST /admin/orders//complete](undefined/api/admin#orders_postordersidcomplete)
+- [POST /admin/orders//credit-lines](undefined/api/admin#orders_postordersidcreditlines)
+- [POST /admin/orders//fulfillments](undefined/api/admin#orders_postordersidfulfillments)
+- [POST /admin/orders//fulfillments//cancel](undefined/api/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
+- [POST /admin/orders//fulfillments//mark-as-delivered](undefined/api/admin#orders_postordersidfulfillmentsfulfillment_idmarkasdelivered)
+- [POST /admin/orders//fulfillments//shipments](undefined/api/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
+- [GET /admin/orders//line-items](undefined/api/admin#orders_getordersidlineitems)
+- [POST /admin/orders//payment-sessions/authorize](undefined/api/admin#orders_postordersidpaymentsessionsauthorize)
+- [GET /admin/orders//preview](undefined/api/admin#orders_getordersidpreview)
+- [GET /admin/orders//shipping-options](undefined/api/admin#orders_getordersidshippingoptions)
+- [POST /admin/orders//transfer](undefined/api/admin#orders_postordersidtransfer)
+- [POST /admin/orders//transfer/cancel](undefined/api/admin#orders_postordersidtransfercancel)
+- [POST /admin/orders//transfer/guest](undefined/api/admin#orders_postordersidtransferguest)
+- [POST /admin/payment-collections](undefined/api/admin#payment-collections_postpaymentcollections)
+- [DELETE /admin/payment-collections/](undefined/api/admin#payment-collections_deletepaymentcollectionsid)
+- [POST /admin/payment-collections//mark-as-paid](undefined/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
+- [POST /admin/payment-collections//payment-sessions](undefined/api/admin#payment-collections_postpaymentcollectionsidpaymentsessions)
+- [GET /admin/payments](undefined/api/admin#payments_getpayments)
+- [GET /admin/payments/payment-providers](undefined/api/admin#payments_getpaymentspaymentproviders)
+- [GET /admin/payments/](undefined/api/admin#payments_getpaymentsid)
+- [POST /admin/payments//capture](undefined/api/admin#payments_postpaymentsidcapture)
+- [POST /admin/payments//refund](undefined/api/admin#payments_postpaymentsidrefund)
+- [GET /admin/plugins](undefined/api/admin#plugins_getplugins)
+- [GET /admin/price-lists](undefined/api/admin#price-lists_getpricelists)
+- [POST /admin/price-lists](undefined/api/admin#price-lists_postpricelists)
+- [GET /admin/price-lists/](undefined/api/admin#price-lists_getpricelistsid)
+- [POST /admin/price-lists/](undefined/api/admin#price-lists_postpricelistsid)
+- [DELETE /admin/price-lists/](undefined/api/admin#price-lists_deletepricelistsid)
+- [GET /admin/price-lists//prices](undefined/api/admin#price-lists_getpricelistsidprices)
+- [POST /admin/price-lists//prices/batch](undefined/api/admin#price-lists_postpricelistsidpricesbatch)
+- [POST /admin/price-lists//products](undefined/api/admin#price-lists_postpricelistsidproducts)
+- [GET /admin/price-preferences](undefined/api/admin#price-preferences_getpricepreferences)
+- [POST /admin/price-preferences](undefined/api/admin#price-preferences_postpricepreferences)
+- [GET /admin/price-preferences/](undefined/api/admin#price-preferences_getpricepreferencesid)
+- [POST /admin/price-preferences/](undefined/api/admin#price-preferences_postpricepreferencesid)
+- [DELETE /admin/price-preferences/](undefined/api/admin#price-preferences_deletepricepreferencesid)
+- [GET /admin/product-categories](undefined/api/admin#product-categories_getproductcategories)
+- [POST /admin/product-categories](undefined/api/admin#product-categories_postproductcategories)
+- [GET /admin/product-categories/](undefined/api/admin#product-categories_getproductcategoriesid)
+- [POST /admin/product-categories/](undefined/api/admin#product-categories_postproductcategoriesid)
+- [DELETE /admin/product-categories/](undefined/api/admin#product-categories_deleteproductcategoriesid)
+- [POST /admin/product-categories//products](undefined/api/admin#product-categories_postproductcategoriesidproducts)
+- [GET /admin/product-options](undefined/api/admin#product-options_getproductoptions)
+- [POST /admin/product-options](undefined/api/admin#product-options_postproductoptions)
+- [GET /admin/product-options/](undefined/api/admin#product-options_getproductoptionsid)
+- [POST /admin/product-options/](undefined/api/admin#product-options_postproductoptionsid)
+- [DELETE /admin/product-options/](undefined/api/admin#product-options_deleteproductoptionsid)
+- [GET /admin/product-options//values](undefined/api/admin#product-options_getproductoptionsidvalues)
+- [GET /admin/product-options//values/](undefined/api/admin#product-options_getproductoptionsidvaluesvalue_id)
+- [POST /admin/product-options//values/](undefined/api/admin#product-options_postproductoptionsidvaluesvalue_id)
+- [DELETE /admin/product-options//values/](undefined/api/admin#product-options_deleteproductoptionsidvaluesvalue_id)
+- [GET /admin/product-tags](undefined/api/admin#product-tags_getproducttags)
+- [POST /admin/product-tags](undefined/api/admin#product-tags_postproducttags)
+- [GET /admin/product-tags/](undefined/api/admin#product-tags_getproducttagsid)
+- [POST /admin/product-tags/](undefined/api/admin#product-tags_postproducttagsid)
+- [DELETE /admin/product-tags/](undefined/api/admin#product-tags_deleteproducttagsid)
+- [GET /admin/product-types](undefined/api/admin#product-types_getproducttypes)
+- [POST /admin/product-types](undefined/api/admin#product-types_postproducttypes)
+- [GET /admin/product-types/](undefined/api/admin#product-types_getproducttypesid)
+- [POST /admin/product-types/](undefined/api/admin#product-types_postproducttypesid)
+- [DELETE /admin/product-types/](undefined/api/admin#product-types_deleteproducttypesid)
+- [GET /admin/product-variants](undefined/api/admin#product-variants_getproductvariants)
+- [GET /admin/products](undefined/api/admin#products_getproducts)
+- [POST /admin/products](undefined/api/admin#products_postproducts)
+- [POST /admin/products/batch](undefined/api/admin#products_postproductsbatch)
+- [POST /admin/products/export](undefined/api/admin#products_postproductsexport)
+- [POST /admin/products/import](undefined/api/admin#products_postproductsimport)
+- [POST /admin/products/import//confirm](undefined/api/admin#products_postproductsimporttransaction_idconfirm)
+- [POST /admin/products/imports](undefined/api/admin#products_postproductsimports)
+- [POST /admin/products/imports//confirm](undefined/api/admin#products_postproductsimportstransaction_idconfirm)
+- [GET /admin/products/](undefined/api/admin#products_getproductsid)
+- [POST /admin/products/](undefined/api/admin#products_postproductsid)
+- [DELETE /admin/products/](undefined/api/admin#products_deleteproductsid)
+- [POST /admin/products//images//variants/batch](undefined/api/admin#products_postproductsidimagesimage_idvariantsbatch)
+- [GET /admin/products//options](undefined/api/admin#products_getproductsidoptions)
+- [POST /admin/products//options/batch](undefined/api/admin#products_postproductsidoptionsbatch)
+- [GET /admin/products//variants](undefined/api/admin#products_getproductsidvariants)
+- [POST /admin/products//variants](undefined/api/admin#products_postproductsidvariants)
+- [POST /admin/products//variants/batch](undefined/api/admin#products_postproductsidvariantsbatch)
+- [POST /admin/products//variants/inventory-items/batch](undefined/api/admin#products_postproductsidvariantsinventoryitemsbatch)
+- [GET /admin/products//variants/](undefined/api/admin#products_getproductsidvariantsvariant_id)
+- [POST /admin/products//variants/](undefined/api/admin#products_postproductsidvariantsvariant_id)
+- [DELETE /admin/products//variants/](undefined/api/admin#products_deleteproductsidvariantsvariant_id)
+- [POST /admin/products//variants//images/batch](undefined/api/admin#products_postproductsidvariantsvariant_idimagesbatch)
+- [POST /admin/products//variants//inventory-items](undefined/api/admin#products_postproductsidvariantsvariant_idinventoryitems)
+- [POST /admin/products//variants//inventory-items/](undefined/api/admin#products_postproductsidvariantsvariant_idinventoryitemsinventory_item_id)
+- [DELETE /admin/products//variants//inventory-items/](undefined/api/admin#products_deleteproductsidvariantsvariant_idinventoryitemsinventory_item_id)
+- [GET /admin/promotions](undefined/api/admin#promotions_getpromotions)
+- [POST /admin/promotions](undefined/api/admin#promotions_postpromotions)
+- [GET /admin/promotions/rule-attribute-options/](undefined/api/admin#promotions_getpromotionsruleattributeoptionsrule_type)
+- [GET /admin/promotions/rule-value-options//](undefined/api/admin#promotions_getpromotionsrulevalueoptionsrule_typerule_attribute_id)
+- [GET /admin/promotions/](undefined/api/admin#promotions_getpromotionsid)
+- [POST /admin/promotions/](undefined/api/admin#promotions_postpromotionsid)
+- [DELETE /admin/promotions/](undefined/api/admin#promotions_deletepromotionsid)
+- [POST /admin/promotions//buy-rules/batch](undefined/api/admin#promotions_postpromotionsidbuyrulesbatch)
+- [POST /admin/promotions//rules/batch](undefined/api/admin#promotions_postpromotionsidrulesbatch)
+- [POST /admin/promotions//target-rules/batch](undefined/api/admin#promotions_postpromotionsidtargetrulesbatch)
+- [GET /admin/promotions//](undefined/api/admin#promotions_getpromotionsidrule_type)
+- [GET /admin/property-labels](undefined/api/admin#property-labels_getpropertylabels)
+- [POST /admin/property-labels](undefined/api/admin#property-labels_postpropertylabels)
+- [POST /admin/property-labels/batch](undefined/api/admin#property-labels_postpropertylabelsbatch)
+- [GET /admin/property-labels/](undefined/api/admin#property-labels_getpropertylabelsid)
+- [POST /admin/property-labels/](undefined/api/admin#property-labels_postpropertylabelsid)
+- [DELETE /admin/property-labels/](undefined/api/admin#property-labels_deletepropertylabelsid)
+- [GET /admin/refund-reasons](undefined/api/admin#refund-reasons_getrefundreasons)
+- [POST /admin/refund-reasons](undefined/api/admin#refund-reasons_postrefundreasons)
+- [GET /admin/refund-reasons/](undefined/api/admin#refund-reasons_getrefundreasonsid)
+- [POST /admin/refund-reasons/](undefined/api/admin#refund-reasons_postrefundreasonsid)
+- [DELETE /admin/refund-reasons/](undefined/api/admin#refund-reasons_deleterefundreasonsid)
+- [GET /admin/regions](undefined/api/admin#regions_getregions)
+- [POST /admin/regions](undefined/api/admin#regions_postregions)
+- [GET /admin/regions/](undefined/api/admin#regions_getregionsid)
+- [POST /admin/regions/](undefined/api/admin#regions_postregionsid)
+- [DELETE /admin/regions/](undefined/api/admin#regions_deleteregionsid)
+- [GET /admin/reservations](undefined/api/admin#reservations_getreservations)
+- [POST /admin/reservations](undefined/api/admin#reservations_postreservations)
+- [GET /admin/reservations/](undefined/api/admin#reservations_getreservationsid)
+- [POST /admin/reservations/](undefined/api/admin#reservations_postreservationsid)
+- [DELETE /admin/reservations/](undefined/api/admin#reservations_deletereservationsid)
+- [GET /admin/return-reasons](undefined/api/admin#return-reasons_getreturnreasons)
+- [POST /admin/return-reasons](undefined/api/admin#return-reasons_postreturnreasons)
+- [GET /admin/return-reasons/](undefined/api/admin#return-reasons_getreturnreasonsid)
+- [POST /admin/return-reasons/](undefined/api/admin#return-reasons_postreturnreasonsid)
+- [DELETE /admin/return-reasons/](undefined/api/admin#return-reasons_deletereturnreasonsid)
+- [GET /admin/returns](undefined/api/admin#returns_getreturns)
+- [POST /admin/returns](undefined/api/admin#returns_postreturns)
+- [GET /admin/returns/](undefined/api/admin#returns_getreturnsid)
+- [POST /admin/returns/](undefined/api/admin#returns_postreturnsid)
+- [POST /admin/returns//cancel](undefined/api/admin#returns_postreturnsidcancel)
+- [POST /admin/returns//dismiss-items](undefined/api/admin#returns_postreturnsiddismissitems)
+- [POST /admin/returns//dismiss-items/](undefined/api/admin#returns_postreturnsiddismissitemsaction_id)
+- [DELETE /admin/returns//dismiss-items/](undefined/api/admin#returns_deletereturnsiddismissitemsaction_id)
+- [POST /admin/returns//receive-items](undefined/api/admin#returns_postreturnsidreceiveitems)
+- [POST /admin/returns//receive-items/](undefined/api/admin#returns_postreturnsidreceiveitemsaction_id)
+- [DELETE /admin/returns//receive-items/](undefined/api/admin#returns_deletereturnsidreceiveitemsaction_id)
+- [POST /admin/returns//receive](undefined/api/admin#returns_postreturnsidreceive)
+- [DELETE /admin/returns//receive](undefined/api/admin#returns_deletereturnsidreceive)
+- [POST /admin/returns//receive/confirm](undefined/api/admin#returns_postreturnsidreceiveconfirm)
+- [POST /admin/returns//request-items](undefined/api/admin#returns_postreturnsidrequestitems)
+- [POST /admin/returns//request-items/](undefined/api/admin#returns_postreturnsidrequestitemsaction_id)
+- [DELETE /admin/returns//request-items/](undefined/api/admin#returns_deletereturnsidrequestitemsaction_id)
+- [POST /admin/returns//request](undefined/api/admin#returns_postreturnsidrequest)
+- [DELETE /admin/returns//request](undefined/api/admin#returns_deletereturnsidrequest)
+- [POST /admin/returns//shipping-method](undefined/api/admin#returns_postreturnsidshippingmethod)
+- [POST /admin/returns//shipping-method/](undefined/api/admin#returns_postreturnsidshippingmethodaction_id)
+- [DELETE /admin/returns//shipping-method/](undefined/api/admin#returns_deletereturnsidshippingmethodaction_id)
+- [GET /admin/sales-channels](undefined/api/admin#sales-channels_getsaleschannels)
+- [POST /admin/sales-channels](undefined/api/admin#sales-channels_postsaleschannels)
+- [GET /admin/sales-channels/](undefined/api/admin#sales-channels_getsaleschannelsid)
+- [POST /admin/sales-channels/](undefined/api/admin#sales-channels_postsaleschannelsid)
+- [DELETE /admin/sales-channels/](undefined/api/admin#sales-channels_deletesaleschannelsid)
+- [POST /admin/sales-channels//products](undefined/api/admin#sales-channels_postsaleschannelsidproducts)
+- [GET /admin/search-indexes](undefined/api/admin#search-indexes_getsearchindexes)
+- [DELETE /admin/search-indexes/](undefined/api/admin#search-indexes_deletesearchindexesid)
+- [POST /admin/search-indexes//reindex](undefined/api/admin#search-indexes_postsearchindexesidreindex)
+- [GET /admin/search](undefined/api/admin#search_getsearch)
+- [GET /admin/shipping-option-types](undefined/api/admin#shipping-option-types_getshippingoptiontypes)
+- [POST /admin/shipping-option-types](undefined/api/admin#shipping-option-types_postshippingoptiontypes)
+- [GET /admin/shipping-option-types/](undefined/api/admin#shipping-option-types_getshippingoptiontypesid)
+- [POST /admin/shipping-option-types/](undefined/api/admin#shipping-option-types_postshippingoptiontypesid)
+- [DELETE /admin/shipping-option-types/](undefined/api/admin#shipping-option-types_deleteshippingoptiontypesid)
+- [GET /admin/shipping-options](undefined/api/admin#shipping-options_getshippingoptions)
+- [POST /admin/shipping-options](undefined/api/admin#shipping-options_postshippingoptions)
+- [GET /admin/shipping-options/](undefined/api/admin#shipping-options_getshippingoptionsid)
+- [POST /admin/shipping-options/](undefined/api/admin#shipping-options_postshippingoptionsid)
+- [DELETE /admin/shipping-options/](undefined/api/admin#shipping-options_deleteshippingoptionsid)
+- [POST /admin/shipping-options//rules/batch](undefined/api/admin#shipping-options_postshippingoptionsidrulesbatch)
+- [GET /admin/shipping-profiles](undefined/api/admin#shipping-profiles_getshippingprofiles)
+- [POST /admin/shipping-profiles](undefined/api/admin#shipping-profiles_postshippingprofiles)
+- [GET /admin/shipping-profiles/](undefined/api/admin#shipping-profiles_getshippingprofilesid)
+- [POST /admin/shipping-profiles/](undefined/api/admin#shipping-profiles_postshippingprofilesid)
+- [DELETE /admin/shipping-profiles/](undefined/api/admin#shipping-profiles_deleteshippingprofilesid)
+- [GET /admin/stock-locations](undefined/api/admin#stock-locations_getstocklocations)
+- [POST /admin/stock-locations](undefined/api/admin#stock-locations_poststocklocations)
+- [GET /admin/stock-locations/](undefined/api/admin#stock-locations_getstocklocationsid)
+- [POST /admin/stock-locations/](undefined/api/admin#stock-locations_poststocklocationsid)
+- [DELETE /admin/stock-locations/](undefined/api/admin#stock-locations_deletestocklocationsid)
+- [POST /admin/stock-locations//fulfillment-providers](undefined/api/admin#stock-locations_poststocklocationsidfulfillmentproviders)
+- [POST /admin/stock-locations//fulfillment-sets](undefined/api/admin#stock-locations_poststocklocationsidfulfillmentsets)
+- [POST /admin/stock-locations//sales-channels](undefined/api/admin#stock-locations_poststocklocationsidsaleschannels)
+- [GET /admin/store-credit-accounts](undefined/api/admin#store-credit-accounts_getstorecreditaccounts)
+- [POST /admin/store-credit-accounts](undefined/api/admin#store-credit-accounts_poststorecreditaccounts)
+- [GET /admin/store-credit-accounts/](undefined/api/admin#store-credit-accounts_getstorecreditaccountsid)
+- [POST /admin/store-credit-accounts//credit](undefined/api/admin#store-credit-accounts_poststorecreditaccountsidcredit)
+- [POST /admin/store-credit-accounts//debit](undefined/api/admin#store-credit-accounts_poststorecreditaccountsiddebit)
+- [GET /admin/store-credit-accounts//transactions](undefined/api/admin#store-credit-accounts_getstorecreditaccountsidtransactions)
+- [GET /admin/stores](undefined/api/admin#stores_getstores)
+- [GET /admin/stores/](undefined/api/admin#stores_getstoresid)
+- [POST /admin/stores/](undefined/api/admin#stores_poststoresid)
+- [GET /admin/tax-providers](undefined/api/admin#tax-providers_gettaxproviders)
+- [GET /admin/tax-rates](undefined/api/admin#tax-rates_gettaxrates)
+- [POST /admin/tax-rates](undefined/api/admin#tax-rates_posttaxrates)
+- [GET /admin/tax-rates/](undefined/api/admin#tax-rates_gettaxratesid)
+- [POST /admin/tax-rates/](undefined/api/admin#tax-rates_posttaxratesid)
+- [DELETE /admin/tax-rates/](undefined/api/admin#tax-rates_deletetaxratesid)
+- [POST /admin/tax-rates//rules](undefined/api/admin#tax-rates_posttaxratesidrules)
+- [DELETE /admin/tax-rates//rules/](undefined/api/admin#tax-rates_deletetaxratesidrulesrule_id)
+- [GET /admin/tax-regions](undefined/api/admin#tax-regions_gettaxregions)
+- [POST /admin/tax-regions](undefined/api/admin#tax-regions_posttaxregions)
+- [GET /admin/tax-regions/](undefined/api/admin#tax-regions_gettaxregionsid)
+- [POST /admin/tax-regions/](undefined/api/admin#tax-regions_posttaxregionsid)
+- [DELETE /admin/tax-regions/](undefined/api/admin#tax-regions_deletetaxregionsid)
+- [GET /admin/translations](undefined/api/admin#translations_gettranslations)
+- [POST /admin/translations/batch](undefined/api/admin#translations_posttranslationsbatch)
+- [GET /admin/translations/entities](undefined/api/admin#translations_gettranslationsentities)
+- [GET /admin/translations/settings](undefined/api/admin#translations_gettranslationssettings)
+- [POST /admin/translations/settings/batch](undefined/api/admin#translations_posttranslationssettingsbatch)
+- [GET /admin/translations/statistics](undefined/api/admin#translations_gettranslationsstatistics)
+- [POST /admin/uploads](undefined/api/admin#uploads_postuploads)
+- [POST /admin/uploads/presigned-urls](undefined/api/admin#uploads_postuploadspresignedurls)
+- [GET /admin/uploads/](undefined/api/admin#uploads_getuploadsid)
+- [DELETE /admin/uploads/](undefined/api/admin#uploads_deleteuploadsid)
+- [GET /admin/users](undefined/api/admin#users_getusers)
+- [GET /admin/users/me](undefined/api/admin#users_getusersme)
+- [GET /admin/users/](undefined/api/admin#users_getusersid)
+- [POST /admin/users/](undefined/api/admin#users_postusersid)
+- [DELETE /admin/users/](undefined/api/admin#users_deleteusersid)
+- [GET /admin/users//auth-providers](undefined/api/admin#users_getusersidauthproviders)
+- [POST /admin/users//reset-password](undefined/api/admin#users_postusersidresetpassword)
+- [GET /admin/views/entities](undefined/api/admin#views_getviewsentities)
+- [GET /admin/views//columns](undefined/api/admin#views_getviewsentitycolumns)
+- [GET /admin/views//configurations](undefined/api/admin#views_getviewsentityconfigurations)
+- [POST /admin/views//configurations](undefined/api/admin#views_postviewsentityconfigurations)
+- [GET /admin/views//configurations/active](undefined/api/admin#views_getviewsentityconfigurationsactive)
+- [POST /admin/views//configurations/active](undefined/api/admin#views_postviewsentityconfigurationsactive)
+- [GET /admin/views//configurations/](undefined/api/admin#views_getviewsentityconfigurationsid)
+- [POST /admin/views//configurations/](undefined/api/admin#views_postviewsentityconfigurationsid)
+- [DELETE /admin/views//configurations/](undefined/api/admin#views_deleteviewsentityconfigurationsid)
+- [GET /admin/workflows-executions](undefined/api/admin#workflows-executions_getworkflowsexecutions)
+- [GET /admin/workflows-executions/](undefined/api/admin#workflows-executions_getworkflowsexecutionsid)
+- [POST /admin/workflows-executions//run](undefined/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idrun)
+- [POST /admin/workflows-executions//steps/failure](undefined/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepsfailure)
+- [POST /admin/workflows-executions//steps/success](undefined/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess)
+- [GET /admin/workflows-executions//subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idsubscribe)
+- [GET /admin/workflows-executions//](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id)
+- [GET /admin/workflows-executions///subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe)
+- [POST /auth/mfa/challenges//verify](undefined/api/admin#multi-factor-authentication_postmfachallengesidverify)
+- [GET /auth/mfa/factors](undefined/api/admin#multi-factor-authentication_getmfafactors)
+- [POST /auth/mfa/factors](undefined/api/admin#multi-factor-authentication_postmfafactors)
+- [DELETE /auth/mfa/factors/](undefined/api/admin#auth_deletemfafactorsid)
+- [POST /auth/mfa/factors//verify](undefined/api/admin#multi-factor-authentication_postmfafactorsidverify)
+- [POST /auth/mfa/recovery-codes](undefined/api/admin#multi-factor-authentication_postmfarecoverycodes)
+- [POST /auth/session](undefined/api/admin#auth_postsession)
+- [DELETE /auth/session](undefined/api/admin#auth_deletesession)
+- [POST /auth/token/refresh](undefined/api/admin#auth_postadminauthtokenrefresh)
+- [GET /auth/user/providers](undefined/api/admin#auth_getuserproviders)
+- [POST /auth/user/](undefined/api/admin#auth_postactor_typeauth_provider)
+- [POST /auth/user//callback](undefined/api/admin#auth_postactor_typeauth_providercallback)
+- [POST /auth/user//register](undefined/api/admin#auth_postactor_typeauth_provider_register)
+- [POST /auth/user//reset-password](undefined/api/admin#auth_postactor_typeauth_providerresetpassword)
+- [POST /auth/user//update](undefined/api/admin#auth_postactor_typeauth_providerupdate)
+- [POST /auth//user](undefined/api/admin#auth_provider_postauth_provideruser)
 
 
 ## Store API Reference
 
-- [POST /auth/customer/emailpass/verification/confirm](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerverificationconfirm)
-- [GET /auth/customer/providers](https://docs.medusajs.com/api/store#auth_getcustomerproviders)
-- [POST /auth/customer/](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider)
-- [POST /auth/customer//callback](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providercallback)
-- [POST /auth/customer//register](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register)
-- [POST /auth/customer//reset-password](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerresetpassword)
-- [POST /auth/customer//update](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerupdate)
-- [POST /auth/mfa/challenges//verify](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_postmfachallengesidverify)
-- [GET /auth/mfa/factors](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_getmfafactors)
-- [POST /auth/mfa/factors](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactors)
-- [DELETE /auth/mfa/factors/](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_deletemfafactorsid)
-- [POST /auth/mfa/factors//verify](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactorsidverify)
-- [POST /auth/mfa/recovery-codes](https://docs.medusajs.com/api/store#multi-factor-authentication-\(mfa\)-factors_postmfarecoverycodes)
-- [POST /auth/session](https://docs.medusajs.com/api/store#auth_postsession)
-- [DELETE /auth/session](https://docs.medusajs.com/api/store#auth_deletesession)
-- [POST /auth/token/refresh](https://docs.medusajs.com/api/store#auth_postadminauthtokenrefresh)
-- [POST /auth/verification/confirm](https://docs.medusajs.com/api/store#auth_postverificationconfirm)
-- [POST /auth/verification/request](https://docs.medusajs.com/api/store#auth_postverificationrequest)
-- [POST /store/carts](https://docs.medusajs.com/api/store#carts_postcarts)
-- [GET /store/carts/](https://docs.medusajs.com/api/store#carts_getcartsid)
-- [POST /store/carts/](https://docs.medusajs.com/api/store#carts_postcartsid)
-- [POST /store/carts//complete](https://docs.medusajs.com/api/store#carts_postcartsidcomplete)
-- [POST /store/carts//customer](https://docs.medusajs.com/api/store#carts_postcartsidcustomer)
-- [POST /store/carts//gift-cards](https://docs.medusajs.com/api/store#carts_postcartsidgiftcards)
-- [DELETE /store/carts//gift-cards](https://docs.medusajs.com/api/store#carts_deletecartsidgiftcards)
-- [POST /store/carts//line-items](https://docs.medusajs.com/api/store#carts_postcartsidlineitems)
-- [POST /store/carts//line-items/](https://docs.medusajs.com/api/store#carts_postcartsidlineitemsline_id)
-- [DELETE /store/carts//line-items/](https://docs.medusajs.com/api/store#carts_deletecartsidlineitemsline_id)
-- [POST /store/carts//promotions](https://docs.medusajs.com/api/store#carts_postcartsidpromotions)
-- [DELETE /store/carts//promotions](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions)
-- [POST /store/carts//shipping-methods](https://docs.medusajs.com/api/store#carts_postcartsidshippingmethods)
-- [POST /store/carts//store-credits](https://docs.medusajs.com/api/store#carts_postcartsidstorecredits)
-- [POST /store/carts//taxes](https://docs.medusajs.com/api/store#carts_postcartsidtaxes)
-- [GET /store/collections](https://docs.medusajs.com/api/store#collections_getcollections)
-- [GET /store/collections/](https://docs.medusajs.com/api/store#collections_getcollectionsid)
-- [GET /store/currencies](https://docs.medusajs.com/api/store#currencies_getcurrencies)
-- [GET /store/currencies/](https://docs.medusajs.com/api/store#currencies_getcurrenciescode)
-- [POST /store/customers](https://docs.medusajs.com/api/store#customers_postcustomers)
-- [GET /store/customers/me](https://docs.medusajs.com/api/store#customers_getcustomersme)
-- [POST /store/customers/me](https://docs.medusajs.com/api/store#customers_postcustomersme)
-- [GET /store/customers/me/addresses](https://docs.medusajs.com/api/store#customers_getcustomersmeaddresses)
-- [POST /store/customers/me/addresses](https://docs.medusajs.com/api/store#customers_postcustomersmeaddresses)
-- [GET /store/customers/me/addresses/](https://docs.medusajs.com/api/store#customers_getcustomersmeaddressesaddress_id)
-- [POST /store/customers/me/addresses/](https://docs.medusajs.com/api/store#customers_postcustomersmeaddressesaddress_id)
-- [DELETE /store/customers/me/addresses/](https://docs.medusajs.com/api/store#customers_deletecustomersmeaddressesaddress_id)
-- [GET /store/gift-cards/](https://docs.medusajs.com/api/store#gift-cards_getgiftcardsidorcode)
-- [GET /store/locales](https://docs.medusajs.com/api/store#locales_getlocales)
-- [GET /store/orders](https://docs.medusajs.com/api/store#orders_getorders)
-- [GET /store/orders/](https://docs.medusajs.com/api/store#orders_getordersid)
-- [POST /store/orders//transfer/accept](https://docs.medusajs.com/api/store#orders_postordersidtransferaccept)
-- [POST /store/orders//transfer/cancel](https://docs.medusajs.com/api/store#orders_postordersidtransfercancel)
-- [POST /store/orders//transfer/decline](https://docs.medusajs.com/api/store#orders_postordersidtransferdecline)
-- [POST /store/orders//transfer/request](https://docs.medusajs.com/api/store#orders_postordersidtransferrequest)
-- [POST /store/payment-collections](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollections)
-- [POST /store/payment-collections//payment-sessions](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions)
-- [GET /store/payment-providers](https://docs.medusajs.com/api/store#payment-providers_getpaymentproviders)
-- [GET /store/product-categories](https://docs.medusajs.com/api/store#product-categories_getproductcategories)
-- [GET /store/product-categories/](https://docs.medusajs.com/api/store#product-categories_getproductcategoriesid)
-- [GET /store/product-options](https://docs.medusajs.com/api/store#product-options_getproductoptions)
-- [GET /store/product-options/](https://docs.medusajs.com/api/store#product-options_getproductoptionsid)
-- [GET /store/product-tags](https://docs.medusajs.com/api/store#product-tags_getproducttags)
-- [GET /store/product-tags/](https://docs.medusajs.com/api/store#product-tags_getproducttagsid)
-- [GET /store/product-types](https://docs.medusajs.com/api/store#product-types_getproducttypes)
-- [GET /store/product-types/](https://docs.medusajs.com/api/store#product-types_getproducttypesid)
-- [GET /store/product-variants](https://docs.medusajs.com/api/store#product-variants_getproductvariants)
-- [GET /store/products](https://docs.medusajs.com/api/store#products_getproducts)
-- [GET /store/products/](https://docs.medusajs.com/api/store#products_getproductsid)
-- [GET /store/regions](https://docs.medusajs.com/api/store#regions_getregions)
-- [GET /store/regions/](https://docs.medusajs.com/api/store#regions_getregionsid)
-- [GET /store/return-reasons](https://docs.medusajs.com/api/store#return-reasons_getreturnreasons)
-- [GET /store/return-reasons/](https://docs.medusajs.com/api/store#return-reasons_getreturnreasonsid)
-- [POST /store/returns](https://docs.medusajs.com/api/store#returns_postreturns)
-- [POST /store/search](https://docs.medusajs.com/api/store#search_postsearch)
-- [GET /store/shipping-options](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions)
-- [POST /store/shipping-options//calculate](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate)
-- [GET /store/store-credit-accounts](https://docs.medusajs.com/api/store#store-credit-accounts_getstorecreditaccounts)
-- [POST /store/store-credit-accounts/claim](https://docs.medusajs.com/api/store#store-credit-accounts_poststorecreditaccountsclaim)
-- [GET /store/store-credit-accounts/](https://docs.medusajs.com/api/store#store-credit-accounts_getstorecreditaccountsid)
+- [POST /auth/customer/emailpass/verification/confirm](undefined/api/store#auth_postactor_typeauth_providerverificationconfirm)
+- [GET /auth/customer/providers](undefined/api/store#auth_getcustomerproviders)
+- [POST /auth/customer/](undefined/api/store#auth_postactor_typeauth_provider)
+- [POST /auth/customer//callback](undefined/api/store#auth_postactor_typeauth_providercallback)
+- [POST /auth/customer//register](undefined/api/store#auth_postactor_typeauth_provider_register)
+- [POST /auth/customer//reset-password](undefined/api/store#auth_postactor_typeauth_providerresetpassword)
+- [POST /auth/customer//update](undefined/api/store#auth_postactor_typeauth_providerupdate)
+- [POST /auth/mfa/challenges//verify](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfachallengesidverify)
+- [GET /auth/mfa/factors](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_getmfafactors)
+- [POST /auth/mfa/factors](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactors)
+- [DELETE /auth/mfa/factors/](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_deletemfafactorsid)
+- [POST /auth/mfa/factors//verify](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactorsidverify)
+- [POST /auth/mfa/recovery-codes](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfarecoverycodes)
+- [POST /auth/session](undefined/api/store#auth_postsession)
+- [DELETE /auth/session](undefined/api/store#auth_deletesession)
+- [POST /auth/token/refresh](undefined/api/store#auth_postadminauthtokenrefresh)
+- [POST /auth/verification/confirm](undefined/api/store#auth_postverificationconfirm)
+- [POST /auth/verification/request](undefined/api/store#auth_postverificationrequest)
+- [POST /store/carts](undefined/api/store#carts_postcarts)
+- [GET /store/carts/](undefined/api/store#carts_getcartsid)
+- [POST /store/carts/](undefined/api/store#carts_postcartsid)
+- [POST /store/carts//complete](undefined/api/store#carts_postcartsidcomplete)
+- [POST /store/carts//customer](undefined/api/store#carts_postcartsidcustomer)
+- [POST /store/carts//gift-cards](undefined/api/store#carts_postcartsidgiftcards)
+- [DELETE /store/carts//gift-cards](undefined/api/store#carts_deletecartsidgiftcards)
+- [POST /store/carts//line-items](undefined/api/store#carts_postcartsidlineitems)
+- [POST /store/carts//line-items/](undefined/api/store#carts_postcartsidlineitemsline_id)
+- [DELETE /store/carts//line-items/](undefined/api/store#carts_deletecartsidlineitemsline_id)
+- [POST /store/carts//promotions](undefined/api/store#carts_postcartsidpromotions)
+- [DELETE /store/carts//promotions](undefined/api/store#carts_deletecartsidpromotions)
+- [POST /store/carts//shipping-methods](undefined/api/store#carts_postcartsidshippingmethods)
+- [POST /store/carts//store-credits](undefined/api/store#carts_postcartsidstorecredits)
+- [POST /store/carts//taxes](undefined/api/store#carts_postcartsidtaxes)
+- [GET /store/collections](undefined/api/store#collections_getcollections)
+- [GET /store/collections/](undefined/api/store#collections_getcollectionsid)
+- [GET /store/currencies](undefined/api/store#currencies_getcurrencies)
+- [GET /store/currencies/](undefined/api/store#currencies_getcurrenciescode)
+- [POST /store/customers](undefined/api/store#customers_postcustomers)
+- [GET /store/customers/me](undefined/api/store#customers_getcustomersme)
+- [POST /store/customers/me](undefined/api/store#customers_postcustomersme)
+- [GET /store/customers/me/addresses](undefined/api/store#customers_getcustomersmeaddresses)
+- [POST /store/customers/me/addresses](undefined/api/store#customers_postcustomersmeaddresses)
+- [GET /store/customers/me/addresses/](undefined/api/store#customers_getcustomersmeaddressesaddress_id)
+- [POST /store/customers/me/addresses/](undefined/api/store#customers_postcustomersmeaddressesaddress_id)
+- [DELETE /store/customers/me/addresses/](undefined/api/store#customers_deletecustomersmeaddressesaddress_id)
+- [GET /store/gift-cards/](undefined/api/store#gift-cards_getgiftcardsidorcode)
+- [GET /store/locales](undefined/api/store#locales_getlocales)
+- [GET /store/orders](undefined/api/store#orders_getorders)
+- [GET /store/orders/](undefined/api/store#orders_getordersid)
+- [POST /store/orders//transfer/accept](undefined/api/store#orders_postordersidtransferaccept)
+- [POST /store/orders//transfer/cancel](undefined/api/store#orders_postordersidtransfercancel)
+- [POST /store/orders//transfer/decline](undefined/api/store#orders_postordersidtransferdecline)
+- [POST /store/orders//transfer/request](undefined/api/store#orders_postordersidtransferrequest)
+- [POST /store/payment-collections](undefined/api/store#payment-collections_postpaymentcollections)
+- [POST /store/payment-collections//payment-sessions](undefined/api/store#payment-collections_postpaymentcollectionsidpaymentsessions)
+- [GET /store/payment-providers](undefined/api/store#payment-providers_getpaymentproviders)
+- [GET /store/product-categories](undefined/api/store#product-categories_getproductcategories)
+- [GET /store/product-categories/](undefined/api/store#product-categories_getproductcategoriesid)
+- [GET /store/product-options](undefined/api/store#product-options_getproductoptions)
+- [GET /store/product-options/](undefined/api/store#product-options_getproductoptionsid)
+- [GET /store/product-tags](undefined/api/store#product-tags_getproducttags)
+- [GET /store/product-tags/](undefined/api/store#product-tags_getproducttagsid)
+- [GET /store/product-types](undefined/api/store#product-types_getproducttypes)
+- [GET /store/product-types/](undefined/api/store#product-types_getproducttypesid)
+- [GET /store/product-variants](undefined/api/store#product-variants_getproductvariants)
+- [GET /store/products](undefined/api/store#products_getproducts)
+- [GET /store/products/](undefined/api/store#products_getproductsid)
+- [GET /store/regions](undefined/api/store#regions_getregions)
+- [GET /store/regions/](undefined/api/store#regions_getregionsid)
+- [GET /store/return-reasons](undefined/api/store#return-reasons_getreturnreasons)
+- [GET /store/return-reasons/](undefined/api/store#return-reasons_getreturnreasonsid)
+- [POST /store/returns](undefined/api/store#returns_postreturns)
+- [POST /store/search](undefined/api/store#search_postsearch)
+- [GET /store/shipping-options](undefined/api/store#shipping-options_getshippingoptions)
+- [POST /store/shipping-options//calculate](undefined/api/store#shipping-options_postshippingoptionsidcalculate)
+- [GET /store/store-credit-accounts](undefined/api/store#store-credit-accounts_getstorecreditaccounts)
+- [POST /store/store-credit-accounts/claim](undefined/api/store#store-credit-accounts_poststorecreditaccountsclaim)
+- [GET /store/store-credit-accounts/](undefined/api/store#store-credit-accounts_getstorecreditaccountsid)
 
 
 # Alert
