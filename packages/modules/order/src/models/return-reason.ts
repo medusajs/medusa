@@ -8,16 +8,13 @@ const _ReturnReason = model
     description: model.text().translatable().nullable(),
     metadata: model.json().nullable(),
     parent_return_reason: model
-      .belongsTo<() => typeof _ReturnReason>(() => _ReturnReason, {
+      .belongsTo<any>(() => _ReturnReason, {
         mappedBy: "return_reason_children",
       })
       .nullable(),
-    return_reason_children: model.hasMany<() => typeof _ReturnReason>(
-      () => _ReturnReason,
-      {
-        mappedBy: "parent_return_reason",
-      }
-    ),
+    return_reason_children: model.hasMany<any>(() => _ReturnReason, {
+      mappedBy: "parent_return_reason",
+    }),
   })
   .indexes([
     {
