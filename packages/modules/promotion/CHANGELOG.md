@@ -1,5 +1,14 @@
 # @medusajs/promotion
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16954](https://github.com/medusajs/medusa/pull/16954) [`3718c46fa637e6556461fd50703425ee2cd33bfd`](https://github.com/medusajs/medusa/commit/3718c46fa637e6556461fd50703425ee2cd33bfd) Thanks [@DylanCuure](https://github.com/DylanCuure)! - fix(promotion): correlate the automatic promotion prefilter with the candidate promotions, so its cost no longer grows with the total number of promotions
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

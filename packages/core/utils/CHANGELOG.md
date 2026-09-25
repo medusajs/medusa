@@ -1,5 +1,16 @@
 # @medusajs/utils
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16568](https://github.com/medusajs/medusa/pull/16568) [`1ba69082ceb941d47cfe390212f400e39a7166dd`](https://github.com/medusajs/medusa/commit/1ba69082ceb941d47cfe390212f400e39a7166dd) Thanks [@wakqasahmed](https://github.com/wakqasahmed)! - fix(utils): strip g/y flags in buildRegexpIfValid for CORS origins
+
+- [#16908](https://github.com/medusajs/medusa/pull/16908) [`989880a6c51f3659453473b2a5b068e83ce4fc78`](https://github.com/medusajs/medusa/commit/989880a6c51f3659453473b2a5b068e83ce4fc78) Thanks [@Dextheking1](https://github.com/Dextheking1)! - fix(@medusajs/utils, @medusajs/medusa): correct misspelled parameter name in getSetDifference
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

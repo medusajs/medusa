@@ -1,5 +1,14 @@
 # @medusajs/payment
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16899](https://github.com/medusajs/medusa/pull/16899) [`5f12d59a33c718aef7fc68150e8950f88087f80e`](https://github.com/medusajs/medusa/commit/5f12d59a33c718aef7fc68150e8950f88087f80e) Thanks [@RoxasZohbi](https://github.com/RoxasZohbi)! - fix(payment): avoid double-prefixing an already pp\_-prefixed provider id in webhook handling
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

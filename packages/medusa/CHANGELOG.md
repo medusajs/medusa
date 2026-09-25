@@ -1,5 +1,71 @@
 # Change Log
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16959](https://github.com/medusajs/medusa/pull/16959) [`2aaf53962055fce8e302a76dd416e4eb6ead5929`](https://github.com/medusajs/medusa/commit/2aaf53962055fce8e302a76dd416e4eb6ead5929) Thanks [@Dextheking1](https://github.com/Dextheking1)! - fix(medusa): allow omitting deprecated options in admin product updates
+
+- [#16908](https://github.com/medusajs/medusa/pull/16908) [`989880a6c51f3659453473b2a5b068e83ce4fc78`](https://github.com/medusajs/medusa/commit/989880a6c51f3659453473b2a5b068e83ce4fc78) Thanks [@Dextheking1](https://github.com/Dextheking1)! - fix(@medusajs/utils, @medusajs/medusa): correct misspelled parameter name in getSetDifference
+
+- Updated dependencies [[`494745b8e6b63024e1b7741fe95caa4d03b464b0`](https://github.com/medusajs/medusa/commit/494745b8e6b63024e1b7741fe95caa4d03b464b0), [`3718c46fa637e6556461fd50703425ee2cd33bfd`](https://github.com/medusajs/medusa/commit/3718c46fa637e6556461fd50703425ee2cd33bfd), [`847de248bcd0d70c558364591df44ac645c90245`](https://github.com/medusajs/medusa/commit/847de248bcd0d70c558364591df44ac645c90245), [`5f12d59a33c718aef7fc68150e8950f88087f80e`](https://github.com/medusajs/medusa/commit/5f12d59a33c718aef7fc68150e8950f88087f80e), [`aff9d3e847f254bfa36c55c9daa4d6261a4b8e23`](https://github.com/medusajs/medusa/commit/aff9d3e847f254bfa36c55c9daa4d6261a4b8e23), [`08f73ec78e17a3a5b6db112290e28f8b3ed79ef6`](https://github.com/medusajs/medusa/commit/08f73ec78e17a3a5b6db112290e28f8b3ed79ef6), [`7054b05d1fa2bebfd168766737bdebc9ef1a15a3`](https://github.com/medusajs/medusa/commit/7054b05d1fa2bebfd168766737bdebc9ef1a15a3)]:
+  - @medusajs/search@2.21.2
+  - @medusajs/promotion@2.21.2
+  - @medusajs/draft-order@2.21.2
+  - @medusajs/payment@2.21.2
+  - @medusajs/workflow-engine-redis@2.21.2
+  - @medusajs/framework@2.21.2
+  - @medusajs/event-bus-redis@2.21.2
+  - @medusajs/admin-bundler@2.21.2
+  - @medusajs/core-flows@2.21.2
+  - @medusajs/analytics@2.21.2
+  - @medusajs/api-key@2.21.2
+  - @medusajs/auth@2.21.2
+  - @medusajs/cache-inmemory@2.21.2
+  - @medusajs/cache-redis@2.21.2
+  - @medusajs/caching@2.21.2
+  - @medusajs/cart@2.21.2
+  - @medusajs/currency@2.21.2
+  - @medusajs/customer@2.21.2
+  - @medusajs/event-bus-local@2.21.2
+  - @medusajs/file@2.21.2
+  - @medusajs/fulfillment@2.21.2
+  - @medusajs/index@2.21.2
+  - @medusajs/inventory@2.21.2
+  - @medusajs/link-modules@2.21.2
+  - @medusajs/locking@2.21.2
+  - @medusajs/notification@2.21.2
+  - @medusajs/order@2.21.2
+  - @medusajs/pricing@2.21.2
+  - @medusajs/product@2.21.2
+  - @medusajs/analytics-local@2.21.2
+  - @medusajs/analytics-posthog@2.21.2
+  - @medusajs/auth-emailpass@2.21.2
+  - @medusajs/auth-github@2.21.2
+  - @medusajs/auth-google@2.21.2
+  - @medusajs/auth-oidc@2.21.2
+  - @medusajs/caching-redis@2.21.2
+  - @medusajs/file-local@2.21.2
+  - @medusajs/file-s3@2.21.2
+  - @medusajs/fulfillment-manual@2.21.2
+  - @medusajs/locking-postgres@2.21.2
+  - @medusajs/locking-redis@2.21.2
+  - @medusajs/notification-local@2.21.2
+  - @medusajs/notification-sendgrid@2.21.2
+  - @medusajs/payment-stripe@2.21.2
+  - @medusajs/search-postgres@2.21.2
+  - @medusajs/rbac@2.21.2
+  - @medusajs/region@2.21.2
+  - @medusajs/sales-channel@2.21.2
+  - @medusajs/settings@2.21.2
+  - @medusajs/stock-location@2.21.2
+  - @medusajs/store@2.21.2
+  - @medusajs/tax@2.21.2
+  - @medusajs/translation@2.21.2
+  - @medusajs/user@2.21.2
+  - @medusajs/workflow-engine-inmemory@2.21.2
+  - @medusajs/telemetry@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes
