@@ -428,4 +428,26 @@ describe("applyTranslations", () => {
 
     expect(data[0].documents).toHaveLength(2)
   })
+
+  it("should ignore numeric ids from external services", async () => {
+    const inputObjects = [
+      {
+        id: "prod_1",
+        title: "Original",
+        external: { id: 12345, name: "External" },
+      },
+    ]
+
+    mockQuery.graph.mockResolvedValue({ data: [] })
+
+    await applyTranslations({
+      localeCode: "en-US",
+      objects: inputObjects,
+      container: mockContainer as any,
+    })
+
+    const filters = mockQuery.graph.mock.calls[0][0].filters
+    expect(filters.reference_id).toContain("prod_1")
+    expect(filters.reference_id).not.toContain(12345)
+  })
 })
