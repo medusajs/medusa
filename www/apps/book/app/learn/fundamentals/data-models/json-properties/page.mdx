@@ -260,6 +260,51 @@ The brand record will now have the `metadata` property updated to remove the `is
 }
 ```
 
+<Note title="Tip">
+
+Only an empty string removes a property. If you pass `null` as the value of a property, Medusa stores `null` as the property's value instead of removing it.
+
+</Note>
+
+### Manage Metadata in Commerce Modules and Workflows
+
+The merge behavior explained in this chapter also applies to the `metadata` property of data models in Medusa's Commerce Modules. This includes:
+
+- Module service methods, such as the Product Module's `updateProducts`, the Order Module's `updateOrders` and `updateOrderLineItems`, and the Cart Module's `updateCarts` and `updateLineItems`.
+- Workflows and steps that use these methods, such as `updateProductsWorkflow`, `updateOrderWorkflow`, `updateCartWorkflow`, and `updateCartsStep`.
+- All API routes that are built on top of these workflows.
+
+So, when you pass `metadata` to these API routes, methods, workflows, or steps:
+
+- Medusa merges the top-level properties you pass with the existing `metadata`. Properties you don't pass remain unchanged.
+- Medusa replaces nested objects entirely, as explained in the [Caveat: Updating Nested Objects](#caveat-updating-nested-objects) section. To change a single nested property, retrieve the record first, then pass the entire nested object with your changes.
+- Medusa removes properties whose value is an empty string.
+
+For example, to add a property to a product's `metadata` and remove another one using the `updateProductsWorkflow`:
+
+```ts
+import { updateProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { result } = await updateProductsWorkflow(container)
+  .run({
+    input: {
+      products: [
+        {
+          id: "prod_123",
+          metadata: {
+            erp_id: "erp_123",
+            old_tax_code: "",
+          },
+        },
+      ],
+    },
+  })
+```
+
+After the update, the product's `metadata` has the new `erp_id` property, doesn't have the `old_tax_code` property, and keeps all other existing properties.
+
 ### Manage JSON Properties in API Routes
 
 The instructions above also apply when managing JSON properties in API routes, since they typically use a service's `update` method under the hood.
