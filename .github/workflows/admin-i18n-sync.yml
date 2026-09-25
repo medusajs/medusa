@@ -162,6 +162,7 @@ jobs:
 
       - name: Apply translations
         id: apply
+        shell: bash
         run: |
           node "$SYNC_SCRIPT" missing > /tmp/before.txt
           node "$SYNC_SCRIPT" apply --input /tmp/i18n/translations 2>&1 | tee /tmp/apply.log

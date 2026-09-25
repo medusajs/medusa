@@ -15,7 +15,6 @@ import {
   ComponentParser,
   parseCard,
   parseCardList,
-  parseChangelogList,
   parseChildDocs,
   parseCodeTabs,
   parseColors,
@@ -25,6 +24,7 @@ import {
   parseEventHeader,
   parseHookValues,
   parseIconSearch,
+  parseInjectedMarkdown,
   parseNote,
   parsePackageInstall,
   parsePrerequisites,
@@ -49,7 +49,7 @@ import { globalConfig } from "./global-config.js"
 const parsers: Record<string, ComponentParser> = {
   Card: parseCard,
   CardList: parseCardList,
-  ChangelogList: parseChangelogList,
+  ChangelogList: parseInjectedMarkdown,
   ChildDocs: parseChildDocs,
   CodeTabs: parseCodeTabs,
   Details: parseDetails,
@@ -68,12 +68,14 @@ const parsers: Record<string, ComponentParser> = {
   Colors: parseColors,
   SplitList: parseSplitList,
   EventHeader: parseEventHeader,
+  PricingContent: parseInjectedMarkdown,
 }
 
 const asyncParserNames = new Set([
   "ChangelogList",
   "ComponentExample",
   "ComponentReference",
+  "PricingContent",
 ])
 
 const isComponentAllowed = (nodeName: string): boolean => {
