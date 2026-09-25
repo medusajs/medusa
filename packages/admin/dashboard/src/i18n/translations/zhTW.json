@@ -44,6 +44,7 @@
     "details": "詳細資訊",
     "items_one": "{{count}} 項",
     "items_other": "{{count}} 項",
+    "values_one": "{{count}} 個值",
     "values_other": "{{count}} 個值",
     "countSelected": "已選擇 {{count}} 項",
     "countOfTotalSelected": "已選擇 {{count}} / {{total}} 項",
@@ -181,22 +182,16 @@
         "all": "所有區域",
         "customer": "顧客",
         "customer_group": "顧客群組",
-        "customerGroup": "顧客群組",
         "product": "商品",
         "product_variant": "商品變體",
         "inventory_item": "庫存",
-        "productVariant": "商品變體",
-        "inventory": "庫存",
         "reservation": "預留",
         "product_category": "分類",
         "product_collection": "系列",
-        "category": "分類",
-        "collection": "商品系列",
         "order": "訂單",
         "promotion": "促銷",
         "campaign": "行銷活動",
         "price_list": "價格清單",
-        "priceList": "價格清單",
         "user": "使用者",
         "region": "區域",
         "tax_region": "稅務地區",
@@ -208,6 +203,14 @@
         "shipping_profile": "運送配置檔",
         "publishable_api_key": "可發布 API 金鑰",
         "secret_api_key": "私密 API 金鑰",
+        "command": "指令",
+        "navigation": "導覽",
+        "customerGroup": "顧客群組",
+        "productVariant": "商品變體",
+        "inventory": "庫存",
+        "category": "分類",
+        "collection": "商品系列",
+        "priceList": "價格清單",
         "taxRegion": "稅務區域",
         "returnReason": "退貨原因",
         "salesChannel": "銷售管道",
@@ -216,9 +219,7 @@
         "location": "地點",
         "shippingProfile": "運送設定檔",
         "publishableApiKey": "可發佈 API 金鑰",
-        "secretApiKey": "私密 API 金鑰",
-        "command": "指令",
-        "navigation": "導覽"
+        "secretApiKey": "私密 API 金鑰"
       }
     },
     "keyboardShortcuts": {
@@ -1567,6 +1568,7 @@
       "methodDescription": "選擇與顧客原先不同的運送方式",
       "error": {
         "wrongQuantity": "僅有一個項目可供出貨",
+        "wrongQuantity_one": "只有一件商品可供履行",
         "wrongQuantity_other": "數量應為 1 到 {{number}} 之間的數字",
         "noItems": "沒有項目可供出貨。",
         "noShippingOption": "運送選項為必填",
@@ -2838,13 +2840,16 @@
       "alreadyAddedTooltip": "使用者已擁有此角色。",
       "unassignableRoleTooltip": "您無權指派此角色，您的權限未涵蓋其所有政策。",
       "add": {
+        "successToast_one": "使用者已成功新增至角色。",
         "successToast_other": "使用者已成功新增至角色。",
         "list": {
           "noRecordsMessage": "請先建立使用者。"
         }
       },
       "remove": {
+        "title_one": "移除使用者",
         "title_other": "移除使用者",
+        "description_one": "您即將從角色中移除 {{count}} 個使用者。此操作無法復原。",
         "description_other": "您即將從角色中移除 {{count}} 位使用者。此操作無法復原。"
       },
       "list": {
