@@ -40,9 +40,11 @@
     "remaining": "คงเหลือ",
     "admin": "ผู้ดูแลระบบ",
     "store": "ร้านค้า",
+    "rank": "อันดับ",
     "details": "รายละเอียด",
     "items_one": "{{count}} รายการ",
     "items_other": "{{count}} รายการ",
+    "values_other": "{{count}} ค่า",
     "countSelected": "เลือก {{count}} รายการ",
     "countOfTotalSelected": "เลือก {{count}} จากทั้งหมด {{total}}",
     "plusCount": "+ {{count}}",
@@ -62,7 +64,10 @@
     "unsavedChangesDescription": "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก และจะสูญหายหากคุณออกจากฟอร์มนี้",
     "includesTaxTooltip": "ราคาคอลัมน์นี้รวมภาษีแล้ว",
     "excludesTaxTooltip": "ราคาคอลัมน์นี้ยังไม่รวมภาษี",
-    "noMoreData": "ไม่มีข้อมูลเพิ่มเติม"
+    "noMoreData": "ไม่มีข้อมูลเพิ่มเติม",
+    "quantityPrice": "ราคาตามจำนวน",
+    "exclusive": "เฉพาะสินค้า",
+    "global": "ทั่วโลก"
   },
   "json": {
     "header": "JSON",
@@ -85,7 +90,8 @@
       "actions": {
         "insertRowAbove": "เพิ่มแถวด้านบน",
         "insertRowBelow": "เพิ่มแถวด้านล่าง",
-        "deleteRow": "ลบแถว"
+        "deleteRow": "ลบแถว",
+        "addRow": "เพิ่มแถว"
       },
       "labels": {
         "key": "คีย์",
@@ -146,9 +152,12 @@
     "browse": "เรียกดู",
     "logout": "ออกจากระบบ",
     "hide": "ซ่อน",
+    "show": "แสดง",
     "export": "ส่งออก",
     "import": "นำเข้า",
-    "cannotUndo": "การดำเนินการนี้ไม่สามารถย้อนกลับได้"
+    "cannotUndo": "การดำเนินการนี้ไม่สามารถย้อนกลับได้",
+    "manage": "จัดการ",
+    "goToProductOption": "ไปที่ตัวเลือกสินค้า"
   },
   "operators": {
     "in": "ใน"
@@ -171,19 +180,34 @@
       "groups": {
         "all": "ทุกพื้นที่",
         "customer": "ลูกค้า",
+        "customer_group": "กลุ่มลูกค้า",
         "customerGroup": "กลุ่มลูกค้า",
         "product": "ผลิตภัณฑ์",
+        "product_variant": "ตัวเลือกสินค้า",
+        "inventory_item": "สินค้าคงคลัง",
         "productVariant": "ตัวเลือกผลิตภัณฑ์",
         "inventory": "สินค้าคงคลัง",
         "reservation": "การจอง",
+        "product_category": "หมวดหมู่",
+        "product_collection": "คอลเลกชัน",
         "category": "หมวดหมู่",
         "collection": "คอลเลกชัน",
         "order": "คำสั่งซื้อ",
         "promotion": "โปรโมชั่น",
         "campaign": "แคมเปญ",
+        "price_list": "รายการราคา",
         "priceList": "รายการราคา",
         "user": "ผู้ใช้",
         "region": "ภูมิภาค",
+        "tax_region": "ภูมิภาคภาษี",
+        "return_reason": "เหตุผลการคืนสินค้า",
+        "sales_channel": "ช่องทางการขาย",
+        "product_type": "ประเภทสินค้า",
+        "product_tag": "แท็กสินค้า",
+        "stock_location": "สถานที่จัดเก็บสินค้า",
+        "shipping_profile": "โปรไฟล์การจัดส่ง",
+        "publishable_api_key": "Publishable API Keys",
+        "secret_api_key": "Secret API Keys",
         "taxRegion": "เขตภาษี",
         "returnReason": "เหตุผลในการคืนสินค้า",
         "salesChannel": "ช่องทางการขาย",
@@ -272,6 +296,24 @@
       }
     }
   },
+  "layout": {
+    "customizeTopbar": "ปรับแต่งแถบด้านบน",
+    "customizeSidebar": "ปรับแต่งแถบด้านข้าง",
+    "customizeSettingsSidebar": "ปรับแต่งแถบด้านข้างการตั้งค่า",
+    "customizePage": "ปรับแต่งหน้า",
+    "customizeLayout": "ปรับแต่งเลย์เอาต์",
+    "viewingPersonalLayout": "คุณกำลังดูเลย์เอาต์ส่วนตัว",
+    "viewingSystemLayout": "คุณกำลังดูเลย์เอาต์ระบบ",
+    "personalView": "ส่วนตัว",
+    "defaultView": "ค่าเริ่มต้น",
+    "empty": "ว่าง",
+    "dropToSectionEnd": "วางที่นี่เพื่อย้ายไปท้ายสุด",
+    "dragToReorder": "ลากเพื่อเรียงลำดับใหม่",
+    "saveForEveryone": "บันทึกสำหรับทุกคน",
+    "saveForEveryoneTitle": "บันทึกเลย์เอาต์สำหรับทุกคน",
+    "saveForEveryoneDescription": "การดำเนินการนี้จะอัปเดตเลย์เอาต์เริ่มต้นของหน้านี้สำหรับผู้ใช้ทั้งหมดที่ยังไม่ได้ปรับแต่งด้วยตนเอง คุณแน่ใจหรือไม่?",
+    "saveSuccess": "บันทึกเลย์เอาต์สำเร็จ"
+  },
   "dataGrid": {
     "columns": {
       "view": "ดู",
@@ -310,6 +352,7 @@
   },
   "filters": {
     "sortLabel": "เรียงลำดับ",
+    "columnsLabel": "คอลัมน์",
     "collapse": {
       "all": "ยุบทั้งหมด"
     },
@@ -458,7 +501,8 @@
         "productOptions": {
           "label": "ตัวเลือกสินค้า",
           "hint": "กำหนดตัวเลือกสำหรับสินค้า เช่น สี ขนาด เป็นต้น"
-        }
+        },
+        "selectValuesHint": "เลือกค่าที่จะใช้สำหรับแต่ละตัวเลือก"
       },
       "successToast": "สินค้า {{title}} ถูกสร้างเรียบร้อยแล้ว"
     },
@@ -715,6 +759,16 @@
         "header": "สร้างตัวเลือก",
         "successToast": "สร้างตัวเลือก {{title}} สำเร็จ"
       },
+      "manage": {
+        "header": "จัดการตัวเลือกสินค้า",
+        "description": "เชื่อมโยงหรือยกเลิกการเชื่อมโยงตัวเลือกสินค้ากับสินค้านี้",
+        "label": "ตัวเลือกสินค้า",
+        "hint": "เลือกตัวเลือกที่ควรเชื่อมโยงกับสินค้านี้",
+        "placeholder": "เลือกตัวเลือก",
+        "error": {
+          "noValues": "กรุณาเลือกค่าอย่างน้อยหนึ่งค่าสำหรับตัวเลือกที่เพิ่ม"
+        }
+      },
       "deleteWarning": "คุณกำลังจะลบตัวเลือกสินค้า: {{title}} การดำเนินการนี้ไม่สามารถยกเลิกได้"
     },
     "organization": {
@@ -764,6 +818,16 @@
   "collections": {
     "domain": "คอลเลกชัน",
     "subtitle": "จัดระเบียบสินค้าเป็นคอลเลกชัน",
+    "list": {
+      "empty": {
+        "heading": "ไม่มีคอลเลกชัน",
+        "description": "ไม่มีคอลเลกชันที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีคอลเลกชันที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
     "createCollection": "สร้างคอลเลกชัน",
     "createCollectionHint": "สร้างคอลเลกชันใหม่เพื่อจัดระเบียบสินค้า",
     "createSuccess": "สร้างคอลเลกชันสำเร็จ",
@@ -851,9 +915,71 @@
       }
     }
   },
+  "productOptions": {
+    "domain": "ตัวเลือก",
+    "subtitle": "จัดการตัวเลือกสินค้าและค่าที่เกี่ยวข้อง",
+    "values": {
+      "header": "ค่า",
+      "list": {
+        "noRecords": "ไม่มีค่าสำหรับตัวเลือกนี้"
+      },
+      "delete": {
+        "confirmation": "คุณกำลังจะลบค่าตัวเลือก \"{{value}}\" การดำเนินการนี้ไม่สามารถยกเลิกได้",
+        "successToast": "ลบค่าตัวเลือกสำเร็จ"
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "ไม่มีสินค้าที่ใช้ตัวเลือกนี้"
+      }
+    },
+    "create": {
+      "header": "สร้างตัวเลือกสินค้า",
+      "hint": "สร้างตัวเลือกสินค้าใหม่และจัดการค่าของตัวเลือก",
+      "successToast": "สร้างตัวเลือกสินค้า \"{{title}}\" สำเร็จ",
+      "tabs": {
+        "details": "รายละเอียด",
+        "organize": "จัดระเบียบอันดับ"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "ตัวเลือกเฉพาะสินค้า"
+    },
+    "edit": {
+      "header": "แก้ไขตัวเลือกสินค้า",
+      "description": "แก้ไขตัวเลือกสินค้าเพื่ออัปเดตรายละเอียดและค่าที่เกี่ยวข้อง",
+      "successToast": "อัปเดตตัวเลือกสินค้า \"{{title}}\" สำเร็จ"
+    },
+    "delete": {
+      "confirmation": "คุณกำลังจะลบตัวเลือกสินค้า \"{{title}}\" การดำเนินการนี้ไม่สามารถยกเลิกได้",
+      "successToast": "ลบตัวเลือกสินค้าสำเร็จ"
+    },
+    "fields": {
+      "title": {
+        "label": "ชื่อ",
+        "placeholder": "ขนาด"
+      },
+      "values": {
+        "label": "ค่า",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
   "inventory": {
     "domain": "สินค้าคงคลัง",
     "subtitle": "จัดการสินค้าคงคลังของคุณ",
+    "export": {
+      "header": "ส่งออกรายการสินค้าคงคลัง",
+      "description": "ส่งออกรายการสินค้าคงคลังเป็นไฟล์ CSV",
+      "success": {
+        "title": "กำลังประมวลผลการส่งออกของคุณ",
+        "description": "การส่งออกข้อมูลอาจใช้เวลาสักครู่ เราจะแจ้งให้คุณทราบเมื่อเสร็จสิ้น"
+      },
+      "filters": {
+        "title": "ตัวกรอง",
+        "description": "ใช้ตัวกรองในตารางเพื่อปรับมุมมองนี้"
+      }
+    },
     "reserved": "จองไว้",
     "available": "พร้อมใช้งาน",
     "locationLevels": "สถานที่",
@@ -863,6 +989,8 @@
     "deleteWarning": "คุณกำลังจะลบรายการสินค้าคงคลัง การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "editItemDetails": "แก้ไขรายละเอียดสินค้า",
     "quantityAcrossLocations": "{{quantity}} ใน {{locations}} สถานที่",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "หน่วยที่ใช้ในการเก็บและนับสต็อก แสดงถัดจากจำนวนทั่วทั้งแผงควบคุม",
     "levelDeleted": "ลบระดับสินค้าคงคลังสำเร็จ",
     "create": {
       "title": "สร้างรายการสินค้าคงคลัง",
@@ -939,6 +1067,14 @@
   "customers": {
     "domain": "ลูกค้า",
     "list": {
+      "empty": {
+        "heading": "ไม่มีลูกค้า",
+        "description": "ไม่มีลูกค้าที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีลูกค้าที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      },
       "noRecordsMessage": "ลูกค้าของคุณจะปรากฏที่นี่"
     },
     "create": {
@@ -1077,7 +1213,9 @@
         "paymentMethod": "วิธีการชำระเงิน",
         "paymentMethodDescription": "คืนเงินไปยังวิธีการชำระเงิน",
         "creditLine": "เครดิตร้านค้า",
-        "creditLineDescription": "คืนเงินเป็นเครดิตร้านค้า"
+        "creditLineDescription": "คืนเงินเป็นเครดิตร้านค้า",
+        "creditLineNoOutstandingAmountDescription": "ใช้ได้เฉพาะเมื่อคำสั่งซื้อมียอดค้างชำระ กรุณาสร้างการคืนสินค้าหรือการแก้ไขคำสั่งซื้อก่อน",
+        "creditLineGuestDescription": "ใช้ได้เฉพาะสำหรับลูกค้าที่มีบัญชี คำสั่งซื้อนี้ถูกสร้างโดยแขก"
       }
     },
     "domain": "คำสั่งซื้อ",
@@ -1130,15 +1268,25 @@
     "transfer": {
       "title": "โอนกรรมสิทธิ์",
       "requestSuccess": "คำขอโอนคำสั่งซื้อถูกส่งไปที่: {{email}}",
+      "guestSuccess": "โอนคำสั่งซื้อไปยังลูกค้าแขก: {{email}} สำเร็จ",
+      "ownerType": "ประเภทบัญชี",
+      "registered": "ลงทะเบียนแล้ว",
+      "registeredDescription": "โอนไปยังลูกค้าที่ลงทะเบียนแล้ว ซึ่งต้องยอมรับคำร้องขอ",
+      "guest": "แขก",
+      "guestDescription": "โอนไปยังลูกค้าแขกด้วยอีเมล ดำเนินการทันที",
       "currentOwner": "เจ้าของปัจจุบัน",
       "newOwner": "เจ้าของใหม่",
+      "newGuestOwner": "อีเมลเจ้าของใหม่",
       "currentOwnerDescription": "ลูกค้าปัจจุบันที่เกี่ยวข้องกับคำสั่งซื้อนี้",
-      "newOwnerDescription": "ลูกค้าคนใหม่ที่จะโอนคำสั่งซื้อนี้ให้"
+      "newOwnerDescription": "ลูกค้าคนใหม่ที่จะโอนคำสั่งซื้อนี้ให้",
+      "newGuestOwnerDescription": "อีเมลของลูกค้าแขกที่จะโอนคำสั่งซื้อนี้ไปให้ หากยังไม่มีลูกค้าแขก ระบบจะสร้างขึ้นใหม่"
     },
     "payment": {
       "title": "การชำระเงิน",
       "isReadyToBeCaptured": "การชำระเงิน <0/> พร้อมที่จะจับยอด",
       "totalPaidByCustomer": "ยอดรวมที่ลูกค้าชำระ",
+      "totalPending": "ยอดรวมที่รอดำเนินการ",
+      "storeCreditRefund": "คืนเงินเป็นเครดิตร้านค้า",
       "totalStoreCreditRefunds": "ยอดรวมการคืนเป็นเครดิตร้านค้า",
       "capture": "จับยอดการชำระเงิน",
       "capture_short": "จับยอด",
@@ -1151,6 +1299,7 @@
         "authorized": "อนุมัติแล้ว",
         "partiallyAuthorized": "อนุมัติบางส่วน",
         "awaiting": "กำลังรอ",
+        "pending": "รอดำเนินการ",
         "captured": "จับยอดแล้ว",
         "partiallyRefunded": "คืนเงินบางส่วน",
         "partiallyCaptured": "จับยอดบางส่วน",
@@ -1162,6 +1311,10 @@
       "capturePaymentSuccess": "การจับยอดการชำระเงินจำนวน {{amount}} สำเร็จ",
       "markAsPaidPayment": "การชำระเงินจำนวน {{amount}} จะถูกทำเครื่องหมายว่าชำระแล้ว",
       "markAsPaidPaymentSuccess": "การชำระเงินจำนวน {{amount}} ถูกทำเครื่องหมายว่าชำระแล้วสำเร็จ",
+      "pendingAuthorization": "กำลังรอการอนุมัติจากผู้ให้บริการชำระเงิน",
+      "checkStatus": "ตรวจสอบสถานะ",
+      "checkStatusSuccess": "การชำระเงินได้รับการอนุมัติสำเร็จ",
+      "stillPending": "การชำระเงินยังคงรอการอนุมัติ",
       "createRefund": "สร้างการคืนเงิน",
       "refundPaymentSuccess": "การคืนเงินจำนวน {{amount}} สำเร็จ",
       "createRefundWrongQuantity": "จำนวนควรอยู่ระหว่าง 1 ถึง {{number}}",
@@ -1184,6 +1337,8 @@
       "create": "แก้ไขคำสั่งซื้อ",
       "currentTotal": "ยอดรวมปัจจุบัน",
       "noteHint": "เพิ่มหมายเหตุภายในสำหรับการแก้ไข",
+      "sendNotification": "ส่งการแจ้งเตือน",
+      "sendNotificationHint": "แจ้งลูกค้าเกี่ยวกับการแก้ไขคำสั่งซื้อนี้",
       "cancelSuccessToast": "ยกเลิกการแก้ไขคำสั่งซื้อสำเร็จ",
       "createSuccessToast": "คำขอแก้ไขคำสั่งซื้อถูกสร้างสำเร็จ",
       "activeChangeError": "มีการเปลี่ยนแปลงคำสั่งซื้อที่กำลังดำเนินการอยู่ โปรดเสร็จสิ้นหรือยกเลิกการเปลี่ยนแปลงก่อนที่จะทำการแก้ไขคำสั่งซื้อ",
@@ -1407,6 +1562,7 @@
       "markAsDelivered": "ทำเครื่องหมายว่าส่งมอบแล้ว",
       "itemsToFulfillDesc": "เลือกรายการและจำนวนที่ต้องการจัดส่ง",
       "locationDescription": "เลือกสถานที่ที่คุณต้องการจัดส่งสินค้า",
+      "locationUnavailable": "สถานที่ถูกลบ/ไม่พร้อมใช้งาน",
       "sendNotificationHint": "แจ้งให้ลูกค้าทราบเกี่ยวกับการสร้างการจัดส่ง",
       "methodDescription": "เลือกวิธีการจัดส่งที่แตกต่างจากที่ลูกค้าเลือก",
       "error": {
@@ -2068,6 +2224,16 @@
   },
   "promotions": {
     "domain": "โปรโมชั่น",
+    "list": {
+      "empty": {
+        "heading": "ไม่มีโปรโมชั่น",
+        "description": "ไม่มีโปรโมชั่นที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีโปรโมชั่นที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
     "sections": {
       "details": "รายละเอียดโปรโมชั่น"
     },
@@ -2294,6 +2460,16 @@
   },
   "campaigns": {
     "domain": "แคมเปญ",
+    "list": {
+      "empty": {
+        "heading": "ไม่มีแคมเปญ",
+        "description": "ไม่มีแคมเปญที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีแคมเปญที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
     "details": "รายละเอียดแคมเปญ",
     "status": {
       "active": "ใช้งาน",
@@ -2405,6 +2581,16 @@
   "priceLists": {
     "domain": "รายการราคา",
     "subtitle": "สร้างราคาขายหรือกำหนดราคาพิเศษตามเงื่อนไขเฉพาะ",
+    "list": {
+      "empty": {
+        "heading": "ไม่มีรายการราคา",
+        "description": "ไม่มีรายการราคาที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีรายการราคาที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
     "delete": {
       "confirmation": "คุณกำลังจะลบรายการราคา {{title}} การกระทำนี้ไม่สามารถย้อนกลับได้",
       "successToast": "ลบรายการราคา {{title}} เรียบร้อยแล้ว"
@@ -2453,6 +2639,34 @@
       },
       "edit": {
         "successToast": "อัปเดตราคาในรายการราคาเรียบร้อยแล้ว"
+      }
+    },
+    "quantityPricing": {
+      "header": "ราคาตามเงื่อนไขสำหรับ {{name}}",
+      "description": "จัดการราคาตามเงื่อนไขสำหรับตัวเลือกสินค้านี้ตามจำนวนในตะกร้าสินค้า",
+      "actions": {
+        "addPrice": "เพิ่มราคา"
+      },
+      "rules": {
+        "amount": "ราคาตัวเลือกสินค้า",
+        "minQuantity": "จำนวนขั้นต่ำในตะกร้า",
+        "maxQuantity": "จำนวนสูงสุดในตะกร้า",
+        "qty": "จำนวน",
+        "allQuantities": "ทุกจำนวน",
+        "min": "ต่ำสุด",
+        "max": "สูงสุด"
+      },
+      "attributes": {
+        "quantity": "จำนวนในตะกร้า"
+      },
+      "summaries": {
+        "range": "ถ้า <0>{{attribute}}</0> อยู่ระหว่าง <1>{{min}}</1> และ <2>{{max}}</2>",
+        "greaterThan": "ถ้า <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "ถ้า <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "จำนวนขั้นต่ำต้องไม่มากกว่าจำนวนสูงสุด",
+        "mustBePositive": "จำนวนต้องมีอย่างน้อย 1"
       }
     },
     "fields": {
@@ -2507,6 +2721,31 @@
       "languageLabel": "ภาษา",
       "usageInsightsLabel": "ข้อมูลการใช้งาน"
     },
+    "mfa": {
+      "title": "การยืนยันตัวตนสองขั้นตอน",
+      "description": "ต้องใช้แอปยืนยันตัวตนเมื่อเข้าสู่ระบบ",
+      "status": "สถานะ",
+      "method": "วิธีการ",
+      "enabled": "เปิดใช้งาน",
+      "disabled": "ปิดใช้งาน",
+      "pending": "รอการตั้งค่า",
+      "authenticatorApp": "แอปยืนยันตัวตน",
+      "noMethod": "ไม่มีวิธีการยืนยันตัวตนที่เปิดใช้งาน",
+      "setupTitle": "ตั้งค่าแอปยืนยันตัวตน",
+      "setupAuthenticatorApp": "ตั้งค่าแอปยืนยันตัวตน",
+      "setupDescription": "สแกน QR code ด้วยแอปยืนยันตัวตนของคุณ จากนั้นป้อนรหัส 6 หลักเพื่อเสร็จสิ้นการตั้งค่า",
+      "setupError": "ไม่สามารถตั้งค่าแอปยืนยันตัวตนได้",
+      "verifyError": "ไม่สามารถยืนยันรหัสยืนยันได้",
+      "qrError": "ไม่สามารถสร้าง QR code ได้",
+      "recoveryCodesTitle": "รหัสกู้คืน",
+      "recoveryCodesDescription": "คัดลอกและเก็บรหัสกู้คืนเหล่านี้ไว้ในกรณีที่คุณสูญเสียการเข้าถึงแอปยืนยันตัวตน",
+      "recoveryCodesError": "ไม่สามารถสร้างรหัสกู้คืนได้",
+      "disableTitle": "ปิดใช้งานการยืนยันตัวตนสองขั้นตอน",
+      "disableDescription": "คุณกำลังจะปิดใช้งานการยืนยันตัวตนสองขั้นตอนสำหรับบัญชีของคุณ",
+      "disableChallengeDescription": "ป้อนรหัส 6 หลักจากแอปยืนยันตัวตนเพื่อปิดใช้งานการยืนยันตัวตนสองขั้นตอน",
+      "disableError": "ไม่สามารถปิดใช้งานการยืนยันตัวตนสองขั้นตอนได้",
+      "disableSuccess": "ปิดใช้งานการยืนยันตัวตนสองขั้นตอนสำเร็จ"
+    },
     "edit": {
       "header": "แก้ไขโปรไฟล์",
       "languageHint": "ภาษาที่คุณต้องการใช้ในแดชบอร์ดของผู้ดูแลระบบ โดยจะไม่เปลี่ยนภาษาของร้านค้า",
@@ -2522,11 +2761,15 @@
     "editUser": "แก้ไขผู้ใช้งาน",
     "inviteUser": "เชิญผู้ใช้งาน",
     "inviteUserHint": "เชิญผู้ใช้งานใหม่ให้เข้าร่วมร้านค้าของคุณ",
+    "inviteRolesTooltip": "หากไม่ได้เลือกบทบาท ผู้ใช้จะถูกเชิญในฐานะ superuser",
     "sendInvite": "ส่งคำเชิญ",
     "pendingInvites": "คำเชิญที่รอดำเนินการ",
     "deleteInviteWarning": "คุณกำลังจะลบคำเชิญของ {{email}} การกระทำนี้ไม่สามารถย้อนกลับได้",
     "resendInvite": "ส่งคำเชิญอีกครั้ง",
     "copyInviteLink": "คัดลอกลิงก์คำเชิญ",
+    "copyResetPasswordLink": "คัดลอกลิงก์รีเซ็ตรหัสผ่าน",
+    "copyResetPasswordLinkSuccess": "คัดลอกลิงก์รีเซ็ตรหัสผ่านไปยังคลิปบอร์ดสำเร็จ",
+    "copyResetPasswordLinkHint": "ลิงก์จะหมดอายุในไม่ช้าและทำให้ลิงก์รีเซ็ตรหัสผ่านที่ส่งไปยังผู้ใช้นี้ก่อนหน้านี้ใช้ไม่ได้",
     "expiredOnDate": "หมดอายุเมื่อ {{date}}",
     "validFromUntil": "ใช้ได้ตั้งแต่ <0>{{from}}</0> ถึง <1>{{until}}</1>",
     "acceptedOnDate": "ยอมรับเมื่อ {{date}}",
@@ -2553,6 +2796,124 @@
     "deleteUserWarning": "คุณกำลังจะลบผู้ใช้งาน {{name}} การกระทำนี้ไม่สามารถย้อนกลับได้",
     "deleteUserSuccess": "ลบผู้ใช้ {{name}} สำเร็จ",
     "invite": "เชิญ"
+  },
+  "roles": {
+    "domain": "บทบาท",
+    "subtitle": "จัดการบทบาทการเข้าถึงและสิทธิ์",
+    "create": {
+      "header": "สร้างบทบาท",
+      "hint": "สร้างบทบาทเพื่อจัดการการเข้าถึงในแผงควบคุมของคุณ",
+      "successToast": "สร้างบทบาท {{name}} สำเร็จ",
+      "tabs": {
+        "details": "รายละเอียด",
+        "permissions": "สิทธิ์"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "ไม่มีสิทธิ์",
+          "description": "ไม่มีสิทธิ์ที่จะเลือก"
+        },
+        "filtered": {
+          "heading": "ไม่มีผลลัพธ์",
+          "description": "ไม่มีสิทธิ์ที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+        }
+      }
+    },
+    "edit": {
+      "header": "แก้ไขบทบาท",
+      "successToast": "อัปเดตบทบาท {{name}} สำเร็จ"
+    },
+    "delete": {
+      "title": "ลบบทบาท",
+      "description": "คุณกำลังจะลบบทบาท {{name}} การดำเนินการนี้ไม่สามารถยกเลิกได้",
+      "successToast": "ลบบทบาท {{name}} สำเร็จ"
+    },
+    "fields": {
+      "permissions": "สิทธิ์"
+    },
+    "actions": {
+      "managePermissions": "จัดการสิทธิ์"
+    },
+    "users": {
+      "alreadyAddedTooltip": "ผู้ใช้มีบทบาทนี้แล้ว",
+      "unassignableRoleTooltip": "คุณไม่มีสิทธิ์กำหนดบทบาทนี้ — สิทธิ์ของคุณไม่ครอบคลุมนโยบายทั้งหมด",
+      "add": {
+        "successToast_other": "เพิ่มผู้ใช้ในบทบาทสำเร็จ",
+        "list": {
+          "noRecordsMessage": "กรุณาสร้างผู้ใช้ก่อน"
+        }
+      },
+      "remove": {
+        "title_other": "ลบผู้ใช้",
+        "description_other": "คุณกำลังจะลบ {{count}} ผู้ใช้ออกจากบทบาท การดำเนินการนี้ไม่สามารถยกเลิกได้"
+      },
+      "list": {
+        "noRecordsMessage": "บทบาทนี้ยังไม่มีผู้ใช้"
+      }
+    },
+    "permissions": {
+      "header": "จัดการสิทธิ์",
+      "hint": "เลือกสิทธิ์ที่บทบาทนี้ควรมี",
+      "empty": {
+        "heading": "ไม่มีสิทธิ์",
+        "description": "ไม่มีสิทธิ์ที่จะเลือก"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีสิทธิ์ที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "ไม่พบบทบาท",
+        "description": "สร้างบทบาทเพื่อจัดการการเข้าถึงในแผงควบคุมของคุณ"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีบทบาทที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    }
+  },
+  "policies": {
+    "domain": "นโยบาย",
+    "subtitle": "กำหนดสิทธิ์ที่บทบาทสามารถมอบให้ได้",
+    "create": {
+      "header": "สร้างนโยบาย",
+      "hint": "กำหนดสิทธิ์ใหม่ที่สามารถแนบกับบทบาทได้",
+      "successToast": "สร้างนโยบาย {{key}} สำเร็จ"
+    },
+    "edit": {
+      "header": "แก้ไขนโยบาย",
+      "successToast": "อัปเดตนโยบาย {{key}} สำเร็จ"
+    },
+    "delete": {
+      "title": "ลบนโยบาย",
+      "description": "คุณกำลังจะลบนโยบาย {{key}} การดำเนินการนี้ไม่สามารถยกเลิกได้",
+      "successToast": "ลบนโยบาย {{key}} สำเร็จ"
+    },
+    "fields": {
+      "roles": "บทบาท",
+      "users": "ผู้ใช้"
+    },
+    "list": {
+      "empty": {
+        "heading": "ไม่พบนโยบาย",
+        "description": "สร้างนโยบายเพื่อจัดการสิทธิ์ที่บทบาทสามารถมอบให้ได้"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีนโยบายที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "ยังไม่มีบทบาทที่รวมนโยบายนี้"
+      },
+      "empty": {
+        "heading": "ไม่มีบทบาท",
+        "description": "ยังไม่มีบทบาทที่รวมนโยบายนี้"
+      }
+    }
   },
   "translations": {
     "domain": "การแปล",
@@ -2651,7 +3012,15 @@
     "flatRate": "ราคาคงที่",
     "calculated": "คำนวณ",
     "list": {
-      "noRecordsMessage": "สร้างภูมิภาคสำหรับพื้นที่ที่คุณขายสินค้า"
+      "noRecordsMessage": "สร้างภูมิภาคสำหรับพื้นที่ที่คุณขายสินค้า",
+      "empty": {
+        "heading": "ไม่มีภูมิภาค",
+        "description": "ไม่มีภูมิภาคที่จะแสดง"
+      },
+      "filtered": {
+        "heading": "ไม่มีผลลัพธ์",
+        "description": "ไม่มีภูมิภาคที่ตรงกับเกณฑ์การกรองปัจจุบัน"
+      }
     },
     "toast": {
       "delete": "ลบภูมิภาคเรียบร้อยแล้ว",
@@ -2945,7 +3314,21 @@
   "login": {
     "forgotPassword": "ลืมรหัสผ่าน? - <0>รีเซ็ต</0>",
     "title": "ยินดีต้อนรับสู่ Medusa",
-    "hint": "เข้าสู่ระบบเพื่อเข้าถึงพื้นที่บัญชี"
+    "hint": "เข้าสู่ระบบเพื่อเข้าถึงพื้นที่บัญชี",
+    "mfa": {
+      "title": "การยืนยันตัวตนสองขั้นตอน",
+      "description": "ป้อนรหัส 6 หลักจากแอปยืนยันตัวตนของคุณ",
+      "recoveryDescription": "ป้อนรหัสกู้คืนหนึ่งในรหัสของคุณ",
+      "recoveryCodePlaceholder": "รหัสกู้คืน",
+      "verify": "ยืนยัน",
+      "verifyError": "ไม่สามารถยืนยันรหัสยืนยันได้",
+      "completeError": "ไม่สามารถดำเนินการยืนยันตัวตนให้เสร็จสมบูรณ์ได้",
+      "backToLogin": "กลับไปหน้าเข้าสู่ระบบ",
+      "useRecoveryCodePrompt": "สูญเสียการเข้าถึงแอปยืนยันตัวตนของคุณหรือไม่?",
+      "useRecoveryCode": "ใช้รหัสกู้คืน",
+      "useAuthenticatorPrompt": "มีการเข้าถึงแอปยืนยันตัวตนของคุณหรือไม่?",
+      "useAuthenticator": "ใช้รหัสจากแอปยืนยันตัวตน"
+    }
   },
   "invite": {
     "title": "ยินดีต้อนรับสู่ Medusa",
@@ -2993,6 +3376,7 @@
     "subtitle": "ดูและติดตามการดำเนินการของเวิร์กโฟลว์ในแอปพลิเคชัน Medusa ของคุณ",
     "transactionIdLabel": "รหัสธุรกรรม",
     "workflowIdLabel": "รหัสเวิร์กโฟลว์",
+    "stateLabel": "สถานะ",
     "progressLabel": "ความคืบหน้า",
     "stepsCompletedLabel_one": "{{completed}} จาก {{count}} ขั้นตอน",
     "stepsCompletedLabel_other": "{{completed}} จาก {{count}} ขั้นตอน",
@@ -3032,6 +3416,33 @@
         "dormant": "อยู่เฉย",
         "timeout": "หมดเวลา"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "ค้นหา",
+    "subtitle": "ดูดัชนีการค้นหาที่ลงทะเบียนและสร้างใหม่จากข้อมูลต้นทาง",
+    "fieldsLabel": "ฟิลด์ที่จัดทำดัชนี",
+    "providerLabel": "ผู้ให้บริการ",
+    "reindex": "สร้างดัชนีใหม่",
+    "reindexConfirmationTitle": "สร้างดัชนีใหม่สำหรับ {{name}}?",
+    "reindexConfirmation": "การดำเนินการนี้จะสร้างดัชนี \"{{name}}\" ใหม่จากข้อมูลต้นทาง ผลการค้นหาสำหรับดัชนีนี้อาจไม่สมบูรณ์จนกว่าการสร้างใหม่จะเสร็จสิ้น",
+    "reindexSuccess": "เริ่มการสร้างดัชนีใหม่สำหรับ {{name}} แล้ว",
+    "reindexSinceLabel": "ตั้งแต่",
+    "reindexSinceHint": "สร้างใหม่เฉพาะเอกสารที่เปลี่ยนแปลงตั้งแต่วันที่นี้หรือหลังจากนั้น เว้นว่างไว้เพื่อสร้างใหม่ทั้งหมด",
+    "reindexEntityIdsLabel": "รหัสเอนทิตี",
+    "reindexEntityIdsHint": "รหัสที่คั่นด้วยเครื่องหมายจุลภาคหรือขึ้นบรรทัดใหม่เพื่อสร้างใหม่เฉพาะเอกสารนั้น ขึ้นอยู่กับนิยามดัชนีนั้นเอง",
+    "delete": "ลบดัชนี",
+    "deleteWarning": "การดำเนินการนี้จะลบดัชนี \"{{name}}\" และทุกเวอร์ชันที่เคยสร้างขึ้น รวมถึงข้อมูลในเครื่องมือค้นหา ไม่มีสิ่งใดที่ค้นหาได้ในดัชนีนี้จนกว่าการ migrate ครั้งถัดไปจะสร้างใหม่จากศูนย์ ไม่สามารถยกเลิกได้",
+    "deleteSuccess": "ลบดัชนี {{name}} สำเร็จ",
+    "noFields": "ไม่มีฟิลด์ที่จัดทำดัชนี",
+    "list": {
+      "noRecordsMessage": "ไม่มีดัชนีการค้นหาที่ลงทะเบียน"
+    },
+    "status": {
+      "pending": "รอดำเนินการ",
+      "building": "กำลังสร้าง",
+      "ready": "พร้อมใช้งาน",
+      "error": "ข้อผิดพลาด"
     }
   },
   "shippingOptionTypes": {
@@ -3096,6 +3507,17 @@
       "value": "ค่า"
     }
   },
+  "propertyLabels": {
+    "domain": "ป้ายกำกับคุณสมบัติ",
+    "title": "ป้ายกำกับคุณสมบัติ",
+    "subtitle": "จัดการป้ายกำกับคุณสมบัติแบบกำหนดเองสำหรับตารางที่กำหนดค่าได้ของเอนทิตีของคุณ",
+    "fields": {
+      "module": "โมดูล",
+      "model": "โมเดล",
+      "propertyCount": "จำนวนคุณสมบัติ",
+      "hasOverrides": "มีการแทนที่"
+    }
+  },
   "notifications": {
     "domain": "การแจ้งเตือน",
     "emptyState": {
@@ -3134,6 +3556,7 @@
     "selectValues": "เลือกค่า"
   },
   "fields": {
+    "actions": "การดำเนินการ",
     "amount": "จำนวนเงิน",
     "reference": "การอ้างอิง",
     "reference_id": "รหัสอ้างอิง",
@@ -3247,11 +3670,13 @@
     "region": "ภูมิภาค",
     "discount": "ส่วนลด",
     "role": "บทบาท",
+    "resource": "ทรัพยากร",
     "sent": "ส่งแล้ว",
     "salesChannels": "ช่องทางการขาย",
     "product": "สินค้า",
     "createdAt": "สร้างเมื่อ",
     "updatedAt": "อัปเดตเมื่อ",
+    "operation": "การดำเนินการ",
     "revokedAt": "เพิกถอนเมื่อ",
     "true": "จริง",
     "false": "เท็จ",
@@ -3274,6 +3699,7 @@
     "barcode": "บาร์โค้ด",
     "countryOfOrigin": "ประเทศต้นทาง",
     "material": "วัสดุ",
+    "unitOfMeasure": "หน่วยวัด",
     "thumbnail": "รูปขนาดย่อ",
     "sku": "SKU",
     "managedInventory": "การจัดการสต็อก",
@@ -3336,8 +3762,63 @@
   },
   "auth": {
     "login": {
+      "noProviders": "ลงทะเบียนผู้ให้บริการยืนยันตัวตนใน Medusa config ของคุณเพื่อเข้าสู่ระบบ",
       "authenticationFailed": "การยืนยันตัวตนล้มเหลว",
-      "cloud": "เข้าสู่ระบบด้วย Medusa Cloud"
+      "cloud": "เข้าสู่ระบบด้วย Medusa Cloud",
+      "continueWithProvider": "ดำเนินการต่อด้วย {{provider}}",
+      "or": "หรือ",
+      "provisioningFailed": "เราไม่สามารถดำเนินการเข้าสู่ระบบให้เสร็จสมบูรณ์ได้ กรุณาติดต่อผู้ดูแลระบบ"
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "การเข้าถึงถูกปฏิเสธ",
+      "description": "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      "requiredPermission": "สิทธิ์ที่จำเป็น: {{permission}}",
+      "action": "คุณไม่มีสิทธิ์ดำเนินการนี้"
+    },
+    "requiredPermissions": {
+      "title": "สิทธิ์ที่จำเป็น",
+      "none": "ไม่มีการประกาศสิทธิ์ในมุมมองนี้",
+      "anyOf": "อย่างน้อยหนึ่งใน",
+      "allOf": "ทั้งหมด",
+      "source": "แหล่งที่มา: {{source}}"
+    },
+    "resources": {
+      "customer": "ลูกค้า",
+      "customer_group": "กลุ่มลูกค้า",
+      "order": "คำสั่งซื้อ",
+      "product": "สินค้า",
+      "product_category": "หมวดหมู่สินค้า",
+      "product_collection": "คอลเลกชันสินค้า",
+      "product_tag": "แท็กสินค้า",
+      "product_type": "ประเภทสินค้า",
+      "inventory": "สินค้าคงคลัง",
+      "reservation": "การจอง",
+      "promotion": "โปรโมชั่น",
+      "campaign": "แคมเปญ",
+      "price_list": "รายการราคา",
+      "region": "ภูมิภาค",
+      "store": "ร้านค้า",
+      "user": "ผู้ใช้",
+      "role": "บทบาท",
+      "permission": "สิทธิ์",
+      "sales_channel": "ช่องทางการขาย",
+      "stock_location": "สถานที่จัดเก็บสินค้า",
+      "shipping_profile": "โปรไฟล์การจัดส่ง",
+      "shipping_option": "ตัวเลือกการจัดส่ง",
+      "tax_region": "ภูมิภาคภาษี",
+      "api_key": "API Key",
+      "return_reason": "เหตุผลการคืนสินค้า",
+      "refund_reason": "เหตุผลการคืนเงิน",
+      "workflow": "เวิร์กโฟลว์",
+      "translation": "การแปลภาษา"
+    },
+    "actions": {
+      "read": "ดู",
+      "create": "สร้าง",
+      "update": "แก้ไข",
+      "delete": "ลบ"
     }
   }
 }
