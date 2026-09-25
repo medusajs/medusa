@@ -205,6 +205,8 @@ jobs:
 
         ## Step 5 — Write the result
 
-        Write /tmp/kapa-result.md using the Write tool with 1-3 sentences of plain markdown, no heading:
-        - If you made changes: what you changed and in which files.
+        Write /tmp/kapa-result.md using the Write tool with plain markdown, no heading:
+        - If you made changes, write two short bullet points:
+          - `**Why:**` what information users couldn't find in the documentation, and why the existing pages didn't answer it.
+          - `**What:**` what you changed, in which files, and how it closes the gap.
         - If you skipped the gap: start with "Skipped:" followed by the reason.
