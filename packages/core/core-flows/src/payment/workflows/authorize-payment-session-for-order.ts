@@ -1,4 +1,8 @@
-import { MedusaError, PaymentSessionStatus } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  PaymentEvents,
+  PaymentSessionStatus,
+} from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -8,7 +12,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { authorizePaymentSessionStep } from "../steps"
 
@@ -108,6 +112,15 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       )
 
       addOrderTransactionStep(orderTransactions)
+    })
+
+    when("emit-payment-captured", { payment }, ({ payment }) => {
+      return !!payment?.captures?.length
+    }).then(() => {
+      emitEventStep({
+        eventName: PaymentEvents.CAPTURED,
+        data: { id: payment.id },
+      })
     })
 
     return new WorkflowResponse(payment)
