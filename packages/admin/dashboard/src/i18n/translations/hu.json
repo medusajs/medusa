@@ -1756,7 +1756,10 @@
   "stockLocations": {
     "domain": "Helyszínek és Szállítás",
     "list": {
-      "description": "Kezelje az áruház készlethelyszíneit és szállítási opcióit."
+      "description": "Kezelje az áruház készlethelyszíneit és szállítási opcióit.",
+      "noRecordsMessage": "Nincsenek rekordok",
+      "noRecordsMessageEmpty": "Nem találhatók helyszínek",
+      "noRecordsMessageFiltered": "Nem találhatók a szűrőknek megfelelő helyszínek"
     },
     "create": {
       "header": "Készlethelyszín létrehozása",
@@ -1769,7 +1772,8 @@
       "successToast": "A(z) {{name}} helyszín sikeresen frissítve."
     },
     "delete": {
-      "confirmation": "A(z) {{name}} készlethelyszín törlésére készül. Ez a művelet nem vonható vissza."
+      "confirmation": "A(z) {{name}} készlethelyszín törlésére készül. Ez a művelet nem vonható vissza.",
+      "successToast": "A(z) \"{{name}}\" helyszín sikeresen törölve."
     },
     "fulfillmentProviders": {
       "header": "Teljesítési Szolgáltatók",
@@ -1802,6 +1806,10 @@
       "shippingProfiles": {
         "label": "Szállítási Profilok",
         "description": "Csoportosítsa a termékeket szállítási követelmények szerint"
+      },
+      "shippingOptionTypes": {
+        "label": "Szállítási opció típusok",
+        "description": "Szállítási opciók csoportosítása típusok szerint"
       }
     },
     "salesChannels": {
@@ -1919,7 +1927,8 @@
         },
         "provider": "Teljesítési szolgáltató",
         "profile": "Szállítási profil",
-        "fulfillmentOption": "Teljesítési opció"
+        "fulfillmentOption": "Teljesítési opció",
+        "type": "Szállítási opció típusa"
       }
     },
     "serviceZones": {
@@ -1981,7 +1990,9 @@
       "hint": "Hozzon létre egy új adórégiót, hogy meghatározza az adókulcsokat egy adott ország számára.",
       "errors": {
         "rateIsRequired": "Adókulcs szükséges, amikor alapértelmezett adókulcsot hoz létre.",
-        "nameIsRequired": "Név szükséges, amikor alapértelmezett adókulcsot hoz létre."
+        "nameIsRequired": "Név szükséges, amikor alapértelmezett adókulcsot hoz létre.",
+        "missingProvider": "Adórégió létrehozásakor a szolgáltató megadása kötelező.",
+        "missingCountry": "Adórégió létrehozásakor az ország megadása kötelező."
       },
       "successToast": "Az adórégió sikeresen létrehozva."
     },
@@ -2125,7 +2136,8 @@
           "productCollection": "Termékgyűjtemények",
           "productTag": "Termékcímkék",
           "productType": "Terméktípusok",
-          "customerGroup": "Vásárlói csoportok"
+          "customerGroup": "Vásárlói csoportok",
+          "shippingOption": "Szállítási opciók"
         },
         "operators": {
           "in": "in",
@@ -2137,14 +2149,16 @@
           "productCollection": "Termékgyűjtemények keresése",
           "productTag": "Termékcímkék keresése",
           "productType": "Terméktípusok keresése",
-          "customerGroup": "Vásárlói csoportok keresése"
+          "customerGroup": "Vásárlói csoportok keresése",
+          "shippingOption": "Szállítási opciók keresése"
         },
         "tags": {
           "product": "Termék",
           "productCollection": "Termékgyűjtemény",
           "productTag": "Termékcímke",
           "productType": "Terméktípus",
-          "customerGroup": "Vásárlói csoport"
+          "customerGroup": "Vásárlói csoport",
+          "shippingOption": "Szállítási opció"
         },
         "modal": {
           "header": "Célok hozzáadása"
@@ -2200,7 +2214,16 @@
       "noDefaultRate": {
         "label": "Nincs alapértelmezett kulcs",
         "tooltip": "Ez az adórégió nem rendelkezik alapértelmezett adókulccsal. Ha van standard kulcs, például egy ország ÁFA-ja, kérjük, adja hozzá ehhez a régióhoz."
-      }
+      },
+      "taxProvider": "Adószolgáltató"
+    },
+    "edit": {
+      "header": "Adórégió szerkesztése",
+      "hint": "Adórégió adatainak szerkesztése.",
+      "successToast": "Az adórégió sikeresen frissítve."
+    },
+    "provider": {
+      "header": "Adószolgáltató"
     }
   },
   "promotions": {
@@ -2232,13 +2255,29 @@
         },
         "target-rules": {
           "title": "Mely tételekre vonatkozik a promóció?",
-          "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek."
+          "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek.",
+          "order": {
+            "title": "Mely tételekre vonatkozzon a promóció?",
+            "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek."
+          },
+          "shipping_methods": {
+            "title": "Mely szállítási módokra vonatkozzon a promóció?",
+            "description": "A promóció azokra a szállítási módokra vonatkozik, amelyek megfelelnek az alábbi feltételeknek."
+          },
+          "items": {
+            "title": "Mely tételekre vonatkozzon a promóció?",
+            "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek."
+          }
         },
         "buy-rules": {
           "title": "Mi szükséges a kosárban a promóció feloldásához?",
           "description": "Ha ezek a feltételek megfelelnek, engedélyezzük a promóciót a cél tételeken."
         }
-      }
+      },
+      "allocationTooltip": "A Minden opció tételenként érvényesíti a mennyiségi korlátot, míg az Egyszer a teljes kosárra érvényesíti azt.",
+      "taxInclusive": "Adót is tartalmaz",
+      "usageLimit": "Felhasználási korlát",
+      "usage": "Felhasználás"
     },
     "tooltips": {
       "campaignType": "A pénznem kódját ki kell választani a promócióban a költségvetési limit beállításához."
@@ -2346,6 +2385,10 @@
         "across": {
           "title": "Keresztül",
           "description": "Értéket alkalmaz a tételeken keresztül"
+        },
+        "once": {
+          "title": "Egyszer",
+          "description": "Értéket alkalmaz korlátozott számú tételre"
         }
       },
       "code": {
@@ -2353,7 +2396,8 @@
         "description": "A kód, amelyet a vásárlók megadnak a fizetés során."
       },
       "value": {
-        "title": "Promóció Értéke"
+        "title": "Promóció Értéke",
+        "invalid": "Érvénytelen promóciós érték"
       },
       "value_type": {
         "fixed": {
@@ -2364,6 +2408,14 @@
           "title": "Promóció Értéke",
           "description": "A kedvezmény százaléka. pl. 8%"
         }
+      },
+      "taxInclusive": {
+        "title": "Tartalmazza a promóció az adókat?",
+        "description": "Engedélyezze ezt a mezőt a promóció adók utáni alkalmazásához."
+      },
+      "limit": {
+        "title": "Felhasználási korlát",
+        "description": "Maximum hányszor használható fel ez a promóció az összes rendelés során. Hagyja üresen a korlátlan felhasználáshoz."
       }
     },
     "deleteWarning": "A(z) {{code}} promóció törlésére készül. Ez a művelet nem vonható vissza.",
@@ -2373,6 +2425,42 @@
       "add": "Feltétel hozzáadása",
       "list": {
         "noRecordsMessage": "Adjon hozzá egy feltételt, hogy korlátozza, mely tételekre vonatkozik a promóció."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Nincsenek promóciók",
+        "description": "Nincsenek megjeleníthető promóciók."
+      },
+      "filtered": {
+        "heading": "Nincs találat",
+        "description": "Nincs a jelenlegi szűrési feltételeknek megfelelő promóció."
+      }
+    },
+    "templates": {
+      "amount_off_products": {
+        "title": "Összeg kedvezmény termékekre",
+        "description": "Kedvezmény konkrét termékekre vagy termékcsoportokra"
+      },
+      "amount_off_order": {
+        "title": "Összeg kedvezmény a rendelésből",
+        "description": "Kedvezmény a rendelés teljes összegéből"
+      },
+      "percentage_off_product": {
+        "title": "Százalékos kedvezmény termékre",
+        "description": "Százalékos kedvezmény a kiválasztott termékekre"
+      },
+      "percentage_off_order": {
+        "title": "Százalékos kedvezmény a rendelésből",
+        "description": "Százalékos kedvezmény a rendelés teljes összegéből"
+      },
+      "buy_get": {
+        "title": "Vásároljon X-et, kapjon Y-t",
+        "description": "Vásároljon X terméket, kapjon Y terméket"
+      },
+      "shipping_discount": {
+        "title": "Ingyenes szállítás",
+        "description": "100%-os kedvezményt alkalmaz a szállítási költségekre"
       }
     }
   },
@@ -2419,7 +2507,8 @@
       "budget_limit": "Költségvetési limit",
       "campaign_id": {
         "hint": "Csak azok a kampányok jelennek meg ebben a listában, amelyek pénznem kódja megegyezik a promócióval."
-      }
+      },
+      "totalUsedByAttribute": "Összes felhasználás"
     },
     "budget": {
       "create": {
@@ -2431,7 +2520,12 @@
         "type": "Típus",
         "currency": "Pénznem",
         "limit": "Limit",
-        "used": "Felhasználva"
+        "used": "Felhasználva",
+        "budgetAttribute": "Felhasználás korlátozása ezenként",
+        "budgetAttributeTooltip": "Határozza meg, hányszor használható fel a promóció egyes vásárlók vagy e-mailek esetén.",
+        "totalUsedByAttribute": "Költségkeret korlát ezenként: {{attribute}}",
+        "totalUsedByAttributeCustomerId": "Költségkeret korlát vásárlónként",
+        "totalUsedByAttributeEmail": "Költségkeret korlát e-mailenként"
       },
       "type": {
         "spend": {
@@ -2441,10 +2535,20 @@
         "usage": {
           "title": "Használat",
           "description": "Állítson be egy limitet arra, hogy hányszor használható a promóció."
+        },
+        "useByAttribute": {
+          "title": "Felhasználás attribútum szerint (vásárlói azonosító, e-mail, stb.)",
+          "titleCustomerId": "Felhasználás vásárlónként",
+          "titleEmail": "Felhasználás e-mailenként",
+          "description": "Állítson be korlátot arra, hányszor használható fel a promóció egy adott attribútumérték esetén."
         }
       },
       "edit": {
         "header": "Kampány Költségvetés Szerkesztése"
+      },
+      "attribute": {
+        "customer_id": "vásárló",
+        "customer_email": "e-mail"
       }
     },
     "promotions": {
@@ -2468,7 +2572,17 @@
       }
     },
     "deleteCampaignWarning": "A(z) {{name}} kampány törlésére készül. Ez a művelet nem vonható vissza.",
-    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>",
+    "list": {
+      "empty": {
+        "heading": "Nincsenek kampányok",
+        "description": "Nincsenek megjeleníthető kampányok."
+      },
+      "filtered": {
+        "heading": "Nincs találat",
+        "description": "Nincs a jelenlegi szűrési feltételeknek megfelelő kampány."
+      }
+    }
   },
   "priceLists": {
     "domain": "Árlisták",
@@ -2565,6 +2679,44 @@
         "hint": "Válassza ki, mely vásárlói csoportokra vonatkozzon az árlista.",
         "placeholder": "Vásárlói csoportok keresése",
         "attribute": "Vásárlói csoportok"
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Nincsenek árak listák",
+        "description": "Nincsenek megjeleníthető árak listák."
+      },
+      "filtered": {
+        "heading": "Nincs találat",
+        "description": "Nincs a jelenlegi szűrési feltételeknek megfelelő árak lista."
+      }
+    },
+    "quantityPricing": {
+      "header": "Feltételes árak a(z) {{name}} esetén",
+      "description": "Kezelje a termékváltozat feltételes árait a kosárban lévő mennyiségek alapján.",
+      "actions": {
+        "addPrice": "Ár hozzáadása"
+      },
+      "rules": {
+        "amount": "Termékváltozat ára",
+        "minQuantity": "Minimális kosármennyiség",
+        "maxQuantity": "Maximális kosármennyiség",
+        "qty": "MENNYISÉG",
+        "allQuantities": "Minden mennyiség",
+        "min": "Min",
+        "max": "Max"
+      },
+      "attributes": {
+        "quantity": "Kosármennyiség"
+      },
+      "summaries": {
+        "range": "Ha <0>{{attribute}}</0> értéke <1>{{min}}</1> és <2>{{max}}</2> között van",
+        "greaterThan": "Ha <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "Ha <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "A minimális mennyiség nem lehet nagyobb, mint a maximális mennyiség",
+        "mustBePositive": "A mennyiségnek legalább 1-nek kell lennie"
       }
     }
   },
