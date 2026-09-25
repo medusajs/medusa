@@ -310,6 +310,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "title": "Custom Admin Authentication",
               "path": "/how-to-tutorials/how-to/admin/auth",
               "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Manage Products with Admin API",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api",
+              "children": []
             }
           ]
         }
