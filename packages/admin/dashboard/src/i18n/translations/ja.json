@@ -67,7 +67,8 @@
     "excludesTaxTooltip": "この列の価格は税抜きです。",
     "noMoreData": "これ以上データはありません",
     "exclusive": "商品固有",
-    "global": "グローバル"
+    "global": "グローバル",
+    "quantityPrice": "数量価格"
   },
   "json": {
     "header": "JSON",
@@ -90,7 +91,8 @@
       "actions": {
         "insertRowAbove": "上に行を挿入",
         "insertRowBelow": "下に行を挿入",
-        "deleteRow": "行を削除"
+        "deleteRow": "行を削除",
+        "addRow": "行を追加"
       },
       "labels": {
         "key": "キー",
@@ -155,7 +157,8 @@
     "import": "インポート",
     "cannotUndo": "この操作は元に戻せません",
     "manage": "管理",
-    "goToProductOption": "商品オプションへ移動"
+    "goToProductOption": "商品オプションへ移動",
+    "show": "表示"
   },
   "operators": {
     "in": "含む"
@@ -201,7 +204,22 @@
         "publishableApiKey": "公開可能なAPIキー",
         "secretApiKey": "秘密のAPIキー",
         "command": "コマンド",
-        "navigation": "ナビゲーション"
+        "navigation": "ナビゲーション",
+        "customer_group": "顧客グループ",
+        "inventory_item": "在庫",
+        "price_list": "価格リスト",
+        "product_category": "カテゴリ",
+        "product_collection": "コレクション",
+        "product_tag": "商品タグ",
+        "product_type": "商品タイプ",
+        "product_variant": "商品バリアント",
+        "publishable_api_key": "公開可能なAPIキー",
+        "return_reason": "返品理由",
+        "sales_channel": "販売チャネル",
+        "secret_api_key": "シークレットAPIキー",
+        "shipping_profile": "配送プロファイル",
+        "stock_location": "所在地",
+        "tax_region": "税地域"
       }
     },
     "keyboardShortcuts": {
@@ -355,7 +373,8 @@
       "true": "真",
       "false": "偽"
     },
-    "addFilter": "フィルター追加"
+    "addFilter": "フィルター追加",
+    "columnsLabel": "列"
   },
   "errorBoundary": {
     "badRequestTitle": "400 - 不正なリクエスト",
@@ -803,6 +822,16 @@
         "successToast_one": "商品がコレクションから正常に削除されました。",
         "successToast_other": "商品がコレクションから正常に削除されました。"
       }
+    },
+    "list": {
+      "empty": {
+        "description": "表示するコレクションはありません。",
+        "heading": "コレクションなし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致するコレクションはありません。",
+        "heading": "結果なし"
+      }
     }
   },
   "categories": {
@@ -984,7 +1013,21 @@
       "disablePrompt_other": "{{count}}件の場所レベルを無効にしようとしています。この操作は元に戻せません。",
       "disabledToggleTooltip": "無効にできません: 無効にする前に、入荷予定数量または引当数量をクリアしてください。",
       "successToast": "在庫レベルが正常に更新されました。"
-    }
+    },
+    "export": {
+      "description": "在庫リストをCSVファイルにエクスポートします。",
+      "filters": {
+        "description": "このビューを調整するには、テーブル概要でフィルターを適用してください",
+        "title": "フィルター"
+      },
+      "header": "在庫リストのエクスポート",
+      "success": {
+        "description": "データのエクスポートには数分かかる場合があります。完了時にお知らせします。",
+        "title": "エクスポートを処理しています"
+      }
+    },
+    "unitOfMeasureHint": "在庫を保持・計上する単位です。管理画面全体の数量の横に表示されます。",
+    "unitOfMeasurePlaceholder": "lb"
   },
   "giftCards": {
     "domain": "ギフトカード",
@@ -1007,7 +1050,15 @@
   "customers": {
     "domain": "顧客",
     "list": {
-      "noRecordsMessage": "顧客情報がここに表示されます。"
+      "noRecordsMessage": "顧客情報がここに表示されます。",
+      "empty": {
+        "description": "表示する顧客はありません。",
+        "heading": "顧客なし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致する顧客はありません。",
+        "heading": "結果なし"
+      }
     },
     "create": {
       "header": "顧客を作成",
@@ -1145,7 +1196,9 @@
         "paymentMethod": "支払い方法",
         "paymentMethodDescription": "支払い方法へ金額を返金します",
         "creditLine": "ストアクレジット",
-        "creditLineDescription": "金額をストアクレジットとして返金します"
+        "creditLineDescription": "金額をストアクレジットとして返金します",
+        "creditLineGuestDescription": "アカウントを持つ顧客のみ利用可能です。この注文はゲストによって行われました。",
+        "creditLineNoOutstandingAmountDescription": "注文に未払い金額がある場合のみ利用可能です。先に返品または注文の編集を作成してください。"
       }
     },
     "domain": "注文",
@@ -1201,7 +1254,15 @@
       "currentOwner": "現在の所有者",
       "newOwner": "新しい所有者",
       "currentOwnerDescription": "この注文に現在関連付けられている顧客。",
-      "newOwnerDescription": "この注文を移転する顧客。"
+      "newOwnerDescription": "この注文を移転する顧客。",
+      "guest": "ゲスト",
+      "guestDescription": "メールアドレスでゲスト顧客に転送します。即時に適用されます。",
+      "guestSuccess": "注文をゲスト顧客に転送しました: {{email}}。",
+      "newGuestOwner": "新しい所有者のメールアドレス",
+      "newGuestOwnerDescription": "この注文の転送先となるゲスト顧客のメールアドレスです。存在しない場合はゲスト顧客が作成されます。",
+      "ownerType": "アカウントタイプ",
+      "registered": "登録済み",
+      "registeredDescription": "登録済みの顧客に転送します。顧客はリクエストを承認する必要があります。"
     },
     "payment": {
       "title": "支払い",
@@ -1224,7 +1285,8 @@
         "partiallyCaptured": "一部支払い済み",
         "refunded": "返金済み",
         "canceled": "キャンセル済み",
-        "requiresAction": "対応が必要"
+        "requiresAction": "対応が必要",
+        "pending": "保留中"
       },
       "capturePayment": "{{amount}}の支払いが確定されます。",
       "capturePaymentSuccess": "{{amount}}の支払いが正常に確定されました",
@@ -1235,7 +1297,13 @@
       "createRefundWrongQuantity": "数量は1から{{number}}の間の数字である必要があります",
       "refundAmount": "{{ amount }}を返金",
       "paymentLink": "{{ amount }}の支払いリンクをコピー",
-      "selectPaymentToRefund": "返金する支払いを選択"
+      "selectPaymentToRefund": "返金する支払いを選択",
+      "checkStatus": "ステータスを確認",
+      "checkStatusSuccess": "支払いが正常に承認されました。",
+      "pendingAuthorization": "支払いは決済プロバイダーによる承認待ちです。",
+      "stillPending": "支払いはまだ承認待ちです。",
+      "storeCreditRefund": "ストアクレジット返金",
+      "totalPending": "保留中の合計"
     },
     "edits": {
       "title": "注文を編集",
@@ -1265,7 +1333,9 @@
       },
       "validation": {
         "quantityLowerThanFulfillment": "数量を出荷済みの数量以下に設定することはできません"
-      }
+      },
+      "sendNotification": "通知を送信",
+      "sendNotificationHint": "この注文の編集について顧客に通知します。"
     },
     "edit": {
       "email": {
@@ -1511,7 +1581,8 @@
       },
       "trackingLabel": "追跡",
       "shippingFromLabel": "発送元",
-      "itemsLabel": "アイテム"
+      "itemsLabel": "アイテム",
+      "locationUnavailable": "所在地が削除されたか利用できません"
     },
     "refund": {
       "title": "返金を作成",
@@ -2365,6 +2436,16 @@
       "list": {
         "noRecordsMessage": "プロモーションが適用されるアイテムを制限する条件を追加してください。"
       }
+    },
+    "list": {
+      "empty": {
+        "description": "表示するプロモーションはありません。",
+        "heading": "プロモーションなし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致するプロモーションはありません。",
+        "heading": "結果なし"
+      }
     }
   },
   "campaigns": {
@@ -2475,7 +2556,17 @@
       }
     },
     "deleteCampaignWarning": "キャンペーン「{{name}}」を削除しようとしています。この操作は取り消せません。",
-    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>",
+    "list": {
+      "empty": {
+        "description": "表示するキャンペーンはありません。",
+        "heading": "キャンペーンなし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致するキャンペーンはありません。",
+        "heading": "結果なし"
+      }
+    }
   },
   "priceLists": {
     "domain": "価格リスト",
@@ -2573,6 +2664,44 @@
         "placeholder": "顧客グループを検索",
         "attribute": "顧客グループ"
       }
+    },
+    "list": {
+      "empty": {
+        "description": "表示する価格リストはありません。",
+        "heading": "価格リストなし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致する価格リストはありません。",
+        "heading": "結果なし"
+      }
+    },
+    "quantityPricing": {
+      "actions": {
+        "addPrice": "価格を追加"
+      },
+      "attributes": {
+        "quantity": "カート数量"
+      },
+      "description": "この商品バリアントの条件付き価格を、カート数量に基づいて管理します。",
+      "errors": {
+        "minGreaterThanMax": "最小数量は最大数量より大きくできません",
+        "mustBePositive": "数量は1以上である必要があります"
+      },
+      "header": "{{name}} の条件付き価格",
+      "rules": {
+        "allQuantities": "すべての数量",
+        "amount": "商品バリアント価格",
+        "max": "最大",
+        "maxQuantity": "最大カート数量",
+        "min": "最小",
+        "minQuantity": "最小カート数量",
+        "qty": "数量"
+      },
+      "summaries": {
+        "greaterThan": "<0>{{attribute}}</0> が <1>{{min}}</1> 以上の場合",
+        "lessThan": "<0>{{attribute}}</0> が <1>{{max}}</1> 以下の場合",
+        "range": "<0>{{attribute}}</0> が <1>{{min}}</1> から <2>{{max}}</2> の間の場合"
+      }
     }
   },
   "profile": {
@@ -2653,7 +2782,10 @@
     },
     "deleteUserWarning": "{{name}}を削除しようとしています。この操作は取り消せません。",
     "deleteUserSuccess": "ユーザー{{name}}が正常に削除されました",
-    "invite": "招待"
+    "invite": "招待",
+    "copyResetPasswordLink": "パスワードリセットリンクをコピー",
+    "copyResetPasswordLinkHint": "このリンクは短期間で失効し、このユーザーに以前送信されたパスワードリセットリンクは無効になります。",
+    "copyResetPasswordLinkSuccess": "パスワードリセットリンクをクリップボードにコピーしました"
   },
   "roles": {
     "domain": "ロール",
@@ -2873,7 +3005,15 @@
     "flatRate": "定額",
     "calculated": "計算式",
     "list": {
-      "noRecordsMessage": "販売地域の地域を作成してください。"
+      "noRecordsMessage": "販売地域の地域を作成してください。",
+      "empty": {
+        "description": "表示する地域はありません。",
+        "heading": "地域なし"
+      },
+      "filtered": {
+        "description": "現在のフィルター条件に一致する地域はありません。",
+        "heading": "結果なし"
+      }
     },
     "toast": {
       "delete": "地域が正常に削除されました",
@@ -3269,7 +3409,8 @@
         "dormant": "休止中",
         "timeout": "タイムアウト"
       }
-    }
+    },
+    "stateLabel": "状態"
   },
   "shippingOptionTypes": {
     "domain": "配送オプションタイプ",
@@ -3535,7 +3676,9 @@
     "startDate": "開始日",
     "endDate": "終了日",
     "draft": "下書き",
-    "values": "値"
+    "values": "値",
+    "actions": "アクション",
+    "unitOfMeasure": "測定単位"
   },
   "dateTime": {
     "years_one": "年",
@@ -3576,7 +3719,11 @@
   "auth": {
     "login": {
       "authenticationFailed": "認証に失敗しました",
-      "cloud": "Medusa Cloudでログイン"
+      "cloud": "Medusa Cloudでログイン",
+      "continueWithProvider": "{{provider}} で続行",
+      "noProviders": "ログインするには、Medusa設定で認証プロバイダーを登録してください",
+      "or": "または",
+      "provisioningFailed": "サインインを完了できませんでした。管理者にお問い合わせください。"
     }
   },
   "permissions": {
@@ -3629,5 +3776,61 @@
       "update": "編集",
       "delete": "削除"
     }
+  },
+  "layout": {
+    "customizeLayout": "レイアウトをカスタマイズ",
+    "customizePage": "ページをカスタマイズ",
+    "customizeSettingsSidebar": "設定サイドバーをカスタマイズ",
+    "customizeSidebar": "サイドバーをカスタマイズ",
+    "customizeTopbar": "トップバーをカスタマイズ",
+    "defaultView": "デフォルト",
+    "dragToReorder": "ドラッグして並べ替え",
+    "dropToSectionEnd": "ここにドロップすると末尾に移動します",
+    "empty": "空",
+    "personalView": "個人",
+    "saveForEveryone": "全員向けに保存",
+    "saveForEveryoneDescription": "これにより、このページのデフォルトレイアウトが、自身でカスタマイズしていないすべてのユーザーに対して更新されます。よろしいですか?",
+    "saveForEveryoneTitle": "全員向けにレイアウトを保存",
+    "saveSuccess": "レイアウトを保存しました",
+    "viewingPersonalLayout": "個人レイアウトを表示しています",
+    "viewingSystemLayout": "システムレイアウトを表示しています"
+  },
+  "propertyLabels": {
+    "domain": "プロパティラベル",
+    "fields": {
+      "hasOverrides": "上書きあり",
+      "model": "モデル",
+      "module": "モジュール",
+      "propertyCount": "プロパティ数"
+    },
+    "subtitle": "エンティティの設定可能なテーブルのカスタムプロパティラベルを管理します。",
+    "title": "プロパティラベル"
+  },
+  "searchIndexes": {
+    "delete": "インデックスを削除",
+    "deleteSuccess": "インデックス {{name}} を削除しました",
+    "deleteWarning": "これにより「{{name}}」インデックスおよびこれまでに構築されたすべてのバージョン(検索エンジン内のデータを含む)が削除されます。次回の移行でゼロから再構築されるまで、このインデックスでは何も検索できません。この操作は元に戻せません。",
+    "domain": "検索",
+    "fieldsLabel": "インデックス済みフィールド",
+    "list": {
+      "noRecordsMessage": "登録されている検索インデックスはありません。"
+    },
+    "noFields": "インデックス化されたフィールドはありません。",
+    "providerLabel": "プロバイダー",
+    "reindex": "再インデックス",
+    "reindexConfirmation": "これにより「{{name}}」インデックスがソースデータから再構築されます。再構築が完了するまで、このインデックスの検索結果は不完全になる可能性があります。",
+    "reindexConfirmationTitle": "{{name}} を再インデックスしますか?",
+    "reindexEntityIdsHint": "特定のドキュメントのみ再構築するには、カンマまたは改行区切りのIDを入力してください。対応状況はこのインデックス自体の定義によります。",
+    "reindexEntityIdsLabel": "エンティティID",
+    "reindexSinceHint": "この日付以降に変更されたドキュメントのみ再構築します。空のままにするとすべて再構築されます。",
+    "reindexSinceLabel": "以降",
+    "reindexSuccess": "{{name}} の再インデックスを開始しました",
+    "status": {
+      "building": "構築中",
+      "error": "エラー",
+      "pending": "保留中",
+      "ready": "準備完了"
+    },
+    "subtitle": "登録されている検索インデックスを表示し、ソースデータから再構築します。"
   }
 }
