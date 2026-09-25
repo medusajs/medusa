@@ -11,6 +11,7 @@ import {
 import { useQueryGraphStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { authorizePaymentSessionStep } from "../steps"
+import { capturePaymentWorkflow } from "./capture-payment"
 
 /**
  * The data to authorize a pending payment session for an existing order.
@@ -108,6 +109,21 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       )
 
       addOrderTransactionStep(orderTransactions)
+    })
+
+    when(
+      "capture-payment-after-authorize",
+      { payment },
+      ({ payment }) => {
+        return (
+          !!payment &&
+          (!!payment.captured_at || (payment.captures?.length ?? 0) > 0)
+        )
+      }
+    ).then(() => {
+      capturePaymentWorkflow.runAsStep({
+        input: { payment_id: payment.id },
+      })
     })
 
     return new WorkflowResponse(payment)

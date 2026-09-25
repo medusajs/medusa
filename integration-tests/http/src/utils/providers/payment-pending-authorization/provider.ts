@@ -48,20 +48,20 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
     return { data: {}, id: crypto.randomUUID() }
   }
 
-  async authorizePayment(
-    input: AuthorizePaymentInput
-  ): Promise<AuthorizePaymentOutput> {
+  async authorizePayment(input: AuthorizePaymentInput): Promise<AuthorizePaymentOutput> {
+    if (input.data?.payment_captured) {
+      return {
+        data: { ...input.data, authorized: true },
+        status: PaymentSessionStatus.CAPTURED,
+      }
+    }
     if (input.data?.payment_received) {
       return {
         data: { ...input.data, authorized: true },
         status: PaymentSessionStatus.AUTHORIZED,
       }
     }
-
-    return {
-      data: { ...input.data },
-      status: PaymentSessionStatus.PENDING_AUTHORIZATION,
-    }
+    return { data: { ...input.data }, status: PaymentSessionStatus.PENDING_AUTHORIZATION }
   }
 
   async capturePayment(
@@ -88,9 +88,10 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
     return { data: {} }
   }
 
-  async getPaymentStatus(
-    input: GetPaymentStatusInput
-  ): Promise<GetPaymentStatusOutput> {
+  async getPaymentStatus(input: GetPaymentStatusInput): Promise<GetPaymentStatusOutput> {
+    if (input.data?.payment_captured) {
+      return { status: PaymentSessionStatus.CAPTURED }
+    }
     if (input.data?.authorized) {
       return { status: PaymentSessionStatus.AUTHORIZED }
     }
