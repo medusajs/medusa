@@ -2,4 +2,4 @@
 "@medusajs/core-flows": patch
 ---
 
-Restore only the reservations deleted by a failed reservation workflow step.
+fix(core-flows): restore only the reservations deleted by a failed reservation workflow step
