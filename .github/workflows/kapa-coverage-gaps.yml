@@ -185,6 +185,7 @@ jobs:
         - The questions are noise: random input, questions unrelated to Medusa, or questions about other products or services
         - The information is already clearly documented and the gap isn't caused by the content being hard to find or incomplete
         - Closing the gap requires new product features, API design decisions, or large architectural rewrites
+        - You can't confirm that the feature or behavior users are asking about exists in Medusa. Search the source code under the `packages` directory for it, such as its data models, services, workflows, API routes, or configuration options. Users and Kapa often assume features that Medusa doesn't have, for example ones from other platforms. Never document a feature just because the questions assume it exists.
         - You can't verify the correct answer from the source code under the `packages` directory or from existing documentation
 
         A low unique user count relative to the thread count means a few people asked repeatedly, which is a signal of noise.
