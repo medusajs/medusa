@@ -1,0 +1,213 @@
+name: Kapa Doc Fixes
+
+on:
+  workflow_call:
+    inputs:
+      indices:
+        description: "JSON array of item indices to process"
+        type: string
+        required: true
+      sha:
+        description: "Commit SHA to base the changes on"
+        type: string
+        required: true
+      branch:
+        description: "Branch to open the PR from"
+        type: string
+        required: true
+      prompt:
+        description: "Claude prompt for a single item. The item is at /tmp/kapa-item.md and the result must be written to /tmp/kapa-result.md"
+        type: string
+        required: true
+      commit_prefix:
+        description: "Commit message prefix, followed by the item title"
+        type: string
+        required: true
+      pr_title:
+        description: "Pull request title"
+        type: string
+        required: true
+      pr_intro:
+        description: "Markdown shown at the top of the pull request body"
+        type: string
+        required: true
+    secrets:
+      CLAUDE_CODE_API_TOKEN:
+        required: true
+      REFERENCE_PAT:
+        required: true
+
+# Callers must upload a `kapa-items` artifact with:
+# - items.json: [{ "index": number, "title": string, "thread_count": number }]
+# - items/<index>.md: the details Claude reads for each item
+jobs:
+  fix-item:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        index: ${{ fromJSON(inputs.indices) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+
+      - name: Download items
+        uses: actions/download-artifact@v4
+        with:
+          name: kapa-items
+          path: /tmp/kapa-items
+
+      - name: Write item details
+        env:
+          INDEX: ${{ matrix.index }}
+        run: |
+          cp "/tmp/kapa-items/items/$INDEX.md" /tmp/kapa-item.md
+          cat /tmp/kapa-item.md
+
+      - name: Run Claude Code to fix the docs
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
+          max_turns: 60
+          model: claude-opus-5-5
+          prompt: ${{ inputs.prompt }}
+
+      - name: Create patch
+        run: |
+          mkdir -p /tmp/kapa-result
+          git add www/apps/book www/apps/resources www/apps/user-guide www/apps/ui www/apps/cloud
+          git reset -q -- www/apps/resources/references www/apps/ui/specs/components
+          git diff --staged --binary --full-index > /tmp/kapa-result/changes.patch
+          if [ -s /tmp/kapa-result.md ]; then
+            cp /tmp/kapa-result.md /tmp/kapa-result/result.md
+          fi
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: kapa-result-${{ matrix.index }}
+          path: /tmp/kapa-result
+          retention-days: 7
+
+  open-pr:
+    needs: fix-item
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+          # Use a PAT so the created PR triggers other workflows
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Configure git
+        env:
+          BRANCH: ${{ inputs.branch }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+      - name: Download items
+        uses: actions/download-artifact@v4
+        with:
+          name: kapa-items
+          path: /tmp/kapa-items
+
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: kapa-result-*
+          path: /tmp/kapa-results
+
+      - name: Apply patches
+        id: apply
+        env:
+          COMMIT_PREFIX: ${{ inputs.commit_prefix }}
+        run: |
+          FIXED=0
+          : > /tmp/pr-items.md
+
+          for i in $(jq -r '.[].index' /tmp/kapa-items/items.json); do
+            TITLE=$(jq -r --argjson i "$i" '.[] | select(.index == $i) | .title' /tmp/kapa-items/items.json)
+            THREADS=$(jq -r --argjson i "$i" '.[] | select(.index == $i) | .thread_count' /tmp/kapa-items/items.json)
+            DIR="/tmp/kapa-results/kapa-result-$i"
+            RESULT=""
+            if [ -s "$DIR/result.md" ]; then
+              RESULT=$(cat "$DIR/result.md")
+            fi
+
+            if [ ! -d "$DIR" ]; then
+              STATUS="Failed"
+              RESULT="The Claude run for this item failed. Check the workflow logs."
+            elif [ ! -s "$DIR/changes.patch" ]; then
+              STATUS="Skipped"
+            elif git apply --3way "$DIR/changes.patch"; then
+              git commit -q -m "$COMMIT_PREFIX: $TITLE"
+              STATUS="Fixed"
+              FIXED=$((FIXED + 1))
+            else
+              git reset -q --hard HEAD
+              STATUS="Conflict"
+              RESULT="$RESULT"$'\n\n'"_The changes conflicted with another item's changes and weren't applied._"
+            fi
+
+            {
+              echo "### $STATUS: $TITLE"
+              echo ""
+              echo "Threads: $THREADS"
+              echo ""
+              echo "${RESULT:-_No summary was generated._}"
+              echo ""
+            } >> /tmp/pr-items.md
+          done
+
+          echo "fixed=$FIXED" >> "$GITHUB_OUTPUT"
+          echo "Applied $FIXED fixes."
+
+      - name: Push branch
+        if: steps.apply.outputs.fixed != '0'
+        env:
+          BRANCH: ${{ inputs.branch }}
+        run: git push origin "$BRANCH"
+
+      - name: Create Pull Request
+        if: steps.apply.outputs.fixed != '0'
+        env:
+          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ inputs.branch }}
+          PR_TITLE: ${{ inputs.pr_title }}
+          PR_INTRO: ${{ inputs.pr_intro }}
+        run: |
+          BODY_FILE=$(mktemp)
+
+          {
+            echo "$PR_INTRO"
+            echo ""
+            cat /tmp/pr-items.md
+            echo "> Review carefully before merging. Claude may have missed context or made"
+            echo "> incorrect assumptions."
+          } > "$BODY_FILE"
+
+          PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+            --method POST \
+            --field title="$PR_TITLE" \
+            --field body="$(cat "$BODY_FILE")" \
+            --field base="develop" \
+            --field head="$BRANCH" \
+            --jq '.number')
+          gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+            --method POST \
+            --field 'labels[]=type: docs'
+          echo "Created PR #$PR_NUMBER"
