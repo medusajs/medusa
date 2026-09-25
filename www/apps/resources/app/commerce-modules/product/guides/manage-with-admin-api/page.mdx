@@ -52,7 +52,7 @@ The rest of this guide uses the JS SDK methods and mentions the Admin API route 
 
 ---
 
-## Step 1: Upload Product Images
+## Upload Product Images
 
 Product images are stored as URLs. So, before you create or update a product with new images, upload the image files using the `sdk.admin.upload.create` method. It sends a `POST` request to `/admin/uploads` as `multipart/form-data`.
 
@@ -75,7 +75,13 @@ The [File Module Provider](../../../../infrastructure-modules/file/page.mdx) con
 
 ---
 
-## Step 2: Create a Product
+## Create a Product
+
+<Note>
+
+Before creating a product with images, make sure to [upload the images](#upload-product-images) first.
+
+</Note>
 
 To create a product, use the `sdk.admin.product.create` method. It sends a `POST` request to `/admin/products`.
 
@@ -129,7 +135,7 @@ const { product } = await sdk.admin.product.create({
 })
 ```
 
-Keep in mind the following about the request body:
+Where:
 
 - `title` is the only required field.
 - `status` defaults to `draft`. Other statuses are `proposed`, `published`, and `rejected`.
@@ -152,9 +158,9 @@ Create products as drafts, then publish them after you verify their details. Dra
 
 ---
 
-## Step 3: Retrieve a Product with Its Relations
+## Retrieve a Product with Its Relations
 
-To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a `GET` request to `/admin/products/:id`.
+To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a request to the [Get Product API route](!api!/admin/products/get-a-product).
 
 Use the `fields` query parameter to select the relations to retrieve. A `*` prefix retrieves all fields of a relation, and a `+` prefix adds a field to the default fields:
 
@@ -167,7 +173,7 @@ const { product } = await sdk.admin.product.retrieve(
 )
 ```
 
-The same `fields` syntax works with `sdk.admin.product.list`, which sends a `GET` request to `/admin/products`. For example, to retrieve each product's category IDs so you can find products without categories:
+The same `fields` syntax works with `sdk.admin.product.list`, which sends a request to the [List Products API route](!api!/admin/products/list-products). For example, to retrieve each product's category IDs so you can find products without categories:
 
 ```ts
 const { products } = await sdk.admin.product.list({
@@ -183,9 +189,9 @@ Learn more about the `fields` query parameter in the [API reference](!api!/admin
 
 ---
 
-## Step 4: Update a Product
+## Update a Product
 
-To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to `/admin/products/:id`. Only the fields that you pass are updated.
+To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to the [Update Product API route](!api!/admin/products/update-a-product). Only the fields that you pass are updated.
 
 For example, to update a product's details, images, and thumbnail:
 
@@ -221,15 +227,15 @@ To manage the product's variants and options, use the dedicated methods explaine
 
 <Note>
 
-Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a `POST` request to `/admin/products/:id/options/batch`.
+Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a request to the [Add Options to Product API route](!api!/admin/products/add-options-to-product).
 
 </Note>
 
 ---
 
-## Step 5: Manage Variants and Prices
+## Manage Variants and Prices
 
-To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a `POST` request to `/admin/products/:id/variants/batch`.
+To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a request to the [Manage Variants API Route](!api!/admin/products/manage-variants-in-a-product).
 
 For example:
 
@@ -267,7 +273,7 @@ When you pass `prices` for a variant, they replace the variant's existing prices
 - Pass a price without an `id` to add it.
 - Existing prices that you don't pass are removed.
 
-To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a `POST` request to `/admin/products/:id/variants/:variant_id`.
+To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a request to the [Update Variant API route](!api!/admin/products/update-variant).
 
 <Note title="Tip">
 
@@ -277,9 +283,9 @@ To set sale prices, create a [price list](../../../pricing/concepts/page.mdx#pri
 
 ---
 
-## Step 6: Assign Products to Collections and Categories in Bulk
+## Assign Products to Collections and Categories in Bulk
 
-To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a `POST` request to `/admin/collections/:id/products`:
+To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a request to the [Manage Products of a Collection API route](!api!/admin/collections/manage-products):
 
 ```ts
 const { collection } =
@@ -294,7 +300,7 @@ const { collection } =
 
 Since a product belongs to at most one collection, adding a product to a collection sets its `collection_id` to that collection.
 
-To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a `POST` request to `/admin/product-categories/:id/products`:
+To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a request to the [Manage Products of a Category API route](!api!/admin/product-categories/manage-products):
 
 ```ts
 const { product_category } =
@@ -311,9 +317,9 @@ Adding a product to a category doesn't remove it from its other categories.
 
 ---
 
-## Step 7: Publish a Product
+## Publish a Product
 
-To publish a draft product, update its `status` to `published`:
+To publish a draft product, update its `status` to `published` using the [Update Product API route](!api!/admin/products/update).
 
 ```ts
 await sdk.admin.product.update("prod_123", {
@@ -327,7 +333,7 @@ Customers can view and purchase a published product in the sales channels that t
 
 ## Create, Update, or Delete Products in Bulk
 
-To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a `POST` request to `/admin/products/batch`:
+To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a request to the [Manage Products API route](!api!/admin/products/manage-products):
 
 ```ts
 const { created, updated, deleted } =
@@ -357,6 +363,6 @@ const { created, updated, deleted } =
   })
 ```
 
-Items in `create` accept the same fields as the create request in [Step 2](#step-2-create-a-product). Items in `update` accept the same fields as the update request in [Step 4](#step-4-update-a-product), along with the product's `id`.
+Items in `create` accept the same fields as the [create request](#create-a-product). Items in `update` accept the same fields as the [update request](#update-a-product), along with the product's `id`.
 
 To import many products from a CSV file, refer to the [Import Products](!user-guide!/products/import) user guide instead.

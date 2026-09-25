@@ -292,11 +292,11 @@ When you deploy changes to an environment on Cloud, Medusa:
 
 So, if you define new database migrations in your module, define new links, or add data migration scripts, Medusa will apply those changes automatically when you deploy the changes to Cloud.
 
-You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, you can rely on the deployment to run them instead.
+You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, remove the `medusa db:migrate` command from your `start` script.
 
 ### How Data Migration Scripts Run on Cloud
 
-Each environment has its own database, so Medusa runs a data migration script once per environment. Medusa records a script in the `script_migrations` table of the environment's database only after the script runs to completion. So:
+Each environment has its own database, so Medusa runs a data migration script once per environment. So:
 
 - A script that completed in a previous deployment doesn't run again in later deployments.
 - A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
@@ -313,7 +313,7 @@ import { ExecArgs } from "@medusajs/framework/types"
 export default async function seedConfig({
   container,
 }: ExecArgs) {
-  // perform the data changes, for example,
+  // perform the data changes
   // by running a workflow
 }
 ```

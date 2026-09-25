@@ -272,8 +272,9 @@ The merge behavior explained in this chapter also applies to the `metadata` prop
 
 - Module service methods, such as the Product Module's `updateProducts`, the Order Module's `updateOrders` and `updateOrderLineItems`, and the Cart Module's `updateCarts` and `updateLineItems`.
 - Workflows and steps that use these methods, such as `updateProductsWorkflow`, `updateOrderWorkflow`, `updateCartWorkflow`, and `updateCartsStep`.
+- All API routes that are built on top of these workflows.
 
-So, when you pass `metadata` to these methods, workflows, or steps:
+So, when you pass `metadata` to these API routes, methods, workflows, or steps:
 
 - Medusa merges the top-level properties you pass with the existing `metadata`. Properties you don't pass remain unchanged.
 - Medusa replaces nested objects entirely, as explained in the [Caveat: Updating Nested Objects](#caveat-updating-nested-objects) section. To change a single nested property, retrieve the record first, then pass the entire nested object with your changes.
