@@ -28,6 +28,12 @@ export class ActiveIndexVersionCache {
   protected values_ = new Map<string, ActiveIndexVersion>()
   protected fetchedAt_ = 0
   protected refreshing_?: Promise<void>
+  /**
+   * Values written by `set()` since the in-flight fetch started. That fetch may
+   * have read the database before this process flipped the version, so its
+   * answer would otherwise drop an entry we know is active.
+   */
+  protected writesSinceFetchStarted_?: Map<string, ActiveIndexVersion>
 
   constructor(
     protected readonly fetchAll_: () => Promise<Map<string, ActiveIndexVersion>>
@@ -61,14 +67,29 @@ export class ActiveIndexVersionCache {
   }
 
   protected refresh(): Promise<void> {
-    this.refreshing_ ??= this.fetchAll_()
-      .then((values) => {
-        this.values_ = values
-        this.fetchedAt_ = Date.now()
-      })
-      .finally(() => {
-        this.refreshing_ = undefined
-      })
+    if (!this.refreshing_) {
+      const writes = (this.writesSinceFetchStarted_ = new Map<
+        string,
+        ActiveIndexVersion
+      >())
+
+      this.refreshing_ = this.fetchAll_()
+        .then((values) => {
+          for (const [name, value] of writes) {
+            values.set(name, value)
+          }
+
+          this.values_ = values
+          this.fetchedAt_ = Date.now()
+        })
+        .finally(() => {
+          this.refreshing_ = undefined
+
+          if (this.writesSinceFetchStarted_ === writes) {
+            this.writesSinceFetchStarted_ = undefined
+          }
+        })
+    }
 
     return this.refreshing_
   }
@@ -76,10 +97,14 @@ export class ActiveIndexVersionCache {
   /** Sets one value directly, e.g. right after this process itself flips it. */
   set(name: string, value: ActiveIndexVersion): void {
     this.values_.set(name, value)
+    this.writesSinceFetchStarted_?.set(name, value)
   }
 
   invalidate(): void {
     this.fetchedAt_ = 0
     this.values_.clear()
+    // Everything known is dropped on purpose, including writes an in-flight
+    // fetch would otherwise carry over.
+    this.writesSinceFetchStarted_?.clear()
   }
 }

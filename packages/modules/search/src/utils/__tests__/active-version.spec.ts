@@ -184,6 +184,61 @@ describe("ActiveIndexVersionCache", () => {
 
     await expect(cache.get("product")).rejects.toThrow("db unreachable")
   })
+
+  /**
+   * A fetch that read the database before this process flipped the version
+   * lands after `set()`. Replacing the whole map with that answer would drop
+   * the entry this process knows is active, and every later read would throw
+   * until a refresh healed it.
+   * @see https://github.com/medusajs/medusa/issues/16956
+   */
+  it("keeps a value set while a refresh that predates it is in flight", async () => {
+    const resolvers: Array<(value: Map<string, any>) => void> = []
+    const fetchAll = jest.fn(
+      () => new Promise<Map<string, any>>((resolve) => resolvers.push(resolve))
+    )
+    const cache = new ActiveIndexVersionCache(fetchAll)
+
+    const cold = cache.get("product").catch(() => "not found")
+    cache.set("product", version(1))
+    resolvers[0]!(new Map())
+    await cold
+
+    expect((await cache.get("product")).version).toBe(1)
+    expect(fetchAll).toHaveBeenCalledTimes(1)
+  })
+
+  it("prefers a later fetch over a value set before it started", async () => {
+    const resolvers: Array<(value: Map<string, any>) => void> = []
+    const fetchAll = jest.fn(
+      () => new Promise<Map<string, any>>((resolve) => resolvers.push(resolve))
+    )
+    const cache = new ActiveIndexVersionCache(fetchAll)
+
+    cache.set("product", version(1))
+    const read = cache.get("product")
+    resolvers[0]!(new Map([["product", version(2)]]))
+
+    expect((await read).version).toBe(2)
+  })
+
+  it("does not restore a set value after being invalidated", async () => {
+    const resolvers: Array<(value: Map<string, any>) => void> = []
+    const fetchAll = jest.fn(
+      () => new Promise<Map<string, any>>((resolve) => resolvers.push(resolve))
+    )
+    const cache = new ActiveIndexVersionCache(fetchAll)
+
+    const cold = cache.get("product").catch(() => "not found")
+    cache.set("product", version(1))
+    cache.invalidate()
+    resolvers[0]!(new Map())
+    await cold
+
+    await expect(cache.get("product")).rejects.toThrow(
+      /Search index "product" has no active version yet/
+    )
+  })
 })
 
 describe("resolveActiveDefinition", () => {
