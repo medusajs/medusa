@@ -118,15 +118,18 @@ interface ActivityItemProps {
 }
 
 const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
-  const { user, isPending, isError, error } = useUser(item.userId!, undefined, {
-    enabled: !!item.userId,
+  // `confirmed_by` can hold a non-user actor id, e.g. an `apk_` admin API key
+  // when the change was made through the Admin API. Only fetch users by real
+  // user ids (matching the dashboard's `By` component), and never throw a
+  // failed lookup into the error boundary - an unresolvable actor must not
+  // crash the whole draft order detail page.
+  const isUserActor = !!item.userId && item.userId.startsWith("user_")
+  const { user, isPending, isError } = useUser(item.userId!, undefined, {
+    enabled: isUserActor,
   })
 
-  if (isError) {
-    throw error
-  }
-
-  const isUserLoaded = !isPending && !!user && !!item.userId
+  const isUserLoaded = isUserActor && !isPending && !isError && !!user
+  const showByRow = isUserActor && (isPending || isUserLoaded)
 
   return (
     <div
@@ -158,7 +161,7 @@ const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
           </Tooltip>
         </div>
         {item.content && renderContent(item.content)}
-        {item.userId && (
+        {showByRow && (
           <div className="text-ui-fg-muted pt-2">
             {isUserLoaded ? (
               <Link to={`/settings/users/${user.id}`} className="w-fit">
