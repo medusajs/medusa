@@ -291,3 +291,37 @@ When you deploy changes to an environment on Cloud, Medusa:
 3. [Runs pending data migration scripts](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts).
 
 So, if you define new database migrations in your module, define new links, or add data migration scripts, Medusa will apply those changes automatically when you deploy the changes to Cloud.
+
+You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, you can rely on the deployment to run them instead.
+
+### How Data Migration Scripts Run on Cloud
+
+Each environment has its own database, so Medusa runs a data migration script once per environment. Medusa records a script in the `script_migrations` table of the environment's database only after the script runs to completion. So:
+
+- A script that completed in a previous deployment doesn't run again in later deployments.
+- A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
+
+### Run One-Off Data Scripts on Cloud
+
+To run a one-off data task on a Cloud environment, such as seeding data or filling a configuration table, create a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory instead of a [custom CLI script](!docs!/learn/fundamentals/custom-cli-scripts) that you run with `medusa exec`.
+
+For example:
+
+```ts title="src/migration-scripts/seed-config.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+
+export default async function seedConfig({
+  container,
+}: ExecArgs) {
+  // perform the data changes, for example,
+  // by running a workflow
+}
+```
+
+When you deploy the commit that adds the script, Medusa runs it during the deployment and doesn't run it again in that environment's later deployments.
+
+<Note>
+
+Test the script locally with `npx medusa db:migrate` and deploy it to a [preview environment](../environments/preview/page.mdx) before merging it to your production branch.
+
+</Note>
