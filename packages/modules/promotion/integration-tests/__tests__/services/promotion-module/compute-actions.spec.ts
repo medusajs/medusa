@@ -97,9 +97,7 @@ moduleIntegrationTestRunner({
               (acc, a) =>
                 MathBN.add(
                   acc,
-                  a.is_tax_inclusive
-                    ? MathBN.div(a.amount, taxRatio)
-                    : a.amount
+                  a.is_tax_inclusive ? MathBN.div(a.amount, taxRatio) : a.amount
                 ),
               MathBN.convert(0)
             )
@@ -3242,6 +3240,80 @@ moduleIntegrationTestRunner({
                 item_id: "item_cotton_tshirt",
               },
             ])
+          })
+
+          const createUseByAttributePromotion = async (
+            isAutomatic: boolean
+          ) => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                limit: 2,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              campaign_id: testCampaign.id,
+              is_automatic: isAutomatic,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
+                  {
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
+                  },
+                ],
+              } as any,
+            })
+          }
+
+          // Guest context: no customer_email, so the budget attribute value is
+          // absent.
+          const guestContext = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_cotton",
+                },
+                product: {
+                  id: "prod_tshirt",
+                },
+              },
+            ],
+          }
+
+          it("should skip an automatic use_by_attribute promotion when the budget attribute is missing from the context", async () => {
+            await createUseByAttributePromotion(true)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              guestContext as any
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should throw for a non-automatic use_by_attribute promotion when the budget attribute is missing from the context", async () => {
+            await createUseByAttributePromotion(false)
+
+            await expect(
+              service.computeActions(["PROMOTION_TEST"], guestContext as any)
+            ).rejects.toThrow(
+              `Attribute value for "customer_email" is required by promotion campaing budget`
+            )
           })
         })
       })
