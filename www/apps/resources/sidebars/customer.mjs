@@ -24,6 +24,11 @@ export const customerSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/customer/events-and-hooks",
+            title: "Events and Hooks",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/customer/links-to-other-modules",
             title: "Link to Modules",
           },
