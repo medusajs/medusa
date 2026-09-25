@@ -370,6 +370,11 @@ type PluralizationSpecialRules = {
   criterion: "criteria"
   tooth: "teeth"
   foot: "feet"
+  echo: "echoes"
+  dingo: "dingoes"
+  volcano: "volcanoes"
+  tornado: "tornadoes"
+  torpedo: "torpedoes"
 }
 
 /**
@@ -407,7 +412,9 @@ export type Pluralize<Singular extends string> =
         | `${string}ch`
         | `${string}x`
         | `${string}z`
-        | `${string}o`
+        | `${string}hero`
+        | `${string}ato`
+        | `${string}gro`
     ? `${Singular}es`
     : Singular extends `${infer R}fe`
     ? `${R}ves`
