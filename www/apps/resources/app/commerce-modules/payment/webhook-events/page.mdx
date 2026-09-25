@@ -31,7 +31,9 @@ The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of
 
 <Note title="Tip">
 
-The route segment does not include the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`, not `/hooks/payment/pp_myprovider_myprovider`.
+The route segment doesn't need the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`.
+
+Starting from Medusa v2.21.2, the route also accepts the full provider ID with the `pp_` prefix, such as `/hooks/payment/pp_myprovider_myprovider`, and removes the `pp_` prefix internally. In earlier versions, the prefixed route fails to resolve the provider.
 
 </Note>
 

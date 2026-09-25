@@ -687,7 +687,7 @@ It accepts the following properties:
   {
     name: "distinct",
     type: "`string`",
-    description: "A field to deduplicate on, so the provider returns at most one hit per distinct value."
+    description: "A field to deduplicate on, so the provider returns at most one hit per distinct value. The count in `metadata.count` then counts the deduplicated hits.\n\nThe field must exist in the index, and it can't be an array or vector field."
   },
   {
     name: "min_score",

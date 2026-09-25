@@ -143,7 +143,7 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
-  "app/learn/fundamentals/query/search/page.mdx": "2026-09-18T07:42:43.195Z",
+  "app/learn/fundamentals/query/search/page.mdx": "2026-09-25T12:33:45.770Z",
   "app/learn/fundamentals/query/index-module/page.mdx": "2026-08-21T06:04:22.962Z",
   "app/learn/fundamentals/query/page.mdx": "2026-09-15T11:13:29.895Z",
   "app/learn/fundamentals/query/query-context/page.mdx": "2026-08-21T06:04:22.963Z",
