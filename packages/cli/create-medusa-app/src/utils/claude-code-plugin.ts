@@ -2,9 +2,10 @@ import { spawnSync } from "child_process"
 import fs from "fs"
 import os from "os"
 import path from "path"
-import inquirer from "inquirer"
+import { confirm } from "@clack/prompts"
+import exitOnCancel from "./exit-on-cancel.js"
 import logMessage from "./log-message.js"
-import pkg from '@medusajs/telemetry';
+import pkg from "@medusajs/telemetry"
 const { Store, track } = pkg
 
 const CLAUDE_DIR = path.join(os.homedir(), ".claude")
@@ -62,22 +63,19 @@ export async function promptClaudeCodePlugin(): Promise<void> {
   }
 
   const configStore = new Store()
-  console.log(configStore.config_.path)
   if (configStore.getConfig(CONFIG_KEY)) {
     return
   }
 
   configStore.setConfig(CONFIG_KEY, true)
 
-  const { install } = await inquirer.prompt([
-    {
-      type: "confirm",
-      name: "install",
+  const install = exitOnCancel(
+    await confirm({
       message:
         "Working with Medusa is easier with the Medusa Plugin for Claude Code. Would you like to install it?",
-      default: true,
-    },
-  ])
+      initialValue: true,
+    })
+  )
 
   track("CMA_CLAUDE_CODE_PLUGIN_PROMPT", {
     install,

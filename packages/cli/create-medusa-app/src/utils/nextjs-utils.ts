@@ -1,21 +1,19 @@
 import { exec } from "child_process"
 import fs from "fs"
-import inquirer from "inquirer"
+import { confirm } from "@clack/prompts"
 import path from "path"
+import exitOnCancel from "./exit-on-cancel.js"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import { updatePackageVersions } from "./update-package-versions.js"
 import PackageManager from "./package-manager.js"
 export async function askForNextjsStarter(): Promise<boolean> {
-  const { installNextjs } = await inquirer.prompt([
-    {
-      type: "confirm",
-      name: "installNextjs",
-      message: `Would you like to install the storefront? You can also install it later.`,
-      default: false,
-    },
-  ])
-
-  return installNextjs
+  return exitOnCancel(
+    await confirm({
+      message:
+        "Would you like to install the storefront? You can also install it later.",
+      initialValue: false,
+    })
+  )
 }
 
 type InstallOptions = {
@@ -33,9 +31,9 @@ export async function installNextjsStarter({
   packageManager,
   version,
 }: InstallOptions): Promise<void> {
-  factBoxOptions.interval = displayFactBox({
+  displayFactBox({
     ...factBoxOptions,
-    title: "Setting up storefront...",
+    title: "Setting up storefront",
   })
 
   const packageJsonPath = path.join(storefrontDirectory, "package.json")

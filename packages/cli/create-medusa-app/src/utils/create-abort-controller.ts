@@ -3,6 +3,9 @@ import ProcessManager from "./process-manager.js"
 export default (processManager: ProcessManager) => {
   const abortController = new AbortController()
   processManager.onTerminated(() => abortController.abort())
+  // Clack spinners put stdin in raw mode and call process.exit() on Ctrl+C
+  // instead of emitting SIGINT, so child processes must also be stopped on exit.
+  process.on("exit", () => abortController.abort())
   return abortController
 }
 

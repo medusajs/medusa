@@ -1,6 +1,11 @@
 #!/usr/bin/env node
+import chalk from "chalk"
 import { Option, program } from "commander"
-import create from "./commands/create.js"
+import terminalLink from "terminal-link"
+import {
+  isNodeVersionSupported,
+  MIN_SUPPORTED_NODE_VERSION,
+} from "./utils/node-version.js"
 
 program
   .description("Create a new Medusa project or plugin")
@@ -62,4 +67,20 @@ program
   )
   .parse()
 
+if (!isNodeVersionSupported()) {
+  program.error(
+    chalk.bold.red(
+      `Medusa requires at least v${MIN_SUPPORTED_NODE_VERSION} of Node.js. You're using v${
+        process.versions.node
+      }. Please ${terminalLink(
+        "install Node.js",
+        "https://nodejs.org/en/download"
+      )} v${MIN_SUPPORTED_NODE_VERSION} or later and try again.`
+    )
+  )
+}
+
+// Imported dynamically so the version check runs before @clack/prompts loads,
+// which fails to import on older Node.js versions.
+const { default: create } = await import("./commands/create.js")
 void create(program.args, program.opts())

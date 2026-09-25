@@ -1,6 +1,5 @@
+import { log } from "@clack/prompts"
 import chalk from "chalk"
-import { program } from "commander"
-import { logger } from "./logger.js"
 
 type LogOptions = {
   message: string
@@ -11,18 +10,19 @@ type LogOptions = {
 export default ({ message, type = "info", stack }: LogOptions) => {
   switch (type) {
     case "info":
-      logger.info(chalk.white(message))
+      log.info(message)
       break
     case "success":
-      logger.info(chalk.green(message))
+      log.success(message)
       break
     case "warn":
-      logger.warn(chalk.yellow(message))
+      log.warn(message)
       break
     case "verbose":
-      logger.info(`${chalk.bgYellowBright("VERBOSE LOG:")} ${message}`)
+      log.message(`${chalk.bgYellowBright("VERBOSE LOG:")} ${message}`)
       break
     case "error":
-      program.error(chalk.bold.red(message.trim() + (stack || "")))
+      log.error(chalk.bold.red(message.trim() + (stack || "")))
+      process.exit(1)
   }
 }

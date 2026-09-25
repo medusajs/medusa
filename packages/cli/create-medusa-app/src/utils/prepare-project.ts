@@ -1,11 +1,10 @@
 import fs from "fs"
 import path from "path"
 import { randomBytes } from "crypto"
-import { Ora } from "ora"
 import { ExecuteResult } from "./execute.js"
 import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
-import ProcessManager from "./process-manager.js"
+import Spinner from "./spinner.js"
 import type { Client } from "@medusajs/deps/pg"
 import PackageManager from "./package-manager.js"
 import { updatePackageVersions } from "./update-package-versions.js"
@@ -25,8 +24,7 @@ type PreparePluginOptions = {
   isPlugin: true
   directory: string
   projectName: string
-  spinner: Ora
-  processManager: ProcessManager
+  spinner: Spinner
   abortController?: AbortController
   verbose?: boolean
   packageManager: PackageManager
@@ -40,8 +38,7 @@ type PrepareProjectOptions = {
   projectName: string
   // TODO add the option to disable seeding. For now, it's enabled by default.
   seed?: boolean
-  spinner: Ora
-  processManager: ProcessManager
+  spinner: Spinner
   abortController?: AbortController
   skipDb?: boolean
   migrations?: boolean
@@ -72,7 +69,6 @@ async function preparePlugin({
   directory,
   projectName,
   spinner,
-  processManager,
   abortController,
   verbose = false,
   packageManager,
@@ -84,12 +80,9 @@ async function preparePlugin({
   }
 
   const factBoxOptions: FactBoxOptions = {
-    interval: null,
     spinner,
-    processManager,
     message: "",
     title: "",
-    verbose,
   }
 
   // Update package.json
@@ -107,16 +100,14 @@ async function preparePlugin({
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
-  factBoxOptions.interval = displayFactBox({
+  displayFactBox({
     ...factBoxOptions,
-    spinner,
-    title: "Installing dependencies...",
-    processManager,
+    title: "Installing dependencies",
   })
 
   await packageManager.installDependencies(execOptions)
 
-  factBoxOptions.interval = displayFactBox({
+  displayFactBox({
     ...factBoxOptions,
     message: "Installed Dependencies",
   })
@@ -131,7 +122,6 @@ async function prepareProject({
   dbConnectionString,
   seed,
   spinner,
-  processManager,
   abortController,
   skipDb,
   migrations,
@@ -164,12 +154,9 @@ async function prepareProject({
   }
 
   const factBoxOptions: FactBoxOptions = {
-    interval: null,
     spinner,
-    processManager,
     message: "",
     title: "",
-    verbose,
   }
 
   // Add packageManager field to ensure consistent version usage
@@ -228,26 +215,24 @@ async function prepareProject({
 
   fs.appendFileSync(path.join(backendDirectory, `.env`), env)
 
-  factBoxOptions.interval = displayFactBox({
+  displayFactBox({
     ...factBoxOptions,
-    spinner,
-    title: "Installing dependencies...",
-    processManager,
+    title: "Installing dependencies",
   })
 
   await packageManager.installDependencies(execOptions, {
     installLegacyPeerDeps: true,
   })
 
-  factBoxOptions.interval = displayFactBox({
+  displayFactBox({
     ...factBoxOptions,
     message: "Installed Dependencies",
   })
 
   if (!skipDb && migrations) {
-    factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...factBoxOptions,
-      title: "Running Migrations...",
+      title: "Running Migrations",
     })
 
     // run migrations
@@ -288,7 +273,7 @@ async function prepareProject({
       }
     }
 
-    factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...factBoxOptions,
       message: "Ran Migrations",
     })
