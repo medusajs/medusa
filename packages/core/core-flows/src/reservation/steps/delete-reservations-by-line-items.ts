@@ -32,10 +32,13 @@ export const deleteReservationsByLineItemsStep = createStep(
       await service.deleteReservationItemsByLineItem(ids)
     })
 
-    return new StepResponse(reservationIds, { ids, inventoryItemIds })
+    return new StepResponse(reservationIds, {
+      reservationIds,
+      inventoryItemIds,
+    })
   },
   async (data, { container }) => {
-    if (!data?.ids?.length) {
+    if (!data?.reservationIds?.length) {
       return
     }
 
@@ -45,7 +48,7 @@ export const deleteReservationsByLineItemsStep = createStep(
     const lockingKeys = Array.from(new Set(data.inventoryItemIds))
 
     await locking.execute(lockingKeys, async () => {
-      await service.restoreReservationItemsByLineItem(data.ids)
+      await service.restoreReservationItems(data.reservationIds)
     })
   }
 )
