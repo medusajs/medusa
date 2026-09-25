@@ -1,8 +1,6 @@
+import { note, outro } from "@clack/prompts"
 import { track } from "@medusajs/telemetry"
-import boxen from "boxen"
-import chalk from "chalk"
 import fs from "fs"
-import { emojify } from "node-emoji"
 import open from "open"
 import { EOL } from "os"
 import slugifyType from "slugify"
@@ -71,16 +69,12 @@ export class MedusaProjectCreator
     }
 
     logMessage({
-      message: `${emojify(
-        ":rocket:"
-      )} Starting project setup, this may take a few minutes.`,
+      message: "Starting project setup, this may take a few minutes.",
     })
 
-    this.spinner.start()
-
-    this.factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...this.factBoxOptions,
-      title: "Setting up project...",
+      title: "Setting up project",
     })
 
     await runCloneRepo({
@@ -91,7 +85,7 @@ export class MedusaProjectCreator
       verbose: this.options.verbose,
     })
 
-    this.factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...this.factBoxOptions,
       message: "Created project directory",
     })
@@ -130,9 +124,9 @@ export class MedusaProjectCreator
     dbName = rest.dbName || dbName
 
     if (!this.options.dbUrl) {
-      this.factBoxOptions.interval = displayFactBox({
+      displayFactBox({
         ...this.factBoxOptions,
-        message: "Creating database...",
+        title: "Creating database",
       })
 
       this.client = await runCreateDb({
@@ -141,7 +135,7 @@ export class MedusaProjectCreator
         spinner: this.spinner,
       })
 
-      this.factBoxOptions.interval = displayFactBox({
+      displayFactBox({
         ...this.factBoxOptions,
         message: `Database ${dbName} created`,
       })
@@ -171,8 +165,6 @@ export class MedusaProjectCreator
     } finally {
       await this.client?.end()
     }
-
-    this.spinner.succeed(chalk.green("Project Prepared"))
   }
 
   private async startServices(): Promise<void> {
@@ -235,36 +227,33 @@ export class MedusaProjectCreator
 
   protected showSuccessMessage(): void {
     const commandStr = this.packageManager.getCommandStr(`dev`)
-    logMessage({
-      message: boxen(
-        chalk.green(
-          `Change to the \`${
-            this.projectName
-          }\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa application again with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}${
-            this.inviteToken
-              ? `After you start the Medusa application, you can create an admin user with the URL http://localhost:9000/app/invite?token=${this.inviteToken}&first_run=true${EOL}${EOL}`
-              : ""
-          }${
-            this.nextjsDirectory?.length
-              ? `The storefront is available in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
-              : ""
-          }Check out the Medusa ${terminalLink(
-            "documentation",
-            "https://docs.medusajs.com/"
-          )} to start your development:${EOL}${EOL}Star us on ${terminalLink(
-            "GitHub",
-            "https://github.com/medusajs/medusa/stargazers"
-          )} if you like what we're building.`
-        ),
-        {
-          titleAlignment: "center",
-          textAlignment: "center",
-          padding: 1,
-          margin: 1,
-          float: "center",
-        }
-      ),
-    })
+    const steps = [
+      `Change to the \`${this.projectName}\` directory to explore your Medusa project.`,
+      `Start your Medusa application again with the following command:${EOL}${EOL}  ${commandStr}`,
+    ]
+
+    if (this.inviteToken) {
+      steps.push(
+        `After you start the Medusa application, you can create an admin user with the URL:${EOL}${EOL}  http://localhost:9000/app/invite?token=${this.inviteToken}&first_run=true`
+      )
+    }
+
+    if (this.nextjsDirectory?.length) {
+      steps.push(
+        `The storefront is available in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}  ${commandStr}`
+      )
+    }
+
+    note(steps.join(`${EOL}${EOL}`), "Next steps")
+    outro(
+      `Check out the Medusa ${terminalLink(
+        "documentation",
+        "https://docs.medusajs.com/"
+      )} to start your development. Star us on ${terminalLink(
+        "GitHub",
+        "https://github.com/medusajs/medusa/stargazers"
+      )} if you like what we're building.`
+    )
   }
 
   protected setupProcessManager(): void {
