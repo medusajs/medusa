@@ -57,24 +57,14 @@ jobs:
           echo "name=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Run Claude Code to fix docs
-        uses: anthropics/claude-code-base-action@beta
+        uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
-          max_turns: 80
-          model: claude-sonnet-4-6
-          mcp_config: |
-            {
-              "mcpServers": {
-                "linear-server": {
-                  "type": "http",
-                  "url": "https://mcp.linear.app/mcp",
-                  "headers": {
-                    "Authorization": "Bearer ${{ secrets.LINEAR_API_KEY }}"
-                  }
-                }
-              }
-            }
+          claude_args: >-
+            --model claude-opus-5-5
+            --max-turns 80
+            --mcp-config '{"mcpServers":{"linear-server":{"type":"http","url":"https://mcp.linear.app/mcp","headers":{"Authorization":"Bearer ${{ secrets.LINEAR_API_KEY }}"}}}}'
+            --allowedTools "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*),Bash(git status:*),Bash(ls:*),Bash(find:*),Bash(cat:*)"
           prompt: |
             IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.
 

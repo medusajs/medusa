@@ -4693,13 +4693,21 @@
                 },
                 "creditLineDescription": {
                   "type": "string"
+                },
+                "creditLineNoOutstandingAmountDescription": {
+                  "type": "string"
+                },
+                "creditLineGuestDescription": {
+                  "type": "string"
                 }
               },
               "required": [
                 "paymentMethod",
                 "paymentMethodDescription",
                 "creditLine",
-                "creditLineDescription"
+                "creditLineDescription",
+                "creditLineNoOutstandingAmountDescription",
+                "creditLineGuestDescription"
               ],
               "additionalProperties": false
             }
@@ -4953,6 +4961,12 @@
             "totalPaidByCustomer": {
               "type": "string"
             },
+            "totalPending": {
+              "type": "string"
+            },
+            "storeCreditRefund": {
+              "type": "string"
+            },
             "totalStoreCreditRefunds": {
               "type": "string"
             },
@@ -4989,6 +5003,9 @@
                 "awaiting": {
                   "type": "string"
                 },
+                "pending": {
+                  "type": "string"
+                },
                 "captured": {
                   "type": "string"
                 },
@@ -5013,6 +5030,7 @@
                 "authorized",
                 "partiallyAuthorized",
                 "awaiting",
+                "pending",
                 "captured",
                 "partiallyRefunded",
                 "partiallyCaptured",
@@ -5069,6 +5087,8 @@
             "title",
             "isReadyToBeCaptured",
             "totalPaidByCustomer",
+            "totalPending",
+            "storeCreditRefund",
             "totalStoreCreditRefunds",
             "capture",
             "capture_short",
@@ -13119,6 +13139,15 @@
         "reindexEntityIdsHint": {
           "type": "string"
         },
+        "delete": {
+          "type": "string"
+        },
+        "deleteWarning": {
+          "type": "string"
+        },
+        "deleteSuccess": {
+          "type": "string"
+        },
         "noFields": {
           "type": "string"
         },
@@ -13165,6 +13194,9 @@
         "reindexSinceHint",
         "reindexEntityIdsLabel",
         "reindexEntityIdsHint",
+        "delete",
+        "deleteWarning",
+        "deleteSuccess",
         "noFields",
         "list",
         "status"

@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd, InlineIcon } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -29,13 +29,56 @@ Medusa automatically configures the database for your environments on Cloud. So,
 
 ## Cloud Database Backups
 
-Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state if needed.
+Medusa provides automatic backups for your environment databases on Cloud. The retention period depends on your plan:
 
-<Note>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Plan
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Retention Period
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Develop
+      </Table.Cell>
+      <Table.Cell>
+        Not supported
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Launch
+      </Table.Cell>
+      <Table.Cell>
+        7 days
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Scale
+      </Table.Cell>
+      <Table.Cell>
+        14 days
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Enterprise
+      </Table.Cell>
+      <Table.Cell>
+        14 days
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
 
-Database backups is available to the Launch, Scale, and Enterprise plans only. Learn how to upgrade in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
-
-</Note>
+You can upgrade your plan as explained in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
 
 To access the database backups of an environment:
 
@@ -48,7 +91,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 
 The **Database Backups** section shows a table of available backups with the following columns:
 
@@ -117,8 +160,9 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
-5. In the **Database read-only connection string** section, copy the read-only connection string in the code block.
+4. Click **Database** in the sidebar under the environment's section.
+5. In the **Database read-only connection string** section, toggle read access on if it is not already enabled.
+6. Copy the read-only connection string from the code block.
   
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
 
@@ -127,6 +171,15 @@ psql "postgresql://..."
 ```
 
 After connecting to the database, you can run SQL queries to interact with your data.
+
+### Rotate Read Password
+
+You can rotate the password for the read-only connection string from the **Database read-only connection string** section. To do that:
+
+1. Click the **Rotate password** button.
+2. Confirm the action in the dialog that opens by clicking **Rotate**.
+ 
+Medusa generates a new read-only connection string. Update any tools or scripts that use the old connection string after rotating.
 
 ### Get Write Connection String
 
@@ -151,7 +204,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 5. In the **Database write-access connection string** section, toggle the switch to enable write access.
 6. Once enabled, copy the write connection string from the code block that appears.
 
@@ -166,6 +219,15 @@ Then, you can connect to your database using a PostgreSQL client with the write 
 ```bash
 psql "postgresql://..."
 ```
+
+### Rotate Write Password
+
+Organization owners can rotate the password for the write connection string from the **Database write-access connection string** section. To do that:
+
+1. Click the **Rotate password** button.
+2. Confirm the action in the dialog that opens by clicking **Rotate**.
+
+Medusa generates a new write connection string. Update any tools or scripts that use the old connection string after rotating.
 
 ---
 
@@ -184,7 +246,7 @@ You can access the database settings from the [command palette](../command-palet
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project that contains the environment you want to view.
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
-4. Click **Database & Storage** > **Database** in the sidebar under the environment's section.
+4. Click **Database** in the sidebar under the environment's section.
 
 In the "Database dump" section, you can either:
 
@@ -229,3 +291,37 @@ When you deploy changes to an environment on Cloud, Medusa:
 3. [Runs pending data migration scripts](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts).
 
 So, if you define new database migrations in your module, define new links, or add data migration scripts, Medusa will apply those changes automatically when you deploy the changes to Cloud.
+
+You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, remove the `medusa db:migrate` command from your `start` script.
+
+### How Data Migration Scripts Run on Cloud
+
+Each environment has its own database, so Medusa runs a data migration script once per environment. So:
+
+- A script that completed in a previous deployment doesn't run again in later deployments.
+- A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
+
+### Run One-Off Data Scripts on Cloud
+
+To run a one-off data task on a Cloud environment, such as seeding data or filling a configuration table, create a [data migration script](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts) in the `src/migration-scripts` directory instead of a [custom CLI script](!docs!/learn/fundamentals/custom-cli-scripts) that you run with `medusa exec`.
+
+For example:
+
+```ts title="src/migration-scripts/seed-config.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+
+export default async function seedConfig({
+  container,
+}: ExecArgs) {
+  // perform the data changes
+  // by running a workflow
+}
+```
+
+When you deploy the commit that adds the script, Medusa runs it during the deployment and doesn't run it again in that environment's later deployments.
+
+<Note>
+
+Test the script locally with `npx medusa db:migrate` and deploy it to a [preview environment](../environments/preview/page.mdx) before merging it to your production branch.
+
+</Note>

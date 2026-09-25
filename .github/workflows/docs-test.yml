@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - www/**
+      - .github/workflows/docs-test.yml
 
 jobs:
   apps-test:
@@ -41,7 +42,7 @@ jobs:
 
       - name: Build Doc Apps
         working-directory: www
-        run: yarn build
+        run: yarn build --concurrency=2
         env:
           NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
           NEXT_PUBLIC_BASE_PATH: /api

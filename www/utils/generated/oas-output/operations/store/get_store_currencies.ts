@@ -150,6 +150,16 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-allowed:
+ *   - code
+ *   - name
+ *   - symbol
+ *   - symbol_native
+ *   - decimal_digits
+ *   - rounding
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
  * 
 */
 

@@ -63,6 +63,9 @@ export const OrderBalanceSettlementForm = ({
   const paymentId = searchParams.get("paymentId")
   const payments = getPaymentsFromOrder(order)
   const pendingDifference = order.summary.pending_difference * -1
+  const hasOutstandingAmount = pendingDifference > 0
+  const isRegisteredCustomer = !!order.customer?.has_account
+  const canSettleWithCreditLine = hasOutstandingAmount && isRegisteredCustomer
 
   const [activePayment, setActivePayment] = useState<AdminPayment | null>(
     paymentId ? payments.find((p) => p.id === paymentId) || null : null
@@ -97,7 +100,7 @@ export const OrderBalanceSettlementForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     if (data.settlement_type === "credit_line") {
-      if (data.credit_line?.amount.float === null) {
+      if (!canSettleWithCreditLine || data.credit_line?.amount.float === null) {
         return
       }
       await createCreditLine(
@@ -157,23 +160,41 @@ export const OrderBalanceSettlementForm = ({
   useEffect(() => {
     form.clearErrors()
 
-    const _minimum = activePayment?.amount
-      ? Math.min(pendingDifference, activePayment.amount)
-      : pendingDifference
-
-    const minimum = {
-      value: _minimum.toFixed(currency.decimal_digits),
-      float: _minimum,
-    }
+    const toAmount = (value: number) => ({
+      value: value.toFixed(currency.decimal_digits),
+      float: value,
+    })
 
     if (settlementType === "refund") {
-      form.setValue("refund.amount", minimum)
+      const paymentAmount = activePayment?.amount ?? 0
+
+      form.setValue(
+        "refund.amount",
+        toAmount(
+          hasOutstandingAmount
+            ? Math.min(pendingDifference, paymentAmount)
+            : paymentAmount
+        )
+      )
     }
 
     if (settlementType === "credit_line") {
-      form.setValue("credit_line.amount", minimum)
+      form.setValue("credit_line.amount", toAmount(pendingDifference))
     }
-  }, [settlementType, activePayment, pendingDifference, form, currency])
+  }, [
+    settlementType,
+    activePayment,
+    pendingDifference,
+    hasOutstandingAmount,
+    form,
+    currency,
+  ])
+
+  const creditLineDescription = canSettleWithCreditLine
+    ? "orders.balanceSettlement.settlementTypes.creditLineDescription"
+    : isRegisteredCustomer
+    ? "orders.balanceSettlement.settlementTypes.creditLineNoOutstandingAmountDescription"
+    : "orders.balanceSettlement.settlementTypes.creditLineGuestDescription"
 
   return (
     <RouteDrawer.Form form={form}>
@@ -208,9 +229,8 @@ export const OrderBalanceSettlementForm = ({
 
                 <RadioGroup.ChoiceBox
                   value={"credit_line"}
-                  description={t(
-                    "orders.balanceSettlement.settlementTypes.creditLineDescription"
-                  )}
+                  disabled={!canSettleWithCreditLine}
+                  description={t(creditLineDescription)}
                   label={t(
                     "orders.balanceSettlement.settlementTypes.creditLine"
                   )}

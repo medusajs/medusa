@@ -35,7 +35,7 @@ export default async function build({
   }
 
   // Lint after type generation.
-  await runLintStep({ directory, lint, fix, quiet, logger })
+  await runLintStep({ directory, lint, fix, quiet, logger, failOnError: false })
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)

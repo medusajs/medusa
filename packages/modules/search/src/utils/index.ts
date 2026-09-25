@@ -687,7 +687,8 @@ export async function listVersionsByIndexId(
  */
 export async function resolveActiveDefinition(
   context: Pick<SearchIndexContext, "indexes" | "activeVersionCache">,
-  name: string
+  name: string,
+  { fresh = false }: { fresh?: boolean } = {}
 ): Promise<SearchTypes.ResolvedSearchIndexDefinition> {
   const definition = retrieveIndexDefinition(context.indexes, name)
 
@@ -695,12 +696,37 @@ export async function resolveActiveDefinition(
     return definition
   }
 
-  const active = await context.activeVersionCache.get(name)
+  const active = await context.activeVersionCache.get(name, { fresh })
 
   return {
     ...definition,
     physical_name: active.physical_name,
     provider: active.provider,
+  }
+}
+
+/**
+ * Runs an operation against whichever version is active, and gives it a second
+ * go on a `NOT_FOUND` with the cache invalidated first.
+ */
+export async function withActiveIndexRetry<T>(
+  context: Pick<SearchIndexContext, "activeVersionCache">,
+  run: () => Promise<T>
+): Promise<T> {
+  try {
+    return await run()
+  } catch (error) {
+    if (
+      !context.activeVersionCache ||
+      !(error instanceof MedusaError) ||
+      error.type !== MedusaError.Types.NOT_FOUND
+    ) {
+      throw error
+    }
+
+    await context.activeVersionCache.invalidate()
+
+    return await run()
   }
 }
 

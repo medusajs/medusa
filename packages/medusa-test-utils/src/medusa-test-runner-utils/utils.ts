@@ -29,7 +29,10 @@ export function formatError(error: unknown): string {
       detail?: string
       hint?: string
       where?: string
+      cause?: unknown
     }
+
+    const aggregatedErrors = (error as AggregateError).errors
 
     return [
       pgError.message || pgError.name,
@@ -37,6 +40,9 @@ export function formatError(error: unknown): string {
       pgError.detail && `detail: ${pgError.detail}`,
       pgError.hint && `hint: ${pgError.hint}`,
       pgError.where && `where: ${pgError.where}`,
+      Array.isArray(aggregatedErrors) &&
+        aggregatedErrors.map((e) => formatError(e)).join("\n"),
+      pgError.cause && `caused by: ${formatError(pgError.cause)}`,
     ]
       .filter(Boolean)
       .join("\n")

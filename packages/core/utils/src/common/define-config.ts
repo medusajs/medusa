@@ -45,6 +45,7 @@ function resolveEnvSecret(envValue: string | undefined): string | undefined {
   return DEFAULT_SECRET
 }
 const DEFAULT_ADMIN_URL = "/"
+const DEFAULT_USER_AUTH_METHODS = ["emailpass"]
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
@@ -610,6 +611,11 @@ function normalizeProjectConfig(
     ...(hasCloudOptions ? { cloud: mergedCloudOptions } : {}),
     ...restOfProjectConfig,
   } satisfies ConfigModule["projectConfig"]
+
+  config.http.authMethodsPerActor = {
+    ...config.http.authMethodsPerActor,
+    user: config.http.authMethodsPerActor?.user ?? DEFAULT_USER_AUTH_METHODS,
+  }
 
   if (
     isCloud &&

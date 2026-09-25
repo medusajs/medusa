@@ -62,7 +62,13 @@
     "unsavedChangesDescription": "Kaydedilmemiş değişiklikleriniz kaybolacak.",
     "includesTaxTooltip": "Bu sütundaki fiyatlar vergiler dahil fiyatlardır.",
     "excludesTaxTooltip": "Bu sütundaki fiyatlar vergiler hariç fiyatlardır.",
-    "noMoreData": "Daha fazla veri yok"
+    "noMoreData": "Daha fazla veri yok",
+    "rank": "Sıra",
+    "values_one": "{{count}} değer",
+    "values_other": "{{count}} değer",
+    "quantityPrice": "Miktar Fiyatı",
+    "exclusive": "Ürüne özel",
+    "global": "Genel"
   },
   "json": {
     "header": "JSON",
@@ -85,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Üstüne satır ekle",
         "insertRowBelow": "Altına satır ekle",
-        "deleteRow": "Satırı sil"
+        "deleteRow": "Satırı sil",
+        "addRow": "Satır ekle"
       },
       "labels": {
         "key": "Anahtar",
@@ -148,7 +155,10 @@
     "hide": "Gizle",
     "export": "Dışa Aktar",
     "import": "İçe Aktar",
-    "cannotUndo": "Bu işlem geri alınamaz"
+    "cannotUndo": "Bu işlem geri alınamaz",
+    "show": "Göster",
+    "manage": "Yönet",
+    "goToProductOption": "Ürün seçeneğine git"
   },
   "operators": {
     "in": "İçinde"
@@ -194,7 +204,22 @@
         "publishableApiKey": "Yayınlanabilir API Anahtarları",
         "secretApiKey": "Gizli API Anahtarları",
         "command": "Komutlar",
-        "navigation": "Navigasyon"
+        "navigation": "Navigasyon",
+        "customer_group": "Müşteri Grupları",
+        "product_variant": "Ürün Varyantları",
+        "inventory_item": "Envanter",
+        "product_category": "Kategoriler",
+        "product_collection": "Koleksiyonlar",
+        "price_list": "Fiyat Listeleri",
+        "tax_region": "Vergi Bölgeleri",
+        "return_reason": "İade Nedenleri",
+        "sales_channel": "Satış Kanalları",
+        "product_type": "Ürün Tipleri",
+        "product_tag": "Ürün Etiketleri",
+        "stock_location": "Konumlar",
+        "shipping_profile": "Kargo Profilleri",
+        "publishable_api_key": "Yayınlanabilir API Anahtarları",
+        "secret_api_key": "Gizli API Anahtarları"
       }
     },
     "keyboardShortcuts": {
@@ -348,7 +373,8 @@
       "true": "Doğru",
       "false": "Yanlış"
     },
-    "addFilter": "Filtre Ekle"
+    "addFilter": "Filtre Ekle",
+    "columnsLabel": "Sütunlar"
   },
   "errorBoundary": {
     "badRequestTitle": "400 - Hatalı İstek",
@@ -458,7 +484,8 @@
         "productOptions": {
           "label": "Ürün seçenekleri",
           "hint": "Ürün için seçenekleri belirleyin, örneğin renk, boyut vb."
-        }
+        },
+        "selectValuesHint": "Her seçenek için kullanılacak değerleri seçin"
       },
       "successToast": "Ürün {{title}} başarıyla oluşturuldu."
     },
@@ -715,7 +742,17 @@
         "header": "Seçenek Oluştur",
         "successToast": "Seçenek {{title}} başarıyla oluşturuldu."
       },
-      "deleteWarning": "Ürün seçeneğini silmek üzeresiniz: {{title}}. Bu işlem geri alınamaz."
+      "deleteWarning": "Ürün seçeneğini silmek üzeresiniz: {{title}}. Bu işlem geri alınamaz.",
+      "manage": {
+        "header": "Ürün Seçeneklerini Yönet",
+        "description": "Bu ürüne ait ürün seçeneklerini ilişkilendirin veya kaldırın.",
+        "label": "Ürün Seçenekleri",
+        "hint": "Bu ürünle ilişkilendirilecek seçenekleri belirleyin.",
+        "placeholder": "Seçenekleri seçin",
+        "error": {
+          "noValues": "Lütfen eklenen seçenek(ler) için en az bir değer seçin."
+        }
+      }
     },
     "organization": {
       "header": "Organize Et",
@@ -784,6 +821,16 @@
       "remove": {
         "successToast_one": "Ürün koleksiyondan başarıyla kaldırıldı.",
         "successToast_other": "Ürünler koleksiyondan başarıyla kaldırıldı."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Koleksiyon yok",
+        "description": "Görüntülenecek koleksiyon bulunmuyor."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir koleksiyon mevcut filtre kriterlerine uymuyor."
       }
     }
   },
@@ -916,7 +963,21 @@
       "disablePrompt_other": "{{count}} konum seviyesini devre dışı bırakmak üzeresiniz. Bu işlem geri alınamaz.",
       "disabledToggleTooltip": "Devre dışı bırakılamaz: devre dışı bırakmadan önce gelen ve/veya rezerve edilmiş miktarı temizleyin.",
       "successToast": "Stok seviyeleri başarıyla güncellendi."
-    }
+    },
+    "export": {
+      "header": "Envanter Listesini Dışa Aktar",
+      "description": "Envanter listesini bir CSV dosyasına dışa aktarın.",
+      "success": {
+        "title": "Dışa aktarma işleminiz işleniyor",
+        "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo görünümünde filtreleri uygulayın"
+      }
+    },
+    "unitOfMeasurePlaceholder": "kg",
+    "unitOfMeasureHint": "Stoğun tutulduğu ve sayıldığı birim. Yönetim panelinde miktarların yanında gösterilir."
   },
   "giftCards": {
     "domain": "Hediye Kartları",
@@ -939,7 +1000,15 @@
   "customers": {
     "domain": "Müşteriler",
     "list": {
-      "noRecordsMessage": "Müşterileriniz burada görünecek."
+      "noRecordsMessage": "Müşterileriniz burada görünecek.",
+      "empty": {
+        "heading": "Müşteri yok",
+        "description": "Görüntülenecek müşteri yok."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir müşteri mevcut filtre kriterlerine uymuyor."
+      }
     },
     "create": {
       "header": "Müşteri Oluştur",
@@ -1077,7 +1146,9 @@
         "paymentMethod": "Ödeme yöntemi",
         "paymentMethodDescription": "Tutarı ödeme yöntemine iade et",
         "creditLine": "Mağaza kredisi",
-        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et"
+        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et",
+        "creditLineGuestDescription": "Yalnızca hesabı olan müşteriler için kullanılabilir. Bu sipariş bir misafir tarafından verildi.",
+        "creditLineNoOutstandingAmountDescription": "Yalnızca siparişin ödenmemiş bir tutarı olduğunda kullanılabilir. Önce bir iade veya sipariş düzenlemesi oluşturun."
       }
     },
     "domain": "Siparişler",
@@ -1133,12 +1204,22 @@
       "currentOwner": "Mevcut Sahip",
       "newOwner": "Yeni Sahip",
       "currentOwnerDescription": "Bu siparişle şu anda ilişkili olan müşteri.",
-      "newOwnerDescription": "Bu siparişin devredileceği müşteri."
+      "newOwnerDescription": "Bu siparişin devredileceği müşteri.",
+      "guestSuccess": "Sipariş misafir müşteriye aktarıldı: {{email}}.",
+      "ownerType": "Hesap türü",
+      "registered": "Kayıtlı",
+      "registeredDescription": "Talebi kabul etmesi gereken kayıtlı bir müşteriye aktarın.",
+      "guest": "Misafir",
+      "guestDescription": "E-posta ile bir misafir müşteriye aktarın. Hemen uygulanır.",
+      "newGuestOwner": "Yeni sahibin e-postası",
+      "newGuestOwnerDescription": "Bu siparişin aktarılacağı misafir müşterinin e-postası. Böyle bir müşteri yoksa oluşturulur."
     },
     "payment": {
       "title": "Ödemeler",
       "isReadyToBeCaptured": "Ödeme <0/> alınmaya hazır.",
       "totalPaidByCustomer": "Müşteri tarafından ödenen toplam",
+      "totalPending": "Toplam bekleyen",
+      "storeCreditRefund": "Mağaza alacak iadesi",
       "totalStoreCreditRefunds": "Toplam mağaza kredisi iadeleri",
       "capture": "Ödemeyi al",
       "capture_short": "Al",
@@ -1151,6 +1232,7 @@
         "authorized": "Yetkilendirildi",
         "partiallyAuthorized": "Kısmen yetkilendirildi",
         "awaiting": "Bekleniyor",
+        "pending": "Beklemede",
         "captured": "Alındı",
         "partiallyRefunded": "Kısmen iade edildi",
         "partiallyCaptured": "Kısmen alındı",
@@ -1167,7 +1249,11 @@
       "createRefundWrongQuantity": "Miktar 1 ile {{number}} arasında bir sayı olmalıdır",
       "refundAmount": "{{ amount }} tutarını iade et",
       "paymentLink": "{{ amount }} için ödeme bağlantısını kopyala",
-      "selectPaymentToRefund": "İade edilecek ödemeyi seçin"
+      "selectPaymentToRefund": "İade edilecek ödemeyi seçin",
+      "pendingAuthorization": "Ödeme, ödeme sağlayıcısından yetkilendirme bekliyor.",
+      "checkStatus": "Durumu kontrol et",
+      "checkStatusSuccess": "Ödeme başarıyla yetkilendirildi.",
+      "stillPending": "Ödeme hâlâ yetkilendirme bekliyor."
     },
     "edits": {
       "title": "Siparişi düzenle",
@@ -1197,7 +1283,9 @@
       },
       "validation": {
         "quantityLowerThanFulfillment": "Miktar, tamamlanan miktardan daha az veya eşit olamaz"
-      }
+      },
+      "sendNotification": "Bildirim gönder",
+      "sendNotificationHint": "Müşteriyi bu sipariş düzenlemesi hakkında bilgilendirin."
     },
     "edit": {
       "email": {
@@ -1414,7 +1502,8 @@
         "wrongQuantity_other": "Miktar 1 ile {{number}} arasında olmalıdır",
         "noItems": "Tamamlanacak ürün yok.",
         "noShippingOption": "Kargo seçeneği gereklidir",
-        "noLocation": "Konum gereklidir"
+        "noLocation": "Konum gereklidir",
+        "wrongQuantity_one": "Tamamlanacak sadece bir ürün mevcut"
       },
       "status": {
         "notFulfilled": "Tamamlanmadı",
@@ -1441,7 +1530,8 @@
       },
       "trackingLabel": "Takip",
       "shippingFromLabel": "Gönderen",
-      "itemsLabel": "Ürünler"
+      "itemsLabel": "Ürünler",
+      "locationUnavailable": "Konum silindi/kullanılamıyor"
     },
     "refund": {
       "title": "İade Oluştur",
@@ -2294,6 +2384,16 @@
       "list": {
         "noRecordsMessage": "Promosyonun uygulanacağı ürünleri kısıtlamak için bir şart ekleyin."
       }
+    },
+    "list": {
+      "empty": {
+        "heading": "Promosyon yok",
+        "description": "Görüntülenecek promosyon yok."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Mevcut filtre kriterleriyle eşleşen promosyon yok."
+      }
     }
   },
   "campaigns": {
@@ -2404,7 +2504,17 @@
       }
     },
     "deleteCampaignWarning": "{{name}} kampanyasını silmek üzeresiniz. Bu işlem geri alınamaz.",
-    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>",
+    "list": {
+      "empty": {
+        "heading": "Kampanya bulunamadı",
+        "description": "Gösterilecek kampanya bulunmuyor."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir kampanya mevcut filtre kriterlerine uymuyor."
+      }
+    }
   },
   "priceLists": {
     "domain": "Fiyat Listeleri",
@@ -2502,6 +2612,44 @@
         "placeholder": "Müşteri gruplarını arayın",
         "attribute": "Müşteri grupları"
       }
+    },
+    "list": {
+      "empty": {
+        "heading": "Fiyat listesi bulunamadı",
+        "description": "Gösterilecek fiyat listesi bulunmuyor."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir fiyat listesi mevcut filtre kriterlerine uymuyor."
+      }
+    },
+    "quantityPricing": {
+      "header": "{{name}} için Koşullu Fiyatlar",
+      "description": "Bu ürün varyantı için koşullu fiyatları sepet miktarına göre yönetin.",
+      "actions": {
+        "addPrice": "Fiyat ekle"
+      },
+      "rules": {
+        "amount": "Ürün varyantı fiyatı",
+        "minQuantity": "Minimum sepet miktarı",
+        "maxQuantity": "Maksimum sepet miktarı",
+        "qty": "ADET",
+        "allQuantities": "Tüm miktarlar",
+        "min": "Min",
+        "max": "Maks"
+      },
+      "attributes": {
+        "quantity": "Sepet miktarı"
+      },
+      "summaries": {
+        "range": "Eğer <0>{{attribute}}</0> <1>{{min}}</1> ile <2>{{max}}</2> arasındaysa",
+        "greaterThan": "Eğer <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "Eğer <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minimum miktar, maksimum miktardan büyük olamaz",
+        "mustBePositive": "Miktar en az 1 olmalıdır"
+      }
     }
   },
   "profile": {
@@ -2519,6 +2667,31 @@
     },
     "toast": {
       "edit": "Profil değişiklikleri kaydedildi"
+    },
+    "mfa": {
+      "title": "İki faktörlü kimlik doğrulama",
+      "description": "Oturum açarken bir kimlik doğrulama uygulaması gerektir.",
+      "status": "Durum",
+      "method": "Yöntem",
+      "enabled": "Etkin",
+      "disabled": "Devre Dışı",
+      "pending": "Kurulum bekleniyor",
+      "authenticatorApp": "Kimlik doğrulama uygulaması",
+      "noMethod": "Etkin bir kimlik doğrulama yöntemi yok",
+      "setupTitle": "Kimlik doğrulama uygulamasını kur",
+      "setupAuthenticatorApp": "Kimlik doğrulama uygulamasını kur",
+      "setupDescription": "QR kodunu kimlik doğrulama uygulamanızla tarayın, ardından kurulumu tamamlamak için 6 haneli kodu girin.",
+      "setupError": "Kimlik doğrulama uygulaması kurulamadı.",
+      "verifyError": "Doğrulama kodu onaylanamadı.",
+      "qrError": "QR kodu oluşturulamadı.",
+      "recoveryCodesTitle": "Kurtarma kodları",
+      "recoveryCodesDescription": "Kimlik doğrulama uygulamanıza erişiminizi kaybetmeniz durumunda kullanmak üzere bu kurtarma kodlarını kopyalayıp saklayın.",
+      "recoveryCodesError": "Kurtarma kodları oluşturulamadı.",
+      "disableTitle": "İki faktörlü kimlik doğrulamayı devre dışı bırak",
+      "disableDescription": "Hesabınız için iki faktörlü kimlik doğrulamayı devre dışı bırakmak üzeresiniz.",
+      "disableChallengeDescription": "İki faktörlü kimlik doğrulamayı devre dışı bırakmak için kimlik doğrulama uygulamanızdaki 6 haneli kodu girin.",
+      "disableError": "İki faktörlü kimlik doğrulama devre dışı bırakılamadı.",
+      "disableSuccess": "İki faktörlü kimlik doğrulama devre dışı bırakıldı"
     }
   },
   "users": {
@@ -2556,7 +2729,11 @@
     },
     "deleteUserWarning": "{{name}} kullanıcısını silmek üzeresiniz. Bu işlem geri alınamaz.",
     "deleteUserSuccess": "Kullanıcı {{name}} başarıyla silindi",
-    "invite": "Davet Et"
+    "invite": "Davet Et",
+    "inviteRolesTooltip": "Rol seçilmezse kullanıcı süper kullanıcı rolüyle davet edilir.",
+    "copyResetPasswordLink": "Şifre sıfırlama bağlantısını kopyala",
+    "copyResetPasswordLinkSuccess": "Şifre sıfırlama bağlantısı panoya kopyalandı",
+    "copyResetPasswordLinkHint": "Bağlantının süresi kısa sürede dolar ve bu kullanıcıya daha önce gönderilmiş şifre sıfırlama bağlantılarını geçersiz kılar."
   },
   "translations": {
     "domain": "Çeviriler",
@@ -2655,7 +2832,15 @@
     "flatRate": "Sabit Ücret",
     "calculated": "Hesaplanmış",
     "list": {
-      "noRecordsMessage": "Satış yaptığınız bölgeler için bir bölge oluşturun."
+      "noRecordsMessage": "Satış yaptığınız bölgeler için bir bölge oluşturun.",
+      "empty": {
+        "heading": "Bölge yok",
+        "description": "Görüntülenecek bölge yok."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir bölge mevcut filtre kriterlerine uymuyor."
+      }
     },
     "toast": {
       "delete": "Bölge başarıyla silindi",
@@ -2950,7 +3135,21 @@
   "login": {
     "forgotPassword": "Şifrenizi mi unuttunuz? - <0>Sıfırla</0>",
     "title": "Medusa'ya Hoş Geldiniz",
-    "hint": "Hesap alanına erişmek için oturum açın"
+    "hint": "Hesap alanına erişmek için oturum açın",
+    "mfa": {
+      "title": "İki adımlı doğrulama",
+      "description": "Doğrulayıcı uygulamanızdaki 6 haneli kodu girin.",
+      "recoveryDescription": "Kurtarma kodlarınızdan birini girin.",
+      "recoveryCodePlaceholder": "Kurtarma kodu",
+      "verify": "Doğrula",
+      "verifyError": "Doğrulama kodu onaylanamadı.",
+      "completeError": "Kimlik doğrulama tamamlanamadı.",
+      "backToLogin": "Girişe dön",
+      "useRecoveryCodePrompt": "Doğrulayıcı uygulamanıza erişiminizi mi kaybettiniz?",
+      "useRecoveryCode": "Kurtarma kodu kullan",
+      "useAuthenticatorPrompt": "Doğrulayıcı uygulamanıza erişiminiz var mı?",
+      "useAuthenticator": "Doğrulayıcı kodu kullan"
+    }
   },
   "invite": {
     "title": "Medusa'ya Hoş Geldiniz",
@@ -3037,7 +3236,8 @@
         "dormant": "Beklemede",
         "timeout": "Zaman aşımı"
       }
-    }
+    },
+    "stateLabel": "Durum"
   },
   "shippingOptionTypes": {
     "domain": "Kargo Seçeneği Türleri",
@@ -3301,7 +3501,11 @@
     "startDate": "Başlangıç Tarihi",
     "endDate": "Bitiş Tarihi",
     "draft": "Taslak",
-    "values": "Değerler"
+    "values": "Değerler",
+    "actions": "İşlemler",
+    "resource": "Kaynak",
+    "operation": "İşlem",
+    "unitOfMeasure": "Ölçü birimi"
   },
   "dateTime": {
     "years_one": "Yıl",
@@ -3342,7 +3546,289 @@
   "auth": {
     "login": {
       "authenticationFailed": "Kimlik doğrulama başarısız oldu",
-      "cloud": "Medusa Cloud ile giriş yapın"
+      "cloud": "Medusa Cloud ile giriş yapın",
+      "noProviders": "Giriş yapabilmek için sunucu yapılandırmanızda bir kimlik doğrulama sağlayıcısı tanımlayın.",
+      "continueWithProvider": "{{provider}} ile Devam Et",
+      "or": "veya",
+      "provisioningFailed": "Oturum açma işleminizi tamamlayamadık. Lütfen bir yöneticiyle iletişime geçin."
+    }
+  },
+  "layout": {
+    "customizeTopbar": "Üst çubuğu özelleştir",
+    "customizeSidebar": "Kenar çubuğunu özelleştir",
+    "customizeSettingsSidebar": "Ayarlar kenar çubuğunu özelleştir",
+    "customizePage": "Sayfayı özelleştir",
+    "customizeLayout": "Düzeni özelleştir",
+    "viewingPersonalLayout": "Kişisel bir düzen görüntülüyorsunuz",
+    "viewingSystemLayout": "Sistem düzenini görüntülüyorsunuz",
+    "personalView": "Kişisel",
+    "defaultView": "Varsayılan",
+    "empty": "Boş",
+    "dropToSectionEnd": "Sona taşımak için buraya bırakın",
+    "dragToReorder": "Yeniden sıralamak için sürükleyin",
+    "saveForEveryone": "Herkes için kaydet",
+    "saveForEveryoneTitle": "Düzeni herkes için kaydet",
+    "saveForEveryoneDescription": "Bu işlem, bu sayfanın varsayılan düzenini henüz kendisi özelleştirmemiş tüm kullanıcılar için günceller. Emin misiniz?",
+    "saveSuccess": "Düzen kaydedildi"
+  },
+  "productOptions": {
+    "domain": "Seçenekler",
+    "subtitle": "Ürün seçeneklerini ve ilişkili değerlerini yönetin.",
+    "values": {
+      "header": "Değerler",
+      "list": {
+        "noRecords": "Bu seçenek için değer yok."
+      },
+      "delete": {
+        "confirmation": "\"{{value}}\" seçenek değerini silmek üzeresiniz. Bu işlem geri alınamaz.",
+        "successToast": "Seçenek değeri başarıyla silindi."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "Bu seçeneğe sahip ürün yok."
+      }
+    },
+    "create": {
+      "header": "Ürün Seçeneği Oluştur",
+      "hint": "Yeni bir ürün seçeneği oluşturun ve değerlerini yönetin.",
+      "successToast": "\"{{title}}\" ürün seçeneği başarıyla oluşturuldu.",
+      "tabs": {
+        "details": "Detaylar",
+        "organize": "Sıralamayı Düzenle"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Ürüne özel seçenek"
+    },
+    "edit": {
+      "header": "Ürün Seçeneğini Düzenle",
+      "description": "Ürün seçeneğinin detaylarını ve ilişkili değerlerini güncellemek için düzenleyin.",
+      "successToast": "\"{{title}}\" ürün seçeneği başarıyla güncellendi."
+    },
+    "delete": {
+      "confirmation": "\"{{title}}\" ürün seçeneğini silmek üzeresiniz. Bu işlem geri alınamaz.",
+      "successToast": "Ürün seçeneği başarıyla silindi."
+    },
+    "fields": {
+      "title": {
+        "label": "Başlık",
+        "placeholder": "Beden"
+      },
+      "values": {
+        "label": "Değerler",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
+  "roles": {
+    "domain": "Roller",
+    "subtitle": "Erişim rollerini ve izinleri yönetin.",
+    "create": {
+      "header": "Rol oluştur",
+      "hint": "Yönetim panelinizde erişimi yönetmek için bir rol oluşturun.",
+      "successToast": "{{name}} rolü oluşturuldu",
+      "tabs": {
+        "details": "Detaylar",
+        "permissions": "İzinler"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "İzin yok",
+          "description": "Seçilebilecek izin bulunmuyor."
+        },
+        "filtered": {
+          "heading": "Sonuç yok",
+          "description": "Hiçbir izin mevcut filtre kriterlerine uymuyor."
+        }
+      }
+    },
+    "edit": {
+      "header": "Rolü düzenle",
+      "successToast": "{{name}} rolü güncellendi"
+    },
+    "delete": {
+      "title": "Rolü sil",
+      "description": "{{name}} rolü silinmek üzere. Bu işlem geri alınamaz.",
+      "successToast": "{{name}} rolü silindi"
+    },
+    "fields": {
+      "permissions": "İzinler"
+    },
+    "actions": {
+      "managePermissions": "İzinleri yönet"
+    },
+    "users": {
+      "alreadyAddedTooltip": "Kullanıcı zaten bu role sahip.",
+      "unassignableRoleTooltip": "Bu rolü atama izniniz yok — izinleriniz bu rolün tüm politikalarını kapsamıyor.",
+      "add": {
+        "successToast_one": "Kullanıcı role başarıyla eklendi.",
+        "successToast_other": "Kullanıcılar role başarıyla eklendi.",
+        "list": {
+          "noRecordsMessage": "Önce bir kullanıcı oluşturun."
+        }
+      },
+      "remove": {
+        "title_one": "Kullanıcıyı kaldır",
+        "title_other": "Kullanıcıları kaldır",
+        "description_one": "{{count}} kullanıcı rolden kaldırılmak üzere. Bu işlem geri alınamaz.",
+        "description_other": "{{count}} kullanıcı rolden kaldırılmak üzere. Bu işlem geri alınamaz."
+      },
+      "list": {
+        "noRecordsMessage": "Bu rolde kullanıcı yok."
+      }
+    },
+    "permissions": {
+      "header": "İzinleri yönet",
+      "hint": "Bu rolün içermesi gereken izinleri seçin.",
+      "empty": {
+        "heading": "İzin yok",
+        "description": "Seçilebilecek izin bulunmuyor."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir izin mevcut filtre kriterlerine uymuyor."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "Rol bulunamadı",
+        "description": "Yönetim panelinizde erişimi yönetmek için roller oluşturun."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Hiçbir rol mevcut filtre kriterlerine uymuyor."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Politikalar",
+    "subtitle": "Rollerin verebileceği izinleri tanımlayın.",
+    "create": {
+      "header": "Politika oluştur",
+      "hint": "Rollere eklenebilecek yeni bir izin tanımlayın.",
+      "successToast": "{{key}} politikası oluşturuldu"
+    },
+    "edit": {
+      "header": "Politikayı düzenle",
+      "successToast": "{{key}} politikası güncellendi"
+    },
+    "delete": {
+      "title": "Politikayı sil",
+      "description": "{{key}} politikasını silmek üzeresiniz. Bu işlem geri alınamaz.",
+      "successToast": "{{key}} politikası silindi"
+    },
+    "fields": {
+      "roles": "Roller",
+      "users": "Kullanıcılar"
+    },
+    "list": {
+      "empty": {
+        "heading": "Politika bulunamadı",
+        "description": "Rollerin verebileceği izinleri yönetmek için politikalar oluşturun."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Mevcut filtre kriterleriyle eşleşen politika yok."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "Bu politikayı içeren rol henüz yok."
+      },
+      "empty": {
+        "heading": "Rol yok",
+        "description": "Bu politikayı içeren rol henüz yok."
+      }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Arama",
+    "subtitle": "Kayıtlı arama dizinlerini görüntüleyin ve kaynak verilerden yeniden oluşturun.",
+    "fieldsLabel": "Dizinlenen alanlar",
+    "providerLabel": "Sağlayıcı",
+    "reindex": "Yeniden dizinle",
+    "reindexConfirmationTitle": "{{name}} yeniden dizinlensin mi?",
+    "reindexConfirmation": "Bu işlem \"{{name}}\" dizinini kaynak verilerinden yeniden oluşturur. Yeniden oluşturma tamamlanana kadar bu dizine ait arama sonuçları eksik olabilir.",
+    "reindexSuccess": "{{name}} için yeniden dizinleme başlatıldı",
+    "reindexSinceLabel": "Başlangıç",
+    "reindexSinceHint": "Yalnızca bu tarihte veya sonrasında değişen belgeleri yeniden oluşturun. Her şeyi yeniden oluşturmak için boş bırakın.",
+    "reindexEntityIdsLabel": "Varlık kimlikleri",
+    "reindexEntityIdsHint": "Yalnızca bu belgeleri yeniden oluşturmak için virgül veya yeni satırla ayrılmış kimlikler. Destek, bu dizinin kendi tanımına bağlıdır.",
+    "noFields": "Dizinlenen alan yok.",
+    "list": {
+      "noRecordsMessage": "Kayıtlı arama dizini yok."
+    },
+    "status": {
+      "pending": "Beklemede",
+      "building": "Oluşturuluyor",
+      "ready": "Hazır",
+      "error": "Hata"
+    },
+    "delete": "Dizini sil",
+    "deleteSuccess": "{{name}} dizini silindi",
+    "deleteWarning": "Bu işlem, \"{{name}}\" dizinini ve onun için oluşturulmuş her sürümü, arama motorundaki verileri de dahil olmak üzere siler. Sonraki geçiş onu sıfırdan yeniden oluşturana kadar bu dizinde hiçbir şey aranamaz. Bu işlem geri alınamaz."
+  },
+  "propertyLabels": {
+    "domain": "Özellik Etiketleri",
+    "title": "Özellik Etiketleri",
+    "subtitle": "Varlıklarınızın yapılandırılabilir tabloları için özel özellik etiketlerini yönetin.",
+    "fields": {
+      "module": "Modül",
+      "model": "Model",
+      "propertyCount": "Özellik Sayısı",
+      "hasOverrides": "Geçersiz Kılmaları Var"
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Erişim Reddedildi",
+      "description": "Bu sayfaya erişim izniniz yok.",
+      "requiredPermission": "Gerekli izin: {{permission}}",
+      "action": "Bu işlemi gerçekleştirme izniniz yok."
+    },
+    "requiredPermissions": {
+      "title": "Gerekli izinler",
+      "none": "Bu görünümde tanımlı bir izin yok.",
+      "anyOf": "Şunlardan biri",
+      "allOf": "Tümü",
+      "source": "Kaynak: {{source}}"
+    },
+    "resources": {
+      "customer": "Müşteri",
+      "customer_group": "Müşteri Grubu",
+      "order": "Sipariş",
+      "product": "Ürün",
+      "product_category": "Ürün Kategorisi",
+      "product_collection": "Ürün Koleksiyonu",
+      "product_tag": "Ürün Etiketi",
+      "product_type": "Ürün Türü",
+      "inventory": "Envanter",
+      "reservation": "Rezervasyon",
+      "promotion": "Promosyon",
+      "campaign": "Kampanya",
+      "price_list": "Fiyat Listesi",
+      "region": "Bölge",
+      "store": "Mağaza",
+      "user": "Kullanıcı",
+      "role": "Rol",
+      "permission": "İzin",
+      "sales_channel": "Satış Kanalı",
+      "stock_location": "Stok Konumu",
+      "shipping_profile": "Teslimat Profili",
+      "shipping_option": "Kargo Seçeneği",
+      "tax_region": "Vergi Bölgesi",
+      "api_key": "API Anahtarı",
+      "return_reason": "İade Sebebi",
+      "refund_reason": "Geri Ödeme Sebebi",
+      "workflow": "İş Akışı",
+      "translation": "Çeviri"
+    },
+    "actions": {
+      "read": "Görüntüle",
+      "create": "Oluştur",
+      "update": "Düzenle",
+      "delete": "Sil"
     }
   }
 }

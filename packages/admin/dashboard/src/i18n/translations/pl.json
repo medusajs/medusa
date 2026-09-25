@@ -1400,7 +1400,7 @@
     },
     "delete": {
       "confirmation": "Zamierzasz usunąć powód zwrotu pieniędzy {{label}}. Tej akcji nie można cofnąć.",
-      "successToast": "Powód zwrotu pieniędzy {{label}} został pomyślnie usunięty."
+      "successToast": "Powód zwrotu pieniędzy został pomyślnie usunięty."
     },
     "fields": {
       "label": {
@@ -1440,7 +1440,9 @@
         "paymentMethod": "Metoda płatności",
         "paymentMethodDescription": "Kwota zwrotu na metodę płatności",
         "creditLine": "Kredyt sklepowy",
-        "creditLineDescription": "Kwota zwrotu w formie kredytu sklepowego"
+        "creditLineDescription": "Kwota zwrotu w formie kredytu sklepowego",
+        "creditLineGuestDescription": "Dostępne tylko dla klientów z kontem. To zamówienie zostało złożone przez gościa.",
+        "creditLineNoOutstandingAmountDescription": "Dostępne tylko, gdy zamówienie ma nieuregulowaną kwotę. Najpierw utwórz zwrot lub edycję zamówienia."
       }
     },
     "domain": "Zamówienia",
@@ -1510,6 +1512,8 @@
       "title": "Płatności",
       "isReadyToBeCaptured": "Płatność <0/> jest gotowa do realizacji.",
       "totalPaidByCustomer": "Łączna kwota zapłacona przez klienta",
+      "totalPending": "Łącznie oczekujące",
+      "storeCreditRefund": "Zwrot kredytu sklepowego",
       "totalStoreCreditRefunds": "Całkowite zwroty kredytów sklepowych",
       "capture": "Zrealizuj płatność",
       "capture_short": "Zrealizuj",
@@ -1522,6 +1526,7 @@
         "authorized": "Autoryzowane",
         "partiallyAuthorized": "Częściowo autoryzowane",
         "awaiting": "Oczekujące",
+        "pending": "Oczekujące",
         "captured": "Zrealizowane",
         "partiallyRefunded": "Częściowo zwrócone",
         "partiallyCaptured": "Częściowo zrealizowane",
@@ -3513,7 +3518,10 @@
       "building": "Budowanie",
       "ready": "Gotowy",
       "error": "Błąd"
-    }
+    },
+    "delete": "Usuń indeks",
+    "deleteSuccess": "Indeks {{name}} usunięty",
+    "deleteWarning": "Spowoduje to usunięcie indeksu \"{{name}}\" i każdej kiedykolwiek zbudowanej dla niego wersji, w tym jego danych w wyszukiwarce. Dopóki następna migracja nie przebuduje go od zera, nic na tym indeksie nie będzie można przeszukiwać. Tej operacji nie można cofnąć."
   },
   "shippingOptionTypes": {
     "domain": "Typy opcji wysyłki",

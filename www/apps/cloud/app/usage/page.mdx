@@ -37,13 +37,17 @@ In the Usage settings, you'll find a table with the list of resources your organ
 The following metrics are tracked and billed as part of your Cloud usage:
 
 - **Data Transfer**: The data that flows in and out of your Medusa server each month, including API responses to your storefront, Admin Dashboard traffic, webhook calls, and external service communications.
+- **Server Transfer**: The data transferred between internal services within your Cloud environment each month, such as between data between the Medusa application and your database.
 - **Compute**: The CPU and memory resources used to run your Medusa applications and background processes, measured in compute units per hour.
 - **Object Storage**: The amount of file storage space used for assets like product images, documents, and other media files, measured in gigabytes (GB).
 - **Database Storage**: The disk space used by your database to store your commerce data, including products, orders, customers, and other business data, measured in gigabytes (GB).
 - **Redis Storage**: The disk space used by Redis to store your application's cache and session data, measured in gigabytes (GB).
 - **Build Minutes**: The time taken to build your Medusa applications during deployments, measured in minutes.
 - **Emails**: The number of emails sent from your Medusa applications, including order confirmations, password resets, and marketing emails.
+- **Freetext search requests**: Keyword search requests your Medusa applications make with [Medusa Search](../search/page.mdx).
+- **Vector search requests**: [semantic search](../search/semantic-search/page.mdx) requests your Medusa applications make with [Medusa Search](../search/page.mdx).
 - **Storefront Requests**: The number of requests made to your storefront. Every page load or API call to your storefront counts as a request.
+- **Webhooks**: The number of webhook event deliveries sent from your organization to your configured endpoint.
 
 ---
 
