@@ -105,6 +105,7 @@ export const prepareConfirmInventoryInput = (data: {
   const allVariants = new Map<string, any>()
   const mapLocationAvailability = new Map<string, Map<string, BigNumberInput>>()
   const variantsWithLocationForChannel = new Set<string>()
+  const variantsWithInventoryItems = new Set<string>()
   let hasManagedInventory = false
 
   const salesChannelId = data.input.sales_channel_id
@@ -175,6 +176,8 @@ export const prepareConfirmInventoryInput = (data: {
       }
 
       if (inventory_items) {
+        variantsWithInventoryItems.add(variants.id)
+
         const inventoryItemId = inventory_items.inventory_item_id
         const mapKey = `${inventoryItemId}-${inventory_items.variant_id}`
 
@@ -213,6 +216,13 @@ export const prepareConfirmInventoryInput = (data: {
         !variant.allow_backorder &&
         !itemBackorderVariantIds.has(variant.id)
       ) {
+        if (!variantsWithInventoryItems.has(variant.id)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant ${variant.id} does not have any inventory items associated with it.`
+          )
+        }
+
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Sales channel ${salesChannelId} is not associated with any stock location for variant ${variant.id}.`

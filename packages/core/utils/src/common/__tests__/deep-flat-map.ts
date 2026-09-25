@@ -200,4 +200,122 @@ describe("deepFlatMap", function () {
       },
     ])
   })
+
+  it("should invoke the callback when the terminal segment is an empty array", function () {
+    const data = {
+      locations: [
+        {
+          id: "location_1",
+          sales_channels: [],
+        },
+      ],
+    }
+
+    const contexts: Record<string, any>[] = []
+
+    deepFlatMap(data, "locations.sales_channels", (context) => {
+      contexts.push(context)
+    })
+
+    expect(contexts).toEqual([
+      {
+        root_: data,
+        locations: data.locations[0],
+      },
+    ])
+  })
+
+  it("should invoke the callback when an intermediate segment is an empty array", function () {
+    const data = {
+      locations: [],
+    }
+
+    const contexts: Record<string, any>[] = []
+
+    deepFlatMap(data, "locations.sales_channels", (context) => {
+      contexts.push(context)
+    })
+
+    expect(contexts).toEqual([{ root_: data }])
+  })
+
+  describe("call-site contracts", function () {
+    // cancel-order.ts and refund-captured-payments.ts map the terminal segment
+    // straight into the results array and then read properties off each entry,
+    // so an empty terminal array must not contribute an entry.
+    it("should not add an entry to the results for an empty terminal array", function () {
+      const order = {
+        payment_collections: [
+          { id: "pay_col_1", payments: [{ id: "pay_1", captures: [] }] },
+          { id: "pay_col_2", payments: [] },
+        ],
+      }
+
+      const payments = deepFlatMap(
+        order,
+        "payment_collections.payments",
+        ({ payments }) => payments
+      )
+
+      expect(payments).toEqual([{ id: "pay_1", captures: [] }])
+      expect(() =>
+        payments.filter((payment) => payment.captures.length === 0)
+      ).not.toThrow()
+    })
+
+    // exchange-request-item-return.ts and claim-request-item-return.ts pick the
+    // first location id off the terminal segment.
+    it("should not pick a location id when the terminal location levels are empty", function () {
+      const item = {
+        variant: {
+          inventory_items: [{ inventory: [{ location_levels: [] }] }],
+        },
+      }
+
+      let locationId: string | undefined
+      deepFlatMap(
+        item,
+        "variant.inventory_items.inventory.location_levels",
+        ({ location_levels }) => {
+          if (!locationId && location_levels?.location_id) {
+            locationId = location_levels.location_id
+          }
+        }
+      )
+
+      expect(locationId).toBeUndefined()
+    })
+
+    it("should pick the first location id when the terminal location levels are present", function () {
+      const item = {
+        variant: {
+          inventory_items: [
+            {
+              inventory: [
+                {
+                  location_levels: [
+                    { location_id: "sl_1" },
+                    { location_id: "sl_2" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      }
+
+      let locationId: string | undefined
+      deepFlatMap(
+        item,
+        "variant.inventory_items.inventory.location_levels",
+        ({ location_levels }) => {
+          if (!locationId && location_levels?.location_id) {
+            locationId = location_levels.location_id
+          }
+        }
+      )
+
+      expect(locationId).toEqual("sl_1")
+    })
+  })
 })
