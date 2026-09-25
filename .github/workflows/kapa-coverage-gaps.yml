@@ -2,7 +2,7 @@ name: Kapa Coverage Gaps Doc Fixes
 
 on:
   schedule:
-    - cron: "0 9 * * 2" # Every Tuesday at 09:00 UTC
+    - cron: "0 9 4 * *" # On the 4th of every month at 09:00 UTC
   workflow_dispatch:
     inputs:
       max_gaps:
@@ -43,11 +43,11 @@ jobs:
           mkdir -p /tmp/kapa-items
 
           PERIOD_ID=$(curl -sSf -H "X-API-KEY: $KAPA_API_KEY" \
-            "$KAPA_API_URL/projects/$KAPA_PROJECT_ID/coverage-gaps/periods/?interval=weekly&page_size=1" \
+            "$KAPA_API_URL/projects/$KAPA_PROJECT_ID/coverage-gaps/periods/?interval=monthly&page_size=1" \
             | jq -r '.periods[0].id // empty')
 
           if [ -z "$PERIOD_ID" ]; then
-            echo "No completed weekly coverage gaps period found."
+            echo "No completed monthly coverage gaps period found."
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -155,7 +155,7 @@ jobs:
       sha: ${{ needs.fetch-gaps.outputs.sha }}
       branch: ${{ needs.fetch-gaps.outputs.branch }}
       commit_prefix: "docs: address Kapa coverage gap"
-      pr_title: "docs: address Kapa coverage gaps for week of ${{ needs.fetch-gaps.outputs.start_date }} [automated]"
+      pr_title: "docs: address Kapa coverage gaps for ${{ needs.fetch-gaps.outputs.start_date }} [automated]"
       pr_intro: |
         ## Address Kapa coverage gaps
 
