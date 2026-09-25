@@ -551,13 +551,70 @@ export default class PromotionModuleService
     const campaignBudgetMap = new Map<string, UpdateCampaignBudgetDTO>()
     const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
-    const existingPromotions = await this.listActivePromotions_(
-      {
-        code: computedActions
-          .map((computedAction) => computedAction.code)
-          .filter(Boolean),
-      },
+    const promotionCodes = computedActions
+      .map((computedAction) => computedAction.code)
+      .filter(Boolean)
+
+    let existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
       { relations: ["campaign", "campaign.budget"] },
+      sharedContext
+    )
+
+    // This decrements the same `promotion.used` and budget `used` counters that
+    // `registerUsage` increments, with the same read-modify-write shape, so it
+    // needs the same serialization. Without it a revert that read a stale `used`
+    // writes its decrement over a concurrent registration's increment and the
+    // campaign ledger drifts below the amount actually spent. Rows are locked in
+    // the same order as `registerUsage` (promotions, then budgets, each by id)
+    // so the two cannot deadlock against each other, and the totals are re-read
+    // under the lock so the arithmetic below sees committed values.
+    const lockPromotionIds = existingPromotions
+      .filter((promotion) => typeof promotion.limit === "number")
+      .map((promotion) => promotion.id)
+    const lockBudgetIds = Array.from(
+      new Set(
+        existingPromotions
+          .map((promotion) => promotion.campaign?.budget?.id)
+          .filter(Boolean) as string[]
+      )
+    )
+
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "revertUsage must run inside a transaction to serialize concurrent usage reverts."
+      )
+    }
+    // Bound the wait for these row locks so a contended revert fails fast
+    // instead of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    if (lockPromotionIds.length) {
+      await knex("promotion")
+        .whereIn("id", lockPromotionIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+    if (lockBudgetIds.length) {
+      await knex("promotion_campaign_budget")
+        .whereIn("id", lockBudgetIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+
+    existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
+      {
+        relations: ["campaign", "campaign.budget"],
+        options: { refresh: true },
+      },
       sharedContext
     )
 
