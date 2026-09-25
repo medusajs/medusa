@@ -43,6 +43,45 @@ export interface ConfirmVariantInventoryStepInput {
 }
 
 export const confirmInventoryStepId = "confirm-inventory-step"
+
+export const aggregateConfirmInventoryItems = (
+  items: ConfirmVariantInventoryStepInput["items"]
+) => {
+  const requests = new Map<
+    string,
+    {
+      inventory_item_id: string
+      location_ids: string[]
+      quantity: BigNumberInput
+    }
+  >()
+
+  for (const item of items) {
+    if (item.allow_backorder) {
+      continue
+    }
+
+    const quantity = MathBN.mult(item.quantity, item.required_quantity)
+    const request = requests.get(item.inventory_item_id)
+
+    if (request) {
+      request.quantity = MathBN.add(request.quantity, quantity)
+      request.location_ids = Array.from(
+        new Set([...request.location_ids, ...item.location_ids])
+      )
+      continue
+    }
+
+    requests.set(item.inventory_item_id, {
+      inventory_item_id: item.inventory_item_id,
+      location_ids: [...item.location_ids],
+      quantity,
+    })
+  }
+
+  return Array.from(requests.values())
+}
+
 /**
  * This step validates that items in the cart have sufficient inventory quantity.
  * If an item doesn't have sufficient inventory, an error is thrown.
@@ -71,20 +110,13 @@ export const confirmInventoryStep = createStep(
       Modules.INVENTORY
     )
 
-    // TODO: Should be bulk
-    const promises = data.items.map(async (item) => {
-      if (item.allow_backorder) {
-        return true
-      }
-
-      const itemQuantity = MathBN.mult(item.quantity, item.required_quantity)
-
-      return await inventoryService.confirmInventory(
+    const promises = aggregateConfirmInventoryItems(data.items).map((item) =>
+      inventoryService.confirmInventory(
         item.inventory_item_id,
         item.location_ids,
-        itemQuantity
+        item.quantity
       )
-    })
+    )
 
     const inventoryCoverage = await promiseAll(promises)
 
