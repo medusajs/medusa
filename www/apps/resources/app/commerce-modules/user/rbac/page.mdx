@@ -1,0 +1,115 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Role-Based Access Control (RBAC) for Admin Users`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about role-based access control (RBAC) in Medusa, how to enable it, and how to restrict what admin users can access.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.16.0 or later",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.16.0"
+    },
+  ]}
+/>
+
+<Note type="warning">
+
+RBAC is currently behind the `rbac` feature flag, which is disabled by default. Without the feature flag, every admin user has full access to all admin features and API routes.
+
+</Note>
+
+## What is RBAC in Medusa?
+
+RBAC allows you to restrict what each admin user can see and do in the Medusa Admin and the Admin API routes. The RBAC Module provides this feature, and it's built around two concepts:
+
+- **Policy**: A permission to perform an operation on a resource. For example, `product:read` allows reading products, and `product:update` allows updating them. The supported operations are `read`, `create`, `update`, `delete`, and the `*` wildcard for all operations.
+- **Role**: A named group of policies, such as "Content Manager". You assign roles to admin users, and a user can perform an action only if one of their roles includes the required policy.
+
+Medusa defines policies for its resources, such as products, orders, customers, and users. When the Medusa application starts, it syncs these policies to the database. So, you don't create policies in the Medusa Admin. Instead, you choose which policies each role includes.
+
+Medusa also creates a Super Admin role with the `*:*` policy, which grants full access to all resources and operations.
+
+---
+
+## Enable RBAC
+
+To enable RBAC, enable the `rbac` feature flag in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    rbac: true,
+  },
+})
+```
+
+Alternatively, set the `MEDUSA_FF_RBAC` environment variable:
+
+```bash
+MEDUSA_FF_RBAC=true
+```
+
+Learn more about feature flags in the [Feature Flags](!docs!/learn/debugging-and-testing/feature-flags) chapter.
+
+When you enable the feature flag, Medusa loads the RBAC Module automatically. You don't need to add it to the `modules` array.
+
+Then, run the following command to create the RBAC Module's tables in the database:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+The command also runs a migration script that assigns the Super Admin role to all existing admin users. This ensures current admin users keep full access after you enable RBAC.
+
+After that, admin users who were already logged in must log in again. Medusa stores a user's role IDs in their authentication token when they log in, and it checks permissions against those roles.
+
+<Note type="warning">
+
+An admin user without any role can't access the Admin API routes that require policies. Medusa returns a `403 Forbidden` error for these requests.
+
+</Note>
+
+### New Admin Users
+
+When RBAC is enabled:
+
+- The `npx medusa user` command assigns the Super Admin role to the user it creates.
+- When you invite a user from the Medusa Admin, you can select the roles to assign to them. The user receives these roles when they accept the invite.
+
+---
+
+## Manage Roles in the Medusa Admin
+
+After you enable RBAC, the Medusa Admin shows two new pages under Settings:
+
+- **Roles**: Create, edit, and delete roles. On a role's details page, you can:
+  - Choose "Manage permissions" to select the policies that the role includes.
+  - Add users to the role or remove users from it.
+- **Policies**: View the list of available policies and the roles that include each policy. Policies are read-only in the Medusa Admin.
+
+For example, to allow a user to only view and edit products:
+
+1. Create a role, such as "Product Editor".
+2. Choose "Manage permissions" and select the product policies you want to allow, such as reading and updating products.
+3. Add the user to the role. If the user has the Super Admin role, remove them from that role.
+4. Ask the user to log in again so that their new roles take effect.
+
+The Medusa Admin hides pages and actions that the logged-in user doesn't have permissions for. The Admin API routes also reject requests that the user's roles don't allow.
+
+<Note>
+
+You can only assign roles whose policies you have yourself. For example, a user who can't delete products can't assign a role that allows deleting products.
+
+</Note>
+
+---
+
+## Manage Roles with the JS SDK
+
+To manage roles and view policies from a custom admin UI, use the [JS SDK](../../../js-sdk/page.mdx). Refer to the [rbacRole](/references/js-sdk/admin/rbacRole) and [rbacPolicy](/references/js-sdk/admin/rbacPolicy) references for the available methods.

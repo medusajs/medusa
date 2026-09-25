@@ -37,6 +37,11 @@ export const userSidebar = [
             path: "/commerce-modules/user/invite-user-subscriber",
             title: "Invite User Email",
           },
+          {
+            type: "link",
+            path: "/commerce-modules/user/rbac",
+            title: "Role-Based Access Control",
+          },
         ],
       },
       {
