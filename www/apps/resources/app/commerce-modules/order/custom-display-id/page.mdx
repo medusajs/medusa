@@ -99,3 +99,51 @@ npm run dev
 ```
 
 Finally, customize the Order view in Medusa Admin to display the `custom_display_id` property.
+
+---
+
+## Search Orders by Display ID
+
+The `display_id` and `custom_display_id` properties are searchable fields of the `Order` data model. So, you can search orders by either display ID without any customizations.
+
+The Order Module also defines database indexes on both properties. The index on `custom_display_id` is unique, so each custom display ID must be unique among orders that aren't deleted.
+
+### Search in Medusa Admin
+
+The search box on the Orders page of Medusa Admin searches the order's searchable fields, including `display_id` and `custom_display_id`. So, you can enter an order's display ID or custom display ID in the search box to find it.
+
+### Search with the Admin API
+
+To search orders by display ID with the [List Orders API route](!api!/admin/orders/list-orders), pass the display ID or custom display ID in the `q` query parameter.
+
+For example, using the [JS SDK](../../../js-sdk/page.mdx):
+
+```ts
+const { orders } = await sdk.admin.order.list({
+  q: "ORD-1234",
+})
+```
+
+The `q` parameter performs a case-insensitive partial match on the order's searchable fields, which also include the email and the shipping and billing addresses. For example, searching for `12` returns orders whose display ID is `12`, `120`, or `1234`.
+
+<Note>
+
+The List Orders API route doesn't accept `display_id` or `custom_display_id` as dedicated filter parameters. Use the `q` parameter instead.
+
+</Note>
+
+### Filter with Query in Customizations
+
+To retrieve an order by its exact display ID or custom display ID in your customizations, such as an API route or workflow step, use [Query](!docs!/learn/fundamentals/query) and pass the property in `filters`.
+
+For example:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["id", "display_id", "custom_display_id"],
+  filters: {
+    custom_display_id: "ORD-1234",
+  },
+})
+```
