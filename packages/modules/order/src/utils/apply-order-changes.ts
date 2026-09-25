@@ -176,7 +176,29 @@ export async function applyChangesToOrder(
           shippingMethodsToUpsert.push(sm)
         }
 
-        shippingMethod_.adjustments?.forEach((adjustment) => {
+        // An existing shipping method keeps an adjustment row per order
+        // version, so its `adjustments` relation carries one entry per past
+        // version. Carrying all of them would create duplicate
+        // (version, shipping_method_id) rows for the new version and hit the
+        // unique constraint. Only the latest version's adjustments belong on
+        // the new version. Freshly replaced adjustments (e.g. from a promotion
+        // re-evaluation during an order edit) have no version yet; treat them
+        // as the latest so they carry forward. A newly added method's
+        // adjustments aren't persisted yet, so take them as-is.
+        const adjustments = shippingMethod_.adjustments ?? []
+        const adjustmentVersion = (adjustment) => adjustment.version ?? Infinity
+        const latestVersion = adjustments.reduce(
+          (latest, adjustment) =>
+            Math.max(latest, adjustmentVersion(adjustment)),
+          -Infinity
+        )
+        const adjustmentsToCarry = isNewShippingMethod
+          ? adjustments
+          : adjustments.filter(
+              (adjustment) => adjustmentVersion(adjustment) === latestVersion
+            )
+
+        adjustmentsToCarry?.forEach((adjustment) => {
           shippingMethodAdjustmentsToCreate.push({
             shipping_method_id: associatedMethodId,
             version,

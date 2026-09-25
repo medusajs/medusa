@@ -589,6 +589,49 @@ medusaIntegrationTestRunner({
         emitSpy.mockRestore()
       })
 
+      it("should receive the return when the order has a shipping-method adjustment", async () => {
+        const order = await createOrderFixture({ container, product })
+        const reasons = await orderService.listReturnReasons({})
+        const testReason = reasons.find(
+          (r) => r.value.toLowerCase() === "test child reason"
+        )!
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: {
+            order_id: order.id,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+                reason_id: testReason.id,
+              },
+            ],
+            receive_now: true,
+          },
+          throwOnError: true,
+        })
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+        const [returnOrder] = await remoteQuery(
+          remoteQueryObjectFromString({
+            entryPoint: "order",
+            variables: { id: order.id },
+            fields: ["*", "items.*", "items.detail.*"],
+          })
+        )
+
+        expect(returnOrder.items[0].detail).toEqual(
+          expect.objectContaining({
+            return_received_quantity: 1,
+          })
+        )
+      })
+
       it("should populate delivery_address on the return fulfillment with the stock location's address", async () => {
         const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
@@ -606,19 +649,21 @@ medusaIntegrationTestRunner({
           }
 
         const query = container.resolve(ContainerRegistrationKeys.QUERY)
-          
-        const { result : returned } = await createAndCompleteReturnOrderWorkflow(container).run({
+
+        const { result: returned } = await createAndCompleteReturnOrderWorkflow(
+          container
+        ).run({
           input: createReturnOrderData,
           throwOnError: true,
-        })  
-        
+        })
+
         const { data: returns } = await query.graph({
           entity: "return",
           filters: {
             id: returned.id,
           },
-          fields: [ 
-            "fulfillments.delivery_address.address_1", 
+          fields: [
+            "fulfillments.delivery_address.address_1",
             "fulfillments.delivery_address.city",
             "fulfillments.delivery_address.country_code",
             "fulfillments.delivery_address.postal_code",
@@ -636,7 +681,6 @@ medusaIntegrationTestRunner({
             phone: "12345",
           })
         )
-        
       })
 
       it("should fail when location is not linked", async () => {
