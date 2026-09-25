@@ -44,6 +44,7 @@
     "details": "Detail",
     "items_one": "{{count}} item",
     "items_other": "{{count}} item",
+    "values_one": "{{count}} nilai",
     "values_other": "{{count}} nilai",
     "countSelected": "{{count}} dipilih",
     "countOfTotalSelected": "{{count}} dari {{total}} dipilih",
@@ -181,22 +182,16 @@
         "all": "Semua area",
         "customer": "Pelanggan",
         "customer_group": "Grup Pelanggan",
-        "customerGroup": "Grup Pelanggan",
         "product": "Produk",
         "product_variant": "Varian Produk",
         "inventory_item": "Inventaris",
-        "productVariant": "Varian Produk",
-        "inventory": "Inventaris",
         "reservation": "Reservasi",
         "product_category": "Kategori",
         "product_collection": "Koleksi",
-        "category": "Kategori",
-        "collection": "Koleksi",
         "order": "Pesanan",
         "promotion": "Promosi",
         "campaign": "Kampanye",
         "price_list": "Daftar Harga",
-        "priceList": "Daftar Harga",
         "user": "Pengguna",
         "region": "Wilayah",
         "tax_region": "Wilayah Pajak",
@@ -208,6 +203,14 @@
         "shipping_profile": "Profil Pengiriman",
         "publishable_api_key": "Kunci API Publik",
         "secret_api_key": "Kunci API Rahasia",
+        "command": "Perintah",
+        "navigation": "Navigasi",
+        "customerGroup": "Grup Pelanggan",
+        "productVariant": "Varian Produk",
+        "inventory": "Inventaris",
+        "category": "Kategori",
+        "collection": "Koleksi",
+        "priceList": "Daftar Harga",
         "taxRegion": "Wilayah Pajak",
         "returnReason": "Alasan Pengembalian",
         "salesChannel": "Saluran Penjualan",
@@ -216,9 +219,7 @@
         "location": "Lokasi",
         "shippingProfile": "Profil Pengiriman",
         "publishableApiKey": "Kunci API yang Dapat Dipublikasikan",
-        "secretApiKey": "Kunci API Rahasia",
-        "command": "Perintah",
-        "navigation": "Navigasi"
+        "secretApiKey": "Kunci API Rahasia"
       }
     },
     "keyboardShortcuts": {
@@ -1567,6 +1568,7 @@
       "methodDescription": "Pilih metode pengiriman yang berbeda dari yang dipilih pelanggan",
       "error": {
         "wrongQuantity": "Hanya satu item yang tersedia untuk pemenuhan",
+        "wrongQuantity_one": "Hanya satu item yang tersedia untuk pemenuhan",
         "wrongQuantity_other": "Kuantitas harus berupa angka antara 1 dan {{number}}",
         "noItems": "Tidak ada item untuk dipenuhi.",
         "noShippingOption": "Opsi pengiriman wajib diisi",
@@ -2840,13 +2842,16 @@
       "alreadyAddedTooltip": "Pengguna sudah memiliki peran ini.",
       "unassignableRoleTooltip": "Anda tidak memiliki akses untuk menetapkan peran ini — izin Anda tidak mencakup semua kebijakannya.",
       "add": {
+        "successToast_one": "Pengguna berhasil ditambahkan ke peran.",
         "successToast_other": "Pengguna berhasil ditambahkan ke peran.",
         "list": {
           "noRecordsMessage": "Buat pengguna terlebih dahulu."
         }
       },
       "remove": {
+        "title_one": "Hapus pengguna",
         "title_other": "Hapus pengguna",
+        "description_one": "Anda akan menghapus {{count}} pengguna dari peran. Tindakan ini tidak dapat dibatalkan.",
         "description_other": "Anda akan menghapus {{count}} pengguna dari peran. Tindakan ini tidak dapat dibatalkan."
       },
       "list": {
@@ -2975,6 +2980,7 @@
     "disableTaxInclusivePricing": "Nonaktifkan harga termasuk pajak",
     "removeCurrencyWarning_one": "Anda akan menghapus {{count}} mata uang dari toko Anda. Pastikan Anda telah menghapus semua harga menggunakan mata uang tersebut sebelum melanjutkan.",
     "removeCurrencyWarning_other": "Anda akan menghapus {{count}} mata uang dari toko Anda. Pastikan Anda telah menghapus semua harga menggunakan mata uang tersebut sebelum melanjutkan.",
+    "removeLocaleWarning_one": "Anda akan menghapus {{count}} lokal dari toko Anda. Terjemahan apa pun yang menggunakan lokal ini akan dihapus.",
     "removeLocaleWarning_other": "Anda akan menghapus {{count}} lokal dari toko Anda. Setiap terjemahan yang menggunakan lokal ini akan dihapus.",
     "currencyAlreadyAdded": "Mata uang sudah ditambahkan ke toko Anda.",
     "localeAlreadyAdded": "Lokal ini sudah ditambahkan ke toko Anda.",
