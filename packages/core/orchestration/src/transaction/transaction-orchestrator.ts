@@ -376,8 +376,32 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   }
 
+  /**
+   * Computes the current state of the transaction and returns the steps that are
+   * ready to be executed next.
+   *
+   * Besides computing the state, this method also owns the scheduling of the steps
+   * that are waiting: it either consumes a retry that is due (returning the step in
+   * `next` so that the caller re-executes it) or schedules the wake up that will
+   * make it due later.
+   *
+   * Consuming a due retry clears `retryRescheduledAt`, which is the marker telling
+   * that a wake up is already scheduled for that step. A caller that does not
+   * execute the returned steps must therefore pass `consumePendingRetries: false`,
+   * otherwise the retry is dropped.
+   */
   private async computeCurrentTransactionState(
-    transaction: DistributedTransactionType
+    transaction: DistributedTransactionType,
+    {
+      consumePendingRetries = true,
+    }: {
+      /**
+       * Whether the caller executes the steps returned in `next`. When false, the
+       * pending retries are left untouched (and scheduled if they aren't yet) instead
+       * of being consumed.
+       */
+      consumePendingRetries?: boolean
+    } = {}
   ): Promise<{
     current: TransactionStep[]
     next: TransactionStep[]
@@ -428,11 +452,11 @@ export class TransactionOrchestrator extends EventEmitter {
         hasWaiting = true
 
         if (stepDef.hasAwaitingRetry()) {
-          if (stepDef.canRetryAwaiting()) {
+          if (consumePendingRetries && stepDef.canRetryAwaiting()) {
             stepDef.retryRescheduledAt = null
 
             nextSteps.push(stepDef)
-          } else if (!stepDef.retryRescheduledAt) {
+          } else if (!stepDef.hasPendingScheduledRetry()) {
             stepDef.hasScheduledRetry = true
             stepDef.retryRescheduledAt = Date.now()
 
@@ -441,7 +465,7 @@ export class TransactionOrchestrator extends EventEmitter {
               stepDef.definition.retryIntervalAwaiting!
             )
           }
-        } else if (stepDef.retryRescheduledAt) {
+        } else if (consumePendingRetries && stepDef.retryRescheduledAt) {
           // The step is not configured for awaiting retry but is manually force to retry
           stepDef.retryRescheduledAt = null
           nextSteps.push(stepDef)
@@ -462,7 +486,10 @@ export class TransactionOrchestrator extends EventEmitter {
         currentSteps.push(stepDef)
 
         if (!stepDef.canRetry()) {
-          if (stepDef.hasRetryInterval() && !stepDef.retryRescheduledAt) {
+          if (
+            stepDef.hasRetryInterval() &&
+            !stepDef.hasPendingScheduledRetry()
+          ) {
             stepDef.hasScheduledRetry = true
             stepDef.retryRescheduledAt = Date.now()
 
@@ -473,6 +500,11 @@ export class TransactionOrchestrator extends EventEmitter {
           }
           continue
         }
+
+        if (!consumePendingRetries) {
+          continue
+        }
+
         stepDef.retryRescheduledAt = null
       }
 
@@ -1009,8 +1041,12 @@ export class TransactionOrchestrator extends EventEmitter {
           ? step.definition.compensateAsync
           : step.definition.async
 
-        // Compute current transaction state
-        await this.computeCurrentTransactionState(transaction)
+        // Refresh the transaction state before the checkpoint is saved. The steps
+        // computed here are discarded, so the pending retries must be left for the
+        // scheduling pass (checkAllSteps) to consume.
+        await this.computeCurrentTransactionState(transaction, {
+          consumePendingRetries: false,
+        })
 
         const promise = this.createStepExecutionPromise(transaction, step)
 
