@@ -146,6 +146,7 @@ jobs:
             Don't mark a question as not covered if:
             - It's noise: random input, unrelated to Medusa, or about other products or services
             - Answering it requires new product features rather than documentation
+            - You can't confirm that the feature or behavior users are asking about exists in Medusa. Search the source code under the `packages` directory for it before marking the question as not covered.
 
             ## Step 2 — Write the result
 
@@ -264,6 +265,7 @@ jobs:
         - After a closer look, the information is already clearly documented
         - The questions are noise or unrelated to Medusa
         - Answering it requires new product features, API design decisions, or large architectural rewrites
+        - You can't confirm that the feature or behavior users are asking about exists in Medusa. Search the source code under the `packages` directory for it, such as its data models, services, workflows, API routes, or configuration options. Users and Kapa often assume features that Medusa doesn't have, for example ones from other platforms. Never document a feature just because the questions assume it exists.
         - You can't verify the correct answer from the source code under the `packages` directory or from existing documentation
 
         ## Step 4 — Document the answer
