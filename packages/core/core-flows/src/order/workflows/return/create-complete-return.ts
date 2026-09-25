@@ -431,6 +431,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       items: input.items,
       shipping_method: shippingMethodData,
       created_by: input.created_by,
+      refund_amount: input.refund_amount,
     })
 
     const link = transform(
