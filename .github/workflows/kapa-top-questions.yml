@@ -170,6 +170,13 @@ jobs:
 
           if ! jq -e 'type == "array"' /tmp/uncovered.json > /dev/null 2>&1; then
             echo "Claude didn't write a valid /tmp/uncovered.json."
+            EXECUTION_FILE="$RUNNER_TEMP/claude-execution-output.json"
+            if [ -f "$EXECUTION_FILE" ]; then
+              echo "Tool calls:"
+              jq -r '.[] | select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | "- \(.name) \(.input | tostring | .[:200])"' "$EXECUTION_FILE"
+              echo "Final message:"
+              jq -r '.[] | select(.type == "result") | .result' "$EXECUTION_FILE"
+            fi
             exit 1
           fi
 
