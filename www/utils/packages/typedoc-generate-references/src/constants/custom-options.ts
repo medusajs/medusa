@@ -58,7 +58,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
   events: getOptions({
     entryPointPath: [
       "packages/core/utils/src/core-flows/events.ts",
-      "packages/core/utils/src/auth/events.ts"
+      "packages/core/utils/src/auth/events.ts",
     ],
     tsConfigName: "utils.json",
     name: "events",
@@ -67,7 +67,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
   "module-events": getOptions({
     entryPointPath: [
       "packages/core/utils/src/core-flows/events.ts",
-      "packages/core/utils/src/auth/events.ts"
+      "packages/core/utils/src/auth/events.ts",
     ],
     tsConfigName: "utils.json",
     name: "module-events",
@@ -96,6 +96,18 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       "packages/core/utils/src/analytics/abstract-analytics-provider.ts",
     tsConfigName: "utils.json",
     name: "analytics-provider",
+  }),
+  search: getOptions({
+    entryPointPath: "packages/core/types/src/search/service.ts",
+    tsConfigName: "types.json",
+    name: "search",
+    parentIgnore: true,
+  }),
+  "search-provider": getOptions({
+    entryPointPath:
+      "packages/core/utils/src/search/abstract-search-provider.ts",
+    tsConfigName: "utils.json",
+    name: "search-provider",
   }),
   "fulfillment-provider": getOptions({
     entryPointPath: "packages/core/utils/src/fulfillment/provider.ts",

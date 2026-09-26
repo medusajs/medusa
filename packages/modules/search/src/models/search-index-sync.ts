@@ -3,9 +3,9 @@ import { SearchSyncStatus } from "../utils"
 import { SearchIndexVersion } from "./search-index-version"
 
 /**
- * Sync runs against one index version. Resuming an interrupted run means
- * finding that version's most recent unfinished row and picking up from its
- * `last_key`.
+ * Sync runs against one index version. Resuming means finding that version's
+ * most recent row and picking up from its `last_key` — but only when that row
+ * says its progress can still be picked up (see `resumable`).
  */
 export const SearchIndexSync = model
   .define("SearchIndexSync", {
@@ -18,6 +18,8 @@ export const SearchIndexSync = model
     filters: model.json().nullable(),
     // Last primary key handed to the engine, and the resume point.
     last_key: model.text().nullable(),
+    // Whether a later run may continue from this row's `last_key`.
+    resumable: model.boolean().default(true),
     documents_synced: model.number().default(0),
     started_at: model.dateTime().nullable(),
     completed_at: model.dateTime().nullable(),

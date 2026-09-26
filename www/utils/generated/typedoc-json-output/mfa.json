@@ -1,12 +1,12 @@
 {
-	"id": 65821,
+	"id": 66081,
 	"name": "mfa",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 65837,
+			"id": 66097,
 			"name": "AuthMfaProvider",
 			"variant": "declaration",
 			"kind": 256,
@@ -76,7 +76,7 @@
 			},
 			"children": [
 				{
-					"id": 65838,
+					"id": 66098,
 					"name": "method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -102,7 +102,7 @@
 							"fileName": "mfa-provider.ts",
 							"line": 114,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L114"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L114"
 						}
 					],
 					"type": {
@@ -121,7 +121,7 @@
 					}
 				},
 				{
-					"id": 65839,
+					"id": 66099,
 					"name": "canVerifyForAuthIdentity",
 					"variant": "declaration",
 					"kind": 2048,
@@ -131,12 +131,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 149,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L149"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L149"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65840,
+							"id": 66100,
 							"name": "canVerifyForAuthIdentity",
 							"variant": "signature",
 							"kind": 4096,
@@ -190,12 +190,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 149,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L149"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L149"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65841,
+									"id": 66101,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -211,14 +211,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65842,
+											"id": 66102,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65843,
+													"id": 66103,
 													"name": "auth_identity_id",
 													"variant": "declaration",
 													"kind": 1024,
@@ -236,7 +236,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 154,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L154"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L154"
 														}
 													],
 													"type": {
@@ -249,7 +249,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														65843
+														66103
 													]
 												}
 											],
@@ -258,14 +258,14 @@
 													"fileName": "mfa-provider.ts",
 													"line": 150,
 													"character": 10,
-													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L150"
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L150"
 												}
 											]
 										}
 									}
 								},
 								{
-									"id": 65844,
+									"id": 66104,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -320,7 +320,7 @@
 					}
 				},
 				{
-					"id": 65845,
+					"id": 66105,
 					"name": "verify",
 					"variant": "declaration",
 					"kind": 2048,
@@ -330,12 +330,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 195,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L195"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L195"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65846,
+							"id": 66106,
 							"name": "verify",
 							"variant": "signature",
 							"kind": 4096,
@@ -381,12 +381,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 195,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L195"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L195"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65847,
+									"id": 66107,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -402,14 +402,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65848,
+											"id": 66108,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65849,
+													"id": 66109,
 													"name": "auth_identity_id",
 													"variant": "declaration",
 													"kind": 1024,
@@ -427,7 +427,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 200,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L200"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L200"
 														}
 													],
 													"type": {
@@ -436,7 +436,7 @@
 													}
 												},
 												{
-													"id": 65850,
+													"id": 66110,
 													"name": "code",
 													"variant": "declaration",
 													"kind": 1024,
@@ -454,7 +454,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 204,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L204"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L204"
 														}
 													],
 													"type": {
@@ -467,8 +467,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														65849,
-														65850
+														66109,
+														66110
 													]
 												}
 											],
@@ -477,14 +477,14 @@
 													"fileName": "mfa-provider.ts",
 													"line": 196,
 													"character": 10,
-													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L196"
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L196"
 												}
 											]
 										}
 									}
 								},
 								{
-									"id": 65851,
+									"id": 66111,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -539,7 +539,7 @@
 					}
 				},
 				{
-					"id": 65852,
+					"id": 66112,
 					"name": "start",
 					"variant": "declaration",
 					"kind": 2048,
@@ -549,12 +549,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 255,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L255"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L255"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65853,
+							"id": 66113,
 							"name": "start",
 							"variant": "signature",
 							"kind": 4096,
@@ -640,12 +640,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 255,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L255"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L255"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65854,
+									"id": 66114,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -669,7 +669,7 @@
 									}
 								},
 								{
-									"id": 65855,
+									"id": 66115,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -719,7 +719,7 @@
 					]
 				},
 				{
-					"id": 65856,
+					"id": 66116,
 					"name": "verifySetup",
 					"variant": "declaration",
 					"kind": 2048,
@@ -729,12 +729,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 305,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L305"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L305"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65857,
+							"id": 66117,
 							"name": "verifySetup",
 							"variant": "signature",
 							"kind": 4096,
@@ -749,7 +749,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "start",
-										"target": 65852
+										"target": 66112
 									},
 									{
 										"kind": "text",
@@ -814,12 +814,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 305,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L305"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L305"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65858,
+									"id": 66118,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -843,7 +843,7 @@
 									}
 								},
 								{
-									"id": 65859,
+									"id": 66119,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -897,16 +897,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						65838
+						66098
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						65839,
-						65845,
-						65852,
-						65856
+						66099,
+						66105,
+						66112,
+						66116
 					]
 				}
 			],
@@ -915,7 +915,7 @@
 					"fileName": "mfa-provider.ts",
 					"line": 110,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L110"
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L110"
 				}
 			],
 			"extendedTypes": [
@@ -928,7 +928,7 @@
 			]
 		},
 		{
-			"id": 65860,
+			"id": 66120,
 			"name": "RecoveryCodeAuthMfaProvider",
 			"variant": "declaration",
 			"kind": 256,
@@ -1006,7 +1006,7 @@
 			},
 			"children": [
 				{
-					"id": 65861,
+					"id": 66121,
 					"name": "method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1032,7 +1032,7 @@
 							"fileName": "mfa-provider.ts",
 							"line": 379,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L379"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L379"
 						}
 					],
 					"type": {
@@ -1046,7 +1046,7 @@
 					}
 				},
 				{
-					"id": 65862,
+					"id": 66122,
 					"name": "canVerifyForAuthIdentity",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1056,12 +1056,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 411,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L411"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L411"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65863,
+							"id": 66123,
 							"name": "canVerifyForAuthIdentity",
 							"variant": "signature",
 							"kind": 4096,
@@ -1107,12 +1107,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 411,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L411"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L411"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65864,
+									"id": 66124,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1128,14 +1128,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65865,
+											"id": 66125,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65866,
+													"id": 66126,
 													"name": "auth_identity_id",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1153,7 +1153,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 416,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L416"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L416"
 														}
 													],
 													"type": {
@@ -1166,7 +1166,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														65866
+														66126
 													]
 												}
 											],
@@ -1175,14 +1175,14 @@
 													"fileName": "mfa-provider.ts",
 													"line": 412,
 													"character": 10,
-													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L412"
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L412"
 												}
 											]
 										}
 									}
 								},
 								{
-									"id": 65867,
+									"id": 66127,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1237,7 +1237,7 @@
 					}
 				},
 				{
-					"id": 65868,
+					"id": 66128,
 					"name": "verify",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1247,12 +1247,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 467,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L467"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L467"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65869,
+							"id": 66129,
 							"name": "verify",
 							"variant": "signature",
 							"kind": 4096,
@@ -1298,12 +1298,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 467,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L467"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L467"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65870,
+									"id": 66130,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1319,14 +1319,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65871,
+											"id": 66131,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65872,
+													"id": 66132,
 													"name": "auth_identity_id",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1344,7 +1344,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 472,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L472"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L472"
 														}
 													],
 													"type": {
@@ -1353,7 +1353,7 @@
 													}
 												},
 												{
-													"id": 65873,
+													"id": 66133,
 													"name": "code",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1371,7 +1371,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 476,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L476"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L476"
 														}
 													],
 													"type": {
@@ -1384,8 +1384,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														65872,
-														65873
+														66132,
+														66133
 													]
 												}
 											],
@@ -1394,14 +1394,14 @@
 													"fileName": "mfa-provider.ts",
 													"line": 468,
 													"character": 10,
-													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L468"
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L468"
 												}
 											]
 										}
 									}
 								},
 								{
-									"id": 65874,
+									"id": 66134,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1456,7 +1456,7 @@
 					}
 				},
 				{
-					"id": 65875,
+					"id": 66135,
 					"name": "generateCodes",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1466,12 +1466,12 @@
 							"fileName": "mfa-provider.ts",
 							"line": 533,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L533"
+							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L533"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65876,
+							"id": 66136,
 							"name": "generateCodes",
 							"variant": "signature",
 							"kind": 4096,
@@ -1517,12 +1517,12 @@
 									"fileName": "mfa-provider.ts",
 									"line": 533,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L533"
+									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L533"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65877,
+									"id": 66137,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1538,14 +1538,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65878,
+											"id": 66138,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65879,
+													"id": 66139,
 													"name": "auth_identity_id",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1563,7 +1563,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 538,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L538"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L538"
 														}
 													],
 													"type": {
@@ -1572,7 +1572,7 @@
 													}
 												},
 												{
-													"id": 65880,
+													"id": 66140,
 													"name": "count",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1590,7 +1590,7 @@
 															"fileName": "mfa-provider.ts",
 															"line": 542,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L542"
+															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L542"
 														}
 													],
 													"type": {
@@ -1603,8 +1603,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														65879,
-														65880
+														66139,
+														66140
 													]
 												}
 											],
@@ -1613,14 +1613,14 @@
 													"fileName": "mfa-provider.ts",
 													"line": 534,
 													"character": 10,
-													"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L534"
+													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L534"
 												}
 											]
 										}
 									}
 								},
 								{
-									"id": 65881,
+									"id": 66141,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1672,15 +1672,15 @@
 				{
 					"title": "Properties",
 					"children": [
-						65861
+						66121
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						65862,
-						65868,
-						65875
+						66122,
+						66128,
+						66135
 					]
 				}
 			],
@@ -1689,7 +1689,7 @@
 					"fileName": "mfa-provider.ts",
 					"line": 374,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/0ed927bdb7a396a8fd5f6447ed69b7b354b150d3/packages/core/types/src/auth/mfa-provider.ts#L374"
+					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/auth/mfa-provider.ts#L374"
 				}
 			],
 			"extendedTypes": [
@@ -1706,194 +1706,194 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				65837,
-				65860
+				66097,
+				66120
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"65821": {
+		"66081": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": ""
 		},
-		"65837": {
+		"66097": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider"
 		},
-		"65838": {
+		"66098": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.method"
 		},
-		"65839": {
+		"66099": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.canVerifyForAuthIdentity"
 		},
-		"65840": {
+		"66100": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.canVerifyForAuthIdentity"
 		},
-		"65841": {
+		"66101": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65842": {
+		"66102": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"65843": {
+		"66103": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.auth_identity_id"
 		},
-		"65844": {
+		"66104": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65845": {
+		"66105": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.verify"
 		},
-		"65846": {
+		"66106": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.verify"
 		},
-		"65847": {
+		"66107": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65848": {
+		"66108": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"65849": {
+		"66109": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.auth_identity_id"
 		},
-		"65850": {
+		"66110": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.code"
 		},
-		"65851": {
+		"66111": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65852": {
+		"66112": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.start"
 		},
-		"65853": {
+		"66113": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.start"
 		},
-		"65854": {
+		"66114": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65855": {
+		"66115": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65856": {
+		"66116": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.verifySetup"
 		},
-		"65857": {
+		"66117": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "AuthMfaProvider.verifySetup"
 		},
-		"65858": {
+		"66118": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65859": {
+		"66119": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65860": {
+		"66120": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider"
 		},
-		"65861": {
+		"66121": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.method"
 		},
-		"65862": {
+		"66122": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.canVerifyForAuthIdentity"
 		},
-		"65863": {
+		"66123": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.canVerifyForAuthIdentity"
 		},
-		"65864": {
+		"66124": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65865": {
+		"66125": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"65866": {
+		"66126": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.auth_identity_id"
 		},
-		"65867": {
+		"66127": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65868": {
+		"66128": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.verify"
 		},
-		"65869": {
+		"66129": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.verify"
 		},
-		"65870": {
+		"66130": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65871": {
+		"66131": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"65872": {
+		"66132": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.auth_identity_id"
 		},
-		"65873": {
+		"66133": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.code"
 		},
-		"65874": {
+		"66134": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65875": {
+		"66135": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.generateCodes"
 		},
-		"65876": {
+		"66136": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "RecoveryCodeAuthMfaProvider.generateCodes"
 		},
-		"65877": {
+		"66137": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "data"
 		},
-		"65878": {
+		"66138": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"65879": {
+		"66139": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.auth_identity_id"
 		},
-		"65880": {
+		"66140": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "__type.count"
 		},
-		"65881": {
+		"66141": {
 			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
 			"qualifiedName": "sharedContext"
 		}
@@ -1903,7 +1903,7 @@
 			"1": "../../../../packages/core/types/src/auth/mfa-provider.ts"
 		},
 		"reflections": {
-			"1": 65821
+			"1": 66081
 		}
 	}
 }

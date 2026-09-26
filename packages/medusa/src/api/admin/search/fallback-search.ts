@@ -56,7 +56,7 @@ export async function searchWithGraphFallback(
       }
 
       const { data, metadata } = await query.graph({
-        entity: config.graphEntity,
+        entity: config.graphEntity ?? config.name,
         fields: config.fields,
         filters,
         pagination: { skip, take },

@@ -1,5 +1,9 @@
 # API Reference App
 
+> **Shipping something new?** Add it to the docs homepage's What's New list in
+> `www/apps/book/components/Homepage/WhatsNewSection/data.ts`. See
+> [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the entry format and rules.
+
 Next.js (App Router) site that renders the Medusa **Store** and **Admin** REST API references. Deployed to Cloudflare via OpenNext, served under the `basePath` `/api` (e.g. `https://docs.medusajs.com/api/store`).
 
 ## Pipeline: from OAS to public docs

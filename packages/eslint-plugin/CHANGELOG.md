@@ -1,5 +1,17 @@
 # @medusajs/eslint-plugin
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16851](https://github.com/medusajs/medusa/pull/16851) [`98f0ecbeb8912ad38492600577e304f2d240f8d8`](https://github.com/medusajs/medusa/commit/98f0ecbeb8912ad38492600577e304f2d240f8d8) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(eslint-plugin): only trigger link-create-keys-modules-enum for actual link methods and steps
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16778](https://github.com/medusajs/medusa/pull/16778) [`f6a417d40360d6946c54f1e522360869a5f8d520`](https://github.com/medusajs/medusa/commit/f6a417d40360d6946c54f1e522360869a5f8d520) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(eslint-plugin): add rules for req.allowed, allowFields, and req.disallowed
+
 ## 2.20.1
 
 ## 2.20.0

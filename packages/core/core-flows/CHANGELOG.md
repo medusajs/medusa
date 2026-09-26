@@ -1,5 +1,39 @@
 # @medusajs/core-flows
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16269](https://github.com/medusajs/medusa/pull/16269) [`f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c`](https://github.com/medusajs/medusa/commit/f8dce55556a1e68d6ea9b2fb88852b2a76fbd73c) Thanks [@KallinikosMil](https://github.com/KallinikosMil)! - fix(core-flows): create an inventory item and link it when manage_inventory is enabled on an existing product variant
+
+- [#16573](https://github.com/medusajs/medusa/pull/16573) [`1caeb1ab62de9b51c1f385e0e051bb8a10c66aee`](https://github.com/medusajs/medusa/commit/1caeb1ab62de9b51c1f385e0e051bb8a10c66aee) Thanks [@ebrahim2355](https://github.com/ebrahim2355)! - fix(core-flows): await the mutations performed in step compensations so rollbacks complete before the workflow reports them as done
+
+- [#16436](https://github.com/medusajs/medusa/pull/16436) [`7ff721850c22a886af25f251685f6bca59434664`](https://github.com/medusajs/medusa/commit/7ff721850c22a886af25f251685f6bca59434664) Thanks [@thomassarazin](https://github.com/thomassarazin)! - fix(@medusajs/order, @medusajs/core-flows): set requested_at when a return is created from the storefront
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16129](https://github.com/medusajs/medusa/pull/16129) [`2097e7b43f3d4525b1a909dbe4cb6fb634765893`](https://github.com/medusajs/medusa/commit/2097e7b43f3d4525b1a909dbe4cb6fb634765893) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): validate cart currency_code against the region's currency on create
+
+- [#16722](https://github.com/medusajs/medusa/pull/16722) [`14e630faa1c31d37626068004e3f00acad1fd51d`](https://github.com/medusajs/medusa/commit/14e630faa1c31d37626068004e3f00acad1fd51d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): only autocapture if payment is authorized successfully
+
+- Updated dependencies [[`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3)]:
+  - @medusajs/framework@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

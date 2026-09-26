@@ -1,5 +1,21 @@
 # @medusajs/auth-emailpass
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16890](https://github.com/medusajs/medusa/pull/16890) [`e607b4f7f9fc5388e545ce00e5a2765f7a3a1fee`](https://github.com/medusajs/medusa/commit/e607b4f7f9fc5388e545ce00e5a2765f7a3a1fee) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(auth-emailpass): require an actor-less identity to use the same password when re-registering
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
+## 2.21.0
+
+### Patch Changes
+
+- Updated dependencies [[`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3)]:
+  - @medusajs/framework@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

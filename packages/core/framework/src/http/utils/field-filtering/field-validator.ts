@@ -3,48 +3,25 @@ import { FieldFilterContext, IFieldFilter } from "./index"
 /**
  * Filter that only allows explicitly specified fields
  * Fields not in the allowed list are returned as not allowed
+ *
+ * A field is allowed only if its full path is in the allowed list as-is, both
+ * for a plain selection and for a relation selected in full (`*region`). A
+ * relation therefore never grants access to anything nested under it: `region`
+ * allows `region` alone, while `region.id` needs `region.id` to be allowed too.
  */
 export class AllowedFieldFilter implements IFieldFilter {
-  private allowed: string[]
+  private allowed: Set<string>
 
   constructor({ allowed }: { allowed: string[] }) {
-    this.allowed = allowed
+    this.allowed = new Set(allowed)
   }
 
   getNotAllowedFields(context: FieldFilterContext): string[] {
     const { parsedFields } = context
     const { fields, starFields } = parsedFields
     const fieldsToCheck = [...fields, ...Array.from(starFields)]
-    const notAllowedFields: string[] = []
 
-    fieldsToCheck.forEach((field) => {
-      const hasAllowedField = this.allowed.includes(field)
-
-      if (hasAllowedField) {
-        return
-      }
-
-      // Select full relation - must match an allowed field fully
-      // e.g product.variants must have product.variants in allowedFields
-      if (starFields.has(field)) {
-        if (hasAllowedField) {
-          return
-        }
-        notAllowedFields.push(field)
-        return
-      }
-
-      const fieldStartsWithAllowedField = this.allowed.some((allowedField) =>
-        field.startsWith(allowedField)
-      )
-
-      if (!fieldStartsWithAllowedField) {
-        notAllowedFields.push(field)
-        return
-      }
-    })
-
-    return notAllowedFields
+    return fieldsToCheck.filter((field) => !this.allowed.has(field))
   }
 }
 

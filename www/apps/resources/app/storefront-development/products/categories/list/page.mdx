@@ -240,15 +240,15 @@ sdk.store.category.list({
 
 To sort categories by a field, use the `order` query parameter. Its value is a comma-separated list of fields to sort by, and each field is optionally prefixed by `-` to indicate descending order.
 
-For example, to sort categories by title in descending order:
+For example, to sort categories by name in descending order:
 
 ```ts
 sdk.store.category.list({
-  order: "-title",
+  order: "-name",
 })
 .then(({ product_categories, count }) => {
   // TODO set categories...
 })
 ```
 
-The result will be categories sorted by title in descending order.
+The result will be categories sorted by name in descending order.

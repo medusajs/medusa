@@ -248,6 +248,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTypesStep"
   },
   {
+    "title": "createProductVariantsDefaultInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
+  },
+  {
     "title": "createProductVariantsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsStep"
   },

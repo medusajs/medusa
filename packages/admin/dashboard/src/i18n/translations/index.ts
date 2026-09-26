@@ -22,6 +22,7 @@ import mn from "./mn.json"
 import ar from "./ar.json"
 import zhCN from "./zhCN.json"
 import fa from "./fa.json"
+import fi from "./fi.json"
 import cs from "./cs.json"
 import ru from "./ru.json"
 import lt from "./lt.json"
@@ -31,6 +32,7 @@ import nl from "./nl.json"
 import bs from "./bs.json"
 import id from "./id.json"
 import zhTW from "./zhTW.json"
+import sv from "./sv.json"
 
 export default {
   bs: {
@@ -108,6 +110,9 @@ export default {
   fa: {
     translation: fa,
   },
+  fi: {
+    translation: fi,
+  },
   cs: {
     translation: cs,
   },
@@ -131,5 +136,8 @@ export default {
   },
   zhTW: {
     translation: zhTW,
+  },
+  sv: {
+    translation: sv,
   },
 }

@@ -11,14 +11,16 @@ import {
   MedusaSearchClient,
   CloudServiceError,
   MedusaSearchProviderOptions,
+  ResolvedMedusaSearchProviderOptions,
   parseFacetResults,
   parseHighlights,
   toSearchDocument,
   toSearchFilter,
-  validateMedusaSearchOptions,
+  resolveMedusaSearchOptions,
   type FacetQuery,
   type IndexQuery,
   type IndexMultiQueryResponse,
+  type IndexQueryResult,
   type QueryPlan,
   type Row,
 } from "../utils"
@@ -29,6 +31,7 @@ type InjectedDependencies = {
 
 const MAX_WRITE_BYTES = 480 * 1024 * 1024
 const MAX_MULTI_QUERIES = 16
+const MAX_AGGREGATION_GROUPS = 10000
 
 type BuiltMultiQuery = {
   input: SearchTypes.ProviderSearchQuery
@@ -44,7 +47,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   static identifier = "search-medusa"
 
   protected readonly logger_?: Logger
-  protected readonly options_: MedusaSearchProviderOptions
+  protected readonly options_: ResolvedMedusaSearchProviderOptions
   protected readonly client_: MedusaSearchClient
 
   constructor(
@@ -53,11 +56,11 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   ) {
     super()
 
-    validateMedusaSearchOptions(options)
+    const resolvedOptions = resolveMedusaSearchOptions(options)
 
     this.logger_ = logger
-    this.options_ = options
-    this.client_ = new MedusaSearchClient(options)
+    this.options_ = resolvedOptions
+    this.client_ = new MedusaSearchClient(resolvedOptions)
   }
 
   /**
@@ -96,7 +99,6 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         name: index.physical_name,
         schema: plan.schema,
         distance_metric: plan.options.distance_metric,
-        sharding: plan.options.sharding,
       })
       return this.task(index.physical_name)
     }
@@ -331,10 +333,21 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     const countIndex = includeCount ? queries.length : -1
 
     if (includeCount) {
-      queries.push({
-        aggregate_by: { count: ["Count"] },
-        filters: base.query.filters,
-      })
+      // Cloud has no distinct count, so a deduplicated total is the number of
+      // groups. Past MAX_AGGREGATION_GROUPS it is a lower bound.
+      queries.push(
+        base.distinct
+          ? {
+              aggregate_by: { count: ["Count"] },
+              group_by: [base.distinct],
+              filters: base.query.filters,
+              top_k: MAX_AGGREGATION_GROUPS,
+            }
+          : {
+              aggregate_by: { count: ["Count"] },
+              filters: base.query.filters,
+            }
+      )
     }
 
     const facetOffset = queries.length
@@ -381,10 +394,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       metadata: {
         skip: base.skip,
         take: base.take,
-        count:
-          countIndex === -1
-            ? null
-            : Number(response.results[countIndex]?.aggregations?.count ?? 0),
+        count: this.parseCount(response.results[countIndex], built),
         query: input.q,
         processing_time_ms: response.performance.server_total_ms,
       },
@@ -393,6 +403,19 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         performance: response.performance,
       },
     }
+  }
+
+  protected parseCount(
+    result: IndexQueryResult | undefined,
+    built: BuiltMultiQuery
+  ): number | null {
+    if (built.countIndex === -1) {
+      return null
+    }
+    if (built.base.distinct) {
+      return result?.aggregation_groups?.length ?? 0
+    }
+    return Number(result?.aggregations?.count ?? 0)
   }
 
   protected chunkRows(rows: Row[]): Row[][] {

@@ -79,6 +79,28 @@ export type SearchIndexMigrationAction =
     }
   | {
       /**
+       * No loaded definition declares this index any more, so it is removed:
+       * every physical index ever built for it, and the record tracking them.
+       *
+       * Destructive and not reversible — the documents are only recovered by
+       * declaring the definition again and letting it seed. `db:migrate` asks
+       * before running one of these unless it is told not to.
+       */
+      action: "drop"
+
+      /**
+       * The name of the index to remove.
+       */
+      index: string
+
+      /**
+       * Every physical index removed along with it, newest version first.
+       * Empty when a record was created but no version was ever built.
+       */
+      physical_names: string[]
+    }
+  | {
+      /**
        * The index already matches its definition, so there's nothing to do.
        */
       action: "noop"

@@ -1,5 +1,57 @@
 # @medusajs/framework
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16858](https://github.com/medusajs/medusa/pull/16858) [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,types,framework): add a generic, InstantSearch-compatible store search endpoint
+
+  `POST /store/search` takes the `SearchQuery` batch `@medusajs/instantsearch-adapter`
+  sends, runs each query against the index it names, and answers with the search
+  engine's own results — hits, scores, highlights and facets. It replaces
+  `/store/products/search`, whose `GET` shape neither InstantSearch nor the adapter
+  could talk to.
+
+  Nothing is searchable until a store opts an index in with the new
+  `configureStoreSearch` middleware, which is also where it narrows what a query
+  may reach within an allowed index. A product index is narrowed to published
+  products in the publishable key's sales channels automatically, wherever it
+  declares those fields, as every other store product read is.
+
+- Updated dependencies [[`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd), [`3538aab7bc5fcff61591a83bb98e6643823cb947`](https://github.com/medusajs/medusa/commit/3538aab7bc5fcff61591a83bb98e6643823cb947), [`893d96850320f8f00c623c66f46e9fcde5ab1cdf`](https://github.com/medusajs/medusa/commit/893d96850320f8f00c623c66f46e9fcde5ab1cdf), [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e), [`75f3d03b84b1404cc05b9f5f15c6be4a2c2f1d18`](https://github.com/medusajs/medusa/commit/75f3d03b84b1404cc05b9f5f15c6be4a2c2f1d18), [`7a0cb956645aef3ed13a20c18fc3faf8961ca535`](https://github.com/medusajs/medusa/commit/7a0cb956645aef3ed13a20c18fc3faf8961ca535), [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/utils@2.21.1
+  - @medusajs/types@2.21.1
+  - @medusajs/cli@2.21.1
+  - @medusajs/modules-sdk@2.21.1
+  - @medusajs/orchestration@2.21.1
+  - @medusajs/workflows-sdk@2.21.1
+  - @medusajs/deps@2.21.1
+  - @medusajs/telemetry@2.21.1
+
+## 2.21.0
+
+### Minor Changes
+
+- [#16702](https://github.com/medusajs/medusa/pull/16702) [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework, medusa, loyalty-plugin): set a strict allowed list for store API routes
+
+### Patch Changes
+
+- [#16716](https://github.com/medusajs/medusa/pull/16716) [`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(framework,medusa): allow overriding a route's disallowed query fields from a global middleware
+
+- [#16351](https://github.com/medusajs/medusa/pull/16351) [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): mark migration scripts as completed only after successful run
+
+- [#16370](https://github.com/medusajs/medusa/pull/16370) [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382) Thanks [@DS123-ally](https://github.com/DS123-ally)! - fix(framework): make unlessPath deterministic for stateful regular expressions
+
+- Updated dependencies [[`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34), [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b), [`ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17`](https://github.com/medusajs/medusa/commit/ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17), [`b650b6c9a486f50ac437614ba36c7f42a203a458`](https://github.com/medusajs/medusa/commit/b650b6c9a486f50ac437614ba36c7f42a203a458), [`bda24b9725ac697ec5e8f706b503013e20babf12`](https://github.com/medusajs/medusa/commit/bda24b9725ac697ec5e8f706b503013e20babf12)]:
+  - @medusajs/types@2.21.0
+  - @medusajs/utils@2.21.0
+  - @medusajs/modules-sdk@2.21.0
+  - @medusajs/orchestration@2.21.0
+  - @medusajs/workflows-sdk@2.21.0
+  - @medusajs/cli@2.21.0
+  - @medusajs/deps@2.21.0
+  - @medusajs/telemetry@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

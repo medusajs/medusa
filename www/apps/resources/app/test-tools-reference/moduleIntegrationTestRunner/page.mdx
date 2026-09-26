@@ -53,7 +53,13 @@ moduleIntegrationTestRunner<BlogModuleService>({
         {
           type: "DmlEntity[]",
           name: "moduleModels",
-          description: "The module's data models.",
+          description: "The module's data models. If not specified, the data models are loaded from the module's `models` directory. The test database is only created if the module has at least one data model, so pass a dummy model if your module doesn't have data models.",
+          optional: true
+        },
+        {
+          type: "`string`",
+          name: "dbName",
+          description: "A name to use for the test database. If not specified, the database name is of the format `medusa-<moduleName>-integration-<jestWorkerId>`. Unlike `medusaIntegrationTestRunner`, the database isn't dropped after the tests end.",
           optional: true
         },
         {

@@ -1,0 +1,82 @@
+{
+  "prefix": "medusa",
+  "icons": {
+    "bolt": {
+      "body": "<g fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"m5.944 13.945 1.778-6.223H3.47a.444.444 0 0 1-.417-.597L5.17 1.347a.44.44 0 0 1 .417-.291h3.707c.313 0 .527.313.414.605l-1.32 3.395h3.333c.366 0 .575.417.356.71z\"></path></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "cloud": {
+      "body": "<g fill=\"none\"><path fill=\"currentColor\" d=\"M12.084 5.123c-1.355-.535-3.066-.29-4.473.951.222-1.13 2.033-2.569 3.91-2.478-.812-1.388-2.313-2.318-3.995-2.318-2.565 0-4.65 2.093-4.65 4.666q0 .167.014.336a3.33 3.33 0 0 0-1.479 5.627c.622.6 1.434.926 2.28.926h6.934c2.198 0 3.986-1.793 3.986-4a3.98 3.98 0 0 0-2.527-3.71\"></path></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "computer": {
+      "body": "<g fill=\"none\"><g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.467\" clip-path=\"url(#medusa-computer-a)\"><path d=\"M4.611 13.944a9.6 9.6 0 0 1 5.778 0M7.5 11.278V13.5M12.167 1.944H2.833c-.982 0-1.777.796-1.777 1.778V9.5c0 .982.795 1.778 1.777 1.778h9.334c.982 0 1.777-.796 1.777-1.778V3.722c0-.982-.796-1.778-1.777-1.778\"></path></g><defs><clipPath id=\"medusa-computer-a\"><path fill=\"#fff\" d=\"M0 0h15v15H0z\"></path></clipPath></defs></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "database": {
+      "body": "<g fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M7.5 5.278c3.068 0 5.556-.896 5.556-2s-2.488-2-5.556-2-5.556.895-5.556 2 2.488 2 5.556 2\"></path><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M1.944 3.278v8.444c0 1.105 2.488 2 5.556 2s5.556-.895 5.556-2V3.278\"></path><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M1.944 7.5c0 1.105 2.488 2 5.556 2s5.556-.895 5.556-2\"></path></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "folder": {
+      "body": "<g fill=\"none\"><g clip-path=\"url(#medusa-folder-a)\"><path fill=\"currentColor\" d=\"M.75 10.833V3.722a2.527 2.527 0 0 1 2.527-2.528H4.9c.696 0 1.358.287 1.833.789l.093.102 1.131 1.332h3.766a2.527 2.527 0 0 1 2.527 2.527v4.89a2.53 2.53 0 0 1-2.527 2.528H3.277A2.53 2.53 0 0 1 .75 10.833\"></path></g><defs><clipPath id=\"medusa-folder-a\"><path fill=\"#fff\" d=\"M0 0h15v15H0z\"></path></clipPath></defs></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "globe": {
+      "body": "<g fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M7.5 13.945c1.473 0 2.667-2.886 2.667-6.445S8.973 1.056 7.5 1.056 4.833 3.94 4.833 7.5s1.194 6.445 2.667 6.445M1.056 7.5h12.888\"></path><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M7.5 13.945a6.444 6.444 0 1 0 0-12.89 6.444 6.444 0 0 0 0 12.89\"></path></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "key": {
+      "body": "<g fill=\"none\"><g stroke=\"currentColor\" clip-path=\"url(#medusa-key-a)\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"m1.345 13.497.158-2.53L6.739 5.73a3.6 3.6 0 0 1-.128-.897 3.556 3.556 0 1 1 3.556 3.556c-.322 0-.629-.057-.926-.137L7.5 9.944h-2v2l-1.462 1.559z\"></path><path d=\"M10.222 4.389a.389.389 0 1 0 .778 0 .389.389 0 0 0-.778 0Z\"></path></g><defs><clipPath id=\"medusa-key-a\"><path fill=\"#fff\" d=\"M0 0h15v15H0z\"></path></clipPath></defs></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "search": {
+      "body": "<g fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" d=\"M13.056 13.056 9.53 9.53M6.389 10.833a4.444 4.444 0 1 0 0-8.888 4.444 4.444 0 0 0 0 8.888\"></path></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "server": {
+      "body": "<g fill=\"none\"><g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" clip-path=\"url(#medusa-server-a)\"><path d=\"M12.611 8.167H2.39c-.736 0-1.333.597-1.333 1.333v1.778c0 .736.597 1.333 1.333 1.333H12.61c.736 0 1.333-.597 1.333-1.333V9.5c0-.736-.597-1.333-1.333-1.333\"></path><path d=\"m1.136 9.046 1.96-5.886a1.78 1.78 0 0 1 1.687-1.216h5.436c.766 0 1.446.49 1.687 1.216l1.96 5.886M3.278 10.389h2.444\"></path></g><defs><clipPath id=\"medusa-server-a\"><path fill=\"#fff\" d=\"M0 0h15v15H0z\"></path></clipPath></defs></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "sync": {
+      "body": "<g fill=\"none\"><g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"0.525\" clip-path=\"url(#medusa-sync-a)\"><path d=\"M4.752 9.616 1.935 8.86l-.755 2.817\"></path><path d=\"M13.136 8.53a5.729 5.729 0 0 1-11.196.357M10.248 5.384l2.817.755.755-2.817\"></path><path d=\"M1.864 6.469a5.729 5.729 0 0 1 11.184-.403\"></path></g><defs><clipPath id=\"medusa-sync-a\"><path fill=\"#fff\" d=\"M0 0h15v15H0z\"></path></clipPath></defs></g>",
+      "left": 0,
+      "top": 0,
+      "width": 15,
+      "height": 15
+    },
+    "terminal": {
+      "body": "<g fill=\"none\">\n<g filter=\"url(#medusa-terminal-filter0_dd_14136_19528)\">\n<rect x=\"16\" y=\"8\" width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#medusa-terminal-paint0_linear_14136_19528)\"/>\n<rect x=\"16.5\" y=\"8.5\" width=\"95\" height=\"95\" rx=\"11.5\" stroke=\"#3E3E44\"/>\n<rect x=\"24\" y=\"16\" width=\"10\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"24\" y=\"53\" width=\"10\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"24\" y=\"85\" width=\"10\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"24\" y=\"40\" width=\"10\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"37\" y=\"16\" width=\"20\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"37\" y=\"53\" width=\"32\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"30\" y=\"24\" width=\"16\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"30\" y=\"61\" width=\"28\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"30\" y=\"32\" width=\"32\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"30\" y=\"69\" width=\"32\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n<rect x=\"30\" y=\"77\" width=\"20\" height=\"5\" rx=\"2.5\" fill=\"#464B50\"/>\n</g>\n<defs>\n<filter id=\"medusa-terminal-filter0_dd_14136_19528\" x=\"0\" y=\"0\" width=\"128\" height=\"128\" filterUnits=\"userSpaceOnUse\" color-interpolation-filters=\"sRGB\">\n<feFlood flood-opacity=\"0\" result=\"BackgroundImageFix\"/>\n<feColorMatrix in=\"SourceAlpha\" type=\"matrix\" values=\"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0\" result=\"hardAlpha\"/>\n<feOffset dy=\"8\"/>\n<feGaussianBlur stdDeviation=\"8\"/>\n<feComposite in2=\"hardAlpha\" operator=\"out\"/>\n<feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.0117647 0 0 0 0 0.027451 0 0 0 0 0.0705882 0 0 0 0.08 0\"/>\n<feBlend mode=\"normal\" in2=\"BackgroundImageFix\" result=\"effect1_dropShadow_14136_19528\"/>\n<feColorMatrix in=\"SourceAlpha\" type=\"matrix\" values=\"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0\" result=\"hardAlpha\"/>\n<feMorphology radius=\"1\" operator=\"dilate\" in=\"SourceAlpha\" result=\"effect2_dropShadow_14136_19528\"/>\n<feOffset/>\n<feComposite in2=\"hardAlpha\" operator=\"out\"/>\n<feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.0117647 0 0 0 0 0.027451 0 0 0 0 0.0705882 0 0 0 0.08 0\"/>\n<feBlend mode=\"normal\" in2=\"effect1_dropShadow_14136_19528\" result=\"effect2_dropShadow_14136_19528\"/>\n<feBlend mode=\"normal\" in=\"SourceGraphic\" in2=\"effect2_dropShadow_14136_19528\" result=\"shape\"/>\n</filter>\n<linearGradient id=\"medusa-terminal-paint0_linear_14136_19528\" x1=\"16\" y1=\"8\" x2=\"112\" y2=\"104\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#1C1C1F\"/>\n<stop offset=\"1\" stop-color=\"#333336\"/>\n</linearGradient>\n</defs>\n</g>",
+      "left": 8,
+      "top": 0,
+      "width": 112,
+      "height": 112
+    }
+  }
+}

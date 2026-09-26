@@ -9,6 +9,6 @@ export const sdk = new Medusa({
 })
 
 sdk.admin.customer.retrieveAddress("cus_123", "cus_addr_123")
-.then(({ customer }) => {
-  console.log(customer)
+.then(({ address }) => {
+  console.log(address)
 })

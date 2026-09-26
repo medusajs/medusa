@@ -48,14 +48,27 @@ Where `<LANGUAGE>` is your language name. For example, `feat/translate-da`.
     - If you're adding a new language, copy the file `packages/admin/dashboard/src/i18n/translations/en.json` and paste it with the ISO-2 name for your language. For example, if you're adding Danish translations, copy the `en.json` file and paste it as `packages/admin/dashboard/src/i18n/translations/de.json`.
     - If you're fixing a translation, find the JSON file of the language under `packages/admin/dashboard/src/i18n/translations`.
 
-5. Start translating the keys in the JSON file (or updating the targeted ones). All keys in the JSON file must be translated, and your PR tests will fail otherwise.
+5. If you're adding a new language, add its plural forms to `packages/admin/dashboard/src/i18n/plural-config.json`, using its ISO-2 code as the key:
+
+```json title="packages/admin/dashboard/src/i18n/plural-config.json"
+{
+  // other languages...
+  "da": ["one", "other"]
+}
+```
+
+The value is the list of [CLDR plural forms](https://www.unicode.org/cldr/charts/47/supplemental/language_plural_rules.html) your language distinguishes. For example, Danish and English only distinguish `one` and `other`, while Polish and Russian also distinguish `few` and `many`.
+
+This step is required before you can validate your translations in the next step. If you skip it, `yarn i18n:validate` fails with `Language "<code>" not found in plural-config.json`. The test suite also uses this file to check that your translation file defines the correct plural key suffixes, such as `items_one` and `items_other`, for every pluralized string.
+
+6. Start translating the keys in the JSON file (or updating the targeted ones). All keys in the JSON file must be translated, and your PR tests will fail otherwise.
     - You can check whether the JSON file is valid by running the following command in `packages/admin/dashboard`, replacing `da.json` with the JSON file's name:
 
 ```bash title="packages/admin/dashboard"
 yarn i18n:validate da.json
 ```
 
-6. After finishing the translation, if you're adding a new language, import its JSON file in `packages/admin/dashboard/src/i18n/translations/index.ts` and add it to the exported object:
+7. After finishing the translation, if you're adding a new language, import its JSON file in `packages/admin/dashboard/src/i18n/translations/index.ts` and add it to the exported object:
 
 ```ts title="packages/admin/dashboard/src/i18n/translations/index.ts" highlights={[["2"], ["6"], ["7"], ["8"]]}
 // other imports...
@@ -71,7 +84,7 @@ export default {
 
 The language's key in the object is the ISO-2 name of the language.
 
-7. If you're adding a new language, add it to the file `packages/admin/dashboard/src/i18n/languages.ts`:
+8. If you're adding a new language, add it to the file `packages/admin/dashboard/src/i18n/languages.ts`:
 
 export const languageHighlights = [
   ["7", "code", "The ISO-2 name of the language."],
@@ -102,6 +115,6 @@ export const languages: Language[] = [
 - `ltr`: Whether the language supports a left-to-right layout. For example, set this to `false` for languages like Arabic.
 - `date_locale`: An instance of the locale imported from the [date-fns/locale](https://date-fns.org/) package.
 
-8. Once you're done, push the changes into your branch and open a pull request on GitHub.
+9. Once you're done, push the changes into your branch and open a pull request on GitHub.
 
 Our team will perform a general review on your PR and merge it if no issues are found. The translation will be available in the admin after the next release.
