@@ -44,6 +44,7 @@
     "details": "详情",
     "items_one": "{{count}} 项",
     "items_other": "{{count}} 项",
+    "values_one": "{{count}} 个值",
     "values_other": "{{count}} 个值",
     "countSelected": "已选择 {{count}} 项",
     "countOfTotalSelected": "已选择 {{count}}/{{total}} 项",
@@ -181,22 +182,16 @@
         "all": "所有区域",
         "customer": "客户",
         "customer_group": "客户群组",
-        "customerGroup": "客户组",
         "product": "产品",
         "product_variant": "产品变体",
         "inventory_item": "库存",
-        "productVariant": "产品变体",
-        "inventory": "库存",
         "reservation": "预订",
         "product_category": "分类",
         "product_collection": "产品系列",
-        "category": "分类",
-        "collection": "系列",
         "order": "订单",
         "promotion": "促销",
         "campaign": "活动",
         "price_list": "价格列表",
-        "priceList": "价格表",
         "user": "用户",
         "region": "地区",
         "tax_region": "税区",
@@ -208,6 +203,14 @@
         "shipping_profile": "配送方案",
         "publishable_api_key": "可发布 API 密钥",
         "secret_api_key": "私密 API 密钥",
+        "command": "命令",
+        "navigation": "导航",
+        "customerGroup": "客户组",
+        "productVariant": "产品变体",
+        "inventory": "库存",
+        "category": "分类",
+        "collection": "系列",
+        "priceList": "价格表",
         "taxRegion": "税收地区",
         "returnReason": "退货原因",
         "salesChannel": "销售渠道",
@@ -216,9 +219,7 @@
         "location": "位置",
         "shippingProfile": "配送方案",
         "publishableApiKey": "可发布的API密钥",
-        "secretApiKey": "密钥API密钥",
-        "command": "命令",
-        "navigation": "导航"
+        "secretApiKey": "密钥API密钥"
       }
     },
     "keyboardShortcuts": {
@@ -1567,6 +1568,7 @@
       "methodDescription": "选择与客户所选不同的配送方式",
       "error": {
         "wrongQuantity": "只有一件商品可供履行",
+        "wrongQuantity_one": "只有一件商品可供履行",
         "wrongQuantity_other": "数量应该在 1 和 {{number}} 之间",
         "noItems": "没有要履行的商品。",
         "noShippingOption": "需要运输选项",
@@ -1812,12 +1814,12 @@
     },
     "salesChannels": {
       "header": "销售渠道",
+      "hint": "管理与此位置相连的销售渠道。",
       "label": "已连接的销售渠道",
       "connectedTo": "已连接 {{total}} 个销售渠道中的 {{count}} 个",
       "noChannels": "该位置未连接任何销售渠道。",
       "action": "连接销售渠道",
-      "successToast": "销售渠道更新成功。",
-      "hint": "管理与此位置相连的销售渠道。"
+      "successToast": "销售渠道更新成功。"
     },
     "pickupOptions": {
       "edit": {
@@ -2840,13 +2842,16 @@
       "alreadyAddedTooltip": "用户已拥有此角色。",
       "unassignableRoleTooltip": "您无权分配此角色——您的权限未涵盖其所有策略。",
       "add": {
+        "successToast_one": "用户已成功添加到角色。",
         "successToast_other": "用户已成功添加到角色。",
         "list": {
           "noRecordsMessage": "请先创建用户。"
         }
       },
       "remove": {
+        "title_one": "移除用户",
         "title_other": "移除用户",
+        "description_one": "您即将从角色中移除 {{count}} 个用户。此操作无法撤销。",
         "description_other": "您即将从角色中移除 {{count}} 个用户。此操作无法撤消。"
       },
       "list": {
@@ -2975,6 +2980,7 @@
     "disableTaxInclusivePricing": "禁用含税定价",
     "removeCurrencyWarning_one": "您即将从您的商店中移除 {{count}} 个货币。确保您已从所有价格中移除该货币。",
     "removeCurrencyWarning_other": "您即将从您的商店中移除 {{count}} 个货币。确保您已从所有价格中移除该货币。",
+    "removeLocaleWarning_one": "您即将从商店中移除 {{count}} 个区域设置。使用此区域设置的所有翻译都将被移除。",
     "removeLocaleWarning_other": "您即将从商店中移除 {{count}} 种语言。使用这些语言的任何翻译都将被删除。",
     "currencyAlreadyAdded": "该货币已添加到您的商店。",
     "localeAlreadyAdded": "该语言已添加到您的商店。",

@@ -44,6 +44,7 @@
     "details": "รายละเอียด",
     "items_one": "{{count}} รายการ",
     "items_other": "{{count}} รายการ",
+    "values_one": "{{count}} ค่า",
     "values_other": "{{count}} ค่า",
     "countSelected": "เลือก {{count}} รายการ",
     "countOfTotalSelected": "เลือก {{count}} จากทั้งหมด {{total}}",
@@ -181,22 +182,16 @@
         "all": "ทุกพื้นที่",
         "customer": "ลูกค้า",
         "customer_group": "กลุ่มลูกค้า",
-        "customerGroup": "กลุ่มลูกค้า",
         "product": "ผลิตภัณฑ์",
         "product_variant": "ตัวเลือกสินค้า",
         "inventory_item": "สินค้าคงคลัง",
-        "productVariant": "ตัวเลือกผลิตภัณฑ์",
-        "inventory": "สินค้าคงคลัง",
         "reservation": "การจอง",
         "product_category": "หมวดหมู่",
         "product_collection": "คอลเลกชัน",
-        "category": "หมวดหมู่",
-        "collection": "คอลเลกชัน",
         "order": "คำสั่งซื้อ",
         "promotion": "โปรโมชั่น",
         "campaign": "แคมเปญ",
         "price_list": "รายการราคา",
-        "priceList": "รายการราคา",
         "user": "ผู้ใช้",
         "region": "ภูมิภาค",
         "tax_region": "ภูมิภาคภาษี",
@@ -208,6 +203,14 @@
         "shipping_profile": "โปรไฟล์การจัดส่ง",
         "publishable_api_key": "Publishable API Keys",
         "secret_api_key": "Secret API Keys",
+        "command": "คำสั่ง",
+        "navigation": "การนำทาง",
+        "customerGroup": "กลุ่มลูกค้า",
+        "productVariant": "ตัวเลือกผลิตภัณฑ์",
+        "inventory": "สินค้าคงคลัง",
+        "category": "หมวดหมู่",
+        "collection": "คอลเลกชัน",
+        "priceList": "รายการราคา",
         "taxRegion": "เขตภาษี",
         "returnReason": "เหตุผลในการคืนสินค้า",
         "salesChannel": "ช่องทางการขาย",
@@ -216,9 +219,7 @@
         "location": "ตำแหน่งที่ตั้ง",
         "shippingProfile": "โปรไฟล์การจัดส่ง",
         "publishableApiKey": "คีย์ API ที่เผยแพร่ได้",
-        "secretApiKey": "คีย์ API ลับ",
-        "command": "คำสั่ง",
-        "navigation": "การนำทาง"
+        "secretApiKey": "คีย์ API ลับ"
       }
     },
     "keyboardShortcuts": {
@@ -1567,6 +1568,7 @@
       "methodDescription": "เลือกวิธีการจัดส่งที่แตกต่างจากที่ลูกค้าเลือก",
       "error": {
         "wrongQuantity": "สามารถจัดส่งได้เพียง 1 รายการ",
+        "wrongQuantity_one": "มีสินค้าเพียงรายการเดียวที่พร้อมจัดส่ง",
         "wrongQuantity_other": "จำนวนต้องอยู่ระหว่าง 1 ถึง {{number}}",
         "noItems": "ไม่มีรายการให้จัดส่ง",
         "noShippingOption": "ต้องระบุตัวเลือกการจัดส่ง",
@@ -2838,13 +2840,16 @@
       "alreadyAddedTooltip": "ผู้ใช้มีบทบาทนี้แล้ว",
       "unassignableRoleTooltip": "คุณไม่มีสิทธิ์กำหนดบทบาทนี้ — สิทธิ์ของคุณไม่ครอบคลุมนโยบายทั้งหมด",
       "add": {
+        "successToast_one": "เพิ่มผู้ใช้ในบทบาทเรียบร้อยแล้ว",
         "successToast_other": "เพิ่มผู้ใช้ในบทบาทสำเร็จ",
         "list": {
           "noRecordsMessage": "กรุณาสร้างผู้ใช้ก่อน"
         }
       },
       "remove": {
+        "title_one": "นำผู้ใช้ออก",
         "title_other": "ลบผู้ใช้",
+        "description_one": "คุณกำลังจะนำผู้ใช้ {{count}} รายออกจากบทบาท การดำเนินการนี้ไม่สามารถย้อนกลับได้",
         "description_other": "คุณกำลังจะลบ {{count}} ผู้ใช้ออกจากบทบาท การดำเนินการนี้ไม่สามารถยกเลิกได้"
       },
       "list": {

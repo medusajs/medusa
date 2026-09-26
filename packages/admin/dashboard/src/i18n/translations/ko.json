@@ -44,6 +44,7 @@
     "details": "상세 정보",
     "items_one": "{{count}}개 상품",
     "items_other": "{{count}}개 상품",
+    "values_one": "값 {{count}}개",
     "values_other": "{{count}}개의 값",
     "countSelected": "{{count}}개 선택됨",
     "countOfTotalSelected": "{{total}}개 중 {{count}}개 선택됨",
@@ -181,22 +182,16 @@
         "all": "모든 영역",
         "customer": "고객",
         "customer_group": "고객 그룹",
-        "customerGroup": "고객 그룹",
         "product": "제품",
         "product_variant": "제품 변형",
         "inventory_item": "재고",
-        "productVariant": "제품 변형",
-        "inventory": "재고",
         "reservation": "예약",
         "product_category": "카테고리",
         "product_collection": "컬렉션",
-        "category": "카테고리",
-        "collection": "컬렉션",
         "order": "주문",
         "promotion": "프로모션",
         "campaign": "캠페인",
         "price_list": "가격 목록",
-        "priceList": "가격 목록",
         "user": "사용자",
         "region": "지역",
         "tax_region": "세금 지역",
@@ -208,6 +203,14 @@
         "shipping_profile": "배송 프로필",
         "publishable_api_key": "게시 가능 API 키",
         "secret_api_key": "비밀 API 키",
+        "command": "명령",
+        "navigation": "탐색",
+        "customerGroup": "고객 그룹",
+        "productVariant": "제품 변형",
+        "inventory": "재고",
+        "category": "카테고리",
+        "collection": "컬렉션",
+        "priceList": "가격 목록",
         "taxRegion": "세금 지역",
         "returnReason": "반품 사유",
         "salesChannel": "판매 채널",
@@ -216,9 +219,7 @@
         "location": "위치",
         "shippingProfile": "배송 프로필",
         "publishableApiKey": "공개 API 키",
-        "secretApiKey": "비밀 API 키",
-        "command": "명령",
-        "navigation": "탐색"
+        "secretApiKey": "비밀 API 키"
       }
     },
     "keyboardShortcuts": {
@@ -636,13 +637,13 @@
       },
       "handle": {
         "label": "핸들",
-        "placeholder": "겨울-자켓",
-        "tooltip": "핸들은 스토어프론트에서 제품을 참조하는 데 사용됩니다. 지정하지 않으면 제품 제목에서 핸들이 생성됩니다."
+        "tooltip": "핸들은 스토어프론트에서 제품을 참조하는 데 사용됩니다. 지정하지 않으면 제품 제목에서 핸들이 생성됩니다.",
+        "placeholder": "겨울-자켓"
       },
       "description": {
         "label": "설명",
-        "placeholder": "상품에 대한 설명을 작성하세요...",
-        "hint": "제품에 간결하고 명확한 설명을 제공하세요.<0/>검색 엔진에 권장되는 길이는 120-160자입니다."
+        "hint": "제품에 간결하고 명확한 설명을 제공하세요.<0/>검색 엔진에 권장되는 길이는 120-160자입니다.",
+        "placeholder": "상품에 대한 설명을 작성하세요..."
       },
       "discountable": {
         "label": "할인 적용 가능",
@@ -1567,6 +1568,7 @@
       "methodDescription": "고객이 선택한 것과 다른 배송 방법을 선택하세요",
       "error": {
         "wrongQuantity": "처리 가능한 상품은 하나뿐입니다",
+        "wrongQuantity_one": "이행 가능한 항목이 하나만 있습니다.",
         "wrongQuantity_other": "수량은 1에서 {{number}} 사이의 숫자여야 합니다",
         "noItems": "처리할 상품이 없습니다.",
         "noShippingOption": "배송 옵션은 필수입니다",
@@ -2004,6 +2006,9 @@
         "hint": "특정 도/주에 대한 세율을 정의하기 위한 새 세금 지역을 생성합니다."
       }
     },
+    "provider": {
+      "header": "세금 제공자"
+    },
     "state": {
       "header": "주",
       "create": {
@@ -2217,9 +2222,6 @@
         "label": "기본 세율 없음",
         "tooltip": "이 세금 지역에는 기본 세율이 없습니다. 국가의 부가가치세와 같은 표준 세율이 있다면 이 지역에 추가하세요."
       }
-    },
-    "provider": {
-      "header": "세금 제공자"
     }
   },
   "promotions": {
@@ -2343,6 +2345,10 @@
           "description": "프로모션을 캠페인과 연결하지 않고 진행합니다"
         }
       },
+      "taxInclusive": {
+        "title": "프로모션에 세금이 포함되나요?",
+        "description": "세금 후에 프로모션을 적용하려면 이 필드를 활성화하세요"
+      },
       "status": {
         "label": "상태",
         "draft": {
@@ -2418,10 +2424,6 @@
       "limit": {
         "title": "사용 제한",
         "description": "모든 주문에서 이 프로모션을 사용할 수 있는 최대 횟수. 무제한 사용을 위해 비워 두세요."
-      },
-      "taxInclusive": {
-        "title": "프로모션에 세금이 포함되나요?",
-        "description": "세금 후에 프로모션을 적용하려면 이 필드를 활성화하세요"
       }
     },
     "templates": {
@@ -2840,13 +2842,16 @@
       "alreadyAddedTooltip": "사용자가 이미 이 역할을 가지고 있습니다.",
       "unassignableRoleTooltip": "이 역할을 할당할 권한이 없습니다. 권한이 모든 정책을 포함하지 않습니다.",
       "add": {
+        "successToast_one": "사용자가 역할에 성공적으로 추가되었습니다.",
         "successToast_other": "사용자가 역할에 성공적으로 추가되었습니다.",
         "list": {
           "noRecordsMessage": "먼저 사용자를 생성하세요."
         }
       },
       "remove": {
+        "title_one": "사용자 제거",
         "title_other": "사용자 제거",
+        "description_one": "역할에서 사용자 {{count}}명을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
         "description_other": "역할에서 {{count}}명의 사용자를 제거하려고 합니다. 이 작업은 취소할 수 없습니다."
       },
       "list": {
@@ -2975,6 +2980,7 @@
     "disableTaxInclusivePricing": "세금 포함 가격 비활성화",
     "removeCurrencyWarning_one": "스토어에서 {{count}}개의 통화를 제거하려고 합니다. 계속하기 전에 해당 통화를 사용하는 모든 가격을 제거했는지 확인하세요.",
     "removeCurrencyWarning_other": "스토어에서 {{count}}개의 통화를 제거하려고 합니다. 계속하기 전에 해당 통화를 사용하는 모든 가격을 제거했는지 확인하세요.",
+    "removeLocaleWarning_one": "스토어에서 로케일 {{count}}개를 제거하려고 합니다. 이 로케일을 사용하는 모든 번역이 제거됩니다.",
     "removeLocaleWarning_other": "스토어에서 {{count}}개의 로케일을 제거하려고 합니다. 이 로케일을 사용하는 모든 번역이 제거됩니다.",
     "currencyAlreadyAdded": "이 통화는 이미 스토어에 추가되었습니다.",
     "localeAlreadyAdded": "이미 스토어에 추가된 로케일입니다.",
