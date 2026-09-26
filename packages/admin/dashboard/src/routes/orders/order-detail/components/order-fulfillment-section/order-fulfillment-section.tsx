@@ -57,6 +57,12 @@ const UnfulfilledItem = ({
   item: AdminOrderLineItem
   currencyCode: string
 }) => {
+  const remainingQuantity = item.quantity - item.detail.fulfilled_quantity
+
+  // `subtotal` covers the whole line, so only show the share of the quantity that is still unfulfilled
+  const remainingSubtotal =
+    (((item.subtotal as number) || 0) / item.quantity) * remainingQuantity
+
   return (
     <div
       key={item.id}
@@ -92,15 +98,12 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text>
-            <span className="tabular-nums">
-              {item.quantity - item.detail.fulfilled_quantity}
-            </span>
-            x
+            <span className="tabular-nums">{remainingQuantity}</span>x
           </Text>
         </div>
         <div className="flex items-center justify-end">
           <Text size="small">
-            {getLocaleAmount((item.subtotal as number) || 0, currencyCode)}
+            {getLocaleAmount(remainingSubtotal, currencyCode)}
           </Text>
         </div>
       </div>
