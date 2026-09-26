@@ -38,11 +38,31 @@ export const useReindexSearchIndex = (
   options?: UseMutationOptions<
     HttpTypes.AdminSearchIndexReindexResponse,
     FetchError,
+    { id: string; body?: HttpTypes.AdminReindexSearchIndex }
+  >
+) => {
+  return useMutation({
+    mutationFn: ({ id, body }) => sdk.admin.search.reindex(id, body),
+    ...options,
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: searchIndexesQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+  })
+}
+
+export const useDeleteSearchIndex = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminSearchIndexDeleteResponse,
+    FetchError,
     string
   >
 ) => {
   return useMutation({
-    mutationFn: (id: string) => sdk.admin.search.reindex(id),
+    mutationFn: (id) => sdk.admin.search.deleteIndex(id),
     ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({

@@ -362,7 +362,7 @@ export class Claim {
    * @param body - The details to update in the inbound item.
    * @param query - Configure the fields to retrieve in the return.
    * @param headers - Headers to pass in the request
-   * @returns The details of the return associated wth the claim, with a preview of the order when the claim is applied.
+   * @returns The details of the return associated with the claim, with a preview of the order when the claim is applied.
    * 
    * @example
    * sdk.admin.claim.updateInboundItem(
@@ -406,7 +406,7 @@ export class Claim {
    * @param actionId - The ID of the return item's `RETURN_ITEM` action.
    * @param query - Configure the fields to retrieve in the return.
    * @param headers - Headers to pass in the request
-   * @returns The details of the return associated wth the claim, with a preview of the order when the claim is applied.
+   * @returns The details of the return associated with the claim, with a preview of the order when the claim is applied.
    * 
    * @example
    * sdk.admin.claim.removeInboundItem(
@@ -444,7 +444,7 @@ export class Claim {
    * @param body - The shipping method's details.
    * @param query - Configure the fields to retrieve in the return.
    * @param headers - Headers to pass in the request
-   * @returns The details of the return associated wth the claim, with a preview of the order when the claim is applied.
+   * @returns The details of the return associated with the claim, with a preview of the order when the claim is applied.
    * 
    * @example
    * sdk.admin.claim.addInboundShipping(
@@ -532,7 +532,7 @@ export class Claim {
    * @param actionId - The id of the shipping method's `SHIPPING_ADD` action.
    * @param query - Configure the fields to retrieve in the return.
    * @param headers - Headers to pass in the request
-   * @returns The details of the return associated wth the claim, with a preview of the order when the claim is applied.
+   * @returns The details of the return associated with the claim, with a preview of the order when the claim is applied.
    * 
    * @example
    * sdk.admin.claim.deleteInboundShipping(

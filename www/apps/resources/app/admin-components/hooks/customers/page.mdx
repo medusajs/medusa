@@ -1,0 +1,280 @@
+---
+sidebar_label: "Customers"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Customer Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The customer hooks fetch customers and their addresses from the Medusa backend. Use them to show customer data in your admin customizations.
+
+```tsx
+import {
+  customersQueryKeys,
+  useCustomer,
+  useCustomerAddress,
+  useCustomers,
+  useListCustomerAddresses,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useCustomers
+
+Fetches a paginated list of customers. Pass query parameters to filter, paginate, or select the fields of the returned customers.
+
+```tsx
+const { customers, count, isPending } = useCustomers({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters to pass to the list customers API route, such as `limit`, `offset`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "customers",
+      type: "`AdminCustomer[]`",
+      description: "The list of customers. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of customers matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of customers returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of customers skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## useCustomer
+
+Fetches a single customer by ID.
+
+```tsx
+const { customer, isPending } = useCustomer(customerId, {
+  fields: "+groups.id",
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The customer's ID.",
+    },
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters, such as `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "customer",
+      type: "`AdminCustomer`",
+      description: "The customer's details. It's `undefined` while the request is loading.",
+    },
+  ]}
+/>
+
+---
+
+## useListCustomerAddresses
+
+Fetches the list of addresses of a customer.
+
+```tsx
+const { addresses, count } =
+  useListCustomerAddresses(customerId)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The customer's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options. This hook accepts the options as its second parameter, not a query object.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "addresses",
+      type: "`AdminCustomerAddress[]`",
+      description: "The customer's addresses. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of the customer's addresses.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of addresses returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of addresses skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## useCustomerAddress
+
+Fetches a single address of a customer.
+
+```tsx
+const { address } = useCustomerAddress(
+  customerId,
+  addressId
+)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The customer's ID.",
+    },
+    {
+      name: "addressId",
+      type: "`string`",
+      optional: false,
+      description: "The address's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "address",
+      type: "`AdminCustomerAddress`",
+      description: "The address's details. It's `undefined` while the request is loading.",
+    },
+  ]}
+/>
+
+---
+
+## customersQueryKeys
+
+A TanStack Query key factory for customer queries. Use it to invalidate cached customer data after you change a customer.
+
+It provides `all`, `lists()`, `list(query)`, `details()`, and `detail(id, query)`.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  customersQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshCustomer = (id: string) => {
+    queryClient.invalidateQueries({
+      queryKey: customersQueryKeys.detail(id),
+    })
+  }
+
+  // ...
+}
+```

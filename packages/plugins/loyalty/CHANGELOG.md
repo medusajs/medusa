@@ -1,5 +1,47 @@
 # @medusajs/loyalty-plugin
 
+## 2.21.1
+
+### Patch Changes
+
+- [#16853](https://github.com/medusajs/medusa/pull/16853) [`17ecd1d329ea36f392cc0ec1e8846bb21da7a4ba`](https://github.com/medusajs/medusa/commit/17ecd1d329ea36f392cc0ec1e8846bb21da7a4ba) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(loyalty-plugin): add debit store credit account option
+
+- [#16854](https://github.com/medusajs/medusa/pull/16854) [`c7225d7191cafcd7e66bba714f203bcf5ce6923b`](https://github.com/medusajs/medusa/commit/c7225d7191cafcd7e66bba714f203bcf5ce6923b) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(loyalty-plugin): show store credit widget with a create action when a customer has no account
+
+- Updated dependencies [[`1c1607cced6c1e552e9e800cf571a2235098d0fd`](https://github.com/medusajs/medusa/commit/1c1607cced6c1e552e9e800cf571a2235098d0fd), [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797), [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f), [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d), [`bb4c7cbafe45212f3df408a2a09d73253c3d0b40`](https://github.com/medusajs/medusa/commit/bb4c7cbafe45212f3df408a2a09d73253c3d0b40), [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d), [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e), [`83592f11c72fde11c2d23d9b160bc5a9f010ea26`](https://github.com/medusajs/medusa/commit/83592f11c72fde11c2d23d9b160bc5a9f010ea26), [`7a0cb956645aef3ed13a20c18fc3faf8961ca535`](https://github.com/medusajs/medusa/commit/7a0cb956645aef3ed13a20c18fc3faf8961ca535), [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/medusa@2.21.1
+  - @medusajs/dashboard@2.21.1
+  - @medusajs/framework@2.21.1
+  - @medusajs/test-utils@2.21.1
+  - @medusajs/cli@2.21.1
+  - @medusajs/admin-sdk@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16755](https://github.com/medusajs/medusa/pull/16755) [`b957121a5adb45a53ca66202c0845c2dcda77e8a`](https://github.com/medusajs/medusa/commit/b957121a5adb45a53ca66202c0845c2dcda77e8a) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(loyalty-plugin): add a validate hook to addGiftCardToCartWorkflow
+
+- [#16754](https://github.com/medusajs/medusa/pull/16754) [`acaa818b1dfa35ac852a67b7736878a7b7442022`](https://github.com/medusajs/medusa/commit/acaa818b1dfa35ac852a67b7736878a7b7442022) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(loyalty-plugin): compensate the workflow each order hook actually ran
+
+- [#16757](https://github.com/medusajs/medusa/pull/16757) [`94567d12270c11e88a22aa4898075f3a3b746440`](https://github.com/medusajs/medusa/commit/94567d12270c11e88a22aa4898075f3a3b746440) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(loyalty-plugin): exclude soft-deleted transactions from store credit balances
+
+- [#16378](https://github.com/medusajs/medusa/pull/16378) [`a963fd6bf746a1aa73f161f89d441287edb035fe`](https://github.com/medusajs/medusa/commit/a963fd6bf746a1aa73f161f89d441287edb035fe) Thanks [@lazerg](https://github.com/lazerg)! - fix(loyalty-plugin): honor a store credit amount of 0 on a cart
+
+- [#16702](https://github.com/medusajs/medusa/pull/16702) [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework, medusa, loyalty-plugin): set a strict allowed list for store API routes
+
+- Updated dependencies [[`c511dbb072270b01cddc52a0b77040701ffe34ff`](https://github.com/medusajs/medusa/commit/c511dbb072270b01cddc52a0b77040701ffe34ff), [`b4081fe878bf8578cd7df672e52b83d97a00984a`](https://github.com/medusajs/medusa/commit/b4081fe878bf8578cd7df672e52b83d97a00984a), [`cbd48e2e0169ef9c016fb25703ae08d70827ff34`](https://github.com/medusajs/medusa/commit/cbd48e2e0169ef9c016fb25703ae08d70827ff34), [`0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b`](https://github.com/medusajs/medusa/commit/0ef6fa815681dfd1771ece1edc921ffbfbc2ef4b), [`c07aa54827922badb6348ed942f73d8d7ebc1d62`](https://github.com/medusajs/medusa/commit/c07aa54827922badb6348ed942f73d8d7ebc1d62), [`b16a37bd23e13bee8f4f6a332e30e8f6da1bd704`](https://github.com/medusajs/medusa/commit/b16a37bd23e13bee8f4f6a332e30e8f6da1bd704), [`ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17`](https://github.com/medusajs/medusa/commit/ebc8aeea3880dd2531c2536b7e2c762ff7ca2c17), [`e9d1f84dbfacd35d7787d1af03215a6ae5a176d8`](https://github.com/medusajs/medusa/commit/e9d1f84dbfacd35d7787d1af03215a6ae5a176d8), [`3b4a8d55b51b414182166f4ba03389a02e87b0be`](https://github.com/medusajs/medusa/commit/3b4a8d55b51b414182166f4ba03389a02e87b0be), [`d7f848706941820a6bf6d95021f012111c9e98fc`](https://github.com/medusajs/medusa/commit/d7f848706941820a6bf6d95021f012111c9e98fc), [`a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b`](https://github.com/medusajs/medusa/commit/a4c0a845e8b3a7a5acfaacbb0c093cd539ac713b), [`c8701e77534f7b615c8b86814f8d5789c0104382`](https://github.com/medusajs/medusa/commit/c8701e77534f7b615c8b86814f8d5789c0104382), [`c0a60497b829113966a0fb40c02de9755b215a4a`](https://github.com/medusajs/medusa/commit/c0a60497b829113966a0fb40c02de9755b215a4a), [`df8c278d615229436be5b299ebdc76a576695fc3`](https://github.com/medusajs/medusa/commit/df8c278d615229436be5b299ebdc76a576695fc3)]:
+  - @medusajs/medusa@2.21.0
+  - @medusajs/dashboard@2.21.0
+  - @medusajs/framework@2.21.0
+  - @medusajs/test-utils@2.21.0
+  - @medusajs/cli@2.21.0
+  - @medusajs/admin-sdk@2.21.0
+  - @medusajs/icons@2.21.0
+  - @medusajs/ui@4.2.4
+
 ## 2.20.1
 
 ### Patch Changes

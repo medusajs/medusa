@@ -1156,6 +1156,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTypesStep"
   },
   {
+    "title": "createProductVariantsDefaultInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
+  },
+  {
     "title": "createProductVariantsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsStep"
   },
@@ -1406,6 +1410,10 @@ export const step = [
   {
     "title": "updateSalesChannelsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateSalesChannelsStep"
+  },
+  {
+    "title": "deleteSearchIndexStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteSearchIndexStep"
   },
   {
     "title": "reindexSearchIndexesStep",

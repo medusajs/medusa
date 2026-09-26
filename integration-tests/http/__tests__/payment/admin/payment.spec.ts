@@ -13,6 +13,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
     let order
+    let adminUser
 
     const createClaim = async ({ order }) => {
       const claim = (
@@ -66,7 +67,11 @@ medusaIntegrationTestRunner({
 
     beforeAll(async () => {
       container = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, container)
+      ;({ user: adminUser } = await createAdminUser(
+        dbConnection,
+        adminHeaders,
+        container
+      ))
 
       const inventoryItemOverride = (
         await api.post(
@@ -99,7 +104,7 @@ medusaIntegrationTestRunner({
         const payment = order.payment_collections[0].payments[0]
 
         const response = await api.post(
-          `/admin/payments/${payment.id}/capture`,
+          `/admin/payments/${payment.id}/capture?fields=+captures.created_by`,
           undefined,
           adminHeaders
         )
@@ -112,6 +117,7 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 100,
+                created_by: adminUser.id,
               }),
             ],
             refunds: [],

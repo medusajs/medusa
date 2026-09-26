@@ -59,7 +59,8 @@ You can also navigate to the environment creation form from the [command palette
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the "Add environment" button at the top right.
 2. In the side window that opens:
     - **Environment name**: Enter the name of the environment. For example, `Staging`.
-    - **Branch**: Select the branch you want to associate with this environment. For example, `staging`.
+    - **Branch**: Click the branch field to open the list of your repository's branches, then select the branch you want to associate with this environment. For example, `staging`. You can use the search field at the top of the list to find a branch by its name.
+        - If a branch is already linked to another environment, the list shows a badge with that environment's name next to the branch, and you can't select it.
         - If you don't see the branch you want to use, refresh the page to load the latest branches from your repository.
     - **Custom subdomain**: Set the custom subdomain for the Medusa application (and, subsequently, storefront). Medusa applications are a subdomain of `medusajs.app`, and their storefront is a subdomain of `medusajs.site`.
         - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions-for-projects) guide for reserved subdomains and restrictions.
@@ -235,7 +236,7 @@ To change the branch associated with a long-lived environment:
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
 4. Click **Deployment Rules** in the sidebar under the environment's section.
 5. In the "Linked branch" section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon to change the branch.
-6. In the side window that opens, enter the name of the branch you want to link to the environment.
+6. In the side window that opens, click the branch field and select the branch you want to link to the environment. You can use the search field at the top of the list to find a branch by its name. Branches already linked to another environment show a badge with that environment's name, and you can't select them.
 7. Click **Save** to apply the changes.
 
 The next time you push a commit to the new branch, Medusa will create a new deployment for the environment. Pushes to the previous branch will no longer trigger new deployments for the environment.
@@ -244,7 +245,7 @@ The next time you push a commit to the new branch, Medusa will create a new depl
 
 ## Import and Export Environment's Database Dump
 
-In the environment's **Database & Storage** settings, you can export a database dump of the environment. This is useful for backing up the environment's data, debugging issues, or migrating the data to another environment.
+In the environment's **Database** settings, you can export a database dump of the environment. This is useful for backing up the environment's data, debugging issues, or migrating the data to another environment.
 
 You can also import a database dump to use existing data that you have, or to restore the environment to a previous state.
 
