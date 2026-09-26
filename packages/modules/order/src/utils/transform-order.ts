@@ -191,6 +191,19 @@ function formatReturn(returnOrder) {
   })
 }
 
+const ORDER_ITEM_WHERE_FIELDS = [
+  "quantity",
+  "unit_price",
+  "compare_at_unit_price",
+  "fulfilled_quantity",
+  "delivered_quantity",
+  "shipped_quantity",
+  "return_requested_quantity",
+  "return_received_quantity",
+  "return_dismissed_quantity",
+  "written_off_quantity",
+]
+
 // Map the public order model to the repository model format
 // As the public responses have a different shape than the repository responses, this function is used to map the public properties to the internal db entities
 // e.g "items" is the relation between "line-item" and "order" + "version", The line item itself is in "items.item"
@@ -247,19 +260,11 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       item: conf.where?.items,
     }
 
-    if (original.quantity) {
-      conf.where.items.quantity = original.quantity
-      delete conf.where.items.item.quantity
-    }
-
-    if (original.unit_price) {
-      conf.where.items.unit_price = original.unit_price
-      delete conf.where.items.item.unit_price
-    }
-
-    if (original.compare_at_unit_price) {
-      conf.where.items.compare_at_unit_price = original.compare_at_unit_price
-      delete conf.where.items.item.compare_at_unit_price
+    for (const field of ORDER_ITEM_WHERE_FIELDS) {
+      if (isDefined(original[field])) {
+        conf.where.items[field] = original[field]
+        delete conf.where.items.item[field]
+      }
     }
 
     if (original.detail) {

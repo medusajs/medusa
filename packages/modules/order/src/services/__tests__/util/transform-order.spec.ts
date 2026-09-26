@@ -1,4 +1,7 @@
-import { formatOrder } from "../../../utils/transform-order"
+import {
+  formatOrder,
+  mapRepositoryToOrderModel,
+} from "../../../utils/transform-order"
 
 // Minimal raw shape that comes back from the ORM before formatOrder transforms it:
 // order.items[] are OrderItem records, each with an `item` property (OrderLineItem).
@@ -104,5 +107,30 @@ describe("formatOrder: item metadata resolution", function () {
     expect(item.id).toBe("ordli_1") // top-level id is from OrderLineItem
     expect(item.detail.id).toBe("orditem_1") // detail id is from OrderItem
     expect(item.line_item_metadata).toBeNull()
+  })
+})
+
+describe("mapRepositoryToOrderModel - where items", function () {
+  it.each([
+    "quantity",
+    "unit_price",
+    "compare_at_unit_price",
+    "fulfilled_quantity",
+    "delivered_quantity",
+    "shipped_quantity",
+    "return_requested_quantity",
+    "return_received_quantity",
+    "return_dismissed_quantity",
+    "written_off_quantity",
+  ])("should keep items.%s on the order item", function (field) {
+    const result = mapRepositoryToOrderModel({
+      options: {},
+      where: { items: { [field]: 0, title: "Shirt" } },
+    })
+
+    expect(result.where.items).toEqual({
+      [field]: 0,
+      item: { title: "Shirt" },
+    })
   })
 })
