@@ -191,10 +191,8 @@ function formatReturn(returnOrder) {
   })
 }
 
-const ORDER_ITEM_WHERE_FIELDS = [
+const ORDER_ITEM_QUANTITY_FIELDS = [
   "quantity",
-  "unit_price",
-  "compare_at_unit_price",
   "fulfilled_quantity",
   "delivered_quantity",
   "shipped_quantity",
@@ -260,11 +258,21 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       item: conf.where?.items,
     }
 
-    for (const field of ORDER_ITEM_WHERE_FIELDS) {
+    for (const field of ORDER_ITEM_QUANTITY_FIELDS) {
       if (isDefined(original[field])) {
         conf.where.items[field] = original[field]
         delete conf.where.items.item[field]
       }
+    }
+
+    if (original.unit_price) {
+      conf.where.items.unit_price = original.unit_price
+      delete conf.where.items.item.unit_price
+    }
+
+    if (original.compare_at_unit_price) {
+      conf.where.items.compare_at_unit_price = original.compare_at_unit_price
+      delete conf.where.items.item.compare_at_unit_price
     }
 
     if (original.detail) {

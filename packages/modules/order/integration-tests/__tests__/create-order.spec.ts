@@ -569,6 +569,38 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         }
       )
 
+      it("should filter orders by items.quantity including 0", async function () {
+        await service.createOrders(input)
+
+        const orders = await service.listOrders(
+          { items: { quantity: 0 } },
+          { select: ["id"], relations: ["items"] }
+        )
+        expect(orders.length).toEqual(0)
+
+        const orders2 = await service.listOrders(
+          { items: { quantity: 1 } },
+          { select: ["id"], relations: ["items"] }
+        )
+        expect(orders2.length).toEqual(1)
+      })
+
+      it("should filter orders by an order item field using an operator", async function () {
+        await service.createOrders(input)
+
+        const orders = await service.listOrders(
+          { items: { fulfilled_quantity: { $gt: 0 } } },
+          { select: ["id"], relations: ["items"] }
+        )
+        expect(orders.length).toEqual(0)
+
+        const orders2 = await service.listOrders(
+          { items: { fulfilled_quantity: { $gte: 0 } } },
+          { select: ["id"], relations: ["items"] }
+        )
+        expect(orders2.length).toEqual(1)
+      })
+
       it("should list orders with totals without selecting shipping method fields", async function () {
         const createdOrder = await service.createOrders(input)
 

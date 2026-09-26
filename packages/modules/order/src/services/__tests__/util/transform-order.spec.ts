@@ -113,8 +113,6 @@ describe("formatOrder: item metadata resolution", function () {
 describe("mapRepositoryToOrderModel - where items", function () {
   it.each([
     "quantity",
-    "unit_price",
-    "compare_at_unit_price",
     "fulfilled_quantity",
     "delivered_quantity",
     "shipped_quantity",
@@ -133,4 +131,33 @@ describe("mapRepositoryToOrderModel - where items", function () {
       item: { title: "Shirt" },
     })
   })
+
+  it.each(["unit_price", "compare_at_unit_price"])(
+    "should keep a truthy items.%s on the order item",
+    function (field) {
+      const result = mapRepositoryToOrderModel({
+        options: {},
+        where: { items: { [field]: 10, title: "Shirt" } },
+      })
+
+      expect(result.where.items).toEqual({
+        [field]: 10,
+        item: { title: "Shirt" },
+      })
+    }
+  )
+
+  it.each(["unit_price", "compare_at_unit_price"])(
+    "should keep a falsy items.%s on the line item",
+    function (field) {
+      const result = mapRepositoryToOrderModel({
+        options: {},
+        where: { items: { [field]: 0 } },
+      })
+
+      expect(result.where.items).toEqual({
+        item: { [field]: 0 },
+      })
+    }
+  )
 })
