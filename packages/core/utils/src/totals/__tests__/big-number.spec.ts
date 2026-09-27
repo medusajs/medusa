@@ -36,6 +36,9 @@ describe("BigNumber", function () {
         )
       }
       expect(() => new BigNumber(NaN)).toThrow("Invalid BigNumber value")
+      expect(() => new BigNumber(new BN("abc"))).toThrow(
+        "Invalid BigNumber value: NaN. Not a number"
+      )
 
       // Numeric strings keep working, including exponent and signed forms.
       expect(new BigNumber("1234.1234").numeric).toBe(1234.1234)
