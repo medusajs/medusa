@@ -13,6 +13,7 @@
     "test": "../../../node_modules/.bin/vitest --run",
     "i18n:validate": "node ./scripts/i18n/validate-translation.js",
     "i18n:schema": "node ./scripts/i18n/generate-schema.js",
+    "i18n:sync": "node ./scripts/i18n/sync-translations.js",
     "lint": "eslint . --ext ts,tsx --ignore-pattern dist --report-unused-disable-directives --max-warnings 0"
   },
   "main": "dist/app.js",

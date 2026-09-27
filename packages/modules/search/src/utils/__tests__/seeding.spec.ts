@@ -427,11 +427,11 @@ describe("search index seeding", () => {
       expect(context.records[0].active_version).toBe(6)
     })
 
-    it("should leave a version built above the active one alone", async () => {
+    it("should drop a rebuild that failed above the active version before building the next one", async () => {
       const context = withHistory()
 
-      // A rebuild that failed before it could swap: it sits above the active
-      // version, so it is not out of rotation and cleanup must not take it.
+      // A rebuild that failed before it could swap. The startup seed prefers
+      // the newer version this reindex builds, so nothing would resume it.
       context.versions.push({
         ...staleVersion(4),
         status: SearchIndexState.ERROR,
@@ -439,8 +439,37 @@ describe("search index seeding", () => {
 
       await reindexIndexes(context as any, { index: "product" })
 
-      expect(deletedIndexes(context)).toEqual(["product_v1", "product_v2"])
-      expect(liveVersions(context)).toEqual([3, 4, 5])
+      expect(deletedIndexes(context)).toEqual([
+        "product_v1",
+        "product_v2",
+        "product_v4",
+      ])
+      expect(liveVersions(context)).toEqual([3, 5])
+      expect(context.records[0].active_version).toBe(5)
+    })
+
+    it("should keep a version above the active one that nothing started filling", async () => {
+      const context = withHistory()
+
+      // What a migration leaves for the startup seed to fill.
+      context.versions.push({
+        ...staleVersion(4),
+        status: SearchIndexState.PENDING,
+      })
+
+      await reindexIndexes(context as any, { index: "product" })
+
+      // Swapping to version 5 is what makes it unreachable, and the cleanup
+      // after the swap is what drops it.
+      expect(deletedIndexes(context)).toEqual([
+        "product_v1",
+        "product_v2",
+        "product_v4",
+      ])
+      expect(
+        context.provider.deleteIndex.mock.invocationCallOrder[2]
+      ).toBeGreaterThan(context.indexService.update.mock.invocationCallOrder[0])
+      expect(liveVersions(context)).toEqual([3, 5])
     })
 
     it("should clean up on an in-place reindex, which builds no new version", async () => {
@@ -467,8 +496,13 @@ describe("search index seeding", () => {
       expect(context.logger_.warn).toHaveBeenCalledWith(
         expect.stringContaining("connection reset")
       )
-      // Version 1 kept its record, so the next reindex tries it again.
-      expect(liveVersions(context)).toEqual([1, 3, 4])
+      // Version 1 kept its record, so the cleanup after the swap retried it.
+      expect(deletedIndexes(context)).toEqual([
+        "product_v1",
+        "product_v2",
+        "product_v1",
+      ])
+      expect(liveVersions(context)).toEqual([3, 4])
       expect(context.records[0].active_version).toBe(4)
     })
   })
@@ -599,6 +633,85 @@ describe("search index seeding", () => {
       })
       expect(context.logger_.error).not.toHaveBeenCalled()
       expect(context.logger_.warn).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("versions a startup seed leaves behind", () => {
+    const pendingVersion = (
+      version: number,
+      status = SearchIndexState.PENDING
+    ): SearchIndexVersionRecord => ({
+      id: `ver_${version}`,
+      search_index_id: "idx_1",
+      version,
+      provider: "test",
+      physical_name: `product_v${version}`,
+      definition_hash: "abcdef0123456789abcdef0123456789",
+      status,
+    })
+
+    // v1 serves reads; migrations built v2 and v3 for definitions that changed
+    // again before either was seeded.
+    const withSkippedVersions = () => {
+      const context = buildContext({
+        indexes: [
+          definition("product", async function* ({ catchup }: any) {
+            if (catchup) {
+              return
+            }
+
+            yield [{ action: "upsert", documents: [{ id: "1" }] }]
+          }),
+        ],
+        locking: passthroughLocking(),
+      })
+
+      context.versions[0].status = SearchIndexState.READY
+      context.records[0].active_version = 1
+      context.versions.push(pendingVersion(2), pendingVersion(3))
+
+      return context
+    }
+
+    it("should drop the versions it skipped once it swaps in the newest one", async () => {
+      const context = withSkippedVersions()
+
+      await executeSeedPlan(
+        context as any,
+        await createSeedPlan(context as any)
+      )
+
+      expect(context.records[0].active_version).toBe(3)
+      expect(
+        context.provider.deleteIndex.mock.calls.map(([call]) => call.index)
+      ).toEqual(["product_v2"])
+      // Version 1 served reads until the swap, so it stays until the next build.
+      expect(context.versions.map((version) => version.version)).toEqual([1, 3])
+    })
+
+    it("should keep the swap when the cleanup after it fails", async () => {
+      const context = withSkippedVersions()
+      const list = context.versionService.list.getMockImplementation()!
+      let calls = 0
+      context.versionService.list.mockImplementation(async (...args: any[]) => {
+        // The seed plan reads the versions first; the cleanup reads them last.
+        if (++calls > 1 && args[0]?.search_index_id) {
+          throw new Error("connection reset")
+        }
+        return list(...args)
+      })
+
+      await executeSeedPlan(
+        context as any,
+        await createSeedPlan(context as any)
+      )
+
+      expect(context.records[0].active_version).toBe(3)
+      expect(context.versions[2].status).toEqual(SearchIndexState.READY)
+      expect(context.logger_.warn).toHaveBeenCalledWith(
+        expect.stringContaining("connection reset")
+      )
+      expect(context.logger_.error).not.toHaveBeenCalled()
     })
   })
 

@@ -1151,7 +1151,9 @@
         "paymentMethod": "Način plaćanja",
         "paymentMethodDescription": "Vrati iznos na odabrani način plaćanja",
         "creditLine": "Kredit trgovine",
-        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine"
+        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine",
+        "creditLineGuestDescription": "Dostupno samo kupcima s računom. Ovu narudžbu izvršio je gost.",
+        "creditLineNoOutstandingAmountDescription": "Dostupno samo kada narudžba ima nepodmireni iznos. Prvo kreirajte povrat ili uređivanje narudžbe."
       }
     },
     "domain": "Narudžbe",
@@ -1221,7 +1223,9 @@
       "title": "Uplate",
       "isReadyToBeCaptured": "Uplata <0/> spremna je za naplatu.",
       "totalPaidByCustomer": "Ukupno plaćeno od strane kupca",
-      "totalStoreCreditRefunds": "Ukupno povrati na kredit trgovine",
+      "totalPending": "Preostalo za naplatu",
+      "storeCreditRefund": "Povrat sredstava na kredit trgovine",
+      "totalStoreCreditRefunds": "Ukupno vraćeno na kredit trgovine",
       "capture": "Naplati uplatu",
       "capture_short": "Naplati",
       "refund": "Povrat sredstava",
@@ -1233,6 +1237,7 @@
         "authorized": "Autorizirano",
         "partiallyAuthorized": "Djelomično autorizirano",
         "awaiting": "Čekanje",
+        "pending": "Na čekanju",
         "captured": "Naplaćeno",
         "partiallyRefunded": "Djelomično vraćeno",
         "partiallyCaptured": "Djelomično naplaćeno",
@@ -3790,7 +3795,10 @@
       "building": "Izrada",
       "ready": "Spremno",
       "error": "Greška"
-    }
+    },
+    "delete": "Izbriši indeks",
+    "deleteSuccess": "Indeks {{name}} izbrisan",
+    "deleteWarning": "Ovo uklanja indeks \"{{name}}\" i svaku verziju ikada izgrađenu za njega, uključujući njegove podatke u tražilici. Ništa na ovom indeksu nije moguće pretraživati dok ga sljedeća migracija ne izgradi ispočetka. Ovo se ne može poništiti."
   },
   "propertyLabels": {
     "domain": "Nazivi svojstava",

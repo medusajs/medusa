@@ -1,5 +1,10 @@
 import { IPaymentModuleService } from "@medusajs/framework/types"
-import { Module, Modules, promiseAll } from "@medusajs/framework/utils"
+import {
+  Module,
+  Modules,
+  PaymentActions,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { PaymentModuleService } from "@services"
 import {
@@ -1660,6 +1665,26 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
 
             expect(finalCollection.refunded_amount).toBe(300)
           })
+        })
+      })
+
+      describe("getWebhookActionAndData", () => {
+        it("resolves the provider when given a bare provider identifier", async () => {
+          const result = await service.getWebhookActionAndData({
+            provider: "system_default",
+            payload: { data: {}, rawData: Buffer.from(""), headers: {} },
+          })
+
+          expect(result).toEqual({ action: PaymentActions.NOT_SUPPORTED })
+        })
+
+        it("resolves the provider when already given a pp_-prefixed provider id", async () => {
+          const result = await service.getWebhookActionAndData({
+            provider: "pp_system_default",
+            payload: { data: {}, rawData: Buffer.from(""), headers: {} },
+          })
+
+          expect(result).toEqual({ action: PaymentActions.NOT_SUPPORTED })
         })
       })
     })

@@ -28,6 +28,7 @@ export type QueryPlan = {
   take: number
   options: MedusaSearchQueryOptions
   highlight?: HighlightPlan
+  distinct?: string
 }
 
 function fail(message: string): never {
@@ -492,6 +493,15 @@ export function buildQueryPlan(
   let limit: number | Limit = skip + take
   const distinct = options.distinct ?? input.index.settings.distinct_attribute
   if (distinct) {
+    const planned = plan.fields.get(distinct)
+    if (!planned) {
+      fail(
+        `Cannot deduplicate search index "${input.index.name}" by unknown field "${distinct}"`
+      )
+    }
+    if (planned.is_array || planned.field.type === "vector") {
+      fail(`The Medusa search provider cannot deduplicate by "${distinct}"`)
+    }
     limit = {
       total: skip + take,
       per: { attributes: [distinct], limit: 1 },
@@ -515,5 +525,6 @@ export function buildQueryPlan(
     take,
     options: providerOptions(input),
     highlight: highlightPlan?.highlight,
+    distinct,
   }
 }

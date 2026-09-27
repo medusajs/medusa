@@ -16,12 +16,10 @@ on:
           - snapshot
           - canary
       branch:
-        type: choice
+        type: string
         default: "develop"
         description: Which branch do you want to release from?
         required: true
-        options:
-          - develop
     branches:
       - develop
     paths-ignore:
