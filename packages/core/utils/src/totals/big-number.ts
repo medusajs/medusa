@@ -43,6 +43,8 @@ export class BigNumber implements IBigNumber {
        *  const bnUnitValue = new BigNumberJS("10.99")
        *  const unitValue = new BigNumber(bnUnitValue)
        */
+      this.throwIfNaN(rawValue, rawValue)
+
       this.numeric_ = rawValue.toNumber()
       this.raw_ = {
         value: rawValue.toPrecision(precision),
