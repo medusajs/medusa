@@ -26,6 +26,23 @@ describe("BigNumber", function () {
       expect(JSON.stringify(number)).toEqual(JSON.stringify(42))
     })
 
+    it("should throw on strings and raw values that are not numeric", function () {
+      for (const value of ["abc", "", " ", "1,5", "NaN", "12abc"]) {
+        expect(() => new BigNumber(value)).toThrow(
+          `Invalid BigNumber value: ${value}. Not a number`
+        )
+        expect(() => new BigNumber({ value })).toThrow(
+          `Invalid BigNumber value: ${value}. Not a number`
+        )
+      }
+      expect(() => new BigNumber(NaN)).toThrow("Invalid BigNumber value")
+
+      // Numeric strings keep working, including exponent and signed forms.
+      expect(new BigNumber("1234.1234").numeric).toBe(1234.1234)
+      expect(new BigNumber("-1e3").numeric).toBe(-1000)
+      expect(new BigNumber({ value: "0.5" }).numeric).toBe(0.5)
+    })
+
     it("should throw if not correct type", function () {
       // @ts-ignore
       expect(() => new BigNumber([])).toThrow(
