@@ -23,6 +23,11 @@ describe("ProductModuleService.createVariants_", () => {
     const events: string[] = []
     const service = Object.create(ProductModuleService.prototype) as any
 
+    service.baseRepository_ = {
+      transaction: jest.fn(async (fn: (manager: unknown) => unknown) =>
+        fn({})
+      ),
+    }
     service.productVariantService_ = {
       list: jest.fn(async () => {
         events.push("list:start")
