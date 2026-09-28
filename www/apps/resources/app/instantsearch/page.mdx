@@ -935,6 +935,8 @@ export const { searchClient } = createInstantSearchAdapter({
 
 Every query then uses the `last` match strategy and typo tolerance, and the product index only returns the fields listed.
 
+The `/store/search` route only returns fields the index holds and can retrieve, so every field in `fields` must be a retrievable field of the index definition. If you list a field that the index can't return, the route rejects the query with an error.
+
 <Note title="Warning" type="warning">
 
 Filters you set in the storefront's client are visible to customers, who can change them, so use these options for presentation, such as choosing the fields to retrieve, and not to protect data. Scoping a search to what a customer may see is the `/store/search` route's own responsibility in your Medusa application, which narrows a product index to published products in the publishable API key's sales channels.

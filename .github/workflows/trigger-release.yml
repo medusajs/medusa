@@ -1,6 +1,9 @@
 name: Trigger Release and Publish
 
 on:
+  push:
+    branches:
+      - develop
   release:
     types: [published]
   workflow_dispatch:
@@ -15,11 +18,17 @@ on:
           - next
           - snapshot
           - canary
+          - latest
       branch:
         type: string
         default: "develop"
-        description: Which branch do you want to release from?
+        description: Which branch or commit SHA do you want to release from?
         required: true
+      pr_number:
+        type: string
+        default: ""
+        description: Pull request to comment the published versions on (optional)
+        required: false
     branches:
       - develop
     paths-ignore:
@@ -30,7 +39,7 @@ on:
     types:
       - created
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency: ${{ github.workflow }}-${{ github.event_name == 'issue_comment' && github.event.comment.id || (github.event_name == 'push' || github.event.inputs.version == 'latest') && format('latest-{0}', github.ref) || github.ref }}
 
 permissions:
   pull-requests: write # to be able to comment on released pull requests
@@ -38,13 +47,15 @@ permissions:
 
 jobs:
   check:
-    name: Check if Release workflow is running
-    if: github.event_name != 'issue_comment'
+    name: Check if latest release is running
+    if: |
+      github.event_name == 'release' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.version != 'latest')
     runs-on: ubuntu-latest
     outputs:
       release_running: ${{ steps.check_release.outputs.release_running }}
     steps:
-      - name: Check for active Release workflow runs
+      - name: Check for active latest release runs
         id: check_release
         uses: actions/github-script@v7
         with:
@@ -53,14 +64,15 @@ jobs:
             const { data } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'release.yml',
+              workflow_id: 'trigger-release.yml',
+              event: 'push',
               per_page: 10,
             })
             const isRunning = data.workflow_runs.some(
               run => ['in_progress', 'queued', 'waiting', 'requested', 'pending'].includes(run.status)
             )
             if (isRunning) {
-              core.notice('Release workflow is currently running. Skipping preview release to avoid conflicts.')
+              core.notice('Latest release is currently running. Skipping preview release to avoid conflicts.')
             }
             core.setOutput('release_running', isRunning.toString())
 
@@ -75,16 +87,8 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch || 'develop' }}
 
-      - name: Setup Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Ensure npm 11.5.1+ for OIDC
-        run: npm install -g npm@11.5.1
-
-      - name: Install Dependencies
-        run: yarn
+      - name: Setup release env
+        uses: ./.github/actions/setup-release
 
       - name: Version packages
         run: yarn changeset version --snapshot ${{ github.event.inputs.version || 'preview' }}
@@ -98,7 +102,52 @@ jobs:
         run: yarn build
 
       - name: Publish packages under next tag
-        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}
+        run: |
+          set -o pipefail
+          yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }} | tee publish-output.txt
+
+      - name: Comment published versions on pull request
+        if: github.event.inputs.pr_number != ''
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ github.event.inputs.pr_number }}
+          RELEASE_TAG: ${{ github.event.inputs.version }}
+        with:
+          script: |
+            const fs = require('fs')
+            const issueNumber = Number(process.env.PR_NUMBER)
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              core.setFailed(`Invalid pr_number: ${process.env.PR_NUMBER}`)
+              return
+            }
+
+            const output = fs.readFileSync('publish-output.txt', 'utf8')
+            const newTags = Array
+              .from(output.matchAll(/New tag:\s+(\S+)/g))
+              .map(([_, tag]) => tag)
+            if (!newTags.length) {
+              return
+            }
+
+            const version = newTags[0].slice(newTags[0].lastIndexOf('@') + 1)
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            const body =
+              `#### :rocket: A ${process.env.RELEASE_TAG} release has been made for this PR\n\n` +
+              `Version: \`${version}\`\n\n` +
+              '```sh\n' +
+              `yarn add @medusajs/medusa@${version}\n` +
+              '```\n\n' +
+              `<details>\n<summary>All ${newTags.length} published packages</summary>\n\n` +
+              '```sh\n' +
+              newTags.map((tag) => `yarn add ${tag}`).join('\n') +
+              '\n```\n\n</details>\n\n' +
+              `> Workflow run: ${runUrl}`
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: issueNumber,
+              body,
+            })
 
       - name: Post failure to Slack channel
         if: failure()
@@ -129,129 +178,118 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_RELEASE }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
+  latest:
+    name: Version packages PR
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.version == 'latest')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+      actions: write # required to createWorkflowDispatch the draft-release workflow
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch || github.sha }}
+
+      - name: Setup release env
+        uses: ./.github/actions/setup-release
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Create Release Pull Request or Publish packages
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: yarn version
+          commit: "Chore: Release"
+          title: "Chore: Release"
+          createGithubReleases: false
+          publish: yarn changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger draft release generation
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const packages = JSON.parse('${{ steps.changesets.outputs.publishedPackages }}')
+            const version = packages[0]?.version ?? ''
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'draft-release.yml',
+              ref: 'develop',
+              inputs: {
+                version
+              }
+            })
+
   snapshot:
-    name: Snapshot Release
+    name: Dispatch Snapshot Release
     if: |
       github.event.issue.pull_request &&
       github.event.comment.body == '/snapshot-this'
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-      NODE_OPTIONS: "--max_old_space_size=4096"
+    permissions:
+      actions: write
+      pull-requests: write
     steps:
-      - name: Validate pull request
-        uses: actions/github-script@v6
+      - name: Validate pull request and dispatch snapshot release
+        uses: actions/github-script@v7
         with:
           script: |
-            try {
-              // Add a rocket reaction to the comment
-              await github.rest.reactions.createForIssueComment({
-                ...context.repo,
-                comment_id: context.payload.comment.id,
-                content: 'rocket',
-              })
+            await github.rest.reactions.createForIssueComment({
+              ...context.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket',
+            })
 
-              // Only allow comment creators who have "write" permissions to repo
-              const actorPermission = (await github.rest.repos.getCollaboratorPermissionLevel({
-                ...context.repo,
-                username: context.actor
-              })).data.permission
-              const isPermitted = ['write', 'admin'].includes(actorPermission)
-              if (!isPermitted) {
-                const errorMessage = 'Only users with write permission to the respository can run /snapshot-this'
-                await github.rest.issues.createComment({
-                  ...context.repo,
-                  issue_number: context.issue.number,
-                  body: errorMessage,
-                })
-                core.setFailed(errorMessage)
-                return;
-              }
-
-              const pullRequest = await github.rest.pulls.get({
-                ...context.repo,
-                pull_number: context.issue.number,
-              })
-              // Pull request from fork
-              if (context.payload.repository.full_name !== pullRequest.data.head.repo.full_name) {
-                const errorMessage = '`/snapshot-this` is not supported on pull requests from forked repositories.'
-                await github.rest.issues.createComment({
-                  ...context.repo,
-                  issue_number: context.issue.number,
-                  body: errorMessage,
-                })
-                core.setFailed(errorMessage)
-              }
-            } catch (err) {
-              core.setFailed(`Request failed with error ${err}`)
-            }
-      - name: Checkout pull request branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ format('refs/pull/{0}/merge', github.event.issue.number) }}
-
-      # Because changeset entries are consumed and removed on the
-      # 'changeset-release/main' branch, we need to reset the files
-      # so the following 'changeset version --snapshot' command will
-      # regenerate the package version bumps with the snapshot releases
-      - name: Reset changeset entries on changeset-release/main branch
-        run: |
-          if [[ $(git branch --show-current) == 'changeset-release/main' ]]; then
-            git checkout origin/main -- .changeset
-          fi
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: "yarn"
-
-      - name: Ensure npm 11.5.1+ for OIDC
-        run: npm install -g npm@11.5.1
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: snapshot-this
-          skip-build: "true"
-
-      - name: Build Packages
-        shell: "bash"
-        run: yarn build
-
-      - name: Create and publish snapshot release
-        uses: actions/github-script@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          script: |
-            await exec.exec('yarn run changeset version --snapshot snapshot')
-            const {stdout} = await exec.getExecOutput('yarn run release:snapshot')
-            const newTags = Array
-              .from(stdout.matchAll(/New tag:\s+([^\s\n]+)/g))
-              .map(([_, tag]) => tag)
-            if (newTags.length) {
-              const multiple = newTags.length > 1
-              const body = (
-                `#### :rocket: A snapshot release has been made for this PR\n\n` +
-                `Test the snapshot${multiple ? 's' : ''} by updating your \`package.json\` ` +
-                `with the newly published version${multiple ? 's' : ''}:\n` +
-                newTags.map(tag => (
-                  '```sh\n' +
-                  `yarn add ${tag}\n` +
-                  '```'
-                )).join('\n') +
-                `\n\n> Latest commit: ${context.sha}`
-
-              )
+            const fail = async (message) => {
               await github.rest.issues.createComment({
                 ...context.repo,
                 issue_number: context.issue.number,
-                body,
+                body: message,
               })
-              await github.rest.reactions.createForIssueComment({
-                ...context.repo,
-                comment_id: context.payload.comment.id,
-                content: 'hooray',
-              })
+              core.setFailed(message)
             }
+
+            const actorPermission = (await github.rest.repos.getCollaboratorPermissionLevel({
+              ...context.repo,
+              username: context.actor,
+            })).data.permission
+            if (!['write', 'admin'].includes(actorPermission)) {
+              return fail('Only users with write permission to the respository can run /snapshot-this')
+            }
+
+            const { data: pullRequest } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.issue.number,
+            })
+            if (context.payload.repository.full_name !== pullRequest.head.repo.full_name) {
+              return fail('`/snapshot-this` is not supported on pull requests from forked repositories.')
+            }
+
+            await github.rest.actions.createWorkflowDispatch({
+              ...context.repo,
+              workflow_id: 'trigger-release.yml',
+              ref: context.payload.repository.default_branch,
+              inputs: {
+                version: 'snapshot',
+                branch: pullRequest.head.ref,
+                pr_number: String(context.issue.number),
+              },
+            })
+
+            const runsUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/workflows/trigger-release.yml?query=event%3Aworkflow_dispatch`
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `#### :rocket: A snapshot release was triggered for \`${pullRequest.head.ref}\`\n\nFollow its progress [here](${runsUrl}). The published versions will be commented here once it finishes.`,
+            })

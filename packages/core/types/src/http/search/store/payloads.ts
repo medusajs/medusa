@@ -4,8 +4,9 @@ import { SearchOptions, SearchQuery } from "../../../search"
  * A query run against one of the store's search indexes by `POST /store/search`.
  *
  * It is the Search Module's own `SearchQuery`, minus what the endpoint owns:
- * `context` shapes the hydration, and `provider_options` reaches straight into
- * the engine's own API.
+ * `context` shapes a hydration the endpoint never runs, and `provider_options`
+ * reaches straight into the engine's own API. `fields` can only select fields
+ * the index can return.
  */
 export type StoreSearchQuery = Omit<
   SearchQuery,

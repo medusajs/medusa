@@ -2,7 +2,9 @@
  * @oas [post] /store/search
  * operationId: PostSearch
  * summary: Search Indexes
- * description: Search the indexes that your application exposes to the storefront. An index is only searchable through this route once it's allowed with the `configureStoreSearch` middleware, and a query for any other index is answered with a `404` error. Pass a single query, or a `queries` array to run a batch of queries in one round-trip to the search engine. For an index whose entity is `product`, Medusa also restricts the results to published products in the sales channels of the request's publishable API key.
+ * description: Search the indexes that your application exposes to the storefront. An index is only searchable through this route once it's allowed with the `configureStoreSearch` middleware, and a
+ *   query for any other index is answered with a `404` error. Pass a single query, or a `queries` array to run a batch of queries in one round-trip to the search engine. For an index whose entity is
+ *   `product`, Medusa also restricts the results to published products in the sales channels of the request's publishable API key.
  * externalDocs:
  *   description: Learn about the Store Search API route
  *   url: https://docs.medusajs.com/resources/infrastructure-modules/search/store-search
