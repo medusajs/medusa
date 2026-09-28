@@ -5,6 +5,9 @@ import PaymentModuleService from "../payment-module"
 describe("PaymentModuleService.getWebhookActionAndData", () => {
   const buildService = () => {
     const service = Object.create(PaymentModuleService.prototype)
+    service.baseRepository_ = {
+      getFreshManager: jest.fn(() => ({})),
+    }
     service.paymentProviderService_ = {
       getWebhookActionAndData: jest.fn(
         async (providerId: string, payload: unknown) => ({
