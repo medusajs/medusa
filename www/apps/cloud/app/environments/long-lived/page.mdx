@@ -78,12 +78,11 @@ After creating the environment, Medusa will automatically trigger a deployment f
 
 After that, Medusa will automatically deploy the environment whenever you push a new commit to the associated branch.
 
-### Create Medusa Admin User in Environment
+Then, wait for the deployment to finish. You can check its status in the "Deployments" section. Once it's deployed, you can [access the environment](#access-deployed-environment) using its URL.
 
-After the environment is deployed, you can log in to the Medusa Admin either with:
+### Log in to the Medusa Admin
 
-1. Your Cloud account by clicking the "Log in with Medusa Cloud" button. A user will be created in the Medusa application with the same email as your Cloud account.
-2. The email and password you set using environment variables.
+Once the environment is deployed, you can log in to the Medusa Admin with your Cloud account by clicking the "Log in with Medusa Cloud" button. Medusa creates a user in the Medusa application with the same email as your Cloud account.
 
 <Note title="Can't find the Log in With Medusa Cloud Button?">
 
@@ -91,39 +90,6 @@ Refer to the [Access Deployment](../../deployments/access/page.mdx#cant-find-the
 
 </Note>
 
-You can set the initial admin user's email and password only once if they aren't already set in the environment. Updating these environment variables later won't change the existing admin user's credentials.
-
-To set the initial admin user's email and password:
-
-1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you just created.
-2. In the environment's dashboard, click **Environment variables** in the sidebar.
-3. In the "Add new environment variables" section, add the following environment variables:
-
-```shell
-USER_INITIAL_EMAIL=admin@test.com
-USER_INITIAL_PASSWORD=secret
-```
-
-<Note title="Tip">
-
-You can paste the above variables directly in the Key field and both environment variables will be filled.
-
-</Note>
-
-Make sure to replace the values with your desired email and password.
-
-4. Click the "Save" button to save the environment variables.
-
-#### Redeploy Environment
-
-If you added the initial admin user's email and password environment variables, you need to redeploy the environment for the changes to take effect:
-
-1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you want to redeploy.
-2. In the environment's dashboard, click on the "Redeploy" button to redeploy the environment with the new environment variables.
-
-This will redeploy the environment's live deployment with the new admin user credentials.
-
-Then, wait for the deployment to finish. You can check its status in the "Deployments" section. Once it's deployed, you can [access the environment](#access-deployed-environment) using its URL.
 
 ---
 
@@ -211,6 +177,15 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 In the environment's **Environment variables** settings, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
+
+### Redeploy Environment
+
+After you add or change the environment's variables, you must redeploy the environment for the changes to take effect:
+
+1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you want to redeploy.
+2. In the environment's dashboard, click on the "Redeploy" button to redeploy the environment with the new environment variables.
+
+This redeploys the environment's live deployment with the updated environment variables.
 
 ---
 
