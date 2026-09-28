@@ -24,6 +24,11 @@ on:
         default: "develop"
         description: Which branch or commit SHA do you want to release from?
         required: true
+      pr_number:
+        type: string
+        default: ""
+        description: Pull request to comment the published versions on (optional)
+        required: false
     branches:
       - develop
     paths-ignore:
@@ -97,7 +102,52 @@ jobs:
         run: yarn build
 
       - name: Publish packages under next tag
-        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}
+        run: |
+          set -o pipefail
+          yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }} | tee publish-output.txt
+
+      - name: Comment published versions on pull request
+        if: github.event.inputs.pr_number != ''
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ github.event.inputs.pr_number }}
+          RELEASE_TAG: ${{ github.event.inputs.version }}
+        with:
+          script: |
+            const fs = require('fs')
+            const issueNumber = Number(process.env.PR_NUMBER)
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              core.setFailed(`Invalid pr_number: ${process.env.PR_NUMBER}`)
+              return
+            }
+
+            const output = fs.readFileSync('publish-output.txt', 'utf8')
+            const newTags = Array
+              .from(output.matchAll(/New tag:\s+(\S+)/g))
+              .map(([_, tag]) => tag)
+            if (!newTags.length) {
+              return
+            }
+
+            const version = newTags[0].slice(newTags[0].lastIndexOf('@') + 1)
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            const body =
+              `#### :rocket: A ${process.env.RELEASE_TAG} release has been made for this PR\n\n` +
+              `Version: \`${version}\`\n\n` +
+              '```sh\n' +
+              `yarn add @medusajs/medusa@${version}\n` +
+              '```\n\n' +
+              `<details>\n<summary>All ${newTags.length} published packages</summary>\n\n` +
+              '```sh\n' +
+              newTags.map((tag) => `yarn add ${tag}`).join('\n') +
+              '\n```\n\n</details>\n\n' +
+              `> Workflow run: ${runUrl}`
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: issueNumber,
+              body,
+            })
 
       - name: Post failure to Slack channel
         if: failure()
@@ -233,6 +283,7 @@ jobs:
               inputs: {
                 version: 'snapshot',
                 branch: pullRequest.head.ref,
+                pr_number: String(context.issue.number),
               },
             })
 
@@ -240,5 +291,5 @@ jobs:
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body: `#### :rocket: A snapshot release was triggered for \`${pullRequest.head.ref}\`\n\nFollow its progress [here](${runsUrl}). Once it finishes, install the snapshot with the \`snapshot\` tag, for example:\n\n\`\`\`sh\nyarn add @medusajs/medusa@snapshot\n\`\`\``,
+              body: `#### :rocket: A snapshot release was triggered for \`${pullRequest.head.ref}\`\n\nFollow its progress [here](${runsUrl}). The published versions will be commented here once it finishes.`,
             })
