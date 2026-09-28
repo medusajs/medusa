@@ -253,32 +253,66 @@ medusaIntegrationTestRunner({
         expect(response.data.results[1].hits).toEqual([])
       })
 
-      it("hydrates fields the index doesn't hold", async () => {
+      it("returns exactly the fields the index can retrieve", async () => {
+        const response = await search({
+          queries: [{ entity: "product", filters: { handle: "zephyr-shirt" } }],
+        })
+
+        expect(response.status).toEqual(200)
+        const [hit] = response.data.results[0].hits
+        expect(Object.keys(hit.document).sort()).toEqual(
+          searchModule.listRetrievableFields("product").sort()
+        )
+        expect(hit.document).toEqual({
+          id: shirt.id,
+          title: "Zephyr Shirt",
+          handle: "zephyr-shirt",
+          status: "published",
+          sales_channel_ids: [salesChannel.id],
+        })
+      })
+
+      it("narrows the hits to the selected fields", async () => {
         const response = await search({
           queries: [
             {
               entity: "product",
               filters: { handle: "zephyr-shirt" },
-              // Dotted `query.graph` paths, not the `*relation` shorthand the
-              // `fields` query param takes.
-              fields: ["id", "title", "description", "variants.*"],
+              fields: ["id", "title"],
             },
           ],
         })
 
         expect(response.status).toEqual(200)
-        expect(response.data.results[0].hits).toEqual([
-          expect.objectContaining({
-            id: shirt.id,
-            document: expect.objectContaining({
-              id: shirt.id,
-              title: "Zephyr Shirt",
-              // Neither of these is on the index.
-              description: "A shirt for windy days",
-              variants: [expect.objectContaining({ sku: "ZEPHYR-M" })],
-            }),
-          }),
-        ])
+        expect(response.data.results[0].hits[0].document).toEqual({
+          id: shirt.id,
+          title: "Zephyr Shirt",
+        })
+      })
+
+      it("rejects fields the index can't return", async () => {
+        const batched = await search({
+          queries: [
+            {
+              entity: "product",
+              filters: { handle: "zephyr-shirt" },
+              // On the product, but not on the index.
+              fields: ["id", "description", "variants.*"],
+            },
+          ],
+        }).catch((e) => e)
+
+        expect(batched.response.status).toEqual(400)
+        expect(batched.response.data.message).toEqual(
+          `Search index "product" can't return the fields: description, variants.*`
+        )
+
+        const single = await search({
+          entity: "product",
+          fields: ["variants.sku"],
+        }).catch((e) => e)
+
+        expect(single.response.status).toEqual(400)
       })
 
       it("filters on the index' own fields", async () => {
