@@ -1,4 +1,5 @@
-import { resolveSessionCookieSecurity } from "../express-loader"
+import { isHealthCheck, resolveSessionCookieSecurity } from "../express-loader"
+import { MedusaRequest } from "../types"
 
 describe("resolveSessionCookieSecurity", () => {
   it("returns insecure, no SameSite outside of production/staging", () => {
@@ -30,6 +31,30 @@ describe("resolveSessionCookieSecurity", () => {
     for (const env of envs) {
       const { sameSite } = resolveSessionCookieSecurity(env)
       expect(sameSite).not.toBe("none")
+    }
+  })
+})
+
+describe("isHealthCheck", () => {
+  it("matches the root health endpoint", () => {
+    expect(isHealthCheck({ originalUrl: "/health" } as MedusaRequest)).toBe(
+      true
+    )
+  })
+
+  it("ignores the query string", () => {
+    expect(
+      isHealthCheck({ originalUrl: "/health?foo=bar" } as MedusaRequest)
+    ).toBe(true)
+  })
+
+  it("does not match health paths under a mounted namespace", () => {
+    for (const originalUrl of [
+      "/admin/health",
+      "/store/health",
+      "/auth/health",
+    ]) {
+      expect(isHealthCheck({ originalUrl } as MedusaRequest)).toBe(false)
     }
   })
 })
