@@ -1,5 +1,5 @@
 {
-  "description": "The seperator component of the command bar. This component is used to display a seperator between commands.",
+  "description": "The separator component of the command bar. This component is used to display a separator between commands.",
   "methods": [],
   "displayName": "CommandBar.Seperator",
   "props": {}
