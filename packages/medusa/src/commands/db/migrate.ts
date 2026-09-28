@@ -137,7 +137,13 @@ export async function migrate({
      * Run migration scripts
      */
     logger.log(new Array(TERMINAL_SIZE).join("-"))
-    await runCliCommand("db:migrate:scripts", directory)
+    const exitCode = await runCliCommand("db:migrate:scripts", directory)
+
+    // Reported rather than swallowed: a failing script must fail the whole
+    // command, otherwise deploys and CI carry on as if it had succeeded.
+    if (exitCode !== 0) {
+      return false
+    }
   }
 
   return true
