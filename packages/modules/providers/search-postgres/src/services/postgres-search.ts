@@ -373,8 +373,8 @@ export class PostgresSearchService extends AbstractSearchProviderService {
   }: {
     index: SearchTypes.ResolvedSearchIndexDefinition
   }): Promise<SearchTypes.SearchTask> {
-    assertIndexSupported(index, this.engine_)
-    const plan = buildIndexPlan(index)
+    assertIndexSupported(index, this.engine_, this.logger_)
+    const plan = buildIndexPlan(index, this.engine_)
     this.assertEmbedderForPlan(plan)
     const table = tableNameForIndex(index.physical_name)
     const existing = await this.getCatalog(index.physical_name)

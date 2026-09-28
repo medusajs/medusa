@@ -1,5 +1,25 @@
 # @medusajs/workflow-engine-redis
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16730](https://github.com/medusajs/medusa/pull/16730) [`7054b05d1fa2bebfd168766737bdebc9ef1a15a3`](https://github.com/medusajs/medusa/commit/7054b05d1fa2bebfd168766737bdebc9ef1a15a3) Thanks [@Asgabani](https://github.com/Asgabani)! - fix(workflow-engine-redis): nest RedisWorkflowsOptions under redis in the module options type
+
+  The `ModuleOptions` augmentation declared `RedisWorkflowsOptions` as the type of the whole module options object, so `{ redisUrl: "..." }` passed type-checking. The runtime loader, however, has always read the same options from a nested `options.redis` object, and every existing test configures the module that way. Passing the top-level shape the types allowed for silently produced no Redis connection, since `redisUrl`/`url` were never read from that location.
+
+  The module options type now matches the shape the loader has always required (`{ redis: { redisUrl, ... } }`), matching the docs example on the module's page. No runtime behavior changes.
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

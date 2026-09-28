@@ -696,6 +696,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product/guides/filter-products"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/guides/manage-with-admin-api/page.mdx",
+    "pathname": "/commerce-modules/product/guides/manage-with-admin-api"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/guides/price/page.mdx",
     "pathname": "/commerce-modules/product/guides/price"
   },
@@ -1280,6 +1284,50 @@ export const filesMap = [
     "pathname": "/infrastructure-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/admin-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/admin-search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/fields/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/fields"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/linked-data/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/linked-data"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions/modifiers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/index-definitions/page.mdx",
+    "pathname": "/infrastructure-modules/search/index-definitions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/page.mdx",
+    "pathname": "/infrastructure-modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/product-index-examples/page.mdx",
+    "pathname": "/infrastructure-modules/search/product-index-examples"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/providers/postgres/page.mdx",
+    "pathname": "/infrastructure-modules/search/providers/postgres"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/reindexing/page.mdx",
+    "pathname": "/infrastructure-modules/search/reindexing"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/search/store-search/page.mdx",
+    "pathname": "/infrastructure-modules/search/store-search"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/how-to-use/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/how-to-use"
   },
@@ -1294,6 +1342,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/page.mdx",
     "pathname": "/infrastructure-modules/workflow-engine/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/instantsearch/examples/filtering-sorting-pagination/page.mdx",
+    "pathname": "/instantsearch/examples/filtering-sorting-pagination"
+  },
+  {
+    "filePath": "/www/apps/resources/app/instantsearch/page.mdx",
+    "pathname": "/instantsearch"
   },
   {
     "filePath": "/www/apps/resources/app/integrations/guides/algolia/page.mdx",
@@ -7500,6 +7556,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/createProductTypesStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsDefaultInventoryStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/functions/core_flows.Product.Steps_Product.createProductVariantsStep/page.json",
     "pathname": "/references/medusa-workflows/steps/createProductVariantsStep"
   },
@@ -7662,6 +7722,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.createProductTypesStepId/page.json",
     "pathname": "/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.createProductTypesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.createProductVariantsDefaultInventoryStepId/page.json",
+    "pathname": "/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.createProductVariantsDefaultInventoryStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Product/Steps_Product/variables/core_flows.Product.Steps_Product.createProductVariantsStepId/page.json",
@@ -8616,12 +8680,20 @@ export const filesMap = [
     "pathname": "/references/core_flows/Sales_Channel/core_flows.Sales_Channel.Workflows_Sales_Channel"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.deleteSearchIndexStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/deleteSearchIndexStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.reindexSearchIndexesStep/page.json",
     "pathname": "/references/medusa-workflows/steps/reindexSearchIndexesStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/functions/core_flows.Search.Steps_Search.validateSearchIndexesExistStep/page.json",
     "pathname": "/references/medusa-workflows/steps/validateSearchIndexesExistStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/variables/core_flows.Search.Steps_Search.deleteSearchIndexStepId/page.json",
+    "pathname": "/references/core_flows/Search/Steps_Search/variables/core_flows.Search.Steps_Search.deleteSearchIndexStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Search/Steps_Search/variables/core_flows.Search.Steps_Search.reindexSearchIndexesStepId/page.json",
@@ -8632,8 +8704,16 @@ export const filesMap = [
     "pathname": "/references/core_flows/Search/Steps_Search/variables/core_flows.Search.Steps_Search.validateSearchIndexesExistStepId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Search/Workflows_Search/functions/core_flows.Search.Workflows_Search.deleteSearchIndexWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteSearchIndexWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Search/Workflows_Search/functions/core_flows.Search.Workflows_Search.reindexSearchIndexesWorkflow/page.json",
     "pathname": "/references/medusa-workflows/reindexSearchIndexesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Search/Workflows_Search/variables/core_flows.Search.Workflows_Search.deleteSearchIndexWorkflowId/page.json",
+    "pathname": "/references/core_flows/Search/Workflows_Search/variables/core_flows.Search.Workflows_Search.deleteSearchIndexWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Search/Workflows_Search/variables/core_flows.Search.Workflows_Search.reindexSearchIndexesWorkflowId/page.json",
@@ -9042,6 +9122,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitAccountsWorkflow/page.json",
     "pathname": "/references/medusa-workflows/debitAccountsWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.debitStoreCreditAccountWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep/page.json",
@@ -9638,6 +9722,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeletePropertyLabelsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeletePropertyLabelsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeleteSearchIndexStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeleteSearchIndexStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeleteStockLocationWorkflowInput/page.json",
@@ -10372,6 +10460,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductTypesWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductVariantsDefaultInventoryStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductVariantsDefaultInventoryStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductVariantsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductVariantsWorkflowInput"
   },
@@ -10774,6 +10866,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteSalesChannelsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteSalesChannelsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteSearchIndexWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteSearchIndexWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteServiceZonesStepInput/page.json",
@@ -12018,6 +12114,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.DebitAccountsWorkflowInput/page.json",
     "pathname": "/references/core_flows/plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.DebitAccountsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.DebitStoreCreditAccountWorkflowInput/page.json",
+    "pathname": "/references/core_flows/plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.DebitStoreCreditAccountWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.RefreshCartGiftCardsWorkflowInput/page.json",
@@ -16124,6 +16224,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/SalesChannel/properties/js_sdk.admin.SalesChannel.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Search/methods/js_sdk.admin.Search.deleteIndex/page.json",
+    "pathname": "/references/js_sdk/admin/Search/methods/js_sdk.admin.Search.deleteIndex"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Search/methods/js_sdk.admin.Search.list/page.json",
     "pathname": "/references/js_sdk/admin/Search/methods/js_sdk.admin.Search.list"
   },
@@ -17542,6 +17646,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/sales_channel_models/page.json",
     "pathname": "/references/sales-channel/models"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/search/page.json",
+    "pathname": "/references/modules/search"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/search_provider/page.json",
+    "pathname": "/references/modules/search_provider"
   },
   {
     "filePath": "/www/apps/resources/references/modules/settings/page.json",
@@ -21762,6 +21874,30 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json",
     "pathname": "/references/sales-channel/models/SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.ISearchModuleService/page.json",
+    "pathname": "/references/search/service"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchIndexDeleteResult/page.json",
+    "pathname": "/references/search/interfaces/search.SearchIndexDeleteResult"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexInput/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/interfaces/search.SearchReindexResult/page.json",
+    "pathname": "/references/search/interfaces/search.SearchReindexResult"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search/types/search.SearchReindexStrategy/page.json",
+    "pathname": "/references/search/types/search.SearchReindexStrategy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/search_provider/classes/search_provider.AbstractSearchProviderService/page.json",
+    "pathname": "/references/search/provider"
   },
   {
     "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages/page.json",
@@ -26032,6 +26168,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminSearchIndex"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminSearchIndexDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminSearchIndexDeleteResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminSearchIndexField/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminSearchIndexField"
   },
@@ -27096,10 +27236,6 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductResponse"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductSearchParams/page.json",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductSearchParams"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductTag/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreProductTag"
   },
@@ -27202,6 +27338,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreReturnResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreReturnResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreSearchResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreSearchResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreShippingOption/page.json",
@@ -27592,10 +27732,6 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreProductOptionListResponse"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreProductSearchResponse/page.json",
-    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreProductSearchResponse"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreProductStatus/page.json",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreProductStatus"
   },
@@ -27614,6 +27750,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreReturnReasonListResponse/page.json",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreReturnReasonListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreSearch/page.json",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreSearch"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreSearchQuery/page.json",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreSearchQuery"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.TransactionState/page.json",
@@ -28026,6 +28170,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDefinition/page.json",
     "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDeleteResult/page.json",
+    "pathname": "/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDeleteResult"
   },
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.SearchIndexDetails/page.json",
@@ -31054,6 +31202,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/SearchUtils/types/utils.SearchUtils.SearchConsumeEvent/page.json",
     "pathname": "/references/utils/SearchUtils/types/utils.SearchUtils.SearchConsumeEvent"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/SearchUtils/types/utils.SearchUtils.SearchGraphQueryContext/page.json",
+    "pathname": "/references/utils/SearchUtils/types/utils.SearchUtils.SearchGraphQueryContext"
   },
   {
     "filePath": "/www/apps/resources/references/utils/ShippingProfileUtils/enums/utils.ShippingProfileUtils.ShippingProfileType/page.json",

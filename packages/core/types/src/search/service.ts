@@ -65,6 +65,22 @@ export interface SearchReindexResult {
   indexes: string[]
 }
 
+/**
+ * The result returned after an index is deleted.
+ */
+export interface SearchIndexDeleteResult {
+  /**
+   * The name of the index that was deleted.
+   */
+  index: string
+
+  /**
+   * How many of the index's versions were dropped. `0` when the index is
+   * registered but was never migrated, so nothing was ever built for it.
+   */
+  deleted_versions: number
+}
+
 export interface ISearchModuleService extends IModuleService {
   /**
    * This method searches an index for documents matching the given query. The
@@ -321,6 +337,26 @@ export interface ISearchModuleService extends IModuleService {
    * ```
    */
   reindex(input?: SearchReindexInput): Promise<SearchReindexResult>
+
+  /**
+   * This method deletes an index: every physical index ever built for it is dropped
+   * from its search engine, along with the versions and sync history behind them.
+   *
+   * Nothing is left for the next migration to find, so it rebuilds the index from
+   * scratch starting at version 1. Use it to recover from an index whose physical
+   * state has drifted past what a reindex can repair.
+   *
+   * The index definition itself is untouched — it lives in your code, not in the
+   * database.
+   *
+   * @param {string} index - The name of the index to delete.
+   * @returns {Promise<SearchIndexDeleteResult>} The deleted index and how many of
+   * its versions were dropped.
+   *
+   * @example
+   * const { deleted_versions } = await searchModuleService.deleteIndex("product")
+   */
+  deleteIndex(index: string): Promise<SearchIndexDeleteResult>
 
   /**
    * This method plans what it would take to bring the physical indexes in line

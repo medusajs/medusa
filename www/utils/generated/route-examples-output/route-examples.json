@@ -827,6 +827,9 @@
   "GET /admin/search-indexes": {
     "js-sdk": "sdk.admin.search.listIndexes()\n.then(({ search_indexes, enabled }) => {\n  console.log(search_indexes, enabled)\n})"
   },
+  "DELETE /admin/search-indexes/{id}": {
+    "js-sdk": "sdk.admin.search.deleteIndex(\"product\")\n.then(({ deleted, deleted_versions }) => {\n  console.log(deleted, deleted_versions)\n})"
+  },
   "POST /admin/search-indexes/{id}/reindex": {
     "js-sdk": "sdk.admin.search.reindex(\"product\")\n.then(({ job_id, indexes }) => {\n  console.log(job_id, indexes)\n})"
   },

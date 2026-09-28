@@ -4073,12 +4073,60 @@ const generatedgeneratedAdminSidebarSidebar = {
       "children": [
         {
           "type": "link",
-          "path": "/admin/search/list-search",
-          "title": "List Search",
+          "path": "/admin/search/search-admin",
+          "title": "Search Admin",
           "loaded": true,
           "badge": {
             "variant": "green",
             "text": "Get"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search Indexes",
+      "path": "/admin/search-indexes",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/schema",
+          "title": "SearchIndex Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/list-search-indexes",
+          "title": "List Search Indexes",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/reindex-a-search-index",
+          "title": "Reindex a Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/delete-a-search-index",
+          "title": "Delete a Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "red",
+            "text": "Del"
           }
         }
       ]
@@ -4455,6 +4503,16 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "/admin/store-credit-accounts/create-store-credit-account",
           "title": "Create Store Credit Account",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+          "title": "Debit a Store Credit Account",
           "loaded": true,
           "badge": {
             "variant": "blue",

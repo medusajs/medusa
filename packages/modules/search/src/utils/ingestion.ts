@@ -8,6 +8,7 @@ import {
   assertTaskAccepted,
   resolveActiveDefinition,
   retrieveIndexDefinition,
+  withActiveIndexRetry,
 } from "./index"
 
 // Built once so routing a delivered event is a lookup, not a scan.
@@ -48,10 +49,6 @@ export async function ingestEvent(
 
   for (const name of names) {
     const definition = retrieveIndexDefinition(context.indexes, name)
-    // The active version, merged in — resolving `definition` alone would
-    // target the never-queried root physical name.
-    const active = await resolveActiveDefinition(context, name)
-    const provider = context.providers.retrieve(active.provider)
 
     // Resolving a definition rejects `events` without `consume`, so there is one.
     const mutations = await definition.consume!(event, {
@@ -59,27 +56,39 @@ export async function ingestEvent(
       index: definition,
     })
 
-    for (const mutation of mutations) {
-      if (mutation.action === "upsert" && !mutation.documents.length) {
-        continue
+    const written = await withActiveIndexRetry(context, async () => {
+      const active = await resolveActiveDefinition(context, name, {
+        fresh: true,
+      })
+      const provider = context.providers.retrieve(active.provider)
+      const applied: SearchTypes.SearchTask[] = []
+
+      for (const mutation of mutations) {
+        if (mutation.action === "upsert" && !mutation.documents.length) {
+          continue
+        }
+
+        const task =
+          mutation.action === "upsert"
+            ? await provider.upsertDocuments({
+                index: active.physical_name,
+                definition: active,
+                documents: mutation.documents,
+              })
+            : await provider.deleteDocuments({
+                index: active.physical_name,
+                filters: mutation.filters,
+              })
+
+        applied.push(
+          await settleTask(provider, assertTaskAccepted(task, name), name)
+        )
       }
 
-      const task =
-        mutation.action === "upsert"
-          ? await provider.upsertDocuments({
-              index: active.physical_name,
-              definition: active,
-              documents: mutation.documents,
-            })
-          : await provider.deleteDocuments({
-              index: active.physical_name,
-              filters: mutation.filters,
-            })
+      return applied
+    })
 
-      tasks.push(
-        await settleTask(provider, assertTaskAccepted(task, name), name)
-      )
-    }
+    tasks.push(...written)
   }
 
   return tasks

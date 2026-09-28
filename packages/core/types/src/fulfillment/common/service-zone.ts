@@ -26,7 +26,7 @@ export interface ServiceZoneDTO {
   metadata: Record<string, unknown> | null
 
   /**
-   * The fulfillment set assoiated with the service zone.
+   * The fulfillment set associated with the service zone.
    */
   fulfillment_set: FulfillmentSetDTO
 
@@ -36,12 +36,12 @@ export interface ServiceZoneDTO {
   fulfillment_set_id: string
 
   /**
-   * The geo zones assoiated with the service zone.
+   * The geo zones associated with the service zone.
    */
   geo_zones: GeoZoneDTO[]
 
   /**
-   * The shipping options assoiated with the service zone.
+   * The shipping options associated with the service zone.
    */
   shipping_options: ShippingOptionDTO[]
 

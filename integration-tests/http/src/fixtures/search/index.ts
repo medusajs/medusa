@@ -24,15 +24,16 @@ const productFields = search.define({
  * Products come off `query.graph` with their sales channels as rows, and the
  * index wants them as a flat array of ids — which is all a `transform` is for.
  */
-const toProductDocument = (product: any) => ({
-  id: product.id,
-  title: product.title,
-  handle: product.handle,
-  status: product.status,
-  sales_channel_ids: (product.sales_channels ?? []).map(
-    (channel: any) => channel.id
-  ),
-})
+const toProductDocuments = (products: any[]) =>
+  products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    handle: product.handle,
+    status: product.status,
+    sales_channel_ids: (product.sales_channels ?? []).map(
+      (channel: any) => channel.id
+    ),
+  }))
 
 // Declared like user code: `defineSearchIndex` compiles the DSL schemas and
 // registers the definitions, and medusa-config passes the returned (normalized)
@@ -51,13 +52,13 @@ const productIndex = defineSearchIndex({
 
   consume: graphConsume<typeof productFields>({
     fields: PRODUCT_FIELDS,
-    transform: toProductDocument,
+    transform: toProductDocuments,
   }),
 
   seed: graphSeed<typeof productFields>({
     fields: PRODUCT_FIELDS,
     batch_size: BATCH_SIZE,
-    transform: toProductDocument,
+    transform: toProductDocuments,
   }),
 })
 

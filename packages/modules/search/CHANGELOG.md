@@ -1,5 +1,62 @@
 # @medusajs/search
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16928](https://github.com/medusajs/medusa/pull/16928) [`494745b8e6b63024e1b7741fe95caa4d03b464b0`](https://github.com/medusajs/medusa/commit/494745b8e6b63024e1b7741fe95caa4d03b464b0) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): count distinct values instead of documents for deduplicated Medusa Cloud searches, and reject deduplicating by an unknown or array field
+
+- [#16966](https://github.com/medusajs/medusa/pull/16966) [`aff9d3e847f254bfa36c55c9daa4d6261a4b8e23`](https://github.com/medusajs/medusa/commit/aff9d3e847f254bfa36c55c9daa4d6261a4b8e23) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): stop the active version cache from undoing an index flip. Setting or invalidating an entry now waits for a refresh in flight to land first, so a refresh that read the database before the flip can no longer drop or roll it back
+
+- [#16930](https://github.com/medusajs/medusa/pull/16930) [`08f73ec78e17a3a5b6db112290e28f8b3ed79ef6`](https://github.com/medusajs/medusa/commit/08f73ec78e17a3a5b6db112290e28f8b3ed79ef6) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): stop search index versions from piling up. A reindex drops the versions earlier failed or interrupted rebuilds left above the active one, and a swap drops every version below the new active one except its predecessor, instead of leaving them until the next build
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
+## 2.21.1
+
+### Patch Changes
+
+- [#16834](https://github.com/medusajs/medusa/pull/16834) [`ad0e98df856f71872c2f1e7c3b5983cfa37d4d51`](https://github.com/medusajs/medusa/commit/ad0e98df856f71872c2f1e7c3b5983cfa37d4d51) Thanks [@sradevski](https://github.com/sradevski)! - Improve how a basic-auth URL is parsed for search
+
+- [#16889](https://github.com/medusajs/medusa/pull/16889) [`414f04ae69012858a6c935972a93d0fdd9a25b33`](https://github.com/medusajs/medusa/commit/414f04ae69012858a6c935972a93d0fdd9a25b33) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): send writes to the version that currently serves reads
+
+  Which physical index backs a logical index is cached per process, and only the
+  process performing a swap updated its own copy. Another process kept resolving
+  the retired version, so its writes landed somewhere nothing reads and were lost
+  once that version was cleaned up. Writes now resolve the active version fresh,
+  and a read whose cached version has since been dropped resolves again instead of
+  failing.
+
+  Also fixes the background refresh latching off after a single failure, which
+  pinned a process to a stale version until the hard TTL expired. That TTL is now
+  2 minutes rather than 10.
+
+- [#16801](https://github.com/medusajs/medusa/pull/16801) [`6498af41624810de111da30a8c9c90d1a7ef820e`](https://github.com/medusajs/medusa/commit/6498af41624810de111da30a8c9c90d1a7ef820e) Thanks [@sradevski](https://github.com/sradevski)! - feat(search): back off and retry when the search engine rate limits a seed
+
+- [#16796](https://github.com/medusajs/medusa/pull/16796) [`989e83d74d19bdbe4cde290c23aea5a0693ad9e8`](https://github.com/medusajs/medusa/commit/989e83d74d19bdbe4cde290c23aea5a0693ad9e8) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): resume a failed seed from where it stopped instead of rebuilding from scratch
+
+- [#16868](https://github.com/medusajs/medusa/pull/16868) [`7a0cb956645aef3ed13a20c18fc3faf8961ca535`](https://github.com/medusajs/medusa/commit/7a0cb956645aef3ed13a20c18fc3faf8961ca535) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,types): drop search indexes no definition declares any more
+
+  `db:migrate` now plans a `drop` for every search index left without a definition,
+  the way it already plans deletions for removed links. It asks which ones to drop
+  before touching them; `--execute-all-search` drops them all without prompting and
+  `--execute-safe-search` leaves them alone, mirroring the link flags. Unattended
+  runs with neither flag skip the drops rather than hang on a prompt.
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+- Updated dependencies [[`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e)]:
+  - @medusajs/framework@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

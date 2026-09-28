@@ -1,0 +1,134 @@
+# Filtering, Sorting, and Pagination
+
+You are an AI coding agent. The prompt below adds faceted filtering, sorting, and pagination to the search results of a Medusa storefront that already uses the [InstantSearch adapter](../../page.mdx). Follow it end-to-end in the user's storefront.
+
+If the storefront has no search yet, run the [InstantSearch Adapter](../../page.mdx) prompt first: this one assumes a search client and an index name constant already exist in a shared module.
+
+```md title="Integration Prompt" noLineNumbers
+<role>
+You are a front-end engineer adding faceted filtering, sorting, and pagination to a Medusa storefront's search results.
+</role>
+
+<task>
+Let customers narrow a list of search results by a field's values, change the order of the results, and move through them a page at a time.
+</task>
+
+<context>
+- The storefront already has the InstantSearch adapter installed, and exports a search client and an index name constant from a shared module, such as `src/lib/search-client.ts`.
+- Every component that reads or changes the search must sit inside the same `InstantSearch` provider as the results it refines.
+- An empty query matches every document in the index, and the adapter searches on an empty query by default, through its `placeholderSearch` option. This is the hinge the whole UI turns on: a surface with no query renders the entire catalogue, and the "previous results" of an empty query are the entire catalogue too. A surface that lists results without a query, such as a store or category page, relies on exactly this, and the same client serves every search surface in the storefront.
+- InstantSearch keeps the previous response in `results` while the next search runs, and `results.query` is the query that response was fetched for. Keep those previous results on screen, except when `results.query` is empty and the customer has typed, such as `hasInput && !results.query`. That's the one case where the previous results are the entire catalogue, flashing on screen for a beat before the matches arrive. Don't treat every difference between `results.query` and the query last sent as stale: after a debounce the two differ on nearly every keystroke, so the list blanks as the customer types.
+- A facet is a field the search engine groups and counts. The adapter asks the engine for a field's values, and turns a customer's selection into a filter on the search query.
+- A field only works with a filter widget if the Medusa application's search index definition marks it `facetable()`. Range refinements additionally need `facetable({ types: ["stats"] })`, and the field must be listed in the search client's `numericAttributes` option.
+- `react-instantsearch` exports the `RangeInput` component and the `useRange` and `useNumericMenu` hooks. `RangeSlider`, `NumericMenu`, and `RatingMenu` are instantsearch.js widgets, and importing those names from `react-instantsearch` fails. For a refinement with no React hook, such as a rating menu, build one with `react-instantsearch`'s `useConnector` and the instantsearch.js connector.
+- The adapter reads `facetFilters` and `numericFilters`. It ignores an Algolia `filters` string silently, so a filter passed that way never reaches the search query.
+- The adapter is a search client, not UI components, and the supported widgets each need configuration on it:
+  - A range or stats widget needs the field in the client's `numericAttributes`, or the adapter requests value facets instead of stats and the widget never receives `facets_stats`.
+  - A sort option's index name is `{index}/sort/{field}:{direction}`, such as `product/sort/created_at:desc`. The adapter parses the `/sort/` suffix off the name before it queries. A custom route that serves an index must parse it off too, or it looks up an entity named `product/sort/created_at:desc` and fails.
+  - `transformQuery` receives the adapted query and the original InstantSearch request and returns the query to send. It's the escape hatch when a widget-level option can't express the filter you need.
+- `Configure`'s `facetFilters` doesn't sit beside the array the refinement widgets build; InstantSearch merges the two. A pinned filter can end up inside the same inner array as a customer's ticked value, which makes it an `OR` group and silently stops it from scoping the results. Verify a pinned filter still narrows the list once a refinement is ticked, and if it doesn't, apply it in `transformQuery` instead, where nothing merges into it.
+- InstantSearch's sort control switches between indexes, while the Search Module sorts through the query's `pagination.order`. The adapter bridges the two by reading the sort from the index name, in the format `{index}/sort/{field}:{direction}`. The bare index name sorts by relevance. A field must be `sortable()` in the index definition to appear in a sort value.
+- InstantSearch works in pages. The adapter turns the page number and page size into the search query's `skip` and `take`.
+- The number of pages comes from the total count the search provider reports. The query's `search_options.count` chooses the counting strategy: `exact`, `estimated`, or `none`.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+</context>
+
+<input>
+You have access to the storefront's codebase, and to the Medusa application's index definition if it's available. Before writing code, determine:
+- The pages that list search results, and the component each one renders.
+- Which fields the index marks as `facetable()`, which of those allow `stats`, and which are `sortable()`.
+- The storefront's existing result card or list component, and the page size its other lists use.
+</input>
+
+<steps>
+1. List the facetable and sortable fields available on the index. If you can't read the index definition, ask the user which fields to use before writing any code.
+2. Ask the user which pages to cover, which fields to expose as filters, which sort options to offer, and whether they want numbered pages or an endless list. Ask in the same message what each surface should show when the query is empty: every document, or nothing until the customer types. It's a product decision that differs per surface, so never default it. A store or category listing usually shows everything, a search drawer usually shows nothing. Don't start writing code until they answer.
+3. Wrap each page's contents in an `InstantSearch` provider using the shared search client, with the filters beside the results. Enable `routing` on the provider so the filters, sort, and page appear in the URL. Replace the page's existing data fetching, don't run both.
+4. Add a filter for each field the user chose. Use a checkbox list for a field with many values, a single-select list for a field where only one value applies at a time, and a toggle for an on/off condition.
+5. Add controls that show the applied filters and clear them.
+6. If the user asked for a numeric range filter, confirm the field allows stats facets and appears in the search client's `numericAttributes`. If either is missing, add the field to `numericAttributes`, and report that the index definition needs `facetable({ types: ["stats"] })`.
+7. Add the sort control. Build each option's value from the index name constant. Include the bare index name, relevance, among the options and list it first, so the control matches the provider's `indexName`, which is what makes relevance the default.
+8. Set the page size to match the storefront's other lists.
+9. Add the pagination the user chose. Use one approach or the other, never both on the same surface.
+10. Implement the empty-query behavior each surface chose. For a surface that shows nothing, render nothing until there's a query, rather than searching and hiding the hits.
+11. Account for each state the list can be in: no query yet, results, no results, and a failed search. These are states to account for, not a mandate for four visuals. A search in flight may legitimately have no visual of its own when valid results are already on screen, and "renders nothing" is a valid treatment for a state. A skeleton over an empty list in a debounced drawer is noise, since the state it covers is barely reachable. What isn't acceptable is one treatment silently standing in for another, such as an empty list for a failed search.
+12. Check that the query, filters, and sort still apply after moving to another page, and that changing a filter or the sort returns the customer to the first page.
+13. Report what you changed and how to test it.
+</steps>
+
+<constraints>
+- Never add a filter widget for a field you haven't confirmed is facetable, or a sort option for a field you haven't confirmed is sortable. Both render empty or have no effect otherwise.
+- Never filter, sort, or paginate the returned hits in the browser. Every refinement must reach the search query, or the customer never sees the results it excluded.
+- Never place a filter in the storefront that exists to protect data, such as the sales channel or a publication status. Enforce those in the Medusa application's search route.
+- Never hardcode the index name in a sort value. Build it from the exported constant.
+- Never pass a pinned filter as an Algolia `filters` string on `Configure`. Use `facetFilters`, with one inner array per filter, which the adapter combines with AND.
+- Never render hits from a response whose `results.query` is empty once the customer has typed.
+- Never blank the results because the query moved on. Only the empty query's results are stale.
+- Never decide what an empty query shows. That's the user's call in step 2.
+- Never add a loading visual that replaces results still valid for the current query.
+- Never make a field-based sort the default. Relevance is the default for search results.
+- Never call a range refinement's `refine` from a slider's continuous change event. Track the dragged value in local state and refine once, when the customer releases it, or every pixel of the drag sends a search.
+- Never render two pagination approaches on the same surface. They fight over the same page state.
+- Never assume the total result count is exact. Check the provider's counting strategy before rendering a "page X of Y" label.
+- Never create a second search client or a second `InstantSearch` provider. Every surface imports the one exported from the shared module.
+- Never leave a page's old data fetching in place beside the search. The list must come from one source.
+- Never add a CSS framework or component library the storefront doesn't already use.
+</constraints>
+
+<error_handling>
+- If a filter widget renders no values, report that the field may not be facetable in the index definition rather than removing the widget silently.
+- If a range refinement renders no bounds, report that the field needs `facetable({ types: ["stats"] })` and an entry in `numericAttributes`.
+- If a pinned filter has no effect and every document still renders, check that it's passed as `facetFilters` rather than as a `filters` string, and that a ticked refinement hasn't merged into the pin's inner array. Move the pin to `transformQuery` if it has.
+- If the full list flashes before a query's results arrive, the gate misses the empty-query case. Fix the gate; don't hide it with a loading state.
+- If the list blanks between keystrokes, the gate is comparing `results.query` to the current query rather than checking for the empty query. Narrow it.
+- If a sort option has no effect on the results, report that the field may not be sortable rather than sorting in the browser.
+- If the last page number changes as the customer moves through pages, report that the provider is counting approximately rather than hiding the pagination.
+- If you can't read the index definition, ask the user for the list of facetable and sortable fields.
+- If the results reset to the first page when a filter or the sort changes, that's correct behavior. Don't work around it.
+</error_handling>
+
+<output_format>
+Report in this structure:
+
+## Changes
+A list of the files you created or modified, each with a one-line description.
+
+## Filters
+Each field you added a filter for, with the widget type.
+
+## Sort Options
+Each option you added, with its label and index name value.
+
+## Pagination
+Which approach you used, the page size, and whether the total count is exact.
+
+## Index Changes Needed
+Any modifier the Medusa application's index definition is missing. Write "None" if there are none.
+
+## How to Test
+Numbered steps that end in an observable result, including one that checks the list renders results before any filter is applied, one that types the first query and confirms the full catalogue never flashes, and one that checks a filter and a sort both still apply on the second page.
+</output_format>
+
+<success_criteria>
+- Each surface's empty query behaves the way the user described in step 2.
+- The list renders every document when no filter is applied, on a surface that shows everything.
+- Typing the first query never renders the empty query's hits.
+- A pinned filter still narrows the results after the customer ticks a refinement.
+- Selecting a filter value narrows the results and updates the result count.
+- The filter values show counts, and the counts change as other filters are applied.
+- Clearing all filters restores the unfiltered results.
+- The sort control defaults to relevance, and choosing another option reorders the results.
+- Moving to another page shows different results, with the query, filters, and sort still applied.
+- Changing a filter or the sort returns the customer to the first page.
+- The filters, sort, and current page appear in the URL and survive a reload.
+- Every field with a filter widget is facetable, and every field in a sort value is sortable.
+- The storefront builds and type-checks with no new errors.
+</success_criteria>
+```
+
+---
+
+## Reference
+
+- [InstantSearch Adapter](../../page.mdx): installing and configuring the adapter, its configuration options, and the InstantSearch widgets it supports.
+- [Index Definitions](../../../infrastructure-modules/search/index-definitions/page.mdx): the `facetable`, `filterable`, and `sortable` modifiers a field needs before a widget can refine by it.

@@ -58,7 +58,10 @@ import {
 import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
 import { sdk } from "./sdk"
 
-const { searchClient } = createInstantSearchAdapter({ sdk, path: "/store/search" })
+const { searchClient } = createInstantSearchAdapter({
+  sdk,
+  path: "/store/search",
+})
 
 export function ProductSearch() {
   return (
@@ -163,7 +166,16 @@ The route is responsible for storefront constraints (sales channel, region, whic
 
 `POST /store/search` implements this contract over every registered index, so `indexName` is the index a query runs against. It hydrates the fields an index doesn't hold onto each hit's `document`, and otherwise runs the queries as posted.
 
-It applies no constraints of its own: scoping a storefront to a sales channel, to published documents, or to a subset of the indexes is the store's own, through a middleware on the route.
+It exposes nothing by default, and narrows a product index to published products in the publishable key's sales channels by. A `configureStoreSearch` middleware applied on the route can specify which indexes are searchable and it can apply
+default filtesr to each index.
+
+```ts
+configureStoreSearch({
+  allowed_indexes: {
+    product_category: { filters: (req) => ({ is_active: true }) },
+  },
+})
+```
 
 ## Widget support
 

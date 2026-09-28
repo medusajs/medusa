@@ -1,5 +1,35 @@
 # @medusajs/draft-order
 
+## 2.21.2
+
+### Patch Changes
+
+- [#16952](https://github.com/medusajs/medusa/pull/16952) [`847de248bcd0d70c558364591df44ac645c90245`](https://github.com/medusajs/medusa/commit/847de248bcd0d70c558364591df44ac645c90245) Thanks [@kelvin511](https://github.com/kelvin511)! - fix(draft-order): fix admin crash when selecting a customer without an email
+
+- Updated dependencies [[`c6d976019f3396d53f6d0b5f8c9911b3710ea559`](https://github.com/medusajs/medusa/commit/c6d976019f3396d53f6d0b5f8c9911b3710ea559), [`61d82cb5e3cb0948044af4e5e33b37151b4b66f3`](https://github.com/medusajs/medusa/commit/61d82cb5e3cb0948044af4e5e33b37151b4b66f3), [`f50015bcc7d67dab84a2c23994b1204925426453`](https://github.com/medusajs/medusa/commit/f50015bcc7d67dab84a2c23994b1204925426453), [`a345cc91c7c79c3ef1746576f87e4c96459a3268`](https://github.com/medusajs/medusa/commit/a345cc91c7c79c3ef1746576f87e4c96459a3268), [`4e1b6fb5732083a323e499d4403739932eb4c122`](https://github.com/medusajs/medusa/commit/4e1b6fb5732083a323e499d4403739932eb4c122)]:
+  - @medusajs/dashboard@2.21.2
+  - @medusajs/cli@2.21.2
+  - @medusajs/framework@2.21.2
+  - @medusajs/test-utils@2.21.2
+  - @medusajs/admin-sdk@2.21.2
+  - @medusajs/js-sdk@2.21.2
+  - @medusajs/icons@2.21.2
+  - @medusajs/ui@4.2.6
+
+## 2.21.1
+
+### Patch Changes
+
+- Updated dependencies [[`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797), [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f), [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d), [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d), [`c000d377f1a90d14bcda41500b1ed5bc2734902e`](https://github.com/medusajs/medusa/commit/c000d377f1a90d14bcda41500b1ed5bc2734902e), [`83592f11c72fde11c2d23d9b160bc5a9f010ea26`](https://github.com/medusajs/medusa/commit/83592f11c72fde11c2d23d9b160bc5a9f010ea26), [`7a0cb956645aef3ed13a20c18fc3faf8961ca535`](https://github.com/medusajs/medusa/commit/7a0cb956645aef3ed13a20c18fc3faf8961ca535), [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/dashboard@2.21.1
+  - @medusajs/framework@2.21.1
+  - @medusajs/test-utils@2.21.1
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/cli@2.21.1
+  - @medusajs/admin-sdk@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes

@@ -122,6 +122,19 @@ export const toolsSidebar = [
         ],
       },
       {
+        type: "link",
+        title: "InstantSearch Adapter",
+        childSidebarTitle: "InstantSearch Adapter",
+        path: "/instantsearch",
+        children: [
+          {
+            type: "link",
+            path: "/instantsearch/examples/filtering-sorting-pagination",
+            title: "Filtering, Sorting, and Pagination",
+          },
+        ],
+      },
+      {
         type: "sidebar",
         sidebar_id: "admin-components",
         title: "Medusa Admin Components",

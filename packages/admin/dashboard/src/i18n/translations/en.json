@@ -1272,6 +1272,8 @@
       "title": "Payments",
       "isReadyToBeCaptured": "Payment <0/> is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
+      "totalPending": "Total pending",
+      "storeCreditRefund": "Store credit refund",
       "totalStoreCreditRefunds": "Total store credit refunds",
       "capture": "Capture payment",
       "capture_short": "Capture",
@@ -1284,6 +1286,7 @@
         "authorized": "Authorized",
         "partiallyAuthorized": "Partially authorized",
         "awaiting": "Awaiting",
+        "pending": "Pending",
         "captured": "Captured",
         "partiallyRefunded": "Partially refunded",
         "partiallyCaptured": "Partially captured",
@@ -3419,6 +3422,9 @@
     "reindexSinceHint": "Only rebuild documents that changed at or after this date. Leave empty to rebuild everything.",
     "reindexEntityIdsLabel": "Entity IDs",
     "reindexEntityIdsHint": "Comma or newline separated IDs to rebuild only those documents. Support depends on this index's own definition.",
+    "delete": "Delete index",
+    "deleteWarning": "This drops the \"{{name}}\" index and every version ever built for it, including its data in the search engine. Nothing is searchable on this index until the next migration rebuilds it from scratch. This can't be undone.",
+    "deleteSuccess": "Index {{name}} deleted",
     "noFields": "No fields are indexed.",
     "list": {
       "noRecordsMessage": "No search indexes are registered."

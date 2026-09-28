@@ -76,6 +76,34 @@ export class Search {
   }
 
   /**
+   * This method deletes a search index, dropping every physical index ever built
+   * for it along with the versions and sync history behind them. The next
+   * migration rebuilds it from scratch, starting at version 1. Until it runs,
+   * nothing serves reads for this index.
+   *
+   * @param {string} id - The name of the index to delete.
+   * @param {ClientHeaders} headers - Headers to pass in the request.
+   * @returns {Promise<HttpTypes.AdminSearchIndexDeleteResponse>} The deletion's details.
+   *
+   * @example
+   * sdk.admin.search.deleteIndex("product")
+   * .then(({ deleted, deleted_versions }) => {
+   *   console.log(deleted, deleted_versions)
+   * })
+   *
+   * @tags search
+   */
+  async deleteIndex(id: string, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminSearchIndexDeleteResponse>(
+      `/admin/search-indexes/${id}`,
+      {
+        method: "DELETE",
+        headers,
+      }
+    )
+  }
+
+  /**
    * This method triggers rebuilding a search index from its seed. The rebuild runs in
    * the background - check the index's `status` through {@link listIndexes} to know
    * when it's done.

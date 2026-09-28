@@ -10,6 +10,11 @@ export const adminSearchIndexRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/search-indexes/:id",
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/search-indexes/:id/reindex",
     middlewares: [

@@ -1,5 +1,55 @@
 # @medusajs/dashboard
 
+## 2.21.2
+
+### Patch Changes
+
+- [#17007](https://github.com/medusajs/medusa/pull/17007) [`c6d976019f3396d53f6d0b5f8c9911b3710ea559`](https://github.com/medusajs/medusa/commit/c6d976019f3396d53f6d0b5f8c9911b3710ea559) Thanks [@theluckystrike](https://github.com/theluckystrike)! - add missing hungarian translations in admin dashboard
+
+- [#16846](https://github.com/medusajs/medusa/pull/16846) [`61d82cb5e3cb0948044af4e5e33b37151b4b66f3`](https://github.com/medusajs/medusa/commit/61d82cb5e3cb0948044af4e5e33b37151b4b66f3) Thanks [@luxapan](https://github.com/luxapan)! - fix(dashboard): internationalize order payment status and labels in Admin
+
+- [#16720](https://github.com/medusajs/medusa/pull/16720) [`f50015bcc7d67dab84a2c23994b1204925426453`](https://github.com/medusajs/medusa/commit/f50015bcc7d67dab84a2c23994b1204925426453) Thanks [@NikhilDhillon](https://github.com/NikhilDhillon)! - fix(dashboard): add readable validation messages to create region form
+
+- [#16742](https://github.com/medusajs/medusa/pull/16742) [`a345cc91c7c79c3ef1746576f87e4c96459a3268`](https://github.com/medusajs/medusa/commit/a345cc91c7c79c3ef1746576f87e4c96459a3268) Thanks [@Minhal128](https://github.com/Minhal128)! - fix(dashboard): point refund and return reason row links at their edit routes
+
+- [#16728](https://github.com/medusajs/medusa/pull/16728) [`4e1b6fb5732083a323e499d4403739932eb4c122`](https://github.com/medusajs/medusa/commit/4e1b6fb5732083a323e499d4403739932eb4c122) Thanks [@Asgabani](https://github.com/Asgabani)! - fix(dashboard): correct shipping profile row link path
+
+  The configurable shipping profile list table's `getRowHref` built `/settings/shipping-profiles/:id`, which 404s, instead of `/settings/locations/shipping-profiles/:id`, where the route is actually registered. Clicking a row in the shipping profiles list now navigates correctly.
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.21.2
+  - @medusajs/js-sdk@2.21.2
+  - @medusajs/icons@2.21.2
+  - @medusajs/ui@4.2.6
+
+## 2.21.1
+
+### Patch Changes
+
+- [#16820](https://github.com/medusajs/medusa/pull/16820) [`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797) Thanks [@Markheris](https://github.com/Markheris)! - fix(dashboard): add the 306 Turkish translations missing from tr.json
+
+- [#16852](https://github.com/medusajs/medusa/pull/16852) [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): disable store credit option when there's no outstanding amount or the customer is a guest
+
+- [#16746](https://github.com/medusajs/medusa/pull/16746) [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d) Thanks [@SanteriMoilanen](https://github.com/SanteriMoilanen)! - Add Finnish (fi) admin translation
+
+- [#16677](https://github.com/medusajs/medusa/pull/16677) [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d) Thanks [@MarcelRoblek](https://github.com/MarcelRoblek)! - fix(dashboard): include shipping_address in order list query so Country column renders
+
+- [#16894](https://github.com/medusajs/medusa/pull/16894) [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,search,core-flows,types,js-sdk,dashboard): delete a search index and everything built for it
+
+  `DELETE /admin/search-indexes/:id` drops every physical index ever built for an
+  index, along with its versions and sync history, so the next migration recreates
+  it from scratch at version 1. Useful when an index' physical state has drifted
+  past what a reindex can repair.
+
+  Available as `searchModuleService.deleteIndex`, `deleteSearchIndexWorkflow`,
+  `sdk.admin.search.deleteIndex`, and a confirmed action in the admin dashboard.
+
+- Updated dependencies [[`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/js-sdk@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/icons@2.21.1
+  - @medusajs/ui@4.2.5
+
 ## 2.21.0
 
 ### Patch Changes

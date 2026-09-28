@@ -1,5 +1,25 @@
 # @medusajs/admin-bundler
 
+## 2.21.2
+
+### Patch Changes
+
+- Updated dependencies [[`c6d976019f3396d53f6d0b5f8c9911b3710ea559`](https://github.com/medusajs/medusa/commit/c6d976019f3396d53f6d0b5f8c9911b3710ea559), [`61d82cb5e3cb0948044af4e5e33b37151b4b66f3`](https://github.com/medusajs/medusa/commit/61d82cb5e3cb0948044af4e5e33b37151b4b66f3), [`f50015bcc7d67dab84a2c23994b1204925426453`](https://github.com/medusajs/medusa/commit/f50015bcc7d67dab84a2c23994b1204925426453), [`a345cc91c7c79c3ef1746576f87e4c96459a3268`](https://github.com/medusajs/medusa/commit/a345cc91c7c79c3ef1746576f87e4c96459a3268), [`4e1b6fb5732083a323e499d4403739932eb4c122`](https://github.com/medusajs/medusa/commit/4e1b6fb5732083a323e499d4403739932eb4c122)]:
+  - @medusajs/dashboard@2.21.2
+  - @medusajs/admin-shared@2.21.2
+  - @medusajs/admin-vite-plugin@2.21.2
+
+## 2.21.1
+
+### Patch Changes
+
+- [#16620](https://github.com/medusajs/medusa/pull/16620) [`d3d5c7729a324732725b27f443693901c8e2b72c`](https://github.com/medusajs/medusa/commit/d3d5c7729a324732725b27f443693901c8e2b72c) Thanks [@bohetangQAQ](https://github.com/bohetangQAQ)! - fix(admin-bundler): dedupe react and react-dom in the admin Vite config, so a second React copy reachable in the workspace (e.g. a React 19 storefront hoisted to the root of the same monorepo) is never pre-bundled alongside the dashboard's React — previously this crashed every admin page in `medusa develop` with "Objects are not valid as a React child"
+
+- Updated dependencies [[`011fa44f688e79f1c3fc4827427257f7fef1b797`](https://github.com/medusajs/medusa/commit/011fa44f688e79f1c3fc4827427257f7fef1b797), [`4e1b75a165ed1247d859de1c4a2d28ba04556b9f`](https://github.com/medusajs/medusa/commit/4e1b75a165ed1247d859de1c4a2d28ba04556b9f), [`7c99bdb0ae07d1a88a40800002bed109ac8fff1d`](https://github.com/medusajs/medusa/commit/7c99bdb0ae07d1a88a40800002bed109ac8fff1d), [`5af555bd8c028db2fa4dbaccb64c4c453997be8d`](https://github.com/medusajs/medusa/commit/5af555bd8c028db2fa4dbaccb64c4c453997be8d), [`854a42c10f14735785fccf74b2f0b53b3b46204f`](https://github.com/medusajs/medusa/commit/854a42c10f14735785fccf74b2f0b53b3b46204f)]:
+  - @medusajs/dashboard@2.21.1
+  - @medusajs/admin-shared@2.21.1
+  - @medusajs/admin-vite-plugin@2.21.1
+
 ## 2.21.0
 
 ### Patch Changes

@@ -870,7 +870,7 @@ This workflow accepts the cart’s ID, along with the subscription details. It e
 
 1. [acquireLockStep](/references/medusa-workflows/steps/acquireLockStep) to acquire a lock on the cart to prevent race conditions.
 2. [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) that completes a cart and creates an order.
-3. [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) to retrieve the order's details. [Query](!docs!/learn/fundamentals/module-links/query) is a tool that allows you to retrieve data across modules.
+3. [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) to retrieve the order's details. [Query](!docs!/learn/fundamentals/query) is a tool that allows you to retrieve data across modules.
 4. [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) again to check if a subscription already exists for the order. This is necessary to ensure idempotency in case the workflow is retried.
 5. Use `when` to check if a subscription already exists for the order. If not, it executes the next steps:
     1. `createSubscriptionStep`, which is the step you created previously.
@@ -1298,7 +1298,7 @@ In this step, you’ll add two API routes for admin users:
 
 ### List Subscriptions Admin API Route
 
-The list subscriptions API route should allow clients to retrieve subscriptions with pagination. An API route can be configured to accept pagination fields, such as `limit` and `offset`, then use them with [Query](!docs!/learn/fundamentals/module-links/query) to paginate the retrieved data.
+The list subscriptions API route should allow clients to retrieve subscriptions with pagination. An API route can be configured to accept pagination fields, such as `limit` and `offset`, then use them with [Query](!docs!/learn/fundamentals/query) to paginate the retrieved data.
 
 You'll start with the API route. To create it, create the file `src/api/admin/subscriptions/route.ts` with the following content:
 
@@ -1401,7 +1401,7 @@ You add the `validateAndTransformQuery` middleware to `GET` requests sent to rou
 
 The middleware combines your default configurations with the query parameters in the request to determine the fields to retrieve and the pagination settings.
 
-Refer to the [Request Query Configuration](!docs!/learn/fundamentals/module-links/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
+Refer to the [Request Query Configuration](!docs!/learn/fundamentals/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
 
 ### Get Subscription Admin API Route
 

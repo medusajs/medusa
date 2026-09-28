@@ -376,7 +376,7 @@ export interface ILockingModule {
   /**
    * This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a
    * provider name to be used for locking. If no provider is passed, the default provider (in-memory or the
-   * provider configuerd in `medusa-config.ts`) will be used.
+   * provider configured in `medusa-config.ts`) will be used.
    *
    * @param keys - The keys to lock durng the job's execution.
    * @param job - The asynchronous job to execute while the keys are locked.
@@ -430,7 +430,7 @@ export interface ILockingModule {
        */
       expire?: number
       /**
-       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
        */
       provider?: string
     },
@@ -438,7 +438,7 @@ export interface ILockingModule {
   ): Promise<T>
   /**
    * This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking.
-   * If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+   * If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
    *
    * You can pass an owner for the lock, which limits who can extend or release the acquired lock. Then, if you use this method again
    * passing the same owner, the lock's expiration time is extended with the value passed in the `expire` argument. Otherwise, if you pass a
@@ -485,7 +485,7 @@ export interface ILockingModule {
        */
       expire?: number
       /**
-       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
        */
       provider?: string
     },
@@ -493,7 +493,7 @@ export interface ILockingModule {
   ): Promise<void>
   /**
    * This method releases a lock on the given keys. You can optionally pass a provider name to be used for locking.
-   * If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+   * If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
    *
    * If the lock has an owner, you must pass the same owner to release the lock.
    *
@@ -531,7 +531,7 @@ export interface ILockingModule {
        */
       ownerId?: string | null
       /**
-       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
        */
       provider?: string
     },
@@ -540,7 +540,7 @@ export interface ILockingModule {
   /**
    * This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released.
    *
-   * You can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+   * You can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
    *
    * @param args - Additional arguments for releasing the locks.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -572,7 +572,7 @@ export interface ILockingModule {
        */
       ownerId?: string | null
       /**
-       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in `medusa-config.ts`) will be used.
+       * The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in `medusa-config.ts`) will be used.
        */
       provider?: string
     },
