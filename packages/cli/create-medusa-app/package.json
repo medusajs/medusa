@@ -14,25 +14,21 @@
     "test": "../../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
+    "@clack/prompts": "^1.8.1",
     "@medusajs/deps": "2.21.1",
     "@medusajs/telemetry": "2.21.1",
-    "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
-    "inquirer": "^8.0.0",
-    "node-emoji": "^2.0.2",
     "open": "^9.1.0",
-    "ora": "^5.4.1",
     "slugify": "^1.6.6",
     "terminal-link": "^5.0.0",
     "uuid": "^11.1.1",
     "validator": "^13.15.22",
     "wait-on": "^9.0.1",
-    "winston": "^3.9.0",
     "yaml": "^2.8.4"
   },
   "engines": {
-    "node": ">=14.16"
+    "node": ">=20.12.0"
   },
   "repository": {
     "type": "git",

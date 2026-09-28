@@ -1,8 +1,5 @@
+import { note, outro } from "@clack/prompts"
 import { track } from "@medusajs/telemetry"
-import boxen from "boxen"
-import chalk from "chalk"
-import { emojify } from "node-emoji"
-import { EOL } from "os"
 import { runCloneRepo } from "../clone-repo.js"
 import { isAbortError } from "../create-abort-controller.js"
 import { displayFactBox } from "../facts.js"
@@ -31,20 +28,16 @@ export class PluginProjectCreator
     await promptClaudeCodePlugin()
 
     logMessage({
-      message: `${emojify(
-        ":rocket:"
-      )} Starting plugin setup, this may take a few minutes.`,
+      message: "Starting plugin setup, this may take a few minutes.",
     })
 
-    this.spinner.start()
-    this.factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...this.factBoxOptions,
-      title: "Setting up plugin...",
+      title: "Setting up plugin",
     })
 
     try {
       await this.cloneAndPreparePlugin()
-      this.spinner.succeed(chalk.green("Plugin Prepared"))
       this.showSuccessMessage()
     } catch (e: any) {
       this.handleError(e)
@@ -61,7 +54,7 @@ export class PluginProjectCreator
       isPlugin: true,
     })
 
-    this.factBoxOptions.interval = displayFactBox({
+    displayFactBox({
       ...this.factBoxOptions,
       message: "Created plugin directory",
     })
@@ -91,28 +84,19 @@ export class PluginProjectCreator
   }
 
   protected showSuccessMessage(): void {
-    logMessage({
-      message: boxen(
-        chalk.green(
-          `Change to the \`${
-            this.projectName
-          }\` directory to explore your Medusa plugin.${EOL}${EOL}Check out the ${terminalLink(
-            "Medusa plugin documentation",
-            "https://docs.medusajs.com/learn/fundamentals/plugins"
-          )} to start your development.${EOL}${EOL}Star us on ${terminalLink(
-            "GitHub",
-            "https://github.com/medusajs/medusa/stargazers"
-          )} if you like what we're building.`
-        ),
-        {
-          titleAlignment: "center",
-          textAlignment: "center",
-          padding: 1,
-          margin: 1,
-          float: "center",
-        }
-      ),
-    })
+    note(
+      `Change to the \`${this.projectName}\` directory to explore your Medusa plugin.`,
+      "Next steps"
+    )
+    outro(
+      `Check out the ${terminalLink(
+        "Medusa plugin documentation",
+        "https://docs.medusajs.com/learn/fundamentals/plugins"
+      )} to start your development. Star us on ${terminalLink(
+        "GitHub",
+        "https://github.com/medusajs/medusa/stargazers"
+      )} if you like what we're building.`
+    )
   }
 
   protected setupProcessManager(): void {

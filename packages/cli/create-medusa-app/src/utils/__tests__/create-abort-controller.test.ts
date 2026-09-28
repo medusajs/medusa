@@ -9,6 +9,7 @@ describe("create-abort-controller", () => {
     let processManager: ProcessManager
     let sigtermListeners: Array<(...args: any[]) => void>
     let sigintListeners: Array<(...args: any[]) => void>
+    let exitListeners: Array<(...args: any[]) => void>
 
     beforeEach(() => {
       // Store existing listeners BEFORE creating ProcessManager
@@ -18,6 +19,9 @@ describe("create-abort-controller", () => {
       sigintListeners = process.listeners("SIGINT") as Array<
         (...args: any[]) => void
       >
+      exitListeners = process.listeners("exit") as Array<
+        (...args: any[]) => void
+      >
       processManager = new ProcessManager()
     })
 
@@ -25,11 +29,13 @@ describe("create-abort-controller", () => {
       // Remove all listeners added during tests
       process.removeAllListeners("SIGTERM")
       process.removeAllListeners("SIGINT")
+      process.removeAllListeners("exit")
       // Restore original listeners
       sigtermListeners.forEach((listener) =>
         process.on("SIGTERM", listener as any)
       )
       sigintListeners.forEach((listener) => process.on("SIGINT", listener as any))
+      exitListeners.forEach((listener) => process.on("exit", listener as any))
     })
 
     it("should create and return an AbortController", () => {
@@ -53,6 +59,15 @@ describe("create-abort-controller", () => {
       const abortSpy = jest.spyOn(abortController, "abort")
 
       process.emit("SIGINT")
+
+      expect(abortSpy).toHaveBeenCalled()
+    })
+
+    it("should abort the controller when the process exits", () => {
+      const abortController = createAbortController(processManager)
+      const abortSpy = jest.spyOn(abortController, "abort")
+
+      process.emit("exit", 0)
 
       expect(abortSpy).toHaveBeenCalled()
     })

@@ -1,12 +1,16 @@
 import { promptClaudeCodePlugin } from "../claude-code-plugin"
 import { spawnSync } from "child_process"
 import fs from "fs"
-import inquirer from "inquirer"
+import { confirm } from "@clack/prompts"
 import logMessage from "../log-message"
 
 jest.mock("child_process")
 jest.mock("fs")
-jest.mock("inquirer", () => ({ prompt: jest.fn() }))
+jest.mock("@clack/prompts", () => ({
+  confirm: jest.fn(),
+  isCancel: jest.fn().mockReturnValue(false),
+  cancel: jest.fn(),
+}))
 jest.mock("../log-message")
 jest.mock("os", () => ({
   homedir: jest.fn().mockReturnValue("/mock/home"),
@@ -19,7 +23,7 @@ jest.mock("@medusajs/telemetry", () => ({
 const mockSpawnSync = spawnSync as jest.MockedFunction<typeof spawnSync>
 const mockExistsSync = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>
 const mockReadFileSync = fs.readFileSync as jest.Mock
-const mockInquirerPrompt = (inquirer as any).prompt as jest.Mock
+const mockConfirm = confirm as jest.Mock
 const mockLogMessage = logMessage as jest.MockedFunction<typeof logMessage>
 
 const CLAUDE_DIR = "/mock/home/.claude"
@@ -68,7 +72,7 @@ describe("promptClaudeCodePlugin", () => {
     )
 
     // Default: user says yes
-    mockInquirerPrompt.mockResolvedValue({ install: true })
+    mockConfirm.mockResolvedValue(true)
 
     // Default: both install commands succeed
     mockSpawnSync.mockReturnValue({ error: undefined } as any)
@@ -85,7 +89,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).not.toHaveBeenCalled()
+      expect(mockConfirm).not.toHaveBeenCalled()
     })
 
     it("skips when stdout is not a TTY", async () => {
@@ -97,7 +101,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).not.toHaveBeenCalled()
+      expect(mockConfirm).not.toHaveBeenCalled()
     })
   })
 
@@ -107,13 +111,13 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).not.toHaveBeenCalled()
+      expect(mockConfirm).not.toHaveBeenCalled()
     })
 
     it("proceeds when ~/.claude exists", async () => {
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).toHaveBeenCalled()
+      expect(mockConfirm).toHaveBeenCalled()
     })
 
     it("proceeds when CLAUDE_CODE env var is set even without ~/.claude dir", async () => {
@@ -122,7 +126,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).toHaveBeenCalled()
+      expect(mockConfirm).toHaveBeenCalled()
     })
   })
 
@@ -135,7 +139,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).not.toHaveBeenCalled()
+      expect(mockConfirm).not.toHaveBeenCalled()
     })
 
     it("proceeds when installed_plugins.json exists but does not contain the plugin", async () => {
@@ -146,7 +150,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).toHaveBeenCalled()
+      expect(mockConfirm).toHaveBeenCalled()
     })
 
     it("proceeds when installed_plugins.json does not exist", async () => {
@@ -156,7 +160,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).toHaveBeenCalled()
+      expect(mockConfirm).toHaveBeenCalled()
     })
 
     it("proceeds when installed_plugins.json contains malformed JSON", async () => {
@@ -165,7 +169,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).toHaveBeenCalled()
+      expect(mockConfirm).toHaveBeenCalled()
     })
   })
 
@@ -175,7 +179,7 @@ describe("promptClaudeCodePlugin", () => {
 
       await promptClaudeCodePlugin()
 
-      expect(mockInquirerPrompt).not.toHaveBeenCalled()
+      expect(mockConfirm).not.toHaveBeenCalled()
     })
 
     it("checks the correct config key", async () => {
@@ -186,7 +190,7 @@ describe("promptClaudeCodePlugin", () => {
 
     it("marks as prompted before showing the prompt", async () => {
       let setConfigCalledBeforePrompt = false
-      mockInquirerPrompt.mockImplementation(async () => {
+      mockConfirm.mockImplementation(async () => {
         setConfigCalledBeforePrompt = mockSetConfig.mock.calls.length > 0
         return { install: false }
       })
@@ -200,7 +204,7 @@ describe("promptClaudeCodePlugin", () => {
 
   describe("user says yes", () => {
     beforeEach(() => {
-      mockInquirerPrompt.mockResolvedValue({ install: true })
+      mockConfirm.mockResolvedValue(true)
     })
 
     it("runs marketplace add command", async () => {
@@ -266,7 +270,7 @@ describe("promptClaudeCodePlugin", () => {
 
   describe("user says no", () => {
     beforeEach(() => {
-      mockInquirerPrompt.mockResolvedValue({ install: false })
+      mockConfirm.mockResolvedValue(false)
     })
 
     it("does not run any install commands", async () => {

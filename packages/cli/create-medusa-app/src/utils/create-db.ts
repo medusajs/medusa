@@ -4,11 +4,11 @@ import postgresClient, {
   DEFAULT_HOST,
   DEFAULT_PORT,
 } from "./postgres-client.js"
-import inquirer from "inquirer"
+import { password, text } from "@clack/prompts"
 import logMessage from "./log-message.js"
+import exitOnCancel from "./exit-on-cancel.js"
 import formatConnectionString from "./format-connection-string.js"
-import { Ora } from "ora"
-import { getCurrentOs } from "./get-current-os.js"
+import Spinner from "./spinner.js"
 import terminalLink from "terminal-link"
 
 type CreateDbOptions = {
@@ -38,7 +38,7 @@ export async function runCreateDb({
 }: {
   client: pg.Client
   dbName: string
-  spinner: Ora
+  spinner: Spinner
 }): Promise<pg.Client> {
   let newClient = client
 
@@ -118,40 +118,31 @@ async function getForDbName({
       })
     }
     logMessage({
-      message: `${EOL}Couldn't connect to PostgreSQL with the default credentials (user "postgres" without a password).${EOL}Medusa needs to connect to your PostgreSQL server to create the database of your project, so please enter your PostgreSQL credentials below.${EOL}`,
+      message: `Couldn't connect to PostgreSQL with the default credentials (user "postgres" without a password).${EOL}Medusa needs to connect to your PostgreSQL server to create the database of your project, so please enter your PostgreSQL credentials below.`,
     })
 
     // ask for the user's postgres credentials
-    const answers = await inquirer.prompt([
-      {
-        type: "input",
-        name: "postgresUsername",
+    postgresUsername = exitOnCancel(
+      await text({
         message: "Enter your Postgres username",
-        default: "postgres",
-        validate: (input) => {
-          return typeof input === "string" && input.length > 0
-        },
-      },
-      {
-        type: "password",
-        name: "postgresPassword",
-        message: "Enter your Postgres password",
-      },
-      {
-        type: "input",
-        name: "newDbName",
+        placeholder: "postgres",
+        defaultValue: "postgres",
+      })
+    )
+    postgresPassword =
+      exitOnCancel(
+        await password({
+          message: "Enter your Postgres password",
+        })
+      ) ?? ""
+    dbName = exitOnCancel(
+      await text({
         message:
           "Enter the name of the database to create for your Medusa project",
-        default: dbName,
-        validate: (input) => {
-          return typeof input === "string" && input.length > 0
-        },
-      },
-    ])
-
-    postgresUsername = answers.postgresUsername
-    postgresPassword = answers.postgresPassword
-    dbName = answers.newDbName
+        placeholder: dbName,
+        defaultValue: dbName,
+      })
+    )
 
     try {
       client = await connectToMaintenanceDb({
@@ -172,21 +163,21 @@ async function getForDbName({
 
   // check if database exists
   if (await doesDbExist(client, dbName)) {
-    const { newDbName } = await inquirer.prompt([
-      {
-        type: "input",
-        name: "newDbName",
-        message: `A database already exists with the name ${dbName}, please enter a name for the database:`,
-        default: dbName,
+    const existingDbName = dbName
+    dbName = exitOnCancel(
+      await text({
+        message: `A database already exists with the name ${existingDbName}, please enter a name for the database:`,
         validate: (input) => {
-          return (
-            typeof input === "string" && input.length > 0 && input !== dbName
-          )
-        },
-      },
-    ])
+          if (!input?.length) {
+            return "Please enter a database name"
+          }
 
-    dbName = newDbName
+          if (input === existingDbName) {
+            return `A database already exists with the name ${existingDbName}`
+          }
+        },
+      })
+    )
   }
 
   // format connection string

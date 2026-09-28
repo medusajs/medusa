@@ -9,7 +9,7 @@ import logMessage from "../log-message"
 jest.mock("../execute")
 jest.mock("fs")
 jest.mock("yaml")
-jest.mock("../log-message")
+jest.mock("../log-message", () => jest.fn())
 
 const mockExecute = execute as jest.MockedFunction<typeof execute>
 const mockExistsSync = existsSync as jest.MockedFunction<typeof existsSync>

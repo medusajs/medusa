@@ -1,9 +1,9 @@
 import fs from "fs"
-import { Ora } from "ora"
 import path from "path"
 import { isAbortError } from "./create-abort-controller.js"
 import execute from "./execute.js"
 import logMessage from "./log-message.js"
+import Spinner from "./spinner.js"
 import { execFileSync } from "child_process"
 
 type CloneRepoOptions = {
@@ -53,7 +53,7 @@ export async function runCloneRepo({
   projectName: string
   repoUrl: string
   abortController: AbortController
-  spinner: Ora
+  spinner: Spinner
   verbose?: boolean
   isPlugin?: boolean
 }) {
