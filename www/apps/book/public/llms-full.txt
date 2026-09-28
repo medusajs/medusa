@@ -24684,7 +24684,7 @@ A search query runs against the [Search Module](undefined/resources/infrastructu
 
 Under the hood, the Search Module retrieves the results from the integrated [Search Module Provider](undefined/resources/infrastructure-modules/search/providers), such as [Medusa Search](undefined/cloud/search) or your custom third-party provider.
 
-For searching from a storefront, Medusa provides a [Store Search API route](undefined/api/store/search/search-indexes) that uses `query.search` under the hood. You can also use `query.search` in your custom API routes, such as to search data models that the route doesn't expose.
+For searching from a storefront, Medusa provides a [Store Search API route](undefined/api/store/search/search-indexes) that returns the fields your search indexes hold. Use `query.search` in your custom API routes to hydrate hits with other fields, or to search data models that the route doesn't expose.
 
 Prefer `query.search` over `query.graph` when the request has a free-text term to rank by. `query.graph` filters records in the database without relevance ranking, whereas `query.search` delegates the ranking to a [Search Module Provider](undefined/resources/infrastructure-modules/search/providers).
 
@@ -63806,6 +63806,8 @@ curl -X POST "http://localhost:9000/store/search" \
     "filters": { "q": "shirt" }
   }'
 ```
+
+Each hit's `document` holds every field of the index that's retrievable. Pass `fields` to narrow the hits to some of those fields. The route rejects a field the index can't return, so a storefront can't retrieve data the index doesn't hold. To keep a field out of the hits, mark it with [`retrievable(false)`](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#retrievable) in the index definition.
 
 Learn more about the accepted request body and the response in the [Store Search API reference](undefined/api/store/search/search-indexes).
 

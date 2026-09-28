@@ -500,7 +500,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/index-definitions/fields/page.mdx": "2026-09-22T11:09:25.271Z",
   "app/infrastructure-modules/search/providers/page.mdx": "2026-09-14T13:05:27.554Z",
   "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-09-22T11:42:26.583Z",
-  "app/instantsearch/page.mdx": "2026-09-22T11:36:21.785Z",
+  "app/instantsearch/page.mdx": "2026-09-28T09:21:08.926Z",
   "app/infrastructure-modules/search/store-search/page.mdx": "2026-09-22T14:46:48.291Z",
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z"
 }
