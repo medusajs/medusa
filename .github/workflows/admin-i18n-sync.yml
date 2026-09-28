@@ -92,12 +92,13 @@ jobs:
           echo "Missing keys: $(jq '.count' /tmp/i18n/missing.json)"
 
       - name: Translate with Claude
-        uses: anthropics/claude-code-base-action@beta
+        uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          allowed_tools: "Read,Write,Grep"
-          max_turns: 60
-          model: claude-sonnet-4-6
+          claude_args: >-
+            --model claude-sonnet-4-6
+            --max-turns 60
+            --allowedTools "Read,Write,Grep"
           prompt: |
             You are translating missing UI strings for the Medusa admin dashboard into the "${{ matrix.locale }}" locale.
 
@@ -162,6 +163,7 @@ jobs:
 
       - name: Apply translations
         id: apply
+        shell: bash
         run: |
           node "$SYNC_SCRIPT" missing > /tmp/before.txt
           node "$SYNC_SCRIPT" apply --input /tmp/i18n/translations 2>&1 | tee /tmp/apply.log

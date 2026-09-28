@@ -74,12 +74,20 @@ export class ActiveIndexVersionCache {
   }
 
   /** Sets one value directly, e.g. right after this process itself flips it. */
-  set(name: string, value: ActiveIndexVersion): void {
+  async set(name: string, value: ActiveIndexVersion): Promise<void> {
+    await this.settle()
     this.values_.set(name, value)
   }
 
-  invalidate(): void {
+  async invalidate(): Promise<void> {
+    await this.settle()
     this.fetchedAt_ = 0
     this.values_.clear()
+  }
+
+  // A fetch in flight may have read the database before the change the caller
+  // is about to make, so it has to land first rather than overwrite it later.
+  protected async settle(): Promise<void> {
+    await this.refreshing_?.catch(() => {})
   }
 }

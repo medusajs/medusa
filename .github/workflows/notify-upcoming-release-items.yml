@@ -201,12 +201,13 @@ jobs:
 
       - name: Summarize the change with Claude
         if: steps.pr.outputs.skip != 'true'
-        uses: anthropics/claude-code-base-action@beta
+        uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          model: claude-sonnet-4-6
-          max_turns: 15
-          allowed_tools: "Read,Write,Bash(git show:*),Bash(git diff:*)"
+          claude_args: >-
+            --model claude-sonnet-4-6
+            --max-turns 15
+            --allowedTools "Read,Write,Bash(git show:*),Bash(git diff:*)"
           prompt: |
             You are deciding whether a merged pull request in the Medusa monorepo
             is worth announcing to users as "coming in the next release", and if
