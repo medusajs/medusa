@@ -502,5 +502,6 @@ export const generatedEditDates = {
   "app/instantsearch/examples/filtering-sorting-pagination/page.mdx": "2026-09-22T11:42:26.583Z",
   "app/instantsearch/page.mdx": "2026-09-28T09:21:08.926Z",
   "app/infrastructure-modules/search/store-search/page.mdx": "2026-09-22T14:46:48.291Z",
-  "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-29T10:02:33.373Z"
+  "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-29T10:02:33.373Z",
+  "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-09-29T10:20:49.956Z"
 }
