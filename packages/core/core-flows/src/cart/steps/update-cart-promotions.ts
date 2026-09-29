@@ -103,26 +103,26 @@ export const updateCartPromotionsStep = createStep(
       await remoteLink.dismiss(linksToDismiss)
     }
 
-    const createdLinks = linksToCreate.length
-      ? await remoteLink.create(linksToCreate)
-      : []
+    if (linksToCreate.length) {
+      await remoteLink.create(linksToCreate)
+    }
 
     return new StepResponse(null, {
-      // @ts-expect-error
-      createdLinkIds: createdLinks.map((link) => link.id),
+      createdLinks: linksToCreate.filter(
+        (link) => !promotionLinkMap.has(link[Modules.PROMOTION].promotion_id)
+      ),
       dismissedLinks: linksToDismiss,
     })
   },
   async (revertData, { container }) => {
     const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
 
-    if (revertData?.dismissedLinks?.length) {
-      await remoteLink.create(revertData.dismissedLinks)
+    if (revertData?.createdLinks?.length) {
+      await remoteLink.dismiss(revertData.createdLinks)
     }
 
-    if (revertData?.createdLinkIds?.length) {
-      // @ts-expect-error
-      await remoteLink.delete(revertData.createdLinkIds)
+    if (revertData?.dismissedLinks?.length) {
+      await remoteLink.create(revertData.dismissedLinks)
     }
   }
 )
