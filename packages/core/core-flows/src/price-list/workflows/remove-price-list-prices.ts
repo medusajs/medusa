@@ -1,8 +1,11 @@
+import { PriceListWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { removePriceListPricesStep } from "../steps/remove-price-list-prices"
 
 /**
@@ -40,6 +43,39 @@ export const removePriceListPricesWorkflow = createWorkflow(
   (
     input: WorkflowData<RemovePriceListPricesWorkflowInput>
   ): WorkflowResponse<string[]> => {
-    return new WorkflowResponse(removePriceListPricesStep(input.ids))
+    const { data: prices } = useQueryGraphStep({
+      entity: "price",
+      fields: ["id", "price_list_id", "price_set_id"],
+      filters: { id: input.ids },
+    }).config({ name: "get-price-list-prices-to-remove" })
+
+    const removedPriceIds = removePriceListPricesStep(input.ids)
+
+    const eventData = transform({ prices }, ({ prices }) => {
+      const priceSetIdsByPriceList = new Map<string, Set<string>>()
+
+      for (const price of prices) {
+        if (!price.price_list_id || !price.price_set_id) {
+          continue
+        }
+
+        const priceSetIds =
+          priceSetIdsByPriceList.get(price.price_list_id) ?? new Set<string>()
+        priceSetIds.add(price.price_set_id)
+        priceSetIdsByPriceList.set(price.price_list_id, priceSetIds)
+      }
+
+      return [...priceSetIdsByPriceList].map(([id, priceSetIds]) => ({
+        id,
+        price_set_ids: [...priceSetIds],
+      }))
+    })
+
+    emitEventStep({
+      eventName: PriceListWorkflowEvents.PRICES_REMOVED,
+      data: eventData,
+    })
+
+    return new WorkflowResponse(removedPriceIds)
   }
 )
