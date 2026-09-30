@@ -212,6 +212,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Authorize Applications",
+            "path": "/authorized-applications",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Account",
             "path": "/user",
             "children": []

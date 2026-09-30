@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `Authorize Applications`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to approve or deny an external application's request to access your environments on Cloud.
+
+## What is an Application Authorization Request?
+
+External applications, such as MCP clients, can request access to your Medusa environments on Cloud. When an application sends a request, Cloud shows you a consent screen where you choose whether to grant access, and to which environments.
+
+The application only gets access to the environments you select, for a limited time.
+
+---
+
+## Review an Authorization Request
+
+The consent screen shows the details of the request, so you can verify the application before granting it access:
+
+- **Application name**: The name of the application requesting access.
+- **Access level**: The access the application requests, such as commerce read access.
+- **Redirect URI**: The URI that Cloud redirects you to after you respond to the request. The URI's host is highlighted, so you can confirm that it belongs to the application you expect.
+- **Website**: The application's website, if the application provides one.
+
+The footer of the consent screen also shows how long the authorization lasts.
+
+<Note type="warning">
+
+Only approve requests from applications you trust. If the redirect URI's host doesn't match the application you're connecting, deny the request.
+
+</Note>
+
+---
+
+## Approve an Authorization Request
+
+To approve an application's request:
+
+1. In the consent screen's environment picker, expand the organizations and projects that contain the environments you want to grant access to.
+2. Select the checkbox next to each environment you want the application to access. The picker shows the number of selected environments for each organization.
+3. Click **Approve**.
+
+After you approve the request, Cloud shows a confirmation screen listing the connected environments, grouped by organization and project. Each environment has a badge showing its type, with production environments in green and other environments in blue.
+
+Click the button on the confirmation screen to return to the application.
+
+---
+
+## Deny an Authorization Request
+
+To deny an application's request, click **Deny** in the consent screen. The application doesn't get access to any of your environments.
+
+---
+
+## Expired or Invalid Requests
+
+If an authorization request has expired or is invalid, Cloud shows an error instead of the consent screen. To continue, start the connection again from the application to send a new request.
