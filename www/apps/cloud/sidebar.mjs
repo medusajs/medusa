@@ -159,11 +159,6 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Authorize Applications",
-            path: "/authorized-applications",
-          },
-          {
-            type: "link",
             title: "Account",
             path: "/user",
           },
