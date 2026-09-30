@@ -290,7 +290,7 @@ export default defineLink(
 
 This defines a link between `DigitalProduct` and the Product Module’s `ProductVariant`. This allows product variants that customers purchase to be digital products.
 
-`deleteCascades` is enabled on the `digitalProduct` so that when a product variant is deleted, its linked digital product is also deleted.
+`deleteCascade` is enabled on the `digitalProduct` so that when a product variant is deleted, its linked digital product is also deleted.
 
 Next, create the file `src/links/digital-product-order.ts` with the following content:
 
@@ -315,7 +315,7 @@ export default defineLink(
 
 This defines a link between `DigitalProductOrder` and the Order Module’s `Order`. This keeps track of orders that include purchases of digital products.
 
-`deleteCascades` is enabled on the `digitalProductOrder` so that when a Medusa order is deleted, its linked digital product order is also deleted.
+`deleteCascade` is enabled on the `digitalProductOrder` so that when a Medusa order is deleted, its linked digital product order is also deleted.
 
 ### Further Read
 
