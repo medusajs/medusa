@@ -1,6 +1,6 @@
 # Medusa Core
 
-Open-source commerce platform. TypeScript monorepo with 30+ modular commerce packages.
+Open-source commerce platform. TypeScript monorepo with 35+ modular commerce packages.
 
 > When working on the API reference documentation (`www/apps/api-reference`), read [`www/apps/api-reference/CLAUDE.md`](www/apps/api-reference/CLAUDE.md) for its path structure and the OAS → public docs flow.
 
@@ -22,12 +22,13 @@ Open-source commerce platform. TypeScript monorepo with 30+ modular commerce pac
 │   ├── workflows-sdk/   # Workflow composition
 │   ├── core-flows/      # Predefined workflows
 │   └── modules-sdk/     # Module development
-├── modules/             # 30+ commerce modules
+├── modules/             # 35+ commerce modules
 │   ├── product/, order/, cart/, payment/...
-│   └── providers/       # 15+ provider implementations
+│   └── providers/       # 16 provider implementations
 ├── admin/               # Dashboard packages
 │   └── dashboard/       # React admin UI
 ├── cli/                 # CLI tools
+├── plugins/             # Official plugins
 └── design-system/       # UI components
 /integration-tests/      # Full-stack tests
 /www/                    # Documentation site
@@ -66,8 +67,6 @@ yarn test
 yarn test:integration:packages
 # HTTP integration tests
 yarn test:integration:http
-# API integration tests
-yarn test:integration:api
 # Module integration tests
 yarn test:integration:modules
 ```
@@ -92,12 +91,28 @@ cd packages/admin/dashboard && yarn i18n:schema
 
 Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, since `translations/$schema.json` is generated from `en.json` and lists every key in both `properties` and `required`. Commit the regenerated `$schema.json` with the translation change.
 
+**Changesets:**
+
+Every change to a published package needs a changeset. Generate it from the repo root with `yarn changeset`. If you can't answer the interactive prompts, write the equivalent file directly in `.changeset/<kebab-case-name>.md`:
+
+```md
+---
+"@medusajs/workflow-engine-redis": patch
+---
+
+fix(workflow-engine-redis): short description of the change
+```
+
+- `patch`: non-breaking changes (fixes, features, refactors)
+- `minor`: breaking changes
+- NEVER use `major`
+
 ### 3. Testing Conventions
 
 **Frameworks:**
 
 - Jest 29.7.0 (backend/core)
-- Vitest 3.0.5 (admin/frontend)
+- Vitest 4.1.10 (admin/frontend)
 
 **Test Locations:**
 
@@ -248,10 +263,31 @@ export const DELETE = async (
 - Fields: `req.queryConfig.fields`
 - Resolve services: `req.scope.resolve(ContainerRegistrationKeys.QUERY)`
 
+**Store Routes - Allowed Fields:**
+
+Store routes are public, so every store route that returns data MUST define an explicit `allowed` list in its query config. Without it, a client can request any field or relation through `?fields=` and read data it shouldn't see.
+
+- Define `defaults` and `allowed` in the route's `query-config.ts`
+- Build `allowed` with `buildAllowedFields()` / `prefixAllowedFields()` from `packages/medusa/src/api/store/utils/allowed-fields.ts`
+- Only allow fields safe to expose publicly; list nested relation fields explicitly (e.g. `countries.iso_2`), not whole relations
+- Pass the config to `validateAndTransformQuery()` in the route's `middlewares.ts`
+
+```typescript
+export const retrieveTransformQueryConfig = {
+  defaults: defaultStoreRegionFields,
+  allowed: buildAllowedFields(
+    defaultStoreRegionFields,
+    nestedStoreRegionCountryFields
+  ),
+  isList: false,
+}
+```
+
 **Reference Files:**
 
 - `packages/medusa/src/api/admin/orders/route.ts`
 - `packages/medusa/src/api/admin/payment-collections/[id]/route.ts`
+- `packages/medusa/src/api/store/regions/query-config.ts` (store allowed fields)
 
 #### 5.3 Workflow Pattern
 

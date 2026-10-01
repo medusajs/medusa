@@ -12,6 +12,7 @@ import {
 import type { Plugin } from "unified"
 import { fetchRawMdx } from "../../../utils/fetch-raw-mdx"
 import { getChangelogMarkdown } from "../../../utils/changelog"
+import { getPricingMarkdown } from "../../../utils/pricing"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -32,19 +33,13 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   const { content: fileContent, isOverride } = result
 
-  // The changelog page renders its entries from generated files with a
-  // `<ChangelogList />` component, so its Markdown must be built here rather
-  // than read from the MDX file.
-  const parserOptions =
-    slug[0] === "changelog" && slug.length === 1
-      ? {
-          ChangelogList: {
-            content: await getChangelogMarkdown(
-              process.env.NEXT_PUBLIC_BASE_URL || origin
-            ),
-          },
-        }
-      : undefined
+  // The changelog and pricing pages render their content from generated files
+  // and Sanity, so their Markdown must be built here rather than read from the
+  // MDX file.
+  const parserOptions = await getParserOptions(
+    slug,
+    process.env.NEXT_PUBLIC_BASE_URL || origin
+  )
 
   const cleanMdContent = await getCleanMd_(fileContent, parserOptions, {
     before: [
@@ -126,6 +121,26 @@ export async function GET(req: NextRequest, { params }: Params) {
       status: 200,
     }
   )
+}
+
+const getParserOptions = async (
+  slug: string[],
+  baseUrl: string
+): Promise<Record<string, unknown> | undefined> => {
+  if (slug.length !== 1) {
+    return
+  }
+
+  switch (slug[0]) {
+    case "changelog":
+      return {
+        ChangelogList: { content: await getChangelogMarkdown(baseUrl) },
+      }
+    case "pricing":
+      return {
+        PricingContent: { content: await getPricingMarkdown(baseUrl) },
+      }
+  }
 }
 
 const getCleanMd_ = unstable_cache(

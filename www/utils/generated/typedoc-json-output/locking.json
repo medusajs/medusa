@@ -59,7 +59,7 @@
 							"fileName": "index.ts",
 							"line": 173,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L173"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L173"
 						}
 					],
 					"signatures": [
@@ -190,7 +190,7 @@
 									"fileName": "index.ts",
 									"line": 173,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L173"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L173"
 								}
 							],
 							"typeParameters": [
@@ -269,7 +269,7 @@
 													"fileName": "index.ts",
 													"line": 175,
 													"character": 9,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L175"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L175"
 												}
 											],
 											"signatures": [
@@ -284,7 +284,7 @@
 															"fileName": "index.ts",
 															"line": 175,
 															"character": 9,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L175"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L175"
 														}
 													],
 													"parameters": [
@@ -376,7 +376,7 @@
 															"fileName": "index.ts",
 															"line": 181,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L181"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L181"
 														}
 													],
 													"type": {
@@ -405,7 +405,7 @@
 															"fileName": "index.ts",
 															"line": 187,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L187"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L187"
 														}
 													],
 													"type": {
@@ -428,7 +428,7 @@
 													"fileName": "index.ts",
 													"line": 176,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L176"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L176"
 												}
 											]
 										}
@@ -493,7 +493,7 @@
 							"fileName": "index.ts",
 							"line": 265,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L265"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L265"
 						}
 					],
 					"signatures": [
@@ -634,7 +634,7 @@
 									"fileName": "index.ts",
 									"line": 265,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L265"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L265"
 								}
 							],
 							"parameters": [
@@ -715,7 +715,7 @@
 															"fileName": "index.ts",
 															"line": 271,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L271"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L271"
 														}
 													],
 													"type": {
@@ -753,7 +753,7 @@
 															"fileName": "index.ts",
 															"line": 276,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L276"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L276"
 														}
 													],
 													"type": {
@@ -776,7 +776,7 @@
 													"fileName": "index.ts",
 													"line": 267,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L267"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L267"
 												}
 											]
 										}
@@ -838,7 +838,7 @@
 							"fileName": "index.ts",
 							"line": 324,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L324"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L324"
 						}
 					],
 					"signatures": [
@@ -929,7 +929,7 @@
 									"fileName": "index.ts",
 									"line": 324,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L324"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L324"
 								}
 							],
 							"parameters": [
@@ -1010,7 +1010,7 @@
 															"fileName": "index.ts",
 															"line": 331,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L331"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L331"
 														}
 													],
 													"type": {
@@ -1041,7 +1041,7 @@
 													"fileName": "index.ts",
 													"line": 326,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L326"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L326"
 												}
 											]
 										}
@@ -1103,7 +1103,7 @@
 							"fileName": "index.ts",
 							"line": 364,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L364"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L364"
 						}
 					],
 					"signatures": [
@@ -1177,7 +1177,7 @@
 									"fileName": "index.ts",
 									"line": 364,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L364"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L364"
 								}
 							],
 							"parameters": [
@@ -1227,7 +1227,7 @@
 															"fileName": "index.ts",
 															"line": 369,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L369"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L369"
 														}
 													],
 													"type": {
@@ -1258,7 +1258,7 @@
 													"fileName": "index.ts",
 													"line": 365,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L365"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L365"
 												}
 											]
 										}
@@ -1326,7 +1326,7 @@
 					"fileName": "index.ts",
 					"line": 63,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L63"
+					"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L63"
 				}
 			]
 		},
@@ -1348,7 +1348,7 @@
 							"fileName": "index.ts",
 							"line": 411,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L411"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L411"
 						}
 					],
 					"signatures": [
@@ -1362,7 +1362,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a\nprovider name to be used for locking. If no provider is passed, the default provider (in-memory or the\nprovider configuerd in "
+										"text": "This method executes a giuven asynchronous job with a lock on the given keys. You can optionally pass a\nprovider name to be used for locking. If no provider is passed, the default provider (in-memory or the\nprovider configured in "
 									},
 									{
 										"kind": "code",
@@ -1427,7 +1427,7 @@
 									"fileName": "index.ts",
 									"line": 411,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L411"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L411"
 								}
 							],
 							"typeParameters": [
@@ -1506,7 +1506,7 @@
 													"fileName": "index.ts",
 													"line": 413,
 													"character": 9,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L413"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L413"
 												}
 											],
 											"signatures": [
@@ -1521,7 +1521,7 @@
 															"fileName": "index.ts",
 															"line": 413,
 															"character": 9,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L413"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L413"
 														}
 													],
 													"parameters": [
@@ -1629,7 +1629,7 @@
 															"fileName": "index.ts",
 															"line": 420,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L420"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L420"
 														}
 													],
 													"type": {
@@ -1674,7 +1674,7 @@
 															"fileName": "index.ts",
 															"line": 431,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L431"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L431"
 														}
 													],
 													"type": {
@@ -1694,7 +1694,7 @@
 														"summary": [
 															{
 																"kind": "text",
-																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in "
+																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in "
 															},
 															{
 																"kind": "code",
@@ -1711,7 +1711,7 @@
 															"fileName": "index.ts",
 															"line": 435,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L435"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L435"
 														}
 													],
 													"type": {
@@ -1735,7 +1735,7 @@
 													"fileName": "index.ts",
 													"line": 414,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L414"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L414"
 												}
 											]
 										}
@@ -1800,7 +1800,7 @@
 							"fileName": "index.ts",
 							"line": 475,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L475"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L475"
 						}
 					],
 					"signatures": [
@@ -1814,7 +1814,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking.\nIf no provider is passed, the default provider (in-memory or the provider configuerd in "
+										"text": "This method acquires a lock on the given keys. You can optionally pass a provider name to be used for locking.\nIf no provider is passed, the default provider (in-memory or the provider configured in "
 									},
 									{
 										"kind": "code",
@@ -1919,7 +1919,7 @@
 									"fileName": "index.ts",
 									"line": 475,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L475"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L475"
 								}
 							],
 							"parameters": [
@@ -2000,7 +2000,7 @@
 															"fileName": "index.ts",
 															"line": 481,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L481"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L481"
 														}
 													],
 													"type": {
@@ -2038,7 +2038,7 @@
 															"fileName": "index.ts",
 															"line": 486,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L486"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L486"
 														}
 													],
 													"type": {
@@ -2058,7 +2058,7 @@
 														"summary": [
 															{
 																"kind": "text",
-																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in "
+																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in "
 															},
 															{
 																"kind": "code",
@@ -2075,7 +2075,7 @@
 															"fileName": "index.ts",
 															"line": 490,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L490"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L490"
 														}
 													],
 													"type": {
@@ -2099,7 +2099,7 @@
 													"fileName": "index.ts",
 													"line": 477,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L477"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L477"
 												}
 											]
 										}
@@ -2161,7 +2161,7 @@
 							"fileName": "index.ts",
 							"line": 525,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L525"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L525"
 						}
 					],
 					"signatures": [
@@ -2175,7 +2175,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method releases a lock on the given keys. You can optionally pass a provider name to be used for locking.\nIf no provider is passed, the default provider (in-memory or the provider configuerd in "
+										"text": "This method releases a lock on the given keys. You can optionally pass a provider name to be used for locking.\nIf no provider is passed, the default provider (in-memory or the provider configured in "
 									},
 									{
 										"kind": "code",
@@ -2272,7 +2272,7 @@
 									"fileName": "index.ts",
 									"line": 525,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L525"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L525"
 								}
 							],
 							"parameters": [
@@ -2353,7 +2353,7 @@
 															"fileName": "index.ts",
 															"line": 532,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L532"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L532"
 														}
 													],
 													"type": {
@@ -2382,7 +2382,7 @@
 														"summary": [
 															{
 																"kind": "text",
-																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in "
+																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in "
 															},
 															{
 																"kind": "code",
@@ -2399,7 +2399,7 @@
 															"fileName": "index.ts",
 															"line": 536,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L536"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L536"
 														}
 													],
 													"type": {
@@ -2422,7 +2422,7 @@
 													"fileName": "index.ts",
 													"line": 527,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L527"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L527"
 												}
 											]
 										}
@@ -2484,7 +2484,7 @@
 							"fileName": "index.ts",
 							"line": 568,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L568"
+							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L568"
 						}
 					],
 					"signatures": [
@@ -2498,7 +2498,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released.\n\nYou can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in "
+										"text": "This method releases all locks. If you specify an owner ID, then all locks that the owner has acquired are released.\n\nYou can also pass a provider name to be used for locking. If no provider is passed, the default provider (in-memory or the provider configured in "
 									},
 									{
 										"kind": "code",
@@ -2562,7 +2562,7 @@
 									"fileName": "index.ts",
 									"line": 568,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L568"
+									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L568"
 								}
 							],
 							"parameters": [
@@ -2612,7 +2612,7 @@
 															"fileName": "index.ts",
 															"line": 573,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L573"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L573"
 														}
 													],
 													"type": {
@@ -2641,7 +2641,7 @@
 														"summary": [
 															{
 																"kind": "text",
-																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configuerd in "
+																"text": "The provider name to use for locking. If no provider is passed, the default provider (in-memory or the provider configured in "
 															},
 															{
 																"kind": "code",
@@ -2658,7 +2658,7 @@
 															"fileName": "index.ts",
 															"line": 577,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L577"
+															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L577"
 														}
 													],
 													"type": {
@@ -2681,7 +2681,7 @@
 													"fileName": "index.ts",
 													"line": 569,
 													"character": 11,
-													"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L569"
+													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L569"
 												}
 											]
 										}
@@ -2749,7 +2749,7 @@
 					"fileName": "index.ts",
 					"line": 375,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/ec7a58b2316e4cb1c2b4463235d24c51b66566e2/packages/core/types/src/locking/index.ts#L375"
+					"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/locking/index.ts#L375"
 				}
 			]
 		}

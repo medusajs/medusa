@@ -200,13 +200,14 @@ jobs:
 
       - name: Run Claude Code to update docs
         if: steps.check.outputs.needs_docs == 'true'
-        uses: anthropics/claude-code-base-action@beta
+        uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          claude_args: >-
+            --model claude-opus-5-5
+            --max-turns 40
+            --allowedTools "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*),Bash(ls:*),Bash(find:*),Bash(cat:*)"
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
-          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
-          model: claude-sonnet-4-6
-          max_turns: 40
 
       - name: Verify no protected files were modified
         if: steps.check.outputs.needs_docs == 'true'

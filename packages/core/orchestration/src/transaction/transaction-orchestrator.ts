@@ -1454,7 +1454,12 @@ export class TransactionOrchestrator extends EventEmitter {
   }
 
   /**
-   * Cancel and revert a transaction compensating all its executed steps. It can be an ongoing transaction or a completed one
+   * Cancel and revert a transaction compensating all its executed steps. It can be an ongoing transaction or a completed one.
+   *
+   * To cancel a completed transaction, you must pass its instance, or the transaction must still be stored. A transaction
+   * is only stored after it's done if its workflow sets the `store` and `retentionTime` options. Otherwise, retrieving it
+   * by its ID throws a `Transaction {id} could not be found` error.
+   *
    * @param transaction - The transaction to be reverted
    */
   public async cancelTransaction(

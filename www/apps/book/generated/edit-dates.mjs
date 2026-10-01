@@ -19,7 +19,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/modules/loaders/page.mdx": "2025-10-09T11:41:31.724Z",
   "app/learn/fundamentals/admin/widgets/page.mdx": "2026-07-28T05:47:54.726Z",
   "app/learn/fundamentals/data-models/page.mdx": "2025-10-28T16:01:48.099Z",
-  "app/learn/fundamentals/api-routes/protected-routes/page.mdx": "2026-08-28T14:41:47.835Z",
+  "app/learn/fundamentals/api-routes/protected-routes/page.mdx": "2026-09-24T14:45:14.504Z",
   "app/learn/fundamentals/workflows/add-workflow-hook/page.mdx": "2025-07-18T11:33:15.959Z",
   "app/learn/fundamentals/events-and-subscribers/data-payload/page.mdx": "2025-05-01T15:30:08.421Z",
   "app/learn/fundamentals/events-and-subscribers/emit-event/page.mdx": "2026-01-20T08:54:20.529Z",
@@ -88,7 +88,7 @@ export const generatedEditDates = {
   "app/learn/installation/page.mdx": "2026-08-12T11:55:04.360Z",
   "app/learn/fundamentals/data-models/check-constraints/page.mdx": "2025-07-25T13:50:21.065Z",
   "app/learn/fundamentals/module-links/link/page.mdx": "2025-12-09T13:27:05.446Z",
-  "app/learn/fundamentals/workflows/store-executions/page.mdx": "2025-04-17T08:29:10.166Z",
+  "app/learn/fundamentals/workflows/store-executions/page.mdx": "2026-09-22T05:54:39.142Z",
   "app/learn/fundamentals/plugins/create/page.mdx": "2025-04-17T08:29:09.910Z",
   "app/learn/fundamentals/plugins/page.mdx": "2025-01-22T10:14:10.433Z",
   "app/learn/customization/reuse-customizations/page.mdx": "2025-09-04T15:45:52.047Z",
@@ -143,10 +143,11 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
-  "app/learn/fundamentals/query/search/page.mdx": "2026-09-18T07:42:43.195Z",
+  "app/learn/fundamentals/query/search/page.mdx": "2026-09-25T12:33:45.770Z",
   "app/learn/fundamentals/query/index-module/page.mdx": "2026-08-21T06:04:22.962Z",
   "app/learn/fundamentals/query/page.mdx": "2026-09-15T11:13:29.895Z",
   "app/learn/fundamentals/query/query-context/page.mdx": "2026-08-21T06:04:22.963Z",
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
-  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z"
+  "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
+  "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z"
 }

@@ -173,6 +173,7 @@ export const sitemapUrls = [
   "/commerce-modules/product/admin-widget-zones",
   "/commerce-modules/product/extend",
   "/commerce-modules/product/guides/filter-products",
+  "/commerce-modules/product/guides/manage-with-admin-api",
   "/commerce-modules/product/guides/price",
   "/commerce-modules/product/guides/price-with-taxes",
   "/commerce-modules/product/guides/variant-inventory",

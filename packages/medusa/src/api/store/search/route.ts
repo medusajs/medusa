@@ -71,19 +71,31 @@ export const POST = async (
         throw notFound(entity)
       }
 
-      const retrievable = new Set(searchModule.listRetrievableFields(entity))
+      // Hits are never hydrated through the graph, so a selection can only
+      // narrow what the index returns, not reach past it.
+      if (fields) {
+        const retrievable = new Set(searchModule.listRetrievableFields(entity))
+        const unknown = fields.filter((field) => !retrievable.has(field))
+
+        if (unknown.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Search index "${entity}" can't return the fields: ${unknown.join(
+              ", "
+            )}`
+          )
+        }
+      }
 
       return {
-        primaryKey: index.primary_key,
         productFilters: buildProductFilters(index, req, logger),
         filters: config === true ? undefined : await config.filters?.(req),
-        withHydration: !!fields?.some((field) => !retrievable.has(field)),
       }
     })
   )
 
-  // `locale` only reaches the hydration: what the index returns is whatever the
-  // seed wrote.
+  // Every selected field is retrievable, so `query.search` never expands the
+  // hits through the graph.
   const results = await query.search(
     queries.map((searchQuery, i) => ({
       ...searchQuery,
@@ -92,28 +104,11 @@ export const POST = async (
         plans[i].filters,
         searchQuery.filters
       ),
-    })),
-    { locale: req.locale }
+    }))
   )
 
   res.json({
-    results: results.map(({ data, search_result: searchResult }, i) => {
-      const { primaryKey, withHydration } = plans[i]
-
-      if (!withHydration) {
-        return searchResult
-      }
-
-      const hydrated = new Map(data.map((entry) => [entry[primaryKey], entry]))
-
-      return {
-        ...searchResult,
-        hits: searchResult.hits.map((hit) => ({
-          ...hit,
-          document: hydrated.get(hit.id) ?? hit.document,
-        })),
-      }
-    }),
+    results: results.map(({ search_result: searchResult }) => searchResult),
   })
 }
 
