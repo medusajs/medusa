@@ -7,6 +7,10 @@ import {
   ProductCell,
   ProductHeader,
 } from "../../../../../components/table/table-cells/product/product-cell"
+import {
+  VariantInventoryCell,
+  VariantInventoryHeader,
+} from "../../../../../components/table/table-cells/product/variant-inventory-cell"
 
 const columnHelper = createColumnHelper<any>()
 
@@ -61,6 +65,11 @@ export const useClaimOutboundItemTableColumns = (currencyCode: string) => {
       }),
       columnHelper.accessor("title", {
         header: t("fields.title"),
+      }),
+      columnHelper.display({
+        id: "inventory",
+        header: () => <VariantInventoryHeader />,
+        cell: ({ row }) => <VariantInventoryCell variant={row.original} />,
       }),
     ],
     [t, currencyCode]

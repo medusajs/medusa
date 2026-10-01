@@ -356,7 +356,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/query/index-module).
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -605,10 +605,15 @@ export const createTierWorkflow = createWorkflow(
           },
         })
       })
+    const promoId = transform(
+      { input },
+      ({ input }) => input.promo_id || null
+    )
+
     // Create the tier
     const tier = createTierStep({
       name: input.name,
-      promo_id: input.promo_id || null,
+      promo_id: promoId,
     })
 
     // Create tier rules if provided
@@ -645,7 +650,7 @@ In the workflow's constructor function, you:
 
 - Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check whether the promotion ID is provided and retrieve the promotion to validate that it exists.
     - By specifying the `throwIfKeyNotFound` option, the `useQueryGraphStep` throws an error if the promotion isn't found, which stops the workflow's execution.
-    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood to retrieve data across modules.
+    - This step uses [Query](!docs!/learn/fundamentals/query) under the hood to retrieve data across modules.
 - Create the tier using the `createTierStep`.
 - Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to conditionally create tier rules if they're provided using the `createTierRulesStep`.
 - Retrieve the created tier with its rules using `useQueryGraphStep`.
@@ -772,7 +777,7 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: tiers, metadata } = await query.graph({
     entity: "tier",
@@ -838,7 +843,7 @@ You set the following configurations:
 
 <Note>
 
-Refer to the [Request Query Configuration](!docs!/learn/fundamentals/module-links/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
+Refer to the [Request Query Configuration](!docs!/learn/fundamentals/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
 
 </Note>
 
@@ -873,8 +878,8 @@ export const sdkHighlights = [
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  debug: process.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: import.meta.env.NODE_ENV === "development",
   auth: {
     type: "session",
   },
@@ -1402,12 +1407,13 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { id } = req.params
 
   const { data: tiers } = await query.graph({
@@ -1690,11 +1696,16 @@ export const updateTierWorkflow = createWorkflow(
           },
         }).config({ name: "retrieve-promotion" })
       })
+    const promoId = transform(
+      { input },
+      ({ input }) => input.promo_id || null
+    )
+
     // Update the tier
     updateTierStep({
       id: input.id,
       name: input.name,
-      promo_id: input.promo_id || null,
+      promo_id: promoId,
     })
 
     when({ input }, (data) => {
@@ -1880,7 +1891,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/query/index-module).
 
 You return the customers in the response.
 
@@ -1919,7 +1930,7 @@ You set the following configurations:
 
 ### c. Install Index Module
 
-The [Index Module](!docs!/learn/fundamentals/module-links/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
+The [Index Module](!docs!/learn/fundamentals/query/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
 
 The Index Module is currently experimental, so you need to install and configure it manually.
 
@@ -1958,7 +1969,7 @@ You can now use the Index Module to filter customers by their tier. You'll test 
 
 <Note>
 
-Refer to the [Index Module](!docs!/learn/fundamentals/module-links/index-module) documentation to learn more.
+Refer to the [Index Module](!docs!/learn/fundamentals/query/index-module) documentation to learn more.
 
 </Note>
 
@@ -2550,7 +2561,6 @@ Finally, you'll create the UI route that displays the details of a tier.
 To create the UI route, create the file `src/admin/routes/tiers/[id]/page.tsx` with the following content:
 
 ```tsx title="src/admin/routes/tiers/[id]/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { sdk } from "../../../lib/sdk"
@@ -2585,10 +2595,6 @@ const TierDetailsPage = () => {
     </>
   )
 }
-
-export const config = defineRouteConfig({
-  label: "Tier Details",
-})
 
 export default TierDetailsPage
 ```
@@ -2922,13 +2928,18 @@ export const updateCustomerTierOnOrderWorkflow = createWorkflow(
       purchase_value: purchasedValue,
     })
 
+    const existingTierId = transform(
+      { orders },
+      ({ orders }) => orders[0].customer?.tier?.id as string
+    )
+
     // Dismiss existing tier link if it exists
     // and the tier id is not the same as the tier id in the determine tier step
     when({ orders, tierId }, (data) => !!data.orders[0].customer?.tier?.id && data.tierId !== data.orders[0].customer?.tier?.id).then(
       () => {
         dismissRemoteLinkStep([
           {
-            [TIER_MODULE]: { tier_id: orders[0].customer?.tier?.id as string },
+            [TIER_MODULE]: { tier_id: existingTierId },
             [Modules.CUSTOMER]: { customer_id: validatedCustomer.id },
           },
         ])
@@ -2981,12 +2992,15 @@ import {
   SubscriberConfig,
 } from "@medusajs/framework"
 import { updateCustomerTierOnOrderWorkflow } from "../workflows/update-customer-tier-on-order"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export default async function orderPlacedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
   try {
     await updateCustomerTierOnOrderWorkflow(container).run({
       input: {
@@ -3228,20 +3242,22 @@ export const addTierPromotionToCartWorkflow = createWorkflow(
 
 
     // Check if customer exists and has tier
+    // @ts-ignore
+    const tierPromotionInput = transform({ carts }, ({ carts }) => ({
+      has_account: carts[0].customer!.has_account,
+      tier: {
+        promo_id: carts[0].customer!.tier!.promo_id || null,
+        promotion: {
+          id: carts[0].customer!.tier!.promotion!.id,
+          code: carts[0].customer!.tier!.promotion!.code || null,
+          status: carts[0].customer!.tier!.promotion!.status || null,
+        },
+      },
+    }))
+
     const validationResult = when({ carts }, (data) => !!data.carts[0].customer).then(() => {
       return validateTierPromotionStep({
-        customer: {
-          has_account: carts[0].customer!.has_account,
-          tier: {
-            promo_id: carts[0].customer!.tier!.promo_id || null,
-            promotion: {
-              id: carts[0].customer!.tier!.promotion!.id,
-              code: carts[0].customer!.tier!.promotion!.code || null,
-              // @ts-ignore
-              status: carts[0].customer!.tier!.promotion!.status || null,
-            },
-          },
-        },
+        customer: tierPromotionInput,
       })
     })
 
@@ -3260,10 +3276,15 @@ export const addTierPromotionToCartWorkflow = createWorkflow(
         !appliedPromotionCodes.includes(data.validationResult?.promotion_code!)
       )
     }).then(() => {
+      const promoCodes = transform(
+        { validationResult },
+        ({ validationResult }) => [validationResult?.promotion_code!]
+      )
+
       return updateCartPromotionsWorkflow.runAsStep({
         input: {
           cart_id: input.cart_id,
-          promo_codes: [validationResult?.promotion_code!],
+          promo_codes: promoCodes,
           action: PromotionActions.ADD,
         },
       })
@@ -3351,11 +3372,16 @@ To consume the hook, create the file `src/workflows/hooks/update-cart-promotions
 
 ```ts title="src/workflows/hooks/update-cart-promotions-validate.ts"
 import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { PromotionActions } from "@medusajs/framework/utils"
 
 updateCartPromotionsWorkflow.hooks.validate(async ({ input, cart }, { container }) => {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Only validate when adding promotions
   if (
@@ -3439,10 +3465,15 @@ Create the file `src/workflows/hooks/complete-cart-validate.ts` with the followi
 
 ```ts title="src/workflows/hooks/complete-cart-validate.ts"
 import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 completeCartWorkflow.hooks.validate(async ({ cart }, { container }) => {
-  const query = container.resolve("query")
+  const query = container.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   // Get cart with promotions
   const { data: [detailedCart] } = await query.graph({
@@ -3572,7 +3603,10 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { TIER_MODULE } from "../../../../../modules/tier"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import { OrderStatus } from "@medusajs/framework/utils"
 
@@ -3596,7 +3630,7 @@ export async function GET(
     )
   }
 
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const tierModuleService = req.scope.resolve(TIER_MODULE)
 
   // Get customer details to validate they're registered

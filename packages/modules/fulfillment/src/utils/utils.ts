@@ -23,7 +23,7 @@ export type Rule = {
 export const availableOperators = Object.values(RuleOperator)
 
 const isDate = (str: string) => {
-  return !isNaN(Date.parse(str))
+  return isNaN(Number(str)) && !isNaN(Date.parse(str))
 }
 
 const operatorsPredicate = {

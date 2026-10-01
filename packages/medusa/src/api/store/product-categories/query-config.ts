@@ -1,4 +1,7 @@
-import { disallowedStoreFields } from "../utils/disallowed-fields"
+import {
+  buildAllowedFields,
+  prefixAllowedFields,
+} from "../utils/allowed-fields"
 
 export const defaults = [
   "id",
@@ -15,15 +18,67 @@ export const defaults = [
   "*category_children",
 ]
 
+const storeCategoryFields = [
+  "id",
+  "name",
+  "description",
+  "handle",
+  "rank",
+  "external_id",
+  "parent_category_id",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+]
+
+const storeCategoryRelations = ["parent_category", "category_children"]
+
+/**
+ * A nested category is itself a category, so every level needs its own exact
+ * paths. Capped at the framework's default `storeRelationsLimit` of 3 — a
+ * deeper path would be rejected by `validateRelationsLimit` anyway.
+ */
+const buildNestedCategoryFields = (depth: number) => {
+  const paths: string[] = []
+  let prefixes = storeCategoryRelations
+
+  for (let level = 1; level <= depth; level++) {
+    if (level > 1) {
+      paths.push(...prefixes)
+    }
+
+    for (const prefix of prefixes) {
+      paths.push(...prefixAllowedFields(prefix, storeCategoryFields))
+    }
+
+    prefixes = prefixes.flatMap((prefix) =>
+      prefixAllowedFields(prefix, storeCategoryRelations)
+    )
+  }
+
+  return paths
+}
+
+export const allowedStoreProductCategoryExtraFields = [
+  "products",
+  "deleted_at",
+  "products.title",
+  "products.variants",
+  "products.options",
+  "products.images",
+  "category_children.products.title",
+  ...buildNestedCategoryFields(3),
+]
+
 export const retrieveProductCategoryConfig = {
   defaults,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaults, allowedStoreProductCategoryExtraFields),
   isList: false,
 }
 
 export const listProductCategoryConfig = {
   defaults,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaults, allowedStoreProductCategoryExtraFields),
   defaultLimit: 50,
   isList: true,
 }

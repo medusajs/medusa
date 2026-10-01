@@ -9,6 +9,7 @@ import {
 } from "@medusajs/framework/utils"
 
 import { StoreProductTypeParamsType } from "../validators"
+import { publishedProductsContext } from "../../utils/published-products-context"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreProductTypeParamsType>,
@@ -23,6 +24,7 @@ export const GET = async (
         id: req.params.id,
       },
       fields: req.queryConfig.fields,
+      context: publishedProductsContext(),
     },
     {
       locale: req.locale,

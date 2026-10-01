@@ -1,0 +1,528 @@
+---
+sidebar_label: "Products"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Product Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The product hooks fetch and mutate products and their variants in the Medusa backend. To fetch variants across all products, use the [product variant hooks](../product-variants/page.mdx) instead.
+
+```tsx
+import {
+  productsQueryKeys,
+  useCreateProduct,
+  useDeleteProduct,
+  useDeleteVariantLazy,
+  useProduct,
+  useProductVariants,
+  useProducts,
+  useUpdateProduct,
+  useUpdateProductVariantsBatch,
+  variantsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useProducts
+
+Fetches a paginated list of products.
+
+```tsx
+const { products, count, isPending } = useProducts({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`AdminProductListParams`",
+      optional: true,
+      description: "Optional query parameters, such as `limit`, `offset`, `q`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "products",
+      type: "`AdminProduct[]`",
+      description: "The list of products. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of products matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of products returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of products skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## useProduct
+
+Fetches a single product by ID.
+
+```tsx
+const { product, isPending } = useProduct(productId, {
+  fields: "+variants.*",
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters, such as `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "product",
+      type: "`AdminProduct`",
+      description: "The product's details. It's `undefined` while the request is loading.",
+    },
+  ]}
+/>
+
+---
+
+## useProductVariants
+
+Fetches the variants of a specific product. The first parameter is the product's ID, not a query object.
+
+```tsx
+const { variants, count } = useProductVariants(
+  productId,
+  { limit: 20 }
+)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "productId",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "query",
+      type: "`AdminProductVariantParams`",
+      optional: true,
+      description: "Optional query parameters, such as `limit`, `offset`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "variants",
+      type: "`AdminProductVariant[]`",
+      description: "The product's variants. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of variants matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of variants returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of variants skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## useCreateProduct
+
+Creates a product. On success, the hook invalidates the product lists, along with the inventory item and product option lists, since creating a product can create those resources too.
+
+```tsx
+const { mutateAsync, isPending } = useCreateProduct()
+
+const handleCreate = async () => {
+  const { product } = await mutateAsync({
+    title: "Shirt",
+    options: [
+      { title: "Size", values: ["S", "M"] },
+    ],
+  })
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "options",
+      type: "`UseMutationOptions`",
+      optional: true,
+      description: "Optional TanStack mutation options, such as `onSuccess` or `onError`. This hook accepts no other parameters.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result.
+
+<TypeList
+  types={[
+    {
+      name: "mutate",
+      type: "`(payload: AdminCreateProduct) => void`",
+      description: "Sends the create request with the product's data.",
+    },
+    {
+      name: "mutateAsync",
+      type: "`(payload: AdminCreateProduct) => Promise`",
+      description: "The promise-based version of `mutate`. It resolves to an object with a `product` property.",
+    },
+  ]}
+/>
+
+---
+
+## useUpdateProduct
+
+Updates a product. The hook requests the updated product without its relations, so the response holds the product's own fields only. On success, it invalidates the product lists and the product's detail query.
+
+```tsx
+const { mutateAsync } = useUpdateProduct(productId)
+
+const handleUpdate = async () => {
+  await mutateAsync({ title: "New title" })
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseMutationOptions`",
+      optional: true,
+      description: "Optional TanStack mutation options, such as `onSuccess` or `onError`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result.
+
+<TypeList
+  types={[
+    {
+      name: "mutate",
+      type: "`(payload: AdminUpdateProduct) => void`",
+      description: "Sends the update request with the product's new data.",
+    },
+    {
+      name: "mutateAsync",
+      type: "`(payload: AdminUpdateProduct) => Promise`",
+      description: "The promise-based version of `mutate`. It resolves to an object with a `product` property.",
+    },
+  ]}
+/>
+
+---
+
+## useDeleteProduct
+
+Deletes a product. On success, the hook invalidates the product lists, the product's detail query, and the product option lists.
+
+```tsx
+const { mutateAsync } = useDeleteProduct(productId)
+
+const handleDelete = async () => {
+  await mutateAsync()
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseMutationOptions`",
+      optional: true,
+      description: "Optional TanStack mutation options, such as `onSuccess` or `onError`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result.
+
+<TypeList
+  types={[
+    {
+      name: "mutate",
+      type: "`() => void`",
+      description: "Sends the delete request. It accepts no payload.",
+    },
+    {
+      name: "mutateAsync",
+      type: "`() => Promise`",
+      description: "The promise-based version of `mutate`. It resolves to an object with `id`, `object`, and `deleted` properties.",
+    },
+  ]}
+/>
+
+---
+
+## useUpdateProductVariantsBatch
+
+Updates multiple variants of a product in one request. The payload is the array of variant updates, and the hook wraps it in the batch request's `update` field for you.
+
+```tsx
+const { mutateAsync } =
+  useUpdateProductVariantsBatch(productId)
+
+const handleUpdate = async () => {
+  await mutateAsync([
+    { id: variantId, title: "Large" },
+  ])
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "productId",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseMutationOptions`",
+      optional: true,
+      description: "Optional TanStack mutation options, such as `onSuccess` or `onError`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result.
+
+<TypeList
+  types={[
+    {
+      name: "mutate",
+      type: `\`(payload: AdminBatchProductVariantRequest["update"]) => void\``,
+      description: "Sends the batch update request with the array of variant updates.",
+    },
+    {
+      name: "mutateAsync",
+      type: `\`(payload: AdminBatchProductVariantRequest["update"]) => Promise\``,
+      description: "The promise-based version of `mutate`. It resolves to the batch response of the updated variants.",
+    },
+  ]}
+/>
+
+---
+
+## useDeleteVariantLazy
+
+Deletes a variant of a product. The hook is bound to the product only, so you pass the variant's ID when you call the mutation. That makes it useful when one component deletes any of a product's variants.
+
+```tsx
+const { mutateAsync } = useDeleteVariantLazy(productId)
+
+const handleDelete = async (variantId: string) => {
+  await mutateAsync({ variantId })
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "productId",
+      type: "`string`",
+      optional: false,
+      description: "The product's ID.",
+    },
+    {
+      name: "options",
+      type: "`UseMutationOptions`",
+      optional: true,
+      description: "Optional TanStack mutation options, such as `onSuccess` or `onError`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) result.
+
+<TypeList
+  types={[
+    {
+      name: "mutate",
+      type: "`(payload: { variantId: string }) => void`",
+      description: "Sends the delete request for the variant whose ID you pass.",
+    },
+    {
+      name: "mutateAsync",
+      type: "`(payload: { variantId: string }) => Promise`",
+      description: "The promise-based version of `mutate`. It resolves to an object with `id`, `object`, `deleted`, and `parent` properties, where `parent` is the product.",
+    },
+  ]}
+/>
+
+---
+
+## productsQueryKeys
+
+A TanStack Query key factory for product queries. Use it to invalidate cached product data after you change a product.
+
+It provides `all`, `lists()`, `list(query)`, `details()`, and `detail(id, query)`.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  productsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshProduct = (id: string) => {
+    queryClient.invalidateQueries({
+      queryKey: productsQueryKeys.detail(id),
+    })
+  }
+
+  // ...
+}
+```
+
+---
+
+## variantsQueryKeys
+
+A TanStack Query key factory for the variants of a product, which is the factory that `useProductVariants` uses. It's separate from `productVariantQueryKeys`, which the [product variant hooks](../product-variants/page.mdx) use.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  variantsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshVariants = () => {
+    queryClient.invalidateQueries({
+      queryKey: variantsQueryKeys.lists(),
+    })
+  }
+
+  // ...
+}
+```

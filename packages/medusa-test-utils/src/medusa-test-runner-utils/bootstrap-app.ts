@@ -11,7 +11,7 @@ async function bootstrapApp({
   env = {},
 }: { cwd?: string; env?: Record<any, any> } = {}) {
   const app = express()
-  applyEnvVarsToProcess(env)
+  const restoreEnvVars = applyEnvVarsToProcess(env)
 
   // Register a health check endpoint
   app.get("/health", (_, res) => {
@@ -33,8 +33,10 @@ async function bootstrapApp({
       container,
       app,
       port: PORT,
+      restoreEnvVars,
     }
   } catch (error) {
+    restoreEnvVars()
     logger.error("Error bootstrapping app:", error)
     throw error
   }
@@ -58,6 +60,7 @@ export async function startApp({
       port,
       container: appContainer,
       shutdown: appShutdown,
+      restoreEnvVars,
     } = await bootstrapApp({
       cwd,
       env,
@@ -87,6 +90,8 @@ export async function startApp({
           logger.error("Error during forced cleanup:", cleanupError)
         }
         throw error
+      } finally {
+        restoreEnvVars()
       }
     }
 

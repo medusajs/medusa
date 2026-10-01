@@ -272,6 +272,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/references/payment/provider"
   },
   {
+    "title": "Use Search Module",
+    "path": "https://docs.medusajs.com/resources/references/search/service"
+  },
+  {
     "title": "Create Tax Provider",
     "path": "https://docs.medusajs.com/resources/references/tax/provider"
   }

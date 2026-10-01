@@ -1,6 +1,5 @@
 import { StepResponse } from "@medusajs/framework/workflows-sdk"
 import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
-import { confirmCartCreditLinesWorkflow } from "../carts/workflows/confirm-cart-credit-lines"
 import { cloneCartGiftCardsToOrderWorkflow } from "../orders/workflows/link-gift-cards-to-order"
 ;(completeCartWorkflow.hooks as any).orderCreated(
   async (data: { order_id: string; cart_id: string }, stepContext) => {
@@ -27,7 +26,7 @@ import { cloneCartGiftCardsToOrderWorkflow } from "../orders/workflows/link-gift
 
     const { container, ...sharedContext } = stepContext
 
-    await confirmCartCreditLinesWorkflow(container).cancel({
+    await cloneCartGiftCardsToOrderWorkflow(container).cancel({
       transactionId,
       container,
       context: { ...sharedContext },

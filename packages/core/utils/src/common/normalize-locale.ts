@@ -16,6 +16,10 @@ import { upperCaseFirst } from "./upper-case-first"
  * @example
  * input: "RU-cYrl-By"
  * output: "ru-Cyrl-BY"
+ *
+ * @example
+ * input: "zh-hans"
+ * output: "zh-Hans"
  */
 export function normalizeLocale(locale: string) {
   const segments = locale.split("-")
@@ -24,9 +28,15 @@ export function normalizeLocale(locale: string) {
     return segments[0].toLowerCase()
   }
 
-  // e.g en-US
+  // e.g en-US, or a script subtag such as zh-Hans
   if (segments.length === 2) {
-    return `${segments[0].toLowerCase()}-${segments[1].toUpperCase()}`
+    const isScript = /^[a-z]{4}$/i.test(segments[1])
+
+    return `${segments[0].toLowerCase()}-${
+      isScript
+        ? upperCaseFirst(segments[1].toLowerCase())
+        : segments[1].toUpperCase()
+    }`
   }
 
   // e.g ru-Cyrl-BY

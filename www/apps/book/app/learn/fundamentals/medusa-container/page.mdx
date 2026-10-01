@@ -14,13 +14,13 @@ In other platforms, if you have a resource A (for example, a class) that depends
 
 Medusa simplifies this process by giving you access to the container, with the tools or resources already registered, at all times in your customizations. When you reach a point in your code where you need a tool, you resolve it from the container and use it.
 
-For example, consider you're creating an API route that retrieves products based on filters using [Query](../../fundamentals/module-links/query/page.mdx), a tool that fetches data across the application. In the API route's function, you can resolve Query from the container passed to the API route and use it:
+For example, consider you're creating an API route that retrieves products based on filters using [Query](../../fundamentals/query/page.mdx), a tool that fetches data across the application. In the API route's function, you can resolve Query from the container passed to the API route and use it:
 
 export const highlights = [
   ["8", "resolve", "A method that resolves resources from the container."],
   [
     "8",
-    `"query"`,
+    `query`,
     "Query's registration key in the container.",
   ],
 ]
@@ -33,7 +33,9 @@ export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: products } = await query.graph({
     entity: "product",
@@ -53,7 +55,7 @@ The API route accepts as a first parameter a request object that has a `scope` p
 
 <Note>
 
-You can learn more about how Query works in [this chapter](../../fundamentals/module-links/query/page.mdx).
+You can learn more about how Query works in [this chapter](../../fundamentals/query/page.mdx).
 
 </Note>
 

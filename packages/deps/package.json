@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.19.0",
+  "version": "2.21.2",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.15.0"
   },
   "publishConfig": {
     "access": "public"

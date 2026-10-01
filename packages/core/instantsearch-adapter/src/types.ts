@@ -73,7 +73,7 @@ export interface SearchOptions {
   typo_tolerance?: boolean
   facets?: (string | SearchFacetRequest)[]
   disjunctive_facets?: boolean
-  highlight?: SearchHighlightOptions
+  highlight?: boolean | SearchHighlightOptions
   distinct?: string
   min_score?: number
   include_score?: boolean

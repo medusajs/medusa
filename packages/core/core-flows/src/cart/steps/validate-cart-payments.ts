@@ -7,6 +7,8 @@ import {
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
+import { listRegionPaymentProviderIds } from "../../payment-collection/utils/region-payment-providers"
+
 /**
  * The cart's details.
  */
@@ -20,7 +22,8 @@ export interface ValidateCartPaymentsStepInput {
 export const validateCartPaymentsStepId = "validate-cart-payments"
 /**
  * This step validates a cart's payment sessions. Their status must
- * be `pending`, `requires_more`, `authorized`, or `captured`. If not valid, the step throws an error.
+ * be `pending`, `requires_more`, `authorized`, or `captured`, and their payment
+ * provider must be enabled in the cart's region. If not valid, the step throws an error.
  *
  * :::tip
  *
@@ -37,9 +40,14 @@ export const validateCartPaymentsStepId = "validate-cart-payments"
  */
 export const validateCartPaymentsStep = createStep(
   validateCartPaymentsStepId,
-  async (data: ValidateCartPaymentsStepInput) => {
+  async (data: ValidateCartPaymentsStepInput, { container }) => {
     const {
-      cart: { payment_collection: paymentCollection, total, credit_line_total },
+      cart: {
+        payment_collection: paymentCollection,
+        total,
+        credit_line_total,
+        region_id: regionId,
+      },
     } = data
 
     const canSkipPayment =
@@ -75,6 +83,32 @@ export const validateCartPaymentsStep = createStep(
         MedusaError.Types.INVALID_DATA,
         `Payment sessions are required to complete cart`
       )
+    }
+
+    if (regionId) {
+      const enabledProviderIds = await listRegionPaymentProviderIds(
+        container,
+        regionId
+      )
+
+      const disabledProviderIds = Array.from(
+        new Set(
+          paymentsToProcess
+            .map((ps) => ps.provider_id)
+            .filter((providerId) => !enabledProviderIds.has(providerId))
+        )
+      )
+
+      if (disabledProviderIds.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Payment provider${
+            disabledProviderIds.length > 1 ? "s" : ""
+          } ${disabledProviderIds.join(", ")} ${
+            disabledProviderIds.length > 1 ? "are" : "is"
+          } not enabled in the cart's region ${regionId}.`
+        )
+      }
     }
 
     return new StepResponse(paymentsToProcess)

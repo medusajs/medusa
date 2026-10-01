@@ -12,6 +12,13 @@ const loggerMock = {
   error: jest.fn().mockImplementation(console.error),
 } as unknown as Logger
 
+const pipelineMock = {
+  rpush: jest.fn(),
+  expire: jest.fn(),
+  del: jest.fn(),
+  exec: jest.fn().mockResolvedValue([]),
+}
+
 const redisMock = {
   del: () => jest.fn(),
   rpush: () => jest.fn(),
@@ -19,6 +26,7 @@ const redisMock = {
   disconnect: () => jest.fn(),
   expire: () => jest.fn(),
   unlink: () => jest.fn(),
+  pipeline: jest.fn(() => pipelineMock),
 } as unknown as Redis
 
 const moduleDeps = {
@@ -84,7 +92,6 @@ describe("RedisEventBusService", () => {
         queue = (eventBus as any).queue_
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
-        redis.rpush = jest.fn()
       })
 
       it("should add job to queue with default options", async () => {
@@ -235,13 +242,18 @@ describe("RedisEventBusService", () => {
         await eventBus.emit(event, options)
 
         expect(queue.addBulk).toHaveBeenCalledTimes(0)
-        expect(redis.rpush).toHaveBeenCalledTimes(1)
-        expect(redis.rpush).toHaveBeenCalledWith(
+        expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+        expect(pipelineMock.rpush).toHaveBeenCalledWith(
           "staging:test-group-1",
           expect.any(String)
         )
+        expect(pipelineMock.expire).toHaveBeenCalledWith(
+          "staging:test-group-1",
+          600
+        )
+        expect(pipelineMock.exec).toHaveBeenCalledTimes(1)
 
-        const stagedEvent = JSON.parse(redis.rpush.mock.calls[0][1])
+        const stagedEvent = JSON.parse(pipelineMock.rpush.mock.calls[0][1])
         expect(stagedEvent.data.metadata).toEqual(
           expect.objectContaining({
             eventGroupId: "test-group-1",
@@ -285,7 +297,7 @@ describe("RedisEventBusService", () => {
         await eventBus.emit(events, options)
 
         expect(queue.addBulk).toHaveBeenCalledTimes(1)
-        expect(redis.rpush).toHaveBeenCalledTimes(2)
+        expect(pipelineMock.rpush).toHaveBeenCalledTimes(2)
         expect(redis.unlink).not.toHaveBeenCalled()
 
         const [testGroup1Event] = (eventBus as any).buildEvents(
@@ -301,10 +313,10 @@ describe("RedisEventBusService", () => {
           options
         )
 
-        const stagedGroup1Event = redis.rpush.mock.calls.find(
+        const stagedGroup1Event = pipelineMock.rpush.mock.calls.find(
           (call) => call[0] === "staging:test-group-1"
         )![1]
-        const stagedGroup2Events = redis.rpush.mock.calls
+        const stagedGroup2Events = pipelineMock.rpush.mock.calls
           .filter((call) => call[0] === "staging:test-group-2")
           .flatMap((call) => call.slice(1))
 
@@ -390,7 +402,6 @@ describe("RedisEventBusService", () => {
         queue = (eventBus as any).queue_
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
-        redis.rpush = jest.fn()
       })
 
       it("should add job to queue with default priority (100) for normal events", async () => {
@@ -787,8 +798,8 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(event)
 
-          expect(redis.rpush).toHaveBeenCalledTimes(1)
-          const calledWith = redis.rpush.mock.calls[0]
+          expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = pipelineMock.rpush.mock.calls[0]
           const stagedEvent = JSON.parse(calledWith[1])
 
           expect(stagedEvent.opts.priority).toBe(100)
@@ -803,8 +814,8 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(event, { internal: true })
 
-          expect(redis.rpush).toHaveBeenCalledTimes(1)
-          const calledWith = redis.rpush.mock.calls[0]
+          expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = pipelineMock.rpush.mock.calls[0]
           const stagedEvent = JSON.parse(calledWith[1])
 
           expect(stagedEvent.opts.priority).toBe(2097152)
@@ -820,8 +831,8 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(event, { priority: 50 })
 
-          expect(redis.rpush).toHaveBeenCalledTimes(1)
-          const calledWith = redis.rpush.mock.calls[0]
+          expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = pipelineMock.rpush.mock.calls[0]
           const stagedEvent = JSON.parse(calledWith[1])
 
           expect(stagedEvent.opts.priority).toBe(50)
@@ -838,7 +849,7 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(event, { priority: 75 })
 
-          const stagedEvent = redis.rpush.mock.calls.find(
+          const stagedEvent = pipelineMock.rpush.mock.calls.find(
             (call) => call[0] === "staging:test-group-priority"
           )![1]
           const builtEvent = JSON.parse(stagedEvent)
@@ -881,8 +892,8 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(event, { priority: 100 })
 
-          expect(redis.rpush).toHaveBeenCalledTimes(1)
-          const calledWith = redis.rpush.mock.calls[0]
+          expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = pipelineMock.rpush.mock.calls[0]
           const stagedEvent = JSON.parse(calledWith[1])
 
           expect(stagedEvent.opts.priority).toBe(20)
@@ -912,8 +923,8 @@ describe("RedisEventBusService", () => {
 
           await eventBus.emit(events, { priority: 200 })
 
-          expect(redis.rpush).toHaveBeenCalledTimes(1)
-          const calledWith = redis.rpush.mock.calls[0]
+          expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
+          const calledWith = pipelineMock.rpush.mock.calls[0]
 
           // First argument is the key, rest are the events
           const stagedEvent1 = JSON.parse(calledWith[1])
@@ -936,7 +947,6 @@ describe("RedisEventBusService", () => {
         queue = (eventBus as any).queue_
         queue.addBulk = jest.fn()
         redis = (eventBus as any).eventBusRedisConnection_
-        redis.rpush = jest.fn()
       })
 
       it("should not add events to queue when there are no subscribers", async () => {
@@ -1003,7 +1013,7 @@ describe("RedisEventBusService", () => {
 
         await eventBus.emit(event, options)
 
-        expect(redis.rpush).toHaveBeenCalledTimes(1)
+        expect(pipelineMock.rpush).toHaveBeenCalledTimes(1)
         expect(queue.addBulk).not.toHaveBeenCalled()
 
         const [builtEvent] = (eventBus as any).buildEvents([event], options)
@@ -1035,7 +1045,7 @@ describe("RedisEventBusService", () => {
 
         await eventBus.emit(event, options)
 
-        const stagedEvent = redis.rpush.mock.calls.find(
+        const stagedEvent = pipelineMock.rpush.mock.calls.find(
           (call) => call[0] === "staging:test-group-no-sub-2"
         )![1]
 
