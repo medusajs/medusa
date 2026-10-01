@@ -15,7 +15,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.15.0"
   },
   "files": [
     "dist",
