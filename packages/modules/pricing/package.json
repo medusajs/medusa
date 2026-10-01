@@ -11,7 +11,7 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22.15.0"
   },
   "repository": {
     "type": "git",
