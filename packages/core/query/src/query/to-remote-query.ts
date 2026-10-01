@@ -9,6 +9,7 @@ import { isObject, isString, QueryContext } from "@medusajs/utils"
 
 const FIELDS = "__fields"
 const ARGUMENTS = "__args"
+const UNSAFE_FIELD_SEGMENTS = new Set(["__proto__", "constructor", "prototype"])
 
 type JoinerConfigLookupResult = {
   joinerConfig?: ModuleJoinerConfig
@@ -115,6 +116,12 @@ export function toRemoteQuery<const TEntity extends string>(
     }
 
     const fieldSegments = fieldAsString.split(".")
+
+    // Guard against prototype pollution through unsafe field segments
+    if (fieldSegments.some((segment) => UNSAFE_FIELD_SEGMENTS.has(segment))) {
+      continue
+    }
+
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""
