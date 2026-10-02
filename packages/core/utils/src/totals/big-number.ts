@@ -20,6 +20,15 @@ export class BigNumber implements IBigNumber {
     this.setRawValueOrThrow(rawValue, options)
   }
 
+  private throwIfNaN(bigNum: BigNumberJS, rawValue: unknown) {
+    // bignumber.js turns a non-numeric string into NaN instead of throwing,
+    // while a NaN number is already rejected below, so keep both paths
+    // consistent and never let a NaN amount through.
+    if (bigNum.isNaN()) {
+      throw new Error(`Invalid BigNumber value: ${rawValue}. Not a number`)
+    }
+  }
+
   setRawValueOrThrow(
     rawValue: BigNumberInput | BigNumber,
     { precision }: { precision?: number } = {}
@@ -34,6 +43,8 @@ export class BigNumber implements IBigNumber {
        *  const bnUnitValue = new BigNumberJS("10.99")
        *  const unitValue = new BigNumber(bnUnitValue)
        */
+      this.throwIfNaN(rawValue, rawValue)
+
       this.numeric_ = rawValue.toNumber()
       this.raw_ = {
         value: rawValue.toPrecision(precision),
@@ -45,6 +56,8 @@ export class BigNumber implements IBigNumber {
        * Example: const unitValue = "1234.1234"
        */
       const bigNum = new BigNumberJS(rawValue)
+
+      this.throwIfNaN(bigNum, rawValue)
 
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
@@ -58,6 +71,7 @@ export class BigNumber implements IBigNumber {
        */
       const definedPrecision = rawValue.precision ?? precision
       const bigNum = new BigNumberJS(rawValue.value)
+      this.throwIfNaN(bigNum, rawValue.value)
       this.numeric_ = bigNum.toNumber()
       this.raw_ = {
         ...rawValue,
