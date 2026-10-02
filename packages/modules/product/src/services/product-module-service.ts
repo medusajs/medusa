@@ -625,15 +625,16 @@ export default class ProductModuleService
     }
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
-    const [variants, { optionsByProductId, valueIdsByProductId }] =
-      await promiseAll([
-        this.productVariantService_.list(
-          { product_id: productIds },
-          { relations: ["options"] },
-          sharedContext
-        ),
-        this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
-      ])
+
+    // Loaded sequentially: a transaction reuses a single pg client, so
+    // parallel queries trigger the pg deprecation warning (removed in pg@9).
+    const variants = await this.productVariantService_.list(
+      { product_id: productIds },
+      { relations: ["options"] },
+      sharedContext
+    )
+    const { optionsByProductId, valueIdsByProductId } =
+      await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
