@@ -8,6 +8,19 @@ import {
 import { AdminCreateProduct, AdminCreateProductVariant } from "@medusajs/types"
 
 /**
+ * Contextual data made available to column processors that need to resolve
+ * values against the store (e.g. region prices need to resolve a region name
+ * to its id). It is kept as plain data so the normalizer stays pure.
+ */
+export type CSVNormalizerContext = {
+  /**
+   * Regions keyed by their lowercased name, used to resolve region-scoped
+   * variant prices (e.g. "Variant Price Europe [EUR]") to a region id.
+   */
+  regionsByName?: Map<string, { id: string; currency_code: string }>
+}
+
+/**
  * Column processor is a function that process the CSV column
  * and writes its value to the output
  */
@@ -15,7 +28,8 @@ type ColumnProcessor<Output> = (
   csvRow: Record<string, string | boolean | number>,
   rowColumns: string[],
   rowNumber: number,
-  output: Output
+  output: Output,
+  context: CSVNormalizerContext
 ) => void
 
 type NormalizedRow =
@@ -42,25 +56,58 @@ function createError(rowNumber: number, message: string) {
   )
 }
 
+const VARIANT_PRICE_COLUMN_PREFIX = "variant price "
+
 /**
- * Parses different patterns to extract variant price iso
- * and the region name. The iso is converted to lowercase
+ * Parses a variant price column name into its currency ISO code and, for
+ * region-scoped prices, the region name. This matches the format written by
+ * the product export:
+ *
+ * - Store-wide price: "Variant Price <CURRENCY>" (e.g. "Variant Price EUR")
+ * - Region price:     "Variant Price <Region Name> [<CURRENCY>]"
+ *                     (e.g. "Variant Price Europe [EUR]")
+ *
+ * The ISO code is returned lowercased. `region` is the (case-insensitive)
+ * region name for region prices, and `undefined` for store-wide prices.
+ *
+ * Note: column names reaching this function are already lowercased.
  */
 function parseVariantPriceColumn(columnName: string, rowNumber: number) {
-  const normalizedValue = columnName
-  const potentialRegion = /\[(.*)\]/g.exec(normalizedValue)?.[1]
-  const iso = normalizedValue.split(" ").pop()
+  // Region prices carry the currency in trailing brackets, with the region
+  // name in between, e.g. "variant price europe [eur]".
+  const trailingBracket = /\[([^\]]+)\]\s*$/.exec(columnName)
+  if (trailingBracket) {
+    const iso = trailingBracket[1].trim()
+    const region = columnName
+      .slice(VARIANT_PRICE_COLUMN_PREFIX.length, trailingBracket.index)
+      .trim()
+
+    if (!iso) {
+      throw createError(
+        rowNumber,
+        `Invalid price format used by "${columnName}". Expect the currency ISO code inside the brackets. For example: "Variant Price Europe [EUR]"`
+      )
+    }
+
+    return {
+      iso: iso.toLowerCase(),
+      region: region || undefined,
+    }
+  }
+
+  // Store-wide price: the currency ISO code is the remainder of the column name.
+  const iso = columnName.slice(VARIANT_PRICE_COLUMN_PREFIX.length).trim()
 
   if (!iso) {
     throw createError(
       rowNumber,
-      `Invalid price format used by "${columnName}". Expect column name to contain the ISO code as the last segment. For example: "Variant Price [Europe] EUR" or "Variant Price EUR"`
+      `Invalid price format used by "${columnName}". Expect the column name to contain the currency ISO code. For example: "Variant Price EUR" or "Variant Price Europe [EUR]"`
     )
   }
 
   return {
     iso: iso.toLowerCase(),
-    region: potentialRegion,
+    region: undefined,
   }
 }
 
@@ -314,14 +361,17 @@ const variantWildcardColumns: {
     [K in keyof AdminCreateProductVariant]?: any
   }>
 } = {
-  "variant price": (csvRow, rowColumns, rowNumber, output) => {
+  "variant price": (csvRow, rowColumns, rowNumber, output, context) => {
     const pricesColumns = rowColumns.filter((rowKey) => {
       return rowKey.startsWith("variant price ") && isPresent(csvRow[rowKey])
     })
     output["prices"] = output["prices"] ?? []
 
     pricesColumns.forEach((columnName) => {
-      const { iso } = parseVariantPriceColumn(columnName, rowNumber)
+      const { iso, region: regionName } = parseVariantPriceColumn(
+        columnName,
+        rowNumber
+      )
       const value = csvRow[columnName]
 
       const numericValue = tryConvertToNumber(value)
@@ -330,6 +380,24 @@ const variantWildcardColumns: {
           rowNumber,
           `Invalid value provided for "${columnName}". Expected value to be a number, received "${value}"`
         )
+      }
+
+      if (regionName) {
+        // Region prices need to resolve the region name to its id so the
+        // price is created with a `region_id` rule (mirroring the export).
+        const region = context?.regionsByName?.get(regionName)
+        if (!region) {
+          throw createError(
+            rowNumber,
+            `Region with name "${regionName}" not found for column "${columnName}"`
+          )
+        }
+
+        output["prices"].push({
+          amount: numericValue,
+          currency_code: region.currency_code,
+          rules: { region_id: region.id },
+        })
       } else {
         output["prices"].push({
           currency_code: iso,
@@ -474,8 +542,11 @@ export class CSVNormalizer {
     toUpdate: {},
   }
 
-  constructor(rows: NormalizedRow[]) {
+  #context: CSVNormalizerContext
+
+  constructor(rows: NormalizedRow[], context: CSVNormalizerContext = {}) {
     this.#rows = rows
+    this.#context = context
   }
 
   /**
@@ -519,10 +590,22 @@ export class CSVNormalizer {
       ? this.#getOrInitializeProductById(String(productId))
       : this.#getOrInitializeProductByHandle(String(productHandle))
     Object.keys(productStaticColumns).forEach((column) => {
-      productStaticColumns[column](row, rowColumns, rowNumber, product)
+      productStaticColumns[column](
+        row,
+        rowColumns,
+        rowNumber,
+        product,
+        this.#context
+      )
     })
     Object.keys(productWildcardColumns).forEach((column) => {
-      productWildcardColumns[column](row, rowColumns, rowNumber, product)
+      productWildcardColumns[column](
+        row,
+        rowColumns,
+        rowNumber,
+        product,
+        this.#context
+      )
     })
 
     /**
@@ -533,10 +616,22 @@ export class CSVNormalizer {
       [K in keyof AdminCreateProductVariant]?: any
     } = {}
     Object.keys(variantStaticColumns).forEach((column) => {
-      variantStaticColumns[column](row, rowColumns, rowNumber, variant)
+      variantStaticColumns[column](
+        row,
+        rowColumns,
+        rowNumber,
+        variant,
+        this.#context
+      )
     })
     Object.keys(variantWildcardColumns).forEach((column) => {
-      variantWildcardColumns[column](row, rowColumns, rowNumber, variant)
+      variantWildcardColumns[column](
+        row,
+        rowColumns,
+        rowNumber,
+        variant,
+        this.#context
+      )
     })
 
     /**
@@ -551,7 +646,7 @@ export class CSVNormalizer {
       }[]
     } = { options: [] }
     Object.keys(optionColumns).forEach((column) => {
-      optionColumns[column](row, rowColumns, rowNumber, options)
+      optionColumns[column](row, rowColumns, rowNumber, options, this.#context)
     })
 
     /**
