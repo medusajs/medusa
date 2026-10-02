@@ -264,6 +264,12 @@ export interface BaseRefund {
   note?: string | null
 
   /**
+   * The key that made the refund idempotent at the payment provider. It's only
+   * set when the request supplied one.
+   */
+  idempotency_key?: string | null
+
+  /**
    * The creation date of the refund.
    */
   created_at: Date
