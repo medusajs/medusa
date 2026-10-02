@@ -1,16 +1,16 @@
 import { Prerequisites, Table } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Submit Feedback with the MCP Server`,
+  title: `${pageNumber} Submit Feedback with the Docs MCP Server`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to send feedback to the Medusa team directly from your AI tool or IDE.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to send feedback to the Medusa team directly from your AI tool or IDE.
 
 ## What is the Submit Feedback Tool?
 
-The Medusa MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
+The Docs MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
 
 The Medusa team receives the feedback immediately at the moment your agent submits it. Because your agent has the full context of what you were building and what went wrong, including the code that failed, the report it writes is usually more specific than one you'd write from memory later.
 
@@ -18,7 +18,7 @@ The Medusa team receives the feedback immediately at the moment your agent submi
 
 ## Why This Matters
 
-Feedback submitted through the MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
+Feedback submitted through the Docs MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
 
 This matters because:
 
@@ -35,13 +35,13 @@ Submitting feedback is always preferable to silently working around a problem.
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     }
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to submit feedback.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to submit feedback.
 
 For example:
 

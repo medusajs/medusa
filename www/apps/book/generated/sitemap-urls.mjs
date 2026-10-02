@@ -132,6 +132,7 @@ export const sitemapUrls = [
   "/learn/introduction/build-with-llms-ai/agentic-skills",
   "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
   "/learn/introduction/build-with-llms-ai/cloud-cli",
+  "/learn/introduction/build-with-llms-ai/manage-store-with-agents",
   "/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question",
   "/learn/introduction/build-with-llms-ai/mcp-server/extend-products",
   "/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers",

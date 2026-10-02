@@ -10,11 +10,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to migrate your store's data from Magento / Adobe Commerce into Medusa.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to migrate your store's data from Magento / Adobe Commerce into Medusa.
 
 ## What is the Migration Tool?
 
-The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Magento / Adobe Commerce.
+The Docs MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Magento / Adobe Commerce.
 
 You tell your AI agent that you're coming from Magento and what you want to bring over, and it produces a working import: your store's data lands in Medusa with Magento's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
 
@@ -130,13 +130,13 @@ Don't mix the two approaches on the same store. The CSV path can't key records t
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     }
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Magento as the source platform, along with the data type and approach, then follows the returned guide.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Magento as the source platform, along with the data type and approach, then follows the returned guide.
 
 For example:
 
@@ -169,9 +169,9 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 ---
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
 
 1. [Magento Migration](https://medusajs.com/contact?type=mcp-server-magento-migration)
 2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)

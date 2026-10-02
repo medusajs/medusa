@@ -108,7 +108,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2026-09-03T14:04:01.809Z",
   "app/learn/fundamentals/workflows/errors/page.mdx": "2025-04-25T14:26:25.000Z",
   "app/learn/fundamentals/api-routes/override/page.mdx": "2025-12-22T12:56:06.558Z",
-  "app/learn/introduction/build-with-llms-ai/page.mdx": "2026-05-05T10:49:20.724Z",
+  "app/learn/introduction/build-with-llms-ai/page.mdx": "2026-10-02T07:27:46.056Z",
   "app/learn/installation/docker/page.mdx": "2026-04-21T08:13:24.486Z",
   "app/learn/fundamentals/generated-types/page.mdx": "2026-08-21T06:05:37.193Z",
   "app/learn/introduction/from-v1-to-v2/page.mdx": "2026-09-04T07:34:27.178Z",
@@ -149,5 +149,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/query/query-context/page.mdx": "2026-08-21T06:04:22.963Z",
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
-  "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z"
+  "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
+  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-10-02T07:46:47.186Z"
 }
