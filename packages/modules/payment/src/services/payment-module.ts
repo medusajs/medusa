@@ -162,6 +162,30 @@ export default class PaymentModuleService
     amount: BigNumberInput,
     currencyCode: string
   ): BigNumberInput {
+    if (amount == null) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Amount must be a finite, non-negative number."
+      )
+    }
+
+    let normalizedAmount: ReturnType<typeof MathBN.convert>
+    try {
+      normalizedAmount = MathBN.convert(amount)
+    } catch {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Amount must be a finite, non-negative number."
+      )
+    }
+
+    if (!normalizedAmount.isFinite() || normalizedAmount.isNegative()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Amount must be a finite, non-negative number."
+      )
+    }
+
     let precision: number | undefined = undefined
     try {
       const formatted = Intl.NumberFormat(undefined, {
@@ -174,7 +198,9 @@ export default class PaymentModuleService
       // Unknown currency, keep the full precision
     }
 
-    return MathBN.convert(amount, precision)
+    return precision == null
+      ? normalizedAmount
+      : normalizedAmount.decimalPlaces(precision)
   }
 
   // @ts-expect-error
