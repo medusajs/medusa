@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 import { HttpTypes } from "@medusajs/types"
 import { DataTableFilter } from "@medusajs/ui"
@@ -93,7 +93,7 @@ export function useTableConfiguration({
   viewConfigurationKey,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [_, setSearchParams] = useSearchParams()
 
   const viewConfigKey = viewConfigurationKey ?? entity
 
@@ -113,7 +113,6 @@ export function useTableConfiguration({
 
   const { activeView, createView } = useViewConfigurations(viewConfigKey)
   const currentActiveView = activeView?.view_configuration || null
-  const isActiveViewLoading = !!activeView?.isLoading
   const { updateView } = useViewConfiguration(
     viewConfigKey,
     currentActiveView?.id || ""
@@ -195,34 +194,12 @@ export function useTableConfiguration({
         .join(",")
     : ""
 
-  // Table state already in the URL when the table mounts (a shared link, a
-  // reload, back navigation) must survive the first view sync. Read once, on
-  // mount. `keptSyncKeyRef` holds the sync key that sync is kept for; keyed
-  // rather than a one-shot flag so that StrictMode's effect re-run keeps the
-  // URL as well.
-  const [urlHadTableState] = useState(() =>
-    Array.from(searchParams.keys()).some((key) =>
-      key.startsWith(queryPrefix + "_")
-    )
-  )
-  const keptSyncKeyRef = useRef<string | null | undefined>(undefined)
-
   // Sync view configuration with URL and column state
   useEffect(() => {
-    if (!columnsToRender || isActiveViewLoading) {
+    if (!columnsToRender) {
       return
     }
     originalHandleViewChange(currentActiveView, columnsToRender)
-
-    const syncKey = `${activeViewSignature}|${columnsSignature}`
-    if (keptSyncKeyRef.current === undefined) {
-      keptSyncKeyRef.current = urlHadTableState ? syncKey : null
-    }
-    if (keptSyncKeyRef.current === syncKey) {
-      return
-    }
-    keptSyncKeyRef.current = null
-
     setSearchParams((prev) => {
       // Clear existing query params
       const keysToDelete = Array.from(prev.keys()).filter(
@@ -267,7 +244,7 @@ export function useTableConfiguration({
     // churn every render), or it re-runs on each render and clears the
     // just-applied filter. applyDefaultFilters is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeViewSignature, columnsSignature, isActiveViewLoading])
+  }, [activeViewSignature, columnsSignature])
 
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {
