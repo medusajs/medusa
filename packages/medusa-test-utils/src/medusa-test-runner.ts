@@ -53,7 +53,6 @@ interface TestRunnerConfig {
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
-  inApp?: boolean
   hooks?: {
     beforeServerStart?: (container: MedusaContainer) => Promise<void>
   }
@@ -68,8 +67,6 @@ class MedusaTestRunner {
   private cwd: string
   private env: Record<string, any>
   private debug: boolean
-  // @ts-ignore
-  private inApp: boolean
 
   private dbUtils: ReturnType<typeof dbTestUtilFactory>
   private dbConfig: {
@@ -100,7 +97,6 @@ class MedusaTestRunner {
     this.modulesConfigPath = config.medusaConfigFile ?? this.cwd
     this.env = config.env ?? {}
     this.debug = config.debug ?? false
-    this.inApp = config.inApp ?? false
 
     this.dbUtils = dbTestUtilFactory()
     this.dbConfig = {
@@ -392,7 +388,6 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   debug = false,
-  inApp = false,
   testSuite,
   hooks,
   cwd,
@@ -403,7 +398,6 @@ export function medusaIntegrationTestRunner({
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
-  inApp?: boolean
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
   cwd?: string
@@ -415,7 +409,6 @@ export function medusaIntegrationTestRunner({
     schema,
     env,
     debug,
-    inApp,
     hooks,
     cwd,
   })
