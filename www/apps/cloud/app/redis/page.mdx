@@ -41,27 +41,6 @@ Remove these modules entirely instead of registering them conditionally, such as
 
 </Note>
 
-For example, remove configurations like the following from your `medusa-config.ts`:
-
-```ts title="medusa-config.ts"
-// Don't do this on Cloud
-const REDIS_URL = process.env.REDIS_URL
-const redisModules = REDIS_URL
-  ? [
-      {
-        resolve: "@medusajs/medusa/event-bus-redis",
-        options: { redisUrl: REDIS_URL },
-      },
-      // other Redis modules...
-    ]
-  : []
-
-module.exports = defineConfig({
-  // ...
-  modules: [...redisModules],
-})
-```
-
 <Note>
 
 If you're using a Medusa version before v2.7.0, contact support for assistance in configuring the Redis modules.
