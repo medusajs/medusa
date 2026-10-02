@@ -108,8 +108,11 @@ export default class NotificationModuleService
       .map((entry) => entry.idempotency_key)
       .filter(Boolean)
 
-    let { notificationsToProcess, createdNotifications } =
-      await this.baseRepository_.transaction(async (txManager) => {
+    let {
+      notificationsToProcess,
+      createdNotifications,
+      retriedNotifications,
+    } = await this.baseRepository_.transaction(async (txManager) => {
         const context = {
           ...sharedContext,
           transactionManager: txManager,
@@ -149,11 +152,17 @@ export default class NotificationModuleService
             const provider = providers.find((provider) =>
               provider?.channels.includes(entry.channel)
             )
+            const existingNotification = entry.idempotency_key
+              ? existsMap.get(entry.idempotency_key)
+              : undefined
 
             return {
               provider,
+              existingNotification,
               data: {
-                id: generateEntityId(undefined, "noti"),
+                id:
+                  existingNotification?.id ??
+                  generateEntityId(undefined, "noti"),
                 ...entry,
                 provider_id: provider?.id,
               },
@@ -175,6 +184,13 @@ export default class NotificationModuleService
         return {
           notificationsToProcess: normalizedNotificationsToProcess,
           createdNotifications,
+          retriedNotifications: normalizedNotificationsToProcess
+            .map((entry) => entry.existingNotification)
+            .filter(
+              (
+                entry
+              ): entry is InferEntityType<typeof Notification> => !!entry
+            ),
         }
       })
 
@@ -226,7 +242,10 @@ export default class NotificationModuleService
       )
 
       // Maintain the order of the notifications
-      createdNotifications = createdNotifications.map((notification) => {
+      createdNotifications = [
+        ...createdNotifications,
+        ...retriedNotifications,
+      ].map((notification) => {
         return updatedNotificationsMap.get(notification.id) || notification
       })
     }

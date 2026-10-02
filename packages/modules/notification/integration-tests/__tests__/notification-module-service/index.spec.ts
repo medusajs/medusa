@@ -206,6 +206,60 @@ moduleIntegrationTestRunner<INotificationModuleService>({
         expect(secondResult).toBe(undefined)
       })
 
+      it("should retry a failed notification using the same idempotency row", async () => {
+        const notification = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "retry-idempotency-key",
+        }
+
+        await expect(service.createNotifications(notification)).rejects.toThrow(
+          "Failed to send notification"
+        )
+
+        const [failedNotification] = await service.listNotifications({
+          idempotency_key: "retry-idempotency-key",
+        })
+        expect(failedNotification.status).toEqual(NotificationStatus.FAILURE)
+
+        const retriedNotification = await service.createNotifications({
+          ...notification,
+          to: "admin@medusa.com",
+        })
+
+        expect(retriedNotification).toEqual(
+          expect.objectContaining({
+            id: failedNotification.id,
+            external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
+          })
+        )
+
+        const storedNotification = await service.retrieveNotification(
+          failedNotification.id
+        )
+        expect(storedNotification).toEqual(
+          expect.objectContaining({
+            id: failedNotification.id,
+            external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
+          })
+        )
+
+        const notifications = await service.listNotifications({
+          idempotency_key: "retry-idempotency-key",
+        })
+        expect(notifications).toHaveLength(1)
+
+        const duplicateResult = await service.createNotifications({
+          ...notification,
+          to: "admin@medusa.com",
+        })
+        expect(duplicateResult).toBe(undefined)
+      })
+
       it("should manage the status of multiple notification properly in any scenarios", async () => {
         const notification1 = {
           to: "admin@medusa.com",
