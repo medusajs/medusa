@@ -108,7 +108,13 @@ export const AdminCustomerAddressesParams = createFindParams({
   })
 )
 
+export const AdminExportCustomer = z.object({
+  format: z.enum(["csv", "json"]).optional(),
+  batch_size: z.union([z.number(), z.string()]).optional(),
+})
+
 export type AdminCustomerParamsType = z.infer<typeof AdminCustomerParams>
+export type AdminExportCustomerType = z.infer<typeof AdminExportCustomer>
 export type AdminCustomersParamsType = z.infer<typeof AdminCustomersParams>
 export type AdminCreateCustomerType = z.infer<typeof CreateCustomer>
 export type AdminUpdateCustomerType = z.infer<typeof UpdateCustomer>
