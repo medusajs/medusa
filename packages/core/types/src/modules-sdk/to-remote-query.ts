@@ -27,7 +27,7 @@ type ExtractFiltersOperators<
     ? never
     : NonNullable<T[Key]> extends string | number | boolean | Date
     ? T[Key] | T[Key][] | OperatorMap<T[Key] | T[Key][]>
-    : T[Key] extends Array<infer R>
+    : NonNullable<T[Key]> extends Array<infer R>
     ? TypeOnly<R> extends { __typename: string }
       ? RemoteQueryFilters<
           Key & string,
@@ -48,8 +48,8 @@ type ExtractFiltersOperators<
         [Key & string, ...Exclusion],
         Depth[Lim]
       >
-    : T[Key] extends object
-    ? CleanupObject<T[Key]>
+    : NonNullable<T[Key]> extends object
+    ? CleanupObject<NonNullable<T[Key]>>
     : never
 }
 
