@@ -2,4 +2,4 @@
 "@medusajs/draft-order": patch
 ---
 
-Guard remaining draft-order admin customer lists against null entries
+fix(draft-order): guard customer lists against null entries
