@@ -773,6 +773,13 @@ export class TransactionOrchestrator extends EventEmitter {
       return result
     }
 
+    // A step that already reached OK must not be failure-marked: the
+    // failure-handling pass of a parallelize() batch can race a succeeded
+    // sibling, and any status/state change below would throw.
+    if (step.getStates().status === TransactionStepStatus.OK) {
+      return result
+    }
+
     step.failures++
 
     if (isErrorLike(error)) {
@@ -792,8 +799,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (
       !isTimeout &&
-      step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE &&
-      step.getStates().status !== TransactionStepStatus.OK
+      step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE
     ) {
       step.changeStatus(TransactionStepStatus.TEMPORARY_FAILURE)
     }
