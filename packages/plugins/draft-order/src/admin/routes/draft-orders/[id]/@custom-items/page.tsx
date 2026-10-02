@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { RouteDrawer } from "../../../../components/modals"
+import { KeyboundForm, RouteDrawer } from "@medusajs/dashboard/components"
 
 const CustomItems = () => {
   return (

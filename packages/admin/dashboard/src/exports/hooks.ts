@@ -25,6 +25,7 @@ export {
   useCreateProduct,
   useDeleteProduct,
   useDeleteVariantLazy,
+  useLinkProductOptions,
   useProduct,
   useProductVariants,
   useProducts,

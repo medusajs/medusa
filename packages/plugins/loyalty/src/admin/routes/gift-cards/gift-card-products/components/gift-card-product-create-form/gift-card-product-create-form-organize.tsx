@@ -1,13 +1,13 @@
-import { UseFormReturn } from "react-hook-form";
-import { StackedFocusModal } from "../../../../../components/modals";
-import { GiftCardProductCreateOrganizationSection } from "./gift-card-product-create-form-organize-section";
-import { GiftCardProductSalesChannelStackedModal } from "./gift-card-product-sales-channel-stacked-modal";
-import { SC_STACKED_MODAL_ID } from "./schema";
-import { ProductCreateSchemaType } from "./types";
+import { UseFormReturn } from "react-hook-form"
+import { GiftCardProductCreateOrganizationSection } from "./gift-card-product-create-form-organize-section"
+import { GiftCardProductSalesChannelStackedModal } from "./gift-card-product-sales-channel-stacked-modal"
+import { SC_STACKED_MODAL_ID } from "./schema"
+import { ProductCreateSchemaType } from "./types"
+import { StackedFocusModal } from "@medusajs/dashboard/components"
 
 type GiftCardProductCreateOrganizeFormProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+}
 
 export const GiftCardProductCreateOrganizeForm = ({
   form,
@@ -18,5 +18,5 @@ export const GiftCardProductCreateOrganizeForm = ({
 
       <GiftCardProductSalesChannelStackedModal form={form} />
     </StackedFocusModal>
-  );
-};
+  )
+}

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const GiftCardCreateSchema = z.object({
   value: z.coerce.number().positive({
@@ -10,4 +10,4 @@ export const GiftCardCreateSchema = z.object({
   expires_at: z.date().nullable().optional(),
   note: z.string().optional(),
   metadata: z.record(z.string(), z.string()).optional(),
-});
+})

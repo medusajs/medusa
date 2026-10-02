@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { ComponentProps } from "react"
 
 const StoreCreditIcon = (props: ComponentProps<"svg">) => {
   return (
@@ -39,7 +39,7 @@ const StoreCreditIcon = (props: ComponentProps<"svg">) => {
         </linearGradient>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default StoreCreditIcon;
+export default StoreCreditIcon

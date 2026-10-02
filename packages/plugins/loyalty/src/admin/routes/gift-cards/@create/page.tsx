@@ -1,9 +1,9 @@
-import { RouteFocusModal } from "../../../components/modals";
-import { useStore } from "../../../hooks/api/store";
-import { GiftCardCreateForm } from "../components/gift-card-create-form/gift-card-create-form";
+import { GiftCardCreateForm } from "../components/gift-card-create-form/gift-card-create-form"
+import { RouteFocusModal } from "@medusajs/dashboard/components"
+import { useStore } from "@medusajs/dashboard/hooks"
 
 const GiftCardCreate = () => {
-  const { store, isLoading } = useStore({});
+  const { store, isLoading } = useStore({})
 
   return (
     <RouteFocusModal>
@@ -17,7 +17,7 @@ const GiftCardCreate = () => {
 
       {!isLoading && <GiftCardCreateForm store={store!} />}
     </RouteFocusModal>
-  );
-};
+  )
+}
 
-export default GiftCardCreate;
+export default GiftCardCreate

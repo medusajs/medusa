@@ -1,23 +1,33 @@
-import { defineWidgetConfig } from "@medusajs/admin-sdk";
-import { Gift, TriangleRightMini } from "@medusajs/icons";
-import { Container, StatusBadge } from "@medusajs/ui";
-import { useParams } from "react-router-dom";
-import { AdminGiftCard } from "../../types";
-import { Header } from "../components/header";
-import { NoRecords } from "../components/no-records";
-import { SidebarLink } from "../components/sidebar-link";
-import { useOrder } from "../hooks/api/order";
-import { formatAmount } from "../utils/format-amount";
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import type { HttpTypes } from "@medusajs/types"
+import { Gift, TriangleRightMini } from "@medusajs/icons"
+import { Container, StatusBadge } from "@medusajs/ui"
+import { useParams } from "react-router-dom"
+import { AdminGiftCard } from "../../types"
+import { Header } from "../components/header"
+import { NoRecords, SidebarLink } from "@medusajs/dashboard/components"
+import { useOrder } from "@medusajs/dashboard/hooks"
+import { formatCurrency } from "@medusajs/dashboard/lib"
+
+/**
+ * `gift_cards` is linked onto the order by this plugin, so it is not part of
+ * the core `AdminOrder` shape.
+ */
+type OrderWithGiftCards = HttpTypes.AdminOrder & {
+  gift_cards?: AdminGiftCard[]
+}
 
 const OrderGiftCardsWidget = () => {
-  const params = useParams();
+  const params = useParams()
 
   const { order } = useOrder(params.id!, {
     fields: "+*gift_cards",
-  });
+  })
 
-  if (!order?.gift_cards?.length) {
-    return;
+  const giftCards = (order as OrderWithGiftCards | undefined)?.gift_cards
+
+  if (!giftCards?.length) {
+    return
   }
 
   return (
@@ -28,7 +38,7 @@ const OrderGiftCardsWidget = () => {
         tooltip={`A credit line “refund” will always attempt to apply the credit to the customers store credit account first. If the customers doesn't have a store credit account, a new one will be created.`}
       />
 
-      {order?.gift_cards?.length === 0 && (
+      {giftCards?.length === 0 && (
         <NoRecords
           className="border-t"
           title="No gift cards"
@@ -37,16 +47,16 @@ const OrderGiftCardsWidget = () => {
         />
       )}
 
-      {order?.gift_cards?.map((giftCard: AdminGiftCard) => {
+      {giftCards?.map((giftCard) => {
         const hasGiftCardExpired =
-          giftCard.expires_at && new Date(giftCard.expires_at) < new Date();
+          giftCard.expires_at && new Date(giftCard.expires_at) < new Date()
 
         return (
           <SidebarLink
             icon={<Gift />}
             key={giftCard.id}
             labelKey={giftCard.code}
-            descriptionKey={formatAmount(
+            descriptionKey={formatCurrency(
               (giftCard.value as number) ?? 0,
               giftCard.currency_code
             )}
@@ -63,15 +73,15 @@ const OrderGiftCardsWidget = () => {
               <TriangleRightMini className="text-ui-fg-muted" />
             </>
           </SidebarLink>
-        );
+        )
       })}
     </Container>
-  );
-};
+  )
+}
 
 export const config = defineWidgetConfig({
   zone: "order.details.side.after",
   id: "medusa:order-gift-cards-widget",
-});
+})
 
-export default OrderGiftCardsWidget;
+export default OrderGiftCardsWidget

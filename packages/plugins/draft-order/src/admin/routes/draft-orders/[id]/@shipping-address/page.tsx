@@ -4,13 +4,16 @@ import { Button, Heading, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { CountrySelect } from "../../../../components/inputs/country-select"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
-import { useOrder } from "../../../../hooks/api/orders"
-import { addressSchema } from "../../../../lib/schemas/address"
+import {
+  CountrySelect,
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useOrder } from "@medusajs/dashboard/hooks"
+import { AddressSchema } from "@medusajs/dashboard/lib"
 
 const ShippingAddress = () => {
   const { id } = useParams()
@@ -254,6 +257,6 @@ const ShippingAddressForm = ({ order }: ShippingAddressFormProps) => {
   )
 }
 
-const schema = addressSchema
+const schema = AddressSchema
 
 export default ShippingAddress

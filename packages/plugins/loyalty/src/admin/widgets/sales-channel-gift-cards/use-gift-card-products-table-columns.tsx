@@ -1,26 +1,20 @@
 /* eslint-disable @medusajs/widget-must-have-default-export */
 /* eslint-disable @medusajs/widget-must-export-config */
-import { HttpTypes } from "@medusajs/types";
-import { createColumnHelper } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { HttpTypes } from "@medusajs/types"
+import { createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
 import {
   ProductCell,
   ProductHeader,
-} from "../../components/product/product-cell";
-import {
   ProductStatusCell,
   ProductStatusHeader,
-} from "../../components/product/product-status-cell";
-import {
   SalesChannelHeader,
   SalesChannelsCell,
-} from "../../components/product/sales-channels-cell";
-import {
   VariantCell,
   VariantHeader,
-} from "../../components/product/variant-cell";
+} from "@medusajs/dashboard/components"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>();
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 export const useProductTableColumns = () => {
   return useMemo(
@@ -46,5 +40,5 @@ export const useProductTableColumns = () => {
       }),
     ],
     []
-  );
-};
+  )
+}

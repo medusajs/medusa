@@ -1,12 +1,15 @@
+import {
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "@medusajs/framework/zod"
 import { AdminGiftCard } from "../../../../../types"
-import { Form } from "../../../../components/form"
-import { KeyboundForm } from "../../../../components/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import {
   useGiftCard,
   useUpdateGiftCard,

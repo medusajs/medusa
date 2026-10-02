@@ -1,5 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals";
-import { StoreCreditAccountCreateForm } from "./components/store-credit-account-create-form/store-credit-account-create-form";
+import { StoreCreditAccountCreateForm } from "./components/store-credit-account-create-form/store-credit-account-create-form"
+import { RouteFocusModal } from "@medusajs/dashboard/components"
 
 const StoreCreditAccountCreate = () => {
   return (
@@ -14,7 +14,7 @@ const StoreCreditAccountCreate = () => {
 
       <StoreCreditAccountCreateForm />
     </RouteFocusModal>
-  );
-};
+  )
+}
 
-export default StoreCreditAccountCreate;
+export default StoreCreditAccountCreate

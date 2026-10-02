@@ -1,16 +1,16 @@
-import { Heading } from "@medusajs/ui";
-import { useParams } from "react-router-dom";
-import { RouteDrawer } from "../../../../../components/modals";
-import { useProduct } from "../../../../../hooks/api/products";
-import { GiftCardProductEditDenominationsForm } from "./components/gift-card-product-edit-denominations-form";
+import { Heading } from "@medusajs/ui"
+import { useParams } from "react-router-dom"
+import { GiftCardProductEditDenominationsForm } from "./components/gift-card-product-edit-denominations-form"
+import { RouteDrawer } from "@medusajs/dashboard/components"
+import { useProduct } from "@medusajs/dashboard/hooks"
 
 export const GiftCardProductEdit = () => {
-  const { id } = useParams();
+  const { id } = useParams()
 
-  const { product, isLoading, isError, error } = useProduct(id!, {});
+  const { product, isLoading, isError, error } = useProduct(id!, {})
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   return (
@@ -29,7 +29,7 @@ export const GiftCardProductEdit = () => {
         <GiftCardProductEditDenominationsForm product={product} />
       )}
     </RouteDrawer>
-  );
-};
+  )
+}
 
-export default GiftCardProductEdit;
+export default GiftCardProductEdit
