@@ -120,7 +120,7 @@
         },
         "weight": {
           "name": "weight",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -132,11 +132,11 @@
           "default": null,
           "comment": null,
           "enumItems": [],
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "length": {
           "name": "length",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -148,11 +148,11 @@
           "default": null,
           "comment": null,
           "enumItems": [],
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "height": {
           "name": "height",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -164,11 +164,11 @@
           "default": null,
           "comment": null,
           "enumItems": [],
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "width": {
           "name": "width",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -180,7 +180,7 @@
           "default": null,
           "comment": null,
           "enumItems": [],
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "requires_shipping": {
           "name": "requires_shipping",

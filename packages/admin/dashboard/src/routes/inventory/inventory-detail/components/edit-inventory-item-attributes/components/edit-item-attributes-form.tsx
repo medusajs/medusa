@@ -91,6 +91,7 @@ export const EditInventoryItemAttributesForm = ({
                   <Form.Control>
                     <Input
                       type="number"
+                      step="any"
                       min={0}
                       value={value || ""}
                       onChange={(e) => {
@@ -120,6 +121,7 @@ export const EditInventoryItemAttributesForm = ({
                   <Form.Control>
                     <Input
                       type="number"
+                      step="any"
                       min={0}
                       value={value || ""}
                       onChange={(e) => {
@@ -149,6 +151,7 @@ export const EditInventoryItemAttributesForm = ({
                   <Form.Control>
                     <Input
                       type="number"
+                      step="any"
                       min={0}
                       value={value || ""}
                       onChange={(e) => {
@@ -178,6 +181,7 @@ export const EditInventoryItemAttributesForm = ({
                   <Form.Control>
                     <Input
                       type="number"
+                      step="any"
                       min={0}
                       value={value || ""}
                       onChange={(e) => {
