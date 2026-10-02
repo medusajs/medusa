@@ -37,7 +37,30 @@ So, you don't need to configure any of these modules and providers or set up Red
 
 If you have any of these modules configured in your `medusa-config.ts`, remove them before deploying to Cloud. Keeping them causes configuration conflicts that result in deployment failures or in-memory fallback warnings at runtime. Also remove any `redisUrl` set in `projectConfig`, since Cloud manages Redis provisioning automatically.
 
+Remove these modules entirely instead of registering them conditionally, such as only when a `REDIS_URL` environment variable is set. If the variable is set when Cloud builds your application, the modules register and conflict with the Redis modules that Cloud configures. The deployment then fails, often with empty logs or unclear error messages.
+
 </Note>
+
+For example, remove configurations like the following from your `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+// Don't do this on Cloud
+const REDIS_URL = process.env.REDIS_URL
+const redisModules = REDIS_URL
+  ? [
+      {
+        resolve: "@medusajs/medusa/event-bus-redis",
+        options: { redisUrl: REDIS_URL },
+      },
+      // other Redis modules...
+    ]
+  : []
+
+module.exports = defineConfig({
+  // ...
+  modules: [...redisModules],
+})
+```
 
 <Note>
 
