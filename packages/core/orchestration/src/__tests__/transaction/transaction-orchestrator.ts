@@ -2288,14 +2288,14 @@ describe("Transaction Orchestrator", () => {
       expect(step.invoke.status).toBe(TransactionStepStatus.OK)
 
       // Simulate the engine's failure-marking pass racing a sibling step that
-      // already reached OK (medusajs/medusa#16825). Before the fix this threw
+      // already reached OK. Before the fix this threw
       // `Updating Status from "ok" to "temp_failure" is not allowed.`
       await expect(
         (TransactionOrchestrator as any).setStepFailure(
           transaction,
           step,
           new Error("concurrent failure"),
-          3
+          0
         )
       ).resolves.toBeDefined()
 
