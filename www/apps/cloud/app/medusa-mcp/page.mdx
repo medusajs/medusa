@@ -18,38 +18,20 @@ Once you connect an AI tool to the Medusa MCP server, you can ask it questions a
 - "How many orders are waiting to be fulfilled?"
 - "What products are available to shoppers in my B2B sales channel?"
 
-The AI tool finds the right API route in your store, including your custom API routes, and calls it on your behalf to answer the question.
-
-<Note>
-
-The Medusa MCP server is in early access. If it isn't enabled for your organization, contact Medusa's support to request access.
-
-</Note>
-
-### Features
-
-- **Connect to environments**: Connect the AI tool to one or more environments across your organizations, and choose which ones it can access. When you connect multiple environments, mention the store you mean in your question.
-- **Read store data**: Retrieve orders, products, customers, inventory, and other commerce data from your store's Admin API routes as your admin user. The AI tool can also retrieve storefront data, such as the products available in a sales channel, from your store's Store API routes as a guest customer.
-- **Read custom store data**: Retrieve data from your store's custom `GET` API routes under the `/store` and `/admin` prefixes. Medusa indexes your store's API routes each time the environment deploys, so the AI tool finds new custom routes after you deploy them.
-- **Answer Medusa questions**: Search the Medusa documentation to answer general questions about Medusa.
-
-### Medusa MCP vs Docs MCP
-
-Medusa provides two MCP servers:
-
-- The **Medusa MCP server**, at `https://cloud.medusajs.com/mcp`, reads data from your Cloud stores. It's the server this guide covers.
-- The [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server), at `https://docs.medusajs.com/mcp`, answers development questions from the Medusa documentation and provides implementation guides.
-
-The Medusa MCP server can also search the Medusa documentation, so you don't need both servers to ask general Medusa questions. If you're writing code for your Medusa application, use the Docs MCP server for its implementation guides.
+Your AI tool then retrieves the relevant data from your store and presents it to you in a human-readable format.
 
 ---
 
-## Prerequisites
+## Connect to the Medusa MCP Server
+
+This section explains how to get access to the Medusa MCP server and connect your AI tool to it.
+
+### Prerequisites
 
 <Prerequisites
   items={[
     {
-      text: "Cloud account in an organization with Medusa MCP access",
+      text: "Cloud account",
       link: "/sign-up",
     },
     {
@@ -63,27 +45,33 @@ The Medusa MCP server can also search the Medusa documentation, so you don't nee
   ]}
 />
 
----
+### Step 1: Request Access
 
-## How the Medusa MCP Server Works
+The Medusa MCP server is in early access. To request access for your organization, email [support@medusajs.com](mailto:support@medusajs.com) with the name of your organization.
 
-When you connect an AI tool to the Medusa MCP server, you log in with your Cloud account and choose the environments, or stores, that the AI tool can access.
+If your organization already has access, skip to the [next step](#step-2-rebuild-environments).
 
-When the AI tool calls the Medusa MCP server, Medusa logs in to the store's Medusa Admin as you, using the same [Log in with Medusa Cloud](../deployments/access/page.mdx#access-the-deployments-medusa-admin) flow you use in the browser. So:
+### Step 2: Rebuild Environments
 
-- The AI tool can only access data that your admin user in the store can access.
-- If you don't have an admin user in the store yet, Medusa creates one with your Cloud account's email.
-- Medusa never shares the store's admin session with the AI tool.
+After Medusa informs you that your organization has access, rebuild each environment that you want to connect to the Medusa MCP server.
 
-### Read-Only Access
+<Note type="warning">
 
-The Medusa MCP server is read-only. The AI tool can retrieve data from your store's Admin and Store API routes, but it can't create, update, or delete data. For example, if you ask the AI tool to cancel an order, it explains that it can't and points you to the Medusa Admin.
+You must start a new build of the environment. Redeploying an existing deployment reuses its previous build, so Medusa doesn't index the environment's API routes.
 
-The AI tool calls Store API routes as a guest customer, so it can't access routes that require a logged-in customer.
+</Note>
 
----
+To rebuild an environment:
 
-## Connect an AI Tool
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. Select the environment, then click **Trigger build** at the top right of the page.
+
+You can also start a new build with the Cloud CLI's [`mcloud environments trigger-build`](../cli/commands/environments/page.mdx#environments-trigger-build) command.
+
+Once the build finishes and the deployment is live, you can connect the environment to your AI tool.
+
+### Step 3: Connect an AI Tool
 
 The Medusa MCP server is a Streamable HTTP server at the following URL:
 
@@ -93,20 +81,11 @@ https://cloud.medusajs.com/mcp
 
 The Medusa MCP server authenticates with OAuth, so you don't need to create an access key. When you connect, the AI tool opens a browser window where you log in to your Cloud account and [approve the connection](#approve-the-connection).
 
-### Claude
+#### Claude
 
-Add the [Claude Connector](./claude/page.mdx) from Claude's connectors directory.
+The [Claude Connector](./claude/page.mdx) is coming soon to Claude's connectors directory. In the meantime, add the Medusa MCP server as a custom connector, as explained in the [Claude Connector](./claude/page.mdx#add-medusa-mcp-as-a-custom-connector-in-claude) guide.
 
-You can also add the Medusa MCP server as a custom connector:
-
-1. In Claude, go to **Settings** > **Connectors**.
-2. Click **Add custom connector**.
-3. Enter a name, such as `Medusa Commerce`, and the URL `https://cloud.medusajs.com/mcp`.
-4. Click **Add**, then click **Connect** next to the connector.
-
-Refer to [Claude's documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp) for more details.
-
-### Claude Code
+#### Claude Code
 
 Run the following command in your terminal:
 
@@ -124,11 +103,11 @@ claude
 
 Select the `medusa-commerce` server and choose **Authenticate**.
 
-### ChatGPT
+#### ChatGPT
 
-The [ChatGPT app](./chatgpt/page.mdx) is under review by OpenAI. In the meantime, add the Medusa MCP server as a custom plugin in ChatGPT's developer mode, as explained in the [ChatGPT app](./chatgpt/page.mdx#add-medusa-mcp-as-a-custom-plugin) guide.
+The [ChatGPT app](./chatgpt/page.mdx) is under review by OpenAI. In the meantime, add the Medusa MCP server as a custom plugin in ChatGPT's developer mode, as explained in the [ChatGPT app](./chatgpt/page.mdx#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) guide.
 
-### Cursor
+#### Cursor
 
 Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
 
@@ -144,7 +123,7 @@ Add the following to your `.cursor/mcp.json` file or Cursor settings, as explain
 
 Then, open **Settings** > **Tools & MCPs** and click **Connect** next to the `medusa-commerce` server.
 
-### VS Code
+#### VS Code
 
 Add the following to the `.vscode/mcp.json` file in your workspace:
 
@@ -161,7 +140,7 @@ Add the following to the `.vscode/mcp.json` file in your workspace:
 
 When you start the server, VS Code prompts you to log in to your Cloud account.
 
-### Codex
+#### Codex
 
 Run the following commands in your terminal:
 
@@ -171,7 +150,7 @@ codex mcp add medusa-commerce \
 codex mcp login medusa-commerce
 ```
 
-### OpenCode
+#### OpenCode
 
 Add the following to your [OpenCode config file](https://opencode.ai/docs/config/), for example, `~/.config/opencode/opencode.json`:
 
@@ -193,7 +172,7 @@ Then, run the following command to log in to your Cloud account:
 opencode mcp auth medusa-commerce
 ```
 
-### Approve the Connection
+#### Approve the Connection
 
 After you log in to your Cloud account, Cloud shows a consent page with the AI tool's name and the access it requests.
 
@@ -216,13 +195,26 @@ To connect more stores or remove stores from an AI tool, re-authenticate the AI 
 
 To disconnect an AI tool, remove the MCP server or connector from the AI tool.
 
-Medusa also revokes an AI tool's access if the AI tool doesn't use it for 30 days. To reconnect, remove and re-add the Medusa MCP server in your AI tool, then approve the connection again.
-
 ### Confirm Your Identity
 
 If a store requires multi-factor authentication, the AI tool asks you to confirm your identity when it calls a [tool](#available-tools) that accesses the store's data, such as `read_admin_api`. Connecting the AI tool doesn't require this confirmation. The AI tool either opens a confirmation page in your browser or shows you its link.
 
 After you confirm your identity, return to the AI tool and run the request again.
+
+---
+
+## Medusa MCP Features
+
+- **Connect to environments**: Connect the AI tool to one or more environments across your organizations, and choose which ones it can access. When you connect multiple environments, mention the store you mean in your question.
+- **Read store data**: Retrieve orders, products, customers, inventory, and other commerce data from your store's Admin API routes as your admin user. The AI tool can also retrieve storefront data, such as the products available in a sales channel, from your store's Store API routes as a guest customer.
+- **Read custom store data**: Retrieve data from your store's custom `GET` API routes under the `/store` and `/admin` prefixes. Medusa indexes your store's API routes each time the environment builds, so the AI tool finds new custom routes after you deploy them.
+- **Answer Medusa questions**: Search the Medusa documentation to answer general questions about Medusa.
+
+### Read-Only Access
+
+The Medusa MCP server is read-only. The AI tool can retrieve data from your store's Admin and Store API routes, but it can't create, update, or delete data. For example, if you ask the AI tool to cancel an order, it explains that it can't and points you to the Medusa Admin.
+
+The AI tool calls Store API routes as a guest customer, so it can't access routes that require a logged-in customer.
 
 ---
 
@@ -327,9 +319,20 @@ The Medusa MCP server provides the following tools to AI tools. You don't call t
 
 ### Custom API Routes
 
-Medusa indexes a store's API routes, including its custom API routes, each time the environment deploys. So, the AI tool can find and call your custom `GET` API routes after you deploy them.
+Medusa indexes a store's API routes, including its custom API routes, each time the environment builds. So, the AI tool can find and call your custom `GET` API routes after you deploy them.
 
 Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call custom API routes under other prefixes.
+
+---
+
+## Medusa MCP vs Docs MCP
+
+Medusa provides two MCP servers:
+
+- The **Medusa MCP server**, at `https://cloud.medusajs.com/mcp`, reads data from your Cloud stores. It's the server this guide covers.
+- The [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server), at `https://docs.medusajs.com/mcp`, answers development questions from the Medusa documentation and provides implementation guides.
+
+The Medusa MCP server can also search the Medusa documentation, so you don't need both servers to ask general Medusa questions. If you're writing code for your Medusa application, use the Docs MCP server for its implementation guides.
 
 ---
 
@@ -337,7 +340,11 @@ Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. 
 
 ### Medusa MCP Isn't Enabled for Your Account
 
-If the AI tool shows an error that Medusa MCP isn't enabled for your account, none of your organizations have Medusa MCP access. Contact Medusa's support to request access.
+If the AI tool shows an error that Medusa MCP isn't enabled for your account, none of your organizations have Medusa MCP access. [Request access](#step-1-request-access) for your organization.
+
+### AI Tool Can't Find Your Store's API Routes
+
+If the AI tool can't find your store's API routes, including your custom API routes, make sure that you [rebuilt the environment](#step-2-rebuild-environments) after your organization received access. Redeploying an existing deployment doesn't index the environment's API routes.
 
 {/* ### Permission Denied Errors
 

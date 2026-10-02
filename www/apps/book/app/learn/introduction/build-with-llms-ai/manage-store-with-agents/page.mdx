@@ -16,13 +16,13 @@ Medusa allows AI agents to read data from your Cloud stores, so you can ask ques
 - "How many orders are waiting to be fulfilled?"
 - "What products are available to shoppers in my B2B sales channel?"
 
-The agent finds the right API route in your store, including your custom API routes, and calls it as your admin user. So, the agent can only access the data that your admin user can access.
+Your AI agent then retrieves the relevant data from your store and presents it to you in a human-readable format.
 
 The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
 
 <Note>
 
-Store access for AI agents is in early access. If it isn't enabled for your organization, contact Medusa's support to request access.
+Store access for AI agents is in early access. If it isn't enabled for your organization, refer to the [Medusa MCP](!cloud!/medusa-mcp#connect-to-the-medusa-mcp-server) guide to request access and rebuild your environments.
 
 </Note>
 
@@ -38,7 +38,13 @@ You can connect AI agents to your store in the following ways:
 
 ## Claude Connector
 
-The Claude Connector is available in Claude's connectors directory. Once you add it, you can ask Claude about your stores in any chat.
+<Note type="soon">
+
+The Claude Connector is coming soon to Claude's connectors directory. In the meantime, you can add the Medusa MCP server to Claude as a [custom connector](!cloud!/medusa-mcp/claude#add-medusa-mcp-as-a-custom-connector-in-claude).
+
+</Note>
+
+The Claude Connector connects Claude to your stores, so you can ask Claude about your stores in any chat.
 
 Refer to the [Claude Connector](!cloud!/medusa-mcp/claude) guide in the Cloud documentation to learn how to add and use it.
 
@@ -48,7 +54,7 @@ Refer to the [Claude Connector](!cloud!/medusa-mcp/claude) guide in the Cloud do
 
 <Note type="soon">
 
-The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](!cloud!/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin) in developer mode.
+The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](!cloud!/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) in developer mode.
 
 </Note>
 

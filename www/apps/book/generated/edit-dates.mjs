@@ -131,18 +131,9 @@ export const generatedEditDates = {
   "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z",
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-07-30T11:47:10.280Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
   "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-07-28T05:43:48.904Z",
   "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-08-21T06:05:37.196Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/page.mdx": "2026-07-30T10:30:50.331Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/extend-products/page.mdx": "2026-07-30T10:34:57.901Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers/page.mdx": "2026-07-30T10:23:36.079Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/page.mdx": "2026-07-30T11:21:42.127Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z",
   "app/learn/fundamentals/query/search/page.mdx": "2026-09-25T12:33:45.770Z",
   "app/learn/fundamentals/query/index-module/page.mdx": "2026-08-21T06:04:22.962Z",
   "app/learn/fundamentals/query/page.mdx": "2026-09-15T11:13:29.895Z",
@@ -150,5 +141,5 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
-  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-10-02T07:46:47.186Z"
+  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-10-02T08:38:00.568Z"
 }

@@ -6,17 +6,23 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to add the Claude Connector to Claude and use it to ask questions about your Cloud stores.
+In this guide, you'll learn how to connect Claude to the Medusa MCP server and use it to ask questions about your Cloud stores.
+
+<Note type="soon">
+
+The Claude Connector is coming soon to Claude's connectors directory. In the meantime, you can [add the Medusa MCP server as a custom connector](#add-medusa-mcp-as-a-custom-connector-in-claude).
+
+</Note>
 
 ## What is the Medusa Claude Connector?
 
-The Claude Connector is listed in Claude's connectors directory. It connects Claude to the [Medusa MCP server](../page.mdx), so you can ask Claude questions about your stores' orders, products, customers, and other commerce data.
+The Claude Connector connects Claude to the [Medusa MCP server](../page.mdx), so you can ask Claude questions about your stores' orders, products, customers, and other commerce data.
 
 The Claude Connector is read-only. Claude can retrieve data from your stores, but it can't create, update, or delete data.
 
 <Note>
 
-The Medusa MCP server is in early access. If it isn't enabled for your organization, you can't connect to your stores, even after you add Medusa to Claude. Contact Medusa's support to request access.
+The Medusa MCP server is in early access. If it isn't enabled for your organization, you can't connect to your stores, even after you add Medusa to Claude. Refer to the [Medusa MCP](../page.mdx#connect-to-the-medusa-mcp-server) guide to request access and rebuild your environments.
 
 </Note>
 
@@ -28,7 +34,7 @@ The Medusa MCP server is in early access. If it isn't enabled for your organizat
   items={[
     {
       text: "Cloud account in an organization with Medusa MCP access",
-      link: "/medusa-mcp#prerequisites",
+      link: "/medusa-mcp#step-1-request-access",
     },
     {
       text: "Claude account",
@@ -38,6 +44,8 @@ The Medusa MCP server is in early access. If it isn't enabled for your organizat
 />
 
 ---
+
+{/* TODO: uncomment once the Claude Connector is listed in Claude's connectors directory
 
 ## Add the Medusa Connector
 
@@ -57,11 +65,34 @@ On Claude Team and Enterprise plans, an owner of the Claude organization may nee
 
 </Note>
 
+*/}
+
+## Add Medusa MCP as a Custom Connector in Claude
+
+Until the Claude Connector is available, you can add the Medusa MCP server to Claude as a custom connector.
+
+To add the Medusa MCP server as a custom connector:
+
+1. In Claude, go to **Settings** > **Connectors**.
+2. Click **Add custom connector**.
+3. Enter a name, such as `Medusa`, and the URL `https://cloud.medusajs.com/mcp`.
+4. Click **Add**, then click **Connect** next to the connector.
+5. In the browser window that opens, log in to your Cloud account.
+6. On the consent page, select the environments that Claude can access, then click **Approve**.
+
+Refer to [Claude's documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp) for more details on custom connectors.
+
+<Note>
+
+On Claude Team and Enterprise plans, an owner of the Claude organization may need to add the custom connector before members can connect to it.
+
+</Note>
+
 ---
 
 ## Use the Medusa Connector
 
-Once you add the Claude Connector, enable it in a chat from the tools menu in the message input. Then, ask Claude questions about your stores. For example:
+Once you add the connector, enable it in a chat from the tools menu in the message input. Then, ask Claude questions about your stores. For example:
 
 - "Which Medusa stores do I have connected?"
 - "Show me the 5 most recent orders in my store, with each order's total and status."
@@ -74,12 +105,12 @@ Claude shows each tool it calls while answering. Refer to the [Medusa MCP](../pa
 
 ## Remove the Medusa Connector
 
-To remove the Claude Connector:
+To remove the Medusa connector from Claude:
 
 1. In Claude, go to **Settings** > **Connectors**.
-2. Find the Claude Connector and click **Disconnect**.
+2. Find the Medusa connector and click **Disconnect**.
 
-To change the stores that Claude can access, disconnect the Claude Connector and connect it again, then select the environments on the consent page.
+To change the stores that Claude can access, disconnect the connector and connect it again, then select the environments on the consent page.
 
 ---
 
