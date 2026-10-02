@@ -248,8 +248,8 @@
         "goToSalesChannels": "销售渠道",
         "goToProductTypes": "产品类型",
         "goToLocations": "位置",
-        "goToPublishableApiKeys": "可发布的API密钥",
-        "goToSecretApiKeys": "密钥API密钥",
+        "goToPublishableApiKeys": "可发布 API 密钥",
+        "goToSecretApiKeys": "私密 API 密钥",
         "goToWorkflows": "工作流",
         "goToProfile": "个人资料",
         "goToReturnReasons": "退货原因"
@@ -386,10 +386,10 @@
       "dateDesc": "按最旧的"
     },
     "radio": {
-      "yes": "Yes",
-      "no": "No",
-      "true": "True",
-      "false": "False"
+      "yes": "是",
+      "no": "否",
+      "true": "是",
+      "false": "否"
     },
     "addFilter": "添加筛选"
   },
@@ -406,7 +406,7 @@
     "backToDashboard": "返回仪表板"
   },
   "addresses": {
-    "title": "标题",
+    "title": "地址",
     "shippingAddress": {
       "header": "配送地址",
       "editHeader": "编辑配送地址",
@@ -924,7 +924,7 @@
         "noRecords": "此选项暂无值。"
       },
       "delete": {
-        "confirmation": "您即将删除选项值\"{{value}}\"。此操作无法撤消。",
+        "confirmation": "您即将删除选项值“{{value}}”。此操作无法撤消。",
         "successToast": "选项值已成功删除。"
       }
     },
@@ -936,7 +936,7 @@
     "create": {
       "header": "创建产品选项",
       "hint": "创建新产品选项并管理其值。",
-      "successToast": "产品选项\"{{title}}\"已成功创建。",
+      "successToast": "产品选项“{{title}}”已成功创建。",
       "tabs": {
         "details": "详情",
         "organize": "管理排名"
@@ -948,10 +948,10 @@
     "edit": {
       "header": "编辑产品选项",
       "description": "编辑产品选项以更新其详情和关联值。",
-      "successToast": "产品选项\"{{title}}\"已成功更新。"
+      "successToast": "产品选项“{{title}}”已成功更新。"
     },
     "delete": {
-      "confirmation": "您即将删除产品选项\"{{title}}\"。此操作无法撤消。",
+      "confirmation": "您即将删除产品选项“{{title}}”。此操作无法撤消。",
       "successToast": "产品选项已成功删除。"
     },
     "fields": {
@@ -961,7 +961,7 @@
       },
       "values": {
         "label": "值",
-        "placeholder": "S, M, L"
+        "placeholder": "S、M、L"
       }
     }
   },
@@ -990,7 +990,7 @@
     "editItemDetails": "编辑项目详情",
     "quantityAcrossLocations": "{{quantity}} 分布于 {{locations}} 个地点",
     "unitOfMeasurePlaceholder": "lb",
-    "unitOfMeasureHint": "库存持有和计量的单位。在管理后台各处数量旁显示。",
+    "unitOfMeasureHint": "库存计量所使用的单位。该单位会显示在管理后台的数量旁。",
     "levelDeleted": "库存级别已成功删除。",
     "create": {
       "title": "创建库存项目",
@@ -1562,7 +1562,7 @@
       "markAsDelivered": "标记为已送达",
       "itemsToFulfillDesc": "选择要履行的商品和数量",
       "locationDescription": "选择您想要从哪个位置履行商品。",
-      "locationUnavailable": "位置已删除/不可用",
+      "locationUnavailable": "位置已删除或不可用",
       "sendNotificationHint": "通知客户关于已创建的履行。",
       "methodDescription": "选择与客户所选不同的配送方式",
       "error": {
@@ -1771,7 +1771,7 @@
     },
     "delete": {
       "confirmation": "您即将删除库存位置 {{name}}。此操作无法撤销。",
-      "successToast": "库存位置\"{{name}}\"已成功删除。"
+      "successToast": "库存位置“{{name}}”已成功删除。"
     },
     "fulfillmentProviders": {
       "header": "履约供应商",
@@ -2345,7 +2345,7 @@
       },
       "taxInclusive": {
         "title": "促销是否含税？",
-        "description": "启用此字段以在税后应用促销"
+        "description": "启用后，促销将在计税后应用。"
       },
       "status": {
         "label": "状态",
@@ -2771,7 +2771,7 @@
     "copyInviteLink": "复制邀请链接",
     "copyResetPasswordLink": "复制重置密码链接",
     "copyResetPasswordLinkSuccess": "重置密码链接已复制到剪贴板",
-    "copyResetPasswordLinkHint": "该链接即将过期，并使之前发送给此用户的任何重置密码链接失效。",
+    "copyResetPasswordLinkHint": "该链接将在短时间内过期，并会使此前发送给此用户的所有重置密码链接失效。",
     "expiredOnDate": "已过期 {{date}}",
     "validFromUntil": "有效期 <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "已接受 {{date}}",
@@ -3294,13 +3294,13 @@
       "successToast": "退款原因 {{label}} 已成功更新。"
     },
     "delete": {
-      "confirmation": "您即将删除退款原因\"{{label}}\"。此操作无法撤消。",
+      "confirmation": "您即将删除退款原因“{{label}}”。此操作无法撤消。",
       "successToast": "退款原因已成功删除。"
     },
     "fields": {
       "label": {
         "label": "标签",
-        "placeholder": "善意手势"
+        "placeholder": "善意补偿"
       },
       "code": {
         "label": "代码",
@@ -3426,14 +3426,14 @@
     "providerLabel": "提供商",
     "reindex": "重建索引",
     "reindexConfirmationTitle": "重建 {{name}} 的索引？",
-    "reindexConfirmation": "这将从源数据重建\"{{name}}\"索引。在重建完成之前，此索引的搜索结果可能不完整。",
+    "reindexConfirmation": "这将从源数据重建“{{name}}”索引。在重建完成之前，此索引的搜索结果可能不完整。",
     "reindexSuccess": "{{name}} 的重建索引已开始",
     "reindexSinceLabel": "起始时间",
     "reindexSinceHint": "仅重建此日期或之后更改的文档。留空则重建所有内容。",
     "reindexEntityIdsLabel": "实体 ID",
     "reindexEntityIdsHint": "以逗号或换行分隔的 ID，仅重建这些文档。是否支持取决于此索引自身的定义。",
     "delete": "删除索引",
-    "deleteWarning": "这将删除\"{{name}}\"索引及其所有历史版本，包括搜索引擎中的数据。在下次迁移从头重建之前，此索引上的内容无法搜索。此操作无法撤消。",
+    "deleteWarning": "这将删除“{{name}}”索引及其所有历史版本，包括搜索引擎中的数据。在下次迁移从头重建之前，此索引上的内容无法搜索。此操作无法撤消。",
     "deleteSuccess": "索引 {{name}} 已删除",
     "noFields": "没有已索引的字段。",
     "list": {
@@ -3459,8 +3459,8 @@
       "successToast": "配送选项类型 {{label}} 已成功更新。"
     },
     "delete": {
-      "confirmation": "您即将删除配送选项类型\"{{label}}\"。此操作无法撤消。",
-      "successToast": "配送选项类型\"{{label}}\"已成功删除。"
+      "confirmation": "您即将删除配送选项类型“{{label}}”。此操作无法撤消。",
+      "successToast": "配送选项类型“{{label}}”已成功删除。"
     },
     "fields": {
       "label": "标签",
@@ -3631,7 +3631,7 @@
     "inventory": "库存",
     "optional": "可选",
     "note": "备注",
-    "automaticTaxes": "自动费",
+    "automaticTaxes": "自动税费",
     "taxInclusivePricing": "含税定价",
     "currency": "货币",
     "address": "地址",
@@ -3755,7 +3755,7 @@
       },
       "updateView": {
         "title": "更新视图",
-        "description": "您确定要更新\"{{name}}\"吗？",
+        "description": "您确定要更新“{{name}}”吗？",
         "confirmText": "更新",
         "cancelText": "取消"
       }
@@ -3774,9 +3774,9 @@
   "permissions": {
     "accessDenied": {
       "title": "访问被拒绝",
-      "description": "您没有访问此页面的权限。",
+      "description": "您没有权限访问此页面。",
       "requiredPermission": "所需权限：{{permission}}",
-      "action": "您没有执行此操作的权限。"
+      "action": "您没有权限执行此操作。"
     },
     "requiredPermissions": {
       "title": "所需权限",
