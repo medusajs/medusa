@@ -164,12 +164,12 @@ export default class PaymentModuleService
   ): BigNumberInput {
     let precision: number | undefined = undefined
     try {
-      const formatted = Intl.NumberFormat(undefined, {
+      const formatter = Intl.NumberFormat(undefined, {
         style: "currency",
         currency: currencyCode,
-      }).format(0.1111111)
+      })
 
-      precision = formatted.split(".")[1].length
+      precision = formatter.resolvedOptions().maximumFractionDigits
     } catch {
       // Unknown currency, keep the full precision
     }
