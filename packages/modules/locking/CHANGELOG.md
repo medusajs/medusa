@@ -1,5 +1,12 @@
 # @medusajs/locking
 
+## 2.22.0
+
+### Patch Changes
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a)]:
+  - @medusajs/framework@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes

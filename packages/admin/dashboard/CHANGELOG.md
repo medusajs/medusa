@@ -1,5 +1,25 @@
 # @medusajs/dashboard
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.15.0 or later
+
+### Patch Changes
+
+- [#17083](https://github.com/medusajs/medusa/pull/17083) [`a49dd4d78fdfad0bba8708bc3ef78e1aaae79123`](https://github.com/medusajs/medusa/commit/a49dd4d78fdfad0bba8708bc3ef78e1aaae79123) Thanks [@Stratkoss](https://github.com/Stratkoss)! - fix(i18n): use Czech genitive plural for counts of 5 and above
+
+- [#16669](https://github.com/medusajs/medusa/pull/16669) [`7906936a5f360acee5f0b8790919e959c7e4a2eb`](https://github.com/medusajs/medusa/commit/7906936a5f360acee5f0b8790919e959c7e4a2eb) Thanks [@vansh17June](https://github.com/vansh17June)! - fix(dashboard): render refund reason selector in balance settlement refund form
+
+- [#17061](https://github.com/medusajs/medusa/pull/17061) [`d5e01f88a32961fda4550bf54b6014ce4e5a64ba`](https://github.com/medusajs/medusa/commit/d5e01f88a32961fda4550bf54b6014ce4e5a64ba) Thanks [@PINYOPATTANAWASANPORN](https://github.com/PINYOPATTANAWASANPORN)! - fix(dashboard): use display_name from API in regions table countries cell
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a)]:
+  - @medusajs/js-sdk@2.22.0
+  - @medusajs/admin-shared@2.22.0
+  - @medusajs/icons@2.22.0
+  - @medusajs/ui@4.2.7
+
 ## 2.21.2
 
 ### Patch Changes
