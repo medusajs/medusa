@@ -1,8 +1,9 @@
-import { PromotionActions } from "@medusajs/framework/utils"
+import { MedusaError, PromotionActions } from "@medusajs/framework/utils"
+import { AdditionalData } from "@medusajs/framework/types"
 import {
   createHook,
+  createStep,
   createWorkflow,
-  parallelize,
   transform,
   when,
   WorkflowData,
@@ -10,19 +11,11 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
-import {
-  createLineItemAdjustmentsStep,
-  createShippingMethodAdjustmentsStep,
-  getActionsToComputeFromPromotionsStep,
-  getPromotionCodesToApply,
-  prepareAdjustmentsFromPromotionActionsStep,
-  removeLineItemAdjustmentsStep,
-  removeShippingMethodAdjustmentsStep,
-  validateCartStep,
-} from "../steps"
-import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
+import { getPromotionCodesToApply, validateCartStep } from "../steps"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { promotionContextResult } from "../utils/schemas"
+import { refreshCartPromotionAdjustmentsWorkflow } from "./refresh-cart-promotion-adjustments"
+import { refreshCartShippingMethodsWorkflow } from "./refresh-cart-shipping-methods"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 /**
@@ -56,6 +49,39 @@ export type UpdateCartPromotionsWorkflowInput = {
   force_refresh_payment_collection?: boolean
 }
 
+/**
+ * The data to validate before updating a cart's promotions.
+ */
+export type UpdateCartPromotionsValidateInputStepInput = {
+  /**
+   * The workflow's input.
+   */
+  input: Pick<UpdateCartPromotionsWorkflowInput, "cart_id" | "cart">
+}
+
+/**
+ * This step validates that either a cart ID or a cart is passed to the
+ * {@link updateCartPromotionsWorkflow}. If neither is passed, the step throws an error.
+ *
+ * @example
+ * const data = updateCartPromotionsValidateInput({
+ *   input: {
+ *     cart_id: "cart_123",
+ *   }
+ * })
+ */
+export const updateCartPromotionsValidateInput = createStep(
+  "update-cart-promotions-validate-input",
+  ({ input }: UpdateCartPromotionsValidateInputStepInput) => {
+    if (!input.cart_id && !input.cart?.id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Either cart_id or cart must be provided to update the cart's promotions"
+      )
+    }
+  }
+)
+
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 /**
  * This workflow updates a cart's promotions, applying or removing promotion codes from the cart. It also computes the adjustments
@@ -87,7 +113,9 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     name: updateCartPromotionsWorkflowId,
     idempotent: false,
   },
-  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
+  (input: WorkflowData<UpdateCartPromotionsWorkflowInput & AdditionalData>) => {
+    updateCartPromotionsValidateInput({ input })
+
     const cartId = transform({ input }, ({ input }) => {
       return input.cart_id ?? input.cart?.id
     })
@@ -104,7 +132,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       const { data: cart } = useQueryGraphStep({
         entity: "cart",
         fields: cartFieldsForRefreshSteps,
-        filters: { id: input.cart_id },
+        filters: { id: cartId },
         options: { isList: false },
       }).config({ name: "fetch-cart" })
 
@@ -149,36 +177,43 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       action: action as PromotionActions,
     })
 
-    const actions = getActionsToComputeFromPromotionsStep({
-      computeActionContext: cart,
-      promotionCodesToApply,
-      additional_promotion_context: setPromotionContextResult,
-    })
-
-    const {
-      lineItemAdjustmentsToCreate,
-      lineItemAdjustmentIdsToRemove,
-      shippingMethodAdjustmentsToCreate,
-      shippingMethodAdjustmentIdsToRemove,
-      computedPromotionCodes,
-      skippedPromoCodes,
-    } = prepareAdjustmentsFromPromotionActionsStep({ actions })
-
-    parallelize(
-      removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove }),
-      removeShippingMethodAdjustmentsStep({
-        shippingMethodAdjustmentIdsToRemove,
-      }),
-      createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
-      createShippingMethodAdjustmentsStep({
-        shippingMethodAdjustmentsToCreate,
-      }),
-      updateCartPromotionsStep({
-        id: cart.id,
-        promo_codes: computedPromotionCodes,
-        action: PromotionActions.REPLACE,
-      })
+    const adjustmentsResult = refreshCartPromotionAdjustmentsWorkflow.runAsStep(
+      {
+        input: {
+          cart_id: cartId,
+          cart,
+          promo_codes: promotionCodesToApply,
+          additional_promotion_context: setPromotionContextResult,
+        },
+      }
     )
+
+    // Shipping prices can depend on the discounted item total, and shipping
+    // adjustments on the shipping price, so recompute once if shipping changed.
+    const shippingMethodsRefresh = refreshCartShippingMethodsWorkflow.runAsStep(
+      {
+        input: {
+          cart,
+          additional_data: input.additional_data,
+        },
+      }
+    )
+
+    const recomputedAdjustmentsResult = when(
+      "should-recompute-promotions-after-shipping-refresh",
+      { shippingMethodsRefresh },
+      ({ shippingMethodsRefresh }) => shippingMethodsRefresh.has_changes
+    ).then(() => {
+      return refreshCartPromotionAdjustmentsWorkflow
+        .runAsStep({
+          input: {
+            cart_id: cartId,
+            promo_codes: promotionCodesToApply,
+            additional_promotion_context: setPromotionContextResult,
+          },
+        })
+        .config({ name: "refresh-cart-promotion-adjustments-after-shipping" })
+    })
 
     when(
       { input },
@@ -192,6 +227,12 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     releaseLockStep({
       key: cartId,
     })
+
+    const skippedPromoCodes = transform(
+      { adjustmentsResult, recomputedAdjustmentsResult },
+      ({ adjustmentsResult, recomputedAdjustmentsResult }) =>
+        (recomputedAdjustmentsResult ?? adjustmentsResult)?.skipped_promo_codes
+    )
 
     return new WorkflowResponse(
       { skipped_promo_codes: skippedPromoCodes },
