@@ -564,7 +564,8 @@ class DistributedTransaction extends EventEmitter {
 
         const lastCheckpoint = await DistributedTransaction.loadTransaction(
           this.modelId,
-          this.transactionId
+          this.transactionId,
+          { isCancelling: !!this.getFlow().cancelledAt }
         )
 
         if (!lastCheckpoint) {
