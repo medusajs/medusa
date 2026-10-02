@@ -31073,9 +31073,9 @@ You can connect AI agents to your store in the following ways:
 
 ## Claude Connector
 
-The Claude Connector is coming soon to Claude's connectors directory. In the meantime, you can add the Medusa MCP server to Claude as a [custom connector](undefined/cloud/medusa-mcp/claude#add-medusa-mcp-as-a-custom-connector-in-claude).
+The Claude Connector is Medusa's listing in [Claude's connectors directory](https://claude.ai/directory/medusa). It connects Claude to your stores, so you can ask Claude about your stores in any chat.
 
-The Claude Connector connects Claude to your stores, so you can ask Claude about your stores in any chat.
+You can add the Claude Connector to Claude at any time, but you can only connect to your stores after your organization has access to the Medusa MCP server.
 
 Refer to the [Claude Connector](undefined/cloud/medusa-mcp/claude) guide in the Cloud documentation to learn how to add and use it.
 
