@@ -5,6 +5,7 @@ import {
 } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { normalizePriceListRules } from "../utils"
 
 export const createPriceListsStepId = "create-price-lists"
 /**
@@ -43,7 +44,9 @@ export const createPriceListsStep = createStep(
 
     const createData = data.map((priceListDTO) => {
       const { prices = [], ...rest } = priceListDTO
-      const createPriceListData: CreatePriceListDTO = { ...rest }
+      const createPriceListData: CreatePriceListDTO = normalizePriceListRules({
+        ...rest,
+      })
 
       createPriceListData.prices = prices.map((price) => ({
         currency_code: price.currency_code,
