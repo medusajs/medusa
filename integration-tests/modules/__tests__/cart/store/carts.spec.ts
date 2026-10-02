@@ -771,6 +771,33 @@ medusaIntegrationTestRunner({
             type: "invalid_data",
           })
 
+          // cannot create a cart with a fractional item quantity
+          const fractionalCreateRes = await api
+            .post(
+              `/store/carts`,
+              {
+                email: "tony@stark.com",
+                currency_code: region.currency_code,
+                region_id: region.id,
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 0.1,
+                  },
+                ],
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(fractionalCreateRes.response.status).toEqual(400)
+          expect(fractionalCreateRes.response.data).toEqual(
+            expect.objectContaining({
+              message: expect.stringContaining("items, 0, quantity"),
+              type: "invalid_data",
+            })
+          )
+
           const cart = (
             await api.post(
               `/store/carts`,
@@ -808,6 +835,26 @@ medusaIntegrationTestRunner({
             type: "invalid_data",
           })
 
+          // cannot add a fractional quantity item to the cart
+          response = await api
+            .post(
+              `/store/carts/${cart.id}/line-items`,
+              {
+                variant_id: product.variants[1].id,
+                quantity: 1.5,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.response.status).toEqual(400)
+          expect(response.response.data).toEqual(
+            expect.objectContaining({
+              message: expect.stringContaining("quantity"),
+              type: "invalid_data",
+            })
+          )
+
           // cannot update a negative quantity item on the cart
           response = await api
             .post(
@@ -825,6 +872,25 @@ medusaIntegrationTestRunner({
               "Invalid request: Value for field 'quantity' too small, expected at least: '0'",
             type: "invalid_data",
           })
+
+          // cannot update a line item to a fractional quantity
+          response = await api
+            .post(
+              `/store/carts/${cart.id}/line-items/${cart.items[0].id}`,
+              {
+                quantity: 2.7,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.response.status).toEqual(400)
+          expect(response.response.data).toEqual(
+            expect.objectContaining({
+              message: expect.stringContaining("quantity"),
+              type: "invalid_data",
+            })
+          )
 
           // should remove the item from the cart when quantity is 0
           const cartResponse = await api.post(
