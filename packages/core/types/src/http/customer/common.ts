@@ -151,11 +151,11 @@ export interface CustomerGroupInCustomerFilters {
   /**
    * Filter by customer group ID(s).
    */
-  id?: string[] | string
+  id?: string[] | string | OperatorMap<string>
   /**
    * Filter by name(s).
    */
-  name?: string[] | string
+  name?: string[] | string | OperatorMap<string>
   /**
    * Apply filters on the group's creation date.
    */
