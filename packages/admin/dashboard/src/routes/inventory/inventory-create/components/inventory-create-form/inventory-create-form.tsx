@@ -337,6 +337,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                                 {...field}
                                 type="number"
                                 min={0}
+                                step="any"
                                 placeholder="100"
                               />
                             </Form.Control>
@@ -359,6 +360,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                                 {...field}
                                 type="number"
                                 min={0}
+                                step="any"
                                 placeholder="100"
                               />
                             </Form.Control>
@@ -381,6 +383,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                                 {...field}
                                 type="number"
                                 min={0}
+                                step="any"
                                 placeholder="100"
                               />
                             </Form.Control>
@@ -403,6 +406,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                                 {...field}
                                 type="number"
                                 min={0}
+                                step="any"
                                 placeholder="100"
                               />
                             </Form.Control>
