@@ -1,4 +1,5 @@
 import { BeforeCreate, OnInit } from "@medusajs/framework/mikro-orm/core"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   BigNumberInput,
   Context,
@@ -797,7 +798,7 @@ export default class OrderModuleService
       if (ord.currency_code) {
         ord.currency_code = normalizeCurrencyCode(ord.currency_code)
       }
-      
+
       ord.custom_display_id = await this.generateCustomDisplayId_.bind(this)(
         data_,
         sharedContext
@@ -2485,6 +2486,34 @@ export default class OrderModuleService
     const orderIds: string[] = []
     const dataMap: Record<string, object> = {}
 
+    for (const change of dataArr) {
+      orderIds.push(change.order_id)
+      dataMap[change.order_id] = change
+    }
+
+    // Serialize concurrent order-change creation against the same order(s).
+    // The "only one active order change per order" guard below is a plain
+    // list-then-check-then-create with no lock and no unique constraint
+    // backing it (IDX_order_change_order_id is not unique) - two concurrent
+    // calls for the same order (e.g. two returns, or a return racing an
+    // order edit) can each see no active change, both pass, and both create
+    // one. Lock the order rows first, in a stable id order, so a second
+    // concurrent call blocks here until the first commits its order change.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "createOrderChange_ must run inside a transaction to serialize concurrent order change creation."
+      )
+    }
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    await knex("order")
+      .whereIn("id", deduplicate(orderIds))
+      .orderBy("id")
+      .forUpdate()
+      .select("id")
+
     const orderChanges = await this.orderChangeService_.list(
       {
         order_id: dataArr.map((data) => data.order_id),
@@ -2499,14 +2528,9 @@ export default class OrderModuleService
       InferEntityType<typeof OrderChange>
     >(orderChanges.map((item) => [item.order_id, item]))
 
-    for (const change of dataArr) {
-      orderIds.push(change.order_id)
-      dataMap[change.order_id] = change
-    }
-
     const orders = await this.orderService_.list(
       { id: orderIds },
-      { select: ["id", "version"] },
+      { select: ["id", "version"], options: { refresh: true } },
       sharedContext
     )
 
@@ -3634,6 +3658,26 @@ export default class OrderModuleService
       sharedContext
     )
 
+    // The quantity fields on items[].detail drive every validate()/operation()
+    // below (e.g. RETURN_ITEM checking fulfilled vs. return_requested), but
+    // this request's identity map may already hold a stale copy of them from
+    // an earlier read in the same call chain (e.g. createReturn's initial
+    // order fetch, taken before a concurrent transaction committed its own
+    // change to this order). listOrders_ above only reflects that staleness
+    // back, since MikroORM merges freshly-selected fields into the cached
+    // entity rather than replacing it. `options: { refresh: true }` isn't a
+    // safe fix here either: the version-scoped `items` relation is stitched
+    // together by a correlated subquery in base-repository-find.ts (joining
+    // each item to the row whose `version` matches the order's current
+    // version), and MikroORM's refresh path re-populates collection
+    // relations without going through that custom query builder, falling
+    // back to loading every version row for the item instead of just the
+    // current one.
+    //
+    // Patch just the quantity columns with a plain, cache-bypassing read
+    // instead, scoped to each order's own (already-fresh) version.
+    await this.refreshStaleItemQuantities_(orders, sharedContext)
+
     const {
       itemsToUpsert,
       shippingMethodsToUpsert,
@@ -3705,6 +3749,81 @@ export default class OrderModuleService
       items: orderItems ?? [],
       shipping_methods: orderShippingMethods ?? [],
       credit_lines: orderCreditLines ?? ([] as any),
+    }
+  }
+
+  // Overwrites the quantity columns on each order's items[].detail with a
+  // plain, cache-bypassing read of the order_item row matching that item's
+  // *current* version (order.version, already fresh on `orders`) - see the
+  // comment at the applyOrderChanges_ call site for why a blanket ORM
+  // refresh isn't safe to use for this instead.
+  @InjectTransactionManager()
+  protected async refreshStaleItemQuantities_(
+    orders: any[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      return
+    }
+
+    const orderVersionPairs = orders
+      .filter((order) => order.items?.length)
+      .map((order) => [order.id, order.version])
+
+    if (!orderVersionPairs.length) {
+      return
+    }
+
+    const freshRows: {
+      order_id: string
+      item_id: string
+      fulfilled_quantity: string
+      delivered_quantity: string
+      shipped_quantity: string
+      return_requested_quantity: string
+      return_received_quantity: string
+      return_dismissed_quantity: string
+      written_off_quantity: string
+    }[] = await knex("order_item")
+      .whereNull("deleted_at")
+      .whereIn(["order_id", "version"], orderVersionPairs as [string, number][])
+      .select(
+        "order_id",
+        "item_id",
+        "fulfilled_quantity",
+        "delivered_quantity",
+        "shipped_quantity",
+        "return_requested_quantity",
+        "return_received_quantity",
+        "return_dismissed_quantity",
+        "written_off_quantity"
+      )
+
+    const freshByItemId = new Map(freshRows.map((row) => [row.item_id, row]))
+
+    const quantityFields = [
+      "fulfilled_quantity",
+      "delivered_quantity",
+      "shipped_quantity",
+      "return_requested_quantity",
+      "return_received_quantity",
+      "return_dismissed_quantity",
+      "written_off_quantity",
+    ] as const
+
+    for (const order of orders) {
+      for (const item of order.items ?? []) {
+        const fresh = freshByItemId.get(item.id)
+        if (!fresh || !item.detail) {
+          continue
+        }
+
+        for (const field of quantityFields) {
+          item.detail[field] = MathBN.convert(fresh[field])
+        }
+      }
     }
   }
 
