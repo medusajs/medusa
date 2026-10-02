@@ -11,16 +11,6 @@ export interface AdminCustomerInGroupFilters {
    */
   email?: string | string[] | OperatorMap<string>
   /**
-   * Filter by IDs of default billing addresses to retrieve 
-   * their associated customers.
-   */
-  default_billing_address_id?: string | string[]
-  /**
-   * Filter by IDs of default shipping addresses to retrieve 
-   * their associated customers.
-   */
-  default_shipping_address_id?: string | string[]
-  /**
    * Filter by company name(s).
    */
   company_name?: string | string[]

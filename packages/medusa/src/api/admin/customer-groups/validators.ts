@@ -16,12 +16,6 @@ export const AdminCustomerInGroupFilters = z.object({
   email: z
     .union([z.string(), z.array(z.string()), createOperatorMap()])
     .optional(),
-  default_billing_address_id: z
-    .union([z.string(), z.array(z.string())])
-    .optional(),
-  default_shipping_address_id: z
-    .union([z.string(), z.array(z.string())])
-    .optional(),
   company_name: z.union([z.string(), z.array(z.string())]).optional(),
   first_name: z.union([z.string(), z.array(z.string())]).optional(),
   last_name: z.union([z.string(), z.array(z.string())]).optional(),
