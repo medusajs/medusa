@@ -1,0 +1,143 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Medusa MCP: Manage Store with Agents`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to connect AI agents like Claude and ChatGPT to your stores deployed on [Cloud](!cloud!), so you can ask them about your store's commerce data.
+
+## What Can AI Agents Do with Your Store?
+
+Medusa allows AI agents to read data from your Cloud stores, so you can ask questions about your store in natural language. For example:
+
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+- "What products are available to shoppers in my B2B sales channel?"
+
+Your AI agent then retrieves the relevant data from your store and presents it to you in a human-readable format.
+
+The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
+
+<Note>
+
+Store access for AI agents is in early access. If it isn't enabled for your organization, refer to the [Medusa MCP](!cloud!/medusa-mcp#connect-to-the-medusa-mcp-server) guide to request access and rebuild your environments.
+
+</Note>
+
+### How to Connect AI Agents to Your Store
+
+You can connect AI agents to your store in the following ways:
+
+- [Claude Connector](#claude-connector): Add the Claude Connector to Claude.
+- [ChatGPT App](#chatgpt-app): Add the ChatGPT app to ChatGPT.
+- [Medusa MCP Server](#medusa-mcp-server): Connect the Medusa MCP server to any AI agent that supports MCP servers, such as Claude Code, Codex, or Cursor.
+
+---
+
+## Claude Connector
+
+<Note type="soon">
+
+The Claude Connector is coming soon to Claude's connectors directory. In the meantime, you can add the Medusa MCP server to Claude as a [custom connector](!cloud!/medusa-mcp/claude#add-medusa-mcp-as-a-custom-connector-in-claude).
+
+</Note>
+
+The Claude Connector connects Claude to your stores, so you can ask Claude about your stores in any chat.
+
+Refer to the [Claude Connector](!cloud!/medusa-mcp/claude) guide in the Cloud documentation to learn how to add and use it.
+
+---
+
+## ChatGPT App
+
+<Note type="soon">
+
+The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](!cloud!/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) in developer mode.
+
+</Note>
+
+The ChatGPT app connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
+
+Refer to the [ChatGPT app](!cloud!/medusa-mcp/chatgpt) guide in the Cloud documentation to learn more.
+
+---
+
+## Medusa MCP Server
+
+The Medusa MCP server is a remote Model Context Protocol (MCP) server that powers the Claude Connector and the ChatGPT app. You can also connect it to any AI agent that supports MCP servers.
+
+<Note>
+
+The Medusa MCP server is different from the [Docs MCP server](../docs-mcp-server/page.mdx). The Docs MCP server helps you build with Medusa using the documentation and implementation guides, while the Medusa MCP server reads data from your stores.
+
+</Note>
+
+The Medusa MCP server is a Streamable HTTP server at `https://cloud.medusajs.com/mcp`. To add it to your AI agent:
+
+<CodeTabs group="medusa-mcp-agent">
+  <CodeTab label="Claude Code" value="claude-code">
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
+```
+
+  </CodeTab>
+  <CodeTab label="Codex" value="codex">
+
+```bash
+codex mcp add medusa-commerce \
+  --url https://cloud.medusajs.com/mcp
+codex mcp login medusa-commerce
+```
+
+  </CodeTab>
+  <CodeTab label="Cursor" value="cursor">
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "medusa-commerce": {
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+  </CodeTab>
+  <CodeTab label="VS Code" value="vscode">
+
+```json title=".vscode/mcp.json"
+{
+  "servers": {
+    "medusa-commerce": {
+      "type": "http",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+  </CodeTab>
+  <CodeTab label="OpenCode" value="opencode">
+
+```json title="~/.config/opencode/opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa-commerce": {
+      "type": "remote",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+When you connect, you log in with your Cloud account and choose the environments that the AI agent can access.
+
+Refer to the [Medusa MCP](!cloud!/medusa-mcp) guide in the Cloud documentation for setup instructions, the available tools, and troubleshooting steps.

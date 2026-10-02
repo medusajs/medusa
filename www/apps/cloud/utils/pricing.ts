@@ -52,7 +52,7 @@ export const featureLinks: Record<string, string> = {
   "hosting of monorepos": "/cloud/projects/prerequisites#monorepo-setup",
   "custom domains": "/cloud/storefront#storefront-custom-domain",
   "storefront previews": "/cloud/environments/preview",
-  "mcp server": "/learn/introduction/build-with-llms-ai/mcp-server",
+  "mcp server": "/learn/introduction/build-with-llms-ai/docs-mcp-server",
   "development agent": "/cloud/assistant",
   "medusa cloud cli": "/cloud/cli",
   "webhook events": "/cloud/webhooks/events",
