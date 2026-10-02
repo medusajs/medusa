@@ -3,7 +3,6 @@ import {
   createWorkflow,
   parallelize,
   transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -20,7 +19,6 @@ import {
   deleteOrderShippingMethods,
   previewOrderChangeStep,
 } from "../../order"
-import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-promotion-context"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderShippingMethodActionStep } from "../steps/validate-draft-order-shipping-method-action"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
@@ -103,25 +101,12 @@ export const removeDraftOrderActionShippingMethodWorkflow = createWorkflow(
       deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
     )
 
-    const context = getDraftOrderPromotionContextStep({
-      order,
-    })
-
-    const appliedPromoCodes: string[] = transform(
-      context,
-      (context) =>
-        (context as any).promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
+    // Always refresh the adjustments: even if the order has no promo codes
+    // applied yet, an automatic promotion may have newly become eligible.
+    computeDraftOrderAdjustmentsWorkflow.runAsStep({
+      input: {
+        order_id: input.order_id,
+      },
     })
 
     releaseLockStep({
