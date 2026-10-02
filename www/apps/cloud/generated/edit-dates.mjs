@@ -80,6 +80,6 @@ export const generatedEditDates = {
   "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
-  "app/medusa-mcp/claude/page.mdx": "2026-10-02T08:36:19.427Z",
-  "app/medusa-mcp/page.mdx": "2026-10-02T08:36:19.427Z"
+  "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
+  "app/medusa-mcp/page.mdx": "2026-10-02T13:23:53.700Z"
 }
