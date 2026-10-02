@@ -259,9 +259,32 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                       <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
                         {t("priceLists.fields.customerAvailability.attribute")}
                       </div>
-                      <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
-                        {t("operators.in")}
-                      </div>
+                      <Form.Field
+                        control={form.control}
+                        name="rules.customer_group_operator"
+                        render={({ field: { onChange, ref, ...rest } }) => (
+                          <Select
+                            dir={direction}
+                            {...rest}
+                            onValueChange={onChange}
+                          >
+                            <Select.Trigger
+                              ref={ref}
+                              className="bg-ui-bg-field"
+                            >
+                              <Select.Value />
+                            </Select.Trigger>
+                            <Select.Content>
+                              <Select.Item value="in">
+                                {t("operators.in")}
+                              </Select.Item>
+                              <Select.Item value="nin">
+                                {t("operators.nin")}
+                              </Select.Item>
+                            </Select.Content>
+                          </Select>
+                        )}
+                      />
                     </div>
                     <div className="flex items-center gap-1.5 px-1.5">
                       <StackedFocusModal id="cg">

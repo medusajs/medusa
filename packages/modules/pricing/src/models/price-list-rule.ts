@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model, PriceListRuleOperator } from "@medusajs/framework/utils"
 import PriceList from "./price-list"
 
 const PriceListRule = model
@@ -6,6 +6,9 @@ const PriceListRule = model
     id: model.id({ prefix: "prule" }).primaryKey(),
     attribute: model.text(),
     value: model.json().nullable(),
+    operator: model
+      .enum(PriceListRuleOperator)
+      .default(PriceListRuleOperator.IN),
     price_list: model.belongsTo(() => PriceList, {
       mappedBy: "price_list_rules",
     }),
@@ -23,6 +26,10 @@ const PriceListRule = model
       on: ["value"],
       where: "deleted_at IS NULL",
       type: "gin",
+    },
+    {
+      on: ["operator"],
+      where: "deleted_at IS NULL",
     },
   ])
 

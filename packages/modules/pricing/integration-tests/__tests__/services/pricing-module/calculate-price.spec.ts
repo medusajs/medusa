@@ -2832,6 +2832,156 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           })
         })
+
+        it("should apply a nin price list to a customer NOT in the excluded group", async () => {
+          await createPriceLists(
+            service,
+            { type: "override" },
+            { ["customer.groups.id"]: { operator: "nin", value: ["vip"] } },
+            [
+              {
+                amount: 500,
+                currency_code: "eur",
+                price_set_id: "price-set-EUR",
+              },
+            ]
+          )
+
+          const result = await service.calculatePrices(
+            { id: ["price-set-EUR"] },
+            {
+              context: {
+                currency_code: "eur",
+                // @ts-ignore
+                customer: { groups: { id: ["newsletter"] } },
+              },
+            }
+          )
+
+          expect(result[0].calculated_amount).toEqual(500)
+        })
+
+        it("should NOT apply a nin price list to a customer in the excluded group", async () => {
+          await createPriceLists(
+            service,
+            { type: "override" },
+            { ["customer.groups.id"]: { operator: "nin", value: ["vip"] } },
+            [
+              {
+                amount: 500,
+                currency_code: "eur",
+                price_set_id: "price-set-EUR",
+              },
+            ]
+          )
+
+          const result = await service.calculatePrices(
+            { id: ["price-set-EUR"] },
+            {
+              context: {
+                currency_code: "eur",
+                // @ts-ignore
+                customer: { groups: { id: ["vip"] } },
+              },
+            }
+          )
+
+          // No default (rules_count 0) price exists for price-set-EUR in this
+          // fixture, so when the nin price list is excluded, there is no
+          // price to fall back to and the price set is omitted entirely.
+          expect(result).toEqual([])
+        })
+
+        it("should apply a nin price list to a customer with NO groups", async () => {
+          // Note: An empty groups.id array is filtered out upstream (the presence filter
+          // drops empty arrays before hasComplexContext is computed), so this test exercises
+          // the same empty-context else branch as the adjacent "guest" test below. This test
+          // documents the valid scenario where a logged-in customer has zero groups but should
+          // still receive a nin price list.
+          await createPriceLists(
+            service,
+            { type: "override" },
+            { ["customer.groups.id"]: { operator: "nin", value: ["vip"] } },
+            [
+              {
+                amount: 500,
+                currency_code: "eur",
+                price_set_id: "price-set-EUR",
+              },
+            ]
+          )
+
+          const result = await service.calculatePrices(
+            { id: ["price-set-EUR"] },
+            {
+              context: {
+                currency_code: "eur",
+                // @ts-ignore
+                customer: { groups: { id: [] } },
+              },
+            }
+          )
+
+          expect(result[0].calculated_amount).toEqual(500)
+        })
+
+        it("should apply a nin price list when the context is empty (guest)", async () => {
+          await createPriceLists(
+            service,
+            { type: "override" },
+            { ["customer.groups.id"]: { operator: "nin", value: ["vip"] } },
+            [
+              {
+                amount: 500,
+                currency_code: "eur",
+                price_set_id: "price-set-EUR",
+              },
+            ]
+          )
+
+          const result = await service.calculatePrices(
+            { id: ["price-set-EUR"] },
+            { context: { currency_code: "eur" } }
+          )
+
+          expect(result[0].calculated_amount).toEqual(500)
+        })
+
+        it("should exclude a customer in ANY listed nin group (multi-value)", async () => {
+          await createPriceLists(
+            service,
+            { type: "override" },
+            {
+              ["customer.groups.id"]: {
+                operator: "nin",
+                value: ["vip", "staff"],
+              },
+            },
+            [
+              {
+                amount: 500,
+                currency_code: "eur",
+                price_set_id: "price-set-EUR",
+              },
+            ]
+          )
+
+          const result = await service.calculatePrices(
+            { id: ["price-set-EUR"] },
+            {
+              context: {
+                currency_code: "eur",
+                // @ts-ignore
+                customer: { groups: { id: ["staff"] } },
+              },
+            }
+          )
+
+          // No default (rules_count 0) price exists for price-set-EUR in this
+          // fixture, so when the nin price list is excluded, there is no
+          // price to fall back to and the price set is omitted entirely.
+          expect(result).toEqual([])
+        })
       })
 
       describe("calculatePrices", () => {

@@ -39,6 +39,7 @@ import {
   mergeMetadata,
   ModulesSdkUtils,
   normalizeCurrencyCode,
+  PriceListRuleOperator,
   PriceListType,
   PricingRuleOperator,
   promiseAll,
@@ -58,6 +59,28 @@ import { Collection } from "@medusajs/framework/mikro-orm/core"
 import { ServiceTypes } from "@types"
 import { validatePriceListDates } from "@utils"
 import { joinerConfig } from "../joiner-config"
+
+const normalizePriceListRuleValue = (
+  rawValue: unknown
+): { value: any; operator: PriceListRuleOperator } => {
+  if (
+    rawValue &&
+    typeof rawValue === "object" &&
+    !Array.isArray(rawValue) &&
+    "value" in (rawValue as Record<string, unknown>)
+  ) {
+    const asObject = rawValue as {
+      operator?: PriceListRuleOperator
+      value: any
+    }
+    return {
+      value: asObject.value,
+      operator: asObject.operator ?? PriceListRuleOperator.IN,
+    }
+  }
+
+  return { value: rawValue, operator: PriceListRuleOperator.IN }
+}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -1426,10 +1449,12 @@ export default class PricingModuleService
           const numberOfRules = rules.length
 
           const rulesDataMap = new Map()
-          rules.map(([attribute, value]) => {
+          rules.map(([attribute, rawValue]) => {
+            const { value, operator } = normalizePriceListRuleValue(rawValue)
             const rule = {
               attribute,
               value,
+              operator,
             }
             rulesDataMap.set(JSON.stringify(rule), rule)
           })
@@ -1497,10 +1522,12 @@ export default class PricingModuleService
           const numberOfRules = rules.length
 
           const rulesDataMap = new Map()
-          rules.map(([attribute, value]) => {
+          rules.map(([attribute, rawValue]) => {
+            const { value, operator } = normalizePriceListRuleValue(rawValue)
             const rule = {
               attribute,
               value,
+              operator,
             }
             rulesDataMap.set(JSON.stringify(rule), rule)
           })
@@ -1673,7 +1700,9 @@ export default class PricingModuleService
             InferEntityType<typeof PriceListRule>
           >
         const allRules = new Map(
-          priceListRules.toArray().map((r) => [r.attribute, r.value])
+          priceListRules
+            .toArray()
+            .map((r) => [r.attribute, { value: r.value, operator: r.operator }])
         )
 
         const rules = rulesMap.get(priceList.id)
@@ -1681,17 +1710,20 @@ export default class PricingModuleService
           return
         }
 
-        rules.forEach(([key, value]) => {
-          allRules.set(key, value)
+        rules.forEach(([key, rawValue]) => {
+          allRules.set(key, normalizePriceListRuleValue(rawValue))
         })
 
         return {
           ...priceList,
           rules_count: allRules.size,
-          price_list_rules: Array.from(allRules).map(([attribute, value]) => ({
-            attribute,
-            value,
-          })),
+          price_list_rules: Array.from(allRules).map(
+            ([attribute, { value, operator }]) => ({
+              attribute,
+              value,
+              operator,
+            })
+          ),
         }
       })
       .filter(Boolean)
