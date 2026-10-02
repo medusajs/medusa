@@ -160,6 +160,36 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("returns a list of products with options and option values", async () => {
+          const res = await api.get(
+            `/admin/products?id[]=${baseProduct.id}&fields=id,title,*options,*options.values`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: baseProduct.id,
+              title: baseProduct.title,
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  title: "size",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({ value: "large" }),
+                    expect.objectContaining({ value: "small" }),
+                  ]),
+                }),
+                expect.objectContaining({
+                  title: "color",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({ value: "green" }),
+                  ]),
+                }),
+              ]),
+            }),
+          ])
+        })
+
         it("returns a list of products with all statuses when no status or invalid status is provided", async () => {
           const res = await api
             .get("/admin/products", adminHeaders)

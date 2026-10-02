@@ -695,6 +695,36 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should list products with options and option values", async () => {
+        const response = await api.get(
+          `/store/products?id[]=${product.id}&fields=id,title,*options,*options.values`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: product.id,
+            title: product.title,
+            options: expect.arrayContaining([
+              expect.objectContaining({
+                title: "size",
+                values: expect.arrayContaining([
+                  expect.objectContaining({ value: "large" }),
+                  expect.objectContaining({ value: "small" }),
+                ]),
+              }),
+              expect.objectContaining({
+                title: "color",
+                values: expect.arrayContaining([
+                  expect.objectContaining({ value: "green" }),
+                ]),
+              }),
+            ]),
+          }),
+        ])
+      })
+
       it("should list all products excluding variants", async () => {
         let response = await api.get(
           `/admin/products?fields=-variants`,
