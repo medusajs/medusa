@@ -23,7 +23,7 @@ import { resolveExports } from "./resolve-exports"
 import { resolveFromProject } from "./resolve-from-project"
 import { tryConvertToNumber } from "./try-convert-to-number"
 
-const MEDUSA_CLOUD_EXECUTION_CONTEXT = "medusa-cloud"
+export const MEDUSA_CLOUD_EXECUTION_CONTEXT = "medusa-cloud"
 const DEFAULT_SECRET = "supersecret"
 
 /**

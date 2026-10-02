@@ -3,10 +3,14 @@ import { Module, Modules } from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
+  setTestLicense,
 } from "@medusajs/test-utils"
 import { RbacModuleService } from "@services"
 
 jest.setTimeout(30000)
+
+// The module is license gated, so it cannot be booted without a key.
+setTestLicense(["rbac"])
 
 moduleIntegrationTestRunner<IRbacModuleService>({
   moduleName: Modules.RBAC,
