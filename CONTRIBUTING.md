@@ -265,6 +265,8 @@ If you wish to patch v1.x your base branch should be `v1.x`.
 
 If your changes should result in a new version of Medusa, you will need to generate a **changelog**. Follow [this guide](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) on how to generate a changeset.
 
+Medusa keeps its published packages in a fixed release group. A changeset for one package can therefore report patch releases for many related packages. This is expected; keep the changeset focused on the package or packages that your change directly modifies.
+
 Finally, submit your branch as a pull request. Your pull request should be opened against the `develop` branch in the main Medusa repo.
 
 In your PR's description you should follow the structure:
