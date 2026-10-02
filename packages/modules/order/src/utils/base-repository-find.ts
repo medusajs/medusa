@@ -276,17 +276,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       config.options.populate.push("shipping_methods")
       config.options.populate.push("shipping_methods.shipping_method")
 
-      if (
-        config.options.fields?.some((f) =>
-          f.includes("shipping_methods.shipping_method.")
-        )
-      ) {
-        config.options.fields.push(
-          isRelatedEntity
-            ? "order.shipping_methods.version"
-            : "shipping_methods.version"
-        )
-      }
+      // Load the shipping method pivot itself, not just its version. The
+      // adjustment projection needs the whole pivot row, and it is needed
+      // whenever a field projection is present -- not only when a dotted
+      // shipping_methods.shipping_method.* field happened to be selected.
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
     }
 
     if (!config.options.orderBy) {
@@ -418,18 +412,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       config.options.populate.push("shipping_methods")
       config.options.populate.push("shipping_methods.shipping_method")
 
-      // make sure version is loaded if adjustments are requested
-      if (
-        config.options.fields?.some((f) =>
-          f.includes("shipping_methods.shipping_method.")
-        )
-      ) {
-        config.options.fields.push(
-          isRelatedEntity
-            ? "order.shipping_methods.version"
-            : "shipping_methods.version"
-        )
-      }
+      // Load the shipping method pivot itself, not just its version. The
+      // adjustment projection needs the whole pivot row, and it is needed
+      // whenever a field projection is present -- not only when a dotted
+      // shipping_methods.shipping_method.* field happened to be selected.
+      ensureOrderShippingMethodFieldsSelection(config, isRelatedEntity)
     }
 
     configurePopulateWhere(
