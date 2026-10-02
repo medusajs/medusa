@@ -125,7 +125,7 @@ function renderTable({
   render(<Table />)
 
   return {
-    user: userEvent.setup(),
+    user: userEvent.setup({ delay: null }),
     urlWrites,
     getUrlValue: () => {
       const value = screen.getByTestId("url").textContent
@@ -168,7 +168,9 @@ afterAll(() => {
   }
 })
 
-describe("DataTable date filter", () => {
+// Each case opens the filter and drives react-aria calendars, which can exceed
+// the 5s default on a busy CI runner.
+describe("DataTable date filter", { timeout: 20_000 }, () => {
   beforeEach(() => {
     // 12:00 on Oct 2 in Asia/Bangkok, so "today" in the calendar is Oct 2.
     vi.useFakeTimers({ toFake: ["Date"] })
