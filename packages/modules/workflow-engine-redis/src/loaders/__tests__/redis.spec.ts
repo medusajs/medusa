@@ -302,6 +302,109 @@ describe("Redis Loader", () => {
     })
   })
 
+  describe("Top-level options", () => {
+    it("should accept redisUrl at the top level (matching the module options type)", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+          },
+        } as any,
+        {} as any
+      )
+
+      const Redis = jest.requireMock("ioredis")
+      expect(Redis).toHaveBeenCalled()
+      expect(Redis.mock.calls[0][0]).toBe("redis://localhost:6379")
+      expect(containerMock.register).toHaveBeenCalled()
+    })
+
+    it("should accept the deprecated top-level url with a deprecation warning", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            url: "redis://localhost:6379",
+          },
+        } as any,
+        {} as any
+      )
+
+      const Redis = jest.requireMock("ioredis")
+      expect(Redis.mock.calls[0][0]).toBe("redis://localhost:6379")
+      expect(loggerMock.warn).toHaveBeenCalledWith(
+        "[Workflow-engine-redis] The `url` option is deprecated. Please use `redisUrl` instead for consistency with other modules."
+      )
+    })
+
+    it("should honor other top-level options such as queueOptions and queueName", async () => {
+      const sharedQueueOptions = {
+        defaultJobOptions: { removeOnComplete: 1000 },
+      }
+
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://localhost:6379",
+            queueName: "top-level-workflows",
+            queueOptions: sharedQueueOptions,
+          },
+        } as any,
+        {} as any
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+      expect(registerCall.redisQueueName.resolve()).toEqual(
+        "top-level-workflows"
+      )
+      expect(registerCall.redisMainQueueOptions.resolve()).toEqual(
+        sharedQueueOptions
+      )
+    })
+
+    it("should let nested options.redis take precedence over top-level options", async () => {
+      await redisLoader(
+        {
+          container: containerMock as any,
+          logger: loggerMock,
+          options: {
+            redisUrl: "redis://top-level:6379",
+            queueName: "top-level-workflows",
+            redis: {
+              redisUrl: "redis://nested:6379",
+              queueName: "nested-workflows",
+            },
+          },
+        } as any,
+        {} as any
+      )
+
+      const Redis = jest.requireMock("ioredis")
+      expect(Redis.mock.calls[0][0]).toBe("redis://nested:6379")
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+      expect(registerCall.redisQueueName.resolve()).toEqual("nested-workflows")
+    })
+
+    it("should still throw when neither top-level nor nested redisUrl is provided", async () => {
+      await expect(
+        redisLoader(
+          {
+            container: containerMock as any,
+            logger: loggerMock,
+            options: {},
+          } as any,
+          {} as any
+        )
+      ).rejects.toThrow("No `redisUrl` (or deprecated `url`) provided")
+    })
+  })
+
   describe("Error handling", () => {
     it("should throw error when redisUrl is not provided", async () => {
       await expect(
@@ -315,9 +418,7 @@ describe("Redis Loader", () => {
           } as any,
           {} as any
         )
-      ).rejects.toThrow(
-        "No `redis.redisUrl` (or deprecated `redis.url`) provided"
-      )
+      ).rejects.toThrow("No `redisUrl` (or deprecated `url`) provided")
     })
   })
 })
