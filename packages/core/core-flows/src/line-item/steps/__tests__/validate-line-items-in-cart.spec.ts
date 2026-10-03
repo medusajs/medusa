@@ -78,4 +78,12 @@ describe("validateLineItemsInCartStep", () => {
     expect(error.type).toEqual("not_found")
     expect(error.message).toContain("li_missing")
   })
+
+  it("passes when the same id is requested more than once", async () => {
+    const { container, calls } = buildContainer(async () => [{ id: "li_1" }])
+
+    await runStep(container, { cart_id: "cart_1", ids: ["li_1", "li_1"] })
+
+    expect(calls.listLineItems).toEqual([{ id: ["li_1"], cart_id: "cart_1" }])
+  })
 })
