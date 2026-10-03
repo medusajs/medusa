@@ -26,12 +26,14 @@ export const validateLineItemsInCartStep = createStep(
   async (input: ValidateLineItemsInCartStepInput, { container }) => {
     const service = container.resolve<ICartModuleService>(Modules.CART)
 
+    const uniqueIds = [...new Set(input.ids)]
+
     const items = await service.listLineItems({
-      id: input.ids,
+      id: uniqueIds,
       cart_id: input.cart_id,
     })
 
-    if (items.length !== input.ids.length) {
+    if (items.length !== uniqueIds.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Line items with ids ${input.ids.join(", ")} were not found in cart ${input.cart_id}`
