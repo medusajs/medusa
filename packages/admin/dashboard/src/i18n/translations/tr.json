@@ -181,28 +181,13 @@
       "groups": {
         "all": "Tüm Alanlar",
         "customer": "Müşteriler",
-        "customerGroup": "Müşteri Grupları",
         "product": "Ürünler",
-        "productVariant": "Ürün Varyantları",
-        "inventory": "Envanter",
         "reservation": "Rezervasyonlar",
-        "category": "Kategoriler",
-        "collection": "Koleksiyonlar",
         "order": "Siparişler",
         "promotion": "Promosyonlar",
         "campaign": "Kampanyalar",
-        "priceList": "Fiyat Listeleri",
         "user": "Kullanıcılar",
         "region": "Bölgeler",
-        "taxRegion": "Vergi Bölgeleri",
-        "returnReason": "İade Nedenleri",
-        "salesChannel": "Satış Kanalları",
-        "productType": "Ürün Tipleri",
-        "productTag": "Ürün Etiketleri",
-        "location": "Konumlar",
-        "shippingProfile": "Kargo Profilleri",
-        "publishableApiKey": "Yayınlanabilir API Anahtarları",
-        "secretApiKey": "Gizli API Anahtarları",
         "command": "Komutlar",
         "navigation": "Navigasyon",
         "customer_group": "Müşteri Grupları",
@@ -1922,9 +1907,7 @@
       "hint": "Belirli bir ülke için vergi oranlarını tanımlamak üzere yeni bir vergi bölgesi oluşturun.",
       "errors": {
         "missingProvider": "Vergi bölgesi oluştururken sağlayıcı gereklidir.",
-        "missingCountry": "Vergi bölgesi oluştururken ülke gereklidir.",
-        "rateIsRequired": "Varsayılan bir vergi oranı oluştururken vergi oranı gereklidir.",
-        "nameIsRequired": "Varsayılan bir vergi oranı oluştururken isim gereklidir."
+        "missingCountry": "Vergi bölgesi oluştururken ülke gereklidir."
       },
       "successToast": "Vergi bölgesi başarıyla oluşturuldu."
     },
@@ -2201,9 +2184,7 @@
           "items": {
             "title": "Promosyon hangi ürünlere uygulanacak?",
             "description": "Promosyon, aşağıdaki koşullara uyan ürünlere uygulanacaktır."
-          },
-          "title": "Promosyon hangi ürünlere uygulanacak?",
-          "description": "Promosyon, aşağıdaki koşulları karşılayan ürünlere uygulanacaktır."
+          }
         },
         "buy-rules": {
           "title": "Promosyonu açmak için sepette ne olmalı?",
@@ -2916,8 +2897,7 @@
       "addShippingOptionOverridesAction": "Kargo seçeneği geçersiz kılmaları ekle",
       "productOverridesHeader": "Ürünler",
       "productTypeOverridesHeader": "Ürün Türleri",
-      "shippingOptionOverridesHeader": "Kargo Seçenekleri",
-      "editTaxRate": "Vergi Oranını Düzenle"
+      "shippingOptionOverridesHeader": "Kargo Seçenekleri"
     }
   },
   "locations": {

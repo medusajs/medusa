@@ -42,7 +42,6 @@
     "store": "ร้านค้า",
     "rank": "อันดับ",
     "details": "รายละเอียด",
-    "items_one": "{{count}} รายการ",
     "items_other": "{{count}} รายการ",
     "values_other": "{{count}} ค่า",
     "countSelected": "เลือก {{count}} รายการ",
@@ -67,22 +66,18 @@
     "noMoreData": "ไม่มีข้อมูลเพิ่มเติม",
     "quantityPrice": "ราคาตามจำนวน",
     "exclusive": "เฉพาะสินค้า",
-    "global": "ทั่วโลก",
-    "values_one": "{{count}} ค่า"
+    "global": "ทั่วโลก"
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}} คีย์",
     "numberOfKeys_other": "{{count}} คีย์",
     "drawer": {
-      "header_one": "JSON <0>· {{count}} คีย์</0>",
       "header_other": "JSON <0>· {{count}} คีย์</0>",
       "description": "ดูข้อมูล JSON สำหรับวัตถุนี้"
     }
   },
   "metadata": {
     "header": "เมตาดาต้า",
-    "numberOfKeys_one": "{{count}} คีย์",
     "numberOfKeys_other": "{{count}} คีย์",
     "edit": {
       "header": "แก้ไขเมตาดาต้า",
@@ -182,22 +177,16 @@
         "all": "ทุกพื้นที่",
         "customer": "ลูกค้า",
         "customer_group": "กลุ่มลูกค้า",
-        "customerGroup": "กลุ่มลูกค้า",
         "product": "ผลิตภัณฑ์",
         "product_variant": "ตัวเลือกสินค้า",
         "inventory_item": "สินค้าคงคลัง",
-        "productVariant": "ตัวเลือกผลิตภัณฑ์",
-        "inventory": "สินค้าคงคลัง",
         "reservation": "การจอง",
         "product_category": "หมวดหมู่",
         "product_collection": "คอลเลกชัน",
-        "category": "หมวดหมู่",
-        "collection": "คอลเลกชัน",
         "order": "คำสั่งซื้อ",
         "promotion": "โปรโมชั่น",
         "campaign": "แคมเปญ",
         "price_list": "รายการราคา",
-        "priceList": "รายการราคา",
         "user": "ผู้ใช้",
         "region": "ภูมิภาค",
         "tax_region": "ภูมิภาคภาษี",
@@ -209,15 +198,6 @@
         "shipping_profile": "โปรไฟล์การจัดส่ง",
         "publishable_api_key": "Publishable API Keys",
         "secret_api_key": "Secret API Keys",
-        "taxRegion": "เขตภาษี",
-        "returnReason": "เหตุผลในการคืนสินค้า",
-        "salesChannel": "ช่องทางการขาย",
-        "productType": "ประเภทผลิตภัณฑ์",
-        "productTag": "แท็กผลิตภัณฑ์",
-        "location": "ตำแหน่งที่ตั้ง",
-        "shippingProfile": "โปรไฟล์การจัดส่ง",
-        "publishableApiKey": "คีย์ API ที่เผยแพร่ได้",
-        "secretApiKey": "คีย์ API ลับ",
         "command": "คำสั่ง",
         "navigation": "การนำทาง"
       }
@@ -347,7 +327,6 @@
     },
     "errors": {
       "fixError": "แก้ไขข้อผิดพลาด",
-      "count_one": "{{count}} ข้อผิดพลาด",
       "count_other": "{{count}} ข้อผิดพลาด"
     }
   },
@@ -570,9 +549,7 @@
       "invalidFileType": "'{{name}}' ไม่ใช่ประเภทไฟล์ที่รองรับ ประเภทไฟล์ที่รองรับคือ: {{types}}",
       "fileTooLarge": "ไฟล์หนึ่งไฟล์หรือมากกว่ามีขนาดเกินขนาดสูงสุด {{size}}: {{name}}",
       "failedToUpload": "การอัปโหลดสื่อที่เพิ่มไม่สำเร็จ โปรดลองอีกครั้ง",
-      "deleteWarning_one": "คุณกำลังจะลบภาพ {{count}} การกระทำนี้ไม่สามารถย้อนกลับได้",
       "deleteWarning_other": "คุณกำลังจะลบภาพ {{count}} การกระทำนี้ไม่สามารถย้อนกลับได้",
-      "deleteWarningWithThumbnail_one": "คุณกำลังจะลบภาพ {{count}} รวมถึงภาพขนาดย่อ การกระทำนี้ไม่สามารถย้อนกลับได้",
       "deleteWarningWithThumbnail_other": "คุณกำลังจะลบภาพ {{count}} รวมถึงภาพขนาดย่อ การกระทำนี้ไม่สามารถย้อนกลับได้",
       "thumbnailTooltip": "ภาพขนาดย่อ",
       "galleryLabel": "แกลเลอรี",
@@ -604,7 +581,6 @@
     },
     "discountableHint": "หากไม่ได้เลือก ส่วนลดจะไม่ถูกนำไปใช้กับสินค้านี้",
     "noSalesChannels": "ไม่มีช่องทางการขายใดๆ",
-    "variantCount_one": "{{count}} ตัวเลือก",
     "variantCount_other": "{{count}} ตัวเลือก",
     "deleteVariantWarning": "คุณกำลังจะลบตัวเลือก {{title}} การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "productStatus": {
@@ -718,7 +694,6 @@
       "deleteWarning": "คุณแน่ใจหรือไม่ว่าต้องการลบตัวเลือกนี้?",
       "pricesPagination": "1 - {{current}} จาก {{total}} ราคา",
       "tableItemAvailable": "{{availableCount}} พร้อมใช้งาน",
-      "tableItem_one": "{{availableCount}} พร้อมใช้งานที่ {{locationCount}} สถานที่",
       "tableItem_other": "{{availableCount}} พร้อมใช้งานที่ {{locationCount}} สถานที่",
       "inventory": {
         "notManaged": "ไม่ได้จัดการ",
@@ -836,18 +811,15 @@
     "handleTooltip": "Handle ใช้เพื่ออ้างอิงคอลเลกชันในหน้าร้าน หากไม่ได้ระบุ Handle จะถูกสร้างจากชื่อคอลเลกชัน",
     "deleteWarning": "คุณกำลังจะลบคอลเลกชัน {{title}} การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "removeSingleProductWarning": "คุณกำลังจะลบสินค้า {{title}} ออกจากคอลเลกชัน การดำเนินการนี้ไม่สามารถยกเลิกได้",
-    "removeProductsWarning_one": "คุณกำลังจะลบ {{count}} สินค้าออกจากคอลเลกชัน การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "removeProductsWarning_other": "คุณกำลังจะลบ {{count}} สินค้าออกจากคอลเลกชัน การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "products": {
       "list": {
         "noRecordsMessage": "ไม่มีสินค้าในคอลเลกชันนี้"
       },
       "add": {
-        "successToast_one": "เพิ่มสินค้าในคอลเลกชันสำเร็จ",
         "successToast_other": "เพิ่มสินค้าลงในคอลเลกชันสำเร็จ"
       },
       "remove": {
-        "successToast_one": "ลบสินค้าออกจากคอลเลกชันสำเร็จ",
         "successToast_other": "ลบสินค้าจากคอลเลกชันสำเร็จ"
       }
     }
@@ -876,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "สินค้านี้อยู่ในหมวดหมู่แล้ว",
-        "successToast_one": "เพิ่ม {{count}} สินค้าในหมวดหมู่สำเร็จ",
         "successToast_other": "เพิ่ม {{count}} สินค้าในหมวดหมู่สำเร็จ"
       },
       "remove": {
-        "confirmation_one": "คุณกำลังจะลบ {{count}} สินค้าออกจากหมวดหมู่ การดำเนินการนี้ไม่สามารถยกเลิกได้",
         "confirmation_other": "คุณกำลังจะลบ {{count}} สินค้าออกจากหมวดหมู่ การดำเนินการนี้ไม่สามารถยกเลิกได้",
-        "successToast_one": "ลบ {{count}} สินค้าออกจากหมวดหมู่สำเร็จ",
         "successToast_other": "ลบ {{count}} สินค้าออกจากหมวดหมู่สำเร็จ"
       },
       "list": {
@@ -1041,7 +1010,6 @@
       "description": "อัปเดตระดับสินค้าคงคลังสำหรับรายการสินค้าคงคลังที่เลือก",
       "action": "แก้ไขระดับสต็อก",
       "placeholder": "ไม่ได้เปิดใช้งาน",
-      "disablePrompt_one": "คุณกำลังจะปิดใช้งานระดับสถานที่ {{count}} รายการ การดำเนินการนี้ไม่สามารถย้อนกลับได้",
       "disablePrompt_other": "คุณกำลังจะปิดใช้งานระดับสถานที่ {{count}} รายการ การดำเนินการนี้ไม่สามารถย้อนกลับได้",
       "disabledToggleTooltip": "ไม่สามารถปิดใช้งานได้: ล้างจำนวนสินค้าขาเข้าและ/หรือจำนวนที่ถูกจองก่อนปิดใช้งาน",
       "successToast": "อัปเดตระดับสินค้าคงคลังสำเร็จ"
@@ -1174,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "ลูกค้านี้ถูกเพิ่มในกลุ่มแล้ว",
       "add": {
-        "successToast_one": "เพิ่มลูกค้าในกลุ่มสำเร็จ",
         "successToast_other": "เพิ่มลูกค้าในกลุ่มสำเร็จ",
         "list": {
           "noRecordsMessage": "กรุณาสร้างลูกค้าก่อน"
         }
       },
       "remove": {
-        "title_one": "ลบลูกค้า",
         "title_other": "ลบลูกค้า",
-        "description_one": "คุณกำลังจะลบ {{count}} ลูกค้าออกจากกลุ่มลูกค้า การดำเนินการนี้ไม่สามารถยกเลิกได้",
         "description_other": "คุณกำลังจะลบ {{count}} ลูกค้าออกจากกลุ่มลูกค้า การดำเนินการนี้ไม่สามารถยกเลิกได้"
       },
       "list": {
@@ -1571,8 +1536,7 @@
         "wrongQuantity_other": "จำนวนต้องอยู่ระหว่าง 1 ถึง {{number}}",
         "noItems": "ไม่มีรายการให้จัดส่ง",
         "noShippingOption": "ต้องระบุตัวเลือกการจัดส่ง",
-        "noLocation": "ต้องระบุสถานที่",
-        "wrongQuantity_one": "มีสินค้าเพียงหนึ่งรายการที่พร้อมสำหรับการจัดส่ง"
+        "noLocation": "ต้องระบุสถานที่"
       },
       "status": {
         "notFulfilled": "ยังไม่ได้เตรียมสินค้า",
@@ -1621,7 +1585,6 @@
     },
     "activity": {
       "header": "กิจกรรม",
-      "showMoreActivities_one": "แสดงกิจกรรมเพิ่มเติมอีก {{count}} กิจกรรม",
       "showMoreActivities_other": "แสดงกิจกรรมเพิ่มเติมอีก {{count}} กิจกรรม",
       "comment": {
         "label": "ความคิดเห็น",
@@ -1654,14 +1617,12 @@
           "canceled": "การจัดส่งถูกยกเลิก",
           "shipped": "จัดส่งแล้ว",
           "delivered": "ส่งถึงลูกค้าแล้ว",
-          "items_one": "{{count}} รายการ",
           "items_other": "{{count}} รายการ"
         },
         "return": {
           "created": "การคืนสินค้า #{{returnId}} ถูกขอ",
           "canceled": "การคืนสินค้า #{{returnId}} ถูกยกเลิก",
           "received": "การคืนสินค้า #{{returnId}} ได้รับแล้ว",
-          "items_one": "{{count}} รายการถูกคืน",
           "items_other": "{{count}} รายการถูกคืน"
         },
         "note": {
@@ -1901,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} ตัวเลือกการจัดส่ง",
           "shipping_other": "{{count}} ตัวเลือกการจัดส่ง",
-          "pickup_one": "ตัวเลือกการรับสินค้า {{count}} รายการ",
           "pickup_other": "ตัวเลือกการรับสินค้า {{count}} รายการ",
-          "returns_one": "{{count}} ตัวเลือกการคืนสินค้า",
           "returns_other": "{{count}} ตัวเลือกการคืนสินค้า"
         },
         "priceType": {
@@ -2170,11 +2128,8 @@
         "modal": {
           "header": "เพิ่มเป้าหมาย"
         },
-        "values_one": "{{count}} ค่า",
         "values_other": "{{count}} ค่าต่างๆ",
-        "numberOfTargets_one": "{{count}} เป้าหมาย",
         "numberOfTargets_other": "{{count}} เป้าหมาย",
-        "additionalValues_one": "และอีก {{count}} ค่า",
         "additionalValues_other": "และอีก {{count}} ค่าต่างๆ",
         "action": "เพิ่มเป้าหมาย"
       },
@@ -2631,9 +2586,7 @@
         "editPrices": "แก้ไขราคา"
       },
       "delete": {
-        "confirmation_one": "คุณกำลังจะลบราคาของ {{count}} สินค้าในรายการราคา การกระทำนี้ไม่สามารถย้อนกลับได้",
         "confirmation_other": "คุณกำลังจะลบราคาของ {{count}} สินค้าในรายการราคา การกระทำนี้ไม่สามารถย้อนกลับได้",
-        "successToast_one": "ลบราคารายการสินค้า {{count}} เรียบร้อยแล้ว",
         "successToast_other": "ลบราคารายการสินค้าทั้งหมด {{count}} เรียบร้อยแล้ว"
       },
       "add": {
@@ -2843,14 +2796,11 @@
         "successToast_other": "เพิ่มผู้ใช้ในบทบาทสำเร็จ",
         "list": {
           "noRecordsMessage": "กรุณาสร้างผู้ใช้ก่อน"
-        },
-        "successToast_one": "เพิ่มผู้ใช้ในบทบาทสำเร็จ"
+        }
       },
       "remove": {
         "title_other": "ลบผู้ใช้",
-        "description_other": "คุณกำลังจะลบ {{count}} ผู้ใช้ออกจากบทบาท การดำเนินการนี้ไม่สามารถยกเลิกได้",
-        "description_one": "คุณกำลังจะนำผู้ใช้ {{count}} คนออกจากบทบาท การดำเนินการนี้ไม่สามารถย้อนกลับได้",
-        "title_one": "นำผู้ใช้ออก"
+        "description_other": "คุณกำลังจะลบ {{count}} ผู้ใช้ออกจากบทบาท การดำเนินการนี้ไม่สามารถยกเลิกได้"
       },
       "list": {
         "noRecordsMessage": "บทบาทนี้ยังไม่มีผู้ใช้"
@@ -2976,9 +2926,7 @@
     "addCurrencies": "เพิ่มสกุลเงิน",
     "enableTaxInclusivePricing": "เปิดใช้งานการตั้งราคารวมภาษี",
     "disableTaxInclusivePricing": "ปิดใช้งานการตั้งราคารวมภาษี",
-    "removeCurrencyWarning_one": "คุณกำลังจะลบสกุลเงิน {{count}} ออกจากร้านค้าของคุณ โปรดตรวจสอบให้แน่ใจว่าคุณได้ลบราคาทั้งหมดที่ใช้สกุลเงินนี้ก่อนดำเนินการต่อ",
     "removeCurrencyWarning_other": "คุณกำลังจะลบสกุลเงิน {{count}} ออกจากร้านค้าของคุณ โปรดตรวจสอบให้แน่ใจว่าคุณได้ลบราคาทั้งหมดที่ใช้สกุลเงินเหล่านี้ก่อนดำเนินการต่อ",
-    "removeLocaleWarning_one": "คุณกำลังจะลบภาษา {{count}} รายการออกจากร้านค้า การแปลที่ใช้ภาษานี้จะถูกลบทั้งหมด",
     "removeLocaleWarning_other": "คุณกำลังจะลบภาษา {{count}} รายการออกจากร้านค้า การแปลที่ใช้ภาษาเหล่านี้จะถูกลบทั้งหมด",
     "currencyAlreadyAdded": "สกุลเงินนี้ได้ถูกเพิ่มในร้านค้าของคุณแล้ว",
     "localeAlreadyAdded": "ภาษานี้ถูกเพิ่มในร้านค้าแล้ว",
@@ -3003,7 +2951,6 @@
     "editRegion": "แก้ไขภูมิภาค",
     "countriesHint": "เพิ่มประเทศที่รวมอยู่ในภูมิภาคนี้",
     "deleteRegionWarning": "คุณกำลังจะลบภูมิภาค {{name}} การกระทำนี้ไม่สามารถย้อนกลับได้",
-    "removeCountriesWarning_one": "คุณกำลังจะลบ {{count}} ประเทศออกจากภูมิภาค การกระทำนี้ไม่สามารถย้อนกลับได้",
     "removeCountriesWarning_other": "คุณกำลังจะลบ {{count}} ประเทศออกจากภูมิภาค การกระทำนี้ไม่สามารถย้อนกลับได้",
     "removeCountryWarning": "คุณกำลังจะลบประเทศ {{name}} ออกจากภูมิภาค การกระทำนี้ไม่สามารถย้อนกลับได้",
     "automaticTaxesHint": "เมื่อเปิดใช้งาน ภาษีจะคำนวณอัตโนมัติในขั้นตอนชำระเงินตามที่อยู่จัดส่ง",
@@ -3111,7 +3058,6 @@
     "noLocationsFound": "ไม่พบสถานที่",
     "selectLocations": "เลือกสถานที่ที่เก็บสต็อกสินค้า",
     "deleteLocationWarning": "คุณกำลังจะลบสถานที่ {{name}} การกระทำนี้ไม่สามารถย้อนกลับได้",
-    "removeSalesChannelsWarning_one": "คุณกำลังจะลบ {{count}} ช่องทางการขายออกจากสถานที่",
     "removeSalesChannelsWarning_other": "คุณกำลังจะลบ {{count}} ช่องทางการขายออกจากสถานที่",
     "toast": {
       "create": "สร้างสถานที่เรียบร้อยแล้ว",
@@ -3140,7 +3086,6 @@
     "createSalesChannel": "สร้างช่องทางการขาย",
     "createSalesChannelHint": "สร้างช่องทางการขายใหม่เพื่อขายสินค้าของคุณ",
     "enabledHint": "ระบุว่าช่องทางการขายนี้เปิดใช้งานหรือไม่",
-    "removeProductsWarning_one": "คุณกำลังจะลบสินค้า {{count}} รายการออกจาก {{sales_channel}}",
     "removeProductsWarning_other": "คุณกำลังจะลบสินค้า {{count}} รายการออกจาก {{sales_channel}}",
     "addProducts": "เพิ่มสินค้า",
     "editSalesChannel": "แก้ไขช่องทางการขาย",
@@ -3201,7 +3146,6 @@
     "salesChannels": {
       "title": "เพิ่มช่องทางการขาย",
       "description": "เพิ่มช่องทางการขายที่คีย์ API ควรถูกจำกัดไว้",
-      "successToast_one": "เพิ่มช่องทางการขาย {{count}} ช่องทางไปยังคีย์ API เรียบร้อยแล้ว",
       "successToast_other": "เพิ่มช่องทางการขาย {{count}} ช่องทางไปยังคีย์ API เรียบร้อยแล้ว",
       "alreadyAddedTooltip": "ช่องทางการขายนี้ได้ถูกเพิ่มไปยังคีย์ API แล้ว",
       "list": {
@@ -3223,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "คุณกำลังจะลบช่องทางการขาย {{name}} ออกจากคีย์ API การกระทำนี้ไม่สามารถย้อนกลับได้",
-      "warningBatch_one": "คุณกำลังจะลบช่องทางการขาย {{count}} ช่องทางออกจากคีย์ API การกระทำนี้ไม่สามารถย้อนกลับได้",
       "warningBatch_other": "คุณกำลังจะลบช่องทางการขาย {{count}} ช่องทางออกจากคีย์ API การกระทำนี้ไม่สามารถย้อนกลับได้",
       "successToast": "ลบช่องทางการขายออกจากคีย์ API เรียบร้อยแล้ว",
-      "successToastBatch_one": "ลบช่องทางการขาย {{count}} ช่องทางออกจากคีย์ API เรียบร้อยแล้ว",
       "successToastBatch_other": "ลบช่องทางการขาย {{count}} ช่องทางออกจากคีย์ API เรียบร้อยแล้ว"
     },
     "actions": {
@@ -3383,7 +3325,6 @@
     "workflowIdLabel": "รหัสเวิร์กโฟลว์",
     "stateLabel": "สถานะ",
     "progressLabel": "ความคืบหน้า",
-    "stepsCompletedLabel_one": "{{completed}} จาก {{count}} ขั้นตอน",
     "stepsCompletedLabel_other": "{{completed}} จาก {{count}} ขั้นตอน",
     "list": {
       "noRecordsMessage": "ยังไม่มีการดำเนินการเวิร์กโฟลว์"
@@ -3730,19 +3671,12 @@
     "values": "ค่า"
   },
   "dateTime": {
-    "years_one": "ปี",
     "years_other": "ปี",
-    "months_one": "เดือน",
     "months_other": "เดือน",
-    "weeks_one": "สัปดาห์",
     "weeks_other": "สัปดาห์",
-    "days_one": "วัน",
     "days_other": "วัน",
-    "hours_one": "ชั่วโมง",
     "hours_other": "ชั่วโมง",
-    "minutes_one": "นาที",
     "minutes_other": "นาที",
-    "seconds_one": "วินาที",
     "seconds_other": "วินาที"
   },
   "views": {

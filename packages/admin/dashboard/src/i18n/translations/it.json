@@ -182,22 +182,16 @@
         "all": "Tutte le aree",
         "customer": "Clienti",
         "customer_group": "Gruppi di clienti",
-        "customerGroup": "Gruppi di clienti",
         "product": "Prodotti",
         "product_variant": "Varianti prodotto",
         "inventory_item": "Inventario",
-        "productVariant": "Varianti di prodotto",
-        "inventory": "Inventario",
         "reservation": "Prenotazioni",
         "product_category": "Categorie",
         "product_collection": "Collezioni",
-        "category": "Categorie",
-        "collection": "Collezioni",
         "order": "Ordini",
         "promotion": "Promozioni",
         "campaign": "Campagne",
         "price_list": "Listini prezzi",
-        "priceList": "Liste dei prezzi",
         "user": "Utenti",
         "region": "Regioni",
         "tax_region": "Regioni fiscali",
@@ -209,15 +203,6 @@
         "shipping_profile": "Profili di spedizione",
         "publishable_api_key": "Chiavi API pubblicabili",
         "secret_api_key": "Chiavi API segrete",
-        "taxRegion": "Regioni fiscali",
-        "returnReason": "Motivi di reso",
-        "salesChannel": "Canali di vendita",
-        "productType": "Tipi di prodotto",
-        "productTag": "Tag di prodotto",
-        "location": "Posizioni",
-        "shippingProfile": "Profili di spedizione",
-        "publishableApiKey": "Chiavi API pubblicabili",
-        "secretApiKey": "Chiavi API segrete",
         "command": "Comandi",
         "navigation": "Navigazione"
       }
@@ -1380,7 +1365,6 @@
       "returnTotal": "Totale reso",
       "inboundTotal": "Totale in entrata",
       "estDifference": "Differenza stimata",
-      "refundAmount": "Importo rimborsabile",
       "outstandingAmount": "Importo in sospeso",
       "reason": "Motivo",
       "reasonHint": "Scegli perché il cliente vuole restituire gli articoli.",
@@ -1991,9 +1975,7 @@
       "hint": "Crea una nuova regione fiscale per definire le aliquote fiscali per un paese specifico.",
       "errors": {
         "missingProvider": "Il fornitore è obbligatorio durante la creazione di una regione fiscale.",
-        "missingCountry": "Il paese è obbligatorio durante la creazione di una regione fiscale.",
-        "rateIsRequired": "L'aliquota fiscale è obbligatoria quando si crea un'aliquota fiscale predefinita.",
-        "nameIsRequired": "Il nome è obbligatorio quando si crea un'aliquota fiscale predefinita."
+        "missingCountry": "Il paese è obbligatorio durante la creazione di una regione fiscale."
       },
       "successToast": "La regione fiscale è stata creata con successo."
     },
@@ -2280,9 +2262,7 @@
           "items": {
             "title": "A quali articoli verrà applicata la promozione?",
             "description": "La promozione verrà applicata agli articoli che soddisfano le seguenti condizioni."
-          },
-          "title": "A quali articoli sarà applicata la promozione?",
-          "description": "La promozione sarà applicata agli articoli che soddisfano le seguenti condizioni."
+          }
         },
         "buy-rules": {
           "title": "Cosa deve essere nel carrello per sbloccare la promozione?",
@@ -2365,8 +2345,7 @@
         "inactive": {
           "title": "Inattiva",
           "description": "I clienti non potranno più utilizzare il codice"
-        },
-        "title": "Stato"
+        }
       },
       "method": {
         "label": "Metodo",
@@ -3091,7 +3070,6 @@
       "createTaxRate": "Crea Aliquota Fiscale",
       "createTaxRateHint": "Crea una nuova aliquota fiscale per la regione.",
       "deleteRateDescription": "Stai per eliminare l'aliquota fiscale {{name}}. Questa azione non può essere annullata.",
-      "editTaxRate": "Modifica Aliquota Fiscale",
       "editRateAction": "Modifica aliquota",
       "editOverridesAction": "Modifica sovrascritture",
       "editOverridesTitle": "Modifica Sovrascritture Aliquota Fiscale",

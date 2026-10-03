@@ -42,7 +42,6 @@
     "store": "스토어",
     "rank": "순위",
     "details": "상세 정보",
-    "items_one": "{{count}}개 상품",
     "items_other": "{{count}}개 상품",
     "values_other": "{{count}}개의 값",
     "countSelected": "{{count}}개 선택됨",
@@ -71,17 +70,14 @@
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}}개 키",
     "numberOfKeys_other": "{{count}}개 키",
     "drawer": {
-      "header_one": "JSON <0>· {{count}}개 키</0>",
       "header_other": "JSON <0>· {{count}}개 키</0>",
       "description": "이 객체의 JSON 데이터를 확인합니다."
     }
   },
   "metadata": {
     "header": "메타데이터",
-    "numberOfKeys_one": "{{count}}개 키",
     "numberOfKeys_other": "{{count}}개 키",
     "edit": {
       "header": "메타데이터 편집",
@@ -181,22 +177,16 @@
         "all": "모든 영역",
         "customer": "고객",
         "customer_group": "고객 그룹",
-        "customerGroup": "고객 그룹",
         "product": "제품",
         "product_variant": "제품 변형",
         "inventory_item": "재고",
-        "productVariant": "제품 변형",
-        "inventory": "재고",
         "reservation": "예약",
         "product_category": "카테고리",
         "product_collection": "컬렉션",
-        "category": "카테고리",
-        "collection": "컬렉션",
         "order": "주문",
         "promotion": "프로모션",
         "campaign": "캠페인",
         "price_list": "가격 목록",
-        "priceList": "가격 목록",
         "user": "사용자",
         "region": "지역",
         "tax_region": "세금 지역",
@@ -208,15 +198,6 @@
         "shipping_profile": "배송 프로필",
         "publishable_api_key": "게시 가능 API 키",
         "secret_api_key": "비밀 API 키",
-        "taxRegion": "세금 지역",
-        "returnReason": "반품 사유",
-        "salesChannel": "판매 채널",
-        "productType": "제품 유형",
-        "productTag": "제품 태그",
-        "location": "위치",
-        "shippingProfile": "배송 프로필",
-        "publishableApiKey": "공개 API 키",
-        "secretApiKey": "비밀 API 키",
         "command": "명령",
         "navigation": "탐색"
       }
@@ -346,7 +327,6 @@
     },
     "errors": {
       "fixError": "오류 수정",
-      "count_one": "{{count}}개 오류",
       "count_other": "{{count}}개 오류"
     }
   },
@@ -569,9 +549,7 @@
       "invalidFileType": "'{{name}}'은(는) 지원되지 않는 파일 형식입니다. 지원되는 파일 형식: {{types}}.",
       "fileTooLarge": "하나 이상의 파일이 최대 파일 크기 {{size}}를 초과합니다: {{name}}",
       "failedToUpload": "추가된 미디어를 업로드하지 못했습니다. 다시 시도해주세요.",
-      "deleteWarning_one": "{{count}}개의 이미지를 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "deleteWarning_other": "{{count}}개의 이미지를 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
-      "deleteWarningWithThumbnail_one": "썸네일을 포함한 {{count}}개의 이미지를 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "deleteWarningWithThumbnail_other": "썸네일을 포함한 {{count}}개의 이미지를 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "thumbnailTooltip": "썸네일",
       "galleryLabel": "갤러리",
@@ -603,7 +581,6 @@
     },
     "discountableHint": "체크 해제 시 이 제품은 할인 대상에서 제외됩니다.",
     "noSalesChannels": "어떤 판매 채널에서도 사용할 수 없음",
-    "variantCount_one": "{{count}}개 변형",
     "variantCount_other": "{{count}}개 변형",
     "deleteVariantWarning": "변형 {{title}}을(를) 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "productStatus": {
@@ -717,7 +694,6 @@
       "deleteWarning": "이 변형을 삭제하시겠습니까?",
       "pricesPagination": "{{total}}개 중 1 - {{current}}개 가격",
       "tableItemAvailable": "{{availableCount}}개 사용 가능",
-      "tableItem_one": "{{locationCount}}개 위치에서 {{availableCount}}개 사용 가능",
       "tableItem_other": "{{locationCount}}개 위치에서 {{availableCount}}개 사용 가능",
       "inventory": {
         "notManaged": "재고 관리 안 함",
@@ -835,18 +811,15 @@
     "handleTooltip": "핸들은 스토어프론트에서 컬렉션을 참조하는 데 사용됩니다. 지정하지 않으면 컬렉션 제목에서 핸들이 생성됩니다.",
     "deleteWarning": "컬렉션 {{title}}을(를) 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "removeSingleProductWarning": "컬렉션에서 제품 {{title}}을(를) 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
-    "removeProductsWarning_one": "컬렉션에서 {{count}}개의 제품을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "removeProductsWarning_other": "컬렉션에서 {{count}}개의 제품을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "products": {
       "list": {
         "noRecordsMessage": "컬렉션에 제품이 없습니다."
       },
       "add": {
-        "successToast_one": "제품이 컬렉션에 성공적으로 추가되었습니다.",
         "successToast_other": "제품이 컬렉션에 성공적으로 추가되었습니다."
       },
       "remove": {
-        "successToast_one": "제품이 컬렉션에서 성공적으로 제거되었습니다.",
         "successToast_other": "제품이 컬렉션에서 성공적으로 제거되었습니다."
       }
     }
@@ -875,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "이 제품은 이미 이 카테고리에 있습니다.",
-        "successToast_one": "{{count}}개 제품이 카테고리에 추가되었습니다.",
         "successToast_other": "{{count}}개 제품이 카테고리에 추가되었습니다."
       },
       "remove": {
-        "confirmation_one": "카테고리에서 {{count}}개 제품을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
         "confirmation_other": "카테고리에서 {{count}}개 제품을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
-        "successToast_one": "{{count}}개 제품이 카테고리에서 제거되었습니다.",
         "successToast_other": "{{count}}개 제품이 카테고리에서 제거되었습니다."
       },
       "list": {
@@ -1040,7 +1010,6 @@
       "description": "선택한 상품의 재고 수량을 업데이트합니다.",
       "action": "재고 수준 편집",
       "placeholder": "활성화되지 않음",
-      "disablePrompt_one": "{{count}}개의 위치 수준을 비활성화하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "disablePrompt_other": "{{count}}개의 위치 수준을 비활성화하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "disabledToggleTooltip": "비활성화할 수 없음: 비활성화하기 전에 들어오는 수량 및/또는 예약된 수량을 지우세요.",
       "successToast": "재고 수준이 성공적으로 업데이트되었습니다."
@@ -1173,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "고객이 이미 그룹에 추가되었습니다.",
       "add": {
-        "successToast_one": "고객이 그룹에 성공적으로 추가되었습니다.",
         "successToast_other": "고객이 그룹에 성공적으로 추가되었습니다.",
         "list": {
           "noRecordsMessage": "먼저 고객을 생성하세요."
         }
       },
       "remove": {
-        "title_one": "고객 제거",
         "title_other": "고객 제거",
-        "description_one": "고객 그룹에서 {{count}}명의 고객을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
         "description_other": "고객 그룹에서 {{count}}명의 고객을 제거하려고 합니다. 이 작업은 취소할 수 없습니다."
       },
       "list": {
@@ -1619,7 +1585,6 @@
     },
     "activity": {
       "header": "활동",
-      "showMoreActivities_one": "{{count}}개 더 활동 보기",
       "showMoreActivities_other": "{{count}}개 더 활동 보기",
       "comment": {
         "label": "댓글",
@@ -1652,14 +1617,12 @@
           "canceled": "주문 처리 취소됨",
           "shipped": "상품 발송됨",
           "delivered": "상품 배송 완료됨",
-          "items_one": "{{count}}개 상품",
           "items_other": "{{count}}개 상품"
         },
         "return": {
           "created": "반품 #{{returnId}} 요청됨",
           "canceled": "반품 #{{returnId}} 취소됨",
           "received": "반품 #{{returnId}} 수령됨",
-          "items_one": "{{count}}개 항목 반품됨",
           "items_other": "{{count}}개 항목 반품됨"
         },
         "note": {
@@ -1899,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}}개 배송 옵션",
           "shipping_other": "{{count}}개 배송 옵션",
-          "pickup_one": "{{count}}개 픽업 옵션",
           "pickup_other": "{{count}}개 픽업 옵션",
-          "returns_one": "{{count}}개 반품 옵션",
           "returns_other": "{{count}}개 반품 옵션"
         },
         "priceType": {
@@ -2165,11 +2125,8 @@
         "modal": {
           "header": "대상 추가"
         },
-        "values_one": "{{count}}개 값",
         "values_other": "{{count}}개 값",
-        "numberOfTargets_one": "{{count}}개 대상",
         "numberOfTargets_other": "{{count}}개 대상",
-        "additionalValues_one": "및 {{count}}개 추가 값",
         "additionalValues_other": "및 {{count}}개 추가 값",
         "action": "대상 추가"
       },
@@ -2275,9 +2232,7 @@
           "items": {
             "title": "프로모션이 적용될 항목은 무엇입니까?",
             "description": "프로모션은 다음 조건과 일치하는 항목에 적용됩니다."
-          },
-          "title": "어떤 항목에 프로모션이 적용되나요?",
-          "description": "프로모션은 다음 조건과 일치하는 항목에 적용됩니다."
+          }
         },
         "buy-rules": {
           "title": "프로모션을 활성화하기 위해 장바구니에 무엇이 필요한가요?",
@@ -2631,9 +2586,7 @@
         "editPrices": "가격 편집"
       },
       "delete": {
-        "confirmation_one": "가격 목록에서 {{count}}개 제품의 가격을 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
         "confirmation_other": "가격 목록에서 {{count}}개 제품의 가격을 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
-        "successToast_one": "{{count}}개 제품의 가격이 성공적으로 삭제되었습니다.",
         "successToast_other": "{{count}}개 제품의 가격이 성공적으로 삭제되었습니다."
       },
       "add": {
@@ -2973,7 +2926,6 @@
     "addCurrencies": "통화 추가",
     "enableTaxInclusivePricing": "세금 포함 가격 활성화",
     "disableTaxInclusivePricing": "세금 포함 가격 비활성화",
-    "removeCurrencyWarning_one": "스토어에서 {{count}}개의 통화를 제거하려고 합니다. 계속하기 전에 해당 통화를 사용하는 모든 가격을 제거했는지 확인하세요.",
     "removeCurrencyWarning_other": "스토어에서 {{count}}개의 통화를 제거하려고 합니다. 계속하기 전에 해당 통화를 사용하는 모든 가격을 제거했는지 확인하세요.",
     "removeLocaleWarning_other": "스토어에서 {{count}}개의 로케일을 제거하려고 합니다. 이 로케일을 사용하는 모든 번역이 제거됩니다.",
     "currencyAlreadyAdded": "이 통화는 이미 스토어에 추가되었습니다.",
@@ -2999,7 +2951,6 @@
     "editRegion": "지역 편집",
     "countriesHint": "이 지역에 포함된 국가를 추가합니다.",
     "deleteRegionWarning": "지역 {{name}}을(를) 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
-    "removeCountriesWarning_one": "지역에서 {{count}}개의 국가를 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "removeCountriesWarning_other": "지역에서 {{count}}개의 국가를 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "removeCountryWarning": "지역에서 국가 {{name}}을(를) 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
     "automaticTaxesHint": "활성화되면 세금은 배송 주소에 따라 결제 시에만 계산됩니다.",
@@ -3107,7 +3058,6 @@
     "noLocationsFound": "위치를 찾을 수 없음",
     "selectLocations": "항목을 보관하는 위치를 선택하세요.",
     "deleteLocationWarning": "위치 {{name}}을(를) 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
-    "removeSalesChannelsWarning_one": "위치에서 {{count}}개의 판매 채널을 제거하려고 합니다.",
     "removeSalesChannelsWarning_other": "위치에서 {{count}}개의 판매 채널을 제거하려고 합니다.",
     "toast": {
       "create": "위치가 성공적으로 생성되었습니다",
@@ -3136,7 +3086,6 @@
     "createSalesChannel": "판매 채널 생성",
     "createSalesChannelHint": "제품을 판매할 새 판매 채널을 생성합니다.",
     "enabledHint": "판매 채널의 활성화 여부를 지정합니다.",
-    "removeProductsWarning_one": "{{sales_channel}}에서 {{count}}개의 제품을 제거하려고 합니다.",
     "removeProductsWarning_other": "{{sales_channel}}에서 {{count}}개의 제품을 제거하려고 합니다.",
     "addProducts": "제품 추가",
     "editSalesChannel": "판매 채널 편집",
@@ -3197,7 +3146,6 @@
     "salesChannels": {
       "title": "판매 채널 추가",
       "description": "API 키가 제한되어야 하는 판매 채널을 추가합니다.",
-      "successToast_one": "{{count}}개의 판매 채널이 API 키에 성공적으로 추가되었습니다.",
       "successToast_other": "{{count}}개의 판매 채널이 API 키에 성공적으로 추가되었습니다.",
       "alreadyAddedTooltip": "이 판매 채널은 이미 API 키에 추가되었습니다.",
       "list": {
@@ -3219,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "API 키에서 판매 채널 {{name}}을(를) 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
-      "warningBatch_one": "API 키에서 {{count}}개의 판매 채널을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "warningBatch_other": "API 키에서 {{count}}개의 판매 채널을 제거하려고 합니다. 이 작업은 취소할 수 없습니다.",
       "successToast": "판매 채널이 API 키에서 성공적으로 제거되었습니다.",
-      "successToastBatch_one": "{{count}}개의 판매 채널이 API 키에서 성공적으로 제거되었습니다.",
       "successToastBatch_other": "{{count}}개의 판매 채널이 API 키에서 성공적으로 제거되었습니다."
     },
     "actions": {
@@ -3379,7 +3325,6 @@
     "workflowIdLabel": "워크플로우 ID",
     "stateLabel": "상태",
     "progressLabel": "진행 상황",
-    "stepsCompletedLabel_one": "{{count}}개 중 {{completed}}개 단계",
     "stepsCompletedLabel_other": "{{count}}개 중 {{completed}}개 단계",
     "list": {
       "noRecordsMessage": "아직 실행된 워크플로우가 없습니다."
@@ -3726,19 +3671,12 @@
     "values": "값"
   },
   "dateTime": {
-    "years_one": "년",
     "years_other": "년",
-    "months_one": "월",
     "months_other": "월",
-    "weeks_one": "주",
     "weeks_other": "주",
-    "days_one": "일",
     "days_other": "일",
-    "hours_one": "시간",
     "hours_other": "시간",
-    "minutes_one": "분",
     "minutes_other": "분",
-    "seconds_one": "초",
     "seconds_other": "초"
   },
   "views": {

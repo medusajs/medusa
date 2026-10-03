@@ -42,9 +42,7 @@
     "store": "ストア",
     "rank": "ランク",
     "details": "詳細",
-    "items_one": "{{count}}個のアイテム",
     "items_other": "{{count}}個のアイテム",
-    "values_one": "{{count}}個の値",
     "values_other": "{{count}}個の値",
     "countSelected": "{{count}}個選択済み",
     "countOfTotalSelected": "{{total}}個中{{count}}個選択済み",
@@ -72,17 +70,14 @@
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}}個のキー",
     "numberOfKeys_other": "{{count}}個のキー",
     "drawer": {
-      "header_one": "JSON <0>· {{count}}個のキー</0>",
       "header_other": "JSON <0>· {{count}}個のキー</0>",
       "description": "このオブジェクトのJSONデータを表示します。"
     }
   },
   "metadata": {
     "header": "メタデータ",
-    "numberOfKeys_one": "{{count}}個のキー",
     "numberOfKeys_other": "{{count}}個のキー",
     "edit": {
       "header": "メタデータを編集",
@@ -182,22 +177,16 @@
         "all": "すべての領域",
         "customer": "顧客",
         "customer_group": "顧客グループ",
-        "customerGroup": "顧客グループ",
         "product": "商品",
         "product_variant": "商品バリアント",
         "inventory_item": "在庫",
-        "productVariant": "商品バリエーション",
-        "inventory": "在庫",
         "reservation": "予約",
         "product_category": "カテゴリー",
         "product_collection": "コレクション",
-        "category": "カテゴリ",
-        "collection": "コレクション",
         "order": "注文",
         "promotion": "プロモーション",
         "campaign": "キャンペーン",
         "price_list": "価格リスト",
-        "priceList": "価格リスト",
         "user": "ユーザー",
         "region": "地域",
         "tax_region": "税地域",
@@ -209,15 +198,6 @@
         "shipping_profile": "配送プロファイル",
         "publishable_api_key": "公開APIキー",
         "secret_api_key": "シークレットAPIキー",
-        "taxRegion": "税地域",
-        "returnReason": "返品理由",
-        "salesChannel": "販売チャネル",
-        "productType": "商品タイプ",
-        "productTag": "商品タグ",
-        "location": "拠点",
-        "shippingProfile": "配送プロファイル",
-        "publishableApiKey": "公開可能なAPIキー",
-        "secretApiKey": "秘密のAPIキー",
         "command": "コマンド",
         "navigation": "ナビゲーション"
       }
@@ -347,7 +327,6 @@
     },
     "errors": {
       "fixError": "エラーを修正",
-      "count_one": "{{count}}個のエラー",
       "count_other": "{{count}}個のエラー"
     }
   },
@@ -570,9 +549,7 @@
       "invalidFileType": "「{{name}}」はサポートされていないファイルタイプです。サポートされているファイルタイプは次のとおりです：{{types}}。",
       "fileTooLarge": "1つ以上のファイルが最大ファイルサイズ{{size}}を超えています: {{name}}",
       "failedToUpload": "追加されたメディアのアップロードに失敗しました。もう一度お試しください。",
-      "deleteWarning_one": "{{count}}枚の画像を削除しようとしています。この操作は元に戻せません。",
       "deleteWarning_other": "{{count}}枚の画像を削除しようとしています。この操作は元に戻せません。",
-      "deleteWarningWithThumbnail_one": "サムネイルを含む{{count}}枚の画像を削除しようとしています。この操作は元に戻せません。",
       "deleteWarningWithThumbnail_other": "サムネイルを含む{{count}}枚の画像を削除しようとしています。この操作は元に戻せません。",
       "thumbnailTooltip": "サムネイル",
       "galleryLabel": "ギャラリー",
@@ -604,7 +581,6 @@
     },
     "discountableHint": "チェックを外すと、この商品に割引は適用されません。",
     "noSalesChannels": "どの販売チャネルでも利用できません",
-    "variantCount_one": "{{count}}個のバリエーション",
     "variantCount_other": "{{count}}個のバリエーション",
     "deleteVariantWarning": "バリエーション「{{title}}」を削除しようとしています。この操作は元に戻せません。",
     "productStatus": {
@@ -718,7 +694,6 @@
       "deleteWarning": "このバリエーションを削除してもよろしいですか？",
       "pricesPagination": "1 - {{total}}件中{{current}}件の価格",
       "tableItemAvailable": "{{availableCount}}個利用可能",
-      "tableItem_one": "{{locationCount}}の拠点で{{availableCount}}個利用可能",
       "tableItem_other": "{{locationCount}}の拠点で{{availableCount}}個利用可能",
       "inventory": {
         "notManaged": "管理されていません",
@@ -836,18 +811,15 @@
     "handleTooltip": "ハンドルはストアフロントでコレクションを参照するために使用されます。指定しない場合、コレクションのタイトルからハンドルが生成されます。",
     "deleteWarning": "コレクション「{{title}}」を削除しようとしています。この操作は元に戻せません。",
     "removeSingleProductWarning": "商品「{{title}}」をコレクションから削除しようとしています。この操作は元に戻せません。",
-    "removeProductsWarning_one": "{{count}}個の商品をコレクションから削除しようとしています。この操作は元に戻せません。",
     "removeProductsWarning_other": "{{count}}個の商品をコレクションから削除しようとしています。この操作は元に戻せません。",
     "products": {
       "list": {
         "noRecordsMessage": "コレクションに商品がありません。"
       },
       "add": {
-        "successToast_one": "商品がコレクションに正常に追加されました。",
         "successToast_other": "商品がコレクションに正常に追加されました。"
       },
       "remove": {
-        "successToast_one": "商品がコレクションから正常に削除されました。",
         "successToast_other": "商品がコレクションから正常に削除されました。"
       }
     }
@@ -876,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "この商品は既にこのカテゴリーに含まれています。",
-        "successToast_one": "{{count}}個の商品をカテゴリーに追加しました。",
         "successToast_other": "{{count}}個の商品をカテゴリーに追加しました。"
       },
       "remove": {
-        "confirmation_one": "{{count}}個の商品をカテゴリーから削除しようとしています。この操作は元に戻せません。",
         "confirmation_other": "{{count}}個の商品をカテゴリーから削除しようとしています。この操作は元に戻せません。",
-        "successToast_one": "{{count}}個の商品をカテゴリーから削除しました。",
         "successToast_other": "{{count}}個の商品をカテゴリーから削除しました。"
       },
       "list": {
@@ -1041,7 +1010,6 @@
       "description": "選択した在庫アイテムの在庫レベルを更新します。",
       "action": "在庫レベルを編集",
       "placeholder": "無効",
-      "disablePrompt_one": "{{count}}件の場所レベルを無効にしようとしています。この操作は元に戻せません。",
       "disablePrompt_other": "{{count}}件の場所レベルを無効にしようとしています。この操作は元に戻せません。",
       "disabledToggleTooltip": "無効にできません: 無効にする前に、入荷予定数量または引当数量をクリアしてください。",
       "successToast": "在庫レベルが正常に更新されました。"
@@ -1174,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "この顧客は既にグループに追加されています。",
       "add": {
-        "successToast_one": "顧客がグループに正常に追加されました。",
         "successToast_other": "顧客がグループに正常に追加されました。",
         "list": {
           "noRecordsMessage": "まず顧客を作成してください。"
         }
       },
       "remove": {
-        "title_one": "顧客を削除",
         "title_other": "顧客を削除",
-        "description_one": "{{count}}人の顧客を顧客グループから削除しようとしています。この操作は元に戻せません。",
         "description_other": "{{count}}人の顧客を顧客グループから削除しようとしています。この操作は元に戻せません。"
       },
       "list": {
@@ -1437,8 +1402,7 @@
       "panel": {
         "title": "返品が開始されました",
         "description": "完了する必要のある未処理の返品リクエストがあります"
-      },
-      "refundAmount": "返金額"
+      }
     },
     "claims": {
       "create": "クレームを作成",
@@ -1569,7 +1533,6 @@
       "methodDescription": "顧客が選択した配送方法とは異なる方法を選択してください",
       "error": {
         "wrongQuantity": "出荷可能なアイテムは1つのみです",
-        "wrongQuantity_one": "フルフィルメントできるアイテムは1つだけです",
         "wrongQuantity_other": "数量は1から{{number}}の間の数字である必要があります",
         "noItems": "出荷するアイテムがありません。",
         "noShippingOption": "配送オプションは必須です",
@@ -1622,7 +1585,6 @@
     },
     "activity": {
       "header": "アクティビティ",
-      "showMoreActivities_one": "さらに{{count}}件のアクティビティを表示",
       "showMoreActivities_other": "さらに{{count}}件のアクティビティを表示",
       "comment": {
         "label": "コメント",
@@ -1655,14 +1617,12 @@
           "canceled": "出荷がキャンセルされました",
           "shipped": "アイテムが配送されました",
           "delivered": "アイテムが配達されました",
-          "items_one": "{{count}}個のアイテム",
           "items_other": "{{count}}個のアイテム"
         },
         "return": {
           "created": "返品#{{returnId}}がリクエストされました",
           "canceled": "返品#{{returnId}}がキャンセルされました",
           "received": "返品#{{returnId}}を受け取りました",
-          "items_one": "{{count}}個のアイテムが返品されました",
           "items_other": "{{count}}個のアイテムが返品されました"
         },
         "note": {
@@ -1902,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}}個の配送オプション",
           "shipping_other": "{{count}}個の配送オプション",
-          "pickup_one": "{{count}}件の受け取りオプション",
           "pickup_other": "{{count}}件の受け取りオプション",
-          "returns_one": "{{count}}個の返品オプション",
           "returns_other": "{{count}}個の返品オプション"
         },
         "priceType": {
@@ -1991,9 +1948,7 @@
       "hint": "特定の国の税率を定義するための新しい税地域を作成します。",
       "errors": {
         "missingProvider": "税地域を作成する際は、プロバイダーが必須です。",
-        "missingCountry": "税地域を作成する際は、国が必須です。",
-        "rateIsRequired": "デフォルトの税率を作成する際は税率が必要です。",
-        "nameIsRequired": "デフォルトの税率を作成する際は名前が必要です。"
+        "missingCountry": "税地域を作成する際は、国が必須です。"
       },
       "successToast": "税地域が正常に作成されました。"
     },
@@ -2173,11 +2128,8 @@
         "modal": {
           "header": "対象を追加"
         },
-        "values_one": "{{count}}個の値",
         "values_other": "{{count}}個の値",
-        "numberOfTargets_one": "{{count}}個の対象",
         "numberOfTargets_other": "{{count}}個の対象",
-        "additionalValues_one": "さらに{{count}}個の値",
         "additionalValues_other": "さらに{{count}}個の値",
         "action": "対象を追加"
       },
@@ -2280,9 +2232,7 @@
           "items": {
             "title": "プロモーションはどのアイテムに適用されますか?",
             "description": "プロモーションは、以下の条件に一致するアイテムに適用されます。"
-          },
-          "title": "プロモーションはどの商品に適用されますか？",
-          "description": "プロモーションは、次の条件に一致する商品に適用されます。"
+          }
         },
         "buy-rules": {
           "title": "プロモーションを有効にするためにカートに必要なものは？",
@@ -2365,8 +2315,7 @@
         "inactive": {
           "title": "無効",
           "description": "顧客はこのコードを使用できなくなります"
-        },
-        "title": "ステータス"
+        }
       },
       "method": {
         "label": "方法",
@@ -2637,9 +2586,7 @@
         "editPrices": "価格を編集"
       },
       "delete": {
-        "confirmation_one": "{{count}}個の商品に対する価格をこの価格リストから削除しようとしています。この操作は取り消せません。",
         "confirmation_other": "{{count}}個の商品に対する価格をこの価格リストから削除しようとしています。この操作は取り消せません。",
-        "successToast_one": "{{count}}個の商品に対する価格が正常に削除されました。",
         "successToast_other": "{{count}}個の商品に対する価格が正常に削除されました。"
       },
       "add": {
@@ -2846,16 +2793,13 @@
       "alreadyAddedTooltip": "ユーザーはすでにこのロールを持っています。",
       "unassignableRoleTooltip": "このロールを割り当てるアクセス権がありません。あなたの権限では、このロールのすべてのポリシーをカバーできません。",
       "add": {
-        "successToast_one": "ユーザーが正常にロールに追加されました。",
         "successToast_other": "ユーザーが正常にロールに追加されました。",
         "list": {
           "noRecordsMessage": "先にユーザーを作成してください。"
         }
       },
       "remove": {
-        "title_one": "ユーザーを削除",
         "title_other": "ユーザーを削除",
-        "description_one": "ロールから{{count}}人のユーザーを削除しようとしています。この操作は元に戻せません。",
         "description_other": "ロールから{{count}}人のユーザーを削除しようとしています。この操作は元に戻せません。"
       },
       "list": {
@@ -2982,9 +2926,7 @@
     "addCurrencies": "通貨を追加",
     "enableTaxInclusivePricing": "税込価格を有効にする",
     "disableTaxInclusivePricing": "税込価格を無効にする",
-    "removeCurrencyWarning_one": "{{count}}個の通貨をストアから削除しようとしています。進む前に、その通貨を使用しているすべての価格が削除されていることを確認してください。",
     "removeCurrencyWarning_other": "{{count}}個の通貨をストアから削除しようとしています。進む前に、それらの通貨を使用しているすべての価格が削除されていることを確認してください。",
-    "removeLocaleWarning_one": "ストアから{{count}}件のロケールを削除しようとしています。このロケールを使用しているすべての翻訳が削除されます。",
     "removeLocaleWarning_other": "ストアから{{count}}件のロケールを削除しようとしています。これらのロケールを使用しているすべての翻訳が削除されます。",
     "currencyAlreadyAdded": "この通貨はすでにストアに追加されています。",
     "localeAlreadyAdded": "このロケールはすでにストアに追加されています。",
@@ -3009,7 +2951,6 @@
     "editRegion": "地域を編集",
     "countriesHint": "この地域に含まれる国を追加します。",
     "deleteRegionWarning": "地域「{{name}}」を削除しようとしています。この操作は取り消せません。",
-    "removeCountriesWarning_one": "{{count}}か国を地域から削除しようとしています。この操作は取り消せません。",
     "removeCountriesWarning_other": "{{count}}か国を地域から削除しようとしています。この操作は取り消せません。",
     "removeCountryWarning": "国「{{name}}」を地域から削除しようとしています。この操作は取り消せません。",
     "automaticTaxesHint": "有効にすると、税金は配送先住所に基づいてチェックアウト時にのみ計算されます。",
@@ -3107,8 +3048,7 @@
       "addShippingOptionOverridesAction": "配送オプションの上書きを追加",
       "productOverridesHeader": "商品",
       "productTypeOverridesHeader": "商品タイプ",
-      "shippingOptionOverridesHeader": "配送オプション",
-      "editTaxRate": "税率を編集"
+      "shippingOptionOverridesHeader": "配送オプション"
     }
   },
   "locations": {
@@ -3118,7 +3058,6 @@
     "noLocationsFound": "拠点が見つかりません",
     "selectLocations": "商品を在庫する拠点を選択してください。",
     "deleteLocationWarning": "拠点「{{name}}」を削除しようとしています。この操作は取り消せません。",
-    "removeSalesChannelsWarning_one": "{{count}}個の販売チャネルを拠点から削除しようとしています。",
     "removeSalesChannelsWarning_other": "{{count}}個の販売チャネルを拠点から削除しようとしています。",
     "toast": {
       "create": "拠点が正常に作成されました",
@@ -3147,7 +3086,6 @@
     "createSalesChannel": "販売チャネルを作成",
     "createSalesChannelHint": "商品を販売するための新しい販売チャネルを作成します。",
     "enabledHint": "販売チャネルが有効かどうかを指定します。",
-    "removeProductsWarning_one": "{{sales_channel}}から{{count}}個の商品を削除しようとしています。",
     "removeProductsWarning_other": "{{sales_channel}}から{{count}}個の商品を削除しようとしています。",
     "addProducts": "商品を追加",
     "editSalesChannel": "販売チャネルを編集",
@@ -3208,7 +3146,6 @@
     "salesChannels": {
       "title": "販売チャネルを追加",
       "description": "APIキーが制限される販売チャネルを追加します。",
-      "successToast_one": "{{count}}個の販売チャネルがAPIキーに正常に追加されました。",
       "successToast_other": "{{count}}個の販売チャネルがAPIキーに正常に追加されました。",
       "alreadyAddedTooltip": "この販売チャネルはすでにAPIキーに追加されています。",
       "list": {
@@ -3230,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "販売チャネル「{{name}}」をAPIキーから削除しようとしています。この操作は取り消せません。",
-      "warningBatch_one": "{{count}}個の販売チャネルをAPIキーから削除しようとしています。この操作は取り消せません。",
       "warningBatch_other": "{{count}}個の販売チャネルをAPIキーから削除しようとしています。この操作は取り消せません。",
       "successToast": "販売チャネルがAPIキーから正常に削除されました。",
-      "successToastBatch_one": "{{count}}個の販売チャネルがAPIキーから正常に削除されました。",
       "successToastBatch_other": "{{count}}個の販売チャネルがAPIキーから正常に削除されました。"
     },
     "actions": {
@@ -3390,7 +3325,6 @@
     "workflowIdLabel": "ワークフローID",
     "stateLabel": "状態",
     "progressLabel": "進捗",
-    "stepsCompletedLabel_one": "{{count}}ステップ中{{completed}}ステップ完了",
     "stepsCompletedLabel_other": "{{count}}ステップ中{{completed}}ステップ完了",
     "list": {
       "noRecordsMessage": "まだワークフローが実行されていません。"
@@ -3737,19 +3671,12 @@
     "values": "値"
   },
   "dateTime": {
-    "years_one": "年",
     "years_other": "年",
-    "months_one": "月",
     "months_other": "月",
-    "weeks_one": "週",
     "weeks_other": "週",
-    "days_one": "日",
     "days_other": "日",
-    "hours_one": "時",
     "hours_other": "時",
-    "minutes_one": "分",
     "minutes_other": "分",
-    "seconds_one": "秒",
     "seconds_other": "秒"
   },
   "views": {

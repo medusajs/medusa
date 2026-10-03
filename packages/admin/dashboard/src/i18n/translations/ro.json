@@ -187,22 +187,16 @@
         "all": "Toate zonele",
         "customer": "Clienții",
         "customer_group": "Grupuri de clienți",
-        "customerGroup": "Grupuri de clienți",
         "product": "Produse",
         "product_variant": "Variante de produs",
         "inventory_item": "Inventar",
-        "productVariant": "Variante de produs",
-        "inventory": "Inventar",
         "reservation": "Rezervări",
         "product_category": "Categorii",
         "product_collection": "Colecții",
-        "category": "Categorii",
-        "collection": "Colecții",
         "order": "Comenzi",
         "promotion": "Promoții",
         "campaign": "Campanii",
         "price_list": "Liste de prețuri",
-        "priceList": "Liste de prețuri",
         "user": "Utilizatori",
         "region": "Regiunile",
         "tax_region": "Regiuni fiscale",
@@ -214,15 +208,6 @@
         "shipping_profile": "Profiluri de expediere",
         "publishable_api_key": "Chei API publicabile",
         "secret_api_key": "Chei API secrete",
-        "taxRegion": "Regiuni fiscale",
-        "returnReason": "Motive de întoarcere",
-        "salesChannel": "Canale de vânzare",
-        "productType": "Tipuri de produse",
-        "productTag": "Etichete de produs",
-        "location": "Locații",
-        "shippingProfile": "Profiluri de expediere",
-        "publishableApiKey": "Chei API care pot fi publicate",
-        "secretApiKey": "Chei secrete API",
         "command": "Comenzi",
         "navigation": "Navigare"
       }
@@ -1400,7 +1385,6 @@
       "returnTotal": "Retur total",
       "inboundTotal": "Total de intrare",
       "estDifference": "Diferență estimată",
-      "refundAmount": "Suma de rambursare",
       "outstandingAmount": "Suma restante",
       "reason": "Motiv",
       "reasonHint": "Alegeți de ce clientul dorește să returneze articole.",
@@ -2018,9 +2002,7 @@
       "hint": "Creați o nouă regiune fiscală pentru a defini cotele de impozitare pentru o anumită țară.",
       "errors": {
         "missingProvider": "Furnizorul este obligatoriu la crearea unei regiuni fiscale.",
-        "missingCountry": "Țara este obligatorie la crearea unei regiuni fiscale.",
-        "rateIsRequired": "Cota de impozitare este necesară la crearea unei cote implicite de impozitare.",
-        "nameIsRequired": "Numele este necesar la crearea unei rate de impozitare implicite."
+        "missingCountry": "Țara este obligatorie la crearea unei regiuni fiscale."
       },
       "successToast": "Regiunea fiscală a fost creată cu succes."
     },
@@ -2310,9 +2292,7 @@
           "items": {
             "title": "La ce articole se va aplica promoția?",
             "description": "Promoția va fi aplicată articolelor care îndeplinesc următoarele condiții."
-          },
-          "title": "La ce articole se va aplica promoția?",
-          "description": "Promoția se va aplica articolelor care îndeplinesc următoarele condiții."
+          }
         },
         "buy-rules": {
           "title": "Ce trebuie să fie în coș pentru a debloca promoția?",
@@ -3128,7 +3108,6 @@
       "createTaxRate": "Creați cota de impozitare",
       "createTaxRateHint": "Creați o nouă cotă de impozitare pentru regiune.",
       "deleteRateDescription": "Sunteți pe cale să ștergeți cota de impozitare {{name}}. ",
-      "editTaxRate": "Editați rata de impozitare",
       "editRateAction": "Editați rata",
       "editOverridesAction": "Modificați suprascrieri",
       "editOverridesTitle": "Editați anulări ale cotei de impozitare",

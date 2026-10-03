@@ -42,7 +42,6 @@
     "store": "商店",
     "rank": "排名",
     "details": "詳細資訊",
-    "items_one": "{{count}} 項",
     "items_other": "{{count}} 項",
     "values_other": "{{count}} 個值",
     "countSelected": "已選擇 {{count}} 項",
@@ -71,17 +70,14 @@
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}} 個鍵",
     "numberOfKeys_other": "{{count}} 個鍵",
     "drawer": {
-      "header_one": "JSON <0>· {{count}} 個鍵</0>",
       "header_other": "JSON <0>· {{count}} 個鍵</0>",
       "description": "檢視此物件的 JSON 資料。"
     }
   },
   "metadata": {
     "header": "中繼資料",
-    "numberOfKeys_one": "{{count}} 個鍵",
     "numberOfKeys_other": "{{count}} 個鍵",
     "edit": {
       "header": "編輯中繼資料",
@@ -181,22 +177,16 @@
         "all": "所有區域",
         "customer": "顧客",
         "customer_group": "顧客群組",
-        "customerGroup": "顧客群組",
         "product": "商品",
         "product_variant": "商品變體",
         "inventory_item": "庫存",
-        "productVariant": "商品變體",
-        "inventory": "庫存",
         "reservation": "預留",
         "product_category": "分類",
         "product_collection": "系列",
-        "category": "分類",
-        "collection": "商品系列",
         "order": "訂單",
         "promotion": "促銷",
         "campaign": "行銷活動",
         "price_list": "價格清單",
-        "priceList": "價格清單",
         "user": "使用者",
         "region": "區域",
         "tax_region": "稅務地區",
@@ -208,15 +198,6 @@
         "shipping_profile": "運送配置檔",
         "publishable_api_key": "可發布 API 金鑰",
         "secret_api_key": "私密 API 金鑰",
-        "taxRegion": "稅務區域",
-        "returnReason": "退貨原因",
-        "salesChannel": "銷售管道",
-        "productType": "商品類型",
-        "productTag": "商品標籤",
-        "location": "地點",
-        "shippingProfile": "運送設定檔",
-        "publishableApiKey": "可發佈 API 金鑰",
-        "secretApiKey": "私密 API 金鑰",
         "command": "指令",
         "navigation": "導覽"
       }
@@ -346,7 +327,6 @@
     },
     "errors": {
       "fixError": "修正錯誤",
-      "count_one": "{{count}} 個錯誤",
       "count_other": "{{count}} 個錯誤"
     }
   },
@@ -569,9 +549,7 @@
       "invalidFileType": "'{{name}}' 不是支援的檔案類型。支援的檔案類型為：{{types}}。",
       "fileTooLarge": "一個或多個檔案超過最大檔案大小 {{size}}：{{name}}",
       "failedToUpload": "上傳新增的媒體失敗。請再試一次。",
-      "deleteWarning_one": "您即將刪除 {{count}} 張圖片。此操作無法復原。",
       "deleteWarning_other": "您即將刪除 {{count}} 張圖片。此操作無法復原。",
-      "deleteWarningWithThumbnail_one": "您即將刪除 {{count}} 張圖片（包括縮圖）。此操作無法復原。",
       "deleteWarningWithThumbnail_other": "您即將刪除 {{count}} 張圖片（包括縮圖）。此操作無法復原。",
       "thumbnailTooltip": "縮圖",
       "galleryLabel": "圖庫",
@@ -603,7 +581,6 @@
     },
     "discountableHint": "取消勾選時，折扣將不會套用於此商品。",
     "noSalesChannels": "任何銷售管道中皆無法使用",
-    "variantCount_one": "{{count}} 個變體",
     "variantCount_other": "{{count}} 個變體",
     "deleteVariantWarning": "您即將刪除變體 {{title}}。此操作無法復原。",
     "productStatus": {
@@ -717,7 +694,6 @@
       "deleteWarning": "您確定要刪除此變體嗎？",
       "pricesPagination": "1 - {{current}} / {{total}} 個價格",
       "tableItemAvailable": "可用 {{availableCount}} 個",
-      "tableItem_one": "{{availableCount}} 個可用,於 {{locationCount}} 個地點",
       "tableItem_other": "{{availableCount}} 個可用,於 {{locationCount}} 個地點",
       "inventory": {
         "notManaged": "未管理",
@@ -835,18 +811,15 @@
     "handleTooltip": "識別碼用於在您的店面中參考該商品系列。如未指定，識別碼將根據商品系列標題生成。",
     "deleteWarning": "您即將刪除商品系列 {{title}}。此操作無法復原。",
     "removeSingleProductWarning": "您即將從商品系列中移除商品 {{title}}。此操作無法復原。",
-    "removeProductsWarning_one": "您即將從商品系列中移除 {{count}} 個商品。此操作無法復原。",
     "removeProductsWarning_other": "您即將從商品系列中移除 {{count}} 個商品。此操作無法復原。",
     "products": {
       "list": {
         "noRecordsMessage": "商品系列中沒有商品。"
       },
       "add": {
-        "successToast_one": "商品已成功加入商品系列。",
         "successToast_other": "商品已成功加入商品系列。"
       },
       "remove": {
-        "successToast_one": "商品已成功從商品系列中移除。",
         "successToast_other": "商品已成功從商品系列中移除。"
       }
     }
@@ -875,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "該商品已在此分類中。",
-        "successToast_one": "已將 {{count}} 個商品新增到分類。",
         "successToast_other": "已將 {{count}} 個商品新增到分類。"
       },
       "remove": {
-        "confirmation_one": "您即將從分類中移除 {{count}} 個商品。此操作無法復原。",
         "confirmation_other": "您即將從分類中移除 {{count}} 個商品。此操作無法復原。",
-        "successToast_one": "已從分類中移除 {{count}} 個商品。",
         "successToast_other": "已從分類中移除 {{count}} 個商品。"
       },
       "list": {
@@ -1040,7 +1010,6 @@
       "description": "更新所選庫存項目的庫存等級。",
       "action": "編輯庫存等級",
       "placeholder": "未啟用",
-      "disablePrompt_one": "您即將停用 {{count}} 個地點等級。此操作無法復原。",
       "disablePrompt_other": "您即將停用 {{count}} 個地點等級。此操作無法復原。",
       "disabledToggleTooltip": "無法停用：請在停用前清除進貨和/或預留數量。",
       "successToast": "庫存等級已成功更新。"
@@ -1173,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "此顧客已加入此群組。",
       "add": {
-        "successToast_one": "顧客已成功加入群組。",
         "successToast_other": "多位顧客已成功加入群組。",
         "list": {
           "noRecordsMessage": "請先建立顧客。"
         }
       },
       "remove": {
-        "title_one": "移除顧客",
         "title_other": "移除顧客",
-        "description_one": "您即將從顧客群組中移除 {{count}} 位顧客。此操作無法復原。",
         "description_other": "您即將從顧客群組中移除 {{count}} 位顧客。此操作無法復原。"
       },
       "list": {
@@ -1619,7 +1585,6 @@
     },
     "activity": {
       "header": "活動記錄",
-      "showMoreActivities_one": "顯示更多 {{count}} 筆活動",
       "showMoreActivities_other": "顯示更多 {{count}} 筆活動",
       "comment": {
         "label": "評論",
@@ -1652,14 +1617,12 @@
           "canceled": "出貨已取消",
           "shipped": "項目已出貨",
           "delivered": "項目已送達",
-          "items_one": "{{count}} 個項目",
           "items_other": "{{count}} 個項目"
         },
         "return": {
           "created": "退貨 #{{returnId}} 已請求",
           "canceled": "退貨 #{{returnId}} 已取消",
           "received": "退貨 #{{returnId}} 已收到",
-          "items_one": "已退貨 {{count}} 個項目",
           "items_other": "已退貨 {{count}} 個項目"
         },
         "note": {
@@ -1899,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} 個運送選項",
           "shipping_other": "{{count}} 個運送選項",
-          "pickup_one": "{{count}} 個取貨選項",
           "pickup_other": "{{count}} 個取貨選項",
-          "returns_one": "{{count}} 個退貨選項",
           "returns_other": "{{count}} 個退貨選項"
         },
         "priceType": {
@@ -2168,11 +2128,8 @@
         "modal": {
           "header": "新增目標"
         },
-        "values_one": "{{count}} 個值",
         "values_other": "{{count}} 個值",
-        "numberOfTargets_one": "{{count}} 個目標",
         "numberOfTargets_other": "{{count}} 個目標",
-        "additionalValues_one": "及 {{count}} 個值",
         "additionalValues_other": "及 {{count}} 個值",
         "action": "新增目標"
       },
@@ -2629,9 +2586,7 @@
         "editPrices": "編輯價格"
       },
       "delete": {
-        "confirmation_one": "您即將刪除價格清單中 {{count}} 個商品的價格。此操作無法復原。",
         "confirmation_other": "您即將刪除價格清單中 {{count}} 個商品的價格。此操作無法復原。",
-        "successToast_one": "已成功刪除 {{count}} 個商品的價格。",
         "successToast_other": "已成功刪除 {{count}} 個商品的價格。"
       },
       "add": {
@@ -2971,9 +2926,7 @@
     "addCurrencies": "新增貨幣",
     "enableTaxInclusivePricing": "啟用含稅價格",
     "disableTaxInclusivePricing": "停用含稅價格",
-    "removeCurrencyWarning_one": "您即將從商店中移除 {{count}} 個貨幣。請確保在繼續之前已移除所有使用該貨幣的價格。",
     "removeCurrencyWarning_other": "您即將從商店中移除 {{count}} 個貨幣。請確保在繼續之前已移除所有使用這些貨幣的價格。",
-    "removeLocaleWarning_one": "您即將從商店中移除 {{count}} 個語系。使用該語系的所有翻譯將被移除。",
     "removeLocaleWarning_other": "您即將從商店中移除 {{count}} 個語系。使用這些語系的所有翻譯將被移除。",
     "currencyAlreadyAdded": "此貨幣已加入您的商店。",
     "localeAlreadyAdded": "此語系已加入您的商店。",
@@ -2998,7 +2951,6 @@
     "editRegion": "編輯區域",
     "countriesHint": "新增此區域包含的國家。",
     "deleteRegionWarning": "您即將刪除區域 {{name}}。此操作無法復原。",
-    "removeCountriesWarning_one": "您即將從該區域移除 {{count}} 個國家。此操作無法復原。",
     "removeCountriesWarning_other": "您即將從該區域移除 {{count}} 個國家。此操作無法復原。",
     "removeCountryWarning": "您即將從該區域移除國家 {{name}}。此操作無法復原。",
     "automaticTaxesHint": "啟用後，將於結帳時依據運送地址計算稅金。",
@@ -3106,7 +3058,6 @@
     "noLocationsFound": "找不到地點",
     "selectLocations": "選擇此項目有庫存的地點。",
     "deleteLocationWarning": "您即將刪除地點 {{name}}。此操作無法復原。",
-    "removeSalesChannelsWarning_one": "您即將從此地點移除 {{count}} 個銷售管道。",
     "removeSalesChannelsWarning_other": "您即將從此地點移除 {{count}} 個銷售管道。",
     "toast": {
       "create": "地點已成功建立",
@@ -3135,7 +3086,6 @@
     "createSalesChannel": "建立銷售管道",
     "createSalesChannelHint": "建立新的銷售管道來銷售您的商品。",
     "enabledHint": "指定銷售管道是否啟用。",
-    "removeProductsWarning_one": "您即將從 {{sales_channel}} 移除 {{count}} 個商品。",
     "removeProductsWarning_other": "您即將從 {{sales_channel}} 移除 {{count}} 個商品。",
     "addProducts": "新增商品",
     "editSalesChannel": "編輯銷售管道",
@@ -3196,7 +3146,6 @@
     "salesChannels": {
       "title": "新增銷售管道",
       "description": "新增 API 金鑰應限制的銷售管道。",
-      "successToast_one": "{{count}} 個銷售管道已成功新增至 API 金鑰。",
       "successToast_other": "{{count}} 個銷售管道已成功新增至 API 金鑰。",
       "alreadyAddedTooltip": "該銷售管道已新增至此 API 金鑰。",
       "list": {
@@ -3218,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "您即將從 API 金鑰移除銷售管道 {{name}}。此操作無法復原。",
-      "warningBatch_one": "您即將從 API 金鑰移除 {{count}} 個銷售管道。此操作無法復原。",
       "warningBatch_other": "您即將從 API 金鑰移除 {{count}} 個銷售管道。此操作無法復原。",
       "successToast": "銷售管道已成功自 API 金鑰移除。",
-      "successToastBatch_one": "{{count}} 個銷售管道已成功自 API 金鑰移除。",
       "successToastBatch_other": "{{count}} 個銷售管道已成功自 API 金鑰移除。"
     },
     "actions": {
@@ -3378,7 +3325,6 @@
     "workflowIdLabel": "工作流程 ID",
     "stateLabel": "狀態",
     "progressLabel": "進度",
-    "stepsCompletedLabel_one": "{{completed}} / {{count}} 個步驟",
     "stepsCompletedLabel_other": "{{completed}} / {{count}} 個步驟",
     "list": {
       "noRecordsMessage": "尚未執行任何工作流程。"
@@ -3725,19 +3671,12 @@
     "values": "值"
   },
   "dateTime": {
-    "years_one": "年",
     "years_other": "年",
-    "months_one": "月",
     "months_other": "月",
-    "weeks_one": "週",
     "weeks_other": "週",
-    "days_one": "天",
     "days_other": "天",
-    "hours_one": "小時",
     "hours_other": "小時",
-    "minutes_one": "分鐘",
     "minutes_other": "分鐘",
-    "seconds_one": "秒",
     "seconds_other": "秒"
   },
   "views": {

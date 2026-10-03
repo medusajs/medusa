@@ -187,22 +187,16 @@
         "all": "Sva područja",
         "customer": "Kupci",
         "customer_group": "Grupe kupaca",
-        "customerGroup": "Grupe kupaca",
         "product": "Proizvodi",
         "product_variant": "Varijante proizvoda",
         "inventory_item": "Inventar",
-        "productVariant": "Varijante proizvoda",
-        "inventory": "Inventar",
         "reservation": "Rezervacije",
         "product_category": "Kategorije",
         "product_collection": "Kolekcije",
-        "category": "Kategorije",
-        "collection": "Kolekcije",
         "order": "Narudžbe",
         "promotion": "Promocije",
         "campaign": "Kampanje",
         "price_list": "Cjenovne liste",
-        "priceList": "Cjenovnici",
         "user": "Korisnici",
         "region": "Regije",
         "tax_region": "Porezne regije",
@@ -214,15 +208,6 @@
         "shipping_profile": "Profili dostave",
         "publishable_api_key": "Javni API ključevi",
         "secret_api_key": "Tajni API ključevi",
-        "taxRegion": "Poreske regije",
-        "returnReason": "Razlozi za povrat",
-        "salesChannel": "Prodajni kanali",
-        "productType": "Tipovi proizvoda",
-        "productTag": "Oznake proizvoda",
-        "location": "Lokacije",
-        "shippingProfile": "Profili isporuke",
-        "publishableApiKey": "Ključevi za objavljivanje API-a",
-        "secretApiKey": "Tajni API ključevi",
         "command": "Komande",
         "navigation": "Navigacija"
       }
@@ -2017,9 +2002,7 @@
       "hint": "Kreirajte novu poresku regiju kako biste definirali poreske stope za određenu zemlju.",
       "errors": {
         "missingProvider": "Pružatelj je obavezan pri kreiranju porezne regije.",
-        "missingCountry": "Zemlja je obavezna pri kreiranju porezne regije.",
-        "rateIsRequired": "Poreska stopa je obavezna pri kreiranju osnovne poreske stope.",
-        "nameIsRequired": "Ime je obavezno pri kreiranju osnovne poreske stope."
+        "missingCountry": "Zemlja je obavezna pri kreiranju porezne regije."
       },
       "successToast": "Poreska regija je uspješno kreirana."
     },
@@ -2309,9 +2292,7 @@
           "items": {
             "title": "Na koje artikle će se promocija primijeniti?",
             "description": "Promocija će se primijeniti na artikle koji odgovaraju sljedećim uvjetima."
-          },
-          "title": "Na koje artikle će se promocija primijeniti?",
-          "description": "Promocija će se primijeniti na artikle koji zadovoljavaju sljedeće uvjete."
+          }
         },
         "buy-rules": {
           "title": "Šta mora biti u košarici da bi se otključala promocija?",

@@ -42,7 +42,6 @@
     "store": "Toko",
     "rank": "Peringkat",
     "details": "Detail",
-    "items_one": "{{count}} item",
     "items_other": "{{count}} item",
     "values_other": "{{count}} nilai",
     "countSelected": "{{count}} dipilih",
@@ -71,17 +70,14 @@
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}} kunci",
     "numberOfKeys_other": "{{count}} kunci",
     "drawer": {
-      "header_one": "JSON <0>· {{count}} kunci</0>",
       "header_other": "JSON <0>· {{count}} kunci</0>",
       "description": "Lihat data JSON untuk objek ini."
     }
   },
   "metadata": {
     "header": "Metadata",
-    "numberOfKeys_one": "{{count}} kunci",
     "numberOfKeys_other": "{{count}} kunci",
     "edit": {
       "header": "Edit Metadata",
@@ -181,22 +177,16 @@
         "all": "Semua area",
         "customer": "Pelanggan",
         "customer_group": "Grup Pelanggan",
-        "customerGroup": "Grup Pelanggan",
         "product": "Produk",
         "product_variant": "Varian Produk",
         "inventory_item": "Inventaris",
-        "productVariant": "Varian Produk",
-        "inventory": "Inventaris",
         "reservation": "Reservasi",
         "product_category": "Kategori",
         "product_collection": "Koleksi",
-        "category": "Kategori",
-        "collection": "Koleksi",
         "order": "Pesanan",
         "promotion": "Promosi",
         "campaign": "Kampanye",
         "price_list": "Daftar Harga",
-        "priceList": "Daftar Harga",
         "user": "Pengguna",
         "region": "Wilayah",
         "tax_region": "Wilayah Pajak",
@@ -208,15 +198,6 @@
         "shipping_profile": "Profil Pengiriman",
         "publishable_api_key": "Kunci API Publik",
         "secret_api_key": "Kunci API Rahasia",
-        "taxRegion": "Wilayah Pajak",
-        "returnReason": "Alasan Pengembalian",
-        "salesChannel": "Saluran Penjualan",
-        "productType": "Jenis Produk",
-        "productTag": "Tag Produk",
-        "location": "Lokasi",
-        "shippingProfile": "Profil Pengiriman",
-        "publishableApiKey": "Kunci API yang Dapat Dipublikasikan",
-        "secretApiKey": "Kunci API Rahasia",
         "command": "Perintah",
         "navigation": "Navigasi"
       }
@@ -346,7 +327,6 @@
     },
     "errors": {
       "fixError": "Perbaiki kesalahan",
-      "count_one": "{{count}} kesalahan",
       "count_other": "{{count}} kesalahan"
     }
   },
@@ -569,9 +549,7 @@
       "invalidFileType": "'{{name}}' bukan jenis file yang didukung. Jenis file yang didukung adalah: {{types}}.",
       "fileTooLarge": "Satu atau lebih file melebihi ukuran file maksimum {{size}}: {{name}}",
       "failedToUpload": "Gagal mengunggah media yang ditambahkan. Silakan coba lagi.",
-      "deleteWarning_one": "Anda akan menghapus {{count}} gambar. Tindakan ini tidak dapat dibatalkan.",
       "deleteWarning_other": "Anda akan menghapus {{count}} gambar. Tindakan ini tidak dapat dibatalkan.",
-      "deleteWarningWithThumbnail_one": "Anda akan menghapus {{count}} gambar termasuk thumbnail. Tindakan ini tidak dapat dibatalkan.",
       "deleteWarningWithThumbnail_other": "Anda akan menghapus {{count}} gambar termasuk thumbnail. Tindakan ini tidak dapat dibatalkan.",
       "thumbnailTooltip": "Thumbnail",
       "galleryLabel": "Galeri",
@@ -603,7 +581,6 @@
     },
     "discountableHint": "Jika tidak dicentang, diskon tidak akan diterapkan pada produk ini.",
     "noSalesChannels": "Tidak tersedia di saluran penjualan mana pun",
-    "variantCount_one": "{{count}} varian",
     "variantCount_other": "{{count}} varian",
     "deleteVariantWarning": "Anda akan menghapus varian {{title}}. Tindakan ini tidak dapat dibatalkan.",
     "productStatus": {
@@ -717,7 +694,6 @@
       "deleteWarning": "Anda yakin ingin menghapus varian ini?",
       "pricesPagination": "1 - {{current}} dari {{total}} harga",
       "tableItemAvailable": "{{availableCount}} tersedia",
-      "tableItem_one": "{{availableCount}} tersedia di {{locationCount}} lokasi",
       "tableItem_other": "{{availableCount}} tersedia di {{locationCount}} lokasi",
       "inventory": {
         "notManaged": "Tidak dikelola",
@@ -835,18 +811,15 @@
     "handleTooltip": "Handle digunakan untuk mereferensikan koleksi di etalase Anda. Jika tidak ditentukan, handle akan dibuat dari judul koleksi.",
     "deleteWarning": "Anda akan menghapus koleksi {{title}}. Tindakan ini tidak dapat dibatalkan.",
     "removeSingleProductWarning": "Anda akan menghapus produk {{title}} dari koleksi. Tindakan ini tidak dapat dibatalkan.",
-    "removeProductsWarning_one": "Anda akan menghapus {{count}} produk dari koleksi. Tindakan ini tidak dapat dibatalkan.",
     "removeProductsWarning_other": "Anda akan menghapus {{count}} produk dari koleksi. Tindakan ini tidak dapat dibatalkan.",
     "products": {
       "list": {
         "noRecordsMessage": "Tidak ada produk dalam koleksi."
       },
       "add": {
-        "successToast_one": "Produk berhasil ditambahkan ke koleksi.",
         "successToast_other": "Produk berhasil ditambahkan ke koleksi."
       },
       "remove": {
-        "successToast_one": "Produk berhasil dihapus dari koleksi.",
         "successToast_other": "Produk berhasil dihapus dari koleksi."
       }
     }
@@ -875,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "Produk sudah ada dalam kategori ini.",
-        "successToast_one": "Menambahkan {{count}} produk ke kategori.",
         "successToast_other": "Menambahkan {{count}} produk ke kategori."
       },
       "remove": {
-        "confirmation_one": "Anda akan menghapus {{count}} produk dari kategori. Tindakan ini tidak dapat dibatalkan.",
         "confirmation_other": "Anda akan menghapus {{count}} produk dari kategori. Tindakan ini tidak dapat dibatalkan.",
-        "successToast_one": "Menghapus {{count}} produk dari kategori.",
         "successToast_other": "Menghapus {{count}} produk dari kategori."
       },
       "list": {
@@ -1040,7 +1010,6 @@
       "description": "Perbarui tingkat inventaris stok untuk semua varian produk.",
       "action": "Edit tingkat stok",
       "placeholder": "Tidak diaktifkan",
-      "disablePrompt_one": "Anda akan menonaktifkan {{count}} tingkat lokasi. Tindakan ini tidak dapat dibatalkan.",
       "disablePrompt_other": "Anda akan menonaktifkan {{count}} tingkat lokasi. Tindakan ini tidak dapat dibatalkan.",
       "disabledToggleTooltip": "Tidak dapat menonaktifkan: kosongkan kuantitas masuk dan/atau dipesan sebelum menonaktifkan.",
       "successToast": "Tingkat inventaris berhasil diperbarui."
@@ -1173,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "Pelanggan sudah ditambahkan ke grup.",
       "add": {
-        "successToast_one": "Pelanggan berhasil ditambahkan ke grup.",
         "successToast_other": "Pelanggan berhasil ditambahkan ke grup.",
         "list": {
           "noRecordsMessage": "Buat pelanggan terlebih dahulu."
         }
       },
       "remove": {
-        "title_one": "Hapus pelanggan",
         "title_other": "Hapus pelanggan",
-        "description_one": "Anda akan menghapus {{count}} pelanggan dari grup pelanggan. Tindakan ini tidak dapat dibatalkan.",
         "description_other": "Anda akan menghapus {{count}} pelanggan dari grup pelanggan. Tindakan ini tidak dapat dibatalkan."
       },
       "list": {
@@ -1619,7 +1585,6 @@
     },
     "activity": {
       "header": "Aktivitas",
-      "showMoreActivities_one": "Tampilkan {{count}} aktivitas lagi",
       "showMoreActivities_other": "Tampilkan {{count}} aktivitas lagi",
       "comment": {
         "label": "Komentar",
@@ -1652,14 +1617,12 @@
           "canceled": "Pemenuhan dibatalkan",
           "shipped": "Item dikirim",
           "delivered": "Item terkirim",
-          "items_one": "{{count}} item",
           "items_other": "{{count}} item"
         },
         "return": {
           "created": "Pengembalian #{{returnId}} diminta",
           "canceled": "Pengembalian #{{returnId}} dibatalkan",
           "received": "Pengembalian #{{returnId}} diterima",
-          "items_one": "{{count}} item dikembalikan",
           "items_other": "{{count}} item dikembalikan"
         },
         "note": {
@@ -1899,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} opsi pengiriman",
           "shipping_other": "{{count}} opsi pengiriman",
-          "pickup_one": "{{count}} opsi pengambilan",
           "pickup_other": "{{count}} opsi pengambilan",
-          "returns_one": "{{count}} opsi pengembalian",
           "returns_other": "{{count}} opsi pengembalian"
         },
         "priceType": {
@@ -2168,11 +2128,8 @@
         "modal": {
           "header": "Tambah target"
         },
-        "values_one": "{{count}} nilai",
         "values_other": "{{count}} nilai",
-        "numberOfTargets_one": "{{count}} target",
         "numberOfTargets_other": "{{count}} target",
-        "additionalValues_one": "dan {{count}} nilai lainnya",
         "additionalValues_other": "dan {{count}} nilai lainnya",
         "action": "Tambah target"
       },
@@ -2275,9 +2232,7 @@
           "items": {
             "title": "Item mana yang akan diterapkan promosi?",
             "description": "Promosi akan diterapkan pada item yang memenuhi kondisi berikut."
-          },
-          "title": "Item apa yang akan dikenakan promosi?",
-          "description": "Promosi akan diterapkan pada item yang sesuai dengan kondisi berikut."
+          }
         },
         "buy-rules": {
           "title": "Apa yang harus ada di keranjang untuk membuka promosi?",
@@ -2631,9 +2586,7 @@
         "editPrices": "Edit harga"
       },
       "delete": {
-        "confirmation_one": "Anda akan menghapus harga untuk {{count}} produk dalam daftar harga. Tindakan ini tidak dapat dibatalkan.",
         "confirmation_other": "Anda akan menghapus harga untuk {{count}} produk dalam daftar harga. Tindakan ini tidak dapat dibatalkan.",
-        "successToast_one": "Berhasil menghapus harga untuk {{count}} produk.",
         "successToast_other": "Berhasil menghapus harga untuk {{count}} produk."
       },
       "add": {
@@ -2973,7 +2926,6 @@
     "addCurrencies": "Tambah mata uang",
     "enableTaxInclusivePricing": "Aktifkan harga termasuk pajak",
     "disableTaxInclusivePricing": "Nonaktifkan harga termasuk pajak",
-    "removeCurrencyWarning_one": "Anda akan menghapus {{count}} mata uang dari toko Anda. Pastikan Anda telah menghapus semua harga menggunakan mata uang tersebut sebelum melanjutkan.",
     "removeCurrencyWarning_other": "Anda akan menghapus {{count}} mata uang dari toko Anda. Pastikan Anda telah menghapus semua harga menggunakan mata uang tersebut sebelum melanjutkan.",
     "removeLocaleWarning_other": "Anda akan menghapus {{count}} lokal dari toko Anda. Setiap terjemahan yang menggunakan lokal ini akan dihapus.",
     "currencyAlreadyAdded": "Mata uang sudah ditambahkan ke toko Anda.",
@@ -2999,7 +2951,6 @@
     "editRegion": "Edit Wilayah",
     "countriesHint": "Tambah negara yang termasuk dalam wilayah ini.",
     "deleteRegionWarning": "Anda akan menghapus wilayah {{name}}. Tindakan ini tidak dapat dibatalkan.",
-    "removeCountriesWarning_one": "Anda akan menghapus {{count}} negara dari wilayah ini. Tindakan ini tidak dapat dibatalkan.",
     "removeCountriesWarning_other": "Anda akan menghapus {{count}} negara dari wilayah ini. Tindakan ini tidak dapat dibatalkan.",
     "removeCountryWarning": "Anda akan menghapus negara {{name}} dari wilayah ini. Tindakan ini tidak dapat dibatalkan.",
     "automaticTaxesHint": "Jika diaktifkan, pajak hanya akan dihitung saat checkout berdasarkan alamat pengiriman.",
@@ -3107,7 +3058,6 @@
     "noLocationsFound": "Tidak ada lokasi ditemukan",
     "selectLocations": "Pilih lokasi yang menyimpan item.",
     "deleteLocationWarning": "Anda akan menghapus lokasi {{name}}. Tindakan ini tidak dapat dibatalkan.",
-    "removeSalesChannelsWarning_one": "Anda akan menghapus {{count}} saluran penjualan dari lokasi.",
     "removeSalesChannelsWarning_other": "Anda akan menghapus {{count}} saluran penjualan dari lokasi.",
     "toast": {
       "create": "Lokasi berhasil dibuat",
@@ -3136,7 +3086,6 @@
     "createSalesChannel": "Buat Saluran Penjualan",
     "createSalesChannelHint": "Buat saluran penjualan baru untuk menjual produk Anda.",
     "enabledHint": "Tentukan apakah saluran penjualan diaktifkan.",
-    "removeProductsWarning_one": "Anda akan menghapus {{count}} produk dari {{sales_channel}}.",
     "removeProductsWarning_other": "Anda akan menghapus {{count}} produk dari {{sales_channel}}.",
     "addProducts": "Tambah Produk",
     "editSalesChannel": "Edit saluran penjualan",
@@ -3197,7 +3146,6 @@
     "salesChannels": {
       "title": "Tambah Saluran Penjualan",
       "description": "Tambah saluran penjualan yang harus dibatasi oleh kunci API.",
-      "successToast_one": "{{count}} saluran penjualan berhasil ditambahkan ke kunci API.",
       "successToast_other": "{{count}} saluran penjualan berhasil ditambahkan ke kunci API.",
       "alreadyAddedTooltip": "Saluran penjualan sudah ditambahkan ke kunci API.",
       "list": {
@@ -3219,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "Anda akan menghapus saluran penjualan {{name}} dari kunci API. Tindakan ini tidak dapat dibatalkan.",
-      "warningBatch_one": "Anda akan menghapus {{count}} saluran penjualan dari kunci API. Tindakan ini tidak dapat dibatalkan.",
       "warningBatch_other": "Anda akan menghapus {{count}} saluran penjualan dari kunci API. Tindakan ini tidak dapat dibatalkan.",
       "successToast": "Saluran penjualan berhasil dihapus dari kunci API.",
-      "successToastBatch_one": "{{count}} saluran penjualan berhasil dihapus dari kunci API.",
       "successToastBatch_other": "{{count}} saluran penjualan berhasil dihapus dari kunci API."
     },
     "actions": {
@@ -3379,7 +3325,6 @@
     "workflowIdLabel": "ID Alur Kerja",
     "stateLabel": "Status",
     "progressLabel": "Kemajuan",
-    "stepsCompletedLabel_one": "{{completed}} dari {{count}} langkah",
     "stepsCompletedLabel_other": "{{completed}} dari {{count}} langkah",
     "list": {
       "noRecordsMessage": "Belum ada alur kerja yang dieksekusi."
@@ -3726,19 +3671,12 @@
     "values": "Nilai"
   },
   "dateTime": {
-    "years_one": "Tahun",
     "years_other": "Tahun",
-    "months_one": "Bulan",
     "months_other": "Bulan",
-    "weeks_one": "Minggu",
     "weeks_other": "Minggu",
-    "days_one": "Hari",
     "days_other": "Hari",
-    "hours_one": "Jam",
     "hours_other": "Jam",
-    "minutes_one": "Menit",
     "minutes_other": "Menit",
-    "seconds_one": "Detik",
     "seconds_other": "Detik"
   },
   "views": {

@@ -182,22 +182,16 @@
         "all": "Minden",
         "customer": "Vásárlók",
         "customer_group": "Vásárlói csoportok",
-        "customerGroup": "Vásárlói csoportok",
         "product": "Termékek",
         "product_variant": "Termékváltozatok",
         "inventory_item": "Készlet",
-        "productVariant": "Termékvariánsok",
-        "inventory": "Készlet",
         "reservation": "Foglalások",
         "product_category": "Kategóriák",
         "product_collection": "Gyűjtemények",
-        "category": "Kategóriák",
-        "collection": "Gyűjtemények",
         "order": "Rendelések",
         "promotion": "Promóciók",
         "campaign": "Kampányok",
         "price_list": "Árlisták",
-        "priceList": "Árlisták",
         "user": "Felhasználók",
         "region": "Régiók",
         "tax_region": "Adórégiók",
@@ -209,15 +203,6 @@
         "shipping_profile": "Szállítási profilok",
         "publishable_api_key": "Nyilvános API-kulcsok",
         "secret_api_key": "Titkos API-kulcsok",
-        "taxRegion": "Adórégiók",
-        "returnReason": "Visszaküldési okok",
-        "salesChannel": "Értékesítési csatornák",
-        "productType": "Terméktípusok",
-        "productTag": "Termékcímkék",
-        "location": "Helyek",
-        "shippingProfile": "Szállítási profilok",
-        "publishableApiKey": "Publikus API kulcsok",
-        "secretApiKey": "Titkos API kulcsok",
         "command": "Parancsok",
         "navigation": "Navigáció"
       }
@@ -1989,8 +1974,6 @@
       "header": "Adórégió Létrehozása",
       "hint": "Hozzon létre egy új adórégiót, hogy meghatározza az adókulcsokat egy adott ország számára.",
       "errors": {
-        "rateIsRequired": "Adókulcs szükséges, amikor alapértelmezett adókulcsot hoz létre.",
-        "nameIsRequired": "Név szükséges, amikor alapértelmezett adókulcsot hoz létre.",
         "missingProvider": "Adórégió létrehozásakor a szolgáltató megadása kötelező.",
         "missingCountry": "Adórégió létrehozásakor az ország megadása kötelező."
       },
@@ -2254,8 +2237,6 @@
           "description": "Melyik vásárló használhatja a promóciós kódot? A promóciós kódot minden vásárló használhatja, ha érintetlenül hagyja."
         },
         "target-rules": {
-          "title": "Mely tételekre vonatkozik a promóció?",
-          "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek.",
           "order": {
             "title": "Mely tételekre vonatkozzon a promóció?",
             "description": "A promóció azokra a tételekre vonatkozik, amelyek megfelelnek az alábbi feltételeknek."
@@ -3089,7 +3070,6 @@
       "createTaxRate": "Adókulcs Létrehozása",
       "createTaxRateHint": "Hozzon létre egy új adókulcsot a régióhoz.",
       "deleteRateDescription": "A(z) {{name}} adókulcs törlésére készül. Ez a művelet nem vonható vissza.",
-      "editTaxRate": "Adókulcs Szerkesztése",
       "editRateAction": "Kulcs szerkesztése",
       "editOverridesAction": "Felülírások szerkesztése",
       "editOverridesTitle": "Adókulcs Felülírások Szerkesztése",

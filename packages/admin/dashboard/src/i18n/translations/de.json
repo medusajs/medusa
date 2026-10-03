@@ -182,22 +182,16 @@
         "all": "Alle Bereiche",
         "customer": "Kunden",
         "customer_group": "Kundengruppen",
-        "customerGroup": "Kundengruppen",
         "product": "Produkte",
         "product_variant": "Produktvarianten",
         "inventory_item": "Inventar",
-        "productVariant": "Produktvarianten",
-        "inventory": "Inventar",
         "reservation": "Reservierungen",
         "product_category": "Kategorien",
         "product_collection": "Sammlungen",
-        "category": "Kategorien",
-        "collection": "Sammlungen",
         "order": "Bestellungen",
         "promotion": "Werbeaktionen",
         "campaign": "Kampagnen",
         "price_list": "Preislisten",
-        "priceList": "Preislisten",
         "user": "Benutzer",
         "region": "Regionen",
         "tax_region": "Steuerregionen",
@@ -209,15 +203,6 @@
         "shipping_profile": "Versandprofile",
         "publishable_api_key": "Veröffentlichbare API-Schlüssel",
         "secret_api_key": "Geheime API-Schlüssel",
-        "taxRegion": "Steuerregionen",
-        "returnReason": "Rückgabegründe",
-        "salesChannel": "Vertriebskanäle",
-        "productType": "Produkttypen",
-        "productTag": "Produkt-Tags",
-        "location": "Standorte",
-        "shippingProfile": "Versandprofile",
-        "publishableApiKey": "Veröffentlichbare API-Schlüssel",
-        "secretApiKey": "Geheime API-Schlüssel",
         "command": "Befehle",
         "navigation": "Navigation"
       }
@@ -1380,7 +1365,6 @@
       "returnTotal": "Gesamtrückgabe",
       "inboundTotal": "Eingehende Summe",
       "estDifference": "Geschätzte Differenz",
-      "refundAmount": "Rückerstattungsbetrag",
       "outstandingAmount": "Ausstehender Betrag",
       "reason": "Grund",
       "reasonHint": "Wählen Sie aus, warum der Kunde Artikel zurückgeben möchte.",
@@ -1991,9 +1975,7 @@
       "hint": "Erstellen Sie eine neue Steuerregion, um Steuersätze für ein bestimmtes Land zu definieren.",
       "errors": {
         "missingProvider": "Ein Anbieter ist erforderlich, wenn eine Steuerregion erstellt wird.",
-        "missingCountry": "Ein Land ist erforderlich, wenn eine Steuerregion erstellt wird.",
-        "rateIsRequired": "Beim Erstellen eines Standardsteuersatzes ist ein Steuersatz erforderlich.",
-        "nameIsRequired": "Der Name ist beim Erstellen eines Standardsteuersatzes erforderlich."
+        "missingCountry": "Ein Land ist erforderlich, wenn eine Steuerregion erstellt wird."
       },
       "successToast": "Die Steuerregion wurde erfolgreich erstellt."
     },
@@ -2280,9 +2262,7 @@
           "items": {
             "title": "Auf welche Artikel wird die Aktion angewendet?",
             "description": "Die Aktion wird auf Artikel angewendet, die die folgenden Bedingungen erfüllen."
-          },
-          "title": "Auf welche Artikel gilt die Aktion?",
-          "description": "Die Aktion gilt für Artikel, die die folgenden Bedingungen erfüllen."
+          }
         },
         "buy-rules": {
           "title": "Was muss im Warenkorb sein, um die Aktion freizuschalten?",
@@ -2365,8 +2345,7 @@
         "inactive": {
           "title": "Inaktiv",
           "description": "Kunden können den Code nicht mehr verwenden"
-        },
-        "title": "Status"
+        }
       },
       "method": {
         "label": "Verfahren",
@@ -3091,7 +3070,6 @@
       "createTaxRate": "Steuersatz erstellen",
       "createTaxRateHint": "Erstellen Sie einen neuen Steuersatz für die Region.",
       "deleteRateDescription": "Sie sind dabei, den Steuersatz {{name}} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
-      "editTaxRate": "Steuersatz bearbeiten",
       "editRateAction": "Tarif bearbeiten",
       "editOverridesAction": "Überschreibungen bearbeiten",
       "editOverridesTitle": "Steuersatzüberschreibungen bearbeiten",

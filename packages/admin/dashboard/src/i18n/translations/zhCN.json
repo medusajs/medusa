@@ -42,7 +42,6 @@
     "store": "商店",
     "rank": "排名",
     "details": "详情",
-    "items_one": "{{count}} 项",
     "items_other": "{{count}} 项",
     "values_other": "{{count}} 个值",
     "countSelected": "已选择 {{count}} 项",
@@ -71,17 +70,14 @@
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}} 个键",
     "numberOfKeys_other": "{{count}} 个键",
     "drawer": {
-      "header_one": "JSON <0>· {{count}} 个键</0>",
       "header_other": "JSON <0>· {{count}} 个键</0>",
       "description": "查看此对象的 JSON 数据。"
     }
   },
   "metadata": {
     "header": "元数据",
-    "numberOfKeys_one": "{{count}} 个键",
     "numberOfKeys_other": "{{count}} 个键",
     "edit": {
       "header": "编辑元数据",
@@ -181,22 +177,16 @@
         "all": "所有区域",
         "customer": "客户",
         "customer_group": "客户群组",
-        "customerGroup": "客户组",
         "product": "产品",
         "product_variant": "产品变体",
         "inventory_item": "库存",
-        "productVariant": "产品变体",
-        "inventory": "库存",
         "reservation": "预订",
         "product_category": "分类",
         "product_collection": "产品系列",
-        "category": "分类",
-        "collection": "系列",
         "order": "订单",
         "promotion": "促销",
         "campaign": "活动",
         "price_list": "价格列表",
-        "priceList": "价格表",
         "user": "用户",
         "region": "地区",
         "tax_region": "税区",
@@ -208,15 +198,6 @@
         "shipping_profile": "配送方案",
         "publishable_api_key": "可发布 API 密钥",
         "secret_api_key": "私密 API 密钥",
-        "taxRegion": "税收地区",
-        "returnReason": "退货原因",
-        "salesChannel": "销售渠道",
-        "productType": "产品类型",
-        "productTag": "产品标签",
-        "location": "位置",
-        "shippingProfile": "配送方案",
-        "publishableApiKey": "可发布的API密钥",
-        "secretApiKey": "密钥API密钥",
         "command": "命令",
         "navigation": "导航"
       }
@@ -346,7 +327,6 @@
     },
     "errors": {
       "fixError": "修复错误",
-      "count_one": "{{count}} 个错误",
       "count_other": "{{count}} 个错误"
     }
   },
@@ -569,9 +549,7 @@
       "invalidFileType": "'{{name}}' 不是支持的文件类型。支持的文件类型有：{{types}}。",
       "fileTooLarge": "一个或多个文件超过最大文件大小 {{size}}：{{name}}",
       "failedToUpload": "添加的媒体上传失败。请重试。",
-      "deleteWarning_one": "您即将删除 {{count}} 张图片。此操作无法撤销。",
       "deleteWarning_other": "您即将删除 {{count}} 张图片。此操作无法撤销。",
-      "deleteWarningWithThumbnail_one": "您即将删除 {{count}} 张图片(包括缩略图)。此操作无法撤销。",
       "deleteWarningWithThumbnail_other": "您即将删除 {{count}} 张图片(包括缩略图)。此操作无法撤销。",
       "thumbnailTooltip": "缩略图",
       "galleryLabel": "图库",
@@ -603,7 +581,6 @@
     },
     "discountableHint": "取消选中时,折扣将不会应用于此产品。",
     "noSalesChannels": "在任何销售渠道中都不可用",
-    "variantCount_one": "{{count}} 个变体",
     "variantCount_other": "{{count}} 个变体",
     "deleteVariantWarning": "您即将删除变体 {{title}}。此操作无法撤销。",
     "productStatus": {
@@ -717,7 +694,6 @@
       "deleteWarning": "您确定要删除此变体吗？",
       "pricesPagination": "第 1-{{current}} 个价格,共 {{total}} 个",
       "tableItemAvailable": "{{availableCount}} 个可用",
-      "tableItem_one": "{{availableCount}} 个可用,位于 {{locationCount}} 个位置",
       "tableItem_other": "{{availableCount}} 个可用,位于 {{locationCount}} 个位置",
       "inventory": {
         "notManaged": "未管理",
@@ -835,18 +811,15 @@
     "handleTooltip": "标识用于在您的店面引用系列。如果未指定,将根据系列标题生成标识。",
     "deleteWarning": "您即将删除系列 {{title}}。此操作无法撤销。",
     "removeSingleProductWarning": "您即将从系列中移除产品 {{title}}。此操作无法撤销。",
-    "removeProductsWarning_one": "您即将从系列中移除 {{count}} 个产品。此操作无法撤销。",
     "removeProductsWarning_other": "您即将从系列中移除 {{count}} 个产品。此操作无法撤销。",
     "products": {
       "list": {
         "noRecordsMessage": "系列中没有产品。"
       },
       "add": {
-        "successToast_one": "产品已成功添加到系列。",
         "successToast_other": "产品已成功添加到系列。"
       },
       "remove": {
-        "successToast_one": "产品已成功从系列中移除。",
         "successToast_other": "产品已成功从系列中移除。"
       }
     }
@@ -875,13 +848,10 @@
     "products": {
       "add": {
         "disabledTooltip": "该产品此分类中。",
-        "successToast_one": "已将 {{count}} 个产品添加到分类。",
         "successToast_other": "已将 {{count}} 个产品添加到分类。"
       },
       "remove": {
-        "confirmation_one": "您即将从分类中移除 {{count}} 个产品。此操作无法撤销。",
         "confirmation_other": "您即将从分类中移除 {{count}} 个产品。此操作无法撤销。",
-        "successToast_one": "已从分类中移除 {{count}} 个产品。",
         "successToast_other": "已从分类中移除 {{count}} 个产品。"
       },
       "list": {
@@ -1040,7 +1010,6 @@
       "description": "更新所选库存项目的库存数量。",
       "action": "编辑库存数量",
       "placeholder": "未启用",
-      "disablePrompt_one": "您即将禁用 {{count}} 个库存地点。此操作无法撤消。",
       "disablePrompt_other": "您即将禁用 {{count}} 个库存地点。此操作无法撤消。",
       "disabledToggleTooltip": "无法禁用：禁用前请先清除在途和/或预留数量。",
       "successToast": "库存数量更新成功。"
@@ -1173,16 +1142,13 @@
     "customers": {
       "alreadyAddedTooltip": "该客户已添加到群组。",
       "add": {
-        "successToast_one": "客户已成功添加到群组。",
         "successToast_other": "客户已成功添加到群组。",
         "list": {
           "noRecordsMessage": "请先创建客户。"
         }
       },
       "remove": {
-        "title_one": "移除客户",
         "title_other": "移除客户",
-        "description_one": "您即将从客户群组中移除 {{count}} 个客户。此操作无法撤消。",
         "description_other": "您即将从客户群组中移除 {{count}} 个客户。此操作无法撤消。"
       },
       "list": {
@@ -1619,7 +1585,6 @@
     },
     "activity": {
       "header": "活动",
-      "showMoreActivities_one": "显示另外 {{count}} 个活动",
       "showMoreActivities_other": "显示另外 {{count}} 个活动",
       "comment": {
         "label": "评论",
@@ -1652,14 +1617,12 @@
           "canceled": "履行已取消",
           "shipped": "商品已发货",
           "delivered": "商品已送达",
-          "items_one": "{{count}} 件商品",
           "items_other": "{{count}} 件商品"
         },
         "return": {
           "created": "退货 #{{returnId}} 已请求",
           "canceled": "退货 #{{returnId}} 已取消",
           "received": "退货 #{{returnId}} 已收到",
-          "items_one": "{{count}} 件商品已退回",
           "items_other": "{{count}} 件商品已退回"
         },
         "note": {
@@ -1899,11 +1862,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} 个配送选项",
           "shipping_other": "{{count}} 个配送选项",
-          "pickup_one": "{{count}} 个自提选项",
           "pickup_other": "{{count}} 个自提选项",
-          "returns_one": "{{count}} 个退货选项",
           "returns_other": "{{count}} 个退货选项"
         },
         "priceType": {
@@ -2168,11 +2128,8 @@
         "modal": {
           "header": "添加目标"
         },
-        "values_one": "{{count}} 个值",
         "values_other": "{{count}} 个值",
-        "numberOfTargets_one": "{{count}} 个目标",
         "numberOfTargets_other": "{{count}} 个目标",
-        "additionalValues_one": "还有 {{count}} 个值",
         "additionalValues_other": "还有 {{count}} 个值",
         "action": "添加目标"
       },
@@ -2275,9 +2232,7 @@
           "items": {
             "title": "促销将应用于哪些商品？",
             "description": "促销将应用于符合以下条件的商品。"
-          },
-          "title": "促销将应用于哪些商品？",
-          "description": "促销将应用于符合以下条件的商品。"
+          }
         },
         "buy-rules": {
           "title": "购物车需要满足什么条件才能解锁促销？",
@@ -2631,9 +2586,7 @@
         "editPrices": "编辑价格"
       },
       "delete": {
-        "confirmation_one": "您即将删除价格列表中 {{count}} 个产品的价格。此操作无法撤销。",
         "confirmation_other": "您即将删除价格列表中 {{count}} 个产品的价格。此操作无法撤销。",
-        "successToast_one": "成功删除价格列表中 {{count}} 个产品的价格。",
         "successToast_other": "成功删除价格列表中 {{count}} 个产品的价格。"
       },
       "add": {
@@ -2973,7 +2926,6 @@
     "addCurrencies": "添加货币",
     "enableTaxInclusivePricing": "启用含税定价",
     "disableTaxInclusivePricing": "禁用含税定价",
-    "removeCurrencyWarning_one": "您即将从您的商店中移除 {{count}} 个货币。确保您已从所有价格中移除该货币。",
     "removeCurrencyWarning_other": "您即将从您的商店中移除 {{count}} 个货币。确保您已从所有价格中移除该货币。",
     "removeLocaleWarning_other": "您即将从商店中移除 {{count}} 种语言。使用这些语言的任何翻译都将被删除。",
     "currencyAlreadyAdded": "该货币已添加到您的商店。",
@@ -2999,7 +2951,6 @@
     "editRegion": "编辑地区",
     "countriesHint": "添加此地区包含的国家。",
     "deleteRegionWarning": "您即将删除地区 {{name}}。此操作无法撤销。",
-    "removeCountriesWarning_one": "您即将从地区中移除 {{count}} 个国家。此操作无法撤销。",
     "removeCountriesWarning_other": "您即将从地区中移除 {{count}} 个国家。此操作无法撤销。",
     "removeCountryWarning": "您即将从地区中移除国家 {{name}}。此操作无法撤销。",
     "automaticTaxesHint": "当启用时,税收将仅基于运输地址在结账时计算。",
@@ -3107,7 +3058,6 @@
     "noLocationsFound": "没有找到位置",
     "selectLocations": "选择库存商品的位置。",
     "deleteLocationWarning": "您即将删除位置 {{name}}。此操作无法撤销。",
-    "removeSalesChannelsWarning_one": "您即将从位置中移除 {{count}} 个销售渠道。",
     "removeSalesChannelsWarning_other": "您即将从位置中移除 {{count}} 个销售渠道。",
     "toast": {
       "create": "位置创建成功",
@@ -3136,7 +3086,6 @@
     "createSalesChannel": "创建销售渠道",
     "createSalesChannelHint": "创建新的销售渠道以销售您的产品。",
     "enabledHint": "指定销售渠道是否启用。",
-    "removeProductsWarning_one": "您即将从 {{sales_channel}} 中移除 {{count}} 个产品。",
     "removeProductsWarning_other": "您即将从 {{sales_channel}} 中移除 {{count}} 个产品。",
     "addProducts": "添加产品",
     "editSalesChannel": "编辑销售渠道",
@@ -3197,7 +3146,6 @@
     "salesChannels": {
       "title": "添加销售渠道",
       "description": "将销售渠道添加到API密钥应限制到的销售渠道。",
-      "successToast_one": "{{count}} 个销售渠道已成功添加到API密钥。",
       "successToast_other": "{{count}} 个销售渠道已成功添加到API密钥。",
       "alreadyAddedTooltip": "销售渠道已添加到API密钥。",
       "list": {
@@ -3219,10 +3167,8 @@
     },
     "removeSalesChannel": {
       "warning": "您即将从API密钥中移除销售渠道 {{name}}。此操作无法撤销。",
-      "warningBatch_one": "您即将从API密钥中移除 {{count}} 个销售渠道。此操作无法撤销。",
       "warningBatch_other": "您即将从API密钥中移除 {{count}} 个销售渠道。此操作无法撤销。",
       "successToast": "销售渠道已成功从API密钥中移除。",
-      "successToastBatch_one": "{{count}} 个销售渠道已成功从API密钥中移除。",
       "successToastBatch_other": "{{count}} 个销售渠道已成功从API密钥中移除。"
     },
     "actions": {
@@ -3379,7 +3325,6 @@
     "workflowIdLabel": "工作流 ID",
     "stateLabel": "状态",
     "progressLabel": "进度",
-    "stepsCompletedLabel_one": "已完成 {{completed}}/{{count}} 步",
     "stepsCompletedLabel_other": "已完成 {{completed}}/{{count}} 步",
     "list": {
       "noRecordsMessage": "尚未执行任何工作流。"
@@ -3726,19 +3671,12 @@
     "values": "值"
   },
   "dateTime": {
-    "years_one": "年",
     "years_other": "年",
-    "months_one": "月",
     "months_other": "月",
-    "weeks_one": "周",
     "weeks_other": "周",
-    "days_one": "天",
     "days_other": "天",
-    "hours_one": "小时",
     "hours_other": "小时",
-    "minutes_one": "分钟",
     "minutes_other": "分钟",
-    "seconds_one": "秒",
     "seconds_other": "秒"
   },
   "views": {

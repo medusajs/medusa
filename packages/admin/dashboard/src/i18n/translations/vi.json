@@ -36,7 +36,6 @@
     "admin": "Quản trị",
     "store": "Cửa hàng",
     "details": "Chi tiết",
-    "items_one": "{{count}} mục",
     "items_other": "{{count}} mục",
     "countSelected": "{{count}} đã chọn",
     "countOfTotalSelected": "{{count}} trong tổng số {{total}} đã chọn",
@@ -67,22 +66,18 @@
     "remaining": "Còn lại",
     "selectAll": "Chọn tất cả",
     "unselectAll": "Bỏ chọn tất cả",
-    "values_one": "{{count}} giá trị",
     "values_other": "{{count}} giá trị"
   },
   "json": {
     "header": "JSON",
-    "numberOfKeys_one": "{{count}} khóa",
     "numberOfKeys_other": "{{count}} khóa",
     "drawer": {
-      "header_one": "JSON <0>· {{count}} khóa</0>",
       "header_other": "JSON <0>· {{count}} khóa</0>",
       "description": "Xem dữ liệu JSON của đối tượng này."
     }
   },
   "metadata": {
     "header": "Siêu dữ liệu",
-    "numberOfKeys_one": "{{count}} khóa",
     "numberOfKeys_other": "{{count}} khóa",
     "edit": {
       "header": "Chỉnh sửa Siêu dữ liệu",
@@ -181,28 +176,13 @@
       "groups": {
         "all": "Tất cả khu vực",
         "customer": "Khách hàng",
-        "customerGroup": "Nhóm khách hàng",
         "product": "Sản phẩm",
-        "productVariant": "Biến thể sản phẩm",
-        "inventory": "Kho hàng",
         "reservation": "Đặt trước",
-        "category": "Danh mục",
-        "collection": "Bộ sưu tập",
         "order": "Đơn hàng",
         "promotion": "Khuyến mãi",
         "campaign": "Chiến dịch",
-        "priceList": "Bảng giá",
         "user": "Người dùng",
         "region": "Khu vực",
-        "taxRegion": "Khu vực thuế",
-        "returnReason": "Lý do trả hàng",
-        "salesChannel": "Kênh bán hàng",
-        "productType": "Loại sản phẩm",
-        "productTag": "Thẻ sản phẩm",
-        "location": "Vị trí",
-        "shippingProfile": "Hồ sơ vận chuyển",
-        "publishableApiKey": "Khóa API công khai",
-        "secretApiKey": "Khóa API bí mật",
         "command": "Lệnh",
         "navigation": "Điều hướng",
         "customer_group": "Nhóm khách hàng",
@@ -329,7 +309,6 @@
     },
     "errors": {
       "fixError": "Sửa lỗi",
-      "count_one": "{{count}} lỗi",
       "count_other": "{{count}} lỗi"
     }
   },
@@ -550,9 +529,7 @@
       "uploadImagesHint": "Kéo và thả hình ảnh vào đây hoặc nhấp để tải lên.",
       "invalidFileType": "'{{name}}' không phải là loại file được hỗ trợ. Các loại file được hỗ trợ là: {{types}}.",
       "failedToUpload": "Không thể tải lên phương tiện vừa thêm. Vui lòng thử lại.",
-      "deleteWarning_one": "Bạn sắp xóa {{count}} hình ảnh. Hành động này không thể hoàn tác.",
       "deleteWarning_other": "Bạn sắp xóa {{count}} hình ảnh. Hành động này không thể hoàn tác.",
-      "deleteWarningWithThumbnail_one": "Bạn sắp xóa {{count}} hình ảnh bao gồm ảnh thu nhỏ. Hành động này không thể hoàn tác.",
       "deleteWarningWithThumbnail_other": "Bạn sắp xóa {{count}} hình ảnh bao gồm ảnh thu nhỏ. Hành động này không thể hoàn tác.",
       "thumbnailTooltip": "Ảnh thu nhỏ",
       "galleryLabel": "Thư viện",
@@ -574,7 +551,6 @@
     },
     "discountableHint": "Khi bỏ chọn, các chương trình giảm giá sẽ không áp dụng cho sản phẩm này.",
     "noSalesChannels": "Không có sẵn trên bất kỳ kênh bán hàng nào",
-    "variantCount_one": "{{count}} biến thể",
     "variantCount_other": "{{count}} biến thể",
     "deleteVariantWarning": "Bạn sắp xóa biến thể {{title}}. Hành động này không thể hoàn tác.",
     "productStatus": {
@@ -676,7 +652,6 @@
       "deleteWarning": "Bạn có chắc muốn xóa biến thể này không?",
       "pricesPagination": "1 - {{current}} trong số {{total}} giá",
       "tableItemAvailable": "{{availableCount}} có sẵn",
-      "tableItem_one": "{{availableCount}} có sẵn tại {{locationCount}} vị trí",
       "tableItem_other": "{{availableCount}} có sẵn tại {{locationCount}} vị trí",
       "inventory": {
         "notManaged": "Không được quản lý",
@@ -808,18 +783,15 @@
     "handleTooltip": "Định danh được sử dụng để tham chiếu bộ sưu tập trên giao diện cửa hàng của bạn. Nếu không chỉ định, định danh sẽ được tạo từ tiêu đề bộ sưu tập.",
     "deleteWarning": "Bạn sắp xóa bộ sưu tập {{title}}. Hành động này không thể hoàn tác.",
     "removeSingleProductWarning": "Bạn sắp xóa sản phẩm {{title}} khỏi bộ sưu tập. Hành động này không thể hoàn tác.",
-    "removeProductsWarning_one": "Bạn sắp xóa {{count}} sản phẩm khỏi bộ sưu tập. Hành động này không thể hoàn tác.",
     "removeProductsWarning_other": "Bạn sắp xóa {{count}} sản phẩm khỏi bộ sưu tập. Hành động này không thể hoàn tác.",
     "products": {
       "list": {
         "noRecordsMessage": "Không có sản phẩm nào trong bộ sưu tập."
       },
       "add": {
-        "successToast_one": "Sản phẩm đã được thêm thành công vào bộ sưu tập.",
         "successToast_other": "Các sản phẩm đã được thêm thành công vào bộ sưu tập."
       },
       "remove": {
-        "successToast_one": "Sản phẩm đã được xóa thành công khỏi bộ sưu tập.",
         "successToast_other": "Các sản phẩm đã được xóa thành công khỏi bộ sưu tập."
       }
     },
@@ -858,13 +830,10 @@
     "products": {
       "add": {
         "disabledTooltip": "Sản phẩm này đã có trong danh mục.",
-        "successToast_one": "Đã thêm {{count}} sản phẩm vào danh mục.",
         "successToast_other": "Đã thêm {{count}} sản phẩm vào danh mục."
       },
       "remove": {
-        "confirmation_one": "Bạn sắp xóa {{count}} sản phẩm khỏi danh mục. Hành động này không thể hoàn tác.",
         "confirmation_other": "Bạn sắp xóa {{count}} sản phẩm khỏi danh mục. Hành động này không thể hoàn tác.",
-        "successToast_one": "Đã xóa {{count}} sản phẩm khỏi danh mục.",
         "successToast_other": "Đã xóa {{count}} sản phẩm khỏi danh mục."
       },
       "list": {
@@ -958,7 +927,6 @@
       "description": "Cập nhật mức tồn kho cho các mục kho hàng đã chọn.",
       "action": "Chỉnh sửa mức tồn kho",
       "placeholder": "Chưa bật",
-      "disablePrompt_one": "Bạn sắp tắt {{count}} mức vị trí. Hành động này không thể hoàn tác.",
       "disablePrompt_other": "Bạn sắp tắt {{count}} mức vị trí. Hành động này không thể hoàn tác.",
       "disabledToggleTooltip": "Không thể tắt: hãy xóa số lượng đang nhập hoặc đã đặt trước trước khi tắt.",
       "successToast": "Mức tồn kho đã được cập nhật thành công."
@@ -1106,16 +1074,13 @@
     "customers": {
       "alreadyAddedTooltip": "Khách hàng này đã được thêm vào nhóm.",
       "add": {
-        "successToast_one": "Khách hàng đã được thêm thành công vào nhóm.",
         "successToast_other": "Các khách hàng đã được thêm thành công vào nhóm.",
         "list": {
           "noRecordsMessage": "Hãy tạo một khách hàng trước."
         }
       },
       "remove": {
-        "title_one": "Xóa khách hàng",
         "title_other": "Xóa khách hàng",
-        "description_one": "Bạn sắp xóa {{count}} khách hàng khỏi nhóm khách hàng. Hành động này không thể hoàn tác.",
         "description_other": "Bạn sắp xóa {{count}} khách hàng khỏi nhóm khách hàng. Hành động này không thể hoàn tác."
       },
       "list": {
@@ -1490,8 +1455,7 @@
         "wrongQuantity_other": "Số lượng phải là một số từ 1 đến {{number}}",
         "noItems": "Không có mục hàng để giao.",
         "noShippingOption": "Yêu cầu chọn phương thức vận chuyển",
-        "noLocation": "Yêu cầu chọn vị trí",
-        "wrongQuantity_one": "Chỉ có một mục khả dụng để giao hàng"
+        "noLocation": "Yêu cầu chọn vị trí"
       },
       "status": {
         "notFulfilled": "Chưa giao",
@@ -1541,7 +1505,6 @@
     },
     "activity": {
       "header": "Hoạt động",
-      "showMoreActivities_one": "Hiển thị thêm {{count}} hoạt động",
       "showMoreActivities_other": "Hiển thị thêm {{count}} hoạt động",
       "comment": {
         "label": "Bình luận",
@@ -1574,14 +1537,12 @@
           "canceled": "Giao hàng đã hủy",
           "shipped": "Mục hàng đã gửi",
           "delivered": "Mục hàng đã giao",
-          "items_one": "{{count}} mục",
           "items_other": "{{count}} mục"
         },
         "return": {
           "created": "Yêu cầu trả hàng #{{returnId}} đã tạo",
           "canceled": "Trả hàng #{{returnId}} đã hủy",
           "received": "Trả hàng #{{returnId}} đã nhận",
-          "items_one": "Đã trả {{count}} mục",
           "items_other": "Đã trả {{count}} mục"
         },
         "note": {
@@ -1833,11 +1794,8 @@
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} tùy chọn vận chuyển",
           "shipping_other": "{{count}} tùy chọn vận chuyển",
-          "pickup_one": "{{count}} tùy chọn nhận tại chỗ",
           "pickup_other": "{{count}} tùy chọn nhận tại chỗ",
-          "returns_one": "{{count}} tùy chọn trả hàng",
           "returns_other": "{{count}} tùy chọn trả hàng"
         },
         "priceType": {
@@ -2102,11 +2060,8 @@
         "modal": {
           "header": "Thêm đối tượng áp dụng"
         },
-        "values_one": "{{count}} giá trị",
         "values_other": "{{count}} giá trị",
-        "numberOfTargets_one": "{{count}} đối tượng",
         "numberOfTargets_other": "{{count}} đối tượng",
-        "additionalValues_one": "và {{count}} giá trị nữa",
         "additionalValues_other": "và {{count}} giá trị nữa",
         "action": "Thêm đối tượng"
       },
@@ -2185,8 +2140,6 @@
           "description": "Khách hàng nào được phép sử dụng mã khuyến mãi? Mã khuyến mãi sẽ áp dụng cho tất cả khách hàng nếu không thay đổi."
         },
         "target-rules": {
-          "title": "Khuyến mãi sẽ áp dụng cho mục hàng nào?",
-          "description": "Khuyến mãi sẽ áp dụng cho các mục hàng đáp ứng các điều kiện sau.",
           "items": {
             "description": "Khuyến mãi sẽ được áp dụng cho các mục khớp với các điều kiện sau.",
             "title": "Khuyến mãi sẽ được áp dụng cho những mục nào?"
@@ -2555,9 +2508,7 @@
         "editPrices": "Chỉnh sửa giá"
       },
       "delete": {
-        "confirmation_one": "Bạn sắp xóa giá của {{count}} sản phẩm trong bảng giá. Hành động này không thể hoàn tác.",
         "confirmation_other": "Bạn sắp xóa giá của {{count}} sản phẩm trong bảng giá. Hành động này không thể hoàn tác.",
-        "successToast_one": "Đã xóa thành công giá của {{count}} sản phẩm.",
         "successToast_other": "Đã xóa thành công giá của {{count}} sản phẩm."
       },
       "add": {
@@ -2748,7 +2699,6 @@
     "addCurrencies": "Thêm tiền tệ",
     "enableTaxInclusivePricing": "Bật giá bao gồm thuế",
     "disableTaxInclusivePricing": "Tắt giá bao gồm thuế",
-    "removeCurrencyWarning_one": "Bạn sắp xóa {{count}} tiền tệ khỏi cửa hàng. Hãy đảm bảo bạn đã xóa tất cả giá sử dụng tiền tệ này trước khi tiếp tục.",
     "removeCurrencyWarning_other": "Bạn sắp xóa {{count}} tiền tệ khỏi cửa hàng. Hãy đảm bảo bạn đã xóa tất cả giá sử dụng các tiền tệ này trước khi tiếp tục.",
     "currencyAlreadyAdded": "Tiền tệ này đã được thêm vào cửa hàng của bạn.",
     "edit": {
@@ -2765,7 +2715,6 @@
     "defaultLocale": "Ngôn ngữ mặc định",
     "localeAlreadyAdded": "Ngôn ngữ này đã được thêm vào cửa hàng của bạn.",
     "locales": "Ngôn ngữ",
-    "removeLocaleWarning_one": "Bạn sắp xóa {{count}} ngôn ngữ khỏi cửa hàng của bạn. Mọi bản dịch sử dụng ngôn ngữ này sẽ bị xóa.",
     "removeLocaleWarning_other": "Bạn sắp xóa {{count}} ngôn ngữ khỏi cửa hàng của bạn. Mọi bản dịch sử dụng các ngôn ngữ này sẽ bị xóa."
   },
   "regions": {
@@ -2777,7 +2726,6 @@
     "editRegion": "Chỉnh sửa khu vực",
     "countriesHint": "Thêm các quốc gia thuộc khu vực này.",
     "deleteRegionWarning": "Bạn sắp xóa khu vực {{name}}. Hành động này không thể hoàn tác.",
-    "removeCountriesWarning_one": "Bạn sắp xóa {{count}} quốc gia khỏi khu vực. Hành động này không thể hoàn tác.",
     "removeCountriesWarning_other": "Bạn sắp xóa {{count}} quốc gia khỏi khu vực. Hành động này không thể hoàn tác.",
     "removeCountryWarning": "Bạn sắp xóa quốc gia {{name}} khỏi khu vực. Hành động này không thể hoàn tác.",
     "automaticTaxesHint": "Khi bật, thuế sẽ chỉ được tính lúc thanh toán dựa trên địa chỉ giao hàng.",
@@ -2885,7 +2833,6 @@
     "noLocationsFound": "Không tìm thấy vị trí",
     "selectLocations": "Chọn các vị trí lưu trữ mục hàng.",
     "deleteLocationWarning": "Bạn sắp xóa vị trí {{name}}. Hành động này không thể hoàn tác.",
-    "removeSalesChannelsWarning_one": "Bạn sắp xóa {{count}} kênh bán hàng khỏi vị trí.",
     "removeSalesChannelsWarning_other": "Bạn sắp xóa {{count}} kênh bán hàng khỏi vị trí.",
     "toast": {
       "create": "Vị trí đã được tạo thành công",
@@ -2914,7 +2861,6 @@
     "createSalesChannel": "Tạo kênh bán hàng",
     "createSalesChannelHint": "Tạo một kênh bán hàng mới để bán sản phẩm của bạn.",
     "enabledHint": "Xác định liệu kênh bán hàng có được bật hay không.",
-    "removeProductsWarning_one": "Bạn sắp xóa {{count}} sản phẩm khỏi {{sales_channel}}.",
     "removeProductsWarning_other": "Bạn sắp xóa {{count}} sản phẩm khỏi {{sales_channel}}.",
     "addProducts": "Thêm sản phẩm",
     "editSalesChannel": "Chỉnh sửa kênh bán hàng",
@@ -2975,7 +2921,6 @@
     "salesChannels": {
       "title": "Thêm kênh bán hàng",
       "description": "Thêm các kênh bán hàng mà khóa API nên được giới hạn.",
-      "successToast_one": "{{count}} kênh bán hàng đã được thêm thành công vào khóa API.",
       "successToast_other": "{{count}} kênh bán hàng đã được thêm thành công vào khóa API.",
       "alreadyAddedTooltip": "Kênh bán hàng này đã được thêm vào khóa API.",
       "list": {
@@ -2997,10 +2942,8 @@
     },
     "removeSalesChannel": {
       "warning": "Bạn sắp xóa kênh bán hàng {{name}} khỏi khóa API. Hành động này không thể hoàn tác.",
-      "warningBatch_one": "Bạn sắp xóa {{count}} kênh bán hàng khỏi khóa API. Hành động này không thể hoàn tác.",
       "warningBatch_other": "Bạn sắp xóa {{count}} kênh bán hàng khỏi khóa API. Hành động này không thể hoàn tác.",
       "successToast": "Kênh bán hàng đã được xóa khỏi khóa API thành công.",
-      "successToastBatch_one": "{{count}} kênh bán hàng đã được xóa khỏi khóa API thành công.",
       "successToastBatch_other": "{{count}} kênh bán hàng đã được xóa khỏi khóa API thành công."
     },
     "actions": {
@@ -3121,7 +3064,6 @@
     "transactionIdLabel": "ID giao dịch",
     "workflowIdLabel": "ID luồng công việc",
     "progressLabel": "Tiến độ",
-    "stepsCompletedLabel_one": "{{completed}} trong {{count}} bước",
     "stepsCompletedLabel_other": "{{completed}} trong {{count}} bước",
     "list": {
       "noRecordsMessage": "Chưa có luồng công việc nào được thực thi."
@@ -3409,19 +3351,12 @@
     "unitOfMeasure": "Đơn vị đo lường"
   },
   "dateTime": {
-    "years_one": "Năm",
     "years_other": "Năm",
-    "months_one": "Tháng",
     "months_other": "Tháng",
-    "weeks_one": "Tuần",
     "weeks_other": "Tuần",
-    "days_one": "Ngày",
     "days_other": "Ngày",
-    "hours_one": "Giờ",
     "hours_other": "Giờ",
-    "minutes_one": "Phút",
     "minutes_other": "Phút",
-    "seconds_one": "Giây",
     "seconds_other": "Giây"
   },
   "auth": {
@@ -3704,7 +3639,6 @@
         "list": {
           "noRecordsMessage": "Tạo người dùng trước."
         },
-        "successToast_one": "Người dùng đã được thêm vào vai trò thành công.",
         "successToast_other": "Các người dùng đã được thêm vào vai trò thành công."
       },
       "alreadyAddedTooltip": "Người dùng đã có vai trò này.",
@@ -3712,9 +3646,7 @@
         "noRecordsMessage": "Vai trò này không có người dùng."
       },
       "remove": {
-        "description_one": "Bạn sắp xóa {{count}} người dùng khỏi vai trò. Hành động này không thể hoàn tác.",
         "description_other": "Bạn sắp xóa {{count}} người dùng khỏi vai trò. Hành động này không thể hoàn tác.",
-        "title_one": "Xóa người dùng",
         "title_other": "Xóa người dùng"
       },
       "unassignableRoleTooltip": "Bạn không có quyền gán vai trò này — quyền của bạn không bao phủ tất cả các chính sách của nó."

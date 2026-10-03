@@ -202,22 +202,16 @@
         "all": "جميع المناطق",
         "customer": "العملاء",
         "customer_group": "مجموعات العملاء",
-        "customerGroup": "مجموعات العملاء",
         "product": "المنتجات",
         "product_variant": "بدائل المنتجات",
         "inventory_item": "المخزون",
-        "productVariant": "متغيرات المنتجات",
-        "inventory": "المخزون",
         "reservation": "الحجوزات",
         "product_category": "الفئات",
         "product_collection": "المجموعات",
-        "category": "الفئات",
-        "collection": "المجموعات",
         "order": "الطلبات",
         "promotion": "العروض الترويجية",
         "campaign": "الحملات",
         "price_list": "قوائم الأسعار",
-        "priceList": "قوائم الأسعار",
         "user": "المستخدمين",
         "region": "المناطق",
         "tax_region": "مناطق الضريبة",
@@ -229,15 +223,6 @@
         "shipping_profile": "ملفات الشحن",
         "publishable_api_key": "مفاتيح API القابلة للنشر",
         "secret_api_key": "مفاتيح API السرية",
-        "taxRegion": "مناطق الضرائب",
-        "returnReason": "أسباب الإرجاع",
-        "salesChannel": "قنوات المبيعات",
-        "productType": "أنواع المنتجات",
-        "productTag": "علامات المنتجات",
-        "location": "المواقع",
-        "shippingProfile": "ملفات الشحن",
-        "publishableApiKey": "مفاتيح API القابلة للنشر",
-        "secretApiKey": "مفاتيح API السرية",
         "command": "الأوامر",
         "navigation": "التنقل"
       }
@@ -1460,7 +1445,6 @@
       "returnTotal": "إجمالي الإرجاع",
       "inboundTotal": "إجمالي الوارد",
       "estDifference": "الفرق التقديري",
-      "refundAmount": "مبلغ الاسترداد",
       "outstandingAmount": "المبلغ المستحق",
       "reason": "السبب",
       "reasonHint": "اختر سبب رغبة العميل في إرجاع العناصر.",
@@ -2099,9 +2083,7 @@
       "hint": "إنشاء منطقة ضريبية جديدة لتحديد معدلات الضرائب لدولة معينة.",
       "errors": {
         "missingProvider": "المزود مطلوب عند إنشاء منطقة ضريبية.",
-        "missingCountry": "الدولة مطلوبة عند إنشاء منطقة ضريبية.",
-        "rateIsRequired": "معدل الضريبة مطلوب عند إنشاء معدل ضريبة افتراضي.",
-        "nameIsRequired": "الاسم مطلوب عند إنشاء معدل ضريبة افتراضي."
+        "missingCountry": "الدولة مطلوبة عند إنشاء منطقة ضريبية."
       },
       "successToast": "تم إنشاء المنطقة الضريبية بنجاح."
     },
@@ -2400,9 +2382,7 @@
           "items": {
             "title": "ما هي العناصر التي سيُطبَّق عليها العرض الترويجي؟",
             "description": "سيُطبَّق العرض الترويجي على العناصر التي تستوفي الشروط التالية."
-          },
-          "title": "ما هي العناصر التي سيتم تطبيق العرض الترويجي عليها؟",
-          "description": "سيتم تطبيق العرض الترويجي على العناصر التي تطابق الشروط التالية."
+          }
         },
         "buy-rules": {
           "title": "ما الذي يجب أن يكون في السلة لتفعيل العرض الترويجي؟",
@@ -3242,7 +3222,6 @@
       "createTaxRate": "إنشاء معدل ضريبة",
       "createTaxRateHint": "إنشاء معدل ضريبة جديد للمنطقة.",
       "deleteRateDescription": "أنت على وشك حذف معدل الضريبة {{name}}. لا يمكن التراجع عن هذا الإجراء.",
-      "editTaxRate": "تحرير معدل الضريبة",
       "editRateAction": "تحرير المعدل",
       "editOverridesAction": "تحرير التجاوزات",
       "editOverridesTitle": "تحرير تجاوزات معدل الضريبة",

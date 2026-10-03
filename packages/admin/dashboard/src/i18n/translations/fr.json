@@ -182,22 +182,16 @@
         "all": "Toutes les zones",
         "customer": "Clients",
         "customer_group": "Groupes de clients",
-        "customerGroup": "Groupes de clients",
         "product": "Produits",
         "product_variant": "Variantes de produits",
         "inventory_item": "Inventaire",
-        "productVariant": "Variantes de produits",
-        "inventory": "Inventaire",
         "reservation": "Réservations",
         "product_category": "Catégories",
         "product_collection": "Collections",
-        "category": "Catégories",
-        "collection": "Collections",
         "order": "Commandes",
         "promotion": "Promotions",
         "campaign": "Campagnes",
         "price_list": "Listes de prix",
-        "priceList": "Listes de prix",
         "user": "Utilisateurs",
         "region": "Régions",
         "tax_region": "Régions fiscales",
@@ -209,15 +203,6 @@
         "shipping_profile": "Profils de livraison",
         "publishable_api_key": "Clés API publiables",
         "secret_api_key": "Clés API secrètes",
-        "taxRegion": "Régions fiscales",
-        "returnReason": "Motifs de retour",
-        "salesChannel": "Canaux de vente",
-        "productType": "Types de produits",
-        "productTag": "Tags de produits",
-        "location": "Emplacements",
-        "shippingProfile": "Profils d'expédition",
-        "publishableApiKey": "Clés API publiques",
-        "secretApiKey": "Clés API secrètes",
         "command": "Commandes",
         "navigation": "Navigation"
       }
@@ -1380,7 +1365,6 @@
       "returnTotal": "Total du retour",
       "inboundTotal": "Total entrant",
       "estDifference": "Différence estimée",
-      "refundAmount": "Montant du remboursement",
       "outstandingAmount": "Montant impayé",
       "reason": "Raison",
       "reasonHint": "Choisir la raison pour laquelle le client souhaite retourner des articles.",
@@ -1991,9 +1975,7 @@
       "hint": "Créer une nouvelle taxe pour définir les taux de taxe pour un pays spécifique.",
       "errors": {
         "missingProvider": "Le fournisseur est obligatoire lors de la création d'une région fiscale.",
-        "missingCountry": "Le pays est obligatoire lors de la création d'une région fiscale.",
-        "rateIsRequired": "Le taux de taxe est requis lors de la création d'une taxe par défaut.",
-        "nameIsRequired": "Le nom est requis lors de la création d'une taxe par défaut."
+        "missingCountry": "Le pays est obligatoire lors de la création d'une région fiscale."
       },
       "successToast": "La taxe a été créée avec succès."
     },
@@ -2280,9 +2262,7 @@
           "items": {
             "title": "À quels articles la promotion sera-t-elle appliquée ?",
             "description": "La promotion sera appliquée aux articles qui correspondent aux conditions suivantes."
-          },
-          "title": "Quels articles seront appliqués à la promotion?",
-          "description": "La promotion sera appliquée aux articles qui correspondent aux conditions suivantes."
+          }
         },
         "buy-rules": {
           "title": "Quels éléments doivent être dans le panier pour déverrouiller la promotion?",
@@ -2365,8 +2345,7 @@
         "inactive": {
           "title": "Inactive",
           "description": "Les clients ne pourront plus utiliser le code"
-        },
-        "title": "Status"
+        }
       },
       "method": {
         "label": "Method",
@@ -3091,7 +3070,6 @@
       "createTaxRate": "Créer un taux de taxe",
       "createTaxRateHint": "Créer un nouveau taux de taxe pour la région.",
       "deleteRateDescription": "Vous êtes sur le point de supprimer le taux de taxe {{name}}. Cette action ne peut être annulée.",
-      "editTaxRate": "Modifier le taux de taxe",
       "editRateAction": "Modifier le taux",
       "editOverridesAction": "Modifier les remplacements",
       "editOverridesTitle": "Modifier les remplacements",

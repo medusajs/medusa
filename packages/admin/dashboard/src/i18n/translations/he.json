@@ -192,22 +192,16 @@
         "all": "כל האזורים",
         "customer": "לקוחות",
         "customer_group": "קבוצות לקוחות",
-        "customerGroup": "קבוצות לקוחות",
         "product": "מוצרים",
         "product_variant": "וריאנטים של מוצר",
         "inventory_item": "מלאי",
-        "productVariant": "וריאנטים של מוצר",
-        "inventory": "מלאי",
         "reservation": "הזמנות",
         "product_category": "קטגוריות",
         "product_collection": "קולקציות",
-        "category": "קטגוריות",
-        "collection": "קולקציות",
         "order": "הזמנות",
         "promotion": "מבצעים",
         "campaign": "קמפיינים",
         "price_list": "רשימות מחירים",
-        "priceList": "רשימות מחירים",
         "user": "משתמשים",
         "region": "אזורים",
         "tax_region": "אזורי מס",
@@ -219,15 +213,6 @@
         "shipping_profile": "פרופילי משלוח",
         "publishable_api_key": "מפתחות API לפרסום",
         "secret_api_key": "מפתחות API סודיים",
-        "taxRegion": "אזורי מס",
-        "returnReason": "סיבות החזרה",
-        "salesChannel": "ערוצי מכירות",
-        "productType": "סוגי מוצרים",
-        "productTag": "תגיות מוצר",
-        "location": "מיקומים",
-        "shippingProfile": "פרופילי שילוח",
-        "publishableApiKey": "מפתחות API לפרסום",
-        "secretApiKey": "מפתחות API סודיים",
         "command": "פקודות",
         "navigation": "ניווט"
       }
@@ -2337,9 +2322,7 @@
           "items": {
             "title": "על אילו פריטים יוחל המבצע?",
             "description": "המבצע יוחל על פריטים התואמים את התנאים הבאים."
-          },
-          "title": "לאילו פריטים יוחל המבצע?",
-          "description": "המבצע יחול על פריטים התואמים את התנאים הבאים."
+          }
         },
         "buy-rules": {
           "title": "מה צריך להיות בעגלה כדי לפתוח את המבצע?",

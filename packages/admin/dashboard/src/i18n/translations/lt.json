@@ -192,22 +192,16 @@
         "all": "Visos sritys",
         "customer": "Klientai",
         "customer_group": "Klientų grupės",
-        "customerGroup": "Klientų grupės",
         "product": "Prekės",
         "product_variant": "Prekių variantai",
         "inventory_item": "Atsargos",
-        "productVariant": "Prekių variantai",
-        "inventory": "Atsargos",
         "reservation": "Rezervacijos",
         "product_category": "Kategorijos",
         "product_collection": "Kolekcijos",
-        "category": "Kategorijos",
-        "collection": "Kolekcijos",
         "order": "Užsakymai",
         "promotion": "Akcijos",
         "campaign": "Kampanijos",
         "price_list": "Kainų sąrašai",
-        "priceList": "Kainoraščiai",
         "user": "Administratoriai",
         "region": "Regionai",
         "tax_region": "Mokesčių regionai",
@@ -219,15 +213,6 @@
         "shipping_profile": "Siuntimo profiliai",
         "publishable_api_key": "Viešieji API raktai",
         "secret_api_key": "Slaptieji API raktai",
-        "taxRegion": "Mokesčių regionai",
-        "returnReason": "Grąžinimo priežastys",
-        "salesChannel": "Pardavimų kanalai",
-        "productType": "Prekių tipai",
-        "productTag": "Prekių žymos",
-        "location": "Sandėliavimo vietos",
-        "shippingProfile": "Siuntimo tipas",
-        "publishableApiKey": "Vieši API raktai",
-        "secretApiKey": "Slapti API raktai",
         "command": "Komandos",
         "navigation": "Navigacija"
       }
@@ -1420,7 +1405,6 @@
       "returnTotal": "Grąžinama viso",
       "inboundTotal": "Įeinantis viso",
       "estDifference": "Numatomas skirtumas",
-      "refundAmount": "Pirkėjui grąžinama suma",
       "outstandingAmount": "Likučio suma",
       "reason": "Priežastis",
       "reasonHint": "Pasirinkite kodėl klientas nori grąžinti prekes.",
@@ -2045,9 +2029,7 @@
       "hint": "Sukurkite mokesčių regioną, kad nustatyti mokesčių tarifus konkrečiai šaliai.",
       "errors": {
         "missingProvider": "Kuriant mokesčių regioną, teikėjas yra privalomas.",
-        "missingCountry": "Kuriant mokesčių regioną, šalis yra privaloma.",
-        "rateIsRequired": "Tarifas yra privalomas kai kuriamas numatytasis mokesčių tarifas.",
-        "nameIsRequired": "Pavadinimas yra privalomas kai kuriamas numatytasis mokesčių tarifas."
+        "missingCountry": "Kuriant mokesčių regioną, šalis yra privaloma."
       },
       "successToast": "Mokesčių regionas sėkmingai sukurtas."
     },
@@ -2340,9 +2322,7 @@
           "items": {
             "title": "Kuriems elementams bus taikoma akcija?",
             "description": "Akcija bus taikoma elementams, atitinkantiems šias sąlygas."
-          },
-          "title": "Kokioms prekėms bus taikoma akcija?",
-          "description": "Akcija bus taikoma prekėms, kurios atitinka šias sąlygas."
+          }
         },
         "buy-rules": {
           "title": "Kas turi būti krepšelyje, kad galiotų akcija?",
@@ -3166,7 +3146,6 @@
       "createTaxRate": "Sukurti mokesčių tarifą",
       "createTaxRateHint": "Sukurkite mokesčių tarifą regionui.",
       "deleteRateDescription": "Ketinate pašalinti mokesčių tarifą {{name}}. Šis veiksmas neatstatomas.",
-      "editTaxRate": "Keisti mokesčių tarifą",
       "editRateAction": "Keisti tarifą",
       "editOverridesAction": "Keisti perrašymus",
       "editOverridesTitle": "Keisti mokesčių tarifo perrašymus",

@@ -214,22 +214,16 @@
         "all": "Todas las áreas",
         "customer": "Clientes",
         "customer_group": "Grupos de clientes",
-        "customerGroup": "Grupos de clientes",
         "product": "Productos",
         "product_variant": "Variantes de producto",
         "inventory_item": "Inventario",
-        "productVariant": "Variantes de productos",
-        "inventory": "Inventario",
         "reservation": "Reservas",
         "product_category": "Categorías",
         "product_collection": "Colecciones",
-        "category": "Categorías",
-        "collection": "Colecciones",
         "order": "Pedidos",
         "promotion": "Promociones",
         "campaign": "Campañas",
         "price_list": "Listas de precios",
-        "priceList": "Listas de precios",
         "user": "Usuarios",
         "region": "Regiones",
         "tax_region": "Regiones fiscales",
@@ -241,15 +235,6 @@
         "shipping_profile": "Perfiles de envío",
         "publishable_api_key": "Claves API publicables",
         "secret_api_key": "Claves API secretas",
-        "taxRegion": "Regiones fiscales",
-        "returnReason": "Motivos de devolución",
-        "salesChannel": "Canales de venta",
-        "productType": "Tipos de productos",
-        "productTag": "Etiquetas de productos",
-        "location": "Ubicaciones",
-        "shippingProfile": "Perfiles de envío",
-        "publishableApiKey": "Claves API publicables",
-        "secretApiKey": "Claves API secretas",
         "command": "Comandos",
         "navigation": "Navegación"
       }
@@ -3028,12 +3013,10 @@
       "manageEntities": "Gestionar entidades",
       "manageLocales": "Gestionar idiomas"
     },
-    "title": "Traducción de dominios",
     "subtitle": "Gestiona las traducciones de tus datos en Medusa",
     "bulk": {
       "header": "Editor de Traducciones en Masa",
-      "mainColumn": "Idioma",
-      "locale": "Idioma"
+      "mainColumn": "Idioma"
     },
     "edit": {
       "successToast": "Traducciones actualizadas exitosamente",

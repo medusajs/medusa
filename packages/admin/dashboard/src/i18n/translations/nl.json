@@ -182,22 +182,16 @@
         "all": "Alle gebieden",
         "customer": "Klanten",
         "customer_group": "Klantengroepen",
-        "customerGroup": "Klantengroepen",
         "product": "Producten",
         "product_variant": "Productvarianten",
         "inventory_item": "Voorraad",
-        "productVariant": "Productvarianten",
-        "inventory": "Voorraad",
         "reservation": "Reserveringen",
         "product_category": "Categorieën",
         "product_collection": "Collecties",
-        "category": "Categorieën",
-        "collection": "Collecties",
         "order": "Bestellingen",
         "promotion": "Promoties",
         "campaign": "Campagnes",
         "price_list": "Prijslijsten",
-        "priceList": "Prijslijsten",
         "user": "Gebruikers",
         "region": "Regio's",
         "tax_region": "Belastingregio's",
@@ -209,15 +203,6 @@
         "shipping_profile": "Verzendprofielen",
         "publishable_api_key": "Publiceerbare API-sleutels",
         "secret_api_key": "Geheime API-sleutels",
-        "taxRegion": "Belastingregio's",
-        "returnReason": "Retourredenen",
-        "salesChannel": "Verkoopkanalen",
-        "productType": "Producttypen",
-        "productTag": "Producttags",
-        "location": "Locaties",
-        "shippingProfile": "Verzendprofielen",
-        "publishableApiKey": "Publiceerbare API-sleutels",
-        "secretApiKey": "Geheime API-sleutels",
         "command": "Commando's",
         "navigation": "Navigatie"
       }
@@ -1990,9 +1975,7 @@
       "hint": "Maak een nieuwe belastingregio aan om belastingtarieven voor een specifiek land te definiëren.",
       "errors": {
         "missingProvider": "Provider is vereist bij het aanmaken van een belastingregio.",
-        "missingCountry": "Land is vereist bij het aanmaken van een belastingregio.",
-        "rateIsRequired": "Belastingtarief is vereist bij het aanmaken van een standaard belastingtarief.",
-        "nameIsRequired": "Naam is vereist bij het aanmaken van een standaard belastingtarief."
+        "missingCountry": "Land is vereist bij het aanmaken van een belastingregio."
       },
       "successToast": "De belastingregio is succesvol aangemaakt."
     },
@@ -2279,9 +2262,7 @@
           "items": {
             "title": "Op welke artikelen wordt de promotie toegepast?",
             "description": "De promotie wordt toegepast op artikelen die aan de volgende voorwaarden voldoen."
-          },
-          "title": "Op welke items wordt de promotie toegepast?",
-          "description": "De promotie wordt toegepast op items die aan de volgende voorwaarden voldoen."
+          }
         },
         "buy-rules": {
           "title": "Wat moet er in de winkelwagen zitten om de promotie te ontgrendelen?",
@@ -3089,7 +3070,6 @@
       "createTaxRate": "Belastingtarief aanmaken",
       "createTaxRateHint": "Maak een nieuw belastingtarief aan voor de regio.",
       "deleteRateDescription": "U staat op het punt het belastingtarief {{name}} te verwijderen. Deze actie kan niet ongedaan worden gemaakt.",
-      "editTaxRate": "Belastingtarief bewerken",
       "editRateAction": "Tarief bewerken",
       "editOverridesAction": "Overschrijvingen bewerken",
       "editOverridesTitle": "Belastingtarief Overschrijvingen bewerken",
