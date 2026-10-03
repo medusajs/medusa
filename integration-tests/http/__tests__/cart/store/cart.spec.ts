@@ -7662,6 +7662,85 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("DELETE /store/carts/:id/line-items/:line_id", () => {
+        let cartA
+        let cartB
+
+        beforeEach(async () => {
+          cartA = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          cartB = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+        })
+
+        it("should delete a line item that belongs to the cart", async () => {
+          const itemId = cartA.items[0].id
+
+          const response = await api.delete(
+            `/store/carts/${cartA.id}/line-items/${itemId}`,
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({
+              id: itemId,
+              object: "line-item",
+              deleted: true,
+            })
+          )
+
+          const updatedCart = (
+            await api.get(`/store/carts/${cartA.id}`, storeHeaders)
+          ).data.cart
+
+          expect(updatedCart.items).toHaveLength(0)
+        })
+
+        it("should return 404 when deleting a line item from another cart", async () => {
+          const otherCartItemId = cartB.items[0].id
+
+          const { response } = await api
+            .delete(
+              `/store/carts/${cartA.id}/line-items/${otherCartItemId}`,
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+
+          // the line item should not have been deleted from its own cart
+          const otherCart = (
+            await api.get(`/store/carts/${cartB.id}`, storeHeaders)
+          ).data.cart
+
+          expect(otherCart.items).toHaveLength(1)
+        })
+      })
+
       describe("POST /store/carts/:id/customer", () => {
         beforeEach(async () => {
           cart = (
