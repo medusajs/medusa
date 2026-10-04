@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Add Georgian (ka) admin translation
+feat(dashboard): Add Georgian (ka) admin translation
