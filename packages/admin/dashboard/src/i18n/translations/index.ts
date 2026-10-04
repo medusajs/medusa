@@ -10,6 +10,7 @@ import hr from "./hr.json"
 import hu from "./hu.json"
 import it from "./it.json"
 import ja from "./ja.json"
+import ka from "./ka.json"
 import pl from "./pl.json"
 import ptBR from "./ptBR.json"
 import ptPT from "./ptPT.json"
@@ -73,6 +74,9 @@ export default {
   },
   ja: {
     translation: ja,
+  },
+  ka: {
+    translation: ka,
   },
   pl: {
     translation: pl,
