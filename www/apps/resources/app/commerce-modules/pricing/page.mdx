@@ -180,4 +180,71 @@ Learn more about workflows in [this documentation](!docs!/learn/fundamentals/wor
 
 ---
 
+## Pricing Events
+
+You can listen to pricing-related events in a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) to perform actions when prices or price lists change.
+
+### Price List Workflow Events
+
+<Note>
+
+Price list workflow events are available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+
+</Note>
+
+Medusa's price list workflows, which the Medusa Admin and the price list API routes use, emit the following events:
+
+| Event | Emitted when | Payload |
+|---|---|---|
+| `price-list.created` | Price lists are created. | `{ id }` |
+| `price-list.updated` | Price lists are updated. | `{ id }` |
+| `price-list.deleted` | Price lists are deleted. | `{ id }` |
+| `price-list.prices_added` | Prices are added to a price list. | `{ id, price_set_ids }` |
+| `price-list.prices_updated` | Prices in a price list are updated. | `{ id, price_set_ids }` |
+| `price-list.prices_removed` | Prices are removed from a price list. | `{ id, price_set_ids }` |
+
+In the payload, `id` is the ID of the price list, and `price_set_ids` holds the IDs of the price sets whose prices were added, updated, or removed.
+
+Medusa doesn't emit workflow events for individual prices or price sets, such as `price.created`.
+
+### Pricing Module Service Events
+
+The Pricing Module's service also emits lower-level events whenever it creates, updates, deletes, or restores a record of its data models. These events are useful when you need to react to changes on records that have no workflow event, such as prices.
+
+The event names follow the format `pricing.<data-model>.<action>`, where:
+
+- `<data-model>` is one of `price-set`, `price`, `price-rule`, `price-list`, or `price-list-rule`.
+- `<action>` is one of `created`, `updated`, `deleted`, or `restored`.
+
+For example, `pricing.price.created`, `pricing.price-list.updated`, and `pricing.price-list-rule.deleted`. The event's payload is `{ id }`, where `id` is the ID of the affected record.
+
+You can also use the `PricingEvents` object exported by `@medusajs/framework/utils` to reference these event names. For example:
+
+```ts title="src/subscribers/price-created.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { PricingEvents } from "@medusajs/framework/utils"
+
+export default async function priceCreatedHandler({
+  event: { data },
+}: SubscriberArgs<{ id: string }>) {
+  console.log(`Price ${data.id} was created`)
+}
+
+export const config: SubscriberConfig = {
+  // "pricing.price.created"
+  event: PricingEvents.PRICE_CREATED,
+}
+```
+
+<Note title="Tip">
+
+Medusa emits the Pricing Module service events as internal events. It doesn't log them, and the [Redis Event Module](../../infrastructure-modules/event/redis/page.mdx) processes them with the lowest priority. Prefer the price list workflow events when they cover your use case.
+
+</Note>
+
+---
+
 <CommerceModuleSections />
