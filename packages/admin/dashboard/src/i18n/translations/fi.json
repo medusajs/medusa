@@ -1199,7 +1199,9 @@
         "paymentMethod": "Maksutapa",
         "paymentMethodDescription": "Palauta summa maksutapaan",
         "creditLine": "Hyvityssaldo",
-        "creditLineDescription": "Palauta summa hyvityssaldona"
+        "creditLineDescription": "Palauta summa hyvityssaldona",
+        "creditLineGuestDescription": "Vain asiakkaille, joilla on tili. Tämän tilauksen teki vieras.",
+        "creditLineNoOutstandingAmountDescription": "Vain tilauksille, joilla on avoin saldo. Luo ensin palautus tai tilausmuokkaus."
       }
     },
     "domain": "Tilaukset",
@@ -1269,6 +1271,8 @@
       "title": "Maksut",
       "isReadyToBeCaptured": "Maksu <0/> on valmis veloitettavaksi.",
       "totalPaidByCustomer": "Asiakkaan maksama summa yhteensä",
+      "totalPending": "Yhteensä odottaa",
+      "storeCreditRefund": "Myymäläkrediittihyvitys",
       "totalStoreCreditRefunds": "Hyvityssaldopalautukset yhteensä",
       "capture": "Veloita maksu",
       "capture_short": "Veloita",
@@ -1281,6 +1285,7 @@
         "authorized": "Varmennettu",
         "partiallyAuthorized": "Osittain varmennettu",
         "awaiting": "Odottaa",
+        "pending": "Odottaa",
         "captured": "Veloitettu",
         "partiallyRefunded": "Osittain hyvitetty",
         "partiallyCaptured": "Osittain veloitettu",
@@ -3425,7 +3430,10 @@
       "building": "Rakennetaan",
       "ready": "Valmis",
       "error": "Virhe"
-    }
+    },
+    "delete": "Poista indeksi",
+    "deleteSuccess": "Indeksi {{name}} poistettu",
+    "deleteWarning": "Tämä poistaa \"{{name}}\"-indeksin ja kaikki sen versiot, mukaan lukien sen tiedot hakukoneessa. Mikään tästä indeksistä ei ole haettavissa ennen kuin seuraava siirto rakentaa sen uudelleen alusta. Tätä ei voi perua."
   },
   "shippingOptionTypes": {
     "domain": "Toimitusvaihtoehtojen tyypit",

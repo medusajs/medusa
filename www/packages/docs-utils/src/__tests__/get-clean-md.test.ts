@@ -105,4 +105,31 @@ describe("getCleanMd", () => {
       )
     })
   })
+  describe("injected Markdown components", () => {
+    it("replaces the component with the passed Markdown", async () => {
+      const content = [
+        "## Cloud Plans",
+        "",
+        "- Deploy from [GitHub](https://docs.medusajs.com/cloud/projects)",
+        "",
+        "| Feature | Develop | Launch |",
+        "| --- | --- | --- |",
+        "| Orders | Unlimited | 1<br />2 |",
+      ].join("\n")
+
+      const md = await getCleanMd({
+        file: ["# Pricing", "", "<PricingContent />"].join("\n"),
+        type: "content",
+        parserOptions: { PricingContent: { content } },
+      })
+
+      expect(md.trim()).toBe(["# Pricing", "", content].join("\n"))
+    })
+
+    it("removes the component when no Markdown is passed", async () => {
+      const md = await clean(["# Pricing", "", "<PricingContent />"].join("\n"))
+
+      expect(md.trim()).toBe("# Pricing")
+    })
+  })
 })

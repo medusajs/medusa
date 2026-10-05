@@ -11567,6 +11567,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Admin Guides",
+          "autogenerate_tags": "admin+product,-jsSdk",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize administative features of the Product Module.",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/product/guides/manage-with-admin-api",
+              "title": "Manage Products with Admin API",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Admin User Guides",
           "autogenerate_tags": "userGuide+product",
           "autogenerate_as_ref": true,
