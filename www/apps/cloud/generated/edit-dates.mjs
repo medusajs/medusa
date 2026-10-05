@@ -27,7 +27,7 @@ export const generatedEditDates = {
   "app/emails/page.mdx": "2026-09-22T15:57:15.779Z",
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
   "app/user/page.mdx": "2026-06-08T13:04:35.724Z",
-  "app/deployments/access/page.mdx": "2026-04-08T16:20:22.886Z",
+  "app/deployments/access/page.mdx": "2026-10-05T11:18:39.432Z",
   "app/projects/prerequisites/page.mdx": "2026-09-15T06:43:04.034Z",
   "app/storefront/page.mdx": "2026-07-28T05:57:46.335Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
@@ -81,5 +81,5 @@ export const generatedEditDates = {
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
-  "app/medusa-mcp/page.mdx": "2026-10-02T13:23:53.700Z"
+  "app/medusa-mcp/page.mdx": "2026-10-05T11:18:21.069Z"
 }
